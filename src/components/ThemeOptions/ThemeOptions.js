@@ -36,7 +36,7 @@ class ThemeOptions extends Component {
 	}
 
 	componentDidMount() {
-		const { darkMode, boxLayout, rtlLayout, miniSidebar } = this.props;
+		const { darkMode, boxLayout, rtlLayout, miniSidebar, activeTheme } = this.props;
 		if (darkMode) {
 			this.darkModeHanlder(true);
 		}
@@ -49,6 +49,9 @@ class ThemeOptions extends Component {
 		if (miniSidebar) {
 			this.miniSidebarHanlder(true);
 		}
+
+		// apply default themes
+		this.changeThemeColor(activeTheme);
 	}
 
 	/**
@@ -133,7 +136,7 @@ class ThemeOptions extends Component {
 
 	/**
 	 * Change Theme Color Event Handler
-	 * @param {*object} theme 
+	 * @param {*object} theme
 	 */
 	changeThemeColor(theme) {
 		const { themes } = this.props;
