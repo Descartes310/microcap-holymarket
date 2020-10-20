@@ -3,37 +3,39 @@
  */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
-import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import { Link } from 'react-router-dom';
-import screenfull from 'screenfull';
 import Tooltip from '@material-ui/core/Tooltip';
 import MenuIcon from '@material-ui/icons/Menu';
 import { withRouter } from 'react-router-dom';
 
 // actions
-import { collapsedSidebarAction } from 'Actions';
+import { collapsedSidebarAction, darkModeAction } from 'Actions';
 
 // helpers
 import { getAppLayout } from "Helpers/helpers";
 
 // components
 import Notifications from './Notifications';
-import ChatSidebar from './ChatSidebar';
 import DashboardOverlay from '../DashboardOverlay/DashboardOverlay';
 import LanguageProvider from './LanguageProvider';
 import SearchForm from './SearchForm';
 import QuickLinks from './QuickLinks';
 import MobileSearchForm from './MobileSearchForm';
-import Cart from './Cart';
 
 // intl messages
 import IntlMessages from 'Util/IntlMessages';
+import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
+import Switch from "@material-ui/core/Switch/Switch";
 
 class Header extends Component {
+
+	constructor(props) {
+		super(props);
+	}
+
 
 	state = {
 		customizer: false,
@@ -68,20 +70,30 @@ class Header extends Component {
 		document.body.style.overflow = "";
 	}
 
-	// toggle screen full
-	toggleScreenFull() {
-		screenfull.toggle();
-	}
-
 	// mobile search form
 	openMobileSearchForm() {
 		this.setState({ isMobileSearchFormVisible: true });
 	}
 
+	/**
+	 * Dark Mode Event Hanlder
+	 * Use To Enable Dark Mode
+	 * @param {*object} event
+	 */
+	darkModeHandler(isTrue) {
+		if (isTrue) {
+			document.body.classList.add("dark-mode");
+		}
+		else {
+			document.body.classList.remove("dark-mode");
+		}
+		this.props.darkModeAction(isTrue);
+	}
+
 	render() {
-		
+
 		const { isMobileSearchFormVisible } = this.state;
-		const { horizontalMenu, agencyMenu, location } = this.props;
+		const { horizontalMenu, agencyMenu, location, darkMode } = this.props;
 		return (
 			<AppBar position="static" className="rct-header">
 				<Toolbar className="d-flex justify-content-between w-100 pl-0">
@@ -89,11 +101,11 @@ class Header extends Component {
 						{(horizontalMenu || agencyMenu) &&
 							<div className="site-logo">
 								<Link to="/" className="logo-mini">
-									<img src={require('Assets/img/appLogo.png')} className="mr-15" alt="site logo" width="35" height="35" />
+									<img src={require('Assets/identity/logomicrocap.png')} className="mr-15" alt="site logo" width="35" height="35" />
 								</Link>
-								<Link to="/" className="logo-normal">
+								{/*<Link to="/" className="logo-normal">
 									<img src={require('Assets/img/appLogoText.png')} className="img-fluid" alt="site-logo" width="67" height="17" />
-								</Link>
+								</Link>*/}
 							</div>
 						}
 						{!agencyMenu &&
@@ -114,62 +126,28 @@ class Header extends Component {
 										</Tooltip>
 									</li>
 								}
-								{!horizontalMenu && <QuickLinks />}
-								<li className="list-inline-item search-icon d-inline-block">
-									<SearchForm />
-									<IconButton mini="true" className="search-icon-btn" onClick={() => this.openMobileSearchForm()}>
-										<i className="zmdi zmdi-search"></i>
-									</IconButton>
-									<MobileSearchForm
-										isOpen={isMobileSearchFormVisible}
-										onClose={() => this.setState({ isMobileSearchFormVisible: false })}
-									/>
-								</li>
 							</ul>
 						}
 					</div>
 					<ul className="navbar-right list-inline mb-0">
-						<li className="list-inline-item summary-icon">
-							<Tooltip title="Summary" placement="bottom">
-								<a href="#" className="header-icon tour-step-3" onClick={(e) => this.openDashboardOverlay(e)}>
-									<i className="zmdi zmdi-info-outline"></i>
-								</a>
-							</Tooltip>
-						</li>
-						{!horizontalMenu &&
-							<li className="list-inline-item">
-								<Tooltip title="Upgrade" placement="bottom">
-									<Button component={Link} to={`/${getAppLayout(location)}/pages/pricing`} variant="contained" className="upgrade-btn tour-step-4 text-white" color="primary">
-										<IntlMessages id="widgets.upgrade" />
-									</Button>
-								</Tooltip>
-							</li>
-						}
-						<LanguageProvider />
 						<Notifications />
-						<Cart />
-						<li className="list-inline-item setting-icon">
-							<Tooltip title="Chat" placement="bottom">
-								<IconButton aria-label="settings" onClick={() => this.setState({ customizer: true })}>
-									<i className="zmdi zmdi-comment"></i>
-								</IconButton>
-							</Tooltip>
+						<LanguageProvider />
+						{!horizontalMenu &&
+						<li className="list-inline-item text-white">
+							<FormControlLabel
+								control={
+									<Switch
+										checked={darkMode}
+										onChange={(e) => this.darkModeHandler(e.target.checked)}
+										className="switch-btn"
+									/>
+								}
+								label={<IntlMessages id="themeOptions.darkMode"/>}
+								className="m-0"
+							/>
 						</li>
-						<li className="list-inline-item">
-							<Tooltip title="Full Screen" placement="bottom">
-								<IconButton aria-label="settings" onClick={() => this.toggleScreenFull()}>
-									<i className="zmdi zmdi-crop-free"></i>
-								</IconButton>
-							</Tooltip>
-						</li>
+						}
 					</ul>
-					<Drawer
-						anchor={'right'}
-						open={this.state.customizer}
-						onClose={() => this.setState({ customizer: false })}
-					>
-						<ChatSidebar />
-					</Drawer>
 				</Toolbar>
 				<DashboardOverlay
 					onClose={() => this.closeDashboardOverlay()}
@@ -185,5 +163,6 @@ const mapStateToProps = ({ settings }) => {
 };
 
 export default withRouter(connect(mapStateToProps, {
-	collapsedSidebarAction
+	collapsedSidebarAction,
+	darkModeAction
 })(Header));

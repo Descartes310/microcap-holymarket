@@ -18,8 +18,9 @@ import IntlMessages from 'Util/IntlMessages';
 class Notifications extends Component {
 
    state = {
-      notifications: null
-   }
+      notifications: null,
+      shouldShake: false,
+   };
 
    componentDidMount() {
       this.getNotifications();
@@ -42,7 +43,7 @@ class Notifications extends Component {
          <UncontrolledDropdown nav className="list-inline-item notification-dropdown">
             <DropdownToggle nav className="p-0">
                <Tooltip title="Notifications" placement="bottom">
-                  <IconButton className="shake" aria-label="bell">
+                  <IconButton className={this.state.shouldShake ? "shake" : ''} aria-label="bell">
                      <i className="zmdi zmdi-notifications-active"></i>
                      <Badge color="danger" className="badge-xs badge-top-right rct-notify">2</Badge>
                   </IconButton>
