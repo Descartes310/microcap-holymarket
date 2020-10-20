@@ -4,10 +4,14 @@ import reducers from '../reducers';
 
 export function configureStore(initialState) {
 
+    // For dev purpose to enable dev tools
+    const composeEnhancers =
+        window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
     const store = createStore(
         reducers,
         initialState,
-        compose(applyMiddleware(Thunk))
+        composeEnhancers(applyMiddleware(Thunk))
     );
 
     if (module.hot) {
