@@ -1,0 +1,33 @@
+.center-hor-ver {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+
+.visibility-hidden {
+  visibility: hidden;
+}
+
+.pl-pr-15 {
+  padding-left: 15px !important;
+  padding-right: 15px !important;
+}
+
+.displayErrorMessage {
+  margin-top: 10px !important;
+}
+
+.label-invalid {
+  color: #F44336;
+}
+
+.custom-error-text {
+  display: block !important;
+  font-size: 0.9rem !important;
+  padding-left: 60px !important;
+}
+
+.has-wrapper .has-icon {
+  bottom: 13px !important;
+  top: unset !important;
+}
