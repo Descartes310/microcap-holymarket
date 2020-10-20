@@ -2,6 +2,7 @@
  * Helpers Functions
  */
 import moment from 'moment';
+import AppConfig from 'Constants/AppConfig';
 
 /**
  * Function to convert hex to rgba
@@ -60,4 +61,20 @@ export function getAppLayout(url) {
     let location = url.pathname;
     let path = location.split('/');
     return path[1];
+}
+
+export const getLocaleFromBrowser = () => {
+    const browserLanguage = window.navigator.userLanguage || window.navigator.language;
+    return browserLanguage.split('-')[0];
+};
+
+export function getDefaultLanguage() {
+    const browserLocale = getLocaleFromBrowser();
+    let defaultLanguage = AppConfig.languages.find(l => l.locale === browserLocale);
+
+    if (!defaultLanguage) {
+        defaultLanguage = AppConfig.languages[0];
+    }
+
+    return defaultLanguage;
 }

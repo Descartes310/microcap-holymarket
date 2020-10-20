@@ -2,7 +2,8 @@
  * App Language Provider
  * Add more locales here
  */
-import { addLocaleData } from 'react-intl';
+import {getDefaultLanguage} from "Helpers/helpers";
+import { addLocaleData, IntlProvider } from 'react-intl';
 import enLang from './entries/en-US';
 import frLang from './entries/fr_FR';
 import zhLang from './entries/zh-Hans-CN';
@@ -43,5 +44,16 @@ addLocaleData(AppLocale.ja.data);
 addLocaleData(AppLocale.ko.data);
 addLocaleData(AppLocale.it.data);
 addLocaleData(AppLocale.hu.data);
+
+const currentAppLocale = AppLocale[getDefaultLanguage().locale];
+
+const intlProvider = new IntlProvider({
+    locale: currentAppLocale.locale,
+    messages: currentAppLocale.messages,
+});
+
+const { intl } = intlProvider.getChildContext();
+
+export const formatMessage = message => intl.formatMessage({ id: message });
 
 export default AppLocale;
