@@ -60,6 +60,7 @@ class RctThemeProvider extends Component {
 		return (
 			<MuiThemeProvider theme={theme}>
 				<IntlProvider
+					key={currentAppLocale.locale}
 					locale={currentAppLocale.locale}
 					messages={currentAppLocale.messages}
 				>
