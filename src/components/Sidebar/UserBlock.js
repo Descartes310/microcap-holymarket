@@ -12,7 +12,7 @@ import { NotificationManager } from 'react-notifications';
 import SupportPage from '../Support/Support';
 
 // redux action
-import { logoutUserFromFirebase } from 'Actions';
+import { logout } from 'Actions';
 
 // intl messages
 import IntlMessages from 'Util/IntlMessages';
@@ -29,7 +29,7 @@ class UserBlock extends Component {
 	 */
 	logoutUser(e) {
 		e.preventDefault();
-		this.props.logoutUserFromFirebase();
+		this.props.logout();
 	}
 
 	/**
@@ -146,5 +146,5 @@ const mapStateToProps = ({ settings }) => {
 }
 
 export default connect(mapStateToProps, {
-	logoutUserFromFirebase
+	logout
 })(UserBlock);
