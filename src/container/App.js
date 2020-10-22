@@ -3,7 +3,7 @@
  */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Redirect, Route } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import { NotificationContainer } from 'react-notifications';
 
 // rct theme provider
@@ -25,8 +25,8 @@ import RctBoxedLayout from './RctBoxedLayout';
 import CRMLayout from './CRMLayout';
 
 // app signin
-import AppSignIn from './SigninFirebase';
-import AppSignUp from './SignupFirebase';
+import AppSignIn from './../routes/session/login';
+import AppSignUp from './../routes/session/register';
 
 // async components
 import {
@@ -44,6 +44,11 @@ import Auth from '../Auth/Auth';
 
 // callback component
 import Callback from "Components/Callback/Callback";
+import {AUTH, HOME} from "../services/frontendRoute";
+import {setAuthUser, loginIntoStore, disableAppLoading} from 'Actions';
+import RctPageLoader from "Components/RctPageLoader/RctPageLoader";
+import {getAuthToken} from "Helpers/tokens";
+import {isUserIntoStoreValid} from "Helpers/helpers";
 
 //Auth0 Handle Authentication
 const auth = new Auth();
@@ -52,7 +57,7 @@ const handleAuthentication = ({ location }) => {
    if (/access_token|id_token|error/.test(location.hash)) {
       auth.handleAuthentication();
    }
-}
+};
 
 /**
  * Initial Path To Check Whether User Is Logged In Or Not
@@ -65,59 +70,110 @@ const InitialPath = ({ component: Component, authUser, ...rest }) =>
             ? <Component {...props} />
             : <Redirect
                to={{
-                  pathname: '/signin',
+                  pathname: AUTH.LOGIN,
                   state: { from: props.location }
                }}
             />}
    />;
 
 class App extends Component {
+    componentDidMount() {
+        this.isNewUser();
+    }
+
+    /**
+     * Check whether the current user is a new or not
+     */
+    isNewUser = () => {
+        this.props
+            .setAuthUser()
+            .then(() => this.refreshTokens())
+            .finally(() => this.props.disableAppLoading());
+    };
+
+    /**
+     * Insert tokens data into store
+     */
+    refreshTokens = () => {
+        const { accessToken, refreshToken, expiresIn, tokenType } = getAuthToken();
+        if (refreshToken && accessToken)
+            this.props.loginIntoStore({
+                accessToken,
+                tokenType,
+                expiresIn,
+                refreshToken,
+            });
+    };
+
    render() {
-      const { location, match, user } = this.props;
-      if (location.pathname === '/') {
-         if (user === null) {
-            return (<Redirect to={'/signin'} />);
-         } else {
-            return (<Redirect to={'/app/dashboard/ecommerce'} />);
-         }
-      }
+       const _isUserIntoStoreValid = isUserIntoStoreValid(this.props.authUser.data, this.props.tokens.data);
+
+       const { location, match, authUser, appLoading } = this.props;
+
       return (
-         <RctThemeProvider>
-            <NotificationContainer />
-            <InitialPath
-               path={`${match.url}app`}
-               authUser={user}
-               component={RctDefaultLayout}
-            />
-            <Route path="/horizontal" component={HorizontalLayout} />
-            <Route path="/agency" component={AgencyLayout} />
-            <Route path="/boxed" component={RctBoxedLayout} />
-            <Route path="/dashboard" component={CRMLayout} />
-            <Route path="/signin" component={AppSignIn} />
-            <Route path="/signup" component={AppSignUp} />
-            <Route path="/session/login" component={AsyncSessionLoginComponent} />
-            <Route path="/session/register" component={AsyncSessionRegisterComponent} />
-            <Route path="/session/lock-screen" component={AsyncSessionLockScreenComponent} />
-            <Route
-               path="/session/forgot-password"
-               component={AsyncSessionForgotPasswordComponent}
-            />
-            <Route path="/session/404" component={AsyncSessionPage404Component} />
-            <Route path="/session/500" component={AsyncSessionPage500Component} />
-            <Route path="/terms-condition" component={AsyncTermsConditionComponent} />
-            <Route path="/callback" render={(props) => {
-               handleAuthentication(props);
-               return <Callback {...props} />
-            }} />
-         </RctThemeProvider>
+         <>
+             {appLoading ? (
+                 <RctPageLoader />
+             ) : (
+                 <RctThemeProvider>
+                     <NotificationContainer />
+                     <>
+                         {_isUserIntoStoreValid ? (
+                             <Switch>
+                                 <InitialPath
+                                     path={`${match.url}app`}
+                                     authUser={authUser.data}
+                                     component={RctDefaultLayout}
+                                 />
+                                 {/*<Route path="/horizontal" component={HorizontalLayout} />
+                                    <Route path="/agency" component={AgencyLayout} />
+                                    <Route path="/boxed" component={RctBoxedLayout} />*/}
+                                 <Route path="/dashboard" component={CRMLayout} />
+                                 {/*<Route path="/session/login" component={AsyncSessionLoginComponent} />*/}
+                                 {/*<Route path="/session/register" component={AsyncSessionRegisterComponent} />*/}
+                                 <Route path="/session/lock-screen" component={AsyncSessionLockScreenComponent} />
+                                 <Route
+                                     path="/session/forgot-password"
+                                     component={AsyncSessionForgotPasswordComponent}
+                                 />
+                                 <Route path="/session/404" component={AsyncSessionPage404Component} />
+                                 <Route path="/session/500" component={AsyncSessionPage500Component} />
+                                 <Route path="/terms-condition" component={AsyncTermsConditionComponent} />
+                                 <Route path="/callback" render={(props) => {
+                                     handleAuthentication(props);
+                                     return <Callback {...props} />
+                                 }} />
+
+                                 {/*<InitialPath
+                                     path={'/'}
+                                     authUser={authUser.data}
+                                     component={RctDefaultLayout}
+                                 />*/}
+
+                                 {/*<Redirect from={HOME} to={'/app/dashboard/ecommerce'} />*/}
+
+                                 <Redirect to={'/app/dashboard/ecommerce'} />
+                             </Switch>
+                         ) : (
+                             <Switch>
+                                 {/*<Route path={HOME} component={AppSignIn} />*/}
+                                 <Route path={AUTH.LOGIN} component={AppSignIn} />
+                                 <Route path={AUTH.REGISTER} component={AppSignUp} />
+
+                                 <Redirect to={AUTH.LOGIN} />
+                             </Switch>
+                         )}
+                     </>
+                 </RctThemeProvider>
+             )}
+         </>
       );
    }
 }
 
 // map state to props
-const mapStateToProps = ({ authUser }) => {
-   const { user } = authUser;
-   return { user };
+const mapStateToProps = ({ authUser, tokens, appLoading }) => {
+   return { tokens, authUser, appLoading };
 };
 
-export default connect(mapStateToProps)(App);
+export default connect(mapStateToProps, {setAuthUser, disableAppLoading, loginIntoStore})(App);
