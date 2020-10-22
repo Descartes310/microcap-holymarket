@@ -48,12 +48,13 @@ addLocaleData(AppLocale.hu.data);
 const currentAppLocale = AppLocale[getDefaultLanguage().locale];
 
 const intlProvider = new IntlProvider({
+    key: currentAppLocale.locale,
     locale: currentAppLocale.locale,
     messages: currentAppLocale.messages,
 });
 
 const { intl } = intlProvider.getChildContext();
 
-export const formatMessage = message => intl.formatMessage({ id: message });
+export const formatMessage = (id, value = {}) => intl.formatMessage({ id, value, });
 
 export default AppLocale;
