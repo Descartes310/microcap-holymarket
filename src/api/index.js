@@ -6,7 +6,7 @@ import {getAuthToken} from "Helpers/tokens";
 const customAxios =
    axios.create({
       baseURL: AppConfig.api.baseUrl,
-      timeout: 5000
+      timeout: 15000
    });
 
 customAxios.interceptors.request.use(
