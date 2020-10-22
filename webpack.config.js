@@ -55,7 +55,8 @@ module.exports = {
 			Routes: path.resolve(__dirname, 'src/routes/'),
 			Constants: path.resolve(__dirname, 'src/constants/'),
 			Helpers: path.resolve(__dirname, 'src/helpers/'),
-			Api: path.resolve(__dirname, 'src/api/')
+			Api: path.resolve(__dirname, 'src/api/'),
+			Data: path.resolve(__dirname, 'src/data/'),
 		}
 	},
 	module: {
@@ -128,7 +129,7 @@ module.exports = {
 				// Use multi-process parallel running to improve the build speed
 				// Default number of concurrent runs: os.cpus().length - 1
 				parallel: true,
-				
+
 				uglifyOptions: {
 					compress: false,
 					ecma: 8,
