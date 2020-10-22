@@ -63,11 +63,11 @@ class Sidebar extends Component {
 					<div className={classNames("rct-sidebar-content", { "sidebar-overlay-dark": isDarkSidenav, 'sidebar-overlay-light': !isDarkSidenav })}>
 						<div className="site-logo">
 							<Link to="/" className="logo-mini">
-								<img src={require('Assets/img/appLogo.png')} className="mr-15" alt="site logo" width="35" height="35" />
+								<img src={require('Assets/identity/logomicrocap.png')} className="mr-15" alt="site logo" style={{width: 'auto', height: '100px'}} />
 							</Link>
-							<Link to="/" className="logo-normal">
+							{/*<Link to="/" className="logo-normal">
 								<img src={require('Assets/img/appLogoText.png')} className="img-fluid" alt="site-logo" width="67" height="17" />
-							</Link>
+							</Link>*/}
 						</div>
 						<div className="rct-sidebar-wrap">
 							<Scrollbars
