@@ -6,6 +6,7 @@ import Slider from "react-slick";
 
 // api
 import api from 'Api';
+import sessionSlider from '../../services/sessionSlider';
 
 export default class SessionSlider extends Component {
 
@@ -14,7 +15,8 @@ export default class SessionSlider extends Component {
    }
 
    componentDidMount() {
-      this.getSessionUsersData();
+      this.setState({ sessionUsersData: sessionSlider });
+      // this.getSessionUsersData();
    }
 
    // session users data
