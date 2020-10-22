@@ -31,3 +31,17 @@
   bottom: 13px !important;
   top: unset !important;
 }
+
+.font-size-medium {
+  font-size: medium !important;
+}
+
+.align-items-flex-end { align-items: flex-end !important;}
+.text-decoration-underline { text-decoration: underline !important;}
+
+.global-loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+}
