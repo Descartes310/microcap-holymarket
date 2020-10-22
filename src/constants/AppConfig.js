@@ -116,15 +116,18 @@ const AppConfig = {
       darkBgColor: '#424242'
    },
    minPasswordLength: 3,
+   minYearOld: 10,
    oauth: {
       clientId: 'microcap-app',
       clientSecret: 'geloka-secret',
       grantType: 'password',
    },
    api: {
-      baseUrl: 'http://prp.microcap.fr/',
-      version: ''
-   }
+      baseUrl: 'http://microcap.skb.best:8080/',
+      version: '',
+      forbiddenCode: 401,
+   },
+
 };
 
 export default AppConfig;
