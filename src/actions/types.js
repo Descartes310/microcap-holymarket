@@ -1,7 +1,8 @@
 /**
  * App Redux Action Types
  */
-export const COLLAPSED_SIDEBAR = 'COLLAPSED_SIDEBAR';
+export const ENABLE_APP_LOADING = 'ENABLE_APP_LOADING';
+export const DISABLE_APP_LOADING = 'DISABLE_APP_LOADING';
 export const DARK_MODE = 'DARK_MODE';
 export const BOXED_LAYOUT = 'BOXED_LAYOUT';
 export const RTL_LAYOUT = 'RTL_LAYOUT';
@@ -80,6 +81,13 @@ export const ON_LABEL_SELECT = 'ON_LABEL_SELECT';
 export const ON_LABEL_MENU_ITEM_SELECT = 'ON_LABEL_MENU_ITEM_SELECT';
 export const UPDATE_SEARCH = 'UPDATE_SEARCH';
 export const SEARCH_TODO = 'SEARCH_TODO';
+
+// Auth user Actions
+export const SET_AUTH_USER = 'SET_AUTH_USER';
+export const SET_AUTH_USER_SUCCESS = 'SET_AUTH_USER_SUCCESS';
+export const SET_AUTH_USER_FAILURE = 'SET_AUTH_USER_FAILURE';
+export const CLEAR_AUTH_USER = 'CLEAR_AUTH_USER';
+
 // Auth Actions
 export const LOGIN_USER = 'LOGIN_USER';
 export const LOGIN_USER_SUCCESS = 'LOGIN_USER_SUCCESS';
@@ -88,6 +96,8 @@ export const LOGOUT_USER = 'LOGOUT_USER';
 export const SIGNUP_USER = 'SIGNUP_USER';
 export const SIGNUP_USER_SUCCESS = 'SIGNUP_USER_SUCCESS';
 export const SIGNUP_USER_FAILURE = 'SIGNUP_USER_FAILURE';
+
+
 // Feedbacks
 export const GET_FEEDBACKS = 'GET_FEEDBACKS';
 export const GET_FEEDBACKS_SUCCESS = 'GET_FEEDBACKS_SUCCESS';
@@ -109,7 +119,7 @@ export const ON_COMMENT_FEEDBACK = 'ON_COMMENT_FEEDBACK';
 export const ON_DELETE_ITEM_FROM_CART = 'ON_DELETE_ITEM_FROM_CART';
 export const ON_QUANTITY_CHANGE = 'ON_QUANTITY_CHANGE';
 export const ON_ADD_ITEM_TO_CART = 'ON_ADD_ITEM_TO_CART';
-//crm 
+//crm
 export const ADD_NEW_CLIENT = 'ADD_NEW_CLIENT';
 export const DELETE_CLIENT = 'DELETE_CLIENT';
 export const UPDATE_CLIENT = 'UPDATE_CLIENT';

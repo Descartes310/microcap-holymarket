@@ -2,46 +2,35 @@
  * Auth User Reducers
  */
 import {
-    LOGIN_USER,
-    LOGIN_USER_SUCCESS,
-    LOGIN_USER_FAILURE,
-    LOGOUT_USER,
-    SIGNUP_USER,
-    SIGNUP_USER_SUCCESS,
-    SIGNUP_USER_FAILURE
+    SET_AUTH_USER,
+    SET_AUTH_USER_SUCCESS,
+    SET_AUTH_USER_FAILURE,
+    CLEAR_AUTH_USER,
 } from 'Actions/types';
 
 /**
- * initial auth user
+ * initial tokens
  */
 const INIT_STATE = {
-    user: localStorage.getItem('user_id'),
+    data: null,
+    error: null,
     loading: false
 };
 
 export default (state = INIT_STATE, action) => {
     switch (action.type) {
 
-        case LOGIN_USER:
+        case SET_AUTH_USER:
             return { ...state, loading: true };
 
-        case LOGIN_USER_SUCCESS:
-            return { ...state, loading: false, user: action.payload };
+        case SET_AUTH_USER_SUCCESS:
+            return { ...state, loading: false, data: action.payload };
 
-        case LOGIN_USER_FAILURE:
-            return { ...state, loading: false };
+        case SET_AUTH_USER_FAILURE:
+            return { ...state, loading: false, error: action.payload };
 
-        case LOGOUT_USER:
-            return { ...state, user: null };
-
-        case SIGNUP_USER:
-            return { ...state, loading: true };
-
-        case SIGNUP_USER_SUCCESS:
-            return { ...state, loading: false, user: action.payload };
-
-        case SIGNUP_USER_FAILURE:
-            return { ...state, loading: false };
+        case CLEAR_AUTH_USER:
+            return { ...INIT_STATE };
 
         default: return { ...state };
     }

@@ -22,6 +22,7 @@ import {
 
 // app config
 import AppConfig from 'Constants/AppConfig';
+import {getDefaultLanguage} from "Helpers/helpers";
 
 /**
  * initial app settings
@@ -74,81 +75,8 @@ const INIT_STATE = {
 	],
 	enableSidebarBackgroundImage: AppConfig.enableSidebarBackgroundImage, // default enable sidebar background
 	selectedSidebarImage: AppConfig.sidebarImage, // default sidebar background image
-	locale: AppConfig.locale,
-	languages: [
-		{
-			languageId: 'english',
-			locale: 'en',
-			name: 'English',
-			icon: 'en',
-		},
-		{
-			languageId: 'chinese',
-			locale: 'zh',
-			name: 'Chinese',
-			icon: 'zh',
-		},
-		{
-			languageId: 'russian',
-			locale: 'ru',
-			name: 'Russian',
-			icon: 'ru',
-		},
-		{
-			languageId: 'hebrew',
-			locale: 'he',
-			name: 'Hebrew',
-			icon: 'he',
-		},
-		{
-			languageId: 'french',
-			locale: 'fr',
-			name: 'French',
-			icon: 'fr',
-		},
-		{
-			languageId: 'saudi-arabia',
-			locale: 'ar',
-			name: 'Arabic',
-			icon: 'ar',
-		},
-		{
-			languageId: 'german',
-			locale: 'de',
-			name: 'German',
-			icon: 'de',
-		},
-		{
-			languageId: 'spanish',
-			locale: 'es',
-			name: 'Spanish',
-			icon: 'es',
-		},
-		{
-			languageId: 'japanese',
-			locale: 'ja',
-			name: 'Japanese',
-			icon: 'ja',
-		},
-		{
-			languageId: 'korean',
-			locale: 'ko',
-			name: 'Korean',
-			icon: 'ko',
-		},
-		{
-			languageId: 'italian',
-			locale: 'it',
-			name: 'Italian',
-			icon: 'it',
-		},
-		{
-			languageId: 'hungarian',
-			locale: 'hu',
-			name: 'Hungarian',
-			icon: 'hu',
-		}
-	],
+	locale: getDefaultLanguage(),
+	languages: AppConfig.languages,
 	agencyLayoutBgColors: [
 		{
 			id: 1,
