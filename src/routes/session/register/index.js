@@ -1,154 +1,135 @@
 /**
- * Sign Up page (Register)
+ * Login Page
  */
-import React, { Component } from 'react';
-import Button from '@material-ui/core/Button';
+
+import React, {useState} from 'react';
 import { connect } from 'react-redux';
+import QueueAnim from 'rc-queue-anim';
+import { Link } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { Form, FormGroup } from 'reactstrap';
+import Button from '@material-ui/core/Button';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import { Link } from 'react-router-dom';
-import { Form, FormGroup, Input } from 'reactstrap';
 import LinearProgress from '@material-ui/core/LinearProgress';
-import QueueAnim from 'rc-queue-anim';
-import { Fab } from '@material-ui/core';
 
 // components
 import { SessionSlider } from 'Components/Widgets';
+import InputComponent from "Components/InputComponent";
+import ErrorInputComponent from "Components/ErrorInputComponent";
+import PersonRegister from './person';
+
+// validator
+import {emailValidatorObject, minMaxValidatorObject} from "Helpers/validator";
 
 // app config
 import AppConfig from 'Constants/AppConfig';
 
 // redux action
-import {
-   signupUserInFirebase,
-   signinUserWithFacebook,
-   signinUserWithGoogle,
-   signinUserWithGithub,
-   signinUserWithTwitter
-} from 'Actions';
+import {loginUserWithEmailAndPassword} from 'Actions';
+import {AUTH, HOME} from "../../../services/frontendRoute";
+import Tab from "@material-ui/core/Tab";
+import Tabs from "@material-ui/core/Tabs";
+import IntlMessages from 'Util/IntlMessages';
+import LanguageProvider from "Components/Header/LanguageProvider";
+import SwipeableViews from "react-swipeable-views";
+import OrganisationRegister from "Routes/session/register/organisation";
 
-class SignupFirebase extends Component {
+const Signup = (props) => {
+   const { loading } = props;
+   const [activeIndex, setActiveIndex] = useState(0);
 
-   state = {
-      name: '',
-      email: '',
-      password: ''
-   }
+   // const watch
 
    /**
-    * On User Signup
+    * On User Sing up
     */
-   onUserSignUp() {
-      const { email, password } = this.state;
-      if (email !== '' && password !== '') {
-         this.props.signupUserInFirebase({ email, password }, this.props.history);
-      }
-   }
+   const onSubmit = (data) => {
+      props.loginUserWithEmailAndPassword(data, props.history)
+          .then(() => props.history.push(HOME));
+   };
 
-   render() {
-      const { name, email, password } = this.state;
-      const { loading } = this.props;
-      return (
-         <QueueAnim type="bottom" duration={2000}>
-            <div className="rct-session-wrapper">
-               {loading &&
-                  <LinearProgress />
-               }
-               <AppBar position="static" className="session-header">
-                  <Toolbar>
-                     <div className="container">
-                        <div className="d-flex justify-content-between">
-                           <div className="session-logo">
-                              <Link to="/">
-                                 <img src={AppConfig.appLogo} alt="session-logo" width="110" height="35" />
-                              </Link>
-                           </div>
-                           <div>
-                              <Link to="/signin" className="mr-15 text-white">Already have an account?</Link>
-                              <Button component={Link} to="/signin" variant="contained" className="btn-light">Sign In</Button>
-                           </div>
-                        </div>
-                     </div>
-                  </Toolbar>
-               </AppBar>
-               <div className="session-inner-wrapper">
-                  <div className="container">
-                     <div className="row row-eq-height">
-                        <div className="col-sm-7 col-md-7 col-lg-8">
-                           <div className="session-body text-center">
-                              <div className="session-head mb-15">
-                                 <h2>Get started with {AppConfig.brandName}</h2>
-                              </div>
-                              <Form>
-                                 <FormGroup className="has-wrapper">
-                                    <Input type="text" value={name} name="user-name" id="user-name" className="has-input input-lg" placeholder="Enter Your Name" onChange={(e) => this.setState({ name: e.target.value })} />
-                                    <span className="has-icon"><i className="ti-user"></i></span>
-                                 </FormGroup>
-                                 <FormGroup className="has-wrapper">
-                                    <Input type="mail" value={email} name="user-mail" id="user-mail" className="has-input input-lg" placeholder="Enter Email Address" onChange={(e) => this.setState({ email: e.target.value })} />
-                                    <span className="has-icon"><i className="ti-email"></i></span>
-                                 </FormGroup>
-                                 <FormGroup className="has-wrapper">
-                                    <Input value={password} type="Password" name="user-pwd" id="pwd" className="has-input input-lg" placeholder="Password" onChange={(e) => this.setState({ password: e.target.value })} />
-                                    <span className="has-icon"><i className="ti-lock"></i></span>
-                                 </FormGroup>
-                                 <FormGroup className="mb-15">
-                                    <Button
-                                       className="btn-info text-white btn-block w-100"
-                                       variant="contained"
-                                       size="large"
-                                       onClick={() => this.onUserSignUp()}>
-                                       Sign Up
+   /**
+    * On User Sign Up
+    */
+   const onUserSignUp = () => {
+      props.history.push(AUTH.LOGIN);
+   };
+
+   return (
+       <QueueAnim type="bottom" duration={2000}>
+          <div className="rct-session-wrapper">
+             <div className={'global-loader'}>
+                {loading && <LinearProgress />}
+             </div>
+             <AppBar position="static" className="session-header">
+                <Toolbar>
+                   <div className="container">
+                      <div className="d-flex justify-content-between">
+                         <div className="session-logo">
+                            <Link to="/">
+                               <img src={AppConfig.appLogo} alt="session-logo" className="img-fluid" width="110" height="35" />
+                            </Link>
+                         </div>
+                         <div className="center-hor-ver">
+                            <a className="mr-15 text-white" onClick={onUserSignUp}>
+                               <IntlMessages id="auth.haveAccount" />
+                            </a>
+                            <Button variant="contained" className="btn-light mr-2" onClick={onUserSignUp}>
+                               <IntlMessages id="auth.signin" />
                             </Button>
-                                 </FormGroup>
-                              </Form>
-                              <p className="mb-20">or sign in with</p>
-                              <Fab size="small" variant="round" className="btn-facebook mr-15 mb-20 text-white"
-                                 onClick={() => this.props.signinUserWithFacebook(this.props.history)}
-                              >
-                                 <i className="zmdi zmdi-facebook"></i>
-                              </Fab>
-                              <Fab size="small" variant="round" className="btn-google mr-15 mb-20 text-white"
-                                 onClick={() => this.props.signinUserWithGoogle(this.props.history)}
-                              >
-                                 <i className="zmdi zmdi-google"></i>
-                              </Fab>
-                              <Fab size="small" variant="round" className="btn-twitter mr-15 mb-20 text-white"
-                                 onClick={() => this.props.signinUserWithTwitter(this.props.history)}
-                              >
-                                 <i className="zmdi zmdi-twitter"></i>
-                              </Fab>
-                              <Fab size="small" variant="round" className="btn-instagram mr-15 mb-20 text-white"
-                                 onClick={() => this.props.signinUserWithGithub(this.props.history)}
-                              >
-                                 <i className="zmdi zmdi-github-alt"></i>
-                              </Fab>
-                              <p className="text-muted">By signing up you agree to {AppConfig.brandName}</p>
-                              <p><Link to="/terms-condition" className="text-muted">Terms of Service</Link></p>
-                           </div>
-                        </div>
-                        <div className="col-sm-5 col-md-5 col-lg-4">
-                           <SessionSlider />
-                        </div>
-                     </div>
-                  </div>
-               </div>
-            </div>
-         </QueueAnim>
-      );
-   }
-}
+                            <LanguageProvider />
+                         </div>
+                      </div>
+                   </div>
+                </Toolbar>
+             </AppBar>
+             <div className="session-inner-wrapper">
+                <div className="container">
+                   <div className="row align-items-center">
+                      <div className="col-sm-7 col-md-7 col-lg-8">
+                         <div className="session-body text-center p-0">
+                            <div className="">
+                               <Tabs
+                                   value={activeIndex}
+                                   onChange={(e, value) => setActiveIndex(value)}
+                                   variant="fullWidth"
+                                   textColor="primary"
+                                   indicatorColor="primary">
+                                  <Tab
+                                      className="font-size-medium"
+                                      label={<IntlMessages id="auth.person" />}
+                                      icon={<i className="zmdi-hc-lg zmdi zmdi-account"></i>}
+                                  />
+                                  <Tab className="font-size-medium" icon={<i className="zmdi-hc-lg zmdi zmdi-balance"></i>} label={<IntlMessages id="auth.organisation" />} />
+                               </Tabs>
+                               <SwipeableViews
+                                   axis={'x'}
+                                   index={activeIndex}
+                                   onChangeIndex={(index) => setActiveIndex(index)}>
+                                  <PersonRegister history={props.history} />
+                                  <OrganisationRegister history={props.history} />
+                               </SwipeableViews>
+                            </div>
+                         </div>
+                      </div>
+                      <div className="col-sm-5 col-md-5 col-lg-4">
+                         <SessionSlider />
+                      </div>
+                   </div>
+                </div>
+             </div>
+          </div>
+       </QueueAnim>
+   );
+};
 
 // map state to props
-const mapStateToProps = ({ authUser }) => {
-   const { loading } = authUser;
-   return { loading };
+const mapStateToProps = ({ authUser, tokens }) => {
+   // const { user, loading } = authUser;
+   return { loading: authUser.loading || tokens.loading }
 };
 
 export default connect(mapStateToProps, {
-   signupUserInFirebase,
-   signinUserWithFacebook,
-   signinUserWithGoogle,
-   signinUserWithGithub,
-   signinUserWithTwitter
-})(SignupFirebase);
+   loginUserWithEmailAndPassword
+})(Signup);
