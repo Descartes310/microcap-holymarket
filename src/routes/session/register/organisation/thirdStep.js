@@ -110,7 +110,7 @@ const ThirdStep = props => {
         if (hasAcceptedTermsOfServicesWatch) {
             setData(data, true);
         } else {
-            NotificationManager.warning('You have to accept our terms and conditions');
+            NotificationManager.warning(intl.formatMessage({id: 'common.acceptTermsAndConditions'}));
         }
     };
 
