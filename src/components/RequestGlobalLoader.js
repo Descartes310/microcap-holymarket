@@ -1,0 +1,36 @@
+import React, {Component} from 'react';
+import LinearProgress from "@material-ui/core/LinearProgress/LinearProgress";
+import {connect} from "react-redux";
+import {setRequestGlobalAction} from "Actions";
+
+class RequestGlobalLoader extends Component {
+    state = {
+        loading: this.props.loading,
+    };
+
+    static getDerivedStateFromProps(props, state) {
+        if (props.loading !== state.loading) {
+            props.setRequestGlobalAction(props.loading);
+
+            return {
+                loading: props.loading
+            }
+        }
+        return null;
+    }
+
+    render() {
+        return (
+            <div className='global-loader'>
+                {this.props.requestGlobalLoader && <LinearProgress />}
+            </div>
+        );
+    }
+}
+
+const mapStateToProps = ({ tokens, authUser, requestGlobalLoader }) => ( {
+    requestGlobalLoader,
+    loading: tokens.loading || authUser.loading,
+});
+
+export default connect(mapStateToProps, {setRequestGlobalAction})(RequestGlobalLoader);

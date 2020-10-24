@@ -13,6 +13,7 @@ import authUserReducer from './AuthUserReducer';
 import feedbacksReducer from './FeedbacksReducer';
 import ecommerceReducer from './EcommerceReducer';
 import CrmReducer from './CrmReducer';
+import RequestGlobalReducer from './RequestGlobalReducer';
 
 const reducers = combineReducers({
    settings,
@@ -25,7 +26,8 @@ const reducers = combineReducers({
    tokens: tokensReducer,
    feedback: feedbacksReducer,
    ecommerce: ecommerceReducer,
-   CrmReducer: CrmReducer
+   CrmReducer: CrmReducer,
+   requestGlobalLoader: RequestGlobalReducer,
 });
 
 export default reducers;

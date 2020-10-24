@@ -49,6 +49,7 @@ import {setAuthUser, loginIntoStore, disableAppLoading} from 'Actions';
 import RctPageLoader from "Components/RctPageLoader/RctPageLoader";
 import {getAuthToken} from "Helpers/tokens";
 import {isUserIntoStoreValid} from "Helpers/helpers";
+import RequestGlobalLoader from "Components/RequestGlobalLoader";
 
 //Auth0 Handle Authentication
 const auth = new Auth();
@@ -117,6 +118,7 @@ class App extends Component {
              ) : (
                  <RctThemeProvider>
                      <NotificationContainer />
+                     <RequestGlobalLoader />
                      <>
                          {_isUserIntoStoreValid ? (
                              <Switch>
