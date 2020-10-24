@@ -164,3 +164,10 @@ export const isUserIntoStoreValid = (
         //     tokens.token !== undefined)
     );
 };
+
+/**
+ * Get query of url
+ * @param useLocation
+ * @returns {URLSearchParams}
+ */
+export const useQuery = (useLocation) => new URLSearchParams(useLocation().search);
