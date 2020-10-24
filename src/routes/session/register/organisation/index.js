@@ -11,7 +11,6 @@ import Stepper from "@material-ui/core/Stepper/Stepper";
 import FirstStep from "./firstStep";
 import SecondStep from "./secondStep";
 import ThirdStep from "./thirdStep";
-import {objectToFormData, toSnakeCase} from "Helpers/helpers";
 import {HOME} from "../../../../services/frontendRoute";
 
 const steps = [1, 2, 3];
@@ -53,7 +52,7 @@ class OrganisationRegister extends Component {
         delete _data.registrationBeginningDate;
 
         this.props
-            .registerOrganisation(objectToFormData(toSnakeCase(_data)))
+            .registerOrganisation(_data)
             .then(() => {
                 this.props
                     .loginUserWithEmailAndPassword({email: _data.email, password: _data.password})
@@ -114,8 +113,8 @@ class OrganisationRegister extends Component {
 }
 
 // map state to props
-const mapStateToProps = ({ authUser, tokens }) => {
-    return { loading: authUser.loading || tokens.loading };
+const mapStateToProps = ({ requestGlobalLoader }) => {
+    return { loading: requestGlobalLoader }
 };
 
 export default connect(mapStateToProps, {registerOrganisation, loginUserWithEmailAndPassword})(OrganisationRegister);

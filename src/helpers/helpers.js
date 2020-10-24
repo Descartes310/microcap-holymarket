@@ -171,3 +171,31 @@ export const isUserIntoStoreValid = (
  * @returns {URLSearchParams}
  */
 export const useQuery = (useLocation) => new URLSearchParams(useLocation().search);
+
+export const getFullAuthorisationRequestConfig = () => {
+    const headers = {
+        'Content-type': 'multipart/form-data',
+        Accept: 'application/json',
+        Authorization: 'Basic ' + btoa(AppConfig.oauth.clientId + ":" + AppConfig.oauth.clientSecret)
+    };
+    return { headers, shouldSkipToken: true, withCredentials: true };
+};
+/*"KEY_1": {
+    "ERROR_1": ERROR_1_MESSAGE,
+    "ERROR_2": ERROR_1_MESSAGE,
+},
+"KEY_2": {
+    "ERROR_1": ERROR_1_MESSAGE
+}*/
+export const requestErrorProcessing = (data) => {
+      /*const result = {};
+      Object.entries(data.errors).map(error => {
+          // error[0] = KEY_1
+          result[error[0]] = typeof error[1] === 'object' ? Object.values(error[1]) : error[1];
+      });*/
+      const result = [];
+      Object.entries(data.errors).map(error => {
+          result.push(typeof error[1] === 'object' ? Object.values(error[1]) : error[1]);
+      });
+      return result;
+};

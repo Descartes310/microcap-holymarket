@@ -29,6 +29,7 @@ import {loginUserWithEmailAndPassword} from 'Actions';
 import LanguageProvider from "Components/Header/LanguageProvider";
 import IntlMessages from "Util/IntlMessages";
 import {injectIntl} from "react-intl";
+import InputLabel from "@material-ui/core/InputLabel";
 
 const Signin = (props) => {
     const { loading, intl } = props;
@@ -38,10 +39,7 @@ const Signin = (props) => {
      * On User Login
      */
     const onSubmit = (data) => {
-        props.loginUserWithEmailAndPassword(data, props.history)
-            .then(() => {
-                props.history.push(HOME);
-            });
+        props.loginUserWithEmailAndPassword(data);
     };
 
     /**
@@ -54,9 +52,9 @@ const Signin = (props) => {
     return (
         <QueueAnim type="bottom" duration={2000}>
             <div className="rct-session-wrapper">
-                <div className={'global-loader'}>
+                {/*<div className={'global-loader'}>
                     {loading && <LinearProgress />}
-                </div>
+                </div>*/}
                 <AppBar position="static" className="session-header">
                     <Toolbar>
                         <div className="container">
@@ -97,6 +95,7 @@ const Signin = (props) => {
                                         </div>
                                         <Form onSubmit={handleSubmit(onSubmit)}>
                                             <FormGroup className="has-wrapper">
+                                                <InputLabel className="text-left" htmlFor="email"><IntlMessages id="auth.email"/></InputLabel>
                                                 <InputComponent
                                                     id="email"
                                                     type="mail"
@@ -105,9 +104,8 @@ const Signin = (props) => {
                                                     errors={errors}
                                                     register={register}
                                                     className="has-input input-lg"
-                                                    placeholder={intl.formatMessage({id: "auth.email"})}
-                                                    otherValidator={{pattern: emailValidatorObject.regex}}
-                                                >
+                                                    placeholder="example@gmail.com"
+                                                    otherValidator={{pattern: emailValidatorObject.regex}}>
                                                     {errors.email?.type === 'pattern' && (
                                                         <ErrorInputComponent text={intl.formatMessage({id: emailValidatorObject.message})} />
                                                     )}
@@ -115,15 +113,25 @@ const Signin = (props) => {
                                                 <span className="has-icon"><i className="ti-email"></i></span>
                                             </FormGroup>
                                             <FormGroup className="has-wrapper">
+                                                <div className="d-flex justify-content-between">
+                                                    <InputLabel className="text-left" htmlFor="password"><IntlMessages id="auth.password"/></InputLabel>
+                                                    <Link to={AUTH.FORGOT_PASSWORD}>
+                                                        <InputLabel
+                                                            className="text-right text-primary text-decoration-underline-hover font-weight-bold"
+                                                            htmlFor="password">
+                                                            <IntlMessages id="sidebar.forgotPassword"/> ?
+                                                        </InputLabel>
+                                                    </Link>
+                                                </div>
                                                 <InputComponent
+                                                    isRequired
                                                     id="password"
                                                     type="Password"
-                                                    isRequired
-                                                    name={'password'}
                                                     errors={errors}
+                                                    name={'password'}
                                                     register={register}
+                                                    placeholder="......."
                                                     className="has-input input-lg"
-                                                    placeholder={intl.formatMessage({id: "auth.password"})}
                                                     otherValidator={{minLength: AppConfig.minPasswordLength}}
                                                 >
                                                     {errors.password?.type === 'minLength' && (
@@ -170,9 +178,8 @@ const Signin = (props) => {
 };
 
 // map state to props
-const mapStateToProps = ({ tokens }) => {
-   const { loading } = tokens;
-   return { loading }
+const mapStateToProps = ({ requestGlobalLoader }) => {
+    return { loading: requestGlobalLoader }
 };
 
 export default connect(mapStateToProps, {loginUserWithEmailAndPassword})(injectIntl(Signin));

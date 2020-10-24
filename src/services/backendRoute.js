@@ -18,7 +18,7 @@ export const AUTH = {
     },
     RESET_PASSWORD: {
         MAIN: 'auth/reset-password',
-        LINK: 'auth/reset-password-link/{email}',
+        LINK: 'auth/send-reset-password-link',
     },
 };
 
@@ -38,7 +38,7 @@ export const joinBaseUrlWithParams = (to, params) => {
     let url = BASE + to;
 
     params.forEach(param => {
-        url = url.replace(`{${param.param}}`, `${param.value}`);
+        url = url.replace(`{${param.param}}`, `${encodeURIComponent(param.value)}`);
     });
 
     return url;

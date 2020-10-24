@@ -20,7 +20,7 @@ import {getAuthToken} from "Helpers/tokens";
 export const setAuthUser = () => (dispatch) => {
     dispatch({ type: SET_AUTH_USER });
 
-    const { accessToken } = getAuthToken();
+    /*const { accessToken } = getAuthToken();
 
     if (accessToken) {
         dispatch({ type: SET_AUTH_USER_SUCCESS, payload: {name: 'juns'} });
@@ -28,9 +28,9 @@ export const setAuthUser = () => (dispatch) => {
     } else {
         dispatch({ type: SET_AUTH_USER_FAILURE });
         return Promise.reject();
-    }
+    }*/
 
-    /*return api
+    return api
         .get(PROFILE.INFORMATION)
         .then((response) => {
             dispatch({ type: SET_AUTH_USER_SUCCESS, payload: response.data });
@@ -40,6 +40,6 @@ export const setAuthUser = () => (dispatch) => {
             dispatch({ type: SET_AUTH_USER_FAILURE });
             NotificationManager.error(error.message);
             return Promise.reject();
-        });*/
+        });
 };
 

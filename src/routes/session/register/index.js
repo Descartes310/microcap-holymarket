@@ -1,26 +1,18 @@
 /**
- * Login Page
+ * Register Page
  */
 
 import React, {useState} from 'react';
 import { connect } from 'react-redux';
 import QueueAnim from 'rc-queue-anim';
 import { Link } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
-import { Form, FormGroup } from 'reactstrap';
 import Button from '@material-ui/core/Button';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import LinearProgress from '@material-ui/core/LinearProgress';
 
 // components
 import { SessionSlider } from 'Components/Widgets';
-import InputComponent from "Components/InputComponent";
-import ErrorInputComponent from "Components/ErrorInputComponent";
 import PersonRegister from './person';
-
-// validator
-import {emailValidatorObject, minMaxValidatorObject} from "Helpers/validator";
 
 // app config
 import AppConfig from 'Constants/AppConfig';
@@ -50,18 +42,15 @@ const Signup = (props) => {
    };
 
    /**
-    * On User Sign Up
+    * On User Log in
     */
-   const onUserSignUp = () => {
+   const onUserLogin = () => {
       props.history.push(AUTH.LOGIN);
    };
 
    return (
        <QueueAnim type="bottom" duration={2000}>
           <div className="rct-session-wrapper">
-             <div className={'global-loader'}>
-                {loading && <LinearProgress />}
-             </div>
              <AppBar position="static" className="session-header">
                 <Toolbar>
                    <div className="container">
@@ -72,10 +61,10 @@ const Signup = (props) => {
                             </Link>
                          </div>
                          <div className="center-hor-ver">
-                            <a className="mr-15 text-white" onClick={onUserSignUp}>
+                            <a className="mr-15 text-white" onClick={onUserLogin}>
                                <IntlMessages id="auth.haveAccount" />
                             </a>
-                            <Button variant="contained" className="btn-light mr-2" onClick={onUserSignUp}>
+                            <Button variant="contained" className="btn-light mr-2" onClick={onUserLogin}>
                                <IntlMessages id="auth.signin" />
                             </Button>
                             <LanguageProvider />
@@ -125,9 +114,8 @@ const Signup = (props) => {
 };
 
 // map state to props
-const mapStateToProps = ({ authUser, tokens }) => {
-   // const { user, loading } = authUser;
-   return { loading: authUser.loading || tokens.loading }
+const mapStateToProps = ({ requestGlobalLoader }) => {
+   return { loading: requestGlobalLoader }
 };
 
 export default connect(mapStateToProps, {

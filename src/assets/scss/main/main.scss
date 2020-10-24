@@ -37,11 +37,20 @@
 }
 
 .align-items-flex-end { align-items: flex-end !important;}
-.text-decoration-underline { text-decoration: underline !important;}
+
+.text-decoration-underline {
+  text-decoration: underline !important;
+
+  @at-root #{&}-hover:hover {
+    text-decoration: underline !important;
+    cursor: pointer;
+  }
+}
 
 .global-loader {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
+  z-index: 9999;
 }

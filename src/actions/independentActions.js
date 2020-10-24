@@ -1,18 +1,12 @@
 import api from 'Api';
 import {AUTH, SYSTEM_OBJECT, joinBaseUrlWithParams} from "../services/backendRoute";
-import CountryManager from "Helpers/CountryManager";
 
-export const getResidenceCountries = (shouldReject = false) => {
+export const getResidenceCountries = () => {
     return new Promise((resolve, reject) => {
         api.get(AUTH.COUNTRY.LIST)
             .then(result => resolve(result.data))
             .catch(error => reject(error));
     });
-    /*return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            !shouldReject ? resolve(CountryManager.countryWithNameAndFlag().slice(0, 10).map(c => c.name)) : reject();
-        }, 3000);
-    });*/
 };
 
 export const getOperators = (country) => {
@@ -46,6 +40,28 @@ export const getRegistrationType = () => {
 export const getOrganisationTypes = () => {
     return new Promise((resolve, reject) => {
         api.get(SYSTEM_OBJECT.ORGANISATION)
+            .then(result => resolve(result.data))
+            .catch(error => reject(error));
+    });
+};
+
+export const sendResetPasswordLink = (email) => {
+    return new Promise((resolve, reject) => {
+        /*const url = joinBaseUrlWithParams(AUTH.RESET_PASSWORD.LINK, [{
+            param: 'email',
+            value: email,
+        }]);*/
+        const url = AUTH.RESET_PASSWORD.LINK + `?email=${email}`;
+
+        api.get(url)
+            .then(result => resolve(result.data))
+            .catch(error => reject(error));
+    });
+};
+
+export const resetPassword = (data) => {
+    return new Promise((resolve, reject) => {
+        api.post(AUTH.RESET_PASSWORD.MAIN, data)
             .then(result => resolve(result.data))
             .catch(error => reject(error));
     });

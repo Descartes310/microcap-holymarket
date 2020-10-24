@@ -1,6 +1,6 @@
 import axios from 'axios';
 import AppConfig from 'Constants/AppConfig';
-import {toCamelCase, toSnakeCase} from "Helpers/helpers";
+import {objectToFormData, toCamelCase, toSnakeCase} from "Helpers/helpers";
 import {getAuthToken} from "Helpers/tokens";
 
 const customAxios =
@@ -19,8 +19,11 @@ customAxios.interceptors.request.use(
              config.headers['Authorization'] = 'Bearer ' + accessToken;
           }
 
-          if (config.data && !config.shouldSkip) {
-             config.data = toSnakeCase(config.data);
+          // Check if post or put to perform some operation
+          if ((config.method === 'post' || config.method === 'put') && !config.shouldSkipDataParsing) {
+              // Parse object to snakeCase and Form data
+              const data = toSnakeCase(config.data);
+              config.data = objectToFormData(data);
           }
 
           // config.headers['Content-Type'] = 'application/json';

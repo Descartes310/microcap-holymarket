@@ -97,7 +97,7 @@ const AppConfig = {
    copyRightText: 'Reactify © 2019 All Rights Reserved.',      // Copy Right Text
    // light theme colors
    themeColors: {
-      'primary': '#5D92F4',
+      'primary': '#FFB70F',
       'secondary': '#677080',
       'success': '#00D014',
       'danger': '#FF3739',

@@ -52,13 +52,13 @@ export default class ProjectStatsChart extends Component {
             {
                fill: false,
                lineTension: 0.4,
-               borderColor: "#5D92F4",
+               borderColor: "#FFB70F",
                borderWidth: 3,
-               pointBorderColor: "#5D92F4",
+               pointBorderColor: "#FFB70F",
                pointBackgroundColor: "#fff",
                pointBorderWidth: 2,
                pointHoverBackgroundColor: "#fff",
-               pointHoverBorderColor: "#5D92F4",
+               pointHoverBorderColor: "#FFB70F",
                pointHoverBorderWidth: 3,
                pointRadius: 6,
                data: this.props.data

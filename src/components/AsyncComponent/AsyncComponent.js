@@ -136,19 +136,19 @@ const AsyncShopGridComponent = Loadable({
 	loading: () => <RctPageLoader />,
 });
 
-// shop 
+// shop
 const AsyncShopComponent = Loadable({
 	loader: () => import("Routes/ecommerce/shop"),
 	loading: () => <RctPageLoader />,
 });
 
-// cart 
+// cart
 const AsyncCartComponent = Loadable({
 	loader: () => import("Routes/ecommerce/cart"),
 	loading: () => <RctPageLoader />,
 });
 
-// checkout 
+// checkout
 const AsyncCheckoutComponent = Loadable({
 	loader: () => import("Routes/ecommerce/checkout"),
 	loading: () => <RctPageLoader />,
@@ -294,7 +294,7 @@ const AsyncSessionLockScreenComponent = Loadable({
 
 // Session Forgot Password
 const AsyncSessionForgotPasswordComponent = Loadable({
-	loader: () => import("Routes/session/forgot-password"),
+	loader: () => import("Routes/session/forgot-password/SendResetPasswordLink"),
 	loading: () => <RctPageLoader />,
 });
 

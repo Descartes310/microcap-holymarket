@@ -10,7 +10,6 @@ import StepLabel from "@material-ui/core/StepLabel/StepLabel";
 import Stepper from "@material-ui/core/Stepper/Stepper";
 import FirstStep from "Routes/session/register/person/firstStep";
 import SecondStep from "Routes/session/register/person/secondStep";
-import {objectToFormData, toSnakeCase} from "Helpers/helpers";
 import {HOME} from "../../../../services/frontendRoute";
 
 const steps = [1, 2];
@@ -49,7 +48,7 @@ class PersonRegister extends Component {
         delete _data.passwordConfirmation;
 
         this.props
-            .registerPersonUser(objectToFormData(toSnakeCase(_data)))
+            .registerPersonUser(_data)
             .then(() => {
                 this.props
                     .loginUserWithEmailAndPassword({email: _data.email, password: _data.password})
@@ -100,8 +99,8 @@ class PersonRegister extends Component {
 }
 
 // map state to props
-const mapStateToProps = ({ authUser, tokens }) => {
-    return { loading: authUser.loading || tokens.loading };
+const mapStateToProps = ({ requestGlobalLoader }) => {
+    return { loading: requestGlobalLoader }
 };
 
 export default connect(mapStateToProps, {registerPersonUser, loginUserWithEmailAndPassword})(PersonRegister);

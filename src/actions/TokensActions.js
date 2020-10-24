@@ -18,23 +18,7 @@ import AppConfig from 'Constants/AppConfig';
 import {AUTH} from '../services/backendRoute';
 import {removeAuthToken, saveAuthToken} from "Helpers/tokens";
 import {setAuthUser} from "Actions/AuthActions";
-
-const login = (email, password) => {
-   const body = new FormData();
-   body.append('username', email);
-   body.append('password', password);
-   body.append('grant_type', AppConfig.oauth.grantType);
-   body.append('client_id', AppConfig.oauth.clientId);
-
-   const headers = {
-      'Content-type': 'multipart/form-data',
-      Accept: 'application/json',
-      Authorization: 'Basic ' + btoa(AppConfig.oauth.clientId + ":" + AppConfig.oauth.clientSecret)
-   };
-
-   return api.post(AUTH.LOGIN, body, { headers, shouldSkip: true, shouldSkipToken: true, withCredentials: true });
-};
-
+import {getFullAuthorisationRequestConfig} from "Helpers/helpers";
 
 const errorDisplay = (error) => {
    if (error && (error.message.includes('code 400') || error.message.includes('code 401'))) {
@@ -48,9 +32,20 @@ const errorDisplay = (error) => {
 /**
  * Redux Action To Sigin User with email and password
  */
-export const loginUserWithEmailAndPassword = (user) => (dispatch) => {
+export const loginUserWithEmailAndPassword = (data) => (dispatch) => {
     dispatch({ type: LOGIN_USER });
-    return login(user.email, user.password)
+
+    const config = getFullAuthorisationRequestConfig();
+
+    const _data = {...data};
+    _data.username = data.email;
+    _data.grantType = AppConfig.oauth.grantType;
+    _data.clientId = AppConfig.oauth.clientId;
+
+    delete _data.email;
+
+    return api
+        .post(AUTH.LOGIN, _data, config)
         .then((response) => {
             const data = {
                 accessToken: response.data.accessToken,
@@ -89,7 +84,7 @@ export const loginIntoStore = (data) => (dispatch) => {
  */
 export const registerPersonUser = (data) => (dispatch) => {
     dispatch({ type: SIGNUP_USER });
-    return api.post(AUTH.REGISTER.PERSON, data, {shouldSkip: true})
+    return api.post(AUTH.REGISTER.PERSON, data)
         .then((response) => {
             dispatch({ type: SIGNUP_USER_SUCCESS, payload: response.data });
             return Promise.resolve();
@@ -107,7 +102,7 @@ export const registerPersonUser = (data) => (dispatch) => {
  */
 export const registerOrganisation = (data) => (dispatch) => {
     dispatch({ type: SIGNUP_USER });
-    return api.post(AUTH.REGISTER.ORGANISATION, data, {shouldSkip: true})
+    return api.post(AUTH.REGISTER.ORGANISATION, data)
         .then((response) => {
             dispatch({ type: SIGNUP_USER_SUCCESS, payload: response.data });
             return Promise.resolve();
