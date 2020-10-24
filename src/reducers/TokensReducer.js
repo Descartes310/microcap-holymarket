@@ -44,7 +44,7 @@ export default (state = INIT_STATE, action) => {
             return { ...state, loading: false, error: action.payload };
 
         case LOGOUT_USER:
-            return { ...INIT_STATE };
+            return { loading: false, error: null, data: null };
 
         default: return { ...state };
     }
