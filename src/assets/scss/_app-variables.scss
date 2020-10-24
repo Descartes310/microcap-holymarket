@@ -37,7 +37,7 @@ $google:                               $google;
 $pinterest:                            $pinterest;
 $instagram:                            $instagram;
 $rss:                                  $rss;
-$tumblr:                               $tumblr;  
+$tumblr:                               $tumblr;
 $linkedin:                             $linkedin;
 $dribbble:                             $dribbble;
 $youtube:                              $youtube;
@@ -57,8 +57,8 @@ $theme-colors: map-merge((
   "linkedin":        $linkedin,
   "dribbble":        $dribbble,
   "youtube":         $youtube,
-  "github":          $github,   
-  "skype":           $skype    
+  "github":          $github,
+  "skype":           $skype
 ), $theme-colors);
 
 // html font
@@ -106,7 +106,7 @@ $input-radius:                    40px;
 $sidebar-dark-gradient:           linear-gradient(0deg, #464D69 0%, rgba(70, 77, 105, 1) 100%);
 $sidebar-dark:                    #2E3344;
 $overlay-light:                   rgb(255,255,255);
-$gradient-primary:                 linear-gradient(180deg, #5D92F4 0%, #09203F 100%); // Primary
+$gradient-primary:                 linear-gradient(180deg, #FFB70F 0%, #09203F 100%); // Primary
 $gradient-purple:                  linear-gradient(0deg, #F53844 0%, #42378F 100%); // Purple
 $gradient-success:                 linear-gradient(180deg, #00D0BD 0%, #007ADF 100%); // Success
 $gradient-warning:                 linear-gradient(0deg, #B02E0C 0%, #FFB70F 100%); // warning
@@ -177,7 +177,7 @@ $dark-layout-bg:                  url('../../assets/img/dark-layout-bg.png');
 $table-tbody-font-size:           14px;
 $table-tbody-font-weight:         300;
 
-//Quick link 
+//Quick link
 $dropdown-link-shadow:            0 3px 2px 0 rgba(0,0,0,0.02);
 $base-light:                    #FAFAFA;
 
