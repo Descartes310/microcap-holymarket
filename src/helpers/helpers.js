@@ -90,7 +90,7 @@ export function deepMapObject(obj, callback) {
     let rtn = obj;
     if (typeof (obj) === 'object') {
         if (obj instanceof Array) {
-            rtn = obj.map(deepMapObject);
+            rtn = obj.map(item => deepMapObject(item, callback));
         } else {
             rtn = {};
             for (let key in obj) {
