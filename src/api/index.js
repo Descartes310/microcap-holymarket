@@ -19,11 +19,32 @@ customAxios.interceptors.request.use(
              config.headers['Authorization'] = 'Bearer ' + accessToken;
           }
 
+          if (config.multipart) {
+              config.headers['content-type'] = 'multipart/form-data';
+          }
+
           // Check if post or put to perform some operation
           if ((config.method === 'post' || config.method === 'put') && !config.shouldSkipDataParsing) {
+              // Create an object to store file data
+              const fileData = {};
+
+              // Check if fileData is present
+              if (config.fileData) {
+                  config.fileData.forEach(f => {
+                      fileData[f] = config.data[f];
+                      delete config.data[f];
+                  });
+              }
               // Parse object to snakeCase and Form data
               const data = toSnakeCase(config.data);
               config.data = objectToFormData(data);
+
+              // Append files to data to send
+              if (config.fileData) {
+                  Object.entries(fileData).forEach(item => {
+                      config.data.append(item[0], item[1]);
+                  });
+              }
           }
 
           // config.headers['Content-Type'] = 'application/json';
