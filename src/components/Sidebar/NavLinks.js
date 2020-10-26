@@ -1,5 +1,16 @@
 // sidebar nav links
+import { NETWORK } from 'Url/frontendUrl'
+
 export default {
+   main: [
+      {
+         "menu_title": "network",
+         "menu_icon": "zmdi zmdi-accounts",
+         "path": NETWORK.LIST,
+         "new_item": false,
+         "child_routes": null
+      },
+   ],
    category1: [
       {
          "menu_title": "sidebar.dashboard",
