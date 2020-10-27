@@ -16,6 +16,7 @@ import jaLang from './entries/ja_JA';
 import koLang from './entries/ko_KO';
 import itLang from './entries/it_IT';
 import huLang from './entries/hu_HU';
+import {initMoment} from "../services/momentService";
 
 const AppLocale = {
     en: enLang,
@@ -46,6 +47,10 @@ addLocaleData(AppLocale.it.data);
 addLocaleData(AppLocale.hu.data);
 
 const currentAppLocale = AppLocale[getDefaultLanguage().locale];
+
+if (currentAppLocale.locale === 'fr') {
+    initMoment('fr');
+}
 
 const intlProvider = new IntlProvider({
     key: currentAppLocale.locale,

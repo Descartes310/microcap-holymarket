@@ -8,6 +8,16 @@ import Loadable from 'react-loadable';
 // rct page loader
 import RctPageLoader from 'Components/RctPageLoader/RctPageLoader';
 
+export const AsyncBranchList = Loadable({
+	loader: () => import("Routes/custom/branch"),
+	loading: () => <RctPageLoader />,
+});
+
+export const AsyncBranchCreate = Loadable({
+	loader: () => import("Routes/custom/branch/create"),
+	loading: () => <RctPageLoader />,
+});
+
 // ecommerce dashboard
 const AsyncEcommerceDashboardComponent = Loadable({
 	loader: () => import("Routes/dashboard/ecommerce"),

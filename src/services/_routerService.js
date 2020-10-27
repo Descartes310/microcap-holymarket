@@ -30,6 +30,10 @@ import {
 
 export default [
    {
+      path: '',
+      component: Ecommerce
+   },
+   {
       path: 'dashboard',
       component: Dashboard
    },

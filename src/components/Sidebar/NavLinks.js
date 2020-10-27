@@ -1,14 +1,17 @@
 // sidebar nav links
-import { NETWORK } from 'Url/frontendUrl'
+import { NETWORK } from 'Url/frontendUrl';
+import Branch from 'Models/Branch';
 
 export default {
    main: [
       {
-         "menu_title": "network",
+         "menu_title": "branch",
          "menu_icon": "zmdi zmdi-accounts",
          "path": NETWORK.LIST,
          "new_item": false,
-         "child_routes": null
+         "child_routes": null,
+         "permissions": [Branch.permissionsRelated.READ],
+         'subject': Branch
       },
    ],
    category1: [

@@ -13,6 +13,7 @@ import NavMenuItem from './NavMenuItem';
 
 // redux actions
 import { onToggleMenu } from 'Actions';
+import Can from "Permissions/Can";
 
 class SidebarContent extends Component {
 
@@ -25,20 +26,28 @@ class SidebarContent extends Component {
 	}
 
 	render() {
-		const { sidebarMenus } = this.props.sidebar;
+		const { sidebarMenus, authUser } = this.props.sidebar;
 		return (
 			<div className="rct-sidebar-nav">
 					<nav className="navigation">
 					<List
 						className="rct-mainMenu p-0 m-0 list-unstyled"
 					>
-						{sidebarMenus.main.map((menu, key) => (
-							<NavMenuItem
-								menu={menu}
-								key={key}
-								onToggleMenu={() => this.toggleMenu(menu, 'main')}
-							/>
-						))}
+						{sidebarMenus.main.map((menu, key) => {
+							// if (menu.permissions.includes(authUser.profile.permissions)) {
+							if (true) {
+								return (
+									<Can I={menu.permissions} on={menu.subject} key={key}>
+										<NavMenuItem
+											menu={menu}
+											onToggleMenu={() => this.toggleMenu(menu, 'main')}
+										/>
+									</Can>
+								)
+							}
+
+							return null
+						})}
 					</List>
 				</nav>
 			</div>
@@ -47,8 +56,8 @@ class SidebarContent extends Component {
 }
 
 // map state to props
-const mapStateToProps = ({ sidebar, settings }) => {
-	return { sidebar, settings };
+const mapStateToProps = ({ sidebar, settings, authUser }) => {
+	return { sidebar, settings, authUser: authUser.data };
 };
 
 export default withRouter(connect(mapStateToProps, {

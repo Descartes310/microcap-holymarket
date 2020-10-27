@@ -3,7 +3,7 @@
  */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Redirect, Route, Switch } from 'react-router-dom';
+import {BrowserRouter as Router, Redirect, Route, Switch} from 'react-router-dom';
 import { NotificationContainer } from 'react-notifications';
 
 // rct theme provider
@@ -36,7 +36,9 @@ import {
     AsyncSessionForgotPasswordComponent,
     AsyncSessionPage404Component,
     AsyncSessionPage500Component,
-    AsyncTermsConditionComponent
+    AsyncTermsConditionComponent,
+    AsyncBranchList,
+    AsyncBranchCreate, AsyncEcommerceDashboardComponent
 } from 'Components/AsyncComponent/AsyncComponent';
 
 //Auth0
@@ -44,12 +46,15 @@ import Auth from '../Auth/Auth';
 
 // callback component
 import Callback from "Components/Callback/Callback";
-import {AUTH, HOME} from "../services/frontendRoute";
+import {AUTH, HOME, NETWORK} from "../urls/frontendUrl";
 import {setAuthUser, loginIntoStore, disableAppLoading} from 'Actions';
 import RctPageLoader from "Components/RctPageLoader/RctPageLoader";
 import {getAuthToken} from "Helpers/tokens";
 import {isUserIntoStoreValid} from "Helpers/helpers";
 import RequestGlobalLoader from "Components/RequestGlobalLoader";
+import Branch from "Models/Branch";
+import Can from "Permissions/Can";
+import Ecommerce from 'Routes/ecommerce';
 
 //Auth0 Handle Authentication
 const auth = new Auth();
@@ -108,8 +113,8 @@ class App extends Component {
 
     render() {
         const _isUserIntoStoreValid = isUserIntoStoreValid(this.props.authUser.data, this.props.tokens.data);
-
         const { location, match, authUser, appLoading } = this.props;
+        // console.log("match.url => ", match.url);
 
         return (
             <>
@@ -119,55 +124,34 @@ class App extends Component {
                     <RctThemeProvider>
                         <NotificationContainer />
                         <RequestGlobalLoader />
-                        <>
-                            {_isUserIntoStoreValid ? (
-                                <Switch>
-                                    <InitialPath
-                                        path={`${match.url}app`}
-                                        authUser={authUser.data}
-                                        component={RctDefaultLayout}
-                                    />
-                                    {/*<Route path="/horizontal" component={HorizontalLayout} />
-                                    <Route path="/agency" component={AgencyLayout} />
-                                    <Route path="/boxed" component={RctBoxedLayout} />*/}
-                                    <Route path="/dashboard" component={CRMLayout} />
-                                    {/*<Route path="/session/login" component={AsyncSessionLoginComponent} />*/}
-                                    {/*<Route path="/session/register" component={AsyncSessionRegisterComponent} />*/}
-                                    <Route path="/session/lock-screen" component={AsyncSessionLockScreenComponent} />
-                                    <Route
-                                        path="/session/forgot-password"
-                                        component={AsyncSessionForgotPasswordComponent}
-                                    />
-                                    <Route path="/session/404" component={AsyncSessionPage404Component} />
-                                    <Route path="/session/500" component={AsyncSessionPage500Component} />
-                                    <Route path="/terms-condition" component={AsyncTermsConditionComponent} />
-                                    <Route path="/callback" render={(props) => {
-                                        handleAuthentication(props);
-                                        return <Callback {...props} />
-                                    }} />
+                        <Router>
+                                {_isUserIntoStoreValid ? (
+                                    <Switch>
+                                        {/*<Route exact path={'/jun'} component={Ecommerce} />*/}
 
-                                    {/*<InitialPath
-                                     path={'/'}
-                                     authUser={authUser.data}
-                                     component={RctDefaultLayout}
-                                 />*/}
 
-                                    {/*<Redirect from={HOME} to={'/app/dashboard/ecommerce'} />*/}
+                                        {/*<Route exact path={HOME} render={() => <p>Home page</p>} />*/}
+                                        <Route exact path={HOME} component={AsyncEcommerceDashboardComponent} />
 
-                                    <Redirect to={'/app/dashboard/ecommerce'} />
-                                </Switch>
-                            ) : (
-                                <Switch>
-                                    {/*<Route path={HOME} component={AppSignIn} />*/}
-                                    <Route path={AUTH.LOGIN} component={AppSignIn} />
-                                    <Route path={AUTH.REGISTER} component={AppSignUp} />
-                                    <Route path={AUTH.RESET_PASSWORD} component={ResetPassword} />
-                                    <Route path={AUTH.FORGOT_PASSWORD} component={SendResetPasswordLink} />
+                                        <Can I={Branch.permissionsRelated.READ} on={Branch}>
+                                            <Route exact path={NETWORK.CREATE} component={AsyncBranchCreate} />
+                                            <Route exact path={NETWORK.LIST} component={AsyncBranchList} />
+                                        </Can>
+                                        {/*<Route path={'/'} render={() => <p>Home page</p>} />*/}
+                                        <Redirect to={HOME} />
+                                    </Switch>
+                                ) : (
+                                    <Switch>
+                                        {/*<Route path={HOME} component={AppSignIn} />*/}
+                                        <Route path={AUTH.LOGIN} component={AppSignIn} />
+                                        <Route path={AUTH.REGISTER} component={AppSignUp} />
+                                        <Route path={AUTH.RESET_PASSWORD} component={ResetPassword} />
+                                        <Route path={AUTH.FORGOT_PASSWORD} component={SendResetPasswordLink} />
 
-                                    <Redirect to={AUTH.LOGIN} />
-                                </Switch>
-                            )}
-                        </>
+                                        <Redirect to={AUTH.LOGIN} />
+                                    </Switch>
+                                )}
+                        </Router>
                     </RctThemeProvider>
                 )}
             </>

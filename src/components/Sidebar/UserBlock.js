@@ -84,15 +84,21 @@ class UserBlock extends Component {
 								/>
 							</div>
 							<div className="user-info">
-								<span className="user-name ml-4">Lucile Beck</span>
+								<span className="user-name ml-4">
+									{this.props.authUser.userName}
+								</span>
 								<i className="zmdi zmdi-chevron-down dropdown-icon mx-4"></i>
 							</div>
 						</DropdownToggle>
 						<DropdownMenu>
 							<ul className="list-unstyled mb-0">
 								<li className="p-15 border-bottom user-profile-top bg-primary rounded-top">
-									<p className="text-white mb-0 fs-14">Lucile Beck</p>
-									<span className="text-white fs-14">info@example.com</span>
+									<p className="text-white mb-0 fs-14">
+										{this.props.authUser.userName}
+									</p>
+									<span className="text-white fs-14">
+										{this.props.authUser.user.login}
+									</span>
 								</li>
 								<li>
 									<Link to={{
@@ -141,9 +147,9 @@ class UserBlock extends Component {
 }
 
 // map state to props
-const mapStateToProps = ({ settings }) => {
-	return settings;
-}
+const mapStateToProps = ({ settings, authUser }) => {
+	return { settings, authUser: authUser.data };
+};
 
 export default connect(mapStateToProps, {
 	logout

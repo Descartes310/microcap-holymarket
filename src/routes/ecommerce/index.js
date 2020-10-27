@@ -11,25 +11,33 @@ import {
 	AsyncInvoiceComponent,
 	AsyncShopComponent,
 	AsyncCartComponent,
-	AsyncCheckoutComponent
+	AsyncCheckoutComponent,
+	AsyncEcommerceDashboardComponent,
+	AsyncSaasDashboardComponent,
+	AsyncAgencyDashboardComponent,
+	AsyncNewsDashboardComponent
 } from 'Components/AsyncComponent/AsyncComponent';
 
+
+import RctAppLayout from 'Components/RctAppLayout';
 const Ecommerce = ({ match }) => (
-	<div className="content-wrapper">
-		<Helmet>
+	<RctAppLayout>
+		<div className="content-wrapper">
+			{/*<Helmet>
 			<title>Ecommerce | Shop</title>
 			<meta name="description" content="Reactify Ecommerce Shop" />
-		</Helmet>
-		<Switch>
-			<Redirect exact from={`${match.url}/`} to={`${match.url}/shop-list`} />
-			<Route path={`${match.url}/shop-list`} component={AsyncShoplistComponent} />
-			<Route path={`${match.url}/shop-grid`} component={AsyncShopGridComponent} />
-			<Route path={`${match.url}/invoice`} component={AsyncInvoiceComponent} />
-			<Route path={`${match.url}/shop`} component={AsyncShopComponent} />
-			<Route path={`${match.url}/cart`} component={AsyncCartComponent} />
-			<Route path={`${match.url}/checkout`} component={AsyncCheckoutComponent} />
-		</Switch>
-	</div>
+		</Helmet>*/}
+			<div className="dashboard-wrapper">
+				<Switch>
+					<Redirect exact from={`${match.url}/`} to={`${match.url}/ecommerce`} />
+					<Route path={`${match.url}/ecommerce`} component={AsyncEcommerceDashboardComponent} />
+					<Route path={`${match.url}/saas`} component={AsyncSaasDashboardComponent} />
+					<Route path={`${match.url}/agency`} component={AsyncAgencyDashboardComponent} />
+					<Route path={`${match.url}/news`} component={AsyncNewsDashboardComponent} />
+				</Switch>
+			</div>
+		</div>
+	</RctAppLayout>
 );
 
 export default Ecommerce;
