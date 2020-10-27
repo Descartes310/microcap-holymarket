@@ -60,6 +60,7 @@ module.exports = {
 			Services: path.resolve(__dirname, 'src/services/'),
 			Url: path.resolve(__dirname, 'src/urls/'),
 			Models: path.resolve(__dirname, 'src/models/'),
+			Permissions: path.resolve(__dirname, 'src/permissions/'),
 		}
 	},
 	module: {

@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import MomentUtils from '@date-io/moment';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
+import { AbilityContext } from './permissions/Can';
 
 // css
 import './lib/reactifyCss';
@@ -16,17 +17,17 @@ import './firebase';
 // app component
 import App from './container/App';
 
-import { configureStore } from './store';
+import store, { configureStore } from './store';
+
+import ability from './permissions/ability';
 
 const MainApp = () => (
-	<Provider store={configureStore()}>
-		<MuiPickersUtilsProvider utils={MomentUtils}>
-			<Router>
-				<Switch>
-					<Route path="/" component={App} />
-				</Switch>
-			</Router>
-		</MuiPickersUtilsProvider>
+	<Provider store={store}>
+		<AbilityContext.Provider value={ability}>
+			<MuiPickersUtilsProvider utils={MomentUtils}>
+				<App />
+			</MuiPickersUtilsProvider>
+		</AbilityContext.Provider>
 	</Provider>
 );
 
