@@ -118,7 +118,7 @@ class CreateBranch extends Component {
     render() {
         const { loading, history, match } = this.props;
         return (
-            <RctAppLayout>
+            <>
                 <PageTitleBar title={<IntlMessages id="branch.createText" />} match={match} />
                 <RctCollapsibleCard>
                 <Stepper activeStep={this.state.activeStep} alternativeLabel className="stepper-rtl">
@@ -162,7 +162,7 @@ class CreateBranch extends Component {
                     )
                 )}
                 </RctCollapsibleCard>
-            </RctAppLayout>
+            </>
         );
     }
 }

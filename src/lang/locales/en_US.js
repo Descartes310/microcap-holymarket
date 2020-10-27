@@ -57,6 +57,9 @@ module.exports = {
    "branch.form.successCreation" : "Branch created successfully",
    "branch.alert.deleteText": "Do you really want to delete this legal representative with all its fields?",
    "branch.alert.deleteTitle": "Delete confirm",
+   "branch.maxMemberNumber": "Member Number",
+   "branch.maxPartnerNumber": "Partner Number",
+   "branch.maxPfmNumber": "PFM Number",
    "common.town": "Town",
    "common.termOfService": "Terms of Service",
    "common.nationality": "Nationality",
@@ -187,7 +190,6 @@ module.exports = {
    "sidebar.wallet": "wallet",
    "sidebar.trade": "trade",
    "sidebar.crm": "CRM",
-   "sidebar.dashboard": "dashboard",
    "sidebar.branch": "Branch",
    "sidebar.create": "Create",
    "widgets.totalEarns": "Total Earns",
@@ -839,5 +841,9 @@ module.exports = {
    "sidebar.projects": "projects",
    "sidebar.projectDetail": "project Detail",
    "sidebar.clients": "clients",
-   "sidebar.reports": "reports"
-}
+   "sidebar.reports": "reports",
+   "list.noItemToDisplay": "No items to display",
+   "list.sortBy": "Sort by",
+   "list.objectFound": "",
+   "general.none": "None",
+};

@@ -46,7 +46,7 @@ class BranchList extends Component {
             products: null,
             listItems,
             reviews: [],
-            order: 'new',
+            order: 'maxMemberNumber',
             branches: [],
             searched: '',
         };
@@ -92,7 +92,14 @@ class BranchList extends Component {
         });
     }
 
-    handleOrder = (order) => this.setState({order});
+    handleOrder = (value, data) => {
+        if (value !== 'none') {
+            // Apply order feature
+            return data.sort((a, b) => Number(a[value]) - Number(b[value]));
+        }
+
+        return data;
+    };
 
     handleSearch = (value, data) => {
         if (value && value !== '') {
@@ -116,53 +123,47 @@ class BranchList extends Component {
         const searchedItems = this.handleSearch(this.state.searched, [...this.state.reviews]);
 
         // Initialize order feature
-        let orderedItems = [...searchedItems];
+        let orderedItems = this.handleOrder(this.state.order, searchedItems);
         console.log("orderedItems => ", orderedItems);
-        /*if (this.state.order !== 'none') {
-            // Apply order feature
-            orderedItems = orderedItems.sort((a, b) => this.state.order === 'old'
-                ? a.date.valueOf() - b.date.valueOf()
-                : b.date.valueOf() - a.date.valueOf());
-        }*/
+
 
         return (
-            <RctAppLayout>
-                <div className="Shop-grid-wrapper">
-                    <div className="row">
-                        <div className="col-2">
-                            <Can I={Branch.permissionsRelated.CREATE} on={Branch.modelName}>
-                                <Button
-                                    color="primary"
-                                    className="mr-5 mb-10 text-white"
-                                    onClick={() => this.props.history.push(NETWORK.CREATE)}
-                                >
-                                    <IntlMessages id="button.add" />
-                                    <i className="zmdi zmdi zmdi-plus ml-2" />
-                                </Button>
-                            </Can>
-                        </div>
+            <div className="Shop-grid-wrapper">
+                <div className="row">
+                    <div className="col-2">
+                        <Can I={Branch.permissionsRelated.CREATE} on={Branch.modelName}>
+                            <Button
+                                color="primary"
+                                className="mr-5 mb-10 text-white"
+                                onClick={() => this.props.history.push(NETWORK.CREATE)}
+                            >
+                                <IntlMessages id="button.add" />
+                                <i className="zmdi zmdi zmdi-plus ml-2" />
+                            </Button>
+                        </Can>
                     </div>
-                    <div className="row align-items-start">
-                        <div className="col-sm-12 col-md-4 col-xl-4 d-sm-full">
-                            <RctCollapsibleCard>
-                                <div className="shop-head">
-                                    <Form>
-                                        <FormGroup className="has-wrapper mb-0">
-                                            <Input
-                                                type="search"
-                                                name="search"
-                                                id="search-todo"
-                                                className="has-input-right input-lg-icon pl-15"
-                                                placeholder="Recherchez..."
-                                                value={this.state.searched}
-                                                onChange={event => this.setState({searched: event.target.value})}
-                                            />
-                                            <i className="zmdi zmdi-search search-icon"></i>
-                                        </FormGroup>
-                                    </Form>
-                                </div>
-                            </RctCollapsibleCard>
-                            {/*<RctCollapsibleCard
+                </div>
+                <div className="row align-items-start">
+                    <div className="col-sm-12 col-md-4 col-xl-4 d-sm-full">
+                        <RctCollapsibleCard>
+                            <div className="shop-head">
+                                <Form>
+                                    <FormGroup className="has-wrapper mb-0">
+                                        <Input
+                                            type="search"
+                                            name="search"
+                                            id="search-todo"
+                                            className="has-input-right input-lg-icon pl-15"
+                                            placeholder="Recherchez..."
+                                            value={this.state.searched}
+                                            onChange={event => this.setState({searched: event.target.value})}
+                                        />
+                                        <i className="zmdi zmdi-search search-icon"></i>
+                                    </FormGroup>
+                                </Form>
+                            </div>
+                        </RctCollapsibleCard>
+                        {/*<RctCollapsibleCard
                                 // heading={<IntlMessages id="widgets.filterByDoctor" />}
                             >
                                 <List className="p-0 list-divider">
@@ -181,62 +182,83 @@ class BranchList extends Component {
                                     ))}
                                 </List>
                             </RctCollapsibleCard>*/}
-                        </div>
-                        <div className="col-md-8 col-sm-12 d-sm-full">
-                            <div className="row justify-content-between">
-                                <div className="col-md-6 col-sm-8">
-                                    <div className="form-group">
-                                        <FormControl fullWidth>
-                                            <InputLabel htmlFor="uncontrolled-native">Classé par</InputLabel>
-                                            <Select
-                                                value={this.state.order}
-                                                onChange={(event) => this.handleOrder(event.target.value)}
-                                            >
-                                                <MenuItem value="new">Nouveau</MenuItem>
-                                                <MenuItem value="old">Ancien</MenuItem>
-                                                <MenuItem value="none">Aucun</MenuItem>
-                                            </Select>
-                                        </FormControl>
-                                    </div>
-                                </div>
-                                <div className="col-md-6 col-sm-4 center-holder text-right">
-                                    <p>{orderedItems.length} branche(s) trouvées</p>
+                    </div>
+                    <div className="col-md-8 col-sm-12 d-sm-full">
+                        <div className="row justify-content-between">
+                            <div className="col-md-6 col-sm-8">
+                                <div className="form-group">
+                                    <FormControl fullWidth>
+                                        <InputLabel htmlFor="uncontrolled-native">
+                                            <IntlMessages id="list.sortBy" />
+                                        </InputLabel>
+                                        <Select
+                                            value={this.state.order}
+                                            onChange={(event) => this.setState({order: event.target.value})}
+                                        >
+                                            <MenuItem value="maxMemberNumber">
+                                                <IntlMessages id="branch.maxMemberNumber" />
+                                            </MenuItem>
+                                            <MenuItem value="maxPartnerNumber">
+                                                <IntlMessages id="branch.maxPartnerNumber" />
+                                            </MenuItem>
+                                            <MenuItem value="maxPfmNumber">
+                                                <IntlMessages id="branch.maxPfmNumber" />
+                                            </MenuItem>
+                                            <MenuItem value="none">
+                                                <IntlMessages id="general.none" />
+                                            </MenuItem>
+                                        </Select>
+                                    </FormControl>
                                 </div>
                             </div>
-                            <div className="dash-cards">
-                                <div className="row">
-                                    {orderedItems.length === 0 ? (
-                                        <RctCollapsibleCard>
-                                            <h4 className="">
-                                                Aucun element à afficher
-                                            </h4>
-                                        </RctCollapsibleCard>
-                                    ) : (
-                                        <>
-                                            {orderedItems.map(branch => (
-                                                <GridList className="col-12 mb-3" key={branch.id}>
-                                                        <GridListTile className="w-100">
-                                                            <img src={require('Assets/img/gallery-2.jpg')}  alt="..."/>
-                                                            <GridListTileBar
-                                                                title={branch.name}
-                                                                 actionIcon={
-                                                                     <IconButton>
-                                                                         <i className="zmdi zmdi-arrow-right text-white"></i>
-                                                                     </IconButton>
-                                                                 }
-                                                            />
-                                                        </GridListTile>
+                            <div className="col-md-6 col-sm-4 center-holder text-right">
+                                <p><IntlMessages id="list.objectFound" values={{count: orderedItems.length}}/> </p>
+                            </div>
+                        </div>
+                        <div className="dash-cards">
+                            <div className="row">
+                                {orderedItems.length === 0 ? (
+                                    <RctCollapsibleCard>
+                                        <h4 className="">
+                                            <IntlMessages id="list.noItemToDisplay" />
+                                        </h4>
+                                    </RctCollapsibleCard>
+                                ) : (
+                                    <>
+                                        {orderedItems.map(branch => (
+                                            <GridList className="col-12 mb-3" key={branch.id}>
+                                                <GridListTile className="w-100">
+                                                    {branch.logo ? (
+                                                        <img
+                                                            alt="..."
+                                                            src={branch.logo}
+                                                            onError={(e)=>{console.log("inside onerror"); e.target.onerror = null; e.target.src=require('Assets/identity/network.jpg')}}
+                                                        />
+                                                    ) : (
+                                                        <img
+                                                            alt="..."
+                                                            src={require('Assets/identity/network.jpg')}
+                                                        />
+                                                    )}
+                                                    <GridListTileBar
+                                                        title={branch.name}
+                                                        actionIcon={
+                                                            <IconButton>
+                                                                <i className="zmdi zmdi-arrow-right text-white"></i>
+                                                            </IconButton>
+                                                        }
+                                                    />
+                                                </GridListTile>
 
-                                                </GridList>
-                                            ))}
-                                        </>
-                                    )}
-                                </div>
+                                            </GridList>
+                                        ))}
+                                    </>
+                                )}
                             </div>
                         </div>
                     </div>
                 </div>
-            </RctAppLayout>
+            </div>
         );
     }
 }

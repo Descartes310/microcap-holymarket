@@ -57,6 +57,9 @@ module.exports = {
    "branch.form.successCreation": "Branche créée avec succès",
    "branch.alert.deleteText": "Voulez-vous vraiment supprimer ce représentant légal avec tous ses champs?",
    "branch.alert.deleteTitle": "Confirmation de supression",
+   "branch.maxMemberNumber": "Nombre de membres",
+   "branch.maxPartnerNumber": "Nombre de partenaires",
+   "branch.maxPfmNumber": "Nombre de PFM",
    "common.termOfService": "Conditions d'utilisation",
    "common.nationality": "Nationalité",
    "common.residenceCountry": "Pays de résidence",
@@ -816,7 +819,6 @@ module.exports = {
    "widgets.preview": "Aperçu",
    "widgets.croppedImage": "Image recadrée",
    "sidebar.crm": "CRM",
-   "sidebar.dashboard": "tableau de bord",
    "widgets.transactionList": "liste de transaction",
    "widgets.transferReport": "rapport de transfert",
    "widgets.expenseCategory": "catégorie de dépense",
@@ -827,5 +829,9 @@ module.exports = {
    "sidebar.projects": "projets",
    "sidebar.projectDetail": "Détail du projet",
    "sidebar.clients": "les clients",
-   "sidebar.reports": "rapports"
-}
+   "sidebar.reports": "rapports",
+   "list.noItemToDisplay": "Aucun element à afficher",
+   "list.sortBy": "Classé par",
+   "list.branchFound": "{count} branche(s) trouvées",
+   "general.none": "Aucun",
+};
