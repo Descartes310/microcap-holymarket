@@ -19,7 +19,7 @@ import AppConfig from 'Constants/AppConfig';
 
 // redux action
 import {loginUserWithEmailAndPassword} from 'Actions';
-import {AUTH, HOME} from "../../../services/frontendRoute";
+import {AUTH, HOME} from "../../../urls/frontendUrl";
 import Tab from "@material-ui/core/Tab";
 import Tabs from "@material-ui/core/Tabs";
 import IntlMessages from 'Util/IntlMessages';

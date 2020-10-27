@@ -29,7 +29,13 @@ export const PROFILE = {
 export const SYSTEM_OBJECT = {
     IDENTIFICATION: '/public/system/objects/identification-type',
     REGISTRATION_TYPE: '/public/system/objects/immatriculation-type',
-    ORGANISATION: '/public/system/objects/organisation-legal-form'
+    ORGANISATION: '/public/system/objects/organisation-legal-form',
+    ORGANISATION_POST: '/public/system/objects/organisation-post'
+};
+
+export const BRANCH = {
+    CREATE: '/public/branchs',
+    GET_ALL: '/public/branchs'
 };
 
 export const joinBaseUrl = to => BASE + to;

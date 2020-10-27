@@ -10,7 +10,7 @@ import StepLabel from "@material-ui/core/StepLabel/StepLabel";
 import Stepper from "@material-ui/core/Stepper/Stepper";
 import FirstStep from "Routes/session/register/person/firstStep";
 import SecondStep from "Routes/session/register/person/secondStep";
-import {HOME} from "../../../../services/frontendRoute";
+import {HOME} from "../../../../urls/frontendUrl";
 
 const steps = [1, 2];
 

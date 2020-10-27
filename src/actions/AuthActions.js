@@ -11,7 +11,7 @@ import {
 
 import api from './../api';
 
-import {PROFILE} from '../services/backendRoute';
+import {PROFILE} from 'Url/backendUrl';
 import {getAuthToken} from "Helpers/tokens";
 
 /**

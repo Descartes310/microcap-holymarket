@@ -11,7 +11,7 @@ import Stepper from "@material-ui/core/Stepper/Stepper";
 import FirstStep from "./firstStep";
 import SecondStep from "./secondStep";
 import ThirdStep from "./thirdStep";
-import {HOME} from "../../../../services/frontendRoute";
+import {HOME} from "../../../../urls/frontendUrl";
 
 const steps = [1, 2, 3];
 

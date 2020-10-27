@@ -19,7 +19,7 @@ import ErrorInputComponent from "Components/ErrorInputComponent";
 import {emailValidatorObject, minMaxValidatorObject} from "Helpers/validator";
 
 // route
-import {AUTH, HOME} from "../../../services/frontendRoute";
+import {AUTH, HOME} from "../../../urls/frontendUrl";
 
 // app config
 import AppConfig from 'Constants/AppConfig';

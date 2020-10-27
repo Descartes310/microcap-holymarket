@@ -1,5 +1,5 @@
 import api from 'Api';
-import {AUTH, SYSTEM_OBJECT, joinBaseUrlWithParams} from "../services/backendRoute";
+import {AUTH, SYSTEM_OBJECT, joinBaseUrlWithParams, BRANCH} from "Url/backendUrl";
 
 export const getResidenceCountries = () => {
     return new Promise((resolve, reject) => {
@@ -45,6 +45,14 @@ export const getOrganisationTypes = () => {
     });
 };
 
+export const getOrganisationPosts = () => {
+    return new Promise((resolve, reject) => {
+        api.get(SYSTEM_OBJECT.ORGANISATION_POST)
+            .then(result => resolve(result.data))
+            .catch(error => reject(error));
+    });
+};
+
 export const sendResetPasswordLink = (email) => {
     return new Promise((resolve, reject) => {
         /*const url = joinBaseUrlWithParams(AUTH.RESET_PASSWORD.LINK, [{
@@ -62,6 +70,14 @@ export const sendResetPasswordLink = (email) => {
 export const resetPassword = (data) => {
     return new Promise((resolve, reject) => {
         api.post(AUTH.RESET_PASSWORD.MAIN, data)
+            .then(result => resolve(result.data))
+            .catch(error => reject(error));
+    });
+};
+
+export const createBranch = (data, config) => {
+    return new Promise((resolve, reject) => {
+        api.post(BRANCH.CREATE, data, config)
             .then(result => resolve(result.data))
             .catch(error => reject(error));
     });

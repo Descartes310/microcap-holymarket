@@ -15,7 +15,7 @@ import {
 
 import api from './../api';
 import AppConfig from 'Constants/AppConfig';
-import {AUTH} from '../services/backendRoute';
+import {AUTH} from '../urls/backendUrl';
 import {removeAuthToken, saveAuthToken} from "Helpers/tokens";
 import {setAuthUser} from "Actions/AuthActions";
 import {getFullAuthorisationRequestConfig} from "Helpers/helpers";

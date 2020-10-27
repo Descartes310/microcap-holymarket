@@ -111,7 +111,6 @@ const SecondStep = props => {
      * On submit
      */
     const onSubmit = (data) => {
-        console.log('data => ', data);
         // Send data
         setData(data, true);
         // Redirect to the next step

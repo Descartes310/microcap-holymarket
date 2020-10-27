@@ -14,7 +14,7 @@ import {connect} from "react-redux";
 import {resetPassword, setRequestGlobalAction} from "Actions";
 import {injectIntl} from "react-intl";
 import IntlMessages from "Util/IntlMessages";
-import {HOME, AUTH} from "../../../services/frontendRoute";
+import {HOME, AUTH} from "../../../urls/frontendUrl";
 import InputComponent from "Components/InputComponent";
 import {minMaxValidatorObject} from "Helpers/validator";
 import ErrorInputComponent from "Components/ErrorInputComponent";
