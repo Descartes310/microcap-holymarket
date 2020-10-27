@@ -53,7 +53,7 @@ import {getAuthToken} from "Helpers/tokens";
 import {isUserIntoStoreValid} from "Helpers/helpers";
 import RequestGlobalLoader from "Components/RequestGlobalLoader";
 import Branch from "Models/Branch";
-import Can from "Permissions/Can";
+import Can, {AbilityContext} from "Permissions/Can";
 import Ecommerce from 'Routes/ecommerce';
 
 //Auth0 Handle Authentication
@@ -83,6 +83,8 @@ const InitialPath = ({ component: Component, authUser, ...rest }) =>
     />;
 
 class App extends Component {
+    static contextType = AbilityContext;
+
     componentDidMount() {
         this.isNewUser();
     }
@@ -133,10 +135,8 @@ class App extends Component {
                                         {/*<Route exact path={HOME} render={() => <p>Home page</p>} />*/}
                                         <Route exact path={HOME} component={AsyncEcommerceDashboardComponent} />
 
-                                        <Can I={Branch.permissionsRelated.READ} on={Branch}>
-                                            <Route exact path={NETWORK.CREATE} component={AsyncBranchCreate} />
-                                            <Route exact path={NETWORK.LIST} component={AsyncBranchList} />
-                                        </Can>
+                                        <Route exact path={NETWORK.CREATE} component={AsyncBranchCreate} />
+                                        <Route exact path={NETWORK.LIST} component={AsyncBranchList} />
                                         {/*<Route path={'/'} render={() => <p>Home page</p>} />*/}
                                         <Redirect to={HOME} />
                                     </Switch>
