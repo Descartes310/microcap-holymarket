@@ -91,6 +91,14 @@ export const createNetworkProfilePartnership = (data, config) => {
     });
 };
 
+export const createAssistantConfiguration = (data, config) => {
+    return new Promise((resolve, reject) => {
+        api.post(NETWORK_PROFILE.PARTNERSHIP.ASSISTANT.CREATE, data, config)
+            .then(result => resolve(result.data))
+            .catch(error => reject(error));
+    });
+};
+
 export const getNetworkProfileType = () => {
     return new Promise((resolve, reject) => {
         api.get(SYSTEM_OBJECT.NETWORK_PROFILE_TYPE)
@@ -136,4 +144,8 @@ export const getNetworkProfilePartnership = (branchId) => {
 
 export const getAllNetworkProfilePartnershipForOneBranch = (branchId) => {
     return makeRequest('get', `${NETWORK_PROFILE.PARTNERSHIP.BRANCH_ALL}?branch_id=${branchId}`);
+};
+
+export const getAllAssistantForOneBranch = (branchId) => {
+    return makeRequest('get', `${NETWORK_PROFILE.PARTNERSHIP.ASSISTANT.LIST}?branch_id=${branchId}`);
 };

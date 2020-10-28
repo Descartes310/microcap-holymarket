@@ -21,6 +21,7 @@ import {getEmails, setNetworkProfileConfigurationState, setRequestGlobalAction} 
 // components
 import NetworkPrimary from './NetworkPrimary';
 import NetworkProfile from './NetworkProfile';
+import AssistantConfiguration from './AssistantConfiguration';
 import NetworkSidebar from './NetworkSidebar';
 import NetworkBranchIntlMessages from "Components/NetworkBranchIntlMessages";
 import {NETWORK} from "Url/frontendUrl";
@@ -90,7 +91,7 @@ class Configuration extends React.Component {
         this.props.setRequestGlobalAction(true);
         setNetworkProfileConfigurationState(true, this.props.authUser.branch.id)
             .then(() => {
-                NotificationManager.success("La configuration de votre a debuté");
+                NotificationManager.success(this.props.intl.formatMessage({id: 'branch.configuration.open.successText'}));
                 window.location.reload();
                 // this.props.history.push(NETWORK.CONFIGURATION.NETWORK_PROFILE.CREATE);
             })
@@ -105,7 +106,7 @@ class Configuration extends React.Component {
         this.props.setRequestGlobalAction(true);
         setNetworkProfileConfigurationState(false, this.props.authUser.branch.id)
             .then(() => {
-                NotificationManager.success("La configuration de votre est terminé");
+                NotificationManager.success(this.props.intl.formatMessage({id: 'branch.configuration.close.successText'}));
                 window.reload();
                 // this.props.history.push(NETWORK.CONFIGURATION.NETWORK_PROFILE.CREATE);
             })
@@ -146,7 +147,7 @@ class Configuration extends React.Component {
                         className="bbbb btn-danger text-white btn-block font-weight-bold"
                     >
                         <i className="zmdi zmdi-lock mr-10 font-lg"></i>
-                        Sceller le réseau
+                        <NetworkBranchIntlMessages id="branch.sealNetwork"/>
                     </Button>
                 </div>
                 <div className="p-20">
@@ -160,16 +161,16 @@ class Configuration extends React.Component {
             <>
                 {!authUser.hasNetworkProfileConfigurationStarted() ? (
                     <BoundaryComponent
-                        btnText={"Demarrer"}
+                        btnText={this.props.intl.formatMessage({id: 'button.start'})}
                         loading={this.props.loading}
                         onButtonClick={this.onStartNetworkConfClick}
-                        text={"Configurer la structure de votre réseau " + authUser.branch.name}
+                        text={this.props.intl.formatMessage({id: 'branch.configuration.open.text'}, {name: authUser.branch.name})}
                     />
                 ) : authUser.isNetworkProfileConfigurationFinished() ? (
                     <BoundaryComponent
-                        btnText={"Reinitialiser"}
+                        btnText={this.props.intl.formatMessage({id: 'button.reset'})}
                         color={"danger"}
-                        text={"La structure de votre réseau " + authUser.branch.name + " est deja scelé "}
+                        text={this.props.intl.formatMessage({id: 'branch.configuration.close.text'}, {name: authUser.branch.name})}
                     />
                 ) : (
                     <div className="rct-mail-wrapper">
@@ -192,6 +193,22 @@ class Configuration extends React.Component {
                                                     color="primary"
                                                     className="mb-10 text-white"
                                                     onClick={() => this.props.history.push(NETWORK.CONFIGURATION.NETWORK_PROFILE.CREATE)}
+                                                >
+                                                    <IntlMessages id="button.add" />
+                                                    <i className="zmdi zmdi zmdi-plus ml-2" />
+                                                </Button>
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {window.location.pathname === NETWORK.CONFIGURATION.ASSISTANT_CONFIGURATION.LIST && (
+                                        <div className="d-flex align-items-center w-100">
+                                            <div className="align-items-center justify-content-between px-2 row w-100">
+                                                <h3 className="mb-0"><IntlMessages id="branch.assistantConfiguration"/></h3>
+                                                <Button
+                                                    color="primary"
+                                                    className="mb-10 text-white"
+                                                    onClick={() => this.props.history.push(NETWORK.CONFIGURATION.ASSISTANT_CONFIGURATION.CREATE)}
                                                 >
                                                     <IntlMessages id="button.add" />
                                                     <i className="zmdi zmdi zmdi-plus ml-2" />
@@ -252,6 +269,7 @@ class Configuration extends React.Component {
                                         <Redirect exact from={`${match.url}/`} to={NETWORK.CONFIGURATION.NETWORK_PROFILE.SELF} />
                                         <Route path={NETWORK.CONFIGURATION.NETWORK_PROFILE.SELF} component={NetworkProfile} />
                                         <Route path={NETWORK.CONFIGURATION.NETWORK_PRIMARY.SELF} component={NetworkPrimary} />
+                                        <Route path={NETWORK.CONFIGURATION.ASSISTANT_CONFIGURATION.SELF} component={AssistantConfiguration} />
                                         {/*<Route path={`${match.url}/compose`} component={ComposeEmail} />*/}
                                     </Switch>
                                 {/*</div>*/}

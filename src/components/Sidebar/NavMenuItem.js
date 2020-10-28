@@ -12,6 +12,7 @@ import Chip from '@material-ui/core/Chip';
 
 // intl messages
 import IntlMessages from 'Util/IntlMessages';
+import NetworkBranchIntlMessages from "Components/NetworkBranchIntlMessages";
 
 class NavMenuItem extends Component {
 
@@ -66,7 +67,7 @@ class NavMenuItem extends Component {
                                  <ListItem button component="li" key={index}>
                                     <NavLink to={subMenu.path} activeClassName="item-active" >
                                        <span className="menu">
-                                          <IntlMessages id={subMenu.menu_title} />
+                                          <NetworkBranchIntlMessages id={subMenu.menu_title} />
 
                                        </span>
                                        {subMenu.new_item && subMenu.new_item === true ?
@@ -89,7 +90,7 @@ class NavMenuItem extends Component {
                                        className={`list-item ${classNames({ 'item-active': subMenuOpen === index })}`}
                                     >
                                        <span className="menu">
-                                          <IntlMessages id={subMenu.menu_title} />
+                                          <NetworkBranchIntlMessages id={subMenu.menu_title} />
                                           {menu.new_item && menu.new_item === true ?
                                              <Chip label="new" className="new-item" color="secondary" />
                                              :
@@ -103,7 +104,7 @@ class NavMenuItem extends Component {
                                              <ListItem button component="li" key={nestedKey}>
                                                 <NavLink activeClassName="item-active" to={nestedMenu.path}>
                                                    <span className="menu pl-10 d-inline-block">
-                                                      <IntlMessages id={nestedMenu.menu_title} />
+                                                      <NetworkBranchIntlMessages id={nestedMenu.menu_title} />
                                                       {menu.new_item && menu.new_item === true ?
                                                          <Chip label="new" className="new-item" color="secondary" />
                                                          :

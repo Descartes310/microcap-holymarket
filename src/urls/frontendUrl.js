@@ -21,6 +21,11 @@ export const NETWORK = {
             ADD_PARTNERSHIP: '/network/configuration/network-primary/partner/add',
             CREATE: '/network/configuration/network-profile/create',
         },
+        ASSISTANT_CONFIGURATION: {
+            SELF: '/network/configuration/assistant',
+            LIST: '/network/configuration/assistant/list',
+            CREATE: '/network/configuration/assistant/create',
+        },
     },
     COVERAGE: '/network/coverage',
     CREATE: '/branch/create',

@@ -26,7 +26,7 @@ const firstList = [
         'id': 0,
         'handle': NETWORK.CONFIGURATION.NETWORK_PROFILE.LIST,
         'title': 'branch.profile',
-        'icon': 'settings'
+        'icon': 'account'
     },
     {
         'id': 1,
@@ -34,6 +34,12 @@ const firstList = [
         'title': 'branch.primary',
         'icon': 'inbox'
     },
+    /*{
+        'id': 2,
+        'handle': NETWORK.CONFIGURATION.ASSISTANT_CONFIGURATION.LIST,
+        'title': 'branch.assistantConfiguration',
+        'icon': 'settings'
+    },*/
 ];
 
 /*const secondList = [
@@ -100,7 +106,7 @@ class NetworkSidebar extends Component {
                                 className={classnames({ 'item-active': selectedFolder === folder.id })}>
                                 <i className={`mr-20 zmdi zmdi-${folder.icon}`} />
                                 <span className="filter-title">
-									<IntlMessages id={folder.title} />
+									<NetworkBranchIntlMessages id={folder.title} />
 								</span>
                             </ListItem>
                         ))}

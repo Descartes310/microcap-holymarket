@@ -48,7 +48,11 @@ export const NETWORK_PROFILE = {
     PARTNERSHIP: {
         GET_ALL: 'public/network-profile/partership',
         CREATE: 'public/network-profile/partership',
-        BRANCH_ALL: 'public/network-profile/partership/all'
+        BRANCH_ALL: 'public/network-profile/partership/all',
+        ASSISTANT: {
+            CREATE: 'public/network-profile/partner/assistant',
+            LIST: 'public/network-profile/partner/assistant',
+        },
     }
 };
 
