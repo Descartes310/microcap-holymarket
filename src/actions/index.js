@@ -13,3 +13,4 @@ export * from './EcommerceActions';
 export * from './CrmActions';
 export * from './independentActions';
 export * from './RequestGlobalAction';
+export * from './NetworkProfileActions';

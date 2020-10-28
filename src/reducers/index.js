@@ -14,6 +14,7 @@ import feedbacksReducer from './FeedbacksReducer';
 import ecommerceReducer from './EcommerceReducer';
 import CrmReducer from './CrmReducer';
 import RequestGlobalReducer from './RequestGlobalReducer';
+import NetworkProfileReducer from './NetworkProfileReducer';
 
 const reducers = combineReducers({
    settings,
@@ -28,6 +29,7 @@ const reducers = combineReducers({
    ecommerce: ecommerceReducer,
    CrmReducer: CrmReducer,
    requestGlobalLoader: RequestGlobalReducer,
+   networkProfile: NetworkProfileReducer,
 });
 
 export default reducers;

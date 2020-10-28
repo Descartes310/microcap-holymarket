@@ -1,5 +1,5 @@
 import api from 'Api';
-import {AUTH, SYSTEM_OBJECT, joinBaseUrlWithParams, BRANCH} from "Url/backendUrl";
+import {AUTH, SYSTEM_OBJECT, joinBaseUrlWithParams, BRANCH, NETWORK_PROFILE} from "Url/backendUrl";
 
 export const getResidenceCountries = () => {
     return new Promise((resolve, reject) => {
@@ -81,4 +81,59 @@ export const createBranch = (data, config) => {
             .then(result => resolve(result.data))
             .catch(error => reject(error));
     });
+};
+
+export const createNetworkProfilePartnership = (data, config) => {
+    return new Promise((resolve, reject) => {
+        api.post(NETWORK_PROFILE.PARTNERSHIP.CREATE, data, config)
+            .then(result => resolve(result.data))
+            .catch(error => reject(error));
+    });
+};
+
+export const getNetworkProfileType = () => {
+    return new Promise((resolve, reject) => {
+        api.get(SYSTEM_OBJECT.NETWORK_PROFILE_TYPE)
+            .then(result => resolve(result.data))
+            .catch(error => reject(error));
+    });
+};
+
+export const createNetworkProfileType = (data) => {
+    return new Promise((resolve, reject) => {
+        api.post(NETWORK_PROFILE.CREATE, data)
+            .then(result => resolve(result.data))
+            .catch(error => reject(error));
+    });
+};
+
+const makeRequest = (verb, url, data = null, config = {}) => {
+    return new Promise((resolve, reject) => {
+        api[verb](url, data)
+            .then(result => resolve(result.data))
+            .catch(error => reject(error));
+    });
+};
+
+export const setNetworkProfileConfigurationState = (shouldStart, id) => {
+    const url = joinBaseUrlWithParams(BRANCH.CONFIGURATION[shouldStart ? 'START' : 'STOP'], [{
+        param: 'id',
+        value: id,
+    }]);
+    return makeRequest('put', url);
+};
+
+export const getNetworkProfilePartnership = (branchId) => {
+    return new Promise((resolve, reject) => {
+        api.get(NETWORK_PROFILE.PARTNERSHIP.GET_ALL)
+            .then(result => {
+                const partner = result.data.filter(p => p.branch.id === branchId);
+                resolve(partner);
+            })
+            .catch(error => reject(error));
+    });
+};
+
+export const getAllNetworkProfilePartnershipForOneBranch = (branchId) => {
+    return makeRequest('get', `${NETWORK_PROFILE.PARTNERSHIP.BRANCH_ALL}?branch_id=${branchId}`);
 };
