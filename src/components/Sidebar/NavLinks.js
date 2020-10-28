@@ -3,9 +3,9 @@ import { NETWORK } from 'Url/frontendUrl';
 import Branch from 'Models/Branch';
 
 export default {
-   main: [
+   manager: [
       {
-         "menu_title": "branch",
+         "menu_title": "sidebar.branch",
          "menu_icon": "zmdi zmdi-accounts",
          "path": NETWORK.LIST,
          "new_item": false,
@@ -13,6 +13,29 @@ export default {
          "permissions": [Branch.permissionsRelated.READ],
          'subject': Branch
       },
+   ],
+   exploitant: [
+      {
+         "menu_title": "sidebar.branch",
+         "menu_icon": "zmdi zmdi-accounts",
+         "path": NETWORK.LIST,
+         "new_item": false,
+         "permissions": [Branch.permissionsRelated.READ],
+         'subject': Branch,
+         "child_routes": [
+            {
+               "menu_title": "sidebar.configuration",
+               "new_item": false,
+               "path": NETWORK.CONFIGURATION.SELF
+            },
+            {
+               "path": NETWORK.COVERAGE,
+               "new_item": false,
+               "menu_title": "sidebar.coverage"
+            },
+         ]
+      },
+
    ],
    category1: [
       {

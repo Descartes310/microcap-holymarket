@@ -27,15 +27,29 @@ export const PROFILE = {
 };
 
 export const SYSTEM_OBJECT = {
-    IDENTIFICATION: '/public/system/objects/identification-type',
-    REGISTRATION_TYPE: '/public/system/objects/immatriculation-type',
-    ORGANISATION: '/public/system/objects/organisation-legal-form',
-    ORGANISATION_POST: '/public/system/objects/organisation-post'
+    IDENTIFICATION: 'public/system/objects/identification-type',
+    REGISTRATION_TYPE: 'public/system/objects/immatriculation-type',
+    ORGANISATION: 'public/system/objects/organisation-legal-form',
+    ORGANISATION_POST: 'public/system/objects/organisation-post',
+    NETWORK_PROFILE_TYPE: 'public/system/objects/network-profile-type',
 };
 
 export const BRANCH = {
-    CREATE: '/public/branchs',
-    GET_ALL: '/public/branchs'
+    CREATE: 'public/branchs',
+    GET_ALL: 'public/branchs',
+    CONFIGURATION: {
+        START: 'public/branchs/start/configurations/{id}',
+        STOP: 'public/branchs/close/configurations/{id}',
+    }
+};
+export const NETWORK_PROFILE = {
+    CREATE: 'public/network-profile',
+    GET_ALL: 'public/network-profile',
+    PARTNERSHIP: {
+        GET_ALL: 'public/network-profile/partership',
+        CREATE: 'public/network-profile/partership',
+        BRANCH_ALL: 'public/network-profile/partership/all'
+    }
 };
 
 export const joinBaseUrl = to => BASE + to;

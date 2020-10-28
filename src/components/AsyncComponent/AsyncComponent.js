@@ -18,6 +18,21 @@ export const AsyncBranchCreate = Loadable({
 	loading: () => <RctPageLoader />,
 });
 
+/*export const AsyncBranchShow = Loadable({
+	loader: () => import("Routes/custom/branch/show"),
+	loading: () => <RctPageLoader />,
+});*/
+
+export const AsyncBranchNetworkConfiguration = Loadable({
+	loader: () => import("Routes/custom/branch/show/Configuration"),
+	loading: () => <RctPageLoader />,
+});
+
+export const AsyncBranchNetworkCoverage = Loadable({
+	loader: () => import("Routes/custom/branch/show/Coverage"),
+	loading: () => <RctPageLoader />,
+});
+
 // ecommerce dashboard
 const AsyncEcommerceDashboardComponent = Loadable({
 	loader: () => import("Routes/dashboard/ecommerce"),

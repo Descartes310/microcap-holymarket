@@ -9,7 +9,10 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 import {
     AsyncEcommerceDashboardComponent,
     AsyncBranchCreate,
-    AsyncBranchList
+    AsyncBranchList,
+    AsyncBranchShow,
+    AsyncBranchNetworkCoverage,
+    AsyncBranchNetworkConfiguration
 } from 'Components/AsyncComponent/AsyncComponent';
 
 import Branch from "Models/Branch";
@@ -38,8 +41,23 @@ const Dashboard = ({ match }) => {
                         component={AsyncBranchCreate}
                         can={ability.can(Branch.permissionsRelated.CREATE, Branch)}
                     />
+
                     <CanRoute
-                        exact
+                        path={NETWORK.CONFIGURATION.SELF}
+                        component={AsyncBranchNetworkConfiguration}
+                        can
+                        // can={ability.can(Branch.permissionsRelated.READ, Branch)}
+                    />
+
+                    <CanRoute
+                        path={NETWORK.COVERAGE}
+                        component={AsyncBranchNetworkCoverage}
+                        can
+                        // can={ability.can(Branch.permissionsRelated.READ, Branch)}
+                    />
+
+                    <CanRoute
+
                         path={NETWORK.LIST}
                         component={AsyncBranchList}
                         can={ability.can(Branch.permissionsRelated.READ, Branch)}

@@ -1,15 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {Form, FormGroup} from "reactstrap";
 import InputComponent from "Components/InputComponent";
-import {emailValidatorObject, minMaxValidatorObject, passwordValidatorObject} from "Helpers/validator";
+import {emailValidatorObject} from "Helpers/validator";
 import ErrorInputComponent from "Components/ErrorInputComponent";
-import AppConfig from "Constants/AppConfig";
-import {useForm} from "react-hook-form";
 import IntlMessages from "Util/IntlMessages";
 import {injectIntl} from 'react-intl';
-import _ from 'lodash';
-
-import Button from "@material-ui/core/Button";
 import Select from "@material-ui/core/Select/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import InputLabel from "@material-ui/core/InputLabel/InputLabel";
@@ -18,15 +13,7 @@ import FormControl from "@material-ui/core/FormControl";
 
 import CustomAsyncComponent from "Components/CustomAsyncComponent";
 import FlagCountry from "Components/FlagCountry";
-import {
-    getOperators,
-    getRegistrationType,
-    getOrganisationPosts,
-    getIdentificationType
-} from "Actions/independentActions";
-import {NotificationManager} from "react-notifications";
 import CountryManager from "Helpers/CountryManager";
-import AccordionDetails from "@material-ui/core/AccordionDetails/AccordionDetails";
 
 const countryWithNameAndFlag = CountryManager.countryWithNameAndFlag();
 const countryWithNumberAndFlag = CountryManager.countryWithNumberAndFlag();
@@ -47,7 +34,7 @@ const ThirdStepItem = props => {
     return (
         <div className="w-100">
             <div className="row align-items-flex-end">
-                <FormGroup className="col-4 has-wrapper">
+                <FormGroup className="col-md-4 col-sm-12 has-wrapper">
                     <InputComponent
                         id="firstName"
                         type="text"
@@ -60,7 +47,7 @@ const ThirdStepItem = props => {
                     />
                     <span className="has-icon"><i className="zmdi zmdi-account"></i></span>
                 </FormGroup>
-                <FormGroup className="col-4 has-wrapper">
+                <FormGroup className="col-md-4 col-sm-12 has-wrapper">
                     <InputComponent
                         id="firstName"
                         type="text"
@@ -73,7 +60,7 @@ const ThirdStepItem = props => {
                     />
                     <span className="has-icon"><i className="zmdi zmdi-account"></i></span>
                 </FormGroup>
-                <FormGroup className="col-4 has-wrapper">
+                <FormGroup className="col-md-4 col-sm-12 has-wrapper">
                     <InputLabel className="text-left" htmlFor="representativeEmail"><IntlMessages id="auth.email"/></InputLabel>
                     <InputComponent
                         type="mail"
@@ -100,7 +87,7 @@ const ThirdStepItem = props => {
                         <ErrorInputComponent text={intl.formatMessage({id: errors.representativePhoneNumber?.message})} />
                     </div>
                 )}
-                <FormGroup className="col-2 has-wrapper">
+                <FormGroup className="col-md-3 col-sm-4 has-wrapper">
                     <InputComponent
                         errors={errors}
                         control={control}
@@ -117,7 +104,7 @@ const ThirdStepItem = props => {
                         </Select>}
                     />
                 </FormGroup>
-                <FormGroup className="col-10 has-wrapper">
+                <FormGroup className="col-md-9 col-sm-8 has-wrapper">
                     <InputComponent
                         type="text"
                         isRequired
@@ -139,7 +126,7 @@ const ThirdStepItem = props => {
                     data={identificationType.data}
                     onRetryClick={_getIdentificationType}
                     component={data => (
-                        <div className="col-6 form-group text-left">
+                        <div className="col-md-6 col-sm-12 form-group text-left">
                             <FormControl fullWidth>
                                 <InputLabel className="text-left" htmlFor="identificationType-helper"><IntlMessages id="common.identificationType"/></InputLabel>
                                 <InputComponent
@@ -163,7 +150,7 @@ const ThirdStepItem = props => {
                         </div>
                     )}
                 />
-                <FormGroup className="col-6 has-wrapper">
+                <FormGroup className="col-md-6 col-sm-12 has-wrapper">
                     <InputComponent
                         type="text"
                         isRequired

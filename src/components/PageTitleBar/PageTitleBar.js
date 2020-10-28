@@ -14,8 +14,10 @@ const getDisplayString = (sub) => {
    const arr = sub.split("-");
    if (arr.length > 1) {
       return <IntlMessages id={`sidebar.${arr[0].charAt(0) + arr[0].slice(1) + arr[1].charAt(0).toUpperCase() + arr[1].slice(1)}`} />
-   } else {
+   } else if (arr[0] !== "") {
       return <IntlMessages id={`sidebar.${sub.charAt(0) + sub.slice(1)}`} />
+   } else {
+      return <></>;
    }
 
 };

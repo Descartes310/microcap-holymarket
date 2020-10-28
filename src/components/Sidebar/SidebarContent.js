@@ -16,7 +16,6 @@ import { onToggleMenu } from 'Actions';
 import Can from "Permissions/Can";
 
 class SidebarContent extends Component {
-
 	toggleMenu(menu, stateCategory) {
 		let data = {
 			menu,
@@ -26,27 +25,38 @@ class SidebarContent extends Component {
 	}
 
 	render() {
-		const { sidebarMenus, authUser } = this.props.sidebar;
+		const { sidebarMenus,  } = this.props.sidebar;
+		const { authUser } = this.props;
+
 		return (
 			<div className="rct-sidebar-nav">
 					<nav className="navigation">
 					<List
 						className="rct-mainMenu p-0 m-0 list-unstyled"
 					>
-						{sidebarMenus.main.map((menu, key) => {
+						{authUser && authUser.isExploitant() && sidebarMenus.exploitant.map((menu, key) => {
 							// if (menu.permissions.includes(authUser.profile.permissions)) {
 							if (true) {
 								return (
-									<Can I={menu.permissions} on={menu.subject} key={key}>
-										<NavMenuItem
-											menu={menu}
-											onToggleMenu={() => this.toggleMenu(menu, 'main')}
-										/>
-									</Can>
+									<NavMenuItem
+										key={key}
+										menu={menu}
+										onToggleMenu={() => this.toggleMenu(menu, 'exploitant')}
+									/>
 								)
 							}
 
 							return null
+						})}
+
+						{authUser && authUser.isManager() && sidebarMenus.manager.map((menu, key) => {
+							return (
+								<NavMenuItem
+									key={key}
+									menu={menu}
+									onToggleMenu={() => this.toggleMenu(menu, 'manager')}
+								/>
+							)
 						})}
 					</List>
 				</nav>

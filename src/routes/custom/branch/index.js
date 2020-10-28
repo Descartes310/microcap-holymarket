@@ -36,6 +36,7 @@ import GridListTile from "@material-ui/core/GridListTile";
 import GridListTileBar from "@material-ui/core/GridListTileBar/GridListTileBar";
 import IconButton from "@material-ui/core/IconButton";
 import GridList from "@material-ui/core/GridList";
+import BranchImage from "Components/BranchImage";
 
 initMoment();
 
@@ -228,18 +229,7 @@ class BranchList extends Component {
                                         {orderedItems.map(branch => (
                                             <GridList className="col-12 mb-3" key={branch.id}>
                                                 <GridListTile className="w-100">
-                                                    {branch.logo ? (
-                                                        <img
-                                                            alt="..."
-                                                            src={branch.logo}
-                                                            onError={(e)=>{console.log("inside onerror"); e.target.onerror = null; e.target.src=require('Assets/identity/network.jpg')}}
-                                                        />
-                                                    ) : (
-                                                        <img
-                                                            alt="..."
-                                                            src={require('Assets/identity/network.jpg')}
-                                                        />
-                                                    )}
+                                                    <BranchImage logo={branch.logo} />
                                                     <GridListTileBar
                                                         title={branch.name}
                                                         actionIcon={
