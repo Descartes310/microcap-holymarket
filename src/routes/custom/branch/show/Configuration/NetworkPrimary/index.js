@@ -34,6 +34,7 @@ const NetworkPrimary = props => {
     const partnershipTypeWatch = watch('partnershipType');
 
     // const [loading, setLoading] = useState(false);
+    const [canDeclare, setCanDeclare] = useState(false);
     const [showDeclareMentorship, setShowDeclareMentorship] = useState(false);
     const [shouldFetchData, setShouldFetchData] = useState(false);
 
@@ -52,11 +53,14 @@ const NetworkPrimary = props => {
             getNetworkProfilePartnership(authUser.branch.id)
                 .then(result => {
                     setNetworkProfilePartnership({loading: false, data: result});
+                    if (result.length > 0) {
+                        setCanDeclare(true);
+                    }
                     resolve();
                 })
                 .catch(error => {
                     setNetworkProfilePartnership({loading: false, data: null});
-                    NotificationManager.error("An error occur " + error);
+                    NotificationManager.error("An error occur " + error.message);
                     reject();
                 });
         });
@@ -65,6 +69,14 @@ const NetworkPrimary = props => {
     const onCloseClick = () => {
         setShowDeclareMentorship(false);
         setShouldFetchData(!shouldFetchData);
+    };
+
+    const onDeclareClick = () => {
+        if (canDeclare) {
+            setShowDeclareMentorship(true)
+        } else {
+            NotificationManager.warning(intl.formatMessage({id: 'branch.field.partnershipType.empty'}));
+        }
     };
 
     return (
@@ -108,8 +120,9 @@ const NetworkPrimary = props => {
                             // type="submit"
                             color="primary"
                             variant="contained"
+                            disabled={networkProfilePartnership.loading}
                             className="text-white font-weight-bold mr-3"
-                            onClick={() => setShowDeclareMentorship(true)}
+                            onClick={onDeclareClick}
                         >
                             <IntlMessages id="button.declare" />
                         </Button>

@@ -20,6 +20,7 @@ import {injectIntl} from "react-intl";
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useTheme } from '@material-ui/core/styles';
 import NetworkBranchIntlMessages from "Components/NetworkBranchIntlMessages";
+import {NETWORK} from "Url/frontendUrl";
 
 const steps = [1, 2, 3];
 
@@ -91,7 +92,7 @@ class AssistantConfigurationCreate extends Component {
         createAssistantConfiguration(_data, {fileData: ['logo'], multipart: true})
             .then(() => {
                 NotificationManager.success(this.props.intl.formatMessage({id: "network.assistantConfiguration.create.successText"}));
-                this.props.onClose();
+                this.props.history(NETWORK.CONFIGURATION.ASSISTANT_CONFIGURATION.LIST);
             })
             .catch(error => {
                 NotificationManager.error(this.props.intl.formatMessage({id: "error.500"}))

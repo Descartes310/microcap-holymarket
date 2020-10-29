@@ -50,7 +50,7 @@ class NetworkProfileList extends Component {
 
     render() {
         const { networkProfiles, loading, error } = this.props;
-        console.log("networkProfiles => ", networkProfiles);
+
         let orderedItems = this.handleOrder(this.state.order, networkProfiles);
         return (
             <div className="mx-4">
@@ -59,7 +59,7 @@ class NetworkProfileList extends Component {
                     : orderedItems.length === 0
                         ? (
                             <RctCollapsibleCard>
-                                <IntlMessages id="list.noItemToDisplay" />
+                                <IntlMessages id="list.noThingToDisplay" values={{thing: this.props.intl.formatMessage({id: 'branch.profile'})}} />
                             </RctCollapsibleCard>
                         )
                         : (

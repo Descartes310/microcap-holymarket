@@ -27,7 +27,6 @@ import _ from 'lodash';
 import {NotificationManager} from "react-notifications";
 
 class NetworkProfileList extends Component {
-
     constructor(props) {
         super(props);
         this.state = {
@@ -63,9 +62,7 @@ class NetworkProfileList extends Component {
         const { assistants, loading } = this.state;
 
         let orderedItems = this.handleOrder(this.state.order, assistants);
-        console.log("orderedItems => ", orderedItems);
-        console.log("loading => ", loading);
-        console.log("loading || orderedItems === null => ", loading || orderedItems === null);
+
         return (
             <div className="mx-4">
                 {loading || orderedItems === null
@@ -73,7 +70,7 @@ class NetworkProfileList extends Component {
                     : orderedItems.length === 0
                         ? (
                             <RctCollapsibleCard>
-                                <IntlMessages id="list.noItemToDisplay" />
+                                <IntlMessages id="list.noThingToDisplay" values={{thing: this.props.intl.formatMessage({id: 'branch.assistantConfiguration'})}} />
                             </RctCollapsibleCard>
                         )
                         : (
@@ -127,14 +124,14 @@ class NetworkProfileList extends Component {
                                                             {/*<img src={networkProfile.label} alt="user profile" className="media-object rounded-circle" width="35" height="35" />*/}
                                                         </div>
                                                         <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{networkProfile.name}</h4>
+                                                            <h4 className="m-0 fw-bold text-dark">{networkProfile.networkProfile.name}</h4>
                                                         </div>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{networkProfile.profileParent ? networkProfile.profileParent : '—'}</h4>
+                                                            <h4 className="m-0 fw-bold text-dark">{networkProfile.networkProfile.profileParent ? networkProfile.networkProfile.profileParent : '—'}</h4>
                                                         </div>
                                                     </div>
                                                 </td>

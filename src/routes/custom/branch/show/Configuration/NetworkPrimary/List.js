@@ -73,7 +73,7 @@ class NetworkPrimaryList extends Component {
                     : orderedItems.length === 0
                         ? (
                             <RctCollapsibleCard>
-                                <IntlMessages id="list.noItemToDisplay" />
+                                <IntlMessages id="list.noThingToDisplay" values={{thing: this.props.intl.formatMessage({id: 'branch.primary'})}} />
                             </RctCollapsibleCard>
                         )
                         : (

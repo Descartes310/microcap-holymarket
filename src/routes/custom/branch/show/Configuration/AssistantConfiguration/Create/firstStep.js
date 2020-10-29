@@ -27,29 +27,64 @@ import {
 import {NotificationManager} from "react-notifications";
 import CountryManager from "Helpers/CountryManager";
 
-const SecondStep = props => {
+const FirstStep = props => {
     const { authUser, loading, nextStep, fullScreen, setData, intl, defaultState } = props;
 
     const { register, errors, handleSubmit, watch, control, getValues} = useForm({
         defaultValues: !_.isEqual(defaultState, {}) ? defaultState : {}
     });
 
+    const [canGoToNextStep, setCanGoToNextStep] = useState(false);
     const [networkProfilePartnership, setNetworkProfilePartnership] = useState({
         loading: true,
         data: null
     });
 
+    const [networkProfilePartnershipType, setNetworkProfilePartnershipType] = useState({
+        loading: true,
+        data: null
+    });
+
     useEffect(() => {
-        _getNetworkProfilePartnership();
+        _getNetworkProfilePartnership()
+            .finally(() => _getNetworkProfilePartnershipType());
     }, []);
+
+    const _getNetworkProfilePartnershipType = () => {
+        return new Promise((resolve, reject) => {
+            setNetworkProfilePartnershipType({loading: true, data: null});
+            getNetworkProfilePartnership(authUser.branch.id)
+                .then(result => {
+                    setNetworkProfilePartnershipType({loading: false, data: result});
+                    resolve();
+                    if (result.length > 0) {
+                        setCanGoToNextStep(true);
+                    } else {
+                        setCanGoToNextStep(false);
+                        NotificationManager.warning(intl.formatMessage({id: 'branch.field.partnership.empty'}));
+                    }
+                })
+                .catch(error => {
+                    setNetworkProfilePartnershipType({loading: false, data: null});
+                    NotificationManager.error("An error occur " + error);
+                    reject();
+                });
+        });
+    };
 
     const _getNetworkProfilePartnership = () => {
         return new Promise((resolve, reject) => {
             setNetworkProfilePartnership({loading: true, data: null});
-            getNetworkProfilePartnership(authUser.branch.id)
+            getAllNetworkProfilePartnershipForOneBranch(authUser.branch.id)
                 .then(result => {
                     setNetworkProfilePartnership({loading: false, data: result});
                     resolve();
+                    if (result.length > 0) {
+                        setCanGoToNextStep(true);
+                    } else {
+                        setCanGoToNextStep(false);
+                        NotificationManager.warning(intl.formatMessage({id: 'branch.field.partnershipType.empty'}));
+                    }
                 })
                 .catch(error => {
                     setNetworkProfilePartnership({loading: false, data: null});
@@ -69,6 +104,10 @@ const SecondStep = props => {
         nextStep();
     };
 
+    const _canGoToNextStep = networkProfilePartnership.data && networkProfilePartnership.data
+        ? networkProfilePartnership.data.length > 0 && networkProfilePartnership.data.length > 0
+        : false;
+
     return (
         <Form onSubmit={handleSubmit(onSubmit)} className={!fullScreen ? "center-holder" : ''}>
             <CustomAsyncComponent
@@ -78,8 +117,40 @@ const SecondStep = props => {
                 component={data => (
                     <div className="form-group text-left">
                         <FormControl fullWidth>
-                            <InputLabel className="text-left" htmlFor="partnershipType">
+                            <InputLabel className="text-left" htmlFor="partnership">
                                 <IntlMessages id="branch.field.partnership"/>
+                            </InputLabel>
+                            <InputComponent
+                                isRequired
+                                className="mt-0"
+                                errors={errors}
+                                control={control}
+                                register={register}
+                                componentType="select"
+                                name={'partnership'}
+                                defaultValue={data[0] ? data[0].id : undefined}
+                                as={<Select input={<Input name="partnershipType" id="partnershipType" />}>
+                                    {data.map((item, index) => (
+                                        <MenuItem key={index} value={item.id} className="center-hor-ver">
+                                            {item.organisation.commercialName}
+                                        </MenuItem>
+                                    ))}
+                                </Select>}
+                            />
+                        </FormControl>
+                    </div>
+                )}
+            />
+
+            <CustomAsyncComponent
+                loading={networkProfilePartnershipType.loading}
+                data={networkProfilePartnershipType.data}
+                onRetryClick={_getNetworkProfilePartnershipType}
+                component={data => (
+                    <div className="form-group text-left">
+                        <FormControl fullWidth>
+                            <InputLabel className="text-left" htmlFor="partnershipType">
+                                <IntlMessages id="branch.field.partnershipType"/>
                             </InputLabel>
                             <InputComponent
                                 isRequired
@@ -127,41 +198,11 @@ const SecondStep = props => {
                 />
             </FormControl>
 
-            {/*<CustomAsyncComponent
-                loading={organisationType.loading}
-                data={organisationType.data}
-                onRetryClick={_getOrganisationType}
-                component={data => (
-                    <div className="col-md-6 col-sm-12 form-group text-left">
-                        <FormControl fullWidth>
-                            <InputLabel className="text-left" htmlFor="organisationType-helper"><IntlMessages id="common.organisationType"/></InputLabel>
-                            <InputComponent
-                                isRequired
-                                className="mt-0"
-                                errors={errors}
-                                control={control}
-                                register={register}
-                                componentType="select"
-                                name={'organisationType'}
-                                defaultValue={data[0]}
-                                as={<Select input={<Input name="organisationType" id="organisationType-helper" />}>
-                                    {data.map((item, index) => (
-                                        <MenuItem key={index} value={item} className="center-hor-ver">
-                                            {item}
-                                        </MenuItem>
-                                    ))}
-                                </Select>}
-                            />
-                        </FormControl>
-                    </div>
-                )}
-            />*/}
-
             <FormGroup className="mb-15 mt-15">
                 <Button
                     // type="submit"
                     color="primary"
-                    disabled={loading}
+                    disabled={!_canGoToNextStep ? !_canGoToNextStep : loading}
                     variant="contained"
                     className="text-white font-weight-bold"
                     onClick={handleSubmit(onSubmit)}
@@ -173,8 +214,8 @@ const SecondStep = props => {
     );
 };
 
-SecondStep.propTypes = {
+FirstStep.propTypes = {
 
 };
 
-export default injectIntl(SecondStep);
+export default injectIntl(FirstStep);

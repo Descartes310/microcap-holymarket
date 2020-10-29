@@ -31,6 +31,7 @@ import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard
 import BoundaryComponent from "Routes/custom/branch/show/Configuration/BoundaryComponent";
 import {NotificationManager} from "react-notifications";
 import BranchImage from "Components/BranchImage";
+import {injectIntl} from "react-intl";
 
 const drawerWidth = 280;
 
@@ -93,10 +94,9 @@ class Configuration extends React.Component {
             .then(() => {
                 NotificationManager.success(this.props.intl.formatMessage({id: 'branch.configuration.open.successText'}));
                 window.location.reload();
-                // this.props.history.push(NETWORK.CONFIGURATION.NETWORK_PROFILE.CREATE);
             })
             .catch((error) => {
-                console.log("error => ", JSON.stringify(error));
+                // console.log("error => ", JSON.stringify(error));
                 NotificationManager.error(error.message);
             })
             .finally(() => this.props.setRequestGlobalAction(false));
@@ -107,11 +107,10 @@ class Configuration extends React.Component {
         setNetworkProfileConfigurationState(false, this.props.authUser.branch.id)
             .then(() => {
                 NotificationManager.success(this.props.intl.formatMessage({id: 'branch.configuration.close.successText'}));
-                window.reload();
-                // this.props.history.push(NETWORK.CONFIGURATION.NETWORK_PROFILE.CREATE);
+                window.location.reload();
             })
             .catch((error) => {
-                console.log("error => ", JSON.stringify(error));
+                // console.log("error => ", JSON.stringify(error));
                 NotificationManager.error(error.message);
             })
             .finally(() => this.props.setRequestGlobalAction(false));
@@ -168,8 +167,9 @@ class Configuration extends React.Component {
                     />
                 ) : authUser.isNetworkProfileConfigurationFinished() ? (
                     <BoundaryComponent
+                        byType={"danger"}
+                        onButtonClick={this.onStartNetworkConfClick}
                         btnText={this.props.intl.formatMessage({id: 'button.reset'})}
-                        color={"danger"}
                         text={this.props.intl.formatMessage({id: 'branch.configuration.close.text'}, {name: authUser.branch.name})}
                     />
                 ) : (
@@ -292,4 +292,4 @@ const mapStateToProps = ({ emailApp, authUser, requestGlobalLoader }) => {
 export default connect(mapStateToProps, {
     getEmails,
     setRequestGlobalAction
-})(withStyles(styles, { withTheme: true })(Configuration));
+})(withStyles(styles, { withTheme: true })(injectIntl(Configuration)));

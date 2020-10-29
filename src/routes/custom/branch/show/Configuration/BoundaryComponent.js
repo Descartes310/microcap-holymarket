@@ -1,9 +1,7 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import IntlMessages from "Util/IntlMessages";
 import Button from "@material-ui/core/Button";
 
-const BoundaryComponent = ({onButtonClick, text, btnText, loading, color = 'primary'}) => {
+const BoundaryComponent = ({onButtonClick, text, btnText, loading, byType = 'primary'}) => {
     return (
         <div className="text-center mt-50" style={{ height: 'calc(100vh - 180px)'}}>
             <div className="center-hor-ver h-50 row">
@@ -16,10 +14,10 @@ const BoundaryComponent = ({onButtonClick, text, btnText, loading, color = 'prim
 
                     <Button
                         // type="submit"
-                        color={color}
+                        color="primary"
                         disabled={loading}
                         variant="contained"
-                        className="text-white font-weight-bold px-50 font-size-medium"
+                        className={`text-white font-weight-bold px-50 font-size-medium bg-${byType}`}
                         onClick={onButtonClick}
                     >
                         {btnText}

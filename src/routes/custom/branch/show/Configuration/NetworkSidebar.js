@@ -17,7 +17,6 @@ import { getAppLayout } from 'Helpers/helpers';
 import { filterEmails } from 'Actions';
 
 //Intl Message
-import IntlMessages from 'Util/IntlMessages';
 import NetworkBranchIntlMessages from "Components/NetworkBranchIntlMessages";
 import {NETWORK} from "Url/frontendUrl";
 
@@ -34,12 +33,12 @@ const firstList = [
         'title': 'branch.primary',
         'icon': 'inbox'
     },
-    /*{
+    {
         'id': 2,
         'handle': NETWORK.CONFIGURATION.ASSISTANT_CONFIGURATION.LIST,
         'title': 'branch.assistantConfiguration',
         'icon': 'settings'
-    },*/
+    },
 ];
 
 /*const secondList = [
