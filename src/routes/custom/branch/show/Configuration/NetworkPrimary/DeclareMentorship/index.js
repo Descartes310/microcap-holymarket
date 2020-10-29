@@ -123,6 +123,8 @@ class DeclareMentorship extends Component {
                     aria-labelledby="responsive-dialog-title"
                     disableBackdropClick
                     disableEscapeKeyDown
+                    maxWidth={'lg'}
+                    fullWidth
                 >
                     <DialogTitle id="form-dialog-title">
                         <div className="row justify-content-between align-items-center">

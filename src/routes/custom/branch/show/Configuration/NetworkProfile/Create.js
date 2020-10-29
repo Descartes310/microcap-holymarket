@@ -11,7 +11,7 @@ import InputLabel from "@material-ui/core/InputLabel/InputLabel";
 import CustomAsyncComponent from "Components/CustomAsyncComponent";
 import FormControl from "@material-ui/core/FormControl";
 import MenuItem from "@material-ui/core/MenuItem";
-import {getNetworkProfileType, setRequestGlobalAction, createNetworkProfileType} from "Actions";
+import {getNetworkProfileType, getAllNetworkProfile, setRequestGlobalAction, createNetworkProfileType} from "Actions";
 import {NotificationManager} from "react-notifications";
 import Select from "@material-ui/core/Select/Select";
 import Input from "@material-ui/core/Input/Input";
@@ -21,11 +21,9 @@ import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard
 import QueueAnim from "rc-queue-anim";
 import {connect} from "react-redux";
 import {NETWORK} from "Url/frontendUrl";
-import {emailValidatorObject, minMaxValidatorObject} from "Helpers/validator";
-import ErrorInputComponent from "Components/ErrorInputComponent";
 
 const NetworkProfileCreate = props => {
-    const { loading, intl, onCancelClick, setRequestGlobalAction, history } = props;
+    const { loading, intl, onCancelClick, networkProfiles, getAllNetworkProfile, setRequestGlobalAction, history } = props;
 
     const { register, errors, handleSubmit, setValue, watch, control} = useForm({
         defaultValues: {
@@ -48,6 +46,7 @@ const NetworkProfileCreate = props => {
 
     useEffect(() => {
         _getNetworkProfileType();
+        getAllNetworkProfile();
     }, []);
 
     const _getNetworkProfileType = () => {
@@ -100,6 +99,12 @@ const NetworkProfileCreate = props => {
             // Redirect to the next step
             // nextStep();
             const _data = {...data};
+
+            if (_data.parentProfile !== 'none') {
+                _data.profileParent = Number(_data.parentProfile);
+                delete _data.parentProfile;
+            }
+
             _data.hasMandatoryAssistant = Boolean(_data.hasMandatoryAssistant);
             _data.hasOptionalAssistant = Boolean(_data.hasOptionalAssistant);
 
@@ -147,6 +152,41 @@ const NetworkProfileCreate = props => {
                                         {data.map((item, index) => (
                                             <MenuItem key={index} value={item} className="center-hor-ver">
                                                 {item}
+                                            </MenuItem>
+                                        ))}
+                                    </Select>}
+                                />
+                            </FormControl>
+                        </div>
+                    )}
+                />
+
+                <CustomAsyncComponent
+                    loading={networkProfiles.loading}
+                    data={networkProfiles.data}
+                    onRetryClick={getAllNetworkProfile}
+                    component={data => (
+                        <div className="form-group text-left">
+                            <FormControl fullWidth>
+                                <InputLabel className="text-left" htmlFor="type">
+                                    <IntlMessages id="branch.parentProfile"/>
+                                </InputLabel>
+                                <InputComponent
+                                    isRequired
+                                    className="mt-0"
+                                    errors={errors}
+                                    control={control}
+                                    register={register}
+                                    componentType="select"
+                                    name={'parentProfile'}
+                                    defaultValue={'none'}
+                                    as={<Select input={<Input name="type" id="type" />}>
+                                        <MenuItem value={'none'} className="center-hor-ver">
+                                            <IntlMessages id="general.none"/>
+                                        </MenuItem>
+                                        {data.map((item, index) => (
+                                            <MenuItem key={index} value={item.id} className="center-hor-ver">
+                                                {item.label}
                                             </MenuItem>
                                         ))}
                                     </Select>}
@@ -314,8 +354,8 @@ const NetworkProfileCreate = props => {
     );
 };
 
-const mapStateToProps = ({ requestGlobalLoader, authUser }) => {
-    return {loading: requestGlobalLoader, authUser: authUser.data};
+const mapStateToProps = ({ requestGlobalLoader, authUser, networkProfile }) => {
+    return {loading: requestGlobalLoader, authUser: authUser.data, networkProfiles: networkProfile};
 };
 
-export default connect(mapStateToProps, { setRequestGlobalAction })(injectIntl(NetworkProfileCreate));
+export default connect(mapStateToProps, { getAllNetworkProfile, setRequestGlobalAction })(injectIntl(NetworkProfileCreate));

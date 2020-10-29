@@ -139,7 +139,7 @@ class NetworkPrimaryList extends Component {
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{networkProfile.networkProfile.profileParent ? networkProfile.networkProfile.profileParent : '—'}</h4>
+                                                            <h4 className="m-0 fw-bold text-dark">{networkProfile.networkProfile.profileParent ? networkProfile.networkProfile.profileParent.label : '—'}</h4>
                                                         </div>
                                                     </div>
                                                 </td>

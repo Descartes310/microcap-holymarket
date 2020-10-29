@@ -12,6 +12,7 @@ export default class NetworkProfile {
         this.name = networkProfile.name;
         this.optionalAssistantMax = networkProfile.optionalAssistantMax;
         this.optionalAssistantMin = networkProfile.optionalAssistantMin;
+        this.profileParent = networkProfile.profileParent;
         this.profileType = networkProfile.profileType;
         this.reference = networkProfile.reference;
     }

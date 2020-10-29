@@ -885,6 +885,7 @@ module.exports = {
    "branch.configuration.close.text": "The structure of your network {name} is already sealed",
    "branch.configuration.close.successText": "Your configuration is complete",
    "branch.sealNetwork": "Seal the Network",
+   "branch.parentProfile": "Parent profile network",
 
    "network": "Network",
    "network.createText": "Create a Network",
@@ -918,7 +919,7 @@ module.exports = {
    "network.maxPfmNumber": "PFM Number",
    "network.profile": "Network profile",
    "network.primary": "Primary network",
-   "network.assistantConfiguration": "Assistant configuration",
+   "network.assistantConfiguration": "Network configuration",
    "network.found": "{count} network found",
    "network.createNewNetworkProfile": "Create a new network profile",
    "network.profile.create.successText": "New network profile created successfully",
@@ -932,6 +933,7 @@ module.exports = {
    "network.configuration.close.text": "The structure of your network {name} is already sealed",
    "network.configuration.close.successText": "Your configuration is complete",
    "network.sealNetwork": "Seal the Network",
+   "network.parentProfile": "Parent profile network",
 };
 
 // a.replace(/branch/g, 'network').replace(/Branch/g, 'Network');

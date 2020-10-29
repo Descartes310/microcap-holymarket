@@ -873,6 +873,8 @@ module.exports = {
    "branch.configuration.close.text": "La structure de votre réseau {name} est deja scelé",
    "branch.configuration.close.successText": "La configuration de votre est terminé",
    "branch.sealNetwork": "Sceller le réseau",
+   "branch.parentProfile": "Parent profile",
+   "branch.parentProfile": "Profile réseau parent",
 
    "network": "Network",
    "network.createText": "Créer un réseau",
@@ -906,7 +908,7 @@ module.exports = {
    "network.maxPfmNumber": "PFM Number",
    "network.profile": "Profil réseau",
    "network.primary": "Réseau primaire",
-   "network.assistantConfiguration": "Configuration de l'assistant",
+   "network.assistantConfiguration": "Configuration de réseau",
    "network.found": "{count} réseau(x) trouvé(s)",
    "network.createNewNetworkProfile": "Créer un nouveau profil réseau",
    "network.profile.create.successText": "Nouveau profil réseau créé avec succès",
@@ -920,4 +922,5 @@ module.exports = {
    "network.configuration.close.text": "La structure de votre réseau {name} est deja scelé",
    "network.configuration.close.successText": "La configuration de votre est terminé",
    "network.sealNetwork": "Sceller le réseau",
+   "network.parentProfile": "Profile réseau parent",
 };
