@@ -15,6 +15,8 @@ import ecommerceReducer from './EcommerceReducer';
 import CrmReducer from './CrmReducer';
 import RequestGlobalReducer from './RequestGlobalReducer';
 import NetworkProfileReducer from './NetworkProfileReducer';
+import CatalogReducer from './CatalogReducer';
+import CatalogTypeReducer from './CatalogTypeReducer';
 
 const reducers = combineReducers({
    settings,
@@ -30,6 +32,8 @@ const reducers = combineReducers({
    CrmReducer: CrmReducer,
    requestGlobalLoader: RequestGlobalReducer,
    networkProfile: NetworkProfileReducer,
+   catalogs: CatalogReducer,
+   catalogTypes: CatalogTypeReducer,
 });
 
 export default reducers;

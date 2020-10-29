@@ -1,5 +1,5 @@
 // sidebar nav links
-import { NETWORK } from 'Url/frontendUrl';
+import {CATALOG, NETWORK} from 'Url/frontendUrl';
 import Branch from 'Models/Branch';
 
 export default {
@@ -35,7 +35,30 @@ export default {
             },
          ]
       },
-
+      {
+         "menu_title": "sidebar.products",
+         "menu_icon": "zmdi zmdi-widgets",
+         "new_item": false,
+         "permissions": [Branch.permissionsRelated.READ],
+         'subject': Branch,
+         "child_routes": [
+            {
+               "menu_title": "sidebar.catalogProducts",
+               "new_item": false,
+               "path": CATALOG.PRODUCT.SELF
+            },
+            {
+               "path": NETWORK.COVERAGE,
+               "new_item": false,
+               "menu_title": "sidebar.catalogSales"
+            },
+            {
+               "path": NETWORK.COVERAGE,
+               "new_item": false,
+               "menu_title": "sidebar.catalogDistribution"
+            },
+         ]
+      },
    ],
    category1: [
       {

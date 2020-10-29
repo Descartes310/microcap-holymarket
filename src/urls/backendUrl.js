@@ -56,6 +56,23 @@ export const NETWORK_PROFILE = {
     }
 };
 
+export const CATALOGS = {
+    GET_ALL: 'public/catalogs',
+    CREATE: 'public/catalogs',
+    GET_ONE: 'public/catalogs/{id}',
+    EDIT: 'public/catalogs/{id}',
+    TYPE_PRODUCTS: {
+        ADD: 'public/catalogs/{id}/add-type-products',
+        REMOVE: 'public/catalogs/{id}/remove-type-products',
+        GET: 'public/catalogs/{id}/type-products',
+    },
+    ACTIVATE: 'public/catalogs/active/{id}'
+};
+
+export const CATALOGS_TYPE = {
+    GET_ALL: 'public/type-catalogs/catalogs',
+};
+
 export const joinBaseUrl = to => BASE + to;
 
 export const joinBaseUrlWithParams = (to, params) => {

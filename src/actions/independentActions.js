@@ -1,5 +1,5 @@
 import api from 'Api';
-import {AUTH, SYSTEM_OBJECT, joinBaseUrlWithParams, BRANCH, NETWORK_PROFILE} from "Url/backendUrl";
+import {AUTH, SYSTEM_OBJECT, joinBaseUrlWithParams, BRANCH, NETWORK_PROFILE, CATALOGS} from "Url/backendUrl";
 
 export const getResidenceCountries = () => {
     return new Promise((resolve, reject) => {
@@ -148,4 +148,16 @@ export const getAllNetworkProfilePartnershipForOneBranch = (branchId) => {
 
 export const getAllAssistantForOneBranch = (branchId) => {
     return makeRequest('get', `${NETWORK_PROFILE.PARTNERSHIP.ASSISTANT.LIST}?branch_id=${branchId}`);
+};
+
+export const setActiveCatalog = (catalogId) => {
+    const url = joinBaseUrlWithParams(CATALOGS.ACTIVATE, [{
+        param: 'id',
+        value: catalogId,
+    }]);
+    return makeRequest('get', url);
+};
+
+export const createCatalog = (data) => {
+    return makeRequest('post', CATALOGS.CREATE, data);
 };

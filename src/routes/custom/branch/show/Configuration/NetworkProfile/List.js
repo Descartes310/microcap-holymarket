@@ -52,7 +52,7 @@ class NetworkProfileList extends Component {
         const { networkProfiles, loading, error } = this.props;
 
         let orderedItems = this.handleOrder(this.state.order, networkProfiles);
-        console.log("orderedItems => ", orderedItems);
+        // console.log("orderedItems => ", orderedItems);
         return (
             <div className="mx-4">
                 {loading || orderedItems === null

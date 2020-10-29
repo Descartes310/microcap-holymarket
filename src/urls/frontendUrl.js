@@ -31,3 +31,10 @@ export const NETWORK = {
     CREATE: '/branch/create',
     EDIT: '/branch/edit',
 };
+
+export const CATALOG = {
+    PRODUCT: {
+        SELF: '/catalog/products',
+        CREATE: '/catalog/products/create'
+    }
+};

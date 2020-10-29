@@ -204,9 +204,9 @@ const SecondStep = props => {
                             <IntlMessages id="button.cancel" />
                         </Button>
                         <Button
-                            color="secondary"
+                            color="primary"
                             variant="contained"
-                            className="text-white font-weight-bold"
+                            className="bg-danger text-white font-weight-bold"
                             onClick={() => onDeleteClick(stepToDelete)}
                         >
                             <IntlMessages id="button.delete" />

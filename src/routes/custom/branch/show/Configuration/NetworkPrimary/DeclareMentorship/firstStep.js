@@ -1,9 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Form, FormGroup,  Input as InputStrap} from "reactstrap";
 import InputComponent from "Components/InputComponent";
-import {emailValidatorObject, minMaxValidatorObject, passwordValidatorObject} from "Helpers/validator";
-import ErrorInputComponent from "Components/ErrorInputComponent";
-import AppConfig from "Constants/AppConfig";
 import {useForm} from "react-hook-form";
 import IntlMessages from "Util/IntlMessages";
 import {injectIntl} from 'react-intl';
@@ -18,16 +15,10 @@ import FormControl from "@material-ui/core/FormControl";
 
 import CustomAsyncComponent from "Components/CustomAsyncComponent";
 import {
-    getOperators,
     getOrganisationTypes,
     getRegistrationType,
-    getResidenceCountries
 } from "Actions/independentActions";
 import {NotificationManager} from "react-notifications";
-import CountryManager from "Helpers/CountryManager";
-
-const countryWithNameAndFlag = CountryManager.countryWithNameAndFlag();
-const countryWithNumberAndFlag = CountryManager.countryWithNumberAndFlag();
 
 const FirstStep = props => {
     const { loading, nextStep, fullScreen, setData, intl, defaultState, partnershipSelected } = props;

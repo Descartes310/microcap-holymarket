@@ -33,6 +33,11 @@ export const AsyncBranchNetworkCoverage = Loadable({
 	loading: () => <RctPageLoader />,
 });
 
+export const AsyncCatalogProducts = Loadable({
+	loader: () => import("Routes/custom/products/catalog-products"),
+	loading: () => <RctPageLoader />,
+});
+
 // ecommerce dashboard
 const AsyncEcommerceDashboardComponent = Loadable({
 	loader: () => import("Routes/dashboard/ecommerce"),

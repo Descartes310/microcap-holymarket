@@ -199,3 +199,18 @@ export const requestErrorProcessing = (data) => {
       });
       return result;
 };
+
+export const globalSearch = (data, searched) => {
+    if (!searched) {
+        return data;
+    }
+
+    const _searched = typeof searched === 'string' ? searched.toLowerCase() : searched;
+    return _.filter(data, o => {
+        return Object.values(o)
+            .filter(f => typeof f === 'string' || typeof f === 'number')
+            .join(' ')
+            .toLowerCase()
+            .includes(_searched)
+    });
+};
