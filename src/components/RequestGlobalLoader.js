@@ -21,8 +21,9 @@ class RequestGlobalLoader extends Component {
 
     render() {
         return (
-            <div className='global-loader'>
+            <div className={`global-loader justify-content-center`}>
                 {this.props.requestGlobalLoader && <LinearProgress />}
+                <div className={`${this.props.requestGlobalLoader ? 'global-loader-overlay' : ''}`} />
             </div>
         );
     }

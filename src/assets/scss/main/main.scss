@@ -52,5 +52,22 @@
   top: 0;
   left: 0;
   right: 0;
-  z-index: 9999;
+  z-index: 9998;
+
+  & div:first-child {
+    height: 6px !important;
+  }
+
+  &-overlay {
+    position: fixed;
+    background: rgba(255, 255, 255, 0.8);
+    top: 6px;
+    left: 0;
+    right: 0;
+    bottom: 0px;
+    z-index: 9999;
+    align-items: center;
+    overflow: hidden;
+    margin: 0 auto;
+  }
 }
