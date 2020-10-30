@@ -14,10 +14,10 @@ const AppConfig = {
    isDarkSidenav: true,                                   // Set true to dark sidebar
    enableThemeOptions: true,                              // Enable Theme Options
    locale: {
-      languageId: 'english',
-      locale: 'en',
-      name: 'English',
-      icon: 'en',
+      languageId: 'french',
+      locale: 'fr',
+      name: 'French',
+      icon: 'fr',
    },
    languages: [
       {

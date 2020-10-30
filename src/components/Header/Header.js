@@ -131,7 +131,7 @@ class Header extends Component {
 					</div>
 					<ul className="navbar-right list-inline mb-0">
 						<Notifications />
-						<LanguageProvider />
+						{/*<LanguageProvider />*/}
 						{!horizontalMenu &&
 						<li className="list-inline-item text-white">
 							<FormControlLabel

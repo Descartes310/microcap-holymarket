@@ -69,14 +69,14 @@ export const getLocaleFromBrowser = () => {
 };
 
 export function getDefaultLanguage() {
-    const browserLocale = getLocaleFromBrowser();
+    /*const browserLocale = getLocaleFromBrowser();
     let defaultLanguage = AppConfig.languages.find(l => l.locale === browserLocale);
 
     if (!defaultLanguage) {
         defaultLanguage = AppConfig.languages[0];
-    }
+    }*/
 
-    return defaultLanguage;
+    return AppConfig.locale;
 }
 
 
