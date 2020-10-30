@@ -32,7 +32,7 @@ const getAvailableProducts = (totalProducts, occupiedProducts) => {
     else return null;
 };
 
-class CatalogShow extends Component {
+class CategoryProductsShow extends Component {
     constructor(props) {
         super(props);
 
@@ -215,4 +215,4 @@ const useStyles = theme => ({
 });
 
 export default connect(mapStateToProps, {getCatalogProducts, getBranchProducts, setRequestGlobalAction})
-(withStyles(useStyles, { withTheme: true })(injectIntl(CatalogShow)));
+(withStyles(useStyles, { withTheme: true })(injectIntl(CategoryProductsShow)));

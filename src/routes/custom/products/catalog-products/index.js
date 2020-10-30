@@ -17,6 +17,8 @@ import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
 // intl messages
 import IntlMessages from 'Util/IntlMessages';
 import CatalogList from "Routes/custom/products/catalog-products/catalog";
+import CategoryProducts from "Routes/custom/products/catalog-products/product-category";
+import {CATEGORY, CATALOG} from "Url/frontendUrl";
 
 // For Tab Content
 function TabContainer(props) {
@@ -28,14 +30,23 @@ function TabContainer(props) {
 }
 
 export default class CatalogProducts extends Component {
+    constructor(props) {
+        super(props);
+        const defaultState = CATEGORY.PRODUCT.SELF === this.props.match.url ? 1 : 0;
 
-    state = {
-        activeTab: this.props.location.state ? this.props.location.state.activeTab : 0
+        this.state = {
+            activeTab: defaultState,
+            // activeTab: this.props.location.state ? this.props.location.state.activeTab : 0
+        }
     }
 
     handleChange = (event, value) => {
+        const oldActivateTab = this.state.activeTab;
         this.setState({ activeTab: value });
-    }
+        if (oldActivateTab !== value) {
+            this.props.history.push(value === 0 ? CATALOG.PRODUCT.LIST : CATEGORY.PRODUCT.SELF);
+        }
+    };
 
     render() {
         const { activeTab } = this.state;
@@ -62,13 +73,15 @@ export default class CatalogProducts extends Component {
                                 />
                             </Tabs>
                         </AppBar>
+                        {/*<CatalogList />
+                        <CategoryProducts />*/}
                         {activeTab === 0 &&
                         <TabContainer>
                             <CatalogList />
                         </TabContainer>}
                         {activeTab === 1 &&
                         <TabContainer>
-                            <p>Catalogue de produits</p>
+                            <CategoryProducts />
                         </TabContainer>}
                     </div>
                 </RctCard>

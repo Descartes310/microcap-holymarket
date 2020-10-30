@@ -75,6 +75,14 @@ export const CATALOGS = {
 export const CATALOGS_TYPE = {
     GET_ALL: 'public/type-catalogs/catalogs',
 };
+export const CATEGORY_PRODUCTS = {
+    ROOT: 'public/category-products/root',
+    GET_ALL: 'public/category-products',
+    CREATE: 'public/category-products',
+    GET_ONE: 'public/category-products/{id}',
+    TYPE_PRODUCTS: 'public/type-catalogs/type-products',
+    SUB_CATEGORY: 'public/category-products/{id}/category-products',
+};
 
 export const joinBaseUrl = to => BASE + to;
 

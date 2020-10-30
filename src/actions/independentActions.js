@@ -1,5 +1,13 @@
 import api from 'Api';
-import {AUTH, SYSTEM_OBJECT, joinBaseUrlWithParams, BRANCH, NETWORK_PROFILE, CATALOGS} from "Url/backendUrl";
+import {
+    AUTH,
+    SYSTEM_OBJECT,
+    joinBaseUrlWithParams,
+    BRANCH,
+    NETWORK_PROFILE,
+    CATALOGS,
+    CATEGORY_PRODUCTS
+} from "Url/backendUrl";
 
 export const getResidenceCountries = () => {
     return new Promise((resolve, reject) => {
@@ -187,4 +195,9 @@ export const getOneCatalog = (catalogId) => {
         value: catalogId,
     }]);
     return makeRequest('get', url);
+};
+
+export const createCategoryProducts = (data, branchId) => {
+    const url = `${CATEGORY_PRODUCTS.CREATE}?branch_id=${branchId}`;
+    return makeRequest('post', url, data);
 };

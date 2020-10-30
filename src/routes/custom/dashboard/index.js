@@ -17,7 +17,7 @@ import {
 
 import Branch from "Models/Branch";
 import {useAbility} from "@casl/react";
-import {CATALOG, HOME, NETWORK} from "Url/frontendUrl";
+import {CATALOG, HOME, NETWORK, CATEGORY} from "Url/frontendUrl";
 import {AbilityContext} from "Permissions/Can";
 import {connect} from "react-redux";
 import {setAuthUser} from "Actions/AuthActions";
@@ -66,6 +66,12 @@ const Dashboard = ({ match, authUser }) => {
 
                     <CanRoute
                         path={CATALOG.PRODUCT.SELF}
+                        component={AsyncCatalogProducts}
+                        can={authUser && authUser.isExploitant()}
+                    />
+
+                    <CanRoute
+                        path={CATEGORY.PRODUCT.SELF}
                         component={AsyncCatalogProducts}
                         can={authUser && authUser.isExploitant()}
                     />

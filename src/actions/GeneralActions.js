@@ -5,12 +5,21 @@ import {
     CATALOG_FAILURE,
     CATALOG_TYPE,
     CATALOG_TYPE_SUCCESS,
-    CATALOG_TYPE_FAILURE, BRANCH_PRODUCT, BRANCH_PRODUCT_SUCCESS, BRANCH_PRODUCT_FAILURE, CATALOG_PRODUCTS,
+    CATALOG_TYPE_FAILURE,
+    CATEGORY_PRODUCTS,
+    CATEGORY_PRODUCTS_SUCCESS,
+    CATEGORY_PRODUCTS_FAILURE,
+    BRANCH_PRODUCT, BRANCH_PRODUCT_SUCCESS, BRANCH_PRODUCT_FAILURE, CATALOG_PRODUCTS,
 } from 'Actions/types';
 
 import api from './../api';
 
-import {CATALOGS_TYPE, CATALOGS as CATALOGS_API, joinBaseUrlWithParams, BRANCH} from 'Url/backendUrl';
+import {
+    CATALOGS_TYPE,
+    CATALOGS as CATALOGS_API,
+    CATEGORY_PRODUCTS as CATEGORY_PRODUCTS_API,
+    joinBaseUrlWithParams,
+    BRANCH} from 'Url/backendUrl';
 
 export const getCatalogs = () => (dispatch) => {
     dispatch({ type: CATALOG });
@@ -66,6 +75,7 @@ export const makeActionRequest = (verb, url, typeBase, dispatch, data = null, co
     dispatch({ type: typeBase });
     return api[verb](url, data)
         .then((response) => {
+            console.log("response => ", response);
             dispatch({ type: `${typeBase}_SUCCESS`, payload: response.data });
             return Promise.resolve();
         })
@@ -83,3 +93,9 @@ export const getCatalogProducts = (catalogId) => (dispatch) => {
     }]);
     return makeActionRequest('get', url, CATALOG_PRODUCTS, dispatch);
 };
+
+export const getCategoryProducts = (branchId) => (dispatch) => {
+    const url = `${CATEGORY_PRODUCTS_API.GET_ALL}?branch_id=${branchId}`;
+    return makeActionRequest('get', url, CATEGORY_PRODUCTS, dispatch);
+};
+

@@ -38,11 +38,6 @@ export const AsyncCatalogProducts = Loadable({
 	loading: () => <RctPageLoader />,
 });
 
-export const AsyncCatalogProductsShow = Loadable({
-	loader: () => import("Routes/custom/products/catalog-products/catalog/Show"),
-	loading: () => <RctPageLoader />,
-});
-
 // ecommerce dashboard
 const AsyncEcommerceDashboardComponent = Loadable({
 	loader: () => import("Routes/dashboard/ecommerce"),

@@ -40,7 +40,16 @@ export const CATALOG = {
         LIST: '/catalog/products/list',
         CREATE: '/catalog/products/create',
         SHOW: '/catalog/products/show/:id',
-    }
+    },
+};
+
+export const CATEGORY = {
+    PRODUCT: {
+        SELF: '/category/products',
+        LIST: '/category/products/list',
+        CREATE: '/category/products/create',
+        SHOW: '/category/products/show/:id',
+    },
 };
 
 export const joinUrlWithParams = (to, params) => {
