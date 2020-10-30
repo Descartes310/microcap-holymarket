@@ -1,3 +1,5 @@
+import {BASE} from "Url/backendUrl";
+
 export const HOME = '/';
 export const AUTH = {
     LOGIN: '/login',
@@ -35,6 +37,17 @@ export const NETWORK = {
 export const CATALOG = {
     PRODUCT: {
         SELF: '/catalog/products',
-        CREATE: '/catalog/products/create'
+        LIST: '/catalog/products/list',
+        CREATE: '/catalog/products/create',
+        SHOW: '/catalog/products/show/:id',
     }
+};
+
+export const joinUrlWithParams = (to, params) => {
+    let url = to;
+    params.forEach(param => {
+        url = url.replace(`:${param.param}`, `${encodeURIComponent(param.value)}`);
+    });
+
+    return url;
 };

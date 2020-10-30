@@ -214,3 +214,4 @@ export const globalSearch = (data, searched) => {
             .includes(_searched)
     });
 };
+

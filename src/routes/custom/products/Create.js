@@ -26,7 +26,7 @@ const CatalogCreate = props => {
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
 
-    const { catalog, loading, intl, onClose, show, setRequestGlobalAction, getCatalogsOfOneType } = props;
+    const { authUser, catalog, loading, intl, onClose, show, setRequestGlobalAction, getCatalogsOfOneType } = props;
 
     const { register, errors, handleSubmit} = useForm();
 
@@ -38,7 +38,7 @@ const CatalogCreate = props => {
 
         const _data = {...data};
         _data.typeCatalogName = catalog.value;
-        createCatalog(_data)
+        createCatalog(_data, authUser.user.branch.id)
             .then(() => {
                 NotificationManager.success(intl.formatMessage({id: 'catalog.create.successText'}));
                 getCatalogsOfOneType(catalog.value);
@@ -147,8 +147,8 @@ const CatalogCreate = props => {
     );
 };
 
-const mapStateToProps = ({ requestGlobalLoader}) => {
-    return {loading: requestGlobalLoader};
+const mapStateToProps = ({ requestGlobalLoader, authUser}) => {
+    return {loading: requestGlobalLoader, authUser: authUser.data};
 };
 
 export default connect(mapStateToProps, {getCatalogsOfOneType, setRequestGlobalAction })(injectIntl(CatalogCreate));

@@ -17,6 +17,8 @@ import RequestGlobalReducer from './RequestGlobalReducer';
 import NetworkProfileReducer from './NetworkProfileReducer';
 import CatalogReducer from './CatalogReducer';
 import CatalogTypeReducer from './CatalogTypeReducer';
+import BranchProductsReducer from './BranchProductsReducer';
+import CatalogProductsReducer from './CatalogProductsReducer';
 
 const reducers = combineReducers({
    settings,
@@ -34,6 +36,8 @@ const reducers = combineReducers({
    networkProfile: NetworkProfileReducer,
    catalogs: CatalogReducer,
    catalogTypes: CatalogTypeReducer,
+   branchProducts: BranchProductsReducer,
+   catalogProducts: CatalogProductsReducer,
 });
 
 export default reducers;

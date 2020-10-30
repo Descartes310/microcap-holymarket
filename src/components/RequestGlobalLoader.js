@@ -29,9 +29,20 @@ class RequestGlobalLoader extends Component {
     }
 }
 
-const mapStateToProps = ({ tokens, authUser, requestGlobalLoader }) => ( {
+const mapStateToProps = (
+    {
+        requestGlobalLoader,
+        tokens,
+        authUser,
+        catalogProducts,
+        branchProducts,
+    }
+) => ( {
     requestGlobalLoader,
-    loading: tokens.loading || authUser.loading,
+    loading: tokens.loading
+        || authUser.loading
+        || catalogProducts.loading
+        || branchProducts.loading
 });
 
 export default connect(mapStateToProps, {setRequestGlobalAction})(RequestGlobalLoader);

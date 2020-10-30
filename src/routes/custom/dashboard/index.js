@@ -10,10 +10,9 @@ import {
     AsyncEcommerceDashboardComponent,
     AsyncBranchCreate,
     AsyncBranchList,
-    AsyncBranchShow,
     AsyncBranchNetworkCoverage,
     AsyncBranchNetworkConfiguration,
-    AsyncCatalogProducts
+    AsyncCatalogProducts,
 } from 'Components/AsyncComponent/AsyncComponent';
 
 import Branch from "Models/Branch";
@@ -70,6 +69,7 @@ const Dashboard = ({ match, authUser }) => {
                         component={AsyncCatalogProducts}
                         can={authUser && authUser.isExploitant()}
                     />
+
                     <Redirect to={HOME} />
                 </Switch>
             </div>

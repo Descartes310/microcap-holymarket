@@ -40,7 +40,7 @@ class NetworkProfileList extends Component {
     }
 
     getAllNetworkProfilePartnership = () => {
-        getAllAssistantForOneBranch(this.props.authUser.branch.id)
+        getAllAssistantForOneBranch(this.props.authUser.user.branch.id)
             .then(result => this.setState({assistants: result}))
             .catch(error => {
                 NotificationManager.error(this.props.intl.formatMessage({id: 'error.500'}));

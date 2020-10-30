@@ -158,6 +158,33 @@ export const setActiveCatalog = (catalogId) => {
     return makeRequest('get', url);
 };
 
-export const createCatalog = (data) => {
-    return makeRequest('post', CATALOGS.CREATE, data);
+export const createCatalog = (data, branchId) => {
+    const url = `${CATALOGS.CREATE}?branch_id=${branchId}`;
+    return makeRequest('post', url, data);
+};
+
+export const addProductsToOneCatalog = (data, catalogId, branchId) => {
+    let url = joinBaseUrlWithParams(CATALOGS.TYPE_PRODUCTS.ADD, [{
+        param: 'id',
+        value: catalogId,
+    }]);
+    url = `${url}?type_products=${encodeURIComponent(data)}`;
+    return makeRequest('post', url, null, {shouldSkipDataParsing: true});
+};
+
+export const removeProductsToOneCatalog = (data, catalogId, branchId) => {
+    let url = joinBaseUrlWithParams(CATALOGS.TYPE_PRODUCTS.REMOVE, [{
+        param: 'id',
+        value: catalogId,
+    }]);
+    url = `${url}?type_products=${encodeURIComponent(data)}`;
+    return makeRequest('post', url, null, {shouldSkipDataParsing: true});
+};
+
+export const getOneCatalog = (catalogId) => {
+    let url = joinBaseUrlWithParams(CATALOGS.GET_ONE, [{
+        param: 'id',
+        value: catalogId,
+    }]);
+    return makeRequest('get', url);
 };

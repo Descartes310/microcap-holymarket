@@ -24,14 +24,14 @@ export default class User {
     };
 
     hasNetworkProfileConfigurationStarted = () => {
-        return this.isExploitant() && this.branch.status !== Status.EMPTY;
+        return this.isExploitant() && this.user.branch.status !== Status.EMPTY;
     };
 
     isNetworkProfileConfigurationFinished = () => {
-        return this.isExploitant() && this.branch.status === Status.CONFIRMED;
+        return this.isExploitant() && this.user.branch.status === Status.CONFIRMED;
     };
 
     isNetworkProfileConfigurationPending = () => {
-        return this.isExploitant() && this.branch.status === Status.PENDING;
+        return this.isExploitant() && this.user.branch.status === Status.PENDING;
     };
 }

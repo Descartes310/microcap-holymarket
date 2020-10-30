@@ -53,7 +53,7 @@ const FirstStep = props => {
     const _getNetworkProfilePartnershipType = () => {
         return new Promise((resolve, reject) => {
             setNetworkProfilePartnershipType({loading: true, data: null});
-            getNetworkProfilePartnership(authUser.branch.id)
+            getNetworkProfilePartnership(authUser.user.branch.id)
                 .then(result => {
                     setNetworkProfilePartnershipType({loading: false, data: result});
                     resolve();
@@ -75,7 +75,7 @@ const FirstStep = props => {
     const _getNetworkProfilePartnership = () => {
         return new Promise((resolve, reject) => {
             setNetworkProfilePartnership({loading: true, data: null});
-            getAllNetworkProfilePartnershipForOneBranch(authUser.branch.id)
+            getAllNetworkProfilePartnershipForOneBranch(authUser.user.branch.id)
                 .then(result => {
                     setNetworkProfilePartnership({loading: false, data: result});
                     resolve();

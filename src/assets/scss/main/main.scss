@@ -69,5 +69,14 @@
     align-items: center;
     overflow: hidden;
     margin: 0 auto;
+    transition: all .4s;
   }
+}
+
+.cursor-pointer:hover {
+  cursor: pointer !important;
+}
+
+.text-black {
+  color: $black !important;
 }

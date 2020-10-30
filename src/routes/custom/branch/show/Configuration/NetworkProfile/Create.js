@@ -112,7 +112,7 @@ const NetworkProfileCreate = props => {
             _data.mandatoryAssistantMax = Number(_data.mandatoryAssistantMax) || 0;
             _data.optionalAssistantMin = Number(_data.optionalAssistantMin) || 0;
             _data.optionalAssistantMax = Number(_data.optionalAssistantMax) || 0;
-            _data.branchId = props.authUser.branch.id;
+            _data.branchId = props.authUser.user.branch.id;
 
             createNetworkProfileType(_data)
                 .then(result => {

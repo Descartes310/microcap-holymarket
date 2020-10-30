@@ -20,18 +20,10 @@ import {getAuthToken} from "Helpers/tokens";
 export const setAuthUser = () => (dispatch) => {
     dispatch({ type: SET_AUTH_USER });
 
-    /*const { accessToken } = getAuthToken();
-
-    if (accessToken) {
-        dispatch({ type: SET_AUTH_USER_SUCCESS, payload: {name: 'juns'} });
-        return Promise.resolve();
-    } else {
-        dispatch({ type: SET_AUTH_USER_FAILURE });
-        return Promise.reject();
-    }*/
-
+    // Define branch url
+    const branchUrl = window.location.host;
     return api
-        .get(PROFILE.INFORMATION)
+        .get(`${PROFILE.INFORMATION}?branch_url=${branchUrl}`)
         .then((response) => {
             dispatch({ type: SET_AUTH_USER_SUCCESS, payload: response.data });
             return Promise.resolve();

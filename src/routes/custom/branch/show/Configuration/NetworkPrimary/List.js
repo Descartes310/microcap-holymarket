@@ -43,7 +43,7 @@ class NetworkPrimaryList extends Component {
     }
 
     getAllNetworkProfilePartnership = () => {
-        getAllNetworkProfilePartnershipForOneBranch(this.props.authUser.branch.id)
+        getAllNetworkProfilePartnershipForOneBranch(this.props.authUser.user.branch.id)
             .then(result => this.setState({partners: result}))
             .catch(error => {
                 NotificationManager.error(intl.formatMessage({id: 'error.500'}));

@@ -8,6 +8,6 @@ export default class Catalog {
         this.label = catalog.label;
         this.active = catalog.active;
         this.description = catalog.description;
-        this.catalogType = new CatalogType(catalog.typeCatalog);
+        // this.catalogType = new CatalogType(catalog.typeCatalog);
     }
 }

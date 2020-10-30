@@ -40,6 +40,9 @@ export const BRANCH = {
     CONFIGURATION: {
         START: 'public/branchs/start/configurations/{id}',
         STOP: 'public/branchs/close/configurations/{id}',
+    },
+    PRODUCTS: {
+        GET_ALL: '/public/type-products/get-all',
     }
 };
 export const NETWORK_PROFILE = {

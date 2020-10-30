@@ -50,7 +50,7 @@ const NetworkPrimary = props => {
     const _getNetworkProfilePartnership = () => {
         return new Promise((resolve, reject) => {
             setNetworkProfilePartnership({loading: true, data: null});
-            getNetworkProfilePartnership(authUser.branch.id)
+            getNetworkProfilePartnership(authUser.user.branch.id)
                 .then(result => {
                     setNetworkProfilePartnership({loading: false, data: result});
                     if (result.length > 0) {

@@ -90,7 +90,7 @@ class Configuration extends React.Component {
 
     onStartNetworkConfClick = () => {
         this.props.setRequestGlobalAction(true);
-        setNetworkProfileConfigurationState(true, this.props.authUser.branch.id)
+        setNetworkProfileConfigurationState(true, this.props.authUser.user.branch.id)
             .then(() => {
                 NotificationManager.success(this.props.intl.formatMessage({id: 'branch.configuration.open.successText'}));
                 window.location.reload();
@@ -104,7 +104,7 @@ class Configuration extends React.Component {
 
     onCloseNetworkClick = () => {
         this.props.setRequestGlobalAction(true);
-        setNetworkProfileConfigurationState(false, this.props.authUser.branch.id)
+        setNetworkProfileConfigurationState(false, this.props.authUser.user.branch.id)
             .then(() => {
                 NotificationManager.success(this.props.intl.formatMessage({id: 'branch.configuration.close.successText'}));
                 window.location.reload();
@@ -123,7 +123,7 @@ class Configuration extends React.Component {
                 <div className="user-wrap d-flex justify-content-between">
                     <div className="media align-items-center">
                         <BranchImage
-                            logo={authUser.branch.logo}
+                            logo={authUser.user.branch.logo}
                             width="60"
                             height="60"
                             className="img-fluid rounded-circle mr-3"
@@ -131,7 +131,7 @@ class Configuration extends React.Component {
                         />
                         <div className="media-body">
                             <h5 className="text-white mb-0">
-                                {authUser.branch.name}
+                                {authUser.user.branch.name}
                             </h5>
                             {/*<p className="text-white font-xs mb-0">braxton@example.com</p>*/}
                         </div>
@@ -163,14 +163,14 @@ class Configuration extends React.Component {
                         btnText={this.props.intl.formatMessage({id: 'button.start'})}
                         loading={this.props.loading}
                         onButtonClick={this.onStartNetworkConfClick}
-                        text={this.props.intl.formatMessage({id: 'branch.configuration.open.text'}, {name: authUser.branch.name})}
+                        text={this.props.intl.formatMessage({id: 'branch.configuration.open.text'}, {name: authUser.user.branch.name})}
                     />
                 ) : authUser.isNetworkProfileConfigurationFinished() ? (
                     <BoundaryComponent
                         byType={"danger"}
                         onButtonClick={this.onStartNetworkConfClick}
                         btnText={this.props.intl.formatMessage({id: 'button.reset'})}
-                        text={this.props.intl.formatMessage({id: 'branch.configuration.close.text'}, {name: authUser.branch.name})}
+                        text={this.props.intl.formatMessage({id: 'branch.configuration.close.text'}, {name: authUser.user.branch.name})}
                     />
                 ) : (
                     <div className="rct-mail-wrapper">
