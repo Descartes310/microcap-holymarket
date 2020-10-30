@@ -32,9 +32,13 @@ const CategoryProductsCreate = props => {
 
     const { categoryProducts, authUser, catalog, loading, intl, onClose, show, setRequestGlobalAction, getCategoryProducts } = props;
 
-    const { control, register, errors, handleSubmit, setValue, watch} = useForm();
+    const { control, register, errors, handleSubmit, setValue, watch} = useForm({
+        defaultValues: {
+            isAvailable: false,
+        }
+    });
 
-    const isAvailableWatch = watch('isAvailableWatch');
+    const isAvailableWatch = watch('isAvailable');
 
     /**
      * On submit
@@ -44,8 +48,8 @@ const CategoryProductsCreate = props => {
 
         const _data = {...data};
 
-        if (_data.isAvailable === 'none') {
-            delete _data.isAvailable;
+        if (_data.parentId === 'none') {
+            delete _data.parentId;
         }
 
         createCategoryProducts(_data, authUser.user.branch.id)
@@ -76,7 +80,7 @@ const CategoryProductsCreate = props => {
             >
                 <DialogTitle id="form-dialog-title">
                     <div className="row justify-content-between align-items-center">
-                        <IntlMessages id={`catalog.create.text`} />
+                        Creation d'une catégorie de produit
                         <IconButton
                             color="primary"
                             aria-label="close"

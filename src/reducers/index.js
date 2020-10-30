@@ -20,6 +20,7 @@ import CatalogTypeReducer from './CatalogTypeReducer';
 import BranchProductsReducer from './BranchProductsReducer';
 import CatalogProductsReducer from './CatalogProductsReducer';
 import CategoryProductsReducer from './CategoryProductsReducer';
+import ProductTypeReducer from './ProductTypeReducer';
 
 const reducers = combineReducers({
    settings,
@@ -40,6 +41,7 @@ const reducers = combineReducers({
    branchProducts: BranchProductsReducer,
    catalogProducts: CatalogProductsReducer,
    categoryProducts: CategoryProductsReducer,
+   productTypes: ProductTypeReducer,
 });
 
 export default reducers;

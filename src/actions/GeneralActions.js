@@ -9,7 +9,7 @@ import {
     CATEGORY_PRODUCTS,
     CATEGORY_PRODUCTS_SUCCESS,
     CATEGORY_PRODUCTS_FAILURE,
-    BRANCH_PRODUCT, BRANCH_PRODUCT_SUCCESS, BRANCH_PRODUCT_FAILURE, CATALOG_PRODUCTS,
+    BRANCH_PRODUCT, BRANCH_PRODUCT_SUCCESS, BRANCH_PRODUCT_FAILURE, CATALOG_PRODUCTS, PRODUCT_TYPE,
 } from 'Actions/types';
 
 import api from './../api';
@@ -18,6 +18,7 @@ import {
     CATALOGS_TYPE,
     CATALOGS as CATALOGS_API,
     CATEGORY_PRODUCTS as CATEGORY_PRODUCTS_API,
+    PRODUCT_TYPE as PRODUCT_TYPE_API,
     joinBaseUrlWithParams,
     BRANCH} from 'Url/backendUrl';
 
@@ -99,3 +100,7 @@ export const getCategoryProducts = (branchId) => (dispatch) => {
     return makeActionRequest('get', url, CATEGORY_PRODUCTS, dispatch);
 };
 
+export const getProductTypes = (branchId) => (dispatch) => {
+    const url = `${PRODUCT_TYPE_API.GET_ALL}?branch_id=${branchId}`;
+    return makeActionRequest('get', url, PRODUCT_TYPE, dispatch);
+};

@@ -18,7 +18,8 @@ import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
 import IntlMessages from 'Util/IntlMessages';
 import CatalogList from "Routes/custom/products/catalog-products/catalog";
 import CategoryProducts from "Routes/custom/products/catalog-products/product-category";
-import {CATEGORY, CATALOG} from "Url/frontendUrl";
+import ProductType from "Routes/custom/products/catalog-products/product-type";
+import {CATEGORY, CATALOG, PRODUCT_TYPE} from "Url/frontendUrl";
 
 // For Tab Content
 function TabContainer(props) {
@@ -32,7 +33,8 @@ function TabContainer(props) {
 export default class CatalogProducts extends Component {
     constructor(props) {
         super(props);
-        const defaultState = CATEGORY.PRODUCT.SELF === this.props.match.url ? 1 : 0;
+        const defaultState = CATALOG.PRODUCT.SELF === this.props.match.url ?
+            0 : CATEGORY.PRODUCT.SELF === this.props.match.url ? 1 : 2;
 
         this.state = {
             activeTab: defaultState,
@@ -44,7 +46,9 @@ export default class CatalogProducts extends Component {
         const oldActivateTab = this.state.activeTab;
         this.setState({ activeTab: value });
         if (oldActivateTab !== value) {
-            this.props.history.push(value === 0 ? CATALOG.PRODUCT.LIST : CATEGORY.PRODUCT.SELF);
+            this.props.history.push(value === 0
+                ? CATALOG.PRODUCT.LIST
+                : value === 1 ? CATEGORY.PRODUCT.SELF : PRODUCT_TYPE.SELF);
         }
     };
 
@@ -71,6 +75,10 @@ export default class CatalogProducts extends Component {
                                     icon={<i className="zmdi zmdi-widgets"></i>}
                                     label={<IntlMessages id="sidebar.productCategory" />}
                                 />
+                                <Tab
+                                    icon={<i className="zmdi zmdi-view-web"></i>}
+                                    label={"Type de produit"}
+                                />
                             </Tabs>
                         </AppBar>
                         {/*<CatalogList />
@@ -82,6 +90,10 @@ export default class CatalogProducts extends Component {
                         {activeTab === 1 &&
                         <TabContainer>
                             <CategoryProducts />
+                        </TabContainer>}
+                        {activeTab === 2 &&
+                        <TabContainer>
+                            <ProductType />
                         </TabContainer>}
                     </div>
                 </RctCard>

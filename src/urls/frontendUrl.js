@@ -52,6 +52,13 @@ export const CATEGORY = {
     },
 };
 
+export const PRODUCT_TYPE = {
+    SELF: '/product-type',
+    LIST: '/product-type/list',
+    CREATE: '/product-type/create',
+    SHOW: '/product-type/show/:id',
+};
+
 export const joinUrlWithParams = (to, params) => {
     let url = to;
     params.forEach(param => {

@@ -81,7 +81,7 @@ const CatalogCreate = props => {
                         <Form onSubmit={handleSubmit(onSubmit)}>
                             <FormGroup className="has-wrapper">
                                 <InputLabel className="text-left" htmlFor="typeCatalogName">
-                                    <IntlMessages id="general.typeof" values={{thing: intl.formatMessage({id: 'catalog'})}}/>
+                                    Type de Catalogue
                                 </InputLabel>
                                 <InputStrap
                                     disabled

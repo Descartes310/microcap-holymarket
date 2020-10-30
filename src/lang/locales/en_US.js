@@ -184,6 +184,7 @@ module.exports = {
    "sidebar.productCategory": "Product category",
    "sidebar.products": "Products",
    "sidebar.category": "Category",
+   "sidebar.productType": "Product Type",
    "sidebar.catalogProducts": "Catalogue Products",
    "sidebar.catalogSales": "Catalogue Sales",
    "sidebar.catalogDistribution": "Catalogue Distribution",

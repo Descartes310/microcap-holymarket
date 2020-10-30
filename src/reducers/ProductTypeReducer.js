@@ -2,11 +2,11 @@
  * Auth User Reducers
  */
 import {
-    CATEGORY_PRODUCTS,
-    CATEGORY_PRODUCTS_SUCCESS,
-    CATEGORY_PRODUCTS_FAILURE,
+    PRODUCT_TYPE,
+    PRODUCT_TYPE_SUCCESS,
+    PRODUCT_TYPE_FAILURE,
 } from 'Actions/types';
-import CategoryProducts from "Models/CategoryProducts";
+import ProductType from "Models/ProductType";
 
 /**
  * initial tokens
@@ -20,13 +20,13 @@ const INIT_STATE = {
 export default (state = INIT_STATE, action) => {
     switch (action.type) {
 
-        case CATEGORY_PRODUCTS:
+        case PRODUCT_TYPE:
             return { ...state, loading: true };
 
-        case CATEGORY_PRODUCTS_SUCCESS:
-            return { ...state, loading: false, data: action.payload.map(catalog => new CategoryProducts(catalog)) };
+        case PRODUCT_TYPE_SUCCESS:
+            return { ...state, loading: false, data: action.payload.map(productType => new ProductType(productType)) };
 
-        case CATEGORY_PRODUCTS_FAILURE:
+        case PRODUCT_TYPE_FAILURE:
             return { ...state, loading: false, error: action.payload };
 
         default: return { ...state };

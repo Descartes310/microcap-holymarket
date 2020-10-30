@@ -84,6 +84,15 @@ export const CATEGORY_PRODUCTS = {
     SUB_CATEGORY: 'public/category-products/{id}/category-products',
 };
 
+export const PRODUCT_TYPE = {
+    ROOT: 'public/type-products/root',
+    GET_ALL: 'public/type-products/get-all',
+    CREATE: 'public/type-products',
+    GET_ONE: 'public/type-products/{id}',
+    TYPE_PRODUCTS: 'public/type-catalogs/type-products',
+    SUB_CATEGORY: 'public/type-products/{id}/type-products',
+};
+
 export const joinBaseUrl = to => BASE + to;
 
 export const joinBaseUrlWithParams = (to, params) => {
