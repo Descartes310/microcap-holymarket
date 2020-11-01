@@ -23,20 +23,9 @@ import {setAuthUser} from "Actions/AuthActions";
 import {disableAppLoading} from "Actions/AppLoadingAction";
 import {loginIntoStore} from "Actions/TokensActions";
 import {getPermissionOfPath} from "Helpers/helpers";
-import Permission from "Enums/permissions";
+import Permission from "Enums/Permissions";
 import HomePage from "Routes/custom/HomePage";
-
-const CanRoute = ({ can, component: Component, path, permissions, ...restProps }) => {
-    const ability = useAbility(AbilityContext);
-    const _permissions = permissions || getPermissionOfPath(path);
-    const _can = _permissions.every(p => ability.can(p, Permission));
-    // ability.can(Branch.permissionsRelated.CREATE, Branch);
-
-    return _can
-        ? (<Route {...restProps} component={Component} />)
-        : (<Redirect to={HOME} />);
-};
-
+import CanRoute from "Components/CanRoute";
 
 const Dashboard = ({ match, authUser }) => {
     const ability = useAbility(AbilityContext);
@@ -94,9 +83,8 @@ const Dashboard = ({ match, authUser }) => {
                     <CanRoute
                         path={USERS.USERS.SELF}
                         component={AsyncUsers}
+                        // permissions={[Permission.users.viewList]}
                         permissions={[]}
-                        // permissions={[Permission.branch.createOne.name]}
-                        // permissions={[]}
                     />
 
                     <CanRoute

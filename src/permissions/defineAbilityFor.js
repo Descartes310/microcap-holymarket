@@ -1,6 +1,6 @@
 import { AbilityBuilder } from "@casl/ability";
 import Branch from "Models/Branch";
-import Permission from "Enums/permissions";
+import Permission from "Enums/Permissions";
 
 export default function defineRulesFor(auth) {
     // const { can, rules } = AbilityBuilder.extract();

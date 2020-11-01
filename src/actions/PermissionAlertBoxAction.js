@@ -9,6 +9,8 @@ export const setPermissionAlertBox = (shouldNotDisplay) => (dispatch) => {
 
 export const permissionMiddleware = (havePermission) => (dispatch) => {
     if (!havePermission) {
-        dispatch(setPermissionAlertBox(true));
+        dispatch(setPermissionAlertBox(false));
     }
+
+    return !havePermission;
 };

@@ -105,6 +105,26 @@ export default class Permission extends BaseEnum {
     };
 
     static users = {
+        viewList: {
+            "name": "users/view-list",
+            "type": [UserType.MANAGER, UserType.EXPLOITANT]
+        },
+        viewOne: {
+            "name": "users/create-one",
+            "type": [UserType.MANAGER, UserType.EXPLOITANT]
+        },
+        search: {
+            "name": "users/search",
+            "type": [UserType.MANAGER, UserType.EXPLOITANT]
+        },
+        createOne: {
+            "name": "users/create-one",
+            "type": [UserType.MANAGER, UserType.EXPLOITANT]
+        },
+        createMany: {
+            "name": "users/create-one",
+            "type": [UserType.MANAGER, UserType.EXPLOITANT]
+        },
     };
 
     static userProfile = {

@@ -32,7 +32,7 @@ class PermissionAlertBox extends Component {
                     show={!this.state.permissionAlertBox}
                     showCancel
                     showConfirm
-                    title="Restriction d'accèss"
+                    title="Restriction d'accès"
                     customButtons={(
                         <>
                             <Button
@@ -47,7 +47,7 @@ class PermissionAlertBox extends Component {
                     )}
                     onConfirm={this.handleOnClose}
                 >
-                    Vous n'avez pas la permission pour effectuer cette action
+                    Vous ne disposez pas de permissions necessaire pour effectuer cette action
                 </SweetAlert>
             </>
         );

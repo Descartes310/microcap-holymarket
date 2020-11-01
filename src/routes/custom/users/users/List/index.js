@@ -25,8 +25,13 @@ import {USERS} from "Url/frontendUrl";
 import {withStyles} from "@material-ui/core";
 import {globalSearch} from "Helpers/helpers";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
+import {permissionMiddleware} from "Actions/PermissionAlertBoxAction";
+import {AbilityContext} from "Permissions/Can";
+import Permission from "Enums/Permissions";
 
 class UserList extends Component {
+    static contextType = AbilityContext;
+
     constructor(props) {
         super(props);
         this.state = {
@@ -37,6 +42,18 @@ class UserList extends Component {
     componentDidMount() {
         this.props.getUsers(this.props.authUser.branchId, this.props.authUser.userType);
     }
+
+    onSearchChanged = (event) => {
+        if (this.props.permissionMiddleware(this.context.can(Permission.users.search, Permission))) return;
+
+        this.setState({searched: event.target.value});
+    };
+
+    onAddClick = () => {
+        if (this.props.permissionMiddleware(this.context.can(Permission.users.createOne, Permission))) return;
+
+        history.push(USERS.USERS.CREATE);
+    };
 
     handleSearch = (value, data) => {
         if (value !== '') {
@@ -63,12 +80,13 @@ class UserList extends Component {
                                 <Button
                                     color="primary"
                                     className="text-white mr-2"
-                                    onClick={() => history.push(USERS.USERS.CREATE)}
+                                    onClick={this.onAddClick}
                                 >
                                     <IntlMessages id="button.add" />
                                     <i className="zmdi zmdi zmdi-plus ml-2" />
                                 </Button>
                                 <div className={classes.flex}>
+                                    {}
                                     <FormControl>
                                         <InputGroup>
                                             <InputGroupAddon addonType="prepend">
@@ -81,7 +99,7 @@ class UserList extends Component {
                                                 name="search"
                                                 value={this.state.searched}
                                                 placeholder={'Recherchez...'}
-                                                onChange={event => this.setState({searched: event.target.value})}
+                                                onChange={event => this.onSearchChanged(event)}
                                             />
                                         </InputGroup>
                                     </FormControl>
@@ -118,11 +136,6 @@ class UserList extends Component {
     }
 }
 
-// map state to props
-const mapStateToProps = ({ requestGlobalLoader, emailApp, users, authUser }) => {
-    return {loading: requestGlobalLoader && users.loading, users: users.data, error: users.error, emailApp, authUser: authUser.data};
-};
-
 const useStyles = theme => ({
     root: {
         width: '100%',
@@ -142,9 +155,15 @@ const useStyles = theme => ({
     }
 });
 
+// map state to props
+const mapStateToProps = ({ requestGlobalLoader, users, authUser }) => {
+    return {loading: requestGlobalLoader && users.loading, users: users.data, error: users.error, authUser: authUser.data};
+};
+
 export default withRouter(connect(mapStateToProps, {
     getUsers,
     readEmail,
     onSelectEmail,
-    markAsStarEmail
+    markAsStarEmail,
+    permissionMiddleware
 })(withStyles(useStyles, { withTheme: true })(UserList)));

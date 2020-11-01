@@ -1,7 +1,7 @@
 // sidebar nav links
 import {CATALOG, NETWORK, USERS} from 'Url/frontendUrl';
 import Branch from 'Models/Branch';
-import Permission from "Enums/permissions";
+import Permission from "Enums/Permissions";
 
 export default {
    menus: [
