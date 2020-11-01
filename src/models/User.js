@@ -1,8 +1,9 @@
 import ProfileType from 'Models/ProfileType';
 import Status from "Enums/Status";
+import UserType from "Enums/UserType";
 
 export default class User {
-    userType;
+    // userType;
     commercialName;
     lastName;
     firstName;
@@ -13,6 +14,13 @@ export default class User {
 
     get userName() {
         return this.user.userType === null ? this.commercialName : `${this.lastName} ${this.firstName}`;
+    }
+
+    get userType() {
+        if (this.isExploitant()) return UserType.EXPLOITANT;
+        if (this.isManager()) return UserType.MANAGER;
+
+        return UserType.USER;
     }
 
     isExploitant = () => {

@@ -9,7 +9,13 @@ import {
     CATEGORY_PRODUCTS,
     CATEGORY_PRODUCTS_SUCCESS,
     CATEGORY_PRODUCTS_FAILURE,
-    BRANCH_PRODUCT, BRANCH_PRODUCT_SUCCESS, BRANCH_PRODUCT_FAILURE, CATALOG_PRODUCTS, PRODUCT_TYPE,
+    BRANCH_PRODUCT,
+    BRANCH_PRODUCT_SUCCESS,
+    BRANCH_PRODUCT_FAILURE,
+    CATALOG_PRODUCTS,
+    PRODUCT_TYPE,
+    USER_PROFILE,
+    USER_PERMISSIONS,
 } from 'Actions/types';
 
 import api from './../api';
@@ -19,6 +25,7 @@ import {
     CATALOGS as CATALOGS_API,
     CATEGORY_PRODUCTS as CATEGORY_PRODUCTS_API,
     PRODUCT_TYPE as PRODUCT_TYPE_API,
+    USER_PROFILE as USER_PROFILE_API,
     joinBaseUrlWithParams,
     BRANCH} from 'Url/backendUrl';
 
@@ -103,4 +110,14 @@ export const getCategoryProducts = (branchId) => (dispatch) => {
 export const getProductTypes = (branchId) => (dispatch) => {
     const url = `${PRODUCT_TYPE_API.GET_ALL}?branch_id=${branchId}`;
     return makeActionRequest('get', url, PRODUCT_TYPE, dispatch);
+};
+
+export const getUserProfiles = (branchId, type) => (dispatch) => {
+    const url = `${USER_PROFILE_API.GET_ALL}?branch_id=${branchId}&type=${type}`;
+    return makeActionRequest('get', url, USER_PROFILE, dispatch);
+};
+
+export const getUserPermissions = (branchId, type) => (dispatch) => {
+    const url = `${USER_PROFILE_API.PERMISSIONS.GET_ALL}?branch_id=${branchId}&type=${type}`;
+    return makeActionRequest('get', url, USER_PERMISSIONS, dispatch);
 };

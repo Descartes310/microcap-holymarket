@@ -7,7 +7,8 @@ import {
     NETWORK_PROFILE,
     CATALOGS,
     CATEGORY_PRODUCTS,
-    PRODUCT_TYPE
+    PRODUCT_TYPE,
+    USER_PROFILE
 } from "Url/backendUrl";
 
 export const getResidenceCountries = () => {
@@ -205,5 +206,10 @@ export const createCategoryProducts = (data, branchId) => {
 
 export const createProductType = (data, branchId) => {
     const url = `${PRODUCT_TYPE.CREATE}?branch_id=${branchId}`;
+    return makeRequest('post', url, data);
+};
+
+export const createUserProfile = (data, branchId) => {
+    const url = `${USER_PROFILE.CREATE}?branch_id=${branchId}`;
     return makeRequest('post', url, data);
 };

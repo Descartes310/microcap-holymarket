@@ -38,6 +38,11 @@ export const AsyncCatalogProducts = Loadable({
 	loading: () => <RctPageLoader />,
 });
 
+export const AsyncUserProfile = Loadable({
+	loader: () => import("Routes/custom/users/user-profile"),
+	loading: () => <RctPageLoader />,
+});
+
 // ecommerce dashboard
 const AsyncEcommerceDashboardComponent = Loadable({
 	loader: () => import("Routes/dashboard/ecommerce"),

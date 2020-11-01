@@ -226,20 +226,26 @@ export const getPermissionOfPath = (path) => {
 
     let permissions = [];
     for (let item of currentMenus) {
-        if (item.child_routes) {
+        if (item.path === path) {
+            permissions = p.permissions;
+            break;
+        } else if (item.child_routes) {
             for (let subItem of item.child_routes) {
                 if (subItem.path === path) {
                     permissions = subItem.permissions;
                     break;
                 }
             }
-        } else {
-            if (item.path === path) {
-                permissions = p.permissions;
-                break;
-            }
         }
     }
 
     return permissions;
+};
+
+export const getAvailableItems = (totalItems, occupiedItems) => {
+    if (totalItems && occupiedItems) {
+        const occupiedItemsId = occupiedItems.map(p => p.id);
+        return totalItems.filter(p => !occupiedItemsId.includes(p.id));
+    }
+    else return [];
 };

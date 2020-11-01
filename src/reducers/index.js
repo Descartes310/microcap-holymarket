@@ -22,6 +22,8 @@ import BranchProductsReducer from './BranchProductsReducer';
 import CatalogProductsReducer from './CatalogProductsReducer';
 import CategoryProductsReducer from './CategoryProductsReducer';
 import ProductTypeReducer from './ProductTypeReducer';
+import UserProfileReducer from './UserProfileReducer';
+import UserPermissionsReducer from './UserPermissionsReducer';
 
 const reducers = combineReducers({
    settings,
@@ -44,6 +46,8 @@ const reducers = combineReducers({
    catalogProducts: CatalogProductsReducer,
    categoryProducts: CategoryProductsReducer,
    productTypes: ProductTypeReducer,
+   userProfile: UserProfileReducer,
+   userPermissions: UserPermissionsReducer,
 });
 
 export default reducers;

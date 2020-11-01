@@ -93,6 +93,14 @@ export const PRODUCT_TYPE = {
     SUB_CATEGORY: 'public/type-products/{id}/type-products',
 };
 
+export const USER_PROFILE = {
+    GET_ALL: 'public/profiles',
+    CREATE: 'public/profiles',
+    PERMISSIONS: {
+        GET_ALL: 'public/profiles/permissions',
+    },
+};
+
 export const joinBaseUrl = to => BASE + to;
 
 export const joinBaseUrlWithParams = (to, params) => {

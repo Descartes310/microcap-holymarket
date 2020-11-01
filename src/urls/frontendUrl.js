@@ -59,6 +59,17 @@ export const PRODUCT_TYPE = {
     SHOW: '/product-type/show/:id',
 };
 
+export const USERS = {
+    USERS: {
+        SELF: '/users'
+    },
+    USERS_PROFILE: {
+        SELF: '/users-profile',
+        LIST: '/users-profile/list',
+        CREATE: '/users-profile/create',
+    },
+};
+
 export const joinUrlWithParams = (to, params) => {
     let url = to;
     params.forEach(param => {

@@ -80,3 +80,7 @@
 .text-black {
   color: $black !important;
 }
+
+.page-list {
+  min-height: calc(100vh - 180px);
+}
