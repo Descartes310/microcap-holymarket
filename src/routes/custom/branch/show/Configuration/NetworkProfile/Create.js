@@ -11,7 +11,7 @@ import InputLabel from "@material-ui/core/InputLabel/InputLabel";
 import CustomAsyncComponent from "Components/CustomAsyncComponent";
 import FormControl from "@material-ui/core/FormControl";
 import MenuItem from "@material-ui/core/MenuItem";
-import {getNetworkProfileType, getAllNetworkProfile, setRequestGlobalAction, createNetworkProfileType} from "Actions";
+import {getNetworkProfile, getAllNetworkProfile, setRequestGlobalAction, createNetworkProfile} from "Actions";
 import {NotificationManager} from "react-notifications";
 import Select from "@material-ui/core/Select/Select";
 import Input from "@material-ui/core/Input/Input";
@@ -21,9 +21,10 @@ import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard
 import QueueAnim from "rc-queue-anim";
 import {connect} from "react-redux";
 import {NETWORK} from "Url/frontendUrl";
+import {getNetworkProfileTypes} from "Actions/GeneralActions";
 
 const NetworkProfileCreate = props => {
-    const { loading, intl, onCancelClick, networkProfiles, getAllNetworkProfile, setRequestGlobalAction, history } = props;
+    const { authUser, getNetworkProfileTypes, networkProfileTypes, loading, intl, onCancelClick, networkProfiles, getAllNetworkProfile, setRequestGlobalAction, history } = props;
 
     const { register, errors, handleSubmit, setValue, watch, control} = useForm({
         defaultValues: {
@@ -50,9 +51,12 @@ const NetworkProfileCreate = props => {
     }, []);
 
     const _getNetworkProfileType = () => {
-        return new Promise((resolve, reject) => {
+        if (!networkProfileTypes.data) {
+            getNetworkProfileTypes(authUser.user.branch.id);
+        }
+        /*return new Promise((resolve, reject) => {
             setNetworkProfileType({loading: true, data: null});
-            getNetworkProfileType()
+            getNetworkProfileTypes(authUser.user.branch.id)
                 .then(result => {
                     setNetworkProfileType({loading: false, data: result});
                     resolve();
@@ -62,7 +66,7 @@ const NetworkProfileCreate = props => {
                     NotificationManager.error("An error occur " + error);
                     reject();
                 });
-        });
+        });*/
     };
 
     const validate = (data) => {
@@ -114,7 +118,7 @@ const NetworkProfileCreate = props => {
             _data.optionalAssistantMax = Number(_data.optionalAssistantMax) || 0;
             _data.branchId = props.authUser.user.branch.id;
 
-            createNetworkProfileType(_data)
+            createNetworkProfile(_data)
                 .then(result => {
                     NotificationManager.success(intl.formatMessage({id: 'branch.profile.create.successText'}));
                     history.push(NETWORK.CONFIGURATION.NETWORK_PROFILE.LIST);
@@ -132,13 +136,13 @@ const NetworkProfileCreate = props => {
         <RctCollapsibleCard>
             <Form onSubmit={handleSubmit(onSubmit)}>
                 <CustomAsyncComponent
-                    loading={networkProfileType.loading}
-                    data={networkProfileType.data}
+                    loading={networkProfileTypes.loading}
+                    data={networkProfileTypes.data}
                     onRetryClick={_getNetworkProfileType}
                     component={data => (
                         <div className="form-group text-left">
                             <FormControl fullWidth>
-                                <InputLabel className="text-left" htmlFor="type"><IntlMessages id="branch.field.type"/></InputLabel>
+                                Type de profile
                                 <InputComponent
                                     isRequired
                                     className="mt-0"
@@ -146,12 +150,12 @@ const NetworkProfileCreate = props => {
                                     control={control}
                                     register={register}
                                     componentType="select"
-                                    name={'type'}
-                                    defaultValue={data[0]}
+                                    name={'typeId'}
+                                    defaultValue={data[0] ? data[0].id : undefined}
                                     as={<Select input={<Input name="type" id="type" />}>
                                         {data.map((item, index) => (
-                                            <MenuItem key={index} value={item} className="center-hor-ver">
-                                                {item}
+                                            <MenuItem key={index} value={item.id} className="center-hor-ver">
+                                                {item.label}
                                             </MenuItem>
                                         ))}
                                     </Select>}
@@ -354,8 +358,8 @@ const NetworkProfileCreate = props => {
     );
 };
 
-const mapStateToProps = ({ requestGlobalLoader, authUser, networkProfile }) => {
-    return {loading: requestGlobalLoader, authUser: authUser.data, networkProfiles: networkProfile};
+const mapStateToProps = ({ requestGlobalLoader, authUser, networkProfile, networkProfileType }) => {
+    return {loading: requestGlobalLoader, authUser: authUser.data, networkProfiles: networkProfile, networkProfileTypes: networkProfileType};
 };
 
-export default connect(mapStateToProps, { getAllNetworkProfile, setRequestGlobalAction })(injectIntl(NetworkProfileCreate));
+export default connect(mapStateToProps, { getNetworkProfileTypes, getAllNetworkProfile, setRequestGlobalAction })(injectIntl(NetworkProfileCreate));

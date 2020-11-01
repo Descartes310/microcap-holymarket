@@ -16,27 +16,31 @@ import { getAppLayout } from 'Helpers/helpers';
 // actions
 import { filterEmails } from 'Actions';
 
-//Intl Message
-import NetworkBranchIntlMessages from "Components/NetworkBranchIntlMessages";
 import {NETWORK} from "Url/frontendUrl";
 
 const firstList = [
     {
         'id': 0,
         'handle': NETWORK.CONFIGURATION.NETWORK_PROFILE.LIST,
-        'title': 'branch.profile',
+        'title': "Profile réseau",
         'icon': 'account'
+    },
+    {
+        'id': 3,
+        'handle': NETWORK.CONFIGURATION.NETWORK_PROFILE_TYPE.LIST,
+        'title': "Type de profile réseau",
+        'icon': 'settings'
     },
     {
         'id': 1,
         'handle': NETWORK.CONFIGURATION.NETWORK_PRIMARY.SELF,
-        'title': 'branch.primary',
+        'title': "Réseau primaire",
         'icon': 'inbox'
     },
     {
         'id': 2,
         'handle': NETWORK.CONFIGURATION.ASSISTANT_CONFIGURATION.LIST,
-        'title': 'branch.assistantConfiguration',
+        'title': "Configuration des assistants",
         'icon': 'settings'
     },
 ];
@@ -105,7 +109,7 @@ class NetworkSidebar extends Component {
                                 className={classnames({ 'item-active': selectedFolder === folder.id })}>
                                 <i className={`mr-20 zmdi zmdi-${folder.icon}`} />
                                 <span className="filter-title">
-									<NetworkBranchIntlMessages id={folder.title} />
+                                    {folder.title}
 								</span>
                             </ListItem>
                         ))}

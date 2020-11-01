@@ -24,6 +24,7 @@ import CategoryProductsReducer from './CategoryProductsReducer';
 import ProductTypeReducer from './ProductTypeReducer';
 import UserProfileReducer from './UserProfileReducer';
 import UserPermissionsReducer from './UserPermissionsReducer';
+import NetworkProfileTypeReducer from './NetworkProfileTypeReducer';
 
 const reducers = combineReducers({
    settings,
@@ -48,6 +49,7 @@ const reducers = combineReducers({
    productTypes: ProductTypeReducer,
    userProfile: UserProfileReducer,
    userPermissions: UserPermissionsReducer,
+   networkProfileType: NetworkProfileTypeReducer,
 });
 
 export default reducers;

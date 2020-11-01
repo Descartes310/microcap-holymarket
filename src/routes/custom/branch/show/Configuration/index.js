@@ -21,6 +21,7 @@ import {getEmails, setNetworkProfileConfigurationState, setRequestGlobalAction} 
 // components
 import NetworkPrimary from './NetworkPrimary';
 import NetworkProfile from './NetworkProfile';
+import NetworkProfileType from './NetworkProfileType';
 import AssistantConfiguration from './AssistantConfiguration';
 import NetworkSidebar from './NetworkSidebar';
 import NetworkBranchIntlMessages from "Components/NetworkBranchIntlMessages";
@@ -150,7 +151,7 @@ class Configuration extends React.Component {
                     </Button>
                 </div>
                 <div className="p-20">
-                    <NetworkBranchIntlMessages id={"branch"} />
+                    Réseau
                 </div>
                 <NetworkSidebar />
             </div>
@@ -193,6 +194,24 @@ class Configuration extends React.Component {
                                                     color="primary"
                                                     className="mb-10 text-white"
                                                     onClick={() => this.props.history.push(NETWORK.CONFIGURATION.NETWORK_PROFILE.CREATE)}
+                                                >
+                                                    <IntlMessages id="button.add" />
+                                                    <i className="zmdi zmdi zmdi-plus ml-2" />
+                                                </Button>
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {window.location.pathname === NETWORK.CONFIGURATION.NETWORK_PROFILE_TYPE.LIST && (
+                                        <div className="d-flex align-items-center w-100">
+                                            <div className="align-items-center justify-content-between px-2 row w-100">
+                                                <h3 className="mb-0">
+                                                    Type de profile réseau
+                                                </h3>
+                                                <Button
+                                                    color="primary"
+                                                    className="mb-10 text-white"
+                                                    onClick={() => this.props.history.push(NETWORK.CONFIGURATION.NETWORK_PROFILE_TYPE.CREATE)}
                                                 >
                                                     <IntlMessages id="button.add" />
                                                     <i className="zmdi zmdi zmdi-plus ml-2" />
@@ -268,6 +287,7 @@ class Configuration extends React.Component {
                                     <Switch>
                                         <Redirect exact from={`${match.url}/`} to={NETWORK.CONFIGURATION.NETWORK_PROFILE.SELF} />
                                         <Route path={NETWORK.CONFIGURATION.NETWORK_PROFILE.SELF} component={NetworkProfile} />
+                                        <Route path={NETWORK.CONFIGURATION.NETWORK_PROFILE_TYPE.SELF} component={NetworkProfileType} />
                                         <Route path={NETWORK.CONFIGURATION.NETWORK_PRIMARY.SELF} component={NetworkPrimary} />
                                         <Route path={NETWORK.CONFIGURATION.ASSISTANT_CONFIGURATION.SELF} component={AssistantConfiguration} />
                                         {/*<Route path={`${match.url}/compose`} component={ComposeEmail} />*/}

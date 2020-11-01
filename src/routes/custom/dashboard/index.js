@@ -7,7 +7,6 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 
 // async components
 import {
-    AsyncEcommerceDashboardComponent,
     AsyncBranchCreate,
     AsyncBranchList,
     AsyncBranchNetworkCoverage,
@@ -25,6 +24,7 @@ import {disableAppLoading} from "Actions/AppLoadingAction";
 import {loginIntoStore} from "Actions/TokensActions";
 import {getPermissionOfPath} from "Helpers/helpers";
 import Permission from "Enums/permissions";
+import HomePage from "Routes/custom/HomePage";
 
 const CanRoute = ({ can, component: Component, path, permissions, ...restProps }) => {
     const ability = useAbility(AbilityContext);
@@ -45,7 +45,7 @@ const Dashboard = ({ match, authUser }) => {
         <RctAppLayout>
             <div className="dashboard-wrapper">
                 <Switch>
-                    <Route exact path={HOME} component={AsyncEcommerceDashboardComponent} />
+                    <Route exact path={HOME} component={HomePage} />
 
                     <CanRoute
                         exact
@@ -64,31 +64,31 @@ const Dashboard = ({ match, authUser }) => {
                     <CanRoute
                         path={NETWORK.CONFIGURATION.SELF}
                         component={AsyncBranchNetworkConfiguration}
-                        can={authUser && authUser.isExploitant()}
+                        permissions={[]}
                     />
 
                     <CanRoute
                         path={NETWORK.COVERAGE}
                         component={AsyncBranchNetworkCoverage}
-                        can={authUser && authUser.isExploitant()}
+                        permissions={[]}
                     />
 
                     <CanRoute
                         path={CATALOG.PRODUCT.SELF}
                         component={AsyncCatalogProducts}
-                        can={authUser && authUser.isExploitant()}
+                        permissions={[]}
                     />
 
                     <CanRoute
                         path={CATEGORY.PRODUCT.SELF}
                         component={AsyncCatalogProducts}
-                        can={authUser && authUser.isExploitant()}
+                        permissions={[]}
                     />
 
                     <CanRoute
                         path={PRODUCT_TYPE.SELF}
                         component={AsyncCatalogProducts}
-                        can={authUser && authUser.isExploitant()}
+                        permissions={[]}
                     />
 
                     <CanRoute
@@ -96,7 +96,7 @@ const Dashboard = ({ match, authUser }) => {
                         component={AsyncUserProfile}
                         permissions={[]}
                         // permissions={[Permission.branch.createOne.name]}
-                        // can={authUser && authUser.isExploitant()}
+                        // permissions={[]}
                     />
 
                     <Redirect to={HOME} />

@@ -16,6 +16,7 @@ import {
     PRODUCT_TYPE,
     USER_PROFILE,
     USER_PERMISSIONS,
+    NETWORK_PROFILE_TYPE
 } from 'Actions/types';
 
 import api from './../api';
@@ -26,6 +27,7 @@ import {
     CATEGORY_PRODUCTS as CATEGORY_PRODUCTS_API,
     PRODUCT_TYPE as PRODUCT_TYPE_API,
     USER_PROFILE as USER_PROFILE_API,
+    NETWORK_PROFILE_TYPE as NETWORK_PROFILE_TYPE_API,
     joinBaseUrlWithParams,
     BRANCH} from 'Url/backendUrl';
 
@@ -120,4 +122,9 @@ export const getUserProfiles = (branchId, type) => (dispatch) => {
 export const getUserPermissions = (branchId, type) => (dispatch) => {
     const url = `${USER_PROFILE_API.PERMISSIONS.GET_ALL}?branch_id=${branchId}&type=${type}`;
     return makeActionRequest('get', url, USER_PERMISSIONS, dispatch);
+};
+
+export const getNetworkProfileTypes = (branchId) => (dispatch) => {
+    const url = `${NETWORK_PROFILE_TYPE_API.GET_ALL}?branch_id=${branchId}`;
+    return makeActionRequest('get', url, NETWORK_PROFILE_TYPE, dispatch);
 };

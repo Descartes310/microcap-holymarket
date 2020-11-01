@@ -18,6 +18,11 @@ export const NETWORK = {
             LIST: '/network/configuration/network-profile/list',
             CREATE: '/network/configuration/network-profile/create',
         },
+        NETWORK_PROFILE_TYPE: {
+            SELF: '/network/configuration/network-profile-type',
+            LIST: '/network/configuration/network-profile-type/list',
+            CREATE: '/network/configuration/network-profile-type/create',
+        },
         NETWORK_PRIMARY: {
             SELF: '/network/configuration/network-primary',
             ADD_PARTNERSHIP: '/network/configuration/network-primary/partner/add',

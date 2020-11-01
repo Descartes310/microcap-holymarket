@@ -8,7 +8,7 @@ import {
     CATALOGS,
     CATEGORY_PRODUCTS,
     PRODUCT_TYPE,
-    USER_PROFILE
+    USER_PROFILE, NETWORK_PROFILE_TYPE
 } from "Url/backendUrl";
 
 export const getResidenceCountries = () => {
@@ -109,7 +109,7 @@ export const createAssistantConfiguration = (data, config) => {
     });
 };
 
-export const getNetworkProfileType = () => {
+export const getNetworkProfile = () => {
     return new Promise((resolve, reject) => {
         api.get(SYSTEM_OBJECT.NETWORK_PROFILE_TYPE)
             .then(result => resolve(result.data))
@@ -117,7 +117,7 @@ export const getNetworkProfileType = () => {
     });
 };
 
-export const createNetworkProfileType = (data) => {
+export const createNetworkProfile = (data) => {
     return new Promise((resolve, reject) => {
         api.post(NETWORK_PROFILE.CREATE, data)
             .then(result => resolve(result.data))
@@ -211,5 +211,10 @@ export const createProductType = (data, branchId) => {
 
 export const createUserProfile = (data, branchId) => {
     const url = `${USER_PROFILE.CREATE}?branch_id=${branchId}`;
+    return makeRequest('post', url, data);
+};
+
+export const createNetworkProfileType = (data, branchId) => {
+    const url = `${NETWORK_PROFILE_TYPE.CREATE}?branch_id=${branchId}`;
     return makeRequest('post', url, data);
 };

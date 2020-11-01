@@ -59,6 +59,11 @@ export const NETWORK_PROFILE = {
     }
 };
 
+export const NETWORK_PROFILE_TYPE = {
+    CREATE: 'public/type-network-profiles',
+    GET_ALL: 'public/type-network-profiles',
+};
+
 export const CATALOGS = {
     GET_ALL: 'public/catalogs',
     CREATE: 'public/catalogs',
