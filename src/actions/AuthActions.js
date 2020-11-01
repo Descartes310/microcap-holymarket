@@ -30,7 +30,7 @@ export const setAuthUser = () => (dispatch) => {
         })
         .catch((error) => {
             dispatch({ type: SET_AUTH_USER_FAILURE });
-            NotificationManager.error(error.message);
+            // NotificationManager.error(error.message);
             return Promise.reject();
         });
 };

@@ -39,7 +39,7 @@ const Signin = (props) => {
      * On User Login
      */
     const onSubmit = (data) => {
-        props.loginUserWithEmailAndPassword(data);
+        props.loginUserWithEmailAndPassword(data).catch();
     };
 
     /**
@@ -71,7 +71,6 @@ const Signin = (props) => {
                                     <Button variant="contained" className="btn-light mr-2" onClick={onUserSignUp}>
                                         <IntlMessages id="auth.signup" />
                                     </Button>
-                                    <LanguageProvider />
                                 </div>
                             </div>
                         </div>

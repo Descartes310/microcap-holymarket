@@ -38,7 +38,8 @@ const Signup = (props) => {
     */
    const onSubmit = (data) => {
       props.loginUserWithEmailAndPassword(data, props.history)
-          .then(() => props.history.push(HOME));
+          .then(() => props.history.push(HOME))
+          .catch();
    };
 
    /**
@@ -67,7 +68,6 @@ const Signup = (props) => {
                             <Button variant="contained" className="btn-light mr-2" onClick={onUserLogin}>
                                <IntlMessages id="auth.signin" />
                             </Button>
-                            <LanguageProvider />
                          </div>
                       </div>
                    </div>
