@@ -34,4 +34,30 @@ export default class User {
     isNetworkProfileConfigurationPending = () => {
         return this.isExploitant() && this.user.branch.status === Status.PENDING;
     };
+
+    /**
+     * Return boolean to indicate if a user get a permissions or
+     * at least one permissions or all permissions of a given permission or permissions list
+     * @param permissions String | Array<String>
+     * @param some indicate whether the user should have at least one permission ot all permissions
+     * @returns {boolean}
+     */
+    hasPermissions = (permissions, some = true) => {
+        const userPermissions = this.user.profile.permissions.map(p => p.name);
+
+        if (permissions && (typeof permissions === 'string' || Array.isArray(permissions))) {
+            // If the array is empty then the user have permissions since there is no restrictions to that
+            if (permissions.length === 0) return true;
+
+            if (Array.isArray(permissions)) {
+                return some
+                    ? userPermissions.some(p => permissions.includes(p))
+                    : userPermissions.every(p => permissions.includes(p));
+            } else {
+                return permissions.includes(permissions);
+            }
+        }
+
+        return false;
+    };
 }

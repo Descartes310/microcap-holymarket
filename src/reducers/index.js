@@ -14,6 +14,7 @@ import feedbacksReducer from './FeedbacksReducer';
 import ecommerceReducer from './EcommerceReducer';
 import CrmReducer from './CrmReducer';
 import RequestGlobalReducer from './RequestGlobalReducer';
+import PermissionAlertBoxReducer from './PermissionAlertBoxReducer';
 import NetworkProfileReducer from './NetworkProfileReducer';
 import CatalogReducer from './CatalogReducer';
 import CatalogTypeReducer from './CatalogTypeReducer';
@@ -35,6 +36,7 @@ const reducers = combineReducers({
    ecommerce: ecommerceReducer,
    CrmReducer: CrmReducer,
    requestGlobalLoader: RequestGlobalReducer,
+   permissionAlertBox: PermissionAlertBoxReducer,
    networkProfile: NetworkProfileReducer,
    catalogs: CatalogReducer,
    catalogTypes: CatalogTypeReducer,

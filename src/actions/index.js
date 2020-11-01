@@ -15,3 +15,4 @@ export * from './independentActions';
 export * from './RequestGlobalAction';
 export * from './NetworkProfileActions';
 export * from './GeneralActions';
+export * from './PermissionAlertBoxAction';

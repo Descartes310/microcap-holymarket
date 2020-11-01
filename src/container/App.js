@@ -24,6 +24,7 @@ import {isUserIntoStoreValid} from "Helpers/helpers";
 import RequestGlobalLoader from "Components/RequestGlobalLoader";
 import {AbilityContext} from "Permissions/Can";
 import Dashboard from 'Routes/custom/dashboard';
+import PermissionAlertBox from "Components/PermissionAlertBox";
 
 class App extends Component {
     static contextType = AbilityContext;
@@ -68,6 +69,7 @@ class App extends Component {
                     <RctThemeProvider>
                         <NotificationContainer />
                         <RequestGlobalLoader />
+                        <PermissionAlertBox />
                         <Router>
                                 {_isUserIntoStoreValid ? (
                                     <Switch>

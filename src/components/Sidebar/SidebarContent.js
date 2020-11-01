@@ -31,32 +31,19 @@ class SidebarContent extends Component {
 		return (
 			<div className="rct-sidebar-nav">
 					<nav className="navigation">
-					<List
-						className="rct-mainMenu p-0 m-0 list-unstyled"
-					>
-						{authUser && authUser.isExploitant() && sidebarMenus.exploitant.map((menu, key) => {
-							// if (menu.permissions.includes(authUser.profile.permissions)) {
-							if (true) {
+					<List className="rct-mainMenu p-0 m-0 list-unstyled">
+						{authUser && sidebarMenus.menus.map((menu, key) => {
+							if (authUser.hasPermissions(menu.permissions.map(i => i.name))) {
 								return (
 									<NavMenuItem
 										key={key}
 										menu={menu}
-										onToggleMenu={() => this.toggleMenu(menu, 'exploitant')}
+										authUser={authUser}
+										onToggleMenu={() => this.toggleMenu(menu, 'menus')}
 									/>
-								)
+								);
 							}
-
-							return null
-						})}
-
-						{authUser && authUser.isManager() && sidebarMenus.manager.map((menu, key) => {
-							return (
-								<NavMenuItem
-									key={key}
-									menu={menu}
-									onToggleMenu={() => this.toggleMenu(menu, 'manager')}
-								/>
-							)
+							return null;
 						})}
 					</List>
 				</nav>

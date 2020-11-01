@@ -1,18 +1,23 @@
 import { AbilityBuilder } from "@casl/ability";
 import Branch from "Models/Branch";
+import Permission from "Enums/permissions";
 
 export default function defineRulesFor(auth) {
     // const { can, rules } = AbilityBuilder.extract();
     const { can, cannot, rules } = new AbilityBuilder();
 
     if (auth && auth.user && auth.user.profile && auth.user.profile.permissions) {
-        const permissionsName = auth.user.profile.permissions.map(p => p.name);
-        const branchPermissions = Object.values(Branch.permissionsRelated);
+        let userPermissions = [];
+        try {
+            userPermissions = JSON.parse(auth.user.profile.permissions);
+        } catch (e) {
 
-        branchPermissions.forEach(branchPermission => {
-            if (permissionsName.includes(branchPermission)) {
-                can(branchPermission, Branch.modelName);
-            }
+        }
+        const permissionsName = userPermissions.map(p => p.name);
+
+        // Enable each permission
+        permissionsName.forEach(permission => {
+            can(permission, Permission);
         });
     }
     return rules

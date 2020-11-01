@@ -3,6 +3,7 @@
  */
 import moment from 'moment';
 import AppConfig from 'Constants/AppConfig';
+import NavLinks from "Components/Sidebar/NavLinks";
 
 /**
  * Function to convert hex to rgba
@@ -215,3 +216,30 @@ export const globalSearch = (data, searched) => {
     });
 };
 
+/**
+ * Return array of permissions of a path
+ * @param path
+ * @returns {Array}
+ */
+export const getPermissionOfPath = (path) => {
+    const currentMenus = NavLinks.menus;
+
+    let permissions = [];
+    for (let item of currentMenus) {
+        if (item.child_routes) {
+            for (let subItem of item.child_routes) {
+                if (subItem.path === path) {
+                    permissions = subItem.permissions;
+                    break;
+                }
+            }
+        } else {
+            if (item.path === path) {
+                permissions = p.permissions;
+                break;
+            }
+        }
+    }
+
+    return permissions;
+};
