@@ -106,6 +106,11 @@ export const USER_PROFILE = {
     },
 };
 
+export const USERS = {
+    GET_ALL: 'public/users/organisations',
+    CREATE: 'public/users/organisations/with-profile',
+};
+
 export const joinBaseUrl = to => BASE + to;
 
 export const joinBaseUrlWithParams = (to, params) => {

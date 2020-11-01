@@ -11,7 +11,7 @@ import {
     AsyncBranchList,
     AsyncBranchNetworkCoverage,
     AsyncBranchNetworkConfiguration,
-    AsyncCatalogProducts, AsyncUserProfile,
+    AsyncCatalogProducts, AsyncUserProfile, AsyncUsers,
 } from 'Components/AsyncComponent/AsyncComponent';
 
 import Branch from "Models/Branch";
@@ -89,6 +89,14 @@ const Dashboard = ({ match, authUser }) => {
                         path={PRODUCT_TYPE.SELF}
                         component={AsyncCatalogProducts}
                         permissions={[]}
+                    />
+
+                    <CanRoute
+                        path={USERS.USERS.SELF}
+                        component={AsyncUsers}
+                        permissions={[]}
+                        // permissions={[Permission.branch.createOne.name]}
+                        // permissions={[]}
                     />
 
                     <CanRoute

@@ -13,7 +13,8 @@ export default class User {
     }
 
     get userName() {
-        return this.user.userType === null ? this.commercialName : `${this.lastName} ${this.firstName}`;
+        return this.user.userType === UserType.ORGANISATION || this.user.userType === null
+            ? this.commercialName : `${this.lastName} ${this.firstName}`;
     }
 
     get userType() {
@@ -21,6 +22,14 @@ export default class User {
         if (this.isManager()) return UserType.MANAGER;
 
         return UserType.USER;
+    }
+
+    get branchId() {
+        return this.user.branch.id;
+    }
+
+    get avatar() {
+        return this.user.avatar ? this.user.avatar : require('Assets/avatars/profile.jpg');
     }
 
     isExploitant = () => {

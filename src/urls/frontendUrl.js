@@ -66,7 +66,9 @@ export const PRODUCT_TYPE = {
 
 export const USERS = {
     USERS: {
-        SELF: '/users'
+        SELF: '/users',
+        LIST: '/users/list',
+        CREATE: '/users/create',
     },
     USERS_PROFILE: {
         SELF: '/users-profile',

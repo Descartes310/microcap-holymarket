@@ -9,18 +9,19 @@ import {USERS} from "Url/frontendUrl";
 
 import {withRouter, Switch, Redirect, Route} from "react-router-dom";
 import List from './List';
-// import Show from './Show';
+import Create from './Create';
 
-class UserProfile extends Component {
+class Users extends Component {
     render() {
         const { match } = this.props;
         return (
-            <div className="page-list">
+            <div className="full-height">
                 <>
                     <Switch>
-                        <Redirect exact from={`${match.url}/`} to={USERS.USERS_PROFILE.LIST} />
+                        <Redirect exact from={`${match.url}/`} to={USERS.USERS.LIST} />
                         {/*<Route path={USERS.USERS_PROFILE.} component={Show} />*/}
-                        <Route path={USERS.USERS_PROFILE.LIST} component={List} />
+                        <Route path={USERS.USERS.LIST} component={List} />
+                        <Route path={USERS.USERS.CREATE} component={Create} />
                     </Switch>
                 </>
             </div>
@@ -33,4 +34,4 @@ const mapStateToProps = ({ requestGlobalLoader }) => {
     return { requestGlobalLoader }
 };
 
-export default connect(mapStateToProps, {})(withRouter(injectIntl(UserProfile)));
+export default connect(mapStateToProps, {})(withRouter(injectIntl(Users)));

@@ -43,6 +43,11 @@ export const AsyncUserProfile = Loadable({
 	loading: () => <RctPageLoader />,
 });
 
+export const AsyncUsers = Loadable({
+	loader: () => import("Routes/custom/users/users"),
+	loading: () => <RctPageLoader />,
+});
+
 // ecommerce dashboard
 const AsyncEcommerceDashboardComponent = Loadable({
 	loader: () => import("Routes/dashboard/ecommerce"),
