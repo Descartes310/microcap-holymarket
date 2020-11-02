@@ -26,7 +26,7 @@ class Users extends Component {
                         <CanRoute
                             path={USERS.USERS.CREATE}
                             component={Create}
-                            permissions={[Permission.users.createOne]}
+                            permissions={[Permission.users.createOne.name]}
                         />
                     </Switch>
                 </>

@@ -44,13 +44,16 @@ class UserList extends Component {
     }
 
     onSearchChanged = (event) => {
-        if (this.props.permissionMiddleware(this.context.can(Permission.users.search, Permission))) return;
+        if (this.props.permissionMiddleware(this.props.authUser.hasPermissions([
+            Permission.navLinks.users.viewMenu.name,
+            Permission.users.search.name
+        ], false))) return;
 
         this.setState({searched: event.target.value});
     };
 
     onAddClick = () => {
-        if (this.props.permissionMiddleware(this.context.can(Permission.users.createOne, Permission))) return;
+        if (this.props.permissionMiddleware(this.context.can(Permission.users.createOne.name, Permission))) return;
 
         history.push(USERS.USERS.CREATE);
     };

@@ -83,16 +83,13 @@ const Dashboard = ({ match, authUser }) => {
                     <CanRoute
                         path={USERS.USERS.SELF}
                         component={AsyncUsers}
-                        // permissions={[Permission.users.viewList]}
-                        permissions={[]}
+                        permissions={[Permission.users.viewList.name]}
                     />
 
                     <CanRoute
                         path={USERS.USERS_PROFILE.SELF}
                         component={AsyncUserProfile}
-                        permissions={[]}
-                        // permissions={[Permission.branch.createOne.name]}
-                        // permissions={[]}
+                        permissions={[Permission.userProfile.viewList.name]}
                     />
 
                     <Redirect to={HOME} />

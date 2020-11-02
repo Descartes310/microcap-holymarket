@@ -249,3 +249,23 @@ export const getAvailableItems = (totalItems, occupiedItems) => {
     }
     else return [];
 };
+
+/**
+ * Extension of can action to handle array
+ * @param permissions {Array}
+ * @param some {boolean}
+ * @returns {boolean|*}
+ */
+export const canArray = (permissions, some = true) => {
+    if (permissions && Array.isArray(permissions)) {
+        // If the array is empty then the user have permissions since there is no restrictions to that
+        if (permissions.length === 0) return true;
+
+        return permissions.reduce((a,b) => some
+            ? a || b
+            : a && b
+        );
+    }
+
+    return false;
+};

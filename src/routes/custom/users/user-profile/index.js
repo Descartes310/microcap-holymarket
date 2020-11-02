@@ -15,7 +15,7 @@ class UserProfile extends Component {
     render() {
         const { match } = this.props;
         return (
-            <div className="page-list">
+            <div className="full-height">
                 <>
                     <Switch>
                         <Redirect exact from={`${match.url}/`} to={USERS.USERS_PROFILE.LIST} />

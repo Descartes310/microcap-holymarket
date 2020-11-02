@@ -182,6 +182,7 @@ module.exports = {
    "sidebar.invoice": "Facture d'achat",
    "sidebar.multilevel": "multiniveau",
    "sidebar.sublevel": "sous-niveau",
+   "sidebar.usersProfile": "Profile utilisateurs",
    "widgets.totalEarns": "total gagne",
    "widgets.emailsStatistics": "Statistiques des emails",
    "widgets.totalRevenue": "Revenu total",
