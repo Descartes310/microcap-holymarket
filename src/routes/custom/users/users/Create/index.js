@@ -61,7 +61,7 @@ class OrganisationRegister extends Component {
         createUsers(_data, this.props.authUser.user.branch.id)
             .then(() => {
                 this.props.getUsers(this.props.authUser.user.branch.id, this.props.authUser.userType);
-                this.props.history.push(USERS.USERS.CREATE);
+                this.props.history.push(USERS.USERS.LIST);
             })
             .catch(() => {
                 NotificationManager.error("Une erreur est survenue")
