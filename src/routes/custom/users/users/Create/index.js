@@ -11,10 +11,12 @@ import Stepper from "@material-ui/core/Stepper/Stepper";
 import FirstStep from "./firstStep";
 import SecondStep from "./secondStep";
 import ThirdStep from "./thirdStep";
-import {HOME} from "Url/frontendUrl";
+import {HOME, USERS} from "Url/frontendUrl";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
 import {createUsers, getUsers} from "Actions";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
+import {setRequestGlobalAction} from "Actions/RequestGlobalAction";
+import {NotificationManager} from "react-notifications";
 
 const steps = [1, 2, 3];
 
@@ -35,6 +37,8 @@ class OrganisationRegister extends Component {
     };
 
     onSubmit = (data) => {
+        this.props.setRequestGlobalAction(true);
+
         const _data = {...data};
         _data.nationality = _data.registrationCountry;
         _data.hostCountry = _data.registrationCountry;
@@ -57,7 +61,12 @@ class OrganisationRegister extends Component {
         createUsers(_data, this.props.authUser.user.branch.id)
             .then(() => {
                 this.props.getUsers(this.props.authUser.user.branch.id, this.props.authUser.userType);
-            });
+                this.props.history.push(USERS.USERS.CREATE);
+            })
+            .catch(() => {
+                NotificationManager.error("Une erreur est survenue")
+            })
+            .finally(() => this.props.setRequestGlobalAction(false));
     };
 
     previousStep = () => this.setState({activeStep: this.state.activeStep - 1 < 0 ? 0 : this.state.activeStep - 1});
@@ -118,4 +127,4 @@ const mapStateToProps = ({ requestGlobalLoader, authUser }) => {
     return { loading: requestGlobalLoader, authUser: authUser.data }
 };
 
-export default connect(mapStateToProps, {getUsers})(OrganisationRegister);
+export default connect(mapStateToProps, {getUsers, setRequestGlobalAction})(OrganisationRegister);

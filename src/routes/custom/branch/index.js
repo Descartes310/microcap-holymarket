@@ -29,7 +29,7 @@ import moment from "moment";
 import {initMoment} from "Services/momentService";
 import {NETWORK} from "Url/frontendUrl";
 import {BRANCH} from "Url/backendUrl";
-import Can from "Permissions/Can";
+import Can, {AbilityContext} from "Permissions/Can";
 import Branch from 'Models/Branch';
 import tileData from "Routes/components/grid-list/components/tileData";
 import GridListTile from "@material-ui/core/GridListTile";
@@ -37,10 +37,13 @@ import GridListTileBar from "@material-ui/core/GridListTileBar/GridListTileBar";
 import IconButton from "@material-ui/core/IconButton";
 import GridList from "@material-ui/core/GridList";
 import BranchImage from "Components/BranchImage";
+import Permission from "Enums/Permissions";
 
 initMoment();
 
 class BranchList extends Component {
+    static contextType = AbilityContext;
+
     constructor(props) {
         super(props);
         this.state = {
@@ -132,7 +135,7 @@ class BranchList extends Component {
             <div className="Shop-grid-wrapper">
                 <div className="row">
                     <div className="col-2">
-                        <Can I={Branch.permissionsRelated.CREATE} on={Branch.modelName}>
+                        {this.context.can(Permission.branch.createOne.name, Permission) && (
                             <Button
                                 color="primary"
                                 className="mr-5 mb-10 text-white"
@@ -141,7 +144,7 @@ class BranchList extends Component {
                                 <IntlMessages id="button.add" />
                                 <i className="zmdi zmdi zmdi-plus ml-2" />
                             </Button>
-                        </Can>
+                        )}
                     </div>
                 </div>
                 <div className="row align-items-start">
@@ -213,7 +216,7 @@ class BranchList extends Component {
                                 </div>
                             </div>
                             <div className="col-md-6 col-sm-4 center-holder text-right">
-                                <p><IntlMessages id="list.objectFound" values={{count: orderedItems.length}}/> </p>
+                                {orderedItems.length} branche(s) trouvées
                             </div>
                         </div>
                         <div className="dash-cards">
@@ -221,7 +224,7 @@ class BranchList extends Component {
                                 {orderedItems.length === 0 ? (
                                     <RctCollapsibleCard>
                                         <h4 className="">
-                                            <IntlMessages id="list.noItemToDisplay" />
+                                            Aucune branches trouvées
                                         </h4>
                                     </RctCollapsibleCard>
                                 ) : (

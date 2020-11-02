@@ -45,7 +45,7 @@ const Dashboard = ({ match, authUser }) => {
 
                     <CanRoute
                         path={NETWORK.LIST}
-                        permissions={[Permission.branch.list.name]}
+                        permissions={[Permission.branch.viewList.name]}
                         component={AsyncBranchList}
                         can={ability.can(Branch.permissionsRelated.READ, Branch)}
                     />

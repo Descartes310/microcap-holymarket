@@ -82,8 +82,8 @@ export default class Permission extends BaseEnum {
     };
 
     static branch = {
-        list: {
-            "name": "branch/list",
+        viewList: {
+            "name": "branch/view-list",
             "types": [UserType.MANAGER]
         },
         viewOne: {
