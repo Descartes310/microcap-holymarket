@@ -55,7 +55,7 @@ class UserList extends Component {
     onAddClick = () => {
         if (this.props.permissionMiddleware(this.context.can(Permission.users.createOne.name, Permission))) return;
 
-        history.push(USERS.USERS.CREATE);
+        this.props.history.push(USERS.USERS.CREATE);
     };
 
     handleSearch = (value, data) => {
@@ -89,7 +89,6 @@ class UserList extends Component {
                                     <i className="zmdi zmdi zmdi-plus ml-2" />
                                 </Button>
                                 <div className={classes.flex}>
-                                    {}
                                     <FormControl>
                                         <InputGroup>
                                             <InputGroupAddon addonType="prepend">

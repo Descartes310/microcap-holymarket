@@ -195,7 +195,7 @@ const UserProfileCreate = props => {
                                                 onChange={event => handleSelect('left', event)}
                                                 multiple>
                                                 {availableProducts.map(p => (
-                                                    <option key={p.id} value={p.id}>{p.name}</option>
+                                                    <option key={p.id} value={p.id}>{p.label}</option>
                                                 ))}
                                             </InputStrap>
                                         </div>
@@ -228,7 +228,7 @@ const UserProfileCreate = props => {
                                                 onChange={event => handleSelect('right', event)}
                                                 multiple>
                                                 {permissionsSelected.map(p => (
-                                                    <option key={p.id} value={p.id}>{p.name}</option>
+                                                    <option key={p.id} value={p.id}>{p.label}</option>
                                                 ))}
                                             </InputStrap>
                                         </div>
