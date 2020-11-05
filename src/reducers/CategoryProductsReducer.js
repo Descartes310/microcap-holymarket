@@ -9,7 +9,7 @@ import {
 import CategoryProducts from "Models/CategoryProducts";
 
 /**
- * initial tokens
+ * initial state
  */
 const INIT_STATE = {
     data: null,

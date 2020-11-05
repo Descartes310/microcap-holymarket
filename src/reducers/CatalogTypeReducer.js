@@ -9,7 +9,7 @@ import {
 import Catalog from "Models/Catalog";
 
 /**
- * initial tokens
+ * initial state
  */
 const INIT_STATE = {
     data: null,

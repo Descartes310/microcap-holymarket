@@ -15,7 +15,7 @@ import {getAuthToken} from "Helpers/tokens";
 const initialTokenValue = getAuthToken();
 
 /**
- * initial tokens
+ * initial state
  */
 const INIT_STATE = {
     error: null,

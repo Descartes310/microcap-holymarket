@@ -26,6 +26,11 @@ import UserProfileReducer from './UserProfileReducer';
 import UserPermissionsReducer from './UserPermissionsReducer';
 import NetworkProfileTypeReducer from './NetworkProfileTypeReducer';
 import UsersReducer from './UsersReducer';
+import UserCommunitiesReducer from './UserCommunitiesReducer';
+import UserCommunitiesAdminReducer from './UserCommunitiesAdminReducer';
+import UserCommunitiesNotInReducer from './UserCommunitiesNotInReducer';
+import ComInvitationsPendingReducer from './ComInvitationsPendingReducer';
+import CurrentCommunityReducer from './CurrentCommunityReducer';
 
 const reducers = combineReducers({
    settings,
@@ -52,6 +57,11 @@ const reducers = combineReducers({
    userPermissions: UserPermissionsReducer,
    networkProfileType: NetworkProfileTypeReducer,
    users: UsersReducer,
+   userCommunities: UserCommunitiesReducer,
+   userCommunitiesAdmin: UserCommunitiesAdminReducer,
+   userCommunitiesNotIn: UserCommunitiesNotInReducer,
+   comInvitationsPending: ComInvitationsPendingReducer,
+   currentCommunity: CurrentCommunityReducer,
 });
 
 export default reducers;

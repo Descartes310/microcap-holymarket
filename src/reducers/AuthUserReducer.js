@@ -10,7 +10,7 @@ import {
 import User from "Models/User";
 
 /**
- * initial tokens
+ * initial state
  */
 const INIT_STATE = {
     data: null,

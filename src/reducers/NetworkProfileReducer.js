@@ -10,7 +10,7 @@ import {
 import NetworkProfile from "Models/NetworkProfile";
 
 /**
- * initial tokens
+ * initial state
  */
 const INIT_STATE = {
     data: null,

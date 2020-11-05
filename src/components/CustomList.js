@@ -56,7 +56,7 @@ class CustomList extends Component {
 
         return (
             <div className="page-list">
-                <PageTitleBar title={titleList} match={match} history={history} />
+                {titleList && (<PageTitleBar title={titleList} match={match} history={history} />)}
                 {loading || orderedItems === null
                     ? (<RctSectionLoader/>)
                     : (
@@ -77,7 +77,7 @@ class CustomList extends Component {
                                         <InputGroup>
                                             <InputGroupAddon addonType="prepend">
                                                 <IconButton aria-label="facebook">
-                                                    <i className="zmdi zmdi-search"></i>
+                                                    <i className="zmdi zmdi-search" />
                                                 </IconButton>
                                             </InputGroupAddon>
                                             <Input
@@ -135,7 +135,7 @@ CustomList.propTypes = {
         permissions: PropTypes.array.isRequired,
         some: PropTypes.bool,
     }),
-    titleList: PropTypes.string.isRequired,
+    titleList: PropTypes.string,
     renderItem: PropTypes.func.isRequired,
     loading: PropTypes.bool.isRequired,
     list: PropTypes.any,

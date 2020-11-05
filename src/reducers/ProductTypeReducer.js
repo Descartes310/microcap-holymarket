@@ -9,7 +9,7 @@ import {
 import ProductType from "Models/ProductType";
 
 /**
- * initial tokens
+ * initial state
  */
 const INIT_STATE = {
     data: null,

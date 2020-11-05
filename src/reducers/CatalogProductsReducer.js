@@ -6,7 +6,7 @@ import {
 import BranchProduct from "Models/BranchProduct";
 
 /**
- * initial tokens
+ * initial state
  */
 const INIT_STATE = {
     data: null,

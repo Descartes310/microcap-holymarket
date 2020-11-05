@@ -11,12 +11,14 @@ import {
     AsyncBranchList,
     AsyncBranchNetworkCoverage,
     AsyncBranchNetworkConfiguration,
-    AsyncCatalogProducts, AsyncUserProfile, AsyncUsers,
+    AsyncCatalogProducts, AsyncUserProfile, AsyncUsers, AsyncCommunity,
 } from 'Components/AsyncComponent/AsyncComponent';
+import Community from "Routes/custom/community";
+
 
 import Branch from "Models/Branch";
 import {useAbility} from "@casl/react";
-import {CATALOG, HOME, NETWORK, CATEGORY, PRODUCT_TYPE, USERS} from "Url/frontendUrl";
+import {CATALOG, HOME, NETWORK, CATEGORY, PRODUCT_TYPE, USERS, COMMUNITY} from "Url/frontendUrl";
 import {AbilityContext} from "Permissions/Can";
 import {connect} from "react-redux";
 import {setAuthUser} from "Actions/AuthActions";
@@ -90,6 +92,13 @@ const Dashboard = ({ match, authUser }) => {
                         path={USERS.USERS_PROFILE.SELF}
                         component={AsyncUserProfile}
                         permissions={[Permission.userProfile.viewList.name]}
+                    />
+
+                    <CanRoute
+                        path={COMMUNITY.SELF}
+                        component={Community}
+                        // component={AsyncCommunity}
+                        permissions={[]}
                     />
 
                     <Redirect to={HOME} />

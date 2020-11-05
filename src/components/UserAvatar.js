@@ -1,12 +1,24 @@
 import React from 'react';
 import Avatar from "@material-ui/core/Avatar";
 
-const UserAvatar = ({user}) => {
+const UserAvatar = ({user = null, avatar = null, name = null}) => {
+    let _avatar, _name;
+    if (avatar)
+        _avatar = avatar;
+    else if (user && user.user)
+        _avatar = user.user.avatar;
+
+    if (name)
+        _name = name;
+    else if (user)
+        _name = user.userName;
+    else _name = 'a';
+
     return (
         <>
-            {(user.user.avatar && user.user.avatar !== '') ?
-                <img src={user.user.avatar} alt="mail user" className="rounded-circle mr-15 align-self-center" width="40" height="40" />
-                : <Avatar className="mr-15 align-self-center">{user.userName.charAt(0)}</Avatar>
+            {(_avatar && _avatar !== '') ?
+                <img src={_avatar} alt="mail user" className="rounded-circle mr-15 align-self-center" width="40" height="40" />
+                : <Avatar className="mr-15 align-self-center">{_name.charAt(0)}</Avatar>
             }
         </>
     );

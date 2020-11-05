@@ -1,5 +1,5 @@
 // sidebar nav links
-import {CATALOG, NETWORK, USERS} from 'Url/frontendUrl';
+import {CATALOG, COMMUNITY, NETWORK, USERS} from 'Url/frontendUrl';
 import Branch from 'Models/Branch';
 import Permission from "Enums/Permissions";
 
@@ -72,7 +72,16 @@ export default {
                "permissions": [Permission.navLinks.products.childLinks.catalogDistribution.viewMenu],
             },
          ]
-      }
+      },
+       {
+           "menu_title": "Communauté",
+           "menu_icon": "ti-comments",
+           "new_item": false,
+           "path": COMMUNITY.SELF,
+           // "permissions": [Permission.navLinks.community.viewMenu],
+           "permissions": [],
+           "child_routes": null
+       },
    ],
    manager: [
       {

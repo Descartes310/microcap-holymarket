@@ -16,7 +16,14 @@ import {
     PRODUCT_TYPE,
     USER_PROFILE,
     USER_PERMISSIONS,
-    NETWORK_PROFILE_TYPE, USERS
+    NETWORK_PROFILE_TYPE,
+    USERS,
+    USER_COMMUNITIES,
+    USER_COMMUNITIES_ADMIN,
+    USER_COMMUNITIES_NOT_IN,
+    COM_INVITATIONS_PENDING,
+    SET_CURRENT_COMMUNITY,
+    SET_CURRENT_COMMUNITY_SUCCESS, SET_CURRENT_COMMUNITY_FAILURE
 } from 'Actions/types';
 
 import api from './../api';
@@ -29,6 +36,7 @@ import {
     USER_PROFILE as USER_PROFILE_API,
     NETWORK_PROFILE_TYPE as NETWORK_PROFILE_TYPE_API,
     USERS as USERS_API,
+    COMMUNITY as COMMUNITY_API,
     joinBaseUrlWithParams,
     BRANCH} from 'Url/backendUrl';
 
@@ -86,7 +94,6 @@ export const makeActionRequest = (verb, url, typeBase, dispatch, data = null, co
     dispatch({ type: typeBase });
     return api[verb](url, data)
         .then((response) => {
-            console.log("response => ", response);
             dispatch({ type: `${typeBase}_SUCCESS`, payload: response.data });
             return Promise.resolve();
         })
@@ -133,4 +140,47 @@ export const getNetworkProfileTypes = (branchId) => (dispatch) => {
 export const getUsers = (branchId, type) => (dispatch) => {
     const url = `${USERS_API.GET_ALL}?branch_id=${branchId}&type=${type}`;
     return makeActionRequest('get', url, USERS, dispatch);
+};
+
+export const getUserCommunities = () => (dispatch) => {
+    const url = `${COMMUNITY_API.USER.GROUPS.GET_ALL}`;
+    return makeActionRequest('get', url, USER_COMMUNITIES, dispatch);
+};
+
+export const getUserCommunitiesAdmin = () => (dispatch) => {
+    const url = `${COMMUNITY_API.USER.GROUPS.ADMIN}`;
+    return makeActionRequest('get', url, USER_COMMUNITIES_ADMIN, dispatch);
+};
+
+export const getUserCommunitiesNotIn = () => (dispatch) => {
+    const url = `${COMMUNITY_API.USER.GROUPS.NOT_IN}`;
+    return makeActionRequest('get', url, USER_COMMUNITIES_NOT_IN, dispatch);
+};
+
+export const getInvitationsPending = () => (dispatch) => {
+    const url = `${COMMUNITY_API.INVITATIONS.GET_ALL}`;
+    return makeActionRequest('get', url, COM_INVITATIONS_PENDING, dispatch);
+};
+
+export const setCurrentCommunity = (community) => (dispatch) => {
+    dispatch({type: SET_CURRENT_COMMUNITY_SUCCESS, payload: community});
+};
+
+export const getMembersOfOneGroup = (group) => (dispatch) => {
+    dispatch({ type: SET_CURRENT_COMMUNITY });
+
+    const url = joinBaseUrlWithParams(COMMUNITY_API.USER.GROUPS.GET_MEMBERS, [{
+        param: 'id',
+        value: group,
+    }]);
+    return api
+        .get(url)
+        .then((response) => {
+            dispatch({ type: SET_CURRENT_COMMUNITY_SUCCESS, payload: {...group, members: response.data} });
+            return Promise.resolve();
+        })
+        .catch(() => {
+            dispatch({ type: SET_CURRENT_COMMUNITY_FAILURE });
+            return Promise.reject();
+        });
 };

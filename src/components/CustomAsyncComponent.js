@@ -33,7 +33,7 @@ const CustomAsyncComponent = ({loading, data, component, onRetryClick, errorMess
                         </>
                     ) : (
                        <>
-                           An error occur while fetching data <a href="#" className="alert-link text-decoration-underline" onClick={_onRetryClick}>Please try again</a>
+                           Une erreur est survenue lors du chargement des données <a href="#" className="alert-link text-decoration-underline" onClick={_onRetryClick}>Veuillez réessayer</a>
                        </>
                     )}
                 </Alert>

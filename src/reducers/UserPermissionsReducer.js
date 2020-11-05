@@ -8,7 +8,7 @@ import {
 } from 'Actions/types';
 
 /**
- * initial tokens
+ * initial state
  */
 const INIT_STATE = {
     data: null,

@@ -8,8 +8,10 @@ import {
     CATALOGS,
     CATEGORY_PRODUCTS,
     PRODUCT_TYPE,
-    USER_PROFILE, NETWORK_PROFILE_TYPE, USERS
+    USER_PROFILE, NETWORK_PROFILE_TYPE, USERS,
+    COMMUNITY
 } from "Url/backendUrl";
+import {SET_CURRENT_COMMUNITY, SET_CURRENT_COMMUNITY_SUCCESS} from "Actions/types";
 
 export const getResidenceCountries = () => {
     return new Promise((resolve, reject) => {
@@ -222,4 +224,55 @@ export const createNetworkProfileType = (data, branchId) => {
 export const createUsers = (data, branchId) => {
     const url = `${USERS.CREATE}?branch_id=${branchId}`;
     return makeRequest('post', url, data);
+};
+
+export const createCommunityNonConventionated = (data, branchId) => {
+    const url = `${COMMUNITY.USER.CREATE.NON_CONVENTIONAL}?branch_id=${branchId}`;
+    return makeRequest('post', url, data);
+};
+
+export const searchUsers = (data) => {
+    const url = `${USERS.SEARCH}?email=${data}`;
+    return makeRequest('get', url);
+};
+
+export const sendManyInvitations = (groupId, usersId) => {
+    let url = joinBaseUrlWithParams(COMMUNITY.INVITATIONS.SEND.MANY, [{
+            param: 'group_id',
+            value: groupId,
+    }]);
+    url = `${url}?users=${encodeURIComponent(usersId)}`;
+    return makeRequest('get', url);
+};
+
+export const sendRequestInvitation = (groupId) => {
+    let url = joinBaseUrlWithParams(COMMUNITY.INVITATIONS.SEND.REQUEST, [{
+        param: 'group_id',
+        value: groupId,
+    }]);
+    return makeRequest('get', url);
+};
+
+export const acceptInvitation = (invitationId) => {
+    const url = joinBaseUrlWithParams(COMMUNITY.INVITATIONS.ACCEPT, [{
+        param: 'invitation_id',
+        value: invitationId,
+    }]);
+    return makeRequest('put', url);
+};
+
+export const cancelInvitation = (invitationId) => {
+    const url = joinBaseUrlWithParams(COMMUNITY.INVITATIONS.CANCEL, [{
+        param: 'invitation_id',
+        value: invitationId,
+    }]);
+    return makeRequest('put', url);
+};
+
+export const deleteInvitation = (invitationId) => {
+    const url = joinBaseUrlWithParams(COMMUNITY.INVITATIONS.DELETE, [{
+        param: 'invitation_id',
+        value: invitationId,
+    }]);
+    return makeRequest('put', url);
 };

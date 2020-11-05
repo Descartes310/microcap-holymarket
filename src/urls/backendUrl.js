@@ -107,8 +107,34 @@ export const USER_PROFILE = {
 };
 
 export const USERS = {
+    SEARCH: 'public/users/search',
     GET_ALL: 'public/users/organisations',
     CREATE: 'public/users/organisations/with-profile',
+};
+
+export const COMMUNITY = {
+    USER: {
+        GROUPS: {
+            GET_ALL: 'groups/communities/user/me',
+            NOT_IN: 'groups/communities/user/me/not-in',
+            ADMIN: 'groups/communities/user/admin/me',
+            GET_MEMBERS: 'groups/communities/{id}/members',
+        },
+        CREATE: {
+            NON_CONVENTIONAL: 'groups/communities/non-conventionated'
+        }
+    },
+    INVITATIONS: {
+        GET_ALL: 'groups/communities/pending/invitation/me',
+        SEND: {
+            ONE: 'groups/communities/send/invitation/community/{group_id}/user/{user_id}',
+            MANY: 'groups/communities/send/invitation/community/{group_id}',
+            REQUEST: 'groups/communities/send/request/community/{group_id}',
+        },
+        ACCEPT: 'groups/communities/accept/invitation/{invitation_id}',
+        CANCEL: 'groups/communities/cancel/invitation/{invitation_id}',
+        DELETE: 'groups/communities/delete/invitation/{invitation_id}',
+    },
 };
 
 export const joinBaseUrl = to => BASE + to;

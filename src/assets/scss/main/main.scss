@@ -81,6 +81,10 @@
   color: $black !important;
 }
 
+.bg-black {
+  background: $black !important;
+}
+
 .full-height {
   min-height: calc(100vh - 180px) !important;
 }
@@ -89,4 +93,16 @@
   @media (max-width: 576px) {
     //padding-right: 1.25rem;
   }
+}
+
+.bg-small-white {
+  background: rgb(240, 240, 240) !important;
+}
+
+.h__bg-small-white:hover {
+  background: rgb(240, 240, 240) !important;
+}
+
+.group-item-li > li {
+  margin: 0 !important;
 }

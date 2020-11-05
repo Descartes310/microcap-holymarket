@@ -77,6 +77,25 @@ export const USERS = {
     },
 };
 
+export const COMMUNITY = {
+    SELF: '/community',
+    GROUPS: {
+        SELF: '/community/groups',
+        LIST: '/community/groups/list',
+        ME: '/community/groups/me',
+        CREATE: '/community/groups/create',
+    },
+    INVITATIONS: {
+        SELF: '/community/invitations',
+        LIST: {
+            SEND: '/community/invitations/send',
+            RECEIVED: '/community/invitations/list',
+            REQUEST: '/community/invitations/integration-request',
+        },
+        CREATE: '/community/invitations/create'
+    },
+};
+
 export const joinUrlWithParams = (to, params) => {
     let url = to;
     params.forEach(param => {

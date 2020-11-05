@@ -1,9 +1,8 @@
 import {
-    BRANCH_PRODUCT,
-    BRANCH_PRODUCT_SUCCESS,
-    BRANCH_PRODUCT_FAILURE,
+    SET_CURRENT_COMMUNITY,
+    SET_CURRENT_COMMUNITY_SUCCESS,
+    SET_CURRENT_COMMUNITY_FAILURE,
 } from 'Actions/types';
-import BranchProduct from "Models/BranchProduct";
 
 /**
  * initial state
@@ -17,13 +16,13 @@ const INIT_STATE = {
 export default (state = INIT_STATE, action) => {
     switch (action.type) {
 
-        case BRANCH_PRODUCT:
+        case SET_CURRENT_COMMUNITY:
             return { ...state, loading: true };
 
-        case BRANCH_PRODUCT_SUCCESS:
-            return { ...state, loading: false, data: action.payload.map(catalog => new BranchProduct(catalog)) };
+        case SET_CURRENT_COMMUNITY_SUCCESS:
+            return { ...state, loading: false, data: action.payload };
 
-        case BRANCH_PRODUCT_FAILURE:
+        case SET_CURRENT_COMMUNITY_FAILURE:
             return { ...state, loading: false, error: action.payload };
 
         default: return { ...state };

@@ -25,6 +25,7 @@ import AppConfig from 'Constants/AppConfig';
 
 // actions
 import { collapsedSidebarAction, startUserTour } from 'Actions';
+import {COMMUNITY, NETWORK} from "Url/frontendUrl";
 
 class MainApp extends Component {
 
@@ -76,7 +77,11 @@ class MainApp extends Component {
 	renderPage() {
 		const { pathname } = this.props.location;
 		const { children } = this.props;
-		if (pathname === '/app/chat' || pathname.startsWith('/app/mail') || pathname === '/app/todo') {
+		if (pathname === '/app/chat'
+			|| pathname.startsWith('/app/mail')
+			|| pathname === '/app/todo'
+			|| pathname.includes(COMMUNITY.SELF)
+			|| pathname.includes(NETWORK.CONFIGURATION.SELF)) {
 			return (
 				<div className="rct-page-content p-0">
 					{children}
