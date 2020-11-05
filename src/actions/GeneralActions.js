@@ -23,7 +23,8 @@ import {
     USER_COMMUNITIES_NOT_IN,
     COM_INVITATIONS_PENDING,
     SET_CURRENT_COMMUNITY,
-    SET_CURRENT_COMMUNITY_SUCCESS, SET_CURRENT_COMMUNITY_FAILURE
+    SET_CURRENT_COMMUNITY_SUCCESS, SET_CURRENT_COMMUNITY_FAILURE,
+    PACKAGES
 } from 'Actions/types';
 
 import api from './../api';
@@ -37,6 +38,7 @@ import {
     NETWORK_PROFILE_TYPE as NETWORK_PROFILE_TYPE_API,
     USERS as USERS_API,
     COMMUNITY as COMMUNITY_API,
+    PACKAGES as PACKAGES_API,
     joinBaseUrlWithParams,
     BRANCH} from 'Url/backendUrl';
 
@@ -95,7 +97,7 @@ export const makeActionRequest = (verb, url, typeBase, dispatch, data = null, co
     return api[verb](url, data)
         .then((response) => {
             dispatch({ type: `${typeBase}_SUCCESS`, payload: response.data });
-            return Promise.resolve();
+            return Promise.resolve(response.data);
         })
         .catch((error) => {
             dispatch({ type: `${typeBase}_FAILURE` });
@@ -183,4 +185,9 @@ export const getMembersOfOneGroup = (group) => (dispatch) => {
             dispatch({ type: SET_CURRENT_COMMUNITY_FAILURE });
             return Promise.reject();
         });
+};
+
+export const getPackages = (branchId) => (dispatch) => {
+    const url = `${PACKAGES_API.LIST}?branch_id=${branchId}`;
+    return makeActionRequest('get', url, PACKAGES, dispatch);
 };

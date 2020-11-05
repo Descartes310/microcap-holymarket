@@ -1,11 +1,5 @@
-/**
- * Employ Payroll
- */
 import React, { Component, Fragment } from 'react';
 import {Badge, Button, FormGroup, Input, InputGroup, InputGroupAddon} from 'reactstrap';
-
-// api
-import api from 'Api';
 
 // rct section loader
 import RctSectionLoader from 'Components/RctSectionLoader/RctSectionLoader';
@@ -48,7 +42,7 @@ class CategoryProductsList extends Component {
     }
 
     componentDidMount() {
-        this.props.getCategoryProducts(this.props.authUser.user.branch.id);
+        this.props.getCategoryProducts(this.props.authUser.branchId);
     }
 
     handleSearch = (value, data) => {

@@ -18,8 +18,10 @@ import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
 import IntlMessages from 'Util/IntlMessages';
 import CatalogList from "Routes/custom/products/catalog-products/catalog";
 import CategoryProducts from "Routes/custom/products/catalog-products/product-category";
+import Packages from "Routes/custom/products/catalog-products/packages";
 import ProductType from "Routes/custom/products/catalog-products/product-type";
-import {CATEGORY, CATALOG, PRODUCT_TYPE} from "Url/frontendUrl";
+import {CATEGORY, CATALOG, PRODUCT_TYPE, PACKAGES, COMMUNITY} from "Url/frontendUrl";
+import {withRouter, Switch, Redirect, Route} from "react-router-dom";
 
 // For Tab Content
 function TabContainer(props) {
@@ -33,8 +35,16 @@ function TabContainer(props) {
 export default class CatalogProducts extends Component {
     constructor(props) {
         super(props);
-        const defaultState = CATALOG.PRODUCT.SELF === this.props.match.url ?
-            0 : CATEGORY.PRODUCT.SELF === this.props.match.url ? 1 : 2;
+        // const defaultState = CATALOG.PRODUCT.SELF === this.props.match.url ?
+        //     0 : CATEGORY.PRODUCT.SELF === this.props.match.url ? 1 : 2;
+
+        const defaultState = (function (url) {
+            if (url.includes(CATALOG.PRODUCT.SELF)) return 0;
+            else if (url.includes(CATEGORY.PRODUCT.SELF)) return 1;
+            else if (url.includes(PRODUCT_TYPE.SELF)) return 2;
+            else if (url.includes(PACKAGES.SELF)) return 3;
+            else return 0;
+        })(window.location.pathname);
 
         this.state = {
             activeTab: defaultState,
@@ -46,17 +56,30 @@ export default class CatalogProducts extends Component {
         const oldActivateTab = this.state.activeTab;
         this.setState({ activeTab: value });
         if (oldActivateTab !== value) {
-            this.props.history.push(value === 0
-                ? CATALOG.PRODUCT.LIST
-                : value === 1 ? CATEGORY.PRODUCT.SELF : PRODUCT_TYPE.SELF);
+            let url;
+            switch (value) {
+                case 0:
+                    url = CATALOG.PRODUCT.SELF; break;
+                case 1:
+                    url = CATEGORY.PRODUCT.SELF; break;
+                case 2:
+                    url = PRODUCT_TYPE.SELF; break;
+                case 3:
+                    url = PACKAGES.SELF; break;
+                default:
+                    url = CATALOG.PRODUCT.LIST; break;
+            }
+
+            this.props.history.push(url);
         }
     };
 
     render() {
         const { activeTab } = this.state;
+
         return (
             <div className="userProfile-wrapper">
-                <PageTitleBar title={<IntlMessages id="sidebar.catalogProducts" />} match={this.props.match} />
+                <PageTitleBar title="Catalogue Produits" match={this.props.match}  enableBreadCrumb={false}/>
                 <RctCard>
                     <div className="rct-tabs">
                         <AppBar position="static">
@@ -79,11 +102,25 @@ export default class CatalogProducts extends Component {
                                     icon={<i className="zmdi zmdi-view-web"></i>}
                                     label={"Type de produit"}
                                 />
+                                <Tab
+                                    icon={<i className="zmdi zmdi-view-web"></i>}
+                                    label={"Paquetage"}
+                                />
                             </Tabs>
                         </AppBar>
                         {/*<CatalogList />
                         <CategoryProducts />*/}
-                        {activeTab === 0 &&
+                        <TabContainer>
+                            <Switch>
+                                {/*<Redirect exact from={`${this.props.match.url}/`} to={CATALOG.PRODUCT.LIST} />*/}
+                                <Route path={PACKAGES.SELF} component={Packages} />
+                                <Route path={CATALOG.PRODUCT.SELF} component={CatalogList} />
+                                <Route path={CATEGORY.SELF} component={CategoryProducts} />
+                                <Route path={PRODUCT_TYPE.SELF} component={ProductType} />
+                            </Switch>
+                        </TabContainer>
+
+                        {/*{activeTab === 0 &&
                         <TabContainer>
                             <CatalogList />
                         </TabContainer>}
@@ -95,6 +132,10 @@ export default class CatalogProducts extends Component {
                         <TabContainer>
                             <ProductType />
                         </TabContainer>}
+                        {activeTab === 3 &&
+                        <TabContainer>
+                            <ProductType />
+                        </TabContainer>}*/}
                     </div>
                 </RctCard>
             </div>

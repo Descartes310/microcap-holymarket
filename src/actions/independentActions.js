@@ -9,7 +9,7 @@ import {
     CATEGORY_PRODUCTS,
     PRODUCT_TYPE,
     USER_PROFILE, NETWORK_PROFILE_TYPE, USERS,
-    COMMUNITY
+    COMMUNITY, PACKAGES
 } from "Url/backendUrl";
 import {SET_CURRENT_COMMUNITY, SET_CURRENT_COMMUNITY_SUCCESS} from "Actions/types";
 
@@ -222,7 +222,7 @@ export const createNetworkProfileType = (data, branchId) => {
 };
 
 export const createUsers = (data, branchId) => {
-    const url = `${USERS.CREATE}?branch_id=${branchId}`;
+    const url = `${USERS.CREATE.PERSON}?branch_id=${branchId}`;
     return makeRequest('post', url, data);
 };
 
@@ -275,4 +275,17 @@ export const deleteInvitation = (invitationId) => {
         value: invitationId,
     }]);
     return makeRequest('put', url);
+};
+
+export const getUserType = () => {
+    return new Promise((resolve, reject) => {
+        api.get(SYSTEM_OBJECT.USER_TYPE)
+            .then(result => resolve(result.data))
+            .catch(error => reject(error));
+    });
+};
+
+export const createPackage = (data, branchId) => {
+    const url = `${PACKAGES.CREATE}?branch_id=${branchId}`;
+    return makeRequest('post', url, data);
 };

@@ -46,6 +46,12 @@ export const CATALOG = {
         CREATE: '/catalog/products/create',
         SHOW: '/catalog/products/show/:id',
     },
+    SALE: {
+        SELF: '/catalog/sale',
+        LIST: '/catalog/sale/list',
+        CREATE: '/catalog/sale/create',
+        SHOW: '/catalog/sale/show/:id',
+    },
 };
 
 export const CATEGORY = {
@@ -62,6 +68,13 @@ export const PRODUCT_TYPE = {
     LIST: '/product-type/list',
     CREATE: '/product-type/create',
     SHOW: '/product-type/show/:id',
+};
+
+export const PACKAGES = {
+    SELF: '/packages',
+    LIST: '/packages/list',
+    CREATE: '/packages/create',
+    SHOW: '/packages/show/:id',
 };
 
 export const USERS = {

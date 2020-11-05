@@ -60,7 +60,7 @@ export default {
                "permissions": [Permission.navLinks.products.childLinks.catalogProducts.viewMenu],
             },
             {
-               "path": NETWORK.COVERAGE,
+               "path": CATALOG.SALE.SELF,
                "new_item": false,
                "menu_title": "Catalogue ventes",
                "permissions": [Permission.navLinks.products.childLinks.catalogProducts.viewMenu],

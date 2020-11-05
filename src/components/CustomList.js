@@ -43,9 +43,9 @@ class CustomList extends Component {
 
     render() {
         const {
-            match, history, classes,
             titleList, itemsFoundText,
             loading, list, error, renderItem,
+            match, history, classes, showSearch,
             addText, onAddClick, addPermissions, searchPermissions,
         } = this.props;
 
@@ -72,24 +72,26 @@ class CustomList extends Component {
                                         <i className="zmdi zmdi zmdi-plus ml-2" />
                                     </Button>
                                 )}
-                                <div className={classes.flex}>
-                                    <FormControl>
-                                        <InputGroup>
-                                            <InputGroupAddon addonType="prepend">
-                                                <IconButton aria-label="facebook">
-                                                    <i className="zmdi zmdi-search" />
-                                                </IconButton>
-                                            </InputGroupAddon>
-                                            <Input
-                                                type="text"
-                                                name="search"
-                                                value={this.state.searched}
-                                                placeholder={'Recherchez...'}
-                                                onChange={event => this.onSearchChanged(event, canSearch)}
-                                            />
-                                        </InputGroup>
-                                    </FormControl>
-                                </div>
+                                {showSearch && (
+                                    <div className={classes.flex}>
+                                        <FormControl>
+                                            <InputGroup>
+                                                <InputGroupAddon addonType="prepend">
+                                                    <IconButton aria-label="facebook">
+                                                        <i className="zmdi zmdi-search" />
+                                                    </IconButton>
+                                                </InputGroupAddon>
+                                                <Input
+                                                    type="text"
+                                                    name="search"
+                                                    value={this.state.searched}
+                                                    placeholder={'Recherchez...'}
+                                                    onChange={event => this.onSearchChanged(event, canSearch)}
+                                                />
+                                            </InputGroup>
+                                        </FormControl>
+                                    </div>
+                                )}
                                 {itemsFoundText && (
                                     <p className={classes.title}>
                                         {itemsFoundText(orderedItems.length)}
@@ -138,6 +140,7 @@ CustomList.propTypes = {
     titleList: PropTypes.string,
     renderItem: PropTypes.func.isRequired,
     loading: PropTypes.bool.isRequired,
+    showSearch: PropTypes.bool,
     list: PropTypes.any,
     error: PropTypes.any,
     itemsFoundText: PropTypes.func,
@@ -153,6 +156,7 @@ CustomList.defaultProps = {
         permissions: [],
         some: true,
     },
+    showSearch: true
 };
 
 export default withRouter(connect(() => ({}), {

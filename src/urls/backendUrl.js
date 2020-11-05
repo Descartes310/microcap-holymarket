@@ -32,6 +32,7 @@ export const SYSTEM_OBJECT = {
     ORGANISATION: 'public/system/objects/organisation-legal-form',
     ORGANISATION_POST: 'public/system/objects/organisation-post',
     NETWORK_PROFILE_TYPE: 'public/system/objects/network-profile-type',
+    USER_TYPE: 'public/system/objects/user-type',
 };
 
 export const BRANCH = {
@@ -98,6 +99,11 @@ export const PRODUCT_TYPE = {
     SUB_CATEGORY: 'public/type-products/{id}/type-products',
 };
 
+export const PACKAGES = {
+    LIST: 'public/packages',
+    CREATE: 'public/packages',
+};
+
 export const USER_PROFILE = {
     GET_ALL: 'public/profiles',
     CREATE: 'public/profiles',
@@ -108,8 +114,11 @@ export const USER_PROFILE = {
 
 export const USERS = {
     SEARCH: 'public/users/search',
-    GET_ALL: 'public/users/organisations',
-    CREATE: 'public/users/organisations/with-profile',
+    GET_ALL: 'public/users/persons',
+    CREATE: {
+        PERSON: 'public/users/persons/with-profile',
+        ORGANISATION: 'public/users/organisations/with-profile',
+    },
 };
 
 export const COMMUNITY = {

@@ -25,6 +25,9 @@ export function hexToRgbA(hex, alpha) {
  * Text Truncate
  */
 export function textTruncate(str, length, ending) {
+    if (!str) {
+        return "";
+    }
     if (length == null) {
         length = 100;
     }

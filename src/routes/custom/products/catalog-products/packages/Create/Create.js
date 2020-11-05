@@ -1,0 +1,404 @@
+import React, {Component, useState} from 'react';
+import {Form, FormGroup, Input as InputStrap} from 'reactstrap';
+import {useForm} from "react-hook-form";
+import IntlMessages from "Util/IntlMessages";
+import {injectIntl} from 'react-intl';
+import _ from 'lodash';
+
+import Button from "@material-ui/core/Button";
+import SweetAlert from 'react-bootstrap-sweetalert';
+import {getPackages, getProductTypes} from "Actions/GeneralActions";
+import {connect} from "react-redux";
+import {setRequestGlobalAction} from "Actions/RequestGlobalAction";
+import CustomList from "Components/CustomList";
+import InputLabel from "@material-ui/core/InputLabel/InputLabel";
+import IconButton from "@material-ui/core/IconButton";
+import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
+import InputComponent from "Components/InputComponent";
+import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
+import DialogTitle from "@material-ui/core/DialogTitle/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent/DialogContent";
+import Dialog from "@material-ui/core/Dialog/Dialog";
+import {useTheme} from "@material-ui/core";
+import useMediaQuery from "@material-ui/core/useMediaQuery/useMediaQuery";
+import CancelIcon from '@material-ui/icons/Cancel';
+import Select from "@material-ui/core/Select/Select";
+import CustomAsyncComponent from "Components/CustomAsyncComponent";
+import FormControl from "@material-ui/core/FormControl";
+import MenuItem from "@material-ui/core/MenuItem";
+import ErrorInputComponent from "Components/ErrorInputComponent";
+import Input from "@material-ui/core/Input/Input";
+import {createPackage} from "Actions/independentActions";
+import {NotificationManager} from "react-notifications";
+import {ERROR_500} from "Constants/errors";
+import {PACKAGES} from "Url/frontendUrl";
+
+class Create extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            name: '',
+            description: '',
+            chosenProducts: [],
+            storeProducts: [],
+            showCreateBox: false,
+            showDeleteBox: false,
+            deleteProduct: {},
+        }
+    }
+
+    componentDidMount() {
+        this.props.getProductTypes(this.props.authUser.user.branch.id)
+            .then(products => {
+                this.setState({storeProducts: products});
+            })
+    }
+
+
+    onAddProduct = (product, quantity) => {
+        this.setState(prevState => ({
+            chosenProducts: [...prevState.chosenProducts, {...product, quantity}],
+            storeProducts: prevState.storeProducts.filter(p => p.id !== product.id),
+            showCreateBox: false,
+        }));
+    };
+
+    onDeleteProduct = () => {
+        this.setState(prevState => ({
+            chosenProducts: prevState.chosenProducts.filter(p => p.id !== this.state.deleteProduct.id),
+            storeProducts: [...prevState.storeProducts, this.state.deleteProduct],
+            showDeleteBox: false,
+        }));
+    };
+
+    validate = () => {
+        if (!this.state.name || (this.state.name && this.state.name.length === 0)) {
+            NotificationManager.error("Veuillez bien remplir le champ nom");
+            return false;
+        }
+
+        if (!this.state.description || (this.state.description && this.state.description.length === 0)) {
+            NotificationManager.error("Veuillez bien remplir le champ description");
+            return false;
+        }
+
+        if (!this.state.chosenProducts || (this.state.chosenProducts && this.state.chosenProducts.length === 0)) {
+            NotificationManager.error("Veuillez Selectionner au moins un produit");
+            return false;
+        }
+
+        return true;
+    };
+
+    onSubmit = (event) => {
+        event.preventDefault();
+
+        if (this.validate()) {
+            const data = {
+                label: this.state.name,
+                description: this.state.description,
+                items: JSON.stringify(this.state.chosenProducts.map(p => ({type_product_id: p.id, quantity: p.quantity})))
+            };
+
+            this.props.setRequestGlobalAction(true);
+            createPackage(data, this.props.authUser.branchId)
+                .then(() => {
+                    NotificationManager.success("Paquetage créé avec succèss");
+                    this.props.getPackages(this.props.authUser.branchId);
+                    this.props.history.push(PACKAGES.LIST);
+                })
+                .catch(() => {
+                    NotificationManager.error(ERROR_500);
+                })
+                .finally(() => this.props.setRequestGlobalAction(false));
+        }
+    };
+
+    render() {
+
+        if (this.props.loading) {
+            return (<RctSectionLoader/>);
+        }
+
+        return (
+            <div>
+                <Form onSubmit={this.onSubmit}>
+                    <FormGroup className="has-wrapper">
+                        <InputLabel className="text-left" htmlFor="name">
+                            Nom du paquetage
+                        </InputLabel>
+                        <InputStrap
+                            required
+                            id="name"
+                            placeholder="Jean"
+                            name={'firstName'}
+                            value={this.state.name}
+                            className="has-input input-lg"
+                            onChange={event => this.setState({name: event.target.value})}
+                        />
+                        <span className="has-icon"><i className="ti-pencil"></i></span>
+                    </FormGroup>
+
+                    <FormGroup className="has-wrapper">
+                        <InputLabel className="text-left" htmlFor="description">
+                            Description
+                        </InputLabel>
+                        <InputStrap
+                            required
+                            id="description"
+                            name={'description'}
+                            value={this.state.description}
+                            className="has-input input-lg"
+                            onChange={event => this.setState({description: event.target.value})}
+                        />
+                        <span className="has-icon"><i className="ti-pencil"></i></span>
+                    </FormGroup>
+
+                    <CustomList
+                        loading={false}
+                        // showSearch={false}
+                        list={this.state.chosenProducts}
+                        onAddClick={() => this.setState({showCreateBox: true})}
+                        itemsFoundText={n => `${n} produit(s) sélectionné(s)`}
+                        addPermissions={{
+                            permissions: [],
+                        }}
+                        renderItem={list => (
+                            <>
+                                {list && list.length === 0 ? (
+                                    <div className="d-flex justify-content-center align-items-center py-50">
+                                        <h4>
+                                            Aucun produits sélectionnés
+                                        </h4>
+                                    </div>
+                                ) : (
+                                    <div className="table-responsive">
+                                        <table className="table table-hover table-middle mb-0 text-center">
+                                            <thead>
+                                            <tr>
+                                                <th><IntlMessages id="components.name" /></th>
+                                                <th>Quantité</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {list && list.map((product, key) => (
+                                                <tr key={key} className="cursor-pointer">
+                                                    <td>
+                                                        <div className="media">
+                                                            <div className="media-body pt-10">
+                                                                <h4 className="m-0 fw-bold text-dark">{product.label}</h4>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div className="media">
+                                                            <div className="media-body pt-10">
+                                                                <h4 className="m-0 fw-bold text-dark">{product.quantity}</h4>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div className="media">
+                                                            <div className="media-body pt-10">
+                                                                <a href="#" className="text-danger" onClick={() => this.setState({showDeleteBox: true, deleteProduct: product})}>
+                                                                    <span className="material-icons mr-10">delete</span>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                )}
+                            </>
+                        )}
+                    />
+
+                    <FormGroup className="mb-15">
+                        <Button
+                            type="submit"
+                            color="primary"
+                            disabled={this.props.requestGlobalLoader}
+                            variant="contained"
+                            // onClick={this.onSubmit}
+                            className="text-white font-weight-bold"
+                        >
+                            <IntlMessages id="button.next" /> <i className="ti-arrow-right font-weight-bold ml-2"></i>
+                        </Button>
+                    </FormGroup>
+                </Form>
+
+                <AddProduct
+                    show={this.state.showCreateBox}
+                    products={this.state.storeProducts}
+                    onSave={this.onAddProduct}
+                    onClose={() => this.setState({showCreateBox: false})}
+                />
+
+                <SweetAlert
+                    type="danger"
+                    show={this.state.showDeleteBox}
+                    showCancel
+                    showConfirm
+                    title={"Confirmation"}
+                    customButtons={(
+                        <>
+                            <Button
+                                color="blue"
+                                variant="outlined"
+                                onClick={() => this.setState({showDeleteBox: false})}
+                                className="text-white bg-blue font-weight-bold mr-3"
+                            >
+                                Non je ne veux pas
+                            </Button>
+                            <Button
+                                color="primary"
+                                variant="contained"
+                                className="bg-danger text-white font-weight-bold"
+                                onClick={this.onDeleteProduct}
+                            >
+                                Oui je veux
+                            </Button>
+                        </>
+                    )}
+                    onConfirm={this.onDeleteProduct}
+                >
+                    Etes-vous sur de vouloir supprimé ce produit ?
+                </SweetAlert>
+
+            </div>
+        );
+    }
+}
+
+// map state to props
+const mapStateToProps = ({ requestGlobalLoader, productTypes, authUser }) => {
+    return {
+        requestGlobalLoader,
+        loading: productTypes.loading,
+        productTypes: productTypes.data,
+        error: productTypes.error,
+        authUser: authUser.data,
+    }
+};
+
+export default connect(mapStateToProps, {getPackages, getProductTypes, setRequestGlobalAction})
+(injectIntl(Create));
+
+const AddProduct = ({show, products, onSave, onClose}) => {
+
+    // const [product, setProduct] = useState(products[0]);
+    // const [quantity, setQuantity] = useState(1);
+    const theme = useTheme();
+    const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
+
+    const { control, register, errors, handleSubmit, setValue, watch} = useForm();
+
+    const onSubmit = (data) => {
+        const productId = data.product;
+        onSave(products.find(p => p.id === productId), data.quantity);
+    };
+
+    return (
+        <Dialog
+            open={show}
+            onClose={onClose}
+            fullScreen={fullScreen}
+            aria-labelledby="responsive-dialog-title"
+            disableBackdropClick
+            disableEscapeKeyDown
+            maxWidth={'lg'}
+            fullWidth
+        >
+            <DialogTitle id="form-dialog-title">
+                <div className="row justify-content-between align-items-center">
+                    Ajouté un nouveau produit
+                    <IconButton
+                        color="primary"
+                        aria-label="close"
+                        className="text-danger"
+                        // onClick={() => this.setState({showCreateBox: false})}>
+                        onClick={onClose}>
+                        <CancelIcon />
+                    </IconButton>
+                </div>
+            </DialogTitle>
+            <DialogContent>
+                <RctCollapsibleCard>
+                    <Form onSubmit={onSubmit}>
+                        <div className="w-100">
+
+                            <CustomAsyncComponent
+                                loading={false}
+                                data={products}
+                                component={data => (
+                                    <div className="form-group text-left">
+                                        <FormControl fullWidth>
+                                            <InputLabel className="text-left" htmlFor="representativePosition">
+                                                Produit
+                                            </InputLabel>
+                                            <InputComponent
+                                                isRequired
+                                                className="mt-0"
+                                                errors={errors}
+                                                control={control}
+                                                register={register}
+                                                componentType="select"
+                                                name={'product'}
+                                                defaultValue={data.id ? data.id : undefined}
+                                                as={<Select input={<Input name="representativePosition" id="representativePosition" />}>
+                                                    {data.map((item, index) => (
+                                                        <MenuItem key={item.id} value={item.id} className="center-hor-ver">
+                                                            {item.label}
+                                                        </MenuItem>
+                                                    ))}
+                                                </Select>}
+                                            />
+                                        </FormControl>
+                                    </div>
+                                )}
+                            />
+
+                            <FormGroup className="has-wrapper">
+                                <InputLabel className="text-left" htmlFor="quantity">
+                                    Quantité
+                                </InputLabel>
+                                <InputComponent
+                                    isRequired
+                                    type="number"
+                                    id="quantity"
+                                    errors={errors}
+                                    register={register}
+                                    className="input-lg"
+                                    name={'quantity'}
+                                    placeholder="10"
+                                    otherValidator={{minLength: 1 }}
+                                >
+                                    {errors.quantity?.type === 'pattern' && (
+                                        <ErrorInputComponent text="Entrer une quantité supérieur à 0" />
+                                    )}
+                                </InputComponent>
+                                <span className="has-icon"><i className="ti-pencil"></i></span>
+                            </FormGroup>
+                        </div>
+
+                        <FormGroup className="mb-15">
+                            <Button
+                                // type="submit"
+                                color="primary"
+                                // disabled={loading}
+                                variant="contained"
+                                className="text-white font-weight-bold mr-3"
+                                onClick={handleSubmit(onSubmit)}
+                            >
+                                Ajouter
+                            </Button>
+                        </FormGroup>
+                    </Form>
+                </RctCollapsibleCard>
+            </DialogContent>
+        </Dialog>
+    );
+};

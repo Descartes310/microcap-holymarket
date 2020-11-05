@@ -110,7 +110,7 @@ class UserList extends Component {
                                     {orderedItems.length} utilisateur(s) trouvé(s)
                                 </p>
                             </div>
-                            <>
+                            <div className="rct-tabs">
                                 <ul className="list-unstyled m-0">
                                     {/*{(emails && emails.length > 0 && emails !== null) ? emails.map((email, key) => (*/}
                                     {(orderedItems && orderedItems.length > 0) ? orderedItems.map((user, key) => (
@@ -129,7 +129,7 @@ class UserList extends Component {
                                         </div>
                                     }
                                 </ul>
-                            </>
+                            </div>
                         </RctCollapsibleCard>
                     )
                 }

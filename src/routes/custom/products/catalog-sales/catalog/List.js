@@ -44,7 +44,7 @@ class CatalogList extends Component {
     }
 
     componentDidMount() {
-        this.props.getCatalogsOfOneType(Product.PRODUCT, this.props.authUser.branchId);
+        this.props.getCatalogsOfOneType(Product.SALE, this.props.authUser.branchId);
     }
 
     handleOrder = (value, data) => {
@@ -82,7 +82,7 @@ class CatalogList extends Component {
         setActiveCatalog(this.state.catalogId)
             .then(result => {
                 NotificationManager.success(this.props.intl.formatMessage({id: 'activeCatalog.alert.successText'}));
-                this.props.getCatalogsOfOneType(Product.PRODUCT, this.props.authUser.branchId);
+                this.props.getCatalogsOfOneType(Product.SALE, this.props.authUser.branchId);
                 this.setState({showWarningBox: false});
             })
             .catch(() => {
@@ -138,7 +138,7 @@ class CatalogList extends Component {
                             <CatalogCreate
                                 show={showCreateBox}
                                 onClose={() => this.setState({showCreateBox: false})}
-                                catalog={{value: Product.PRODUCT, displayName: this.props.intl.formatMessage({id: "sidebar.product"})}}
+                                catalog={{value: Product.SALE, displayName: "Vente"}}
                             />
                             {orderedItems.length === 0
                                 ? (
@@ -154,7 +154,6 @@ class CatalogList extends Component {
                                                 <tr>
                                                     <th><IntlMessages id="components.name" /></th>
                                                     <th><IntlMessages id="widgets.description" /></th>
-                                                    <th><IntlMessages id="widgets.action" /></th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
@@ -176,13 +175,6 @@ class CatalogList extends Component {
                                                                     <h4 className="m-0 fw-bold text-dark">{catalog.description}</h4>
                                                                 </div>
                                                             </div>
-                                                        </td>
-                                                        <td className="table-action">
-                                                            <Switch
-                                                                checked={catalog.active}
-                                                                onChange={() => this.handleActiveChange(catalog.id)}
-                                                                aria-label="checkedA"
-                                                            />
                                                         </td>
                                                     </tr>
                                                 ))}

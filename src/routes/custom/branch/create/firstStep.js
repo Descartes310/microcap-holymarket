@@ -100,7 +100,7 @@ const FirstStep = props => {
                     data={organisationType.data}
                     onRetryClick={_getOrganisationType}
                     component={data => (
-                        <div className="col-6 form-group text-left">
+                        <div className="col-md-4 col-sm-12 form-group text-left">
                             <FormControl fullWidth>
                                 <InputLabel className="text-left" htmlFor="organisationType-helper"><IntlMessages id="common.organisationType"/></InputLabel>
                                 <InputComponent
@@ -124,7 +124,7 @@ const FirstStep = props => {
                         </div>
                     )}
                 />
-                <FormGroup className="col-6 has-wrapper">
+                <FormGroup className="col-md-4 col-sm-12 has-wrapper">
                     <InputLabel className="text-left" htmlFor="licenseNumber"><IntlMessages id="branch.field.licenseNumber"/></InputLabel>
                     <InputComponent
                         id="link"
@@ -132,6 +132,22 @@ const FirstStep = props => {
                         errors={errors}
                         register={register}
                         name={'licenseNumber'}
+                        className="input-lg"
+                        // placeholder={intl.formatMessage({id: "common.commercialName"})}
+                    />
+                    <span className="has-icon"><i className="ti-pencil"></i></span>
+                </FormGroup>
+                <FormGroup className="col-md-4 col-sm-12 has-wrapper">
+                    <InputLabel className="text-left" htmlFor="maxAdmins">
+                        Max. Nombre d'utilisateurs
+                    </InputLabel>
+                    <InputComponent
+                        id="link"
+                        isRequired
+                        type="number"
+                        errors={errors}
+                        register={register}
+                        name={'maxAdmins'}
                         className="input-lg"
                         // placeholder={intl.formatMessage({id: "common.commercialName"})}
                     />

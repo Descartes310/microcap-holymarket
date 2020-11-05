@@ -31,6 +31,7 @@ import UserCommunitiesAdminReducer from './UserCommunitiesAdminReducer';
 import UserCommunitiesNotInReducer from './UserCommunitiesNotInReducer';
 import ComInvitationsPendingReducer from './ComInvitationsPendingReducer';
 import CurrentCommunityReducer from './CurrentCommunityReducer';
+import PackagesReducer from './PackagesReducer';
 
 const reducers = combineReducers({
    settings,
@@ -62,6 +63,7 @@ const reducers = combineReducers({
    userCommunitiesNotIn: UserCommunitiesNotInReducer,
    comInvitationsPending: ComInvitationsPendingReducer,
    currentCommunity: CurrentCommunityReducer,
+   packages: PackagesReducer,
 });
 
 export default reducers;

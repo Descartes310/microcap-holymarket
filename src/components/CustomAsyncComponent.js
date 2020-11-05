@@ -9,7 +9,7 @@ const CustomAsyncComponent = ({loading, data, component, onRetryClick, errorMess
 
     const _onRetryClick = (event) => {
         event.preventDefault();
-        onRetryClick();
+        if(onRetryClick) onRetryClick();
     };
 
     return (
