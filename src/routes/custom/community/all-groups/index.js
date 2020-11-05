@@ -24,7 +24,7 @@ class AllGroups extends Component {
         this.props.setRequestGlobalAction(true);
         sendRequestInvitation(group.id)
             .then(() => {
-                NotificationManager.success("Votre demande pour le groupe " + this.props.invitation.group.label + " a été envoyé");
+                NotificationManager.success("Votre demande pour le groupe " + group.label + " a été envoyé");
                 this.props.getInvitationsPending();
             })
             .catch(() => {
