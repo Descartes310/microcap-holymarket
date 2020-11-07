@@ -56,7 +56,7 @@ class CustomList extends Component {
 
         return (
             <div className="page-list">
-                {titleList && (<PageTitleBar title={titleList} match={match} history={history} />)}
+                {titleList && (<PageTitleBar title={titleList} match={match} history={history} enableBreadCrumb={false} />)}
                 {loading || orderedItems === null
                     ? (<RctSectionLoader/>)
                     : (

@@ -109,6 +109,24 @@ export const COMMUNITY = {
     },
 };
 
+export const COMMERCIAL_MANAGEMENT = {
+    COMMERCIAL_OFFER: {
+        SELF: '/commercial/offer',
+        LIST: '/commercial/offer/list',
+        CREATE: '/commercial/offer/create',
+    },
+    COMMERCIAL_OPERATION: {
+        SELF: '/commercial/operation',
+        LIST: '/commercial/operation/list',
+        CREATE: '/commercial/operation/create',
+    },
+    COMMERCIAL_OPERATION_TYPE: {
+        SELF: '/commercial/operation-type',
+        LIST: '/commercial/operation-type/list',
+        CREATE: '/commercial/operation-type/create',
+    },
+};
+
 export const joinUrlWithParams = (to, params) => {
     let url = to;
     params.forEach(param => {

@@ -24,7 +24,8 @@ import {
     COM_INVITATIONS_PENDING,
     SET_CURRENT_COMMUNITY,
     SET_CURRENT_COMMUNITY_SUCCESS, SET_CURRENT_COMMUNITY_FAILURE,
-    PACKAGES
+    PACKAGES,
+    COMMERCIAL_OPERATION_TYPE, COMMERCIAL_OPERATION, COMMERCIAL_OFFER
 } from 'Actions/types';
 
 import api from './../api';
@@ -39,6 +40,7 @@ import {
     USERS as USERS_API,
     COMMUNITY as COMMUNITY_API,
     PACKAGES as PACKAGES_API,
+    COMMERCIAL_MANAGEMENT as COMMERCIAL_MANAGEMENT_API,
     joinBaseUrlWithParams,
     BRANCH} from 'Url/backendUrl';
 
@@ -66,11 +68,11 @@ export const getCatalogsOfOneType = (name, branchId) => (dispatch) => {
         .get(url)
         .then((response) => {
             dispatch({ type: CATALOG_TYPE_SUCCESS, payload: response.data });
-            return Promise.resolve();
+            return Promise.resolve(response.data);
         })
         .catch((error) => {
             dispatch({ type: CATALOG_TYPE_FAILURE });
-            NotificationManager.error(error.message);
+            // NotificationManager.error(error.message);
             return Promise.reject();
         });
 };
@@ -190,4 +192,19 @@ export const getMembersOfOneGroup = (group) => (dispatch) => {
 export const getPackages = (branchId) => (dispatch) => {
     const url = `${PACKAGES_API.LIST}?branch_id=${branchId}`;
     return makeActionRequest('get', url, PACKAGES, dispatch);
+};
+
+export const getComOperationType = (branchId) => (dispatch) => {
+    const url = `${COMMERCIAL_MANAGEMENT_API.OPERATION_TYPE.GET_ALL}?branch_id=${branchId}`;
+    return makeActionRequest('get', url, COMMERCIAL_OPERATION_TYPE, dispatch);
+};
+
+export const getComOperation = (branchId) => (dispatch) => {
+    const url = `${COMMERCIAL_MANAGEMENT_API.OPERATION.GET_ALL}?branch_id=${branchId}`;
+    return makeActionRequest('get', url, COMMERCIAL_OPERATION, dispatch);
+};
+
+export const getComOffer = (branchId) => (dispatch) => {
+    const url = `${COMMERCIAL_MANAGEMENT_API.OFFER.GET_ALL}?branch_id=${branchId}`;
+    return makeActionRequest('get', url, COMMERCIAL_OFFER, dispatch);
 };

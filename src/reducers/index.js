@@ -32,6 +32,10 @@ import UserCommunitiesNotInReducer from './UserCommunitiesNotInReducer';
 import ComInvitationsPendingReducer from './ComInvitationsPendingReducer';
 import CurrentCommunityReducer from './CurrentCommunityReducer';
 import PackagesReducer from './PackagesReducer';
+import SystemObjectReducer from './SystemObjectReducer';
+import ComOperationTypeReducer from './ComOperationTypeReducer';
+import ComOperationReducer from './ComOperationReducer';
+import ComOfferReducer from './ComOfferReducer';
 
 const reducers = combineReducers({
    settings,
@@ -64,6 +68,10 @@ const reducers = combineReducers({
    comInvitationsPending: ComInvitationsPendingReducer,
    currentCommunity: CurrentCommunityReducer,
    packages: PackagesReducer,
+   systemObject: SystemObjectReducer,
+   comOperationType: ComOperationTypeReducer,
+   comOperation: ComOperationReducer,
+   comOffer: ComOfferReducer,
 });
 
 export default reducers;

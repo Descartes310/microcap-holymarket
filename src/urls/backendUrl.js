@@ -33,6 +33,8 @@ export const SYSTEM_OBJECT = {
     ORGANISATION_POST: 'public/system/objects/organisation-post',
     NETWORK_PROFILE_TYPE: 'public/system/objects/network-profile-type',
     USER_TYPE: 'public/system/objects/user-type',
+    PRODUCT_NATURE: 'public/system/objects/product-nature',
+    TIME_UNIT: 'public/system/objects/time-unit',
 };
 
 export const BRANCH = {
@@ -81,6 +83,7 @@ export const CATALOGS = {
 export const CATALOGS_TYPE = {
     GET_ALL: 'public/type-catalogs/catalogs',
 };
+
 export const CATEGORY_PRODUCTS = {
     ROOT: 'public/category-products/root',
     GET_ALL: 'public/category-products',
@@ -97,6 +100,7 @@ export const PRODUCT_TYPE = {
     GET_ONE: 'public/type-products/{id}',
     TYPE_PRODUCTS: 'public/type-catalogs/type-products',
     SUB_CATEGORY: 'public/type-products/{id}/type-products',
+    GET_ALL_BY_SALE: 'public/type-products/by-catalogue-vente',
 };
 
 export const PACKAGES = {
@@ -143,6 +147,24 @@ export const COMMUNITY = {
         ACCEPT: 'groups/communities/accept/invitation/{invitation_id}',
         CANCEL: 'groups/communities/cancel/invitation/{invitation_id}',
         DELETE: 'groups/communities/delete/invitation/{invitation_id}',
+    },
+};
+
+export const COMMERCIAL_MANAGEMENT = {
+    OPERATION_TYPE: {
+        GET_ALL: 'public/commercial-operation-type',
+        CREATE: 'public/commercial-operation-type',
+        UPDATE: 'public/commercial-operation-type',
+    },
+    OPERATION: {
+        GET_ALL: 'public/commercial-operation',
+        CREATE: 'public/commercial-operation',
+        UPDATE: 'public/commercial-operation',
+    },
+    OFFER: {
+        GET_ALL: 'public/commercial-offer',
+        CREATE: 'public/commercial-offer',
+        UPDATE: 'public/commercial-offer',
     },
 };
 

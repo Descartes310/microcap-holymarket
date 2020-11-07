@@ -9,7 +9,7 @@ import {
     CATEGORY_PRODUCTS,
     PRODUCT_TYPE,
     USER_PROFILE, NETWORK_PROFILE_TYPE, USERS,
-    COMMUNITY, PACKAGES
+    COMMUNITY, PACKAGES, COMMERCIAL_MANAGEMENT
 } from "Url/backendUrl";
 import {SET_CURRENT_COMMUNITY, SET_CURRENT_COMMUNITY_SUCCESS} from "Actions/types";
 
@@ -288,4 +288,29 @@ export const getUserType = () => {
 export const createPackage = (data, branchId) => {
     const url = `${PACKAGES.CREATE}?branch_id=${branchId}`;
     return makeRequest('post', url, data);
+};
+
+export const createComOperationType = (data, branchId) => {
+    const url = `${COMMERCIAL_MANAGEMENT.OPERATION_TYPE.GET_ALL}?branch_id=${branchId}`;
+    return makeRequest('post', url, data);
+};
+
+export const createComOperation = (data, branchId) => {
+    const url = `${COMMERCIAL_MANAGEMENT.OPERATION.GET_ALL}?branch_id=${branchId}`;
+    return makeRequest('post', url, data);
+};
+
+export const createOffer = (data, branchId, config) => {
+    const url = `${COMMERCIAL_MANAGEMENT.OFFER.GET_ALL}?branch_id=${branchId}`;
+    // return makeRequest('post', url, data);
+    return new Promise((resolve, reject) => {
+        api.post(url, data, config)
+            .then(result => resolve(result.data))
+            .catch(error => reject(error));
+    });
+};
+
+export const getAllProductTypeBySale = (branchId) => {
+    const url = `${PRODUCT_TYPE.GET_ALL_BY_SALE}?branch_id=${branchId}`;
+    return makeRequest('get', url);
 };

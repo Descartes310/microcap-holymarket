@@ -43,6 +43,21 @@ export const AsyncCatalogSales = Loadable({
 	loading: () => <RctPageLoader />,
 });
 
+export const AsyncComOperationType = Loadable({
+	loader: () => import("Routes/custom/commercial-management/operation-type"),
+	loading: () => <RctPageLoader />,
+});
+
+export const AsyncComOperation = Loadable({
+	loader: () => import("Routes/custom/commercial-management/operation"),
+	loading: () => <RctPageLoader />,
+});
+
+export const AsyncComOffer = Loadable({
+	loader: () => import("Routes/custom/commercial-management/offer"),
+	loading: () => <RctPageLoader />,
+});
+
 export const AsyncUserProfile = Loadable({
 	loader: () => import("Routes/custom/users/user-profile"),
 	loading: () => <RctPageLoader />,

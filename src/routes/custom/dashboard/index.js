@@ -11,14 +11,30 @@ import {
     AsyncBranchList,
     AsyncBranchNetworkCoverage,
     AsyncBranchNetworkConfiguration,
-    AsyncCatalogProducts, AsyncUserProfile, AsyncUsers, AsyncCommunity, AsyncCatalogSales,
+    AsyncCatalogProducts,
+    AsyncUserProfile,
+    AsyncUsers,
+    AsyncCommunity,
+    AsyncCatalogSales,
+    AsyncComOperationType,
+    AsyncComOperation, AsyncComOffer,
 } from 'Components/AsyncComponent/AsyncComponent';
 import Community from "Routes/custom/community";
 
 
 import Branch from "Models/Branch";
 import {useAbility} from "@casl/react";
-import {CATALOG, HOME, NETWORK, CATEGORY, PRODUCT_TYPE, USERS, COMMUNITY, PACKAGES} from "Url/frontendUrl";
+import {
+    CATALOG,
+    HOME,
+    NETWORK,
+    CATEGORY,
+    PRODUCT_TYPE,
+    USERS,
+    COMMUNITY,
+    PACKAGES,
+    COMMERCIAL_MANAGEMENT
+} from "Url/frontendUrl";
 import {AbilityContext} from "Permissions/Can";
 import {connect} from "react-redux";
 import {setAuthUser} from "Actions/AuthActions";
@@ -84,13 +100,31 @@ const Dashboard = ({ match, authUser }) => {
 
                     <CanRoute
                         path={PACKAGES.SELF}
-                        component={AsyncCatalogProducts}
+                        component={AsyncCatalogSales}
                         permissions={[]}
                     />
 
                     <CanRoute
                         path={CATALOG.SALE.SELF}
                         component={AsyncCatalogSales}
+                        permissions={[]}
+                    />
+
+                    <CanRoute
+                        path={COMMERCIAL_MANAGEMENT.COMMERCIAL_OFFER.SELF}
+                        component={AsyncComOffer}
+                        permissions={[]}
+                    />
+
+                    <CanRoute
+                        path={COMMERCIAL_MANAGEMENT.COMMERCIAL_OPERATION_TYPE.SELF}
+                        component={AsyncComOperationType}
+                        permissions={[]}
+                    />
+
+                    <CanRoute
+                        path={COMMERCIAL_MANAGEMENT.COMMERCIAL_OPERATION.SELF}
+                        component={AsyncComOperation}
                         permissions={[]}
                     />
 

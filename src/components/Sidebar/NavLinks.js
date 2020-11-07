@@ -1,5 +1,5 @@
 // sidebar nav links
-import {CATALOG, COMMUNITY, NETWORK, USERS} from 'Url/frontendUrl';
+import {CATALOG, COMMERCIAL_MANAGEMENT, COMMUNITY, NETWORK, USERS} from 'Url/frontendUrl';
 import Branch from 'Models/Branch';
 import Permission from "Enums/Permissions";
 
@@ -51,7 +51,6 @@ export default {
          "menu_icon": "zmdi zmdi-widgets",
          "new_item": false,
          "permissions": [Permission.navLinks.products.viewMenu],
-         'subject': Branch,
          "child_routes": [
             {
                "menu_title": "Catalogue produits",
@@ -70,6 +69,32 @@ export default {
                "new_item": false,
                "menu_title": "Catalogue distributions",
                "permissions": [Permission.navLinks.products.childLinks.catalogDistribution.viewMenu],
+            },
+         ]
+      },
+      {
+         "menu_title": "Gestion commercial",
+         "menu_icon": "zmdi zmdi-widgets",
+         "new_item": false,
+         "permissions": [],
+         "child_routes": [
+            {
+               "menu_title": "Type d'opération commerciale",
+               "new_item": false,
+               "path": COMMERCIAL_MANAGEMENT.COMMERCIAL_OPERATION_TYPE.SELF,
+               "permissions": [],
+            },
+            {
+               "path": COMMERCIAL_MANAGEMENT.COMMERCIAL_OPERATION.SELF,
+               "new_item": false,
+               "menu_title": "Opération commerciale",
+               "permissions": [],
+            },
+            {
+               "path": COMMERCIAL_MANAGEMENT.COMMERCIAL_OFFER.SELF,
+               "new_item": false,
+               "menu_title": "Offre commerciale",
+               "permissions": [],
             },
          ]
       },
