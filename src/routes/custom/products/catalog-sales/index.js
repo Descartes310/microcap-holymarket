@@ -17,8 +17,9 @@ import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
 // intl messages
 import IntlMessages from 'Util/IntlMessages';
 import CatalogList from "Routes/custom/products/catalog-sales/catalog";
-import {CATALOG} from "Url/frontendUrl";
+import {CATALOG, PACKAGES} from "Url/frontendUrl";
 import {withRouter, Switch, Redirect, Route} from "react-router-dom";
+import Packages from "Routes/custom/products/catalog-sales/packages";
 
 // For Tab Content
 function TabContainer(props) {
@@ -35,6 +36,7 @@ export default class CatalogProducts extends Component {
 
         const defaultState = (function (url) {
             if (url.includes(CATALOG.SALE.SELF)) return 0;
+            else if (url.includes(PACKAGES.SELF)) return 1;
             else return 0;
         })(window.location.pathname);
 
@@ -51,6 +53,8 @@ export default class CatalogProducts extends Component {
             switch (value) {
                 case 0:
                     url = CATALOG.SALE.SELF; break;
+                case 1:
+                    url = PACKAGES.SELF; break;
                 default:
                     url = CATALOG.SALE.LIST; break;
             }
@@ -77,7 +81,11 @@ export default class CatalogProducts extends Component {
                             >
                                 <Tab
                                     icon={<i className="zmdi zmdi-library"></i>}
-                                    label={<IntlMessages id="sidebar.catalog" />}
+                                    label={"Catalogue"}
+                                />
+                                <Tab
+                                    icon={<i className="zmdi zmdi-view-web"></i>}
+                                    label={"Paquetage"}
                                 />
                             </Tabs>
                         </AppBar>
@@ -86,6 +94,7 @@ export default class CatalogProducts extends Component {
                         <TabContainer>
                             <Switch>
                                 {/*<Redirect exact from={`${this.props.match.url}/`} to={CATALOG.PRODUCT.LIST} />*/}
+                                <Route path={PACKAGES.SELF} component={Packages} />
                                 <Route path={CATALOG.SALE.SELF} component={CatalogList} />
                             </Switch>
                         </TabContainer>

@@ -4,7 +4,6 @@ import IntlMessages from 'Util/IntlMessages';
 import {getPackages, setRequestGlobalAction} from "Actions";
 import {injectIntl} from "react-intl";
 import {withStyles} from "@material-ui/core";
-import UserProfileCreate from "./Create";
 import {withRouter} from "react-router-dom";
 import {AbilityContext} from "Permissions/Can";
 import Permission from "Enums/Permissions";

@@ -7,7 +7,7 @@ import _ from 'lodash';
 
 import Button from "@material-ui/core/Button";
 import SweetAlert from 'react-bootstrap-sweetalert';
-import {getPackages, getProductTypes} from "Actions/GeneralActions";
+import {getCatalogsOfOneType, getPackages, getProductTypes, getCatalogProducts} from "Actions/GeneralActions";
 import {connect} from "react-redux";
 import {setRequestGlobalAction} from "Actions/RequestGlobalAction";
 import CustomList from "Components/CustomList";
@@ -28,10 +28,12 @@ import FormControl from "@material-ui/core/FormControl";
 import MenuItem from "@material-ui/core/MenuItem";
 import ErrorInputComponent from "Components/ErrorInputComponent";
 import Input from "@material-ui/core/Input/Input";
-import {createPackage} from "Actions/independentActions";
+import {createPackage, getOneCatalog} from "Actions/independentActions";
 import {NotificationManager} from "react-notifications";
 import {ERROR_500} from "Constants/errors";
 import {PACKAGES} from "Url/frontendUrl";
+import Product from "Enums/Product";
+import FetchFailedComponent from "Components/FetchFailedComponent";
 
 class Create extends Component {
     constructor(props) {
@@ -44,16 +46,60 @@ class Create extends Component {
             showCreateBox: false,
             showDeleteBox: false,
             deleteProduct: {},
+            catalogSale: {},
+            loadingProducts: false,
         }
     }
 
     componentDidMount() {
-        this.props.getProductTypes(this.props.authUser.user.branch.id)
-            .then(products => {
-                this.setState({storeProducts: products});
-            })
+        this.loadData();
     }
 
+    loadData = () => {
+        this.props.getCatalogsOfOneType(Product.SALE, this.props.authUser.branchId)
+            .then(result => {
+                console.log("result => ", result);
+                if (result.length > 0) {
+                    this.setState({catalogSale: result[0].id});
+                    this.fetchProducts(result[0].id);
+                } else {
+                    NotificationManager.warning("Vous devez d'abord créer un catalogue de vente avant de pousuivre cette action");
+                }
+            })
+            .catch(error => {
+                console.log(" getCatalogsOfOneType error => ", error);
+                NotificationManager.error(ERROR_500);
+            })
+
+        /*this.props.getProductTypes(this.props.authUser.user.branch.id)
+            .then(products => {
+                this.setState({storeProducts: products});
+            });*/
+    };
+
+    fetchProducts = catalogId => {
+        this.setState({loadingProducts: true});
+        // getOneCatalog(result[0].id)
+        this.props.getCatalogProducts(catalogId)
+            .then(res => {
+                if (res.length === 0) {
+                    NotificationManager.warning("Aucun produit disponible pour ce catalogue");
+                }
+                this.setState({storeProducts: res});
+            })
+            .catch(() => {
+                NotificationManager.error(ERROR_500);
+            })
+            .finally(() => this.setState({loadingProducts: false}));
+    };
+
+    handleOnCatalogChange = (value) => {
+        if (value !== this.state.catalogSale) {
+            this.setState({catalogSale: value}, () => {
+                this.fetchProducts(value);
+            });
+        }
+    };
 
     onAddProduct = (product, quantity) => {
         this.setState(prevState => ({
@@ -95,6 +141,7 @@ class Create extends Component {
 
         if (this.validate()) {
             const data = {
+                catalog_id: this.state.catalogSale,
                 label: this.state.name,
                 description: this.state.description,
                 items: JSON.stringify(this.state.chosenProducts.map(p => ({type_product_id: p.id, quantity: p.quantity})))
@@ -115,14 +162,45 @@ class Create extends Component {
     };
 
     render() {
+        const { catalogTypes } = this.props;
+        const { catalogSale, loadingProducts } = this.state;
 
-        if (this.props.loading) {
+        if (catalogTypes.loading) {
             return (<RctSectionLoader/>);
+        }
+
+        if (!catalogTypes.loading && !catalogTypes.data) {
+           return ( <FetchFailedComponent _onRetryClick={this.loadData} />)
         }
 
         return (
             <div>
                 <Form onSubmit={this.onSubmit}>
+
+                    <CustomAsyncComponent
+                        loading={false}
+                        data={catalogTypes.data}
+                        component={data => (
+                            <div className="form-group text-left">
+                                <FormControl fullWidth>
+                                    <InputLabel className="text-left" htmlFor="operator-helper">
+                                        Catalogue de vente
+                                    </InputLabel>
+                                    <Select
+                                        value={catalogSale}
+                                        onChange={event => this.handleOnCatalogChange(event.target.value)}
+                                        input={<Input name="operator" id="operator-helper" />}>
+                                        {data.map((item, index) => (
+                                            <MenuItem key={index} value={item.id} className="center-hor-ver">
+                                                {item.label}
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
+                            </div>
+                        )}
+                    />
+
                     <FormGroup className="has-wrapper">
                         <InputLabel className="text-left" htmlFor="name">
                             Nom du paquetage
@@ -130,8 +208,7 @@ class Create extends Component {
                         <InputStrap
                             required
                             id="name"
-                            placeholder="Jean"
-                            name={'firstName'}
+                            name={'label'}
                             value={this.state.name}
                             className="has-input input-lg"
                             onChange={event => this.setState({name: event.target.value})}
@@ -154,80 +231,87 @@ class Create extends Component {
                         <span className="has-icon"><i className="ti-pencil"></i></span>
                     </FormGroup>
 
-                    <CustomList
-                        loading={false}
-                        // showSearch={false}
-                        list={this.state.chosenProducts}
-                        onAddClick={() => this.setState({showCreateBox: true})}
-                        itemsFoundText={n => `${n} produit(s) sélectionné(s)`}
-                        addPermissions={{
-                            permissions: [],
-                        }}
-                        renderItem={list => (
-                            <>
-                                {list && list.length === 0 ? (
-                                    <div className="d-flex justify-content-center align-items-center py-50">
-                                        <h4>
-                                            Aucun produits sélectionnés
-                                        </h4>
-                                    </div>
-                                ) : (
-                                    <div className="table-responsive">
-                                        <table className="table table-hover table-middle mb-0 text-center">
-                                            <thead>
-                                            <tr>
-                                                <th><IntlMessages id="components.name" /></th>
-                                                <th>Quantité</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            {list && list.map((product, key) => (
-                                                <tr key={key} className="cursor-pointer">
-                                                    <td>
-                                                        <div className="media">
-                                                            <div className="media-body pt-10">
-                                                                <h4 className="m-0 fw-bold text-dark">{product.label}</h4>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div className="media">
-                                                            <div className="media-body pt-10">
-                                                                <h4 className="m-0 fw-bold text-dark">{product.quantity}</h4>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div className="media">
-                                                            <div className="media-body pt-10">
-                                                                <a href="#" className="text-danger" onClick={() => this.setState({showDeleteBox: true, deleteProduct: product})}>
-                                                                    <span className="material-icons mr-10">delete</span>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            ))}
-                                            </tbody>
-                                        </table>
-                                    </div>
+                    {loadingProducts ? (
+                        <RctSectionLoader/>
+                    ) : (
+                        <>
+                            <CustomList
+                                loading={false}
+                                // showSearch={false}
+                                list={this.state.chosenProducts}
+                                onAddClick={() => this.setState({showCreateBox: true})}
+                                itemsFoundText={n => `${n} produit(s) sélectionné(s)`}
+                                addPermissions={{
+                                    permissions: [],
+                                }}
+                                renderItem={list => (
+                                    <>
+                                        {list && list.length === 0 ? (
+                                            <div className="d-flex justify-content-center align-items-center py-50">
+                                                <h4>
+                                                    Aucun produits sélectionnés
+                                                </h4>
+                                            </div>
+                                        ) : (
+                                            <div className="table-responsive">
+                                                <table className="table table-hover table-middle mb-0 text-center">
+                                                    <thead>
+                                                    <tr>
+                                                        <th><IntlMessages id="components.name" /></th>
+                                                        <th>Quantité</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    {list && list.map((product, key) => (
+                                                        <tr key={key} className="cursor-pointer">
+                                                            <td>
+                                                                <div className="media">
+                                                                    <div className="media-body pt-10">
+                                                                        <h4 className="m-0 fw-bold text-dark">{product.label}</h4>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div className="media">
+                                                                    <div className="media-body pt-10">
+                                                                        <h4 className="m-0 fw-bold text-dark">{product.quantity}</h4>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div className="media">
+                                                                    <div className="media-body pt-10">
+                                                                        <a href="#" className="text-danger" onClick={() => this.setState({showDeleteBox: true, deleteProduct: product})}>
+                                                                            <span className="material-icons mr-10">delete</span>
+                                                                        </a>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    ))}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        )}
+                                    </>
                                 )}
-                            </>
-                        )}
-                    />
+                            />
 
-                    <FormGroup className="mb-15">
-                        <Button
-                            type="submit"
-                            color="primary"
-                            disabled={this.props.requestGlobalLoader}
-                            variant="contained"
-                            // onClick={this.onSubmit}
-                            className="text-white font-weight-bold"
-                        >
-                            <IntlMessages id="button.next" /> <i className="ti-arrow-right font-weight-bold ml-2"></i>
-                        </Button>
-                    </FormGroup>
+                            <FormGroup className="mb-15">
+                                <Button
+                                    type="submit"
+                                    color="primary"
+                                    disabled={this.props.catalogTypes.data.length === 0 || this.props.requestGlobalLoader}
+                                    variant="contained"
+                                    // onClick={this.onSubmit}
+                                    className="text-white font-weight-bold"
+                                >
+                                    Soumettre <i className="ti-arrow-right font-weight-bold ml-2"></i>
+                                </Button>
+                            </FormGroup>
+                        </>
+                    )}
+
                 </Form>
 
                 <AddProduct
@@ -274,17 +358,18 @@ class Create extends Component {
 }
 
 // map state to props
-const mapStateToProps = ({ requestGlobalLoader, productTypes, authUser }) => {
+const mapStateToProps = ({ requestGlobalLoader, productTypes, authUser, catalogTypes }) => {
     return {
         requestGlobalLoader,
         loading: productTypes.loading,
         productTypes: productTypes.data,
         error: productTypes.error,
         authUser: authUser.data,
+        catalogTypes
     }
 };
 
-export default connect(mapStateToProps, {getPackages, getProductTypes, setRequestGlobalAction})
+export default connect(mapStateToProps, {getPackages, getProductTypes, getCatalogsOfOneType, getCatalogProducts, setRequestGlobalAction})
 (injectIntl(Create));
 
 const AddProduct = ({show, products, onSave, onClose}) => {
@@ -298,6 +383,11 @@ const AddProduct = ({show, products, onSave, onClose}) => {
 
     const onSubmit = (data) => {
         const productId = data.product;
+        if (productId === null || productId === undefined) {
+            NotificationManager.error("Vous devez choisir un produit ou en créé un d'abord");
+            return;
+        }
+
         onSave(products.find(p => p.id === productId), data.quantity);
     };
 

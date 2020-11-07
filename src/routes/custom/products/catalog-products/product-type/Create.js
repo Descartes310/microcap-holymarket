@@ -11,7 +11,8 @@ import {
     createCatalog,
     getCategoryProducts,
     createCategoryProducts,
-    getCatalogsOfOneType
+    getCatalogsOfOneType,
+    getSysProductNature
 } from "Actions";
 import {NotificationManager} from "react-notifications";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
@@ -40,7 +41,7 @@ const CategoryProductsCreate = props => {
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
 
-    const { categoryProducts, catalogTypes, authUser, catalog, loading, intl, onClose, show, setRequestGlobalAction, getCatalogsOfOneType, getCategoryProducts, getProductTypes } = props;
+    const { categoryProducts, catalogTypes, authUser, catalog, loading, intl, onClose, show, setRequestGlobalAction, getCatalogsOfOneType, getCategoryProducts, getProductTypes, systemObject, getSysProductNature } = props;
 
     const { control, register, errors, handleSubmit, setValue, watch} = useForm({
         defaultValues: {
@@ -57,6 +58,7 @@ const CategoryProductsCreate = props => {
     useEffect(() => {
         fetchCategoryProducts();
         fetchCatalogTypes();
+        fetchSysProductNature();
     }, []);
 
     /**
@@ -89,6 +91,10 @@ const CategoryProductsCreate = props => {
 
     const fetchCategoryProducts = () => {
         getCategoryProducts(authUser.user.branch.id);
+    };
+
+    const fetchSysProductNature = () => {
+        getSysProductNature();
     };
 
     return (
@@ -185,6 +191,38 @@ const CategoryProductsCreate = props => {
                                 />
                                 <span className="has-icon"><i className="ti-pencil"/></span>
                             </FormGroup>
+
+                            <CustomAsyncComponent
+                                loading={systemObject.productNature.loading}
+                                data={systemObject.productNature.data}
+                                onRetryClick={fetchSysProductNature}
+                                component={data => (
+                                    <div className="form-group text-left">
+                                        <FormControl fullWidth>
+                                            <InputLabel className="text-left" htmlFor="nature-helper">
+                                                Nautre du produit
+                                            </InputLabel>
+                                            <InputComponent
+                                                isRequired
+                                                className="mt-0"
+                                                errors={errors}
+                                                control={control}
+                                                register={register}
+                                                componentType="select"
+                                                name={'nature'}
+                                                defaultValue={data[0]}
+                                                as={<Select input={<Input name="nature" id="nature-helper" />}>
+                                                    {data.map((item, index) => (
+                                                        <MenuItem key={index} value={item} className="center-hor-ver">
+                                                            {item}
+                                                        </MenuItem>
+                                                    ))}
+                                                </Select>}
+                                            />
+                                        </FormControl>
+                                    </div>
+                                )}
+                            />
 
                             <div className="row">
                                 <div className="col-md-4 col-sm-6">
@@ -343,8 +381,8 @@ const CategoryProductsCreate = props => {
     );
 };
 
-const mapStateToProps = ({ requestGlobalLoader, authUser, catalogTypes, categoryProducts}) => {
-    return {loading: requestGlobalLoader, authUser: authUser.data, catalogTypes: catalogTypes, categoryProducts: categoryProducts};
+const mapStateToProps = ({ requestGlobalLoader, authUser, catalogTypes, categoryProducts, systemObject}) => {
+    return {loading: requestGlobalLoader, authUser: authUser.data, catalogTypes: catalogTypes, categoryProducts: categoryProducts, systemObject};
 };
 
-export default connect(mapStateToProps, {getProductTypes, getCategoryProducts, getCatalogsOfOneType, setRequestGlobalAction })(injectIntl(CategoryProductsCreate));
+export default connect(mapStateToProps, {getProductTypes, getCategoryProducts, getCatalogsOfOneType, getSysProductNature, setRequestGlobalAction })(injectIntl(CategoryProductsCreate));
