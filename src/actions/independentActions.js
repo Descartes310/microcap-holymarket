@@ -314,3 +314,13 @@ export const getAllProductTypeBySale = (branchId) => {
     const url = `${PRODUCT_TYPE.GET_ALL_BY_SALE}?branch_id=${branchId}`;
     return makeRequest('get', url);
 };
+
+export const getRootProductType = (branchId) => {
+    const url = `${PRODUCT_TYPE.ROOT}?branch_id=${branchId}`;
+    return makeRequest('get', url);
+};
+
+export const setPackageActivationStatus = (packageId, shouldActivate) => {
+    const url = `${PACKAGES[shouldActivate ? 'ACTIVATE' : 'DEACTIVATE']}?package_id=${packageId}`;
+    return makeRequest('put', url);
+};

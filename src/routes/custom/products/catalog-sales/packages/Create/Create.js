@@ -41,6 +41,7 @@ class Create extends Component {
         this.state = {
             name: '',
             description: '',
+            price: '',
             chosenProducts: [],
             storeProducts: [],
             showCreateBox: false,
@@ -58,7 +59,6 @@ class Create extends Component {
     loadData = () => {
         this.props.getCatalogsOfOneType(Product.SALE, this.props.authUser.branchId)
             .then(result => {
-                console.log("result => ", result);
                 if (result.length > 0) {
                     this.setState({catalogSale: result[0].id});
                     this.fetchProducts(result[0].id);
@@ -67,7 +67,6 @@ class Create extends Component {
                 }
             })
             .catch(error => {
-                console.log(" getCatalogsOfOneType error => ", error);
                 NotificationManager.error(ERROR_500);
             })
 
@@ -128,6 +127,16 @@ class Create extends Component {
             return false;
         }
 
+        if (!this.state.price || (this.state.price && this.state.price.length === 0) || isNaN(Number(this.state.price))) {
+            NotificationManager.error("Veuillez bien remplir le champ prix");
+            return false;
+        }
+
+        if (this.state.price && Number(this.state.price) < 0) {
+            NotificationManager.error("Le prix minimum est de 0");
+            return false;
+        }
+
         if (!this.state.chosenProducts || (this.state.chosenProducts && this.state.chosenProducts.length === 0)) {
             NotificationManager.error("Veuillez Selectionner au moins un produit");
             return false;
@@ -144,6 +153,8 @@ class Create extends Component {
                 catalog_id: this.state.catalogSale,
                 label: this.state.name,
                 description: this.state.description,
+                price: this.state.price,
+                partner_id: this.props.authUser.user.id,
                 items: JSON.stringify(this.state.chosenProducts.map(p => ({type_product_id: p.id, quantity: p.quantity})))
             };
 
@@ -151,7 +162,8 @@ class Create extends Component {
             createPackage(data, this.props.authUser.branchId)
                 .then(() => {
                     NotificationManager.success("Paquetage créé avec succèss");
-                    this.props.getPackages(this.props.authUser.branchId);
+                    // this.props.getPackages(this.props.authUser.branchId);
+                    this.props.getPackages(this.props.authUser.user.id, this.props.authUser.user.branch.id);
                     this.props.history.push(PACKAGES.LIST);
                 })
                 .catch(() => {
@@ -231,6 +243,22 @@ class Create extends Component {
                         <span className="has-icon"><i className="ti-pencil"></i></span>
                     </FormGroup>
 
+                    <FormGroup className="has-wrapper">
+                        <InputLabel className="text-left" htmlFor="price">
+                            Prix
+                        </InputLabel>
+                        <InputStrap
+                            required
+                            id="price"
+                            type="number"
+                            name={'price'}
+                            value={this.state.price}
+                            className="has-input input-lg"
+                            onChange={event => this.setState({price: event.target.value})}
+                        />
+                        <span className="has-icon"><i className="ti-pencil"></i></span>
+                    </FormGroup>
+
                     {loadingProducts ? (
                         <RctSectionLoader/>
                     ) : (
@@ -304,9 +332,9 @@ class Create extends Component {
                                     disabled={this.props.catalogTypes.data.length === 0 || this.props.requestGlobalLoader}
                                     variant="contained"
                                     // onClick={this.onSubmit}
-                                    className="text-white font-weight-bold"
+                                    className="bg-blue text-white font-weight-bold"
                                 >
-                                    Soumettre <i className="ti-arrow-right font-weight-bold ml-2"></i>
+                                    Soumettre
                                 </Button>
                             </FormGroup>
                         </>

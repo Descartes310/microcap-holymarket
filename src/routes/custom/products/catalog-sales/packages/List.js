@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {connect} from "react-redux";
 import IntlMessages from 'Util/IntlMessages';
-import {getPackages, setRequestGlobalAction} from "Actions";
+import {getPackages, setPackageActivationStatus, setRequestGlobalAction} from "Actions";
 import {injectIntl} from "react-intl";
 import {withStyles} from "@material-ui/core";
 import {withRouter} from "react-router-dom";
@@ -9,6 +9,9 @@ import {AbilityContext} from "Permissions/Can";
 import Permission from "Enums/Permissions";
 import CustomList from "Components/CustomList";
 import {PACKAGES} from "Url/frontendUrl";
+import Switch from "@material-ui/core/Switch/Switch";
+import {NotificationManager} from "react-notifications";
+import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
 
 class PackageList extends Component {
     static contextType = AbilityContext;
@@ -17,15 +20,34 @@ class PackageList extends Component {
         super(props);
         this.state = {
             catalogId: null,
+            loading: false,
         }
     }
 
     componentDidMount() {
-        this.props.getPackages(this.props.authUser.user.branch.id);
+        // this.props.getPackages(this.props.authUser.user.branch.id);
+        this.props.getPackages(this.props.authUser.user.id, this.props.authUser.user.branch.id);
     }
+
+    onToggleActivationStatus = (packageId, value) => {
+        this.setState({loading: true});
+        setPackageActivationStatus(packageId, value)
+            .then(() => {
+                this.props.getPackages(this.props.authUser.user.id, this.props.authUser.user.branch.id);
+                NotificationManager.success("Changement du status du paquetage effectué avec succès");
+            })
+            .catch(() => {
+                NotificationManager.error("Erreur lors du changement du status du paquetage");
+            })
+            .finally(() => this.setState({loading: false}));
+    };
 
     render() {
         const { packages, loading, error, history } = this.props;
+
+        if (this.state.loading) {
+            return (<RctSectionLoader/>);
+        }
 
         return (
             <>
@@ -50,11 +72,12 @@ class PackageList extends Component {
                                 <div className="table-responsive">
                                     <table className="table table-hover table-middle mb-0 text-center">
                                         <thead>
-                                        <tr>
-                                            <th><IntlMessages id="components.name" /></th>
-                                            <th><IntlMessages id="widgets.description" /></th>
-                                            <th>Nombres de produits</th>
-                                        </tr>
+                                            <tr>
+                                                <th><IntlMessages id="components.name" /></th>
+                                                <th><IntlMessages id="widgets.description" /></th>
+                                                <th>Nombres de produits</th>
+                                                <th>Statut d'activation</th>
+                                            </tr>
                                         </thead>
                                         <tbody>
                                         {list && list.map((catalog, key) => (
@@ -79,6 +102,13 @@ class PackageList extends Component {
                                                 <td className="table-action">
                                                     {catalog.packageItem.length}
                                                     {/*{catalog.permissions.length} permissions(s)*/}
+                                                </td>
+                                                <td className="table-action">
+                                                    <Switch
+                                                        checked={catalog.active}
+                                                        onChange={(event) => this.onToggleActivationStatus(catalog.id, event.target.value)}
+                                                        aria-label="Activé"
+                                                    />
                                                 </td>
                                             </tr>
                                         ))}

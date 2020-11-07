@@ -21,6 +21,11 @@ import Packages from "Routes/custom/products/catalog-sales/packages";
 import ProductType from "Routes/custom/products/catalog-products/product-type";
 import {CATEGORY, CATALOG, PRODUCT_TYPE, PACKAGES, COMMUNITY} from "Url/frontendUrl";
 import {withRouter, Switch, Redirect, Route} from "react-router-dom";
+import {connect} from "react-redux";
+import {getCatalogsOfOneType, getCategoryProducts, getProductTypes} from "Actions/GeneralActions";
+import {getSysProductNature} from "Actions/SystemObjectsActions";
+import {setRequestGlobalAction} from "Actions/RequestGlobalAction";
+import {injectIntl} from "react-intl";
 
 // For Tab Content
 function TabContainer(props) {
@@ -31,7 +36,7 @@ function TabContainer(props) {
     );
 }
 
-export default class CatalogProducts extends Component {
+class CatalogProducts extends Component {
     constructor(props) {
         super(props);
         // const defaultState = CATALOG.PRODUCT.SELF === this.props.match.url ?
@@ -90,10 +95,12 @@ export default class CatalogProducts extends Component {
                                     icon={<i className="zmdi zmdi-library"></i>}
                                     label={<IntlMessages id="sidebar.catalog" />}
                                 />
-                                <Tab
-                                    icon={<i className="zmdi zmdi-widgets"></i>}
-                                    label={<IntlMessages id="sidebar.productCategory" />}
-                                />
+                                {this.props.authUser.isExploitant() && (
+                                    <Tab
+                                        icon={<i className="zmdi zmdi-widgets"></i>}
+                                        label={<IntlMessages id="sidebar.productCategory" />}
+                                    />
+                                )}
                                 <Tab
                                     icon={<i className="zmdi zmdi-view-web"></i>}
                                     label={"Type de produit"}
@@ -106,7 +113,9 @@ export default class CatalogProducts extends Component {
                             <Switch>
                                 {/*<Redirect exact from={`${this.props.match.url}/`} to={CATALOG.PRODUCT.LIST} />*/}
                                 <Route path={PRODUCT_TYPE.SELF} component={ProductType} />
-                                <Route path={CATALOG.PRODUCT.SELF} component={CatalogList} />
+                                {this.props.authUser.isExploitant() && (
+                                    <Route path={CATALOG.PRODUCT.SELF} component={CatalogList} />
+                                )}
                                 <Route path={CATEGORY.SELF} component={CategoryProducts} />
                             </Switch>
                         </TabContainer>
@@ -116,3 +125,9 @@ export default class CatalogProducts extends Component {
         );
     }
 }
+
+const mapStateToProps = ({ requestGlobalLoader, authUser }) => {
+    return {loading: requestGlobalLoader, authUser: authUser.data };
+};
+
+export default connect(mapStateToProps, { })(injectIntl(CatalogProducts));

@@ -106,6 +106,8 @@ export const PRODUCT_TYPE = {
 export const PACKAGES = {
     LIST: 'public/packages',
     CREATE: 'public/packages',
+    ACTIVATE: 'public/packages/activate',
+    DEACTIVATE: 'public/packages/desactivate',
 };
 
 export const USER_PROFILE = {

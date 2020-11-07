@@ -189,8 +189,9 @@ export const getMembersOfOneGroup = (group) => (dispatch) => {
         });
 };
 
-export const getPackages = (branchId) => (dispatch) => {
-    const url = `${PACKAGES_API.LIST}?branch_id=${branchId}`;
+export const getPackages = (userId, branchId) => (dispatch) => {
+    // const url = `${PACKAGES_API.LIST}?branch_id=${branchId}`;
+    const url = `${PACKAGES_API.LIST}?partner_id=${userId}`;
     return makeActionRequest('get', url, PACKAGES, dispatch);
 };
 

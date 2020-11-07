@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Form, FormGroup} from "reactstrap";
 import InputComponent from "Components/InputComponent";
 import Button from "@material-ui/core/Button";
@@ -12,7 +12,8 @@ import {
     getCategoryProducts,
     createCategoryProducts,
     getCatalogsOfOneType,
-    getSysProductNature
+    getSysProductNature,
+    getRootProductType
 } from "Actions";
 import {NotificationManager} from "react-notifications";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
@@ -36,12 +37,18 @@ import Product from "Enums/Product";
 import CustomAsyncComponent from "Components/CustomAsyncComponent";
 import {createProductType} from "Actions/independentActions";
 import {getProductTypes} from "Actions/GeneralActions";
+import {ERROR_500} from "Constants/errors";
 
 const CategoryProductsCreate = props => {
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
 
     const { categoryProducts, catalogTypes, authUser, catalog, loading, intl, onClose, show, setRequestGlobalAction, getCatalogsOfOneType, getCategoryProducts, getProductTypes, systemObject, getSysProductNature } = props;
+
+    const [rootProductType, setRootProductType] = useState({
+        loading: true,
+        data: null
+    });
 
     const { control, register, errors, handleSubmit, setValue, watch} = useForm({
         defaultValues: {
@@ -59,6 +66,8 @@ const CategoryProductsCreate = props => {
         fetchCategoryProducts();
         fetchCatalogTypes();
         fetchSysProductNature();
+        if (!authUser.isExploitant())
+            fetchRootProductType();
     }, []);
 
     /**
@@ -97,6 +106,23 @@ const CategoryProductsCreate = props => {
         getSysProductNature();
     };
 
+    const fetchRootProductType = () => {
+        getRootProductType(authUser.branchId)
+            .then(result => {
+                setRootProductType({
+                    loading: false,
+                    data: result
+                })
+            })
+            .catch(() => {
+                NotificationManager.error(ERROR_500);
+                setRootProductType({
+                    loading: false,
+                    data: null
+                })
+            })
+    };
+
     return (
         <>
             <Dialog
@@ -124,6 +150,41 @@ const CategoryProductsCreate = props => {
                 <DialogContent>
                     <RctCollapsibleCard>
                         <Form onSubmit={handleSubmit(onSubmit)}>
+
+                            {!authUser.isExploitant() && (
+                                <CustomAsyncComponent
+                                    loading={rootProductType.loading}
+                                    data={rootProductType.data}
+                                    onRetryClick={fetchRootProductType}
+                                    component={data => (
+                                        <div className="form-group text-left">
+                                            <FormControl fullWidth>
+                                                <InputLabel className="text-left" htmlFor="nature-helper">
+                                                    Racine du produit
+                                                </InputLabel>
+                                                <InputComponent
+                                                    isRequired
+                                                    className="mt-0"
+                                                    errors={errors}
+                                                    control={control}
+                                                    register={register}
+                                                    componentType="select"
+                                                    name={'root'}
+                                                    defaultValue={data[0] ? data[0].id : undefined}
+                                                    as={<Select input={<Input name="nature" id="nature-helper" />}>
+                                                        {data.map((item, index) => (
+                                                            <MenuItem key={index} value={item.id} className="center-hor-ver">
+                                                                {item.label}
+                                                            </MenuItem>
+                                                        ))}
+                                                    </Select>}
+                                                />
+                                            </FormControl>
+                                        </div>
+                                    )}
+                                />
+                            )}
+
                             <div className="row align-items-center">
                                 <div className="col-md-6 col-sm-12">
                                     <FormGroup className="has-wrapper">
@@ -200,7 +261,7 @@ const CategoryProductsCreate = props => {
                                     <div className="form-group text-left">
                                         <FormControl fullWidth>
                                             <InputLabel className="text-left" htmlFor="nature-helper">
-                                                Nautre du produit
+                                                Nature du produit
                                             </InputLabel>
                                             <InputComponent
                                                 isRequired

@@ -106,3 +106,9 @@
 .group-item-li > li {
   margin: 0 !important;
 }
+
+.bg-blue {
+  &[class*="disabled"] {
+    background-color: rgba(0, 0, 0, 0.12) !important;
+  }
+}
