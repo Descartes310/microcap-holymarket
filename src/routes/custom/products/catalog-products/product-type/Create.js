@@ -169,7 +169,7 @@ const CategoryProductsCreate = props => {
                                                     control={control}
                                                     register={register}
                                                     componentType="select"
-                                                    name={'root'}
+                                                    name={'parent_type'}
                                                     defaultValue={data[0] ? data[0].id : undefined}
                                                     as={<Select input={<Input name="nature" id="nature-helper" />}>
                                                         {data.map((item, index) => (

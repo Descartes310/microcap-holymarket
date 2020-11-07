@@ -164,9 +164,13 @@ export const COMMERCIAL_MANAGEMENT = {
         UPDATE: 'public/commercial-operation',
     },
     OFFER: {
-        GET_ALL: 'public/commercial-offer',
+        GET_ALL: {
+            FOR_PARTNER: 'public/commercial-offer/for-partner',
+            FOR_NETWORK: 'public/commercial-offer/for-network',
+        },
         CREATE: 'public/commercial-offer',
         UPDATE: 'public/commercial-offer',
+        ACTIVATE: 'public/commercial-offer/active'
     },
 };
 

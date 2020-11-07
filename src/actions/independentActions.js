@@ -324,3 +324,8 @@ export const setPackageActivationStatus = (packageId, shouldActivate) => {
     const url = `${PACKAGES[shouldActivate ? 'ACTIVATE' : 'DEACTIVATE']}?package_id=${packageId}`;
     return makeRequest('put', url);
 };
+
+export const setOfferActivationStatus = (packageId, shouldActivate) => {
+    const url = `${COMMERCIAL_MANAGEMENT.OFFER[shouldActivate ? 'ACTIVATE' : 'DEACTIVATE']}?package_id=${packageId}`;
+    return makeRequest('put', url);
+};

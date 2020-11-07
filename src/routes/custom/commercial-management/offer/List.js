@@ -8,6 +8,9 @@ import {withRouter} from "react-router-dom";
 import {AbilityContext} from "Permissions/Can";
 import CustomList from "Components/CustomList";
 import {COMMERCIAL_MANAGEMENT} from "Url/frontendUrl";
+import Switch from "@material-ui/core/Switch";
+import {NotificationManager} from "react-notifications";
+import {setOfferActivationStatus} from "Actions/independentActions";
 
 class List extends Component {
     static contextType = AbilityContext;
@@ -21,8 +24,21 @@ class List extends Component {
     }
 
     componentDidMount() {
-        this.props.getComOffer(this.props.authUser.branchId);
+        this.props.getComOffer(this.props.authUser.user.id);
     }
+
+    onToggleActivationStatus = (packageId, value) => {
+        this.setState({loading: true});
+        setOfferActivationStatus(packageId, value)
+            .then(() => {
+                this.props.getComOffer(this.props.authUser.user.id);
+                NotificationManager.success("Changement du status de l'offre effectué avec succès");
+            })
+            .catch(() => {
+                NotificationManager.error("Erreur lors du changement de l'offre");
+            })
+            .finally(() => this.setState({loading: false}));
+    };
 
     render() {
         const { comOffer, loading, error, history } = this.props;
@@ -52,10 +68,11 @@ class List extends Component {
                                 <div className="table-responsive">
                                     <table className="table table-hover table-middle mb-0 text-center">
                                         <thead>
-                                        <tr>
-                                            <th><IntlMessages id="components.name" /></th>
-                                            <th><IntlMessages id="widgets.description" /></th>
-                                        </tr>
+                                            <tr>
+                                                <th><IntlMessages id="components.name" /></th>
+                                                <th><IntlMessages id="widgets.description" /></th>
+                                                <th>Status d'activation</th>
+                                            </tr>
                                         </thead>
                                         <tbody>
                                         {list && list.map((item, key) => (
@@ -73,6 +90,13 @@ class List extends Component {
                                                             <h4 className="m-0 fw-bold text-dark">{item.description}</h4>
                                                         </div>
                                                     </div>
+                                                </td>
+                                                <td className="table-action">
+                                                    <Switch
+                                                        checked={item.active}
+                                                        onChange={(event) => this.onToggleActivationStatus(item.id, event.target.value)}
+                                                        aria-label="Activé"
+                                                    />
                                                 </td>
                                             </tr>
                                         ))}

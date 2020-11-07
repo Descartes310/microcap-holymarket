@@ -151,10 +151,10 @@ class Create extends Component {
             return false;
         }
 
-        if (!this.state.chosenPackage || (this.state.chosenPackage && this.state.chosenPackage.length === 0)) {
+        /*if (!this.state.chosenPackage || (this.state.chosenPackage && this.state.chosenPackage.length === 0)) {
             NotificationManager.error("Veuillez Selectionner au moins un paquetage");
             return false;
-        }
+        }*/
 
         return true;
     };
@@ -169,6 +169,7 @@ class Create extends Component {
                 validity_unit: this.state.validityUnit,
                 validity_value: this.state.validityValue,
                 quantity: this.state.quantity,
+                partner_id: this.props.authUser.user.id,
                 type_products: JSON.stringify(this.state.chosenProducts.map(p => p.id)),
                 packages: JSON.stringify(this.state.chosenPackage.map(p => p.id)),
                 commercial_operation_id: this.state.commercialOperatorId,

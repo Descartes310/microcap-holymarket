@@ -205,7 +205,7 @@ export const getComOperation = (branchId) => (dispatch) => {
     return makeActionRequest('get', url, COMMERCIAL_OPERATION, dispatch);
 };
 
-export const getComOffer = (branchId) => (dispatch) => {
-    const url = `${COMMERCIAL_MANAGEMENT_API.OFFER.GET_ALL}?branch_id=${branchId}`;
+export const getComOffer = (partnerId) => (dispatch) => {
+    const url = `${COMMERCIAL_MANAGEMENT_API.OFFER.GET_ALL.FOR_PARTNER}?partner_id=${partnerId}`;
     return makeActionRequest('get', url, COMMERCIAL_OFFER, dispatch);
 };
