@@ -188,6 +188,12 @@ export const SALES = {
     CREATE: 'public/sales',
 };
 
+export const GENERIC_OBJECT = {
+    GET_ALL: 'public/generic-objects',
+    GET_ONE: 'public/generic-objects/{id}',
+    CREATE: 'public/generic-objects',
+};
+
 export const joinBaseUrl = to => BASE + to;
 
 export const joinBaseUrlWithParams = (to, params) => {

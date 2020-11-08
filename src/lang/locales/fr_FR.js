@@ -849,9 +849,10 @@ module.exports = {
 
    "branch": "Branche",
    "branch.createText": "Créer une branche",
-   "branch.step.1.label": "Informations de base sur la branche",
-   "branch.step.2.label": "Opérateur",
+   "branch.step.1.label": "Informations sur l'exploitant",
+   "branch.step.2.label": "Implantation de l'exploitant",
    "branch.step.3.label": "Représentant légal",
+   "branch.step.4.label": "Configuration de la branche",
    "branch.step.3.labelCount": "Représentant légal N°{count}",
    "branch.field.name": "Nom de la succursale",
    "branch.field.link": "Lien de branche",

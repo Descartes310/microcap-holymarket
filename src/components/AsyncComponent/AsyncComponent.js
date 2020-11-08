@@ -14,7 +14,7 @@ export const AsyncBranchList = Loadable({
 });
 
 export const AsyncBranchCreate = Loadable({
-	loader: () => import("Routes/custom/branch/create"),
+	loader: () => import("Routes/custom/branch/new-create"),
 	loading: () => <RctPageLoader />,
 });
 

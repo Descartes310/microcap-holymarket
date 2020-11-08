@@ -10,7 +10,7 @@ import {
     PRODUCT_TYPE,
     USER_PROFILE, NETWORK_PROFILE_TYPE, USERS,
     COMMUNITY, PACKAGES, COMMERCIAL_MANAGEMENT, joinBaseUrlWithParamsId,
-    ORDER, SALES
+    ORDER, SALES, GENERIC_OBJECT
 } from "Url/backendUrl";
 import {SET_CURRENT_COMMUNITY, SET_CURRENT_COMMUNITY_SUCCESS} from "Actions/types";
 
@@ -352,4 +352,13 @@ export const getOrder = (orderId) => {
 
 export const createSale = (data) => {
     return makeRequest('post', SALES.CREATE, data);
+};
+
+export const createGenericData = (data) => {
+    return makeRequest('post', GENERIC_OBJECT.GET_ALL, data);
+};
+
+export const getGenericData = (type, branchId) => {
+    const url = `${GENERIC_OBJECT.GET_ALL}?type=${type}&branch_id=${branchId}`;
+    return makeRequest('get', url);
 };
