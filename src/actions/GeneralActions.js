@@ -25,7 +25,7 @@ import {
     SET_CURRENT_COMMUNITY,
     SET_CURRENT_COMMUNITY_SUCCESS, SET_CURRENT_COMMUNITY_FAILURE,
     PACKAGES,
-    COMMERCIAL_OPERATION_TYPE, COMMERCIAL_OPERATION, COMMERCIAL_OFFER
+    COMMERCIAL_OPERATION_TYPE, COMMERCIAL_OPERATION, COMMERCIAL_OFFER, PRODUCT
 } from 'Actions/types';
 
 import api from './../api';
@@ -208,4 +208,9 @@ export const getComOperation = (branchId) => (dispatch) => {
 export const getComOffer = (partnerId) => (dispatch) => {
     const url = `${COMMERCIAL_MANAGEMENT_API.OFFER.GET_ALL.FOR_PARTNER}?partner_id=${partnerId}`;
     return makeActionRequest('get', url, COMMERCIAL_OFFER, dispatch);
+};
+
+export const getProducts = (branchId) => (dispatch) => {
+    const url = `${COMMERCIAL_MANAGEMENT_API.OFFER.GET_ALL.PRODUCT_AVAILABLE}?branch_id=${branchId}`;
+    return makeActionRequest('get', url, PRODUCT, dispatch);
 };

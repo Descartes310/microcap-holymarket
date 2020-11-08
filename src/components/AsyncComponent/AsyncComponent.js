@@ -63,6 +63,21 @@ export const AsyncUserProfile = Loadable({
 	loading: () => <RctPageLoader />,
 });
 
+export const AsyncProducts = Loadable({
+	loader: () => import("Routes/custom/products/self"),
+	loading: () => <RctPageLoader />,
+});
+
+export const AsyncStore = Loadable({
+	loader: () => import("Routes/custom/store"),
+	loading: () => <RctPageLoader />,
+});
+
+export const AsyncStoreWrapper = Loadable({
+	loader: () => import("Routes/custom/store/indexWrapper"),
+	loading: () => <RctPageLoader />,
+});
+
 export const AsyncCommunity = Loadable({
 	loader: () => import("Routes/custom/community"),
 	loading: () => <RctPageLoader />,

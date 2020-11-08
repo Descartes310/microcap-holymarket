@@ -36,6 +36,8 @@ import SystemObjectReducer from './SystemObjectReducer';
 import ComOperationTypeReducer from './ComOperationTypeReducer';
 import ComOperationReducer from './ComOperationReducer';
 import ComOfferReducer from './ComOfferReducer';
+import ProductReducer from './ProductReducer';
+import CartReducer from './CartReducer';
 
 const reducers = combineReducers({
    settings,
@@ -72,6 +74,8 @@ const reducers = combineReducers({
    comOperationType: ComOperationTypeReducer,
    comOperation: ComOperationReducer,
    comOffer: ComOfferReducer,
+   products: ProductReducer,
+   cart: CartReducer,
 });
 
 export default reducers;

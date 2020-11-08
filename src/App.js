@@ -20,6 +20,10 @@ import App from './container/App';
 import store, { configureStore } from './store';
 
 import ability from './permissions/ability';
+import {getSessonId} from "Helpers/helpers";
+
+// Set session id if it doest not exits
+getSessonId();
 
 const MainApp = () => (
 	<Provider store={store}>

@@ -9,7 +9,8 @@ import {
     CATEGORY_PRODUCTS,
     PRODUCT_TYPE,
     USER_PROFILE, NETWORK_PROFILE_TYPE, USERS,
-    COMMUNITY, PACKAGES, COMMERCIAL_MANAGEMENT
+    COMMUNITY, PACKAGES, COMMERCIAL_MANAGEMENT, joinBaseUrlWithParamsId,
+    ORDER, SALES
 } from "Url/backendUrl";
 import {SET_CURRENT_COMMUNITY, SET_CURRENT_COMMUNITY_SUCCESS} from "Actions/types";
 
@@ -328,4 +329,27 @@ export const setPackageActivationStatus = (packageId, shouldActivate) => {
 export const setOfferActivationStatus = (packageId, shouldActivate) => {
     const url = `${COMMERCIAL_MANAGEMENT.OFFER[shouldActivate ? 'ACTIVATE' : 'DEACTIVATE']}?package_id=${packageId}`;
     return makeRequest('put', url);
+};
+
+export const getProductItemAvailable = (productId) => {
+    const url = joinBaseUrlWithParamsId(PRODUCT_TYPE.AVAILABLE, productId);
+    return makeRequest('get', url);
+};
+
+export const getOneProductType = (productId) => {
+    const url = joinBaseUrlWithParamsId(PRODUCT_TYPE.GET_ONE, productId);
+    return makeRequest('get', url);
+};
+
+export const placeOrder = (data) => {
+    return makeRequest('post', ORDER.CREATE, data);
+};
+
+export const getOrder = (orderId) => {
+    const url = joinBaseUrlWithParamsId(ORDER.GET_ONE, orderId);
+    return makeRequest('get', url);
+};
+
+export const createSale = (data) => {
+    return makeRequest('post', SALES.CREATE, data);
 };

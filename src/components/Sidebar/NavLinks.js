@@ -1,5 +1,5 @@
 // sidebar nav links
-import {CATALOG, COMMERCIAL_MANAGEMENT, COMMUNITY, NETWORK, USERS} from 'Url/frontendUrl';
+import {CATALOG, COMMERCIAL_MANAGEMENT, COMMUNITY, NETWORK, PRODUCT, USERS} from 'Url/frontendUrl';
 import Branch from 'Models/Branch';
 import Permission from "Enums/Permissions";
 
@@ -74,7 +74,7 @@ export default {
       },
       {
          "menu_title": "Gestion commercial",
-         "menu_icon": "zmdi zmdi-widgets",
+         "menu_icon": "zmdi zmdi-case",
          "new_item": false,
          "permissions": [],
          "child_routes": [
@@ -98,9 +98,18 @@ export default {
             },
          ]
       },
+      {
+         "menu_title": "Produits & Services",
+         "menu_icon": "zmdi zmdi-shopping-cart",
+         "new_item": false,
+         "path": PRODUCT.LIST,
+         // "permissions": [Permission.navLinks.community.viewMenu],
+         "permissions": [],
+         "child_routes": null
+      },
        {
            "menu_title": "Communauté",
-           "menu_icon": "ti-comments",
+           "menu_icon": "zmdi zmdi-comments",
            "new_item": false,
            "path": COMMUNITY.SELF,
            // "permissions": [Permission.navLinks.community.viewMenu],

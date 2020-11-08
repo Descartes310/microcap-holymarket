@@ -16,7 +16,7 @@ import ResetPassword from './../routes/session/forgot-password/ResetPassword';
 import SendResetPasswordLink from './../routes/session/forgot-password/SendResetPasswordLink';
 
 // callback component
-import {AUTH} from "../urls/frontendUrl";
+import {AUTH, STORE} from "../urls/frontendUrl";
 import {setAuthUser, loginIntoStore, disableAppLoading} from 'Actions';
 import RctPageLoader from "Components/RctPageLoader/RctPageLoader";
 import {getAuthToken} from "Helpers/tokens";
@@ -25,6 +25,8 @@ import RequestGlobalLoader from "Components/RequestGlobalLoader";
 import {AbilityContext} from "Permissions/Can";
 import Dashboard from 'Routes/custom/dashboard';
 import PermissionAlertBox from "Components/PermissionAlertBox";
+import {AsyncStoreWrapper} from "Components/AsyncComponent/AsyncComponent";
+import CanRoute from "Components/CanRoute";
 
 class App extends Component {
     static contextType = AbilityContext;
@@ -81,6 +83,12 @@ class App extends Component {
                                         <Route path={AUTH.REGISTER} component={AppSignUp} />
                                         <Route path={AUTH.RESET_PASSWORD} component={ResetPassword} />
                                         <Route path={AUTH.FORGOT_PASSWORD} component={SendResetPasswordLink} />
+
+                                        <CanRoute
+                                            path={STORE.SELF}
+                                            component={AsyncStoreWrapper}
+                                            permissions={[]}
+                                        />
 
                                         <Redirect to={AUTH.LOGIN} />
                                     </Switch>

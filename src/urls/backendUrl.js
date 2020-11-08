@@ -101,6 +101,7 @@ export const PRODUCT_TYPE = {
     TYPE_PRODUCTS: 'public/type-catalogs/type-products',
     SUB_CATEGORY: 'public/type-products/{id}/type-products',
     GET_ALL_BY_SALE: 'public/type-products/by-catalogue-vente',
+    AVAILABLE: 'public/type-products/{id}/variations',
 };
 
 export const PACKAGES = {
@@ -167,11 +168,24 @@ export const COMMERCIAL_MANAGEMENT = {
         GET_ALL: {
             FOR_PARTNER: 'public/commercial-offer/for-partner',
             FOR_NETWORK: 'public/commercial-offer/for-network',
+            PRODUCT_AVAILABLE: 'public/commercial-offer/products-available',
         },
         CREATE: 'public/commercial-offer',
         UPDATE: 'public/commercial-offer',
         ACTIVATE: 'public/commercial-offer/active'
     },
+};
+
+export const ORDER = {
+    GET_ALL: 'public/order',
+    GET_ONE: 'public/order/{id}',
+    CREATE: 'public/order',
+};
+
+export const SALES = {
+    GET_ALL: 'public/sales',
+    GET_ONE: 'public/sales/{id}',
+    CREATE: 'public/sales',
 };
 
 export const joinBaseUrl = to => BASE + to;
@@ -184,4 +198,8 @@ export const joinBaseUrlWithParams = (to, params) => {
     });
 
     return url;
+};
+
+export const joinBaseUrlWithParamsId = (to, id) => {
+    return joinBaseUrlWithParams(to, [{param: 'id', value: id}]);
 };

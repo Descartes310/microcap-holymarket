@@ -14,6 +14,7 @@ import Hidden from '@material-ui/core/Hidden';
 
 class Community extends Component {
     constructor(props) {
+        console.log("sdsds");
         super(props);
         const defaultState = (function (url) {
             if (url.includes(COMMUNITY.GROUPS.ME)) return 0;

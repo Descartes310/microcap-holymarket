@@ -1,6 +1,7 @@
 import {BASE} from "Url/backendUrl";
 
-export const HOME = '/';
+export const ROOT = '/';
+export const HOME = '/home';
 export const AUTH = {
     LOGIN: '/login',
     REGISTER: '/register',
@@ -127,6 +128,17 @@ export const COMMERCIAL_MANAGEMENT = {
     },
 };
 
+export const PRODUCT = {
+    LIST: '/products',
+    SHOW: '/products/:id/show',
+};
+
+export const STORE = {
+    SELF: '/store',
+    CART: '/store/cart',
+    CHECKOUT: '/store/checkout/:id',
+};
+
 export const joinUrlWithParams = (to, params) => {
     let url = to;
     params.forEach(param => {
@@ -134,4 +146,8 @@ export const joinUrlWithParams = (to, params) => {
     });
 
     return url;
+};
+
+export const joinUrlWithParamsId = (to, id) => {
+    return joinUrlWithParams(to, [{param: 'id', value: id}]);
 };

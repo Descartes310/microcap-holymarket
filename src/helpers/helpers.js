@@ -4,6 +4,13 @@
 import moment from 'moment';
 import AppConfig from 'Constants/AppConfig';
 import NavLinks from "Components/Sidebar/NavLinks";
+import {NotificationManager} from 'react-notifications';
+
+const TABLE_OF_256_HEXADECIMAL = (function () {
+    const arr = [];
+    for (let i = 0; i < 256; i++) { arr[i] = (i < 16 ? '0': '') + (i).toString(16); }
+    return arr;
+})();
 
 /**
  * Function to convert hex to rgba
@@ -271,4 +278,61 @@ export const canArray = (permissions, some = true) => {
     }
 
     return false;
+};
+
+
+/**
+ * Generate an unique id
+ *
+ * From StackOverFlow https://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript
+ *
+ * @returns {string}
+ */
+const getUniqueId = () => {
+    const d0 = Math.random()*0xffffffff|0;
+    const d1 = Math.random()*0xffffffff|0;
+    const d2 = Math.random()*0xffffffff|0;
+    const d3 = Math.random()*0xffffffff|0;
+    return TABLE_OF_256_HEXADECIMAL[d0&0xff]+TABLE_OF_256_HEXADECIMAL[d0>>8&0xff]+TABLE_OF_256_HEXADECIMAL[d0>>16&0xff]+TABLE_OF_256_HEXADECIMAL[d0>>24&0xff]+'-'+
+        TABLE_OF_256_HEXADECIMAL[d1&0xff]+TABLE_OF_256_HEXADECIMAL[d1>>8&0xff]+'-'+TABLE_OF_256_HEXADECIMAL[d1>>16&0x0f|0x40]+TABLE_OF_256_HEXADECIMAL[d1>>24&0xff]+'-'+
+        TABLE_OF_256_HEXADECIMAL[d2&0x3f|0x80]+TABLE_OF_256_HEXADECIMAL[d2>>8&0xff]+'-'+TABLE_OF_256_HEXADECIMAL[d2>>16&0xff]+TABLE_OF_256_HEXADECIMAL[d2>>24&0xff]+
+        TABLE_OF_256_HEXADECIMAL[d3&0xff]+TABLE_OF_256_HEXADECIMAL[d3>>8&0xff]+TABLE_OF_256_HEXADECIMAL[d3>>16&0xff]+TABLE_OF_256_HEXADECIMAL[d3>>24&0xff];
+};
+
+/**
+ * Get or create session id
+ * @returns {string}
+ */
+export const getSessonId = () => {
+    const sessionId = localStorage.getItem('ssid');
+    if (sessionId) {
+        return sessionId;
+    } else {
+        const newSessionId = getUniqueId();
+        localStorage.setItem('ssid', newSessionId);
+        return newSessionId;
+    }
+};
+
+export const copyToClipboard = (text) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (navigator.clipboard) {
+                await navigator.clipboard.writeText(text);
+            } else {
+                const textField = document.createElement('textarea');
+                textField.innerText = text;
+                document.body.appendChild(textField);
+                textField.select();
+                document.execCommand('copy');
+                textField.remove();
+            }
+
+            NotificationManager.success("Lien copié");
+            resolve();
+        } catch (e) {
+            NotificationManager.error("Impossible de copier le lien");
+            reject();
+        }
+    })
 };

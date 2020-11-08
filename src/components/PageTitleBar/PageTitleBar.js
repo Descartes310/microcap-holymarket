@@ -4,7 +4,7 @@
  */
 import React from 'react';
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap';
-import { Link } from 'react-router-dom';
+import {Link, withRouter} from 'react-router-dom';
 import _ from "lodash";
 
 // intl messages
@@ -38,7 +38,7 @@ const PageTitleBar = ({ title, match, enableBreadCrumb, history}) => {
       <div className="page-title d-flex justify-content-between align-items-center">
          {title &&
             <div className="page-title-wrap">
-               <i onClick={() => history ? history.goBack() : null} className="ti-angle-left cursor-pointer"/>
+               <i onClick={() => history ? history.goBack() : null} className="ti-angle-left cursor-pointer mr-2 icon-hover"/>
                <h2 className="">{title}</h2>
             </div>
          }
@@ -58,7 +58,7 @@ const PageTitleBar = ({ title, match, enableBreadCrumb, history}) => {
 
 // default props value
 PageTitleBar.defaultProps = {
-   enableBreadCrumb: true
+   enableBreadCrumb: false
 }
 
-export default PageTitleBar;
+export default withRouter(PageTitleBar);

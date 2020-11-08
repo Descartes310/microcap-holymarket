@@ -1,6 +1,5 @@
 import {connect} from "react-redux";
 import {injectIntl} from "react-intl";
-import UserProfileCreate from "./Create";
 import React, { Component } from 'react';
 import Permission from "Enums/Permissions";
 import {withRouter} from "react-router-dom";
@@ -8,41 +7,38 @@ import IntlMessages from 'Util/IntlMessages';
 import {withStyles} from "@material-ui/core";
 import {AbilityContext} from "Permissions/Can";
 import CustomList from "Components/CustomList";
-import {getUserProfiles, setRequestGlobalAction} from "Actions";
+import {getProducts, setRequestGlobalAction} from "Actions";
+import Button from "@material-ui/core/Button";
+import {joinUrlWithParamsId, PRODUCT} from "Url/frontendUrl";
 
-class UserProfileList extends Component {
+class ProductList extends Component {
     static contextType = AbilityContext;
     constructor(props) {
         super(props);
-        this.state = {
-            catalogId: null,
-            showCreateBox: false,
-        }
+        this.state = {}
     }
 
     componentDidMount() {
-        this.props.getUserProfiles(this.props.authUser.user.branch.id, this.props.authUser.userType);
+        this.props.getProducts(this.props.authUser.user.branch.id);
     }
 
+    onEnterClick = (product) => {
+        console.log("product => ", product);
+        const url = joinUrlWithParamsId(PRODUCT.SHOW, product.id);
+        this.props.history.push(url, {currentProduct: JSON.stringify(product)});
+    };
+
     render() {
-        const { catalogTypes, loading, error } = this.props;
-        const { showCreateBox } = this.state;
+        const { products, loading, error } = this.props;
 
         return (
             <>
-                {this.context.can(Permission.userProfile.createOne.name, Permission) && (
-                    <UserProfileCreate
-                        show={showCreateBox}
-                        onClose={() => this.setState({showCreateBox: false})}
-                    />
-                )}
                 <CustomList
                     error={error}
                     loading={loading}
-                    list={catalogTypes}
-                    titleList={"Profile utilisateurs"}
-                    onAddClick={() => this.setState({showCreateBox: true})}
-                    itemsFoundText={n => `${n} profile d'utilisateurs trouvés`}
+                    list={products}
+                    titleList={"Produits"}
+                    itemsFoundText={n => `${n} produits trouvés`}
                     addPermissions={{
                         permissions: [Permission.userProfile.createOne.name],
                     }}
@@ -51,7 +47,7 @@ class UserProfileList extends Component {
                             {list && list.length === 0 ? (
                                 <div className="d-flex justify-content-center align-items-center py-50">
                                     <h4>
-                                        Aucun utilisateurs trouvés
+                                        Aucun produits trouvés
                                     </h4>
                                 </div>
                             ) : (
@@ -60,8 +56,7 @@ class UserProfileList extends Component {
                                         <thead>
                                             <tr>
                                                 <th><IntlMessages id="components.name" /></th>
-                                                <th><IntlMessages id="widgets.description" /></th>
-                                                <th>Nombres de permissions</th>
+                                                <th></th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -77,15 +72,18 @@ class UserProfileList extends Component {
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td>
-                                                    <div className="media">
-                                                        <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{item.description}</h4>
-                                                        </div>
-                                                    </div>
-                                                </td>
                                                 <td className="table-action">
-                                                    {item.permissions.length} permissions(s)
+                                                    <Button
+                                                        size="small"
+                                                        color="primary"
+                                                        // disabled={loading}
+                                                        variant="contained"
+                                                        className={"text-white font-weight-bold mr-3 bg-blue"}
+                                                        onClick={() => this.onEnterClick(item)}
+                                                    >
+                                                        Voir les propositions
+                                                        <i className="zmdi zmdi-arrow-right mr-2"/>
+                                                    </Button>
                                                 </td>
                                             </tr>
                                         ))}
@@ -121,15 +119,15 @@ const useStyles = theme => ({
 });
 
 // map state to props
-const mapStateToProps = ({ requestGlobalLoader, userProfile, authUser  }) => {
+const mapStateToProps = ({ requestGlobalLoader, products, authUser  }) => {
     return {
         requestGlobalLoader,
         authUser: authUser.data,
-        loading: userProfile.loading,
-        catalogTypes: userProfile.data,
-        error: userProfile.error
+        loading: products.loading,
+        products: products.data,
+        error: products.error
     }
 };
 
-export default connect(mapStateToProps, {getUserProfiles, setRequestGlobalAction})
-(withStyles(useStyles, { withTheme: true })(withRouter(injectIntl(UserProfileList))));
+export default connect(mapStateToProps, {getProducts, setRequestGlobalAction})
+(withStyles(useStyles, { withTheme: true })(withRouter(injectIntl(ProductList))));

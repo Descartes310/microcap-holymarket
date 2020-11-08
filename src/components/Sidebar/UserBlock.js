@@ -102,7 +102,7 @@ class UserBlock extends Component {
 								</li>
 								<li>
 									<Link to={{
-										pathname: '/app/users/user-profile-1',
+										pathname: '/',
 										state: { activeTab: 0 }
 									}}>
 										<i className="zmdi zmdi-account text-primary mr-3"></i>
@@ -111,7 +111,7 @@ class UserBlock extends Component {
 								</li>
 								<li>
 									<Link to={{
-										pathname: '/app/users/user-profile-1',
+										pathname: '/',
 										state: { activeTab: 2 }
 									}}>
 										<i className="zmdi zmdi-comment-text-alt text-success mr-3"></i>
@@ -120,7 +120,7 @@ class UserBlock extends Component {
 									</Link>
 								</li>
 								<li>
-									<Link to="/app/pages/feedback">
+									<Link to="/">
 										<i className="zmdi zmdi-edit text-warning mr-3"></i>
 										<span><IntlMessages id="sidebar.feedback" /></span>
 										<Badge color="info" className="pull-right">1</Badge>
@@ -129,7 +129,9 @@ class UserBlock extends Component {
 								<li className="border-top">
 									<a href="#" onClick={(e) => this.logoutUser(e)}>
 										<i className="zmdi zmdi-power text-danger mr-3"></i>
-										<span><IntlMessages id="widgets.logOut" /></span>
+										<span>
+											Deconnexion
+										</span>
 									</a>
 								</li>
 							</ul>

@@ -20,7 +20,7 @@ import { getAppLayout } from "Helpers/helpers";
 // components
 import Notifications from './Notifications';
 import DashboardOverlay from '../DashboardOverlay/DashboardOverlay';
-import LanguageProvider from './LanguageProvider';
+import Cart from './Cart';
 import SearchForm from './SearchForm';
 import QuickLinks from './QuickLinks';
 import MobileSearchForm from './MobileSearchForm';
@@ -131,7 +131,7 @@ class Header extends Component {
 					</div>
 					<ul className="navbar-right list-inline mb-0">
 						<Notifications />
-						{/*<LanguageProvider />*/}
+						<Cart />
 						{!horizontalMenu &&
 						<li className="list-inline-item text-white">
 							<FormControlLabel
