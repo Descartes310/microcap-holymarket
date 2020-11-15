@@ -267,5 +267,5 @@ const useStyles = theme => ({
     }
 });
 
-export default connect(mapStateToProps, {getMandateType, getMandateModel, getBranchUsers, setRequestGlobalAction })
+export default connect(mapStateToProps, {getMandateType, getMandate, getMandateModel, getBranchUsers, setRequestGlobalAction })
 (withStyles(useStyles, { withTheme: true })(injectIntl(Create)));
