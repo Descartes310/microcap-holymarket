@@ -18,6 +18,7 @@ import {
     AsyncCatalogSales,
     AsyncComOperationType,
     AsyncComOperation, AsyncComOffer, AsyncProducts, AsyncStore,
+    AsyncAccess,
 } from 'Components/AsyncComponent/AsyncComponent';
 import Community from "Routes/custom/community";
 
@@ -33,7 +34,7 @@ import {
     USERS,
     COMMUNITY,
     PACKAGES,
-    COMMERCIAL_MANAGEMENT, PRODUCT, STORE, ROOT
+    COMMERCIAL_MANAGEMENT, PRODUCT, STORE, ROOT, ACCESS
 } from "Url/frontendUrl";
 import {AbilityContext} from "Permissions/Can";
 import {connect} from "react-redux";
@@ -150,6 +151,13 @@ const Dashboard = ({ match, authUser }) => {
                     <CanRoute
                         path={COMMUNITY.SELF}
                         component={Community}
+                        // component={AsyncCommunity}
+                        permissions={[]}
+                    />
+
+                    <CanRoute
+                        path={ACCESS.SELF}
+                        component={AsyncAccess}
                         // component={AsyncCommunity}
                         permissions={[]}
                     />

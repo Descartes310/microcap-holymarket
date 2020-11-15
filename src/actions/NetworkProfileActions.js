@@ -31,3 +31,19 @@ export const getAllNetworkProfile = () => (dispatch) => {
         });
 };
 
+export const getAllNetworkProfileWithBranch = (branchId) => (dispatch) => {
+    const url = `${NETWORK_PROFILE_API.BRANCH}?branch_id=${branchId}`;
+    dispatch({ type: NETWORK_PROFILE });
+    return api
+        .get(url)
+        .then((response) => {
+            dispatch({ type: NETWORK_PROFILE_SUCCESS, payload: response.data });
+            return Promise.resolve();
+        })
+        .catch((error) => {
+            dispatch({ type: NETWORK_PROFILE_FAILURE, error: error });
+            NotificationManager.error(error.message);
+            return Promise.reject();
+        });
+};
+

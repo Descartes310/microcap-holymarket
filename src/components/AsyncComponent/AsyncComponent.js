@@ -73,6 +73,11 @@ export const AsyncStore = Loadable({
 	loading: () => <RctPageLoader />,
 });
 
+export const AsyncAccess = Loadable({
+	loader: () => import("Routes/custom/access"),
+	loading: () => <RctPageLoader />,
+});
+
 export const AsyncStoreWrapper = Loadable({
 	loader: () => import("Routes/custom/store/indexWrapper"),
 	loading: () => <RctPageLoader />,

@@ -38,6 +38,10 @@ import ComOperationReducer from './ComOperationReducer';
 import ComOfferReducer from './ComOfferReducer';
 import ProductReducer from './ProductReducer';
 import CartReducer from './CartReducer';
+import MandateTypeReducer from './MandateTypeReducer';
+import MandateModelReducer from './MandateModelReducer';
+import MandateReducer from './MandateReducer';
+import BranchUsersReducer from './BranchUsersReducer';
 
 const reducers = combineReducers({
    settings,
@@ -76,6 +80,10 @@ const reducers = combineReducers({
    comOffer: ComOfferReducer,
    products: ProductReducer,
    cart: CartReducer,
+   mandateType: MandateTypeReducer,
+   mandateModel: MandateModelReducer,
+   mandate: MandateReducer,
+   branchUsers: BranchUsersReducer,
 });
 
 export default reducers;

@@ -51,6 +51,7 @@ export const BRANCH = {
 export const NETWORK_PROFILE = {
     CREATE: 'public/network-profile',
     GET_ALL: 'public/network-profile',
+    BRANCH: 'public/network-profile/branch',
     PARTNERSHIP: {
         GET_ALL: 'public/network-profile/partership',
         CREATE: 'public/network-profile/partership',
@@ -120,6 +121,7 @@ export const USER_PROFILE = {
 };
 
 export const USERS = {
+    BRANCH_USERS: 'public/users',
     SEARCH: 'public/users/search',
     GET_ALL: 'public/users/persons',
     CREATE: {
@@ -192,6 +194,26 @@ export const GENERIC_OBJECT = {
     GET_ALL: 'public/generic-objects',
     GET_ONE: 'public/generic-objects/{id}',
     CREATE: 'public/generic-objects',
+};
+
+export const ACCESS = {
+    GET_ALL: 'public/access/access',
+    CREATE: 'public/access/access',
+    GET_ONE: 'public/generic-objects/{id}',
+    MANDATE: {
+        SELF: {
+            GET_ALL: 'public/access/mandates',
+            CREATE: 'public/access/mandates',
+        },
+        MODEL: {
+            GET_ALL: 'public/access/mandate-models',
+            CREATE: 'public/access/mandate-models',
+        },
+        TYPE: {
+            GET_ALL: 'public/access/mandate-types',
+            CREATE: 'public/access/mandate-types',
+        }
+    }
 };
 
 export const joinBaseUrl = to => BASE + to;

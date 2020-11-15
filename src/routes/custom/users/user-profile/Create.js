@@ -31,6 +31,7 @@ import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import {createUserProfile} from "Actions/independentActions";
 import {getUserProfiles} from "Actions/GeneralActions";
 import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
+import {ERROR_500} from "Constants/errors";
 
 const UserProfileCreate = props => {
     const theme = useTheme();
@@ -78,8 +79,7 @@ const UserProfileCreate = props => {
                 onClose();
             })
             .catch((error) => {
-                console.log("error => ", JSON.stringify(error));
-                NotificationManager.error("Une erreur est survenue");
+                NotificationManager.error(ERROR_500);
                 // console.log("error => ", error.message);
             })
             .finally(() => setRequestGlobalAction(false));

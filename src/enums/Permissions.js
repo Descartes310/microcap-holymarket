@@ -396,4 +396,47 @@ export default class Permission extends BaseEnum {
             },
         }
     };
+
+    static access = {
+        mandate: {
+            type: {
+                viewList: {
+                    "name": "access/mandate/type/view-list",
+                    "types": [UserType.EXPLOITANT]
+                },
+                viewOne: {
+                    "name": "access/mandate/type/create-one",
+                    "types": [UserType.EXPLOITANT]
+                },
+                search: {
+                    "name": "access/mandate/type/search",
+                    "types": [UserType.EXPLOITANT]
+                },
+                createOne: {
+                    "name": "access/mandate/type/create-one",
+                    "types": [UserType.EXPLOITANT]
+                },
+                createMany: {
+                    "name": "access/mandate/type/create-one",
+                    "types": [UserType.EXPLOITANT]
+                },
+                editOne: {
+                    "name": "access/mandate/type/edit-one",
+                    "types": [UserType.EXPLOITANT]
+                },
+                editMany: {
+                    "name": "access/mandate/type/edit-many",
+                    "types": [UserType.EXPLOITANT]
+                },
+                deleteOne: {
+                    "name": "access/mandate/type/delete-one",
+                    "types": [UserType.EXPLOITANT]
+                },
+                deleteMany: {
+                    "name": "access/mandate/type/delete-many",
+                    "types": [UserType.EXPLOITANT]
+                },
+            }
+        }
+    };
 }

@@ -1,5 +1,5 @@
 // sidebar nav links
-import {CATALOG, COMMERCIAL_MANAGEMENT, COMMUNITY, NETWORK, PRODUCT, USERS} from 'Url/frontendUrl';
+import {CATALOG, COMMERCIAL_MANAGEMENT, COMMUNITY, NETWORK, PRODUCT, USERS, ACCESS} from 'Url/frontendUrl';
 import Branch from 'Models/Branch';
 import Permission from "Enums/Permissions";
 
@@ -18,7 +18,7 @@ export default {
                "permissions": [Permission.navLinks.users.childLinks.users.viewMenu],
             },
             {
-               "menu_title": "Profil utilisateurs",
+               "menu_title": "Roles",
                "new_item": false,
                "path": USERS.USERS_PROFILE.SELF,
                "permissions": [Permission.navLinks.users.childLinks.userProfile.viewMenu],
@@ -116,6 +116,15 @@ export default {
            "permissions": [],
            "child_routes": null
        },
+      {
+         "menu_title": "Accès",
+         "menu_icon": "zmdi zmdi-comments",
+         "new_item": false,
+         "path": ACCESS.SELF,
+         // "permissions": [Permission.navLinks.community.viewMenu],
+         "permissions": [],
+         "child_routes": null
+      },
    ],
    manager: [
       {

@@ -139,6 +139,29 @@ export const STORE = {
     CHECKOUT: '/store/checkout/:id',
 };
 
+export const ACCESS = {
+    SELF: '/access',
+    LIST: '/access/list',
+    CREATE: '/access/create',
+    MANDATE: {
+        SELF: {
+            SELF: '/access/mandate/mandate',
+            LIST: '/access/mandate//mandate/list',
+            CREATE: '/access/mandate/mandate/create',
+        },
+        MODEL: {
+            SELF: '/access/mandate/model',
+            LIST: '/access/mandate/model/list',
+            CREATE: '/access/mandate/model/create',
+        },
+        TYPE: {
+            SELF: '/access/mandate/type',
+            LIST: '/access/mandate/type/list',
+            CREATE: '/access/mandate/type/create',
+        },
+    }
+};
+
 export const joinUrlWithParams = (to, params) => {
     let url = to;
     params.forEach(param => {

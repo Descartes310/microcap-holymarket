@@ -1,3 +1,4 @@
+import Create from "./Create";
 import {connect} from "react-redux";
 import {injectIntl} from "react-intl";
 import React, { Component } from 'react';
@@ -7,46 +8,48 @@ import IntlMessages from 'Util/IntlMessages';
 import {withStyles} from "@material-ui/core";
 import {AbilityContext} from "Permissions/Can";
 import CustomList from "Components/CustomList";
-import {getProducts, setRequestGlobalAction} from "Actions";
-import Button from "@material-ui/core/Button";
-import {joinUrlWithParamsId, PRODUCT} from "Url/frontendUrl";
+import {getMandateType, setRequestGlobalAction} from "Actions";
 
-class ProductList extends Component {
+class MandateTypeList extends Component {
     static contextType = AbilityContext;
     constructor(props) {
         super(props);
-        this.state = {}
+        this.state = {
+            showCreateBox: false,
+        }
     }
 
     componentDidMount() {
-        this.props.getProducts(this.props.authUser.user.branch.id);
+        this.props.getMandateType(this.props.authUser.branchId);
     }
 
-    onEnterClick = (product) => {
-        const url = joinUrlWithParamsId(PRODUCT.SHOW, product.id);
-        this.props.history.push(url, {currentProduct: JSON.stringify(product)});
-    };
-
     render() {
-        const { products, loading, error } = this.props;
+        const { mandateType, loading, error } = this.props;
+        const { showCreateBox } = this.state;
 
         return (
             <>
+                {/*{this.context.can(Permission.userProfile.createOne.name, Permission) && (*/}
+                    <Create
+                        show={showCreateBox}
+                        onClose={() => this.setState({showCreateBox: false})}
+                    />
+                {/*)}*/}
                 <CustomList
                     error={error}
                     loading={loading}
-                    list={products}
-                    titleList={"Produits"}
-                    itemsFoundText={n => `${n} produits trouvés`}
-                    addPermissions={{
+                    list={mandateType}
+                    onAddClick={() => this.setState({showCreateBox: true})}
+                    itemsFoundText={n => `${n} type de mandat trouvés`}
+                    /*addPermissions={{
                         permissions: [Permission.userProfile.createOne.name],
-                    }}
+                    }}*/
                     renderItem={list => (
                         <>
                             {list && list.length === 0 ? (
                                 <div className="d-flex justify-content-center align-items-center py-50">
                                     <h4>
-                                        Aucun produits trouvés
+                                        Aucun type de mandat trouvés
                                     </h4>
                                 </div>
                             ) : (
@@ -55,7 +58,7 @@ class ProductList extends Component {
                                         <thead>
                                             <tr>
                                                 <th><IntlMessages id="components.name" /></th>
-                                                <th></th>
+                                                <th><IntlMessages id="widgets.description" /></th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -71,18 +74,12 @@ class ProductList extends Component {
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td className="table-action">
-                                                    <Button
-                                                        size="small"
-                                                        color="primary"
-                                                        // disabled={loading}
-                                                        variant="contained"
-                                                        className={"text-white font-weight-bold mr-3 bg-blue"}
-                                                        onClick={() => this.onEnterClick(item)}
-                                                    >
-                                                        Voir les propositions
-                                                        <i className="zmdi zmdi-arrow-right mr-2"/>
-                                                    </Button>
+                                                <td>
+                                                    <div className="media">
+                                                        <div className="media-body pt-10">
+                                                            <h4 className="m-0 fw-bold text-dark">{item.description}</h4>
+                                                        </div>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         ))}
@@ -118,15 +115,15 @@ const useStyles = theme => ({
 });
 
 // map state to props
-const mapStateToProps = ({ requestGlobalLoader, products, authUser  }) => {
+const mapStateToProps = ({ requestGlobalLoader, mandateType, authUser  }) => {
     return {
         requestGlobalLoader,
         authUser: authUser.data,
-        loading: products.loading,
-        products: products.data,
-        error: products.error
+        loading: mandateType.loading,
+        mandateType: mandateType.data,
+        error: mandateType.error
     }
 };
 
-export default connect(mapStateToProps, {getProducts, setRequestGlobalAction})
-(withStyles(useStyles, { withTheme: true })(withRouter(injectIntl(ProductList))));
+export default connect(mapStateToProps, {getMandateType, setRequestGlobalAction})
+(withStyles(useStyles, { withTheme: true })(withRouter(injectIntl(MandateTypeList))));

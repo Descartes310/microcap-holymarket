@@ -10,7 +10,8 @@ import {
     PRODUCT_TYPE,
     USER_PROFILE, NETWORK_PROFILE_TYPE, USERS,
     COMMUNITY, PACKAGES, COMMERCIAL_MANAGEMENT, joinBaseUrlWithParamsId,
-    ORDER, SALES, GENERIC_OBJECT
+    ORDER, SALES, GENERIC_OBJECT,
+    ACCESS
 } from "Url/backendUrl";
 import {SET_CURRENT_COMMUNITY, SET_CURRENT_COMMUNITY_SUCCESS} from "Actions/types";
 
@@ -361,4 +362,24 @@ export const createGenericData = (data) => {
 export const getGenericData = (type, branchId) => {
     const url = `${GENERIC_OBJECT.GET_ALL}?type=${type}&branch_id=${branchId}`;
     return makeRequest('get', url);
+};
+
+export const createMandateType = (data, branchId) => {
+    const url = `${ACCESS.MANDATE.TYPE.CREATE}?branch_id=${branchId}`;
+    return makeRequest('post', url, data);
+};
+
+export const createMandateModel = (data, branchId) => {
+    const url = `${ACCESS.MANDATE.MODEL.CREATE}?branch_id=${branchId}`;
+    return makeRequest('post', url, data);
+};
+
+export const createMandate = (data, branchId) => {
+    const url = `${ACCESS.MANDATE.SELF.CREATE}?branch_id=${branchId}`;
+    return makeRequest('post', url, data);
+};
+
+export const createAccess = (data, branchId) => {
+    const url = `${ACCESS.CREATE}?branch_id=${branchId}`;
+    return makeRequest('post', url, data);
 };

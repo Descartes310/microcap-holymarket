@@ -25,7 +25,8 @@ import {
     SET_CURRENT_COMMUNITY,
     SET_CURRENT_COMMUNITY_SUCCESS, SET_CURRENT_COMMUNITY_FAILURE,
     PACKAGES,
-    COMMERCIAL_OPERATION_TYPE, COMMERCIAL_OPERATION, COMMERCIAL_OFFER, PRODUCT
+    COMMERCIAL_OPERATION_TYPE, COMMERCIAL_OPERATION, COMMERCIAL_OFFER, PRODUCT,
+    MANDATE_TYPE, MANDATE_MODEL, MANDATE, BRANCH_USERS
 } from 'Actions/types';
 
 import api from './../api';
@@ -41,6 +42,7 @@ import {
     COMMUNITY as COMMUNITY_API,
     PACKAGES as PACKAGES_API,
     COMMERCIAL_MANAGEMENT as COMMERCIAL_MANAGEMENT_API,
+    ACCESS as ACCESS_API,
     joinBaseUrlWithParams,
     BRANCH} from 'Url/backendUrl';
 
@@ -213,4 +215,24 @@ export const getComOffer = (partnerId) => (dispatch) => {
 export const getProducts = (branchId) => (dispatch) => {
     const url = `${COMMERCIAL_MANAGEMENT_API.OFFER.GET_ALL.PRODUCT_AVAILABLE}?branch_id=${branchId}`;
     return makeActionRequest('get', url, PRODUCT, dispatch);
+};
+
+export const getMandateType = (branchId) => (dispatch) => {
+    const url = `${ACCESS_API.MANDATE.TYPE.GET_ALL}?branch_id=${branchId}`;
+    return makeActionRequest('get', url, MANDATE_TYPE, dispatch);
+};
+
+export const getMandateModel = (mandateTypeId, branchId) => (dispatch) => {
+    const url = `${ACCESS_API.MANDATE.MODEL.GET_ALL}?mandat_type_id=${mandateTypeId}&branch_id=${branchId}`;
+    return makeActionRequest('get', url, MANDATE_MODEL, dispatch);
+};
+
+export const getMandate = (branchId) => (dispatch) => {
+    const url = `${ACCESS_API.MANDATE.SELF.GET_ALL}?branch_id=${branchId}`;
+    return makeActionRequest('get', url, MANDATE, dispatch);
+};
+
+export const getBranchUsers = (branchId) => (dispatch) => {
+    const url = `${USERS_API.BRANCH_USERS}?branch_id=${branchId}`;
+    return makeActionRequest('get', url, BRANCH_USERS, dispatch);
 };

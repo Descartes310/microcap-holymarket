@@ -30,7 +30,7 @@ class ProductItemAvailable extends Component {
         this.state = {
             showQuantityBox: false,
             showWarningBox: false,
-            loading: false,
+            loading: true,
             products: [],
             currentProduct: this.currentProduct,
             productToAdd: null,
