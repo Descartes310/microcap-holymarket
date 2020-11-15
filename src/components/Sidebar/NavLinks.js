@@ -118,7 +118,7 @@ export default {
        },
       {
          "menu_title": "Accès",
-         "menu_icon": "zmdi zmdi-comments",
+         "menu_icon": "zmdi zmdi-key",
          "new_item": false,
          "path": ACCESS.SELF,
          // "permissions": [Permission.navLinks.community.viewMenu],
