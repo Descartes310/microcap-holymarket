@@ -148,6 +148,11 @@ export const getUsers = (branchId, type) => (dispatch) => {
     return makeActionRequest('get', url, USERS, dispatch);
 };
 
+export const getUsersByOrganisation = (organisationId) => (dispatch) => {
+    const url = `${USERS_API.GET_ALL_BY_ORGANISATION}?organisation_id=${organisationId}`;
+    return makeActionRequest('get', url, USERS, dispatch);
+};
+
 export const getUserCommunities = () => (dispatch) => {
     const url = `${COMMUNITY_API.USER.GROUPS.GET_ALL}`;
     return makeActionRequest('get', url, USER_COMMUNITIES, dispatch);
@@ -229,6 +234,11 @@ export const getMandateModel = (mandateTypeId, branchId) => (dispatch) => {
 
 export const getMandate = (branchId) => (dispatch) => {
     const url = `${ACCESS_API.MANDATE.SELF.GET_ALL}?branch_id=${branchId}`;
+    return makeActionRequest('get', url, MANDATE, dispatch);
+};
+
+export const getMandateOfUser = (userId) => (dispatch) => {
+    const url = `${ACCESS_API.MANDATE.SELF.USER.GET_ALL}?user_id=${userId}`;
     return makeActionRequest('get', url, MANDATE, dispatch);
 };
 

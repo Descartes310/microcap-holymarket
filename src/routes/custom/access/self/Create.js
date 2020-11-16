@@ -7,7 +7,6 @@ import {useForm} from "react-hook-form";
 import IntlMessages from "Util/IntlMessages";
 import {injectIntl} from 'react-intl';
 import InputLabel from "@material-ui/core/InputLabel/InputLabel";
-import {setRequestGlobalAction, getUserPermissions, getAllNetworkProfileWithBranch} from "Actions";
 import {NotificationManager} from "react-notifications";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
 import DialogTitle from "@material-ui/core/DialogTitle/DialogTitle";
@@ -17,11 +16,9 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import {useTheme, withStyles} from '@material-ui/core/styles';
 import CancelIcon from '@material-ui/icons/Cancel';
 import IconButton from "@material-ui/core/IconButton";
-import {createAccess, createMandateModel} from "Actions/independentActions";
-import {getBranchUsers, getMandate, getUserProfiles} from "Actions/GeneralActions";
+import {createAccess, getBranchUsers, getMandate, getMandateOfUser, getUsersByOrganisation, setRequestGlobalAction} from "Actions";
 import {ERROR_500} from "Constants/errors";
 import ObjectSwitcher from "Components/ObjectSwitcher";
-import RangeDate from "Components/RangeDate";
 import FormControl from "@material-ui/core/FormControl";
 import MenuItem from "@material-ui/core/MenuItem";
 import CustomAsyncComponent from "Components/CustomAsyncComponent";
@@ -32,13 +29,21 @@ import ErrorInputComponent from "Components/ErrorInputComponent";
 import {minMaxValidatorObject, passwordValidatorObject} from "Helpers/validator";
 import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
 import FetchFailedComponent from "Components/FetchFailedComponent";
+import UserType from "Enums/UserType";
+import SingleTitleText from "Components/SingleTitleText";
 
 const Create = props => {
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
 
-    const { mandate, getMandate, authUser, loading, intl, onClose, show, branchUsers, getBranchUsers, setRequestGlobalAction } = props;
+    const { mandate, getMandate, authUser, loading, intl, onClose, show, getBranchUsers, getMandateOfUser, getUsersByOrganisation, setRequestGlobalAction } = props;
 
+    const userDoesNotHaveRight = authUser.user.userType === UserType.ORGANISATION;
+
+    const [branchUsers, setBranchUsers] = useState({
+        data: null,
+        loading: false,
+    });
     const [mandateSelected, setMandateSelected] = useState(null);
     const [permissionsSelected, setPermissionsSelected] = useState([]);
 
@@ -49,10 +54,47 @@ const Create = props => {
     }, []);
 
     const loadData = () => {
-        getBranchUsers(authUser.branchId);
-        getMandate(authUser.branchId).then(result => {
-            if (result && result.length > 0) setMandateSelected(result[0].id);
+        loadUsers().catch(() => {});
+        loadMandate().catch(() => {});
+    };
+
+    const loadUsers = async () => {
+        setBranchUsers({
+            data: branchUsers.data,
+            loading: true
         });
+        let result = branchUsers.data;
+
+        try {
+            if (userDoesNotHaveRight) {
+                result = await getUsersByOrganisation(authUser.id);
+            } else {
+                result = await getBranchUsers(authUser.branchId);
+            }
+        } catch (e) {
+
+        }
+
+        setBranchUsers({
+            data: result,
+            loading: false
+        });
+    };
+
+    const loadMandate = async () => {
+        getBranchUsers(authUser.branchId);
+        let result;
+        try {
+            if (userDoesNotHaveRight) {
+                result = await getMandateOfUser(authUser.user.id);
+            } else {
+                result = await getMandate(authUser.branchId);
+            }
+        } catch (e) {
+
+        }
+
+        if (result && result.length > 0) setMandateSelected(result[0].id);
     };
 
     /**
@@ -116,12 +158,20 @@ const Create = props => {
                             <RctSectionLoader />
                         ) : (!mandate.data || !branchUsers.data) ? (
                             <FetchFailedComponent _onRetryClick={loadData} />
+                        ) : branchUsers.data.length === 0 ? (
+                            <SingleTitleText
+                                text={"Aucun utilisateurs trouvés dans l'organisation"}
+                            />
+                        ) : mandate.data.length === 0 ? (
+                            <SingleTitleText
+                                text={"Aucun mandats trouvés dans l'organisation"}
+                            />
                         ) : (
                             <Form onSubmit={handleSubmit(onSubmit)}>
                                 <CustomAsyncComponent
                                     data={branchUsers.data}
                                     loading={branchUsers.loading}
-                                    onRetryClick={loadData}
+                                    onRetryClick={loadUsers}
                                     component={data => (
                                         <div className="form-group text-left my-3">
                                             <FormControl fullWidth>
@@ -155,7 +205,7 @@ const Create = props => {
                                 <CustomAsyncComponent
                                     data={mandate.data}
                                     loading={mandate.loading}
-                                    onRetryClick={loadData}
+                                    onRetryClick={loadMandate}
                                     component={data => (
                                         <div className="form-group text-left my-3">
                                             <FormControl fullWidth>
@@ -269,4 +319,4 @@ const mapStateToProps = ({ requestGlobalLoader, authUser, mandate, branchUsers})
     return {loading: requestGlobalLoader, authUser: authUser.data, mandate, branchUsers};
 };
 
-export default connect(mapStateToProps, {getMandate, getBranchUsers, setRequestGlobalAction })(injectIntl(Create));
+export default connect(mapStateToProps, {getMandate, getBranchUsers, getMandateOfUser, getUsersByOrganisation, setRequestGlobalAction })(injectIntl(Create));

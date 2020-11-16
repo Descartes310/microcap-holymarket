@@ -9,8 +9,9 @@ import {HOME} from "Url/frontendUrl";
 const CanRoute = ({ can, component: Component, path, permissions, ...restProps }) => {
     const ability = useAbility(AbilityContext);
     const _permissions = permissions || getPermissionOfPath(path);
-    const _can = _permissions.every(p => ability.can(p, Permission));
+    let _can = _permissions.every(p => ability.can(p, Permission));
     // ability.can(Branch.permissionsRelated.CREATE, Branch);
+    _can = (can !== null && can !== undefined) ? can && _can : _can;
 
     return _can
         ? (<Route {...restProps} component={Component} />)

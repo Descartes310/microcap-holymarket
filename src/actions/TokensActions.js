@@ -44,8 +44,10 @@ export const loginUserWithEmailAndPassword = (data) => (dispatch) => {
 
     delete _data.email;
 
+    const url = _data.gotServiceNumber ? AUTH.LOGIN_WITH_SERVICE_NUMBER : AUTH.LOGIN;
+
     return api
-        .post(AUTH.LOGIN, _data, config)
+        .post(url, _data, config)
         .then((response) => {
             const data = {
                 accessToken: response.data.accessToken,
@@ -58,7 +60,7 @@ export const loginUserWithEmailAndPassword = (data) => (dispatch) => {
             saveAuthToken(data.accessToken, data.tokenType, data.expiresIn, data.refreshToken);
 
             // Fetch user data
-            dispatch(setAuthUser());
+            dispatch(setAuthUser(_data.gotServiceNumber ? _data.serviceNumber : null ));
 
             // Persist data into store
             dispatch({ type: LOGIN_USER_SUCCESS, payload: data });

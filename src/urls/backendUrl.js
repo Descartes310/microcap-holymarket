@@ -8,6 +8,7 @@ const publicPrefix = shouldHavePublic ? 'public/' : '';
 
 export const AUTH = {
     LOGIN: 'oauth/token',
+    LOGIN_WITH_SERVICE_NUMBER: 'auth/login',
     COUNTRY: {
         LIST: 'auth/countries',
         OPERATORS: 'auth/countries/{country}/microcap-operators'
@@ -24,6 +25,7 @@ export const AUTH = {
 
 export const PROFILE = {
     INFORMATION: 'auth/me',
+    INFORMATION_WITH_SERVICE_NUMBER: 'auth/me/mandate',
 };
 
 export const SYSTEM_OBJECT = {
@@ -124,6 +126,7 @@ export const USERS = {
     BRANCH_USERS: 'public/users',
     SEARCH: 'public/users/search',
     GET_ALL: 'public/users/persons',
+    GET_ALL_BY_ORGANISATION: 'public/users/persons/by-organisation',
     CREATE: {
         PERSON: 'public/users/persons/with-profile',
         ORGANISATION: 'public/users/organisations/with-profile',
@@ -204,6 +207,9 @@ export const ACCESS = {
         SELF: {
             GET_ALL: 'public/access/mandates',
             CREATE: 'public/access/mandates',
+            USER: {
+                GET_ALL: 'public/access/mandates/user',
+            }
         },
         MODEL: {
             GET_ALL: 'public/access/mandate-models',

@@ -30,15 +30,21 @@ import LanguageProvider from "Components/Header/LanguageProvider";
 import IntlMessages from "Util/IntlMessages";
 import {injectIntl} from "react-intl";
 import InputLabel from "@material-ui/core/InputLabel";
+import FormControl from "@material-ui/core/FormControl";
+import Checkbox from "@material-ui/core/Checkbox/Checkbox";
+import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
 
 const Signin = (props) => {
     const { loading, intl } = props;
-    const { register, errors, handleSubmit } = useForm();
+    const { control, register, errors, handleSubmit, watch, setValue } = useForm();
+
+    const gotServiceNumberWatch = watch('gotServiceNumber');
 
     /**
      * On User Login
      */
     const onSubmit = (data) => {
+        console.log("data => ", data);
         props.loginUserWithEmailAndPassword(data).catch();
     };
 
@@ -97,19 +103,14 @@ const Signin = (props) => {
                                                 <InputLabel className="text-left" htmlFor="email"><IntlMessages id="auth.email"/></InputLabel>
                                                 <InputComponent
                                                     id="email"
-                                                    type="mail"
                                                     isRequired
                                                     name={'email'}
                                                     errors={errors}
                                                     register={register}
                                                     className="has-input input-lg"
                                                     placeholder="example@gmail.com"
-                                                    otherValidator={{pattern: emailValidatorObject.regex}}>
-                                                    {errors.email?.type === 'pattern' && (
-                                                        <ErrorInputComponent text={intl.formatMessage({id: emailValidatorObject.message})} />
-                                                    )}
-                                                </InputComponent>
-                                                <span className="has-icon"><i className="ti-email"></i></span>
+                                                />
+                                                <span className="has-icon"><i className="ti-email"/></span>
                                             </FormGroup>
                                             <FormGroup className="has-wrapper">
                                                 <div className="d-flex justify-content-between">
@@ -139,6 +140,46 @@ const Signin = (props) => {
                                                 </InputComponent>
                                                 <span className="has-icon"><i className="ti-lock"></i></span>
                                             </FormGroup>
+
+                                            <FormControl fullWidth>
+                                                <InputComponent
+                                                    isRequired
+                                                    className="mt-0"
+                                                    errors={errors}
+                                                    control={control}
+                                                    register={register}
+                                                    componentType="select"
+                                                    id="gotServiceNumber"
+                                                    name={'gotServiceNumber'}
+                                                    // defaultValue={data[0]}
+                                                    as={<FormControlLabel control={
+                                                        <Checkbox
+                                                            color="primary"
+                                                            checked={gotServiceNumberWatch}
+                                                            onChange={() => setValue('gotServiceNumber', !gotServiceNumberWatch)}
+                                                        />
+                                                    } label={"Accès nomade ?"}
+                                                    />}
+                                                />
+                                            </FormControl>
+
+                                            {gotServiceNumberWatch && (
+                                                <FormGroup className="has-wrapper">
+                                                    <InputLabel className="text-left" htmlFor="serviceNumber">
+                                                        Numéro de service
+                                                    </InputLabel>
+                                                    <InputComponent
+                                                        isRequired
+                                                        errors={errors}
+                                                        id="serviceNumber"
+                                                        register={register}
+                                                        name={'serviceNumber'}
+                                                        className="has-input input-lg"
+                                                        />
+                                                    <span className="has-icon"><i className="ti-pencil"/></span>
+                                                </FormGroup>
+                                            )}
+
                                             <FormGroup className="mb-15">
                                                 <Button
                                                     type="submit"

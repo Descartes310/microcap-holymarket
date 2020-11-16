@@ -7,20 +7,28 @@ import IntlMessages from 'Util/IntlMessages';
 import {withStyles} from "@material-ui/core";
 import {AbilityContext} from "Permissions/Can";
 import CustomList from "Components/CustomList";
-import {getMandate, setRequestGlobalAction} from "Actions";
+import {getMandate, getMandateOfUser, setRequestGlobalAction} from "Actions";
 import TimeFromMoment from "Components/TimeFromMoment";
+import UserType from "Enums/UserType";
 
 class MandateList extends Component {
     static contextType = AbilityContext;
     constructor(props) {
         super(props);
+
+        this.userDoesNotHaveRight = this.props.authUser.user.userType === UserType.ORGANISATION;
+
         this.state = {
             showCreateBox: false,
         }
     }
 
     componentDidMount() {
-        this.props.getMandate(this.props.authUser.branchId);
+        if (this.userDoesNotHaveRight) {
+            this.props.getMandateOfUser(this.props.authUser.user.id);
+        } else {
+            this.props.getMandate(this.props.authUser.branchId);
+        }
     }
 
     render() {
@@ -29,17 +37,17 @@ class MandateList extends Component {
 
         return (
             <>
-                {/*{this.context.can(Permission.userProfile.createOne.name, Permission) && (*/}
+                {!this.userDoesNotHaveRight && (
                     <Create
                         show={showCreateBox}
                         onClose={() => this.setState({showCreateBox: false})}
                     />
-                {/*)}*/}
+                )}
                 <CustomList
                     error={error}
                     list={mandate}
                     loading={loading}
-                    onAddClick={() => this.setState({showCreateBox: true})}
+                    onAddClick={ !this.userDoesNotHaveRight ? () => this.setState({showCreateBox: true}) : null}
                     itemsFoundText={n => `${n} mandat(s) trouvés`}
                     /*addPermissions={{
                         permissions: [Permission.userProfile.createOne.name],
@@ -139,5 +147,5 @@ const mapStateToProps = ({ requestGlobalLoader, mandate, authUser  }) => {
     }
 };
 
-export default connect(mapStateToProps, {getMandate, setRequestGlobalAction})
+export default connect(mapStateToProps, {getMandate, getMandateOfUser, setRequestGlobalAction})
 (withStyles(useStyles, { withTheme: true })(withRouter(injectIntl(MandateList))));

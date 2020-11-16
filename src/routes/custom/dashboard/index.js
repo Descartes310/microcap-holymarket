@@ -38,7 +38,6 @@ import {
 } from "Url/frontendUrl";
 import {AbilityContext} from "Permissions/Can";
 import {connect} from "react-redux";
-import {setAuthUser} from "Actions/AuthActions";
 import {disableAppLoading} from "Actions/AppLoadingAction";
 import {loginIntoStore} from "Actions/TokensActions";
 import {getPermissionOfPath} from "Helpers/helpers";
@@ -179,4 +178,4 @@ const mapStateToProps = ({ authUser, tokens, appLoading }) => {
     return { tokens, authUser: authUser.data, appLoading };
 };
 
-export default connect(mapStateToProps, {setAuthUser, disableAppLoading, loginIntoStore})(Dashboard);
+export default connect(mapStateToProps, {disableAppLoading, loginIntoStore})(Dashboard);
