@@ -20,10 +20,15 @@ export const setAuthUser = (serviceNumber = null) => (dispatch) => {
 
     // Define branch url
     const branchUrl = window.location.host;
+    const access = localStorage.getItem('access');
+    let accessId = "undefined";
+    if (access) {
+        accessId = JSON.parse(access).id;
+    }
 
     const url = serviceNumber === null
         ?  `${PROFILE.INFORMATION}?branch_url=${branchUrl}`
-        : `${PROFILE.INFORMATION_WITH_SERVICE_NUMBER}?service_number=${serviceNumber}&branch_url=${branchUrl}`;
+        : `${PROFILE.INFORMATION_WITH_SERVICE_NUMBER}?access_id=${accessId}&service_number=${serviceNumber}&branch_url=${branchUrl}`;
 
     return api
         .get(url)

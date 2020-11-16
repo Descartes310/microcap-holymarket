@@ -44,7 +44,6 @@ const Signin = (props) => {
      * On User Login
      */
     const onSubmit = (data) => {
-        console.log("data => ", data);
         props.loginUserWithEmailAndPassword(data).catch();
     };
 

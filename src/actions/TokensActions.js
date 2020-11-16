@@ -49,11 +49,16 @@ export const loginUserWithEmailAndPassword = (data) => (dispatch) => {
     return api
         .post(url, _data, config)
         .then((response) => {
+            const token = _data.gotServiceNumber ? response.data.token : response.data;
+            const access = _data.gotServiceNumber ? response.data.access : {};
+
+            localStorage.setItem("access", JSON.stringify(access));
+
             const data = {
-                accessToken: response.data.accessToken,
-                tokenType: response.data.tokenType,
-                expiresIn: response.data.expiresIn,
-                refreshToken: response.data.refreshToken,
+                accessToken: token.accessToken,
+                tokenType: token.tokenType,
+                expiresIn: token.expiresIn,
+                refreshToken: token.refreshToken,
             };
 
             // Persist data into localstorage
