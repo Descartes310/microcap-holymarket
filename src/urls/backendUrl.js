@@ -222,6 +222,16 @@ export const ACCESS = {
     }
 };
 
+export const NOTIFICATIONS = {
+    GET_ALL: 'public/notifications',
+    TYPE: {
+        GET_ALL_MODEL: 'public/notifications/notification_models',
+        GET_ALL: 'public/notifications/notification_type',
+        CREATE: 'public/notifications/notification_type',
+    },
+    CREATE: 'public/generic-objects',
+};
+
 export const joinBaseUrl = to => BASE + to;
 
 export const joinBaseUrlWithParams = (to, params) => {

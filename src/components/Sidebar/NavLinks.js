@@ -1,5 +1,5 @@
 // sidebar nav links
-import {CATALOG, COMMERCIAL_MANAGEMENT, COMMUNITY, NETWORK, PRODUCT, USERS, ACCESS} from 'Url/frontendUrl';
+import {CATALOG, COMMERCIAL_MANAGEMENT, COMMUNITY, NETWORK, PRODUCT, USERS, ACCESS, SETTINGS} from 'Url/frontendUrl';
 import Branch from 'Models/Branch';
 import Permission from "Enums/Permissions";
 
@@ -124,6 +124,20 @@ export default {
          // "permissions": [Permission.navLinks.community.viewMenu],
          "permissions": [],
          "child_routes": null
+      },
+      {
+         "menu_title": "Paramètres",
+         "menu_icon": "zmdi zmdi-settings",
+         "new_item": false,
+         "permissions": [],
+         "child_routes": [
+            {
+               "menu_title": "Notification",
+               "new_item": false,
+               "path": SETTINGS.NOTIFICATION.SELF,
+               "permissions": [],
+            },
+         ]
       },
    ],
    manager: [

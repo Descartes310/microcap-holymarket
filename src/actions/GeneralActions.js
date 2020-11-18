@@ -26,7 +26,7 @@ import {
     SET_CURRENT_COMMUNITY_SUCCESS, SET_CURRENT_COMMUNITY_FAILURE,
     PACKAGES,
     COMMERCIAL_OPERATION_TYPE, COMMERCIAL_OPERATION, COMMERCIAL_OFFER, PRODUCT,
-    MANDATE_TYPE, MANDATE_MODEL, MANDATE, BRANCH_USERS
+    MANDATE_TYPE, MANDATE_MODEL, MANDATE, BRANCH_USERS, NOTIFICATION_MODEL
 } from 'Actions/types';
 
 import api from './../api';
@@ -43,8 +43,10 @@ import {
     PACKAGES as PACKAGES_API,
     COMMERCIAL_MANAGEMENT as COMMERCIAL_MANAGEMENT_API,
     ACCESS as ACCESS_API,
+    NOTIFICATIONS as NOTIFICATIONS_API,
     joinBaseUrlWithParams,
-    BRANCH} from 'Url/backendUrl';
+    BRANCH,
+} from 'Url/backendUrl';
 
 export const getCatalogs = () => (dispatch) => {
     dispatch({ type: CATALOG });
@@ -245,4 +247,9 @@ export const getMandateOfUser = (userId) => (dispatch) => {
 export const getBranchUsers = (branchId) => (dispatch) => {
     const url = `${USERS_API.BRANCH_USERS}?branch_id=${branchId}`;
     return makeActionRequest('get', url, BRANCH_USERS, dispatch);
+};
+
+export const getModelNotifications = (branchId) => (dispatch) => {
+    const url = `${NOTIFICATIONS_API.TYPE.GET_ALL_MODEL}?branch_id=${branchId}`;
+    return makeActionRequest('get', url, NOTIFICATION_MODEL, dispatch);
 };

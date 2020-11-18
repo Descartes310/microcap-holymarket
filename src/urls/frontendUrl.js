@@ -162,6 +162,14 @@ export const ACCESS = {
     }
 };
 
+export const SETTINGS = {
+    NOTIFICATION: {
+      SELF: '/settings/notifications',
+      LIST: '/settings/notifications/list',
+      CREATE: '/settings/notifications/create',
+    }
+};
+
 export const joinUrlWithParams = (to, params) => {
     let url = to;
     params.forEach(param => {

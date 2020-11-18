@@ -19,9 +19,9 @@ const RangeDate = props => {
     const { startDateLabel, endDateLabel, startDateName, endDateName, errors, register, watch, intl } = props;
 
     const [errorMessages, setErrorMessages] = useState({
-        startingDate: '',
-        endingDate: '',
-        birthDate: '',
+        startingDate: {},
+        endingDate: {},
+        birthDate: {},
     });
 
     const validateStartingValidityDate = value => {
@@ -65,7 +65,16 @@ const RangeDate = props => {
         const _startingDate = moment(startingDate);
 
         if (!_startingDate.isValid()) {
-            return true;
+            setErrorMessages({
+                ...errorMessages,
+                startingDate: {
+                    id: 'form.error.date.valid',
+                    value: {
+                        date: intl.formatMessage({id: 'date.validity.start'}),
+                    }
+                }
+            });
+            return false;
         }
 
         if (_endingDate.diff(_startingDate) < 0) {
@@ -102,7 +111,7 @@ const RangeDate = props => {
                     className="has-input input-lg"
                     otherValidator={{validate: value => validateStartingValidityDate(value)}}
                 >
-                    {errors.startingValidityDate && errors.startingValidityDate?.type !== 'required' && (
+                    {errors[startDateName] && errors[startDateName]?.type !== 'required' && (
                         <ErrorInputComponent
                             text={intl.formatMessage(
                                 {id: errorMessages.startingDate.id},
@@ -117,16 +126,16 @@ const RangeDate = props => {
                     {endDateLabel}
                 </InputLabel>
                 <InputComponent
-                    id="endingValidityDate"
                     type="date"
                     isRequired
                     errors={errors}
                     name={endDateName}
                     register={register}
+                    id="endingValidityDate"
                     className="has-input input-lg"
                     otherValidator={{validate: value => validateEndingValidityDate(value, watch('startingValidityDate'))}}
                 >
-                    {errors.endingValidityDate && errors.endingValidityDate?.type !== 'required' && (
+                    {errors[endDateName] && errors[endDateName]?.type !== 'required' && (
                         <ErrorInputComponent
                             text={intl.formatMessage(
                                 {id: errorMessages.endingDate.id},

@@ -11,7 +11,7 @@ import {
     USER_PROFILE, NETWORK_PROFILE_TYPE, USERS,
     COMMUNITY, PACKAGES, COMMERCIAL_MANAGEMENT, joinBaseUrlWithParamsId,
     ORDER, SALES, GENERIC_OBJECT,
-    ACCESS
+    ACCESS, NOTIFICATIONS
 } from "Url/backendUrl";
 import {SET_CURRENT_COMMUNITY, SET_CURRENT_COMMUNITY_SUCCESS} from "Actions/types";
 
@@ -381,5 +381,22 @@ export const createMandate = (data, branchId) => {
 
 export const createAccess = (data, branchId) => {
     const url = `${ACCESS.CREATE}?branch_id=${branchId}`;
+    return makeRequest('post', url, data);
+};
+
+export const getNotificationType = (notificationType = '') => {
+    const url = `${NOTIFICATIONS.TYPE.GET_ALL}`;
+    const data = notificationType !== '' ? {notificationType} : {};
+    return makeRequest('get', url, data);
+};
+
+export const getNotificationModel = (notificationType = '') => {
+    const data = notificationType !== '' ? `?notification_type_id=${notificationType}` : '';
+    const url = `${NOTIFICATIONS.TYPE.GET_ALL}${data}`;
+    return makeRequest('get', url);
+};
+
+export const createNotificationType = (data, branchId) => {
+    const url = `${NOTIFICATIONS.TYPE.CREATE}?branch_id=${branchId}`;
     return makeRequest('post', url, data);
 };
