@@ -162,6 +162,12 @@ export const ACCESS = {
     }
 };
 
+export const NOTIFICATIONS = {
+    SELF: '/notifications',
+    LIST: '/notifications/list',
+    // CREATE: '/notifications/create',
+};
+
 export const SETTINGS = {
     NOTIFICATION: {
       SELF: '/settings/notifications',

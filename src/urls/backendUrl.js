@@ -224,6 +224,14 @@ export const ACCESS = {
 
 export const NOTIFICATIONS = {
     GET_ALL: 'public/notifications',
+    SELF: {
+        GET_ALL: {
+            SELF: 'public/notifications',
+            BY_STATUS: 'public/notifications/by-status',
+        },
+        COUNT_UNREAD: 'public/notifications/unread/count',
+        UPDATE: 'public/notifications',
+    },
     TYPE: {
         GET_ALL_MODEL: 'public/notifications/notification_models',
         GET_ALL: 'public/notifications/notification_type',

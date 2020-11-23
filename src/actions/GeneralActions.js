@@ -26,7 +26,8 @@ import {
     SET_CURRENT_COMMUNITY_SUCCESS, SET_CURRENT_COMMUNITY_FAILURE,
     PACKAGES,
     COMMERCIAL_OPERATION_TYPE, COMMERCIAL_OPERATION, COMMERCIAL_OFFER, PRODUCT,
-    MANDATE_TYPE, MANDATE_MODEL, MANDATE, BRANCH_USERS, NOTIFICATION_MODEL
+    MANDATE_TYPE, MANDATE_MODEL, MANDATE, BRANCH_USERS, NOTIFICATION_MODEL,
+    NOTIFICATION
 } from 'Actions/types';
 
 import api from './../api';
@@ -108,7 +109,7 @@ export const makeActionRequest = (verb, url, typeBase, dispatch, data = null, co
         .catch((error) => {
             dispatch({ type: `${typeBase}_FAILURE` });
             NotificationManager.error(error.message);
-            return Promise.reject();
+            return Promise.reject(error);
         });
 };
 
@@ -253,3 +254,15 @@ export const getModelNotifications = (branchId) => (dispatch) => {
     const url = `${NOTIFICATIONS_API.TYPE.GET_ALL_MODEL}?branch_id=${branchId}`;
     return makeActionRequest('get', url, NOTIFICATION_MODEL, dispatch);
 };
+
+export const getAllNotifications = (userId) => (dispatch) => {
+    const url = `${NOTIFICATIONS_API.SELF.GET_ALL.SELF}?user_id=${userId}`;
+    console.log("_url=> ", url);
+    return makeActionRequest('get', url, NOTIFICATION, dispatch);
+};
+
+export const getAllNotificationsByStatus = (userId, status) => (dispatch) => {
+    const url = `${NOTIFICATIONS_API.SELF.GET_ALL.SELF}?user_id=${userId}&notification_status=${status}`;
+    return makeActionRequest('get', url, NOTIFICATION, dispatch);
+};
+

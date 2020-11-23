@@ -59,7 +59,7 @@ export default class Comments extends Component {
                         </div>
                         <div className="comment-action w-20 text-right">
                            <span className="font-xs text-muted font-weight-light d-block comment-date">{comment.date}</span>
-                           <div className="hover-action d-flex align-items-center">
+                           <div className="hover-action d-flex align-items-center opacity-1">
                               <Fab variant="round" size="small" color="primary" className="btn-sm mx-1 bg-primary">
                                  <i className="zmdi zmdi-check"></i>
                               </Fab>

@@ -11,7 +11,7 @@ import {
     USER_PROFILE, NETWORK_PROFILE_TYPE, USERS,
     COMMUNITY, PACKAGES, COMMERCIAL_MANAGEMENT, joinBaseUrlWithParamsId,
     ORDER, SALES, GENERIC_OBJECT,
-    ACCESS, NOTIFICATIONS
+    ACCESS, NOTIFICATIONS, NOTIFICATIONS as NOTIFICATIONS_API
 } from "Url/backendUrl";
 import {SET_CURRENT_COMMUNITY, SET_CURRENT_COMMUNITY_SUCCESS} from "Actions/types";
 
@@ -399,4 +399,13 @@ export const getNotificationModel = (notificationType = '') => {
 export const createNotificationType = (data, branchId) => {
     const url = `${NOTIFICATIONS.TYPE.CREATE}?branch_id=${branchId}`;
     return makeRequest('post', url, data);
+};
+
+export const getCountUnreadNotifications = (userId) => {
+    const url = `${NOTIFICATIONS.SELF.COUNT_UNREAD}?user_id=${userId}`;
+    return makeRequest('get', url);
+};
+export const getAllNotifications2 = (userId) => {
+    const url = `${NOTIFICATIONS_API.SELF.GET_ALL.SELF}?user_id=${userId}`;
+    return makeRequest('get', url);
 };

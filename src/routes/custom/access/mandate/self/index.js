@@ -16,7 +16,7 @@ class MandateList extends Component {
     constructor(props) {
         super(props);
 
-        this.userDoesNotHaveRight = this.props.authUser.user.userType === UserType.ORGANISATION;
+        this.userDoesNotHaveRight = !this.props.authUser.isExploitant();
 
         this.state = {
             showCreateBox: false,

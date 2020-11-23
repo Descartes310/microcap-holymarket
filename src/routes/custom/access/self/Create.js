@@ -38,7 +38,8 @@ const Create = props => {
 
     const { mandate, getMandate, authUser, loading, intl, onClose, show, getBranchUsers, getMandateOfUser, getUsersByOrganisation, setRequestGlobalAction } = props;
 
-    const userDoesNotHaveRight = authUser.user.userType === UserType.ORGANISATION;
+    // const userDoesNotHaveRight = authUser.user.userType === UserType.ORGANISATION;
+    const userDoesNotHaveRight = !authUser.isExploitant();
 
     const [branchUsers, setBranchUsers] = useState({
         data: null,

@@ -8,44 +8,63 @@ import Button from '@material-ui/core/Button';
 import { Badge } from 'reactstrap';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
-
-// api
-import api from 'Api';
+import {getAllNotifications, getCountUnreadNotifications} from 'Actions';
 
 // intl messages
 import IntlMessages from 'Util/IntlMessages';
+import {NotificationManager} from "react-notifications";
+import {ERROR_500} from "Constants/errors";
+import {connect} from "react-redux";
+import {NOTIFICATIONS} from "Url/frontendUrl";
+import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
+import FetchFailedComponent from "Components/FetchFailedComponent";
+import SingleTitleText from "Components/SingleTitleText";
+import {withRouter} from "react-router-dom";
+import {textTruncate} from "Helpers/helpers";
 
-class Notifications extends Component {
-
-   state = {
-      notifications: null,
-      shouldShake: false,
-   };
+class HeaderNotifications extends Component {
+   constructor(props) {
+      super(props);
+      this.state = {
+         unreadCount: 0
+      }
+   }
 
    componentDidMount() {
-      this.getNotifications();
+      getCountUnreadNotifications(this.props.authUser.user.id)
+          .then(unreadCount => this.setState({unreadCount}))
+          .catch((error) => {
+             NotificationManager.error(ERROR_500);
+          });
+
+      this.props.getAllNotifications(this.props.authUser.user.id);
    }
 
-   // get notifications
-   getNotifications() {
-      api.get('notifications.js')
-         .then((response) => {
-            this.setState({ notifications: response.data });
-         })
-         .catch(error => {
-            console.log(error);
-         })
-   }
+   viewAll = () => {
+      this.props.history.push(NOTIFICATIONS.LIST);
+   };
+
+   onNotificationClick = (id) => {
+
+   };
 
    render() {
-      const { notifications } = this.state;
+      const { loading, data, error } = this.props.notifications;
+      /*if (loading) {
+         return (<RctSectionLoader />)
+      }*/
+
       return (
          <UncontrolledDropdown nav className="list-inline-item notification-dropdown">
             <DropdownToggle nav className="p-0">
                <Tooltip title="Notifications" placement="bottom">
-                  <IconButton className={this.state.shouldShake ? "shake" : ''} aria-label="bell">
+                  <IconButton className={this.state.unreadCount > 0 ? "shake" : ''} aria-label="bell">
                      <i className="zmdi zmdi-notifications-active"></i>
-                     <Badge color="danger" className="badge-xs badge-top-right rct-notify">2</Badge>
+                     {this.state.unreadCount > 0 && (
+                         <Badge color="danger" className="badge-xs badge-top-right rct-notify">
+                            {this.state.unreadCount}
+                         </Badge>
+                     )}
                   </IconButton>
                </Tooltip>
             </DropdownToggle>
@@ -55,40 +74,51 @@ class Notifications extends Component {
                      <span className="text-white font-weight-bold">
                         <IntlMessages id="widgets.recentNotifications" />
                      </span>
-                     <Badge color="warning">1 NEW</Badge>
+                     {/*<Badge color="warning">1 NEW</Badge>*/}
                   </div>
                   <Scrollbars className="rct-scroll" autoHeight autoHeightMin={100} autoHeightMax={280}>
-                     <ul className="list-unstyled dropdown-list">
-                        {notifications && notifications.map((notification, key) => (
-                           <li key={key}>
-                              <div className="media">
-                                 <div className="mr-10">
-                                    <img src={notification.userAvatar} alt="user profile" className="media-object rounded-circle" width="50" height="50" />
-                                 </div>
-                                 <div className="media-body pt-5">
-                                    <div className="d-flex justify-content-between">
-                                       <h5 className="mb-5 text-primary">{notification.userName}</h5>
-                                       <span className="text-muted fs-12">{notification.date}</span>
-                                    </div>
-                                    <span className="text-muted fs-12 d-block">{notification.notification}</span>
-                                    <Button className="btn-xs mr-10">
-                                       <i className="zmdi zmdi-mail-reply mr-2"></i> <IntlMessages id="button.reply" />
-                                    </Button>
-                                    <Button className="btn-xs">
-                                       <i className="zmdi zmdi-thumb-up mr-2"></i> <IntlMessages id="button.like" />
-                                    </Button>
-                                 </div>
-                              </div>
-                           </li>
-                        ))}
-                     </ul>
+                     {loading ? (
+                         <RctSectionLoader />
+                     ) : !data ? (
+                         <FetchFailedComponent _onRetryClick={() => this.props.getAllNotifications(this.props.authUser.user.id)} />
+                     ) : data.length === 0 ? (
+                         <SingleTitleText
+                             text="Pas de nouvelle notifications pour le moment"
+                         />
+                     ) : (
+                         <ul className="list-unstyled dropdown-list">
+                            {data && data.map((notification, index) => (
+                                <li key={index}>
+                                   <div className="media">
+                                      {/*<div className="mr-10">
+                                          <img src={notification.userAvatar} alt="user profile" className="media-object rounded-circle" width="50" height="50" />
+                                       </div>*/}
+                                      <div className="media-body pt-5">
+                                         <div className="d-flex justify-content-between">
+                                            <h5 className="mb-5 text-primary">{textTruncate(notification.title, 40)}</h5>
+                                            <span className="text-muted fs-12">{notification.createdAt}</span>
+                                         </div>
+                                         <span className="text-muted fs-12 d-block">{textTruncate(notification.message, 100)}</span>
+                                         <Button className="btn-xs mr-10">
+                                             <i className="zmdi zmdi-eyes mr-2" /> Marqué comme lu
+                                          </Button>
+                                          {/*<Button className="btn-xs">
+                                             <i className="zmdi zmdi-thumb-up mr-2"/> <IntlMessages id="button.like" />
+                                          </Button>*/}
+                                      </div>
+                                   </div>
+                                </li>
+                            ))}
+                         </ul>
+                     )}
                   </Scrollbars>
                </div>
                <div className="dropdown-foot p-2 bg-white rounded-bottom">
                   <Button
-                     variant="contained"
                      color="primary"
-                     className="mr-10 btn-xs bg-primary"
+                     variant="contained"
+                     className="mr-10 btn-xs bg-primary text-white"
+                     onClick={this.viewAll}
                   >
                      <IntlMessages id="button.viewAll" />
                   </Button>
@@ -99,4 +129,5 @@ class Notifications extends Component {
    }
 }
 
-export default Notifications;
+export default connect(({notifications, authUser}) => ({notifications, authUser: authUser.data}), {getAllNotifications})
+(withRouter(HeaderNotifications));

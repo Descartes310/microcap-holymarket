@@ -18,7 +18,7 @@ import {
     AsyncCatalogSales,
     AsyncComOperationType,
     AsyncComOperation, AsyncComOffer, AsyncProducts, AsyncStore,
-    AsyncAccess, AsyncSettingNotifications,
+    AsyncAccess, AsyncSettingNotifications, AsyncNotifications,
 } from 'Components/AsyncComponent/AsyncComponent';
 import Community from "Routes/custom/community";
 
@@ -34,7 +34,7 @@ import {
     USERS,
     COMMUNITY,
     PACKAGES,
-    COMMERCIAL_MANAGEMENT, PRODUCT, STORE, ROOT, ACCESS, SETTINGS
+    COMMERCIAL_MANAGEMENT, PRODUCT, STORE, ROOT, ACCESS, SETTINGS, NOTIFICATIONS
 } from "Url/frontendUrl";
 import {AbilityContext} from "Permissions/Can";
 import {connect} from "react-redux";
@@ -62,6 +62,12 @@ const Dashboard = ({ match, authUser }) => {
                     />
 
                     <CanRoute
+                        path={NOTIFICATIONS.SELF}
+                        component={AsyncNotifications}
+                        permissions={[]}
+                    />
+
+                    <CanRoute
                         path={STORE.SELF}
                         component={AsyncStore}
                         permissions={[]}
@@ -78,7 +84,7 @@ const Dashboard = ({ match, authUser }) => {
                         path={NETWORK.LIST}
                         permissions={[Permission.branch.viewList.name]}
                         component={AsyncBranchList}
-                        can={ability.can(Branch.permissionsRelated.READ, Branch)}
+                        // can={ability.can(Branch.permissionsRelated.READ, Branch)}
                     />
 
                     <CanRoute

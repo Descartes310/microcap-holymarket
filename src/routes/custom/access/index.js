@@ -29,7 +29,8 @@ class AccessWrapper extends Component {
     constructor(props) {
         super(props);
 
-        this.userDoesNotHaveRight = this.props.authUser.user.userType === UserType.ORGANISATION;
+        // this.userDoesNotHaveRight = this.props.authUser.user.userType === UserType.ORGANISATION;
+        this.userDoesNotHaveRight = !this.props.authUser.isExploitant();
 
         const defaultState = (function (url, hasPermission) {
             if (hasPermission) {

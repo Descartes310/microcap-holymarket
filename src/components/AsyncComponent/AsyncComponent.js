@@ -68,6 +68,11 @@ export const AsyncProducts = Loadable({
 	loading: () => <RctPageLoader />,
 });
 
+export const AsyncNotifications = Loadable({
+	loader: () => import("Routes/custom/notifications"),
+	loading: () => <RctPageLoader />,
+});
+
 export const AsyncStore = Loadable({
 	loader: () => import("Routes/custom/store"),
 	loading: () => <RctPageLoader />,
