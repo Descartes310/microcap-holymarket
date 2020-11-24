@@ -44,6 +44,7 @@ import MandateReducer from './MandateReducer';
 import BranchUsersReducer from './BranchUsersReducer';
 import ModelNotificationsReducer from './ModelNotificationsReducer';
 import NotificationsReducer from './NotificationsReducer';
+import ServicesNotificationsReducer from './ServicesNotificationsReducer';
 
 const reducers = combineReducers({
    settings,
@@ -88,7 +89,7 @@ const reducers = combineReducers({
    branchUsers: BranchUsersReducer,
    modelNotifications: ModelNotificationsReducer,
    notifications: NotificationsReducer,
-   notifications2: NotificationsReducer,
+   servicesNotifications: ServicesNotificationsReducer,
 });
 
 export default reducers;

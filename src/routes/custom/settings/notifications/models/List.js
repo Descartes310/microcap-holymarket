@@ -43,8 +43,8 @@ class List extends Component {
                     error={error}
                     loading={loading}
                     list={modelNotifications}
-                    titleList={"Notifications"}
-                    onAddClick={() => history.push(SETTINGS.NOTIFICATION.CREATE)}
+                    // titleList={"Notifications"}
+                    onAddClick={() => history.push(SETTINGS.NOTIFICATION.MODEL.CREATE)}
                     itemsFoundText={n => `${n} notifications trouvés`}
                     /*addPermissions={{
                         permissions: [Permission.userProfile.createOne.name],

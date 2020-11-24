@@ -96,11 +96,11 @@ class HeaderNotifications extends Component {
                                       <div className="media-body pt-5">
                                          <div className="d-flex justify-content-between">
                                             <h5 className="mb-5 text-primary">{textTruncate(notification.title, 40)}</h5>
-                                            <span className="text-muted fs-12">{notification.createdAt}</span>
+                                            <span className="text-muted fs-12">{notification.createdAt.fromNow()}</span>
                                          </div>
                                          <span className="text-muted fs-12 d-block">{textTruncate(notification.message, 100)}</span>
-                                         <Button className="btn-xs mr-10">
-                                             <i className="zmdi zmdi-eyes mr-2" /> Marqué comme lu
+                                         <Button className="btn-xs pl-0">
+                                             <i className="zmdi zmdi-eye mr-2" /> Marqué comme lu
                                           </Button>
                                           {/*<Button className="btn-xs">
                                              <i className="zmdi zmdi-thumb-up mr-2"/> <IntlMessages id="button.like" />

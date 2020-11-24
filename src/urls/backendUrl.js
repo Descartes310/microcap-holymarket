@@ -227,10 +227,12 @@ export const NOTIFICATIONS = {
     SELF: {
         GET_ALL: {
             SELF: 'public/notifications',
+            BY_BRANCH: 'public/notifications/branch/{id}',
             BY_STATUS: 'public/notifications/by-status',
         },
         COUNT_UNREAD: 'public/notifications/unread/count',
         UPDATE: 'public/notifications',
+        CREATE: 'public/notifications',
     },
     TYPE: {
         GET_ALL_MODEL: 'public/notifications/notification_models',

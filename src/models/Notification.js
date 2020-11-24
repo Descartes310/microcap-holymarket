@@ -7,6 +7,7 @@ export default class Notification {
     constructor(notification) {
         Object.assign(this, notification);
         this.createdAt = moment(this.createdAt);
+        this.expireAt = moment(this.expireAt);
     }
 
 }

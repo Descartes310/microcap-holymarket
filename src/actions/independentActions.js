@@ -405,7 +405,8 @@ export const getCountUnreadNotifications = (userId) => {
     const url = `${NOTIFICATIONS.SELF.COUNT_UNREAD}?user_id=${userId}`;
     return makeRequest('get', url);
 };
-export const getAllNotifications2 = (userId) => {
-    const url = `${NOTIFICATIONS_API.SELF.GET_ALL.SELF}?user_id=${userId}`;
-    return makeRequest('get', url);
+
+export const createNotificationsService = (branchId, data) => {
+    const url = `${NOTIFICATIONS.SELF.CREATE}?branch_id=${branchId}`;
+    return makeRequest('post', url, data);
 };

@@ -27,7 +27,7 @@ import {
     PACKAGES,
     COMMERCIAL_OPERATION_TYPE, COMMERCIAL_OPERATION, COMMERCIAL_OFFER, PRODUCT,
     MANDATE_TYPE, MANDATE_MODEL, MANDATE, BRANCH_USERS, NOTIFICATION_MODEL,
-    NOTIFICATION
+    NOTIFICATION, NOTIFICATION_SERVICE
 } from 'Actions/types';
 
 import api from './../api';
@@ -46,7 +46,7 @@ import {
     ACCESS as ACCESS_API,
     NOTIFICATIONS as NOTIFICATIONS_API,
     joinBaseUrlWithParams,
-    BRANCH,
+    BRANCH, joinBaseUrlWithParamsId,
 } from 'Url/backendUrl';
 
 export const getCatalogs = () => (dispatch) => {
@@ -255,9 +255,13 @@ export const getModelNotifications = (branchId) => (dispatch) => {
     return makeActionRequest('get', url, NOTIFICATION_MODEL, dispatch);
 };
 
+export const getServicesNotifications = (branchId) => (dispatch) => {
+    const url = joinBaseUrlWithParamsId(NOTIFICATIONS_API.SELF.GET_ALL.BY_BRANCH, branchId);
+    return makeActionRequest('get', url, NOTIFICATION_SERVICE, dispatch);
+};
+
 export const getAllNotifications = (userId) => (dispatch) => {
     const url = `${NOTIFICATIONS_API.SELF.GET_ALL.SELF}?user_id=${userId}`;
-    console.log("_url=> ", url);
     return makeActionRequest('get', url, NOTIFICATION, dispatch);
 };
 

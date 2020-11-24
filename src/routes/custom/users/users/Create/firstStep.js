@@ -27,7 +27,7 @@ import {getAllNetworkProfile} from "Actions/NetworkProfileActions";
 const countryWithNumberAndFlag = CountryManager.countryWithNumberAndFlag();
 
 const FirstStep = props => {
-    const { loading, nextStep, setData, intl, defaultState, userProfiles, authUser } = props;
+    const { loading, nextStep, setData, intl, defaultState, userProfiles, authUser, getUserProfiles } = props;
 
     const { register, errors, handleSubmit, watch, control} = useForm({
         defaultValues: !_.isEqual(defaultState, {}) ? defaultState : {}
@@ -55,9 +55,9 @@ const FirstStep = props => {
     };
 
     const _getAllNetworkProfile = () => {
-        if (!userProfiles.data) {
-            getUserProfiles(authUser.branchId, authUser.userType);
-        }
+        getUserProfiles(authUser.branchId, authUser.userType)
+            .then(() => null)
+            .catch(error => console.log("Error => ", error))
     };
 
     useEffect(() => {

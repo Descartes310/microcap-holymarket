@@ -125,3 +125,17 @@
 .opacity-1 {
   opacity: 1 !important;
 }
+
+.btn-xs.pl-0 {
+  padding: 0 !important;
+}
+
+.notification-hover {
+  opacity: 0 !important;
+}
+
+.notification-hover-wrapper:hover {
+  .notification-hover {
+    opacity: 1 !important;
+  }
+}

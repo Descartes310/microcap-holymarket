@@ -38,6 +38,9 @@ class CreateUser extends Component {
         _data.endPieceValidity = _data.endingValidityDate;
         _data.microcapOperator = _data.operator;
 
+        //
+        _data.organisationId = this.props.authUser.id;
+
         delete _data.phoneNumberPrefix;
         delete _data.residenceCountry;
         delete _data.identificationNumber;

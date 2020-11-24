@@ -1,7 +1,6 @@
 import moment from 'moment';
 
 export const initMoment = (lang) => {
-    console.log('into locale');
     if (lang === 'fr') {
         moment.locale('fr', {
             months : 'janvier_février_mars_avril_mai_juin_juillet_août_septembre_octobre_novembre_décembre'.split('_'),

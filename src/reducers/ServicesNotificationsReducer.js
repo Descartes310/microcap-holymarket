@@ -1,7 +1,7 @@
 import {
-    NOTIFICATION,
-    NOTIFICATION_SUCCESS,
-    NOTIFICATION_FAILURE,
+    NOTIFICATION_SERVICE,
+    NOTIFICATION_SERVICE_SUCCESS,
+    NOTIFICATION_SERVICE_FAILURE,
 } from 'Actions/types';
 import Notification from "Models/Notification";
 
@@ -16,14 +16,13 @@ const INIT_STATE = {
 
 export default (state = INIT_STATE, action) => {
     switch (action.type) {
-
-        case NOTIFICATION:
+        case NOTIFICATION_SERVICE:
             return { ...state, loading: true };
 
-        case NOTIFICATION_SUCCESS:
-            return { ...state, loading: false, data: action.payload.map(notification => new Notification(notification))};
+        case NOTIFICATION_SERVICE_SUCCESS:
+            return { ...state, loading: false, data: action.payload.map(n => new Notification(n)) };
 
-        case NOTIFICATION_FAILURE:
+        case NOTIFICATION_SERVICE_FAILURE:
             return { ...state, loading: false, error: action.payload };
 
         default: return { ...state };

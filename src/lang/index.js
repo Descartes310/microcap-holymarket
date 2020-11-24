@@ -48,9 +48,10 @@ addLocaleData(AppLocale.hu.data);
 
 const currentAppLocale = AppLocale[getDefaultLanguage().locale];
 
-if (currentAppLocale.locale === 'fr') {
+/*if (currentAppLocale.locale === 'fr') {
     initMoment('fr');
-}
+}*/
+initMoment('fr');
 
 const intlProvider = new IntlProvider({
     key: currentAppLocale.locale,

@@ -170,9 +170,17 @@ export const NOTIFICATIONS = {
 
 export const SETTINGS = {
     NOTIFICATION: {
-      SELF: '/settings/notifications',
-      LIST: '/settings/notifications/list',
-      CREATE: '/settings/notifications/create',
+        SELF: '/settings/notifications',
+        MODEL: {
+            SELF: '/settings/notifications/model',
+            LIST: '/settings/notifications/model/list',
+            CREATE: '/settings/notifications/model/create',
+        },
+        SERVICE: {
+            SELF: '/settings/notifications/service',
+            LIST: '/settings/notifications/service/list',
+            CREATE: '/settings/notifications/service/create',
+        }
     }
 };
 
