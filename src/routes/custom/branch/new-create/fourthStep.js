@@ -19,9 +19,9 @@ import GenericObjectType from "Enums/GenericObjectType";
 import CustomAsyncAddBtn from "Components/CustomAsyncAddBtn";
 
 const FourthStep = props => {
-    const { loading, nextStep, setData, intl, defaultState, authUser } = props;
+    const { loading, nextStep, previousStep, setData, intl, defaultState, authUser } = props;
 
-    const { register, errors, handleSubmit, watch, control} = useForm({
+    const { register, errors, handleSubmit, watch, control, getValues} = useForm({
         defaultValues: !_.isEqual(defaultState, {}) ? defaultState : {}
     });
 
@@ -381,7 +381,7 @@ const FourthStep = props => {
                     className="text-white font-weight-bold"
                     onClick={handleSubmit(onSubmit)}
                 >
-                    <IntlMessages id="button.next" /> <i className="ti-arrow-right font-weight-bold ml-2"></i>
+                    <IntlMessages id="button.submit" />
                 </Button>
             </FormGroup>
         </Form>

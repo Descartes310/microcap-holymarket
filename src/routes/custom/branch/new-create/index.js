@@ -118,6 +118,7 @@ class CreateBranch extends Component {
 
     render() {
         const { loading, history, match, authUser } = this.props;
+        console.log("this.state.data => ", this.state.data);
         return (
             <>
                 <PageTitleBar title={<IntlMessages id="branch.createText" />} match={match} />

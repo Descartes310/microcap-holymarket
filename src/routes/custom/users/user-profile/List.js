@@ -40,9 +40,9 @@ class UserProfileList extends Component {
                     error={error}
                     loading={loading}
                     list={catalogTypes}
-                    titleList={"Profile utilisateurs"}
+                    titleList={"Roles utilisateurs"}
                     onAddClick={() => this.setState({showCreateBox: true})}
-                    itemsFoundText={n => `${n} profile d'utilisateurs trouvés`}
+                    itemsFoundText={n => `${n} roles trouvés`}
                     addPermissions={{
                         permissions: [Permission.userProfile.createOne.name],
                     }}
@@ -51,7 +51,7 @@ class UserProfileList extends Component {
                             {list && list.length === 0 ? (
                                 <div className="d-flex justify-content-center align-items-center py-50">
                                     <h4>
-                                        Aucun utilisateurs trouvés
+                                        Aucun roles trouvés
                                     </h4>
                                 </div>
                             ) : (

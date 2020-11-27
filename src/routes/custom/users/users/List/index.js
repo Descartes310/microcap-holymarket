@@ -7,7 +7,7 @@ import { withRouter } from 'react-router-dom';
 import classnames from 'classnames';
 
 // redux action
-import { readEmail, onSelectEmail, markAsStarEmail, getUsers } from 'Actions';
+import { readEmail, onSelectEmail, markAsStarEmail, getUsersByOrganisation } from 'Actions';
 
 // component
 import ListItem from './ListItem';
@@ -40,7 +40,7 @@ class UserList extends Component {
     }
 
     componentDidMount() {
-        this.props.getUsers(this.props.authUser.branchId, this.props.authUser.userType);
+        this.props.getUsersByOrganisation(this.props.authUser.id);
     }
 
     onSearchChanged = (event) => {
@@ -163,7 +163,7 @@ const mapStateToProps = ({ requestGlobalLoader, users, authUser }) => {
 };
 
 export default withRouter(connect(mapStateToProps, {
-    getUsers,
+    getUsersByOrganisation,
     readEmail,
     onSelectEmail,
     markAsStarEmail,

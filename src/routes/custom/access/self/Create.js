@@ -26,11 +26,13 @@ import Select from "@material-ui/core/Select/Select";
 import Input from "@material-ui/core/Input/Input";
 import AppConfig from "Constants/AppConfig";
 import ErrorInputComponent from "Components/ErrorInputComponent";
-import {minMaxValidatorObject, passwordValidatorObject} from "Helpers/validator";
+import {emailValidatorObject, minMaxValidatorObject, passwordValidatorObject} from "Helpers/validator";
 import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
 import FetchFailedComponent from "Components/FetchFailedComponent";
 import UserType from "Enums/UserType";
 import SingleTitleText from "Components/SingleTitleText";
+import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
+import Checkbox from "@material-ui/core/Checkbox/Checkbox";
 
 const Create = props => {
     const theme = useTheme();
@@ -50,6 +52,8 @@ const Create = props => {
 
     const { control, register, errors, handleSubmit, setValue, watch} = useForm();
 
+    const acceptLoginWatch = watch('acceptLogin');
+
     useEffect(() => {
         loadData();
     }, []);
@@ -67,11 +71,12 @@ const Create = props => {
         let result = branchUsers.data;
 
         try {
-            if (userDoesNotHaveRight) {
+            result = await getUsersByOrganisation(authUser.id);
+            /*if (userDoesNotHaveRight) {
                 result = await getUsersByOrganisation(authUser.id);
             } else {
                 result = await getBranchUsers(authUser.branchId);
-            }
+            }*/
         } catch (e) {
 
         }
@@ -105,7 +110,7 @@ const Create = props => {
         setRequestGlobalAction(true);
 
         const _data = {...data};
-
+        _data.login = _data.acceptLogin ? _data.login : _data.email;
         _data.mandateId = mandateSelected;
         _data.permissions = JSON.stringify(permissionsSelected.map(i => i.id));
 
@@ -238,21 +243,65 @@ const Create = props => {
                                     />
                                 )}
 
-                                <FormGroup className="has-wrapper my-3">
-                                    <InputLabel className="text-left" htmlFor="login">
-                                        Login
+                                <FormGroup className="has-wrapper">
+                                    <InputLabel className="text-left" htmlFor="password">
+                                        Email de notification
                                     </InputLabel>
                                     <InputComponent
-                                        id="login"
+                                        id="email"
+                                        type="mail"
                                         isRequired
-                                        name={'login'}
+                                        name={'email'}
                                         errors={errors}
                                         register={register}
                                         className="input-lg"
-                                        // placeholder={intl.formatMessage({id: "common.commercialName"})}
-                                    />
-                                    <span className="has-icon"><i className="ti-pencil"/></span>
+                                        otherValidator={{pattern: emailValidatorObject.regex}}
+                                    >
+                                        {errors.email?.type === 'pattern' && (
+                                            <ErrorInputComponent text={intl.formatMessage({id: emailValidatorObject.message})} />
+                                        )}
+                                    </InputComponent>
+                                    <span className="has-icon"><i className="zmdi zmdi-email"></i></span>
                                 </FormGroup>
+
+                                <FormControl fullWidth>
+                                    <InputComponent
+                                        isRequired
+                                        className="mt-0"
+                                        errors={errors}
+                                        id="acceptLogin"
+                                        control={control}
+                                        name={'acceptLogin'}
+                                        register={register}
+                                        componentType="select"
+                                        as={<FormControlLabel control={
+                                            <Checkbox
+                                                color="primary"
+                                                checked={acceptLoginWatch}
+                                                onChange={() => setValue('acceptLogin', !acceptLoginWatch)}
+                                            />
+                                        } label={"Ne pas utiliser cette email comme login"}
+                                        />}
+                                    />
+                                </FormControl>
+
+                                {acceptLoginWatch && (
+                                    <FormGroup className="has-wrapper my-3">
+                                        <InputLabel className="text-left" htmlFor="login">
+                                            Login
+                                        </InputLabel>
+                                        <InputComponent
+                                            id="login"
+                                            name={'login'}
+                                            errors={errors}
+                                            register={register}
+                                            className="input-lg"
+                                            isRequired={acceptLoginWatch}
+                                            // placeholder={intl.formatMessage({id: "common.commercialName"})}
+                                        />
+                                        <span className="has-icon"><i className="ti-pencil"/></span>
+                                    </FormGroup>
+                                )}
 
                                 <FormGroup className="has-wrapper my-2">
                                     <InputLabel className="text-left" htmlFor="password">
