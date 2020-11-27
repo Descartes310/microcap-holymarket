@@ -14,20 +14,31 @@ import {injectIntl} from 'react-intl';
 import CountryManager from 'Helpers/CountryManager';
 import FlagCountry from "Components/FlagCountry";
 import _ from 'lodash';
+import InputLabel from "@material-ui/core/InputLabel/InputLabel";
+import {NotificationManager} from "react-notifications";
+import FormControl from "@material-ui/core/FormControl";
+import Checkbox from "@material-ui/core/Checkbox";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
 
 const countryWithNumberAndFlag = CountryManager.countryWithNumberAndFlag();
 
 const FirstStep = props => {
     const { loading, nextStep, setData, intl, defaultState } = props;
 
-    const { register, errors, handleSubmit, watch, control} = useForm({
+    const { register, errors, handleSubmit, watch, control, setValue, getValues} = useForm({
         defaultValues: !_.isEqual(defaultState, {}) ? defaultState : {}
     });
+
+    const acceptLoginWatch = watch('acceptLogin');
 
     /**
      * On submit
      */
     const onSubmit = (data) => {
+        if (acceptLoginWatch && getValues('login').length <= 0) {
+            NotificationManager.error("Veuillez entrer un login valide");
+            return;
+        }
         // Send data
         setData(data);
         // Redirect to the next step
@@ -140,6 +151,45 @@ const FirstStep = props => {
                 </InputComponent>
                 <span className="has-icon"><i className="zmdi zmdi-lock-outline"></i></span>
             </FormGroup>
+
+            <FormControl fullWidth>
+                <InputComponent
+                    isRequired
+                    className="mt-0"
+                    errors={errors}
+                    id="acceptLogin"
+                    control={control}
+                    name={'acceptLogin'}
+                    register={register}
+                    componentType="select"
+                    as={<FormControlLabel control={
+                        <Checkbox
+                            color="primary"
+                            checked={acceptLoginWatch}
+                            onChange={() => setValue('acceptLogin', !acceptLoginWatch)}
+                        />
+                    } label={"Se connecter avec le login ?"}
+                    />}
+                />
+            </FormControl>
+
+            {acceptLoginWatch && (
+                <FormGroup className="has-wrapper">
+                    <InputLabel className="text-left" htmlFor="login">
+                        Login
+                    </InputLabel>
+                    <InputComponent
+                        id="login"
+                        name={'login'}
+                        errors={errors}
+                        register={register}
+                        isRequired={acceptLoginWatch}
+                        className="has-input input-lg"
+                    />
+                    <span className="has-icon"><i className="ti-pencil"/></span>
+                </FormGroup>
+            )}
+
             <FormGroup className="has-wrapper">
                 <InputComponent
                     isRequired

@@ -39,7 +39,8 @@ class OrganisationRegister extends Component {
         _data.immatriculationValue = _data.registrationNumber;
         _data.legalForm = _data.organisationType;
         _data.corporateName = _data.socialReason;
-        _data.microcapOperator = _data.operator;
+        _data.login = _data.acceptLogin ? _data.login : _data.email;
+        // _data.microcapOperator = _data.operator;
 
         delete _data.registrationCountry;
         delete _data.registrationType;
@@ -55,7 +56,7 @@ class OrganisationRegister extends Component {
             .registerOrganisation(_data)
             .then(() => {
                 this.props
-                    .loginUserWithEmailAndPassword({email: _data.email, password: _data.password})
+                    .loginUserWithEmailAndPassword({login: _data.login, password: _data.password})
                     .then(() => this.props.history.push(HOME));
             });
     };

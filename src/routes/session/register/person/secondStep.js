@@ -304,38 +304,6 @@ const SecondStep = props => {
                 )}
             />
 
-            {oldFormState && oldFormState.residenceCountry && (
-                <CustomAsyncComponent
-                    loading={operator.loading}
-                    data={operator.data}
-                    onRetryClick={() => _getOperator(oldFormState.residenceCountry)}
-                    component={data => (
-                        <div className="form-group text-left">
-                            <FormControl fullWidth>
-                                <InputLabel className="text-left" htmlFor="operator-helper"><IntlMessages id="common.operator"/></InputLabel>
-                                <InputComponent
-                                    isRequired
-                                    className="mt-0"
-                                    errors={errors}
-                                    control={control}
-                                    register={register}
-                                    componentType="select"
-                                    name={'operator'}
-                                    defaultValue={data[0] ? data[0].id : undefined }
-                                    as={<Select input={<Input name="operator" id="operator-helper" />}>
-                                        {data.map((item, index) => (
-                                            <MenuItem key={index} value={item.id} className="center-hor-ver">
-                                                {item.commercialName}
-                                            </MenuItem>
-                                        ))}
-                                    </Select>}
-                                />
-                            </FormControl>
-                        </div>
-                    )}
-                />
-            )}
-
             <div className="row align-items-flex-end">
                 <CustomAsyncComponent
                     loading={identificationType.loading}

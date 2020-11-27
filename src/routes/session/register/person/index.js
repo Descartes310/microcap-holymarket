@@ -37,7 +37,8 @@ class PersonRegister extends Component {
         _data.identificationValue = _data.identificationNumber;
         _data.startPieceValidity = _data.startingValidityDate;
         _data.endPieceValidity = _data.endingValidityDate;
-        _data.microcapOperator = _data.operator;
+        _data.login = _data.acceptLogin ? _data.login : _data.email;
+        // _data.microcapOperator = _data.operator;
 
         delete _data.phoneNumberPrefix;
         delete _data.residenceCountry;
@@ -51,7 +52,7 @@ class PersonRegister extends Component {
             .registerPersonUser(_data)
             .then(() => {
                 this.props
-                    .loginUserWithEmailAndPassword({email: _data.email, password: _data.password})
+                    .loginUserWithEmailAndPassword({login: _data.login, password: _data.password})
                     .then(() => this.props.history.push(HOME));
             });
     };

@@ -38,11 +38,11 @@ export const loginUserWithEmailAndPassword = (data) => (dispatch) => {
     const config = getFullAuthorisationRequestConfig();
 
     const _data = {...data};
-    _data.username = data.email;
+    _data.username = data.login;
     _data.grantType = AppConfig.oauth.grantType;
     _data.clientId = AppConfig.oauth.clientId;
 
-    delete _data.email;
+    delete _data.login;
 
     const url = _data.gotServiceNumber ? AUTH.LOGIN_WITH_SERVICE_NUMBER : AUTH.LOGIN;
 
@@ -90,8 +90,9 @@ export const loginIntoStore = (data) => (dispatch) => {
  * Redux Action To Sigin User with email and password
  */
 export const registerPersonUser = (data) => (dispatch) => {
+    const branchUrl = window.location.host;
     dispatch({ type: SIGNUP_USER });
-    return api.post(AUTH.REGISTER.PERSON, data)
+    return api.post(AUTH.REGISTER.PERSON, {...data, branchUrl})
         .then((response) => {
             dispatch({ type: SIGNUP_USER_SUCCESS, payload: response.data });
             return Promise.resolve();
@@ -108,8 +109,9 @@ export const registerPersonUser = (data) => (dispatch) => {
  * Redux Action To Sigin User with email and password
  */
 export const registerOrganisation = (data) => (dispatch) => {
+    const branchUrl = window.location.host;
     dispatch({ type: SIGNUP_USER });
-    return api.post(AUTH.REGISTER.ORGANISATION, data)
+    return api.post(AUTH.REGISTER.ORGANISATION, {...data, branchUrl})
         .then((response) => {
             dispatch({ type: SIGNUP_USER_SUCCESS, payload: response.data });
             return Promise.resolve();

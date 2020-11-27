@@ -99,17 +99,18 @@ const Signin = (props) => {
                                         </div>
                                         <Form onSubmit={handleSubmit(onSubmit)}>
                                             <FormGroup className="has-wrapper">
-                                                <InputLabel className="text-left" htmlFor="email"><IntlMessages id="auth.email"/></InputLabel>
+                                                <InputLabel className="text-left" htmlFor="email">
+                                                    Login ou email
+                                                </InputLabel>
                                                 <InputComponent
                                                     id="email"
                                                     isRequired
-                                                    name={'email'}
+                                                    name={'login'}
                                                     errors={errors}
                                                     register={register}
                                                     className="has-input input-lg"
-                                                    placeholder="example@gmail.com"
                                                 />
-                                                <span className="has-icon"><i className="ti-email"/></span>
+                                                <span className="has-icon"><i className="ti-pencil"/></span>
                                             </FormGroup>
                                             <FormGroup className="has-wrapper">
                                                 <div className="d-flex justify-content-between">

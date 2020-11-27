@@ -10,19 +10,28 @@ import IntlMessages from "Util/IntlMessages";
 import {injectIntl} from 'react-intl';
 import _ from 'lodash';
 import InputLabel from "@material-ui/core/InputLabel/InputLabel";
-import Input from "@material-ui/core/Input/Input";
+import {NotificationManager} from "react-notifications";
+import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
+import Checkbox from "@material-ui/core/Checkbox/Checkbox";
+import FormControl from "@material-ui/core/FormControl";
 
 const SecondStep = props => {
     const { loading, nextStep, previousStep, setData, intl, defaultState } = props;
 
-    const { register, errors, handleSubmit, watch, control, getValues} = useForm({
+    const { register, errors, handleSubmit, watch, control, getValues, setValue} = useForm({
         defaultValues: !_.isEqual(defaultState, {}) ? defaultState : {}
     });
+
+    const acceptLoginWatch = watch('acceptLogin');
 
     /**
      * On submit
      */
     const onSubmit = (data) => {
+        if (acceptLoginWatch && getValues('login').length <= 0) {
+            NotificationManager.error("Veuillez entrer un login valide");
+            return;
+        }
         // Send data
         setData(data);
         // Redirect to the next step
@@ -78,6 +87,44 @@ const SecondStep = props => {
                 <span className="has-icon"><i className="zmdi zmdi-lock-outline"></i></span>
             </FormGroup>
 
+            <FormControl fullWidth>
+                <InputComponent
+                    isRequired
+                    className="mt-0"
+                    errors={errors}
+                    id="acceptLogin"
+                    control={control}
+                    name={'acceptLogin'}
+                    register={register}
+                    componentType="select"
+                    as={<FormControlLabel control={
+                        <Checkbox
+                            color="primary"
+                            checked={acceptLoginWatch}
+                            onChange={() => setValue('acceptLogin', !acceptLoginWatch)}
+                        />
+                    } label={"Se connecter avec le login ?"}
+                    />}
+                />
+            </FormControl>
+
+            {acceptLoginWatch && (
+                <FormGroup className="has-wrapper">
+                    <InputLabel className="text-left" htmlFor="login">
+                        Login
+                    </InputLabel>
+                    <InputComponent
+                        id="login"
+                        name={'login'}
+                        errors={errors}
+                        register={register}
+                        isRequired={acceptLoginWatch}
+                        className="has-input input-lg"
+                    />
+                    <span className="has-icon"><i className="ti-pencil"/></span>
+                </FormGroup>
+            )}
+
             <FormGroup className="has-wrapper">
                 <InputLabel className="text-left" htmlFor="passwordConfirmation"><IntlMessages id="auth.passwordConfirmation"/></InputLabel>
                 <InputComponent
@@ -97,6 +144,8 @@ const SecondStep = props => {
                 </InputComponent>
                 <span className="has-icon"><i className="zmdi zmdi-lock-outline"></i></span>
             </FormGroup>
+
+
             <FormGroup className="mb-15">
                 <Button
                     color="primary"
