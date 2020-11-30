@@ -93,8 +93,8 @@ export const AsyncCommunity = Loadable({
 	loading: () => <RctPageLoader />,
 });
 
-export const AsyncUsers = Loadable({
-	loader: () => import("Routes/custom/users/users"),
+export const AsyncUsersAccounts = Loadable({
+	loader: () => import("Routes/custom/users/accounts"),
 	loading: () => <RctPageLoader />,
 });
 

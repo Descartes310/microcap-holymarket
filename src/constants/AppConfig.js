@@ -129,8 +129,6 @@ const AppConfig = {
       version: '',
       forbiddenCode: 401,
    },
-
-
 };
 
 export default AppConfig;

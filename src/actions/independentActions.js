@@ -410,3 +410,8 @@ export const createNotificationsService = (branchId, data) => {
     const url = `${NOTIFICATIONS.SELF.CREATE}?branch_id=${branchId}`;
     return makeRequest('post', url, data);
 };
+
+export const createUsersAccounts = (data) => {
+    const url = `${USERS.ACCOUNTS.CREATE}`;
+    return makeRequest('post', url, data);
+};

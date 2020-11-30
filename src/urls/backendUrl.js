@@ -131,6 +131,10 @@ export const USERS = {
         PERSON: 'public/users/persons/with-profile',
         ORGANISATION: 'public/users/organisations/with-profile',
     },
+    ACCOUNTS: {
+        GET_ALL: '/public/type-network-profiles',
+        CREATE: '/public/type-network-profiles',
+    }
 };
 
 export const COMMUNITY = {

@@ -17,11 +17,13 @@ import Select from "@material-ui/core/Select/Select";
 import Input from "@material-ui/core/Input/Input";
 import GenericObjectType from "Enums/GenericObjectType";
 import CustomAsyncAddBtn from "Components/CustomAsyncAddBtn";
+import FourthStepInner from "./fourthStepInner";
+import SecondStepItem from "Routes/custom/branch/new-create/secondStepItem";
 
 const FourthStep = props => {
     const { loading, nextStep, previousStep, setData, intl, defaultState, authUser } = props;
 
-    const { register, errors, handleSubmit, watch, control, getValues} = useForm({
+    const { register, errors, handleSubmit, watch, control, setValue, getValues} = useForm({
         defaultValues: !_.isEqual(defaultState, {}) ? defaultState : {}
     });
 
@@ -54,8 +56,36 @@ const FourthStep = props => {
      * On submit
      */
     const onSubmit = (data) => {
+        let dataToSend = {};
+        const dataToWorkOn = Object.entries(data).filter(i => /[0-9]/.test(i[0][0]));
+
+        dataToWorkOn.forEach(item => {
+            const _step = Number(item[0][0]), _value = item[0].substring(1);
+            dataToSend[_step] = dataToSend[_step]
+                ? {...dataToSend[_step], [_value]: item[1]}
+                : {[_value]: item[1]};
+        });
+        let accounts = Object.values(dataToSend).map(elt => {
+            return Object
+                .entries(elt)
+                .map(_elt => {
+                    // console.log("_elt => ", _elt);
+                    const __elt = [..._elt];
+                    if (__elt[1] === undefined) {
+                        __elt[1] = -1;
+                    } else {
+                        const n = Number(__elt[1]);
+                        __elt[1] = isNaN(n) ? -1 : n;
+                    }
+                    return __elt;
+                });
+        });
+
+        accounts = accounts.map(item => item.reduce((acc, b) => ({...acc, [b[0]]: b[1]}), {}));
+
+        const result = {accounts: accounts, ...data};
         // Send data
-        setData(data, true);
+        setData(result, true);
         // Redirect to the next step
     };
 
@@ -107,7 +137,7 @@ const FourthStep = props => {
             </div>
 
             <div className="row">
-                <div className="col-md-6 col-sm-12">
+                <div className="col-md-4 col-sm-12">
                     <FormGroup className="has-wrapper">
                         <InputLabel className="text-left" htmlFor="url">
                             Lien d'accès
@@ -124,7 +154,7 @@ const FourthStep = props => {
                         <span className="has-icon"><i className="ti-link"></i></span>
                     </FormGroup>
                 </div>
-                <div className="col-md-6 col-sm-12">
+                <div className="col-md-4 col-sm-12">
                     <FormGroup className="has-wrapper">
                         <InputLabel className="text-left" htmlFor="downloadLink">
                             Lien de téléchargement
@@ -141,57 +171,7 @@ const FourthStep = props => {
                         <span className="has-icon"><i className="ti-link"></i></span>
                     </FormGroup>
                 </div>
-            </div>
-
-            <div className="row">
-                <div className="col-md-3 col-sm-12">
-                    <FormGroup className="has-wrapper">
-                        <InputLabel className="text-left" htmlFor="pfmshipLimit">
-                            <IntlMessages id="branch.field.pfmshipLimit"/>
-                        </InputLabel>
-                        <InputComponent
-                            isRequired
-                            type="number"
-                            errors={errors}
-                            id="pfmshipLimit"
-                            register={register}
-                            name={'pfmshipLimit'}
-                            className="input-lg"
-                            // placeholder={intl.formatMessage({id: "common.commercialName"})}
-                        />
-                    </FormGroup>
-                </div>
-                <div className="col-md-3 col-sm-12">
-                    <FormGroup className="has-wrapper">
-                        <InputLabel className="text-left" htmlFor="membershipLimit"><IntlMessages id="branch.field.membershipLimit"/></InputLabel>
-                        <InputComponent
-                            isRequired
-                            type="number"
-                            errors={errors}
-                            register={register}
-                            id="membershipLimit"
-                            name={'membershipLimit'}
-                            className="input-lg"
-                            // placeholder={intl.formatMessage({id: "common.commercialName"})}
-                        />
-                    </FormGroup>
-                </div>
-                <div className="col-md-3 col-sm-12">
-                    <FormGroup className="has-wrapper">
-                        <InputLabel className="text-left" htmlFor="partnershipLimit"><IntlMessages id="branch.field.partnershipLimit"/></InputLabel>
-                        <InputComponent
-                            isRequired
-                            type="number"
-                            errors={errors}
-                            register={register}
-                            id="partnershipLimit"
-                            name={'partnershipLimit'}
-                            className="input-lg"
-                            // placeholder={intl.formatMessage({id: "common.commercialName"})}
-                        />
-                    </FormGroup>
-                </div>
-                <div className="col-md-3 col-sm-12">
+                <div className="col-md-4 col-sm-12">
                     <FormGroup className="has-wrapper">
                         <InputLabel className="text-left" htmlFor="maxAdmins">
                             Nombre limit d'administrateur
@@ -210,37 +190,15 @@ const FourthStep = props => {
                 </div>
             </div>
 
-            <CustomAsyncAddBtn
-                data={profile.data}
-                loading={profile.loading}
-                type={GenericObjectType.PROFILE}
-                onRetryClick={_getProfile}
-                component={data => (
-                    <div className="form-group text-left">
-                        <FormControl fullWidth>
-                            <InputLabel className="text-left" htmlFor="profile-helper">
-                                Type de profile
-                            </InputLabel>
-                            <InputComponent
-                                isRequired
-                                className="mt-0"
-                                errors={errors}
-                                control={control}
-                                register={register}
-                                componentType="select"
-                                name={'profile'}
-                                defaultValue={data[0] ? data[0].id : undefined}
-                                as={<Select input={<Input name="profile" id="profile-helper" />}>
-                                    {data.map((item, index) => (
-                                        <MenuItem key={index} value={item.id} className="center-hor-ver">
-                                            {item.label}
-                                        </MenuItem>
-                                    ))}
-                                </Select>}
-                            />
-                        </FormControl>
-                    </div>
-                )}
+            <FourthStepInner
+                // intl={intl}
+                // step={step}
+                watch={watch}
+                errors={errors}
+                control={control}
+                register={register}
+                setValue={setValue}
+                getValues={getValues}
             />
 
             {/*<div className="row">

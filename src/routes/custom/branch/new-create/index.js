@@ -64,6 +64,8 @@ class CreateBranch extends Component {
         _data.telephoneExploitant = _data.operatorPhoneNumberPrefix + _data.operatorPhoneNumber;
         _data.corporateName = _data.socialReason;
 
+        _data.maxAdmins = Number(_data.maxAdmins);
+
         delete _data.operatorEmail;
         delete _data.organisationType;
         delete _data.registrationType;
@@ -93,6 +95,7 @@ class CreateBranch extends Component {
         });
         _data.representants = JSON.stringify(toSnakeCase(representants));
         _data.institutions = JSON.stringify(toSnakeCase(_data.institutions));
+        _data.accounts = JSON.stringify(toSnakeCase(_data.accounts));
         // delete _data.legalRepresentatives;
 
         /*const _logo = _data.logo;
@@ -118,7 +121,7 @@ class CreateBranch extends Component {
 
     render() {
         const { loading, history, match, authUser } = this.props;
-        console.log("this.state.data => ", this.state.data);
+
         return (
             <>
                 <PageTitleBar title={<IntlMessages id="branch.createText" />} match={match} />

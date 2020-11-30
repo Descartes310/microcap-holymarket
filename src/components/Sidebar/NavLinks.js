@@ -23,6 +23,12 @@ export default {
                "path": USERS.USERS_PROFILE.SELF,
                "permissions": [Permission.navLinks.users.childLinks.userProfile.viewMenu],
             },
+            {
+               "menu_title": "Compte utilisateurs",
+               "new_item": false,
+               "path": USERS.ACCOUNTS.SELF,
+               "permissions": [Permission.navLinks.users.childLinks.accounts.viewMenu],
+            },
          ],
       },
       {

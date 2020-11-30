@@ -27,7 +27,7 @@ import {
     PACKAGES,
     COMMERCIAL_OPERATION_TYPE, COMMERCIAL_OPERATION, COMMERCIAL_OFFER, PRODUCT,
     MANDATE_TYPE, MANDATE_MODEL, MANDATE, BRANCH_USERS, NOTIFICATION_MODEL,
-    NOTIFICATION, NOTIFICATION_SERVICE
+    NOTIFICATION, NOTIFICATION_SERVICE, USERS_ACCOUNTS
 } from 'Actions/types';
 
 import api from './../api';
@@ -270,3 +270,7 @@ export const getAllNotificationsByStatus = (userId, status) => (dispatch) => {
     return makeActionRequest('get', url, NOTIFICATION, dispatch);
 };
 
+export const getUsersAccounts = (userId) => (dispatch) => {
+    const url = `${USERS_API.ACCOUNTS.GET_ALL}?user_id=${userId}`;
+    return makeActionRequest('get', url, USERS_ACCOUNTS, dispatch);
+};

@@ -51,6 +51,12 @@ export default class Permission extends BaseEnum {
                         "types": [UserType.MANAGER, UserType.EXPLOITANT]
                     }
                 },
+                accounts: {
+                    viewMenu: {
+                        "name": "nav-links/users/accounts/view-menu",
+                        "types": [UserType.MANAGER, UserType.EXPLOITANT]
+                    }
+                },
             }
         },
         products: {
@@ -153,6 +159,44 @@ export default class Permission extends BaseEnum {
             "name": "users/delete-many",
             "types": [UserType.EXPLOITANT]
         },
+        accounts: {
+            viewList: {
+                "name": "users/accounts/view-list",
+                "types": [UserType.MANAGER, UserType.EXPLOITANT]
+            },
+            viewOne: {
+                "name": "users/accounts/create-one",
+                "types": [UserType.MANAGER, UserType.EXPLOITANT]
+            },
+            search: {
+                "name": "users/accounts/search",
+                "types": [UserType.MANAGER, UserType.EXPLOITANT]
+            },
+            createOne: {
+                "name": "users/accounts/create-one",
+                "types": [UserType.MANAGER, UserType.EXPLOITANT]
+            },
+            createMany: {
+                "name": "users/accounts/create-many",
+                "types": [UserType.MANAGER, UserType.EXPLOITANT]
+            },
+            editOne: {
+                "name": "users/accounts/edit-one",
+                "types": [UserType.EXPLOITANT]
+            },
+            editMany: {
+                "name": "users/accounts/edit-many",
+                "types": [UserType.EXPLOITANT]
+            },
+            deleteOne: {
+                "name": "users/accounts/delete-one",
+                "types": [UserType.EXPLOITANT]
+            },
+            deleteMany: {
+                "name": "users/accounts/delete-many",
+                "types": [UserType.EXPLOITANT]
+            },
+        }
     };
 
     static userProfile = {

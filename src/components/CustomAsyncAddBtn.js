@@ -24,7 +24,7 @@ import {NotificationManager} from "react-notifications";
 import {ERROR_500} from "Constants/errors";
 import {createGenericData, setRequestGlobalAction} from "Actions";
 
-const CustomAsyncAddBtn = ({loading, data, component, onRetryClick, errorMessageComponent, type, requestGlobalLoader, setRequestGlobalAction, authUser}) => {
+const CustomAsyncAddBtn = ({loading, data, component, onRetryClick, errorMessageComponent, type, requestGlobalLoader, setRequestGlobalAction, authUser, createFunction = null}) => {
     const [show, setShow] = useState(false);
 
     const _onRetryClick = (event) => {
@@ -49,7 +49,9 @@ const CustomAsyncAddBtn = ({loading, data, component, onRetryClick, errorMessage
         _data.branchId = authUser.branchId;
         _data.type = type;
 
-        createGenericData(_data)
+        const func = createFunction ? createFunction : createGenericData;
+
+        func(_data)
             .then(() => {
                 NotificationManager.success("Nouveau element ajouté avec succès");
                 onClose();
@@ -111,7 +113,7 @@ const CustomAsyncAddBtn = ({loading, data, component, onRetryClick, errorMessage
                         </DialogTitle>
                         <DialogContent>
                             <RctCollapsibleCard>
-                                <Form onSubmit={onSubmit}>
+                                <Form onSubmit={handleSubmit(onSubmit)}>
                                     <div className="w-100">
                                         <FormGroup className="has-wrapper">
                                             <InputLabel className="text-left" htmlFor="name">
@@ -180,7 +182,7 @@ const CustomAsyncAddBtn = ({loading, data, component, onRetryClick, errorMessage
 
 CustomAsyncAddBtn.propTypes = {
     type: PropTypes.string.isRequired,
-
+    createFunction: PropTypes.func,
 };
 
 // map state to props

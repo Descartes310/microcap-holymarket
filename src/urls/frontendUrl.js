@@ -89,6 +89,11 @@ export const USERS = {
         LIST: '/users-profile/list',
         CREATE: '/users-profile/create',
     },
+    ACCOUNTS: {
+        SELF: '/users-accounts',
+        LIST: '/users-accounts/list',
+        CREATE: '/users-accounts/create',
+    }
 };
 
 export const COMMUNITY = {

@@ -18,7 +18,7 @@ import {
     AsyncCatalogSales,
     AsyncComOperationType,
     AsyncComOperation, AsyncComOffer, AsyncProducts, AsyncStore,
-    AsyncAccess, AsyncSettingNotifications, AsyncNotifications,
+    AsyncAccess, AsyncSettingNotifications, AsyncNotifications, AsyncUsersAccounts,
 } from 'Components/AsyncComponent/AsyncComponent';
 import Community from "Routes/custom/community";
 
@@ -54,6 +54,12 @@ const Dashboard = ({ match, authUser }) => {
                 <Switch>
                     <Route exact path={ROOT} component={HomePage} />
                     <Route exact path={HOME} component={HomePage} />
+
+                    <CanRoute
+                        path={USERS.ACCOUNTS.SELF}
+                        component={AsyncUsersAccounts}
+                        permissions={[Permission.users.accounts.viewList.name]}
+                    />
 
                     <CanRoute
                         path={SETTINGS.NOTIFICATION.SELF}
@@ -148,15 +154,15 @@ const Dashboard = ({ match, authUser }) => {
                     />
 
                     <CanRoute
-                        path={USERS.USERS.SELF}
-                        component={AsyncUsers}
-                        permissions={[Permission.users.viewList.name]}
-                    />
-
-                    <CanRoute
                         path={USERS.USERS_PROFILE.SELF}
                         component={AsyncUserProfile}
                         permissions={[Permission.userProfile.viewList.name]}
+                    />
+
+                    <CanRoute
+                        path={USERS.USERS.SELF}
+                        component={AsyncUsers}
+                        permissions={[Permission.users.viewList.name]}
                     />
 
                     <CanRoute
