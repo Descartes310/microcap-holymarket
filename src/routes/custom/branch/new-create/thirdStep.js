@@ -27,6 +27,8 @@ const ThirdStep = props => {
         defaultValues: !_.isEqual(defaultState, {}) ? defaultState : {}
     });
 
+    const institutionsWatch = watch('institutions');
+
     const [legalRepresentativeCount, setLegalRepresentativeCount] = useState([1]);
     const [showDeleteBox, setShowDeleteBox] = useState(false);
     const [stepToDelete, setStepToDelete] = useState(null);
@@ -111,7 +113,7 @@ const ThirdStep = props => {
                 ? {...dataToSend[_step], [_value]: item[1]}
                 : {[_value]: item[1]};
         });
-        const result = {legalRepresentatives: Object.values(dataToSend)};
+        const result = {legalRepresentatives: Object.values(dataToSend), ...data};
 
         // Send data
         setData(result);
@@ -180,6 +182,7 @@ const ThirdStep = props => {
                             register={register}
                             position={position}
                             _getPosition={_getPosition}
+                            institutionsWatch={institutionsWatch}
                             organisationPosts={organisationPosts}
                             identificationType={identificationType}
                             _getOrganisationPosts={_getOrganisationPosts}

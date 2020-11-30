@@ -41,39 +41,25 @@ const ThirdStepItem = props => {
     return (
         <div className="w-100">
 
-            <CustomAsyncAddBtn
-                data={profile.data}
-                loading={profile.loading}
-                createFunction={createUsersAccounts}
-                type={GenericObjectType.PROFILE}
-                onRetryClick={_getProfile}
-                component={data => (
-                    <div className="form-group text-left">
-                        <FormControl fullWidth>
-                            <InputLabel className="text-left" htmlFor="profile-helper">
-                                Type de profile
-                            </InputLabel>
-                            <InputComponent
-                                isRequired
-                                className="mt-0"
-                                errors={errors}
-                                control={control}
-                                register={register}
-                                componentType="select"
-                                name={step + 'profile'}
-                                defaultValue={data[0] ? data[0].id : undefined}
-                                as={<Select input={<Input name="profile" id="profile-helper" />}>
-                                    {data.map((item, index) => (
-                                        <MenuItem key={index} value={item.id} className="center-hor-ver">
-                                            {item.label}
-                                        </MenuItem>
-                                    ))}
-                                </Select>}
-                            />
-                        </FormControl>
-                    </div>
-                )}
-            />
+            <div className="row">
+                <div className="col-sm-12">
+                    <FormGroup className="has-wrapper">
+                        <InputLabel className="text-left" htmlFor="name">
+                            Type de compte utilisateur
+                        </InputLabel>
+                        <InputComponent
+                            id="name"
+                            type="text"
+                            isRequired
+                            errors={errors}
+                            register={register}
+                            name={step + 'name'}
+                            className="input-lg"
+                        />
+                        <span className="has-icon"><i className="ti-link"></i></span>
+                    </FormGroup>
+                </div>
+            </div>
 
             <div className="row">
                 <div className="col-md-3 col-md-6 col-sm-12">

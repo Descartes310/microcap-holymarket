@@ -16,6 +16,7 @@ import FlagCountry from "Components/FlagCountry";
 import CountryManager from "Helpers/CountryManager";
 import GenericObjectType from "Enums/GenericObjectType";
 import CustomAsyncAddBtn from "Components/CustomAsyncAddBtn";
+import Typography from "@material-ui/core/Typography";
 
 const countryWithNameAndFlag = CountryManager.countryWithNameAndFlag();
 const countryWithNumberAndFlag = CountryManager.countryWithNumberAndFlag();
@@ -25,6 +26,7 @@ const ThirdStepItem = props => {
         intl,
         identificationType,
         _getIdentificationType,
+        institutionsWatch,
         organisationPosts,
         _getOrganisationPosts,
         position,
@@ -83,6 +85,42 @@ const ThirdStepItem = props => {
                     </InputComponent>
                     <span className="has-icon"><i className="zmdi zmdi-email"></i></span>
                 </FormGroup>
+            </div>
+
+            <div className="row">
+                <div className="col-sm-12">
+                    <CustomAsyncComponent
+                        loading={false}
+                        data={institutionsWatch}
+                        // onRetryClick={_getIdentificationType}
+                        component={data => (
+                            <div className="col-md-12 col-sm-12 form-group text-left">
+                                <FormControl fullWidth>
+                                    <InputLabel className="text-left" htmlFor="institution-helper">
+                                        Site d'implantation
+                                    </InputLabel>
+                                    <InputComponent
+                                        isRequired
+                                        className="mt-0"
+                                        errors={errors}
+                                        control={control}
+                                        register={register}
+                                        componentType="select"
+                                        name={step + 'institution'}
+                                        defaultValue={data[0] ? data[0].name : undefined}
+                                        as={<Select input={<Input name="institution" id="institution-helper" />}>
+                                            {data.map((item, index) => (
+                                                <MenuItem key={index} value={item.name} className="center-hor-ver">
+                                                    {item.name}
+                                                </MenuItem>
+                                            ))}
+                                        </Select>}
+                                    />
+                                </FormControl>
+                            </div>
+                        )}
+                    />
+                </div>
             </div>
 
             <div className="row">

@@ -100,7 +100,7 @@ const fourthStepInner = props => {
                 <Accordion key={step}>
                     <AccordionSummary expandIcon={<i className="zmdi zmdi-chevron-down"></i>}>
                         <Typography>
-                            Comptes utilisateurs
+                            Comptes utilisateur {step}
                             {step > 1 && (
                                 <IconButton
                                     aria-label="Delete"

@@ -133,6 +133,7 @@ export const USERS = {
     },
     ACCOUNTS: {
         GET_ALL: '/public/type-network-profiles',
+        GET_ALL_BY_BRANCH: '/public/type-network-profiles/branch',
         CREATE: '/public/type-network-profiles',
     }
 };

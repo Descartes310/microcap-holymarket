@@ -60,16 +60,15 @@ class BranchList extends Component {
         this.getBranches();
     }
 
-
     // Temporary fetch it directly
     getBranches = () => {
-          api.get(BRANCH.GET_ALL)
-              .then(response => {
-                  this.setState({reviews: response.data});
-              })
-              .catch(error => {
-                 console.log("error => ", error.message);
-              });
+        api.get(BRANCH.GET_ALL)
+          .then(response => {
+              this.setState({reviews: response.data});
+          })
+          .catch(error => {
+             console.log("error => ", error.message);
+          });
     };
 
     handleToggleListItems(key) {

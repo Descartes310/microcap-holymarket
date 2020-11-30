@@ -74,8 +74,12 @@ const FourthStep = props => {
                     if (__elt[1] === undefined) {
                         __elt[1] = -1;
                     } else {
-                        const n = Number(__elt[1]);
-                        __elt[1] = isNaN(n) ? -1 : n;
+                        if (__elt[0] === "name") {
+                            return __elt;
+                        } else {
+                            const n = Number(__elt[1]);
+                            __elt[1] = isNaN(n) ? -1 : n;
+                        }
                     }
                     return __elt;
                 });

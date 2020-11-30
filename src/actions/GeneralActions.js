@@ -274,3 +274,8 @@ export const getUsersAccounts = (userId) => (dispatch) => {
     const url = `${USERS_API.ACCOUNTS.GET_ALL}?user_id=${userId}`;
     return makeActionRequest('get', url, USERS_ACCOUNTS, dispatch);
 };
+
+export const getUsersAccountsByBranch = (branchId) => (dispatch) => {
+    const url = `${USERS_API.ACCOUNTS.GET_ALL_BY_BRANCH}?branch_id=${branchId}`;
+    return makeActionRequest('get', url, USERS_ACCOUNTS, dispatch);
+};

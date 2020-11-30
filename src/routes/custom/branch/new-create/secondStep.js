@@ -64,7 +64,7 @@ const ThirdStep = props => {
                 ? {...dataToSend[_step], [_value]: item[1]}
                 : {[_value]: item[1]};
         });
-        const result = {institutions: Object.values(dataToSend)};
+        const result = {institutions: Object.values(dataToSend), ...data};
 
         // Send data
         setData(result);
@@ -112,7 +112,7 @@ const ThirdStep = props => {
                 <Accordion key={step}>
                     <AccordionSummary expandIcon={<i className="zmdi zmdi-chevron-down"></i>}>
                         <Typography>
-                            Site d'implémentation {step}
+                            Site d'implantation {step}
                             {step > 1 && (
                                 <IconButton
                                     aria-label="Delete"
