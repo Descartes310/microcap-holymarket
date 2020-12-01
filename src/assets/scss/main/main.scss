@@ -139,3 +139,18 @@
     opacity: 1 !important;
   }
 }
+
+.user-status-pending {
+  position: absolute;
+  /* top: 0; */
+  right: 4px;
+  bottom: 0;
+
+  &-circle {
+    width: 10px;
+    height: 10px;
+    background: red;
+    border-radius: 50%;
+    position: relative;
+  }
+}

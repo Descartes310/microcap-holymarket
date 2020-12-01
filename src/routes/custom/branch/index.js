@@ -127,8 +127,6 @@ class BranchList extends Component {
 
         // Initialize order feature
         let orderedItems = this.handleOrder(this.state.order, searchedItems);
-        console.log("orderedItems => ", orderedItems);
-
 
         return (
             <div className="Shop-grid-wrapper">

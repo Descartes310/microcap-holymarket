@@ -16,6 +16,8 @@ import { logout } from 'Actions';
 
 // intl messages
 import IntlMessages from 'Util/IntlMessages';
+import Tooltip from "@material-ui/core/Tooltip/Tooltip";
+import Status from "Enums/Status";
 
 class UserBlock extends Component {
 
@@ -74,7 +76,7 @@ class UserBlock extends Component {
 							tag="div"
 							className="d-flex align-items-center"
 						>
-							<div className="user-profile">
+							<div className="user-profile position-relative">
 								<img
 									src={require('Assets/avatars/user-15.jpg')}
 									alt="user profile"
@@ -82,12 +84,19 @@ class UserBlock extends Component {
 									width="50"
 									height="100"
 								/>
+								{this.props.authUser.user.status === Status.PENDING && (
+									<div className="user-status-pending">
+										<Tooltip id="tooltip-status" title={"Votre compte n'est pas activé"}>
+											<div className={`user-status-pending-circle rct-notify`} />
+										</Tooltip>
+									</div>
+								)}
 							</div>
 							<div className="user-info">
 								<span className="user-name ml-4">
 									{this.props.authUser.userName}
 								</span>
-								<i className="zmdi zmdi-chevron-down dropdown-icon mx-4"></i>
+								<i className="zmdi zmdi-chevron-down dropdown-icon ml-2"></i>
 							</div>
 						</DropdownToggle>
 						<DropdownMenu>

@@ -1,16 +1,16 @@
-import React, {Component} from 'react';
-import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
-import IntlMessages from "Util/IntlMessages";
-import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
-import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
-import {getAllNotifications} from "Actions";
 import {connect} from "react-redux";
-import FetchFailedComponent from "Components/FetchFailedComponent";
-import SingleTitleText from "Components/SingleTitleText";
+import React, {Component} from 'react';
+import {getAllNotifications} from "Actions";
 import {Scrollbars} from "react-custom-scrollbars";
 import Item from "Routes/custom/notifications/Item";
 import {List as ListMaterial} from '@material-ui/core';
-import ListItem from '@material-ui/core/ListItem';
+import SingleTitleText from "Components/SingleTitleText";
+import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
+import FetchFailedComponent from "Components/FetchFailedComponent";
+import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
+import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
+import ActivationBox from "Routes/custom/notifications/ActivationBox";
+import Status from "Enums/Status";
 
 class List extends Component {
     constructor(props) {
@@ -20,14 +20,18 @@ class List extends Component {
                 data: null,
                 loading: true,
             },
+            showActivationBox: false,
             selectedNotifications: [],
         }
-
     }
 
     componentDidMount() {
         this.props.getAllNotifications(this.props.authUser.user.id);
     }
+
+    onActivationClick = (notificationId) => {
+        this.setState({showActivationBox: true})
+    };
 
     render() {
         const { data: notifications, loading } = this.props.notifications;
@@ -65,6 +69,8 @@ class List extends Component {
                                             <Item
                                                 key={index}
                                                 notification={notification}
+                                                authUser={this.props.authUser}
+                                                onActivationClick={() => this.onActivationClick(notification.id)}
                                             />
                                         ))}
                                     </ListMaterial>
@@ -73,6 +79,12 @@ class List extends Component {
                         </>
                     </div>
                 </RctCollapsibleCard>
+                {this.props.authUser.user.status === Status.PENDING && (
+                    <ActivationBox
+                        show={this.state.showActivationBox}
+                        onClose={() => this.setState({showActivationBox: false})}
+                    />
+                )}
             </>
         );
     }

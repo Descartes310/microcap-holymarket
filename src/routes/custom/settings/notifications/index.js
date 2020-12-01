@@ -60,24 +60,28 @@ export default class NotificationsIndex extends Component {
 
         return (
             <div className="userProfile-wrapper">
-                <PageTitleBar title="Notifications" match={this.props.match}  enableBreadCrumb={false}/>
+                <PageTitleBar
+                    title="Notifications"
+                    match={this.props.match}
+                    enableBreadCrumb={false}
+                />
                 <RctCard>
                     <div className="rct-tabs">
                         <AppBar position="static">
                             <Tabs
                                 value={activeTab}
-                                onChange={this.handleChange}
-                                variant="scrollable"
                                 scrollButtons="off"
+                                variant="scrollable"
                                 indicatorColor="primary"
+                                onChange={this.handleChange}
                             >
                                 <Tab
-                                    icon={<i className="zmdi zmdi-library"></i>}
                                     label={"Modeles"}
+                                    icon={<i className="zmdi zmdi-library"></i>}
                                 />
                                 <Tab
-                                    icon={<i className="zmdi zmdi-view-web"></i>}
                                     label={"Notifications de Services"}
+                                    icon={<i className="zmdi zmdi-view-web"></i>}
                                 />
                             </Tabs>
                         </AppBar>
