@@ -76,22 +76,32 @@ class UserBlock extends Component {
 							tag="div"
 							className="d-flex align-items-center"
 						>
-							<div className="user-profile position-relative">
-								<img
-									src={require('Assets/avatars/user-15.jpg')}
-									alt="user profile"
-									className="img-fluid rounded-circle"
-									width="50"
-									height="100"
-								/>
-								{this.props.authUser.user.status === Status.PENDING && (
-									<div className="user-status-pending">
-										<Tooltip id="tooltip-status" title={"Votre compte n'est pas activé"}>
+							{this.props.authUser.user.status === Status.PENDING ? (
+								<Tooltip id="tooltip-status" title={"Votre compte n'est pas activé"}>
+									<div className="user-profile position-relative">
+										<img
+											src={require('Assets/avatars/user-15.jpg')}
+											alt="user profile"
+											className="img-fluid rounded-circle"
+											width="50"
+											height="100"
+										/>
+										<div className="user-status-pending">
 											<div className={`user-status-pending-circle rct-notify`} />
-										</Tooltip>
+										</div>
 									</div>
-								)}
-							</div>
+								</Tooltip>
+							) : (
+								<div className="user-profile position-relative">
+									<img
+										src={require('Assets/avatars/user-15.jpg')}
+										alt="user profile"
+										className="img-fluid rounded-circle"
+										width="50"
+										height="100"
+									/>
+								</div>
+							)}
 							<div className="user-info">
 								<span className="user-name ml-4">
 									{this.props.authUser.userName}
