@@ -21,7 +21,7 @@ import FourthStepInner from "./fourthStepInner";
 import SecondStepItem from "Routes/custom/branch/new-create/secondStepItem";
 
 const FourthStep = props => {
-    const { loading, nextStep, previousStep, setData, intl, defaultState, authUser } = props;
+    const { loading, nextStep, previousStep, setData, intl, defaultState, authUser} = props;
 
     const { register, errors, handleSubmit, watch, control, setValue, getValues} = useForm({
         defaultValues: !_.isEqual(defaultState, {}) ? defaultState : {}
@@ -31,6 +31,8 @@ const FourthStep = props => {
         loading: true,
         data: null
     });
+   
+    const [counter, setCounter] = useState(0);
 
     useEffect(() => {
         _getProfile();
@@ -57,6 +59,7 @@ const FourthStep = props => {
      */
     const onSubmit = (data) => {
         let dataToSend = {};
+        console.log("Data parameter inside GD =>",data);
         const dataToWorkOn = Object.entries(data).filter(i => /[0-9]/.test(i[0][0]));
 
         dataToWorkOn.forEach(item => {
@@ -65,6 +68,7 @@ const FourthStep = props => {
                 ? {...dataToSend[_step], [_value]: item[1]}
                 : {[_value]: item[1]};
         });
+
         let accounts = Object.values(dataToSend).map(elt => {
             return Object
                 .entries(elt)
@@ -99,6 +103,7 @@ const FourthStep = props => {
         setData(values);
         previousStep();
     };
+
 
     return (
         <Form onSubmit={handleSubmit(onSubmit)}>
@@ -203,6 +208,7 @@ const FourthStep = props => {
                 register={register}
                 setValue={setValue}
                 getValues={getValues}
+                counter={val}
             />
 
             {/*<div className="row">

@@ -12,6 +12,7 @@ import InputLabel from "@material-ui/core/InputLabel/InputLabel";
 import Checkbox from "@material-ui/core/Checkbox/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
 import {createUsersAccounts} from "Actions/independentActions";
+import { useState } from 'react';
 
 const ThirdStepItem = props => {
     const {
@@ -23,9 +24,10 @@ const ThirdStepItem = props => {
         control,
         step,
         watch,
-        setValue,
+        setValue
     } = props;
 
+   
     const bmaxNetworkWatch = watch(step + 'bmaxNetwork');
     const bminNetworkWatch = watch(step + 'bminNetwork');
 
@@ -37,6 +39,9 @@ const ThirdStepItem = props => {
 
     const bmaxPersonWatch = watch(step + 'bmaxPerson');
     const bminPersonWatch = watch(step + 'bminPerson');
+    
+
+
 
     return (
         <div className="w-100">
@@ -72,6 +77,7 @@ const ThirdStepItem = props => {
                         <div className="col-sm-12">
                             <div className="d-flex justify-content-between align-items-center">
                                 <FormGroup className="has-wrapper w-100">
+                                    <Checkbox/>Par défaut
                                     <InputLabel className="text-left" htmlFor="max_network">
                                         Plafond
                                     </InputLabel>
@@ -164,6 +170,7 @@ const ThirdStepItem = props => {
                         <div className="col-sm-12">
                             <div className="d-flex justify-content-between align-items-center">
                                 <FormGroup className="has-wrapper w-100">
+                                    <Checkbox/>Par défaut
                                     <InputLabel className="text-left" htmlFor="max_partner">
                                         Plafond
                                     </InputLabel>
@@ -254,6 +261,7 @@ const ThirdStepItem = props => {
                         <div className="col-sm-12">
                             <div className="d-flex justify-content-between align-items-center">
                                 <FormGroup className="has-wrapper w-100">
+                                    <Checkbox/>Par défaut
                                     <InputLabel className="text-left" htmlFor="max_org">
                                         Plafond
                                     </InputLabel>
@@ -344,6 +352,7 @@ const ThirdStepItem = props => {
                         <div className="col-sm-12">
                             <div className="d-flex justify-content-between align-items-center">
                                 <FormGroup className="has-wrapper w-100">
+                                    <Checkbox/>Par défaut
                                     <InputLabel className="text-left" htmlFor="max_person">
                                         Plafond
                                     </InputLabel>

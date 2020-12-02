@@ -21,7 +21,7 @@ import {getUsersAccounts} from "Actions/GeneralActions";
 
 const fourthStepInner = props => {
     const { loading, nextStep, previousStep, intl, setData,  defaultState, authUser, usersAccounts, getUsersAccounts } = props;
-    const { register, errors, handleSubmit, watch, control, setValue, getValues  } = props;
+    const { register, errors, handleSubmit, watch, control, setValue, getValues, counter} = props;
 
     /*const { register, errors, handleSubmit, watch, control, getValues} = useForm({
         defaultValues: !_.isEqual(defaultState, {}) ? defaultState : {}
@@ -30,6 +30,7 @@ const fourthStepInner = props => {
     const [usersAccountCount, setUsersAccountCount] = useState([1]);
     const [showDeleteBox, setShowDeleteBox] = useState(false);
     const [stepToDelete, setStepToDelete] = useState(null);
+    const [selectedBox, setSelectedBox] = useState(0);
 
     /*const [profile, setProfile] = useState({
         loading: true,
@@ -85,6 +86,7 @@ const fourthStepInner = props => {
         setShowDeleteBox(false);
     };
 
+    
     return (
         <div className="my-30">
             <div className="d-flex justify-content-between">
@@ -122,7 +124,8 @@ const fourthStepInner = props => {
                             setValue={setValue}
                             profile={usersAccounts}
                             register={register}
-                            _getProfile={_getProfile}
+                            _getProfile={getProfile}
+                            counter={0}
                         />
                     </AccordionDetails>
                 </Accordion>
