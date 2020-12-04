@@ -16,6 +16,8 @@ import { logout } from 'Actions';
 
 // intl messages
 import IntlMessages from 'Util/IntlMessages';
+import Tooltip from "@material-ui/core/Tooltip/Tooltip";
+import Status from "Enums/Status";
 
 class UserBlock extends Component {
 
@@ -74,20 +76,37 @@ class UserBlock extends Component {
 							tag="div"
 							className="d-flex align-items-center"
 						>
-							<div className="user-profile">
-								<img
-									src={require('Assets/avatars/user-15.jpg')}
-									alt="user profile"
-									className="img-fluid rounded-circle"
-									width="50"
-									height="100"
-								/>
-							</div>
+							{this.props.authUser.user.status === Status.PENDING ? (
+								<Tooltip id="tooltip-status" title={"Votre compte n'est pas activé"}>
+									<div className="user-profile position-relative">
+										<img
+											src={require('Assets/avatars/user-15.jpg')}
+											alt="user profile"
+											className="img-fluid rounded-circle"
+											width="50"
+											height="100"
+										/>
+										<div className="user-status-pending">
+											<div className={`user-status-pending-circle rct-notify`} />
+										</div>
+									</div>
+								</Tooltip>
+							) : (
+								<div className="user-profile position-relative">
+									<img
+										src={require('Assets/avatars/user-15.jpg')}
+										alt="user profile"
+										className="img-fluid rounded-circle"
+										width="50"
+										height="100"
+									/>
+								</div>
+							)}
 							<div className="user-info">
 								<span className="user-name ml-4">
 									{this.props.authUser.userName}
 								</span>
-								<i className="zmdi zmdi-chevron-down dropdown-icon mx-4"></i>
+								<i className="zmdi zmdi-chevron-down dropdown-icon ml-2"></i>
 							</div>
 						</DropdownToggle>
 						<DropdownMenu>

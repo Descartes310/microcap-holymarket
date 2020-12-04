@@ -415,3 +415,13 @@ export const createUsersAccounts = (data) => {
     const url = `${USERS.ACCOUNTS.CREATE}`;
     return makeRequest('post', url, data);
 };
+
+export const askValidationCode = (userId) => {
+    const url = joinBaseUrlWithParamsId(USERS.VALIDATION.SEND_OTP, userId);
+    return makeRequest('post', url);
+};
+
+export const verifyCode = (userId, otp) => {
+    const url = joinBaseUrlWithParamsId(USERS.VALIDATION.VERIFY, userId);
+    return makeRequest('put', url, {otp});
+};

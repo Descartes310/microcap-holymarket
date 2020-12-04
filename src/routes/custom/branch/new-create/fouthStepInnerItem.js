@@ -24,6 +24,8 @@ const ThirdStepItem = props => {
         step,
         watch,
         setValue,
+        getValues,
+        setData,
     } = props;
 
     const bmaxNetworkWatch = watch(step + 'bmaxNetwork');
@@ -38,8 +40,126 @@ const ThirdStepItem = props => {
     const bmaxPersonWatch = watch(step + 'bmaxPerson');
     const bminPersonWatch = watch(step + 'bminPerson');
 
+
+    // const defaultNetwork = watch(step + 'defaultNetwork');
+    // const defaultPartner = watch(step + 'defaultPartner');
+    // const defaultOrg = watch(step + 'defaultOrg');
+    // const defaultPerson = watch(step + 'defaultPerson');
+
+    const onChangeDefaultEntity = (type, currentKey, oldValue) => {
+        const values = getValues();
+        Object.entries(values).forEach(value => {
+            if (value[0].includes(type)) {
+                if (oldValue) {
+                    setValue(value[0], false);
+                } else {
+                    setValue(value[0], value[0] === currentKey);
+                }
+            }
+        });
+        setData(values);
+    };
+
     return (
         <div className="w-100">
+
+            <div className="row">
+                <div className="col-md-6 col-sm-12">
+                    <FormControl fullWidth className="w-100 ml-15">
+                        <InputComponent
+                            isRequired
+                            className="mt-0"
+                            errors={errors}
+                            control={control}
+                            register={register}
+                            componentType="select"
+                            id="defaultNetwork"
+                            name={step + 'defaultNetwork'}
+                            as={<FormControlLabel control={
+                                <Checkbox
+                                    color="primary"
+                                    // This is not a mistake
+                                    checked={(() => (Boolean(watch(step + 'defaultNetwork'))))()}
+                                    onChange={() => onChangeDefaultEntity('defaultNetwork', step + 'defaultNetwork', watch(step + 'defaultNetwork'))}
+                                />
+                            } label={"Réseau par default ?"}
+                            />}
+                        />
+                    </FormControl>
+                </div>
+
+                <div className="col-md-6 col-sm-12">
+                    <FormControl fullWidth className="w-100 ml-15">
+                        <InputComponent
+                            isRequired
+                            className="mt-0"
+                            errors={errors}
+                            control={control}
+                            register={register}
+                            componentType="select"
+                            id="defaultPartner"
+                            name={step + 'defaultPartner'}
+                            as={<FormControlLabel control={
+                                <Checkbox
+                                    color="primary"
+                                    // This is not a mistake
+                                    checked={(() => (Boolean(watch(step + 'defaultPartner'))))()}
+                                    onChange={() => onChangeDefaultEntity('defaultPartner', step + 'defaultPartner', watch(step + 'defaultPartner'))}
+                                />
+                            } label={"Partenaire par default ?"}
+                            />}
+                        />
+                    </FormControl>
+                </div>
+
+                <div className="col-md-6 col-sm-12">
+                    <FormControl fullWidth className="w-100 ml-15">
+                        <InputComponent
+                            isRequired
+                            className="mt-0"
+                            errors={errors}
+                            control={control}
+                            register={register}
+                            componentType="select"
+                            id="defaultOrg"
+                            name={step + 'defaultOrg'}
+                            as={<FormControlLabel control={
+                                <Checkbox
+                                    color="primary"
+                                    // This is not a mistake
+                                    checked={(() => (Boolean(watch(step + 'defaultOrg'))))()}
+                                    onChange={() => onChangeDefaultEntity('defaultOrg', step + 'defaultOrg', watch(step + 'defaultOrg'))}
+                                />
+                            } label={"Personne morale par default ?"}
+                            />}
+                        />
+                    </FormControl>
+                </div>
+
+                <div className="col-md-6 col-sm-12">
+                    <FormControl fullWidth className="w-100 ml-15">
+                        <InputComponent
+                            isRequired
+                            className="mt-0"
+                            errors={errors}
+                            control={control}
+                            register={register}
+                            componentType="select"
+                            id="defaultPerson"
+                            name={step + 'defaultPerson'}
+                            as={<FormControlLabel control={
+                                <Checkbox
+                                    color="primary"
+                                    // This is not a mistake
+                                    checked={(() => (Boolean(watch(step + 'defaultPerson'))))()}
+                                    onChange={() => onChangeDefaultEntity('defaultPerson', step + 'defaultPerson', watch(step + 'defaultPerson'))}
+                                />
+                            } label={"Personne physique par default ?"}
+                            />}
+                        />
+                    </FormControl>
+                </div>
+            </div>
 
             <div className="row">
                 <div className="col-sm-12">

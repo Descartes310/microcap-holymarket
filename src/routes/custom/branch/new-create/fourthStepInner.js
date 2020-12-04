@@ -119,7 +119,9 @@ const fourthStepInner = props => {
                             watch={watch}
                             errors={errors}
                             control={control}
+                            setData={setData}
                             setValue={setValue}
+                            getValues={getValues}
                             profile={usersAccounts}
                             register={register}
                             _getProfile={_getProfile}

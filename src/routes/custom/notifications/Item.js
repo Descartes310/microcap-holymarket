@@ -1,13 +1,13 @@
-import React, {Component} from 'react';
-import PropTypes from 'prop-types';
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
+import {Button} from "reactstrap";
+import Status from "Enums/Status";
 import {Fab} from "@material-ui/core";
-import {Scrollbars} from "react-custom-scrollbars";
+import React, {Component} from 'react';
+import ListItem from "@material-ui/core/ListItem";
+import NotificationType from "Enums/NotificationType";
 
 class Item extends Component {
     render() {
-        const { notification } = this.props;
+        const { notification, onActivationClick, authUser } = this.props;
         return (
             <ListItem className="row px-20 py-3 align-items-center notification-hover-wrapper" button>
                 <div className="col-md-9">
@@ -23,15 +23,36 @@ class Item extends Component {
                     </div>
                 </div>
                 <div className="col-md-3 comment-action w-20 text-right">
-                    <span className="font-xs text-muted font-weight-light d-block comment-date">{notification.createdAt.fromNow()}</span>
-                    <div className="notification-hover d-flex align-items-center justify-content-end">
-                        <Fab variant="round" size="small" color="primary" className="btn-sm mx-1 bg-primary text-white">
-                            <i className="zmdi zmdi-check"/>
-                        </Fab>
-                        <Fab variant="round" size="small" className="bg-blue text-white btn-sm mx-1">
-                            <i className="zmdi zmdi-menu"/>
-                        </Fab>
-                    </div>
+                    {notification.notificationType === NotificationType.ACTIVATE_ACCOUNT ? (
+                        <div className="notification-hover d-flex align-items-center justify-content-end">
+                            {authUser.user.status === Status.PENDING ? (
+                                <Button
+                                    color="primary"
+                                    className="text-white mr-2"
+                                    onClick={() => onActivationClick()}
+                                >
+                                    Activer Mon compte
+                                </Button>
+                            ) : (
+                                <span className="text-success fw-bold d-block comment-date">
+                                    <i className="zmdi zmdi-check mr-2"/>
+                                    Compte déja validé
+                                </span>
+                            )}
+                        </div>
+                    ) : (
+                        <>
+                          <span className="font-xs text-muted font-weight-light d-block comment-date">{notification.createdAt.fromNow()}</span>
+                          <div className="notification-hover d-flex align-items-center justify-content-end">
+                              <Fab variant="round" size="small" color="primary" className="btn-sm mx-1 bg-primary text-white">
+                                  <i className="zmdi zmdi-check"/>
+                              </Fab>
+                              <Fab variant="round" size="small" className="bg-blue text-white btn-sm mx-1">
+                                  <i className="zmdi zmdi-menu"/>
+                              </Fab>
+                          </div>
+                        </>
+                    )}
                 </div>
             </ListItem>
         );

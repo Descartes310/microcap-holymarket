@@ -71,7 +71,10 @@ const FourthStep = props => {
                 .map(_elt => {
                     // console.log("_elt => ", _elt);
                     const __elt = [..._elt];
-                    if (__elt[1] === undefined) {
+
+                    if (['defaultNetwork', 'defaultPartner', 'defaultOrg', 'defaultPerson'].includes(__elt[0])) {
+                        return __elt;
+                    } else if (__elt[1] === undefined) {
                         __elt[1] = -1;
                     } else {
                         if (__elt[0] === "name") {
@@ -81,16 +84,68 @@ const FourthStep = props => {
                             __elt[1] = isNaN(n) ? -1 : n;
                         }
                     }
+
                     return __elt;
                 });
         });
 
         accounts = accounts.map(item => item.reduce((acc, b) => ({...acc, [b[0]]: b[1]}), {}));
 
-        const result = {accounts: accounts, ...data};
-        // Send data
-        setData(result, true);
+        if (validateAccounts(accounts)) {
+            // Send data
+            data.defaultNetwork = accounts.find(account => account.defaultNetwork).name;
+            data.defaultPartner = accounts.find(account => account.defaultPartner).name;
+            data.defaultOrg = accounts.find(account => account.defaultOrg).name;
+            data.defaultPerson = accounts.find(account => account.defaultPerson).name;
+
+            const result = {accounts: accounts, ...data};
+
+            setData(result, true);
+        }
         // Redirect to the next step
+    };
+
+    const validateAccounts = (accounts) => {
+        let countDefaultNetwork = 0, countDefaultPartner = 0, countDefaultOrg = 0, countDefaultPerson = 0;
+        accounts.forEach(account => {
+            if (account.defaultNetwork) countDefaultNetwork++;
+            if (account.defaultPartner) countDefaultPartner++;
+            if (account.defaultOrg) countDefaultOrg++;
+            if (account.defaultPerson) countDefaultPerson++;
+        });
+        if (countDefaultNetwork === 0) {
+            NotificationManager.error("Vous devez selectionner un compte réseau par defaut");
+            return false;
+        } else if (countDefaultNetwork !== 1) {
+            NotificationManager.error("Vous devez selectionner exactement un compte réseau par defaut");
+            return false;
+        }
+
+        if (countDefaultPartner === 0) {
+            NotificationManager.error("Vous devez selectionner un compte partenaire par defaut");
+            return false;
+        } else if (countDefaultPartner !== 1) {
+            NotificationManager.error("Vous devez selectionner exactement un compte partenaire par defaut");
+            return false;
+        }
+
+        if (countDefaultOrg === 0) {
+            NotificationManager.error("Vous devez selectionner un compte personne morale par defaut");
+            return false;
+        } else if (countDefaultOrg !== 1) {
+            NotificationManager.error("Vous devez selectionner exactement un compte personne morale par defaut");
+            return false;
+        }
+
+        if (countDefaultPerson === 0) {
+            NotificationManager.error("Vous devez selectionner un compte personne physique par defaut");
+            return false;
+        } else if (countDefaultPerson !== 1) {
+            NotificationManager.error("Vous devez selectionner exactement un compte personne physique par defaut");
+            return false;
+        }
+
+        return true;
     };
 
     const onPreviousClicked = (event) => {
@@ -99,6 +154,7 @@ const FourthStep = props => {
         setData(values);
         previousStep();
     };
+
 
     return (
         <Form onSubmit={handleSubmit(onSubmit)}>
@@ -201,6 +257,7 @@ const FourthStep = props => {
                 errors={errors}
                 control={control}
                 register={register}
+                setData={setData}
                 setValue={setValue}
                 getValues={getValues}
             />

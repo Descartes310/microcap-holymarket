@@ -135,6 +135,10 @@ export const USERS = {
         GET_ALL: '/public/type-network-profiles',
         GET_ALL_BY_BRANCH: '/public/type-network-profiles/branch',
         CREATE: '/public/type-network-profiles',
+    },
+    VALIDATION: {
+        SEND_OTP: 'public/users/{id}/otp/mail',
+        VERIFY: 'public/users/{id}/otp'
     }
 };
 
