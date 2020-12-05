@@ -304,7 +304,7 @@ const SecondStep = props => {
                 )}
             />
 
-            {oldFormState && oldFormState.residenceCountry && (
+            {/* {oldFormState && oldFormState.residenceCountry && (
                 <CustomAsyncComponent
                     loading={operator.loading}
                     data={operator.data}
@@ -334,7 +334,7 @@ const SecondStep = props => {
                         </div>
                     )}
                 />
-            )}
+            )} */}
 
             <div className="row align-items-flex-end">
                 <CustomAsyncComponent

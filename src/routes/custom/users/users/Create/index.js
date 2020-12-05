@@ -36,7 +36,8 @@ class CreateUser extends Component {
         _data.identificationValue = _data.identificationNumber;
         _data.startPieceValidity = _data.startingValidityDate;
         _data.endPieceValidity = _data.endingValidityDate;
-        _data.microcapOperator = _data.operator;
+        _data.login = _data.acceptLogin ? _data.login : _data.email;
+        //_data.microcapOperator = _data.operator;
 
         //
         _data.organisationId = this.props.authUser.id;
