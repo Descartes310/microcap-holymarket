@@ -18,6 +18,7 @@ import { logout } from 'Actions';
 import IntlMessages from 'Util/IntlMessages';
 import Tooltip from "@material-ui/core/Tooltip/Tooltip";
 import Status from "Enums/Status";
+import FieldsetComponent from "Components/FieldsetComponent";
 
 class UserBlock extends Component {
 
@@ -119,31 +120,10 @@ class UserBlock extends Component {
 										{this.props.authUser.user.login}
 									</span>
 								</li>
-								<li>
-									<Link to={{
-										pathname: '/',
-										state: { activeTab: 0 }
-									}}>
-										<i className="zmdi zmdi-account text-primary mr-3"></i>
-										<span><IntlMessages id="widgets.profile" /></span>
-									</Link>
-								</li>
-								<li>
-									<Link to={{
-										pathname: '/',
-										state: { activeTab: 2 }
-									}}>
-										<i className="zmdi zmdi-comment-text-alt text-success mr-3"></i>
-										<span><IntlMessages id="widgets.messages" /></span>
-										<Badge color="danger" className="pull-right">3</Badge>
-									</Link>
-								</li>
-								<li>
-									<Link to="/">
-										<i className="zmdi zmdi-edit text-warning mr-3"></i>
-										<span><IntlMessages id="sidebar.feedback" /></span>
-										<Badge color="info" className="pull-right">1</Badge>
-									</Link>
+								<li className="mt-3">
+									<FieldsetComponent title={"Réference"} titleClass={"text-dark"}>
+										<p className="text-dark fw-bold mb-0">{this.props.authUser.user.reference}</p>
+									</FieldsetComponent>
 								</li>
 								<li className="border-top">
 									<a href="#" onClick={(e) => this.logoutUser(e)}>

@@ -23,15 +23,18 @@ import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
 import FetchFailedComponent from "Components/FetchFailedComponent";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import TimeFromMoment from "Components/TimeFromMoment";
+import AddUserToRole from "Routes/custom/users/AddUserToRole";
+import Button from "@material-ui/core/Button";
 
 class UsersAccountsList extends Component {
     static contextType = AbilityContext;
     constructor(props) {
         super(props);
         this.state = {
-            catalogId: null,
             showCreateBox: false,
-            selectedBranch: null,
+            profileId: null,
+            showAddBox: false,
+            selectedBranch: this.props.authUser.isManager() ? null : this.props.authUser.branchId,
             branches: {
                 data: null,
                 loading: true
@@ -82,45 +85,41 @@ class UsersAccountsList extends Component {
     };
 
     render() {
-        const { usersAccounts, loading, error } = this.props;
-        const { showCreateBox, branches, selectedBranch } = this.state;
+        const { usersAccounts, loading, error, authUser, setRequestGlobalAction } = this.props;
+        const { showCreateBox, branches, selectedBranch, showAddBox, profileId } = this.state;
 
         return (
             <>
                 <PageTitleBar
                     title={"Comptes utilisateurs"}
                 />
-                {/*{this.context.can(Permission.users.accounts.createOne.name, Permission) && (
-                    <UsersAccountsCreate
-                        show={showCreateBox}
-                        onClose={() => this.setState({showCreateBox: false})}
-                    />
-                )}*/}
-                <div className="row mb-3">
-                    <div className="col-sm-12">
-                        <FormControl fullWidth>
-                            <InputLabel className="text-left" htmlFor="institution-helper">
-                                Branche
-                            </InputLabel>
-                            {branches.loading ? (
-                                <RctSectionLoader/>
-                            ) : branches.data ? (
-                                <Select
-                                    value={selectedBranch}
-                                    onChange={event => this.handleOnBranchChange(event.target.value)}
-                                    input={<Input name="institution" id="institution-helper" />}>
-                                    {branches.data.map((item, index) => (
-                                        <MenuItem key={index} value={item.id} className="center-hor-ver">
-                                            {item.name}
-                                        </MenuItem>
-                                    ))}
-                                </Select>
-                            ) : (
-                                <FetchFailedComponent _onRetryClick={this.getBranches} />
-                            )}
-                        </FormControl>
+                {authUser.isManager() && (
+                    <div className="row mb-3">
+                        <div className="col-sm-12">
+                            <FormControl fullWidth>
+                                <InputLabel className="text-left" htmlFor="institution-helper">
+                                    Branche
+                                </InputLabel>
+                                {branches.loading ? (
+                                    <RctSectionLoader/>
+                                ) : branches.data ? (
+                                    <Select
+                                        value={selectedBranch}
+                                        onChange={event => this.handleOnBranchChange(event.target.value)}
+                                        input={<Input name="institution" id="institution-helper" />}>
+                                        {branches.data.map((item, index) => (
+                                            <MenuItem key={index} value={item.id} className="center-hor-ver">
+                                                {item.name}
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+                                ) : (
+                                    <FetchFailedComponent _onRetryClick={this.getBranches} />
+                                )}
+                            </FormControl>
+                        </div>
                     </div>
-                </div>
+                )}
                 <CustomList
                     error={error}
                     loading={loading}
@@ -146,6 +145,7 @@ class UsersAccountsList extends Component {
                                             <tr>
                                                 <th><IntlMessages id="components.name" /></th>
                                                 <th>Date de création</th>
+                                                <th>Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -173,6 +173,16 @@ class UsersAccountsList extends Component {
                                                         </div>
                                                     </div>
                                                 </td>
+                                                <td>
+                                                    <Button
+                                                        color="primary"
+                                                        // variant={"outlined"}
+                                                        className={`text-white font-weight-bold btn-primary btn-xs mr-2`}
+                                                        onClick={() => this.setState({showAddBox: true, profileId: item.id})}
+                                                    >
+                                                        Ajouter
+                                                    </Button>
+                                                </td>
                                             </tr>
                                         ))}
                                         </tbody>
@@ -181,6 +191,13 @@ class UsersAccountsList extends Component {
                             )}
                         </>
                     )}
+                />
+                <AddUserToRole
+                    show={showAddBox}
+                    profileId={profileId}
+                    setRequestGlobalAction={setRequestGlobalAction}
+                    onClose={() => this.setState({showAddBox: false, profileId: null})}
+                    type={"profile"}
                 />
             </>
         );

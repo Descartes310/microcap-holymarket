@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import IconButton from "@material-ui/core/IconButton";
-import DialogTitle from "@material-ui/core/DialogTitle/DialogTitle";
-import DialogContent from "@material-ui/core/DialogContent/DialogContent";
-import Dialog from "@material-ui/core/Dialog/Dialog";
 import CancelIcon from "@material-ui/icons/Cancel";
-import useMediaQuery from "@material-ui/core/useMediaQuery/useMediaQuery";
+import Dialog from "@material-ui/core/Dialog/Dialog";
+import IconButton from "@material-ui/core/IconButton";
 import useTheme from "@material-ui/core/styles/useTheme";
+import DialogTitle from "@material-ui/core/DialogTitle/DialogTitle";
+import useMediaQuery from "@material-ui/core/useMediaQuery/useMediaQuery";
+import DialogContent from "@material-ui/core/DialogContent/DialogContent";
 
 const DialogComponent = ({show, title, onClose, ...restProps}) => {
     const theme = useTheme();
@@ -30,7 +30,6 @@ const DialogComponent = ({show, title, onClose, ...restProps}) => {
                         color="primary"
                         aria-label="close"
                         className="text-danger"
-                        // onClick={() => this.setState({showCreateBox: false})}>
                         onClick={onClose}>
                         <CancelIcon />
                     </IconButton>
@@ -44,7 +43,9 @@ const DialogComponent = ({show, title, onClose, ...restProps}) => {
 };
 
 DialogComponent.propTypes = {
-
+    show: PropTypes.bool.isRequired,
+    title: PropTypes.string.isRequired,
+    onClose: PropTypes.func,
 };
 
 export default DialogComponent;

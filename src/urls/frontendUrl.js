@@ -11,6 +11,7 @@ export const AUTH = {
 
 export const NETWORK = {
     LIST: '/branch',
+    ACTIVATION: '/branches/activation',
     SHOW: '/branch/:id',
     CONFIGURATION: {
         SELF: '/network/configuration',

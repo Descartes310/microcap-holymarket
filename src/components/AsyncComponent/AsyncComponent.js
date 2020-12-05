@@ -108,6 +108,11 @@ export const AsyncSettingNotifications = Loadable({
 	loading: () => <RctPageLoader />,
 });
 
+export const AsyncActivateBranch = Loadable({
+	loader: () => import("Routes/custom/branch/Activation"),
+	loading: () => <RctPageLoader />,
+});
+
 // ecommerce dashboard
 const AsyncEcommerceDashboardComponent = Loadable({
 	loader: () => import("Routes/dashboard/ecommerce"),

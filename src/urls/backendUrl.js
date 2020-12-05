@@ -40,6 +40,7 @@ export const SYSTEM_OBJECT = {
 };
 
 export const BRANCH = {
+    ACTIVATION: 'public/branchs/activation',
     CREATE: 'public/branchs',
     GET_ALL: 'public/branchs',
     CONFIGURATION: {
@@ -53,6 +54,7 @@ export const BRANCH = {
 export const NETWORK_PROFILE = {
     CREATE: 'public/network-profile',
     GET_ALL: 'public/network-profile',
+    ADD_USER_TO_ROLE: 'public/network-profile/{id}/users',
     BRANCH: 'public/network-profile/branch',
     PARTNERSHIP: {
         GET_ALL: 'public/network-profile/partership',
@@ -117,6 +119,7 @@ export const PACKAGES = {
 export const USER_PROFILE = {
     GET_ALL: 'public/profiles',
     CREATE: 'public/profiles',
+    ADD_USER: 'public/profiles/{id}/users',
     PERMISSIONS: {
         GET_ALL: 'public/profiles/permissions',
     },

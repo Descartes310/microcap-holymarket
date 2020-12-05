@@ -19,6 +19,7 @@ import {
     AsyncComOperationType,
     AsyncComOperation, AsyncComOffer, AsyncProducts, AsyncStore,
     AsyncAccess, AsyncSettingNotifications, AsyncNotifications, AsyncUsersAccounts,
+    AsyncActivateBranch
 } from 'Components/AsyncComponent/AsyncComponent';
 import Community from "Routes/custom/community";
 
@@ -54,6 +55,12 @@ const Dashboard = ({ match, authUser }) => {
                 <Switch>
                     <Route exact path={ROOT} component={HomePage} />
                     <Route exact path={HOME} component={HomePage} />
+
+                    <CanRoute
+                        path={NETWORK.ACTIVATION}
+                        component={AsyncActivateBranch}
+                        permissions={[]}
+                    />
 
                     <CanRoute
                         path={USERS.ACCOUNTS.SELF}

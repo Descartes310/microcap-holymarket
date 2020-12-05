@@ -154,3 +154,23 @@
     position: relative;
   }
 }
+
+
+.custom-fieldset {
+  //border: 2px groove threedface;
+  border: 1px groove rgba(0, 0, 0, 0.23);
+  padding: 1em;
+
+  &.custom-fieldset-rounded {
+    border-radius: 5px;
+  }
+
+  &-title {
+    float: left;
+    margin: -1.7em 0 0;
+    padding: 0 .5em;
+    background: #fff;
+    font-size: 1em;
+    font-weight: normal;
+  }
+}

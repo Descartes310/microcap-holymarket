@@ -425,3 +425,12 @@ export const verifyCode = (userId, otp) => {
     const url = joinBaseUrlWithParamsId(USERS.VALIDATION.VERIFY, userId);
     return makeRequest('put', url, {otp});
 };
+
+export const activateBranch = (data) => {
+    return makeRequest('post', BRANCH.ACTIVATION, data);
+};
+
+export const addUserToProfile = (userId, reference, type) => {
+    const url = joinBaseUrlWithParamsId(type === 'network-profile' ? NETWORK_PROFILE.ADD_USER_TO_ROLE : USER_PROFILE.ADD_USER, userId);
+    return makeRequest('post', url, {reference});
+};

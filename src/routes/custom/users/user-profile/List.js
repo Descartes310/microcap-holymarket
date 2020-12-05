@@ -9,13 +9,16 @@ import {withStyles} from "@material-ui/core";
 import {AbilityContext} from "Permissions/Can";
 import CustomList from "Components/CustomList";
 import {getUserProfiles, setRequestGlobalAction} from "Actions";
+import Button from "@material-ui/core/Button";
+import AddUserToRole from "Routes/custom/users/AddUserToRole";
 
 class UserProfileList extends Component {
     static contextType = AbilityContext;
     constructor(props) {
         super(props);
         this.state = {
-            catalogId: null,
+            profileId: null,
+            showAddBox: false,
             showCreateBox: false,
         }
     }
@@ -25,8 +28,8 @@ class UserProfileList extends Component {
     }
 
     render() {
-        const { catalogTypes, loading, error } = this.props;
-        const { showCreateBox } = this.state;
+        const { catalogTypes, loading, error, setRequestGlobalAction } = this.props;
+        const { showCreateBox, showAddBox, profileId } = this.state;
 
         return (
             <>
@@ -62,6 +65,7 @@ class UserProfileList extends Component {
                                                 <th><IntlMessages id="components.name" /></th>
                                                 <th><IntlMessages id="widgets.description" /></th>
                                                 <th>Nombres de permissions</th>
+                                                <th>Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -87,6 +91,16 @@ class UserProfileList extends Component {
                                                 <td className="table-action">
                                                     {item.permissions.length} permissions(s)
                                                 </td>
+                                                <td>
+                                                    <Button
+                                                        color="primary"
+                                                        // variant={"outlined"}
+                                                        className={`text-white font-weight-bold btn-primary btn-xs mr-2`}
+                                                        onClick={() => this.setState({showAddBox: true, profileId: item.id})}
+                                                    >
+                                                        Ajouter
+                                                    </Button>
+                                                </td>
                                             </tr>
                                         ))}
                                         </tbody>
@@ -95,6 +109,12 @@ class UserProfileList extends Component {
                             )}
                         </>
                     )}
+                />
+                <AddUserToRole
+                    show={showAddBox}
+                    profileId={profileId}
+                    setRequestGlobalAction={setRequestGlobalAction}
+                    onClose={() => this.setState({showAddBox: false, profileId: null})}
                 />
             </>
         );
