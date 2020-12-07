@@ -113,6 +113,11 @@ export const AsyncActivateBranch = Loadable({
 	loading: () => <RctPageLoader />,
 });
 
+export const AsyncSampleBranchList = Loadable({
+	loader: () => import("Routes/custom/branch/SampleBranchList"),
+	loading: () => <RctPageLoader />,
+});
+
 // ecommerce dashboard
 const AsyncEcommerceDashboardComponent = Loadable({
 	loader: () => import("Routes/dashboard/ecommerce"),

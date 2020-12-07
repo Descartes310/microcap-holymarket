@@ -100,7 +100,7 @@ const FourthStep = props => {
 
             const result = {accounts: accounts, ...data};
 
-            setData(result, true);
+            setData(result, 4, true);
         }
         // Redirect to the next step
     };

@@ -145,8 +145,8 @@ class AccessWrapper extends Component {
                                 <Route path={ACCESS.LIST} component={Access} />
                                 <Redirect
                                     exact
-                                    to={!this.userDoesNotHaveRight ? ACCESS.MANDATE.TYPE.SELF : ACCESS.MANDATE.SELF.SELF }
                                     from={`${this.props.match.url}/`}
+                                    to={!this.userDoesNotHaveRight ? ACCESS.MANDATE.TYPE.SELF : ACCESS.MANDATE.SELF.SELF }
                                 />
                             </Switch>
                         </TabContainer>

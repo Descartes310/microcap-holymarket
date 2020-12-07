@@ -68,11 +68,11 @@ class NavMenuItem extends Component {
                                 if (authUser.hasPermissions(subMenu.permissions.map(p => p.name))) {
                                    return (
                                        <ListItem button component="li" key={index}>
-                                          <NavLink to={subMenu.path} activeClassName="item-active" >
-                                       <span className="menu">
-                                          {/*<NetworkBranchIntlMessages id={subMenu.menu_title} />*/}
-                                          {subMenu.menu_title}
-                                       </span>
+                                           <NavLink to={subMenu.path} activeClassName="item-active" >
+                                           <span className="menu">
+                                              {/*<NetworkBranchIntlMessages id={subMenu.menu_title} />*/}
+                                              {subMenu.menu_title}
+                                           </span>
                                              {subMenu.new_item && subMenu.new_item === true ?
                                                  <Chip label="new" className="new-item" color="secondary" />
                                                  :
@@ -90,30 +90,48 @@ class NavMenuItem extends Component {
                              {authUser && menu.child_routes.map((subMenu, index) => {
                                 return (
                                     <Fragment key={index}>
-                                       <ListItem button component="li"
-                                                 onClick={() => this.onToggleCollapseMenu(index)}
-                                                 className={`list-item ${classNames({ 'item-active': subMenuOpen === index })}`}
-                                       >
-                                       <span className="menu">
-                                          {subMenu.menu_title}
-                                          {/*<NetworkBranchIntlMessages id={subMenu.menu_title} />*/}
-                                          {menu.new_item && menu.new_item === true ?
-                                              <Chip label="new" className="new-item" color="secondary" />
-                                              :
-                                              null
-                                          }
-                                       </span>
-                                       </ListItem>
+                                        {subMenu.child_routes ? (
+                                            <ListItem
+                                                button
+                                                component="li"
+                                                onClick={() => this.onToggleCollapseMenu(index)}
+                                                className={`list-item ${classNames({ 'item-active': subMenuOpen === index })}`}
+                                            >
+                                           <span className="">
+                                              {subMenu.menu_title}
+                                               {/*<NetworkBranchIntlMessages id={subMenu.menu_title} />*/}
+                                               {menu.new_item && menu.new_item === true ?
+                                                   <Chip label="new" className="new-item" color="secondary" />
+                                                   :
+                                                   null
+                                               }
+                                           </span>
+                                            </ListItem>
+                                        ) : (
+                                            <ListItem button component="li" key={index}>
+                                                <NavLink to={subMenu.path} activeClassName="item-active" >
+                                                   <span className="menu">
+                                                      {/*<NetworkBranchIntlMessages id={subMenu.menu_title} />*/}
+                                                       {subMenu.menu_title}
+                                                   </span>
+                                                    {subMenu.new_item && subMenu.new_item === true ?
+                                                        <Chip label="new" className="new-item" color="secondary" />
+                                                        :
+                                                        ''
+                                                    }
+                                                </NavLink>
+                                            </ListItem>
+                                        )}
                                        <Collapse in={subMenuOpen === index} timeout="auto">
                                           <List className="list-unstyled py-0">
-                                             {authUser && subMenu.child_routes.map((nestedMenu, nestedKey) => {
+                                             {authUser && subMenu.child_routes && subMenu.child_routes.map((nestedMenu, nestedKey) => {
                                                 if (authUser.hasPermissions(nestedMenu.permissions.map(p => p.name))) {
                                                    return (
                                                        <ListItem button component="li" key={nestedKey}>
                                                           <NavLink activeClassName="item-active" to={nestedMenu.path}>
                                                          <span className="menu pl-10 d-inline-block">
                                                             {/*<NetworkBranchIntlMessages id={nestedMenu.menu_title} />*/}
-                                                            {subMenu.menu_title}
+                                                            {nestedMenu.menu_title}
                                                             {menu.new_item && menu.new_item === true ?
                                                                 <Chip label="new" className="new-item" color="secondary" />
                                                                 :

@@ -66,10 +66,15 @@ const ThirdStep = props => {
         });
         const result = {institutions: Object.values(dataToSend), ...data};
 
-        // Send data
-        setData(result);
+        if (!result.institutions.every(i => i.typeId && `${i.typeId}`.length > 0)) {
+            NotificationManager.error("Veuillez selectionner un type d'etablissement");
+            return;
+        }
 
-        nextStep();
+        // Send data
+        setData(result, 2);
+
+        // nextStep();
     };
 
     const onPreviousClicked = (event) => {

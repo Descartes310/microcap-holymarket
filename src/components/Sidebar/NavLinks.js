@@ -4,6 +4,52 @@ import Branch from 'Models/Branch';
 import Permission from "Enums/Permissions";
 
 export default {
+   a: [
+      {
+         "menu_title": "Réseau",
+         "menu_icon": "zmdi zmdi-accounts-list",
+         "new_item": false,
+         "path": NETWORK.LIST,
+         "permissions": [Permission.navLinks.network.viewMenu],
+         "child_routes": [
+            {
+               "menu_title": "Liste",
+               "new_item": false,
+               "path": NETWORK.LIST,
+               "permissions": [Permission.branch.viewList],
+            },
+            /*{
+               "menu_title": "Creation",
+               "new_item": false,
+               "path": NETWORK.CREATE,
+               "type_multi": true,
+               "permissions": [Permission.branch.createOne, Permission.branch.createMany],
+               "child_routes": [
+                  {
+                     "path": NETWORK.CREATE,
+                     "menu_title": "En cours",
+                  },
+                  {
+                     "path": NETWORK.CREATE,
+                     "menu_title": "Nouveau",
+                  },
+               ]
+            },*/
+            {
+               "menu_title": "Configuration",
+               "new_item": false,
+               "path": NETWORK.CONFIGURATION.SELF,
+               "permissions": [Permission.navLinks.network.childLinks.configuration.viewMenu],
+            },
+            {
+               "menu_title": "Couverture",
+               "path": NETWORK.COVERAGE,
+               "new_item": false,
+               "permissions": [Permission.navLinks.network.childLinks.coverage.viewMenu],
+            },
+         ]
+      },
+   ],
    menus: [
       {
          "menu_title": "Utilisateurs",
@@ -35,9 +81,36 @@ export default {
          "menu_title": "Réseau",
          "menu_icon": "zmdi zmdi-accounts-list",
          "new_item": false,
-          "path": NETWORK.LIST,
+         "path": NETWORK.LIST,
+         "type_multi": true,
          "permissions": [Permission.navLinks.network.viewMenu],
          "child_routes": [
+            {
+               "menu_title": "Liste",
+               "new_item": false,
+               "path": NETWORK.LIST,
+               // "permissions": [Permission.branch.viewList],
+               "permissions": [Permission.navLinks.network.viewMenu],
+            },
+            {
+               "menu_title": "Creation",
+               "new_item": false,
+               "path": NETWORK.CREATE,
+               // "permissions": [Permission.branch.createOne, Permission.branch.createMany],
+               "permissions": [Permission.navLinks.network.viewMenu],
+               "child_routes": [
+                  {
+                     "path": NETWORK.ONGOING_CREATE,
+                     "menu_title": "En cours",
+                     "permissions": [Permission.navLinks.network.viewMenu],
+                  },
+                  {
+                     "path": NETWORK.CREATE,
+                     "menu_title": "Nouveau",
+                     "permissions": [Permission.navLinks.network.viewMenu],
+                  },
+               ]
+            },
             {
                "menu_title": "Configuration",
                "new_item": false,

@@ -434,3 +434,20 @@ export const addUserToProfile = (userId, reference, type) => {
     const url = joinBaseUrlWithParamsId(type === 'network-profile' ? NETWORK_PROFILE.ADD_USER_TO_ROLE : USER_PROFILE.ADD_USER, userId);
     return makeRequest('post', url, {reference});
 };
+
+export const getAllSampleBranch = () => {
+    return makeRequest('get', BRANCH.SAMPLE.GET_ALL);
+};
+
+export const getOneSampleBranch = (sampleBranchId) => {
+    const url = joinBaseUrlWithParamsId(BRANCH.SAMPLE.GET_ONE, sampleBranchId);
+    return makeRequest('get', url);
+};
+
+export const saveSampleBranchStep = (step, data, config) => {
+    return new Promise((resolve, reject) => {
+        api.post(BRANCH.SAMPLE.STEP[`${step}`], data, config)
+            .then(result => resolve(result.data))
+            .catch(error => reject(error));
+    });
+};

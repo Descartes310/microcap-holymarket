@@ -117,17 +117,20 @@ const FirstStep = props => {
             return;
         }
 
-        // Send data
-        setData({...data, logo,});
-        // Redirect to the next step
-        nextStep();
-    };
+        if (data.organisationType === null) {
+            NotificationManager.error("Vous devez un type d'organisation");
+            return;
+        }
 
-    const onPreviousClicked = (event) => {
-        event.preventDefault();
-        const values = getValues();
-        setData(values);
-        previousStep();
+        if (data.juridicForm === null) {
+            NotificationManager.error("Vous devez une forme juridique");
+            return;
+        }
+
+        // Send data
+        setData({...data, logo,}, 1);
+        // Redirect to the next step
+        // nextStep();
     };
 
     return (
@@ -399,7 +402,7 @@ const FirstStep = props => {
                                 <ErrorInputComponent text={intl.formatMessage({id: emailValidatorObject.message})} />
                             )}
                         </InputComponent>
-                        <span className="has-icon"><i className="zmdi zmdi-email"></i></span>
+                        <span className="has-icon"><i className="zmdi zmdi-email"/></span>
                     </FormGroup>
                 </div>
             </div>

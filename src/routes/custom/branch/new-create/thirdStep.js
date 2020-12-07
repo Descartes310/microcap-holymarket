@@ -115,10 +115,15 @@ const ThirdStep = props => {
         });
         const result = {legalRepresentatives: Object.values(dataToSend), ...data};
 
+        if (!result.legalRepresentatives.every(i => i.post && `${i.post}`.length > 0)) {
+            NotificationManager.error("Veuillez selectionner un poste");
+            return;
+        }
+
         // Send data
-        setData(result);
+        setData(result, 3);
         // Redirect to the next step
-        nextStep();
+        // nextStep();
     };
 
     const onPreviousClicked = (event) => {

@@ -18,6 +18,11 @@ class CountryManager {
         const item = this.countries.find(c => c.alpha3Code === id);
         return item ? {name: item.name, flag: item.flag, id: item.alpha3Code} : {};
     };
+
+    getCountryFromId = (id) => {
+        const item = this.countries.find(c => c.alpha3Code === id);
+        return item ? {...item, phonePrefixes: item.callingCodes} : {};
+    };
 }
 
 export default new CountryManager();

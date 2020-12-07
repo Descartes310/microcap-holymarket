@@ -46,6 +46,7 @@ import ModelNotificationsReducer from './ModelNotificationsReducer';
 import NotificationsReducer from './NotificationsReducer';
 import ServicesNotificationsReducer from './ServicesNotificationsReducer';
 import UsersAccountsReducer from './UsersAccountsReducer';
+import SampleBranchesReducer from './SampleBranchesReducer';
 
 const reducers = combineReducers({
    settings,
@@ -92,6 +93,7 @@ const reducers = combineReducers({
    notifications: NotificationsReducer,
    servicesNotifications: ServicesNotificationsReducer,
    usersAccounts: UsersAccountsReducer,
+   sampleBranches: SampleBranchesReducer,
 });
 
 export default reducers;

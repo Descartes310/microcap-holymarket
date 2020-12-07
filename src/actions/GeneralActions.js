@@ -27,7 +27,7 @@ import {
     PACKAGES,
     COMMERCIAL_OPERATION_TYPE, COMMERCIAL_OPERATION, COMMERCIAL_OFFER, PRODUCT,
     MANDATE_TYPE, MANDATE_MODEL, MANDATE, BRANCH_USERS, NOTIFICATION_MODEL,
-    NOTIFICATION, NOTIFICATION_SERVICE, USERS_ACCOUNTS
+    NOTIFICATION, NOTIFICATION_SERVICE, USERS_ACCOUNTS, SAMPLE_BRANCHES
 } from 'Actions/types';
 
 import api from './../api';
@@ -278,4 +278,9 @@ export const getUsersAccounts = (userId) => (dispatch) => {
 export const getUsersAccountsByBranch = (branchId) => (dispatch) => {
     const url = `${USERS_API.ACCOUNTS.GET_ALL_BY_BRANCH}?branch_id=${branchId}`;
     return makeActionRequest('get', url, USERS_ACCOUNTS, dispatch);
+};
+
+export const getSampleBranches = (branchId) => (dispatch) => {
+    const url = `${BRANCH.SAMPLE.GET_ALL}?branch_id=${branchId}`;
+    return makeActionRequest('get', url, SAMPLE_BRANCHES, dispatch);
 };

@@ -59,7 +59,7 @@ const fourthStepInner = props => {
         const result = {usersAccount: Object.values(dataToSend)};
 
         // Send data
-        setData(result);
+        setData(result, 5);
         // Redirect to the next step
         nextStep();
     };

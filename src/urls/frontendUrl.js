@@ -38,6 +38,7 @@ export const NETWORK = {
     },
     COVERAGE: '/network/coverage',
     CREATE: '/branch/create',
+    ONGOING_CREATE: '/branch/ongoing/create',
     EDIT: '/branch/edit',
 };
 

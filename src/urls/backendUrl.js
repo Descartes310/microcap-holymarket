@@ -49,6 +49,16 @@ export const BRANCH = {
     },
     PRODUCTS: {
         GET_ALL: '/public/type-products/get-all',
+    },
+    SAMPLE: {
+        GET_ALL: "public/branchs/staging",
+        GET_ONE: "public/branchs/{id}",
+        STEP: {
+            "1": "public/branchs/step1",
+            "2": "public/branchs/step2",
+            "3": "public/branchs/step3",
+            "4": "public/branchs/step4",
+        }
     }
 };
 export const NETWORK_PROFILE = {
@@ -64,7 +74,7 @@ export const NETWORK_PROFILE = {
             CREATE: 'public/network-profile/partner/assistant',
             LIST: 'public/network-profile/partner/assistant',
         },
-    }
+    },
 };
 
 export const NETWORK_PROFILE_TYPE = {
