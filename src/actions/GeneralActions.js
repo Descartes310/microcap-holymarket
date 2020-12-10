@@ -27,7 +27,8 @@ import {
     PACKAGES,
     COMMERCIAL_OPERATION_TYPE, COMMERCIAL_OPERATION, COMMERCIAL_OFFER, PRODUCT,
     MANDATE_TYPE, MANDATE_MODEL, MANDATE, BRANCH_USERS, NOTIFICATION_MODEL,
-    NOTIFICATION, NOTIFICATION_SERVICE, USERS_ACCOUNTS, SAMPLE_BRANCHES
+    NOTIFICATION, NOTIFICATION_SERVICE, USERS_ACCOUNTS, SAMPLE_BRANCHES,
+    PROJECT_WORKS, PROJECT_STANDARD
 } from 'Actions/types';
 
 import api from './../api';
@@ -45,6 +46,7 @@ import {
     COMMERCIAL_MANAGEMENT as COMMERCIAL_MANAGEMENT_API,
     ACCESS as ACCESS_API,
     NOTIFICATIONS as NOTIFICATIONS_API,
+    PROJECTS as PROJECTS_API,
     joinBaseUrlWithParams,
     BRANCH, joinBaseUrlWithParamsId,
 } from 'Url/backendUrl';
@@ -283,4 +285,15 @@ export const getUsersAccountsByBranch = (branchId) => (dispatch) => {
 export const getSampleBranches = (branchId) => (dispatch) => {
     const url = `${BRANCH.SAMPLE.GET_ALL}?branch_id=${branchId}`;
     return makeActionRequest('get', url, SAMPLE_BRANCHES, dispatch);
+};
+
+export const getProjectWorks = (branchId) => (dispatch) => {
+    const url = joinBaseUrlWithParamsId(PROJECTS_API.CONFIGURATION.WORKS.GET_ALL, branchId);
+    return makeActionRequest('get', url, PROJECT_WORKS, dispatch);
+};
+
+export const getProjectStandard = (branchId) => (dispatch) => {
+    // const url = joinBaseUrlWithParamsId(PROJECTS_API.CONFIGURATION.STANDARD.GET_ALL, branchId);
+    const url = `${PROJECTS_API.CONFIGURATION.STANDARD.GET_ALL}?id=${branchId}`;
+    return makeActionRequest('get', url, PROJECT_STANDARD, dispatch);
 };

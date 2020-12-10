@@ -13,6 +13,7 @@ import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard
 import {permissionMiddleware} from "Actions/PermissionAlertBoxAction";
 import {AbilityContext} from "Permissions/Can";
 import Permission from "Enums/Permissions";
+import FetchFailedComponent from "Components/FetchFailedComponent";
 
 class CustomList extends Component {
     static contextType = AbilityContext;
@@ -45,7 +46,7 @@ class CustomList extends Component {
         const {
             titleList, itemsFoundText,
             loading, list, error, renderItem,
-            match, history, classes, showSearch,
+            match, history, classes, showSearch, onRetryClick,
             addText, onAddClick, addPermissions, searchPermissions,
         } = this.props;
 
@@ -57,9 +58,11 @@ class CustomList extends Component {
         return (
             <div className="page-list">
                 {titleList && (<PageTitleBar title={titleList} match={match} history={history} enableBreadCrumb={false} />)}
-                {loading || orderedItems === null
+                {loading
                     ? (<RctSectionLoader/>)
-                    : (
+                    : orderedItems === null ? (
+                        <FetchFailedComponent _onRetryClick={onRetryClick} />
+                    ) : (
                         <RctCollapsibleCard>
                             <div className="align-items-center mb-30 px-15 row">
                                 {(onAddClick && canAdd) && (

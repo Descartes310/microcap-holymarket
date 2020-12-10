@@ -11,7 +11,7 @@ import {
     USER_PROFILE, NETWORK_PROFILE_TYPE, USERS,
     COMMUNITY, PACKAGES, COMMERCIAL_MANAGEMENT, joinBaseUrlWithParamsId,
     ORDER, SALES, GENERIC_OBJECT,
-    ACCESS, NOTIFICATIONS, NOTIFICATIONS as NOTIFICATIONS_API
+    ACCESS, NOTIFICATIONS, NOTIFICATIONS as NOTIFICATIONS_API, PROJECTS
 } from "Url/backendUrl";
 import {SET_CURRENT_COMMUNITY, SET_CURRENT_COMMUNITY_SUCCESS} from "Actions/types";
 
@@ -450,4 +450,34 @@ export const saveSampleBranchStep = (step, data, config) => {
             .then(result => resolve(result.data))
             .catch(error => reject(error));
     });
+};
+
+export const createProjectWork = (data, branchId) => {
+    const url = `${PROJECTS.CONFIGURATION.WORKS.CREATE}?branch_id=${branchId}`;
+    return makeRequest('post', url, data);
+};
+
+export const createProjectStandard = (data, branchId) => {
+    const url = `${PROJECTS.CONFIGURATION.STANDARD.CREATE}?branch_id=${branchId}`;
+    return makeRequest('post', url, data);
+};
+
+export const configureProjectStandard = (data, branchId) => {
+    const url = `${PROJECTS.CONFIGURATION.STANDARD.CONFIGURATION}?branch_id=${branchId}`;
+    return makeRequest('post', url, data);
+};
+
+export const getProjectStandardModel = (projectStandardId) => {
+    const url = joinBaseUrlWithParamsId(PROJECTS.CONFIGURATION.STANDARD.MODELS.GET_ALL, projectStandardId);
+    return makeRequest('get', url);
+};
+
+export const createModel = (data) => {
+    const url = `${PROJECTS.CONFIGURATION.STANDARD.MODELS.CREATE}`;
+    return makeRequest('post', url, data);
+};
+
+export const removeProjectStandardModel = (itemId) => {
+    const url = joinBaseUrlWithParamsId(PROJECTS.CONFIGURATION.STANDARD.MODELS.DELETE, itemId);
+    return makeRequest('delete', url);
 };

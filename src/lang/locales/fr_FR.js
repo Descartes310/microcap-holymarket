@@ -10,6 +10,10 @@ module.exports = {
    "step.step3": "Étape 3",
    "form.min": "Min",
    "form.max": "Max",
+   "form.name": "Nom",
+   "form.description": "Description",
+   "form.error.verify.name": "Veuillez entrer un nom valide",
+   "form.error.verify.description": "Veuillez entrer une description valide",
    "form.error.verify.min": "Veuillez vérifier la valeur minimale",
    "form.error.verify.minAndMax": "Veuillez vérifier la valeur minimale et maximale",
    "form.error.correct.min": "Veuillez vérifier la valeur minimale",
@@ -943,4 +947,7 @@ module.exports = {
    "network.configuration.close.successText": "La configuration de votre est terminé",
    "network.sealNetwork": "Sceller le réseau",
    "network.parentProfile": "Profile réseau parent",
+   "projects.configuration.works.found": "{count, plural, =0 {Aucun ouvrages trouvés} one {1 ouvrage trouvé} other { {count} ouvrages trouvés}}",
+   "projects.configuration.standard.found": "{count, plural, =0 {Aucun standard de présentation trouvés} one {1 standard de présentation trouvé} other { {count} standard de présentation trouvés}}",
+   "projects.configuration.standard.model.found": "{count, plural, =0 {Aucun bloc trouvés} one {1 bloc trouvé} other { {count} blocs trouvés}}",
 };

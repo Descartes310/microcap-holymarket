@@ -264,6 +264,24 @@ export const NOTIFICATIONS = {
     CREATE: 'public/generic-objects',
 };
 
+export const PROJECTS = {
+    CONFIGURATION: {
+        WORKS: {
+            GET_ALL: 'public/branchs/{id}/books',
+            CREATE: 'public/books',
+        },
+        STANDARD: {
+            GET_ALL: 'public/projects/presentation-standard',
+            CREATE: 'public/projects/presentation-standard',
+            MODELS: {
+                GET_ALL: 'public/projects/presentation-standard/{id}/models',
+                CREATE: 'public/projects/model',
+                DELETE: 'public/projects/models/{id}',
+            },
+        }
+    }
+};
+
 export const joinBaseUrl = to => BASE + to;
 
 export const joinBaseUrlWithParams = (to, params) => {

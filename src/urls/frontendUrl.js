@@ -191,6 +191,24 @@ export const SETTINGS = {
     }
 };
 
+export const PROJECTS = {
+    SELF: '/projects',
+    CONFIGURATION: {
+        SELF: '/projects/configuration',
+        STANDARD: {
+            SELF: '/projects/configuration/standard',
+            LIST: '/projects/configuration/standard/list',
+            CREATE: '/projects/configuration/standard/create',
+            CONFIGURATION: '/projects/configuration/standard/:id/configuration',
+        },
+        WORKS: {
+            SELF: '/projects/configuration/works',
+            LIST: '/projects/configuration/works/list',
+            CREATE: '/projects/configuration/works/create',
+        }
+    },
+};
+
 export const joinUrlWithParams = (to, params) => {
     let url = to;
     params.forEach(param => {

@@ -15,6 +15,7 @@ import {
     AsyncUserProfile,
     AsyncUsers,
     AsyncCommunity,
+    AsyncProjects,
     AsyncCatalogSales,
     AsyncComOperationType,
     AsyncComOperation, AsyncComOffer, AsyncProducts, AsyncStore,
@@ -35,7 +36,7 @@ import {
     USERS,
     COMMUNITY,
     PACKAGES,
-    COMMERCIAL_MANAGEMENT, PRODUCT, STORE, ROOT, ACCESS, SETTINGS, NOTIFICATIONS
+    COMMERCIAL_MANAGEMENT, PRODUCT, STORE, ROOT, ACCESS, SETTINGS, NOTIFICATIONS, PROJECTS
 } from "Url/frontendUrl";
 import {AbilityContext} from "Permissions/Can";
 import {connect} from "react-redux";
@@ -84,6 +85,12 @@ const Dashboard = ({ match, authUser }) => {
                         path={NOTIFICATIONS.SELF}
                         component={AsyncNotifications}
                         permissions={[]}
+                    />
+
+                    <CanRoute
+                        permissions={[]}
+                        path={PROJECTS.SELF}
+                        component={AsyncProjects}
                     />
 
                     <CanRoute

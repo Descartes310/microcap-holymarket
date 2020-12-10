@@ -1,5 +1,5 @@
 // sidebar nav links
-import {CATALOG, COMMERCIAL_MANAGEMENT, COMMUNITY, NETWORK, PRODUCT, USERS, ACCESS, SETTINGS} from 'Url/frontendUrl';
+import {CATALOG, COMMERCIAL_MANAGEMENT, COMMUNITY, NETWORK, PRODUCT, USERS, ACCESS, SETTINGS, PROJECTS} from 'Url/frontendUrl';
 import Branch from 'Models/Branch';
 import Permission from "Enums/Permissions";
 
@@ -148,6 +148,53 @@ export default {
                "new_item": false,
                "menu_title": "Catalogue distributions",
                "permissions": [Permission.navLinks.products.childLinks.catalogDistribution.viewMenu],
+            },
+         ]
+      },
+      {
+         "menu_title": "Projets",
+         "menu_icon": "zmdi zmdi-widgets",
+         "new_item": false,
+         "permissions": [],
+         "type_multi": true,
+         "child_routes": [
+            {
+               "menu_title": "Configuration",
+               "menu_icon": "zmdi zmdi-case",
+               "new_item": false,
+               "permissions": [],
+               "child_routes": [
+                  {
+                     "menu_title": "Ouvrages",
+                     "new_item": false,
+                     "permissions": [],
+                     "path": PROJECTS.CONFIGURATION.WORKS.SELF,
+                  },
+                  {
+                     "menu_title": "Initialisation",
+                     "new_item": false,
+                     "permissions": [],
+                     "path": PROJECTS.CONFIGURATION.WORKS.SELF,
+                  },
+                  {
+                     "menu_title": "Standard de présentation",
+                     "new_item": false,
+                     "permissions": [],
+                     "path": PROJECTS.CONFIGURATION.STANDARD.SELF,
+                  },
+               ],
+            },
+            {
+               "path": COMMERCIAL_MANAGEMENT.COMMERCIAL_OPERATION.SELF,
+               "new_item": false,
+               "menu_title": "Opération commerciale",
+               "permissions": [],
+            },
+            {
+               "path": COMMERCIAL_MANAGEMENT.COMMERCIAL_OFFER.SELF,
+               "new_item": false,
+               "menu_title": "Offre commerciale",
+               "permissions": [],
             },
          ]
       },
