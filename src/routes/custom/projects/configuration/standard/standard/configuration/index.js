@@ -96,13 +96,6 @@ class List extends Component {
         const projectStandard = this.state.projectStandard;
         const _detailsLevel = [];
 
-        /*{ name: 'Titre', value: 'TITLE'},
-    { name: 'Sous-titre', value: 'SUBTITLE'},
-    { name: 'Paragraphe', value: 'PARAGRAPH'},
-    { name: 'Sous-paragraphe', value: 'SUBPARAGRAPH'},
-    { name: 'Image', value: 'IMAGE'},
-    { name: 'Table', value: 'TABLE'},*/
-
         if (projectStandard.hasTitle) _detailsLevel.push({ name: 'Titre', value: 'TITLE'});
         if (projectStandard.hasSubTitle) _detailsLevel.push({ name: 'Sous-titre', value: 'SUBTITLE'});
         if (projectStandard.hasParagraph) _detailsLevel.push({ name: 'Paragraphe', value: 'PARAGRAPH'});
@@ -111,6 +104,10 @@ class List extends Component {
         if (projectStandard.hasTable) _detailsLevel.push({ name: 'Table', value: 'TABLE'});
 
         return _detailsLevel;
+    };
+
+    onBackClick = () => {
+        this.props.history.push(PROJECTS.CONFIGURATION.STANDARD.LIST);
     };
 
     render() {
@@ -142,10 +139,16 @@ class List extends Component {
                         onClose={() => this.setState({ showCreate: false })}
                     />
                 )}
+                <div className="my-3 pl-3 page-title m-0">
+                    <i onClick={this.onBackClick} className="ti-angle-left cursor-pointer mr-2 icon-hover d-inline-flex"/>
+                    <h3 className="font-lg d-inline-flex">
+                        Configuration d'un standard
+                    </h3>
+                </div>
                 <CustomList
                     list={models}
                     loading={loading}
-                    titleList={"Configuration d'un standard"}
+                    // titleList={"Configuration d'un standard"}
                     itemsFoundText={n => intl.formatMessage({id: "projects.configuration.standard.model.found"}, {count: n})}
                     onAddClick={() => this.setState({ showCreate: true })}
                     /*addPermissions={{

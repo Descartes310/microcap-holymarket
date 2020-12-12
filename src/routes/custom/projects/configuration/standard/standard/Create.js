@@ -67,17 +67,22 @@ class Create extends Component {
         }
     };
 
+    onBackClick = () => {
+        this.props.history.push(PROJECTS.CONFIGURATION.STANDARD.LIST);
+    };
+
     render() {
         const { intl, match, history } = this.props;
         const { label, description, title, subTitle, paragraph, subParagraph, image, table } = this.state;
 
         return (
             <>
-                <PageTitleBar
-                    match={match}
-                    history={history}
-                    title={intl.formatMessage({id: 'officePositions.create'})}
-                />
+                <div className="my-3 pl-3 page-title m-0">
+                    <i onClick={this.onBackClick} className="ti-angle-left cursor-pointer mr-2 icon-hover d-inline-flex"/>
+                    <h3 className="font-lg d-inline-flex">
+                        Création d'un standard de présentation
+                    </h3>
+                </div>
                 <div className="full-height row">
                     <div className="col-md-12 col-sm-12 pr-md-40">
                         <RctCollapsibleCard>

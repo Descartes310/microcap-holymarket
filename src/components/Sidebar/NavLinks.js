@@ -184,7 +184,7 @@ export default {
                   },
                ],
             },
-            {
+            /*{
                "path": COMMERCIAL_MANAGEMENT.COMMERCIAL_OPERATION.SELF,
                "new_item": false,
                "menu_title": "Opération commerciale",
@@ -195,7 +195,7 @@ export default {
                "new_item": false,
                "menu_title": "Offre commerciale",
                "permissions": [],
-            },
+            },*/
          ]
       },
       {

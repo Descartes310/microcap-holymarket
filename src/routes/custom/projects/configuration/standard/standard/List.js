@@ -32,12 +32,9 @@ class List extends Component {
                     list={list}
                     error={error}
                     loading={loading}
-                    titleList={"Standard de présentation"}
+                    // titleList={"Standard de présentation"}
                     itemsFoundText={n => intl.formatMessage({id: "projects.configuration.standard.found"}, {count: n})}
                     onAddClick={() => history.push(this.baseUrl.CREATE)}
-                    /*addPermissions={{
-                        permissions: [Permission.roles.createOne.name],
-                    }}*/
                     renderItem={list => (
                         <>
                             {list && list.length === 0 ? (

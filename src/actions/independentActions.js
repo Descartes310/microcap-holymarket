@@ -491,3 +491,8 @@ export const createInitialisationOption = (data) => {
     const url = `${PROJECTS.CONFIGURATION.INITIALISATION.CREATE}`;
     return makeRequest('post', url, data);
 };
+
+export const createProjectStandardPresentation = (data) => {
+    const url = `${PROJECTS.CONFIGURATION.STANDARD.PRESENTATION.CREATE}`;
+    return makeRequest('post', url, data);
+};

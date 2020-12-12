@@ -200,6 +200,11 @@ export const PROJECTS = {
             LIST: '/projects/configuration/standard/list',
             CREATE: '/projects/configuration/standard/create',
             CONFIGURATION: '/projects/configuration/standard/:id/configuration',
+            PRESENTATION: {
+                SELF: '/projects/configuration/standard/presentation',
+                LIST: '/projects/configuration/standard/presentation/list',
+                CREATE: '/projects/configuration/standard/presentation/create',
+            }
         },
         WORKS: {
             SELF: '/projects/configuration/works',

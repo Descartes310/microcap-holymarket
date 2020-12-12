@@ -52,6 +52,7 @@ import ProjectStandardReducer from './ProjectStandardReducer';
 import InitialisationIdeasReducer from './InitialisationIdeasReducer';
 import InitialisationProgramReducer from './InitialisationProgramReducer';
 import InitialisationProjectsCallReducer from './InitialisationProjectsCallReducer';
+import ProjectStandardPresentationReducer from './ProjectStandardPresentationReducer';
 
 const reducers = combineReducers({
    settings,
@@ -104,6 +105,7 @@ const reducers = combineReducers({
    initialisationIdeas: InitialisationIdeasReducer,
    initialisationProgram: InitialisationProgramReducer,
    initialisationProjectsCall: InitialisationProjectsCallReducer,
+   projectStandardPresentation: ProjectStandardPresentationReducer,
 });
 
 export default reducers;

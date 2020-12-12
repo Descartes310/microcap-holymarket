@@ -10,10 +10,10 @@ const ProjectsCallManagement = ({ match }) => {
             <Switch>
                 <Redirect exact from={`${match.url}/`} to={PROJECTS.CONFIGURATION.INITIALISATION.PROJECTS_CALL.LIST} />
                 <Route path={PROJECTS.CONFIGURATION.INITIALISATION.PROJECTS_CALL.CREATE} children={(
-                    <Create type={'APP'} />
+                    <Create type={'PROJECTS_CALL'} />
                 )} />
                 <Route path={PROJECTS.CONFIGURATION.INITIALISATION.PROJECTS_CALL.LIST} children={(
-                    <List type={'APP'} />
+                    <List type={'PROJECTS_CALL'} />
                 )} />
             </Switch>
         </div>

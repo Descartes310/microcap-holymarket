@@ -9,20 +9,18 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Input from "@material-ui/core/Input/Input";
 import Select from "@material-ui/core/Select/Select";
 import {NotificationManager} from "react-notifications";
-import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import InputLabel from "@material-ui/core/InputLabel/InputLabel";
 import CustomAsyncComponent from "Components/CustomAsyncComponent";
 import {Button, Form, FormGroup, Input as InputStrap} from 'reactstrap';
-import {createProjectWork, setRequestGlobalAction, getProjectWorks} from "Actions";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
+import {createProjectStandardPresentation, setRequestGlobalAction, getProjectStandard} from "Actions";
 
 class Create extends Component {
     constructor(props) {
         super(props);
         this.state = {
             label: '',
-            description: '',
-            parentId: '-1',
+            standardId: '-1',
         }
     }
 
@@ -31,7 +29,12 @@ class Create extends Component {
     }
 
     loadData = () => {
-        this.props.getProjectWorks(this.props.authUser.branchId);
+        this.props.getProjectStandard(this.props.authUser.branchId)
+            .then(result => {
+                if (result) {
+                    this.setState({standardId: result[0] ? +result[0].id : ''});
+                }
+            });
     };
 
     handleOnFormChange = (field, value) => {
@@ -44,10 +47,10 @@ class Create extends Component {
             return false;
         }
 
-        /*if (this.state.description.length === 0) {
-            NotificationManager.error(this.props.intl.formatMessage({id: 'form.error.verify.description'}));
+        if (this.state.standardId.length === 0) {
+            NotificationManager.error("Vous devez selectionner un standard de présentation");
             return false;
-        }*/
+        }
 
         return true;
     };
@@ -56,18 +59,15 @@ class Create extends Component {
         if (this.validate()) {
             this.props.setRequestGlobalAction(true);
             const data = {
-                title: this.state.label,
-                // content: this.state.description,
+                name: this.state.label,
+                standardId: Number(this.state.standardId),
                 branchId: this.props.authUser.branchId,
             };
-            if (this.state.parentId !== '-1') {
-                data.parentId = Number(this.state.parentId);
-            }
 
-            createProjectWork(data)
+            createProjectStandardPresentation(data)
                 .then(() => {
-                    NotificationManager.success("Ouvrage de projets créé avec succès");
-                    this.props.history.push(PROJECTS.CONFIGURATION.WORKS.LIST);
+                    NotificationManager.success("Présentation créée avec succès");
+                    this.props.history.push(PROJECTS.CONFIGURATION.STANDARD.PRESENTATION.LIST);
                 })
                 .catch(() => {
                     NotificationManager.error(ERROR_500);
@@ -76,16 +76,21 @@ class Create extends Component {
         }
     };
 
+    onBackClick = () => {
+        this.props.history.push(PROJECTS.CONFIGURATION.STANDARD.PRESENTATION.LIST);
+    };
+
     render() {
-        const { intl, match, history, projectWorks } = this.props;
+        const { intl, match, history, projectStandard } = this.props;
 
         return (
             <>
-                <PageTitleBar
-                    match={match}
-                    history={history}
-                    title={"Création d'un ouvrage de projets"}
-                />
+                <div className="my-3 pl-3 page-title m-0">
+                    <i onClick={this.onBackClick} className="ti-angle-left cursor-pointer mr-2 icon-hover d-inline-flex"/>
+                    <h3 className="font-lg d-inline-flex">
+                        Création d'une présentation
+                    </h3>
+                </div>
                 <div className="full-height row">
                     <div className="col-md-12 col-sm-12 pr-md-40">
                         <RctCollapsibleCard>
@@ -93,7 +98,7 @@ class Create extends Component {
                                 <div className="row">
                                     <FormGroup className="col-sm-12 has-wrapper">
                                         <InputLabel className="text-left" htmlFor="label">
-                                            Titre
+                                            Nom
                                         </InputLabel>
                                         <InputStrap
                                             required
@@ -106,36 +111,18 @@ class Create extends Component {
                                         <span className="has-icon"><i className="ti-pencil"/></span>
                                     </FormGroup>
 
-                                    {/*<FormGroup className="col-sm-12 has-wrapper">
-                                        <InputLabel className="text-left" htmlFor="description">
-                                            Texte
-                                        </InputLabel>
-                                        <InputStrap
-                                            required
-                                            id="description"
-                                            name={'description'}
-                                            value={this.state.description}
-                                            className="has-input input-lg input-border"
-                                            onChange={event => this.handleOnFormChange('description', event.target.value)}
-                                        />
-                                        <span className="has-icon"><i className="ti-pencil"/></span>
-                                    </FormGroup>*/}
-
                                     <CustomAsyncComponent
                                         loading={false}
-                                        data={projectWorks.data}
+                                        data={projectStandard.data}
                                         component={data => (
                                             <FormGroup className="col-sm-12 has-wrapper">
                                                 <InputLabel className="text-left" htmlFor="description">
-                                                    Ouvrage parent
+                                                    Standard
                                                 </InputLabel>
                                                 <Select
-                                                    value={this.state.parentId}
-                                                    onChange={event => this.setState({ parentId: event.target.value })}
+                                                    value={this.state.standardId}
+                                                    onChange={event => this.setState({ standardId: event.target.value })}
                                                     input={<Input name="institution" id="institution-helper" />}>
-                                                    <MenuItem value="-1" className="center-hor-ver">
-                                                        Aucun
-                                                    </MenuItem>
                                                     {data.map((item, index) => (
                                                         <MenuItem key={index} value={item.id} className="center-hor-ver">
                                                             {item.title}
@@ -171,12 +158,12 @@ Create.propTypes = {
 
 };
 
-const mapStateToProps = ({ requestGlobalLoader, authUser, projectWorks }) => {
+const mapStateToProps = ({ requestGlobalLoader, authUser, projectStandard }) => {
     return {
-        projectWorks,
+        projectStandard,
         requestGlobalLoader,
         authUser: authUser.data,
     }
 };
 
-export default connect(mapStateToProps, {setRequestGlobalAction, getProjectWorks})(withRouter((injectIntl(Create))));
+export default connect(mapStateToProps, {setRequestGlobalAction, getProjectStandard})(withRouter((injectIntl(Create))));

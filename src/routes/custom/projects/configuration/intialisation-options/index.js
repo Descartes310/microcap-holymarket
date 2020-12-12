@@ -2,10 +2,10 @@ import Idea from "./idea";
 import Program from "./program";
 import {connect} from "react-redux";
 import Tab from '@material-ui/core/Tab';
-import ProjectsCall from "./projects-call";
 import React, { Component } from 'react';
 import {PROJECTS} from "Url/frontendUrl";
 import Tabs from '@material-ui/core/Tabs';
+import ProjectsCall from "./projects-call";
 import { RctCard } from 'Components/RctCard';
 import AppBar from '@material-ui/core/AppBar';
 import Hidden from '@material-ui/core/Hidden';
@@ -57,7 +57,7 @@ class InitialisationOptions extends Component {
                                         <h2 className="">Options d'initialisation</h2>
                                     </div>
                                 </Hidden>
-                                <div className="w-100">
+                                <div className="">
                                     <Tabs
                                         centered
                                         value={activeTab}
