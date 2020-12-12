@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
+import AddWork from "./CreateItem";
 import {connect} from "react-redux";
 import {injectIntl} from "react-intl";
-import AddWork from "./CreateItem";
 import React, {Component} from 'react';
 import {PROJECTS} from "Url/frontendUrl";
 import {ERROR_500} from "Constants/errors";
@@ -9,13 +9,18 @@ import {withRouter} from "react-router-dom";
 import IntlMessages from "Util/IntlMessages";
 import CustomList from "Components/CustomList";
 import {NotificationManager} from "react-notifications";
-import DeleteConfirmBox from "Components/dialog/DeleteConfirmBox";
 import InputLabel from "@material-ui/core/InputLabel/InputLabel";
+import DeleteConfirmBox from "Components/dialog/DeleteConfirmBox";
+import {getProjectStandardPresentation} from "Actions/GeneralActions";
 import {Button, Form, FormGroup, Input as InputStrap} from 'reactstrap';
+import {createProject, setRequestGlobalAction, getProjectWorks} from "Actions";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
-import {createInitialisationOption, setRequestGlobalAction, getProjectWorks} from "Actions";
+import CustomAsyncComponent from "Components/CustomAsyncComponent";
+import Select from "@material-ui/core/Select/Select";
+import Input from "@material-ui/core/Input/Input";
+import MenuItem from "@material-ui/core/MenuItem/MenuItem";
 
-class CreateProjectsCall extends Component {
+class Create extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -23,8 +28,9 @@ class CreateProjectsCall extends Component {
             storeWorks: [],
             description: '',
             chosenWorks: [],
-            showCreateBox: false,
             deleteItem: null,
+            presentationId: '',
+            showCreateBox: false,
             showDeleteBox: false
         }
     }
@@ -36,6 +42,12 @@ class CreateProjectsCall extends Component {
     loadData = () => {
         this.props.getProjectWorks(this.props.authUser.branchId)
             .then(result => this.setState({ storeWorks: result }));
+        this.props.getProjectStandardPresentation(this.props.authUser.branchId)
+            .then(result => {
+                if (result) {
+                    this.setState({presentationId: result[0] ? result[0].id : ''});
+                }
+            });
     };
 
     handleOnFormChange = (field, value) => {
@@ -45,6 +57,11 @@ class CreateProjectsCall extends Component {
     validate = () => {
         if (this.state.label.length === 0) {
             NotificationManager.error("Vous devez inserer un titre");
+            return false;
+        }
+
+        if (this.state.presentationId.length === 0) {
+            NotificationManager.error("Veuillez selectionner une présentation ou en créer un d'abord");
             return false;
         }
 
@@ -76,16 +93,16 @@ class CreateProjectsCall extends Component {
         if (this.validate()) {
             this.props.setRequestGlobalAction(true);
             const data = {
-                type: this.props.type,
                 name: this.state.label,
-                works: JSON.stringify(this.state.chosenWorks.map(i => ({id: Number(i.id), content: i.content}))),
                 branchId: this.props.authUser.branchId,
+                presentationId: this.state.presentationId,
+                works: JSON.stringify(this.state.chosenWorks.map(i => ({id: Number(i.id), content: i.content}))),
             };
 
-            createInitialisationOption(data)
+            createProject(data)
                 .then(() => {
-                    NotificationManager.success("Ouvrage de projets créé avec succès");
-                    this.props.history.push(PROJECTS.CONFIGURATION.INITIALISATION[this.props.type].LIST);
+                    NotificationManager.success("Project créé avec succès");
+                    this.props.history.push(PROJECTS.PROJECTS.LIST);
                 })
                 .catch(() => {
                     NotificationManager.error(ERROR_500);
@@ -100,26 +117,18 @@ class CreateProjectsCall extends Component {
     };
 
     onBackClick = () => {
-        this.props.history.push(PROJECTS.CONFIGURATION.INITIALISATION[this.props.type].LIST);
-    };
-
-    getText = () => {
-        return this.props.type === 'IDEA'
-            ? "Création d'une idée"
-            : this.props.type === 'APP'
-                ? "Création d'un appel à projet"
-                : "Création d'un programme"
+        this.props.history.push(PROJECTS.PROJECTS.LIST);
     };
 
     render() {
-        const { intl, match, history, projectWorks } = this.props;
+        const { intl, match, history, projectWorks, presentations } = this.props;
 
         return (
             <div className="my-3">
                 <div className="my-3 pl-3 page-title m-0">
                     <i onClick={this.onBackClick} className="ti-angle-left cursor-pointer mr-2 icon-hover d-inline-flex"/>
                     <h3 className="font-lg d-inline-flex">
-                        {this.getText()}
+                        Création d'un projet
                     </h3>
                 </div>
                 <div className="row">
@@ -141,6 +150,28 @@ class CreateProjectsCall extends Component {
                                         />
                                         <span className="has-icon"><i className="ti-pencil"/></span>
                                     </FormGroup>
+
+                                    <CustomAsyncComponent
+                                        loading={false}
+                                        data={presentations.data}
+                                        component={data => (
+                                            <FormGroup className="col-sm-12 has-wrapper">
+                                                <InputLabel className="text-left" htmlFor="presentation">
+                                                    Présentation
+                                                </InputLabel>
+                                                <Select
+                                                    value={this.state.presentationId}
+                                                    onChange={event => this.handleOnFormChange('presentationId', event.target.value)}
+                                                    input={<Input name="presentation" id="presentation" />}>
+                                                    {data.map((item, index) => (
+                                                        <MenuItem key={index} value={item.id} className="center-hor-ver">
+                                                            {item.name}
+                                                        </MenuItem>
+                                                    ))}
+                                                </Select>
+                                            </FormGroup>
+                                        )}
+                                    />
 
                                     <div className="col-sm-12">
                                         <CustomList
@@ -236,16 +267,17 @@ class CreateProjectsCall extends Component {
     }
 }
 
-CreateProjectsCall.propTypes = {
+Create.propTypes = {
     type: PropTypes.string.isRequired,
 };
 
-const mapStateToProps = ({ requestGlobalLoader, authUser, projectWorks }) => {
+const mapStateToProps = ({ requestGlobalLoader, authUser, projectWorks, projectStandardPresentation }) => {
     return {
         projectWorks,
         requestGlobalLoader,
         authUser: authUser.data,
+        presentations: projectStandardPresentation,
     }
 };
 
-export default connect(mapStateToProps, {setRequestGlobalAction, getProjectWorks})(withRouter((injectIntl(CreateProjectsCall))));
+export default connect(mapStateToProps, {setRequestGlobalAction, getProjectWorks, getProjectStandardPresentation})(withRouter((injectIntl(Create))));

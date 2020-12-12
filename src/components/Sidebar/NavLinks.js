@@ -184,6 +184,12 @@ export default {
                   },
                ],
             },
+            {
+               "path": PROJECTS.PROJECTS.LIST,
+               "new_item": false,
+               "menu_title": "Projets",
+               "permissions": [],
+            }
             /*{
                "path": COMMERCIAL_MANAGEMENT.COMMERCIAL_OPERATION.SELF,
                "new_item": false,

@@ -496,3 +496,8 @@ export const createProjectStandardPresentation = (data) => {
     const url = `${PROJECTS.CONFIGURATION.STANDARD.PRESENTATION.CREATE}`;
     return makeRequest('post', url, data);
 };
+
+export const createProject = (data) => {
+    const url = `${PROJECTS.SELF.CREATE}`;
+    return makeRequest('post', url, data);
+};

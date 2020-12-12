@@ -265,6 +265,10 @@ export const NOTIFICATIONS = {
 };
 
 export const PROJECTS = {
+    SELF: {
+        GET_ALL: 'public/projects',
+        CREATE: 'public/projects',
+    },
     CONFIGURATION: {
         WORKS: {
             GET_ALL: 'public/branchs/{id}/books',

@@ -947,11 +947,12 @@ module.exports = {
    "network.configuration.close.successText": "La configuration de votre est terminé",
    "network.sealNetwork": "Sceller le réseau",
    "network.parentProfile": "Profile réseau parent",
+   "projects.found": "{count, plural, =0 {Aucun projet trouvés} one {1 projet trouvé} other { {count} projets trouvés}}",
    "projects.configuration.works.found": "{count, plural, =0 {Aucun ouvrages trouvés} one {1 ouvrage trouvé} other { {count} ouvrages trouvés}}",
    "projects.configuration.standard.found": "{count, plural, =0 {Aucun standard de présentation trouvés} one {1 standard de présentation trouvé} other { {count} standard de présentation trouvés}}",
    "projects.configuration.standard.model.found": "{count, plural, =0 {Aucun bloc trouvés} one {1 bloc trouvé} other { {count} blocs trouvés}}",
    "projects.configuration.standard.presentation.found": "{count, plural, =0 {Aucun présentation trouvés} one {1 présentation trouvé} other { {count} présentations trouvés}}",
    "projects.configuration.initialisation.idea.found": "{count, plural, =0 {Aucune idée trouvés} one {1 idée trouvé} other { {count} idées trouvés}}",
-   "projects.configuration.initialisation.app.found": "{count, plural, =0 {Aucune appel à projets trouvés} one {1 appel à projets trouvé} other { {count} appel à projets trouvés}}",
+   "projects.configuration.initialisation.projects_call.found": "{count, plural, =0 {Aucune appel à projets trouvés} one {1 appel à projets trouvé} other { {count} appel à projets trouvés}}",
    "projects.configuration.initialisation.program.found": "{count, plural, =0 {Aucune programme trouvés} one {1 programme trouvé} other { {count} programmes trouvés}}",
 };

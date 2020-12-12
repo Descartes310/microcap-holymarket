@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import {injectIntl} from "react-intl";
-import AddWork from "./CreateItem";
+import AddWork from "./../CreateItem";
 import React, {Component} from 'react';
 import {PROJECTS} from "Url/frontendUrl";
 import {ERROR_500} from "Constants/errors";

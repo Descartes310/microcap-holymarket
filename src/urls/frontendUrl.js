@@ -193,6 +193,10 @@ export const SETTINGS = {
 
 export const PROJECTS = {
     SELF: '/projects',
+    PROJECTS: {
+        LIST: '/projects/list',
+        CREATE: '/projects/create',
+    },
     CONFIGURATION: {
         SELF: '/projects/configuration',
         STANDARD: {
