@@ -171,10 +171,10 @@ export default {
                      "path": PROJECTS.CONFIGURATION.WORKS.SELF,
                   },
                   {
-                     "menu_title": "Initialisation",
+                     "menu_title": "Options d'initialisation",
                      "new_item": false,
                      "permissions": [],
-                     "path": PROJECTS.CONFIGURATION.WORKS.SELF,
+                     "path": PROJECTS.CONFIGURATION.INITIALISATION.SELF,
                   },
                   {
                      "menu_title": "Standard de présentation",

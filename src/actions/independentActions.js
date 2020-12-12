@@ -481,3 +481,13 @@ export const removeProjectStandardModel = (itemId) => {
     const url = joinBaseUrlWithParamsId(PROJECTS.CONFIGURATION.STANDARD.MODELS.DELETE, itemId);
     return makeRequest('delete', url);
 };
+
+export const getOneProjectStandard = (projectStandardId) => {
+    const url = joinBaseUrlWithParamsId(PROJECTS.CONFIGURATION.STANDARD.GET_ONE, projectStandardId);
+    return makeRequest('get', url);
+};
+
+export const createInitialisationOption = (data) => {
+    const url = `${PROJECTS.CONFIGURATION.INITIALISATION.CREATE}`;
+    return makeRequest('post', url, data);
+};

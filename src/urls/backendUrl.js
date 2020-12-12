@@ -272,12 +272,17 @@ export const PROJECTS = {
         },
         STANDARD: {
             GET_ALL: 'public/projects/presentation-standard',
+            GET_ONE: 'public/projects/presentation-standard/{id}',
             CREATE: 'public/projects/presentation-standard',
             MODELS: {
                 GET_ALL: 'public/projects/presentation-standard/{id}/models',
                 CREATE: 'public/projects/model',
                 DELETE: 'public/projects/models/{id}',
             },
+        },
+        INITIALISATION: {
+            GET_ALL: 'public/projects/options',
+            CREATE: 'public/projects/options',
         }
     }
 };

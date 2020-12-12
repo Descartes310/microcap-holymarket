@@ -1,17 +1,18 @@
 import {connect} from "react-redux";
 import {injectIntl} from "react-intl";
+import CreateModel from './CreateModel';
+import {PROJECTS} from "Url/frontendUrl";
 import React, { Component } from 'react';
+import {ERROR_500} from "Constants/errors";
 import {withRouter} from "react-router-dom";
 import IntlMessages from 'Util/IntlMessages';
 import {AbilityContext} from "Permissions/Can";
 import CustomList from "Components/CustomList";
-import {ERROR_500} from "Constants/errors";
-import CreateModel from './CreateModel';
-import {PROJECTS} from "Url/frontendUrl";
-import {setRequestGlobalAction, getProjectStandard} from "Actions";
+import {setRequestGlobalAction} from "Actions";
 import {NotificationManager} from "react-notifications";
-import {getProjectStandardModel, removeProjectStandardModel} from "Actions/independentActions";
-import {getProjectWorks} from "Actions/GeneralActions";
+import {getProjectWorks, getProjectStandardModel, removeProjectStandardModel, getOneProjectStandard} from "Actions";
+import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
+import FetchFailedComponent from "Components/FetchFailedComponent";
 
 const detailsLevel = [
     { name: 'Titre', value: 'TITLE'},
@@ -34,19 +35,33 @@ class List extends Component {
     constructor(props) {
         super(props);
         this.projectStandardId = this.props.match.params.id;
-        console.log("projectStandardId=> ", this.projectStandardId);
 
         this.state = {
             showCreate: false,
             loading: true,
             models: null,
+            loadingProjectStandard: true,
+            projectStandard: null,
         }
     }
 
     componentDidMount() {
         this.loadData();
         this.loadProjectWorks();
+        this.loadProjectStandard();
     }
+
+    loadProjectStandard = () => {
+        this.setState({ loadingProjectStandard: true });
+        getOneProjectStandard(this.projectStandardId)
+            .then(result => {
+                this.setState({ projectStandard: result });
+            })
+            .catch(() => {
+                NotificationManager.error(ERROR_500);
+            })
+            .finally(() => this.setState({ loadingProjectStandard: false }));
+    };
 
     loadProjectWorks = () => {
         this.props.getItems(this.props.authUser.branchId);
@@ -77,9 +92,38 @@ class List extends Component {
             .finally(() => this.props.setRequestGlobalAction(false));
     };
 
+    getDetailLevel = () => {
+        const projectStandard = this.state.projectStandard;
+        const _detailsLevel = [];
+
+        /*{ name: 'Titre', value: 'TITLE'},
+    { name: 'Sous-titre', value: 'SUBTITLE'},
+    { name: 'Paragraphe', value: 'PARAGRAPH'},
+    { name: 'Sous-paragraphe', value: 'SUBPARAGRAPH'},
+    { name: 'Image', value: 'IMAGE'},
+    { name: 'Table', value: 'TABLE'},*/
+
+        if (projectStandard.hasTitle) _detailsLevel.push({ name: 'Titre', value: 'TITLE'});
+        if (projectStandard.hasSubTitle) _detailsLevel.push({ name: 'Sous-titre', value: 'SUBTITLE'});
+        if (projectStandard.hasParagraph) _detailsLevel.push({ name: 'Paragraphe', value: 'PARAGRAPH'});
+        if (projectStandard.hasSubParagraph) _detailsLevel.push({ name: 'Sous-paragraphe', value: 'SUBPARAGRAPH'});
+        if (projectStandard.hasImage) _detailsLevel.push({ name: 'Image', value: 'IMAGE'});
+        if (projectStandard.hasTable) _detailsLevel.push({ name: 'Table', value: 'TABLE'});
+
+        return _detailsLevel;
+    };
+
     render() {
         const { error, intl, history, projectWorks, authUser, setRequestGlobalAction} = this.props;
-        const { models, loading, showCreate } = this.state;
+        const { models, loading, showCreate, loadingProjectStandard, projectStandard } = this.state;
+
+        if (loadingProjectStandard) {
+            return (<RctSectionLoader/>);
+        }
+
+        if (!projectStandard) {
+            return (<FetchFailedComponent _onRetryClick={this.loadProjectStandard} />);
+        }
 
         return (
             <>
@@ -88,9 +132,10 @@ class List extends Component {
                         show={showCreate}
                         loadData={this.loadData}
                         chosenTitle={chosenTitle}
-                        detailsLevel={detailsLevel}
                         projectWorks={projectWorks}
                         branchId={authUser.branchId}
+                        projectStandard={projectStandard}
+                        detailsLevel={this.getDetailLevel()}
                         getProjectWorks={this.loadProjectWorks}
                         projectStandardId={this.projectStandardId}
                         setRequestGlobalAction={setRequestGlobalAction}
@@ -99,7 +144,6 @@ class List extends Component {
                 )}
                 <CustomList
                     list={models}
-                    error={error}
                     loading={loading}
                     titleList={"Configuration d'un standard"}
                     itemsFoundText={n => intl.formatMessage({id: "projects.configuration.standard.model.found"}, {count: n})}
@@ -161,7 +205,7 @@ class List extends Component {
                                                             </div>
                                                         </div>
                                                     </td>
-                                                    <td>
+                                                    <td className="center-hor-ver">
                                                         <div className="media">
                                                             <button
                                                                 type="button"
@@ -187,15 +231,11 @@ class List extends Component {
 }
 
 // map state to props
-const mapStateToProps = ({ requestGlobalLoader, projectStandard, projectWorks, authUser  }) => {
-    const list = projectStandard;
+const mapStateToProps = ({ requestGlobalLoader, projectWorks, authUser  }) => {
     return {
         projectWorks,
         requestGlobalLoader,
         authUser: authUser.data,
-        loading: list.loading,
-        list: list.data,
-        error: list.error
     }
 };
 

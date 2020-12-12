@@ -49,6 +49,9 @@ import UsersAccountsReducer from './UsersAccountsReducer';
 import SampleBranchesReducer from './SampleBranchesReducer';
 import ProjectWorksReducer from './ProjectWorksReducer';
 import ProjectStandardReducer from './ProjectStandardReducer';
+import InitialisationIdeasReducer from './InitialisationIdeasReducer';
+import InitialisationProgramReducer from './InitialisationProgramReducer';
+import InitialisationProjectsCallReducer from './InitialisationProjectsCallReducer';
 
 const reducers = combineReducers({
    settings,
@@ -98,6 +101,9 @@ const reducers = combineReducers({
    sampleBranches: SampleBranchesReducer,
    projectWorks: ProjectWorksReducer,
    projectStandard: ProjectStandardReducer,
+   initialisationIdeas: InitialisationIdeasReducer,
+   initialisationProgram: InitialisationProgramReducer,
+   initialisationProjectsCall: InitialisationProjectsCallReducer,
 });
 
 export default reducers;

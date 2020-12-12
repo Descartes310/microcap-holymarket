@@ -28,7 +28,7 @@ import {
     COMMERCIAL_OPERATION_TYPE, COMMERCIAL_OPERATION, COMMERCIAL_OFFER, PRODUCT,
     MANDATE_TYPE, MANDATE_MODEL, MANDATE, BRANCH_USERS, NOTIFICATION_MODEL,
     NOTIFICATION, NOTIFICATION_SERVICE, USERS_ACCOUNTS, SAMPLE_BRANCHES,
-    PROJECT_WORKS, PROJECT_STANDARD
+    PROJECT_WORKS, PROJECT_STANDARD, INITIALISATION_IDEA, INITIALISATION_PROGRAM, INITIALISATION_PROJECTS_CALL
 } from 'Actions/types';
 
 import api from './../api';
@@ -296,4 +296,18 @@ export const getProjectStandard = (branchId) => (dispatch) => {
     // const url = joinBaseUrlWithParamsId(PROJECTS_API.CONFIGURATION.STANDARD.GET_ALL, branchId);
     const url = `${PROJECTS_API.CONFIGURATION.STANDARD.GET_ALL}?id=${branchId}`;
     return makeActionRequest('get', url, PROJECT_STANDARD, dispatch);
+};
+
+export const getOneProjectStandard = (branchId) => (dispatch) => {
+    const url = `${PROJECTS_API.CONFIGURATION.STANDARD.GET_ONE}?id=${branchId}`;
+    return makeActionRequest('get', url, PROJECT_STANDARD, dispatch);
+};
+
+export const getInitialisationOptions = (type, branchId) => (dispatch) => {
+    const url = `${PROJECTS_API.CONFIGURATION.INITIALISATION.GET_ALL}?type=${type}&branch_id=${branchId}`;
+    const actionType = type === 'IDEA' ? INITIALISATION_IDEA
+        : type === 'PROGRAM'
+            ? INITIALISATION_PROGRAM
+            : INITIALISATION_PROJECTS_CALL;
+    return makeActionRequest('get', url, actionType , dispatch);
 };

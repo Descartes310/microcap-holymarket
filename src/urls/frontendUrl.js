@@ -205,6 +205,26 @@ export const PROJECTS = {
             SELF: '/projects/configuration/works',
             LIST: '/projects/configuration/works/list',
             CREATE: '/projects/configuration/works/create',
+        },
+        INITIALISATION: {
+            SELF: '/projects/configuration/initialisation-options',
+            IDEA: {
+                SELF: '/projects/configuration/initialisation-options/idea',
+                LIST: '/projects/configuration/initialisation-options/idea/list',
+                CREATE: '/projects/configuration/initialisation-options/idea/create',
+            },
+            PROJECTS_CALL: {
+                SELF: '/projects/configuration/initialisation-options/projects-call',
+                LIST: '/projects/configuration/initialisation-options/projects-call/list',
+                CREATE: '/projects/configuration/initialisation-options/projects-call/create',
+            },
+            PROGRAM: {
+                SELF: '/projects/configuration/initialisation-options/program',
+                LIST: '/projects/configuration/initialisation-options/program/list',
+                CREATE: '/projects/configuration/initialisation-options/program/create',
+            },
+            LIST: '/projects/configuration/works/list',
+            CREATE: '/projects/configuration/works/create',
         }
     },
 };

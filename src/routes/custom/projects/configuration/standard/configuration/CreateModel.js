@@ -30,6 +30,7 @@ const CreateModel = props => {
         chosenTitle,
         projectWorks,
         getProjectWorks,
+        projectStandard,
         projectStandardId,
         setRequestGlobalAction,
     } = props;
