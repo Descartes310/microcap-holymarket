@@ -193,6 +193,11 @@ export const SETTINGS = {
 
 export const PROJECTS = {
     SELF: '/projects',
+    FOLDERS: {
+        SELF: '/projects/folder',
+        LIST: '/projects/folder/list',
+        CREATE: '/projects/folder/create',
+    },
     PROJECTS: {
         LIST: '/projects/list',
         CREATE: '/projects/create',

@@ -189,7 +189,14 @@ export default {
                "new_item": false,
                "menu_title": "Projets",
                "permissions": [],
-            }
+            },
+            {
+               "path": PROJECTS.FOLDERS.SELF,
+               "new_item": false,
+               "menu_title": "Gestion des projets",
+               "permissions": [],
+               // "permissions": [Permission.navLinks.projects.folders.viewMenu],
+            },
             /*{
                "path": COMMERCIAL_MANAGEMENT.COMMERCIAL_OPERATION.SELF,
                "new_item": false,

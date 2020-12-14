@@ -501,3 +501,8 @@ export const createProject = (data) => {
     const url = `${PROJECTS.SELF.CREATE}`;
     return makeRequest('post', url, data);
 };
+
+export const createFolder = (data, branchId) => {
+    const url = `${PROJECTS.FOLDERS.CREATE}?branch_id=${branchId}`;
+    return makeRequest('post', url, data);
+};

@@ -44,7 +44,7 @@ import {
     INITIALISATION_IDEA,
     INITIALISATION_PROGRAM,
     INITIALISATION_PROJECTS_CALL,
-    PROJECT_STANDARD_PRESENTATION, PROJECTS
+    PROJECT_STANDARD_PRESENTATION, PROJECTS, FOLDERS
 } from 'Actions/types';
 
 import api from './../api';
@@ -336,4 +336,9 @@ export const getProjectStandardPresentation = (branchId) => (dispatch) => {
 export const getProjects = (branchId) => (dispatch) => {
     const url = `${PROJECTS_API.SELF.GET_ALL}?branch_id=${branchId}`;
     return makeActionRequest('get', url, PROJECTS, dispatch);
+};
+
+export const getFolders = (userId) => (dispatch) => {
+    const url = joinBaseUrlWithParamsId(PROJECTS_API.FOLDERS.GET_ALL, userId);
+    return makeActionRequest('get', url, FOLDERS, dispatch);
 };

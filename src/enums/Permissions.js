@@ -85,6 +85,14 @@ export default class Permission extends BaseEnum {
                 },
             }
         },
+        projects: {
+            folders: {
+                viewMenu: {
+                    "name": "nav-links/projects/folders/view-menu",
+                    "types": [UserType.USER]
+                }
+            }
+        }
     };
 
     static branch = {
@@ -483,4 +491,45 @@ export default class Permission extends BaseEnum {
             }
         }
     };
+
+    static projects = {
+        folders: {
+            viewList: {
+                "name": "projects/folders/view-list",
+                "types": [UserType.USER]
+            },
+            viewOne: {
+                "name": "projects/folders/create-one",
+                "types": [UserType.USER]
+            },
+            search: {
+                "name": "projects/folders/search",
+                "types": [UserType.USER]
+            },
+            createOne: {
+                "name": "projects/folders/create-one",
+                "types": [UserType.USER]
+            },
+            createMany: {
+                "name": "projects/folders/create-one",
+                "types": [UserType.USER]
+            },
+            editOne: {
+                "name": "projects/folders/edit-one",
+                "types": [UserType.USER]
+            },
+            editMany: {
+                "name": "projects/folders/edit-many",
+                "types": [UserType.USER]
+            },
+            deleteOne: {
+                "name": "projects/folders/delete-one",
+                "types": [UserType.USER]
+            },
+            deleteMany: {
+                "name": "projects/folders/delete-many",
+                "types": [UserType.USER]
+            },
+        }
+    }
 }

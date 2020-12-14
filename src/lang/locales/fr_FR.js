@@ -947,6 +947,7 @@ module.exports = {
    "network.configuration.close.successText": "La configuration de votre est terminé",
    "network.sealNetwork": "Sceller le réseau",
    "network.parentProfile": "Profile réseau parent",
+   "folders.found": "{count, plural, =0 {Aucun dossiers trouvés} one {1 dossier trouvé} other { {count} dossiers trouvés}}",
    "projects.found": "{count, plural, =0 {Aucun projet trouvés} one {1 projet trouvé} other { {count} projets trouvés}}",
    "projects.configuration.works.found": "{count, plural, =0 {Aucun ouvrages trouvés} one {1 ouvrage trouvé} other { {count} ouvrages trouvés}}",
    "projects.configuration.standard.found": "{count, plural, =0 {Aucun standard de présentation trouvés} one {1 standard de présentation trouvé} other { {count} standard de présentation trouvés}}",

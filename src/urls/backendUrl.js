@@ -269,6 +269,10 @@ export const PROJECTS = {
         GET_ALL: 'public/projects',
         CREATE: 'public/projects',
     },
+    FOLDERS: {
+        GET_ALL: 'public/projects/folders/users/{id}',
+        CREATE: 'public/projects/folders',
+    },
     CONFIGURATION: {
         WORKS: {
             GET_ALL: 'public/branchs/{id}/books',
