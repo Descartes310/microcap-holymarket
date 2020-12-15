@@ -15,9 +15,12 @@ import Select from "@material-ui/core/Select/Select";
 import InputComponent from "Components/InputComponent";
 import {NotificationManager} from "react-notifications";
 import FormControl from "@material-ui/core/FormControl";
+import SingleTitleText from "Components/SingleTitleText";
+import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import InputLabel from "@material-ui/core/InputLabel/InputLabel";
 import CustomAsyncComponent from "Components/CustomAsyncComponent";
 import {getInitialisationOptions, setRequestGlobalAction} from "Actions";
+import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
 
 const Create = props => {
     const { authUser, history, intl, getInitialisationOptions, setRequestGlobalAction } = props;
@@ -75,12 +78,25 @@ const Create = props => {
      */
     const onSubmit = (data) => {
         setRequestGlobalAction(true);
+
+        const contents = Object.entries(data).filter(i => i[0].includes('content'));
+
+        const works = contents.map(i => {
+            const id = Number(i[0][0]);
+            delete data[i[0]];
+            return {
+                id,
+                content: i[1]
+            }
+        });
+
         const _data = {
             ...data,
             userId: authUser.user.id,
             branchId: authUser.user.branch.id,
             folderType: oldFolderType,
-            initializationId
+            initializationId,
+            works: JSON.stringify(works),
         };
         createFolder(_data)
             .then(() => {
@@ -93,9 +109,43 @@ const Create = props => {
             .finally(() => setRequestGlobalAction(false));
     };
 
+    const getWorks = () => {
+        if (initialisationData.data) {
+            const item = initialisationData.data.find(i => i.id === initializationId);
+            return item ? item.works : null;
+        }
+
+        return null;
+    };
+
+    const works = getWorks();
+
     return (
         <>
+            <PageTitleBar
+                title={"Création d'un projet"}
+            />
             <Form onSubmit={handleSubmit(onSubmit)}>
+                <div className="row">
+                    <div className="col-sm-12">
+                        <FormGroup className="has-wrapper">
+                            <InputLabel className="text-left" htmlFor="title">
+                                Titre
+                            </InputLabel>
+                            <InputComponent
+                                isRequired
+                                id="title"
+                                name={'title'}
+                                errors={errors}
+                                register={register}
+                                className="input-lg"
+                                // placeholder={intl.formatMessage({id: "common.commercialName"})}
+                            />
+                            <span className="has-icon"><i className="ti-pencil"/></span>
+                        </FormGroup>
+                    </div>
+                </div>
+
                 <div className="row">
                     <div className="col-sm-12 mb-20">
                         <FormControl fullWidth>
@@ -146,26 +196,42 @@ const Create = props => {
                 </div>
 
                 <div className="row">
-                    <div className="col-sm-12">
-                        <FormGroup className="has-wrapper">
-                            <InputLabel className="text-left" htmlFor="title">
-                                Titre
-                            </InputLabel>
-                            <InputComponent
-                                isRequired
-                                id="title"
-                                name={'title'}
-                                errors={errors}
-                                register={register}
-                                className="input-lg"
-                                // placeholder={intl.formatMessage({id: "common.commercialName"})}
-                            />
-                            <span className="has-icon"><i className="ti-pencil"/></span>
-                        </FormGroup>
-                    </div>
+                    {initialisationData.loading ? (
+                        <RctSectionLoader/>
+                    ) : !works && initializationId === '' ? (
+                        <SingleTitleText
+                            text={"Veuillez selectionner une options d'initialisation"}
+                        />
+                    ) : !works ? (
+                        <SingleTitleText
+                            text={"BNUll"}
+                        />
+                    ) : works.map((work, index) => {
+                        const key = initializationId + index;
+                        const label = `${work.book.id}content`;
+                        return (
+                            <div key={key} className="col-sm-12">
+                                <FormGroup className="has-wrapper">
+                                    <InputLabel className="text-left" htmlFor={label}>
+                                        {work.content}
+                                    </InputLabel>
+                                    <InputComponent
+                                        isRequired
+                                        id={label}
+                                        name={label}
+                                        errors={errors}
+                                        register={register}
+                                        className="input-lg"
+                                        // placeholder={intl.formatMessage({id: "common.commercialName"})}
+                                    />
+                                    <span className="has-icon"><i className="ti-pencil"/></span>
+                                </FormGroup>
+                            </div>
+                        )
+                    })}
                 </div>
 
-                <div className="row">
+                {/*<div className="row">
                     <div className="col-sm-12">
                         <FormGroup className="has-wrapper">
                             <InputLabel className="text-left" htmlFor="description">
@@ -183,7 +249,7 @@ const Create = props => {
                             <span className="has-icon"><i className="ti-pencil"/></span>
                         </FormGroup>
                     </div>
-                </div>
+                </div>*/}
 
                 <FormGroup className="mb-15">
                     <Button

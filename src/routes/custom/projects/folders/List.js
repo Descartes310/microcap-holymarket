@@ -48,7 +48,6 @@ class List extends Component {
                                         <thead>
                                             <tr>
                                                 <th>Titre</th>
-                                                <th>Description</th>
                                                 <th>Type</th>
                                                 <th>Option d'initialisation</th>
                                             </tr>
@@ -62,13 +61,6 @@ class List extends Component {
                                                     <div className="media">
                                                         <div className="media-body pt-10">
                                                             <h4 className="m-0 fw-bold text-dark">{item.title}</h4>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div className="media">
-                                                        <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{item.description}</h4>
                                                         </div>
                                                     </div>
                                                 </td>
