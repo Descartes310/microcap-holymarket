@@ -506,3 +506,8 @@ export const createFolder = (data, branchId) => {
     const url = `${PROJECTS.FOLDERS.CREATE}?branch_id=${branchId}`;
     return makeRequest('post', url, data);
 };
+
+export const getOneProjectFolder = (folderId) => {
+    const url = joinBaseUrlWithParamsId(PROJECTS.FOLDERS.GET_ONE, folderId);
+    return makeRequest('get', url);
+};

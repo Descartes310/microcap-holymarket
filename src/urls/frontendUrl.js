@@ -196,6 +196,7 @@ export const PROJECTS = {
     FOLDERS: {
         SELF: '/projects/folder',
         LIST: '/projects/folder/list',
+        SHOW: '/projects/folder/:id',
         CREATE: '/projects/folder/create',
     },
     PROJECTS: {

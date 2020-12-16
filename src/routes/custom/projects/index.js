@@ -10,7 +10,7 @@ import Permissions from "Enums/Permissions";
 
 const Projects = ({ match }) => {
     return (
-        <div className="mx-4 full-height">
+        <div className="mx-sm-4 full-height">
             <Switch>
                 <Redirect exact from={`${match.url}/`} to={PROJECTS.CONFIGURATION.SELF} />
                 <Route path={PROJECTS.CONFIGURATION.SELF} component={ProjectConfiguration} />

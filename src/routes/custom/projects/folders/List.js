@@ -2,7 +2,7 @@ import { projects } from "Data";
 import {connect} from "react-redux";
 import {injectIntl} from "react-intl";
 import React, { Component } from 'react';
-import {PROJECTS} from "Url/frontendUrl";
+import {joinUrlWithParamsId, PROJECTS} from "Url/frontendUrl";
 import {withRouter} from "react-router-dom";
 import IntlMessages from 'Util/IntlMessages';
 import {AbilityContext} from "Permissions/Can";
@@ -20,6 +20,10 @@ class List extends Component {
     getTypeLabel = (type) => {
         const item = projects.initialisationOptions.find(i => i.value === type);
         return item ? item.name : '';
+    };
+
+    onItemClick = (projectId) => {
+        this.props.history.push(joinUrlWithParamsId(this.baseUrl.SHOW, projectId));
     };
 
     render() {
@@ -56,7 +60,9 @@ class List extends Component {
                                         {list && list.map((item, key) => (
                                             <tr
                                                 key={key}
-                                                className="cursor-pointer">
+                                                className="cursor-pointer"
+                                                onClick={() => this.onItemClick(item.id)}
+                                            >
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
