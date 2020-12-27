@@ -8,6 +8,11 @@ import Loadable from 'react-loadable';
 // rct page loader
 import RctPageLoader from 'Components/RctPageLoader/RctPageLoader';
 
+export const AsyncDiscover = Loadable({
+	loader: () => import("Routes/custom/dashboard/Discover"),
+	loading: () => <RctPageLoader />,
+});
+
 export const AsyncBranchList = Loadable({
 	loader: () => import("Routes/custom/branch"),
 	loading: () => <RctPageLoader />,

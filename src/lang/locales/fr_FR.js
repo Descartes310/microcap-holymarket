@@ -35,7 +35,7 @@ module.exports = {
    "auth.haveAccount": "Vous avez déjà un compte?",
    "auth.haveAccountLogin": "Vous avez déjà un compte? Connectez-vous",
    "auth.login.title": "Debutez sur {name}",
-   "auth.login.subTitle": "Mon slogan intéressant ici",
+   "auth.login.subTitle": "Connecter le monde aux projets d'entrepreneurs! offrir un parcours de professionnalisation vers l'entrepreneuriat",
    "auth.termOfService": "En vous inscrivant sur {name}, vous acceptez nos",
    "auth.signin": "Se connecter",
    "auth.signup": "S'inscrire",

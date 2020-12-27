@@ -20,7 +20,8 @@ import {
     AsyncComOperationType,
     AsyncComOperation, AsyncComOffer, AsyncProducts, AsyncStore,
     AsyncAccess, AsyncSettingNotifications, AsyncNotifications, AsyncUsersAccounts,
-    AsyncActivateBranch, AsyncSampleBranchList
+    AsyncActivateBranch, AsyncSampleBranchList,
+    AsyncDiscover
 } from 'Components/AsyncComponent/AsyncComponent';
 import Community from "Routes/custom/community";
 
@@ -29,6 +30,7 @@ import Branch from "Models/Branch";
 import {useAbility} from "@casl/react";
 import {
     CATALOG,
+    DISCOVER,
     HOME,
     NETWORK,
     CATEGORY,
@@ -54,6 +56,7 @@ const Dashboard = ({ match, authUser }) => {
         <RctAppLayout>
             <div className="dashboard-wrapper">
                 <Switch>
+                    <Route exact path={DISCOVER} component={AsyncDiscover} />
                     <Route exact path={ROOT} component={HomePage} />
                     <Route exact path={HOME} component={HomePage} />
 

@@ -2,6 +2,7 @@ import {BASE} from "Url/backendUrl";
 
 export const ROOT = '/';
 export const HOME = '/home';
+export const DISCOVER = '/discover';
 export const AUTH = {
     LOGIN: '/login',
     REGISTER: '/register',
