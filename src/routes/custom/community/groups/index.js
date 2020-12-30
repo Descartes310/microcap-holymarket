@@ -6,6 +6,7 @@ import Drawer from '@material-ui/core/Drawer';
 import Hidden from '@material-ui/core/Hidden';
 import { withStyles } from '@material-ui/core/styles';
 import { Helmet } from "react-helmet";
+import {COMMUNITY} from "Url/frontendUrl";
 // components
 import GroupsSidebar from "Routes/custom/community/groups/GroupsSidebar";
 import CommunityItem from "Routes/custom/community/groups/CommunityItem";
@@ -14,6 +15,8 @@ import IconButton from "@material-ui/core/IconButton";
 import EmailSearch from "Routes/mail/components/EmailSearch";
 import AppBar from "@material-ui/core/AppBar/AppBar";
 import AppsIcon from '@material-ui/icons/Apps';
+import MatButton from '@material-ui/core/Button';
+import InvitationCreateDialog from '../invitations/InvitationCreateDialog';
 
 const drawerWidth = 310;
 
@@ -57,10 +60,23 @@ class Groups extends Component {
 
     state = {
         mobileOpen: false,
+        open: false
     };
 
     handleDrawerToggle = () => {
         this.setState({ mobileOpen: !this.state.mobileOpen });
+    };
+
+    join = () => {
+        this.props.history.push(COMMUNITY.MEMBERS.LIST);
+    }
+
+    handleClickOpenInvation = () => {
+        this.setState({ open: true });
+    };
+
+    handleCloseInvation = () => {
+        this.setState({ open: false });
     };
 
     render() {
@@ -113,6 +129,22 @@ class Groups extends Component {
                     </Hidden>
                     <div className={`chat-content ${classes.content}`}>
                         <CommunityItem onMenuIconPress={this.handleDrawerToggle} />
+                        
+                        <div className="text-center" style={{ position: "absolute", top: "60%", padding: 10, width: "100%" }}>
+                            <MatButton variant="contained" color="primary" className="mr-10 mb-10 text-white btn-icon">Adherer</MatButton>
+                            <MatButton variant="contained" className="btn-info ml-10 mb-10 text-white btn-icon" onClick={this.join}>Rejoindre</MatButton>
+                            <MatButton
+                                variant="contained"
+                                className="btn-info ml-10 mb-10 text-white btn-icon"
+                                onClick={this.handleClickOpenInvation}
+                                /* onClick={() => history.push(COMMUNITY_MEMBER.INVITATIONS.CREATE)} */
+                            >
+                                <i className="zmdi zmdi zmdi-plus mr-2" />
+                                Nouvelle invitation
+                            </MatButton>
+
+                            <InvitationCreateDialog open={this.state.open} handleClose={this.handleCloseInvation} />
+                        </div>
                     </div>
                 </div>
             </div>

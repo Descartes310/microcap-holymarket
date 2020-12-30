@@ -123,9 +123,10 @@ const AppConfig = {
       grantType: 'password',
    },
    api: {
-      baseUrl: 'http://microcap.skb.best:8080/',
+      //baseUrl: 'http://microcap.skb.best:8080/',
       // baseUrl: 'http://microcap.skb.best:4200/',
-      // baseUrl: 'http://192.168.1.9:8080/',
+      //baseUrl: 'http://192.168.1.3:8080/',
+      baseUrl: 'http://192.168.225.220:8080/',
       // baseUrl: 'http://192.168.43.83:8080/',
       version: '',
       forbiddenCode: 401,

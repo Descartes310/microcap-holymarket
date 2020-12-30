@@ -1,5 +1,5 @@
 // sidebar nav links
-import {CATALOG, COMMERCIAL_MANAGEMENT, COMMUNITY, NETWORK, PRODUCT, USERS, ACCESS, SETTINGS, PROJECTS} from 'Url/frontendUrl';
+import {CATALOG, COMMERCIAL_MANAGEMENT, COMMUNITY_MEMBER, COMMUNITY, NETWORK, PRODUCT, USERS, ACCESS, SETTINGS, PROJECTS, MICROCAP360} from 'Url/frontendUrl';
 import Branch from 'Models/Branch';
 import Permission from "Enums/Permissions";
 
@@ -191,6 +191,24 @@ export default {
                "permissions": [],
             },
             {
+               "path": PROJECTS.POST_PROJETS.LIST,
+               "new_item": false,
+               "menu_title": "Poste projets",
+               "permissions": [],
+            },
+            {
+               "path": PROJECTS.PROJECTS.EDITION.SELF,
+               "new_item": false,
+               "menu_title": "Edition",
+               "permissions": [],
+            },
+            {
+               "path": PROJECTS.PROJECTS.CONSULTATION,
+               "new_item": false,
+               "menu_title": "Consultation",
+               "permissions": [],
+            },
+            {
                "path": PROJECTS.FOLDERS.SELF,
                "new_item": false,
                "menu_title": "Gestion des projets",
@@ -242,25 +260,79 @@ export default {
          "menu_icon": "zmdi zmdi-shopping-cart",
          "new_item": false,
          "path": PRODUCT.LIST,
-         // "permissions": [Permission.navLinks.community.viewMenu],
+         // "permissions": [Permission.navLinks.COMMUNITY_MEMBER.viewMenu],
          "permissions": [],
          "child_routes": null
       },
-       {
-           "menu_title": "Communauté",
-           "menu_icon": "zmdi zmdi-comments",
-           "new_item": false,
-           "path": COMMUNITY.SELF,
-           // "permissions": [Permission.navLinks.community.viewMenu],
-           "permissions": [],
-           "child_routes": null
-       },
+      {
+         "menu_title": "Communauté membre",
+         "menu_icon": "zmdi zmdi-comments",
+         "new_item": false,
+         "path": COMMUNITY_MEMBER.SELF,
+         // "permissions": [Permission.navLinks.COMMUNITY_MEMBER.viewMenu],
+         "permissions": [],
+         "child_routes": null
+      },
+      {
+         "menu_title": "Communauté",
+         "menu_icon": "zmdi zmdi-comments",
+         "new_item": false,
+         // "permissions": [Permission.navLinks.COMMUNITY.viewMenu],
+         "permissions": [],
+         "child_routes": [
+            {
+               "menu_title": "Poste projet",
+               "new_item": false,
+               "path": COMMUNITY.POST_PROJECT.SELF,
+               "permissions": [],
+            },
+            {
+               "menu_title": "Membres",
+               "new_item": false,
+               "path": COMMUNITY.MEMBERS.SELF,
+               "permissions": [],
+            },
+            {
+               "menu_title": "Activités",
+               "new_item": false,
+               "path": COMMUNITY.ACTIVITY.SELF,
+               "permissions": [],
+            },
+         ],
+      },
+      {
+         "menu_title": "Microcap360",
+         "menu_icon": "icon-people",
+         "new_item": false,
+         // "permissions": [Permission.navLinks.COMMUNITY.viewMenu],
+         "permissions": [],
+         "child_routes": [
+            {
+               "menu_title": "Comptes",
+               "new_item": false,
+               "path": MICROCAP360.COMPTES.SELF,
+               "permissions": [],
+            },
+            {
+               "menu_title": "Projets",
+               "new_item": false,
+               "path": PROJECTS.FOLDERS.SELF,
+               "permissions": [],
+            },
+            {
+               "menu_title": "Reseau",
+               "new_item": false,
+               "path": MICROCAP360.RESEAU.SELF,
+               "permissions": [],
+            },
+         ],
+      },
       {
          "menu_title": "Accès",
          "menu_icon": "zmdi zmdi-key",
          "new_item": false,
          "path": ACCESS.SELF,
-         // "permissions": [Permission.navLinks.community.viewMenu],
+         // "permissions": [Permission.navLinks.COMMUNITY_MEMBER.viewMenu],
          "permissions": [],
          "child_routes": null
       },

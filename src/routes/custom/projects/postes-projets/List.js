@@ -6,14 +6,15 @@ import {withRouter} from "react-router-dom";
 import IntlMessages from 'Util/IntlMessages';
 import {AbilityContext} from "Permissions/Can";
 import CustomList from "Components/CustomList";
-import {setRequestGlobalAction, getProjects} from "Actions";
+import {setRequestGlobalAction, getAllPostProject} from "Actions";
 
 class List extends Component {
     static contextType = AbilityContext;
-    baseUrl = PROJECTS.PROJECTS;
+    baseUrl = PROJECTS.POST_PROJETS;
 
     componentDidMount() {
         this.props.getItems(this.props.authUser.branchId);
+        console.log(this.props.authUser.branchId);
     }
 
     render() {
@@ -25,25 +26,37 @@ class List extends Component {
                     list={list}
                     error={error}
                     loading={loading}
-                    titleList={"Projets"}
+                    titleList={"Poste Projets"}
                     itemsFoundText={n => intl.formatMessage({id: "projects.found"}, {count: n})}
                     onAddClick={() => history.push(this.baseUrl.CREATE)}
                     renderItem={list => (
                         <>
                             {list && list.length === 0 ? (
-                                <div className="d-flex justify-content-center align-items-center py-50">
-                                    <h4>
-                                        <IntlMessages id="projects.found" values={{count: 0}} />
-                                    </h4>
+                                <div>
+                                    <table className="table table-hover table-middle mb-0 text-center">
+                                            <thead>
+                                                <tr>
+                                                    <th>Titre</th>
+                                                    <th>Description</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            
+                                            </tbody>
+                                        </table>
+                                    <div className="d-flex justify-content-center align-items-center py-50">
+                                        <h4>
+                                            <IntlMessages id="projects.found" values={{count: 0}} />
+                                        </h4>
+                                    </div>
                                 </div>
                             ) : (
                                 <div className="table-responsive">
                                     <table className="table table-hover table-middle mb-0 text-center">
                                         <thead>
                                             <tr>
-                                                <th>Désignation</th>
-                                                <th>Nom de la présentation</th>
-                                                <th>Nombre d'ouvrages</th>
+                                                <th>Titre</th>
+                                                <th>Description</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -62,13 +75,6 @@ class List extends Component {
                                                     <div className="media">
                                                         <div className="media-body pt-10">
                                                             <h4 className="m-0 fw-bold text-dark">{item.presentationProject.name}</h4>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div className="media">
-                                                        <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{ item.works.length}</h4>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -98,4 +104,4 @@ const mapStateToProps = ({ requestGlobalLoader, projects, authUser  }) => {
     }
 };
 
-export default connect(mapStateToProps, {getItems: getProjects, setRequestGlobalAction})(withRouter(injectIntl(List)));
+export default connect(mapStateToProps, {getItems: getAllPostProject, setRequestGlobalAction})(withRouter(injectIntl(List)));

@@ -25,6 +25,9 @@ import {
 } from 'Components/AsyncComponent/AsyncComponent';
 import Community from "Routes/custom/community";
 
+import CommunityMembersActivities from "Routes/custom/communityT/activities";
+import CommunityMembers from "Routes/custom/communityT/members";
+import CommunityMembersPostsProjects from "Routes/custom/communityT/postsProjects";
 
 import Branch from "Models/Branch";
 import {useAbility} from "@casl/react";
@@ -37,6 +40,7 @@ import {
     PRODUCT_TYPE,
     USERS,
     COMMUNITY,
+    COMMUNITY_MEMBER,
     PACKAGES,
     COMMERCIAL_MANAGEMENT, PRODUCT, STORE, ROOT, ACCESS, SETTINGS, NOTIFICATIONS, PROJECTS
 } from "Url/frontendUrl";
@@ -189,9 +193,27 @@ const Dashboard = ({ match, authUser }) => {
                     />
 
                     <CanRoute
-                        path={COMMUNITY.SELF}
+                        path={COMMUNITY_MEMBER.SELF}
                         component={Community}
                         // component={AsyncCommunity}
+                        permissions={[]}
+                    />
+
+                    <CanRoute
+                        path={COMMUNITY.POST_PROJECT.SELF}
+                        component={CommunityMembersPostsProjects}
+                        permissions={[]}
+                    />
+
+                    <CanRoute
+                        path={COMMUNITY.MEMBERS.SELF}
+                        component={CommunityMembers}
+                        permissions={[]}
+                    />
+
+                    <CanRoute
+                        path={COMMUNITY.ACTIVITY.SELF}
+                        component={CommunityMembersActivities}
                         permissions={[]}
                     />
 

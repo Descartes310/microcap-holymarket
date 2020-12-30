@@ -62,6 +62,7 @@ class App extends Component {
     render() {
         const _isUserIntoStoreValid = isUserIntoStoreValid(this.props.authUser.data, this.props.tokens.data);
         const { location, match, authUser, appLoading } = this.props;
+        //const _isUserIntoStoreValid = true;
 
         return (
             <>

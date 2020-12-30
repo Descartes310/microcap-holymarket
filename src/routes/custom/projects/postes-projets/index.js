@@ -3,15 +3,15 @@ import {PROJECTS} from "Url/frontendUrl";
 import List from './List';
 import {withRouter, Switch, Redirect, Route} from "react-router-dom";
 
-const ProjectsManagement = ({ match }) => {
+const PostProjectsManagement = ({ match }) => {
     return (
         <div className="mx-4 full-height">
             <Switch>
-                <Redirect exact from={`${match.url}/`} to={PROJECTS.PROJECTS.LIST} />
-                <Route path={PROJECTS.PROJECTS.LIST} component={List} />
+{/*                 <Redirect exact from={`${match.url}/`} to={PROJECTS.POST_PROJETS.LIST} />
+ */}                <Route path={PROJECTS.POST_PROJETS.LIST} component={List} />
             </Switch>
         </div>
     );
 };
 
-export default withRouter(ProjectsManagement);
+export default withRouter(PostProjectsManagement);

@@ -57,7 +57,7 @@ import {
     USER_PROFILE as USER_PROFILE_API,
     NETWORK_PROFILE_TYPE as NETWORK_PROFILE_TYPE_API,
     USERS as USERS_API,
-    COMMUNITY as COMMUNITY_API,
+    COMMUNITY_MEMBER as COMMUNITY_API,
     PACKAGES as PACKAGES_API,
     COMMERCIAL_MANAGEMENT as COMMERCIAL_MANAGEMENT_API,
     ACCESS as ACCESS_API,
@@ -312,6 +312,14 @@ export const getProjectStandard = (branchId) => (dispatch) => {
     // const url = joinBaseUrlWithParamsId(PROJECTS_API.CONFIGURATION.STANDARD.GET_ALL, branchId);
     const url = `${PROJECTS_API.CONFIGURATION.STANDARD.GET_ALL}?id=${branchId}`;
     return makeActionRequest('get', url, PROJECT_STANDARD, dispatch);
+};
+
+export const getAllPostProject = (branchId) => {
+    const url = joinBaseUrlWithParams(PROJECTS_API.POST_PROJETS.GET_ALL, [{
+        param: 'branchId',
+        value: branchId
+    }]);
+    return makeRequest('get', url);
 };
 
 export const getOneProjectStandard = (branchId) => (dispatch) => {

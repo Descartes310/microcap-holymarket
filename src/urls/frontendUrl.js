@@ -99,7 +99,7 @@ export const USERS = {
     }
 };
 
-export const COMMUNITY = {
+export const COMMUNITY_MEMBER = {
     SELF: '/community',
     GROUPS: {
         SELF: '/community/groups',
@@ -203,6 +203,16 @@ export const PROJECTS = {
     PROJECTS: {
         LIST: '/projects/list',
         CREATE: '/projects/create',
+        EDITION: {
+            SELF: '/projects/edition',
+            ARTICLE: '/projects/edition/article',
+            ILLUSTRATION: '/projects/edition/illustration',
+        },
+        CONSULTATION: '/projects/consultation'
+    },
+    POST_PROJETS: {
+        LIST: '/projects/post-projects/list',
+        CREATE: '/projects/post-projects/create',
     },
     CONFIGURATION: {
         SELF: '/projects/configuration',
@@ -244,6 +254,40 @@ export const PROJECTS = {
         }
     },
 };
+
+export const COMMUNITY = {
+    SELF: '/community-t',
+    POST_PROJECT: {
+        SELF: '/community-t/projects',
+        LIST: '',
+        CREATE: ''
+    },
+    MEMBERS: {
+        SELF: '/community-t/members',
+        LIST: '/community-t/members/list',
+        INVITATION: '/community-t/members/invitation'
+    },
+    ACTIVITY: {
+        SELF: '/community-t/activities',
+        LIST: '',
+        CREATE: ''
+    }
+};
+
+
+export const MICROCAP360 = {
+    MICROCAP360: '/microcap360',
+    COMPTES: {
+        SELF: '/microcap360/accounts',
+    },
+    PROJECTS: {
+        SELF: '/microcap360/projects',
+    },
+    RESEAU: {
+        SELF: '/community',
+    }
+};
+
 
 export const joinUrlWithParams = (to, params) => {
     let url = to;

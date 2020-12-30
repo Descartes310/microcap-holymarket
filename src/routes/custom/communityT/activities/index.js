@@ -7,12 +7,12 @@ import {COMMUNITY_MEMBER} from "Url/frontendUrl";
 import {connect} from "react-redux";
 import {setRequestGlobalAction} from "Actions/RequestGlobalAction";
 import {withRouter} from "react-router-dom";
-import TabContent from "./TabContent";
+import TabContent from "../../community/TabContent";
 import IntlMessages from "Util/IntlMessages";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import Hidden from '@material-ui/core/Hidden';
 
-class Community extends Component {
+class Activities extends Component {
     constructor(props) {
         super(props);
         const defaultState = (function (url) {
@@ -47,16 +47,16 @@ class Community extends Component {
 
         return (
             <div className="userProfile-wrapper overflow-hidden">
-                <PageTitleBar title={"Communauté Membre"} match={this.props.match} enableBreadCrumb={false} />
+                {/*<PageTitleBar title={"Communauté"} match={this.props.match} enableBreadCrumb={false} />*/}
                 <RctCard>
                     <div className="rct-tabs">
                         <AppBar position="static">
                             <div className="d-flex align-items-center">
-                                {/* <Hidden smDown>
+                                <Hidden smDown>
                                     <div className="pl-3 page-title m-0">
-                                        <h2 className="">Communauté Membre</h2>
+                                        <h2 className="">Communauté - Activités</h2>
                                     </div>
-                                </Hidden> */}
+                                </Hidden>
                                 <div className="w-100">
                                     <Tabs
                                         value={activeTab}
@@ -67,19 +67,11 @@ class Community extends Component {
                                     >
                                         <Tab
                                             icon={<i className="zmdi zmdi-group-work"/>}
-                                            label={"Mon Reseau"}
+                                            label={"Liste"}
                                         />
                                         <Tab
                                             icon={<i className="ti-world"></i>}
-                                            label={"Reseau Microcap"}
-                                        />
-                                        <Tab
-                                            icon={<i className="icon-plus"></i>}
-                                            label={"Invitations"}
-                                        />
-                                        <Tab
-                                            icon={<i className="zmdi zmdi-inbox"></i>}
-                                            label={"Messagerie"}
+                                            label={"Invitation"}
                                         />
                                     </Tabs>
                                 </div>
@@ -98,4 +90,4 @@ const mapStateToProps = ({ requestGlobalLoader, userForms, authUser }) => {
     return { requestGlobalLoader, authUser: authUser.data, }
 };
 
-export default connect(mapStateToProps, {setRequestGlobalAction})(withRouter(Community));
+export default connect(mapStateToProps, {setRequestGlobalAction})(withRouter(Activities));

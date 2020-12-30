@@ -9,7 +9,7 @@ import {
     CATEGORY_PRODUCTS,
     PRODUCT_TYPE,
     USER_PROFILE, NETWORK_PROFILE_TYPE, USERS,
-    COMMUNITY, PACKAGES, COMMERCIAL_MANAGEMENT, joinBaseUrlWithParamsId,
+    COMMUNITY_MEMBER, COMMUNITY, PACKAGES, COMMERCIAL_MANAGEMENT, joinBaseUrlWithParamsId,
     ORDER, SALES, GENERIC_OBJECT,
     ACCESS, NOTIFICATIONS, NOTIFICATIONS as NOTIFICATIONS_API, PROJECTS
 } from "Url/backendUrl";
@@ -229,7 +229,7 @@ export const createUsers = (data, branchId) => {
 };
 
 export const createCommunityNonConventionated = (data, branchId) => {
-    const url = `${COMMUNITY.USER.CREATE.NON_CONVENTIONAL}?branch_id=${branchId}`;
+    const url = `${COMMUNITY_MEMBER.USER.CREATE.NON_CONVENTIONAL}?branch_id=${branchId}`;
     return makeRequest('post', url, data);
 };
 
@@ -239,7 +239,7 @@ export const searchUsers = (data) => {
 };
 
 export const sendManyInvitations = (groupId, usersId) => {
-    let url = joinBaseUrlWithParams(COMMUNITY.INVITATIONS.SEND.MANY, [{
+    let url = joinBaseUrlWithParams(COMMUNITY_MEMBER.INVITATIONS.SEND.MANY, [{
             param: 'group_id',
             value: groupId,
     }]);
@@ -248,7 +248,7 @@ export const sendManyInvitations = (groupId, usersId) => {
 };
 
 export const sendRequestInvitation = (groupId) => {
-    let url = joinBaseUrlWithParams(COMMUNITY.INVITATIONS.SEND.REQUEST, [{
+    let url = joinBaseUrlWithParams(COMMUNITY_MEMBER.INVITATIONS.SEND.REQUEST, [{
         param: 'group_id',
         value: groupId,
     }]);
@@ -256,7 +256,7 @@ export const sendRequestInvitation = (groupId) => {
 };
 
 export const acceptInvitation = (invitationId) => {
-    const url = joinBaseUrlWithParams(COMMUNITY.INVITATIONS.ACCEPT, [{
+    const url = joinBaseUrlWithParams(COMMUNITY_MEMBER.INVITATIONS.ACCEPT, [{
         param: 'invitation_id',
         value: invitationId,
     }]);
@@ -264,7 +264,7 @@ export const acceptInvitation = (invitationId) => {
 };
 
 export const cancelInvitation = (invitationId) => {
-    const url = joinBaseUrlWithParams(COMMUNITY.INVITATIONS.CANCEL, [{
+    const url = joinBaseUrlWithParams(COMMUNITY_MEMBER.INVITATIONS.CANCEL, [{
         param: 'invitation_id',
         value: invitationId,
     }]);
@@ -272,12 +272,39 @@ export const cancelInvitation = (invitationId) => {
 };
 
 export const deleteInvitation = (invitationId) => {
-    const url = joinBaseUrlWithParams(COMMUNITY.INVITATIONS.DELETE, [{
+    const url = joinBaseUrlWithParams(COMMUNITY_MEMBER.INVITATIONS.DELETE, [{
         param: 'invitation_id',
         value: invitationId,
     }]);
     return makeRequest('put', url);
 };
+
+/********************************  ***************************************** */
+export const sendInvitationCommunityMember = (userdId) => {
+    const url = joinBaseUrlWithParams(COMMUNITY_MEMBER.INVITATIONS.SEND.TO_USER, [{
+        param: 'userd_id',
+        value: userdId,
+    }]);
+    return makeRequest('post', url);
+};
+/********************************************************************** */
+/*****************************  ***************************************** */
+export const createPostProject = (data) => {
+    const url = joinBaseUrlWithParams(PROJECTS.POST_PROJETS.CREATE, [{
+        param: 'branchId',
+        value: data.branchId
+    }]);
+    return makeRequest('post', url , data);
+};
+
+export const getAllPostProject = (branchId) => {
+    const url = joinBaseUrlWithParams(PROJECTS.POST_PROJETS.GET_ALL, [{
+        param: 'branchId',
+        value: branchId
+    }]);
+    return makeRequest('get', url);
+};
+/*****************************  ***************************************** */
 
 export const getUserType = () => {
     return new Promise((resolve, reject) => {

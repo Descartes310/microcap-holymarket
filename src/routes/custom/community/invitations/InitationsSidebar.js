@@ -17,10 +17,24 @@ import UserProfileCreate from "Routes/custom/users/user-profile/Create";
 import CommunityCreate from "Routes/custom/community/groups/CommunityCreate";
 import classnames from "classnames";
 import ListItem from "@material-ui/core/ListItem";
-import {COMMUNITY} from "Url/frontendUrl";
+import {COMMUNITY_MEMBER} from "Url/frontendUrl";
 import InvitationType from "Enums/InvitationType";
+import InvitationCreateDialog from './InvitationCreateDialog'
 
 class InvitationsSidebar extends Component {
+
+    state = {
+        open: false,
+     };
+  
+     handleClickOpenInvation = () => {
+        this.setState({ open: true });
+     };
+  
+     handleCloseInvation = () => {
+        this.setState({ open: false });
+     };
+
     componentDidMount() {
         // this.props.getUserCommunities();
     }
@@ -42,11 +56,13 @@ class InvitationsSidebar extends Component {
                                     color="primary"
                                     variant="contained"
                                     className="text-white font-weight-bold"
-                                    onClick={() => history.push(COMMUNITY.INVITATIONS.CREATE)}
+                                    onClick={this.handleClickOpenInvation}
+                                    /* onClick={() => history.push(COMMUNITY_MEMBER.INVITATIONS.CREATE)} */
                                 >
                                     <i className="zmdi zmdi zmdi-plus mr-2" />
                                     Nouvelle invitation
                                 </Button>
+                                <InvitationCreateDialog open={this.state.open} handleClose={this.handleCloseInvation} />
                             </div>
                         </div>
                         <div className="chat-list">
@@ -59,7 +75,7 @@ class InvitationsSidebar extends Component {
                                     <List className="p-0 mb-0 filters list-unstyled">
                                         <ListItem
                                             button
-                                            onClick={() => history.push(COMMUNITY.INVITATIONS.LIST.RECEIVED)}
+                                            onClick={() => history.push(COMMUNITY_MEMBER.INVITATIONS.LIST.RECEIVED)}
                                             // className={classnames({ 'item-active': selectedFolder === folder.id })}
                                         >
                                             <i className={`mr-20 zmdi zmdi-inbox`} />
@@ -72,7 +88,7 @@ class InvitationsSidebar extends Component {
                                         </ListItem>
                                         <ListItem
                                             button
-                                            onClick={() => history.push(COMMUNITY.INVITATIONS.LIST.SEND)}
+                                            onClick={() => history.push(COMMUNITY_MEMBER.INVITATIONS.LIST.SEND)}
                                             // className={classnames({ 'item-active': selectedFolder === folder.id })}
                                         >
                                             <i className={`mr-20 zmdi zmdi-mail-send`} />
@@ -85,7 +101,7 @@ class InvitationsSidebar extends Component {
                                         </ListItem>
                                         <ListItem
                                             button
-                                            onClick={() => history.push(COMMUNITY.INVITATIONS.LIST.REQUEST)}
+                                            onClick={() => history.push(COMMUNITY_MEMBER.INVITATIONS.LIST.REQUEST)}
                                             // className={classnames({ 'item-active': selectedFolder === folder.id })}
                                         >
                                             <i className={`mr-20 zmdi zmdi-view-web`} />

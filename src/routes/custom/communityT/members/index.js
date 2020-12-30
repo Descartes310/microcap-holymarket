@@ -3,7 +3,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import { RctCard } from 'Components/RctCard';
-import {COMMUNITY_MEMBER} from "Url/frontendUrl";
+import {COMMUNITY} from "Url/frontendUrl";
 import {connect} from "react-redux";
 import {setRequestGlobalAction} from "Actions/RequestGlobalAction";
 import {withRouter} from "react-router-dom";
@@ -12,13 +12,12 @@ import IntlMessages from "Util/IntlMessages";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import Hidden from '@material-ui/core/Hidden';
 
-class Community extends Component {
+class Members extends Component {
     constructor(props) {
         super(props);
         const defaultState = (function (url) {
-            if (url.includes(COMMUNITY_MEMBER.GROUPS.ME)) return 0;
-            else if (url.includes(COMMUNITY_MEMBER.GROUPS.LIST)) return 1;
-            else if (url.includes(COMMUNITY_MEMBER.INVITATIONS.SELF)) return 2;
+            if (url.includes(COMMUNITY.MEMBERS.LIST)) return 0;
+            else if (url.includes(COMMUNITY.MEMBERS.INVITATION)) return 1;
             else return 0;
         })(window.location.pathname);
 
@@ -33,10 +32,9 @@ class Community extends Component {
         this.setState({ activeTab: value });
         if (oldActivateTab !== value) {
             switch (value) {
-                case 0: return this.props.history.push(COMMUNITY_MEMBER.GROUPS.ME);
-                case 1: return this.props.history.push(COMMUNITY_MEMBER.GROUPS.LIST);
-                case 2: return this.props.history.push(COMMUNITY_MEMBER.INVITATIONS.SELF);
-                default: return this.props.history.push(COMMUNITY_MEMBER.GROUPS.ME);
+                case 0: return this.props.history.push(COMMUNITY.MEMBERS.LIST);
+                case 1: return this.props.history.push(COMMUNITY.MEMBERS.INVITATION);
+                default: return this.props.history.push(COMMUNITY.MEMBERS.LIST);
             }
         }
     };
@@ -46,17 +44,18 @@ class Community extends Component {
         const { match, currentForm } = this.props;
 
         return (
-            <div className="userProfile-wrapper overflow-hidden">
-                <PageTitleBar title={"Communauté Membre"} match={this.props.match} enableBreadCrumb={false} />
+            <div className="mx-sm-4">
+                <div className="userProfile-wrapper overflow-hidden">
+                <PageTitleBar title={"Communauté - Membres"} match={this.props.match} enableBreadCrumb={false} />
                 <RctCard>
                     <div className="rct-tabs">
                         <AppBar position="static">
-                            <div className="d-flex align-items-center">
-                                {/* <Hidden smDown>
+                        {/* <Hidden smDown>
                                     <div className="pl-3 page-title m-0">
-                                        <h2 className="">Communauté Membre</h2>
+                                        <h2 className="">Communauté - Membres</h2>
                                     </div>
                                 </Hidden> */}
+                            <div className="d-flex align-items-center">
                                 <div className="w-100">
                                     <Tabs
                                         value={activeTab}
@@ -67,19 +66,11 @@ class Community extends Component {
                                     >
                                         <Tab
                                             icon={<i className="zmdi zmdi-group-work"/>}
-                                            label={"Mon Reseau"}
+                                            label={"Liste"}
                                         />
                                         <Tab
                                             icon={<i className="ti-world"></i>}
-                                            label={"Reseau Microcap"}
-                                        />
-                                        <Tab
-                                            icon={<i className="icon-plus"></i>}
-                                            label={"Invitations"}
-                                        />
-                                        <Tab
-                                            icon={<i className="zmdi zmdi-inbox"></i>}
-                                            label={"Messagerie"}
+                                            label={"Invitation"}
                                         />
                                     </Tabs>
                                 </div>
@@ -88,6 +79,7 @@ class Community extends Component {
                     </div>
                     <TabContent />
                 </RctCard>
+            </div>
             </div>
         );
     }
@@ -98,4 +90,4 @@ const mapStateToProps = ({ requestGlobalLoader, userForms, authUser }) => {
     return { requestGlobalLoader, authUser: authUser.data, }
 };
 
-export default connect(mapStateToProps, {setRequestGlobalAction})(withRouter(Community));
+export default connect(mapStateToProps, {setRequestGlobalAction})(withRouter(Members));

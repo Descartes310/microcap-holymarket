@@ -155,7 +155,7 @@ export const USERS = {
     }
 };
 
-export const COMMUNITY = {
+export const COMMUNITY_MEMBER = {
     USER: {
         GROUPS: {
             GET_ALL: 'groups/communities/user/me',
@@ -173,6 +173,9 @@ export const COMMUNITY = {
             ONE: 'groups/communities/send/invitation/community/{group_id}/user/{user_id}',
             MANY: 'groups/communities/send/invitation/community/{group_id}',
             REQUEST: 'groups/communities/send/request/community/{group_id}',
+
+            TO_USER: 'groups/communities/send/invitation/community/user/{user_id}',
+            TO_GROUP: 'groups/communities/send/invitation/community/group/{group_id}',
         },
         ACCEPT: 'groups/communities/accept/invitation/{invitation_id}',
         CANCEL: 'groups/communities/cancel/invitation/{invitation_id}',
@@ -180,6 +183,21 @@ export const COMMUNITY = {
     },
 };
 
+/* export const COMMUNITY = {
+
+    INVITATIONS: {
+        GET_ALL: 'groups/communities/pending/invitation/me',
+        SEND: {
+            ONE: 'groups/communities/send/invitation/community/{group_id}/user/{user_id}',
+            MANY: 'groups/communities/send/invitation/community/{group_id}',
+            REQUEST: 'groups/communities/send/request/community/{group_id}',
+        },
+        ACCEPT: 'groups/communities/accept/invitation/{invitation_id}',
+        CANCEL: 'groups/communities/cancel/invitation/{invitation_id}',
+        DELETE: 'groups/communities/delete/invitation/{invitation_id}',
+    },
+};
+ */
 export const COMMERCIAL_MANAGEMENT = {
     OPERATION_TYPE: {
         GET_ALL: 'public/commercial-operation-type',
@@ -273,6 +291,10 @@ export const PROJECTS = {
         GET_ALL: 'public/projects/folders/users/{id}',
         CREATE: 'public/projects/folders',
         GET_ONE: 'public/projects/folders/{id}',
+    },
+    POST_PROJETS: {
+        CREATE: 'public/branchs/{branchId}/posts',
+        GET_ALL: 'public/branchs/{branchId}/posts',
     },
     CONFIGURATION: {
         WORKS: {
