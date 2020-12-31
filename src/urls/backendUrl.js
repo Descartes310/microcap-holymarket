@@ -293,8 +293,8 @@ export const PROJECTS = {
         GET_ONE: 'public/projects/folders/{id}',
     },
     POST_PROJETS: {
-        CREATE: 'public/branchs/{branchId}/posts',
-        GET_ALL: 'public/branchs/{branchId}/posts',
+        CREATE: 'public/branchs/{id}/posts',
+        GET_ALL: 'public/branchs/{id}/posts',
     },
     CONFIGURATION: {
         WORKS: {

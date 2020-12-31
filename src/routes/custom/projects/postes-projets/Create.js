@@ -42,10 +42,10 @@ class Create extends Component {
             return false;
         }
 
-        if (this.state.description.length === 0) {
+        /* if (this.state.description.length === 0) {
             NotificationManager.error("Veuillez selectionner une description");
             return false;
-        }
+        } */
 
         return true;
     };
@@ -200,7 +200,7 @@ class Create extends Component {
                         </RctCollapsibleCard>
                     </div>
                 </div>
-                <DeleteConfirmBox
+                {/* <DeleteConfirmBox
                     show={this.state.showDeleteBox}
                     rightButtonOnClick={this.onDeleteWork}
                     leftButtonOnClick={() => this.setState({ showDeleteBox: false })}
@@ -211,7 +211,7 @@ class Create extends Component {
                     works={this.state.storeWorks}
                     show={this.state.showCreateBox}
                     onClose={() => this.setState({ showCreateBox: false })}
-                />
+                /> */}
             </div>
         );
     }

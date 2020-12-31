@@ -314,14 +314,12 @@ export const getProjectStandard = (branchId) => (dispatch) => {
     return makeActionRequest('get', url, PROJECT_STANDARD, dispatch);
 };
 
-export const getAllPostProject = (branchId) => {
-    const url = joinBaseUrlWithParams(PROJECTS_API.POST_PROJETS.GET_ALL, [{
-        param: 'branchId',
-        value: branchId
-    }]);
-    return makeRequest('get', url);
+/*** ************************************************/
+export const getAllPostProject = (branchId) => (dispatch) => {
+    const url = joinBaseUrlWithParamsId(PROJECTS_API.POST_PROJETS.GET_ALL, branchId);
+    return makeActionRequest('get', url, PROJECTS, dispatch);
 };
-
+/**** ******************************************************/
 export const getOneProjectStandard = (branchId) => (dispatch) => {
     const url = `${PROJECTS_API.CONFIGURATION.STANDARD.GET_ONE}?id=${branchId}`;
     return makeActionRequest('get', url, PROJECT_STANDARD, dispatch);

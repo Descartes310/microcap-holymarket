@@ -14,7 +14,6 @@ class List extends Component {
 
     componentDidMount() {
         this.props.getItems(this.props.authUser.branchId);
-        console.log(this.props.authUser.branchId);
     }
 
     render() {
@@ -67,14 +66,14 @@ class List extends Component {
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{item.name}</h4>
+                                                            <h4 className="m-0 fw-bold text-dark">{item.title}</h4>
                                                         </div>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{item.presentationProject.name}</h4>
+                                                            <h4 className="m-0 fw-bold text-dark">{item.description}</h4>
                                                         </div>
                                                     </div>
                                                 </td>
