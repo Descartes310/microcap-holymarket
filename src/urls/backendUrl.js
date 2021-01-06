@@ -175,7 +175,7 @@ export const COMMUNITY_MEMBER = {
             REQUEST: 'groups/communities/send/request/community/{group_id}',
 
             TO_USER: 'groups/communities/send/invitation/community/user/{user_id}',
-            TO_GROUP: 'groups/communities/send/invitation/community/group/{group_id}',
+            TO_GROUP: 'groups/communities/send/invitation/community/{group_id}',
         },
         ACCEPT: 'groups/communities/accept/invitation/{invitation_id}',
         CANCEL: 'groups/communities/cancel/invitation/{invitation_id}',

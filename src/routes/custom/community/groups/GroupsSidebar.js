@@ -83,7 +83,7 @@ class GroupsSidebar extends Component {
                                 <>
                                     {!userCommunities || (userCommunities && userCommunities.length === 0) ? (
                                         <div className="no-found-user-wrap d-flex justify-content-center align-items-center py-50">
-                                            <h4> Aucune communauté trouvés</h4>
+                                            <h4> Aucune communauté trouvé</h4>
                                         </div>
                                     ) : (
                                         <List className="p-0 mb-0">
@@ -109,7 +109,12 @@ class GroupsSidebar extends Component {
 
 // map state to props
 const mapStateToProps = ({ requestGlobalLoader, authUser, userCommunities }) => {
-    return { requestGlobalLoader, authUser: authUser.data, userCommunities: userCommunities.data, loading: userCommunities.loading }
+    return {
+        requestGlobalLoader, authUser: authUser.data, 
+        userCommunities: userCommunities.data, 
+        loading: userCommunities.loading,
+        error: userCommunities.error,
+    }
 };
 
 export default connect(mapStateToProps, {setCurrentCommunity, getUserCommunities, setRequestGlobalAction})(withRouter(GroupsSidebar));

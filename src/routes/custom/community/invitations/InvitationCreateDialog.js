@@ -76,12 +76,22 @@ class InvitationCreateDialog extends React.Component {
     };
 
     handleTabChange(e, value) {
-        this.setState({ activeIndex: value });
+        this.setState({ activeIndex: value }, () => {
+            if (this.state.activeIndex == 0) {
+                this.state.email = '';
+                this.state.tel = '';
+            }
+
+            if (this.state.activeIndex == 1) {
+                this.state.userIdentifier = '';
+            }
+        });
      }
 
     handleCloseChangeRole = () => {
         const {handleClose} = this.props
-        this.setState({ showNextDialog: false, currentDialogNotOpened: false }, () => {
+        this.setState({ showNextDialog: false, currentDialogNotOpened: false,
+             userIdentifier: '', email: '', tel: ''}, () => {
             handleClose();
         });
      };
@@ -89,9 +99,27 @@ class InvitationCreateDialog extends React.Component {
     handleSubmit = () => {
         const {handleClose} = this.props
         //handleClose();
-        this.props.setRequestGlobalAction(true);
         
-        sendInvitationCommunityMember('yobaaaa', 'bamba')
+        let data = {};
+
+        if (this.state.activeIndex == 0) {
+            data = {
+                group_id: this.props.currentCommunity.id,
+                name: this.state.userIdentifier,
+            };
+        }
+
+        if (this.state.activeIndex == 1) {
+            data = {
+                group_id: this.props.currentCommunity.id,
+                email: this.state.email,
+                number: this.state.tel,
+            };
+        }
+
+        this.props.setRequestGlobalAction(true);
+
+        sendInvitationCommunityMember(data)
         .then((res) => {
             console.log(res);
             NotificationManager.success("Invitation envoyé avec succès");
@@ -193,8 +221,13 @@ class InvitationCreateDialog extends React.Component {
 
 
 // map state to props
-const mapStateToProps = ({ requestGlobalAction, userCommunitiesAdmin }) => {
-    return {loading: requestGlobalAction, userCommunitiesAdmin};
+const mapStateToProps = ({ requestGlobalAction, currentCommunity, userCommunitiesAdmin, authUser }) => {
+    return {
+        loading: requestGlobalAction, 
+        userCommunitiesAdmin,
+        currentCommunity: currentCommunity.data,
+        authUser: authUser.data
+    };
 };
 
 export default withRouter(connect(mapStateToProps, {

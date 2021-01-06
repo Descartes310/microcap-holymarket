@@ -18,7 +18,7 @@ class NavMenuItem extends Component {
 
    state = {
       subMenuOpen: '',
-      activeMenu: ''
+      /*activeMenu: ''*/
    }
 	/**
    * On Toggle Collapse Menu
@@ -39,7 +39,7 @@ class NavMenuItem extends Component {
       }
    }
 
-   onActiveMenu(index) {
+   /*onActiveMenu(index) {
       if (this.state.activeMenu === '') {
          this.setState({
             activeMenu: index
@@ -54,7 +54,7 @@ class NavMenuItem extends Component {
          this.setState({ activeMenu: '' });
       }
 
-   }
+   }*/
 
    render() {
       const { menu, onToggleMenu, authUser } = this.props;

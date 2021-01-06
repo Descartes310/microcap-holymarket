@@ -280,12 +280,12 @@ export const deleteInvitation = (invitationId) => {
 };
 
 /********************************  ***************************************** */
-export const sendInvitationCommunityMember = (userdId) => {
-    const url = joinBaseUrlWithParams(COMMUNITY_MEMBER.INVITATIONS.SEND.TO_USER, [{
-        param: 'userd_id',
-        value: userdId,
+export const sendInvitationCommunityMember = (data) => {
+    const url = joinBaseUrlWithParams(COMMUNITY_MEMBER.INVITATIONS.SEND.TO_GROUP, [{
+        param: 'group_id',
+        value: data.group_id,
     }]);
-    return makeRequest('post', url);
+    return makeRequest('post', url, data);
 };
 /********************************************************************** */
 /*****************************  ***************************************** */
