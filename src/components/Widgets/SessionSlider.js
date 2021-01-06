@@ -46,6 +46,7 @@ export default class SessionSlider extends Component {
          draggable: true
       };
       const { sessionUsersData } = this.state;
+      console.log('user info', sessionUsersData);
       return (
          <div className="session-slider">
             <Slider {...settings}>
@@ -59,9 +60,9 @@ export default class SessionSlider extends Component {
                         height="588"
                      />
                      <div className="rct-img-overlay">
-                        <h5 className="client-name">{data.name}</h5>
+                        {/*<h5 className="client-name">{data.name}</h5>
                         <span>{data.designation}</span>
-                        <p className="mb-0 fs-14">{data.body}</p>
+                        <p className="mb-0 fs-14">{data.body}</p>*/}
                      </div>
                   </div>
                ))}

@@ -175,7 +175,7 @@ export const COMMUNITY_MEMBER = {
             REQUEST: 'groups/communities/send/request/community/{group_id}',
 
             TO_USER: 'groups/communities/send/invitation/community/user/{user_id}',
-            TO_GROUP: 'groups/communities/send/invitation/community/group/{group_id}',
+            TO_GROUP: 'groups/communities/send/invitation/community/{group_id}',
         },
         ACCEPT: 'groups/communities/accept/invitation/{invitation_id}',
         CANCEL: 'groups/communities/cancel/invitation/{invitation_id}',
@@ -293,7 +293,7 @@ export const PROJECTS = {
         GET_ONE: 'public/projects/folders/{id}',
     },
     POST_PROJETS: {
-        CREATE: 'public/branchs/{branchId}/posts',
+        CREATE: 'public/branchs/{id}/posts',
         GET_ALL: 'public/branchs/{id}/posts',
     },
     CONFIGURATION: {

@@ -280,30 +280,27 @@ export const deleteInvitation = (invitationId) => {
 };
 
 /********************************  ***************************************** */
-export const sendInvitationCommunityMember = (userdId) => {
-    const url = joinBaseUrlWithParams(COMMUNITY_MEMBER.INVITATIONS.SEND.TO_USER, [{
-        param: 'userd_id',
-        value: userdId,
+export const sendInvitationCommunityMember = (data) => {
+    const url = joinBaseUrlWithParams(COMMUNITY_MEMBER.INVITATIONS.SEND.TO_GROUP, [{
+        param: 'group_id',
+        value: data.group_id,
     }]);
-    return makeRequest('post', url);
+    return makeRequest('post', url, data);
 };
 /********************************************************************** */
 /*****************************  ***************************************** */
 export const createPostProject = (data) => {
-    const url = joinBaseUrlWithParams(PROJECTS.POST_PROJETS.CREATE, [{
-        param: 'branchId',
-        value: data.branchId
-    }]);
+    const url = joinBaseUrlWithParamsId(PROJECTS.POST_PROJETS.CREATE, data.branchId);
     return makeRequest('post', url , data);
 };
 
-export const getAllPostProject = (branchId) => {
+/* export const getAllPostProject = (branchId) => {
     const url = joinBaseUrlWithParams(PROJECTS.POST_PROJETS.GET_ALL, [{
         param: 'branchId',
         value: branchId
     }]);
     return makeRequest('get', url);
-};
+}; */
 /*****************************  ***************************************** */
 
 export const getUserType = () => {
