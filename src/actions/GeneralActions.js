@@ -175,7 +175,7 @@ export const getUsersByOrganisation = (organisationId) => (dispatch) => {
 };
 
 export const getUserCommunities = () => (dispatch) => { // we should normally user GROUPS.GET_ALL
-    const url = `${COMMUNITY_API.USER.GROUPS.GET_ALL}`;
+    const url = `${COMMUNITY_API.USER.GROUPS.NOT_IN}`;
     return makeActionRequest('get', url, USER_COMMUNITIES, dispatch);
 };
 
