@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
 
 // redux action
-import {createBranch, setRequestGlobalAction} from 'Actions';
+import {createBranch, setRequestGlobalAction, getUserProfiles} from 'Actions';
 import IntlMessages from "Util/IntlMessages";
 import Step from "@material-ui/core/Step/Step";
 import StepLabel from "@material-ui/core/StepLabel/StepLabel";
@@ -42,6 +42,7 @@ class CreateBranch extends Component {
 
     componentDidMount() {
         this.loadData();
+        this.props.getUserProfiles(this.props.authUser.user.branch.id, this.props.authUser.userType);    
     }
 
     mapDataToFormData = (data) => {
@@ -282,8 +283,10 @@ class CreateBranch extends Component {
     nextStep = () => this.setState({activeStep: this.state.activeStep + 1 >= steps.length ? steps.length - 1 : this.state.activeStep + 1});
 
     render() {
-        const { requestGlobalLoader, history, match, authUser } = this.props;
+        const { requestGlobalLoader, history, match, authUser, userInfos} = this.props;
         const { data, activeStep, loading } = this.state;
+        console.log('userInfos', userInfos);
+        console.log('userInfosProps', this.props);
 
         if (loading) {
             return (<RctSectionLoader/>);
@@ -333,6 +336,7 @@ class CreateBranch extends Component {
                                 nextStep={this.nextStep}
                                 loading={requestGlobalLoader}
                                 previousStep={this.previousStep}
+                                userInfomations={userInfos}
                             />
                         ) : (
                             <FourthStep
@@ -354,8 +358,11 @@ class CreateBranch extends Component {
 }
 
 // map state to props
-const mapStateToProps = ({ requestGlobalLoader, authUser }) => {
-    return { requestGlobalLoader, authUser: authUser.data }
+const mapStateToProps = ({ requestGlobalLoader, authUser, userProfile}) => {
+    return { requestGlobalLoader, 
+             authUser: authUser.data,
+             userInfos: userProfile.data
+            }
 };
 
-export default connect(mapStateToProps, {setRequestGlobalAction})(injectIntl(CreateBranch));
+export default connect(mapStateToProps, {getUserProfiles, setRequestGlobalAction})(injectIntl(CreateBranch));
