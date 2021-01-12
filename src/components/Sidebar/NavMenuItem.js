@@ -61,7 +61,8 @@ class NavMenuItem extends Component {
       const { subMenuOpen } = this.state;
 
       // Check if the route has nested routes and if the user has at least one permission for one nested routes
-      if (menu.child_routes !== null && authUser.hasPermissions(_.flattenDeep(menu.child_routes.map(p => p.permissions.map(i => i.name))))) {
+      if (menu.child_routes !== null && authUser.hasPermissions(_.flattenDeep(menu.child_routes.map(p => p.permissions.map(i => i.name))), true)) {
+         
          return (
              <Fragment>
                 <ListItem button component="li" onClick={onToggleMenu} className={`list-item ${classNames({ 'item-active': menu.open })}`}>

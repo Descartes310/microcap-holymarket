@@ -532,4 +532,275 @@ export default class Permission extends BaseEnum {
             },
         }
     }
+
+    static projects = {
+        configuration: {
+           handiwork: {
+                viewList: {
+                    "name": "projects/configuration/handiwork/view-list",
+                    "types": [UserType.USER]
+                },
+                viewOne: {
+                    "name": "projects/configuration/handiwork/create-one",
+                    "types": [UserType.USER]
+                },
+                search: {
+                    "name": "projects/configuration/handiwork/search",
+                    "types": [UserType.USER]
+                },
+                createOne: {
+                    "name": "projects/configuration/handiwork/create-one",
+                    "types": [UserType.USER]
+                },
+                createMany: {
+                    "name": "projects/configuration/handiwork/create-one",
+                    "types": [UserType.USER]
+                },
+                editOne: {
+                    "name": "projects/configuration/handiwork/edit-one",
+                    "types": [UserType.USER]
+                },
+                editMany: {
+                    "name": "projects/configuration/handiwork/edit-many",
+                    "types": [UserType.USER]
+                },
+                deleteOne: {
+                    "name": "projects/configuration/handiwork/delete-one",
+                    "types": [UserType.USER]
+                },
+                deleteMany: {
+                    "name": "projects/configuration/handiwork/delete-many",
+                    "types": [UserType.USER]
+                },
+           },
+           initialisationOption: {
+                viewList: {
+                    "name": "projects/configuration/initialisationOption/view-list",
+                    "types": [UserType.USER]
+                },
+                viewOne: {
+                    "name": "projects/configuration/initialisationOption/create-one",
+                    "types": [UserType.USER]
+                },
+                search: {
+                    "name": "projects/configuration/initialisationOption/search",
+                    "types": [UserType.USER]
+                },
+                createOne: {
+                    "name": "projects/configuration/initialisationOption/create-one",
+                    "types": [UserType.USER]
+                },
+                createMany: {
+                    "name": "projects/configuration/initialisationOption/create-one",
+                    "types": [UserType.USER]
+                },
+                editOne: {
+                    "name": "projects/configuration/initialisationOption/edit-one",
+                    "types": [UserType.USER]
+                },
+                editMany: {
+                    "name": "projects/configuration/initialisationOption/edit-many",
+                    "types": [UserType.USER]
+                },
+                deleteOne: {
+                    "name": "projects/configuration/initialisationOption/delete-one",
+                    "types": [UserType.USER]
+                },
+                deleteMany: {
+                    "name": "projects/configuration/initialisationOption/delete-many",
+                    "types": [UserType.USER]
+                },
+            },
+            standardPresentation:{
+                viewList: {
+                    "name": "projects/configuration/standardPresentation/view-list",
+                    "types": [UserType.USER]
+                },
+                viewOne: {
+                    "name": "projects/configuration/standardPresentation/create-one",
+                    "types": [UserType.USER]
+                },
+                search: {
+                    "name": "projects/configuration/standardPresentation/search",
+                    "types": [UserType.USER]
+                },
+                createOne: {
+                    "name": "projects/configuration/standardPresentation/create-one",
+                    "types": [UserType.USER]
+                },
+                createMany: {
+                    "name": "projects/configuration/standardPresentation/create-one",
+                    "types": [UserType.USER]
+                },
+                editOne: {
+                    "name": "projects/configuration/standardPresentation/edit-one",
+                    "types": [UserType.USER]
+                },
+                editMany: {
+                    "name": "projects/configuration/standardPresentation/edit-many",
+                    "types": [UserType.USER]
+                },
+                deleteOne: {
+                    "name": "projects/configuration/standardPresentation/delete-one",
+                    "types": [UserType.USER]
+                },
+                deleteMany: {
+                    "name": "projects/configuration/standardPresentation/delete-many",
+                    "types": [UserType.USER]
+                },
+            },
+        },
+        project: {
+            viewList: {
+                "name": "projects/project/view-list",
+                "types": [UserType.USER]
+            },
+            viewOne: {
+                "name": "projects/project/create-one",
+                "types": [UserType.USER]
+            },
+            search: {
+                "name": "projects/project/search",
+                "types": [UserType.USER]
+            },
+            createOne: {
+                "name": "projects/project/create-one",
+                "types": [UserType.USER]
+            },
+            createMany: {
+                "name": "projects/project/create-one",
+                "types": [UserType.USER]
+            },
+            editOne: {
+                "name": "projects/project/edit-one",
+                "types": [UserType.USER]
+            },
+            editMany: {
+                "name": "projects/project/edit-many",
+                "types": [UserType.USER]
+            },
+            deleteOne: {
+                "name": "projects/project/delete-one",
+                "types": [UserType.USER]
+            },
+            deleteMany: {
+                "name": "projects/project/delete-many",
+                "types": [UserType.USER]
+            }, 
+        },
+        projectPost: {
+            viewList: {
+                "name": "projects/projectPost/view-list",
+                "types": [UserType.USER]
+            },
+            viewOne: {
+                "name": "projects/projectPost/create-one",
+                "types": [UserType.USER]
+            },
+            search: {
+                "name": "projects/projectPost/search",
+                "types": [UserType.USER]
+            },
+            createOne: {
+                "name": "projects/projectPost/create-one",
+                "types": [UserType.USER]
+            },
+            createMany: {
+                "name": "projects/projectPost/create-one",
+                "types": [UserType.USER]
+            },
+            editOne: {
+                "name": "projects/projectPost/edit-one",
+                "types": [UserType.USER]
+            },
+            editMany: {
+                "name": "projects/projectPost/edit-many",
+                "types": [UserType.USER]
+            },
+            deleteOne: {
+                "name": "projects/projectPost/delete-one",
+                "types": [UserType.USER]
+            },
+            deleteMany: {
+                "name": "projects/projectPost/delete-many",
+                "types": [UserType.USER]
+            }, 
+        },
+        edition:{
+            viewList: {
+                "name": "projects/edition/view-list",
+                "types": [UserType.USER]
+            },
+            viewOne: {
+                "name": "projects/edition/create-one",
+                "types": [UserType.USER]
+            },
+            search: {
+                "name": "projects/edition/search",
+                "types": [UserType.USER]
+            },
+            createOne: {
+                "name": "projects/edition/create-one",
+                "types": [UserType.USER]
+            },
+            createMany: {
+                "name": "projects/edition/create-one",
+                "types": [UserType.USER]
+            },
+            editOne: {
+                "name": "projects/edition/edit-one",
+                "types": [UserType.USER]
+            },
+            editMany: {
+                "name": "projects/edition/edit-many",
+                "types": [UserType.USER]
+            },
+            deleteOne: {
+                "name": "projects/edition/delete-one",
+                "types": [UserType.USER]
+            },
+            deleteMany: {
+                "name": "projects/edition/delete-many",
+                "types": [UserType.USER]
+            }, 
+        },
+        projectManagement: {
+            viewList: {
+                "name": "projects/projectManagement/view-list",
+                "types": [UserType.USER]
+            },
+            viewOne: {
+                "name": "projects/projectManagement/create-one",
+                "types": [UserType.USER]
+            },
+            search: {
+                "name": "projects/projectManagement/search",
+                "types": [UserType.USER]
+            },
+            createOne: {
+                "name": "projects/projectManagement/create-one",
+                "types": [UserType.USER]
+            },
+            createMany: {
+                "name": "projects/projectManagement/create-one",
+                "types": [UserType.USER]
+            },
+            editOne: {
+                "name": "projects/projectManagement/edit-one",
+                "types": [UserType.USER]
+            },
+            editMany: {
+                "name": "projects/projectManagement/edit-many",
+                "types": [UserType.USER]
+            },
+            deleteOne: {
+                "name": "projects/projectManagement/delete-one",
+                "types": [UserType.USER]
+            },
+            deleteMany: {
+                "name": "projects/projectManagement/delete-many",
+                "types": [UserType.USER]
+            },
+        },
+    }
 }
