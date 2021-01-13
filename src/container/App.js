@@ -16,7 +16,7 @@ import ResetPassword from './../routes/session/forgot-password/ResetPassword';
 import SendResetPasswordLink from './../routes/session/forgot-password/SendResetPasswordLink';
 
 // callback component
-import {AUTH, STORE} from "../urls/frontendUrl";
+import {AUTH, DISCOVER, STORE} from "../urls/frontendUrl";
 import {setAuthUser, loginIntoStore, disableAppLoading} from 'Actions';
 import RctPageLoader from "Components/RctPageLoader/RctPageLoader";
 import {getAuthToken} from "Helpers/tokens";
@@ -25,7 +25,7 @@ import RequestGlobalLoader from "Components/RequestGlobalLoader";
 import {AbilityContext} from "Permissions/Can";
 import Dashboard from 'Routes/custom/dashboard';
 import PermissionAlertBox from "Components/PermissionAlertBox";
-import {AsyncStoreWrapper} from "Components/AsyncComponent/AsyncComponent";
+import {AsyncDiscover, AsyncStoreWrapper} from "Components/AsyncComponent/AsyncComponent";
 import CanRoute from "Components/CanRoute";
 
 class App extends Component {
@@ -62,6 +62,7 @@ class App extends Component {
     render() {
         const _isUserIntoStoreValid = isUserIntoStoreValid(this.props.authUser.data, this.props.tokens.data);
         const { location, match, authUser, appLoading } = this.props;
+        //const _isUserIntoStoreValid = true;
 
         return (
             <>
@@ -79,6 +80,7 @@ class App extends Component {
                                     </Switch>
                                 ) : (
                                     <Switch>
+                                        <Route exact path={DISCOVER} component={AsyncDiscover} />
                                         <Route path={AUTH.LOGIN} component={AppSignIn} />
                                         <Route path={AUTH.REGISTER} component={AppSignUp} />
                                         <Route path={AUTH.RESET_PASSWORD} component={ResetPassword} />

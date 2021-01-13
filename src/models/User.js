@@ -61,6 +61,7 @@ export default class User {
      */
     hasPermissions = (permissions, some = true) => {
         const userPermissions = this.user.profile.permissions.map(p => p.name);
+        console.log('PERMISSIONS => ', permissions);
 
         if (permissions && (typeof permissions === 'string' || Array.isArray(permissions))) {
             // If the array is empty then the user have permissions since there is no restrictions to that

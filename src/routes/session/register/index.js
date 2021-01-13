@@ -26,6 +26,7 @@ import IntlMessages from 'Util/IntlMessages';
 import LanguageProvider from "Components/Header/LanguageProvider";
 import SwipeableViews from "react-swipeable-views";
 import OrganisationRegister from "Routes/session/register/organisation";
+import {DISCOVER} from "Url/frontendUrl";
 
 const Signup = (props) => {
    const { loading } = props;
@@ -49,6 +50,13 @@ const Signup = (props) => {
       props.history.push(AUTH.LOGIN);
    };
 
+   /**
+    * On navigate to Discover Microcap
+    */
+   const onDiscoverClick = () => {
+      props.history.push(DISCOVER);
+   };
+
    return (
        <QueueAnim type="bottom" duration={2000}>
           <div className="rct-session-wrapper">
@@ -67,6 +75,9 @@ const Signup = (props) => {
                             </a>
                             <Button variant="contained" className="btn-light mr-2" onClick={onUserLogin}>
                                <IntlMessages id="auth.signin" />
+                            </Button>
+                            <Button variant="contained" className="btn-primary mr-2 text-white" onClick={onDiscoverClick}>
+                               Découvrir Microcap
                             </Button>
                          </div>
                       </div>

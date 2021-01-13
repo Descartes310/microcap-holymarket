@@ -19,7 +19,7 @@ import ErrorInputComponent from "Components/ErrorInputComponent";
 import {emailValidatorObject, minMaxValidatorObject} from "Helpers/validator";
 
 // route
-import {AUTH, HOME} from "../../../urls/frontendUrl";
+import {AUTH, HOME, DISCOVER} from "../../../urls/frontendUrl";
 
 // app config
 import AppConfig from 'Constants/AppConfig';
@@ -54,6 +54,13 @@ const Signin = (props) => {
         props.history.push(AUTH.REGISTER);
     };
 
+    /**
+     * On navigate to Discover Microcap
+     */
+    const onDiscoverClick = () => {
+        props.history.push(DISCOVER);
+    };
+
     return (
         <QueueAnim type="bottom" duration={2000}>
             <div className="rct-session-wrapper">
@@ -75,6 +82,9 @@ const Signin = (props) => {
                                     </a>
                                     <Button variant="contained" className="btn-light mr-2" onClick={onUserSignUp}>
                                         <IntlMessages id="auth.signup" />
+                                    </Button>
+                                    <Button variant="contained" className="btn-primary mr-2 text-white" onClick={onDiscoverClick}>
+                                        Découvrir Microcap
                                     </Button>
                                 </div>
                             </div>

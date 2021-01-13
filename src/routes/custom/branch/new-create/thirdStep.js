@@ -8,8 +8,7 @@ import _ from 'lodash';
 import Button from "@material-ui/core/Button";
 import {
     getOrganisationPosts,
-    getIdentificationType, getGenericData
-} from "Actions/independentActions";
+    getIdentificationType, getGenericData, getUserProfiles, setRequestGlobalAction} from "Actions/independentActions";
 import {NotificationManager} from "react-notifications";
 import Accordion from '@material-ui/core/Accordion';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
@@ -21,7 +20,7 @@ import SweetAlert from 'react-bootstrap-sweetalert';
 import GenericObjectType from "Enums/GenericObjectType";
 
 const ThirdStep = props => {
-    const { loading, nextStep, previousStep, setData, intl, defaultState, authUser } = props;
+    const { loading, nextStep, previousStep, setData, intl, defaultState, authUser, userInfomations} = props;
 
     const { register, errors, handleSubmit, watch, control, getValues} = useForm({
         defaultValues: !_.isEqual(defaultState, {}) ? defaultState : {}
@@ -48,11 +47,19 @@ const ThirdStep = props => {
         data: null
     });
 
+    
+
     useEffect(() => {
         _getOrganisationPosts();
         _getIdentificationType();
         _getPosition();
     }, []);
+
+    const getProfile = () => {
+        /*this.props.getUserProfiles(this.props.authUser.user.branch.id, this.props.authUser.userType);
+        console.log(this.props.getUserProfiles(this.props.authUser.user.branch.id, this.props.authUser.userType))*/
+    }
+
 
     const _getPosition = () => {
         return new Promise((resolve, reject) => {
@@ -192,6 +199,8 @@ const ThirdStep = props => {
                             identificationType={identificationType}
                             _getOrganisationPosts={_getOrganisationPosts}
                             _getIdentificationType={_getIdentificationType}
+                            represent={getProfile}
+                            user_informations={userInfomations}
                         />
                     </AccordionDetails>
                 </Accordion>
@@ -258,3 +267,17 @@ ThirdStep.propTypes = {
 };
 
 export default injectIntl(ThirdStep);
+
+// map state to props
+/*const mapStateToProps = ({ requestGlobalLoader, userProfile, authUser  }) => {
+    return {
+        requestGlobalLoader,
+        authUser: authUser.data,
+        loading: userProfile.loading,
+        catalogTypes: userProfile.data,
+        error: userProfile.error
+    }
+};
+
+export default connect(mapStateToProps, {getUserProfiles, setRequestGlobalAction})
+((withRouter(injectIntl(ThirdStep))));*/

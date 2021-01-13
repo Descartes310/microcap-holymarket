@@ -8,6 +8,11 @@ import Loadable from 'react-loadable';
 // rct page loader
 import RctPageLoader from 'Components/RctPageLoader/RctPageLoader';
 
+export const AsyncDiscover = Loadable({
+	loader: () => import("Routes/custom/dashboard/Discover"),
+	loading: () => <RctPageLoader />,
+});
+
 export const AsyncBranchList = Loadable({
 	loader: () => import("Routes/custom/branch"),
 	loading: () => <RctPageLoader />,
@@ -115,6 +120,11 @@ export const AsyncActivateBranch = Loadable({
 
 export const AsyncSampleBranchList = Loadable({
 	loader: () => import("Routes/custom/branch/SampleBranchList"),
+	loading: () => <RctPageLoader />,
+});
+
+export const AsyncProjects = Loadable({
+	loader: () => import("Routes/custom/projects"),
 	loading: () => <RctPageLoader />,
 });
 

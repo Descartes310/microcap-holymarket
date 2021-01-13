@@ -31,7 +31,7 @@ const countryWithNumberAndFlag = CountryManager.countryWithNumberAndFlag();
 const FirstStep = props => {
     const { loading, nextStep, setData, intl, defaultState, userProfiles, authUser, getUserProfiles } = props;
 
-    const { register, errors, handleSubmit, watch, control, setValue} = useForm({
+    const { register, errors, handleSubmit, watch, getValues, control, setValue} = useForm({
         defaultValues: !_.isEqual(defaultState, {}) ? defaultState : {}
     });
 
@@ -148,6 +148,7 @@ const FirstStep = props => {
                         <Checkbox
                             color="primary"
                             checked={acceptLoginWatch}
+                            value={acceptLoginWatch}
                             onChange={() => setValue('acceptLogin', !acceptLoginWatch)}
                         />
                     } label={"Se connecter avec le login ?"}

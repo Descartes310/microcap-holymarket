@@ -3,7 +3,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import { RctCard } from 'Components/RctCard';
-import {COMMUNITY} from "Url/frontendUrl";
+import {COMMUNITY_MEMBER} from "Url/frontendUrl";
 import {connect} from "react-redux";
 import {setRequestGlobalAction} from "Actions/RequestGlobalAction";
 import {withRouter} from "react-router-dom";
@@ -16,9 +16,9 @@ class Community extends Component {
     constructor(props) {
         super(props);
         const defaultState = (function (url) {
-            if (url.includes(COMMUNITY.GROUPS.ME)) return 0;
-            else if (url.includes(COMMUNITY.GROUPS.LIST)) return 1;
-            else if (url.includes(COMMUNITY.INVITATIONS.SELF)) return 2;
+            if (url.includes(COMMUNITY_MEMBER.GROUPS.ME)) return 0;
+            else if (url.includes(COMMUNITY_MEMBER.GROUPS.LIST)) return 1;
+            else if (url.includes(COMMUNITY_MEMBER.INVITATIONS.SELF)) return 2;
             else return 0;
         })(window.location.pathname);
 
@@ -33,10 +33,10 @@ class Community extends Component {
         this.setState({ activeTab: value });
         if (oldActivateTab !== value) {
             switch (value) {
-                case 0: return this.props.history.push(COMMUNITY.GROUPS.ME);
-                case 1: return this.props.history.push(COMMUNITY.GROUPS.LIST);
-                case 2: return this.props.history.push(COMMUNITY.INVITATIONS.SELF);
-                default: return this.props.history.push(COMMUNITY.GROUPS.ME);
+                case 0: return this.props.history.push(COMMUNITY_MEMBER.GROUPS.ME);
+                case 1: return this.props.history.push(COMMUNITY_MEMBER.GROUPS.LIST);
+                case 2: return this.props.history.push(COMMUNITY_MEMBER.INVITATIONS.SELF);
+                default: return this.props.history.push(COMMUNITY_MEMBER.GROUPS.ME);
             }
         }
     };
@@ -47,16 +47,16 @@ class Community extends Component {
 
         return (
             <div className="userProfile-wrapper overflow-hidden">
-                {/*<PageTitleBar title={"Communauté"} match={this.props.match} enableBreadCrumb={false} />*/}
+                <PageTitleBar title={"Communauté Membre"} match={this.props.match} enableBreadCrumb={false} />
                 <RctCard>
                     <div className="rct-tabs">
                         <AppBar position="static">
                             <div className="d-flex align-items-center">
-                                <Hidden smDown>
+                                {/* <Hidden smDown>
                                     <div className="pl-3 page-title m-0">
-                                        <h2 className="">Communauté</h2>
+                                        <h2 className="">Communauté Membre</h2>
                                     </div>
-                                </Hidden>
+                                </Hidden> */}
                                 <div className="w-100">
                                     <Tabs
                                         value={activeTab}
@@ -67,15 +67,19 @@ class Community extends Component {
                                     >
                                         <Tab
                                             icon={<i className="zmdi zmdi-group-work"/>}
-                                            label={"Mes groupes"}
+                                            label={"Mon Reseau"}
                                         />
                                         <Tab
                                             icon={<i className="ti-world"></i>}
-                                            label={"Tous les groupes"}
+                                            label={"Reseau Microcap"}
+                                        />
+                                        <Tab
+                                            icon={<i className="icon-plus"></i>}
+                                            label={"Invitations"}
                                         />
                                         <Tab
                                             icon={<i className="zmdi zmdi-inbox"></i>}
-                                            label={"Invitations"}
+                                            label={"Messagerie"}
                                         />
                                     </Tabs>
                                 </div>

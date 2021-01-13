@@ -23,11 +23,28 @@ import {
     USER_COMMUNITIES_NOT_IN,
     COM_INVITATIONS_PENDING,
     SET_CURRENT_COMMUNITY,
-    SET_CURRENT_COMMUNITY_SUCCESS, SET_CURRENT_COMMUNITY_FAILURE,
+    SET_CURRENT_COMMUNITY_SUCCESS,
+    SET_CURRENT_COMMUNITY_FAILURE,
     PACKAGES,
-    COMMERCIAL_OPERATION_TYPE, COMMERCIAL_OPERATION, COMMERCIAL_OFFER, PRODUCT,
-    MANDATE_TYPE, MANDATE_MODEL, MANDATE, BRANCH_USERS, NOTIFICATION_MODEL,
-    NOTIFICATION, NOTIFICATION_SERVICE, USERS_ACCOUNTS, SAMPLE_BRANCHES
+    COMMERCIAL_OPERATION_TYPE,
+    COMMERCIAL_OPERATION,
+    COMMERCIAL_OFFER,
+    PRODUCT,
+    MANDATE_TYPE,
+    MANDATE_MODEL,
+    MANDATE,
+    BRANCH_USERS,
+    NOTIFICATION_MODEL,
+    NOTIFICATION,
+    NOTIFICATION_SERVICE,
+    USERS_ACCOUNTS,
+    SAMPLE_BRANCHES,
+    PROJECT_WORKS,
+    PROJECT_STANDARD,
+    INITIALISATION_IDEA,
+    INITIALISATION_PROGRAM,
+    INITIALISATION_PROJECTS_CALL,
+    PROJECT_STANDARD_PRESENTATION, PROJECTS, FOLDERS
 } from 'Actions/types';
 
 import api from './../api';
@@ -40,11 +57,12 @@ import {
     USER_PROFILE as USER_PROFILE_API,
     NETWORK_PROFILE_TYPE as NETWORK_PROFILE_TYPE_API,
     USERS as USERS_API,
-    COMMUNITY as COMMUNITY_API,
+    COMMUNITY_MEMBER as COMMUNITY_API,
     PACKAGES as PACKAGES_API,
     COMMERCIAL_MANAGEMENT as COMMERCIAL_MANAGEMENT_API,
     ACCESS as ACCESS_API,
     NOTIFICATIONS as NOTIFICATIONS_API,
+    PROJECTS as PROJECTS_API,
     joinBaseUrlWithParams,
     BRANCH, joinBaseUrlWithParamsId,
 } from 'Url/backendUrl';
@@ -156,8 +174,8 @@ export const getUsersByOrganisation = (organisationId) => (dispatch) => {
     return makeActionRequest('get', url, USERS, dispatch);
 };
 
-export const getUserCommunities = () => (dispatch) => {
-    const url = `${COMMUNITY_API.USER.GROUPS.GET_ALL}`;
+export const getUserCommunities = () => (dispatch) => { // we should normally user GROUPS.GET_ALL
+    const url = `${COMMUNITY_API.USER.GROUPS.NOT_IN}`;
     return makeActionRequest('get', url, USER_COMMUNITIES, dispatch);
 };
 
@@ -283,4 +301,50 @@ export const getUsersAccountsByBranch = (branchId) => (dispatch) => {
 export const getSampleBranches = (branchId) => (dispatch) => {
     const url = `${BRANCH.SAMPLE.GET_ALL}?branch_id=${branchId}`;
     return makeActionRequest('get', url, SAMPLE_BRANCHES, dispatch);
+};
+
+export const getProjectWorks = (branchId) => (dispatch) => {
+    const url = joinBaseUrlWithParamsId(PROJECTS_API.CONFIGURATION.WORKS.GET_ALL, branchId);
+    return makeActionRequest('get', url, PROJECT_WORKS, dispatch);
+};
+
+export const getProjectStandard = (branchId) => (dispatch) => {
+    // const url = joinBaseUrlWithParamsId(PROJECTS_API.CONFIGURATION.STANDARD.GET_ALL, branchId);
+    const url = `${PROJECTS_API.CONFIGURATION.STANDARD.GET_ALL}?id=${branchId}`;
+    return makeActionRequest('get', url, PROJECT_STANDARD, dispatch);
+};
+
+/*** ************************************************/
+export const getAllPostProject = (branchId) => (dispatch) => {
+    const url = joinBaseUrlWithParamsId(PROJECTS_API.POST_PROJETS.GET_ALL, branchId);
+    return makeActionRequest('get', url, PROJECTS, dispatch);
+};
+/**** ******************************************************/
+export const getOneProjectStandard = (branchId) => (dispatch) => {
+    const url = `${PROJECTS_API.CONFIGURATION.STANDARD.GET_ONE}?id=${branchId}`;
+    return makeActionRequest('get', url, PROJECT_STANDARD, dispatch);
+};
+
+export const getInitialisationOptions = (type, branchId) => (dispatch) => {
+    const url = `${PROJECTS_API.CONFIGURATION.INITIALISATION.GET_ALL}?type=${type}&branch_id=${branchId}`;
+    const actionType = type === 'IDEA' ? INITIALISATION_IDEA
+        : type === 'PROGRAM'
+            ? INITIALISATION_PROGRAM
+            : INITIALISATION_PROJECTS_CALL;
+    return makeActionRequest('get', url, actionType , dispatch);
+};
+
+export const getProjectStandardPresentation = (branchId) => (dispatch) => {
+    const url = `${PROJECTS_API.CONFIGURATION.STANDARD.PRESENTATION.GET_ALL}?branch_id=${branchId}`;
+    return makeActionRequest('get', url, PROJECT_STANDARD_PRESENTATION, dispatch);
+};
+
+export const getProjects = (branchId) => (dispatch) => {
+    const url = `${PROJECTS_API.SELF.GET_ALL}?branch_id=${branchId}`;
+    return makeActionRequest('get', url, PROJECTS, dispatch);
+};
+
+export const getFolders = (userId) => (dispatch) => {
+    const url = joinBaseUrlWithParamsId(PROJECTS_API.FOLDERS.GET_ALL, userId);
+    return makeActionRequest('get', url, FOLDERS, dispatch);
 };

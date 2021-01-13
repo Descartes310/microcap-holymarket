@@ -2,6 +2,7 @@ import {BASE} from "Url/backendUrl";
 
 export const ROOT = '/';
 export const HOME = '/home';
+export const DISCOVER = '/discover';
 export const AUTH = {
     LOGIN: '/login',
     REGISTER: '/register',
@@ -98,7 +99,7 @@ export const USERS = {
     }
 };
 
-export const COMMUNITY = {
+export const COMMUNITY_MEMBER = {
     SELF: '/community',
     GROUPS: {
         SELF: '/community/groups',
@@ -190,6 +191,103 @@ export const SETTINGS = {
         }
     }
 };
+
+export const PROJECTS = {
+    SELF: '/projects',
+    FOLDERS: {
+        SELF: '/projects/folder',
+        LIST: '/projects/folder/list',
+        SHOW: '/projects/folder/:id',
+        CREATE: '/projects/folder/create',
+    },
+    PROJECTS: {
+        LIST: '/projects/list',
+        CREATE: '/projects/create',
+        EDITION: {
+            SELF: '/projects/edition',
+            ARTICLE: '/projects/edition/article',
+            ILLUSTRATION: '/projects/edition/illustration',
+        },
+        CONSULTATION: '/projects/consultation'
+    },
+    POST_PROJETS: {
+        LIST: '/projects/post-projects/list',
+        CREATE: '/projects/post-projects/create',
+    },
+    CONFIGURATION: {
+        SELF: '/projects/configuration',
+        STANDARD: {
+            SELF: '/projects/configuration/standard',
+            LIST: '/projects/configuration/standard/list',
+            CREATE: '/projects/configuration/standard/create',
+            CONFIGURATION: '/projects/configuration/standard/:id/configuration',
+            PRESENTATION: {
+                SELF: '/projects/configuration/standard/presentation',
+                LIST: '/projects/configuration/standard/presentation/list',
+                CREATE: '/projects/configuration/standard/presentation/create',
+            }
+        },
+        WORKS: {
+            SELF: '/projects/configuration/works',
+            LIST: '/projects/configuration/works/list',
+            CREATE: '/projects/configuration/works/create',
+        },
+        INITIALISATION: {
+            SELF: '/projects/configuration/initialisation-options',
+            IDEA: {
+                SELF: '/projects/configuration/initialisation-options/idea',
+                LIST: '/projects/configuration/initialisation-options/idea/list',
+                CREATE: '/projects/configuration/initialisation-options/idea/create',
+            },
+            PROJECTS_CALL: {
+                SELF: '/projects/configuration/initialisation-options/projects-call',
+                LIST: '/projects/configuration/initialisation-options/projects-call/list',
+                CREATE: '/projects/configuration/initialisation-options/projects-call/create',
+            },
+            PROGRAM: {
+                SELF: '/projects/configuration/initialisation-options/program',
+                LIST: '/projects/configuration/initialisation-options/program/list',
+                CREATE: '/projects/configuration/initialisation-options/program/create',
+            },
+            LIST: '/projects/configuration/works/list',
+            CREATE: '/projects/configuration/works/create',
+        }
+    },
+};
+
+export const COMMUNITY = {
+    SELF: '/community-t',
+    POST_PROJECT: {
+        SELF: '/community-t/projects',
+        LIST: '',
+        CREATE: ''
+    },
+    MEMBERS: {
+        SELF: '/community-t/members',
+        LIST: '/community-t/members/list',
+        INVITATION: '/community-t/members/invitation'
+    },
+    ACTIVITY: {
+        SELF: '/community-t/activities',
+        LIST: '',
+        CREATE: ''
+    }
+};
+
+
+export const MICROCAP360 = {
+    MICROCAP360: '/microcap360',
+    COMPTES: {
+        SELF: '/microcap360/accounts',
+    },
+    PROJECTS: {
+        SELF: '/microcap360/projects',
+    },
+    RESEAU: {
+        SELF: '/community',
+    }
+};
+
 
 export const joinUrlWithParams = (to, params) => {
     let url = to;

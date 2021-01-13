@@ -47,6 +47,14 @@ import NotificationsReducer from './NotificationsReducer';
 import ServicesNotificationsReducer from './ServicesNotificationsReducer';
 import UsersAccountsReducer from './UsersAccountsReducer';
 import SampleBranchesReducer from './SampleBranchesReducer';
+import ProjectWorksReducer from './ProjectWorksReducer';
+import ProjectStandardReducer from './ProjectStandardReducer';
+import InitialisationIdeasReducer from './InitialisationIdeasReducer';
+import InitialisationProgramReducer from './InitialisationProgramReducer';
+import InitialisationProjectsCallReducer from './InitialisationProjectsCallReducer';
+import ProjectStandardPresentationReducer from './ProjectStandardPresentationReducer';
+import ProjectsReducer from './ProjectsReducer';
+import FoldersReducer from './FoldersReducer';
 
 const reducers = combineReducers({
    settings,
@@ -94,6 +102,14 @@ const reducers = combineReducers({
    servicesNotifications: ServicesNotificationsReducer,
    usersAccounts: UsersAccountsReducer,
    sampleBranches: SampleBranchesReducer,
+   projectWorks: ProjectWorksReducer,
+   projectStandard: ProjectStandardReducer,
+   initialisationIdeas: InitialisationIdeasReducer,
+   initialisationProgram: InitialisationProgramReducer,
+   initialisationProjectsCall: InitialisationProjectsCallReducer,
+   projectStandardPresentation: ProjectStandardPresentationReducer,
+   projects: ProjectsReducer,
+   folders: FoldersReducer,
 });
 
 export default reducers;

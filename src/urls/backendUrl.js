@@ -155,7 +155,7 @@ export const USERS = {
     }
 };
 
-export const COMMUNITY = {
+export const COMMUNITY_MEMBER = {
     USER: {
         GROUPS: {
             GET_ALL: 'groups/communities/user/me',
@@ -173,6 +173,9 @@ export const COMMUNITY = {
             ONE: 'groups/communities/send/invitation/community/{group_id}/user/{user_id}',
             MANY: 'groups/communities/send/invitation/community/{group_id}',
             REQUEST: 'groups/communities/send/request/community/{group_id}',
+
+            TO_USER: 'groups/communities/send/invitation/community/user/{user_id}',
+            TO_GROUP: 'groups/communities/send/invitation/community/{group_id}',
         },
         ACCEPT: 'groups/communities/accept/invitation/{invitation_id}',
         CANCEL: 'groups/communities/cancel/invitation/{invitation_id}',
@@ -180,6 +183,21 @@ export const COMMUNITY = {
     },
 };
 
+/* export const COMMUNITY = {
+
+    INVITATIONS: {
+        GET_ALL: 'groups/communities/pending/invitation/me',
+        SEND: {
+            ONE: 'groups/communities/send/invitation/community/{group_id}/user/{user_id}',
+            MANY: 'groups/communities/send/invitation/community/{group_id}',
+            REQUEST: 'groups/communities/send/request/community/{group_id}',
+        },
+        ACCEPT: 'groups/communities/accept/invitation/{invitation_id}',
+        CANCEL: 'groups/communities/cancel/invitation/{invitation_id}',
+        DELETE: 'groups/communities/delete/invitation/{invitation_id}',
+    },
+};
+ */
 export const COMMERCIAL_MANAGEMENT = {
     OPERATION_TYPE: {
         GET_ALL: 'public/commercial-operation-type',
@@ -262,6 +280,47 @@ export const NOTIFICATIONS = {
         CREATE: 'public/notifications/notification_type',
     },
     CREATE: 'public/generic-objects',
+};
+
+export const PROJECTS = {
+    SELF: {
+        GET_ALL: 'public/projects',
+        CREATE: 'public/projects',
+    },
+    FOLDERS: {
+        GET_ALL: 'public/projects/folders/users/{id}',
+        CREATE: 'public/projects/folders',
+        GET_ONE: 'public/projects/folders/{id}',
+    },
+    POST_PROJETS: {
+        CREATE: 'public/branchs/{id}/posts',
+        GET_ALL: 'public/branchs/{id}/posts',
+    },
+    CONFIGURATION: {
+        WORKS: {
+            GET_ALL: 'public/branchs/{id}/books',
+            CREATE: 'public/books',
+        },
+        STANDARD: {
+            GET_ALL: 'public/projects/presentation-standard',
+            GET_ONE: 'public/projects/presentation-standard/{id}',
+            CREATE: 'public/projects/presentation-standard',
+            MODELS: {
+                GET_ALL: 'public/projects/presentation-standard/{id}/models',
+                CREATE: 'public/projects/model',
+                DELETE: 'public/projects/models/{id}',
+            },
+            PRESENTATION:  {
+                GET_ALL: 'public/projects/presentation',
+                GET_ONE: 'public/projects/presentation/{id}',
+                CREATE: 'public/projects/presentation',
+            }
+        },
+        INITIALISATION: {
+            GET_ALL: 'public/projects/options',
+            CREATE: 'public/projects/options',
+        }
+    }
 };
 
 export const joinBaseUrl = to => BASE + to;

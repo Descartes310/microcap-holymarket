@@ -17,7 +17,8 @@ import NetworkBranchIntlMessages from "Components/NetworkBranchIntlMessages";
 class NavMenuItem extends Component {
 
    state = {
-      subMenuOpen: ''
+      subMenuOpen: '',
+      /*activeMenu: ''*/
    }
 	/**
    * On Toggle Collapse Menu
@@ -38,12 +39,30 @@ class NavMenuItem extends Component {
       }
    }
 
+   /*onActiveMenu(index) {
+      if (this.state.activeMenu === '') {
+         this.setState({
+            activeMenu: index
+         })
+      }
+      else if (this.state.activeMenu !== index) {
+         this.setState({
+            activeMenu: index
+         })
+      }
+      else {
+         this.setState({ activeMenu: '' });
+      }
+
+   }*/
+
    render() {
       const { menu, onToggleMenu, authUser } = this.props;
       const { subMenuOpen } = this.state;
 
       // Check if the route has nested routes and if the user has at least one permission for one nested routes
-      if (menu.child_routes !== null && authUser.hasPermissions(_.flattenDeep(menu.child_routes.map(p => p.permissions.map(i => i.name))))) {
+      if (menu.child_routes !== null && authUser.hasPermissions(_.flattenDeep(menu.child_routes.map(p => p.permissions.map(i => i.name))), true)) {
+         
          return (
              <Fragment>
                 <ListItem button component="li" onClick={onToggleMenu} className={`list-item ${classNames({ 'item-active': menu.open })}`}>
@@ -127,17 +146,17 @@ class NavMenuItem extends Component {
                                              {authUser && subMenu.child_routes && subMenu.child_routes.map((nestedMenu, nestedKey) => {
                                                 if (authUser.hasPermissions(nestedMenu.permissions.map(p => p.name))) {
                                                    return (
-                                                       <ListItem button component="li" key={nestedKey}>
+                                                       <ListItem button component="li" key={nestedKey}  onClick={() => this.onToggleCollapseMenu(index)}>
                                                           <NavLink activeClassName="item-active" to={nestedMenu.path}>
-                                                         <span className="menu pl-10 d-inline-block">
-                                                            {/*<NetworkBranchIntlMessages id={nestedMenu.menu_title} />*/}
-                                                            {nestedMenu.menu_title}
-                                                            {menu.new_item && menu.new_item === true ?
-                                                                <Chip label="new" className="new-item" color="secondary" />
-                                                                :
-                                                                null
-                                                            }
-                                                         </span>
+                                                            <span className="menu pl-10 d-inline-block">
+                                                               {/*<NetworkBranchIntlMessages id={nestedMenu.menu_title} />*/}
+                                                               {nestedMenu.menu_title}
+                                                               {menu.new_item && menu.new_item === true ?
+                                                                  <Chip label="new" className="new-item" color="secondary" />
+                                                                  :
+                                                                  null
+                                                               }
+                                                            </span>
                                                           </NavLink>
                                                        </ListItem>
                                                    )

@@ -9,9 +9,9 @@ import {
     CATEGORY_PRODUCTS,
     PRODUCT_TYPE,
     USER_PROFILE, NETWORK_PROFILE_TYPE, USERS,
-    COMMUNITY, PACKAGES, COMMERCIAL_MANAGEMENT, joinBaseUrlWithParamsId,
+    COMMUNITY_MEMBER, COMMUNITY, PACKAGES, COMMERCIAL_MANAGEMENT, joinBaseUrlWithParamsId,
     ORDER, SALES, GENERIC_OBJECT,
-    ACCESS, NOTIFICATIONS, NOTIFICATIONS as NOTIFICATIONS_API
+    ACCESS, NOTIFICATIONS, NOTIFICATIONS as NOTIFICATIONS_API, PROJECTS
 } from "Url/backendUrl";
 import {SET_CURRENT_COMMUNITY, SET_CURRENT_COMMUNITY_SUCCESS} from "Actions/types";
 
@@ -229,7 +229,7 @@ export const createUsers = (data, branchId) => {
 };
 
 export const createCommunityNonConventionated = (data, branchId) => {
-    const url = `${COMMUNITY.USER.CREATE.NON_CONVENTIONAL}?branch_id=${branchId}`;
+    const url = `${COMMUNITY_MEMBER.USER.CREATE.NON_CONVENTIONAL}?branch_id=${branchId}`;
     return makeRequest('post', url, data);
 };
 
@@ -239,7 +239,7 @@ export const searchUsers = (data) => {
 };
 
 export const sendManyInvitations = (groupId, usersId) => {
-    let url = joinBaseUrlWithParams(COMMUNITY.INVITATIONS.SEND.MANY, [{
+    let url = joinBaseUrlWithParams(COMMUNITY_MEMBER.INVITATIONS.SEND.MANY, [{
             param: 'group_id',
             value: groupId,
     }]);
@@ -248,7 +248,7 @@ export const sendManyInvitations = (groupId, usersId) => {
 };
 
 export const sendRequestInvitation = (groupId) => {
-    let url = joinBaseUrlWithParams(COMMUNITY.INVITATIONS.SEND.REQUEST, [{
+    let url = joinBaseUrlWithParams(COMMUNITY_MEMBER.INVITATIONS.SEND.REQUEST, [{
         param: 'group_id',
         value: groupId,
     }]);
@@ -256,7 +256,7 @@ export const sendRequestInvitation = (groupId) => {
 };
 
 export const acceptInvitation = (invitationId) => {
-    const url = joinBaseUrlWithParams(COMMUNITY.INVITATIONS.ACCEPT, [{
+    const url = joinBaseUrlWithParams(COMMUNITY_MEMBER.INVITATIONS.ACCEPT, [{
         param: 'invitation_id',
         value: invitationId,
     }]);
@@ -264,7 +264,7 @@ export const acceptInvitation = (invitationId) => {
 };
 
 export const cancelInvitation = (invitationId) => {
-    const url = joinBaseUrlWithParams(COMMUNITY.INVITATIONS.CANCEL, [{
+    const url = joinBaseUrlWithParams(COMMUNITY_MEMBER.INVITATIONS.CANCEL, [{
         param: 'invitation_id',
         value: invitationId,
     }]);
@@ -272,12 +272,36 @@ export const cancelInvitation = (invitationId) => {
 };
 
 export const deleteInvitation = (invitationId) => {
-    const url = joinBaseUrlWithParams(COMMUNITY.INVITATIONS.DELETE, [{
+    const url = joinBaseUrlWithParams(COMMUNITY_MEMBER.INVITATIONS.DELETE, [{
         param: 'invitation_id',
         value: invitationId,
     }]);
     return makeRequest('put', url);
 };
+
+/********************************  ***************************************** */
+export const sendInvitationCommunityMember = (data) => {
+    const url = joinBaseUrlWithParams(COMMUNITY_MEMBER.INVITATIONS.SEND.TO_GROUP, [{
+        param: 'group_id',
+        value: data.group_id,
+    }]);
+    return makeRequest('post', url, data);
+};
+/********************************************************************** */
+/*****************************  ***************************************** */
+export const createPostProject = (data) => {
+    const url = joinBaseUrlWithParamsId(PROJECTS.POST_PROJETS.CREATE, data.branchId);
+    return makeRequest('post', url , data);
+};
+
+/* export const getAllPostProject = (branchId) => {
+    const url = joinBaseUrlWithParams(PROJECTS.POST_PROJETS.GET_ALL, [{
+        param: 'branchId',
+        value: branchId
+    }]);
+    return makeRequest('get', url);
+}; */
+/*****************************  ***************************************** */
 
 export const getUserType = () => {
     return new Promise((resolve, reject) => {
@@ -450,4 +474,64 @@ export const saveSampleBranchStep = (step, data, config) => {
             .then(result => resolve(result.data))
             .catch(error => reject(error));
     });
+};
+
+export const createProjectWork = (data, branchId) => {
+    const url = `${PROJECTS.CONFIGURATION.WORKS.CREATE}?branch_id=${branchId}`;
+    return makeRequest('post', url, data);
+};
+
+export const createProjectStandard = (data, branchId) => {
+    const url = `${PROJECTS.CONFIGURATION.STANDARD.CREATE}?branch_id=${branchId}`;
+    return makeRequest('post', url, data);
+};
+
+export const configureProjectStandard = (data, branchId) => {
+    const url = `${PROJECTS.CONFIGURATION.STANDARD.CONFIGURATION}?branch_id=${branchId}`;
+    return makeRequest('post', url, data);
+};
+
+export const getProjectStandardModel = (projectStandardId) => {
+    const url = joinBaseUrlWithParamsId(PROJECTS.CONFIGURATION.STANDARD.MODELS.GET_ALL, projectStandardId);
+    return makeRequest('get', url);
+};
+
+export const createModel = (data) => {
+    const url = `${PROJECTS.CONFIGURATION.STANDARD.MODELS.CREATE}`;
+    return makeRequest('post', url, data);
+};
+
+export const removeProjectStandardModel = (itemId) => {
+    const url = joinBaseUrlWithParamsId(PROJECTS.CONFIGURATION.STANDARD.MODELS.DELETE, itemId);
+    return makeRequest('delete', url);
+};
+
+export const getOneProjectStandard = (projectStandardId) => {
+    const url = joinBaseUrlWithParamsId(PROJECTS.CONFIGURATION.STANDARD.GET_ONE, projectStandardId);
+    return makeRequest('get', url);
+};
+
+export const createInitialisationOption = (data) => {
+    const url = `${PROJECTS.CONFIGURATION.INITIALISATION.CREATE}`;
+    return makeRequest('post', url, data);
+};
+
+export const createProjectStandardPresentation = (data) => {
+    const url = `${PROJECTS.CONFIGURATION.STANDARD.PRESENTATION.CREATE}`;
+    return makeRequest('post', url, data);
+};
+
+export const createProject = (data) => {
+    const url = `${PROJECTS.SELF.CREATE}`;
+    return makeRequest('post', url, data);
+};
+
+export const createFolder = (data, branchId) => {
+    const url = `${PROJECTS.FOLDERS.CREATE}?branch_id=${branchId}`;
+    return makeRequest('post', url, data);
+};
+
+export const getOneProjectFolder = (folderId) => {
+    const url = joinBaseUrlWithParamsId(PROJECTS.FOLDERS.GET_ONE, folderId);
+    return makeRequest('get', url);
 };

@@ -55,7 +55,7 @@ class InvitationsListType extends Component {
             return (<RctSectionLoader/>)
         }
 
-        let orderedItems = this.handleSearch(this.state.searched, comInvitationsPending.filter(invitation => invitation.type === type));
+        let orderedItems = this.handleSearch(this.state.searched, comInvitationsPending.filter(invitation => invitation.type === null));
 
         return (
             <>
@@ -88,10 +88,10 @@ class InvitationsListType extends Component {
                                     </p>
                                 </div>
                                 <>
-                                    {orderedItems.length === 0 ? (
+                                    {orderedItems.length == 0 ? (
                                         <div className="d-flex justify-content-center align-items-center py-50">
                                             <h4>
-                                                Aucun invitations trouvés
+                                                Aucune invitation trouvée
                                             </h4>
                                         </div>
                                     ) : (
@@ -142,5 +142,8 @@ const useStyles = theme => ({
     }
 });
 
-export default connect(mapStateToProps, {getInvitationsPending, setRequestGlobalAction})
+/*  export default connect(mapStateToProps, {getInvitationsPending, setRequestGlobalAction})
 (withStyles(useStyles, { withTheme: true })(withRouter(injectIntl(InvitationsListType))));
+ */
+
+export default connect(mapStateToProps, {getInvitationsPending, setRequestGlobalAction})(withStyles(useStyles, { withTheme: true })(withRouter(InvitationsListType)));
