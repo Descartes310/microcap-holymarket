@@ -252,12 +252,19 @@ export const sendManyInvitations = (groupId, usersId) => {
     return makeRequest('get', url);
 };
 
-export const sendRequestInvitation = (groupId) => {
-    let url = joinBaseUrlWithParams(COMMUNITY_MEMBER.INVITATIONS.SEND.REQUEST, [{
-        param: 'group_id',
-        value: groupId,
-    }]);
-    return makeRequest('get', url);
+export const sendRequestInvitation = (groupId, userId) => {
+    let url = joinBaseUrlWithParams(COMMUNITY_MEMBER.INVITATIONS.SEND.REQUEST, [
+        {
+            param: 'group_id',
+            value: groupId,
+        },
+        {
+            param: 'user_id',
+            value: userId,
+        }
+
+    ]);
+    return makeRequest('post', url, null, {shouldSkipDataParsing: true});
 };
 
 export const acceptInvitation = (invitationId) => {

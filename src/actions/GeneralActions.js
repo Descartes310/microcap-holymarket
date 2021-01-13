@@ -184,8 +184,8 @@ export const getUserCommunitiesAdmin = () => (dispatch) => {
     return makeActionRequest('get', url, USER_COMMUNITIES_ADMIN, dispatch);
 };
 
-export const getUserCommunitiesNotIn = () => (dispatch) => {
-    const url = `${COMMUNITY_API.USER.GROUPS.NOT_IN}`;
+export const getUserCommunitiesNotIn = (userId) => (dispatch) => {
+    const url = joinBaseUrlWithParamsId(COMMUNITY_API.USER.GROUPS.NOT_IN, userId);
     return makeActionRequest('get', url, USER_COMMUNITIES_NOT_IN, dispatch);
 };
 

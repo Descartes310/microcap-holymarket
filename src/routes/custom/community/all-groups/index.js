@@ -17,15 +17,16 @@ class AllGroups extends Component {
     static contextType = AbilityContext;
 
     componentDidMount() {
-        this.props.getUserCommunitiesNotIn();
+        this.props.getUserCommunitiesNotIn(this.props.authUser.user.id);
     }
 
     onEnterClick = (group) => {
+        console.log('user use and group',this.props.authUser.user.id, group.id)
         this.props.setRequestGlobalAction(true);
-        sendRequestInvitation(group.id)
+        sendRequestInvitation(group.id, this.props.authUser.user.id)
             .then(() => {
                 NotificationManager.success("Votre demande pour le groupe " + group.label + " a été envoyé");
-                this.props.getUserCommunitiesNotIn();
+                this.props.getUserCommunitiesNotIn(this.props.authUser.user.id);
                 this.props.getInvitationsPending();
             })
             .catch(() => {
@@ -36,6 +37,7 @@ class AllGroups extends Component {
 
     render() {
         const { userCommunitiesNotIn, loading, error } = this.props;
+        console.log('userCommunitiesNotIn', userCommunitiesNotIn);
 
         if (!loading && userCommunitiesNotIn && userCommunitiesNotIn.length === 0) {
             return (
