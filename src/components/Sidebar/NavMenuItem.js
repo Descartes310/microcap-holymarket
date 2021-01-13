@@ -61,7 +61,7 @@ class NavMenuItem extends Component {
       const { subMenuOpen } = this.state;
 
       // Check if the route has nested routes and if the user has at least one permission for one nested routes
-      if (menu.child_routes !== null && authUser.hasPermissions(_.flattenDeep(menu.child_routes.map(p => p.permissions.map(i => i.name))), true)) {
+      if (menu.child_routes !== null && authUser.hasPermissions(_.flattenDeep(menu.child_routes.map(p => p.permissions.map(i => i.name))))) {
          
          return (
              <Fragment>

@@ -35,7 +35,7 @@ const ThirdStepItem = props => {
         errors,
         control,
         step,
-        user_informations
+        rolesWatch
     } = props;
 
     return (
@@ -93,12 +93,12 @@ const ThirdStepItem = props => {
                 <div className="col-sm-12">
                     <CustomAsyncComponent
                         loading={false}
-                        data={user_informations}
+                        data={rolesWatch}
                         // onRetryClick={_getIdentificationType}
                         component={data => (
                             <div className="col-md-12 col-sm-12 form-group text-left">
                                 <FormControl fullWidth>
-                                    <InputLabel className="text-left" htmlFor="institution-helper">
+                                    <InputLabel className="text-left" htmlFor="role-helper">
                                         Role du représentant legal
                                     </InputLabel>
                                     <InputComponent
@@ -108,9 +108,9 @@ const ThirdStepItem = props => {
                                         control={control}
                                         register={register}
                                         componentType="select"
-                                        name={step + 'institution'}
+                                        name={step + 'role'}
                                         defaultValue={data[0] ? data[0].name : undefined}
-                                        as={<Select input={<Input name="institution" id="institution-helper" />}>
+                                        as={<Select input={<Input name="role" id="role-helper" />}>
                                             {data.map((item, index) => (
                                                 <MenuItem key={index} value={item.name} className="center-hor-ver">
                                                     {item.name}
