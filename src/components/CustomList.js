@@ -44,7 +44,7 @@ class CustomList extends Component {
 
     render() {
         const {
-            titleList, itemsFoundText,
+            titleList, itemsFoundText, addingButton,
             loading, list, error, renderItem,
             match, history, classes, showSearch, onRetryClick,
             addText, onAddClick, addPermissions, searchPermissions,
@@ -65,7 +65,7 @@ class CustomList extends Component {
                     ) : (
                         <RctCollapsibleCard>
                             <div className="align-items-center mb-30 px-15 row">
-                                {(onAddClick && canAdd) && (
+                                {(onAddClick && canAdd && !addingButton) && (
                                     <Button
                                         color="primary"
                                         className="text-white mr-2"

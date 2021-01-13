@@ -238,6 +238,11 @@ export const searchUsers = (data) => {
     return makeRequest('get', url);
 };
 
+export const getBranchProfile = (type, branchId) => {
+    const url = `${USER_PROFILE.GET_ALL}?branch_id=${branchId}&type=${type}`;
+    return makeRequest('get', url);
+};
+
 export const sendManyInvitations = (groupId, usersId) => {
     let url = joinBaseUrlWithParams(COMMUNITY_MEMBER.INVITATIONS.SEND.MANY, [{
             param: 'group_id',
@@ -451,12 +456,16 @@ export const verifyCode = (userId, otp) => {
 };
 
 export const activateBranch = (data) => {
-    return makeRequest('post', BRANCH.ACTIVATION, data);
+    return makeRequest('post', `${BRANCH.ACTIVATION}?branch_url=${window.location.host}`, data);
 };
 
 export const addUserToProfile = (userId, reference, type) => {
     const url = joinBaseUrlWithParamsId(type === 'network-profile' ? NETWORK_PROFILE.ADD_USER_TO_ROLE : USER_PROFILE.ADD_USER, userId);
     return makeRequest('post', url, {reference});
+};
+
+export const addPermissionToProfile = (permission, role) => {
+    return makeRequest('post', `${USER_PROFILE.PERMISSION}?permission_id=${permission}&profile_id=${role}`, null, {shouldSkipDataParsing: true});
 };
 
 export const getAllSampleBranch = () => {

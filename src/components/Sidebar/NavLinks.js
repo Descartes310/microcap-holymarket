@@ -70,6 +70,12 @@ export default {
                "permissions": [Permission.navLinks.users.childLinks.userProfile.viewMenu],
             },
             {
+               "menu_title": "Permissions",
+               "new_item": false,
+               "path": USERS.USERS_PROFILE.USERS_PERMISSION.LIST,
+               "permissions": [Permission.navLinks.users.childLinks.userProfile.viewMenu],
+            },
+            {
                "menu_title": "Compte utilisateurs",
                "new_item": false,
                "path": USERS.ACCOUNTS.SELF,
