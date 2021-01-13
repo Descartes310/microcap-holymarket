@@ -54,7 +54,7 @@ const CommunityCreate = props => {
         createCommunityNonConventionated(data, authUser.branchId, authUser.user.id)
             .then(() => {
                 NotificationManager.success("Communauté créée avec succès");
-                getUserCommunities();
+                getUserCommunities(authUser.user.id);
                 onClose();
             })
             .catch((error) => {
