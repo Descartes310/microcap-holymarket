@@ -56,7 +56,6 @@ class InvitationCreateDialog extends React.Component {
         super(props)
         this.state = {
             activeIndex: 0,
-
             userOrProject: "user",
             userIdentifier: "",
             email: "", 
@@ -117,13 +116,14 @@ class InvitationCreateDialog extends React.Component {
             };
         }
 
-        this.props.setRequestGlobalAction(true);
+        console.log("invitayion Datas", data);
 
+        this.props.setRequestGlobalAction(true);
+    
         sendInvitationCommunityMember(data)
         .then((res) => {
             console.log(res);
             NotificationManager.success("Invitation envoyé avec succès");
-
             if (this.state.userOrProject === 'project')
             this.setState({ currentDialogNotOpened: true, showNextDialog: true })
             else{
@@ -138,7 +138,7 @@ class InvitationCreateDialog extends React.Component {
 
     render() {
         const {open, handleClose} = this.props
-
+       
         return (
             <Fragment>
                 <Dialog open={open && !this.state.currentDialogNotOpened} onClose={handleClose} aria-labelledby="form-dialog-title">

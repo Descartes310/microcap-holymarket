@@ -48,8 +48,10 @@ const CommunityCreate = props => {
      */
     const onSubmit = (data) => {
         setRequestGlobalAction(true);
+        
+        console.log('Create Group', authUser.user.id)
 
-        createCommunityNonConventionated(data, authUser.branchId)
+        createCommunityNonConventionated(data, authUser.branchId, authUser.user.id)
             .then(() => {
                 NotificationManager.success("Communauté créée avec succès");
                 getUserCommunities();

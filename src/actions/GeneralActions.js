@@ -44,7 +44,7 @@ import {
     INITIALISATION_IDEA,
     INITIALISATION_PROGRAM,
     INITIALISATION_PROJECTS_CALL,
-    PROJECT_STANDARD_PRESENTATION, PROJECTS, FOLDERS
+    PROJECT_STANDARD_PRESENTATION, PROJECTS, FOLDERS,
 } from 'Actions/types';
 
 import api from './../api';
@@ -174,8 +174,8 @@ export const getUsersByOrganisation = (organisationId) => (dispatch) => {
     return makeActionRequest('get', url, USERS, dispatch);
 };
 
-export const getUserCommunities = () => (dispatch) => { // we should normally user GROUPS.GET_ALL
-    const url = `${COMMUNITY_API.USER.GROUPS.NOT_IN}`;
+export const getUserCommunities = (userId) => (dispatch) => {// we should normally user GROUPS.GET_ALL
+    const url = joinBaseUrlWithParamsId(COMMUNITY_API.USER.GROUPS.GET_COMMUNITIES, userId);
     return makeActionRequest('get', url, USER_COMMUNITIES, dispatch);
 };
 

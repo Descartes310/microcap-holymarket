@@ -162,6 +162,7 @@ export const COMMUNITY_MEMBER = {
             NOT_IN: 'groups/communities/user/me/not-in',
             ADMIN: 'groups/communities/user/admin/me',
             GET_MEMBERS: 'groups/communities/{id}/members',
+            GET_COMMUNITIES: 'groups/communities/users/{id}',
         },
         CREATE: {
             NON_CONVENTIONAL: 'groups/communities/non-conventionated'
