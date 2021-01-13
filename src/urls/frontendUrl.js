@@ -1,4 +1,4 @@
-import {BASE} from "Url/backendUrl";
+import { BASE } from "Url/backendUrl";
 
 export const ROOT = '/';
 export const HOME = '/home';
@@ -6,6 +6,7 @@ export const DISCOVER = '/discover';
 export const AUTH = {
     LOGIN: '/login',
     REGISTER: '/register',
+    TOKEN: '/branch/activation',
     FORGOT_PASSWORD: '/forgot-password',
     RESET_PASSWORD: '/reset-password',
 };
@@ -91,6 +92,11 @@ export const USERS = {
         SELF: '/users-profile',
         LIST: '/users-profile/list',
         CREATE: '/users-profile/create',
+        USERS_PERMISSION: {
+            SELF: '/users-profile/users-permission',
+            LIST: '/users-profile/users-permission/list',
+            CREATE: '/users-permission/create',
+        },
     },
     ACCOUNTS: {
         SELF: '/users-accounts',
@@ -299,5 +305,5 @@ export const joinUrlWithParams = (to, params) => {
 };
 
 export const joinUrlWithParamsId = (to, id) => {
-    return joinUrlWithParams(to, [{param: 'id', value: id}]);
+    return joinUrlWithParams(to, [{ param: 'id', value: id }]);
 };

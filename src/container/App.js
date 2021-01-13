@@ -12,6 +12,7 @@ import RctThemeProvider from './RctThemeProvider';
 // app signin
 import AppSignIn from './../routes/session/login';
 import AppSignUp from './../routes/session/register';
+import BranchActivation from './../routes/session/token';
 import ResetPassword from './../routes/session/forgot-password/ResetPassword';
 import SendResetPasswordLink from './../routes/session/forgot-password/SendResetPasswordLink';
 
@@ -83,6 +84,7 @@ class App extends Component {
                                         <Route exact path={DISCOVER} component={AsyncDiscover} />
                                         <Route path={AUTH.LOGIN} component={AppSignIn} />
                                         <Route path={AUTH.REGISTER} component={AppSignUp} />
+                                        <Route path={AUTH.TOKEN} component={BranchActivation} />
                                         <Route path={AUTH.RESET_PASSWORD} component={ResetPassword} />
                                         <Route path={AUTH.FORGOT_PASSWORD} component={SendResetPasswordLink} />
 

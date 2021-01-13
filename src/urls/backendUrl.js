@@ -129,6 +129,7 @@ export const PACKAGES = {
 export const USER_PROFILE = {
     GET_ALL: 'public/profiles',
     CREATE: 'public/profiles',
+    PERMISSION: 'public/profiles/permission',
     ADD_USER: 'public/profiles/{id}/users',
     PERMISSIONS: {
         GET_ALL: 'public/profiles/permissions',
