@@ -162,7 +162,8 @@ export default {
                "menu_title": "Configuration",
                "menu_icon": "zmdi zmdi-case",
                "new_item": false,
-               "permissions": [],
+               "permissions": [
+               ],
                "child_routes": [
                   {
                      "menu_title": "Ouvrages",
@@ -188,19 +189,19 @@ export default {
                "path": PROJECTS.PROJECTS.LIST,
                "new_item": false,
                "menu_title": "Projets",
-               "permissions": [Permission.projects.project.viewOne],
+               "permissions": [Permission.projects.project.viewList],
             },
             {
                "path": PROJECTS.POST_PROJETS.LIST,
                "new_item": false,
                "menu_title": "Poste projets",
-              "permissions": [/*Permission.projects.projectPost.viewOne*/],
+              "permissions": [Permission.projects.projectPost.viewOne],
             },
             {
                "path": PROJECTS.PROJECTS.EDITION.SELF,
                "new_item": false,
                "menu_title": "Edition",
-               "permissions": [/*Permission.projects.edition.viewOne*/],
+               "permissions": [Permission.projects.edition.viewOne],
             },
             {
                "path": PROJECTS.PROJECTS.CONSULTATION,
@@ -212,8 +213,7 @@ export default {
                "path": PROJECTS.FOLDERS.SELF,
                "new_item": false,
                "menu_title": "Gestion des projets",
-               "permissions": [],
-               "permissions": [/*Permission.navLinks.projects.folders.viewMenu*/],
+               "permissions": [Permission.navLinks.projects.folders.viewMenu],
             },
             /*{
                "path": COMMERCIAL_MANAGEMENT.COMMERCIAL_OPERATION.SELF,

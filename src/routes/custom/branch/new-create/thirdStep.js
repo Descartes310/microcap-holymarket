@@ -200,7 +200,7 @@ const ThirdStep = props => {
                             _getOrganisationPosts={_getOrganisationPosts}
                             _getIdentificationType={_getIdentificationType}
                             represent={getProfile}
-                            user_informations={userInfomations}
+                            rolesWatch={userInfomations}
                         />
                     </AccordionDetails>
                 </Accordion>
