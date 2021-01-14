@@ -131,8 +131,8 @@ class Groups extends Component {
                         <CommunityItem onMenuIconPress={this.handleDrawerToggle} />
                         
                         <div className="text-center" style={{ position: "absolute", top: "60%", padding: 10, width: "100%" }}>
-                            <MatButton variant="contained" color="primary" className="mr-10 mb-10 text-white btn-icon">Adherer</MatButton>
-                            <MatButton variant="contained" className="btn-info ml-10 mb-10 text-white btn-icon" onClick={this.join}>Rejoindre</MatButton>
+                            {/*<MatButton variant="contained" color="primary" className="mr-10 mb-10 text-white btn-icon">Adherer</MatButton>
+                            <MatButton variant="contained" className="btn-info ml-10 mb-10 text-white btn-icon" onClick={this.join}>Rejoindre</MatButton>*/}
                             <MatButton
                                 variant="contained"
                                 className="btn-info ml-10 mb-10 text-white btn-icon"

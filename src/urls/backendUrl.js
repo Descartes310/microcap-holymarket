@@ -170,7 +170,7 @@ export const COMMUNITY_MEMBER = {
         }
     },
     INVITATIONS: {
-        GET_ALL: 'groups/communities/pending/invitation/me',
+        GET_ALL: 'groups/communities/pending/invitation/{id}',
         SEND: {
             ONE: 'groups/communities/send/invitation/community/{group_id}/users/{user_id}/invited/{id}',
             MANY: 'groups/communities/send/invitation/community/{group_id}',

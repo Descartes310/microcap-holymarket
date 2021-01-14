@@ -117,7 +117,7 @@ class InvitationCreateDialog extends React.Component {
             };
         }
 
-        console.log("invitation Datas", this.props.authUser.id);
+       
 
         this.props.setRequestGlobalAction(true);
     
@@ -139,7 +139,7 @@ class InvitationCreateDialog extends React.Component {
 
     render() {
         const {open, handleClose} = this.props
-        console.log("invitation Datas props", this.props);
+        
         return (
             <Fragment>
                 <Dialog open={open && !this.state.currentDialogNotOpened} onClose={handleClose} aria-labelledby="form-dialog-title">

@@ -51,19 +51,19 @@ class InvitationsSidebar extends Component {
                 <div className="chat-sidebar">
                     <div>
                         <div className="justify-content-between align-items-center mt-2 mb-30 px-15 row">
-                            <div className="col-md-12">
+                           {/* <div className="col-md-12">
                                 <Button
                                     color="primary"
                                     variant="contained"
                                     className="text-white font-weight-bold"
                                     onClick={this.handleClickOpenInvation}
-                                    /* onClick={() => history.push(COMMUNITY_MEMBER.INVITATIONS.CREATE)} */
+                                     onClick={() => history.push(COMMUNITY_MEMBER.INVITATIONS.CREATE)} 
                                 >
                                     <i className="zmdi zmdi zmdi-plus mr-2" />
                                     Nouvelle invitation
                                 </Button>
                                 <InvitationCreateDialog open={this.state.open} handleClose={this.handleCloseInvation} />
-                            </div>
+                            </div>*/}
                         </div>
                         <div className="chat-list">
                             <Scrollbars
@@ -75,7 +75,7 @@ class InvitationsSidebar extends Component {
                                     <List className="p-0 mb-0 filters list-unstyled">
                                         <ListItem
                                             button
-                                            onClick={() => history.push(COMMUNITY_MEMBER.INVITATIONS.LIST.RECEIVED)}
+                                            onClick={() => this.props.history.push(COMMUNITY_MEMBER.INVITATIONS.LIST.RECEIVED)}
                                             // className={classnames({ 'item-active': selectedFolder === folder.id })}
                                         >
                                             <i className={`mr-20 zmdi zmdi-inbox`} />
@@ -88,7 +88,7 @@ class InvitationsSidebar extends Component {
                                         </ListItem>
                                         <ListItem
                                             button
-                                            onClick={() => history.push(COMMUNITY_MEMBER.INVITATIONS.LIST.SEND)}
+                                            onClick={() => this.props.history.push(COMMUNITY_MEMBER.INVITATIONS.LIST.SEND)}
                                             // className={classnames({ 'item-active': selectedFolder === folder.id })}
                                         >
                                             <i className={`mr-20 zmdi zmdi-mail-send`} />
@@ -101,7 +101,7 @@ class InvitationsSidebar extends Component {
                                         </ListItem>
                                         <ListItem
                                             button
-                                            onClick={() => history.push(COMMUNITY_MEMBER.INVITATIONS.LIST.REQUEST)}
+                                            onClick={() => this.props.history.push(COMMUNITY_MEMBER.INVITATIONS.LIST.REQUEST)}
                                             // className={classnames({ 'item-active': selectedFolder === folder.id })}
                                         >
                                             <i className={`mr-20 zmdi zmdi-view-web`} />

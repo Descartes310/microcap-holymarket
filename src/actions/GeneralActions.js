@@ -189,8 +189,8 @@ export const getUserCommunitiesNotIn = (userId) => (dispatch) => {
     return makeActionRequest('get', url, USER_COMMUNITIES_NOT_IN, dispatch);
 };
 
-export const getInvitationsPending = () => (dispatch) => {
-    const url = `${COMMUNITY_API.INVITATIONS.GET_ALL}`;
+export const getInvitationsPending = (userId) => (dispatch) => {
+    const url = joinBaseUrlWithParamsId(COMMUNITY_API.INVITATIONS.GET_ALL, userId);
     return makeActionRequest('get', url, COM_INVITATIONS_PENDING, dispatch);
 };
 

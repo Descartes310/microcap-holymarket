@@ -29,11 +29,12 @@ class InvitationItem extends Component {
     }
 
     onAccept = () => {
+        console.log("Invitation validation",this.props);
         this.props.setRequestGlobalAction(true);
         acceptInvitation(this.props.invitation.id)
             .then(() => {
                 NotificationManager.success("Vous faite maintenant partir du groupe " + this.props.invitation.group.label);
-                this.props.getInvitationsPending();
+                this.props.getInvitationsPending(this.props.authUser.user.id);
             })
             .catch(() => {
                 NotificationManager.error(ERROR_500);
@@ -56,7 +57,7 @@ class InvitationItem extends Component {
                         ? "Invitation annulé avec succès"
                         : "Demande annulé avec succès"
                 );
-                this.props.getInvitationsPending();
+                this.props.getInvitationsPending(this.props.authUser.user.id);
             })
             .catch(() => {
                 NotificationManager.error(ERROR_500);
@@ -184,8 +185,8 @@ class InvitationItem extends Component {
 }
 
 // map state to props
-const mapStateToProps = ({ requestGlobalAction }) => {
-    return {loading: requestGlobalAction};
+const mapStateToProps = ({ requestGlobalAction, authUser }) => {
+    return {loading: requestGlobalAction, authUser: authUser.data};
 };
 
 export default withRouter(connect(mapStateToProps, {
