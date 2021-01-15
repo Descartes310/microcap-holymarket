@@ -92,9 +92,10 @@ class AssistantConfigurationCreate extends Component {
         createAssistantConfiguration(_data, {fileData: ['logo'], multipart: true})
             .then(() => {
                 NotificationManager.success(this.props.intl.formatMessage({id: "network.assistantConfiguration.create.successText"}));
-                this.props.history(NETWORK.CONFIGURATION.ASSISTANT_CONFIGURATION.LIST);
+                this.props.history.push(NETWORK.CONFIGURATION.ASSISTANT_CONFIGURATION.LIST);
             })
             .catch(error => {
+                console.log(error)
                 NotificationManager.error(this.props.intl.formatMessage({id: "error.500"}))
             })
             .finally(() => this.props.setRequestGlobalAction(false));

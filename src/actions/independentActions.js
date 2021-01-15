@@ -113,6 +113,11 @@ export const createAssistantConfiguration = (data, config) => {
     });
 };
 
+export const getAccountsByBranch = (branchId) => {
+    const url = `${USERS.ACCOUNTS.GET_ALL_BY_BRANCH}?branch_id=${branchId}`;
+    return makeRequest('get', url);
+};
+
 export const getNetworkProfile = () => {
     return new Promise((resolve, reject) => {
         api.get(SYSTEM_OBJECT.NETWORK_PROFILE_TYPE)
@@ -441,8 +446,8 @@ export const createNotificationsService = (branchId, data) => {
 };
 
 export const createUsersAccounts = (data) => {
-    const url = `${USERS.ACCOUNTS.CREATE}`;
-    return makeRequest('post', url, data);
+    const url = `${USERS.ACCOUNTS.CREATE}?label=${data.label}&description=${data.description}&branch_id=${data.branchId}`;
+    return makeRequest('post', url, null);
 };
 
 export const askValidationCode = (userId) => {

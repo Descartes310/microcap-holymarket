@@ -14,7 +14,7 @@ import RctSectionLoader from 'Components/RctSectionLoader/RctSectionLoader';
 // intl messages
 import {connect} from "react-redux";
 import IntlMessages from 'Util/IntlMessages';
-import {getNetworkProfileTypes} from "Actions";
+import {getAllNetworkProfile} from "Actions";
 import {injectIntl} from "react-intl";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel/InputLabel";
@@ -24,17 +24,21 @@ import NetworkBranchIntlMessages from "Components/NetworkBranchIntlMessages";
 import IconButton from "@material-ui/core/IconButton";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
 import _ from 'lodash';
+import { getAccountsByBranch } from 'Actions/independentActions'
 
 class NetworkProfileList extends Component {
+
     constructor(props) {
         super(props);
         this.state = {
-            order: 'withParent'
+            order: 'withParent',
+            profiles: []
         }
     }
 
     componentDidMount() {
-        this.props.getNetworkProfileTypes(this.props.authUser.user.branch.id);
+        this.props.getAllNetworkProfile();
+        getAccountsByBranch(1).then(data => this.setState({ profiles: data}) )
     }
 
     handleOrder = (value, data) => {
@@ -48,9 +52,9 @@ class NetworkProfileList extends Component {
     };
 
     render() {
-        const { networkProfileTypes, loading, error } = this.props;
+        const { networkProfiles, loading, error } = this.props;
 
-        let orderedItems = this.handleOrder(this.state.order, networkProfileTypes);
+        let orderedItems = this.handleOrder(this.state.profiles, networkProfiles);
         // console.log("orderedItems => ", orderedItems);
         return (
             <div className="mx-4">
@@ -59,7 +63,7 @@ class NetworkProfileList extends Component {
                     : orderedItems.length === 0
                         ? (
                             <RctCollapsibleCard>
-                                Aucun type de profil réseau trouvé
+                                <IntlMessages id="list.noThingToDisplay" values={{thing: this.props.intl.formatMessage({id: 'branch.profile'})}} />
                             </RctCollapsibleCard>
                         )
                         : (
@@ -105,22 +109,22 @@ class NetworkProfileList extends Component {
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        {orderedItems && orderedItems.map((networkProfileType, key) => (
+                                        {orderedItems && orderedItems.map((networkProfile, key) => (
                                             <tr key={key}>
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-left media-middle mr-15">
-                                                            {/*<img src={networkProfileType.label} alt="user profile" className="media-object rounded-circle" width="35" height="35" />*/}
+                                                            {/*<img src={networkProfile.label} alt="user profile" className="media-object rounded-circle" width="35" height="35" />*/}
                                                         </div>
                                                         <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{networkProfileType.label}</h4>
+                                                            <h4 className="m-0 fw-bold text-dark">{networkProfile.name}</h4>
                                                         </div>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{networkProfileType.description}</h4>
+                                                            <h4 className="m-0 fw-bold text-dark">{networkProfile.profileParent ? networkProfile.profileParent.label : '—'}</h4>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -161,8 +165,8 @@ class NetworkProfileList extends Component {
 }
 
 // map state to props
-const mapStateToProps = ({ networkProfileType, authUser }) => {
-    return { authUser: authUser.data, loading: networkProfileType.loading, networkProfileTypes: networkProfileType.data, error: networkProfileType.error }
+const mapStateToProps = ({ networkProfile  }) => {
+    return { loading: networkProfile.loading, networkProfiles: networkProfile.data, error: networkProfile.error }
 };
 
-export default connect(mapStateToProps, {getNetworkProfileTypes})(injectIntl(NetworkProfileList));
+export default connect(mapStateToProps, {getAllNetworkProfile})(injectIntl(NetworkProfileList));
