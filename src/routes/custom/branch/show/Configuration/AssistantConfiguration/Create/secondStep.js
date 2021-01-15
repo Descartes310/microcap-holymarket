@@ -87,10 +87,10 @@ const SecondStep = props => {
      * On submit
      */
     const onSubmit = (data) => {
-        if (logo === null) {
-            NotificationManager.error('You should select a logo');
-            return;
-        }
+        // if (logo === null) {
+        //     NotificationManager.error('You should select a logo');
+        //     return;
+        // }
         // Send data
         setData({...data, logo,});
         // Redirect to the next step
@@ -235,7 +235,7 @@ const SecondStep = props => {
                 </FormGroup>
             </div>
 
-            <FormGroup>
+            {/* <FormGroup>
                 <InputLabel className="text-left">
                     <IntlMessages id="branch.field.logo"/>
                 </InputLabel>
@@ -245,7 +245,7 @@ const SecondStep = props => {
                     name="file"
                     onChange={event => setLogo(event.target.files[0])}
                 />
-            </FormGroup>
+            </FormGroup> */}
 
             <FormGroup className="mb-15">
                 <Button

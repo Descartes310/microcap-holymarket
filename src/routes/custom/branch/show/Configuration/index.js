@@ -156,7 +156,7 @@ class Configuration extends React.Component {
 
         return (
             <>
-                {!authUser.hasNetworkProfileConfigurationStarted() ? (
+                {authUser.hasNetworkProfileConfigurationStarted() ? (
                     <BoundaryComponent
                         btnText={this.props.intl.formatMessage({id: 'button.start'})}
                         loading={this.props.loading}
@@ -203,7 +203,7 @@ class Configuration extends React.Component {
                                         <div className="d-flex align-items-center w-100">
                                             <div className="align-items-center justify-content-between px-2 row w-100">
                                                 <h3 className="mb-0">
-                                                    Type de profile réseau
+                                                    Struture du réseau
                                                 </h3>
                                                 <Button
                                                     color="primary"

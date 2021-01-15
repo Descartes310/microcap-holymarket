@@ -20,16 +20,16 @@ import {NETWORK} from "Url/frontendUrl";
 
 const firstList = [
     {
+        'id': 3,
+        'handle': NETWORK.CONFIGURATION.NETWORK_PROFILE_TYPE.LIST,
+        'title': "Structure du réseau",
+        'icon': 'settings'
+    },
+    {
         'id': 0,
         'handle': NETWORK.CONFIGURATION.NETWORK_PROFILE.LIST,
         'title': "Profile réseau",
         'icon': 'account'
-    },
-    {
-        'id': 3,
-        'handle': NETWORK.CONFIGURATION.NETWORK_PROFILE_TYPE.LIST,
-        'title': "Type de profile réseau",
-        'icon': 'settings'
     },
     {
         'id': 1,
@@ -40,7 +40,7 @@ const firstList = [
     {
         'id': 2,
         'handle': NETWORK.CONFIGURATION.ASSISTANT_CONFIGURATION.LIST,
-        'title': "Configuration des assistants",
+        'title': "Assistants",
         'icon': 'settings'
     },
 ];
@@ -114,23 +114,6 @@ class NetworkSidebar extends Component {
                             </ListItem>
                         ))}
                     </List>
-                    {/*<h6 className="sidebar-title px-20 pt-20">
-                        <NetworkBranchIntlMessages id="branch" />
-                    </h6>
-                    <List className="p-0 filters list-unstyled">
-                        {secondList.map((folder, key) => (
-                            <ListItem
-                                button
-                                key={key}
-                                onClick={() => this.navigateTo(folder.handle)}
-                                className={classnames({ 'item-active': selectedFolder === folder.id })}>
-                                <i className={`mr-20 zmdi zmdi-${folder.icon}`} />
-                                <span className="filter-title">
-									<IntlMessages id={folder.title} />
-								</span>
-                            </ListItem>
-                        ))}
-                    </List>*/}
                 </div>
             </Scrollbars>
         );

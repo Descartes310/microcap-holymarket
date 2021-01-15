@@ -41,7 +41,7 @@ export default class User {
     };
 
     hasNetworkProfileConfigurationStarted = () => {
-        return this.isExploitant() && this.user.branch.status !== Status.EMPTY;
+        return this.isExploitant() && this.user.branch.status === Status.EMPTY;
     };
 
     isNetworkProfileConfigurationFinished = () => {

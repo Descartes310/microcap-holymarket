@@ -124,12 +124,13 @@ class UsersAccountsList extends Component {
                     error={error}
                     loading={loading}
                     list={usersAccounts}
+                    addingButton={false}
                     // titleList={"Comptes utilisateurs"}
-                    // onAddClick={() => this.setState({showCreateBox: true})}
+                    onAddClick={() => this.setState({showCreateBox: true})}
                     itemsFoundText={n => `${n} comptes utilisateurs trouvés`}
-                    /*addPermissions={{
-                        permissions: [Permission.users.accounts.createOne.name],
-                    }}*/
+                    // addPermissions={{
+                    //     permissions: [Permission.users.accounts.createOne.name],
+                    // }}
                     renderItem={list => (
                         <>
                             {list && list.length === 0 ? (
@@ -197,6 +198,13 @@ class UsersAccountsList extends Component {
                     profileId={profileId}
                     setRequestGlobalAction={setRequestGlobalAction}
                     onClose={() => this.setState({showAddBox: false, profileId: null})}
+                    type={"profile"}
+                />
+                <UsersAccountsCreate
+                    show={showCreateBox}
+                    profileId={profileId}
+                    setRequestGlobalAction={setRequestGlobalAction}
+                    onClose={() => this.setState({showCreateBox: false, profileId: null})}
                     type={"profile"}
                 />
             </>
