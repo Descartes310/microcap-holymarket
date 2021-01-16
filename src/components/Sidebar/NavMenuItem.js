@@ -9,10 +9,15 @@ import Collapse from '@material-ui/core/Collapse';
 import { NavLink } from 'react-router-dom';
 import classNames from 'classnames';
 import Chip from '@material-ui/core/Chip';
+import { connect } from "react-redux";
+import { withStyles } from '@material-ui/core/styles';
+import { statusCommunitySpaceStatus } from 'Actions/CommunityAction';
 
 // intl messages
 import IntlMessages from 'Util/IntlMessages';
 import NetworkBranchIntlMessages from "Components/NetworkBranchIntlMessages";
+
+const styles = theme => ({})
 
 class NavMenuItem extends Component {
 
@@ -39,6 +44,11 @@ class NavMenuItem extends Component {
       }
    }
 
+   enterInCommunitySpace = () => {
+      this.props.statusCommunitySpaceStatus(false);
+   }
+
+
    /*onActiveMenu(index) {
       if (this.state.activeMenu === '') {
          this.setState({
@@ -62,132 +72,149 @@ class NavMenuItem extends Component {
 
       // Check if the route has nested routes and if the user has at least one permission for one nested routes
       if (menu.child_routes !== null && authUser.hasPermissions(_.flattenDeep(menu.child_routes.map(p => p.permissions.map(i => i.name))))) {
-         
+
          return (
-             <Fragment>
-                <ListItem button component="li" onClick={onToggleMenu} className={`list-item ${classNames({ 'item-active': menu.open })}`}>
-                   <ListItemIcon className="menu-icon">
-                      <i className={menu.menu_icon}></i>
-                   </ListItemIcon>
-                   <span className="menu text-capitalize">
+            <Fragment>
+               <ListItem button component="li" onClick={onToggleMenu} className={`list-item ${classNames({ 'item-active': menu.open })}`}>
+                  <ListItemIcon className="menu-icon">
+                     <i className={menu.menu_icon}></i>
+                  </ListItemIcon>
+                  <span className="menu text-capitalize">
                      {/*<IntlMessages id={menu.menu_title} />*/}
-                      {menu.menu_title}
+                     {menu.menu_title}
                   </span>
-                   {menu.new_item && menu.new_item === true ?
-                       <Chip label="new" className="new-item" color="secondary" />
-                       :
-                       ''
-                   }
-                </ListItem>
-                <Collapse in={menu.open} timeout="auto" className="sub-menu">
-                   <Fragment>
-                      {menu.type_multi == null ?
-                          <List className="list-unstyled py-0">
-                             {authUser && menu.child_routes.map((subMenu, index) => {
-                                if (authUser.hasPermissions(subMenu.permissions.map(p => p.name))) {
-                                   return (
-                                       <ListItem button component="li" key={index}>
-                                           <NavLink to={subMenu.path} activeClassName="item-active" >
-                                           <span className="menu">
-                                              {/*<NetworkBranchIntlMessages id={subMenu.menu_title} />*/}
-                                              {subMenu.menu_title}
-                                           </span>
-                                             {subMenu.new_item && subMenu.new_item === true ?
-                                                 <Chip label="new" className="new-item" color="secondary" />
-                                                 :
-                                                 ''
+                  {menu.new_item && menu.new_item === true ?
+                     <Chip label="new" className="new-item" color="secondary" />
+                     :
+                     ''
+                  }
+               </ListItem>
+               <Collapse in={menu.open} timeout="auto" className="sub-menu">
+                  <Fragment>
+                     {menu.type_multi == null ?
+                        <List className="list-unstyled py-0">
+                           {authUser && menu.child_routes.map((subMenu, index) => {
+                              if (authUser.hasPermissions(subMenu.permissions.map(p => p.name))) {
+                                 return (
+                                    <ListItem button component="li" key={index}>
+                                       <NavLink to={subMenu.path} activeClassName="item-active" >
+                                          <span className="menu">
+                                             {/*<NetworkBranchIntlMessages id={subMenu.menu_title} />*/}
+                                             {subMenu.menu_title}
+                                          </span>
+                                          {subMenu.new_item && subMenu.new_item === true ?
+                                             <Chip label="new" className="new-item" color="secondary" />
+                                             :
+                                             ''
+                                          }
+                                       </NavLink>
+                                    </ListItem>
+                                 )
+                              }
+                              return null;
+                           })}
+                        </List>
+                        :
+                        <List className="list-unstyled py-0">
+                           {authUser && menu.child_routes.map((subMenu, index) => {
+                              return (
+                                 <Fragment key={index}>
+                                    {subMenu.child_routes ? (
+                                       <ListItem
+                                          button
+                                          component="li"
+                                          onClick={() => this.onToggleCollapseMenu(index)}
+                                          className={`list-item ${classNames({ 'item-active': subMenuOpen === index })}`}
+                                       >
+                                          <span className="">
+                                             {subMenu.menu_title}
+                                             {/*<NetworkBranchIntlMessages id={subMenu.menu_title} />*/}
+                                             {menu.new_item && menu.new_item === true ?
+                                                <Chip label="new" className="new-item" color="secondary" />
+                                                :
+                                                null
                                              }
-                                          </NavLink>
+                                          </span>
                                        </ListItem>
-                                   )
-                                }
-                                return null;
-                             })}
-                          </List>
-                          :
-                          <List className="list-unstyled py-0">
-                             {authUser && menu.child_routes.map((subMenu, index) => {
-                                return (
-                                    <Fragment key={index}>
-                                        {subMenu.child_routes ? (
-                                            <ListItem
-                                                button
-                                                component="li"
-                                                onClick={() => this.onToggleCollapseMenu(index)}
-                                                className={`list-item ${classNames({ 'item-active': subMenuOpen === index })}`}
-                                            >
-                                           <span className="">
-                                              {subMenu.menu_title}
-                                               {/*<NetworkBranchIntlMessages id={subMenu.menu_title} />*/}
-                                               {menu.new_item && menu.new_item === true ?
+                                    ) : (
+                                          <ListItem button component="li" key={index}>
+                                             <NavLink to={subMenu.path} activeClassName="item-active" >
+                                                <span className="menu">
+                                                   {/*<NetworkBranchIntlMessages id={subMenu.menu_title} />*/}
+                                                   {subMenu.menu_title}
+                                                </span>
+                                                {subMenu.new_item && subMenu.new_item === true ?
                                                    <Chip label="new" className="new-item" color="secondary" />
                                                    :
-                                                   null
-                                               }
-                                           </span>
-                                            </ListItem>
-                                        ) : (
-                                            <ListItem button component="li" key={index}>
-                                                <NavLink to={subMenu.path} activeClassName="item-active" >
-                                                   <span className="menu">
-                                                      {/*<NetworkBranchIntlMessages id={subMenu.menu_title} />*/}
-                                                       {subMenu.menu_title}
-                                                   </span>
-                                                    {subMenu.new_item && subMenu.new_item === true ?
-                                                        <Chip label="new" className="new-item" color="secondary" />
-                                                        :
-                                                        ''
-                                                    }
-                                                </NavLink>
-                                            </ListItem>
-                                        )}
-                                       <Collapse in={subMenuOpen === index} timeout="auto">
-                                          <List className="list-unstyled py-0">
-                                             {authUser && subMenu.child_routes && subMenu.child_routes.map((nestedMenu, nestedKey) => {
-                                                if (authUser.hasPermissions(nestedMenu.permissions.map(p => p.name))) {
-                                                   return (
-                                                       <ListItem button component="li" key={nestedKey}  onClick={() => this.onToggleCollapseMenu(index)}>
-                                                          <NavLink activeClassName="item-active" to={nestedMenu.path}>
-                                                            <span className="menu pl-10 d-inline-block">
-                                                               {/*<NetworkBranchIntlMessages id={nestedMenu.menu_title} />*/}
-                                                               {nestedMenu.menu_title}
-                                                               {menu.new_item && menu.new_item === true ?
-                                                                  <Chip label="new" className="new-item" color="secondary" />
-                                                                  :
-                                                                  null
-                                                               }
-                                                            </span>
-                                                          </NavLink>
-                                                       </ListItem>
-                                                   )
+                                                   ''
                                                 }
+                                             </NavLink>
+                                          </ListItem>
+                                       )}
+                                    <Collapse in={subMenuOpen === index} timeout="auto">
+                                       <List className="list-unstyled py-0">
+                                          {authUser && subMenu.child_routes && subMenu.child_routes.map((nestedMenu, nestedKey) => {
+                                             if (authUser.hasPermissions(nestedMenu.permissions.map(p => p.name))) {
+                                                return (
+                                                   <ListItem button component="li" key={nestedKey} onClick={() => this.onToggleCollapseMenu(index)}>
+                                                      <NavLink activeClassName="item-active" to={nestedMenu.path}>
+                                                         <span className="menu pl-10 d-inline-block">
+                                                            {/*<NetworkBranchIntlMessages id={nestedMenu.menu_title} />*/}
+                                                            {nestedMenu.menu_title}
+                                                            {menu.new_item && menu.new_item === true ?
+                                                               <Chip label="new" className="new-item" color="secondary" />
+                                                               :
+                                                               null
+                                                            }
+                                                         </span>
+                                                      </NavLink>
+                                                   </ListItem>
+                                                )
+                                             }
 
-                                                return null;
-                                             })}
-                                          </List>
-                                       </Collapse>
-                                    </Fragment>
-                                )
-                             })}
-                          </List>
-                      }
-                   </Fragment>
-                </Collapse>
-             </Fragment>
+                                             return null;
+                                          })}
+                                       </List>
+                                    </Collapse>
+                                 </Fragment>
+                              )
+                           })}
+                        </List>
+                     }
+                  </Fragment>
+               </Collapse>
+            </Fragment>
          )
       } else if (menu.child_routes === null || menu.path) {
          return (
-             <ListItem button component="li">
-                <NavLink activeClassName="item-active" to={menu.path}>
-                   <ListItemIcon className="menu-icon">
-                      <i className={menu.menu_icon}></i>
-                   </ListItemIcon>
-                   <span className="menu">
-                  {/*<IntlMessages id={menu.menu_title} />*/}
-                      {menu.menu_title}
-               </span>
-                </NavLink>
-             </ListItem>
+            <>
+               {
+                  menu.key == "personnal_space" ?
+
+                     <ListItem button component="li">
+                        <NavLink activeClassName="item-active" onClick={this.enterInCommunitySpace} to=''>
+                           <ListItemIcon className="menu-icon">
+                              <i className={menu.menu_icon}></i>
+                           </ListItemIcon>
+                           <span className="menu">
+                              {/*<IntlMessages id={menu.menu_title} />*/}
+                              {menu.menu_title}
+                           </span>
+                        </NavLink>
+                     </ListItem> :
+                     <ListItem button component="li">
+                        <NavLink activeClassName="item-active" to={menu.path}>
+                           <ListItemIcon className="menu-icon">
+                              <i className={menu.menu_icon}></i>
+                           </ListItemIcon>
+                           <span className="menu">
+                              {/*<IntlMessages id={menu.menu_title} />*/}
+                              {menu.menu_title}
+                           </span>
+                        </NavLink>
+                     </ListItem>
+               }
+            </>
          );
       }
 
@@ -195,4 +222,12 @@ class NavMenuItem extends Component {
    }
 }
 
-export default NavMenuItem;
+const mapStateToProps = ({ communitySpace }) => {
+   return {
+      communitySpace: communitySpace
+   }
+};
+
+
+export default connect(mapStateToProps, { statusCommunitySpaceStatus })
+   (withStyles(styles, { withTheme: true })(NavMenuItem));

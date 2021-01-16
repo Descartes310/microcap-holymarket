@@ -55,6 +55,7 @@ import InitialisationProjectsCallReducer from './InitialisationProjectsCallReduc
 import ProjectStandardPresentationReducer from './ProjectStandardPresentationReducer';
 import ProjectsReducer from './ProjectsReducer';
 import FoldersReducer from './FoldersReducer';
+import CommunitySpace from './CommunityReducer';
 
 const reducers = combineReducers({
    settings,
@@ -110,6 +111,7 @@ const reducers = combineReducers({
    projectStandardPresentation: ProjectStandardPresentationReducer,
    projects: ProjectsReducer,
    folders: FoldersReducer,
+   communitySpace: CommunitySpace,
 });
 
 export default reducers;
