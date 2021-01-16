@@ -1,13 +1,14 @@
 /**
  * Chat
  */
+import {connect} from "react-redux";
 import React, { Component } from 'react';
 import Drawer from '@material-ui/core/Drawer';
 import Hidden from '@material-ui/core/Hidden';
 import { withStyles } from '@material-ui/core/styles';
 import { Helmet } from "react-helmet";
 import {COMMUNITY} from "Url/frontendUrl";
-// components
+import { statusCommunitySpaceStatus } from 'Actions/CommunityAction';
 import GroupsSidebar from "Routes/custom/community/groups/GroupsSidebar";
 import CommunityItem from "Routes/custom/community/groups/CommunityItem";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -66,6 +67,10 @@ class Groups extends Component {
     handleDrawerToggle = () => {
         this.setState({ mobileOpen: !this.state.mobileOpen });
     };
+
+    enterInCommunitySpace = () => {
+        this.props.statusCommunitySpaceStatus(true);
+    }
 
     join = () => {
         this.props.history.push(COMMUNITY.MEMBERS.LIST);
@@ -131,17 +136,16 @@ class Groups extends Component {
                         <CommunityItem onMenuIconPress={this.handleDrawerToggle} />
                         
                         <div className="text-center" style={{ position: "absolute", top: "60%", padding: 10, width: "100%" }}>
-                            {/*<MatButton variant="contained" color="primary" className="mr-10 mb-10 text-white btn-icon">Adherer</MatButton>
-                            <MatButton variant="contained" className="btn-info ml-10 mb-10 text-white btn-icon" onClick={this.join}>Rejoindre</MatButton>*/}
-                            <MatButton
+                            <MatButton variant="contained" color="primary" className="mr-10 mb-10 text-white btn-icon">Adherer</MatButton>
+                            <MatButton variant="contained" className="btn-info ml-10 mb-10 text-white btn-icon" onClick={this.enterInCommunitySpace}>Rejoindre</MatButton>
+                            {/* <MatButton
                                 variant="contained"
                                 className="btn-info ml-10 mb-10 text-white btn-icon"
                                 onClick={this.handleClickOpenInvation}
-                                /* onClick={() => history.push(COMMUNITY_MEMBER.INVITATIONS.CREATE)} */
                             >
                                 <i className="zmdi zmdi zmdi-plus mr-2" />
                                 Nouvelle invitation
-                            </MatButton>
+                            </MatButton> */}
 
                             <InvitationCreateDialog open={this.state.open} handleClose={this.handleCloseInvation} />
                         </div>
@@ -152,4 +156,12 @@ class Groups extends Component {
     }
 }
 
-export default withStyles(styles, { withTheme: true })(Groups);
+const mapStateToProps = ({ communitySpace  }) => {
+    return {
+        communitySpace: communitySpace
+    }
+};
+
+
+export default connect(mapStateToProps, {statusCommunitySpaceStatus})
+(withStyles(styles, { withTheme: true })(Groups));

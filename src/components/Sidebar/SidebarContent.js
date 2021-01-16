@@ -27,22 +27,22 @@ class SidebarContent extends Component {
 	render() {
 		const { sidebarMenus,  } = this.props.sidebar;
 		const { authUser } = this.props;
-
+		const menuType = authUser.user.profile.name.toString().toLowerCase();
 		return (
 			<div className="rct-sidebar-nav">
 					<nav className="navigation">
 					<List className="rct-mainMenu p-0 m-0 list-unstyled">
-						{authUser && sidebarMenus.menus.map((menu, key) => {
-							if (authUser.hasPermissions(menu.permissions.map(i => i.name))) {
+						{authUser && sidebarMenus[this.props.communitySpace.status ? 'community' : menuType].map((menu, key) => {
+							// if (authUser.hasPermissions(menu.permissions.map(i => i.name))) {
 								return (
 									<NavMenuItem
 										key={key}
 										menu={menu}
 										authUser={authUser}
-										onToggleMenu={() => this.toggleMenu(menu, 'menus')}
+										onToggleMenu={() => this.toggleMenu(menu, this.props.communitySpace.status ? 'community' : menuType)}
 									/>
 								);
-							}
+							// }
 							return null;
 						})}
 					</List>
@@ -53,8 +53,8 @@ class SidebarContent extends Component {
 }
 
 // map state to props
-const mapStateToProps = ({ sidebar, settings, authUser }) => {
-	return { sidebar, settings, authUser: authUser.data };
+const mapStateToProps = ({ sidebar, settings, authUser, communitySpace }) => {
+	return { sidebar, settings, authUser: authUser.data, communitySpace };
 };
 
 export default withRouter(connect(mapStateToProps, {
