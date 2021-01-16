@@ -26,12 +26,15 @@ class InvitationsListType extends Component {
         }
     }
 
+    
+
     componentDidMount() {
-        this.props.getInvitationsPending();
+        this.props.getInvitationsPending(this.props.authUser.user.id);
     }
 
     onSearchChanged = (event) => {
         this.setState({searched: event.target.value});
+        console.log('event', event)
     };
 
     handleSearch = (value, data) => {
@@ -55,8 +58,8 @@ class InvitationsListType extends Component {
             return (<RctSectionLoader/>)
         }
 
-        let orderedItems = this.handleSearch(this.state.searched, comInvitationsPending.filter(invitation => invitation.type === null));
-
+        let orderedItems = this.handleSearch(this.state.searched, comInvitationsPending.filter(invitation => invitation.type === this.props.type));
+       
         return (
             <>
                 <div className="page-list">
@@ -78,7 +81,7 @@ class InvitationsListType extends Component {
                                                     name="search"
                                                     value={this.state.searched}
                                                     placeholder={'Recherchez...'}
-                                                    onChange={event => this.onSearchChanged(event)}
+                                                    onChange={this.onSearchChanged}
                                                 />
                                             </InputGroup>
                                         </FormControl>

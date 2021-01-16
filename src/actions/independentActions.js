@@ -233,8 +233,8 @@ export const createUsers = (data, branchId) => {
     return makeRequest('post', url, data);
 };
 
-export const createCommunityNonConventionated = (data, branchId) => {
-    const url = `${COMMUNITY_MEMBER.USER.CREATE.NON_CONVENTIONAL}?branch_id=${branchId}`;
+export const createCommunityNonConventionated = (data, branchId, userId) => {
+    const url = `${COMMUNITY_MEMBER.USER.CREATE.NON_CONVENTIONAL}?branch_id=${branchId}&user_id=${userId}`;
     return makeRequest('post', url, data);
 };
 
@@ -257,12 +257,19 @@ export const sendManyInvitations = (groupId, usersId) => {
     return makeRequest('get', url);
 };
 
-export const sendRequestInvitation = (groupId) => {
-    let url = joinBaseUrlWithParams(COMMUNITY_MEMBER.INVITATIONS.SEND.REQUEST, [{
-        param: 'group_id',
-        value: groupId,
-    }]);
-    return makeRequest('get', url);
+export const sendRequestInvitation = (groupId, userId) => {
+    let url = joinBaseUrlWithParams(COMMUNITY_MEMBER.INVITATIONS.SEND.REQUEST, [
+        {
+            param: 'group_id',
+            value: groupId,
+        },
+        {
+            param: 'user_id',
+            value: userId,
+        }
+
+    ]);
+    return makeRequest('post', url, null, {shouldSkipDataParsing: true});
 };
 
 export const acceptInvitation = (invitationId) => {
@@ -291,11 +298,21 @@ export const deleteInvitation = (invitationId) => {
 
 /********************************  ***************************************** */
 export const sendInvitationCommunityMember = (data) => {
-    const url = joinBaseUrlWithParams(COMMUNITY_MEMBER.INVITATIONS.SEND.TO_GROUP, [{
-        param: 'group_id',
-        value: data.group_id,
-    }]);
-    return makeRequest('post', url, data);
+    const url = joinBaseUrlWithParams(COMMUNITY_MEMBER.INVITATIONS.SEND.ONE, [
+        {
+            param: 'group_id',
+            value: data.group_id,
+        },
+        {
+            param: 'user_id',
+            value: data.name, 
+        },
+        {
+            param: 'id',
+            value: data.user_current_id, 
+        }
+]);
+    return makeRequest('post', url, data, {shouldSkipDataParsing: true});
 };
 /********************************************************************** */
 /*****************************  ***************************************** */

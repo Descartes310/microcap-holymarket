@@ -9,6 +9,7 @@ import {AbilityContext} from "Permissions/Can";
 import Permission from "Enums/Permissions";
 import CustomList from "Components/CustomList";
 import Button from "@material-ui/core/Button";
+
 import {NotificationManager} from "react-notifications";
 import {ERROR_500} from "Constants/errors";
 import {getInvitationsPending} from "Actions/GeneralActions";
@@ -17,16 +18,17 @@ class AllGroups extends Component {
     static contextType = AbilityContext;
 
     componentDidMount() {
-        this.props.getUserCommunitiesNotIn();
+        this.props.getUserCommunitiesNotIn(this.props.authUser.user.id);
     }
 
     onEnterClick = (group) => {
+        console.log('user use and group',this.props.authUser.user.id, group.id)
         this.props.setRequestGlobalAction(true);
-        sendRequestInvitation(group.id)
+        sendRequestInvitation(group.id, this.props.authUser.user.id)
             .then(() => {
                 NotificationManager.success("Votre demande pour le groupe " + group.label + " a été envoyé");
-                this.props.getUserCommunitiesNotIn();
-                this.props.getInvitationsPending();
+                this.props.getUserCommunitiesNotIn(this.props.authUser.user.id);
+                this.props.getInvitationsPending(this.props.authUser.user.id);
             })
             .catch(() => {
                 NotificationManager.error(ERROR_500);
@@ -34,8 +36,11 @@ class AllGroups extends Component {
             .finally(() => this.props.setRequestGlobalAction(false));
     };
 
+    
+
     render() {
         const { userCommunitiesNotIn, loading, error } = this.props;
+        console.log('userCommunitiesNotIn', userCommunitiesNotIn);
 
         if (!loading && userCommunitiesNotIn && userCommunitiesNotIn.length === 0) {
             return (
@@ -106,6 +111,7 @@ class AllGroups extends Component {
                                         ))}
                                         </tbody>
                                     </table>
+                    
                                 </div>
                             )}
                         </>

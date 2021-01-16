@@ -160,21 +160,21 @@ export const COMMUNITY_MEMBER = {
     USER: {
         GROUPS: {
             GET_ALL: 'groups/communities/user/me',
-            NOT_IN: 'groups/communities/user/me/not-in',
+            NOT_IN: 'groups/communities/user/{id}/not-in',
             ADMIN: 'groups/communities/user/admin/me',
             GET_MEMBERS: 'groups/communities/{id}/members',
+            GET_COMMUNITIES: 'groups/communities/users/{id}',
         },
         CREATE: {
             NON_CONVENTIONAL: 'groups/communities/non-conventionated'
         }
     },
     INVITATIONS: {
-        GET_ALL: 'groups/communities/pending/invitation/me',
+        GET_ALL: 'groups/communities/pending/invitation/{id}',
         SEND: {
-            ONE: 'groups/communities/send/invitation/community/{group_id}/user/{user_id}',
+            ONE: 'groups/communities/send/invitation/community/{group_id}/users/{user_id}/invited/{id}',
             MANY: 'groups/communities/send/invitation/community/{group_id}',
-            REQUEST: 'groups/communities/send/request/community/{group_id}',
-
+            REQUEST: 'groups/communities/send/request/community/{group_id}/users/{user_id}',
             TO_USER: 'groups/communities/send/invitation/community/user/{user_id}',
             TO_GROUP: 'groups/communities/send/invitation/community/{group_id}',
         },
