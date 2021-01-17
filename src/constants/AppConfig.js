@@ -131,7 +131,7 @@ const AppConfig = {
       //baseUrl: 'http://192.168.1.8:8080/',
       baseUrl: 'http://178.170.41.113:8080/',
       // baseUrl: 'http://192.168.43.83:8080/',
-      //3..1baseUrl: 'http://localhost:8080/',
+      // baseUrl: 'http://localhost:8080/',
       version: '',
       forbiddenCode: 401,
      },

@@ -267,15 +267,38 @@ export default {
       },
    ],
    platform_manager: [
-      // {
-      //    "menu_title": "sidebar.branch",
-      //    "menu_icon": "zmdi zmdi-accounts",
-      //    "path": NETWORK.LIST,
-      //    "new_item": false,
-      //    "child_routes": null,
-      //    "permissions": [Branch.permissionsRelated.READ],
-      //    'subject': Branch
-      // },
+      {
+         "menu_title": "Utilisateurs",
+         "menu_icon": "zmdi zmdi-accounts",
+         "new_item": false,
+         "permissions": [Permission.navLinks.users.viewMenu],
+         "child_routes": [
+            {
+               "menu_title": "Utilisateurs",
+               "new_item": false,
+               "path": USERS.USERS.SELF,
+               "permissions": [Permission.navLinks.users.childLinks.users.viewMenu],
+            },
+            {
+               "menu_title": "Roles",
+               "new_item": false,
+               "path": USERS.USERS_PROFILE.SELF,
+               "permissions": [Permission.navLinks.users.childLinks.userProfile.viewMenu],
+            },
+            {
+               "menu_title": "Permissions",
+               "new_item": false,
+               "path": USERS.USERS_PROFILE.USERS_PERMISSION.LIST,
+               "permissions": [Permission.navLinks.users.childLinks.userProfile.viewMenu],
+            },
+            {
+               "menu_title": "Compte utilisateurs",
+               "new_item": false,
+               "path": USERS.ACCOUNTS.SELF,
+               "permissions": [Permission.navLinks.users.childLinks.accounts.viewMenu],
+            },
+         ],
+      },
       {
          "menu_title": "Réseau",
          "menu_icon": "zmdi zmdi-accounts-list",
@@ -285,7 +308,7 @@ export default {
          "permissions": [Permission.navLinks.network.viewMenu],
          "child_routes": [
             {
-               "menu_title": "Liste",
+               "menu_title": "Consulter",
                "new_item": false,
                "path": NETWORK.LIST,
                // "permissions": [Permission.branch.viewList],
@@ -300,7 +323,7 @@ export default {
                "child_routes": [
                   {
                      "path": NETWORK.ONGOING_CREATE,
-                     "menu_title": "En cours",
+                     "menu_title": "Editer",
                      "permissions": [Permission.navLinks.network.viewMenu],
                   },
                   {
@@ -310,22 +333,63 @@ export default {
                   },
                ]
             },
-            {
-               "menu_title": "Configuration",
-               "new_item": false,
-               "path": NETWORK.CONFIGURATION.SELF,
-               "permissions": [Permission.navLinks.network.childLinks.configuration.viewMenu],
-            },
-            {
-               "menu_title": "Couverture",
-               "path": NETWORK.COVERAGE,
-               "new_item": false,
-               "permissions": [Permission.navLinks.network.childLinks.coverage.viewMenu],
-            },
+            // {
+            //    "menu_title": "Configuration",
+            //    "new_item": false,
+            //    "path": NETWORK.CONFIGURATION.SELF,
+            //    "permissions": [Permission.navLinks.network.childLinks.configuration.viewMenu],
+            // },
+            // {
+            //    "menu_title": "Couverture",
+            //    "path": NETWORK.COVERAGE,
+            //    "new_item": false,
+            //    "permissions": [Permission.navLinks.network.childLinks.coverage.viewMenu],
+            // },
          ]
       },
+      {
+         "menu_title": "Accès",
+         "menu_icon": "zmdi zmdi-key",
+         "new_item": false,
+         "path": ACCESS.SELF,
+         // "permissions": [Permission.navLinks.COMMUNITY_MEMBER.viewMenu],
+         "permissions": [],
+         "child_routes": null
+      }
    ],
    exploitant_reseau: [
+      {
+         "menu_title": "Utilisateurs",
+         "menu_icon": "zmdi zmdi-accounts",
+         "new_item": false,
+         "permissions": [Permission.navLinks.users.viewMenu],
+         "child_routes": [
+            {
+               "menu_title": "Utilisateurs",
+               "new_item": false,
+               "path": USERS.USERS.SELF,
+               "permissions": [Permission.navLinks.users.childLinks.users.viewMenu],
+            },
+            {
+               "menu_title": "Roles",
+               "new_item": false,
+               "path": USERS.USERS_PROFILE.SELF,
+               "permissions": [Permission.navLinks.users.childLinks.userProfile.viewMenu],
+            },
+            {
+               "menu_title": "Permissions",
+               "new_item": false,
+               "path": USERS.USERS_PROFILE.USERS_PERMISSION.LIST,
+               "permissions": [Permission.navLinks.users.childLinks.userProfile.viewMenu],
+            },
+            {
+               "menu_title": "Compte utilisateurs",
+               "new_item": false,
+               "path": USERS.ACCOUNTS.SELF,
+               "permissions": [Permission.navLinks.users.childLinks.accounts.viewMenu],
+            },
+         ],
+      },
       {
          "menu_title": "Réseau",
          "menu_icon": "zmdi zmdi-accounts-list",
@@ -344,6 +408,130 @@ export default {
                "menu_title": "Couverture",
                "path": NETWORK.COVERAGE,
                "new_item": false,
+               "permissions": [],
+            },
+         ]
+      },
+      {
+         "menu_title": "Produits & Services",
+         "menu_icon": "zmdi zmdi-shopping-cart",
+         "new_item": false,
+         "path": PRODUCT.LIST,
+         // "permissions": [Permission.navLinks.COMMUNITY_MEMBER.viewMenu],
+         "permissions": [],
+         "child_routes": null
+      },
+      {
+         "menu_title": "Gestion commercial",
+         "menu_icon": "zmdi zmdi-case",
+         "new_item": false,
+         "permissions": [],
+         "child_routes": [
+            {
+               "menu_title": "Type d'opération commerciale",
+               "new_item": false,
+               "path": COMMERCIAL_MANAGEMENT.COMMERCIAL_OPERATION_TYPE.SELF,
+               "permissions": [],
+            },
+            {
+               "path": COMMERCIAL_MANAGEMENT.COMMERCIAL_OPERATION.SELF,
+               "new_item": false,
+               "menu_title": "Opération commerciale",
+               "permissions": [],
+            },
+            {
+               "path": COMMERCIAL_MANAGEMENT.COMMERCIAL_OFFER.SELF,
+               "new_item": false,
+               "menu_title": "Offre commerciale",
+               "permissions": [],
+            },
+         ]
+      },
+      {
+         "menu_title": "Projets",
+         "menu_icon": "zmdi zmdi-widgets",
+         "new_item": false,
+         "permissions": [],
+         "type_multi": true,
+         "child_routes": [
+            {
+               "menu_title": "Configuration",
+               "menu_icon": "zmdi zmdi-case",
+               "new_item": false,
+               "permissions": [
+               ],
+               "child_routes": [
+                  {
+                     "menu_title": "Ouvrages",
+                     "new_item": false,
+                     "permissions": [Permission.projects.configuration.handiwork.viewOne],
+                     "path": PROJECTS.CONFIGURATION.WORKS.SELF,
+                  },
+                  {
+                     "menu_title": "Options d'initialisation",
+                     "new_item": false,
+                     "permissions": [Permission.projects.configuration.initialisationOption.viewOne],
+                     "path": PROJECTS.CONFIGURATION.INITIALISATION.SELF,
+                  },
+                  {
+                     "menu_title": "Standard de présentation",
+                     "new_item": false,
+                     "permissions": [Permission.projects.configuration.standardPresentation.viewOne],
+                     "path": PROJECTS.CONFIGURATION.STANDARD.SELF,
+                  },
+               ],
+            },
+            {
+               "path": PROJECTS.PROJECTS.LIST,
+               "new_item": false,
+               "menu_title": "Projets",
+               "permissions": [Permission.projects.project.viewList],
+            },
+            {
+               "path": PROJECTS.POST_PROJETS.LIST,
+               "new_item": false,
+               "menu_title": "Poste projets",
+              "permissions": [Permission.projects.projectPost.viewOne],
+            },
+            {
+               "path": PROJECTS.PROJECTS.EDITION.SELF,
+               "new_item": false,
+               "menu_title": "Edition",
+               "permissions": [Permission.projects.edition.viewOne],
+            },
+            {
+               "path": PROJECTS.PROJECTS.CONSULTATION,
+               "new_item": false,
+               "menu_title": "Consultation",
+               "permissions": [],
+            },
+            {
+               "path": PROJECTS.FOLDERS.SELF,
+               "new_item": false,
+               "menu_title": "Gestion des projets",
+               "permissions": [Permission.navLinks.projects.folders.viewMenu],
+            }
+         ]
+      },
+      {
+         "menu_title": "Accès",
+         "menu_icon": "zmdi zmdi-key",
+         "new_item": false,
+         "path": ACCESS.SELF,
+         // "permissions": [Permission.navLinks.COMMUNITY_MEMBER.viewMenu],
+         "permissions": [],
+         "child_routes": null
+      },
+      {
+         "menu_title": "Paramètres",
+         "menu_icon": "zmdi zmdi-settings",
+         "new_item": false,
+         "permissions": [],
+         "child_routes": [
+            {
+               "menu_title": "Notification",
+               "new_item": false,
+               "path": SETTINGS.NOTIFICATION.SELF,
                "permissions": [],
             },
          ]
