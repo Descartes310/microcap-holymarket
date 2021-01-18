@@ -105,25 +105,6 @@ export const USERS = {
     }
 };
 
-export const COMMUNITY_MEMBER = {
-    SELF: '/community',
-    GROUPS: {
-        SELF: '/community/groups',
-        LIST: '/community/groups/list',
-        ME: '/community/groups/me',
-        CREATE: '/community/groups/create',
-    },
-    INVITATIONS: {
-        SELF: '/community/invitations',
-        LIST: {
-            SEND: '/community/invitations/send',
-            RECEIVED: '/community/invitations/list',
-            REQUEST: '/community/invitations/integration-request',
-        },
-        CREATE: '/community/invitations/create'
-    },
-};
-
 export const COMMERCIAL_MANAGEMENT = {
     COMMERCIAL_OFFER: {
         SELF: '/commercial/offer',
@@ -277,7 +258,32 @@ export const COMMUNITY = {
         SELF: '/community-t/activities',
         LIST: '',
         CREATE: ''
-    }
+    },
+    INVITATIONS: {
+        SELF: '/community-t/members/invitation',
+        LIST: {
+            SEND: '/community-t/members/invitation/send',
+            RECEIVED: '/community-t/members/invitation/integration-request',
+        },
+        CREATE: '/community-t/members/invitation/create'
+    },
+};
+
+export const COMMUNITY_MEMBER = {
+    SELF: '/community',
+    GROUPS: {
+        SELF: '/community/groups',
+        LIST: '/community/groups/list',
+        ME: '/community/groups/me',
+        CREATE: '/community/groups/create',
+    },
+    INVITATIONS: {
+        SELF: '/community/invitation',
+        LIST: {
+            RECEIVED: '/community/invitation/list',
+            REQUEST: '/community/invitation/integration-request',
+        },
+    },
 };
 
 

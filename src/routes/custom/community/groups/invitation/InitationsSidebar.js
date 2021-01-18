@@ -17,7 +17,7 @@ import UserProfileCreate from "Routes/custom/users/user-profile/Create";
 import CommunityCreate from "Routes/custom/community/groups/CommunityCreate";
 import classnames from "classnames";
 import ListItem from "@material-ui/core/ListItem";
-import {COMMUNITY} from "Url/frontendUrl";
+import {COMMUNITY_MEMBER} from "Url/frontendUrl";
 import InvitationType from "Enums/InvitationType";
 import InvitationCreateDialog from './InvitationCreateDialog'
 
@@ -44,7 +44,6 @@ class InvitationsSidebar extends Component {
 
         const nbInvReceived = comInvitationsPending ? comInvitationsPending.filter(i => i.type === InvitationType.INVITATION).length : 0;
         const nbInvRequest = comInvitationsPending ? comInvitationsPending.filter(i => i.type === InvitationType.REQUEST).length : 0;
-        const nbInvSend = comInvitationsPending ? comInvitationsPending.filter(i => i.type === InvitationType.INVITATION_SEND).length : 0;
 
         return (
             <>
@@ -62,12 +61,12 @@ class InvitationsSidebar extends Component {
                                     <List className="p-0 mb-0 filters list-unstyled">
                                         <ListItem
                                             button
-                                            onClick={() => this.props.history.push(COMMUNITY.INVITATIONS.LIST.RECEIVED)}
+                                            onClick={() => this.props.history.push(COMMUNITY_MEMBER.INVITATIONS.LIST.RECEIVED)}
                                             // className={classnames({ 'item-active': selectedFolder === folder.id })}
                                         >
                                             <i className={`mr-20 zmdi zmdi-inbox`} />
                                             <span className="filter-title">
-                                                Demande d'adhésions
+                                                Invitations Reçus
                                                 {comInvitationsPending  && nbInvReceived > 0 && (<Badge className="ml-2" color="primary" pill>
                                                     {comInvitationsPending.filter(i => i.type === InvitationType.INVITATION).length}
                                                 </Badge>)}
@@ -75,14 +74,14 @@ class InvitationsSidebar extends Component {
                                         </ListItem>
                                         <ListItem
                                             button
-                                            onClick={() => this.props.history.push(COMMUNITY.INVITATIONS.LIST.SEND)}
+                                            onClick={() => this.props.history.push(COMMUNITY_MEMBER.INVITATIONS.LIST.REQUEST)}
                                             // className={classnames({ 'item-active': selectedFolder === folder.id })}
                                         >
-                                            <i className={`mr-20 zmdi zmdi-mail-send`} />
+                                            <i className={`mr-20 zmdi zmdi-view-web`} />
                                             <span className="filter-title">
-                                                Invitations Envoyés
-                                                {comInvitationsPending && nbInvSend > 0 && (<Badge className="ml-2" color="primary" pill>
-                                                    {comInvitationsPending.filter(i => i.type === InvitationType.INVITATION_SEND).length}
+                                                Demande d'adhesion
+                                                {comInvitationsPending && nbInvRequest > 0 && (<Badge className="ml-2" color="primary" pill>
+                                                    {comInvitationsPending.filter(i => i.type === InvitationType.REQUEST).length}
                                                 </Badge>)}
                                             </span>
                                         </ListItem>

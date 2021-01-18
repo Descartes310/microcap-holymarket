@@ -7,7 +7,7 @@ import IconButton from "@material-ui/core/IconButton";
 import AppBar from "@material-ui/core/AppBar/AppBar";
 import AppsIcon from '@material-ui/icons/Apps';
 import {Switch, Route, Redirect} from "react-router-dom";
-import {COMMUNITY_MEMBER} from "Url/frontendUrl";
+import {COMMUNITY} from "Url/frontendUrl";
 import InvitationsSidebar from "./InitationsSidebar";
 import InvitationsReceived from "./InvitationsReceived";
 import InvitationsSend from "./InvitationsSend";
@@ -113,11 +113,11 @@ class Invitations extends Component {
                     </Hidden>
                     <div className={`chat-content ${classes.content}`}>
                         <Switch>
-                            <Redirect exact from={`${match.url}/`} to={COMMUNITY_MEMBER.INVITATIONS.LIST.RECEIVED} />
-                            <Route path={COMMUNITY_MEMBER.INVITATIONS.LIST.RECEIVED} component={InvitationsReceived} />
-                            <Route path={COMMUNITY_MEMBER.INVITATIONS.LIST.SEND} component={InvitationsSend} />
-                            <Route path={COMMUNITY_MEMBER.INVITATIONS.LIST.REQUEST} component={IntegrationRequest} />
-                            <Route path={COMMUNITY_MEMBER.INVITATIONS.CREATE} component={InvitationCreate} />
+                            <Redirect exact from={`${match.url}/`} to={COMMUNITY.INVITATIONS.LIST.RECEIVED} />
+                            <Route path={COMMUNITY.INVITATIONS.LIST.RECEIVED} component={InvitationsReceived} />
+                            <Route path={COMMUNITY.INVITATIONS.LIST.SEND} component={InvitationsSend} />
+                            <Route path={COMMUNITY.INVITATIONS.LIST.REQUEST} component={IntegrationRequest} />
+                            <Route path={COMMUNITY.INVITATIONS.CREATE} component={InvitationCreate} />
                         </Switch>
                     </div>
                 </div>
