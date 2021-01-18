@@ -116,8 +116,6 @@ class Invitations extends Component {
                             <Redirect exact from={`${match.url}/`} to={COMMUNITY.INVITATIONS.LIST.RECEIVED} />
                             <Route path={COMMUNITY.INVITATIONS.LIST.RECEIVED} component={InvitationsReceived} />
                             <Route path={COMMUNITY.INVITATIONS.LIST.SEND} component={InvitationsSend} />
-                            <Route path={COMMUNITY.INVITATIONS.LIST.REQUEST} component={IntegrationRequest} />
-                            <Route path={COMMUNITY.INVITATIONS.CREATE} component={InvitationCreate} />
                         </Switch>
                     </div>
                 </div>

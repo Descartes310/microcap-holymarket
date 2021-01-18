@@ -119,7 +119,6 @@ export const getAccountsByBranch = (branchId) => {
 };
 
 export const getMembersOfCommunity = (group) => {
-    console.log('LE GROUPE EST => ', group);
     const url = joinBaseUrlWithParams(COMMUNITY_MEMBER.USER.GROUPS.GET_MEMBERS, [{
         param: 'id',
         value: group,
@@ -263,6 +262,22 @@ export const sendManyInvitations = (groupId, usersId) => {
             value: groupId,
     }]);
     url = `${url}?users=${encodeURIComponent(usersId)}`;
+    return makeRequest('get', url);
+};
+
+export const invitationSent = (groupId) => {
+    let url = joinBaseUrlWithParams(COMMUNITY_MEMBER.INVITATIONS.SEND.INVITATIONS, [{
+            param: 'id',
+            value: groupId,
+    }]);
+    return makeRequest('get', url);
+};
+
+export const requestsReceived = (groupId) => {
+    let url = joinBaseUrlWithParams(COMMUNITY_MEMBER.INVITATIONS.SEND.REQUESTS, [{
+            param: 'id',
+            value: groupId,
+    }]);
     return makeRequest('get', url);
 };
 

@@ -29,7 +29,6 @@ class InvitationsListType extends Component {
     
 
     componentDidMount() {
-        console.log('JE SUIS LA !')
         this.props.getInvitationsPending(this.props.authUser.user.id);
     }
 

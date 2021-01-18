@@ -49,7 +49,7 @@ class InvitationItem extends Component {
     handleActiveConfirmed = () => {
         this.props.setRequestGlobalAction(true);
         const func = this.invitationType === InvitationType.INVITATION_SEND ? cancelInvitation : deleteInvitation;
-        func(this.props.invitation.id)
+        func(this.props.invitation.invitationId)
             .then(() => {
                 NotificationManager.success(this.invitationType === InvitationType.INVITATION
                     ? "Invitation refusé avec succès"
@@ -57,12 +57,15 @@ class InvitationItem extends Component {
                         ? "Invitation annulé avec succès"
                         : "Demande annulé avec succès"
                 );
-                this.props.getInvitationsPending(this.props.authUser.user.id);
+                this.props.reload();
             })
             .catch(() => {
                 NotificationManager.error(ERROR_500);
             })
-            .finally(() => this.props.setRequestGlobalAction(false));
+            .finally(() => {
+                this.props.setRequestGlobalAction(false);
+                this.setState({showWarningBox: false})
+            });
     };
 
     render() {

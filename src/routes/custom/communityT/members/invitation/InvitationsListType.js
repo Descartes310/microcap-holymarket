@@ -1,20 +1,21 @@
 import React, { Component } from 'react';
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 import IntlMessages from 'Util/IntlMessages';
-import {getInvitationsPending, setRequestGlobalAction} from "Actions";
-import {injectIntl} from "react-intl";
-import {Fab, withStyles} from "@material-ui/core";
-import {withRouter} from "react-router-dom";
-import {AbilityContext} from "Permissions/Can";
+import { setRequestGlobalAction } from "Actions";
+import { injectIntl } from "react-intl";
+import { Fab, withStyles } from "@material-ui/core";
+import { withRouter } from "react-router-dom";
+import { AbilityContext } from "Permissions/Can";
 import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
 import FormControl from "@material-ui/core/FormControl";
-import {Input, InputGroup, InputGroupAddon, Media} from "reactstrap";
+import { Input, InputGroup, InputGroupAddon, Media } from "reactstrap";
 import IconButton from "@material-ui/core/IconButton";
-import {globalSearch} from "Helpers/helpers";
+import { globalSearch } from "Helpers/helpers";
+import { requestsReceived, invitationSent } from "Actions/independentActions";
 import InvitationType from "Enums/InvitationType";
 import Avatar from "@material-ui/core/Avatar";
-import {Scrollbars} from "react-custom-scrollbars";
+import { Scrollbars } from "react-custom-scrollbars";
 import InvitationItem from "./InvitationItem";
 
 class InvitationsListType extends Component {
@@ -23,19 +24,39 @@ class InvitationsListType extends Component {
         super(props);
         this.state = {
             searched: '',
+            loading: true,
+            datas: []
         }
     }
 
-    
-
     componentDidMount() {
-        console.log('JE SUIS LA !')
-        this.props.getInvitationsPending(this.props.authUser.user.id);
+        this.getDatas()
+    }
+
+    getDatas = () => {
+        if (this.props.type == InvitationType.INVITATION) {
+            this.getRequests();
+        }
+        if (this.props.type == InvitationType.INVITATION_SEND) {
+            this.getInvitations();
+        }
     }
 
     onSearchChanged = (event) => {
-        this.setState({searched: event.target.value});
+        this.setState({ searched: event.target.value });
         console.log('event', event)
+    };
+
+    getInvitations = () => {
+        invitationSent(this.props.communitySpace.data).then(data => {
+            this.setState({ datas: data });
+        }).finally(() => this.setState({ loading: false }))
+    };
+
+    getRequests = () => {
+        requestsReceived(this.props.communitySpace.data).then(data => {
+            this.setState({ datas: data });
+        }).finally(() => this.setState({ loading: false }))
     };
 
     handleSearch = (value, data) => {
@@ -49,25 +70,21 @@ class InvitationsListType extends Component {
 
 
     render() {
-        const { classes, comInvitationsPending, loading, type } = this.props;
-
-        if (!loading && comInvitationsPending === null) {
-            return (<p>Un problème est survenue</p>)
-        }
+        const { classes, title } = this.props;
+        const { loading, datas } = this.state;
 
         if (loading) {
-            return (<RctSectionLoader/>)
+            return (<RctSectionLoader />)
         }
 
-        let orderedItems = this.handleSearch(this.state.searched, comInvitationsPending.filter(invitation => invitation.type === this.props.type));
-       
         return (
             <>
                 <div className="page-list">
-                    {loading || orderedItems === null
-                        ? (<RctSectionLoader/>)
+                    {loading
+                        ? (<RctSectionLoader />)
                         : (
                             <RctCollapsibleCard>
+                                <h1 style={{ marginBottom: '30px' }}>{title}</h1>
                                 <div className="align-items-center mb-30 px-15 row">
                                     <div className={classes.flex}>
                                         <FormControl>
@@ -88,30 +105,31 @@ class InvitationsListType extends Component {
                                         </FormControl>
                                     </div>
                                     <p className={classes.title}>
-                                        {orderedItems.length} invitation(s) reçu(s)
+                                        {datas.length} invitation(s) reçu(s)
                                     </p>
                                 </div>
                                 <>
-                                    {orderedItems.length == 0 ? (
+                                    {datas.length == 0 ? (
                                         <div className="d-flex justify-content-center align-items-center py-50">
                                             <h4>
                                                 Aucune invitation trouvée
                                             </h4>
                                         </div>
                                     ) : (
-                                        <>
-                                            <Scrollbars className="rct-scroll" autoHeight autoHeightMin={100} autoHeightMax={400} autoHide>
-                                                <ul className="new-mail mb-0 list-unstyled">
-                                                    {orderedItems.map((invitation, key) => (
-                                                        <InvitationItem
-                                                            key={key}
-                                                            invitation={invitation}
-                                                        />
-                                                    ))}
-                                                </ul>
-                                            </Scrollbars>
-                                        </>
-                                    )}
+                                            <>
+                                                <Scrollbars className="rct-scroll" autoHeight autoHeightMin={100} autoHeightMax={400} autoHide>
+                                                    <ul className="new-mail mb-0 list-unstyled">
+                                                        {datas.map((invitation, key) => (
+                                                            <InvitationItem
+                                                                key={key}
+                                                                reload={this.getDatas}
+                                                                invitation={invitation}
+                                                            />
+                                                        ))}
+                                                    </ul>
+                                                </Scrollbars>
+                                            </>
+                                        )}
                                 </>
                             </RctCollapsibleCard>
                         )
@@ -122,9 +140,9 @@ class InvitationsListType extends Component {
     }
 }
 
-// map state to props
-const mapStateToProps = ({ requestGlobalLoader, comInvitationsPending, authUser  }) => {
-    return { requestGlobalLoader, authUser: authUser.data, loading: comInvitationsPending.loading, comInvitationsPending: comInvitationsPending.data, error: comInvitationsPending.error }
+
+const mapStateToProps = ({ requestGlobalLoader, authUser, communitySpace }) => {
+    return { requestGlobalLoader, authUser: authUser.data, communitySpace: communitySpace };
 };
 
 const useStyles = theme => ({
@@ -150,4 +168,4 @@ const useStyles = theme => ({
 (withStyles(useStyles, { withTheme: true })(withRouter(injectIntl(InvitationsListType))));
  */
 
-export default connect(mapStateToProps, {getInvitationsPending, setRequestGlobalAction})(withStyles(useStyles, { withTheme: true })(withRouter(InvitationsListType)));
+export default connect(mapStateToProps, { setRequestGlobalAction })(withStyles(useStyles, { withTheme: true })(withRouter(InvitationsListType)));
