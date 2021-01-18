@@ -13,7 +13,7 @@ const TabContent = ({ match }) => {
                 <Redirect exact from={`${match.url}/`} to={COMMUNITY_MEMBER.GROUPS.ME} />
                 <Route path={COMMUNITY_MEMBER.GROUPS.ME} component={Groups} />
                 <Route path={COMMUNITY_MEMBER.GROUPS.LIST} component={AllGroups} />
-                <Route path={COMMUNITY_MEMBER.INVITATIONS.SELF} component={Invitations} />
+                {/* <Route path={COMMUNITY_MEMBER.INVITATIONS.SELF} component={Invitations} /> */}
             </Switch>
         </div>
     )

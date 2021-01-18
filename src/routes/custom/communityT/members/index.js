@@ -46,7 +46,7 @@ class Members extends Component {
         return (
             <div className="mx-sm-4">
                 <div className="userProfile-wrapper overflow-hidden">
-                <PageTitleBar title={"Communauté - Membres"} match={this.props.match} enableBreadCrumb={false} />
+                {/* <PageTitleBar title={"Communauté - Membres"} match={this.props.match} enableBreadCrumb={false} /> */}
                 <RctCard>
                     <div className="rct-tabs">
                         <AppBar position="static">

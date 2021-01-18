@@ -30,7 +30,6 @@ class GroupsSidebar extends Component {
 
     render() {
         const { userCommunities, loading } = this.props;
-        console.log('user Community', userCommunities);
 
         if (loading) {
             return (<RctSectionLoader/>)

@@ -5,4 +5,5 @@ export default class UserType extends BaseEnum {
     static USER = 'USER';
     static MANAGER = 'MANAGER';
     static ORGANISATION = 'ORGANISATION';
+    static PERSON = 'PERSON';
 }

@@ -21,7 +21,7 @@ import {Button, Input, InputGroup, InputGroupAddon} from "reactstrap";
 import FormControl from "@material-ui/core/FormControl";
 import IconButton from "@material-ui/core/IconButton";
 import AppBar from "@material-ui/core/AppBar/AppBar";
-import {USERS} from "Url/frontendUrl";
+import {USERS} from "../../../communityT/members/invitation/node_modules/Url/frontendUrl";
 import {withStyles} from "@material-ui/core";
 import {globalSearch} from "Helpers/helpers";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";

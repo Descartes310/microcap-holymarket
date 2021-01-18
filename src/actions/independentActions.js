@@ -118,6 +118,15 @@ export const getAccountsByBranch = (branchId) => {
     return makeRequest('get', url);
 };
 
+export const getMembersOfCommunity = (group) => {
+    console.log('LE GROUPE EST => ', group);
+    const url = joinBaseUrlWithParams(COMMUNITY_MEMBER.USER.GROUPS.GET_MEMBERS, [{
+        param: 'id',
+        value: group,
+    }]);
+    return makeRequest('get', url);
+};
+
 export const getNetworkProfile = () => {
     return new Promise((resolve, reject) => {
         api.get(SYSTEM_OBJECT.NETWORK_PROFILE_TYPE)

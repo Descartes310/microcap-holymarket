@@ -317,21 +317,20 @@ export default {
             {
                "menu_title": "Creation",
                "new_item": false,
-               "path": NETWORK.CREATE,
-               // "permissions": [Permission.branch.createOne, Permission.branch.createMany],
+               "path": NETWORK.ONGOING_CREATE,
                "permissions": [Permission.navLinks.network.viewMenu],
-               "child_routes": [
-                  {
-                     "path": NETWORK.ONGOING_CREATE,
-                     "menu_title": "Editer",
-                     "permissions": [Permission.navLinks.network.viewMenu],
-                  },
-                  {
-                     "path": NETWORK.CREATE,
-                     "menu_title": "Nouveau",
-                     "permissions": [Permission.navLinks.network.viewMenu],
-                  },
-               ]
+               "child_routes": null
+                  // {
+                  //    "path": NETWORK.ONGOING_CREATE,
+                  //    "menu_title": "Editer",
+                  //    "permissions": [Permission.navLinks.network.viewMenu],
+                  // },
+               //    {
+               //       "path": NETWORK.CREATE,
+               //       "menu_title": "Nouveau",
+               //       "permissions": [Permission.navLinks.network.viewMenu],
+               //    },
+               // ]
             },
             // {
             //    "menu_title": "Configuration",
@@ -594,24 +593,24 @@ export default {
          "new_item": false,
          "permissions": [],
          "child_routes": [
-            {
-               "menu_title": "Catalogue produits",
-               "new_item": false,
-               "path": CATALOG.PRODUCT.SELF,
-               "permissions": [],
-            },
+            // {
+            //    "menu_title": "Catalogue produits",
+            //    "new_item": false,
+            //    "path": CATALOG.PRODUCT.SELF,
+            //    "permissions": [],
+            // },
             {
                "path": CATALOG.SALE.SELF,
                "new_item": false,
                "menu_title": "Catalogue ventes",
                "permissions": [],
             },
-            {
-               "path": NETWORK.COVERAGE,
-               "new_item": false,
-               "menu_title": "Catalogue distributions",
-               "permissions": [],
-            },
+            // {
+            //    "path": NETWORK.COVERAGE,
+            //    "new_item": false,
+            //    "menu_title": "Catalogue distributions",
+            //    "permissions": [],
+            // },
          ]
       },{
          "menu_title": "Ressources",

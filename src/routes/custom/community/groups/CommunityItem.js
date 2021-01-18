@@ -128,50 +128,9 @@ class CommunityItem extends Component {
                 </div>
                 <div className="chat-box-main">
                     <div className="text-center">
-                        <h3>Aucun messages pour le moment</h3>
+                        <h3>Cliquez sur le boutton rejoindre pour acceder à l'espace de cette communauté</h3>
                     </div>
                 </div>
-                {/*<Scrollbars
-                    className="rct-scroll"
-                    autoHide
-                    ref="chatScroll"
-                    style={{ height: "calc(100vh - 198px)" }}
-                >
-                    <div className="chat-body p-30">
-                        {selectedUser.previousChats.map((previousChat, key) => (
-                            <MessageBlock
-                                even={!previousChat.isAdmin}
-                                key={key}
-                                selectedUserPhotoUrl={selectedUser.photo_url}
-                                data={previousChat}
-                                adminPhotoUrl={admin_photo_url}
-                            />
-                        ))}
-                    </div>
-                </Scrollbars>
-                <div className="chat-footer d-flex px-4 align-items-center py-3">
-                    <form onSubmit={(event) => this.onSubmitMessage(event)} className="mr-3 w-100">
-                        <FormGroup className="mb-0">
-                            <Input
-                                type="text"
-                                id="search-msg"
-                                placeholder="Type your message"
-                                value={this.state.message}
-                                className="msg-input"
-                                onChange={(event) => this.setState({ message: event.target.value, })}
-                            />
-                        </FormGroup>
-                    </form>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={(event) => this.onSubmitMessage(event)}
-                        className="submit-btn bg-primary"
-                    >
-                        Send
-                        <i className="zmdi zmdi-mail-send ml-2"></i>
-                    </Button>
-                </div>*/}
             </div>
         );
     }

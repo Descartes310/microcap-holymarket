@@ -1,14 +1,13 @@
 /**
  * Chat
  */
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 import React, { Component } from 'react';
 import Drawer from '@material-ui/core/Drawer';
 import Hidden from '@material-ui/core/Hidden';
 import { withStyles } from '@material-ui/core/styles';
 import { Helmet } from "react-helmet";
-import {COMMUNITY} from "Url/frontendUrl";
-import { statusCommunitySpaceStatus } from 'Actions/CommunityAction';
+import { statusCommunitySpaceStatus, setCommunitySpaceData } from 'Actions/CommunityAction';
 import GroupsSidebar from "Routes/custom/community/groups/GroupsSidebar";
 import CommunityItem from "Routes/custom/community/groups/CommunityItem";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -18,6 +17,7 @@ import AppBar from "@material-ui/core/AppBar/AppBar";
 import AppsIcon from '@material-ui/icons/Apps';
 import MatButton from '@material-ui/core/Button';
 import InvitationCreateDialog from '../invitations/InvitationCreateDialog';
+import { COMMUNITY } from '../../communityT/members/invitation/node_modules/Url/frontendUrl';
 
 const drawerWidth = 310;
 
@@ -64,12 +64,18 @@ class Groups extends Component {
         open: false
     };
 
+    constructor(props) {
+        super(props);
+     }
+
     handleDrawerToggle = () => {
         this.setState({ mobileOpen: !this.state.mobileOpen });
     };
 
     enterInCommunitySpace = () => {
         this.props.statusCommunitySpaceStatus(true);
+        this.props.setCommunitySpaceData(this.props.currentCommunity.data.id);
+        this.props.history.push(COMMUNITY.MEMBERS.LIST);
     }
 
     join = () => {
@@ -85,7 +91,7 @@ class Groups extends Component {
     };
 
     render() {
-        const { classes, theme } = this.props;
+        const { classes, theme, currentCommunity } = this.props;
         const drawer = <GroupsSidebar />;
         return (
             <div className="chat-wrapper">
@@ -134,21 +140,17 @@ class Groups extends Component {
                     </Hidden>
                     <div className={`chat-content ${classes.content}`}>
                         <CommunityItem onMenuIconPress={this.handleDrawerToggle} />
-                        
-                        <div className="text-center" style={{ position: "absolute", top: "60%", padding: 10, width: "100%" }}>
-                            <MatButton variant="contained" color="primary" className="mr-10 mb-10 text-white btn-icon">Adherer</MatButton>
-                            <MatButton variant="contained" className="btn-info ml-10 mb-10 text-white btn-icon" onClick={this.enterInCommunitySpace}>Rejoindre</MatButton>
-                            {/* <MatButton
-                                variant="contained"
-                                className="btn-info ml-10 mb-10 text-white btn-icon"
-                                onClick={this.handleClickOpenInvation}
-                            >
-                                <i className="zmdi zmdi zmdi-plus mr-2" />
-                                Nouvelle invitation
-                            </MatButton> */}
+                        {
+                            currentCommunity.data ?
+                                <div className="text-center" style={{ position: "absolute", top: "60%", padding: 10, width: "100%" }}>
+                                    <MatButton variant="contained" color="primary" className="mr-10 mb-10 text-white btn-icon">Envoyer une invitation</MatButton>
+                                    <MatButton variant="contained" className="btn-info ml-10 mb-10 text-white btn-icon" onClick={this.enterInCommunitySpace}>Rejoindre</MatButton>
+                                </div>
+                                :
+                                null
+                        }
 
-                            <InvitationCreateDialog open={this.state.open} handleClose={this.handleCloseInvation} />
-                        </div>
+                        <InvitationCreateDialog open={this.state.open} handleClose={this.handleCloseInvation} />
                     </div>
                 </div>
             </div>
@@ -156,12 +158,13 @@ class Groups extends Component {
     }
 }
 
-const mapStateToProps = ({ communitySpace  }) => {
+const mapStateToProps = ({ communitySpace, currentCommunity }) => {
     return {
-        communitySpace: communitySpace
+        communitySpace: communitySpace,
+        currentCommunity: currentCommunity
     }
 };
 
 
-export default connect(mapStateToProps, {statusCommunitySpaceStatus})
-(withStyles(styles, { withTheme: true })(Groups));
+export default connect(mapStateToProps, { statusCommunitySpaceStatus, setCommunitySpaceData })
+    (withStyles(styles, { withTheme: true })(Groups));

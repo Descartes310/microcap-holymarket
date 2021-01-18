@@ -1,143 +1,131 @@
-import React, {Fragment} from 'react'
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
+import React, { Component } from 'react'
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-
-// intl messages
+import ListItem from './ListItem';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import { readEmail, onSelectEmail } from 'Actions';
 import IntlMessages from 'Util/IntlMessages';
+import { withStyles } from "@material-ui/core";
+import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
+import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
+import {Button, Input, InputGroup, InputGroupAddon} from "reactstrap";
+import IconButton from "@material-ui/core/IconButton";
+import { getMembersOfCommunity } from 'Actions/independentActions';
+import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
+import {AbilityContext} from "Permissions/Can";
+import User from "Models/User";
 
 
+class ListMembers extends Component {
 
-// Function for interactive List
-function generate(element) {
-	return [0, 1, 2].map(value =>
-		React.cloneElement(element, {
-			key: value,
-		}),
-	);
-}
+    static contextType = AbilityContext;
 
-class ListMembers extends React.Component {
-    
     state = {
-		dense: false,
-        secondary: false,
-        age: '',
-        name: 'hai',
+        loading: true,
+        users: []
     }
 
     handleChange = event => {
         this.setState({ [event.target.name]: event.target.value });
-      };
-    
+    };
+
+    getMembers = () => {
+        getMembersOfCommunity(this.props.communitySpace.data).then(data => {
+            this.setState({ users: data })
+        }).finally(() => this.setState({ loading: false}))
+    }
+
+    componentDidMount() {
+        this.getMembers();
+    }
+
     render() {
-        const { dense, secondary } = this.state;
+        const { loading, users } = this.state;
+        const { classes } = this.props;
         return (
 
-           <div className="container" style={{ padding: "20px" }}> 
-
-                <form autoComplete="off mt-4">
-                    <div className="row">
-                    <div className="col-sm-6 col-md-6 col-xl-3">
-
-                        <div className="form-group">
-                            <div className="d-flex">
-                                <div>Filtre &nbsp;&nbsp;</div>
-                                <FormControl fullWidth>
-                                    {/* <InputLabel htmlFor="age-simple"></InputLabel> */}
-                                    <Select value={this.state.age} onChange={this.handleChange}
-                                    inputProps={{ name: 'age', id: 'age-simple', }}>
-                                    <MenuItem value=""><em>None</em></MenuItem>
-                                    <MenuItem value={10}>Ten</MenuItem>
-                                    <MenuItem value={20}>Twenty</MenuItem>
-                                    <MenuItem value={30}>Thirty</MenuItem>
-                                    </Select>
-                                </FormControl>
+            <div className="page-list">
+                <PageTitleBar title={"Membres de la communautés"} />
+                {loading 
+                    ? (<RctSectionLoader />)
+                    : (
+                        <RctCollapsibleCard>
+                            <div className="align-items-center mb-30 px-15 row">
+                                <div className={classes.flex}>
+                                    <FormControl>
+                                        <InputGroup>
+                                            <InputGroupAddon addonType="prepend">
+                                                <IconButton aria-label="facebook">
+                                                    <i className="zmdi zmdi-search"></i>
+                                                </IconButton>
+                                            </InputGroupAddon>
+                                            <Input
+                                                type="text"
+                                                name="search"
+                                                value={this.state.searched}
+                                                placeholder={'Recherchez...'}
+                                                onChange={event => this.onSearchChanged(event)}
+                                            />
+                                        </InputGroup>
+                                    </FormControl>
+                                </div>
+                                <p className={classes.title}>
+                                    {users.length} utilisateur(s) trouvé(s)
+                                </p>
                             </div>
-                        </div>
-                    </div>
-                    </div>
-                </form>
-
-                <div className="table-responsive">
-						<Table>
-							<TableHead>
-								<TableRow hover>
-									<TableCell>Post projets</TableCell>
-									<TableCell>Membres</TableCell>
-								</TableRow>
-							</TableHead>
-							<TableBody>
-								<Fragment>
-                                <TableRow hover>
-                                <TableCell>Poste projet 1</TableCell>
-									<TableCell>
-                                    <List dense={dense}>
-                                        {generate(
-                                            <ListItem button>
-                                                <ListItemText primary="Ryan Keher" secondary={secondary ? 'Secondary text' : null} />
-                                            </ListItem>
-                                            , )}
-                                    </List>
-                                    </TableCell>
-								</TableRow>
-                                <TableRow hover>
-                                <TableCell>Poste projet 2</TableCell>
-									<TableCell>
-                                    <List dense={dense}>
-                                        {generate(
-                                            <ListItem button>
-                                                <ListItemText primary="Ryan Keher" secondary={secondary ? 'Secondary text' : null} />
-                                            </ListItem>
-                                            , )}
-                                    </List>
-                                    </TableCell>
-								</TableRow>
-								</Fragment>
-							</TableBody>
-						</Table>
-					</div>
-
-                {/* <Grid container>
-                    <Grid item xs={12} md={6}>
-                        <Typography type="title"> <strong>Poste projet 1</strong> </Typography>
-                        <div>
-                            <List dense={dense}>
-                                {generate(
-                                    <ListItem button>
-                                        <ListItemText primary="Ryan Keher" secondary={secondary ? 'Secondary text' : null} />
-                                    </ListItem>
-                                    , )}
-                            </List>
-                        </div>
-
-                        <Typography type="title"> <strong>Poste projet 2</strong> </Typography>
-                        <div>
-                            <List dense={dense}>
-                                {generate(
-                                    <ListItem button>
-                                        <ListItemText primary="Ryan Keher" secondary={secondary ? 'Secondary text' : null} />
-                                    </ListItem>
-                                    , )}
-                            </List>
-                        </div>
-                    </Grid>
-                </Grid> */}
+                            <div className="rct-tabs">
+                                <ul className="list-unstyled m-0">
+                                    {users.length > 0 ? users.map((user, key) => (
+                                        <ListItem
+                                            user={user}
+                                            key={key}
+                                            onSelectEmail={(e) => this.onSelectEmail(e, user)}
+                                            onReadEmail={() => this.readEmail(user)}
+                                        />
+                                    ))
+                                        :
+                                        <div className="d-flex justify-content-center align-items-center py-50">
+                                            <h4>
+                                                Aucun utilisateurs trouvés
+                                            </h4>
+                                        </div>
+                                    }
+                                </ul>
+                            </div>
+                        </RctCollapsibleCard>
+                    )
+                }
             </div>
         )
     }
 }
 
-export default ListMembers
+const useStyles = theme => ({
+    root: {
+        width: '100%',
+    },
+    flex: {
+        flex: 1,
+    },
+    menuButton: {
+        marginLeft: -12,
+        marginRight: 20,
+    },
+    title: {
+        display: 'none',
+        [theme.breakpoints.up('sm')]: {
+            display: 'block',
+        },
+    }
+});
+
+const mapStateToProps = ({ authUser, communitySpace }) => {
+    return { authUser: authUser.data, 
+        communitySpace: communitySpace };
+};
+
+export default withRouter(connect(mapStateToProps, {
+    readEmail,
+    onSelectEmail,
+})(withStyles(useStyles, { withTheme: true })(ListMembers)));

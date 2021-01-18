@@ -200,7 +200,6 @@ export const setCurrentCommunity = (community) => (dispatch) => {
 
 export const getMembersOfOneGroup = (group) => (dispatch) => {
     dispatch({ type: SET_CURRENT_COMMUNITY });
-
     const url = joinBaseUrlWithParams(COMMUNITY_API.USER.GROUPS.GET_MEMBERS, [{
         param: 'id',
         value: group,
