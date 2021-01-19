@@ -160,6 +160,7 @@ export const COMMUNITY_MEMBER = {
     USER: {
         GROUPS: {
             GET_ALL: 'groups/communities/user/me',
+            GET_BY_BRANCH: 'groups/communities/branch/{id}/user/{user_id}',
             NOT_IN: 'groups/communities/user/{id}/not-in',
             ADMIN: 'groups/communities/user/admin/me',
             GET_MEMBERS: 'groups/communities/{id}/members',
@@ -172,7 +173,7 @@ export const COMMUNITY_MEMBER = {
     INVITATIONS: {
         GET_ALL: 'groups/communities/pending/invitation/{id}',
         SEND: {
-            ONE: 'groups/communities/send/invitation/community/{group_id}/users/{user_id}/invited/{id}',
+            ONE: 'groups/communities/send/invitation/community/{group_id}',
             MANY: 'groups/communities/send/invitation/community/{group_id}',
             REQUEST: 'groups/communities/send/request/community/{group_id}/users/{user_id}',
             TO_USER: 'groups/communities/send/invitation/community/user/{user_id}',

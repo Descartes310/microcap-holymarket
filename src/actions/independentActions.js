@@ -126,6 +126,18 @@ export const getMembersOfCommunity = (group) => {
     return makeRequest('get', url);
 };
 
+
+export const getCommunitiesByBranch = (branch, user) => {
+    const url = joinBaseUrlWithParams(COMMUNITY_MEMBER.USER.GROUPS.GET_BY_BRANCH, [{
+        param: 'id',
+        value: branch,
+    }, {
+        param: 'user_id',
+        value: user
+    }]);
+    return makeRequest('get', url);
+};
+
 export const getNetworkProfile = () => {
     return new Promise((resolve, reject) => {
         api.get(SYSTEM_OBJECT.NETWORK_PROFILE_TYPE)
@@ -322,18 +334,11 @@ export const deleteInvitation = (invitationId) => {
 
 /********************************  ***************************************** */
 export const sendInvitationCommunityMember = (data) => {
+    console.log(data)
     const url = joinBaseUrlWithParams(COMMUNITY_MEMBER.INVITATIONS.SEND.ONE, [
         {
             param: 'group_id',
             value: data.group_id,
-        },
-        {
-            param: 'user_id',
-            value: data.name, 
-        },
-        {
-            param: 'id',
-            value: data.user_current_id, 
         }
 ]);
     return makeRequest('post', url, data, {shouldSkipDataParsing: true});
