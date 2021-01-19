@@ -315,7 +315,7 @@ export default {
                "permissions": [Permission.navLinks.network.viewMenu],
             },
             {
-               "menu_title": "Creation",
+               "menu_title": "Editer",
                "new_item": false,
                "path": NETWORK.ONGOING_CREATE,
                "permissions": [Permission.navLinks.network.viewMenu],
