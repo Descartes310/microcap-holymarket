@@ -118,6 +118,11 @@ export const getAccountsByBranch = (branchId) => {
     return makeRequest('get', url);
 };
 
+export const findUsersByOrganisation = (organisationId) => {
+    const url = `${USERS.GET_ALL_BY_ORGANISATION}?organisation_id=${organisationId}`;
+    return makeRequest('get', url);
+};
+
 export const getMembersOfCommunity = (group) => {
     const url = joinBaseUrlWithParams(COMMUNITY_MEMBER.USER.GROUPS.GET_MEMBERS, [{
         param: 'id',

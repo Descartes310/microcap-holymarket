@@ -410,15 +410,31 @@ export default {
                "permissions": [],
             },
          ]
-      },
-      {
-         "menu_title": "Produits & Services",
-         "menu_icon": "zmdi zmdi-shopping-cart",
+      },{
+         "menu_title": "Produits & services",
+         "menu_icon": "zmdi zmdi-widgets",
          "new_item": false,
-         "path": PRODUCT.LIST,
-         // "permissions": [Permission.navLinks.COMMUNITY_MEMBER.viewMenu],
-         "permissions": [],
-         "child_routes": null
+         "permissions": [Permission.navLinks.products.viewMenu],
+         "child_routes": [
+            {
+               "menu_title": "Catalogue produits",
+               "new_item": false,
+               "path": CATALOG.PRODUCT.SELF,
+               "permissions": [Permission.navLinks.products.childLinks.catalogProducts.viewMenu],
+            },
+            {
+               "path": CATALOG.SALE.SELF,
+               "new_item": false,
+               "menu_title": "Catalogue ventes",
+               "permissions": [Permission.navLinks.products.childLinks.catalogProducts.viewMenu],
+            },
+            {
+               "path": NETWORK.COVERAGE,
+               "new_item": false,
+               "menu_title": "Catalogue distributions",
+               "permissions": [Permission.navLinks.products.childLinks.catalogDistribution.viewMenu],
+            },
+         ]
       },
       {
          "menu_title": "Gestion commercial",
@@ -587,31 +603,15 @@ export default {
          "child_routes": null,
          "permissions": [Branch.permissionsRelated.READ],
          'subject': Branch
-      },{
-         "menu_title": "Produits & Service",
-         "menu_icon": "zmdi zmdi-widgets",
+      },
+      {
+         "menu_title": "Produits & Services",
+         "menu_icon": "zmdi zmdi-shopping-cart",
          "new_item": false,
+         "path": PRODUCT.LIST,
+         // "permissions": [Permission.navLinks.COMMUNITY_MEMBER.viewMenu],
          "permissions": [],
-         "child_routes": [
-            // {
-            //    "menu_title": "Catalogue produits",
-            //    "new_item": false,
-            //    "path": CATALOG.PRODUCT.SELF,
-            //    "permissions": [],
-            // },
-            {
-               "path": CATALOG.SALE.SELF,
-               "new_item": false,
-               "menu_title": "Catalogue ventes",
-               "permissions": [],
-            },
-            // {
-            //    "path": NETWORK.COVERAGE,
-            //    "new_item": false,
-            //    "menu_title": "Catalogue distributions",
-            //    "permissions": [],
-            // },
-         ]
+         "child_routes": null
       },{
          "menu_title": "Ressources",
          "menu_icon": "zmdi zmdi-accounts",

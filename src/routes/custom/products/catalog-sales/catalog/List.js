@@ -44,7 +44,7 @@ class CatalogList extends Component {
     }
 
     componentDidMount() {
-        this.props.getCatalogsOfOneType(Product.SALE, this.props.authUser.branchId);
+        this.props.getCatalogsOfOneType(Product.SALE, this.props.authUser.user.branch.id);
     }
 
     handleOrder = (value, data) => {
@@ -82,7 +82,7 @@ class CatalogList extends Component {
         setActiveCatalog(this.state.catalogId)
             .then(result => {
                 NotificationManager.success(this.props.intl.formatMessage({id: 'activeCatalog.alert.successText'}));
-                this.props.getCatalogsOfOneType(Product.SALE, this.props.authUser.branchId);
+                this.props.getCatalogsOfOneType(Product.SALE, this.props.authUser.user.branch.id);
                 this.setState({showWarningBox: false});
             })
             .catch(() => {

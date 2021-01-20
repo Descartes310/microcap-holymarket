@@ -17,7 +17,7 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import {useTheme, withStyles} from '@material-ui/core/styles';
 import CancelIcon from '@material-ui/icons/Cancel';
 import IconButton from "@material-ui/core/IconButton";
-import {createMandate, getMandate, getMandateType, getMandateModel, getBranchUsers, setRequestGlobalAction} from "Actions";
+import {createMandate, getMandate, getMandateType, getMandateModel, getBranchUsers, getUsersByOrganisation, setRequestGlobalAction} from "Actions";
 import {ERROR_500} from "Constants/errors";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select/Select";
@@ -26,6 +26,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import CustomAsyncComponent from "Components/CustomAsyncComponent";
 import SingleTitleText from "Components/SingleTitleText";
 import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
+import { findUsersByOrganisation } from 'Actions/independentActions'
 
 /**
  *
@@ -35,21 +36,39 @@ import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
  */
 const Create = props => {
     const theme = useTheme();
-    const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
+    const fullScreen = useMediaQuery(theme.breakpoints.down('md'));    
+    
+    const [users, setUsers] = useState([]);
+    // const [usersLoading, setUsersLoading] = useState(true);
 
     const [selectedMandateType, setSelectedMandateType] = useState("");
 
-    const { getMandateType, mandateType, mandateModel, getMandateModel, branchUsers, getBranchUsers, authUser, loading, onClose, show, getMandate, setRequestGlobalAction } = props;
+    const { getMandateType, mandateType, mandateModel, getMandateModel, authUser, loading, onClose, show, getMandate, setRequestGlobalAction } = props;
 
     const { control, register, errors, handleSubmit } = useForm();
 
     useEffect(() => {
-        getBranchUsers(authUser.branchId);
+        findUsersByOrganisation(authUser.id).then(data => {
+            console.log(data)
+            setUsers(data);
+        })
         getMandateType(authUser.branchId)
             .then(result => {
                 if (result && result.length > 0) onMandateTypeChange(result[0].id);
             });
     }, []);
+
+    // const loadUsers = async () => {
+    //     try {
+    //         let result = await getUsersByOrganisation(authUser.id);
+    //         setUsers(result);
+    //         console.log('Les valeurs sont => ', result)
+    //     } catch (e) {
+    //         console.log(e)
+    //     }
+    //     setUsersLoading(false);
+    // };
+
 
     /**
      * On submit
@@ -63,7 +82,7 @@ const Create = props => {
                 onClose();
             })
             .catch((error) => {
-                NotificationManager.error(ERROR_500);
+                NotificationManager.error("Le numéro de service est déja existant");
             })
             .finally(() => setRequestGlobalAction(false));
     };
@@ -171,13 +190,14 @@ const Create = props => {
                                 />
 
                                 <CustomAsyncComponent
-                                    data={branchUsers.data}
-                                    loading={branchUsers.loading}
-                                    component={data => (
+                                    data={users}
+                                    loading={false}
+                                    component={data => {
+                                        return(
                                         <div className="form-group text-left my-3">
                                             <FormControl fullWidth>
                                                 <InputLabel className="text-left" htmlFor="userId-helper">
-                                                    Utilisateur
+                                                    Utilisateurs
                                                 </InputLabel>
                                                 <InputComponent
                                                     isRequired
@@ -192,7 +212,7 @@ const Create = props => {
                                                         {data.map((item, index) => {
                                                             return (
                                                                 <MenuItem key={index} value={item.id} className="center-hor-ver">
-                                                                    {item.name}
+                                                                    {item.firstName} {item.lastName}
                                                                 </MenuItem>
                                                             )
                                                         })}
@@ -200,7 +220,7 @@ const Create = props => {
                                                 />
                                             </FormControl>
                                         </div>
-                                    )}
+                                    )}}
                                 />
 
                                 <FormGroup className="has-wrapper my-3">
@@ -240,8 +260,8 @@ const Create = props => {
     );
 };
 
-const mapStateToProps = ({ requestGlobalLoader, authUser , mandateType, mandateModel, branchUsers}) => {
-    return {loading: requestGlobalLoader, authUser: authUser.data, mandateType, mandateModel, branchUsers };
+const mapStateToProps = ({ requestGlobalLoader, authUser , mandateType, mandateModel, users}) => {
+    return {loading: requestGlobalLoader, authUser: authUser.data, mandateType, mandateModel, users };
 };
 
 
@@ -267,5 +287,5 @@ const useStyles = theme => ({
     }
 });
 
-export default connect(mapStateToProps, {getMandateType, getMandate, getMandateModel, getBranchUsers, setRequestGlobalAction })
+export default connect(mapStateToProps, {getMandateType, getMandate, getMandateModel, getBranchUsers, getUsersByOrganisation, setRequestGlobalAction })
 (withStyles(useStyles, { withTheme: true })(injectIntl(Create)));
