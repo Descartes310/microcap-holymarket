@@ -94,7 +94,7 @@ const AppConfig = {
       }
    ],
    enableUserTour: process.env.NODE_ENV === 'production' ? true : false,  // Enable / Disable User Tour
-   copyRightText: 'Reactify © 2019 All Rights Reserved.',      // Copy Right Text
+   copyRightText: 'Microcap © 2021 All Rights Reserved.',      // Copy Right Text
    // light theme colors
    themeColors: {
       'primary': '#FFB70F',

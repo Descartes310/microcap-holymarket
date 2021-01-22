@@ -296,6 +296,11 @@ export const PROJECTS = {
         CREATE: 'public/projects/folders',
         GET_ONE: 'public/projects/folders/{id}',
     },
+    REACTIONS: {
+        GET_ALL: 'public/projects/reactions/projects/{id}',
+        CREATE: 'public/projects/reactions',
+        GET_ONE: 'public/projects/reactions/{id}',
+    },
     POST_PROJETS: {
         CREATE: 'public/branchs/{id}/posts',
         GET_ALL: 'public/branchs/{id}/posts',

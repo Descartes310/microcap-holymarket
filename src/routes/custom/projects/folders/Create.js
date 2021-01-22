@@ -1,25 +1,25 @@
 import { projects } from "Data";
-import {connect} from "react-redux";
-import {createFolder} from "Actions";
-import {injectIntl} from 'react-intl';
-import {useForm} from "react-hook-form";
-import {PROJECTS} from "Url/frontendUrl";
-import {ERROR_500} from "Constants/errors";
-import {Form, FormGroup} from "reactstrap";
+import { connect } from "react-redux";
+import { createFolder } from "Actions";
+import { injectIntl } from 'react-intl';
+import { useForm } from "react-hook-form";
+import { PROJECTS } from "Url/frontendUrl";
+import { ERROR_500 } from "Constants/errors";
+import { Form, FormGroup } from "reactstrap";
 import IntlMessages from "Util/IntlMessages";
 import Button from "@material-ui/core/Button";
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import Input from "@material-ui/core/Input/Input";
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select/Select";
 import InputComponent from "Components/InputComponent";
-import {NotificationManager} from "react-notifications";
+import { NotificationManager } from "react-notifications";
 import FormControl from "@material-ui/core/FormControl";
 import SingleTitleText from "Components/SingleTitleText";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import InputLabel from "@material-ui/core/InputLabel/InputLabel";
 import CustomAsyncComponent from "Components/CustomAsyncComponent";
-import {getInitialisationOptions, setRequestGlobalAction} from "Actions";
+import { getInitialisationOptions, setRequestGlobalAction } from "Actions";
 import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
 
 const Create = props => {
@@ -33,6 +33,8 @@ const Create = props => {
         error: null,
         loading: true
     });
+
+    const [file, setFile] = useState(null);
 
     const { register, errors, handleSubmit } = useForm();
 
@@ -92,13 +94,15 @@ const Create = props => {
 
         const _data = {
             ...data,
+            file,
             userId: authUser.user.id,
             branchId: authUser.user.branch.id,
             folderType: oldFolderType,
             initializationId,
             works: JSON.stringify(works),
         };
-        createFolder(_data)
+        console.log(_data)
+        createFolder(_data, {fileData: ['file'], multipart: true})
             .then(() => {
                 NotificationManager.success("Projet crée avec succès");
                 history.push(PROJECTS.FOLDERS.LIST);
@@ -139,9 +143,9 @@ const Create = props => {
                                 errors={errors}
                                 register={register}
                                 className="input-lg"
-                                // placeholder={intl.formatMessage({id: "common.commercialName"})}
+                            // placeholder={intl.formatMessage({id: "common.commercialName"})}
                             />
-                            <span className="has-icon"><i className="ti-pencil"/></span>
+                            <span className="has-icon"><i className="ti-pencil" /></span>
                         </FormGroup>
                     </div>
                 </div>
@@ -197,7 +201,7 @@ const Create = props => {
 
                 <div className="row">
                     {initialisationData.loading ? (
-                        <RctSectionLoader/>
+                        <RctSectionLoader />
                     ) : !works && initializationId === '' ? (
                         <SingleTitleText
                             text={"Veuillez selectionner une options d'initialisation"}
@@ -222,13 +226,29 @@ const Create = props => {
                                         errors={errors}
                                         register={register}
                                         className="input-lg"
-                                        // placeholder={intl.formatMessage({id: "common.commercialName"})}
+                                    // placeholder={intl.formatMessage({id: "common.commercialName"})}
                                     />
-                                    <span className="has-icon"><i className="ti-pencil"/></span>
+                                    <span className="has-icon"><i className="ti-pencil" /></span>
                                 </FormGroup>
                             </div>
                         )
                     })}
+                </div>
+
+                <div className="row">
+                    <div className="col-sm-12 col-md-12">
+                        <FormGroup fullWidth>
+                            <InputLabel className="text-left" htmlFor="file">
+                                Document du projet
+                            </InputLabel>
+                            <Input
+                                id="File"
+                                type="file"
+                                name="file"
+                                onChange={event => setFile(event.target.files[0])}
+                            />
+                        </FormGroup>
+                    </div>
                 </div>
 
                 {/*<div className="row">
@@ -275,4 +295,4 @@ const mapStateToProps = ({ requestGlobalLoader, authUser }) => {
     };
 };
 
-export default connect(mapStateToProps, {getInitialisationOptions, setRequestGlobalAction })(injectIntl(Create));
+export default connect(mapStateToProps, { getInitialisationOptions, setRequestGlobalAction })(injectIntl(Create));

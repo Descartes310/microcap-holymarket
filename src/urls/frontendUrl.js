@@ -186,6 +186,11 @@ export const PROJECTS = {
         LIST: '/projects/folder/list',
         SHOW: '/projects/folder/:id',
         CREATE: '/projects/folder/create',
+        REACTIONS: {
+            LIST: '/projects/folder/reactions/list',
+            CREATE: '/projects/folder/reactions/create',
+            CONSULTATION: '/projects/folder/reactions/consultation'
+        },
     },
     PROJECTS: {
         LIST: '/projects/list',

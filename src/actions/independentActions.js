@@ -591,9 +591,28 @@ export const createProject = (data) => {
     return makeRequest('post', url, data);
 };
 
-export const createFolder = (data, branchId) => {
-    const url = `${PROJECTS.FOLDERS.CREATE}?branch_id=${branchId}`;
+export const createProjectReaction = (data) => {
+    const url = `${PROJECTS.REACTIONS.CREATE}`;
     return makeRequest('post', url, data);
+};
+
+export const getOneProjectReaction = (id) => {
+    const url = joinBaseUrlWithParamsId(PROJECTS.REACTIONS.GET_ONE, id);
+    return makeRequest('get', url);
+};
+
+export const getAllProjectReaction = (id) => {
+    const url = joinBaseUrlWithParamsId(PROJECTS.REACTIONS.GET_ALL, id);
+    return makeRequest('get', url);
+};
+
+export const createFolder = (data, config) => {
+    const url = `${PROJECTS.FOLDERS.CREATE}`;
+    return new Promise((resolve, reject) => {
+        api.post(url, data, config)
+            .then(result => resolve(result.data))
+            .catch(error => reject(error));
+    });
 };
 
 export const getOneProjectFolder = (folderId) => {

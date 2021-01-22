@@ -642,13 +642,13 @@ export default {
             {
                "menu_title": "Membres",
                "new_item": false,
-               "path": COMMUNITY.MEMBERS.SELF,
+               "path": COMMUNITY.MEMBERS.LIST,
                "permissions": [],
             },
             {
                "menu_title": "Activités",
                "new_item": false,
-               "path": PROJECTS.FOLDERS.SELF,
+               "path": PROJECTS.FOLDERS.REACTIONS.LIST,
                "permissions": [],
             }
          ],
