@@ -221,7 +221,8 @@ export const COMMERCIAL_MANAGEMENT = {
         },
         CREATE: 'public/commercial-offer',
         UPDATE: 'public/commercial-offer',
-        ACTIVATE: 'public/commercial-offer/active'
+        ACTIVATE: 'public/commercial-offer/active',
+        DEACTIVATE: 'public/commercial-offer/desactive'
     },
 };
 

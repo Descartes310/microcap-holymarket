@@ -388,7 +388,7 @@ export const createComOperation = (data, branchId) => {
 };
 
 export const createOffer = (data, branchId, config) => {
-    const url = `${COMMERCIAL_MANAGEMENT.OFFER.GET_ALL}?branch_id=${branchId}`;
+    const url = `${COMMERCIAL_MANAGEMENT.OFFER.CREATE}?branch_id=${branchId}`;
     // return makeRequest('post', url, data);
     return new Promise((resolve, reject) => {
         api.post(url, data, config)
@@ -412,8 +412,8 @@ export const setPackageActivationStatus = (packageId, shouldActivate) => {
     return makeRequest('put', url);
 };
 
-export const setOfferActivationStatus = (packageId, shouldActivate) => {
-    const url = `${COMMERCIAL_MANAGEMENT.OFFER[shouldActivate ? 'ACTIVATE' : 'DEACTIVATE']}?package_id=${packageId}`;
+export const setOfferActivationStatus = (partnerId, comId, shouldActivate) => {
+    const url = `${COMMERCIAL_MANAGEMENT.OFFER[shouldActivate ? 'ACTIVATE' : 'DEACTIVATE']}?partner_id=${partnerId}&commercial_offer_id=${comId}`;
     return makeRequest('put', url);
 };
 
@@ -591,9 +591,13 @@ export const createProject = (data) => {
     return makeRequest('post', url, data);
 };
 
-export const createProjectReaction = (data) => {
+export const createProjectReaction = (data, config) => {
     const url = `${PROJECTS.REACTIONS.CREATE}`;
-    return makeRequest('post', url, data);
+    return new Promise((resolve, reject) => {
+        api.post(url, data, config)
+            .then(result => resolve(result.data))
+            .catch(error => reject(error));
+    });
 };
 
 export const getOneProjectReaction = (id) => {

@@ -29,7 +29,7 @@ class List extends Component {
 
     onToggleActivationStatus = (packageId, value) => {
         this.setState({loading: true});
-        setOfferActivationStatus(packageId, value)
+        setOfferActivationStatus(this.props.authUser.user.id, packageId, value)
             .then(() => {
                 this.props.getComOffer(this.props.authUser.user.id);
                 NotificationManager.success("Changement du status de l'offre effectué avec succès");
@@ -93,8 +93,8 @@ class List extends Component {
                                                 </td>
                                                 <td className="table-action">
                                                     <Switch
-                                                        checked={item.active}
-                                                        onChange={(event) => this.onToggleActivationStatus(item.id, event.target.value)}
+                                                        checked={item.isActive}
+                                                        onChange={(event) => {this.onToggleActivationStatus(item.id, event.target.checked)}}
                                                         aria-label="Activé"
                                                     />
                                                 </td>

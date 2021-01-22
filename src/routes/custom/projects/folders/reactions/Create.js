@@ -23,16 +23,12 @@ import { getInitialisationOptions, setRequestGlobalAction } from "Actions";
 import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
 
 const Create = props => {
-    const { authUser, history, intl, getInitialisationOptions, setRequestGlobalAction, communitySpace } = props;
+    const { authUser, history, intl, currentCommunity, setRequestGlobalAction, communitySpace } = props;
 
-    const [type, setType] = useState('POSITIVE');
-    const [initializationId, setInitializationId] = useState('');
+    const [type, setType] = useState('ARGUMENT');
+    const [work, setWork] = useState(currentCommunity.data ? currentCommunity.data.project ? currentCommunity.data.project.works[0].id : null : null);
 
-    const [initialisationData, setInitialisationData] = useState({
-        data: null,
-        error: null,
-        loading: true
-    });
+    const [file, setFile] = useState(null);
 
     const { register, errors, handleSubmit } = useForm();
 
@@ -42,6 +38,16 @@ const Create = props => {
         }
     };
 
+    const onWorkChange = (newValue) => {
+        if (newValue !== work) {
+            setWork(newValue);
+        }
+    };
+
+    useEffect(() => {
+        console.log(currentCommunity);
+    }, [])
+
     /**
      * On submit
      */
@@ -49,11 +55,13 @@ const Create = props => {
         setRequestGlobalAction(true);
         const _data = {
             ...data,
+            file,
             userId: authUser.user.id,
             type: type,
+            workId: work,
             groupId: communitySpace.data
         };
-        createProjectReaction(_data)
+        createProjectReaction(_data, { fileData: ['file'], multipart: true })
             .then(() => {
                 NotificationManager.success("Activité crée avec succès");
                 history.push(PROJECTS.FOLDERS.REACTIONS.LIST);
@@ -63,17 +71,6 @@ const Create = props => {
             })
             .finally(() => setRequestGlobalAction(false));
     };
-
-    const getWorks = () => {
-        if (initialisationData.data) {
-            const item = initialisationData.data.find(i => i.id === initializationId);
-            return item ? item.works : null;
-        }
-
-        return null;
-    };
-
-    const works = getWorks();
 
     return (
         <>
@@ -110,12 +107,36 @@ const Create = props => {
                                 value={type}
                                 onChange={event => onTypeChange(event.target.value)}
                                 input={<Input name="type" id="type" />}>
-                                <MenuItem value={'POSITIVE'} className="center-hor-ver">
-                                    Approbation
+                                <MenuItem value={'ARGUMENT'} className="center-hor-ver">
+                                    Argument
                                 </MenuItem>
-                                <MenuItem value={'NEGATIVE'} className="center-hor-ver">
+                                <MenuItem value={'OBJECTION'} className="center-hor-ver">
                                     Objection
                                 </MenuItem>
+                                <MenuItem value={'ILLUSTRATION'} className="center-hor-ver">
+                                    Illustration
+                                </MenuItem>
+                            </Select>
+                        </FormControl>
+                    </div>
+                </div>
+
+                <div className="row">
+                    <div className="col-sm-12 mb-20">
+                        <FormControl fullWidth>
+                            <InputLabel className="text-left" htmlFor="type">
+                                Ouvrages du projet
+                            </InputLabel>
+                            <Select
+                                value={work}
+                                onChange={event => onWorkChange(event.target.value)}
+                                input={<Input name="type" id="type" />}>
+                                {
+                                    currentCommunity.data ? currentCommunity.data.project ? currentCommunity.data.project.works.map(w => (
+                                        <MenuItem value={w.id} className="center-hor-ver">
+                                            {w.book.title}
+                                        </MenuItem>
+                                    )) : null : null}
                             </Select>
                         </FormControl>
                     </div>
@@ -140,6 +161,24 @@ const Create = props => {
                         </FormGroup>
                     </div>
                 </div>
+                {
+                    type == 'ILLUSTRATION' ?
+                        <div className="row">
+                            <div className="col-sm-12 col-md-12">
+                                <FormGroup fullWidth>
+                                    <InputLabel className="text-left" htmlFor="file">
+                                        Document du projet
+                                    </InputLabel>
+                                    <Input
+                                        id="File"
+                                        type="file"
+                                        name="file"
+                                        onChange={event => setFile(event.target.files[0])}
+                                    />
+                                </FormGroup>
+                            </div>
+                        </div> : null
+                }
 
                 <FormGroup className="mb-15">
                     <Button
@@ -157,11 +196,12 @@ const Create = props => {
     );
 };
 
-const mapStateToProps = ({ requestGlobalLoader, authUser, communitySpace }) => {
+const mapStateToProps = ({ requestGlobalLoader, authUser, communitySpace, currentCommunity }) => {
     return {
         authUser: authUser.data,
         loading: requestGlobalLoader,
-        communitySpace
+        communitySpace,
+        currentCommunity
     };
 };
 

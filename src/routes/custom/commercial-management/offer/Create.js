@@ -80,7 +80,7 @@ class Create extends Component {
     loadData = () => {
         this.fetchProducts();
         this.props.getComOperationType(this.props.authUser.branchId);
-        this.props.getPackages(this.props.authUser.user.branch.id)
+        this.props.getPackages(this.props.authUser.user.id)
             .then(res => this.setState({storePackage: res}));
 
         this.props.getSysTimeUnit();
@@ -318,7 +318,7 @@ class Create extends Component {
                                     </InputLabel>
                                     <Select
                                         value={this.state.commercialOperatorId}
-                                        onChange={event => this.setState({commercialOperatorId: event.target.value})}
+                                        onChange={event => this.setState({commercialOperatorId: event.target.value}, () => { console.log('Bonjour le monde => ', this.state.commercialOperatorId)})}
                                         input={<Input name="commercialOperatorId" id="commercialOperatorId-helper" />}>
                                         {data.map((item, index) => (
                                             <MenuItem key={index} value={item.id} className="center-hor-ver">
