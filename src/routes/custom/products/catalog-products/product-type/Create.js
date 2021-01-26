@@ -1,10 +1,11 @@
-import React, {useEffect, useState} from 'react';
-import {Form, FormGroup} from "reactstrap";
+import React, { useEffect, useState } from 'react';
+import { Form, FormGroup } from "reactstrap";
 import InputComponent from "Components/InputComponent";
 import Button from "@material-ui/core/Button";
-import {useForm} from "react-hook-form";
+import SweetAlert from 'react-bootstrap-sweetalert';
+import { useForm } from "react-hook-form";
 import IntlMessages from "Util/IntlMessages";
-import {injectIntl} from 'react-intl';
+import { injectIntl } from 'react-intl';
 import InputLabel from "@material-ui/core/InputLabel/InputLabel";
 import {
     setRequestGlobalAction,
@@ -15,10 +16,11 @@ import {
     getSysProductNature,
     getRootProductType
 } from "Actions";
-import {NotificationManager} from "react-notifications";
+import { NotificationManager } from "react-notifications";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 
+import CustomList from "Components/CustomList";
 // Material
 import DialogTitle from "@material-ui/core/DialogTitle/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent/DialogContent";
@@ -35,9 +37,9 @@ import Select from "@material-ui/core/Select";
 import Input from "@material-ui/core/Input";
 import Product from "Enums/Product";
 import CustomAsyncComponent from "Components/CustomAsyncComponent";
-import {createProductType} from "Actions/independentActions";
-import {getProductTypes} from "Actions/GeneralActions";
-import {ERROR_500} from "Constants/errors";
+import { createProductType } from "Actions/independentActions";
+import { getProductTypes } from "Actions/GeneralActions";
+import { ERROR_500 } from "Constants/errors";
 
 const CategoryProductsCreate = props => {
     const theme = useTheme();
@@ -50,21 +52,30 @@ const CategoryProductsCreate = props => {
         data: null
     });
 
-    const { control, register, errors, handleSubmit, setValue, watch} = useForm({
+    const [products, setProducts] = useState(props.productTypes);
+    const [chosenProducts, setChosenProducts] = useState([]);
+    const [showCreateBox, setShowCreateBox] = useState(false);
+    const [showDeleteBox, setShowDeleteBox] = useState(false);
+    const [deleteProduct, setDeleteProduct] = useState(null);
+
+    const { control, register, errors, handleSubmit, setValue, watch } = useForm({
         defaultValues: {
             isAvailable: false,
             isDefaultPfm: false,
             isDefaultMember: false,
+            isAccount: false,
         }
     });
 
     const isAvailableWatch = watch('isAvailable');
+    const isAccountWatch = watch('isAccount');
     const isDefaultPfmWatch = watch('isDefaultPfm');
     const isDefaultMemberWatch = watch('isDefaultMember');
 
     useEffect(() => {
         fetchCategoryProducts();
         fetchCatalogTypes();
+        // getProductTypes(authUser.user.branch.id);
         fetchSysProductNature();
         if (!authUser.isExploitant())
             fetchRootProductType();
@@ -76,9 +87,10 @@ const CategoryProductsCreate = props => {
     const onSubmit = (data) => {
         setRequestGlobalAction(true);
 
-        const _data = {...data};
+        const _data = { ...data };
 
         _data.organisationId = authUser.id;
+        _data.type_products = JSON.stringify(chosenProducts.map(p => p.id));
 
         createProductType(_data, authUser.user.branch.id)
             .then(() => {
@@ -121,6 +133,18 @@ const CategoryProductsCreate = props => {
                     data: null
                 })
             })
+    };
+
+    const onAddProduct = (product) => {
+        setChosenProducts([...chosenProducts, { ...product }]);
+        setShowCreateBox(false);
+        setProducts(products.filter(p => p.id !== product.id));
+    };
+
+    const onDeleteProduct = () => {
+        setProducts([...products, deleteProduct]);
+        setShowCreateBox(false);
+        setChosenProducts(chosenProducts.filter(p => p.id !== deleteProduct.id));
     };
 
     return (
@@ -198,9 +222,9 @@ const CategoryProductsCreate = props => {
                                             register={register}
                                             name={'code'}
                                             className="input-lg"
-                                            // placeholder={intl.formatMessage({id: "common.commercialName"})}
+                                        // placeholder={intl.formatMessage({id: "common.commercialName"})}
                                         />
-                                        <span className="has-icon"><i className="ti-pencil"/></span>
+                                        <span className="has-icon"><i className="ti-pencil" /></span>
                                     </FormGroup>
                                 </div>
                                 <div className="col-md-6 col-sm-12">
@@ -215,16 +239,16 @@ const CategoryProductsCreate = props => {
                                             register={register}
                                             name={'label'}
                                             className="input-lg"
-                                            // placeholder={intl.formatMessage({id: "common.commercialName"})}
+                                        // placeholder={intl.formatMessage({id: "common.commercialName"})}
                                         />
-                                        <span className="has-icon"><i className="ti-pencil"/></span>
+                                        <span className="has-icon"><i className="ti-pencil" /></span>
                                     </FormGroup>
                                 </div>
                             </div>
 
                             <FormGroup className="has-wrapper">
                                 <InputLabel className="text-left" htmlFor="description">
-                                    <IntlMessages id="widgets.description"/>
+                                    <IntlMessages id="widgets.description" />
                                 </InputLabel>
                                 <InputComponent
                                     id="description"
@@ -233,9 +257,9 @@ const CategoryProductsCreate = props => {
                                     register={register}
                                     name={'description'}
                                     className="input-lg"
-                                    // placeholder={intl.formatMessage({id: "common.commercialName"})}
+                                // placeholder={intl.formatMessage({id: "common.commercialName"})}
                                 />
-                                <span className="has-icon"><i className="ti-pencil"/></span>
+                                <span className="has-icon"><i className="ti-pencil" /></span>
                             </FormGroup>
 
                             <FormGroup className="has-wrapper">
@@ -248,10 +272,126 @@ const CategoryProductsCreate = props => {
                                     register={register}
                                     name={'defaultPrice'}
                                     className="input-lg"
-                                    // placeholder={intl.formatMessage({id: "common.commercialName"})}
+                                // placeholder={intl.formatMessage({id: "common.commercialName"})}
                                 />
-                                <span className="has-icon"><i className="ti-pencil"/></span>
+                                <span className="has-icon"><i className="ti-pencil" /></span>
                             </FormGroup>
+
+                            <div className="row align-items-center">
+                                <div className="col-md-4 col-sm-12">
+                                    <FormControl fullWidth>
+                                        <InputComponent
+                                            isRequired
+                                            className="mt-0"
+                                            errors={errors}
+                                            control={control}
+                                            register={register}
+                                            componentType="select"
+                                            id="isAccount"
+                                            name={'isAccount'}
+                                            // defaultValue={data[0]}
+                                            as={<FormControlLabel control={
+                                                <Checkbox
+                                                    color="primary"
+                                                    checked={isAccountWatch}
+                                                    onChange={() => setValue('isAccount', !isAccountWatch)}
+                                                />
+                                            } label={"Associer une unité de compte"}
+                                            />}
+                                        />
+                                    </FormControl>
+                                </div>
+                                <div className="col-md-8 col-sm-12">
+                                    <CustomAsyncComponent
+                                        loading={false}
+                                        data={["EURO", "XAF", "USD"]}
+                                        component={data => (
+                                            <div className="form-group text-left">
+                                                <FormControl fullWidth>
+                                                    <InputLabel className="text-left" htmlFor="currency-helper">
+                                                        Unité de compte
+                                                    </InputLabel>
+                                                    <InputComponent
+                                                        isRequired
+                                                        disabled={!isAccountWatch}
+                                                        className="mt-0"
+                                                        errors={errors}
+                                                        control={control}
+                                                        register={register}
+                                                        componentType="select"
+                                                        name={'currency'}
+                                                        defaultValue={data[0]}
+                                                        as={<Select input={<Input name="currency" id="currency-helper" />}>
+                                                            {data.map((item, index) => (
+                                                                <MenuItem key={index} value={item} className="center-hor-ver">
+                                                                    {item}
+                                                                </MenuItem>
+                                                            ))}
+                                                        </Select>}
+                                                    />
+                                                </FormControl>
+                                            </div>
+                                        )}
+                                    />
+                                </div>
+                            </div>
+
+                            <InputLabel className="text-left" htmlFor="currency-helper">
+                                Associer des produits par défaut
+                            </InputLabel>
+                            <CustomList
+                                loading={false}
+                                // showSearch={false}
+                                list={chosenProducts}
+                                onAddClick={() => setShowCreateBox(true)}
+                                itemsFoundText={n => `${n} produit(s) sélectionné(s)`}
+                                addPermissions={{
+                                    permissions: [],
+                                }}
+                                renderItem={list => (
+                                    <>
+                                        {list && list.length === 0 ? (
+                                            <div className="d-flex justify-content-center align-items-center py-50">
+                                                <h4>
+                                                    Aucun produits sélectionnés
+                                                </h4>
+                                            </div>
+                                        ) : (
+                                                <div className="table-responsive">
+                                                    <table className="table table-hover table-middle mb-0 text-center">
+                                                        <thead>
+                                                            <tr>
+                                                                <th><IntlMessages id="components.name" /></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {list && list.map((product, key) => (
+                                                                <tr key={key} className="cursor-pointer">
+                                                                    <td>
+                                                                        <div className="media">
+                                                                            <div className="media-body pt-10">
+                                                                                <h4 className="m-0 fw-bold text-dark">{product.label}</h4>
+                                                                            </div>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div className="media">
+                                                                            <div className="media-body pt-10">
+                                                                                <a href="#" className="text-danger" onClick={() => { setShowDeleteBox(true); setDeleteProduct(product); }}>
+                                                                                    <span className="material-icons mr-10">delete</span>
+                                                                                </a>
+                                                                            </div>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            ))}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            )}
+                                    </>
+                                )}
+                            />
 
                             <CustomAsyncComponent
                                 loading={systemObject.productNature.loading}
@@ -435,6 +575,43 @@ const CategoryProductsCreate = props => {
                                 </Button>
                             </FormGroup>
                         </Form>
+                        <AddProduct
+                            show={showCreateBox}
+                            products={products}
+                            onSave={onAddProduct}
+                            onClose={() => setShowCreateBox(false)}
+                        />
+
+                        <SweetAlert
+                            type="danger"
+                            show={showDeleteBox}
+                            showCancel
+                            showConfirm
+                            title={"Confirmation"}
+                            customButtons={(
+                                <>
+                                    <Button
+                                        color="blue"
+                                        variant="outlined"
+                                        onClick={() => setShowDeleteBox(false)}
+                                        className="text-white bg-blue font-weight-bold mr-3"
+                                    >
+                                        Non je ne veux pas
+                            </Button>
+                                    <Button
+                                        color="primary"
+                                        variant="contained"
+                                        className="bg-danger text-white font-weight-bold"
+                                        onClick={onDeleteProduct}
+                                    >
+                                        Oui je veux
+                            </Button>
+                                </>
+                            )}
+                            onConfirm={onDeleteProduct}
+                        >
+                            Etes-vous sur de vouloir supprimé ce produit ?
+                </SweetAlert>
                     </RctCollapsibleCard>
                 </DialogContent>
             </Dialog>
@@ -442,8 +619,110 @@ const CategoryProductsCreate = props => {
     );
 };
 
-const mapStateToProps = ({ requestGlobalLoader, authUser, catalogTypes, categoryProducts, systemObject}) => {
-    return {loading: requestGlobalLoader, authUser: authUser.data, catalogTypes: catalogTypes, categoryProducts: categoryProducts, systemObject};
+const mapStateToProps = ({ requestGlobalLoader, authUser, catalogTypes, categoryProducts, systemObject, productTypes }) => {
+    return {
+        loading: requestGlobalLoader, authUser: authUser.data, catalogTypes: catalogTypes, categoryProducts: categoryProducts, systemObject,
+        productTypes: productTypes.data,
+    };
 };
 
-export default connect(mapStateToProps, {getProductTypes, getCategoryProducts, getCatalogsOfOneType, getSysProductNature, setRequestGlobalAction })(injectIntl(CategoryProductsCreate));
+export default connect(mapStateToProps, { getProductTypes, getCategoryProducts, getCatalogsOfOneType, getSysProductNature, setRequestGlobalAction })(injectIntl(CategoryProductsCreate));
+
+const AddProduct = ({ show, products, onSave, onClose }) => {
+
+    // const [product, setProduct] = useState(products[0]);
+    // const [quantity, setQuantity] = useState(1);
+    const theme = useTheme();
+    const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
+
+    const { control, register, errors, handleSubmit, setValue, watch } = useForm();
+
+    const onSubmit = (data) => {
+        const productId = data.product;
+        if (productId === null || productId === undefined) {
+            NotificationManager.error("Vous devez choisir un produit ou en créé un d'abord");
+            return;
+        }
+
+        onSave(products.find(p => p.id === productId));
+    };
+
+    return (
+        <Dialog
+            open={show}
+            onClose={onClose}
+            fullScreen={fullScreen}
+            aria-labelledby="responsive-dialog-title"
+            disableBackdropClick
+            disableEscapeKeyDown
+            maxWidth={'lg'}
+            fullWidth
+        >
+            <DialogTitle id="form-dialog-title">
+                <div className="row justify-content-between align-items-center">
+                    Ajouté un nouveau produit
+                    <IconButton
+                        color="primary"
+                        aria-label="close"
+                        className="text-danger"
+                        // onClick={() => this.setState({showCreateBox: false})}>
+                        onClick={onClose}>
+                        <CancelIcon />
+                    </IconButton>
+                </div>
+            </DialogTitle>
+            <DialogContent>
+                <RctCollapsibleCard>
+                    <Form onSubmit={onSubmit}>
+                        <div className="w-100">
+
+                            <CustomAsyncComponent
+                                loading={false}
+                                data={products}
+                                component={data => (
+                                    <div className="form-group text-left">
+                                        <FormControl fullWidth>
+                                            <InputLabel className="text-left" htmlFor="representativePosition">
+                                                Produit
+                                            </InputLabel>
+                                            <InputComponent
+                                                isRequired
+                                                className="mt-0"
+                                                errors={errors}
+                                                control={control}
+                                                register={register}
+                                                componentType="select"
+                                                name={'product'}
+                                                defaultValue={data.id ? data.id : undefined}
+                                                as={<Select input={<Input name="representativePosition" id="representativePosition" />}>
+                                                    {data.map((item, index) => (
+                                                        <MenuItem key={item.id} value={item.id} className="center-hor-ver">
+                                                            {item.label}
+                                                        </MenuItem>
+                                                    ))}
+                                                </Select>}
+                                            />
+                                        </FormControl>
+                                    </div>
+                                )}
+                            />
+                        </div>
+
+                        <FormGroup className="mb-15">
+                            <Button
+                                // type="submit"
+                                color="primary"
+                                // disabled={loading}
+                                variant="contained"
+                                className="text-white font-weight-bold mr-3"
+                                onClick={handleSubmit(onSubmit)}
+                            >
+                                Ajouter
+                            </Button>
+                        </FormGroup>
+                    </Form>
+                </RctCollapsibleCard>
+            </DialogContent>
+        </Dialog>
+    );
+};

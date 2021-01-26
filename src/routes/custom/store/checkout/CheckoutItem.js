@@ -20,6 +20,7 @@ class CheckoutItem extends Component {
     constructor(props) {
         super(props);
         this.order = this.props.order;
+        console.log(this.props.order)
     }
 
 
