@@ -571,7 +571,7 @@ export default {
             {
                "menu_title": "Comptes",
                "new_item": false,
-               "path": MICROCAP360.COMPTES.SELF,
+               "path": PRODUCT.SHOW_ACCOUNT,
                "permissions": [],
             },
             {

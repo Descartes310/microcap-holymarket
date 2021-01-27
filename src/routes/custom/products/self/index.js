@@ -10,6 +10,7 @@ import {PRODUCT} from "Url/frontendUrl";
 import {withRouter, Switch, Redirect, Route} from "react-router-dom";
 import List from './List';
 import ProductItemAvailable from './ProductItemAvailable';
+import Account from './accounts';
 import Permission from "Enums/Permissions";
 import CanRoute from "Components/CanRoute";
 
@@ -23,6 +24,7 @@ class Products extends Component {
                         <Redirect exact from={`${match.url}/`} to={PRODUCT.LIST} />
                         {/*<Route path={USERS.USERS_PROFILE.} component={Show} />*/}
                         <Route path={PRODUCT.SHOW} component={ProductItemAvailable} />
+                        <Route path={PRODUCT.SHOW_ACCOUNT} component={Account} />
                         <Route path={PRODUCT.LIST} component={List} />
                         {/*<CanRoute
                             path={PRODUCT.CREATE}

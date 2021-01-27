@@ -126,6 +126,7 @@ export const COMMERCIAL_MANAGEMENT = {
 export const PRODUCT = {
     LIST: '/products',
     SHOW: '/products/:id/show',
+    SHOW_ACCOUNT: '/products/accounts'
 };
 
 export const STORE = {

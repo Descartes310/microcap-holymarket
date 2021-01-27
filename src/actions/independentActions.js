@@ -7,6 +7,7 @@ import {
     NETWORK_PROFILE,
     CATALOGS,
     CATEGORY_PRODUCTS,
+    PRODUCTS,
     PRODUCT_TYPE,
     USER_PROFILE, NETWORK_PROFILE_TYPE, USERS,
     COMMUNITY_MEMBER, COMMUNITY, PACKAGES, COMMERCIAL_MANAGEMENT, joinBaseUrlWithParamsId,
@@ -353,6 +354,11 @@ export const sendInvitationCommunityMember = (data) => {
 export const createPostProject = (data) => {
     const url = joinBaseUrlWithParamsId(PROJECTS.POST_PROJETS.CREATE, data.branchId);
     return makeRequest('post', url , data);
+};
+
+export const getUserAccounts = (id) => {
+    const url = joinBaseUrlWithParamsId(PRODUCTS.GET_FOR_USER, id);
+    return makeRequest('get', url);
 };
 
 /* export const getAllPostProject = (branchId) => {

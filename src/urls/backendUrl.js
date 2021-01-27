@@ -82,6 +82,10 @@ export const NETWORK_PROFILE_TYPE = {
     GET_ALL: 'public/type-network-profiles',
 };
 
+export const PRODUCTS = {
+    GET_FOR_USER: 'public/products/accounts/user/{id}',
+};
+
 export const CATALOGS = {
     GET_ALL: 'public/catalogs',
     CREATE: 'public/catalogs',
