@@ -9,13 +9,19 @@ import IntlMessages from 'Util/IntlMessages';
 import { withStyles } from "@material-ui/core";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
-import {Button, Input, InputGroup, InputGroupAddon} from "reactstrap";
+import { Button, Input, InputGroup, InputGroupAddon } from "reactstrap";
 import IconButton from "@material-ui/core/IconButton";
-import { getMembersOfCommunity } from 'Actions/independentActions';
+import { createVoucher, getMembersOfCommunity, getVouchers } from 'Actions/independentActions';
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
-import {AbilityContext} from "Permissions/Can";
+import { AbilityContext } from "Permissions/Can";
 import User from "Models/User";
-
+import SweetAlert from "react-bootstrap-sweetalert";
+import { NotificationManager } from "react-notifications";
+import DialogTitle from "@material-ui/core/DialogTitle/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent/DialogContent";
+import Dialog from "@material-ui/core/Dialog/Dialog";
+import CancelIcon from '@material-ui/icons/Cancel';
+import TimeFromMoment from "Components/TimeFromMoment";
 
 class ListMembers extends Component {
 
@@ -23,6 +29,10 @@ class ListMembers extends Component {
 
     state = {
         loading: true,
+        showQuantityBox: false,
+        showVoucherBox: false,
+        selectedUser: null,
+        code: [],
         users: []
     }
 
@@ -30,10 +40,35 @@ class ListMembers extends Component {
         this.setState({ [event.target.name]: event.target.value });
     };
 
+    handleGenerate = value => {
+        this.setState({ showQuantityBox: true, selectedUser: value });
+    };
+
+    onViewVoucher = user => {
+        this.setState({ showVoucherBox: true });
+        getVouchers(this.props.communitySpace.data, user.id).then(data => {
+            this.setState({ codes: data })
+        }).catch(err => {
+            console.log(err)
+            this.setState({ codes: [] })
+        }).finally(() => {})
+    }
+
+    onGenerate = value => {
+        createVoucher(this.props.communitySpace.data, {
+            user_id: this.state.selectedUser.id,
+            price: value
+        }).then(data => {
+            NotificationManager.success("Le code généré avec succès");
+        }).catch(err => {
+            NotificationManager.error("Une erreur est survenue")
+        }).finally(() => this.setState({ showQuantityBox: false }))
+    };
+
     getMembers = () => {
         getMembersOfCommunity(this.props.communitySpace.data).then(data => {
             this.setState({ users: data })
-        }).finally(() => this.setState({ loading: false}))
+        }).finally(() => this.setState({ loading: false }))
     }
 
     componentDidMount() {
@@ -41,13 +76,13 @@ class ListMembers extends Component {
     }
 
     render() {
-        const { loading, users } = this.state;
+        const { loading, users, showQuantityBox, showVoucherBox, codes } = this.state;
         const { classes } = this.props;
         return (
 
-            <div className="page-list">
+            <div className="page-list mt-40">
                 <PageTitleBar title={"Membres de la communautés"} />
-                {loading 
+                {loading
                     ? (<RctSectionLoader />)
                     : (
                         <RctCollapsibleCard>
@@ -80,8 +115,8 @@ class ListMembers extends Component {
                                         <ListItem
                                             user={user}
                                             key={key}
-                                            onSelectEmail={(e) => this.onSelectEmail(e, user)}
-                                            onReadEmail={() => this.readEmail(user)}
+                                            onGenerate={() => this.handleGenerate(user)}
+                                            onViewVoucher={() => this.onViewVoucher(user)}
                                         />
                                     ))
                                         :
@@ -94,8 +129,84 @@ class ListMembers extends Component {
                                 </ul>
                             </div>
                         </RctCollapsibleCard>
+
                     )
                 }
+                <SweetAlert
+                    input
+                    btnSize="sm"
+                    show={showQuantityBox}
+                    showCancel
+                    cancelBtnBsStyle="danger"
+                    title="Montant"
+                    placeHolder="10"
+                    inputType="number"
+                    onConfirm={(value) => this.onGenerate(value)}
+                    onCancel={() => this.setState({ showQuantityBox: false })}
+                    confirmBtnText="Générer"
+                    cancelBtnText="Annuler"
+                    confirmBtnCssClass="bg-primary text-white"
+                >
+                    Entrez le montant du code a générer
+                </SweetAlert>
+                <Dialog
+                    open={showVoucherBox}
+                    onClose={() => { this.setState({ showVoucherBox: false, codes: [] }) }}
+                    aria-labelledby="responsive-dialog-title"
+                    maxWidth={'lg'}
+                    fullWidth
+                >
+                    <DialogTitle id="form-dialog-title">
+                        <div className="row justify-content-between align-items-center">
+                            Codes de paiement actifs
+                            <IconButton
+                                color="primary"
+                                aria-label="close"
+                                className="text-danger"
+                                onClick={() => { this.setState({ showVoucherBox: false, codes: [] }) }}>
+                                <CancelIcon />
+                            </IconButton>
+                        </div>
+                    </DialogTitle>
+                    <DialogContent>
+                        <table className="table table-hover table-middle mb-0 text-center">
+                            <thead>
+                                <tr>
+                                    <th>Code de paiement</th>
+                                    <th>Montant</th>
+                                    <th>Date de création</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {codes && codes.map((item, key) => (
+                                    <tr key={key} className="cursor-pointer">
+                                        <td>
+                                            <div className="media">
+                                                <div className="media-body pt-10">
+                                                    <h4 className="m-0 fw-bold text-dark">{item.code}</h4>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div className="media">
+                                                <div className="media-body pt-10">
+                                                    <h4 className="m-0 fw-bold text-dark">{item.price}</h4>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div className="media">
+                                                <div className="media-body pt-10">
+                                                    <h4 className="m-0 fw-bold text-dark"><TimeFromMoment time={item.updatedAt} /></h4>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </DialogContent>
+                </Dialog>
             </div>
         )
     }
@@ -121,8 +232,10 @@ const useStyles = theme => ({
 });
 
 const mapStateToProps = ({ authUser, communitySpace }) => {
-    return { authUser: authUser.data, 
-        communitySpace: communitySpace };
+    return {
+        authUser: authUser.data,
+        communitySpace: communitySpace
+    };
 };
 
 export default withRouter(connect(mapStateToProps, {

@@ -14,6 +14,7 @@ import Create from './Create';
 class Offer extends Component {
     render() {
         const { match } = this.props;
+        console.log('Je suis dans le match ', match)
         return (
             <div className="full-height">
                 <>

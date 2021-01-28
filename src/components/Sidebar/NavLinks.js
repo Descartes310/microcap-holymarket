@@ -1,5 +1,5 @@
 // sidebar nav links
-import {CATALOG, COMMERCIAL_MANAGEMENT, COMMUNITY_MEMBER, COMMUNITY, NETWORK, PRODUCT, USERS, ACCESS, SETTINGS, PROJECTS, MICROCAP360} from 'Url/frontendUrl';
+import {CATALOG, COMMERCIAL_MANAGEMENT, COMMUNITY_ADMIN, COMMUNITY_MEMBER, COMMUNITY, NETWORK, PRODUCT, USERS, ACCESS, SETTINGS, PROJECTS, MICROCAP360} from 'Url/frontendUrl';
 import Branch from 'Models/Branch';
 import Permission from "Enums/Permissions";
 
@@ -699,7 +699,7 @@ export default {
                   {
                      "menu_title": "Paiement",
                      "new_item": false,
-                     "path": COMMUNITY.MEMBERS.LIST,
+                     "path": COMMUNITY_ADMIN.SELF,
                      "permissions": [],
                   },{
                      "menu_title": "Activation",

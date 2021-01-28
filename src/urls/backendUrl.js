@@ -169,6 +169,8 @@ export const COMMUNITY_MEMBER = {
             ADMIN: 'groups/communities/user/admin/me',
             GET_MEMBERS: 'groups/communities/{id}/members',
             GET_COMMUNITIES: 'groups/communities/users/{id}',
+            CREATE_VOUCHER: 'groups/{id}/vouchers',
+            GET_VOUCHERS: 'groups/{id}/vouchers/users/{user_id}',
         },
         CREATE: {
             NON_CONVENTIONAL: 'groups/communities/non-conventionated'

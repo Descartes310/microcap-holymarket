@@ -250,6 +250,13 @@ export const PROJECTS = {
     },
 };
 
+export const COMMUNITY_ADMIN = {
+    SELF: '/admin/community-t',
+    VOUCHER: {
+        LIST: '/admin/community-t/members/vouchers',
+    },
+}
+
 export const COMMUNITY = {
     SELF: '/community-t',
     POST_PROJECT: {

@@ -8,10 +8,9 @@ import {Button} from "reactstrap";
 import { textTruncate } from 'Helpers/helpers';
 import UserAvatar from "Components/UserAvatar";
 
-const ListItem = ({ user, onReadEmail }) => {
-    console.log(user)
+const ListItem = ({ user, onGenerate, onViewVoucher }) => {
     return (
-        <li className="d-flex justify-content-between align-items-center list-item" onClick={onReadEmail}>
+        <li className="d-flex justify-content-between align-items-center list-item">
             <div className="d-flex align-items-center w-100">
                 <div className="emails media w-100">
                     <div className="avatar-wrap w-10 align-self-center d-sm-r-none">
@@ -28,12 +27,22 @@ const ListItem = ({ user, onReadEmail }) => {
                     </div>
                 </div>
             </div>
-            <div className="font-xs text-muted w-10" style={{ marginRight: '50px' }}>
+            <div className="font-xs text-muted" style={{ marginRight: '50px' }}>
                 <Button
                     color="primary"
-                    className="text-white mr-2"
+                    className="text-white"
+                    onClick={onGenerate}
                 >
-                    Consulter les détails
+                    Générer un code de paiement
+                </Button>
+            </div>
+            <div className="font-xs text-muted" style={{ marginRight: '50px' }}>
+                <Button
+                    variant="contained"
+                    className={"text-white font-weight-bold mr-3 bg-blue"}
+                    onClick={onViewVoucher}
+                >
+                    Consulter les codes actifs
                 </Button>
             </div>
         </li>
