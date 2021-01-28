@@ -688,13 +688,32 @@ export default {
          "menu_title": "Administration",
          "menu_icon": "zmdi zmdi-widgets",
          "new_item": false,
+         "type_multi": true,
          "permissions": [],
          "child_routes": [
             {
-               "menu_title": "Membres",
+               "menu_title": "Codes",
                "new_item": false,
-               "path": CATALOG.PRODUCT.SELF,
                "permissions": [],
+               "child_routes": [
+                  {
+                     "menu_title": "Paiement",
+                     "new_item": false,
+                     "path": COMMUNITY.MEMBERS.LIST,
+                     "permissions": [],
+                  },{
+                     "menu_title": "Activation",
+                     "new_item": false,
+                     "path": COMMUNITY.MEMBERS.LIST,
+                     "permissions": [],
+                  },
+                  {
+                     "menu_title": "Confirmation",
+                     "new_item": false,
+                     "path": COMMUNITY.MEMBERS.LIST,
+                     "permissions": [],
+                  }
+               ],
             }
          ]
       }
