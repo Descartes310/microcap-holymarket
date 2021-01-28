@@ -608,10 +608,22 @@ export default {
          "menu_title": "Produits & Services",
          "menu_icon": "zmdi zmdi-shopping-cart",
          "new_item": false,
-         "path": PRODUCT.LIST,
          // "permissions": [Permission.navLinks.COMMUNITY_MEMBER.viewMenu],
          "permissions": [],
-         "child_routes": null
+         "child_routes": [
+            {
+               "menu_title": "Market place",
+               "new_item": false,
+               "path": PRODUCT.LIST,
+               "permissions": [],
+            },
+            {
+               "menu_title": "Mes commandes",
+               "new_item": false,
+               "path": PRODUCT.ORDERS,
+               "permissions": [],
+            }
+         ],
       },{
          "menu_title": "Ressources",
          "menu_icon": "zmdi zmdi-accounts",

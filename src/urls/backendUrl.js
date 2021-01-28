@@ -239,6 +239,7 @@ export const ORDER = {
 export const SALES = {
     GET_ALL: 'public/sales',
     GET_ONE: 'public/sales/{id}',
+    GET_BY_USER: 'public/sales/users/{id}',
     CREATE: 'public/sales',
 };
 

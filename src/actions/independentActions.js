@@ -361,6 +361,16 @@ export const getUserAccounts = (id) => {
     return makeRequest('get', url);
 };
 
+export const getUserSales = (id) => {
+    const url = joinBaseUrlWithParamsId(SALES.GET_BY_USER, id);
+    return makeRequest('get', url);
+};
+
+export const getSaleProducts = (id) => {
+    const url = joinBaseUrlWithParamsId(SALES.GET_ONE, id);
+    return makeRequest('get', url);
+};
+
 /* export const getAllPostProject = (branchId) => {
     const url = joinBaseUrlWithParams(PROJECTS.POST_PROJETS.GET_ALL, [{
         param: 'branchId',

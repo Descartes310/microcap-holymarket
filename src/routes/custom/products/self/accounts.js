@@ -22,8 +22,7 @@ class Account extends Component {
 
         this.state = {
             loading: true,
-            products: [],
-            currentProduct: this.currentProduct,
+            products: []
         }
     }
 
@@ -35,7 +34,6 @@ class Account extends Component {
         getUserAccounts(this.props.authUser.user.id)
             .then(products => {
                 this.setState({ products });
-                console.log(products)
             })
             .catch(() => {
                 NotificationManager.error(ERROR_500);
@@ -61,58 +59,69 @@ class Account extends Component {
                                     </h4>
                                 </div>
                             ) : (
-                                    <div className="table-responsive">
-                                        <table className="table table-hover table-middle mb-0 text-center">
-                                            <thead>
-                                                <tr>
-                                                    <th><IntlMessages id="components.name" /></th>
-                                                    <th>Type de compte</th>
-                                                    <th>Solde</th>
-                                                    <th>Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {list && list.map((item, key) => (
-                                                    <tr key={key} className="cursor-pointer">
-                                                        <td>
-                                                            <div className="media">
-                                                                <div className="media-body pt-10">
-                                                                    <h4 className="m-0 fw-bold text-dark">{item.name}</h4>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div className="media">
-                                                                <div className="media-body pt-10">
-                                                                    <h4 className="m-0 fw-bold text-dark">{item.typeProduct.name}</h4>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div className="media">
-                                                                <div className="media-body pt-10">
-                                                                    <h4 className="m-0 fw-bold text-dark"> 0 {item.typeProduct.currency}</h4>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                        <td className="table-action">
-                                                            <Button
-                                                                size="small"
-                                                                color="primary"
-                                                                // disabled={loading}
-                                                                variant="contained"
-                                                                className={"text-white font-weight-bold mr-3"}
-                                                                onClick={() => this.onWantToAddItemToCart(item)}
-                                                            >
-                                                                Consulter le compte
+                                    list && list.map((item, key) => {
+
+                                        return (
+                                            <>
+                                                <h2 style={{ marginBottom: 20 }}>{item.type}</h2>
+                                                {
+                                                    item.accounts.length == 0 ?
+                                                        <div className="d-flex justify-content-center align-items-center py-20">
+                                                            <h4>
+                                                                Aucun comptes trouvés
+                                                    </h4>
+                                                        </div>
+                                                        :
+
+                                                        <div className="table-responsive">
+                                                            <table className="table table-hover table-middle mb-0 text-center">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th><IntlMessages id="components.name" /></th>
+                                                                        <th>Solde</th>
+                                                                        <th>Action</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    {item.accounts.map((account, key) => (
+                                                                        <tr key={key} className="cursor-pointer">
+                                                                            <td>
+                                                                                <div className="media">
+                                                                                    <div className="media-body pt-10">
+                                                                                        <h4 className="m-0 fw-bold text-dark">{account.name}</h4>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </td>
+                                                                            <td>
+                                                                                <div className="media">
+                                                                                    <div className="media-body pt-10">
+                                                                                        <h4 className="m-0 fw-bold text-dark"> 0 {account.typeProduct.currency}</h4>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </td>
+                                                                            <td className="table-action">
+                                                                                <Button
+                                                                                    size="small"
+                                                                                    color="primary"
+                                                                                    // disabled={loading}
+                                                                                    variant="contained"
+                                                                                    className={"text-white font-weight-bold mr-3"}
+                                                                                >
+                                                                                    Consulter le compte
                                                         </Button>
-                                                        </td>
-                                                    </tr>
-                                                ))}
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                )}
+                                                                            </td>
+                                                                        </tr>
+                                                                    ))}
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                }
+                                            </>
+                                        )
+                                    }
+                                    )
+                                )
+                            }
                         </>
                     )}
                 />
