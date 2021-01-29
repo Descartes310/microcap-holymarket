@@ -101,7 +101,7 @@ class CheckoutItem extends Component {
                <span className="font-weight-bold text-muted"><IntlMessages id="components.totalPrice" /></span>
                <span className="font-weight-bold">$ {cart.getTotalPrice()}</span>
             </div>
-            <div className="d-flex justify-content-end align-items-center">
+            {/* <div className="d-flex justify-content-end align-items-center">
                {!cart.isCartEmpty() ? (
                   <Button variant="contained" color="primary" className="text-white" onClick={() => this.openAlert('success')}>
                      <IntlMessages id="components.placeOrder" />
@@ -112,7 +112,7 @@ class CheckoutItem extends Component {
                      </Button>
                   )
                }
-            </div>
+            </div> */}
             <SweetAlert
                success
                show={success}

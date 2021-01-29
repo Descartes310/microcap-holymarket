@@ -154,7 +154,7 @@ class CartView extends Component {
                                             className="text-white"
                                             onClick={() => this.onInitPayment()}
                                         >
-                                            Payer
+                                            Commander
                                         </Button>
                                     )}
                                 </td>

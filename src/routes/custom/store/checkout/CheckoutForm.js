@@ -42,9 +42,9 @@ class CheckoutForm extends Component {
       this.setState({ value });
    };
 
-   onFormComplete = (data, nextStep) => {
+   onFormComplete = (data, nextStep, voucher = null) => {
       this.setState(prevState => ({data: {...prevState.data, ...data}, value: nextStep ? prevState.value + 1 : 0}), () => {
-         if (!nextStep) {
+         if (!nextStep && voucher != null) {
             this.props.setRequestGlobalAction(true);
             const _data = {...this.state.data};
             _data.address1 = this.state.data.addressLine1;
@@ -55,6 +55,7 @@ class CheckoutForm extends Component {
             _data.phone = this.props.authUser.user.phone;
             _data.orderId = this.order.id;
             _data.userId = this.props.authUser.user.id;
+            _data.voucherCode = voucher;
 
             createSale(_data)
                 .then(() => {
