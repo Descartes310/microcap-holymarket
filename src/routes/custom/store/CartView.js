@@ -79,7 +79,6 @@ class CartView extends Component {
     };
 
     render() {
-        console.log("CartView");
         const { cart, match, history } = this.props;
         const { showConfirmBox } = this.state;
 

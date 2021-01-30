@@ -156,7 +156,7 @@ class BillingForm extends Component {
                   </div>
                </DialogTitle>
                <DialogContent style={{ display: 'flex', flexDirection: 'column' }}>
-                  <Button disable={entringCode} size="large" onClick={() => this.props.onComplete(this.state.billingInformation, true)} style={{ color: 'white' }} color="primary" variant="contained">
+                  <Button disable={entringCode} size="large" onClick={() => /*this.props.onComplete(this.state.billingInformation, true)*/ console.log('Bonjour')} style={{ color: 'white' }} color="primary" variant="contained">
                      Payment Stripe
                   </Button>
                   <Button disable={entringCode} onClick={() => this.setState({ entringCode: true })} size="large" color="primary" variant="contained" style={{ marginTop: 40, marginBottom: entringCode ? 20 : 40, color: 'white' }}>

@@ -7,6 +7,7 @@ import {
     NETWORK_PROFILE,
     CATALOGS,
     CATEGORY_PRODUCTS,
+    ACCOUNT,
     PRODUCTS,
     PRODUCT_TYPE,
     USER_PROFILE, NETWORK_PROFILE_TYPE, USERS,
@@ -379,9 +380,24 @@ export const getUserAccounts = (id) => {
     return makeRequest('get', url);
 };
 
+export const getAccountDetails = (id) => {
+    const url = joinBaseUrlWithParamsId(ACCOUNT.GET_ONE, id);
+    return makeRequest('get', url);
+};
+
+export const getAccountTransactions = (id) => {
+    const url = joinBaseUrlWithParamsId(ACCOUNT.GET_TRANSACTIONS, id);
+    return makeRequest('get', url);
+};
+
 export const getUserSales = (id) => {
     const url = joinBaseUrlWithParamsId(SALES.GET_BY_USER, id);
     return makeRequest('get', url);
+};
+
+export const approvisioningVoucher = (id, data) => {
+    const url = joinBaseUrlWithParamsId(ACCOUNT.APPROVISIONING_VOUCHER, id);
+    return makeRequest('post', url, data);
 };
 
 export const getSaleProducts = (id) => {

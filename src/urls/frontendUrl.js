@@ -128,7 +128,8 @@ export const PRODUCT = {
     ORDERS: '/products/orders',
     ORDERS_SHOW: '/products/orders/:id/show',
     SHOW: '/products/:id/show',
-    SHOW_ACCOUNT: '/products/accounts'
+    SHOW_ACCOUNT: '/products/accounts',
+    ACCOUNT_DETAILS: '/products/accounts/:id'
 };
 
 export const STORE = {

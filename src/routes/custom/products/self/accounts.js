@@ -7,6 +7,7 @@ import IntlMessages from 'Util/IntlMessages';
 import { withStyles } from "@material-ui/core";
 import { AbilityContext } from "Permissions/Can";
 import CustomList from "Components/CustomList";
+import { PRODUCT, joinUrlWithParamsId } from "Url/frontendUrl";
 import { getProductItemAvailable, setRequestGlobalAction } from "Actions";
 import { getUserAccounts } from "Actions/independentActions";
 import { NotificationManager } from "react-notifications";
@@ -22,7 +23,7 @@ class Account extends Component {
 
         this.state = {
             loading: true,
-            products: []
+            products: {}
         }
     }
 
@@ -33,15 +34,38 @@ class Account extends Component {
     loadData = () => {
         getUserAccounts(this.props.authUser.user.id)
             .then(products => {
-                this.setState({ products });
+                this.setState({ products: this.groups(products) });
             })
             .catch(() => {
                 NotificationManager.error(ERROR_500);
             })
             .finally(() => this.setState({ loading: false }));
     };
+
+    groups = (array) => {
+        let result = array.reduce((groups, account) => {
+            const type = account.type;
+            if (!groups[type]) {
+                groups[type] = [];
+            }
+            groups[type].push(...account.accounts);
+            return groups;
+        }, {});
+        return result;
+    }
+
+    groupArrays = () => {
+        Object.keys(groups).map((type) => {
+            return {
+                date,
+                transactions: groups[type]
+            };
+        });
+    }
+
     render() {
         const { loading, products } = this.state;
+        const { history } = this.props;
 
         return (
             <>
@@ -59,13 +83,12 @@ class Account extends Component {
                                     </h4>
                                 </div>
                             ) : (
-                                    list && list.map((item, key) => {
-
+                                    Object.entries(list).map(function (account, index) {
                                         return (
                                             <>
-                                                <h2 style={{ marginBottom: 20 }}>{item.type}</h2>
-                                                {
-                                                    item.accounts.length == 0 ?
+                                                <h2 style={{ marginBottom: 20 }}>{account[0]}</h2>
+                                                 {
+                                                    account[1].length == 0 ?
                                                         <div className="d-flex justify-content-center align-items-center py-20">
                                                             <h4>
                                                                 Aucun comptes trouvés
@@ -73,7 +96,7 @@ class Account extends Component {
                                                         </div>
                                                         :
 
-                                                        <div className="table-responsive">
+                                                        <div className="table-responsive mb-40">
                                                             <table className="table table-hover table-middle mb-0 text-center">
                                                                 <thead>
                                                                     <tr>
@@ -83,7 +106,7 @@ class Account extends Component {
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
-                                                                    {item.accounts.map((account, key) => (
+                                                                    {Array.isArray(account[1]) && account[1].map((account, key) => (
                                                                         <tr key={key} className="cursor-pointer">
                                                                             <td>
                                                                                 <div className="media">
@@ -95,7 +118,7 @@ class Account extends Component {
                                                                             <td>
                                                                                 <div className="media">
                                                                                     <div className="media-body pt-10">
-                                                                                        <h4 className="m-0 fw-bold text-dark"> 0 {account.typeProduct.currency}</h4>
+                                                                                        <h4 className="m-0 fw-bold text-dark"> { account.detailsProducts.filter(d => d.detailsType.name == 'SOLDE').length > 0 ? account.detailsProducts.filter(d => d.detailsType.name == 'SOLDE')[0].value : 0 } {account.typeProduct.currency}</h4>
                                                                                     </div>
                                                                                 </div>
                                                                             </td>
@@ -106,9 +129,10 @@ class Account extends Component {
                                                                                     // disabled={loading}
                                                                                     variant="contained"
                                                                                     className={"text-white font-weight-bold mr-3"}
+                                                                                    onClick={() => history.push(joinUrlWithParamsId(PRODUCT.ACCOUNT_DETAILS, account.id))}
                                                                                 >
                                                                                     Consulter le compte
-                                                        </Button>
+                                                                                </Button>
                                                                             </td>
                                                                         </tr>
                                                                     ))}

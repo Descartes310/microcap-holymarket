@@ -238,6 +238,12 @@ export const ORDER = {
     CREATE: 'public/order',
 };
 
+export const ACCOUNT = {
+    GET_ONE: 'public/accounts/{id}',
+    GET_TRANSACTIONS: 'public/accounts/{id}/mouvements',
+    APPROVISIONING_VOUCHER: 'public/accounts/{id}/approvisioning/voucher'
+};
+
 export const SALES = {
     GET_ALL: 'public/sales',
     GET_ONE: 'public/sales/{id}',
