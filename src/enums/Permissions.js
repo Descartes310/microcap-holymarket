@@ -63,6 +63,14 @@ export default class Permission extends BaseEnum {
                         "types": [UserType.MANAGER, UserType.EXPLOITANT]
                     }
                 },
+            },
+            community: {
+                admin: {
+                    viewMenu: {
+                        "name": "nav-links/users/user-permission/community/admin/view-menu",
+                        "types": [UserType.USER]
+                    }
+                }
             }
         },
         products: {

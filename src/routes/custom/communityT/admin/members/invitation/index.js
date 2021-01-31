@@ -1,24 +1,19 @@
-/**
- * Chat
- */
-import { connect } from "react-redux";
 import React, { Component } from 'react';
 import Drawer from '@material-ui/core/Drawer';
 import Hidden from '@material-ui/core/Hidden';
 import { withStyles } from '@material-ui/core/styles';
-import { Helmet } from "react-helmet";
-import { statusCommunitySpaceStatus, setCommunitySpaceData, setCommunitySpaceAdmins } from 'Actions/CommunityAction';
-import GroupsSidebar from "Routes/custom/community/groups/GroupsSidebar";
-import CommunityItem from "Routes/custom/community/groups/CommunityItem";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
-import EmailSearch from "Routes/mail/components/EmailSearch";
 import AppBar from "@material-ui/core/AppBar/AppBar";
 import AppsIcon from '@material-ui/icons/Apps';
-import MatButton from '@material-ui/core/Button';
-import { getCommunityAdmins } from 'Actions/independentActions'
-import InvitationCreateDialog from '../../communityT/members/invitation/InvitationCreateDialog';
-import { COMMUNITY } from 'Url/frontendUrl';
+import {Switch, Route, Redirect} from "react-router-dom";
+import {COMMUNITY_ADMIN} from "Url/frontendUrl";
+import InvitationsSidebar from "./InitationsSidebar";
+import InvitationsReceived from "./InvitationsReceived";
+import InvitationsSend from "./InvitationsSend";
+import IntegrationRequest from "./IntegrationRequest";
+import InvitationCreate from "./InvitationCreate";
+import {withRouter} from 'react-router-dom';
 
 const drawerWidth = 310;
 
@@ -58,45 +53,20 @@ const styles = theme => ({
     },
 });
 
-class Groups extends Component {
+class Invitations extends Component {
 
     state = {
         mobileOpen: false,
-        open: false
     };
-
-    constructor(props) {
-        super(props);
-     }
 
     handleDrawerToggle = () => {
         this.setState({ mobileOpen: !this.state.mobileOpen });
     };
 
-    enterInCommunitySpace = () => {
-        getCommunityAdmins(this.props.currentCommunity.data.id).then(data => {
-            this.props.statusCommunitySpaceStatus(true);
-            this.props.setCommunitySpaceAdmins(data);
-            this.props.setCommunitySpaceData(this.props.currentCommunity.data.id);
-            this.props.history.push(COMMUNITY.MEMBERS.LIST);
-        })
-    }
-
-    join = () => {
-        this.props.history.push(COMMUNITY.MEMBERS.LIST);
-    }
-
-    handleClickOpenInvation = () => {
-        this.setState({ open: true });
-    };
-
-    handleCloseInvation = () => {
-        this.setState({ open: false });
-    };
-
     render() {
-        const { classes, theme, currentCommunity } = this.props;
-        const drawer = <GroupsSidebar />;
+        const { classes, theme, match } = this.props;
+        const drawer = <InvitationsSidebar />;
+        console.log("Je suis dans invitation admin !")
         return (
             <div className="chat-wrapper">
                 <div className={classes.root}>
@@ -143,17 +113,11 @@ class Groups extends Component {
                         </Drawer>
                     </Hidden>
                     <div className={`chat-content ${classes.content}`}>
-                        <CommunityItem onMenuIconPress={this.handleDrawerToggle} />
-                        {
-                            currentCommunity.data ?
-                                <div className="text-center" style={{ position: "absolute", top: "60%", padding: 10, width: "100%" }}>
-                                    <MatButton variant="contained" color="primary" className="mr-10 mb-10 text-white btn-icon" onClick={this.handleClickOpenInvation}>Envoyer une invitation</MatButton>
-                                    <MatButton variant="contained" className="btn-info ml-10 mb-10 text-white btn-icon" onClick={this.enterInCommunitySpace}>Rejoindre</MatButton>
-                                    <InvitationCreateDialog open={this.state.open} handleClose={this.handleCloseInvation}/>
-                                </div>
-                                :
-                                null
-                        }
+                        <Switch>
+                            <Redirect exact from={`${match.url}/`} to={COMMUNITY_ADMIN.INVITATIONS.LIST.RECEIVED} />
+                            <Route path={COMMUNITY_ADMIN.INVITATIONS.LIST.RECEIVED} component={InvitationsReceived} />
+                            <Route path={COMMUNITY_ADMIN.INVITATIONS.LIST.SEND} component={InvitationsSend} />
+                        </Switch>
                     </div>
                 </div>
             </div>
@@ -161,13 +125,4 @@ class Groups extends Component {
     }
 }
 
-const mapStateToProps = ({ communitySpace, currentCommunity }) => {
-    return {
-        communitySpace: communitySpace,
-        currentCommunity: currentCommunity
-    }
-};
-
-
-export default connect(mapStateToProps, { statusCommunitySpaceStatus, setCommunitySpaceData, setCommunitySpaceAdmins })
-    (withStyles(styles, { withTheme: true })(Groups));
+export default withStyles(styles, { withTheme: true })(withRouter(Invitations));

@@ -25,7 +25,6 @@ class GroupsSidebar extends Component {
     }
 
     onCommunityClick = (community) => {
-        console.log(community)
         this.props.setCurrentCommunity(community);
     };
 

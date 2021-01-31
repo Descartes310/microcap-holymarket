@@ -48,7 +48,7 @@ class InvitationItem extends Component {
     handleActiveConfirmed = () => {
         this.props.setRequestGlobalAction(true);
         const func = this.invitationType === InvitationType.INVITATION_SEND ? cancelInvitation : deleteInvitation;
-        func(this.props.invitation.id)
+        func(this.props.invitation.invitationId)
             .then(() => {
                 NotificationManager.success(this.invitationType === InvitationType.INVITATION
                     ? "Invitation refusé avec succès"
@@ -56,12 +56,15 @@ class InvitationItem extends Component {
                         ? "Invitation annulé avec succès"
                         : "Demande annulé avec succès"
                 );
-                this.props.getInvitationsPending(this.props.authUser.user.id);
+                this.props.reload();
             })
             .catch(() => {
                 NotificationManager.error(ERROR_500);
             })
-            .finally(() => this.props.setRequestGlobalAction(false));
+            .finally(() => {
+                this.props.setRequestGlobalAction(false);
+                this.setState({showWarningBox: false})
+            });
     };
 
     render() {
@@ -84,10 +87,10 @@ class InvitationItem extends Component {
                         {/*<span className="small align-self-center">19 Mar 2017</span>*/}
                     </div>
                     <div className="d-flex justify-content-between">
-                        {this.invitationType === InvitationType.INVITATION ? (
+                        {this.invitationType === InvitationType.REQUEST ? (
                             <div className="text-justify">
                                 <p className="subject">
-                                    Vous avez une demande d'adhesion de la part de ce groupe.
+                                    Vous avez reçu une demande d'adhesion de la part de { invitation.name }.
                                     Voulez-vous accepter ?
                                 </p>
                                 <div className="d-flex">
@@ -109,10 +112,10 @@ class InvitationItem extends Component {
                                     </Button>
                                 </div>
                             </div>
-                        ) : this.invitationType === InvitationType.INVITATION_SEND ? (
+                        ) : this.invitationType === InvitationType.INVITATION ? (
                             <div className="text-justify">
                                 <p className="subject">
-                                    Votre invitation a été envoyé avec succès.
+                                    Votre invitation a été envoyé avec succès a  { invitation.name }.
                                 </p>
                                 <div className="d-flex">
                                     <Button

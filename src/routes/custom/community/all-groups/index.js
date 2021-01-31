@@ -9,11 +9,11 @@ import { AbilityContext } from "Permissions/Can";
 import Permission from "Enums/Permissions";
 import CustomList from "Components/CustomList";
 import Button from "@material-ui/core/Button";
-import { statusCommunitySpaceStatus, setCommunitySpaceData } from 'Actions/CommunityAction';
+import { statusCommunitySpaceStatus, setCommunitySpaceData, setCommunitySpaceAdmins } from 'Actions/CommunityAction';
 import { NotificationManager } from "react-notifications";
 import { ERROR_500 } from "Constants/errors";
 import { getInvitationsPending } from "Actions/GeneralActions";
-import { getCommunitiesByBranch } from "Actions/independentActions";
+import { getCommunitiesByBranch, getCommunityAdmins } from "Actions/independentActions";
 import { COMMUNITY } from 'Url/frontendUrl';
 
 class AllGroups extends Component {
@@ -52,9 +52,12 @@ class AllGroups extends Component {
     };
 
     onJoinClick = (group) => {
-        this.props.statusCommunitySpaceStatus(true);
-        this.props.setCommunitySpaceData(group.id);
-        this.props.history.push(COMMUNITY.MEMBERS.LIST);
+        getCommunityAdmins(group.id).then(data => {
+            this.props.statusCommunitySpaceStatus(true);
+            this.props.setCommunitySpaceAdmins(data);
+            this.props.setCommunitySpaceData(group.id);
+            this.props.history.push(COMMUNITY.MEMBERS.LIST);
+        })
     }
 
 
@@ -180,5 +183,5 @@ const useStyles = theme => ({
     }
 });
 
-export default connect(mapStateToProps, { getInvitationsPending, setRequestGlobalAction, statusCommunitySpaceStatus, setCommunitySpaceData })
+export default connect(mapStateToProps, { getInvitationsPending, setRequestGlobalAction, setCommunitySpaceAdmins, statusCommunitySpaceStatus, setCommunitySpaceData })
     (withStyles(useStyles, { withTheme: true })(withRouter(injectIntl(AllGroups))));

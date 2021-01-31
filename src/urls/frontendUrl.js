@@ -254,7 +254,21 @@ export const PROJECTS = {
 export const COMMUNITY_ADMIN = {
     SELF: '/admin/community-t',
     VOUCHER: {
-        LIST: '/admin/community-t/members/vouchers',
+        PAYMENT: '/admin/community-t/members/vouchers/payment',
+        CHARCHING: '/admin/community-t/members/vouchers/charging'
+    },
+    MEMBERS: {
+        SELF: '/admin/community-t/members',
+        LIST: '/admin/community-t/members/list',
+        INVITATION: '/admin/community-t/members/invitation'
+    },
+    INVITATIONS: {
+        SELF: '/admin/community-t/members/invitation',
+        LIST: {
+            SEND: '/admin/community-t/members/invitation/send',
+            RECEIVED: '/admin/community-t/members/invitation/integration-request',
+        },
+        CREATE: '/admin/community-t/members/invitation/create'
     },
 }
 

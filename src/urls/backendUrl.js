@@ -170,7 +170,8 @@ export const COMMUNITY_MEMBER = {
             GET_MEMBERS: 'groups/communities/{id}/members',
             GET_COMMUNITIES: 'groups/communities/users/{id}',
             CREATE_VOUCHER: 'groups/{id}/vouchers',
-            GET_VOUCHERS: 'groups/{id}/vouchers/users/{user_id}',
+            GET_VOUCHERS: 'groups/{id}/vouchers/users/{user_id}/type/{type}',
+            GET_ADMINS: 'groups/communities/{id}/admins',
         },
         CREATE: {
             NON_CONVENTIONAL: 'groups/communities/non-conventionated'

@@ -362,7 +362,7 @@ export const createVoucher = (id, data) => {
     return makeRequest('post', url, data);
 };
 
-export const getVouchers = (id, user) => {
+export const getVouchers = (id, user, type) => {
     const url = joinBaseUrlWithParams(COMMUNITY_MEMBER.USER.GROUPS.GET_VOUCHERS, [
         {
             param: 'id',
@@ -370,6 +370,9 @@ export const getVouchers = (id, user) => {
         }, {
             param: 'user_id',
             value: user,
+        }, {
+            param: 'type',
+            value: type,
         }
     ]);
     return makeRequest('get', url);
@@ -377,6 +380,11 @@ export const getVouchers = (id, user) => {
 
 export const getUserAccounts = (id) => {
     const url = joinBaseUrlWithParamsId(PRODUCTS.GET_FOR_USER, id);
+    return makeRequest('get', url);
+};
+
+export const getCommunityAdmins = (id) => {
+    const url = joinBaseUrlWithParamsId(COMMUNITY_MEMBER.USER.GROUPS.GET_ADMINS, id);
     return makeRequest('get', url);
 };
 

@@ -46,7 +46,7 @@ class ListMembers extends Component {
 
     onViewVoucher = user => {
         this.setState({ showVoucherBox: true });
-        getVouchers(this.props.communitySpace.data, user.id, 'PAYMENT').then(data => {
+        getVouchers(this.props.communitySpace.data, user.id, 'CHARGING').then(data => {
             this.setState({ codes: data })
         }).catch(err => {
             console.log(err)
@@ -58,7 +58,7 @@ class ListMembers extends Component {
         createVoucher(this.props.communitySpace.data, {
             user_id: this.state.selectedUser.id,
             price: value,
-            type: 'PAYMENT'
+            type: 'CHARGING'
         }).then(data => {
             NotificationManager.success("Le code généré avec succès");
         }).catch(err => {
@@ -116,7 +116,7 @@ class ListMembers extends Component {
                                         <ListItem
                                             user={user}
                                             key={key}
-                                            buttonLabel="paiement"
+                                            buttonLabel="recharge"
                                             onGenerate={() => this.handleGenerate(user)}
                                             onViewVoucher={() => this.onViewVoucher(user)}
                                         />
@@ -160,7 +160,7 @@ class ListMembers extends Component {
                 >
                     <DialogTitle id="form-dialog-title">
                         <div className="row justify-content-between align-items-center">
-                            Codes de paiement actifs
+                            Codes de recharge actifs
                             <IconButton
                                 color="primary"
                                 aria-label="close"
@@ -174,7 +174,7 @@ class ListMembers extends Component {
                         <table className="table table-hover table-middle mb-0 text-center">
                             <thead>
                                 <tr>
-                                    <th>Code de paiement</th>
+                                    <th>Code de recharge</th>
                                     <th>Montant</th>
                                     <th>Date de création</th>
                                 </tr>

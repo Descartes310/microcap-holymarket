@@ -688,28 +688,46 @@ export default {
          "menu_title": "Administration",
          "menu_icon": "zmdi zmdi-widgets",
          "new_item": false,
+         'key': 'commnity_admin',
          "type_multi": true,
          "permissions": [],
          "child_routes": [
             {
+               "menu_title": "Membres",
+               "new_item": false,
+               'key': 'commnity_admin',
+               "path": COMMUNITY_ADMIN.MEMBERS.LIST,
+               "permissions": [],
+            },{
+               "menu_title": "Postes",
+               "new_item": false,
+               'key': 'commnity_admin',
+               "path": PROJECTS.POST_PROJETS.LIST,
+               "permissions": [],
+            },
+            {
                "menu_title": "Codes",
                "new_item": false,
+               'key': 'commnity_admin',
                "permissions": [],
                "child_routes": [
                   {
                      "menu_title": "Paiement",
                      "new_item": false,
+                     'key': 'commnity_admin',
                      "path": COMMUNITY_ADMIN.SELF,
                      "permissions": [],
                   },{
-                     "menu_title": "Activation",
+                     "menu_title": "Recharge",
                      "new_item": false,
-                     "path": COMMUNITY.MEMBERS.LIST,
+                     'key': 'commnity_admin',
+                     "path": COMMUNITY_ADMIN.VOUCHER.CHARCHING,
                      "permissions": [],
                   },
                   {
                      "menu_title": "Confirmation",
                      "new_item": false,
+                     'key': 'commnity_admin',
                      "path": COMMUNITY.MEMBERS.LIST,
                      "permissions": [],
                   }
