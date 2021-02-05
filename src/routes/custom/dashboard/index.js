@@ -29,6 +29,7 @@ import CommunityMembersActivities from "Routes/custom/communityT/activities";
 import CommunityMembers from "Routes/custom/communityT/members";
 import CommunityAdmins from "Routes/custom/communityT/admin";
 import CommunityMembersPostsProjects from "Routes/custom/communityT/postsProjects";
+import ClientPieceList from "Routes/custom/settings/client_folder/List";
 
 import Branch from "Models/Branch";
 import {useAbility} from "@casl/react";
@@ -87,6 +88,12 @@ const Dashboard = ({ match, authUser }) => {
                     <CanRoute
                         path={SETTINGS.NOTIFICATION.SELF}
                         component={AsyncSettingNotifications}
+                        permissions={[]}
+                    />
+
+                    <CanRoute
+                        path={SETTINGS.USERPIECE.SELF}
+                        component={ClientPieceList}
                         permissions={[]}
                     />
 

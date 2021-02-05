@@ -46,11 +46,11 @@ class CheckoutForm extends Component {
       this.setState({ value });
    };
 
-   onFormComplete = (data, nextStep, voucher = null) => {
+   onFormComplete = (data, nextStep, voucher = null, account = null) => {
 
       this.setState(prevState => ({ data: { ...prevState.data, ...data }, value: nextStep ? prevState.value + 1 : 0 }));
 
-      if (!nextStep && voucher != null) {
+      if (!nextStep && (voucher != null || account != null)) {
          this.props.setRequestGlobalAction(true);
          const _data = { ...this.state.data };
          _data.address1 = data.addressLine1;
@@ -62,12 +62,15 @@ class CheckoutForm extends Component {
          _data.phone = this.props.authUser.user.phone;
          _data.orderId = this.order.id;
          _data.userId = this.props.authUser.user.id;
-         _data.voucherCode = voucher;
+         if (voucher != null)
+            _data.voucherCode = voucher;
+         if (account != null)
+            _data.accountId = account;
 
          createSale(_data)
             .then((resp) => {
                NotificationManager.success("Achat effectué avec succes");
-               this.setState({ showConfirmBox: true, response: resp }, () => { console.log('Update fine !')})
+               this.setState({ showConfirmBox: true, response: resp }, () => { console.log('Update fine !') })
             })
             .catch((error) => {
                console.log(error)
@@ -121,7 +124,7 @@ class CheckoutForm extends Component {
                   </div>
                   <div className="col-12">
                      <p className="fw-bold my-3">
-                        {this.state.response? this.state.response.name : ''}
+                        {this.state.response ? this.state.response.name : ''}
                      </p>
                   </div>
                   <div className="col-12">

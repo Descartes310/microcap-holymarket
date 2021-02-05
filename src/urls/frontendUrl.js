@@ -125,6 +125,9 @@ export const COMMERCIAL_MANAGEMENT = {
 
 export const PRODUCT = {
     LIST: '/products',
+    CLASSIC_SALES: '/products/classic-sales',
+    PRIVATE_SALES: '/products/private-sales',
+    FINANCIAL_SALES: '/products/financial-sales',
     ORDERS: '/products/orders',
     ORDERS_SHOW: '/products/orders/:id/show',
     SHOW: '/products/:id/show',
@@ -180,6 +183,9 @@ export const SETTINGS = {
             LIST: '/settings/notifications/service/list',
             CREATE: '/settings/notifications/service/create',
         }
+    },
+    USERPIECE: {
+        SELF: '/settings/users-pieces'
     }
 };
 

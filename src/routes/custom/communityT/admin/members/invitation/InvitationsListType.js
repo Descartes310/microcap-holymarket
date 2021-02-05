@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import IntlMessages from 'Util/IntlMessages';
-import { setRequestGlobalAction } from "Actions";
+import { setRequestGlobalAction, acceptInvitation, getInvitationsPending } from "Actions";
 import { injectIntl } from "react-intl";
 import { Fab, withStyles } from "@material-ui/core";
 import { withRouter } from "react-router-dom";
+import Button from "@material-ui/core/Button";
 import { AbilityContext } from "Permissions/Can";
 import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
@@ -12,11 +13,15 @@ import FormControl from "@material-ui/core/FormControl";
 import { Input, InputGroup, InputGroupAddon, Media } from "reactstrap";
 import IconButton from "@material-ui/core/IconButton";
 import { globalSearch } from "Helpers/helpers";
-import { requestsReceived, invitationSent } from "Actions/independentActions";
+import { requestsReceived, invitationSent, getUserClient, getUserClientExp, createUserPieceValue, deleteUserClient } from "Actions/independentActions";
 import InvitationType from "Enums/InvitationType";
-import Avatar from "@material-ui/core/Avatar";
 import { Scrollbars } from "react-custom-scrollbars";
 import InvitationItem from "./InvitationItem";
+import DialogTitle from "@material-ui/core/DialogTitle/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent/DialogContent";
+import Dialog from "@material-ui/core/Dialog/Dialog";
+import CancelIcon from '@material-ui/icons/Cancel';
+import {NotificationManager} from "react-notifications";
 
 class InvitationsListType extends Component {
     static contextType = AbilityContext;
@@ -25,6 +30,11 @@ class InvitationsListType extends Component {
         this.state = {
             searched: '',
             loading: true,
+            showBox: false,
+            isAdding: false,
+            pieces: [],
+            invitation: null,
+            userPieces: [],
             datas: []
         }
     }
@@ -36,6 +46,7 @@ class InvitationsListType extends Component {
     getDatas = () => {
         if (this.props.type == InvitationType.INVITATION) {
             this.getRequests();
+            this.getPieces();
         }
         if (this.props.type == InvitationType.INVITATION_SEND) {
             this.getInvitations();
@@ -44,7 +55,6 @@ class InvitationsListType extends Component {
 
     onSearchChanged = (event) => {
         this.setState({ searched: event.target.value });
-        console.log('event', event)
     };
 
     getInvitations = () => {
@@ -59,6 +69,12 @@ class InvitationsListType extends Component {
         }).finally(() => this.setState({ loading: false }))
     };
 
+    getPieces = () => {
+        getUserClientExp(this.props.authUser.user.branch.id).then(data => {
+            this.setState({ pieces: data });
+        })
+    };
+
     handleSearch = (value, data) => {
         if (value !== '') {
             // Apply order feature
@@ -68,10 +84,54 @@ class InvitationsListType extends Component {
         return data;
     };
 
+    onAccept = () => {
+        this.props.setRequestGlobalAction(true);
+        acceptInvitation(this.state.invitation.invitationId)
+            .then(() => {
+                NotificationManager.success("Vous faite maintenant partir du groupe " + this.state.invitation.group.label);
+                console.log("La communauté est ==> ", this.props.communitySpace.data, this.state.invitation)
+                this.getDatas();
+            })
+            .catch(() => {
+                NotificationManager.error(ERROR_500);
+            })
+            .finally(() => { this.props.setRequestGlobalAction(false); this.setState({ showBox: false}) });
+    };
+
+    onHandleRequest = (invitation) => {
+        getUserClient(invitation.user.id).then(data => {
+            this.setState({ userPieces: data, showBox: true, isAdding: false, invitation });
+        })
+    }
+
+    onAddPiece = (piece) => {
+        this.props.setRequestGlobalAction(true);
+        createUserPieceValue({
+            piece_id: piece.id,
+            group_id: this.state.invitation.group.id,
+            user_id: this.state.invitation.user.id
+        }).then(data => {
+            NotificationManager.success("Demande de pièce terminée");
+            getUserClient(this.state.invitation.user.id).then(data => {
+                this.setState({ userPieces: data, isAdding: false });
+            })
+        }).finally(() => {this.setState({ isAdding: false }); this.props.setRequestGlobalAction(false)})
+    }
+
+    onDeletePiece = (piece) => {
+        this.props.setRequestGlobalAction(true);
+        deleteUserClient(piece.id).then(data => {
+            NotificationManager.success("Demande de pièce supprimée");
+            getUserClient(this.state.invitation.user.id).then(data => {
+                this.setState({ userPieces: data, isAdding: false });
+            })
+        }).finally(() => {this.setState({ isAdding: false }); this.props.setRequestGlobalAction(false)})
+    }
+
 
     render() {
         const { classes, title } = this.props;
-        const { loading, datas } = this.state;
+        const { loading, datas, showBox, isAdding } = this.state;
 
         if (loading) {
             return (<RctSectionLoader />)
@@ -124,6 +184,7 @@ class InvitationsListType extends Component {
                                                                 key={key}
                                                                 reload={this.getDatas}
                                                                 invitation={invitation}
+                                                                showBox={() => this.onHandleRequest(invitation)}
                                                             />
                                                         ))}
                                                     </ul>
@@ -134,6 +195,121 @@ class InvitationsListType extends Component {
                             </RctCollapsibleCard>
                         )
                     }
+                    <Dialog
+                        open={showBox}
+                        onClose={() => { this.setState({ showBox: false }) }}
+                        aria-labelledby="responsive-dialog-title"
+                        maxWidth={'md'}
+                        fullWidth
+                    >
+                        <DialogTitle id="form-dialog-title">
+                            <div className="row justify-content-between align-items-center">
+                                Demande de pièces
+                            <IconButton
+                                    color="primary"
+                                    aria-label="close"
+                                    className="text-danger"
+                                    onClick={() => { this.setState({ showBox: false }) }}>
+                                    <CancelIcon />
+                                </IconButton>
+                            </div>
+                        </DialogTitle>
+                        <DialogContent>
+                            <div className="row">
+                                <div className="col-md-8">
+                                    {
+                                        isAdding ?
+                                            <table className="table table-hover table-middle mb-0 text-center">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Ajouter une nouvelle pièce</th>
+                                                        <th>Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {this.state.pieces.filter(p => !this.state.userPieces.map(a => a.userPiece.id).includes(p.id)).map(p => (
+                                                        <tr>
+                                                            <td>
+                                                                <div className="media">
+                                                                    <div className="media-body pt-10">
+                                                                        <h4 className="m-0 fw-bold text-dark">{p.name}</h4>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <Button
+                                                                    size="small"
+                                                                    color="primary"
+                                                                    variant="contained"
+                                                                    className={"text-white font-weight-bold mr-3"}
+                                                                    onClick={() => this.onAddPiece(p)}
+                                                                >
+                                                                    Reclamer
+                                                                </Button>
+                                                                <Button
+                                                                    href={p.file}
+                                                                    target='_blank'
+                                                                    size="small"
+                                                                    color="primary"
+                                                                    variant="contained"
+                                                                    className={"text-white font-weight-bold mr-3"}
+                                                                >
+                                                                    Consulter
+                                                                </Button>
+                                                            </td>
+                                                        </tr>
+                                                    ))
+                                                    }
+                                                </tbody>
+                                            </table>
+                                            :
+                                            <table className="table table-hover table-middle mb-0 text-center">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Liste des pièces demandées</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {
+                                                        this.state.userPieces.map(p => (
+                                                            <tr>
+                                                                <td>
+                                                                    <div className="media">
+                                                                        <div className="media-body pt-10">
+                                                                            <h4 className="m-0 fw-bold" style={{ textAlign: 'left' }}>{p.userPiece.name}</h4>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    <div className="media">
+                                                                        <div className="media-body pt-10">
+                                                                            {
+                                                                                p.file != null ?
+                                                                                    <Button href={p.file} target='_blank' variant="contained">Consulter</Button>
+                                                                                    :
+                                                                                    <Button className="btn-danger text-white" onClick={() => this.onDeletePiece(p)} variant="contained">Retirer</Button>
+                                                                            }
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        ))
+                                                    }
+                                                </tbody>
+                                            </table>
+                                    }
+                                </div>
+                                <div className="col-md-4" style={{ display: 'block' }}>
+                                    {/* <Button color="primary" variant="contained" style={{ marginBottom: 20, width: '100%' }}>Reclammer</Button> */}
+                                    <Button color="primary" className="bg-blue text-white" onClick={() => this.onAccept()} variant="contained" style={{ marginBottom: 20, width: '100%' }}>Accepter la demande</Button>
+                                    <Button color="primary" variant="contained" style={{ marginBottom: 20, width: '100%' }}>Archiver</Button>
+                                    <Button color="primary" variant="contained" style={{ marginBottom: 20, width: '100%' }} onClick={() => this.setState({ isAdding: !this.state.isAdding })}>{isAdding ? 'Voir les pièces demandées' : 'Ajouter une pièce'}</Button>
+                                </div>
+                            </div>
+
+                        </DialogContent>
+                    </Dialog>
                 </div>
             </>
         );
@@ -168,4 +344,4 @@ const useStyles = theme => ({
 (withStyles(useStyles, { withTheme: true })(withRouter(injectIntl(InvitationsListType))));
  */
 
-export default connect(mapStateToProps, { setRequestGlobalAction })(withStyles(useStyles, { withTheme: true })(withRouter(InvitationsListType)));
+export default connect(mapStateToProps, { setRequestGlobalAction, acceptInvitation, getInvitationsPending })(withStyles(useStyles, { withTheme: true })(withRouter(InvitationsListType)));

@@ -383,6 +383,21 @@ export const getUserAccounts = (id) => {
     return makeRequest('get', url);
 };
 
+export const getUserClientExp = (id) => {
+    const url = joinBaseUrlWithParamsId(USERS.PIECE.GET_ALL, id);
+    return makeRequest('get', url);
+};
+
+export const getUserClient = (id) => {
+    const url = joinBaseUrlWithParamsId(USERS.PIECE.GET_USER, id);
+    return makeRequest('get', url);
+};
+
+export const deleteUserClient = (id) => {
+    const url = joinBaseUrlWithParamsId(USERS.PIECE.DELETE_FOR_USER, id);
+    return makeRequest('get', url);
+};
+
 export const getCommunityAdmins = (id) => {
     const url = joinBaseUrlWithParamsId(COMMUNITY_MEMBER.USER.GROUPS.GET_ADMINS, id);
     return makeRequest('get', url);
@@ -649,6 +664,11 @@ export const createProject = (data) => {
     return makeRequest('post', url, data);
 };
 
+export const createUserPieceValue = (data) => {
+    const url = `${USERS.PIECE.CREATE_FOR_USER}`;
+    return makeRequest('post', url, data);
+};
+
 export const createProjectReaction = (data, config) => {
     const url = `${PROJECTS.REACTIONS.CREATE}`;
     return new Promise((resolve, reject) => {
@@ -677,7 +697,31 @@ export const createFolder = (data, config) => {
     });
 };
 
+export const createUserPiece = (data, config) => {
+    const url = `${USERS.PIECE.CREATE}`;
+    return new Promise((resolve, reject) => {
+        api.post(url, data, config)
+            .then(result => resolve(result.data))
+            .catch(error => reject(error));
+    });
+};
+
+export const updateUserPieceValue = (data, config) => {
+    const url = `${USERS.PIECE.UPDATE_FOR_USER}`;
+    return new Promise((resolve, reject) => {
+        api.post(url, data, config)
+            .then(result => resolve(result.data))
+            .catch(error => reject(error));
+    });
+};
+
 export const getOneProjectFolder = (folderId) => {
     const url = joinBaseUrlWithParamsId(PROJECTS.FOLDERS.GET_ONE, folderId);
+    return makeRequest('get', url);
+};
+
+export const getAccountByAmount = (userId, amount) => {
+    const data = `?amount=${amount}`;
+    const url = joinBaseUrlWithParamsId(`${ACCOUNT.GET_ACCOUNT_BY_AMOUNT}${data}`, userId);
     return makeRequest('get', url);
 };

@@ -18,7 +18,7 @@ export default class AddTickets extends Component {
       const { addtickets } = this.props;
       return (
          <Fragment>
-            <Scrollbars className="rct-scroll" autoHeight autoHeightMin={100} autoHeightMax={424} autoHide>
+            <Scrollbars className="rct-scroll" autoHeight autoHeightMin={100}>
                <Table className="table-wrap" >
                   <TableHead>
                      <TableRow>

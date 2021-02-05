@@ -18,7 +18,7 @@ export default class TaxRates extends Component {
       const { taxrates } = this.props;
       return (
          <Fragment>
-            <Scrollbars className="rct-scroll" autoHeight autoHeightMin={100} autoHeightMax={424} autoHide>
+            <Scrollbars className="rct-scroll" autoHeight autoHeightMin={100}>
                <Table className="table-wrap" >
                   <TableHead>
                      <TableRow>

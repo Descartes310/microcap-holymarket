@@ -9,12 +9,15 @@ import IntlMessages from 'Util/IntlMessages';
 import { withStyles } from "@material-ui/core";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
-import {Button, Input, InputGroup, InputGroupAddon} from "reactstrap";
+import { Button, Input, InputGroup, InputGroupAddon } from "reactstrap";
 import IconButton from "@material-ui/core/IconButton";
-import { getMembersOfCommunity } from 'Actions/independentActions';
+import { getMembersOfCommunity, getUserClient } from 'Actions/independentActions';
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
-import {AbilityContext} from "Permissions/Can";
-import User from "Models/User";
+import { AbilityContext } from "Permissions/Can";
+import DialogTitle from "@material-ui/core/DialogTitle/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent/DialogContent";
+import Dialog from "@material-ui/core/Dialog/Dialog";
+import CancelIcon from '@material-ui/icons/Cancel';
 
 
 class ListMembers extends Component {
@@ -23,6 +26,8 @@ class ListMembers extends Component {
 
     state = {
         loading: true,
+        showBox: false,
+        userPieces: [],
         users: []
     }
 
@@ -33,22 +38,28 @@ class ListMembers extends Component {
     getMembers = () => {
         getMembersOfCommunity(this.props.communitySpace.data).then(data => {
             this.setState({ users: data })
-        }).finally(() => this.setState({ loading: false}))
+        }).finally(() => this.setState({ loading: false }))
     }
 
     componentDidMount() {
         this.getMembers();
     }
 
+    getClientFolder = (user) => {
+        getUserClient(user.id).then(data => {
+            this.setState({ userPieces: data, showBox: true });
+        })
+    }
+
     render() {
-        const { loading, users } = this.state;
+        const { loading, users, showBox } = this.state;
         const { classes } = this.props;
         console.log("Je suis dans membre admin !")
         return (
 
             <div className="page-list">
                 <PageTitleBar title={"Membres de la communautés"} />
-                {loading 
+                {loading
                     ? (<RctSectionLoader />)
                     : (
                         <RctCollapsibleCard>
@@ -81,6 +92,7 @@ class ListMembers extends Component {
                                         <ListItem
                                             user={user}
                                             key={key}
+                                            getClientFolder={() => this.getClientFolder(user)}
                                             onSelectEmail={(e) => this.onSelectEmail(e, user)}
                                             onReadEmail={() => this.readEmail(user)}
                                         />
@@ -97,6 +109,63 @@ class ListMembers extends Component {
                         </RctCollapsibleCard>
                     )
                 }
+                <Dialog
+                    open={showBox}
+                    onClose={() => { this.setState({ showBox: false }) }}
+                    aria-labelledby="responsive-dialog-title"
+                    maxWidth={'md'}
+                    fullWidth
+                >
+                    <DialogTitle id="form-dialog-title">
+                        <div className="row justify-content-between align-items-center">
+                            Dossier client
+                            <IconButton
+                                color="primary"
+                                aria-label="close"
+                                className="text-danger"
+                                onClick={() => { this.setState({ showBox: false }) }}>
+                                <CancelIcon />
+                            </IconButton>
+                        </div>
+                    </DialogTitle>
+                    <DialogContent>
+                        <div className="row">
+                            <div className="col-md-12">
+                                <table className="table table-hover table-middle mb-0 text-center">
+                                    <thead>
+                                        <tr>
+                                            <th>Liste des pièces</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {
+                                            this.state.userPieces.map(p => (
+                                                <tr>
+                                                    <td>
+                                                        <div className="media">
+                                                            <div className="media-body pt-10">
+                                                                <h4 className="m-0 fw-bold" style={{ textAlign: 'left' }}>{p.userPiece.name}</h4>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div className="media">
+                                                            <div className="media-body pt-10">
+                                                                <Button color='primary' href={p.file} target='_blank' variant="contained">Consulter</Button>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            ))
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </DialogContent>
+                </Dialog>
             </div>
         )
     }
@@ -122,8 +191,10 @@ const useStyles = theme => ({
 });
 
 const mapStateToProps = ({ authUser, communitySpace }) => {
-    return { authUser: authUser.data, 
-        communitySpace: communitySpace };
+    return {
+        authUser: authUser.data,
+        communitySpace: communitySpace
+    };
 };
 
 export default withRouter(connect(mapStateToProps, {

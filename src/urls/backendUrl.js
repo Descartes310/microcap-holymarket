@@ -157,6 +157,14 @@ export const USERS = {
     VALIDATION: {
         SEND_OTP: 'public/users/{id}/otp/mail',
         VERIFY: 'public/users/{id}/otp'
+    },
+    PIECE: {
+        GET_ALL: 'public/users/pieces/{id}/get',
+        GET_USER: 'public/users/pieces/user/{id}/get',
+        CREATE: 'public/users/pieces/create',
+        CREATE_FOR_USER: 'public/users/pieces/value/create',
+        UPDATE_FOR_USER: 'public/users/pieces/value/update',
+        DELETE_FOR_USER: 'public/users/pieces/value/{id}/delete'
     }
 };
 
@@ -242,6 +250,7 @@ export const ORDER = {
 export const ACCOUNT = {
     GET_ONE: 'public/accounts/{id}',
     GET_TRANSACTIONS: 'public/accounts/{id}/mouvements',
+    GET_ACCOUNT_BY_AMOUNT: 'public/accounts/users/{id}/account-by-amount',
     APPROVISIONING_VOUCHER: 'public/accounts/{id}/approvisioning/voucher'
 };
 

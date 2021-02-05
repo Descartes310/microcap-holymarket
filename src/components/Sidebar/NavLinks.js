@@ -549,6 +549,12 @@ export default {
                "path": SETTINGS.NOTIFICATION.SELF,
                "permissions": [],
             },
+            {
+               "menu_title": "Dossier utilisateur",
+               "new_item": false,
+               "path": SETTINGS.USERPIECE.SELF,
+               "permissions": [],
+            },
          ]
       },
    ],

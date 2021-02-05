@@ -8,7 +8,7 @@ import {Button} from "reactstrap";
 import { textTruncate } from 'Helpers/helpers';
 import UserAvatar from "Components/UserAvatar";
 
-const ListItem = ({ user, onReadEmail }) => {
+const ListItem = ({ user, onReadEmail, getClientFolder }) => {
     return (
         <li className="d-flex justify-content-between align-items-center list-item" onClick={onReadEmail}>
             <div className="d-flex align-items-center w-100">
@@ -31,6 +31,7 @@ const ListItem = ({ user, onReadEmail }) => {
                 <Button
                     color="primary"
                     className="text-white mr-2"
+                    onClick={getClientFolder}
                 >
                     Consulter les détails
                 </Button>

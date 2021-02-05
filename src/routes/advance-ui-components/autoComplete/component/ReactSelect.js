@@ -189,13 +189,11 @@ const styles = theme => ({
 			top: `calc(100% + ${theme.spacing(1)}px)`,
 			width: '100%',
 			zIndex: 2,
-			maxHeight: ITEM_HEIGHT * 4.5,
 		},
 		'.Select.is-focused:not(.is-open) > .Select-control': {
 			boxShadow: 'none',
 		},
 		'.Select-menu': {
-			maxHeight: ITEM_HEIGHT * 4.5,
 			overflowY: 'auto',
 		},
 		'.Select-menu div': {

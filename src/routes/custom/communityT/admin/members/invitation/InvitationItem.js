@@ -98,7 +98,8 @@ class InvitationItem extends Component {
                                         size="small"
                                         disabled={loading}
                                         variant="contained"
-                                        onClick={() => this.onAccept()}
+                                        // onClick={() => this.onAccept()}
+                                        onClick={this.props.showBox}
                                         className="btn-primary mr-5 mb-10 text-white">
                                         Accepté
                                     </Button>

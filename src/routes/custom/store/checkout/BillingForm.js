@@ -12,6 +12,10 @@ import DialogContent from "@material-ui/core/DialogContent/DialogContent";
 import Dialog from "@material-ui/core/Dialog/Dialog";
 import CancelIcon from '@material-ui/icons/Cancel';
 import IconButton from "@material-ui/core/IconButton";
+import { getAccountByAmount } from 'Actions/independentActions';
+import { connect } from "react-redux";
+import { setRequestGlobalAction } from "Actions/RequestGlobalAction";
+import { withRouter } from "react-router-dom";
 
 
 const stripePromise = loadStripe('pk_test_51Gz2fvFpVeqBYSfw7Am6yvkuz3Hv42Tma0auEhSyncIUXS0TtiSrt05JLgSH4AnKxSvVB3wMT7oA8lxoUcmp2vmX00NKx4OZmh');
@@ -28,7 +32,9 @@ class BillingForm extends Component {
       this.state = {
          showPaymentBox: false,
          entringCode: false,
+         accounts: [],
          code: '',
+         selectingAccount: false,
          billingInformation: {
             addressLine1: defaultValue.addressLine1 || '',
             addressLine2: defaultValue.addressLine2 || '',
@@ -38,6 +44,11 @@ class BillingForm extends Component {
       }
    }
 
+   componentDidMount() {
+      getAccountByAmount(this.props.authUser.user.id, 0).then(data => {
+         this.setState({ accounts: data })
+      })
+   }
 	/**
 	 * On Change Billing Information
 	 */
@@ -72,7 +83,7 @@ class BillingForm extends Component {
 
    render() {
       const { stripe } = this.props;
-      const { showPaymentBox, entringCode, code } = this.state;
+      const { showPaymentBox, entringCode, code, selectingAccount } = this.state;
       return (
          <div className="billing-form-warp py-4">
             <Form>
@@ -140,7 +151,7 @@ class BillingForm extends Component {
                open={showPaymentBox}
                onClose={() => { this.setState({ showPaymentBox: false }) }}
                aria-labelledby="responsive-dialog-title"
-               maxWidth={'sm'}
+               maxWidth={'md'}
                fullWidth
             >
                <DialogTitle id="form-dialog-title">
@@ -156,10 +167,13 @@ class BillingForm extends Component {
                   </div>
                </DialogTitle>
                <DialogContent style={{ display: 'flex', flexDirection: 'column' }}>
-                  <Button disable={entringCode} size="large" onClick={() => /*this.props.onComplete(this.state.billingInformation, true)*/ console.log('Bonjour')} style={{ color: 'white' }} color="primary" variant="contained">
+                  <Button size="large" onClick={() => /*this.props.onComplete(this.state.billingInformation, true)*/ console.log('Bonjour')} style={{ color: 'white' }} color="primary" variant="contained">
                      Payment Stripe
                   </Button>
-                  <Button disable={entringCode} onClick={() => this.setState({ entringCode: true })} size="large" color="primary" variant="contained" style={{ marginTop: 40, marginBottom: entringCode ? 20 : 40, color: 'white' }}>
+                  <Button size="large" onClick={() => this.setState({ selectingAccount: true, entringCode: false })} style={{ marginTop: 40, color: 'white' }} color="primary" variant="contained">
+                     Payment par compte Microcap
+                  </Button>
+                  <Button onClick={() => this.setState({ entringCode: true, selectingAccount: false })} size="large" color="primary" variant="contained" style={{ marginTop: 40, marginBottom: entringCode ? 20 : 40, color: 'white' }}>
                      Utiliser un coupon de paiement
                   </Button>
 
@@ -187,10 +201,35 @@ class BillingForm extends Component {
                         </Col>
                      </FormGroup>
                   </div>
+                  <div style={{ display: selectingAccount ? 'block' : 'none' }}>
+                     <Label>Selectionnez le compte a débiter</Label>
+
+                     {this.state.accounts.map((account) => (
+                        <FormGroup row style={{ justifyContent: 'space-around', alignItems: 'center' }}>
+                           <Col sm={7}>
+                              <Label>{ account.label} </Label>
+                           </Col>
+                           <Col sm={3}>
+                              <Label>Solde: { account.detailsProducts.filter(d => d.detailsType.name == 'SOLDE').length > 0 ? account.detailsProducts.filter(d => d.detailsType.name == 'SOLDE')[0].value : 0 } {account.typeProduct.currency}</Label>
+                           </Col>
+                           <Col sm={2}>
+                              <Button onClick={() => this.props.onComplete(this.state.billingInformation, false, null, account.id)} size="large" variant="contained" style={{ color: 'white', backgroundColor: '#1976d2' }}>
+                                 Payer
+                           </Button>
+                           </Col>
+                        </FormGroup>
+                     ))}
+                  </div>
                </DialogContent>
             </Dialog>
          </div>
       )
    }
 }
-export default BillingForm;
+const mapStateToProps = ({ authUser }) => {
+   return { authUser: authUser.data };
+};
+
+export default connect(mapStateToProps, {
+   setRequestGlobalAction,
+})(withRouter(BillingForm));
