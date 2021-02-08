@@ -7,9 +7,10 @@ import { withStyles } from "@material-ui/core";
 import { withRouter } from "react-router-dom";
 import { AbilityContext } from "Permissions/Can";
 import CustomList from "Components/CustomList";
-import { COMMERCIAL_MANAGEMENT } from "Url/frontendUrl";
+import { COMMERCIAL_MANAGEMENT, joinUrlWithParamsId } from "Url/frontendUrl";
 import Switch from "@material-ui/core/Switch";
 import { NotificationManager } from "react-notifications";
+import Button from "@material-ui/core/Button";
 import { setOfferActivationStatus } from "Actions/independentActions";
 
 const saleWays = [{
@@ -91,6 +92,7 @@ class List extends Component {
                                                     <th>Canal de vente</th>
                                                     <th><IntlMessages id="widgets.description" /></th>
                                                     <th>Status d'activation</th>
+                                                    <th>Actions</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -123,6 +125,18 @@ class List extends Component {
                                                                 onChange={(event) => { this.onToggleActivationStatus(item.id, event.target.checked) }}
                                                                 aria-label="Activé"
                                                             />
+                                                        </td>
+                                                        <td className="table-action">
+                                                            <Button
+                                                                size="small"
+                                                                color="primary"
+                                                                // disabled={loading}
+                                                                variant="contained"
+                                                                className={"text-white font-weight-bold mr-3"}
+                                                                onClick={() => history.push(joinUrlWithParamsId(COMMERCIAL_MANAGEMENT.COMMERCIAL_OFFER.ADD_PRODUCT, item.id))}
+                                                            >
+                                                                Nouveau produit
+                                                            </Button>
                                                         </td>
                                                     </tr>
                                                 ))}

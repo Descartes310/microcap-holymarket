@@ -11,7 +11,7 @@ import {getProductItemAvailable, setRequestGlobalAction} from "Actions";
 import {NotificationManager} from "react-notifications";
 import {ERROR_500} from "Constants/errors";
 import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
-import {getOneProductType} from "Actions/independentActions";
+import {getOneProductTypeFromCommercialOffer} from "Actions/independentActions";
 import FetchFailedComponent from "Components/FetchFailedComponent";
 import Button from "@material-ui/core/Button";
 import SweetAlert from "react-bootstrap-sweetalert";
@@ -52,7 +52,7 @@ class ProductItemAvailable extends Component {
 
         if (!this.currentProduct) {
             this.props.setRequestGlobalAction(true);
-            getOneProductType(this.productId)
+            getOneProductTypeFromCommercialOffer(this.productId)
                 .then(product => this.setState({currentProduct: product}))
                 .catch(() => {
                     NotificationManager.error(ERROR_500);
@@ -122,6 +122,7 @@ class ProductItemAvailable extends Component {
                                                 <th><IntlMessages id="components.name" /></th>
                                                 <th>Proposé par</th>
                                                 <th>Prix</th>
+                                                <th>Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody>

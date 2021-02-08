@@ -110,6 +110,7 @@ export const COMMERCIAL_MANAGEMENT = {
         SELF: '/commercial/offer',
         LIST: '/commercial/offer/list',
         CREATE: '/commercial/offer/create',
+        ADD_PRODUCT: '/commercial/offer/:id/add-product'
     },
     COMMERCIAL_OPERATION: {
         SELF: '/commercial/operation',

@@ -43,6 +43,7 @@ import { COMMERCIAL_MANAGEMENT, PACKAGES } from "Url/frontendUrl";
 import Product from "Enums/Product";
 import FetchFailedComponent from "Components/FetchFailedComponent";
 import { getComOffer } from "Actions/GeneralActions";
+import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 
 class Create extends Component {
     constructor(props) {
@@ -54,6 +55,8 @@ class Create extends Component {
             description: '',
             validityUnit: '',
             validityValue: '',
+            endDate: '',
+            startDate: '',
             commercialOperatorId: '',
             image: '',
             saleWay: null,
@@ -147,10 +150,10 @@ class Create extends Component {
             return false;
         }
 
-        if (!this.state.chosenProducts || (this.state.chosenProducts && this.state.chosenProducts.length === 0)) {
-            NotificationManager.error("Veuillez Selectionner au moins un produit");
-            return false;
-        }
+        // if (!this.state.chosenProducts || (this.state.chosenProducts && this.state.chosenProducts.length === 0)) {
+        //     NotificationManager.error("Veuillez Selectionner au moins un produit");
+        //     return false;
+        // }
 
         /*if (!this.state.chosenPackage || (this.state.chosenPackage && this.state.chosenPackage.length === 0)) {
             NotificationManager.error("Veuillez Selectionner au moins un paquetage");
@@ -166,23 +169,25 @@ class Create extends Component {
         if (this.validate()) {
             const data = {
                 label: this.state.name,
-                price: this.state.price,
-                validity_unit: this.state.validityUnit,
-                validity_value: this.state.validityValue,
-                quantity: this.state.quantity,
+                start_date: this.state.startDate,
+                end_date: this.state.endDate,
+                // price: this.state.price,
+                // validity_unit: this.state.validityUnit,
+                // validity_value: this.state.validityValue,
+                // quantity: this.state.quantity,
                 partner_id: this.props.authUser.user.id,
-                type_products: JSON.stringify(this.state.chosenProducts.map(p => p.id)),
-                packages: JSON.stringify(this.state.chosenPackage.map(p => p.id)),
+                // type_products: JSON.stringify(this.state.chosenProducts.map(p => p.id)),
+                // packages: JSON.stringify(this.state.chosenPackage.map(p => p.id)),
                 commercial_operation_id: this.state.commercialOperatorId,
                 description: this.state.description,
                 sale_way: this.state.saleWay,
-                image: this.state.image,
+                // image: this.state.image,
             };
 
             this.props.setRequestGlobalAction(true);
             createOffer(data, this.props.authUser.branchId, { fileData: ['image'], multipart: true })
                 .then(() => {
-                    NotificationManager.success("Paquetage créé avec succèss");
+                    NotificationManager.success("Offre commerciale créée avec succèss");
                     this.props.getComOffer(this.props.authUser.branchId);
                     this.props.history.push(COMMERCIAL_MANAGEMENT.COMMERCIAL_OFFER.LIST);
                 })
@@ -198,41 +203,75 @@ class Create extends Component {
         const { catalogSale, loadingProducts } = this.state;
 
         return (
-            <div>
-                <Form onSubmit={this.onSubmit}>
-
-                    <div className="row">
-                        <FormGroup className="col-md-6 col-sm-12 has-wrapper">
-                            <InputLabel className="text-left" htmlFor="name">
-                                Désignation
+            <div className="page-list" style={{ padding: 30 }}>
+                <PageTitleBar title={"Création d'une offre commerciale"} />
+                <RctCollapsibleCard>
+                    <Form onSubmit={this.onSubmit}>
+                        <div className="row">
+                            <FormGroup className="col-md-6 col-sm-12 has-wrapper">
+                                <InputLabel className="text-left" htmlFor="name">
+                                    Désignation
                             </InputLabel>
-                            <InputStrap
-                                required
-                                id="name"
-                                name={'name'}
-                                value={this.state.name}
-                                className="has-input input-lg"
-                                onChange={event => this.setState({ name: event.target.value })}
-                            />
-                            <span className="has-icon"><i className="ti-pencil"></i></span>
-                        </FormGroup>
+                                <InputStrap
+                                    required
+                                    id="name"
+                                    name={'name'}
+                                    value={this.state.name}
+                                    className="has-input input-lg"
+                                    onChange={event => this.setState({ name: event.target.value })}
+                                />
+                                <span className="has-icon"><i className="ti-pencil"></i></span>
+                            </FormGroup>
 
-                        <FormGroup className="col-md-6 col-sm-12 has-wrapper">
-                            <InputLabel className="text-left" htmlFor="description">
-                                Description
+                            <FormGroup className="col-md-6 col-sm-12 has-wrapper">
+                                <InputLabel className="text-left" htmlFor="description">
+                                    Description
                             </InputLabel>
-                            <InputStrap
-                                required
-                                id="description"
-                                name={'description'}
-                                value={this.state.description}
-                                className="has-input input-lg"
-                                onChange={event => this.setState({ description: event.target.value })}
-                            />
-                            <span className="has-icon"><i className="ti-pencil"></i></span>
-                        </FormGroup>
-                    </div>
+                                <InputStrap
+                                    required
+                                    id="description"
+                                    name={'description'}
+                                    value={this.state.description}
+                                    className="has-input input-lg"
+                                    onChange={event => this.setState({ description: event.target.value })}
+                                />
+                                <span className="has-icon"><i className="ti-pencil"></i></span>
+                            </FormGroup>
+                        </div>
 
+                        <div className="row">
+                            <FormGroup className="col-md-6 col-sm-12 has-wrapper">
+                                <InputLabel className="text-left" htmlFor="startDate">
+                                    Date de début de validité
+                            </InputLabel>
+                                <InputStrap
+                                    required
+                                    type="date"
+                                    id="startDate"
+                                    name={'startDate'}
+                                    value={this.state.startDate}
+                                    className="has-input input-lg"
+                                    onChange={event => this.setState({ startDate: event.target.value })}
+                                />
+                            </FormGroup>
+
+                            <FormGroup className="col-md-6 col-sm-12 has-wrapper">
+                                <InputLabel className="text-left" htmlFor="endDate">
+                                    Date de fin de validité
+                            </InputLabel>
+                                <InputStrap
+                                    required
+                                    type="date"
+                                    id="endDate"
+                                    name={'endDate'}
+                                    value={this.state.endDate}
+                                    className="has-input input-lg"
+                                    onChange={event => this.setState({ endDate: event.target.value })}
+                                />
+                            </FormGroup>
+                        </div>
+
+                        {/*
                     <div className="row">
                         <FormGroup className="col-md-6 col-sm-12 has-wrapper">
                             <InputLabel className="text-left" htmlFor="name">
@@ -307,70 +346,70 @@ class Create extends Component {
                             />
                             <span className="has-icon"><i className="ti-pencil"></i></span>
                         </FormGroup>
-                    </div>
+                    </div> */}
 
-                    <div className="row">
-                        <CustomAsyncComponent
-                            loading={comOperationType.loading}
-                            data={comOperationType.data}
-                            component={data => (
-                                <div className="col-md-6 col-sm-12 form-group text-left">
-                                    <FormControl fullWidth>
-                                        <InputLabel className="text-left" htmlFor="commercialOperatorId-helper">
-                                            Opérateur commercial
+                        <div className="row">
+                            <CustomAsyncComponent
+                                loading={comOperationType.loading}
+                                data={comOperationType.data}
+                                component={data => (
+                                    <div className="col-md-6 col-sm-12 form-group text-left">
+                                        <FormControl fullWidth>
+                                            <InputLabel className="text-left" htmlFor="commercialOperatorId-helper">
+                                                Opérateur commercial
                                     </InputLabel>
-                                        <Select
-                                            value={this.state.commercialOperatorId}
-                                            onChange={event => this.setState({ commercialOperatorId: event.target.value }, () => { console.log('Bonjour le monde => ', this.state.commercialOperatorId) })}
-                                            input={<Input name="commercialOperatorId" id="commercialOperatorId-helper" />}>
-                                            {data.map((item, index) => (
-                                                <MenuItem key={index} value={item.id} className="center-hor-ver">
-                                                    {item.label}
-                                                </MenuItem>
-                                            ))}
-                                        </Select>
-                                    </FormControl>
-                                </div>
-                            )}
-                        />
-                        <CustomAsyncComponent
-                            data={[{
-                                label: 'Ventes classiques',
-                                key: 'CLASSIC_SALE',
-                            }, {
-                                label: 'Solutions financières',
-                                key: 'FINANCIAL_SOLUTION',
-                            }, {
-                                label: 'Ventes privées',
-                                key: 'PRIVATE_SALE',
-                            }]}
-                            component={data => (
-                                <div className="col-md-6 col-sm-12 form-group text-left">
-                                    <FormControl fullWidth>
-                                        <InputLabel className="text-left" htmlFor="saleWay-helper">
-                                            Canal de vente
+                                            <Select
+                                                value={this.state.commercialOperatorId}
+                                                onChange={event => this.setState({ commercialOperatorId: event.target.value }, () => { console.log('Bonjour le monde => ', this.state.commercialOperatorId) })}
+                                                input={<Input name="commercialOperatorId" id="commercialOperatorId-helper" />}>
+                                                {data.map((item, index) => (
+                                                    <MenuItem key={index} value={item.id} className="center-hor-ver">
+                                                        {item.label}
+                                                    </MenuItem>
+                                                ))}
+                                            </Select>
+                                        </FormControl>
+                                    </div>
+                                )}
+                            />
+                            <CustomAsyncComponent
+                                data={[{
+                                    label: 'Ventes classiques',
+                                    key: 'CLASSIC_SALE',
+                                }, {
+                                    label: 'Solutions financières',
+                                    key: 'FINANCIAL_SOLUTION',
+                                }, {
+                                    label: 'Ventes privées',
+                                    key: 'PRIVATE_SALE',
+                                }]}
+                                component={data => (
+                                    <div className="col-md-6 col-sm-12 form-group text-left">
+                                        <FormControl fullWidth>
+                                            <InputLabel className="text-left" htmlFor="saleWay-helper">
+                                                Canal de vente
                                     </InputLabel>
-                                        <Select
-                                            value={this.state.saleWay}
-                                            onChange={event => this.setState({ saleWay: event.target.value })}
-                                            input={<Input name="saleWay" id="saleWay-helper" />}>
-                                            {data.map((item, index) => (
-                                                <MenuItem key={index} value={item.key} className="center-hor-ver">
-                                                    {item.label}
-                                                </MenuItem>
-                                            ))}
-                                        </Select>
-                                    </FormControl>
-                                </div>
-                            )}
-                        />
-                    </div>
+                                            <Select
+                                                value={this.state.saleWay}
+                                                onChange={event => this.setState({ saleWay: event.target.value })}
+                                                input={<Input name="saleWay" id="saleWay-helper" />}>
+                                                {data.map((item, index) => (
+                                                    <MenuItem key={index} value={item.key} className="center-hor-ver">
+                                                        {item.label}
+                                                    </MenuItem>
+                                                ))}
+                                            </Select>
+                                        </FormControl>
+                                    </div>
+                                )}
+                            />
+                        </div>
 
-                    {loadingProducts ? (
+                        {/* {loadingProducts ? (
                         <RctSectionLoader />
-                    ) : (
-                            <>
-                                <CustomList
+                    ) : ( */}
+                        <>
+                            {/* <CustomList
                                     loading={false}
                                     // showSearch={false}
                                     list={this.state.chosenProducts}
@@ -422,9 +461,9 @@ class Create extends Component {
                                                 )}
                                         </>
                                     )}
-                                />
+                                /> */}
 
-                                <CustomList
+                            {/* <CustomList
                                     loading={false}
                                     // showSearch={false}
                                     list={this.state.chosenPackage}
@@ -476,9 +515,9 @@ class Create extends Component {
                                                 )}
                                         </>
                                     )}
-                                />
+                                /> */}
 
-                                <FormGroup>
+                            {/* <FormGroup>
                                     <InputLabel className="text-left" htmlFor="operatorEmail">
                                         Image
                                 </InputLabel>
@@ -488,25 +527,26 @@ class Create extends Component {
                                         name="file"
                                         onChange={event => this.setState({ image: event.target.files[0] })}
                                     />
-                                </FormGroup>
+                                </FormGroup> */}
 
-                                <FormGroup className="mb-15">
-                                    <Button
-                                        type="submit"
-                                        color="primary"
-                                        disabled={this.props.requestGlobalLoader}
-                                        variant="contained"
-                                        // onClick={this.onSubmit}
-                                        className="text-white font-weight-bold"
-                                    >
-                                        Soumettre
+                            <FormGroup className="mb-15">
+                                <Button
+                                    type="submit"
+                                    color="primary"
+                                    disabled={this.props.requestGlobalLoader}
+                                    variant="contained"
+                                    // onClick={this.onSubmit}
+                                    className="text-white font-weight-bold"
+                                >
+                                    Soumettre
                                 </Button>
-                                </FormGroup>
-                            </>
-                        )}
+                            </FormGroup>
+                        </>
+                        {/* )} */}
 
-                </Form>
+                    </Form>
 
+                </RctCollapsibleCard>
                 <AddProduct
                     show={this.state.showCreateBox}
                     products={this.state.storeProducts}

@@ -117,6 +117,7 @@ export const PRODUCT_TYPE = {
     GET_ALL: 'public/type-products/get-all',
     CREATE: 'public/type-products',
     GET_ONE: 'public/type-products/{id}',
+    GET_ONE_FROM_COM_OFFER: 'public/type-products/offer/{id}',
     TYPE_PRODUCTS: 'public/type-catalogs/type-products',
     SUB_CATEGORY: 'public/type-products/{id}/type-products',
     GET_ALL_BY_SALE: 'public/type-products/by-catalogue-vente',
@@ -145,6 +146,7 @@ export const USERS = {
     SEARCH: 'public/users/search',
     GET_ALL: 'public/users/persons',
     GET_ALL_BY_ORGANISATION: 'public/users/persons/by-organisation',
+    GET_ALL_ORGANISATIONS: 'public/users/organisations',
     CREATE: {
         PERSON: 'public/users/persons/with-profile',
         ORGANISATION: 'public/users/organisations/with-profile',
@@ -235,6 +237,7 @@ export const COMMERCIAL_MANAGEMENT = {
             PRODUCT_AVAILABLE: 'public/commercial-offer/products-available',
         },
         CREATE: 'public/commercial-offer',
+        ADD_PRODUCT: 'public/commercial-offer/{id}',
         UPDATE: 'public/commercial-offer',
         ACTIVATE: 'public/commercial-offer/active',
         DEACTIVATE: 'public/commercial-offer/desactive'

@@ -61,6 +61,11 @@ export const getOrganisationTypes = () => {
     });
 };
 
+export const getOrganisations = (id) => {
+    const url = `${USERS.GET_ALL_ORGANISATIONS}?branch_id=${id}&type=USER`;
+    return makeRequest('get', url);
+};
+
 export const getOrganisationPosts = () => {
     return new Promise((resolve, reject) => {
         api.get(SYSTEM_OBJECT.ORGANISATION_POST)
@@ -218,6 +223,14 @@ export const addProductsToOneCatalog = (data, catalogId, branchId) => {
     return makeRequest('post', url, null, { shouldSkipDataParsing: true });
 };
 
+export const getProductsFromCatalog = (catalogId) => {
+    let url = joinBaseUrlWithParams(CATALOGS.TYPE_PRODUCTS.GET, [{
+        param: 'id',
+        value: catalogId,
+    }]);
+    return makeRequest('get', url);
+};
+
 export const removeProductsToOneCatalog = (data, catalogId, branchId) => {
     let url = joinBaseUrlWithParams(CATALOGS.TYPE_PRODUCTS.REMOVE, [{
         param: 'id',
@@ -232,6 +245,11 @@ export const getOneCatalog = (catalogId) => {
         param: 'id',
         value: catalogId,
     }]);
+    return makeRequest('get', url);
+};
+
+export const getAllCatalogs = (partnerId) => {
+    let url = `${CATALOGS.GET_ALL}?partner_id=${partnerId}`;
     return makeRequest('get', url);
 };
 
@@ -470,6 +488,11 @@ export const createOffer = (data, branchId, config) => {
     });
 };
 
+export const addProductToOffer = (data, id) => {
+    const url = joinBaseUrlWithParamsId(`${COMMERCIAL_MANAGEMENT.OFFER.ADD_PRODUCT}`, id);
+    return makeRequest('post', url, data);
+};
+
 export const getAllProductTypeBySale = (branchId) => {
     const url = `${PRODUCT_TYPE.GET_ALL_BY_SALE}?branch_id=${branchId}`;
     return makeRequest('get', url);
@@ -497,6 +520,12 @@ export const getProductItemAvailable = (productId) => {
 
 export const getOneProductType = (productId) => {
     const url = joinBaseUrlWithParamsId(PRODUCT_TYPE.GET_ONE, productId);
+    return makeRequest('get', url);
+};
+
+
+export const getOneProductTypeFromCommercialOffer = (productId) => {
+    const url = joinBaseUrlWithParamsId(PRODUCT_TYPE.GET_ONE_FROM_COM_OFFER, productId);
     return makeRequest('get', url);
 };
 

@@ -10,6 +10,7 @@ import {COMMERCIAL_MANAGEMENT} from "Url/frontendUrl";
 import {withRouter, Switch, Redirect, Route} from "react-router-dom";
 import List from './List';
 import Create from './Create';
+import AddProduct from './AddProduct';
 
 class Offer extends Component {
     render() {
@@ -21,6 +22,7 @@ class Offer extends Component {
                     <Switch>
                         <Redirect exact from={`${match.url}/`} to={COMMERCIAL_MANAGEMENT.COMMERCIAL_OFFER.LIST} />
                         <Route path={COMMERCIAL_MANAGEMENT.COMMERCIAL_OFFER.CREATE} component={Create} />
+                        <Route path={COMMERCIAL_MANAGEMENT.COMMERCIAL_OFFER.ADD_PRODUCT} component={AddProduct} />
                         <Route path={COMMERCIAL_MANAGEMENT.COMMERCIAL_OFFER.LIST} component={List} />
                     </Switch>
                 </>
