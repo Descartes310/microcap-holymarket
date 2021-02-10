@@ -146,10 +146,13 @@ export const USERS = {
     SEARCH: 'public/users/search',
     GET_ALL: 'public/users/persons',
     GET_ALL_BY_ORGANISATION: 'public/users/persons/by-organisation',
+    GET_ALL_PARTNER: 'public/users/organisations/branch/{id}/partner',
     GET_ALL_ORGANISATIONS: 'public/users/organisations',
+    GET_ORGANISATION_REFERENCE: 'public/users/organisations/adhesion/{id}',
     CREATE: {
         PERSON: 'public/users/persons/with-profile',
         ORGANISATION: 'public/users/organisations/with-profile',
+        PARTNER: 'public/users/organisations/{id}/partner',
     },
     ACCOUNTS: {
         GET_ALL: '/public/type-network-profiles',

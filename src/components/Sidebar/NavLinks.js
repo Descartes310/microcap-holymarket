@@ -411,6 +411,20 @@ export default {
             },
          ]
       },{
+         "menu_title": "Microcap360",
+         "menu_icon": "icon-people",
+         "new_item": false,
+         // "permissions": [Permission.navLinks.COMMUNITY.viewMenu],
+         "permissions": [],
+         "child_routes": [
+            {
+               "menu_title": "Reseau",
+               "new_item": false,
+               "path": MICROCAP360.RESEAU.SELF,
+               "permissions": [],
+            },
+         ],
+      },{
          "menu_title": "Produits & services",
          "menu_icon": "zmdi zmdi-widgets",
          "new_item": false,
@@ -559,6 +573,89 @@ export default {
       },
    ],
    pfm: [
+      {
+         "menu_title": "Profile",
+         "menu_icon": "zmdi zmdi-accounts",
+         "path": NETWORK.LIST,
+         "new_item": false,
+         "child_routes": null,
+         "permissions": [Branch.permissionsRelated.READ],
+         'subject': Branch
+      },{
+         "menu_title": "Microcap360",
+         "menu_icon": "icon-people",
+         "new_item": false,
+         // "permissions": [Permission.navLinks.COMMUNITY.viewMenu],
+         "permissions": [],
+         "child_routes": [
+            {
+               "menu_title": "Comptes",
+               "new_item": false,
+               "path": PRODUCT.SHOW_ACCOUNT,
+               "permissions": [],
+            },
+            {
+               "menu_title": "Projets",
+               "new_item": false,
+               "path": PROJECTS.FOLDERS.SELF,
+               "permissions": [],
+            },
+            {
+               "menu_title": "Reseau",
+               "new_item": false,
+               "path": MICROCAP360.RESEAU.SELF,
+               "permissions": [],
+            },
+         ],
+      },{
+         "menu_title": "Bourse de Financement",
+         "menu_icon": "zmdi zmdi-accounts",
+         "path": NETWORK.LIST,
+         "new_item": false,
+         "child_routes": null,
+         "permissions": [Branch.permissionsRelated.READ],
+         'subject': Branch
+      },{
+         "menu_title": "Bourse des opportunités",
+         "menu_icon": "zmdi zmdi-accounts",
+         "path": NETWORK.LIST,
+         "new_item": false,
+         "child_routes": null,
+         "permissions": [Branch.permissionsRelated.READ],
+         'subject': Branch
+      },
+      {
+         "menu_title": "Produits & Services",
+         "menu_icon": "zmdi zmdi-shopping-cart",
+         "new_item": false,
+         // "permissions": [Permission.navLinks.COMMUNITY_MEMBER.viewMenu],
+         "permissions": [],
+         "child_routes": [
+            {
+               "menu_title": "Market place",
+               "new_item": false,
+               "path": PRODUCT.LIST,
+               "permissions": [],
+            },
+            {
+               "menu_title": "Mes commandes",
+               "new_item": false,
+               "path": PRODUCT.ORDERS,
+               "permissions": [],
+            }
+         ],
+      },{
+         "menu_title": "Ressources",
+         "menu_icon": "zmdi zmdi-accounts",
+         "path": NETWORK.LIST,
+         "new_item": false,
+         "child_routes": null,
+         "permissions": [Branch.permissionsRelated.READ],
+         'subject': Branch
+      },
+
+   ],
+   member: [
       {
          "menu_title": "Profile",
          "menu_icon": "zmdi zmdi-accounts",

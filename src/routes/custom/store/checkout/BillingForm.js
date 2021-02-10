@@ -6,7 +6,6 @@ import React, { Component } from 'react';
 import { Form, FormGroup, Input, Label, Col, FormText } from 'reactstrap';
 import Button from '@material-ui/core/Button';
 import { loadStripe } from '@stripe/stripe-js';
-import { CardElement, Elements, ElementsConsumer } from '@stripe/react-stripe-js';
 import DialogTitle from "@material-ui/core/DialogTitle/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent/DialogContent";
 import Dialog from "@material-ui/core/Dialog/Dialog";
@@ -16,6 +15,7 @@ import { getAccountByAmount } from 'Actions/independentActions';
 import { connect } from "react-redux";
 import { setRequestGlobalAction } from "Actions/RequestGlobalAction";
 import { withRouter } from "react-router-dom";
+import StripeCheckout from 'react-stripe-checkout';
 
 
 const stripePromise = loadStripe('pk_test_51Gz2fvFpVeqBYSfw7Am6yvkuz3Hv42Tma0auEhSyncIUXS0TtiSrt05JLgSH4AnKxSvVB3wMT7oA8lxoUcmp2vmX00NKx4OZmh');
@@ -26,7 +26,7 @@ import IntlMessages from 'Util/IntlMessages';
 class BillingForm extends Component {
    constructor(props) {
       super(props);
-      console.log('Stripe => ', stripePromise)
+      console.log('Stripe => ', this.props.cart.getTotalPrice())
       const defaultValue = this.props.data;
 
       this.state = {
@@ -42,6 +42,22 @@ class BillingForm extends Component {
             zipCode: defaultValue.zipCode || '',
          }
       }
+   }
+
+   onToken = (token, address) => {
+
+      console.log('STRYPE TOKEN', token);
+      console.log('STRYPE ADDRESS', address);
+
+      const tokenToSend = token.id;
+      const amount = 100;
+      //const SK = 'sk_test_51IIZ35AcN6gYdJ7TK61kTa8ReZje9jvmfrIqCNMgEsOIQr1VZhz4VKPUmirEFpodHIvZuISv5U6S0AGIspXo6Qnh009JWP1Jjo';
+      makePayement({ tokenToSend, amount }).then((result) => {
+
+      }).catch((err) => {
+
+         console.log(err);
+      });
    }
 
    componentDidMount() {
@@ -60,15 +76,6 @@ class BillingForm extends Component {
          }
       })
    }
-
-   handleSubmit = async (event) => {
-      event.preventDefault();
-      const { stripe, elements } = this.props;
-      const { error, paymentMethod } = await stripe.createPaymentMethod({
-         type: 'card',
-         card: elements.getElement(CardElement),
-      });
-   };
 
    //this.props.onComplete(this.state.billingInformation, true)
 
@@ -139,12 +146,9 @@ class BillingForm extends Component {
                </FormGroup>
 
                <div className="d-flex justify-content-end">
-                  <Elements stripe={stripePromise}>
-                     <CardElement />
-                     <Button disabled={!this.isFormValid()} onClick={() => this.setState({ showPaymentBox: true })} color="primary" variant="contained">
-                        Payer
-                     </Button>
-                  </Elements>
+                  <Button disabled={!this.isFormValid()} onClick={() => this.setState({ showPaymentBox: true })} color="primary" variant="contained">
+                     Payer
+                  </Button>
                </div>
             </Form>
             <Dialog
@@ -167,9 +171,18 @@ class BillingForm extends Component {
                   </div>
                </DialogTitle>
                <DialogContent style={{ display: 'flex', flexDirection: 'column' }}>
-                  <Button size="large" onClick={() => /*this.props.onComplete(this.state.billingInformation, true)*/ console.log('Bonjour')} style={{ color: 'white' }} color="primary" variant="contained">
-                     Payment Stripe
-                  </Button>
+                  <StripeCheckout
+                     stripeKey="pk_test_51IIZ35AcN6gYdJ7T3HZctvJcdqOLuMHBG7WMMiVtFJtOW2IlJBwIRzIXCu2DPPJLvzCi4HEHEX3ZDqC5wQREOsj300xS6NlkLx"
+                     token={this.onToken}
+                     amount={100}
+                     // amount={(Number(this.props.cart.getTotalPrice())+49.00)*100}
+                     currency="EUR"
+                     name={'Tesla Roadster'}
+                     // name={this.props.authUser.userName}
+                     label='Payment par stripe'
+                     billingAddress
+                     shippingAddress
+                  />
                   <Button size="large" onClick={() => this.setState({ selectingAccount: true, entringCode: false })} style={{ marginTop: 40, color: 'white' }} color="primary" variant="contained">
                      Payment par compte Microcap
                   </Button>
@@ -207,10 +220,10 @@ class BillingForm extends Component {
                      {this.state.accounts.map((account) => (
                         <FormGroup row style={{ justifyContent: 'space-around', alignItems: 'center' }}>
                            <Col sm={7}>
-                              <Label>{ account.label} </Label>
+                              <Label>{account.label} </Label>
                            </Col>
                            <Col sm={3}>
-                              <Label>Solde: { account.detailsProducts.filter(d => d.detailsType.name == 'SOLDE').length > 0 ? account.detailsProducts.filter(d => d.detailsType.name == 'SOLDE')[0].value : 0 } {account.typeProduct.currency}</Label>
+                              <Label>Solde: {account.detailsProducts.filter(d => d.detailsType.name == 'SOLDE').length > 0 ? account.detailsProducts.filter(d => d.detailsType.name == 'SOLDE')[0].value : 0} {account.typeProduct.currency}</Label>
                            </Col>
                            <Col sm={2}>
                               <Button onClick={() => this.props.onComplete(this.state.billingInformation, false, null, account.id)} size="large" variant="contained" style={{ color: 'white', backgroundColor: '#1976d2' }}>
@@ -226,8 +239,8 @@ class BillingForm extends Component {
       )
    }
 }
-const mapStateToProps = ({ authUser }) => {
-   return { authUser: authUser.data };
+const mapStateToProps = ({ authUser, cart }) => {
+   return { authUser: authUser.data, cart };
 };
 
 export default connect(mapStateToProps, {

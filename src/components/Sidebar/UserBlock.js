@@ -93,16 +93,16 @@ class UserBlock extends Component {
 									</div>
 								</Tooltip>
 							) : (
-								<div className="user-profile position-relative">
-									<img
-										src={require('Assets/avatars/user-15.jpg')}
-										alt="user profile"
-										className="img-fluid rounded-circle"
-										width="50"
-										height="100"
-									/>
-								</div>
-							)}
+									<div className="user-profile position-relative">
+										<img
+											src={require('Assets/avatars/user-15.jpg')}
+											alt="user profile"
+											className="img-fluid rounded-circle"
+											width="50"
+											height="100"
+										/>
+									</div>
+								)}
 							<div className="user-info">
 								<span className="user-name ml-4">
 									{this.props.authUser.userName}
@@ -125,6 +125,15 @@ class UserBlock extends Component {
 										<p className="text-dark fw-bold mb-0">{this.props.authUser.user.reference}</p>
 									</FieldsetComponent>
 								</li>
+								{
+									this.props.authUser.user.membershipNumber ?
+
+										<li className="mt-3">
+											<FieldsetComponent title={"Adhesion"} titleClass={"text-dark"}>
+												<p className="text-dark fw-bold mb-0">{this.props.authUser.user.membershipNumber}</p>
+											</FieldsetComponent>
+										</li> : null
+								}
 								<li className="border-top">
 									<a href="#" onClick={(e) => this.logoutUser(e)}>
 										<i className="zmdi zmdi-power text-danger mr-3"></i>

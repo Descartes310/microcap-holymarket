@@ -39,6 +39,12 @@ export const NETWORK = {
         },
     },
     COVERAGE: '/network/coverage',
+    COVERAGE_TABS: {
+        AREA: '/network/coverage/areas',
+        AREA_TYPE: '/network/coverage/area-types',
+        PARTNER: '/network/coverage/partners'
+    },
+
     CREATE: '/branch/create',
     ONGOING_CREATE: '/branch/ongoing/create',
     EDIT: '/branch/edit',

@@ -182,6 +182,22 @@ export const setNetworkProfileConfigurationState = (shouldStart, id) => {
     return makeRequest('put', url);
 };
 
+export const getOrganisationByReference = (id) => {
+    const url = joinBaseUrlWithParams(USERS.GET_ORGANISATION_REFERENCE, [{
+        param: 'id',
+        value: id,
+    }]);
+    return makeRequest('get', url);
+};
+
+export const getPartnersByBranch = (id) => {
+    const url = joinBaseUrlWithParams(USERS.GET_ALL_PARTNER, [{
+        param: 'id',
+        value: id,
+    }]);
+    return makeRequest('get', url);
+};
+
 export const getNetworkProfilePartnership = (branchId) => {
     return new Promise((resolve, reject) => {
         api.get(NETWORK_PROFILE.PARTNERSHIP.GET_ALL)
@@ -212,6 +228,11 @@ export const setActiveCatalog = (catalogId) => {
 export const createCatalog = (data, branchId) => {
     const url = `${CATALOGS.CREATE}?branch_id=${branchId}`;
     return makeRequest('post', url, data);
+};
+
+export const createPartner = (id, contract, type) => {
+    const url = joinBaseUrlWithParamsId(`${USERS.CREATE.PARTNER}?contract_number=${contract}&id_profile=${type}`, id);
+    return makeRequest('post', url, null);
 };
 
 export const addProductsToOneCatalog = (data, catalogId, branchId) => {
@@ -598,8 +619,13 @@ export const createNotificationsService = (branchId, data) => {
     return makeRequest('post', url, data);
 };
 
+export const getUsersAccounts = (branchId, type) => {
+    const url = `${USERS.ACCOUNTS.GET_ALL_BY_BRANCH}?branch_id=${branchId}&type=${type}`;
+    return makeRequest('get', url);
+};
+
 export const createUsersAccounts = (data) => {
-    const url = `${USERS.ACCOUNTS.CREATE}?label=${data.label}&description=${data.description}&branch_id=${data.branchId}`;
+    const url = `${USERS.ACCOUNTS.CREATE}?label=${data.label}&description=${data.description}&branch_id=${data.branchId}&type=${data.type}`;
     return makeRequest('post', url, null);
 };
 

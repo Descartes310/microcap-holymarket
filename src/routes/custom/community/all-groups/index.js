@@ -92,6 +92,7 @@ class AllGroups extends Component {
                                                 <tr>
                                                     <th><IntlMessages id="components.name" /></th>
                                                     <th><IntlMessages id="widgets.description" /></th>
+                                                    <th>Type</th>
                                                     <th />
                                                 </tr>
                                             </thead>
@@ -112,6 +113,13 @@ class AllGroups extends Component {
                                                             <div className="media">
                                                                 <div className="media-body pt-10">
                                                                     <h4 className="m-0 fw-bold text-dark">{group.description}</h4>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div className="media">
+                                                                <div className="media-body pt-10">
+                                                                    <h4 className="m-0 fw-bold text-dark">{group.convetionnated}</h4>
                                                                 </div>
                                                             </div>
                                                         </td>

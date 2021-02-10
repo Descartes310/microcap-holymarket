@@ -29,7 +29,7 @@ import CustomAsyncComponent from "Components/CustomAsyncComponent";
 import FormControl from "@material-ui/core/FormControl";
 import MenuItem from "@material-ui/core/MenuItem";
 import Input from "@material-ui/core/Input/Input";
-import { createOffer, getOrganisations, getAllCatalogs, getProductsFromCatalog, addProductToOffer } from "Actions/independentActions";
+import { getPartnersByBranch, getOrganisations, getAllCatalogs, getProductsFromCatalog, addProductToOffer } from "Actions/independentActions";
 import { NotificationManager } from "react-notifications";
 import { ERROR_500 } from "Constants/errors";
 import { COMMERCIAL_MANAGEMENT, PACKAGES } from "Url/frontendUrl";
@@ -85,13 +85,11 @@ class AddProduct extends Component {
 
     fetchSeller = () => {
         this.setState({ sellerLoading: true });
-        getOrganisations(this.props.authUser.branchId)
+        getPartnersByBranch(this.props.authUser.branchId)
             .then(res => {
-                console.log(res)
                 this.setState({ sellers: res });
             })
             .catch((error) => {
-                console.log("error => ", error);
                 NotificationManager.error(ERROR_500);
             })
             .finally(() => this.setState({ sellerLoading: false }));
@@ -206,14 +204,14 @@ class AddProduct extends Component {
                                         <FormControl fullWidth>
                                             <InputLabel className="text-left" htmlFor="partnerId-helper">
                                                 Vendeur
-                                    </InputLabel>
+                                            </InputLabel>
                                             <Select
                                                 value={this.state.seller}
                                                 onChange={event => { this.setState({ seller: event.target.value }, () => { this.loadCatalogs(this.state.seller) }) }}
                                                 input={<Input name="partnerId" id="partnerId-helper" />}>
                                                 {data.map((item, index) => (
-                                                    <MenuItem key={index} value={item.user.id} className="center-hor-ver">
-                                                        {item.commercialName}
+                                                    <MenuItem key={index} value={item.organisation.user.id} className="center-hor-ver">
+                                                        {item.organisation.commercialName}
                                                     </MenuItem>
                                                 ))}
                                             </Select>
