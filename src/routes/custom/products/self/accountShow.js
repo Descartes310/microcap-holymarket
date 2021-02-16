@@ -5,7 +5,7 @@ import { withRouter } from "react-router-dom";
 import { withStyles } from "@material-ui/core";
 import { AbilityContext } from "Permissions/Can";
 import { getProductItemAvailable, setRequestGlobalAction } from "Actions";
-import { getAccountDetails, approvisioningVoucher, getAccountTransactions } from "Actions/independentActions";
+import { getAccountDetails, approvisioningVoucher, approvisioningCard, getAccountTransactions } from "Actions/independentActions";
 import { NotificationManager } from "react-notifications";
 import { ERROR_500 } from "Constants/errors";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
@@ -19,6 +19,7 @@ import FormControl from "@material-ui/core/FormControl";
 import IconButton from "@material-ui/core/IconButton";
 import SweetAlert from "react-bootstrap-sweetalert";
 import TimeFromMoment from "Components/TimeFromMoment";
+import StripeCheckout from 'react-stripe-checkout';
 
 class AccountShow extends Component {
     static contextType = AbilityContext;
@@ -29,8 +30,10 @@ class AccountShow extends Component {
             loading: true,
             account: [],
             balance: '0',
+            amount: 0,
             currency: 'Currency',
             showQuantityBox: false,
+            paying: false,
             transactions: {}
         }
     }
@@ -71,6 +74,17 @@ class AccountShow extends Component {
             .finally(() => this.setState({ showQuantityBox: false }));
     };
 
+    handleApprovisioningCard = (token) => {
+        approvisioningCard(this.state.account.id, { amount: this.state.amount, token: token.id })
+            .then(account => {
+                this.loadData()
+            })
+            .catch((err) => {
+                NotificationManager.error(ERROR_500);
+            })
+            .finally(() => this.setState({ paying: false }));
+    };
+
     groups = (array) => {
         let result = array.reduce((groups, transaction) => {
             const date = transaction.createdAt.split('T')[0];
@@ -92,9 +106,8 @@ class AccountShow extends Component {
         });
     }
 
-
     render() {
-        const { loading, account, balance, currency, showQuantityBox, transactions } = this.state;
+        const { loading, account, balance, currency, showQuantityBox, transactions, paying } = this.state;
         const { match, history, classes } = this.props;
 
         return (
@@ -158,15 +171,56 @@ class AccountShow extends Component {
                                 />
                             </InputGroup>
                         </FormControl>
-                        <Button
-                            size="large"
-                            color="primary"
-                            variant="contained"
-                            className={"text-white font-weight-bold mr-3"}
-                            onClick={() => this.setState({ showQuantityBox: true })}
-                        >
-                            Approvisionnement
-                        </Button>
+                        {
+                            !paying ?
+                                <div>
+                                    <Button
+                                        size="large"
+                                        color="primary"
+                                        variant="contained"
+                                        className={"text-white font-weight-bold mr-3"}
+                                        onClick={() => this.setState({ showQuantityBox: true })}
+                                    >
+                                        Approvisionnement coupon
+                                </Button>
+                                    <Button
+                                        size="large"
+                                        color="primary"
+                                        variant="contained"
+                                        className={"text-white font-weight-bold mr-3"}
+                                        onClick={() => this.setState({ paying: true })}
+                                    >
+                                        Approvisionnement carte
+                                </Button>
+                                </div>
+                                :
+                                <div className='d-flex'>
+                                    <Input
+                                        type="number"
+                                        name="amount"
+                                        id="amount"
+                                        placeHolder='Montant a recharger'
+                                        onChange={(e) => this.setState({ amount: e.target.value })}
+                                    />
+                                    <StripeCheckout
+                                        stripeKey="pk_test_51ILMcRF8O7K51xUUQ3rGe0lMNsDJWjM4DCxMH7zJwnxl2uFiVeC8hzrOYmAGHKiU4XAM5OIgHTZhjDrac7vP97yo00VO7op4Qx"
+                                        token={this.handleApprovisioningCard}
+                                        amount={this.state.amount*100}
+                                        name="Recharger le compte"
+                                        currency='EUR'
+                                        label="Recharger"
+                                    />
+                                    <Button
+                                        size="large"
+                                        color="primary"
+                                        variant="contained"
+                                        className={"text-white font-weight-bold mr-3"}
+                                        onClick={() => this.setState({ paying: false })}
+                                    >
+                                        Annuler
+                                </Button>
+                                </div>
+                        }
                     </div>
                     <div className="table-responsive" style={{ padding: 40 }}>
 
@@ -225,7 +279,7 @@ class AccountShow extends Component {
                                                                     className={"text-white font-weight-bold mr-3 bg-blue"}
                                                                 >
                                                                     Détails
-                                                </Button>
+                                                                </Button>
                                                             </td>
                                                         </tr>
                                                     ))}

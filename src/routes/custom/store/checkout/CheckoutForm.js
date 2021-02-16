@@ -46,11 +46,11 @@ class CheckoutForm extends Component {
       this.setState({ value });
    };
 
-   onFormComplete = (data, nextStep, voucher = null, account = null) => {
+   onFormComplete = (data, nextStep, voucher = null, account = null, token = null) => {
 
       this.setState(prevState => ({ data: { ...prevState.data, ...data }, value: nextStep ? prevState.value + 1 : 0 }));
 
-      if (!nextStep && (voucher != null || account != null)) {
+      if (!nextStep && (voucher != null || account != null || token != null)) {
          this.props.setRequestGlobalAction(true);
          const _data = { ...this.state.data };
          _data.address1 = data.addressLine1;
@@ -66,6 +66,8 @@ class CheckoutForm extends Component {
             _data.voucherCode = voucher;
          if (account != null)
             _data.accountId = account;
+         if (token != null)
+            _data.stripeToken = token;
 
          createSale(_data)
             .then((resp) => {

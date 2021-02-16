@@ -5,7 +5,6 @@
 import React, { Component } from 'react';
 import { Form, FormGroup, Input, Label, Col, FormText } from 'reactstrap';
 import Button from '@material-ui/core/Button';
-import { loadStripe } from '@stripe/stripe-js';
 import DialogTitle from "@material-ui/core/DialogTitle/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent/DialogContent";
 import Dialog from "@material-ui/core/Dialog/Dialog";
@@ -17,16 +16,12 @@ import { setRequestGlobalAction } from "Actions/RequestGlobalAction";
 import { withRouter } from "react-router-dom";
 import StripeCheckout from 'react-stripe-checkout';
 
-
-const stripePromise = loadStripe('pk_test_51Gz2fvFpVeqBYSfw7Am6yvkuz3Hv42Tma0auEhSyncIUXS0TtiSrt05JLgSH4AnKxSvVB3wMT7oA8lxoUcmp2vmX00NKx4OZmh');
-
 // intl messages
 import IntlMessages from 'Util/IntlMessages';
 
 class BillingForm extends Component {
    constructor(props) {
       super(props);
-      console.log('Stripe => ', this.props.cart.getTotalPrice())
       const defaultValue = this.props.data;
 
       this.state = {
@@ -44,20 +39,8 @@ class BillingForm extends Component {
       }
    }
 
-   onToken = (token, address) => {
-
-      console.log('STRYPE TOKEN', token);
-      console.log('STRYPE ADDRESS', address);
-
-      const tokenToSend = token.id;
-      const amount = 100;
-      //const SK = 'sk_test_51IIZ35AcN6gYdJ7TK61kTa8ReZje9jvmfrIqCNMgEsOIQr1VZhz4VKPUmirEFpodHIvZuISv5U6S0AGIspXo6Qnh009JWP1Jjo';
-      makePayement({ tokenToSend, amount }).then((result) => {
-
-      }).catch((err) => {
-
-         console.log(err);
-      });
+   onToken = (token) => {
+      this.props.onComplete(this.state.billingInformation, false, null, null, token.id)
    }
 
    componentDidMount() {
@@ -89,7 +72,6 @@ class BillingForm extends Component {
    }
 
    render() {
-      const { stripe } = this.props;
       const { showPaymentBox, entringCode, code, selectingAccount } = this.state;
       return (
          <div className="billing-form-warp py-4">
@@ -145,12 +127,21 @@ class BillingForm extends Component {
                   </Col>
                </FormGroup>
 
+               </Form>
                <div className="d-flex justify-content-end">
-                  <Button disabled={!this.isFormValid()} onClick={() => this.setState({ showPaymentBox: true })} color="primary" variant="contained">
-                     Payer
+                  <StripeCheckout
+                     stripeKey="pk_test_51ILMcRF8O7K51xUUQ3rGe0lMNsDJWjM4DCxMH7zJwnxl2uFiVeC8hzrOYmAGHKiU4XAM5OIgHTZhjDrac7vP97yo00VO7op4Qx"
+                     token={this.onToken}
+                     amount={(Number(this.props.cart.getTotalPrice())) * 100}
+                     name="Payer les produits"
+                     opened={() => this.setState({ showPaymentBox: false })}
+                     currency='USD'
+                     label="Payement par carte"
+                  />
+                  <Button onClick={() => this.setState({ showPaymentBox: true })} color="primary" variant="contained" style={{ marginLeft: 10 }}>
+                     Autre Payement
                   </Button>
                </div>
-            </Form>
             <Dialog
                open={showPaymentBox}
                onClose={() => { this.setState({ showPaymentBox: false }) }}
@@ -171,18 +162,6 @@ class BillingForm extends Component {
                   </div>
                </DialogTitle>
                <DialogContent style={{ display: 'flex', flexDirection: 'column' }}>
-                  <StripeCheckout
-                     stripeKey="pk_test_51IIZ35AcN6gYdJ7T3HZctvJcdqOLuMHBG7WMMiVtFJtOW2IlJBwIRzIXCu2DPPJLvzCi4HEHEX3ZDqC5wQREOsj300xS6NlkLx"
-                     token={this.onToken}
-                     amount={100}
-                     // amount={(Number(this.props.cart.getTotalPrice())+49.00)*100}
-                     currency="EUR"
-                     name={'Tesla Roadster'}
-                     // name={this.props.authUser.userName}
-                     label='Payment par stripe'
-                     billingAddress
-                     shippingAddress
-                  />
                   <Button size="large" onClick={() => this.setState({ selectingAccount: true, entringCode: false })} style={{ marginTop: 40, color: 'white' }} color="primary" variant="contained">
                      Payment par compte Microcap
                   </Button>

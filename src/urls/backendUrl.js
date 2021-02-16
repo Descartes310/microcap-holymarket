@@ -257,7 +257,8 @@ export const ACCOUNT = {
     GET_ONE: 'public/accounts/{id}',
     GET_TRANSACTIONS: 'public/accounts/{id}/mouvements',
     GET_ACCOUNT_BY_AMOUNT: 'public/accounts/users/{id}/account-by-amount',
-    APPROVISIONING_VOUCHER: 'public/accounts/{id}/approvisioning/voucher'
+    APPROVISIONING_VOUCHER: 'public/accounts/{id}/approvisioning/voucher',
+    APPROVISIONING_CARD: 'public/accounts/{id}/approvisioning/card'
 };
 
 export const SALES = {

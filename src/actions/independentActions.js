@@ -462,6 +462,11 @@ export const approvisioningVoucher = (id, data) => {
     return makeRequest('post', url, data);
 };
 
+export const approvisioningCard = (id, data) => {
+    const url = joinBaseUrlWithParamsId(ACCOUNT.APPROVISIONING_CARD, id);
+    return makeRequest('post', url, data);
+};
+
 export const getSaleProducts = (id) => {
     const url = joinBaseUrlWithParamsId(SALES.GET_ONE, id);
     return makeRequest('get', url);
