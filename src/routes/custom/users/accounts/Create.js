@@ -22,9 +22,9 @@ const UsersAccountsCreate = props => {
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
 
-    const [type, setType] = useState('');
+    const [type, setType] = useState('OPERATOR');
 
-    const { authUser, onClose, show, loading, setRequestGlobalAction, getUsersAccounts } = props;
+    const { authUser, onClose, show, loading, setRequestGlobalAction, getUsersAccounts, branchId } = props;
 
     const { register, errors, handleSubmit } = useForm();
 
@@ -33,13 +33,13 @@ const UsersAccountsCreate = props => {
      */
     const onSubmit = (data) => {
         setRequestGlobalAction(true);
-        data.branchId = authUser.branchId;
+        data.branchId = branchId;
         data.type = type;
         createUsersAccounts(data)
             .then(() => {
                 NotificationManager.success("Compte utilisateur créée avec succès");
-                getUsersAccounts(authUser.user.branch.id);
-                onClose();
+                // getUsersAccounts(authUser.user.branch.id);
+                // onClose();
             })
             .catch((error) => {
                 NotificationManager.error(ERROR_500);
@@ -114,7 +114,7 @@ const UsersAccountsCreate = props => {
                                     <select
                                         className="form-control"
                                         style={{ width: '100%', display: 'inline-block' }} 
-                                        onChange={(e) => setType(e.target.value)}
+                                        onChange={(e) => {setType(e.target.value)}}
                                     >
                                         <option key='OPERATOR' value='OPERATOR'>
                                             OPERATEUR MICROCAP

@@ -16,7 +16,7 @@ import DialogTitle from "@material-ui/core/DialogTitle/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent/DialogContent";
 import NotificationManager from "react-notifications/lib/NotificationManager";
 import { getProducts, setRequestGlobalAction } from "Actions";
-import { getOrganisationByReference, createPartner, getPartnersByBranch, getUsersAccounts } from 'Actions/independentActions'
+import { getOrganisationByReference, createPartner, getPartnersByBranch, getUsersAccounts, addOperator, getPartnersOperatorByBranch } from 'Actions/independentActions'
 import Accordion from '@material-ui/core/Accordion';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
@@ -36,7 +36,8 @@ class ClassicSale extends Component {
             showBox: false,
             organisation: null,
             type: null,
-            accounts: []
+            accounts: [],
+            operators: []
         }
     }
 
@@ -62,6 +63,15 @@ class ClassicSale extends Component {
         }).catch(err => {
             this.setState({ partners: [] })
         }).finally(() => this.setState({ loading: false }))
+    };
+
+    getPartnersOperator = () => {
+        this.setState({ loading: true });
+        getPartnersOperatorByBranch(this.props.authUser.user.branch.id, this.props.authUser.user.hostCountry).then(data => {
+            this.setState({ operators: data })
+        }).catch(err => {
+            this.setState({ operators: [] })
+        }).finally(() => this.setState({ loading: false, showOperator: true }))
     };
 
     getUsersAccountsBranchs = (type) => {
@@ -191,6 +201,7 @@ class ClassicSale extends Component {
                                                             <th><IntlMessages id="components.name" /></th>
                                                             <th>Email</th>
                                                             <th>Numéro de contrat</th>
+                                                            <th>Action</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -226,6 +237,17 @@ class ClassicSale extends Component {
                                                                         </div>
                                                                     </div>
                                                                 </td>
+                                                                <td>
+                                                                    <Button
+                                                                        size="large"
+                                                                        color="primary"
+                                                                        variant="contained"
+                                                                        className={"text-white font-weight-bold mr-3"}
+                                                                        onClick={() => this.getPartnersOperator()}
+                                                                    >
+                                                                        Operateur de supervision
+                                                                    </Button>
+                                                                </td>
                                                             </tr>
                                                         ))}
                                                     </tbody>
@@ -237,6 +259,87 @@ class ClassicSale extends Component {
                         />
                     </AccordionDetails>
                 </Accordion>
+                <Dialog
+                    open={this.state.showOperator}
+                    onClose={() => this.setState({ showOperator: false })}
+                    aria-labelledby="responsive-dialog-title"
+                    maxWidth={'md'}
+                    fullWidth
+                >
+                    <DialogTitle id="form-dialog-title">
+                        <div className="row justify-content-between align-items-center">
+                            Sélectionner un opérateur
+                            <IconButton
+                                color="primary"
+                                aria-label="close"
+                                className="text-danger"
+                                onClick={() => { this.setState({ showOperator: false }) }}>
+                                <CancelIcon />
+                            </IconButton>
+                        </div>
+                    </DialogTitle>
+                    <DialogContent>
+                        <div className="row">
+                            <table className="table table-hover table-middle mb-0 text-center">
+                                <thead>
+                                    <tr>
+                                        <th><IntlMessages id="components.name" /></th>
+                                        <th>Email</th>
+                                        <th>Numéro de contrat</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {this.state.operators && this.state.operators.map((item, key) => (
+                                        <tr key={key} className="cursor-pointer">
+                                            <td>
+                                                <div className="media">
+                                                    <div className="media-left media-middle mr-15">
+                                                        {/*<img src={item.label} alt="user profile" className="media-object rounded-circle" width="35" height="35" />*/}
+                                                    </div>
+                                                    <div className="media-body pt-10">
+                                                        <h4 className="m-0 fw-bold text-dark">{item.organisation.commercialName}</h4>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div className="media">
+                                                    <div className="media-left media-middle mr-15">
+                                                        {/*<img src={item.label} alt="user profile" className="media-object rounded-circle" width="35" height="35" />*/}
+                                                    </div>
+                                                    <div className="media-body pt-10">
+                                                        <h4 className="m-0 fw-bold text-dark">{item.organisation.user.email}</h4>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div className="media">
+                                                    <div className="media-left media-middle mr-15">
+                                                        {/*<img src={item.label} alt="user profile" className="media-object rounded-circle" width="35" height="35" />*/}
+                                                    </div>
+                                                    <div className="media-body pt-10">
+                                                        <h4 className="m-0 fw-bold text-dark">{item.contractNumber}</h4>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <Button
+                                                    size="large"
+                                                    color="primary"
+                                                    variant="contained"
+                                                    className={"text-white font-weight-bold mr-3"}
+                                                    onClick={() => NotificationManager.success("Opérateur assigné avec succès")}
+                                                >
+                                                    Assigner
+                                                </Button>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    </DialogContent>
+                </Dialog>
                 <Dialog
                     open={this.state.showBox}
                     onClose={() => { this.setState({ showBox: false }) }}

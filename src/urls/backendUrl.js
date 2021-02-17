@@ -147,6 +147,7 @@ export const USERS = {
     GET_ALL: 'public/users/persons',
     GET_ALL_BY_ORGANISATION: 'public/users/persons/by-organisation',
     GET_ALL_PARTNER: 'public/users/organisations/branch/{id}/partner',
+    GET_ALL_PARTNER_OPERATOR: 'public/users/organisations/branch/{id}/partner/operator',
     GET_ALL_ORGANISATIONS: 'public/users/organisations',
     GET_ORGANISATION_REFERENCE: 'public/users/organisations/adhesion/{id}',
     CREATE: {
@@ -185,6 +186,7 @@ export const COMMUNITY_MEMBER = {
             CREATE_VOUCHER: 'groups/{id}/vouchers',
             GET_VOUCHERS: 'groups/{id}/vouchers/users/{user_id}/type/{type}',
             GET_ADMINS: 'groups/communities/{id}/admins',
+            ADD_OPERATOR: 'groups/communities/{id}/operator',
         },
         CREATE: {
             NON_CONVENTIONAL: 'groups/communities/non-conventionated'

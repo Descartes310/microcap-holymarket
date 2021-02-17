@@ -198,6 +198,14 @@ export const getPartnersByBranch = (id) => {
     return makeRequest('get', url);
 };
 
+export const getPartnersOperatorByBranch = (id, country) => {
+    const url = joinBaseUrlWithParams(USERS.GET_ALL_PARTNER_OPERATOR+'?country='+country, [{
+        param: 'id',
+        value: id,
+    }]);
+    return makeRequest('get', url);
+};
+
 export const getNetworkProfilePartnership = (branchId) => {
     return new Promise((resolve, reject) => {
         api.get(NETWORK_PROFILE.PARTNERSHIP.GET_ALL)
@@ -320,6 +328,15 @@ export const sendManyInvitations = (groupId, usersId) => {
         value: groupId,
     }]);
     url = `${url}?users=${encodeURIComponent(usersId)}`;
+    return makeRequest('get', url);
+};
+
+export const addOperator = (id, userId) => {
+    let url = joinBaseUrlWithParams(COMMUNITY_MEMBER.USER.GROUPS.ADD_OPERATOR, [{
+        param: 'id',
+        value: id,
+    }]);
+    url = `${url}?org=${userId}`;
     return makeRequest('get', url);
 };
 

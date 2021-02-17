@@ -211,6 +211,7 @@ class UsersAccountsList extends Component {
                 <UsersAccountsCreate
                     show={showCreateBox}
                     profileId={profileId}
+                    branchId={this.state.selectedBranch}
                     setRequestGlobalAction={setRequestGlobalAction}
                     onClose={() => this.setState({showCreateBox: false, profileId: null})}
                     type={"profile"}
