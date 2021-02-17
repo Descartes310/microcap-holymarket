@@ -17,6 +17,11 @@ import DialogContent from "@material-ui/core/DialogContent/DialogContent";
 import NotificationManager from "react-notifications/lib/NotificationManager";
 import { getProducts, setRequestGlobalAction } from "Actions";
 import { getOrganisationByReference, createPartner, getPartnersByBranch, getUsersAccounts } from 'Actions/independentActions'
+import Accordion from '@material-ui/core/Accordion';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import Typography from '@material-ui/core/Typography';
+
 
 class ClassicSale extends Component {
     static contextType = AbilityContext;
@@ -25,6 +30,7 @@ class ClassicSale extends Component {
         this.state = {
             contrat: '',
             adhesion: '',
+            selectedType: null,
             partners: [],
             loading: true,
             showBox: false,
@@ -35,7 +41,7 @@ class ClassicSale extends Component {
     }
 
     componentDidMount() {
-        this.getUsersAccountsBranchs();
+        //this.getUsersAccountsBranchs();
         this.getPartners(this.props.authUser.user.branch.id);
     }
 
@@ -58,10 +64,10 @@ class ClassicSale extends Component {
         }).finally(() => this.setState({ loading: false }))
     };
 
-    getUsersAccountsBranchs = () => {
+    getUsersAccountsBranchs = (type) => {
         this.setState({ loading: true });
-        getUsersAccounts(this.props.authUser.user.branch.id, 'PARTNER').then(data => {
-            this.setState({ accounts: data })
+        getUsersAccounts(this.props.authUser.user.branch.id, type).then(data => {
+            this.setState({ accounts: data, showBox: true, selectedType: type })
         }).catch(err => {
             this.setState({ partners: [] })
         }).finally(() => this.setState({ loading: false }))
@@ -83,72 +89,154 @@ class ClassicSale extends Component {
 
         return (
             <>
-                <CustomList
-                    loading={loading}
-                    list={partners}
-                    onAddClick={() => this.setState({ showBox: true })}
-                    // titleList={"Produits"}
-                    itemsFoundText={n => `${n} partenaires trouvés`}
-                    renderItem={list => (
-                        <>
-                            {list && list.length === 0 ? (
-                                <div className="d-flex justify-content-center align-items-center py-50">
-                                    <h4>
-                                        Aucun partenaire trouvés
+                <Accordion>
+                    <AccordionSummary expandIcon={<i className="zmdi zmdi-chevron-down"></i>}>
+                        <Typography>Opérateur Microcap</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                        <CustomList
+                            loading={loading}
+                            list={partners.filter(p => p.networkProfile.type == 'OPERATOR')}
+                            style={{ width: '-webkit-fill-available' }}
+                            onAddClick={() => this.getUsersAccountsBranchs('OPERATOR')}
+                            // titleList={"Produits"}
+                            itemsFoundText={n => `${n} partenaires trouvés`}
+                            renderItem={list => (
+                                <>
+                                    {list && list.length === 0 ? (
+                                        <div className="d-flex justify-content-center align-items-center py-50">
+                                            <h4>
+                                                Aucun partenaire trouvés
                                     </h4>
-                                </div>
-                            ) : (
-                                    <div className="table-responsive">
-                                        <table className="table table-hover table-middle mb-0 text-center">
-                                            <thead>
-                                                <tr>
-                                                    <th><IntlMessages id="components.name" /></th>
-                                                    <th>Email</th>
-                                                    <th>Numéro de contrat</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {list && list.map((item, key) => (
-                                                    <tr key={key} className="cursor-pointer">
-                                                        <td>
-                                                            <div className="media">
-                                                                <div className="media-left media-middle mr-15">
-                                                                    {/*<img src={item.label} alt="user profile" className="media-object rounded-circle" width="35" height="35" />*/}
-                                                                </div>
-                                                                <div className="media-body pt-10">
-                                                                    <h4 className="m-0 fw-bold text-dark">{item.organisation.commercialName}</h4>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div className="media">
-                                                                <div className="media-left media-middle mr-15">
-                                                                    {/*<img src={item.label} alt="user profile" className="media-object rounded-circle" width="35" height="35" />*/}
-                                                                </div>
-                                                                <div className="media-body pt-10">
-                                                                    <h4 className="m-0 fw-bold text-dark">{item.organisation.user.email}</h4>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div className="media">
-                                                                <div className="media-left media-middle mr-15">
-                                                                    {/*<img src={item.label} alt="user profile" className="media-object rounded-circle" width="35" height="35" />*/}
-                                                                </div>
-                                                                <div className="media-body pt-10">
-                                                                    <h4 className="m-0 fw-bold text-dark">{item.contractNumber}</h4>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                ))}
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                )}
-                        </>
-                    )}
-                />
+                                        </div>
+                                    ) : (
+                                            <div className="table-responsive">
+                                                <table className="table table-hover table-middle mb-0 text-center">
+                                                    <thead>
+                                                        <tr>
+                                                            <th><IntlMessages id="components.name" /></th>
+                                                            <th>Email</th>
+                                                            <th>Numéro de contrat</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {list && list.map((item, key) => (
+                                                            <tr key={key} className="cursor-pointer">
+                                                                <td>
+                                                                    <div className="media">
+                                                                        <div className="media-left media-middle mr-15">
+                                                                            {/*<img src={item.label} alt="user profile" className="media-object rounded-circle" width="35" height="35" />*/}
+                                                                        </div>
+                                                                        <div className="media-body pt-10">
+                                                                            <h4 className="m-0 fw-bold text-dark">{item.organisation.commercialName}</h4>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    <div className="media">
+                                                                        <div className="media-left media-middle mr-15">
+                                                                            {/*<img src={item.label} alt="user profile" className="media-object rounded-circle" width="35" height="35" />*/}
+                                                                        </div>
+                                                                        <div className="media-body pt-10">
+                                                                            <h4 className="m-0 fw-bold text-dark">{item.organisation.user.email}</h4>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    <div className="media">
+                                                                        <div className="media-left media-middle mr-15">
+                                                                            {/*<img src={item.label} alt="user profile" className="media-object rounded-circle" width="35" height="35" />*/}
+                                                                        </div>
+                                                                        <div className="media-body pt-10">
+                                                                            <h4 className="m-0 fw-bold text-dark">{item.contractNumber}</h4>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        ))}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        )}
+                                </>
+                            )}
+                        />
+                    </AccordionDetails>
+                </Accordion>
+                <Accordion>
+                    <AccordionSummary expandIcon={<i className="zmdi zmdi-chevron-down"></i>}>
+                        <Typography>Communauté Microcap</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                        <CustomList
+                            loading={loading}
+                            list={partners.filter(p => p.networkProfile.type == 'COMMUNITY')}
+                            style={{ width: '-webkit-fill-available' }}
+                            onAddClick={() => this.getUsersAccountsBranchs('COMMUNITY')}
+                            // titleList={"Produits"}
+                            itemsFoundText={n => `${n} partenaires trouvés`}
+                            renderItem={list => (
+                                <>
+                                    {list && list.length === 0 ? (
+                                        <div className="d-flex justify-content-center align-items-center py-50">
+                                            <h4>
+                                                Aucun partenaire trouvés
+                                    </h4>
+                                        </div>
+                                    ) : (
+                                            <div className="table-responsive">
+                                                <table className="table table-hover table-middle mb-0 text-center">
+                                                    <thead>
+                                                        <tr>
+                                                            <th><IntlMessages id="components.name" /></th>
+                                                            <th>Email</th>
+                                                            <th>Numéro de contrat</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {list && list.map((item, key) => (
+                                                            <tr key={key} className="cursor-pointer">
+                                                                <td>
+                                                                    <div className="media">
+                                                                        <div className="media-left media-middle mr-15">
+                                                                            {/*<img src={item.label} alt="user profile" className="media-object rounded-circle" width="35" height="35" />*/}
+                                                                        </div>
+                                                                        <div className="media-body pt-10">
+                                                                            <h4 className="m-0 fw-bold text-dark">{item.organisation.commercialName}</h4>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    <div className="media">
+                                                                        <div className="media-left media-middle mr-15">
+                                                                            {/*<img src={item.label} alt="user profile" className="media-object rounded-circle" width="35" height="35" />*/}
+                                                                        </div>
+                                                                        <div className="media-body pt-10">
+                                                                            <h4 className="m-0 fw-bold text-dark">{item.organisation.user.email}</h4>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    <div className="media">
+                                                                        <div className="media-left media-middle mr-15">
+                                                                            {/*<img src={item.label} alt="user profile" className="media-object rounded-circle" width="35" height="35" />*/}
+                                                                        </div>
+                                                                        <div className="media-body pt-10">
+                                                                            <h4 className="m-0 fw-bold text-dark">{item.contractNumber}</h4>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        ))}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        )}
+                                </>
+                            )}
+                        />
+                    </AccordionDetails>
+                </Accordion>
                 <Dialog
                     open={this.state.showBox}
                     onClose={() => { this.setState({ showBox: false }) }}
@@ -248,7 +336,7 @@ class ClassicSale extends Component {
                                         <select
                                             className="form-control"
                                             style={{ width: '100%', display: 'inline-block' }}
-                                            onChange={(e) => this.setState({ type: e.target.value }) }
+                                            onChange={(e) => this.setState({ type: e.target.value })}
                                         >
                                             <option value={null}>
                                                 Choisissez un partenariat
@@ -278,7 +366,7 @@ class ClassicSale extends Component {
                                     <FormGroup>
                                         <Button
                                             color="primary"
-                                            disabled={!this.state.organisation || this.state.contrat.length <= 0 || !this.state.type }
+                                            disabled={!this.state.organisation || this.state.contrat.length <= 0 || !this.state.type}
                                             variant="contained"
                                             onClick={() => this.onSubmit()}
                                             className="text-white font-weight-bold"

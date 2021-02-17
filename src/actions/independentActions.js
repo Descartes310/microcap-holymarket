@@ -624,8 +624,12 @@ export const createNotificationsService = (branchId, data) => {
     return makeRequest('post', url, data);
 };
 
-export const getUsersAccounts = (branchId, type) => {
-    const url = `${USERS.ACCOUNTS.GET_ALL_BY_BRANCH}?branch_id=${branchId}&type=${type}`;
+export const getUsersAccounts = (branchId, type = null) => {
+    let url = '';
+    if(type)
+        url = `${USERS.ACCOUNTS.GET_ALL_BY_BRANCH}?branch_id=${branchId}&type=${type}`;
+    else
+        url = `${USERS.ACCOUNTS.GET_ALL_BY_BRANCH}?branch_id=${branchId}`;
     return makeRequest('get', url);
 };
 

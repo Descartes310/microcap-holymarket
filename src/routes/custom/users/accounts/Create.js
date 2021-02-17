@@ -116,9 +116,15 @@ const UsersAccountsCreate = props => {
                                         style={{ width: '100%', display: 'inline-block' }} 
                                         onChange={(e) => setType(e.target.value)}
                                     >
-                                        <option key='PARTENAIRE' value='PARTNER'>
-                                            PARTENAIRE
+                                        <option key='OPERATOR' value='OPERATOR'>
+                                            OPERATEUR MICROCAP
                                         </option>
+                                        <option key='COMMUNITY' value='COMMUNITY'>
+                                            COMMUNAUTE
+                                        </option>
+                                        {/* <option key='PARTENAIRE' value='PARTNER'>
+                                            PARTENAIRE
+                                        </option> */}
                                     </select>
                                 </FormGroup>
 
