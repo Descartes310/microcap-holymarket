@@ -138,7 +138,7 @@ class ClassicSale extends Component {
                                                                             {/*<img src={item.label} alt="user profile" className="media-object rounded-circle" width="35" height="35" />*/}
                                                                         </div>
                                                                         <div className="media-body pt-10">
-                                                                            <h4 className="m-0 fw-bold text-dark">{item.organisation.commercialName}</h4>
+                                                                        <h4 className="m-0 fw-bold text-dark">{item.organisation ? item.organisation.commercialName : item.person.firstName + ' ' + item.person.lastName}</h4>
                                                                         </div>
                                                                     </div>
                                                                 </td>
@@ -148,7 +148,7 @@ class ClassicSale extends Component {
                                                                             {/*<img src={item.label} alt="user profile" className="media-object rounded-circle" width="35" height="35" />*/}
                                                                         </div>
                                                                         <div className="media-body pt-10">
-                                                                            <h4 className="m-0 fw-bold text-dark">{item.organisation.user.email}</h4>
+                                                                        <h4 className="m-0 fw-bold text-dark">{item.organisation ? item.organisation.user.email : item.person.user.email}</h4>
                                                                         </div>
                                                                     </div>
                                                                 </td>
@@ -213,7 +213,7 @@ class ClassicSale extends Component {
                                                                             {/*<img src={item.label} alt="user profile" className="media-object rounded-circle" width="35" height="35" />*/}
                                                                         </div>
                                                                         <div className="media-body pt-10">
-                                                                            <h4 className="m-0 fw-bold text-dark">{item.organisation.commercialName}</h4>
+                                                                            <h4 className="m-0 fw-bold text-dark">{item.organisation ? item.organisation.commercialName : item.person.firstName + ' ' + item.person.lastName}</h4>
                                                                         </div>
                                                                     </div>
                                                                 </td>
@@ -223,7 +223,7 @@ class ClassicSale extends Component {
                                                                             {/*<img src={item.label} alt="user profile" className="media-object rounded-circle" width="35" height="35" />*/}
                                                                         </div>
                                                                         <div className="media-body pt-10">
-                                                                            <h4 className="m-0 fw-bold text-dark">{item.organisation.user.email}</h4>
+                                                                            <h4 className="m-0 fw-bold text-dark">{item.organisation ? item.organisation.user.email : item.person.user.email}</h4>
                                                                         </div>
                                                                     </div>
                                                                 </td>
@@ -298,7 +298,7 @@ class ClassicSale extends Component {
                                                         {/*<img src={item.label} alt="user profile" className="media-object rounded-circle" width="35" height="35" />*/}
                                                     </div>
                                                     <div className="media-body pt-10">
-                                                        <h4 className="m-0 fw-bold text-dark">{item.organisation.commercialName}</h4>
+                                                        <h4 className="m-0 fw-bold text-dark">{item.organisation ? item.organisation.commercialName : item.person.firstName + ' ' + item.person.lastName}</h4>
                                                     </div>
                                                 </div>
                                             </td>
@@ -308,7 +308,7 @@ class ClassicSale extends Component {
                                                         {/*<img src={item.label} alt="user profile" className="media-object rounded-circle" width="35" height="35" />*/}
                                                     </div>
                                                     <div className="media-body pt-10">
-                                                        <h4 className="m-0 fw-bold text-dark">{item.organisation.user.email}</h4>
+                                                        <h4 className="m-0 fw-bold text-dark">{item.organisation ? item.organisation.user.email : item.person.user.email}</h4>
                                                     </div>
                                                 </div>
                                             </td>
