@@ -210,8 +210,8 @@ class AddProduct extends Component {
                                                 onChange={event => { this.setState({ seller: event.target.value }, () => { this.loadCatalogs(this.state.seller) }) }}
                                                 input={<Input name="partnerId" id="partnerId-helper" />}>
                                                 {data.map((item, index) => (
-                                                    <MenuItem key={index} value={item.organisation.user.id} className="center-hor-ver">
-                                                        {item.organisation.commercialName}
+                                                    <MenuItem key={index} value={item.organisation ? item.organisation.user.id : item.person.user.id} className="center-hor-ver">
+                                                        {item.organisation ? item.organisation.commercialName : item.person.firstName + ' ' + item.person.lastName}
                                                     </MenuItem>
                                                 ))}
                                             </Select>
