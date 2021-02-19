@@ -789,7 +789,7 @@ module.exports = {
    "components.totalPrice": "Prix total",
    "components.removeProduct": "Supprimer le produit",
    "components.mobileNumber": "Numéro de portable",
-   "components.address2Optional": "Adresse 2 (facultatif)",
+   "components.address2Optional": "Adresse de facturation 2 (facultatif)",
    "components.country": "Pays",
    "components.zip": "Zip *: français",
    "components.saveContinue": "Enregistrer continuer",

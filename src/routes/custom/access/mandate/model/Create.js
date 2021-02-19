@@ -17,7 +17,7 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import {useTheme, withStyles} from '@material-ui/core/styles';
 import CancelIcon from '@material-ui/icons/Cancel';
 import IconButton from "@material-ui/core/IconButton";
-import {createMandateModel} from "Actions/independentActions";
+import {createMandateModel, getAccountsByBranch} from "Actions/independentActions";
 import {getUserProfiles} from "Actions/GeneralActions";
 import {ERROR_500} from "Constants/errors";
 import ObjectSwitcher from "Components/ObjectSwitcher";
@@ -36,13 +36,21 @@ const Create = props => {
 
     const [permissionsSelected, setPermissionsSelected] = useState([]);
 
+    const [profiles, setProfiles] = useState([]);
+    const [profilesLoading, setProfilesLoading] = useState(true);
+
     const { control, register, errors, handleSubmit, setValue, watch} = useForm();
 
     useEffect(() => {
-        getAllNetworkProfileWithBranch(authUser.branchId);
-        if (userPermissions.data === null) {
+        // getAllNetworkProfileWithBranch(authUser.branchId);
+        // if (userPermissions.data === null) {
+        //     loadData();
+        // }
+        
+        getAccountsByBranch(authUser.branchId).then(data => {
+            setProfiles(data);
             loadData();
-        }
+        }).finally(() => setProfilesLoading(false))
     }, []);
 
     const loadData = () => {
@@ -133,8 +141,8 @@ const Create = props => {
                             </div>
 
                             <CustomAsyncComponent
-                                data={networkProfile.data}
-                                loading={networkProfile.loading}
+                                data={profiles}
+                                loading={profilesLoading}
                                 component={data => (
                                     <div className="form-group text-left mb-3">
                                         <FormControl fullWidth>

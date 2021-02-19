@@ -29,9 +29,8 @@ class InvitationItem extends Component {
     }
 
     onAccept = () => {
-        console.log("Invitation validation",this.props);
         this.props.setRequestGlobalAction(true);
-        acceptInvitation(this.props.invitation.id)
+        acceptInvitation(this.props.invitation.invitationId)
             .then(() => {
                 NotificationManager.success("Vous faite maintenant partir du groupe " + this.props.invitation.group.label);
                 this.props.getInvitationsPending(this.props.authUser.user.id);

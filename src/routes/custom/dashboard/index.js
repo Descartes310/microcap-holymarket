@@ -18,7 +18,7 @@ import {
     AsyncProjects,
     AsyncCatalogSales,
     AsyncComOperationType,
-    AsyncComOperation, AsyncComOffer, AsyncProducts, AsyncStore,
+    AsyncComOperation, AsyncComOffer, AsyncGroupAdmin,  AsyncProducts, AsyncStore,
     AsyncAccess, AsyncSettingNotifications, AsyncNotifications, AsyncUsersAccounts,
     AsyncActivateBranch, AsyncSampleBranchList,
     AsyncDiscover
@@ -27,7 +27,9 @@ import Community from "Routes/custom/community";
 
 import CommunityMembersActivities from "Routes/custom/communityT/activities";
 import CommunityMembers from "Routes/custom/communityT/members";
+import CommunityAdmins from "Routes/custom/communityT/admin";
 import CommunityMembersPostsProjects from "Routes/custom/communityT/postsProjects";
+import ClientPieceList from "Routes/custom/settings/client_folder/List";
 
 import Branch from "Models/Branch";
 import {useAbility} from "@casl/react";
@@ -40,6 +42,7 @@ import {
     PRODUCT_TYPE,
     USERS,
     COMMUNITY,
+    COMMUNITY_ADMIN,
     COMMUNITY_MEMBER,
     PACKAGES,
     COMMERCIAL_MANAGEMENT, PRODUCT, STORE, ROOT, ACCESS, SETTINGS, NOTIFICATIONS, PROJECTS
@@ -85,6 +88,12 @@ const Dashboard = ({ match, authUser }) => {
                     <CanRoute
                         path={SETTINGS.NOTIFICATION.SELF}
                         component={AsyncSettingNotifications}
+                        permissions={[]}
+                    />
+
+                    <CanRoute
+                        path={SETTINGS.USERPIECE.SELF}
+                        component={ClientPieceList}
                         permissions={[]}
                     />
 
@@ -208,6 +217,12 @@ const Dashboard = ({ match, authUser }) => {
                     <CanRoute
                         path={COMMUNITY.MEMBERS.SELF}
                         component={CommunityMembers}
+                        permissions={[]}
+                    />
+
+                    <CanRoute
+                        path={COMMUNITY_ADMIN.SELF}
+                        component={CommunityAdmins}
                         permissions={[]}
                     />
 

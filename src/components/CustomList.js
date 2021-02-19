@@ -45,7 +45,7 @@ class CustomList extends Component {
     render() {
         const {
             titleList, itemsFoundText, addingButton,
-            loading, list, error, renderItem,
+            loading, list, error, renderItem, style,
             match, history, classes, showSearch, onRetryClick,
             addText, onAddClick, addPermissions, searchPermissions,
         } = this.props;
@@ -56,7 +56,7 @@ class CustomList extends Component {
         const canSearch = canArray(this.mapPermissions(searchPermissions.permissions), searchPermissions.some);
 
         return (
-            <div className="page-list">
+            <div className="page-list" style={style}>
                 {titleList && (<PageTitleBar title={titleList} match={match} history={history} enableBreadCrumb={false} />)}
                 {loading
                     ? (<RctSectionLoader/>)

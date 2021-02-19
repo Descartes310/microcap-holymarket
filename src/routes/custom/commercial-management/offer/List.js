@@ -1,16 +1,28 @@
 import React, { Component } from 'react';
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 import IntlMessages from 'Util/IntlMessages';
-import {getComOffer, setRequestGlobalAction} from "Actions";
-import {injectIntl} from "react-intl";
-import {withStyles} from "@material-ui/core";
-import {withRouter} from "react-router-dom";
-import {AbilityContext} from "Permissions/Can";
+import { getComOffer, setRequestGlobalAction } from "Actions";
+import { injectIntl } from "react-intl";
+import { withStyles } from "@material-ui/core";
+import { withRouter } from "react-router-dom";
+import { AbilityContext } from "Permissions/Can";
 import CustomList from "Components/CustomList";
-import {COMMERCIAL_MANAGEMENT} from "Url/frontendUrl";
+import { COMMERCIAL_MANAGEMENT, joinUrlWithParamsId } from "Url/frontendUrl";
 import Switch from "@material-ui/core/Switch";
-import {NotificationManager} from "react-notifications";
-import {setOfferActivationStatus} from "Actions/independentActions";
+import { NotificationManager } from "react-notifications";
+import Button from "@material-ui/core/Button";
+import { setOfferActivationStatus } from "Actions/independentActions";
+
+const saleWays = [{
+    label: 'Ventes classiques',
+    key: 'CLASSIC_SALE',
+}, {
+    label: 'Solutions financières',
+    key: 'FINANCIAL_SOLUTION',
+}, {
+    label: 'Ventes privées',
+    key: 'PRIVATE_SALE',
+}]
 
 class List extends Component {
     static contextType = AbilityContext;
@@ -23,13 +35,20 @@ class List extends Component {
         }
     }
 
+    getSaleWay(key) {
+        if (key) {
+            return saleWays.filter(sw => sw.key == key)[0].label;
+        }
+        return '-'
+    }
+
     componentDidMount() {
         this.props.getComOffer(this.props.authUser.user.id);
     }
 
     onToggleActivationStatus = (packageId, value) => {
-        this.setState({loading: true});
-        setOfferActivationStatus(packageId, value)
+        this.setState({ loading: true });
+        setOfferActivationStatus(this.props.authUser.user.id, packageId, value)
             .then(() => {
                 this.props.getComOffer(this.props.authUser.user.id);
                 NotificationManager.success("Changement du status de l'offre effectué avec succès");
@@ -37,7 +56,7 @@ class List extends Component {
             .catch(() => {
                 NotificationManager.error("Erreur lors du changement de l'offre");
             })
-            .finally(() => this.setState({loading: false}));
+            .finally(() => this.setState({ loading: false }));
     };
 
     render() {
@@ -65,45 +84,66 @@ class List extends Component {
                                     </h4>
                                 </div>
                             ) : (
-                                <div className="table-responsive">
-                                    <table className="table table-hover table-middle mb-0 text-center">
-                                        <thead>
-                                            <tr>
-                                                <th><IntlMessages id="components.name" /></th>
-                                                <th><IntlMessages id="widgets.description" /></th>
-                                                <th>Status d'activation</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                        {list && list.map((item, key) => (
-                                            <tr key={key} className="cursor-pointer">
-                                                <td>
-                                                    <div className="media">
-                                                        <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{item.label}</h4>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div className="media">
-                                                        <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{item.description}</h4>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td className="table-action">
-                                                    <Switch
-                                                        checked={item.active}
-                                                        onChange={(event) => this.onToggleActivationStatus(item.id, event.target.value)}
-                                                        aria-label="Activé"
-                                                    />
-                                                </td>
-                                            </tr>
-                                        ))}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            )}
+                                    <div className="table-responsive">
+                                        <table className="table table-hover table-middle mb-0 text-center">
+                                            <thead>
+                                                <tr>
+                                                    <th><IntlMessages id="components.name" /></th>
+                                                    <th>Canal de vente</th>
+                                                    <th><IntlMessages id="widgets.description" /></th>
+                                                    <th>Status d'activation</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {list && list.map((item, key) => (
+                                                    <tr key={key} className="cursor-pointer">
+                                                        <td>
+                                                            <div className="media">
+                                                                <div className="media-body pt-10">
+                                                                    <h4 className="m-0 fw-bold text-dark">{item.label}</h4>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div className="media">
+                                                                <div className="media-body pt-10">
+                                                                    <h4 className="m-0 fw-bold text-dark">{this.getSaleWay(item.saleWay)}</h4>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div className="media">
+                                                                <div className="media-body pt-10">
+                                                                    <h4 className="m-0 fw-bold text-dark">{item.description}</h4>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td className="table-action">
+                                                            <Switch
+                                                                checked={item.isActive}
+                                                                onChange={(event) => { this.onToggleActivationStatus(item.id, event.target.checked) }}
+                                                                aria-label="Activé"
+                                                            />
+                                                        </td>
+                                                        <td className="table-action">
+                                                            <Button
+                                                                size="small"
+                                                                color="primary"
+                                                                // disabled={loading}
+                                                                variant="contained"
+                                                                className={"text-white font-weight-bold mr-3"}
+                                                                onClick={() => history.push(joinUrlWithParamsId(COMMERCIAL_MANAGEMENT.COMMERCIAL_OFFER.ADD_PRODUCT, item.id))}
+                                                            >
+                                                                Nouveau produit
+                                                            </Button>
+                                                        </td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                )}
                         </>
                     )}
                 />
@@ -113,7 +153,7 @@ class List extends Component {
 }
 
 // map state to props
-const mapStateToProps = ({ requestGlobalLoader, comOffer, authUser  }) => {
+const mapStateToProps = ({ requestGlobalLoader, comOffer, authUser }) => {
     return { requestGlobalLoader, authUser: authUser.data, loading: comOffer.loading, comOffer: comOffer.data, error: comOffer.error }
 };
 
@@ -136,5 +176,5 @@ const useStyles = theme => ({
     }
 });
 
-export default connect(mapStateToProps, {getComOffer, setRequestGlobalAction})
-(withStyles(useStyles, { withTheme: true })(withRouter(injectIntl(List))));
+export default connect(mapStateToProps, { getComOffer, setRequestGlobalAction })
+    (withStyles(useStyles, { withTheme: true })(withRouter(injectIntl(List))));

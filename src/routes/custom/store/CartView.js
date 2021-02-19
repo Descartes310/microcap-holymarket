@@ -79,7 +79,6 @@ class CartView extends Component {
     };
 
     render() {
-        console.log("CartView");
         const { cart, match, history } = this.props;
         const { showConfirmBox } = this.state;
 
@@ -154,7 +153,7 @@ class CartView extends Component {
                                             className="text-white"
                                             onClick={() => this.onInitPayment()}
                                         >
-                                            Payer
+                                            Commander
                                         </Button>
                                     )}
                                 </td>

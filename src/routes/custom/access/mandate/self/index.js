@@ -16,7 +16,7 @@ class MandateList extends Component {
     constructor(props) {
         super(props);
 
-        this.userDoesNotHaveRight = !this.props.authUser.isExploitant();
+        this.userDoesNotHaveRight = !this.props.authUser.isExploitant() && !this.props.authUser.isManager();
 
         this.state = {
             showCreateBox: false,
@@ -37,17 +37,17 @@ class MandateList extends Component {
 
         return (
             <>
-                {!this.userDoesNotHaveRight && (
+                {/* {!this.userDoesNotHaveRight && ( */}
                     <Create
                         show={showCreateBox}
                         onClose={() => this.setState({showCreateBox: false})}
                     />
-                )}
+                {/* )} */}
                 <CustomList
                     error={error}
                     list={mandate}
                     loading={loading}
-                    onAddClick={ !this.userDoesNotHaveRight ? () => this.setState({showCreateBox: true}) : null}
+                    onAddClick={ () => this.setState({showCreateBox: true}) }
                     itemsFoundText={n => `${n} mandat(s) trouvés`}
                     /*addPermissions={{
                         permissions: [Permission.userProfile.createOne.name],

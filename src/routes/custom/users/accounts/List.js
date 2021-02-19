@@ -124,7 +124,7 @@ class UsersAccountsList extends Component {
                     error={error}
                     loading={loading}
                     list={usersAccounts}
-                    addingButton={false}
+                    addingButton={!this.props.authUser.isManager()}
                     // titleList={"Comptes utilisateurs"}
                     onAddClick={() => this.setState({showCreateBox: true})}
                     itemsFoundText={n => `${n} comptes utilisateurs trouvés`}
@@ -145,8 +145,9 @@ class UsersAccountsList extends Component {
                                         <thead>
                                             <tr>
                                                 <th><IntlMessages id="components.name" /></th>
+                                                <th>Type</th>
                                                 <th>Date de création</th>
-                                                <th>Actions</th>
+                                                {/* <th>Actions</th> */}
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -165,6 +166,13 @@ class UsersAccountsList extends Component {
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
+                                                            <h4 className="m-0 fw-bold text-dark">{item.type}</h4>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="media">
+                                                        <div className="media-body pt-10">
                                                             <h4 className="m-0 fw-bold text-dark">
                                                                 {item.description}
                                                                 <TimeFromMoment
@@ -174,7 +182,7 @@ class UsersAccountsList extends Component {
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td>
+                                                {/* <td>
                                                     <Button
                                                         color="primary"
                                                         // variant={"outlined"}
@@ -183,7 +191,7 @@ class UsersAccountsList extends Component {
                                                     >
                                                         Ajouter
                                                     </Button>
-                                                </td>
+                                                </td> */}
                                             </tr>
                                         ))}
                                         </tbody>
@@ -203,6 +211,7 @@ class UsersAccountsList extends Component {
                 <UsersAccountsCreate
                     show={showCreateBox}
                     profileId={profileId}
+                    branchId={this.state.selectedBranch}
                     setRequestGlobalAction={setRequestGlobalAction}
                     onClose={() => this.setState({showCreateBox: false, profileId: null})}
                     type={"profile"}

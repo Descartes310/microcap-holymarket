@@ -39,6 +39,12 @@ export const NETWORK = {
         },
     },
     COVERAGE: '/network/coverage',
+    COVERAGE_TABS: {
+        AREA: '/network/coverage/areas',
+        AREA_TYPE: '/network/coverage/area-types',
+        PARTNER: '/network/coverage/partners'
+    },
+
     CREATE: '/branch/create',
     ONGOING_CREATE: '/branch/ongoing/create',
     EDIT: '/branch/edit',
@@ -110,6 +116,7 @@ export const COMMERCIAL_MANAGEMENT = {
         SELF: '/commercial/offer',
         LIST: '/commercial/offer/list',
         CREATE: '/commercial/offer/create',
+        ADD_PRODUCT: '/commercial/offer/:id/add-product'
     },
     COMMERCIAL_OPERATION: {
         SELF: '/commercial/operation',
@@ -125,7 +132,14 @@ export const COMMERCIAL_MANAGEMENT = {
 
 export const PRODUCT = {
     LIST: '/products',
+    CLASSIC_SALES: '/products/classic-sales',
+    PRIVATE_SALES: '/products/private-sales',
+    FINANCIAL_SALES: '/products/financial-sales',
+    ORDERS: '/products/orders',
+    ORDERS_SHOW: '/products/orders/:id/show',
     SHOW: '/products/:id/show',
+    SHOW_ACCOUNT: '/products/accounts',
+    ACCOUNT_DETAILS: '/products/accounts/:id'
 };
 
 export const STORE = {
@@ -176,6 +190,9 @@ export const SETTINGS = {
             LIST: '/settings/notifications/service/list',
             CREATE: '/settings/notifications/service/create',
         }
+    },
+    USERPIECE: {
+        SELF: '/settings/users-pieces'
     }
 };
 
@@ -186,6 +203,11 @@ export const PROJECTS = {
         LIST: '/projects/folder/list',
         SHOW: '/projects/folder/:id',
         CREATE: '/projects/folder/create',
+        REACTIONS: {
+            LIST: '/projects/folder/reactions/list',
+            CREATE: '/projects/folder/reactions/create',
+            CONSULTATION: '/projects/folder/reactions/consultation'
+        },
     },
     PROJECTS: {
         LIST: '/projects/list',
@@ -241,6 +263,27 @@ export const PROJECTS = {
         }
     },
 };
+
+export const COMMUNITY_ADMIN = {
+    SELF: '/admin/community-t',
+    VOUCHER: {
+        PAYMENT: '/admin/community-t/members/vouchers/payment',
+        CHARCHING: '/admin/community-t/members/vouchers/charging'
+    },
+    MEMBERS: {
+        SELF: '/admin/community-t/members',
+        LIST: '/admin/community-t/members/list',
+        INVITATION: '/admin/community-t/members/invitation'
+    },
+    INVITATIONS: {
+        SELF: '/admin/community-t/members/invitation',
+        LIST: {
+            SEND: '/admin/community-t/members/invitation/send',
+            RECEIVED: '/admin/community-t/members/invitation/integration-request',
+        },
+        CREATE: '/admin/community-t/members/invitation/create'
+    },
+}
 
 export const COMMUNITY = {
     SELF: '/community-t',

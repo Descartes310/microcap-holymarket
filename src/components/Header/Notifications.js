@@ -87,7 +87,7 @@ class HeaderNotifications extends Component {
                          />
                      ) : (
                          <ul className="list-unstyled dropdown-list">
-                            {data && data.map((notification, index) => (
+                            {data && data.reverse().map((notification, index) => (
                                 <li key={index}>
                                    <div className="media">
                                       {/*<div className="mr-10">

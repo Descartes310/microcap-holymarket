@@ -41,7 +41,7 @@ const Create = props => {
     const { mandate, getMandate, authUser, loading, intl, onClose, show, getBranchUsers, getMandateOfUser, getUsersByOrganisation, setRequestGlobalAction } = props;
 
     // const userDoesNotHaveRight = authUser.user.userType === UserType.ORGANISATION;
-    const userDoesNotHaveRight = !authUser.isExploitant();
+    const userDoesNotHaveRight = !authUser.isExploitant() && !authUser.isManager();
 
     const [branchUsers, setBranchUsers] = useState({
         data: null,
@@ -197,7 +197,7 @@ const Create = props => {
                                                         {data.map((item, index) => {
                                                             return (
                                                                 <MenuItem key={index} value={item.id} className="center-hor-ver">
-                                                                    {item.name}
+                                                                    {item.firstName} {item.lastName}
                                                                 </MenuItem>
                                                             )
                                                         })}

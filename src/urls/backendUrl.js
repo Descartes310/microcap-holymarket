@@ -82,6 +82,10 @@ export const NETWORK_PROFILE_TYPE = {
     GET_ALL: 'public/type-network-profiles',
 };
 
+export const PRODUCTS = {
+    GET_FOR_USER: 'public/products/accounts/user/{id}',
+};
+
 export const CATALOGS = {
     GET_ALL: 'public/catalogs',
     CREATE: 'public/catalogs',
@@ -113,6 +117,7 @@ export const PRODUCT_TYPE = {
     GET_ALL: 'public/type-products/get-all',
     CREATE: 'public/type-products',
     GET_ONE: 'public/type-products/{id}',
+    GET_ONE_FROM_COM_OFFER: 'public/type-products/offer/{id}',
     TYPE_PRODUCTS: 'public/type-catalogs/type-products',
     SUB_CATEGORY: 'public/type-products/{id}/type-products',
     GET_ALL_BY_SALE: 'public/type-products/by-catalogue-vente',
@@ -141,9 +146,14 @@ export const USERS = {
     SEARCH: 'public/users/search',
     GET_ALL: 'public/users/persons',
     GET_ALL_BY_ORGANISATION: 'public/users/persons/by-organisation',
+    GET_ALL_PARTNER: 'public/users/organisations/branch/{id}/partner',
+    GET_ALL_PARTNER_OPERATOR: 'public/users/organisations/branch/{id}/partner/operator',
+    GET_ALL_ORGANISATIONS: 'public/users/organisations',
+    GET_ORGANISATION_REFERENCE: 'public/users/organisations/adhesion/{id}',
     CREATE: {
         PERSON: 'public/users/persons/with-profile',
         ORGANISATION: 'public/users/organisations/with-profile',
+        PARTNER: 'public/users/organisations/{id}/partner',
     },
     ACCOUNTS: {
         GET_ALL: '/public/type-network-profiles',
@@ -153,6 +163,14 @@ export const USERS = {
     VALIDATION: {
         SEND_OTP: 'public/users/{id}/otp/mail',
         VERIFY: 'public/users/{id}/otp'
+    },
+    PIECE: {
+        GET_ALL: 'public/users/pieces/{id}/get',
+        GET_USER: 'public/users/pieces/user/{id}/get',
+        CREATE: 'public/users/pieces/create',
+        CREATE_FOR_USER: 'public/users/pieces/value/create',
+        UPDATE_FOR_USER: 'public/users/pieces/value/update',
+        DELETE_FOR_USER: 'public/users/pieces/value/{id}/delete'
     }
 };
 
@@ -165,6 +183,10 @@ export const COMMUNITY_MEMBER = {
             ADMIN: 'groups/communities/user/admin/me',
             GET_MEMBERS: 'groups/communities/{id}/members',
             GET_COMMUNITIES: 'groups/communities/users/{id}',
+            CREATE_VOUCHER: 'groups/{id}/vouchers',
+            GET_VOUCHERS: 'groups/{id}/vouchers/users/{user_id}/type/{type}',
+            GET_ADMINS: 'groups/communities/{id}/admins',
+            ADD_OPERATOR: 'groups/communities/{id}/operator',
         },
         CREATE: {
             NON_CONVENTIONAL: 'groups/communities/non-conventionated'
@@ -220,8 +242,10 @@ export const COMMERCIAL_MANAGEMENT = {
             PRODUCT_AVAILABLE: 'public/commercial-offer/products-available',
         },
         CREATE: 'public/commercial-offer',
+        ADD_PRODUCT: 'public/commercial-offer/{id}',
         UPDATE: 'public/commercial-offer',
-        ACTIVATE: 'public/commercial-offer/active'
+        ACTIVATE: 'public/commercial-offer/active',
+        DEACTIVATE: 'public/commercial-offer/desactive'
     },
 };
 
@@ -231,9 +255,18 @@ export const ORDER = {
     CREATE: 'public/order',
 };
 
+export const ACCOUNT = {
+    GET_ONE: 'public/accounts/{id}',
+    GET_TRANSACTIONS: 'public/accounts/{id}/mouvements',
+    GET_ACCOUNT_BY_AMOUNT: 'public/accounts/users/{id}/account-by-amount',
+    APPROVISIONING_VOUCHER: 'public/accounts/{id}/approvisioning/voucher',
+    APPROVISIONING_CARD: 'public/accounts/{id}/approvisioning/card'
+};
+
 export const SALES = {
     GET_ALL: 'public/sales',
     GET_ONE: 'public/sales/{id}',
+    GET_BY_USER: 'public/sales/users/{id}',
     CREATE: 'public/sales',
 };
 
@@ -296,6 +329,11 @@ export const PROJECTS = {
         CREATE: 'public/projects/folders',
         GET_ONE: 'public/projects/folders/{id}',
     },
+    REACTIONS: {
+        GET_ALL: 'public/projects/reactions/projects/{id}',
+        CREATE: 'public/projects/reactions',
+        GET_ONE: 'public/projects/reactions/{id}',
+    },
     POST_PROJETS: {
         CREATE: 'public/branchs/{id}/posts',
         GET_ALL: 'public/branchs/{id}/posts',
@@ -334,6 +372,19 @@ export const joinBaseUrlWithParams = (to, params) => {
 
     params.forEach(param => {
         url = url.replace(`{${param.param}}`, `${encodeURIComponent(param.value)}`);
+    });
+
+    return url;
+};
+
+export const joinBaseUrlWithRequestParams = (to, params) => {
+    let url = BASE + to;
+    let i = 0;
+    params.forEach(param => {
+        if(i == 0)
+            url = url + '?' + param.param + '=' + param.value
+        else
+        url = url + '&' + param.param + '=' + param.value
     });
 
     return url;

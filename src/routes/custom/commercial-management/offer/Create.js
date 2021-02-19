@@ -1,8 +1,8 @@
-import React, {Component, useState} from 'react';
-import {Form, FormGroup, Input as InputStrap} from 'reactstrap';
-import {useForm} from "react-hook-form";
+import React, { Component, useState } from 'react';
+import { Form, FormGroup, Input as InputStrap } from 'reactstrap';
+import { useForm } from "react-hook-form";
 import IntlMessages from "Util/IntlMessages";
-import {injectIntl} from 'react-intl';
+import { injectIntl } from 'react-intl';
 import _ from 'lodash';
 
 import Button from "@material-ui/core/Button";
@@ -16,8 +16,8 @@ import {
     getAllProductTypeBySale,
     getSysTimeUnit
 } from "Actions";
-import {connect} from "react-redux";
-import {setRequestGlobalAction} from "Actions/RequestGlobalAction";
+import { connect } from "react-redux";
+import { setRequestGlobalAction } from "Actions/RequestGlobalAction";
 import CustomList from "Components/CustomList";
 import InputLabel from "@material-ui/core/InputLabel/InputLabel";
 import IconButton from "@material-ui/core/IconButton";
@@ -27,7 +27,7 @@ import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
 import DialogTitle from "@material-ui/core/DialogTitle/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent/DialogContent";
 import Dialog from "@material-ui/core/Dialog/Dialog";
-import {useTheme} from "@material-ui/core";
+import { useTheme } from "@material-ui/core";
 import useMediaQuery from "@material-ui/core/useMediaQuery/useMediaQuery";
 import CancelIcon from '@material-ui/icons/Cancel';
 import Select from "@material-ui/core/Select/Select";
@@ -36,13 +36,14 @@ import FormControl from "@material-ui/core/FormControl";
 import MenuItem from "@material-ui/core/MenuItem";
 import ErrorInputComponent from "Components/ErrorInputComponent";
 import Input from "@material-ui/core/Input/Input";
-import {createOffer, createPackage, getOneCatalog} from "Actions/independentActions";
-import {NotificationManager} from "react-notifications";
-import {ERROR_500} from "Constants/errors";
-import {COMMERCIAL_MANAGEMENT, PACKAGES} from "Url/frontendUrl";
+import { createOffer, createPackage, getOneCatalog } from "Actions/independentActions";
+import { NotificationManager } from "react-notifications";
+import { ERROR_500 } from "Constants/errors";
+import { COMMERCIAL_MANAGEMENT, PACKAGES } from "Url/frontendUrl";
 import Product from "Enums/Product";
 import FetchFailedComponent from "Components/FetchFailedComponent";
-import {getComOffer} from "Actions/GeneralActions";
+import { getComOffer } from "Actions/GeneralActions";
+import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 
 class Create extends Component {
     constructor(props) {
@@ -54,8 +55,11 @@ class Create extends Component {
             description: '',
             validityUnit: '',
             validityValue: '',
+            endDate: '',
+            startDate: '',
             commercialOperatorId: '',
             image: '',
+            saleWay: null,
 
             chosenProducts: [],
             storeProducts: [],
@@ -80,32 +84,32 @@ class Create extends Component {
     loadData = () => {
         this.fetchProducts();
         this.props.getComOperationType(this.props.authUser.branchId);
-        this.props.getPackages(this.props.authUser.user.branch.id)
-            .then(res => this.setState({storePackage: res}));
+        this.props.getPackages(this.props.authUser.user.id)
+            .then(res => this.setState({ storePackage: res }));
 
         this.props.getSysTimeUnit();
     };
 
     fetchProducts = () => {
-        this.setState({loadingProducts: true});
+        this.setState({ loadingProducts: true });
         // getOneCatalog(result[0].id)
         getAllProductTypeBySale(this.props.authUser.branchId)
             .then(res => {
                 if (res.length === 0) {
                     NotificationManager.warning("Aucun produits disponible.");
                 }
-                this.setState({storeProducts: res});
+                this.setState({ storeProducts: res });
             })
             .catch((error) => {
                 console.log("error => ", error);
                 NotificationManager.error(ERROR_500);
             })
-            .finally(() => this.setState({loadingProducts: false}));
+            .finally(() => this.setState({ loadingProducts: false }));
     };
 
     onAddProduct = (product) => {
         this.setState(prevState => ({
-            chosenProducts: [...prevState.chosenProducts, {...product}],
+            chosenProducts: [...prevState.chosenProducts, { ...product }],
             storeProducts: prevState.storeProducts.filter(p => p.id !== product.id),
             showCreateBox: false,
         }));
@@ -113,7 +117,7 @@ class Create extends Component {
 
     onAddPackage = (_package) => {
         this.setState(prevState => ({
-            chosenPackage: [...prevState.chosenPackage, {..._package}],
+            chosenPackage: [...prevState.chosenPackage, { ..._package }],
             storePackage: prevState.storePackage.filter(p => p.id !== _package.id),
             showCreateBoxPackage: false,
         }));
@@ -146,10 +150,10 @@ class Create extends Component {
             return false;
         }
 
-        if (!this.state.chosenProducts || (this.state.chosenProducts && this.state.chosenProducts.length === 0)) {
-            NotificationManager.error("Veuillez Selectionner au moins un produit");
-            return false;
-        }
+        // if (!this.state.chosenProducts || (this.state.chosenProducts && this.state.chosenProducts.length === 0)) {
+        //     NotificationManager.error("Veuillez Selectionner au moins un produit");
+        //     return false;
+        // }
 
         /*if (!this.state.chosenPackage || (this.state.chosenPackage && this.state.chosenPackage.length === 0)) {
             NotificationManager.error("Veuillez Selectionner au moins un paquetage");
@@ -165,22 +169,25 @@ class Create extends Component {
         if (this.validate()) {
             const data = {
                 label: this.state.name,
-                price: this.state.price,
-                validity_unit: this.state.validityUnit,
-                validity_value: this.state.validityValue,
-                quantity: this.state.quantity,
+                start_date: this.state.startDate,
+                end_date: this.state.endDate,
+                // price: this.state.price,
+                // validity_unit: this.state.validityUnit,
+                // validity_value: this.state.validityValue,
+                // quantity: this.state.quantity,
                 partner_id: this.props.authUser.user.id,
-                type_products: JSON.stringify(this.state.chosenProducts.map(p => p.id)),
-                packages: JSON.stringify(this.state.chosenPackage.map(p => p.id)),
+                // type_products: JSON.stringify(this.state.chosenProducts.map(p => p.id)),
+                // packages: JSON.stringify(this.state.chosenPackage.map(p => p.id)),
                 commercial_operation_id: this.state.commercialOperatorId,
                 description: this.state.description,
-                image: this.state.image,
+                sale_way: this.state.saleWay,
+                // image: this.state.image,
             };
 
             this.props.setRequestGlobalAction(true);
-            createOffer(data, this.props.authUser.branchId, {fileData: ['image'], multipart: true})
+            createOffer(data, this.props.authUser.branchId, { fileData: ['image'], multipart: true })
                 .then(() => {
-                    NotificationManager.success("Paquetage créé avec succèss");
+                    NotificationManager.success("Offre commerciale créée avec succèss");
                     this.props.getComOffer(this.props.authUser.branchId);
                     this.props.history.push(COMMERCIAL_MANAGEMENT.COMMERCIAL_OFFER.LIST);
                 })
@@ -196,41 +203,75 @@ class Create extends Component {
         const { catalogSale, loadingProducts } = this.state;
 
         return (
-            <div>
-                <Form onSubmit={this.onSubmit}>
-
-                    <div className="row">
-                        <FormGroup className="col-md-6 col-sm-12 has-wrapper">
-                            <InputLabel className="text-left" htmlFor="name">
-                                Désignation
+            <div className="page-list" style={{ padding: 30 }}>
+                <PageTitleBar title={"Création d'une offre commerciale"} />
+                <RctCollapsibleCard>
+                    <Form onSubmit={this.onSubmit}>
+                        <div className="row">
+                            <FormGroup className="col-md-6 col-sm-12 has-wrapper">
+                                <InputLabel className="text-left" htmlFor="name">
+                                    Désignation
                             </InputLabel>
-                            <InputStrap
-                                required
-                                id="name"
-                                name={'name'}
-                                value={this.state.name}
-                                className="has-input input-lg"
-                                onChange={event => this.setState({name: event.target.value})}
-                            />
-                            <span className="has-icon"><i className="ti-pencil"></i></span>
-                        </FormGroup>
+                                <InputStrap
+                                    required
+                                    id="name"
+                                    name={'name'}
+                                    value={this.state.name}
+                                    className="has-input input-lg"
+                                    onChange={event => this.setState({ name: event.target.value })}
+                                />
+                                <span className="has-icon"><i className="ti-pencil"></i></span>
+                            </FormGroup>
 
-                        <FormGroup className="col-md-6 col-sm-12 has-wrapper">
-                            <InputLabel className="text-left" htmlFor="description">
-                                Description
+                            <FormGroup className="col-md-6 col-sm-12 has-wrapper">
+                                <InputLabel className="text-left" htmlFor="description">
+                                    Description
                             </InputLabel>
-                            <InputStrap
-                                required
-                                id="description"
-                                name={'description'}
-                                value={this.state.description}
-                                className="has-input input-lg"
-                                onChange={event => this.setState({description: event.target.value})}
-                            />
-                            <span className="has-icon"><i className="ti-pencil"></i></span>
-                        </FormGroup>
-                    </div>
+                                <InputStrap
+                                    required
+                                    id="description"
+                                    name={'description'}
+                                    value={this.state.description}
+                                    className="has-input input-lg"
+                                    onChange={event => this.setState({ description: event.target.value })}
+                                />
+                                <span className="has-icon"><i className="ti-pencil"></i></span>
+                            </FormGroup>
+                        </div>
 
+                        <div className="row">
+                            <FormGroup className="col-md-6 col-sm-12 has-wrapper">
+                                <InputLabel className="text-left" htmlFor="startDate">
+                                    Date de début de validité
+                            </InputLabel>
+                                <InputStrap
+                                    required
+                                    type="date"
+                                    id="startDate"
+                                    name={'startDate'}
+                                    value={this.state.startDate}
+                                    className="has-input input-lg"
+                                    onChange={event => this.setState({ startDate: event.target.value })}
+                                />
+                            </FormGroup>
+
+                            <FormGroup className="col-md-6 col-sm-12 has-wrapper">
+                                <InputLabel className="text-left" htmlFor="endDate">
+                                    Date de fin de validité
+                            </InputLabel>
+                                <InputStrap
+                                    required
+                                    type="date"
+                                    id="endDate"
+                                    name={'endDate'}
+                                    value={this.state.endDate}
+                                    className="has-input input-lg"
+                                    onChange={event => this.setState({ endDate: event.target.value })}
+                                />
+                            </FormGroup>
+                        </div>
+
+                        {/*
                     <div className="row">
                         <FormGroup className="col-md-6 col-sm-12 has-wrapper">
                             <InputLabel className="text-left" htmlFor="name">
@@ -243,7 +284,7 @@ class Create extends Component {
                                 name={'name'}
                                 value={this.state.price}
                                 className="has-input input-lg"
-                                onChange={event => this.setState({price: event.target.value})}
+                                onChange={event => this.setState({ price: event.target.value })}
                             />
                             <span className="has-icon"><i className="ti-pencil"></i></span>
                         </FormGroup>
@@ -259,7 +300,7 @@ class Create extends Component {
                                 name={'quantity'}
                                 value={this.state.quantity}
                                 className="has-input input-lg"
-                                onChange={event => this.setState({quantity: event.target.value})}
+                                onChange={event => this.setState({ quantity: event.target.value })}
                             />
                             <span className="has-icon"><i className="ti-pencil"></i></span>
                         </FormGroup>
@@ -277,7 +318,7 @@ class Create extends Component {
                                         </InputLabel>
                                         <Select
                                             value={this.state.validityUnit}
-                                            onChange={event => this.setState({validityUnit: event.target.value})}
+                                            onChange={event => this.setState({ validityUnit: event.target.value })}
                                             input={<Input name="validityUnit" id="validityUnit-helper" />}>
                                             {data.map((item, index) => (
                                                 <MenuItem key={index} value={item} className="center-hor-ver">
@@ -301,159 +342,192 @@ class Create extends Component {
                                 name={'validityValue'}
                                 value={this.state.validityValue}
                                 className="has-input input-lg"
-                                onChange={event => this.setState({validityValue: event.target.value})}
+                                onChange={event => this.setState({ validityValue: event.target.value })}
                             />
                             <span className="has-icon"><i className="ti-pencil"></i></span>
                         </FormGroup>
-                    </div>
+                    </div> */}
 
-                    <CustomAsyncComponent
-                        loading={comOperationType.loading}
-                        data={comOperationType.data}
-                        component={data => (
-                            <div className="form-group text-left">
-                                <FormControl fullWidth>
-                                    <InputLabel className="text-left" htmlFor="commercialOperatorId-helper">
-                                        Opérateur commercial
+                        <div className="row">
+                            <CustomAsyncComponent
+                                loading={comOperationType.loading}
+                                data={comOperationType.data}
+                                component={data => (
+                                    <div className="col-md-6 col-sm-12 form-group text-left">
+                                        <FormControl fullWidth>
+                                            <InputLabel className="text-left" htmlFor="commercialOperatorId-helper">
+                                                Opérateur commercial
                                     </InputLabel>
-                                    <Select
-                                        value={this.state.commercialOperatorId}
-                                        onChange={event => this.setState({commercialOperatorId: event.target.value})}
-                                        input={<Input name="commercialOperatorId" id="commercialOperatorId-helper" />}>
-                                        {data.map((item, index) => (
-                                            <MenuItem key={index} value={item.id} className="center-hor-ver">
-                                                {item.label}
-                                            </MenuItem>
-                                        ))}
-                                    </Select>
-                                </FormControl>
-                            </div>
-                        )}
-                    />
+                                            <Select
+                                                value={this.state.commercialOperatorId}
+                                                onChange={event => this.setState({ commercialOperatorId: event.target.value }, () => { console.log('Bonjour le monde => ', this.state.commercialOperatorId) })}
+                                                input={<Input name="commercialOperatorId" id="commercialOperatorId-helper" />}>
+                                                {data.map((item, index) => (
+                                                    <MenuItem key={index} value={item.id} className="center-hor-ver">
+                                                        {item.label}
+                                                    </MenuItem>
+                                                ))}
+                                            </Select>
+                                        </FormControl>
+                                    </div>
+                                )}
+                            />
+                            <CustomAsyncComponent
+                                data={[{
+                                    label: 'Ventes classiques',
+                                    key: 'CLASSIC_SALE',
+                                }, {
+                                    label: 'Solutions financières',
+                                    key: 'FINANCIAL_SOLUTION',
+                                }, {
+                                    label: 'Ventes privées',
+                                    key: 'PRIVATE_SALE',
+                                }]}
+                                component={data => (
+                                    <div className="col-md-6 col-sm-12 form-group text-left">
+                                        <FormControl fullWidth>
+                                            <InputLabel className="text-left" htmlFor="saleWay-helper">
+                                                Canal de vente
+                                    </InputLabel>
+                                            <Select
+                                                value={this.state.saleWay}
+                                                onChange={event => this.setState({ saleWay: event.target.value })}
+                                                input={<Input name="saleWay" id="saleWay-helper" />}>
+                                                {data.map((item, index) => (
+                                                    <MenuItem key={index} value={item.key} className="center-hor-ver">
+                                                        {item.label}
+                                                    </MenuItem>
+                                                ))}
+                                            </Select>
+                                        </FormControl>
+                                    </div>
+                                )}
+                            />
+                        </div>
 
-                    {loadingProducts ? (
-                        <RctSectionLoader/>
-                    ) : (
+                        {/* {loadingProducts ? (
+                        <RctSectionLoader />
+                    ) : ( */}
                         <>
-                            <CustomList
-                                loading={false}
-                                // showSearch={false}
-                                list={this.state.chosenProducts}
-                                onAddClick={() => this.setState({showCreateBox: true})}
-                                itemsFoundText={n => `${n} produit(s) sélectionné(s)`}
-                                addPermissions={{
-                                    permissions: [],
-                                }}
-                                renderItem={list => (
-                                    <>
-                                        {list && list.length === 0 ? (
-                                            <div className="d-flex justify-content-center align-items-center py-50">
-                                                <h4>
-                                                    Aucun produits sélectionnés
+                            {/* <CustomList
+                                    loading={false}
+                                    // showSearch={false}
+                                    list={this.state.chosenProducts}
+                                    onAddClick={() => this.setState({ showCreateBox: true })}
+                                    itemsFoundText={n => `${n} produit(s) sélectionné(s)`}
+                                    addPermissions={{
+                                        permissions: [],
+                                    }}
+                                    renderItem={list => (
+                                        <>
+                                            {list && list.length === 0 ? (
+                                                <div className="d-flex justify-content-center align-items-center py-50">
+                                                    <h4>
+                                                        Aucun produits sélectionnés
                                                 </h4>
-                                            </div>
-                                        ) : (
-                                            <div className="table-responsive">
-                                                <table className="table table-hover table-middle mb-0 text-center">
-                                                    <thead>
-                                                        <tr>
-                                                            <th><IntlMessages id="components.name" /></th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                    {list && list.map((product, key) => (
-                                                        <tr key={key} className="cursor-pointer">
-                                                            <td>
-                                                                <div className="media">
-                                                                    <div className="media-body pt-10">
-                                                                        <h4 className="m-0 fw-bold text-dark">{product.label}</h4>
-                                                                    </div>
-                                                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <div className="media">
-                                                                    <div className="media-body pt-10">
-                                                                        <a href="#" className="text-danger" onClick={() => this.setState({showDeleteBox: true, deleteProduct: product})}>
-                                                                            <span className="material-icons mr-10">delete</span>
-                                                                        </a>
-                                                                    </div>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                    ))}
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        )}
-                                    </>
-                                )}
-                            />
+                                                </div>
+                                            ) : (
+                                                    <div className="table-responsive">
+                                                        <table className="table table-hover table-middle mb-0 text-center">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th><IntlMessages id="components.name" /></th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                {list && list.map((product, key) => (
+                                                                    <tr key={key} className="cursor-pointer">
+                                                                        <td>
+                                                                            <div className="media">
+                                                                                <div className="media-body pt-10">
+                                                                                    <h4 className="m-0 fw-bold text-dark">{product.label}</h4>
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td>
+                                                                            <div className="media">
+                                                                                <div className="media-body pt-10">
+                                                                                    <a href="#" className="text-danger" onClick={() => this.setState({ showDeleteBox: true, deleteProduct: product })}>
+                                                                                        <span className="material-icons mr-10">delete</span>
+                                                                                    </a>
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                ))}
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                )}
+                                        </>
+                                    )}
+                                /> */}
 
-                            <CustomList
-                                loading={false}
-                                // showSearch={false}
-                                list={this.state.chosenPackage}
-                                onAddClick={() => this.setState({showCreateBoxPackage: true})}
-                                itemsFoundText={n => `${n} paquetage(s) sélectionné(s)`}
-                                addPermissions={{
-                                    permissions: [],
-                                }}
-                                renderItem={list => (
-                                    <>
-                                        {list && list.length === 0 ? (
-                                            <div className="d-flex justify-content-center align-items-center py-50">
-                                                <h4>
-                                                    Aucun paquetages sélectionnés
+                            {/* <CustomList
+                                    loading={false}
+                                    // showSearch={false}
+                                    list={this.state.chosenPackage}
+                                    onAddClick={() => this.setState({ showCreateBoxPackage: true })}
+                                    itemsFoundText={n => `${n} paquetage(s) sélectionné(s)`}
+                                    addPermissions={{
+                                        permissions: [],
+                                    }}
+                                    renderItem={list => (
+                                        <>
+                                            {list && list.length === 0 ? (
+                                                <div className="d-flex justify-content-center align-items-center py-50">
+                                                    <h4>
+                                                        Aucun paquetages sélectionnés
                                                 </h4>
-                                            </div>
-                                        ) : (
-                                            <div className="table-responsive">
-                                                <table className="table table-hover table-middle mb-0 text-center">
-                                                    <thead>
-                                                        <tr>
-                                                            <th><IntlMessages id="components.name" /></th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                    {list && list.map((product, key) => (
-                                                        <tr key={key} className="cursor-pointer">
-                                                            <td>
-                                                                <div className="media">
-                                                                    <div className="media-body pt-10">
-                                                                        <h4 className="m-0 fw-bold text-dark">{product.label}</h4>
-                                                                    </div>
-                                                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <div className="media">
-                                                                    <div className="media-body pt-10">
-                                                                        <a href="#" className="text-danger" onClick={() => this.setState({showDeleteBoxPackage: true, deletePackage: product})}>
-                                                                            <span className="material-icons mr-10">delete</span>
-                                                                        </a>
-                                                                    </div>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                    ))}
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        )}
-                                    </>
-                                )}
-                            />
+                                                </div>
+                                            ) : (
+                                                    <div className="table-responsive">
+                                                        <table className="table table-hover table-middle mb-0 text-center">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th><IntlMessages id="components.name" /></th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                {list && list.map((product, key) => (
+                                                                    <tr key={key} className="cursor-pointer">
+                                                                        <td>
+                                                                            <div className="media">
+                                                                                <div className="media-body pt-10">
+                                                                                    <h4 className="m-0 fw-bold text-dark">{product.label}</h4>
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td>
+                                                                            <div className="media">
+                                                                                <div className="media-body pt-10">
+                                                                                    <a href="#" className="text-danger" onClick={() => this.setState({ showDeleteBoxPackage: true, deletePackage: product })}>
+                                                                                        <span className="material-icons mr-10">delete</span>
+                                                                                    </a>
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                ))}
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                )}
+                                        </>
+                                    )}
+                                /> */}
 
-                            <FormGroup>
-                                <InputLabel className="text-left" htmlFor="operatorEmail">
-                                    Image
+                            {/* <FormGroup>
+                                    <InputLabel className="text-left" htmlFor="operatorEmail">
+                                        Image
                                 </InputLabel>
-                                <Input
-                                    id="File"
-                                    type="file"
-                                    name="file"
-                                    onChange={event => this.setState({image: event.target.files[0]})}
-                                />
-                            </FormGroup>
+                                    <Input
+                                        id="File"
+                                        type="file"
+                                        name="file"
+                                        onChange={event => this.setState({ image: event.target.files[0] })}
+                                    />
+                                </FormGroup> */}
 
                             <FormGroup className="mb-15">
                                 <Button
@@ -468,22 +542,23 @@ class Create extends Component {
                                 </Button>
                             </FormGroup>
                         </>
-                    )}
+                        {/* )} */}
 
-                </Form>
+                    </Form>
 
+                </RctCollapsibleCard>
                 <AddProduct
                     show={this.state.showCreateBox}
                     products={this.state.storeProducts}
                     onSave={this.onAddProduct}
-                    onClose={() => this.setState({showCreateBox: false})}
+                    onClose={() => this.setState({ showCreateBox: false })}
                 />
 
                 <AddPackage
                     show={this.state.showCreateBoxPackage}
                     products={this.state.storePackage}
                     onSave={this.onAddPackage}
-                    onClose={() => this.setState({showCreateBoxPackage: false})}
+                    onClose={() => this.setState({ showCreateBoxPackage: false })}
                 />
 
                 <SweetAlert
@@ -497,7 +572,7 @@ class Create extends Component {
                             <Button
                                 color="blue"
                                 variant="outlined"
-                                onClick={() => this.setState({showDeleteBox: false})}
+                                onClick={() => this.setState({ showDeleteBox: false })}
                                 className="text-white bg-blue font-weight-bold mr-3"
                             >
                                 Non je ne veux pas
@@ -528,7 +603,7 @@ class Create extends Component {
                             <Button
                                 color="blue"
                                 variant="outlined"
-                                onClick={() => this.setState({showDeleteBoxPackage: false})}
+                                onClick={() => this.setState({ showDeleteBoxPackage: false })}
                                 className="text-white bg-blue font-weight-bold mr-3"
                             >
                                 Non je ne veux pas
@@ -567,17 +642,17 @@ const mapStateToProps = ({ requestGlobalLoader, productTypes, authUser, comOpera
     }
 };
 
-export default connect(mapStateToProps, {getComOffer, getPackages, getProductTypes, getComOperationType, getCatalogProducts, getSysTimeUnit, setRequestGlobalAction})
-(injectIntl(Create));
+export default connect(mapStateToProps, { getComOffer, getPackages, getProductTypes, getComOperationType, getCatalogProducts, getSysTimeUnit, setRequestGlobalAction })
+    (injectIntl(Create));
 
-const AddProduct = ({show, products, onSave, onClose}) => {
+const AddProduct = ({ show, products, onSave, onClose }) => {
 
     // const [product, setProduct] = useState(products[0]);
     // const [quantity, setQuantity] = useState(1);
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
 
-    const { control, register, errors, handleSubmit, setValue, watch} = useForm();
+    const { control, register, errors, handleSubmit, setValue, watch } = useForm();
 
     const onSubmit = (data) => {
         const productId = data.product;
@@ -669,14 +744,14 @@ const AddProduct = ({show, products, onSave, onClose}) => {
     );
 };
 
-const AddPackage = ({show, products, onSave, onClose}) => {
+const AddPackage = ({ show, products, onSave, onClose }) => {
 
     // const [product, setProduct] = useState(products[0]);
     // const [quantity, setQuantity] = useState(1);
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
 
-    const { control, register, errors, handleSubmit, setValue, watch} = useForm();
+    const { control, register, errors, handleSubmit, setValue, watch } = useForm();
 
     const onSubmit = (data) => {
         const productId = data.product;

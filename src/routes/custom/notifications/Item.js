@@ -7,7 +7,7 @@ import NotificationType from "Enums/NotificationType";
 
 class Item extends Component {
     render() {
-        const { notification, onActivationClick, authUser } = this.props;
+        const { notification, onActivationClick, authUser, onAskingPieceClick } = this.props;
         return (
             <ListItem className="row px-20 py-3 align-items-center notification-hover-wrapper" button>
                 <div className="col-md-9">
@@ -40,6 +40,15 @@ class Item extends Component {
                                 </span>
                             )}
                         </div>
+                    ) : notification.notificationType === NotificationType.PIECE_REQUEST ? (
+                        <>
+                          <span className="font-xs text-muted font-weight-light d-block comment-date">{notification.createdAt.fromNow()}</span>
+                          <div className="notification-hover d-flex align-items-center justify-content-end">
+                              <Fab variant="round" size="small" className="bg-blue text-white btn-sm mx-1" onClick={onAskingPieceClick}>
+                                  <i className="zmdi zmdi-menu"/>
+                              </Fab>
+                          </div>
+                        </>
                     ) : (
                         <>
                           <span className="font-xs text-muted font-weight-light d-block comment-date">{notification.createdAt.fromNow()}</span>

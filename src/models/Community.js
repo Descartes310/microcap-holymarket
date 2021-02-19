@@ -11,6 +11,7 @@ export default class Community {
         this.private = community.private;
         this.reference = community.reference;
         this.visible = community.visible;
+        this.project = community.projectFolder;
     }
 
     get shortDescription() {

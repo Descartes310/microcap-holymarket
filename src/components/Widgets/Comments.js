@@ -43,7 +43,7 @@ export default class Comments extends Component {
       const { comments } = this.state;
       return (
          <Fragment>
-            <Scrollbars className="rct-scroll" autoHeight autoHeightMin={100} autoHeightMax={424} autoHide>
+            <Scrollbars className="rct-scroll" autoHeight autoHeightMin={100}>
                <List className="list-group aqua-ripple p-0">
                   {comments && comments.map((comment) => (
                      <ListItem className="d-flex px-20 py-3 align-items-start" key={comment.id} button>

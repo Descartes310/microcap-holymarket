@@ -10,8 +10,10 @@ import {PRODUCT} from "Url/frontendUrl";
 import {withRouter, Switch, Redirect, Route} from "react-router-dom";
 import List from './List';
 import ProductItemAvailable from './ProductItemAvailable';
-import Permission from "Enums/Permissions";
-import CanRoute from "Components/CanRoute";
+import Account from './accounts';
+import AccountShow from './accountShow';
+import Order from './orders';
+import OrderShow from './orderShow';
 
 class Products extends Component {
     render() {
@@ -21,14 +23,12 @@ class Products extends Component {
                 <>
                     <Switch>
                         <Redirect exact from={`${match.url}/`} to={PRODUCT.LIST} />
-                        {/*<Route path={USERS.USERS_PROFILE.} component={Show} />*/}
+                        <Route path={PRODUCT.ORDERS_SHOW} component={OrderShow} />
+                        <Route path={PRODUCT.ACCOUNT_DETAILS} component={AccountShow} />
                         <Route path={PRODUCT.SHOW} component={ProductItemAvailable} />
+                        <Route path={PRODUCT.SHOW_ACCOUNT} component={Account} />
+                        <Route path={PRODUCT.ORDERS} component={Order} />
                         <Route path={PRODUCT.LIST} component={List} />
-                        {/*<CanRoute
-                            path={PRODUCT.CREATE}
-                            component={Create}
-                            permissions={[Permission.users.createOne.name]}
-                        />*/}
                     </Switch>
                 </>
             </div>

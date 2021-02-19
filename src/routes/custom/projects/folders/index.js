@@ -1,5 +1,7 @@
 import React from 'react';
 import List from './List';
+import ReactionList from './reactions/List';
+import ReactionCreate from './reactions/Create';
 import Show from './Show';
 import Create from './Create';
 import {PROJECTS} from "Url/frontendUrl";
@@ -11,6 +13,8 @@ const FoldersManagement = ({ match }) => {
             <Switch>
                 <Redirect exact from={`${match.url}/`} to={PROJECTS.FOLDERS.LIST} />
                 <Route path={PROJECTS.FOLDERS.LIST} component={List} />
+                <Route path={PROJECTS.FOLDERS.REACTIONS.LIST} component={ReactionList} />
+                <Route path={PROJECTS.FOLDERS.REACTIONS.CREATE} component={ReactionCreate} />
                 <Route path={PROJECTS.FOLDERS.CREATE} component={Create} />
                 <Route path={PROJECTS.FOLDERS.SHOW} component={Show} />
             </Switch>

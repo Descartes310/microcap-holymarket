@@ -38,10 +38,11 @@ const CatalogCreate = props => {
 
         const _data = {...data};
         _data.typeCatalogName = catalog.value;
+        _data.partnerId = authUser.user.id;
         createCatalog(_data, authUser.user.branch.id)
             .then(() => {
                 NotificationManager.success(intl.formatMessage({id: 'catalog.create.successText'}));
-                getCatalogsOfOneType(catalog.value);
+                getCatalogsOfOneType(catalog.value, authUser.user.branch.id);
                 onClose();
             })
             .catch((error) => {

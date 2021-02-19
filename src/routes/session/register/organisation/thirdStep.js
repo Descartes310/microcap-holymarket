@@ -1,15 +1,15 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import {Alert, Form, FormGroup} from "reactstrap";
+import { Alert, Form, FormGroup } from "reactstrap";
 import FormControl from '@material-ui/core/FormControl';
 import InputComponent from "Components/InputComponent";
 import ErrorInputComponent from "Components/ErrorInputComponent";
 import Button from "@material-ui/core/Button";
-import {useForm} from "react-hook-form";
+import { useForm } from "react-hook-form";
 import IntlMessages from "Util/IntlMessages";
 import Select from "@material-ui/core/Select/Select";
 import MenuItem from "@material-ui/core/MenuItem";
-import {injectIntl} from 'react-intl';
+import { injectIntl } from 'react-intl';
 import CountryManager from 'Helpers/CountryManager';
 import FlagCountry from "Components/FlagCountry";
 import InputLabel from "@material-ui/core/InputLabel/InputLabel";
@@ -18,13 +18,16 @@ import CustomAsyncComponent from "Components/CustomAsyncComponent";
 import { NotificationManager } from 'react-notifications';
 import * as moment from "moment";
 import _ from 'lodash';
-import {getOperators, getRegistrationType, getResidenceCountries} from "Actions/independentActions";
+import { getOperators, getRegistrationType, getResidenceCountries } from "Actions/independentActions";
 import Checkbox from "@material-ui/core/Checkbox/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
 
+
+const countryWithNameAndFlag = CountryManager.countryWithNameAndFlag();
+
 const ThirdStep = props => {
     const { loading, nextStep, previousStep, setData, defaultState, intl } = props;
-    const { register, errors, handleSubmit, watch, control, getValues, setValue} = useForm({
+    const { register, errors, handleSubmit, watch, control, getValues, setValue } = useForm({
         defaultValues: !_.isEqual(defaultState, {}) ? defaultState : {}
     });
 
@@ -60,14 +63,14 @@ const ThirdStep = props => {
 
     const _getRegistrationCountries = () => {
         return new Promise((resolve, reject) => {
-            setRegistrationCountries({loading: true, data: null});
+            setRegistrationCountries({ loading: true, data: null });
             getResidenceCountries()
                 .then(result => {
-                    setRegistrationCountries({loading: false, data: result});
+                    setRegistrationCountries({ loading: false, data: result });
                     resolve();
                 })
                 .catch(error => {
-                    setRegistrationCountries({loading: false, data: null});
+                    setRegistrationCountries({ loading: false, data: null });
                     NotificationManager.error("An error occur " + error);
                     setTimeout(() => reject(), 500);
                 });
@@ -75,27 +78,27 @@ const ThirdStep = props => {
     };
 
     const _getOperator = (registrationCountry) => {
-        setOperator({loading: true, data: null});
+        setOperator({ loading: true, data: null });
         getOperators(registrationCountry)
             .then(result => {
-                setOperator({loading: false, data: result});
+                setOperator({ loading: false, data: result });
             })
             .catch(error => {
-                setOperator({loading: false, data: null});
+                setOperator({ loading: false, data: null });
                 NotificationManager.error("An error occur " + error);
             });
     };
 
     const _getRegistrationType = () => {
         return new Promise((resolve, reject) => {
-            setRegistrationType({loading: true, data: null});
+            setRegistrationType({ loading: true, data: null });
             getRegistrationType()
                 .then(result => {
-                    setRegistrationType({loading: false, data: result});
+                    setRegistrationType({ loading: false, data: result });
                     resolve();
                 })
                 .catch(error => {
-                    setRegistrationType({loading: false, data: null});
+                    setRegistrationType({ loading: false, data: null });
                     NotificationManager.error("An error occur " + error);
                     reject();
                 });
@@ -110,7 +113,7 @@ const ThirdStep = props => {
         if (hasAcceptedTermsOfServicesWatch) {
             setData(data, true);
         } else {
-            NotificationManager.warning(intl.formatMessage({id: 'common.acceptTermsAndConditions'}));
+            NotificationManager.warning(intl.formatMessage({ id: 'common.acceptTermsAndConditions' }));
         }
     };
 
@@ -132,7 +135,7 @@ const ThirdStep = props => {
                 startingDate: {
                     id: 'form.error.date.valid',
                     value: {
-                        date: intl.formatMessage({id: 'common.registrationBeginningDate'}),
+                        date: intl.formatMessage({ id: 'common.registrationBeginningDate' }),
                     }
                 }
             });
@@ -146,8 +149,8 @@ const ThirdStep = props => {
                 startingDate: {
                     id: 'form.error.date.maximumDate',
                     value: {
-                        currentDate: intl.formatMessage({id: 'common.registrationBeginningDate'}),
-                        maximumDate: _.lowerCase(intl.formatMessage({id: 'date.today'})),
+                        currentDate: intl.formatMessage({ id: 'common.registrationBeginningDate' }),
+                        maximumDate: _.lowerCase(intl.formatMessage({ id: 'date.today' })),
                     }
                 }
             });
@@ -169,14 +172,38 @@ const ThirdStep = props => {
 
     return (
         <Form onSubmit={handleSubmit(onSubmit)} className={"center-holder"}>
-            <CustomAsyncComponent
+
+            <div className="form-group text-left">
+                <FormControl fullWidth>
+                    <InputLabel className="text-left pl-2" htmlFor="registrationCountry-helper"><IntlMessages id="common.registrationCountry" /></InputLabel>
+                    <InputComponent
+                        isRequired
+                        className="mt-0"
+                        errors={errors}
+                        control={control}
+                        register={register}
+                        componentType="select"
+                        name={'registrationCountry'}
+                        defaultValue={countryWithNameAndFlag[0].id}
+                        as={<Select input={<Input name="registrationCountry" id="registrationCountry-helper" />}>
+                            {countryWithNameAndFlag.map(item => (
+                                <MenuItem key={item.id} value={item.id} className="center-hor-ver">
+                                    <FlagCountry flag={item.flag} label={item.name} />
+                                </MenuItem>
+                            ))}
+                        </Select>}
+                    />
+                </FormControl>
+            </div>
+
+            {/* <CustomAsyncComponent
                 loading={registrationCountries.loading}
                 data={registrationCountries.data}
                 onRetryClick={_getRegistrationCountries}
                 component={data => (
                     <div className="form-group text-left">
                         <FormControl fullWidth>
-                            <InputLabel className="text-left" htmlFor="registrationCountry"><IntlMessages id="common.registrationCountry"/></InputLabel>
+                            <InputLabel className="text-left" htmlFor="registrationCountry"><IntlMessages id="common.registrationCountry" /></InputLabel>
                             <InputComponent
                                 isRequired
                                 className="mt-0"
@@ -200,7 +227,7 @@ const ThirdStep = props => {
                         </FormControl>
                     </div>
                 )}
-            />
+            /> */}
 
             <CustomAsyncComponent
                 loading={registrationType.loading}
@@ -209,7 +236,7 @@ const ThirdStep = props => {
                 component={data => (
                     <div className="form-group text-left">
                         <FormControl fullWidth>
-                            <InputLabel className="text-left" htmlFor="registrationType-helper"><IntlMessages id="common.registrationType"/></InputLabel>
+                            <InputLabel className="text-left" htmlFor="registrationType-helper"><IntlMessages id="common.registrationType" /></InputLabel>
                             <InputComponent
                                 isRequired
                                 className="mt-0"
@@ -234,7 +261,7 @@ const ThirdStep = props => {
 
             <FormGroup className="has-wrapper">
                 <InputLabel className="text-left" htmlFor="registrationNumber">
-                    <IntlMessages id="common.registrationNumber"/>
+                    <IntlMessages id="common.registrationNumber" />
                 </InputLabel>
                 <InputComponent
                     type="text"
@@ -244,14 +271,14 @@ const ThirdStep = props => {
                     id="registrationNumber"
                     name={'registrationNumber'}
                     className="has-input input-lg"
-                    // placeholder={intl.formatMessage({id: "common.registrationType"})}
+                // placeholder={intl.formatMessage({id: "common.registrationType"})}
                 />
                 <span className="has-icon"><i className="zmdi zmdi-card"></i></span>
             </FormGroup>
 
             <FormGroup className="has-wrapper">
                 <InputLabel className="text-left" htmlFor="registrationBeginningDate">
-                    <IntlMessages id="common.registrationBeginningDate"/></InputLabel>
+                    <IntlMessages id="common.registrationBeginningDate" /></InputLabel>
                 <InputComponent
                     type="date"
                     isRequired
@@ -261,12 +288,12 @@ const ThirdStep = props => {
                     id="registrationBeginningDate"
                     name={'registrationBeginningDate'}
                     // placeholder={intl.formatMessage({id: "date.birth"})}
-                    otherValidator={{validate: value => validateRegistrationBeginningDate(value)}}
+                    otherValidator={{ validate: value => validateRegistrationBeginningDate(value) }}
                 >
                     {errors.birthDate && errors.birthDate?.type !== 'required' && (
                         <ErrorInputComponent
                             text={intl.formatMessage(
-                                {id: errorMessages.birthDate.id},
+                                { id: errorMessages.birthDate.id },
                                 errorMessages.birthDate.value,
                             )}
                         />
@@ -292,7 +319,7 @@ const ThirdStep = props => {
                             checked={hasAcceptedTermsOfServicesWatch}
                             onChange={() => setValue('hasAcceptedTermsOfServices', !hasAcceptedTermsOfServicesWatch)}
                         />
-                    } label={intl.formatMessage({id: 'common.agreeTermsConditions'})}
+                    } label={intl.formatMessage({ id: 'common.agreeTermsConditions' })}
                     />}
                 />
             </FormControl>

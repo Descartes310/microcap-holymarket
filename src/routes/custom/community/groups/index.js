@@ -7,7 +7,7 @@ import Drawer from '@material-ui/core/Drawer';
 import Hidden from '@material-ui/core/Hidden';
 import { withStyles } from '@material-ui/core/styles';
 import { Helmet } from "react-helmet";
-import { statusCommunitySpaceStatus, setCommunitySpaceData } from 'Actions/CommunityAction';
+import { statusCommunitySpaceStatus, setCommunitySpaceData, setCommunitySpaceAdmins } from 'Actions/CommunityAction';
 import GroupsSidebar from "Routes/custom/community/groups/GroupsSidebar";
 import CommunityItem from "Routes/custom/community/groups/CommunityItem";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -16,6 +16,7 @@ import EmailSearch from "Routes/mail/components/EmailSearch";
 import AppBar from "@material-ui/core/AppBar/AppBar";
 import AppsIcon from '@material-ui/icons/Apps';
 import MatButton from '@material-ui/core/Button';
+import { getCommunityAdmins } from 'Actions/independentActions'
 import InvitationCreateDialog from '../../communityT/members/invitation/InvitationCreateDialog';
 import { COMMUNITY } from 'Url/frontendUrl';
 
@@ -73,9 +74,12 @@ class Groups extends Component {
     };
 
     enterInCommunitySpace = () => {
-        this.props.statusCommunitySpaceStatus(true);
-        this.props.setCommunitySpaceData(this.props.currentCommunity.data.id);
-        this.props.history.push(COMMUNITY.MEMBERS.LIST);
+        getCommunityAdmins(this.props.currentCommunity.data.id).then(data => {
+            this.props.statusCommunitySpaceStatus(true);
+            this.props.setCommunitySpaceAdmins(data);
+            this.props.setCommunitySpaceData(this.props.currentCommunity.data.id);
+            this.props.history.push(COMMUNITY.MEMBERS.LIST);
+        })
     }
 
     join = () => {
@@ -165,5 +169,5 @@ const mapStateToProps = ({ communitySpace, currentCommunity }) => {
 };
 
 
-export default connect(mapStateToProps, { statusCommunitySpaceStatus, setCommunitySpaceData })
+export default connect(mapStateToProps, { statusCommunitySpaceStatus, setCommunitySpaceData, setCommunitySpaceAdmins })
     (withStyles(styles, { withTheme: true })(Groups));

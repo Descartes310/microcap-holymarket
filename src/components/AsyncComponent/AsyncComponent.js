@@ -63,6 +63,11 @@ export const AsyncComOffer = Loadable({
 	loading: () => <RctPageLoader />,
 });
 
+export const AsyncGroupAdmin = Loadable({
+	loader: () => import("Routes/custom/communityT/admin"),
+	loading: () => <RctPageLoader />,
+});
+
 export const AsyncUserProfile = Loadable({
 	loader: () => import("Routes/custom/users/user-profile"),
 	loading: () => <RctPageLoader />,

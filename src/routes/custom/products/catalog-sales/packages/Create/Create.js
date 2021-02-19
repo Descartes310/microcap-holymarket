@@ -57,7 +57,7 @@ class Create extends Component {
     }
 
     loadData = () => {
-        this.props.getCatalogsOfOneType(Product.SALE, this.props.authUser.branchId)
+        this.props.getCatalogsOfOneType(Product.SALE, this.props.authUser.user.branch.id)
             .then(result => {
                 if (result.length > 0) {
                     this.setState({catalogSale: result[0].id});

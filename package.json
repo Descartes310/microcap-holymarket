@@ -127,6 +127,7 @@
 		"react-sidebar": "^3.0.2",
 		"react-slick": "^0.27.11",
 		"react-star-rating-component": "^1.4.1",
+		"react-stripe-checkout": "^2.6.3",
 		"react-swipeable-views": "^0.13.9",
 		"react-table": "~6.11.5",
 		"react-text-mask": "^5.4.3",

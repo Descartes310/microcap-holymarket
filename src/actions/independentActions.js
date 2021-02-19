@@ -7,13 +7,15 @@ import {
     NETWORK_PROFILE,
     CATALOGS,
     CATEGORY_PRODUCTS,
+    ACCOUNT,
+    PRODUCTS,
     PRODUCT_TYPE,
     USER_PROFILE, NETWORK_PROFILE_TYPE, USERS,
     COMMUNITY_MEMBER, COMMUNITY, PACKAGES, COMMERCIAL_MANAGEMENT, joinBaseUrlWithParamsId,
     ORDER, SALES, GENERIC_OBJECT,
     ACCESS, NOTIFICATIONS, NOTIFICATIONS as NOTIFICATIONS_API, PROJECTS
 } from "Url/backendUrl";
-import {SET_CURRENT_COMMUNITY, SET_CURRENT_COMMUNITY_SUCCESS} from "Actions/types";
+import { SET_CURRENT_COMMUNITY, SET_CURRENT_COMMUNITY_SUCCESS } from "Actions/types";
 
 export const getResidenceCountries = () => {
     return new Promise((resolve, reject) => {
@@ -57,6 +59,11 @@ export const getOrganisationTypes = () => {
             .then(result => resolve(result.data))
             .catch(error => reject(error));
     });
+};
+
+export const getOrganisations = (id) => {
+    const url = `${USERS.GET_ALL_ORGANISATIONS}?branch_id=${id}&type=USER`;
+    return makeRequest('get', url);
 };
 
 export const getOrganisationPosts = () => {
@@ -118,6 +125,11 @@ export const getAccountsByBranch = (branchId) => {
     return makeRequest('get', url);
 };
 
+export const findUsersByOrganisation = (organisationId) => {
+    const url = `${USERS.GET_ALL_BY_ORGANISATION}?organisation_id=${organisationId}`;
+    return makeRequest('get', url);
+};
+
 export const getMembersOfCommunity = (group) => {
     const url = joinBaseUrlWithParams(COMMUNITY_MEMBER.USER.GROUPS.GET_MEMBERS, [{
         param: 'id',
@@ -170,6 +182,30 @@ export const setNetworkProfileConfigurationState = (shouldStart, id) => {
     return makeRequest('put', url);
 };
 
+export const getOrganisationByReference = (id) => {
+    const url = joinBaseUrlWithParams(USERS.GET_ORGANISATION_REFERENCE, [{
+        param: 'id',
+        value: id,
+    }]);
+    return makeRequest('get', url);
+};
+
+export const getPartnersByBranch = (id) => {
+    const url = joinBaseUrlWithParams(USERS.GET_ALL_PARTNER, [{
+        param: 'id',
+        value: id,
+    }]);
+    return makeRequest('get', url);
+};
+
+export const getPartnersOperatorByBranch = (id, country) => {
+    const url = joinBaseUrlWithParams(USERS.GET_ALL_PARTNER_OPERATOR+'?country='+country, [{
+        param: 'id',
+        value: id,
+    }]);
+    return makeRequest('get', url);
+};
+
 export const getNetworkProfilePartnership = (branchId) => {
     return new Promise((resolve, reject) => {
         api.get(NETWORK_PROFILE.PARTNERSHIP.GET_ALL)
@@ -202,13 +238,26 @@ export const createCatalog = (data, branchId) => {
     return makeRequest('post', url, data);
 };
 
+export const createPartner = (id, contract, type) => {
+    const url = joinBaseUrlWithParamsId(`${USERS.CREATE.PARTNER}?contract_number=${contract}&id_profile=${type}`, id);
+    return makeRequest('post', url, null);
+};
+
 export const addProductsToOneCatalog = (data, catalogId, branchId) => {
     let url = joinBaseUrlWithParams(CATALOGS.TYPE_PRODUCTS.ADD, [{
         param: 'id',
         value: catalogId,
     }]);
     url = `${url}?type_products=${encodeURIComponent(data)}`;
-    return makeRequest('post', url, null, {shouldSkipDataParsing: true});
+    return makeRequest('post', url, null, { shouldSkipDataParsing: true });
+};
+
+export const getProductsFromCatalog = (catalogId) => {
+    let url = joinBaseUrlWithParams(CATALOGS.TYPE_PRODUCTS.GET, [{
+        param: 'id',
+        value: catalogId,
+    }]);
+    return makeRequest('get', url);
 };
 
 export const removeProductsToOneCatalog = (data, catalogId, branchId) => {
@@ -217,7 +266,7 @@ export const removeProductsToOneCatalog = (data, catalogId, branchId) => {
         value: catalogId,
     }]);
     url = `${url}?type_products=${encodeURIComponent(data)}`;
-    return makeRequest('post', url, null, {shouldSkipDataParsing: true});
+    return makeRequest('post', url, null, { shouldSkipDataParsing: true });
 };
 
 export const getOneCatalog = (catalogId) => {
@@ -225,6 +274,11 @@ export const getOneCatalog = (catalogId) => {
         param: 'id',
         value: catalogId,
     }]);
+    return makeRequest('get', url);
+};
+
+export const getAllCatalogs = (partnerId) => {
+    let url = `${CATALOGS.GET_ALL}?partner_id=${partnerId}`;
     return makeRequest('get', url);
 };
 
@@ -270,25 +324,34 @@ export const getBranchProfile = (type, branchId) => {
 
 export const sendManyInvitations = (groupId, usersId) => {
     let url = joinBaseUrlWithParams(COMMUNITY_MEMBER.INVITATIONS.SEND.MANY, [{
-            param: 'group_id',
-            value: groupId,
+        param: 'group_id',
+        value: groupId,
     }]);
     url = `${url}?users=${encodeURIComponent(usersId)}`;
     return makeRequest('get', url);
 };
 
+export const addOperator = (id, userId) => {
+    let url = joinBaseUrlWithParams(COMMUNITY_MEMBER.USER.GROUPS.ADD_OPERATOR, [{
+        param: 'id',
+        value: id,
+    }]);
+    url = `${url}?org=${userId}`;
+    return makeRequest('get', url);
+};
+
 export const invitationSent = (groupId) => {
     let url = joinBaseUrlWithParams(COMMUNITY_MEMBER.INVITATIONS.SEND.INVITATIONS, [{
-            param: 'id',
-            value: groupId,
+        param: 'id',
+        value: groupId,
     }]);
     return makeRequest('get', url);
 };
 
 export const requestsReceived = (groupId) => {
     let url = joinBaseUrlWithParams(COMMUNITY_MEMBER.INVITATIONS.SEND.REQUESTS, [{
-            param: 'id',
-            value: groupId,
+        param: 'id',
+        value: groupId,
     }]);
     return makeRequest('get', url);
 };
@@ -305,7 +368,7 @@ export const sendRequestInvitation = (groupId, userId) => {
         }
 
     ]);
-    return makeRequest('post', url, null, {shouldSkipDataParsing: true});
+    return makeRequest('post', url, null, { shouldSkipDataParsing: true });
 };
 
 export const acceptInvitation = (invitationId) => {
@@ -340,14 +403,90 @@ export const sendInvitationCommunityMember = (data) => {
             param: 'group_id',
             value: data.group_id,
         }
-]);
-    return makeRequest('post', url, data, {shouldSkipDataParsing: true});
+    ]);
+    return makeRequest('post', url, data, { shouldSkipDataParsing: true });
 };
 /********************************************************************** */
 /*****************************  ***************************************** */
 export const createPostProject = (data) => {
     const url = joinBaseUrlWithParamsId(PROJECTS.POST_PROJETS.CREATE, data.branchId);
-    return makeRequest('post', url , data);
+    return makeRequest('post', url, data);
+};
+
+export const createVoucher = (id, data) => {
+    const url = joinBaseUrlWithParamsId(COMMUNITY_MEMBER.USER.GROUPS.CREATE_VOUCHER, id);
+    return makeRequest('post', url, data);
+};
+
+export const getVouchers = (id, user, type) => {
+    const url = joinBaseUrlWithParams(COMMUNITY_MEMBER.USER.GROUPS.GET_VOUCHERS, [
+        {
+            param: 'id',
+            value: id,
+        }, {
+            param: 'user_id',
+            value: user,
+        }, {
+            param: 'type',
+            value: type,
+        }
+    ]);
+    return makeRequest('get', url);
+};
+
+export const getUserAccounts = (id) => {
+    const url = joinBaseUrlWithParamsId(PRODUCTS.GET_FOR_USER, id);
+    return makeRequest('get', url);
+};
+
+export const getUserClientExp = (id) => {
+    const url = joinBaseUrlWithParamsId(USERS.PIECE.GET_ALL, id);
+    return makeRequest('get', url);
+};
+
+export const getUserClient = (id) => {
+    const url = joinBaseUrlWithParamsId(USERS.PIECE.GET_USER, id);
+    return makeRequest('get', url);
+};
+
+export const deleteUserClient = (id) => {
+    const url = joinBaseUrlWithParamsId(USERS.PIECE.DELETE_FOR_USER, id);
+    return makeRequest('get', url);
+};
+
+export const getCommunityAdmins = (id) => {
+    const url = joinBaseUrlWithParamsId(COMMUNITY_MEMBER.USER.GROUPS.GET_ADMINS, id);
+    return makeRequest('get', url);
+};
+
+export const getAccountDetails = (id) => {
+    const url = joinBaseUrlWithParamsId(ACCOUNT.GET_ONE, id);
+    return makeRequest('get', url);
+};
+
+export const getAccountTransactions = (id) => {
+    const url = joinBaseUrlWithParamsId(ACCOUNT.GET_TRANSACTIONS, id);
+    return makeRequest('get', url);
+};
+
+export const getUserSales = (id) => {
+    const url = joinBaseUrlWithParamsId(SALES.GET_BY_USER, id);
+    return makeRequest('get', url);
+};
+
+export const approvisioningVoucher = (id, data) => {
+    const url = joinBaseUrlWithParamsId(ACCOUNT.APPROVISIONING_VOUCHER, id);
+    return makeRequest('post', url, data);
+};
+
+export const approvisioningCard = (id, data) => {
+    const url = joinBaseUrlWithParamsId(ACCOUNT.APPROVISIONING_CARD, id);
+    return makeRequest('post', url, data);
+};
+
+export const getSaleProducts = (id) => {
+    const url = joinBaseUrlWithParamsId(SALES.GET_ONE, id);
+    return makeRequest('get', url);
 };
 
 /* export const getAllPostProject = (branchId) => {
@@ -383,13 +522,18 @@ export const createComOperation = (data, branchId) => {
 };
 
 export const createOffer = (data, branchId, config) => {
-    const url = `${COMMERCIAL_MANAGEMENT.OFFER.GET_ALL}?branch_id=${branchId}`;
+    const url = `${COMMERCIAL_MANAGEMENT.OFFER.CREATE}?branch_id=${branchId}`;
     // return makeRequest('post', url, data);
     return new Promise((resolve, reject) => {
         api.post(url, data, config)
             .then(result => resolve(result.data))
             .catch(error => reject(error));
     });
+};
+
+export const addProductToOffer = (data, id) => {
+    const url = joinBaseUrlWithParamsId(`${COMMERCIAL_MANAGEMENT.OFFER.ADD_PRODUCT}`, id);
+    return makeRequest('post', url, data);
 };
 
 export const getAllProductTypeBySale = (branchId) => {
@@ -407,8 +551,8 @@ export const setPackageActivationStatus = (packageId, shouldActivate) => {
     return makeRequest('put', url);
 };
 
-export const setOfferActivationStatus = (packageId, shouldActivate) => {
-    const url = `${COMMERCIAL_MANAGEMENT.OFFER[shouldActivate ? 'ACTIVATE' : 'DEACTIVATE']}?package_id=${packageId}`;
+export const setOfferActivationStatus = (partnerId, comId, shouldActivate) => {
+    const url = `${COMMERCIAL_MANAGEMENT.OFFER[shouldActivate ? 'ACTIVATE' : 'DEACTIVATE']}?partner_id=${partnerId}&commercial_offer_id=${comId}`;
     return makeRequest('put', url);
 };
 
@@ -419,6 +563,12 @@ export const getProductItemAvailable = (productId) => {
 
 export const getOneProductType = (productId) => {
     const url = joinBaseUrlWithParamsId(PRODUCT_TYPE.GET_ONE, productId);
+    return makeRequest('get', url);
+};
+
+
+export const getOneProductTypeFromCommercialOffer = (productId) => {
+    const url = joinBaseUrlWithParamsId(PRODUCT_TYPE.GET_ONE_FROM_COM_OFFER, productId);
     return makeRequest('get', url);
 };
 
@@ -466,7 +616,7 @@ export const createAccess = (data, branchId) => {
 
 export const getNotificationType = (notificationType = '') => {
     const url = `${NOTIFICATIONS.TYPE.GET_ALL}`;
-    const data = notificationType !== '' ? {notificationType} : {};
+    const data = notificationType !== '' ? { notificationType } : {};
     return makeRequest('get', url, data);
 };
 
@@ -491,8 +641,17 @@ export const createNotificationsService = (branchId, data) => {
     return makeRequest('post', url, data);
 };
 
+export const getUsersAccounts = (branchId, type = null) => {
+    let url = '';
+    if(type)
+        url = `${USERS.ACCOUNTS.GET_ALL_BY_BRANCH}?branch_id=${branchId}&type=${type}`;
+    else
+        url = `${USERS.ACCOUNTS.GET_ALL_BY_BRANCH}?branch_id=${branchId}`;
+    return makeRequest('get', url);
+};
+
 export const createUsersAccounts = (data) => {
-    const url = `${USERS.ACCOUNTS.CREATE}?label=${data.label}&description=${data.description}&branch_id=${data.branchId}`;
+    const url = `${USERS.ACCOUNTS.CREATE}?label=${data.label}&description=${data.description}&branch_id=${data.branchId}&type=${data.type}`;
     return makeRequest('post', url, null);
 };
 
@@ -503,7 +662,7 @@ export const askValidationCode = (userId) => {
 
 export const verifyCode = (userId, otp) => {
     const url = joinBaseUrlWithParamsId(USERS.VALIDATION.VERIFY, userId);
-    return makeRequest('put', url, {otp});
+    return makeRequest('put', url, { otp });
 };
 
 export const activateBranch = (data) => {
@@ -512,11 +671,11 @@ export const activateBranch = (data) => {
 
 export const addUserToProfile = (userId, reference, type) => {
     const url = joinBaseUrlWithParamsId(type === 'network-profile' ? NETWORK_PROFILE.ADD_USER_TO_ROLE : USER_PROFILE.ADD_USER, userId);
-    return makeRequest('post', url, {reference});
+    return makeRequest('post', url, { reference });
 };
 
 export const addPermissionToProfile = (permission, role) => {
-    return makeRequest('post', `${USER_PROFILE.PERMISSION}?permission_id=${permission}&profile_id=${role}`, null, {shouldSkipDataParsing: true});
+    return makeRequest('post', `${USER_PROFILE.PERMISSION}?permission_id=${permission}&profile_id=${role}`, null, { shouldSkipDataParsing: true });
 };
 
 export const getAllSampleBranch = () => {
@@ -586,12 +745,64 @@ export const createProject = (data) => {
     return makeRequest('post', url, data);
 };
 
-export const createFolder = (data, branchId) => {
-    const url = `${PROJECTS.FOLDERS.CREATE}?branch_id=${branchId}`;
+export const createUserPieceValue = (data) => {
+    const url = `${USERS.PIECE.CREATE_FOR_USER}`;
     return makeRequest('post', url, data);
+};
+
+export const createProjectReaction = (data, config) => {
+    const url = `${PROJECTS.REACTIONS.CREATE}`;
+    return new Promise((resolve, reject) => {
+        api.post(url, data, config)
+            .then(result => resolve(result.data))
+            .catch(error => reject(error));
+    });
+};
+
+export const getOneProjectReaction = (id) => {
+    const url = joinBaseUrlWithParamsId(PROJECTS.REACTIONS.GET_ONE, id);
+    return makeRequest('get', url);
+};
+
+export const getAllProjectReaction = (id) => {
+    const url = joinBaseUrlWithParamsId(PROJECTS.REACTIONS.GET_ALL, id);
+    return makeRequest('get', url);
+};
+
+export const createFolder = (data, config) => {
+    const url = `${PROJECTS.FOLDERS.CREATE}`;
+    return new Promise((resolve, reject) => {
+        api.post(url, data, config)
+            .then(result => resolve(result.data))
+            .catch(error => reject(error));
+    });
+};
+
+export const createUserPiece = (data, config) => {
+    const url = `${USERS.PIECE.CREATE}`;
+    return new Promise((resolve, reject) => {
+        api.post(url, data, config)
+            .then(result => resolve(result.data))
+            .catch(error => reject(error));
+    });
+};
+
+export const updateUserPieceValue = (data, config) => {
+    const url = `${USERS.PIECE.UPDATE_FOR_USER}`;
+    return new Promise((resolve, reject) => {
+        api.post(url, data, config)
+            .then(result => resolve(result.data))
+            .catch(error => reject(error));
+    });
 };
 
 export const getOneProjectFolder = (folderId) => {
     const url = joinBaseUrlWithParamsId(PROJECTS.FOLDERS.GET_ONE, folderId);
+    return makeRequest('get', url);
+};
+
+export const getAccountByAmount = (userId, amount) => {
+    const data = `?amount=${amount}`;
+    const url = joinBaseUrlWithParamsId(`${ACCOUNT.GET_ACCOUNT_BY_AMOUNT}${data}`, userId);
     return makeRequest('get', url);
 };

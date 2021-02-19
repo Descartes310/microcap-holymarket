@@ -117,7 +117,7 @@ export const getBranchProducts = (branchId) => (dispatch) => {
         });
 };
 
-export const makeActionRequest = (verb, url, typeBase, dispatch, data = null, config = {} ) => {
+export const makeActionRequest = (verb, url, typeBase, dispatch, data = null, config = {}) => {
     dispatch({ type: typeBase });
     return api[verb](url, data)
         .then((response) => {
@@ -195,7 +195,7 @@ export const getInvitationsPending = (userId) => (dispatch) => {
 };
 
 export const setCurrentCommunity = (community) => (dispatch) => {
-    dispatch({type: SET_CURRENT_COMMUNITY_SUCCESS, payload: community});
+    dispatch({ type: SET_CURRENT_COMMUNITY_SUCCESS, payload: community });
 };
 
 export const getMembersOfOneGroup = (group) => (dispatch) => {
@@ -207,7 +207,7 @@ export const getMembersOfOneGroup = (group) => (dispatch) => {
     return api
         .get(url)
         .then((response) => {
-            dispatch({ type: SET_CURRENT_COMMUNITY_SUCCESS, payload: {...group, members: response.data} });
+            dispatch({ type: SET_CURRENT_COMMUNITY_SUCCESS, payload: { ...group, members: response.data } });
             return Promise.resolve();
         })
         .catch(() => {
@@ -237,8 +237,12 @@ export const getComOffer = (partnerId) => (dispatch) => {
     return makeActionRequest('get', url, COMMERCIAL_OFFER, dispatch);
 };
 
-export const getProducts = (branchId) => (dispatch) => {
-    const url = `${COMMERCIAL_MANAGEMENT_API.OFFER.GET_ALL.PRODUCT_AVAILABLE}?branch_id=${branchId}`;
+export const getProducts = (branchId, saleway = null) => (dispatch) => {
+    let url = ''
+    if (saleway != null)
+        url = `${COMMERCIAL_MANAGEMENT_API.OFFER.GET_ALL.PRODUCT_AVAILABLE}?branch_id=${branchId}&sale_way=${saleway}`;
+    else
+        url = `${COMMERCIAL_MANAGEMENT_API.OFFER.GET_ALL.PRODUCT_AVAILABLE}?branch_id=${branchId}`;
     return makeActionRequest('get', url, PRODUCT, dispatch);
 };
 
@@ -330,7 +334,7 @@ export const getInitialisationOptions = (type, branchId) => (dispatch) => {
         : type === 'PROGRAM'
             ? INITIALISATION_PROGRAM
             : INITIALISATION_PROJECTS_CALL;
-    return makeActionRequest('get', url, actionType , dispatch);
+    return makeActionRequest('get', url, actionType, dispatch);
 };
 
 export const getProjectStandardPresentation = (branchId) => (dispatch) => {

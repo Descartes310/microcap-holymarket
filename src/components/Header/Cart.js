@@ -132,7 +132,7 @@ class Carts extends Component {
 											>
 												Voir le panier
 											</Button>
-											<Button
+											{/* <Button
 												variant="contained"
 												component={Link}
 												to={`/${getAppLayout(location)}/ecommerce/checkout`}
@@ -140,7 +140,7 @@ class Carts extends Component {
 												className="btn-xs bg-primary text-white"
 											>
 												Payer
-											</Button>
+											</Button> */}
 										</div>
 										<span className="fw-normal text-dark font-weight-bold font-xs">
 											Total: $ {cart.getTotalPrice()}

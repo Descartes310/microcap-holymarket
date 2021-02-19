@@ -271,7 +271,30 @@ const SecondStep = props => {
                 </FormControl>
             </div>
 
-            <CustomAsyncComponent
+            <div className="form-group text-left">
+                <FormControl fullWidth>
+                    <InputLabel className="text-left pl-2" htmlFor="residenceCountries-helper"><IntlMessages id="common.residenceCountry"/></InputLabel>
+                    <InputComponent
+                        isRequired
+                        className="mt-0"
+                        errors={errors}
+                        control={control}
+                        register={register}
+                        componentType="select"
+                        name={'residenceCountry'}
+                        defaultValue={countryWithNameAndFlag[0].id}
+                        as={<Select input={<Input name="residenceCountry" id="residenceCountries-helper" />}>
+                            {countryWithNameAndFlag.map(item => (
+                                <MenuItem key={item.id} value={item.id} className="center-hor-ver">
+                                    <FlagCountry flag={item.flag} label={item.name} />
+                                </MenuItem>
+                            ))}
+                        </Select>}
+                    />
+                </FormControl>
+            </div>
+
+            {/* <CustomAsyncComponent
                 loading={residenceCountries.loading}
                 data={residenceCountries.data}
                 onRetryClick={_getResidenceCountry}
@@ -302,7 +325,7 @@ const SecondStep = props => {
                         </FormControl>
                     </div>
                 )}
-            />
+            /> */}
 
             <div className="row align-items-flex-end">
                 <CustomAsyncComponent

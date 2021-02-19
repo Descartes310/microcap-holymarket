@@ -17,7 +17,7 @@ class Members extends Component {
         super(props);
         const defaultState = (function (url) {
             if (url.includes(COMMUNITY.MEMBERS.LIST)) return 0;
-            else if (url.includes(COMMUNITY.MEMBERS.INVITATION)) return 1;
+            // else if (url.includes(COMMUNITY.MEMBERS.INVITATION)) return 1;
             else return 0;
         })(window.location.pathname);
 
@@ -33,7 +33,7 @@ class Members extends Component {
         if (oldActivateTab !== value) {
             switch (value) {
                 case 0: return this.props.history.push(COMMUNITY.MEMBERS.LIST);
-                case 1: return this.props.history.push(COMMUNITY.MEMBERS.INVITATION);
+                // case 1: return this.props.history.push(COMMUNITY.MEMBERS.INVITATION);
                 default: return this.props.history.push(COMMUNITY.MEMBERS.LIST);
             }
         }
@@ -66,12 +66,12 @@ class Members extends Component {
                                     >
                                         <Tab
                                             icon={<i className="zmdi zmdi-group-work"/>}
-                                            label={"Liste"}
+                                            label={"Liste des membres"}
                                         />
-                                        <Tab
+                                        {/* <Tab
                                             icon={<i className="ti-world"></i>}
                                             label={"Invitation"}
-                                        />
+                                        /> */}
                                     </Tabs>
                                 </div>
                             </div>

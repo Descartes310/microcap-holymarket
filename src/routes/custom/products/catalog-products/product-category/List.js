@@ -42,7 +42,7 @@ class CategoryProductsList extends Component {
     }
 
     componentDidMount() {
-        this.props.getCategoryProducts(this.props.authUser.branchId);
+        this.props.getCategoryProducts(this.props.authUser.user.branch.id);
     }
 
     handleSearch = (value, data) => {
