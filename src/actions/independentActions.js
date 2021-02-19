@@ -568,7 +568,7 @@ export const getOneProductType = (productId) => {
 
 
 export const getOneProductTypeFromCommercialOffer = (productId) => {
-    const url = joinBaseUrlWithParamsId(PRODUCT_TYPE.GET_ONE_FROM_COM_OFFER, productId);
+    const url = joinBaseUrlWithParamsId(PRODUCT_TYPE.GET_ONE, productId);
     return makeRequest('get', url);
 };
 

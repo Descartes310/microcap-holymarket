@@ -11,10 +11,14 @@ import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
 import {Button, Input, InputGroup, InputGroupAddon} from "reactstrap";
 import IconButton from "@material-ui/core/IconButton";
-import { getMembersOfCommunity } from 'Actions/independentActions';
+import { getMembersOfCommunity, getVouchers } from 'Actions/independentActions';
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
 import {AbilityContext} from "Permissions/Can";
-import User from "Models/User";
+import DialogTitle from "@material-ui/core/DialogTitle/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent/DialogContent";
+import Dialog from "@material-ui/core/Dialog/Dialog";
+import CancelIcon from '@material-ui/icons/Cancel';
+import TimeFromMoment from "Components/TimeFromMoment";
 
 
 class ListMembers extends Component {
@@ -23,7 +27,9 @@ class ListMembers extends Component {
 
     state = {
         loading: true,
-        users: []
+        users: [],
+        codes: [],
+        showVoucherBox: false,
     }
 
     handleChange = event => {
@@ -36,12 +42,22 @@ class ListMembers extends Component {
         }).finally(() => this.setState({ loading: false}))
     }
 
+    onViewVoucher = user => {
+        this.setState({ showVoucherBox: true });
+        getVouchers(this.props.communitySpace.data, user.id, 'PAYMENT').then(data => {
+            this.setState({ codes: data })
+        }).catch(err => {
+            console.log(err)
+            this.setState({ codes: [] })
+        }).finally(() => {})
+    }
+
     componentDidMount() {
         this.getMembers();
     }
 
     render() {
-        const { loading, users } = this.state;
+        const { loading, users, showVoucherBox, codes } = this.state;
         const { classes } = this.props;
         return (
 
@@ -80,8 +96,8 @@ class ListMembers extends Component {
                                         <ListItem
                                             user={user}
                                             key={key}
-                                            onSelectEmail={(e) => this.onSelectEmail(e, user)}
-                                            onReadEmail={() => this.readEmail(user)}
+                                            onViewVoucher={() => this.onViewVoucher(user)}
+                                            isMe={this.props.authUser.user.id == user.id}
                                         />
                                     ))
                                         :
@@ -96,6 +112,64 @@ class ListMembers extends Component {
                         </RctCollapsibleCard>
                     )
                 }
+                <Dialog
+                    open={showVoucherBox}
+                    onClose={() => { this.setState({ showVoucherBox: false, codes: [] }) }}
+                    aria-labelledby="responsive-dialog-title"
+                    maxWidth={'lg'}
+                    fullWidth
+                >
+                    <DialogTitle id="form-dialog-title">
+                        <div className="row justify-content-between align-items-center">
+                            Codes de paiement actifs
+                            <IconButton
+                                color="primary"
+                                aria-label="close"
+                                className="text-danger"
+                                onClick={() => { this.setState({ showVoucherBox: false, codes: [] }) }}>
+                                <CancelIcon />
+                            </IconButton>
+                        </div>
+                    </DialogTitle>
+                    <DialogContent>
+                        <table className="table table-hover table-middle mb-0 text-center">
+                            <thead>
+                                <tr>
+                                    <th>Code de paiement</th>
+                                    <th>Montant</th>
+                                    <th>Date de création</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {codes && codes.map((item, key) => (
+                                    <tr key={key} className="cursor-pointer">
+                                        <td>
+                                            <div className="media">
+                                                <div className="media-body pt-10">
+                                                    <h4 className="m-0 fw-bold text-dark">{item.code}</h4>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div className="media">
+                                                <div className="media-body pt-10">
+                                                    <h4 className="m-0 fw-bold text-dark">{item.price}</h4>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div className="media">
+                                                <div className="media-body pt-10">
+                                                    <h4 className="m-0 fw-bold text-dark"><TimeFromMoment time={item.updatedAt} /></h4>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </DialogContent>
+                </Dialog>
             </div>
         )
     }

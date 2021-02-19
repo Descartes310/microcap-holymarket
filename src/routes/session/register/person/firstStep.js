@@ -94,6 +94,47 @@ const FirstStep = props => {
                 </InputComponent>
                 <span className="has-icon"><i className="zmdi zmdi-email"></i></span>
             </FormGroup>
+
+
+
+            <FormControl fullWidth>
+                <InputComponent
+                    isRequired
+                    className="mt-0"
+                    errors={errors}
+                    id="acceptLogin"
+                    control={control}
+                    name={'acceptLogin'}
+                    register={register}
+                    componentType="select"
+                    as={<FormControlLabel control={
+                        <Checkbox
+                            color="primary"
+                            checked={acceptLoginWatch}
+                            onChange={() => setValue('acceptLogin', !acceptLoginWatch)}
+                        />
+                    } label={"Se connecter avec le login ?"}
+                    />}
+                />
+            </FormControl>
+
+            {acceptLoginWatch && (
+                <FormGroup className="has-wrapper">
+                    <InputLabel className="text-left" htmlFor="login">
+                        Login
+                    </InputLabel>
+                    <InputComponent
+                        id="login"
+                        name={'login'}
+                        errors={errors}
+                        register={register}
+                        isRequired={acceptLoginWatch}
+                        className="has-input input-lg"
+                    />
+                    <span className="has-icon"><i className="ti-pencil"/></span>
+                </FormGroup>
+            )}
+            
             <div className="row">
                 {errors.phoneNumber?.type === 'required' && (
                     <div className="col-12">
@@ -151,44 +192,6 @@ const FirstStep = props => {
                 </InputComponent>
                 <span className="has-icon"><i className="zmdi zmdi-lock-outline"></i></span>
             </FormGroup>
-
-            <FormControl fullWidth>
-                <InputComponent
-                    isRequired
-                    className="mt-0"
-                    errors={errors}
-                    id="acceptLogin"
-                    control={control}
-                    name={'acceptLogin'}
-                    register={register}
-                    componentType="select"
-                    as={<FormControlLabel control={
-                        <Checkbox
-                            color="primary"
-                            checked={acceptLoginWatch}
-                            onChange={() => setValue('acceptLogin', !acceptLoginWatch)}
-                        />
-                    } label={"Se connecter avec le login ?"}
-                    />}
-                />
-            </FormControl>
-
-            {acceptLoginWatch && (
-                <FormGroup className="has-wrapper">
-                    <InputLabel className="text-left" htmlFor="login">
-                        Login
-                    </InputLabel>
-                    <InputComponent
-                        id="login"
-                        name={'login'}
-                        errors={errors}
-                        register={register}
-                        isRequired={acceptLoginWatch}
-                        className="has-input input-lg"
-                    />
-                    <span className="has-icon"><i className="ti-pencil"/></span>
-                </FormGroup>
-            )}
 
             <FormGroup className="has-wrapper">
                 <InputComponent
