@@ -93,6 +93,7 @@ export const USERS = {
         SELF: '/users',
         LIST: '/users/list',
         CREATE: '/users/create',
+        PERSONNAL_SPACE: '/personal-space'
     },
     USERS_PROFILE: {
         SELF: '/users-profile',
@@ -108,7 +109,7 @@ export const USERS = {
         SELF: '/users-accounts',
         LIST: '/users-accounts/list',
         CREATE: '/users-accounts/create',
-    }
+    },
 };
 
 export const COMMERCIAL_MANAGEMENT = {

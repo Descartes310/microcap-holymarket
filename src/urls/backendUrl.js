@@ -148,6 +148,7 @@ export const USERS = {
     GET_ALL_BY_ORGANISATION: 'public/users/persons/by-organisation',
     GET_ALL_PARTNER: 'public/users/organisations/branch/{id}/partner',
     GET_ALL_PARTNER_OPERATOR: 'public/users/organisations/branch/{id}/partner/operator',
+    GET_ALL_PARTNER_OPERATOR_ME: 'public/users/organisations/partner/operator/me/{id}',
     GET_ALL_ORGANISATIONS: 'public/users/organisations',
     GET_ORGANISATION_REFERENCE: 'public/users/organisations/adhesion/{id}',
     CREATE: {

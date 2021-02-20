@@ -30,6 +30,7 @@ import CommunityMembers from "Routes/custom/communityT/members";
 import CommunityAdmins from "Routes/custom/communityT/admin";
 import CommunityMembersPostsProjects from "Routes/custom/communityT/postsProjects";
 import ClientPieceList from "Routes/custom/settings/client_folder/List";
+import PersonalSpace from "Routes/custom/users/users/personnal-space";
 
 import Branch from "Models/Branch";
 import {useAbility} from "@casl/react";
@@ -223,6 +224,13 @@ const Dashboard = ({ match, authUser }) => {
                     <CanRoute
                         path={COMMUNITY_ADMIN.SELF}
                         component={CommunityAdmins}
+                        permissions={[]}
+                    />
+
+
+                    <CanRoute
+                        path={USERS.USERS.PERSONNAL_SPACE}
+                        component={PersonalSpace}
                         permissions={[]}
                     />
 

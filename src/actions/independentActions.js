@@ -206,6 +206,14 @@ export const getPartnersOperatorByBranch = (id, country) => {
     return makeRequest('get', url);
 };
 
+export const getPartnersOperatorByMe = (id) => {
+    const url = joinBaseUrlWithParams(USERS.GET_ALL_PARTNER_OPERATOR_ME, [{
+        param: 'id',
+        value: id,
+    }]);
+    return makeRequest('get', url);
+};
+
 export const getNetworkProfilePartnership = (branchId) => {
     return new Promise((resolve, reject) => {
         api.get(NETWORK_PROFILE.PARTNERSHIP.GET_ALL)
