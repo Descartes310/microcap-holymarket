@@ -13,8 +13,8 @@ class UserBlock extends Component {
                         <img src={require('Assets/avatars/user-15.jpg')} alt="user profile" className="rounded-circle mr-30 bordered" width="140" height="140" />
                         <div className="media-body pt-25">
                             <div className="mb-20">
-                                <h2>Lucile Beck</h2>
-                                <p>info@example.com</p>
+                                <h2>{this.props.userName}</h2>
+                                <p>{this.props.userEmail}</p>
                             </div>
                         </div>
                     </div>

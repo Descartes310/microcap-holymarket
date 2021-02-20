@@ -99,6 +99,7 @@ export const USERS = {
         SELF: '/users-profile',
         LIST: '/users-profile/list',
         CREATE: '/users-profile/create',
+        PROFILE: '/users-profile/profile',
         USERS_PERMISSION: {
             SELF: '/users-profile/users-permission',
             LIST: '/users-profile/users-permission/list',

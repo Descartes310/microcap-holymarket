@@ -156,6 +156,9 @@ export const USERS = {
         ORGANISATION: 'public/users/organisations/with-profile',
         PARTNER: 'public/users/organisations/{id}/partner',
     },
+    UPDATE: {
+        PERSON: '/public/users/persons'
+    },
     ACCOUNTS: {
         GET_ALL: '/public/type-network-profiles',
         GET_ALL_BY_BRANCH: '/public/type-network-profiles/branch',

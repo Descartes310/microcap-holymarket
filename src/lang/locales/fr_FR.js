@@ -55,6 +55,8 @@ module.exports = {
    "common.operator": "Opérateur",
    "common.identificationType": "Type d'identification",
    "common.identificationNumber": "Numéro d'identification",
+   "common.immatriculationType": "Type d'immatriculation",
+   "common.immatriculationValue": "Numéro d'immatriculation",
    "common.socialReason": "Raison social",
    "common.commercialName": "Nom commercial",
    "common.organisationType": "Type d'organisation",

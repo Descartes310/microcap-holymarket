@@ -31,6 +31,8 @@ import CommunityAdmins from "Routes/custom/communityT/admin";
 import CommunityMembersPostsProjects from "Routes/custom/communityT/postsProjects";
 import ClientPieceList from "Routes/custom/settings/client_folder/List";
 import PersonalSpace from "Routes/custom/users/users/personnal-space";
+import SingleProfile from 'Routes/custom/users/user-profile/Profile';
+import UserProfile from 'Routes/custom/users/user-profile';
 
 import Branch from "Models/Branch";
 import {useAbility} from "@casl/react";
@@ -192,8 +194,8 @@ const Dashboard = ({ match, authUser }) => {
 
                     <CanRoute
                         path={USERS.USERS_PROFILE.SELF}
-                        component={AsyncUserProfile}
-                        permissions={[Permission.userProfile.viewList.name]}
+                        component={UserProfile}
+                        permissions={[]}
                     />
 
                     <CanRoute
@@ -250,6 +252,12 @@ const Dashboard = ({ match, authUser }) => {
                     <CanRoute
                         path={PRODUCT.SELF}
                         component={AsyncProducts}
+                        permissions={[]}
+                    />
+
+                    <CanRoute
+                        path={USERS.USERS_PROFILE.PROFILE}
+                        component={SingleProfile}
                         permissions={[]}
                     />
 
