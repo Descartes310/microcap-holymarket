@@ -3,10 +3,11 @@
  */
 import React, { Component } from 'react';
 import { Dropdown, DropdownToggle, DropdownMenu } from 'reactstrap';
-import { Link } from 'react-router-dom';
+import { Link, NavLink, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Badge } from 'reactstrap';
 import { NotificationManager } from 'react-notifications';
+import { USERS } from 'Url/frontendUrl';
 
 // components
 import SupportPage from '../Support/Support';
@@ -135,6 +136,15 @@ class UserBlock extends Component {
 										</li> : null
 								}
 								<li className="border-top">
+									<NavLink to={USERS.USERS_PROFILE.PROFILE} className="nav-link" activeClassName="active">
+										<i className="zmdi zmdi-account text-primary mr-3"></i>
+										<span>
+											Profile
+										</span>
+									</NavLink>
+								</li>
+								
+								<li className="border-top">
 									<a href="#" onClick={(e) => this.logoutUser(e)}>
 										<i className="zmdi zmdi-power text-danger mr-3"></i>
 										<span>
@@ -163,4 +173,4 @@ const mapStateToProps = ({ settings, authUser }) => {
 
 export default connect(mapStateToProps, {
 	logout
-})(UserBlock);
+})(withRouter((UserBlock)));

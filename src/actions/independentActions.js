@@ -307,6 +307,11 @@ export const createUsers = (data, branchId) => {
     return makeRequest('post', url, data);
 };
 
+export const updateUsers = (data, personId) => {
+    const url = `${USERS.UPDATE.PERSON}?person_id=${personId}`;
+    return makeRequest('put', url, data);
+};
+
 export const createCommunityNonConventionated = (data, branchId, userId) => {
     const url = `${COMMUNITY_MEMBER.USER.CREATE.NON_CONVENTIONAL}?branch_id=${branchId}&user_id=${userId}`;
     return makeRequest('post', url, data);

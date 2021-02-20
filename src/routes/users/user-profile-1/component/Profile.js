@@ -25,6 +25,12 @@ export default class Profile extends Component {
             <h2 className="heading"><IntlMessages id="widgets.personalDetails" /></h2>
             <Form>
                <FormGroup row>
+                  <Label for="firstName" sm={3}><IntlMessages id="components.name" /></Label>
+                  <Col sm={9}>
+                     <Input type="text" name="firstName" id="firstName" className="input-lg" />
+                  </Col>
+               </FormGroup>
+               <FormGroup row>
                   <Label for="firstName" sm={3}><IntlMessages id="components.firstName" /></Label>
                   <Col sm={9}>
                      <Input type="text" name="firstName" id="firstName" className="input-lg" />
