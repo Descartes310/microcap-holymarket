@@ -569,6 +569,12 @@ export default {
                "path": SETTINGS.USERPIECE.SELF,
                "permissions": [],
             },
+            {
+               "menu_title": "Configuration",
+               "new_item": false,
+               "path": SETTINGS.CONFIGS.SELF,
+               "permissions": [],
+            },
          ]
       },
    ],

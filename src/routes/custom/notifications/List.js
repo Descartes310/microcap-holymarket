@@ -17,7 +17,7 @@ import Dialog from "@material-ui/core/Dialog/Dialog";
 import CancelIcon from '@material-ui/icons/Cancel';
 import IconButton from "@material-ui/core/IconButton";
 import { Button } from "reactstrap";
-import { updateUserPieceValue } from 'Actions/independentActions';
+import { updateUserPieceValue, getAllSettingsByName } from 'Actions/independentActions';
 import { NotificationManager } from "react-notifications";
 import { Form, FormGroup, Input as InputStrap } from "reactstrap";
 import InputLabel from "@material-ui/core/InputLabel";
@@ -34,6 +34,7 @@ class List extends Component {
             showBox: false,
             notif: null,
             file: null,
+            data: [],
             showActivationBox: false,
             selectedNotifications: [],
         }
@@ -41,6 +42,9 @@ class List extends Component {
 
     componentDidMount() {
         this.props.getAllNotifications(this.props.authUser.user.id);
+        getAllSettingsByName(this.props.authUser.user.branch.id, 'CGU').then(data => {
+            this.setState({ data })
+        })
     }
 
     onActivationClick = (notificationId) => {
@@ -117,6 +121,7 @@ class List extends Component {
                 {this.props.authUser.user.status === Status.PENDING && (
                     <ActivationBox
                         show={this.state.showActivationBox}
+                        pdfUrl={this.state.data.length > 0 ? this.state.data[0].value : ''}
                         onClose={() => this.setState({ showActivationBox: false })}
                     />
                 )}

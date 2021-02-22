@@ -195,6 +195,9 @@ export const SETTINGS = {
     },
     USERPIECE: {
         SELF: '/settings/users-pieces'
+    },
+    CONFIGS: {
+        SELF: '/settings/configurations'
     }
 };
 

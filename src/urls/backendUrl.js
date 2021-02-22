@@ -28,6 +28,12 @@ export const PROFILE = {
     INFORMATION_WITH_SERVICE_NUMBER: 'auth/me/mandate',
 };
 
+export const SETTING = {
+    GET_ALL: 'api/settings/branchs/{id}',
+    GET_ALL_BY_NAME: 'api/settings/branchs/{id}/by-name',
+    CGU: 'api/settings/update/cgu',
+};
+
 export const SYSTEM_OBJECT = {
     IDENTIFICATION: 'public/system/objects/identification-type',
     REGISTRATION_TYPE: 'public/system/objects/immatriculation-type',

@@ -8,6 +8,7 @@ import {
     CATALOGS,
     CATEGORY_PRODUCTS,
     ACCOUNT,
+    SETTING,
     PRODUCTS,
     PRODUCT_TYPE,
     USER_PROFILE, NETWORK_PROFILE_TYPE, USERS,
@@ -208,6 +209,22 @@ export const getPartnersOperatorByBranch = (id, country) => {
 
 export const getPartnersOperatorByMe = (id) => {
     const url = joinBaseUrlWithParams(USERS.GET_ALL_PARTNER_OPERATOR_ME, [{
+        param: 'id',
+        value: id,
+    }]);
+    return makeRequest('get', url);
+};
+
+export const getAllSettings = (id) => {
+    const url = joinBaseUrlWithParams(SETTING.GET_ALL, [{
+        param: 'id',
+        value: id,
+    }]);
+    return makeRequest('get', url);
+};
+
+export const getAllSettingsByName = (id, name) => {
+    const url = joinBaseUrlWithParams(`${SETTING.GET_ALL_BY_NAME}?name=${name}`, [{
         param: 'id',
         value: id,
     }]);
@@ -793,6 +810,15 @@ export const createFolder = (data, config) => {
 
 export const createUserPiece = (data, config) => {
     const url = `${USERS.PIECE.CREATE}`;
+    return new Promise((resolve, reject) => {
+        api.post(url, data, config)
+            .then(result => resolve(result.data))
+            .catch(error => reject(error));
+    });
+};
+
+export const createBranchCGU = (data, config) => {
+    const url = `${SETTING.CGU}`;
     return new Promise((resolve, reject) => {
         api.post(url, data, config)
             .then(result => resolve(result.data))

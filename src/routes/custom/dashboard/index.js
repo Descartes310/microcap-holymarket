@@ -30,11 +30,11 @@ import CommunityMembers from "Routes/custom/communityT/members";
 import CommunityAdmins from "Routes/custom/communityT/admin";
 import CommunityMembersPostsProjects from "Routes/custom/communityT/postsProjects";
 import ClientPieceList from "Routes/custom/settings/client_folder/List";
+import ConfigurationsList from "Routes/custom/settings/configurations/List";
 import PersonalSpace from "Routes/custom/users/users/personnal-space";
 import SingleProfile from 'Routes/custom/users/user-profile/Profile';
 import UserProfile from 'Routes/custom/users/user-profile';
 
-import Branch from "Models/Branch";
 import {useAbility} from "@casl/react";
 import {
     CATALOG,
@@ -54,7 +54,6 @@ import {AbilityContext} from "Permissions/Can";
 import {connect} from "react-redux";
 import {disableAppLoading} from "Actions/AppLoadingAction";
 import {loginIntoStore} from "Actions/TokensActions";
-import {getPermissionOfPath} from "Helpers/helpers";
 import Permission from "Enums/Permissions";
 import HomePage from "Routes/custom/HomePage";
 import CanRoute from "Components/CanRoute";
@@ -97,6 +96,12 @@ const Dashboard = ({ match, authUser }) => {
                     <CanRoute
                         path={SETTINGS.USERPIECE.SELF}
                         component={ClientPieceList}
+                        permissions={[]}
+                    />
+
+                    <CanRoute
+                        path={SETTINGS.CONFIGS.SELF}
+                        component={ConfigurationsList}
                         permissions={[]}
                     />
 

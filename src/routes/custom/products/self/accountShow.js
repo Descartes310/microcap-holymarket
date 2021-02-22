@@ -8,7 +8,6 @@ import { getProductItemAvailable, setRequestGlobalAction } from "Actions";
 import { getAccountDetails, approvisioningVoucher, approvisioningCard, getAccountTransactions } from "Actions/independentActions";
 import { NotificationManager } from "react-notifications";
 import { ERROR_500 } from "Constants/errors";
-import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import { Link } from 'react-router-dom';
 import { UncontrolledDropdown, DropdownToggle, DropdownMenu } from 'reactstrap';
@@ -20,6 +19,8 @@ import IconButton from "@material-ui/core/IconButton";
 import SweetAlert from "react-bootstrap-sweetalert";
 import TimeFromMoment from "Components/TimeFromMoment";
 import StripeCheckout from 'react-stripe-checkout';
+import DocService from 'Helpers/DocService';
+import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
 
 class AccountShow extends Component {
     static contextType = AbilityContext;
@@ -36,6 +37,7 @@ class AccountShow extends Component {
             paying: false,
             transactions: {}
         }
+        this.billRef = React.createRef();
     }
 
     componentDidMount() {
@@ -106,6 +108,10 @@ class AccountShow extends Component {
         });
     }
 
+    generateBills = (name) => {
+        DocService.createPdf(this.billRef.current, name, (new Date()).toISOString());
+    }
+
     render() {
         const { loading, account, balance, currency, showQuantityBox, transactions, paying } = this.state;
         const { match, history, classes } = this.props;
@@ -113,6 +119,7 @@ class AccountShow extends Component {
         return (
             <>
                 <RctCollapsibleCard>
+                    <div>
                     <PageTitleBar title={"Details sur les comptes"} match={match} history={history} enableBreadCrumb={false} />
                     <div className="page-title d-flex justify-content-between align-items-center" style={{ paddingLeft: 40, paddingRight: 40, paddingTop: 20 }}>
                         <div className="d-flex justify-content-between align-items-center">
@@ -131,19 +138,34 @@ class AccountShow extends Component {
                                             </div>
                                             <ul className="list-unstyled mb-0 dropdown-list d-flex" style={{ flexDirection: 'column' }}>
                                                 <li style={{ width: '98%' }}>
-                                                    <Link to={''}>
+                                                    <p style={{
+                                                        fontSize: '1.3em',
+                                                        textAlign: 'center',
+                                                        padding: 5,
+                                                        cursor: 'pointer'
+                                                    }}>
                                                         Voir le relévé
-                                                    </Link>
+                                                    </p>
                                                 </li>
-                                                <li style={{ width: '98%' }}>
-                                                    <Link to={''}>
+                                                <li style={{ width: '98%' }} onClick={() => this.generateBills(account.label)}>
+                                                    <p style={{
+                                                        fontSize: '1.3em',
+                                                        textAlign: 'center',
+                                                        padding: 5,
+                                                        cursor: 'pointer'
+                                                    }}>
                                                         Imprimer
-                                                    </Link>
+                                                    </p>
                                                 </li>
                                                 <li style={{ width: '98%' }}>
-                                                    <Link to={''}>
+                                                    <p style={{
+                                                        fontSize: '1.3em',
+                                                        textAlign: 'center',
+                                                        padding: 5,
+                                                        cursor: 'pointer'
+                                                    }}>
                                                         Modifier le libellé du compte
-                                                    </Link>
+                                                    </p>
                                                 </li>
 
                                             </ul>
@@ -222,8 +244,8 @@ class AccountShow extends Component {
                                 </div>
                         }
                     </div>
-                    <div className="table-responsive" style={{ padding: 40 }}>
-
+                    <div className="table-responsive" style={{ padding: 40 }} ref={this.billRef}>
+                        <h1 style={{ marginBottom: 50 }}>Mouvements sur le compte</h1>
                         {
                             Object.entries(transactions).map(function (transaction, index) {
                                 return (
@@ -288,6 +310,7 @@ class AccountShow extends Component {
                                     </>
                                 )
                             })}
+                        </div>
                     </div>
                 </RctCollapsibleCard>
                 <SweetAlert
