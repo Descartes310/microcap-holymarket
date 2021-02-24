@@ -1,8 +1,9 @@
 import React, {useEffect, useState} from 'react';
+import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import IntlMessages from "Util/IntlMessages";
 import Step from "@material-ui/core/Step/Step";
-import {updateUsers, getUsers} from "Actions";
+import {updateUsers, getUsers, getUser, getOrganisationTypes, setAuthUser} from "Actions";
 import {NotificationManager} from "react-notifications";
 import {Form, FormGroup} from "reactstrap";
 import {injectIntl} from 'react-intl';
@@ -28,7 +29,7 @@ import AppConfig from "Constants/AppConfig";
 import Button from "@material-ui/core/Button";
 import {useForm} from "react-hook-form";
 
-//const steps = [1, 2];
+
 const countryWithNumberAndFlag = CountryManager.countryWithNumberAndFlag();
 
 const  UpdateProfile = props => {
@@ -40,13 +41,15 @@ const  UpdateProfile = props => {
     const { register, errors, handleSubmit, watch, getValues, control, setValue} = useForm({
         defaultValues: !_.isEqual(defaultState, {}) ? defaultState : (
             {
-                firstName: authUser.commercialName ? authUser.commercialName : authUser.firstName,
-                lastName:authUser.commercialName ? authUser.commercialName : authUser.lastName,
+                commercialName: authUser.commercialName,
+                corporateName: authUser.corporateName,
+                firstName:  authUser.firstName,
+                lastName: authUser.lastName,
                 email: authUser.user.email,
                 login: authUser.user.login, 
                 phoneNumber: authUser.user.phone,
                 profileId: authUser.user.profile.id,
-                userType: authUser.user.userType,
+                userType: authUser.user.userType
             
             }
         )
@@ -55,6 +58,11 @@ const  UpdateProfile = props => {
     const acceptLoginWatch = watch('acceptLogin');
 
     const [userType, setUserType] = useState({
+        loading: true,
+        data: null
+    });
+
+    const [organisationTypes, setOrganisationTypes] = useState({
         loading: true,
         data: null
     });
@@ -82,54 +90,112 @@ const  UpdateProfile = props => {
     };
 
     useEffect(() => {
+        _getOrganisationType();
+    }, []);
+
+    const _getOrganisationType = () => {
+        return new Promise((resolve, reject) => {
+            setOrganisationTypes({loading: true, data: null});
+            getOrganisationTypes()
+                .then(result => {
+                    setOrganisationTypes({loading: false, data: result});
+                    resolve();
+                console.log( "Grace result",result);
+                })
+                .catch(error => {
+                    setOrganisationTypes({loading: false, data: null});
+                    NotificationManager.error("An error occur " + error);
+                    reject();
+                });
+        });
+    };
+
+    useEffect(() => {
         _getUserType();
         _getAllNetworkProfile();
     }, []);
 
+    
+
+
     const onSubmit = (data) => {
         props.setRequestGlobalAction(true);
+        
         updateUsers(data, props.authUser.user.id)
             .then(() => {
-                props.getUsers(props.authUser.user.branch.id, props.authUser.userType);
-                props.history.push(USERS.USERS.LIST);
+                getUser(props.authUser.user.id);
+                console.log("updated User =>",getUser(props.authUser.user.id));
+                props.history.push(USERS.USERS_PROFILE.DISPLAY_PROFILE);
             })
-            .catch(() => {
+            .catch((error) => {
                 NotificationManager.error("Une erreur est survenue")
+                console.log(error);
             })
             .finally(() => props.setRequestGlobalAction(false));
     };
         return (
-            <>
-                
+            <>  
                 <Form onSubmit={handleSubmit(onSubmit)} className={"center-holder"}>
-                    <div className="row align-items-flex-end">
-                        <FormGroup className="col-md-6 col-sm-12 has-wrapper">
-                            <InputComponent
-                                id="firstName"
-                                type="text"
-                                isRequired
-                                name={'firstName'}
-                                errors={errors}
-                                register={register}
-                                className="has-input input-lg"
-                                placeholder={intl.formatMessage({id: "components.firstName"})}
-                            />
-                            <span className="has-icon"><i className="zmdi zmdi-account"></i></span>
-                        </FormGroup>
-                        <FormGroup className="col-md-6 col-sm-12 has-wrapper">
-                            <InputComponent
-                                id="lastName"
-                                type="text"
-                                isRequired
-                                name={'lastName'}
-                                errors={errors}
-                                register={register}
-                                className="has-input input-lg"
-                                placeholder={intl.formatMessage({id: "components.lastName"})}
-                            />
-                            <span className="has-icon"><i className="zmdi zmdi-account"></i></span>
-                        </FormGroup>
-                    </div>
+                    {authUser.user.userType === "ORGANISATION" ? 
+                        (
+                            <div className="row align-items-flex-end">
+                                <FormGroup className="col-md-6 col-sm-12 has-wrapper">
+                                    <InputComponent
+                                        id="commercialName"
+                                        type="text"
+                                        isRequired
+                                        name={'commercialName'}
+                                        errors={errors}
+                                        register={register}
+                                        className="has-input input-lg"
+                                        placeholder={intl.formatMessage({id: "components.commercialName"})}
+                                    />
+                                    <span className="has-icon"><i className="zmdi zmdi-account"></i></span>
+                                </FormGroup>
+                                <FormGroup className="col-md-6 col-sm-12 has-wrapper">
+                                    <InputComponent
+                                        id="corporateName"
+                                        type="text"
+                                        isRequired
+                                        name={'corporateName'}
+                                        errors={errors}
+                                        register={register}
+                                        className="has-input input-lg"
+                                        placeholder={intl.formatMessage({id: "components.corporateName"})}
+                                    />
+                                    <span className="has-icon"><i className="zmdi zmdi-account"></i></span>
+                                </FormGroup>
+                            </div>
+                        ) :(
+                            <div className="row align-items-flex-end">
+                                <FormGroup className="col-md-6 col-sm-12 has-wrapper">
+                                    <InputComponent
+                                        id="firstName"
+                                        type="text"
+                                        isRequired
+                                        name={'firstName'}
+                                        errors={errors}
+                                        register={register}
+                                        className="has-input input-lg"
+                                        placeholder={intl.formatMessage({id: "components.firstName"})}
+                                    />
+                                    <span className="has-icon"><i className="zmdi zmdi-account"></i></span>
+                                </FormGroup>
+                                <FormGroup className="col-md-6 col-sm-12 has-wrapper">
+                                    <InputComponent
+                                        id="lastName"
+                                        type="text"
+                                        isRequired
+                                        name={'lastName'}
+                                        errors={errors}
+                                        register={register}
+                                        className="has-input input-lg"
+                                        placeholder={intl.formatMessage({id: "components.lastName"})}
+                                    />
+                                    <span className="has-icon"><i className="zmdi zmdi-account"></i></span>
+                                </FormGroup>
+                            </div>
+                    )}
 
                     <FormGroup className="has-wrapper">
                         <InputComponent
@@ -212,22 +278,59 @@ const  UpdateProfile = props => {
 
                             />
                         </FormGroup>
-                        <FormGroup className="col-10 has-wrapper">
-                            <InputComponent
-                                type="text"
-                                isRequired
-                                errors={errors}
-                                id="phoneNumber"
-                                register={register}
-                                name={'phoneNumber'}
-                                customRequiredDisplay={true}
-                                className="has-input input-lg"
-                                placeholder={intl.formatMessage({id: "auth.phoneNumber"})}
-                            />
-                            <span className="has-icon"><i className="zmdi zmdi-phone"></i></span>
-                        </FormGroup>
+                        {authUser.user.userType === "PERSON" ? 
+                            (
+                                <FormGroup className="col-10 has-wrapper">
+                                    <InputComponent
+                                        type="text"
+                                        isRequired
+                                        errors={errors}
+                                        id="phoneNumber"
+                                        register={register}
+                                        name={'phoneNumber'}
+                                        customRequiredDisplay={true}
+                                        className="has-input input-lg"
+                                        placeholder={intl.formatMessage({id: "auth.phoneNumber"})}
+                                    />
+                                    <span className="has-icon"><i className="zmdi zmdi-phone"></i></span>
+                                </FormGroup>
+                                ): (
+                                    <div className="col-md-10 col-sm-12">
+                                     <CustomAsyncComponent
+                                        loading={organisationTypes.loading}
+                                        data={organisationTypes.data}
+                                        onRetryClick={_getOrganisationType}
+                                        component={data => (
+                                            <div className="form-group text-left">
+                                                <FormControl fullWidth>
+                                                    <InputLabel className="text-left" htmlFor="organisationTypes-helper"><IntlMessages id="common.organisationType"/></InputLabel>
+                                                    <InputComponent
+                                                        isRequired
+                                                        className="mt-0"
+                                                        errors={errors}
+                                                        control={control}
+                                                        register={register}
+                                                        componentType="select"
+                                                        name={'organisationType'}
+                                                        defaultValue={authUser.legalForm}
+                                                        as={<Select input={<Input name="organisationTypes" id="organisationTypes-helper" />}>
+                                                            {data.map((item, index) => {
+                                                                return (
+                                                                    <MenuItem key={index} value={item} className="center-hor-ver">
+                                                                        {item}
+                                                                    </MenuItem>
+                                                                )
+                                                            })}
+                                                        </Select>}
+                                                    />
+                                                </FormControl>
+                                            </div>
+                                        )}
+                                    />
+                                </div>
+                                )}
                     </div>
-                    <div className="row">
+                    {/*<div className="row">
                         <FormGroup className="col-md-6 col-sm-12 has-wrapper">
                             <InputComponent
                                 isRequired
@@ -264,10 +367,10 @@ const  UpdateProfile = props => {
                             </InputComponent>
                             <span className="has-icon"><i className="zmdi zmdi-lock-outline"></i></span>
                         </FormGroup>
-                    </div>
+                                </div>*/}
 
-                    <div className="row">
-                        <div className="col-md-6 col-sm-12">
+                    {authUser.user.userType === "ORGANISATION" && (<div className="row">
+                        <div className="col-md-12 col-sm-12">
                             <CustomAsyncComponent
                                 loading={userProfiles.loading}
                                 data={userProfiles.data}
@@ -276,7 +379,7 @@ const  UpdateProfile = props => {
                                     <div className="form-group text-left">
                                         <FormControl fullWidth>
                                             <InputLabel className="text-left" htmlFor="organisationTypes-helper">
-                                                Profile utilisateur
+                                                Forme Juridique
                                             </InputLabel>
                                             <InputComponent
                                                 isRequired
@@ -302,42 +405,7 @@ const  UpdateProfile = props => {
                                 )}
                             />
                         </div>
-
-                        <div className="col-md-6 col-sm-12">
-                            <CustomAsyncComponent
-                                loading={userType.loading}
-                                data={userType.data}
-                                onRetryClick={_getUserType}
-                                component={data => (
-                                    <div className="form-group text-left">
-                                        <FormControl fullWidth>
-                                            <InputLabel className="text-left" htmlFor="userType">
-                                                Type d'utilisateurs
-                                            </InputLabel>
-                                            <InputComponent
-                                                isRequired
-                                                id="userType"
-                                                className="mt-0"
-                                                errors={errors}
-                                                control={control}
-                                                register={register}
-                                                componentType="select"
-                                                name={'userType'}
-                                                defaultValue={data[0]}
-                                                as={<Select input={<Input name="userType" id="userType" />}>
-                                                    {data.map((item, index) => (
-                                                        <MenuItem key={index} value={item} className="center-hor-ver">
-                                                            {item}
-                                                        </MenuItem>
-                                                    ))}
-                                                </Select>}
-                                            />
-                                        </FormControl>
-                                    </div>
-                                )}
-                            />
-                        </div>
-                    </div>
+                    </div>)}
 
                     <FormGroup className="mb-15">
                     <Button
@@ -372,4 +440,4 @@ const mapStateToProps = ({ requestGlobalLoader, authUser,userProfile  }) => {
     return { loading: requestGlobalLoader, authUser: authUser.data, userProfiles: userProfile}
 };
 
-export default connect(mapStateToProps, {getUserProfiles, getAllNetworkProfile, getUsers, setRequestGlobalAction})(injectIntl(UpdateProfile));
+export default withRouter(connect(mapStateToProps, {getUserProfiles, getAllNetworkProfile, getUsers, setRequestGlobalAction})(injectIntl(UpdateProfile)));

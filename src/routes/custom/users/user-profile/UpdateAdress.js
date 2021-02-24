@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import { connect } from 'react-redux';
 import IntlMessages from "Util/IntlMessages";
-import {updateUsers, getUsers} from "Actions";
+import { withRouter } from 'react-router-dom';
+import {updateUsers, getUsers,getUser, getRegistrationType} from "Actions";
 import {NotificationManager} from "react-notifications";
 import SecondStep from "./secondStep";
 import {setRequestGlobalAction} from "Actions/RequestGlobalAction";
@@ -48,13 +49,14 @@ const UpdateAdress = props => {
             {
                 nationality: authUser.user.nationality,
                 residenceCountry:authUser.user.hostCountry,
+                city: authUser.user.city,
                 identificationType: authUser.identificationType ? authUser.identificationType : null,
                 immatriculationType: authUser.immatriculationType ? authUser.immatriculationType : null,
                 identificationNumber: authUser.identificationNumber ? authUser.identificationNumber : authUser.immatriculationValue, 
                 immatriculationValue: authUser.immatriculationValue ? authUser.immatriculationValue : null,
-                startingValidityDate: authUser.user.createdAt,
-                endingValidityDate: authUser.user.updatedAt,
-                birthDate: authUser.user.createdAt,
+                startingValidityDate: authUser.beginingPieceValidity,
+                endingValidityDate: authUser.endPieceValidity,
+                birthDate: authUser.dateBirth,
                 
             
             }
@@ -76,6 +78,11 @@ const UpdateAdress = props => {
         data: null
     });
 
+    const [registrationType, setRegistrationType] = useState({
+        loading: true,
+        data: null
+    });
+
     const [operator, setOperator] = useState({
         loading: true,
         data: null
@@ -85,6 +92,28 @@ const UpdateAdress = props => {
         loading: true,
         data: null
     });
+
+    useEffect(() => {
+       // _getRegistrationCountries();
+        _getRegistrationType();
+    }, []);
+
+    const _getRegistrationType = () => {
+        return new Promise((resolve, reject) => {
+            setRegistrationType({ loading: true, data: null });
+            getRegistrationType()
+                .then(result => {
+                    setRegistrationType({ loading: false, data: result });
+                    resolve();
+                })
+                .catch(error => {
+                    setRegistrationType({ loading: false, data: null });
+                    NotificationManager.error("An error occur " + error);
+                    reject();
+                });
+        });
+    };
+
 
     useEffect(() => {
         _getResidenceCountry().then(() => _getIdentificationType());
@@ -259,13 +288,16 @@ const UpdateAdress = props => {
 
     const onSubmit = (data) => {
         props.setRequestGlobalAction(true);
-        updateUsers(data, props.authUser.user.branch.id)
+        
+        updateUsers(data, props.authUser.user.id)
             .then(() => {
-                props.getUsers(props.authUser.user.branch.id, props.authUser.userType);
-                props.history.push(USERS.USERS.LIST);
+                getUser(props.authUser.user.id);
+                console.log("updated User =>",getUser(props.authUser.user.id));
+                props.history.push(USERS.USERS_PROFILE.DISPLAY_PROFILE);
             })
-            .catch(() => {
+            .catch((error) => {
                 NotificationManager.error("Une erreur est survenue")
+                console.log(error);
             })
             .finally(() => props.setRequestGlobalAction(false));
     };
@@ -330,16 +362,30 @@ const UpdateAdress = props => {
                         )}
                     />
 
+                    <FormGroup className="col-md-12 col-sm-12 has-wrapper">      
+                        <InputComponent
+                            id="city"
+                            type="text"
+                            isRequired
+                            name={'city'}
+                            errors={errors}
+                            register={register}
+                            className="has-input input-lg"
+                            placeholder={intl.formatMessage({id: "components.city"})}
+                        />
+                        <span className="has-icon"><i className="zmdi zmdi-pin"></i></span>
+                    </FormGroup>
+
 
                 
                     <div className="row align-items-flex-end">
+                    {authUser.user.userTyper === "PERSON" ? (
                         <CustomAsyncComponent
                             loading={identificationType.loading}
                             data={identificationType.data}
                             onRetryClick={_getIdentificationType}
                             component={data => (
-                                <div className="col-6 form-group text-left">
-                                    {authUser.identificationType ? (
+                                <div className="col-md-6 form-group text-left">
                                     <FormControl fullWidth>
                                         <InputLabel className="text-left" htmlFor="identificationType-helper"><IntlMessages id="common.identificationType"/></InputLabel>
                                         <InputComponent
@@ -359,9 +405,19 @@ const UpdateAdress = props => {
                                                 ))}
                                             </Select>}
                                         />
-                                    </FormControl>): (
-                                        <FormControl fullWidth>
-                                        <InputLabel className="text-left" htmlFor="identificationType-helper"><IntlMessages id="common.immatriculationType"/></InputLabel>
+                                    </FormControl>
+                                    </div>
+                            )}
+                        />
+                        ): (
+                        <CustomAsyncComponent
+                            loading={registrationType.loading}
+                            data={registrationType.data}
+                            onRetryClick={_getRegistrationType}
+                            component={data => (
+                                <div className=" col-md-6 form-group text-left">
+                                    <FormControl fullWidth>
+                                        <InputLabel className="text-left" htmlFor="registrationType-helper"><IntlMessages id="common.registrationType" /></InputLabel>
                                         <InputComponent
                                             isRequired
                                             className="mt-0"
@@ -369,9 +425,9 @@ const UpdateAdress = props => {
                                             control={control}
                                             register={register}
                                             componentType="select"
-                                            name={'immatriculationType'}
+                                            name={'registrationType'}
                                             defaultValue={data[0]}
-                                            as={<Select input={<Input name="immatriculationType" id="identificationType-helper" />}>
+                                            as={<Select input={<Input name="registrationType" id="registrationType-helper" />}>
                                                 {data.map((item, index) => (
                                                     <MenuItem key={index} value={item} className="center-hor-ver">
                                                         {item}
@@ -380,12 +436,12 @@ const UpdateAdress = props => {
                                             </Select>}
                                         />
                                     </FormControl>
-                                    )}
                                 </div>
                             )}
                         />
-                        {authUser.immatriculationValue ? (
-                        <FormGroup className="col-6 has-wrapper">
+                    )}
+                        {authUser.user.userType === "PERSON" ? (
+                        <FormGroup className="col-md-6 has-wrapper">
                             <InputComponent
                                 id="identificationNumber"
                                 type="text"
@@ -398,7 +454,7 @@ const UpdateAdress = props => {
                             />
                             <span className="has-icon"><i className="zmdi zmdi-card"></i></span>
                         </FormGroup>) : (
-                        <FormGroup className="col-6 has-wrapper">
+                        <FormGroup className="col-md-6 has-wrapper">
                         <InputComponent
                             id="immatriculationValue"
                             type="text"
@@ -527,4 +583,4 @@ const mapStateToProps = ({ requestGlobalLoader, authUser, userProfile }) => {
     return { loading: requestGlobalLoader, authUser: authUser.data, userProfiles: userProfile }
 };
 
-export default connect(mapStateToProps, {getUsers, setRequestGlobalAction,getUserProfiles, getAllNetworkProfile })(injectIntl(UpdateAdress));
+export default withRouter(connect(mapStateToProps, {getUsers, setRequestGlobalAction,getUserProfiles, getAllNetworkProfile })(injectIntl(UpdateAdress)));

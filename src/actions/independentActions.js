@@ -302,13 +302,18 @@ export const createNetworkProfileType = (data, branchId) => {
     return makeRequest('post', url, data);
 };
 
+export const getUser = (userId) => {
+    const url = `${USERS.GET_ONE}?user_id=${userId}`;
+    return makeRequest('get', url);
+};
+
 export const createUsers = (data, branchId) => {
     const url = `${USERS.CREATE.PERSON}?branch_id=${branchId}`;
     return makeRequest('post', url, data);
 };
 
-export const updateUsers = (data, personId) => {
-    const url = `${USERS.UPDATE.PERSON}?person_id=${personId}`;
+export const updateUsers = (data, userId) => {
+    const url = `${USERS.UPDATE.PERSON}?user_id=${userId}`;
     return makeRequest('put', url, data);
 };
 

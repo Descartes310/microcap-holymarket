@@ -419,3 +419,20 @@ ol.custom-list > li:nth-child(10n+10):before {
 ol.custom-list > li + li {
   margin-top: 2rem;
 }
+ 
+
+.user-profile-item {
+  padding-bottom: 20px;
+}
+
+.user-profile-item-value{
+  padding-top: 20px;
+  padding-bottom: 10px;
+  border-bottom : 1px solid rgba(70, 77, 105, 0.2)
+}
+
+.user-profile-item-value span{
+  border-radius: 5px;
+  padding: 10px;
+  background-color:  rgba(70, 77, 105, 0.2)
+}
