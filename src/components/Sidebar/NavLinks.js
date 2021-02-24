@@ -582,7 +582,7 @@ export default {
       {
          "menu_title": "Profile",
          "menu_icon": "zmdi zmdi-accounts",
-         "path": NETWORK.LIST,
+         "path": USERS.USERS.PERSONNAL_SPACE,
          "new_item": false,
          "child_routes": null,
          "permissions": [Branch.permissionsRelated.READ],
@@ -748,7 +748,7 @@ export default {
       {
          "menu_title": "Espace personnel",
          "menu_icon": "zmdi zmdi-accounts",
-         "path": NETWORK.LIST,
+         "path": USERS.USERS.PERSONNAL_SPACE,
          "new_item": false,
          "child_routes": null,
          "permissions": [],

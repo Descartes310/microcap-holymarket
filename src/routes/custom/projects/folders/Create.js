@@ -82,9 +82,8 @@ const Create = props => {
         setRequestGlobalAction(true);
 
         const contents = Object.entries(data).filter(i => i[0].includes('content'));
-
         const works = contents.map(i => {
-            const id = Number(i[0][0]);
+            const id = Number(i[0].split('-')[0]);
             delete data[i[0]];
             return {
                 id,
@@ -101,7 +100,6 @@ const Create = props => {
             initializationId,
             works: JSON.stringify(works),
         };
-        console.log(_data)
         createFolder(_data, {fileData: ['file'], multipart: true})
             .then(() => {
                 NotificationManager.success("Projet crée avec succès");
@@ -212,7 +210,7 @@ const Create = props => {
                         />
                     ) : works.map((work, index) => {
                         const key = initializationId + index;
-                        const label = `${work.book.id}content`;
+                        const label = `${work.book.id}-content`;
                         return (
                             <div key={key} className="col-sm-12">
                                 <FormGroup className="has-wrapper">

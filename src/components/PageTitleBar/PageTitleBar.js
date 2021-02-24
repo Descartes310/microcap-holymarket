@@ -14,9 +14,11 @@ import IntlMessages from 'Util/IntlMessages';
 const getDisplayString = (sub) => {
    const arr = sub.split("-");
    if (arr.length > 1) {
-      return <IntlMessages id={`sidebar.${arr[0].charAt(0) + arr[0].slice(1) + arr[1].charAt(0).toUpperCase() + arr[1].slice(1)}`} />
+      return arr[0].charAt(0) + arr[0].slice(1) + arr[1].charAt(0).toUpperCase() + arr[1].slice(1)
+      // return <IntlMessages id={`sidebar.${arr[0].charAt(0) + arr[0].slice(1) + arr[1].charAt(0).toUpperCase() + arr[1].slice(1)}`} />
    } else if (arr[0] !== "") {
-      return <IntlMessages id={`sidebar.${sub.charAt(0) + sub.slice(1)}`} />
+      return sub.charAt(0) + sub.slice(1)
+      // return <IntlMessages id={`sidebar.${sub.charAt(0) + sub.slice(1)}`} />
    } else {
       return <></>;
    }
@@ -32,17 +34,18 @@ const getUrlString = (path, sub, index) => {
 };
 
 const PageTitleBar = ({ title, match, enableBreadCrumb, history}) => {
-   const path = match.path.substr(1);
+   const path = match.url.substr(1);
    const subPath = path.split('/');
    return (
       <div className="page-title d-flex justify-content-between align-items-center">
          {title &&
             <div className="page-title-wrap">
-               <i onClick={() => history ? history.goBack() : null} className="ti-angle-left cursor-pointer mr-2 icon-hover"/>
+               {/* <i onClick={() => null} className="ti-angle-left cursor-pointer mr-2 icon-hover"/> */}
+               {/* <i onClick={() => history ? history.goBack() : null} className="ti-angle-left cursor-pointer mr-2 icon-hover"/> */}
                <h2 className="">{title}</h2>
             </div>
          }
-         {enableBreadCrumb &&
+         
             <Breadcrumb className="mb-0 tour-step-7" tag="nav">
                {subPath.map((sub, index) => {
                   return <BreadcrumbItem active={subPath.length === index + 1}
@@ -51,7 +54,7 @@ const PageTitleBar = ({ title, match, enableBreadCrumb, history}) => {
                }
                )}
             </Breadcrumb>
-         }
+         
       </div>
    )
 };

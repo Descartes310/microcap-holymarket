@@ -3,7 +3,7 @@
  */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { withRouter, NavLink } from 'react-router-dom';
 
 //Intl Message
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
@@ -21,6 +21,7 @@ import Button from "@material-ui/core/Button";
 import { COMMUNITY } from 'Url/frontendUrl';
 import { getCommunityAdmins, getPartnersOperatorByMe } from "Actions/independentActions";
 import UserType from "Enums/UserType";
+import { USERS } from 'Url/frontendUrl';
 
 class PersonalSpace extends Component {
 
@@ -59,7 +60,7 @@ class PersonalSpace extends Component {
         const { operators } = this.state;
         return (
             <div className="page-list">
-                <PageTitleBar title={"Espace personnel"} match={this.props.match} history={history} />
+                <PageTitleBar title={"Espace personnel"} enableBreadCrumb={true} match={this.props.match} history={history} />
                 {loading
                     ? (<RctSectionLoader />)
                     : (
@@ -69,7 +70,19 @@ class PersonalSpace extends Component {
                                     <Typography>Utilisateurs</Typography>
                                 </AccordionSummary>
                                 <AccordionDetails>
-
+                                <NavLink to={USERS.USERS_PROFILE.PROFILE} className="nav-link" activeClassName="active">
+                                    <Button
+                                        // type="submit"
+                                        size="small"
+                                        color="primary"
+                                        disabled={loading}
+                                        variant="contained"
+                                        className={"text-white font-weight-bold mr-3"}
+                                        // onClick={() => this.onJoinClick(group)}
+                                    >
+                                        Consulter mon profil
+                                    </Button>
+                                </NavLink>
                                 </AccordionDetails>
                             </Accordion>
                             <Accordion>
@@ -92,7 +105,7 @@ class PersonalSpace extends Component {
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        { operators && operators.map((operator, key) => (
+                                                        {operators && operators.map((operator, key) => (
                                                             <tr key={key} className="cursor-pointer">
                                                                 <td>
                                                                     <div className="media">
@@ -120,7 +133,7 @@ class PersonalSpace extends Component {
                                                                         disabled={loading}
                                                                         variant="contained"
                                                                         className={"text-white font-weight-bold mr-3"}
-                                                                        // onClick={() => this.onJoinClick(group)}
+                                                                    // onClick={() => this.onJoinClick(group)}
                                                                     >
                                                                         Rejoindre l'espace
                                                                     </Button>

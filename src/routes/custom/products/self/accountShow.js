@@ -35,7 +35,8 @@ class AccountShow extends Component {
             currency: 'Currency',
             showQuantityBox: false,
             paying: false,
-            transactions: {}
+            transactions: {},
+            printing: false
         }
         this.billRef = React.createRef();
     }
@@ -109,207 +110,221 @@ class AccountShow extends Component {
     }
 
     generateBills = (name) => {
-        DocService.createPdf(this.billRef.current, name, (new Date()).toISOString());
+        this.setState({ printing: true }, () => {
+            DocService.createPdf(this.billRef.current, name, (new Date()).toISOString(), () => {
+                console.log('Yep')
+                // this.setState({ printing: false });
+            });
+        })
     }
 
     render() {
-        const { loading, account, balance, currency, showQuantityBox, transactions, paying } = this.state;
+        const { loading, account, balance, currency, showQuantityBox, transactions, paying, printing } = this.state;
         const { match, history, classes } = this.props;
 
         return (
             <>
                 <RctCollapsibleCard>
                     <div>
-                    <PageTitleBar title={"Details sur les comptes"} match={match} history={history} enableBreadCrumb={false} />
-                    <div className="page-title d-flex justify-content-between align-items-center" style={{ paddingLeft: 40, paddingRight: 40, paddingTop: 20 }}>
-                        <div className="d-flex justify-content-between align-items-center">
-                            <h1 className="mr-10 mb-0" >{account.label}</h1>
-                            <UncontrolledDropdown nav className="list-inline-item quciklink-dropdown tour-step-1">
-                                <DropdownToggle nav className="header-icon p-0">
-                                    <Tooltip title="Actions" placement="bottom">
-                                        <i className="zmdi zmdi-apps" style={{ color: '#fed039' }}></i>
-                                    </Tooltip>
-                                </DropdownToggle>
-                                <DropdownMenu>
-                                    <Scrollbars className="rct-scroll" autoHeight autoHeightMin={100} autoHeightMax={350}>
-                                        <div className="dropdown-content">
-                                            <div className="dropdown-top d-flex justify-content-between rounded-top bg-primary">
-                                                <span className="text-white font-weight-bold">Liste des actions</span>
-                                            </div>
-                                            <ul className="list-unstyled mb-0 dropdown-list d-flex" style={{ flexDirection: 'column' }}>
-                                                <li style={{ width: '98%' }}>
-                                                    <p style={{
-                                                        fontSize: '1.3em',
-                                                        textAlign: 'center',
-                                                        padding: 5,
-                                                        cursor: 'pointer'
-                                                    }}>
-                                                        Voir le relévé
+                        <PageTitleBar title={"Details sur les comptes"} match={match} history={history} enableBreadCrumb={true} />
+                        <div className="page-title d-flex justify-content-between align-items-center" style={{ paddingLeft: 40, paddingRight: 40, paddingTop: 20 }}>
+                            <div className="d-flex justify-content-between align-items-center">
+                                <h1 className="mr-10 mb-0" >{account.label}</h1>
+                                <UncontrolledDropdown nav className="list-inline-item quciklink-dropdown tour-step-1">
+                                    <DropdownToggle nav className="header-icon p-0">
+                                        <Tooltip title="Actions" placement="bottom">
+                                            <i className="zmdi zmdi-apps" style={{ color: '#fed039' }}></i>
+                                        </Tooltip>
+                                    </DropdownToggle>
+                                    <DropdownMenu>
+                                        <Scrollbars className="rct-scroll" autoHeight autoHeightMin={100} autoHeightMax={350}>
+                                            <div className="dropdown-content">
+                                                <div className="dropdown-top d-flex justify-content-between rounded-top bg-primary">
+                                                    <span className="text-white font-weight-bold">Liste des actions</span>
+                                                </div>
+                                                <ul className="list-unstyled mb-0 dropdown-list d-flex" style={{ flexDirection: 'column' }}>
+                                                    <li style={{ width: '98%' }}>
+                                                        <p style={{
+                                                            fontSize: '1.3em',
+                                                            textAlign: 'center',
+                                                            padding: 5,
+                                                            cursor: 'pointer'
+                                                        }}>
+                                                            Voir le relévé
                                                     </p>
-                                                </li>
-                                                <li style={{ width: '98%' }} onClick={() => this.generateBills(account.label)}>
-                                                    <p style={{
-                                                        fontSize: '1.3em',
-                                                        textAlign: 'center',
-                                                        padding: 5,
-                                                        cursor: 'pointer'
-                                                    }}>
-                                                        Imprimer
+                                                    </li>
+                                                    <li style={{ width: '98%' }} onClick={() => this.generateBills(account.label)}>
+                                                        <p style={{
+                                                            fontSize: '1.3em',
+                                                            textAlign: 'center',
+                                                            padding: 5,
+                                                            cursor: 'pointer'
+                                                        }}>
+                                                            Imprimer
                                                     </p>
-                                                </li>
-                                                <li style={{ width: '98%' }}>
-                                                    <p style={{
-                                                        fontSize: '1.3em',
-                                                        textAlign: 'center',
-                                                        padding: 5,
-                                                        cursor: 'pointer'
-                                                    }}>
-                                                        Modifier le libellé du compte
+                                                    </li>
+                                                    <li style={{ width: '98%' }}>
+                                                        <p style={{
+                                                            fontSize: '1.3em',
+                                                            textAlign: 'center',
+                                                            padding: 5,
+                                                            cursor: 'pointer'
+                                                        }}>
+                                                            Modifier le libellé du compte
                                                     </p>
-                                                </li>
+                                                    </li>
 
-                                            </ul>
-                                        </div>
-                                    </Scrollbars>
-                                </DropdownMenu>
-                            </UncontrolledDropdown>
+                                                </ul>
+                                            </div>
+                                        </Scrollbars>
+                                    </DropdownMenu>
+                                </UncontrolledDropdown>
+                            </div>
+                            <h1 className="mr-2"><span style={{ color: '#fed039' }}>Solde:</span> {balance} {currency}</h1>
                         </div>
-                        <h1 className="mr-2"><span style={{ color: '#fed039' }}>Solde:</span> {balance} {currency}</h1>
-                    </div>
-                    <div className="d-flex justify-content-between align-items-center" style={{ padding: 40 }}>
-                        <FormControl>
-                            <InputGroup>
-                                <InputGroupAddon addonType="prepend">
-                                    <IconButton aria-label="facebook">
-                                        <i className="zmdi zmdi-search" />
-                                    </IconButton>
-                                </InputGroupAddon>
-                                <Input
-                                    type="text"
-                                    name="search"
-                                    value={this.state.searched}
-                                    placeholder={'Recherchez...'}
-                                    onChange={event => this.onSearchChanged(event, canSearch)}
-                                />
-                            </InputGroup>
-                        </FormControl>
-                        {
-                            !paying ?
-                                <div>
-                                    <Button
-                                        size="large"
-                                        color="primary"
-                                        variant="contained"
-                                        className={"text-white font-weight-bold mr-3"}
-                                        onClick={() => this.setState({ showQuantityBox: true })}
-                                    >
-                                        Approvisionnement coupon
-                                </Button>
-                                    <Button
-                                        size="large"
-                                        color="primary"
-                                        variant="contained"
-                                        className={"text-white font-weight-bold mr-3"}
-                                        onClick={() => this.setState({ paying: true })}
-                                    >
-                                        Approvisionnement carte
-                                </Button>
-                                </div>
-                                :
-                                <div className='d-flex'>
+                        <div className="d-flex justify-content-between align-items-center" style={{ padding: 40 }}>
+                            <FormControl>
+                                <InputGroup>
+                                    <InputGroupAddon addonType="prepend">
+                                        <IconButton aria-label="facebook">
+                                            <i className="zmdi zmdi-search" />
+                                        </IconButton>
+                                    </InputGroupAddon>
                                     <Input
-                                        type="number"
-                                        name="amount"
-                                        id="amount"
-                                        placeHolder='Montant a recharger'
-                                        onChange={(e) => this.setState({ amount: e.target.value })}
+                                        type="text"
+                                        name="search"
+                                        value={this.state.searched}
+                                        placeholder={'Recherchez...'}
+                                        onChange={event => this.onSearchChanged(event, canSearch)}
                                     />
-                                    <StripeCheckout
-                                        stripeKey="pk_test_51ILMcRF8O7K51xUUQ3rGe0lMNsDJWjM4DCxMH7zJwnxl2uFiVeC8hzrOYmAGHKiU4XAM5OIgHTZhjDrac7vP97yo00VO7op4Qx"
-                                        token={this.handleApprovisioningCard}
-                                        amount={this.state.amount*100}
-                                        name="Recharger le compte"
-                                        currency='EUR'
-                                        label="Recharger"
-                                    />
-                                    <Button
-                                        size="large"
-                                        color="primary"
-                                        variant="contained"
-                                        className={"text-white font-weight-bold mr-3"}
-                                        onClick={() => this.setState({ paying: false })}
-                                    >
-                                        Annuler
+                                </InputGroup>
+                            </FormControl>
+                            {
+                                !paying ?
+                                    <div>
+                                        <Button
+                                            size="large"
+                                            color="primary"
+                                            variant="contained"
+                                            className={"text-white font-weight-bold mr-3"}
+                                            onClick={() => this.setState({ showQuantityBox: true })}
+                                        >
+                                            Approvisionnement coupon
                                 </Button>
-                                </div>
-                        }
-                    </div>
-                    <div className="table-responsive" style={{ padding: 40 }} ref={this.billRef}>
-                        <h1 style={{ marginBottom: 50 }}>Mouvements sur le compte</h1>
-                        {
-                            Object.entries(transactions).map(function (transaction, index) {
-                                return (
-                                    <>
-                                        <p>{<TimeFromMoment time={transaction[0]} showFullDate />}</p>
-                                        <table className="table table-hover table-middle mb-60 text-center">
-                                            <thead>
-                                                <tr>
-                                                    <th>Motif de la transaction</th>
-                                                    <th>Sens</th>
-                                                    <th>Montant</th>
-                                                    <th>Date</th>
-                                                    <th>Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {
-                                                    transaction[1].map(transaction => (
-                                                        <tr>
-                                                            <td>
-                                                                <div className="media">
-                                                                    <div className="media-body">
-                                                                        <h4 className="m-0 text-dark">{transaction.motif.length > 100 ? transaction.motif.substring(0, 100) + '...' : transaction.motif}</h4>
+                                        <Button
+                                            size="large"
+                                            color="primary"
+                                            variant="contained"
+                                            className={"text-white font-weight-bold mr-3"}
+                                            onClick={() => this.setState({ paying: true })}
+                                        >
+                                            Approvisionnement carte
+                                </Button>
+                                    </div>
+                                    :
+                                    <div className='d-flex'>
+                                        <Input
+                                            type="number"
+                                            name="amount"
+                                            id="amount"
+                                            placeHolder='Montant a recharger'
+                                            onChange={(e) => this.setState({ amount: e.target.value })}
+                                        />
+                                        <StripeCheckout
+                                            stripeKey="pk_test_51ILMcRF8O7K51xUUQ3rGe0lMNsDJWjM4DCxMH7zJwnxl2uFiVeC8hzrOYmAGHKiU4XAM5OIgHTZhjDrac7vP97yo00VO7op4Qx"
+                                            token={this.handleApprovisioningCard}
+                                            amount={this.state.amount * 100}
+                                            name="Recharger le compte"
+                                            currency='EUR'
+                                            label="Recharger"
+                                        />
+                                        <Button
+                                            size="large"
+                                            color="primary"
+                                            variant="contained"
+                                            className={"text-white font-weight-bold mr-3"}
+                                            onClick={() => this.setState({ paying: false })}
+                                        >
+                                            Annuler
+                                </Button>
+                                    </div>
+                            }
+                        </div>
+                        <div className="table-responsive" style={{ padding: 40 }} ref={this.billRef}>
+                            <h1 style={{ marginBottom: 50 }}>Mouvements sur le compte {account.label}</h1>
+                            {
+                                Object.entries(transactions).map(function (transaction, index) {
+                                    return (
+                                        <>
+                                            <p>{<TimeFromMoment time={transaction[0]} showFullDate />}</p>
+                                            <table className="table table-hover table-middle mb-60 text-center">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Date</th>
+                                                        <th>Libellé</th>
+                                                        <th>Nature</th>
+                                                        <th>Montant</th>
+                                                        {
+                                                            !printing ?
+                                                                <th>Action</th> :
+                                                                null
+                                                        }
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {
+                                                        transaction[1].map(transaction => (
+                                                            <tr>
+                                                                <td>
+                                                                    <div className="media">
+                                                                        <div className="media-body">
+                                                                            <h4 className="m-0 text-dark"><TimeFromMoment showFullDate time={transaction.createdAt} /></h4>
+                                                                        </div>
                                                                     </div>
-                                                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <div className="media">
-                                                                    <div className="media-body">
-                                                                        <h4 className="m-0 text-dark">{transaction.direction}</h4>
+                                                                </td>
+                                                                <td>
+                                                                    <div className="media">
+                                                                        <div className="media-body">
+                                                                            <h4 className="m-0 text-dark">{transaction.motif.length > 100 ? transaction.motif.substring(0, 100) + '...' : transaction.motif}</h4>
+                                                                        </div>
                                                                     </div>
-                                                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <div className="media">
-                                                                    <div className="media-body">
-                                                                        <h4 className="m-0 text-dark">{transaction.amount} {currency}</h4>
+                                                                </td>
+                                                                <td>
+                                                                    <div className="media">
+                                                                        <div className="media-body">
+                                                                            <h4 className="m-0 text-dark">{transaction.direction}</h4>
+                                                                        </div>
                                                                     </div>
-                                                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <div className="media">
-                                                                    <div className="media-body">
-                                                                        <h4 className="m-0 text-dark"><TimeFromMoment time={transaction.createdAt} /></h4>
+                                                                </td>
+                                                                <td>
+                                                                    <div className="media">
+                                                                        <div className="media-body">
+                                                                            <h4 className="m-0 text-dark">{transaction.amount} {currency}</h4>
+                                                                        </div>
                                                                     </div>
-                                                                </div>
-                                                            </td>
-                                                            <td className="table-action">
-                                                                <Button
-                                                                    size="small"
-                                                                    color="primary"
-                                                                    variant="contained"
-                                                                    className={"text-white font-weight-bold mr-3 bg-blue"}
-                                                                >
-                                                                    Détails
-                                                                </Button>
-                                                            </td>
-                                                        </tr>
-                                                    ))}
-                                            </tbody>
-                                        </table>
-                                    </>
-                                )
-                            })}
+                                                                </td>
+                                                                {
+                                                                    !printing ?
+                                                                        <td className="table-action">
+                                                                            <Button
+                                                                                size="small"
+                                                                                color="primary"
+                                                                                variant="contained"
+                                                                                className={"text-white font-weight-bold mr-3 bg-blue"}
+                                                                            >
+                                                                                Détails
+                                                                    </Button>
+                                                                        </td>
+                                                                        :
+                                                                        null
+                                                                }
+                                                            </tr>
+                                                        ))}
+                                                </tbody>
+                                            </table>
+                                        </>
+                                    )
+                                })}
                         </div>
                     </div>
                 </RctCollapsibleCard>
