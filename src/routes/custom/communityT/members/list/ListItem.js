@@ -2,11 +2,13 @@
  * Email List Item
  */
 import React from 'react';
-import {Button} from "reactstrap";
+import { Button } from "reactstrap";
 
 // helpers functions
 import { textTruncate } from 'Helpers/helpers';
 import UserAvatar from "Components/UserAvatar";
+import { Link } from 'react-router-dom';
+import { USERS, joinUrlWithParamsId } from 'Url/frontendUrl';
 
 const ListItem = ({ user, isMe, onViewVoucher }) => {
     return (
@@ -28,25 +30,28 @@ const ListItem = ({ user, isMe, onViewVoucher }) => {
                 </div>
             </div>
             {
-                isMe ? 
-                <div className="font-xs text-muted" style={{ marginRight: '50px' }}>
-                    <Button
-                        variant="contained"
-                        className={"text-white font-weight-bold mr-3 bg-blue"}
-                        onClick={onViewVoucher}
-                    >
-                        Consulter Mes codes actifs
+                isMe ?
+                    <div className="font-xs text-muted" style={{ marginRight: '50px' }}>
+                        <Button
+                            variant="contained"
+                            className={"text-white font-weight-bold mr-3 bg-blue"}
+                            onClick={onViewVoucher}
+                        >
+                            Consulter Mes codes actifs
                     </Button>
-                </div>
-                : null
+                    </div>
+                    : null
             }
             <div className="font-xs text-muted w-10" style={{ marginRight: '50px' }}>
-                <Button
-                    color="primary"
-                    className="text-white mr-2"
-                >
-                    Consulter les détails
-                </Button>
+                <Link to={USERS.USERS_PROFILE.SHOW_PROFILE.replace('{id}', user.id)}>
+                    <Button
+                        color="primary"
+                        className="text-white mr-2"
+                    >
+                        Consulter les détails
+                    </Button>
+                </Link>
+
             </div>
         </li>
     )

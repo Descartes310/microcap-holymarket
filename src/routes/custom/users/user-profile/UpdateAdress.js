@@ -292,7 +292,6 @@ const UpdateAdress = props => {
         updateUsers(data, props.authUser.user.id)
             .then(() => {
                 getUser(props.authUser.user.id);
-                console.log("updated User =>",getUser(props.authUser.user.id));
                 props.history.push(USERS.USERS_PROFILE.DISPLAY_PROFILE);
             })
             .catch((error) => {

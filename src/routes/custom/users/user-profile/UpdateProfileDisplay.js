@@ -1,17 +1,17 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import IntlMessages from "Util/IntlMessages";
 import Step from "@material-ui/core/Step/Step";
-import {updateUsers, getUsers, getUser, getOrganisationTypes} from "Actions";
-import {NotificationManager} from "react-notifications";
-import {injectIntl} from 'react-intl';
-import {setRequestGlobalAction} from "Actions/RequestGlobalAction";
-import {USERS} from "Url/frontendUrl";
+import { updateUsers, getUsers, getUser, getOrganisationTypes } from "Actions";
+import { NotificationManager } from "react-notifications";
+import { injectIntl } from 'react-intl';
+import { setRequestGlobalAction } from "Actions/RequestGlobalAction";
+import { USERS } from "Url/frontendUrl";
 import FormControl from "@material-ui/core/FormControl";
 import Checkbox from "@material-ui/core/Checkbox/Checkbox";
 import CustomAsyncComponent from "Components/CustomAsyncComponent";
-import {getUserType} from "Actions/independentActions";
+import { getUserType } from "Actions/independentActions";
 import Select from "@material-ui/core/Select/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import CountryManager from 'Helpers/CountryManager';
@@ -19,29 +19,29 @@ import FlagCountry from "Components/FlagCountry";
 import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
 //import div from "@material-ui/core/div/div";
 import Input from "@material-ui/core/Input/Input";
-import {getUserProfiles} from "Actions/GeneralActions";
-import {getAllNetworkProfile} from "Actions/NetworkProfileActions";
+import { getUserProfiles } from "Actions/GeneralActions";
+import { getAllNetworkProfile } from "Actions/NetworkProfileActions";
 import InputComponent from "Components/InputComponent";
-import {emailValidatorObject, minMaxValidatorObject, passwordValidatorObject} from "Helpers/validator";
+import { emailValidatorObject, minMaxValidatorObject, passwordValidatorObject } from "Helpers/validator";
 import ErrorInputComponent from "Components/ErrorInputComponent";
 import AppConfig from "Constants/AppConfig";
 import Button from "@material-ui/core/Button";
-import {useForm} from "react-hook-form";
+import { useForm } from "react-hook-form";
 
 
 const countryWithNumberAndFlag = CountryManager.countryWithNumberAndFlag();
 
-const  UpdateProfileDisplay = props => {
+const UpdateProfileDisplay = props => {
 
     const { loading, intl, userProfiles, authUser, getUserProfiles, history } = props;
 
     const [defaultState, setDefaultState] = useState({});
 
-    const { register, errors, handleSubmit, watch, getValues, control, setValue} = useForm({
+    const { register, errors, handleSubmit, watch, getValues, control, setValue } = useForm({
         defaultValues: !_.isEqual(defaultState, {}) ? defaultState : (
             {
-               
-            
+
+
             }
         )
     });
@@ -71,37 +71,30 @@ const  UpdateProfileDisplay = props => {
 
     const _getOrganisationType = () => {
         return new Promise((resolve, reject) => {
-            setOrganisationTypes({loading: true, data: null});
+            setOrganisationTypes({ loading: true, data: null });
             getOrganisationTypes()
                 .then(result => {
-                    setOrganisationTypes({loading: false, data: result});
+                    setOrganisationTypes({ loading: false, data: result });
                     resolve();
-                console.log( "Grace result",result);
+                    console.log("Grace result", result);
                 })
                 .catch(error => {
-                    setOrganisationTypes({loading: false, data: null});
+                    setOrganisationTypes({ loading: false, data: null });
                     NotificationManager.error("An error occur " + error);
                     reject();
                 });
         });
     };
 
-    useEffect(() => {
-       console.log("reloader =>", getUser(props.authUser.user.id));
-    }, []);
-
-    
-   const goToEdition = () => {
+    const goToEdition = () => {
         props.history.push(USERS.USERS_PROFILE.PROFILE);
-   }
+    }
 
     const onSubmit = (data) => {
         props.setRequestGlobalAction(true);
-        
+
         updateUsers(data, props.authUser.user.id)
             .then(() => {
-                getUser(props.authUser.user.id);
-                console.log("updated User =>",getUser(props.authUser.user.id));
                 props.history.push(USERS.USERS_PROFILE.DISPLAY_PROFILE);
             })
             .catch((error) => {
@@ -110,83 +103,103 @@ const  UpdateProfileDisplay = props => {
             })
             .finally(() => props.setRequestGlobalAction(false));
     };
-    
-        return (
-            <>  
-                <div onSubmit={handleSubmit(onSubmit)} className={"center-holder"}>
-                    {authUser.user.userType === "ORGANISATION" ? 
-                        (
-                            <div className="row align-items-flex-end">
-                                <div className="col-md-3 user-profile-item">
-                                    <h3> Nom commercial : </h3>
-                                </div>
-                                <div className="col-md-9 user-profile-item-value">  
-                                    <span>{authUser.commercialName}</span>
-                                </div>
-                                
-                                <div className="col-md-3 user-profile-item">
-                                       <h3> Nom de l'organisattion : </h3>
-                                </div>
-                                <div className="col-md-9 user-profile-item-value">
-                                    <span>{authUser.corporateName}</span>
-                                </div>  
-                            </div>      
-                        ) : (
-                            <div className="row align-items-flex-end">
-                                <div className="col-md-3 user-profile-item">
-                                    <h3>Nom : </h3> 
-                                </div>
-                                <div className="col-md-9 user-profile-item-value">
-                                    <span>{authUser.firstName}</span>
-                                </div>
-                                
-                                <div className="col-md-3 user-profile-item">
-                                    <h3> Prénom :  </h3> 
-                                </div>
-                                <div className="col-md-9 user-profile-item-value">
-                                    <span>{authUser.lastName}</span>
-                                </div> 
+
+    return (
+        <>
+            <div onSubmit={handleSubmit(onSubmit)} className={"center-holder"}>
+                {authUser.user.userType === "ORGANISATION" ?
+                    (
+                        <div className="row align-items-flex-end">
+                            <div className="col-md-3 user-profile-item">
+                                <h3> Nom commercial : </h3>
                             </div>
+                            <div className="col-md-9 user-profile-item-value">
+                                <span>{authUser.commercialName}</span>
+                            </div>
+
+                            <div className="col-md-3 user-profile-item">
+                                <h3> Nom de l'organisattion : </h3>
+                            </div>
+                            <div className="col-md-9 user-profile-item-value">
+                                <span>{authUser.corporateName}</span>
+                            </div>
+                        </div>
+                    ) : (
+                        <div className="row align-items-flex-end">
+                            <div className="col-md-3 user-profile-item">
+                                <h3>Nom : </h3>
+                            </div>
+                            <div className="col-md-9 user-profile-item-value">
+                                <span>{authUser.firstName}</span>
+                            </div>
+
+                            <div className="col-md-3 user-profile-item">
+                                <h3> Prénom :  </h3>
+                            </div>
+                            <div className="col-md-9 user-profile-item-value">
+                                <span>{authUser.lastName}</span>
+                            </div>
+                        </div>
                     )}
 
+                <div className="row align-items-flex-end">
+                    <div className="col-md-3 user-profile-item">
+                        <h3>Email :</h3>
+                    </div>
+                    <div className="col-md-9 user-profile-item-value">
+                        <span>{authUser.user.email}</span>
+                    </div>
+                </div>
+
+                <div className="row align-items-flex-end">
+                    <div className="col-md-3 user-profile-item">
+                        <h3>Numéro d'utilisateur :</h3>
+                    </div>
+                    <div className="col-md-9 user-profile-item-value">
+                        <span>{authUser.user.reference}</span>
+                    </div>
+                </div>
+
+                {
+                    authUser.user.membershipNumber ?
                     <div className="row align-items-flex-end">
                         <div className="col-md-3 user-profile-item">
-                            <h3>Email :</h3> 
+                            <h3>Numéro d'adhésion :</h3>
                         </div>
                         <div className="col-md-9 user-profile-item-value">
-                            <span>{authUser.user.email}</span>
+                            <span>{authUser.user.membershipNumber}</span>
                         </div>
-                    </div>
-                    
-                        
-                        {authUser.user.userType === "ORGANISATION"? 
-                            (
-                                <div className="row align-items-flex-end">
-                                        <div className="col-md-3 user-profile-item">
-                                            <h3>Type d'organisation : </h3> 
-                                        </div>
-                                        <div className="col-md-9 user-profile-item-value">
-                                            <span>{authUser.legalForm}</span>
-                                        </div>
-                                    </div>
-                                
-                                ): (
-                                    
+                    </div> : null}
 
-                                <div className="row align-items-flex-end">
-                                    <div className="col-md-3 user-profile-item">
-                                        <h3>Numéro de téléphone :</h3> 
-                                    </div>
-                                    <div className="col-md-9 user-profile-item-value">
-                                        <span>{authUser.user.phone}</span>
-                                    </div>
-                                </div>
-                                )}
-                       
-                    
 
-                        {authUser.user.userType === "ORGANISATION" && (<div className="row">
-                            {/*<div className="col-md-12 col-sm-12">
+                {authUser.user.userType === "ORGANISATION" ?
+                    (
+                        <div className="row align-items-flex-end">
+                            <div className="col-md-3 user-profile-item">
+                                <h3>Type d'organisation : </h3>
+                            </div>
+                            <div className="col-md-9 user-profile-item-value">
+                                <span>{authUser.legalForm}</span>
+                            </div>
+                        </div>
+
+                    ) : (
+
+
+                        <div className="row align-items-flex-end">
+                            <div className="col-md-3 user-profile-item">
+                                <h3>Numéro de téléphone :</h3>
+                            </div>
+                            <div className="col-md-9 user-profile-item-value">
+                                <span>{authUser.user.phone}</span>
+                            </div>
+                        </div>
+                    )}
+
+
+
+                {authUser.user.userType === "ORGANISATION" && (<div className="row">
+                    {/*<div className="col-md-12 col-sm-12">
                                 <CustomAsyncComponent
                                     loading={userProfiles.loading}
                                     data={userProfiles.data}
@@ -221,31 +234,31 @@ const  UpdateProfileDisplay = props => {
                                     )}  
                                 />
                                                     </div>*/}
-                        </div>)}
+                </div>)}
 
-                    <div className=" row mb-15 mt-15">
+                <div className=" row mb-15 mt-15">
 
-                        <Button
-                            type="submit"
-                            color="primary"
-                            disabled={loading}
-                            variant="contained"
-                            onClick={goToEdition}
-                            className="text-white font-weight-bold"
-                        >
-                            {/*<IntlMessages id="auth.signup" />*/}
+                    <Button
+                        type="submit"
+                        color="primary"
+                        disabled={loading}
+                        variant="contained"
+                        onClick={goToEdition}
+                        className="text-white font-weight-bold"
+                    >
+                        {/*<IntlMessages id="auth.signup" />*/}
                             Modifier
                         </Button>
-                    </div>
-                </div>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
-            </>
-        );
-    
+                </div>
+            </div>
+        </>
+    );
+
 }
 
 // map state to props
-const mapStateToProps = ({ requestGlobalLoader, authUser,userProfile  }) => {
-    return { loading: requestGlobalLoader, authUser: authUser.data, userProfiles: userProfile}
+const mapStateToProps = ({ requestGlobalLoader, authUser, userProfile }) => {
+    return { loading: requestGlobalLoader, authUser: authUser.data, userProfiles: userProfile }
 };
 
-export default withRouter(connect(mapStateToProps, {getUserProfiles, getAllNetworkProfile, getUsers, setRequestGlobalAction})(injectIntl(UpdateProfileDisplay)));
+export default withRouter(connect(mapStateToProps, { getUserProfiles, getAllNetworkProfile, getUsers, setRequestGlobalAction })(injectIntl(UpdateProfileDisplay)));

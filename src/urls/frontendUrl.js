@@ -101,6 +101,7 @@ export const USERS = {
         CREATE: '/users-profile/create',
         PROFILE: '/users-profile/profile',
         DISPLAY_PROFILE: '/users-profile/display-profile',
+        SHOW_PROFILE: '/users-profile/display-profile/{id}',
         USERS_PERMISSION: {
             SELF: '/users-profile/users-permission',
             LIST: '/users-profile/users-permission/list',
