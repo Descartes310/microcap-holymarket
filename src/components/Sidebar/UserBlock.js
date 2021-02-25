@@ -136,7 +136,7 @@ class UserBlock extends Component {
 										</li> : null
 								}
 								<li className="border-top">
-									<NavLink to={USERS.USERS_PROFILE.PROFILE} className="nav-link" activeClassName="active">
+									<NavLink to={USERS.USERS_PROFILE.DISPLAY_PROFILE} className="nav-link" activeClassName="active">
 										<i className="zmdi zmdi-account text-primary mr-3"></i>
 										<span>
 											Profile

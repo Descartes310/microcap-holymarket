@@ -151,6 +151,7 @@ export const USER_PROFILE = {
 export const USERS = {
     BRANCH_USERS: 'public/users',
     SEARCH: 'public/users/search',
+    GET_ONE: '/public/users/one',
     GET_ALL: 'public/users/persons',
     GET_ALL_BY_ORGANISATION: 'public/users/persons/by-organisation',
     GET_ALL_PARTNER: 'public/users/organisations/branch/{id}/partner',
@@ -164,7 +165,7 @@ export const USERS = {
         PARTNER: 'public/users/organisations/{id}/partner',
     },
     UPDATE: {
-        PERSON: '/public/users/persons'
+        PERSON: '/public/users'
     },
     ACCOUNTS: {
         GET_ALL: '/public/type-network-profiles',

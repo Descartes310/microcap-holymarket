@@ -10,15 +10,16 @@ import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import { Helmet } from "react-helmet";
 import {withRouter} from "react-router-dom";
+import { getUser} from "Actions";
 // Components
-import UpdateProfile from './UpdateProfile';
-import UpdateAdress from './UpdateAdress';
+import UpdateProfileDisplay from './UpdateProfileDisplay';
+import UpdateAdressDisplay from './UpdateAdressDisplay';
 import UpdatePassword from './UpdatePassword';
 import EmailPrefrences from '../../../users/user-profile-1/component/EmailPrefrences';
 import Messages from '../../../users/user-profile-1/component/Messages';
 import Address from '../../../users/user-profile-1/component/Address';
 import UserBlock from '../../../users/user-profile-1/component/UserBlock';
-import {getUserProfiles, setRequestGlobalAction} from "Actions";
+import {getUserProfiles, setRequestGlobalAction, setAuthUser} from "Actions";
 
 // rct card box
 import { RctCard } from 'Components/RctCard';
@@ -38,17 +39,21 @@ function TabContainer(props) {
    );
 }
 
- class SingleProfile extends Component {
+ class DisplayProfile extends Component {
 
    state = {
       activeTab: this.props.location.state ? this.props.location.state.activeTab : 0
    }
 
+  
    handleChange = (event, value) => {
       this.setState({ activeTab: value });
    }
 
+
    render() {
+      const currentUser = getUser(this.props.authUser.user.id);
+      console.log("currentUser =>", currentUser)
       const { authUser} = this.props;
       const { activeTab } = this.state;
       return (
@@ -80,11 +85,11 @@ function TabContainer(props) {
                            icon={<i className="ti-home"></i>}
                            label={<IntlMessages id="components.address" />}
                         />
-                        <Tab
+                        {/* <Tab
                            icon={<i className="ti-email"></i>}
                            label={<IntlMessages id="auth.password" />}
                         />
-                        {/*<Tab
+                       <Tab
                            icon={<i className="ti-comment-alt"></i>}
                            label={<IntlMessages id="widgets.messages" />}
                         />*/}
@@ -93,17 +98,17 @@ function TabContainer(props) {
                   </AppBar>
                   {activeTab === 0 &&
                      <TabContainer>
-                        <UpdateProfile userProfileInformations={authUser}/>
+                        <UpdateProfileDisplay userProfileInformations={authUser}/>
                      </TabContainer>}
                   {activeTab === 1 &&
                      <TabContainer>
-                        <UpdateAdress/>
+                        <UpdateAdressDisplay userAdressInformations={authUser}/>
                      </TabContainer>}
-                 {activeTab === 2 &&
-                     <TabContainer>
-                        <UpdatePassword />
+                 {/*activeTab === 2 &&
+                    <TabContainer>
+                        <UpdatePassword />props.setRequestGlobalAction(true
                      </TabContainer>}
-                   {/*activeTab === 3 &&
+                   activeTab === 3 &&
                      <TabContainer>
                         <Address />
                   </TabContainer>*/}
@@ -126,4 +131,4 @@ const mapStateToProps = ({ requestGlobalLoader, userProfile, authUser  }) => {
 
 export default connect(mapStateToProps, {
 	getUserProfiles, setRequestGlobalAction
-})(withRouter(injectIntl(SingleProfile)))
+})(withRouter(injectIntl(DisplayProfile)))
