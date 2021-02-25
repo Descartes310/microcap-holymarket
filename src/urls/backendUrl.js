@@ -9,6 +9,7 @@ const publicPrefix = shouldHavePublic ? 'public/' : '';
 export const AUTH = {
     LOGIN: 'oauth/token',
     LOGIN_WITH_SERVICE_NUMBER: 'auth/login',
+    GET_ALL_BY_NAME_AND_URL: 'auth/cgu/by-url',
     COUNTRY: {
         LIST: 'auth/countries',
         OPERATORS: 'auth/countries/{country}/microcap-operators'

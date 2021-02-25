@@ -14,11 +14,15 @@ import { askValidationCode, verifyCode, setRequestGlobalAction } from "Actions";
 import { ERROR_500 } from "Constants/errors";
 import { connect } from "react-redux";
 import { Document, Page, pdfjs } from 'react-pdf';
+import FormControl from "@material-ui/core/FormControl";
+import Checkbox from "@material-ui/core/Checkbox/Checkbox";
+import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
+import InputComponent from "Components/InputComponent";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 class ActivationBox extends Component {
-    
+
     constructor(props) {
         super(props);
         this.state = {
@@ -26,6 +30,7 @@ class ActivationBox extends Component {
             loading: false,
             codeToVerify: '',
             hasAskCode: false,
+            accept: false,
             numPages: 1,
             pageNumber: 1,
         }
@@ -56,12 +61,12 @@ class ActivationBox extends Component {
 
     onDocumentLoadSuccess = ({ numPages }) => {
         this.setState({ numPages, pageNumber: 1 });
-	}
+    }
 
     onVerifyCode = () => {
         this.props.setRequestGlobalAction(true);
         this.setState({ loading: true });
-        verifyCode(this.props.authUser.user.id, this.state.codeToVerify)
+        verifyCode(this.props.authUser.user.id, this.state.codeToVerify, this.props.notification.id)
             .then(() => {
                 NotificationManager.success("Votre compte a été activé avec success");
                 this.props.onClose();
@@ -103,16 +108,26 @@ class ActivationBox extends Component {
                         <div className="card mb-0 transaction-box">
                             <TabContainer>
                                 <div className="p-sm-20 pt-sm-30 p-10 pt-15 border-top">
+
                                     <>
                                         {this.state.hasAskCode ? (
-                                            <Button
-                                                color="primary"
-                                                disabled={this.state.loading}
-                                                className="text-white bg-blue mr-2"
-                                                onClick={this.onAskAnotherCode}
-                                            >
-                                                Demander un autre code
+                                            <>
+                                                <div>
+                                                    <label>J'ai lu et j'accepte les CGU</label>
+                                                    <Checkbox
+                                                        color="primary"
+                                                        onChange={(e) => this.setState({ accept: e.target.checked })}
+                                                    />
+                                                </div>
+                                                <Button
+                                                    color="primary"
+                                                    disabled={this.state.loading || !this.state.accept}
+                                                    className="text-white bg-blue mr-2"
+                                                    onClick={this.onAskAnotherCode}
+                                                >
+                                                    Demander un autre code
                                             </Button>
+                                            </>
                                         ) : (
                                                 <>
                                                     <Document
@@ -121,9 +136,16 @@ class ActivationBox extends Component {
                                                     >
                                                         <Page pageNumber={this.state.pageNumber} />
                                                     </Document>
+                                                    <div>
+                                                        <label>J'ai lu et j'accepte les CGU</label>
+                                                        <Checkbox
+                                                            color="primary"
+                                                            onChange={(e) => this.setState({ accept: e.target.checked })}
+                                                        />
+                                                    </div>
                                                     <Button
                                                         color="primary"
-                                                        disabled={this.state.loading}
+                                                        disabled={this.state.loading || !this.state.accept}
                                                         className="text-white mr-2"
                                                         onClick={this.onAskCode}
                                                     >
@@ -132,6 +154,15 @@ class ActivationBox extends Component {
                                                 </>
                                             )}
                                     </>
+                                    <Button
+                                        color="primary"
+                                        className="text-white bg-blue mr-2"
+                                        href={this.props.pdfUrl}
+                                        target="_blank"
+                                        download
+                                    >
+                                        Télécharger les CGU ici
+                                    </Button>
                                 </div>
                             </TabContainer>
                         </div>

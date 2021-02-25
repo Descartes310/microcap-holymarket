@@ -231,6 +231,11 @@ export const getAllSettingsByName = (id, name) => {
     return makeRequest('get', url);
 };
 
+export const getAllSettingsByNameAndUrl = (id, name) => {
+    const url = `${AUTH.GET_ALL_BY_NAME_AND_URL}?name=${name}&url=${id}`;
+    return makeRequest('get', url);
+};
+
 export const getNetworkProfilePartnership = (branchId) => {
     return new Promise((resolve, reject) => {
         api.get(NETWORK_PROFILE.PARTNERSHIP.GET_ALL)
@@ -661,6 +666,11 @@ export const createNotificationType = (data, branchId) => {
     return makeRequest('post', url, data);
 };
 
+export const changeNotificationStatus = (id) => {
+    const url = `${NOTIFICATIONS.GET_ALL}?notification_id=${id}`;
+    return makeRequest('put', url, null);
+};
+
 export const getCountUnreadNotifications = (userId) => {
     const url = `${NOTIFICATIONS.SELF.COUNT_UNREAD}?user_id=${userId}`;
     return makeRequest('get', url);
@@ -690,9 +700,9 @@ export const askValidationCode = (userId) => {
     return makeRequest('post', url);
 };
 
-export const verifyCode = (userId, otp) => {
+export const verifyCode = (userId, otp, notification_id) => {
     const url = joinBaseUrlWithParamsId(USERS.VALIDATION.VERIFY, userId);
-    return makeRequest('put', url, { otp });
+    return makeRequest('put', url, { otp, notification_id });
 };
 
 export const activateBranch = (data) => {

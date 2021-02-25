@@ -7,7 +7,7 @@ import NotificationType from "Enums/NotificationType";
 
 class Item extends Component {
     render() {
-        const { notification, onActivationClick, authUser, onAskingPieceClick } = this.props;
+        const { notification, onActivationClick, authUser, onAskingPieceClick, markAsRead, state } = this.props;
         return (
             <ListItem className="row px-20 py-3 align-items-center notification-hover-wrapper" button>
                 <div className="col-md-9">
@@ -40,7 +40,7 @@ class Item extends Component {
                                 </span>
                             )}
                         </div>
-                    ) : notification.notificationType === NotificationType.PIECE_REQUEST ? (
+                    ) : notification.notificationType === NotificationType.PIECE_REQUEST && state != 'TREATED' ? (
                         <>
                           <span className="font-xs text-muted font-weight-light d-block comment-date">{notification.createdAt.fromNow()}</span>
                           <div className="notification-hover d-flex align-items-center justify-content-end">
@@ -49,11 +49,12 @@ class Item extends Component {
                               </Fab>
                           </div>
                         </>
-                    ) : (
+                    ) : state == 'UNREAD' ? (
                         <>
                           <span className="font-xs text-muted font-weight-light d-block comment-date">{notification.createdAt.fromNow()}</span>
                           <div className="notification-hover d-flex align-items-center justify-content-end">
-                              <Fab variant="round" size="small" color="primary" className="btn-sm mx-1 bg-primary text-white">
+                              <Fab variant="round" size="small" color="primary" className="btn-sm mx-1 bg-primary text-white" 
+                                    onClick={() => markAsRead()}>
                                   <i className="zmdi zmdi-check"/>
                               </Fab>
                               <Fab variant="round" size="small" className="bg-blue text-white btn-sm mx-1">
@@ -61,7 +62,7 @@ class Item extends Component {
                               </Fab>
                           </div>
                         </>
-                    )}
+                    ) : null}
                 </div>
             </ListItem>
         );

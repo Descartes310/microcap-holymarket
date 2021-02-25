@@ -64,7 +64,7 @@ module.exports = {
    "common.registrationType": "Type d'immatriculation",
    "common.registrationNumber": "Numéro d'immatriculation",
    "common.registrationBeginningDate": "Date du debut d'immatriculation",
-   "common.agreeTermsConditions": "J'accepte nos Conditions d'utilisation",
+   "common.agreeTermsConditions": "J'accepte les Conditions d'utilisation",
    "common.acceptTermsAndConditions": "Vous devez accepter nos Conditions d'utilisation",
    "sidebar.app": "App",
    "sidebar.horizontal": "Horizontal",

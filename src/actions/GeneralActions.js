@@ -281,8 +281,8 @@ export const getServicesNotifications = (branchId) => (dispatch) => {
     return makeActionRequest('get', url, NOTIFICATION_SERVICE, dispatch);
 };
 
-export const getAllNotifications = (userId) => (dispatch) => {
-    const url = `${NOTIFICATIONS_API.SELF.GET_ALL.SELF}?user_id=${userId}`;
+export const getAllNotifications = (userId, state) => (dispatch) => {
+    const url = `${NOTIFICATIONS_API.SELF.GET_ALL.SELF}?user_id=${userId}&state=${state}`;
     return makeActionRequest('get', url, NOTIFICATION, dispatch);
 };
 

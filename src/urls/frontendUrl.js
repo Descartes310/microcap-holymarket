@@ -175,7 +175,9 @@ export const ACCESS = {
 
 export const NOTIFICATIONS = {
     SELF: '/notifications',
-    LIST: '/notifications/list',
+    LIST: '/notifications/unread',
+    READ: '/notifications/read',
+    TREATED: '/notifications/treated',
     // CREATE: '/notifications/create',
 };
 

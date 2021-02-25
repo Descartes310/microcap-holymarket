@@ -17,8 +17,9 @@ import Input from "@material-ui/core/Input/Input";
 import CustomAsyncComponent from "Components/CustomAsyncComponent";
 import { NotificationManager } from 'react-notifications';
 import * as moment from "moment";
+import { Link } from 'react-router-dom';
 import _ from 'lodash';
-import { getOperators, getRegistrationType, getResidenceCountries } from "Actions/independentActions";
+import { getOperators, getRegistrationType, getResidenceCountries, getAllSettingsByNameAndUrl } from "Actions/independentActions";
 import Checkbox from "@material-ui/core/Checkbox/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
 
@@ -35,6 +36,7 @@ const ThirdStep = props => {
     const hasAcceptedTermsOfServicesWatch = watch('hasAcceptedTermsOfServices');
 
     const [oldFormState, setOldFormState] = useState({});
+    const [cgu, setCgu] = useState('');
     const [errorMessages, setErrorMessages] = useState({
         startingDate: '',
         endingDate: '',
@@ -59,6 +61,7 @@ const ThirdStep = props => {
     useEffect(() => {
         _getRegistrationCountries();
         _getRegistrationType();
+        getCGU();
     }, []);
 
     const _getRegistrationCountries = () => {
@@ -87,6 +90,12 @@ const ThirdStep = props => {
                 setOperator({ loading: false, data: null });
                 NotificationManager.error("An error occur " + error);
             });
+    };    
+
+    const getCGU = () => {
+        getAllSettingsByNameAndUrl(window.location.host, 'CGU').then(data => {
+            setCgu(data[0]);
+        })
     };
 
     const _getRegistrationType = () => {
@@ -319,7 +328,11 @@ const ThirdStep = props => {
                             checked={hasAcceptedTermsOfServicesWatch}
                             onChange={() => setValue('hasAcceptedTermsOfServices', !hasAcceptedTermsOfServicesWatch)}
                         />
-                    } label={intl.formatMessage({ id: 'common.agreeTermsConditions' })}
+                    } label={
+                        <>
+                        J'accepte les <a href={cgu.value} target='_blank' >conditions générales d'utilisation</a>
+                        </>
+                    }
                     />}
                 />
             </FormControl>

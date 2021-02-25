@@ -37,7 +37,7 @@ class HeaderNotifications extends Component {
              NotificationManager.error(ERROR_500);
           });
 
-      this.props.getAllNotifications(this.props.authUser.user.id);
+      this.props.getAllNotifications(this.props.authUser.user.id, 'UNREAD');
    }
 
    viewAll = () => {
