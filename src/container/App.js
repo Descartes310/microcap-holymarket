@@ -19,6 +19,7 @@ import SendResetPasswordLink from './../routes/session/forgot-password/SendReset
 // callback component
 import {AUTH, DISCOVER, STORE} from "../urls/frontendUrl";
 import {setAuthUser, loginIntoStore, disableAppLoading} from 'Actions';
+import {getCurrencies} from 'Actions/GeneralActions';
 import RctPageLoader from "Components/RctPageLoader/RctPageLoader";
 import {getAuthToken} from "Helpers/tokens";
 import {isUserIntoStoreValid} from "Helpers/helpers";
@@ -34,6 +35,7 @@ class App extends Component {
 
     componentDidMount() {
         this.isNewUser();
+        this.props.getCurrencies();
     }
 
     /**
@@ -110,4 +112,4 @@ const mapStateToProps = ({ authUser, tokens, appLoading }) => {
     return { tokens, authUser, appLoading };
 };
 
-export default connect(mapStateToProps, {setAuthUser, disableAppLoading, loginIntoStore})(App);
+export default connect(mapStateToProps, {setAuthUser, disableAppLoading, loginIntoStore, getCurrencies})(App);

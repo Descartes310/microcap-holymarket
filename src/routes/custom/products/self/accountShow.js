@@ -5,7 +5,7 @@ import { withRouter } from "react-router-dom";
 import { withStyles } from "@material-ui/core";
 import { AbilityContext } from "Permissions/Can";
 import { getProductItemAvailable, setRequestGlobalAction } from "Actions";
-import { getAccountDetails, approvisioningVoucher, approvisioningCard, getAccountTransactions } from "Actions/independentActions";
+import { getAccountDetails, approvisioningVoucher, approvisioningCard, getAccountTransactions, changeCurrency } from "Actions/independentActions";
 import { NotificationManager } from "react-notifications";
 import { ERROR_500 } from "Constants/errors";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
@@ -18,9 +18,14 @@ import FormControl from "@material-ui/core/FormControl";
 import IconButton from "@material-ui/core/IconButton";
 import SweetAlert from "react-bootstrap-sweetalert";
 import TimeFromMoment from "Components/TimeFromMoment";
+import AmountCurrency from "Components/AmountCurrency";
 import StripeCheckout from 'react-stripe-checkout';
 import DocService from 'Helpers/DocService';
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
+import DialogTitle from "@material-ui/core/DialogTitle/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent/DialogContent";
+import Dialog from "@material-ui/core/Dialog/Dialog";
+import CancelIcon from '@material-ui/icons/Cancel';
 
 class AccountShow extends Component {
     static contextType = AbilityContext;
@@ -32,11 +37,12 @@ class AccountShow extends Component {
             account: [],
             balance: '0',
             amount: 0,
-            currency: 'Currency',
+            currency: null,
             showQuantityBox: false,
             paying: false,
             transactions: {},
-            printing: false
+            printing: false,
+            showCurrencyBox: false
         }
         this.billRef = React.createRef();
     }
@@ -55,10 +61,26 @@ class AccountShow extends Component {
                         })
                 });
                 let balance = account.detailsProducts.filter(d => d.detailsType.name == 'SOLDE')
+                let currency = account.detailsProducts.filter(d => d.detailsType.name == 'CURRENCY')
                 if (balance.length > 0) {
                     this.setState({ balance: balance[0].value })
                 }
-                this.setState({ currency: account.typeProduct.currency });
+                if(currency.length > 0)
+                    this.setState({ currency: currency[0].value });
+                else
+                    this.setState({ currency: 'EUR' });
+            })
+            .catch((err) => {
+                NotificationManager.error(ERROR_500);
+            })
+            .finally(() => this.setState({ loading: false }));
+    };
+
+    changeAccountCurrency = (id) => {
+        changeCurrency(this.props.match.params.id, id)
+            .then(response => {
+                this.loadData();
+                this.setState({ showCurrencyBox: false })
             })
             .catch((err) => {
                 NotificationManager.error(ERROR_500);
@@ -112,14 +134,12 @@ class AccountShow extends Component {
     generateBills = (name) => {
         this.setState({ printing: true }, () => {
             DocService.createPdf(this.billRef.current, name, (new Date()).toISOString(), () => {
-                console.log('Yep')
-                // this.setState({ printing: false });
             });
         })
     }
 
     render() {
-        const { loading, account, balance, currency, showQuantityBox, transactions, paying, printing } = this.state;
+        const { loading, account, balance, currency, showQuantityBox, transactions, paying, printing, showCurrencyBox } = this.state;
         const { match, history, classes } = this.props;
 
         return (
@@ -147,7 +167,7 @@ class AccountShow extends Component {
                                                         <p style={{
                                                             fontSize: '1.3em',
                                                             textAlign: 'center',
-                                                            padding: 5,
+                                                            paddingTop: 5,
                                                             cursor: 'pointer'
                                                         }}>
                                                             Voir le relévé
@@ -157,7 +177,7 @@ class AccountShow extends Component {
                                                         <p style={{
                                                             fontSize: '1.3em',
                                                             textAlign: 'center',
-                                                            padding: 5,
+                                                            paddingTop: 5,
                                                             cursor: 'pointer'
                                                         }}>
                                                             Imprimer
@@ -167,11 +187,21 @@ class AccountShow extends Component {
                                                         <p style={{
                                                             fontSize: '1.3em',
                                                             textAlign: 'center',
-                                                            padding: 5,
+                                                            paddingTop: 5,
                                                             cursor: 'pointer'
                                                         }}>
-                                                            Modifier le libellé du compte
+                                                            Modifier le libellé
                                                     </p>
+                                                    </li>
+                                                    <li style={{ width: '98%' }} onClick={() => this.setState({ showCurrencyBox: true })}>
+                                                        <p style={{
+                                                            fontSize: '1.3em',
+                                                            textAlign: 'center',
+                                                            paddingTop: 5,
+                                                            cursor: 'pointer'
+                                                        }}>
+                                                            Modifier la devise
+                                                        </p>
                                                     </li>
 
                                                 </ul>
@@ -180,7 +210,7 @@ class AccountShow extends Component {
                                     </DropdownMenu>
                                 </UncontrolledDropdown>
                             </div>
-                            <h1 className="mr-2"><span style={{ color: '#fed039' }}>Solde:</span> {balance} {currency}</h1>
+                            <h1 className="mr-2"><span style={{ color: '#fed039' }}>Solde:</span> <AmountCurrency styles={{ fontSize: '1.1em' }} amount={balance} from={currency} to={currency} /></h1>
                         </div>
                         <div className="d-flex justify-content-between align-items-center" style={{ padding: 40 }}>
                             <FormControl>
@@ -235,7 +265,7 @@ class AccountShow extends Component {
                                             token={this.handleApprovisioningCard}
                                             amount={this.state.amount * 100}
                                             name="Recharger le compte"
-                                            currency='EUR'
+                                            currency={currency}
                                             label="Recharger"
                                         />
                                         <Button
@@ -299,7 +329,7 @@ class AccountShow extends Component {
                                                                 <td>
                                                                     <div className="media">
                                                                         <div className="media-body">
-                                                                            <h4 className="m-0 text-dark">{transaction.amount} {currency}</h4>
+                                                                            <h4 className="m-0 text-dark"><AmountCurrency amount={transaction.amount} from={transaction.currency} to={currency} /></h4>
                                                                         </div>
                                                                     </div>
                                                                 </td>
@@ -345,6 +375,74 @@ class AccountShow extends Component {
                 >
                     Entrez le code du coupon de recharge
                 </SweetAlert>
+                <Dialog
+                    open={showCurrencyBox}
+                    onClose={() => { this.setState({ showCurrencyBox: false }) }}
+                    aria-labelledby="responsive-dialog-title"
+                    maxWidth={'md'}
+                    fullWidth
+                >
+                    <DialogTitle id="form-dialog-title">
+                        <div className="row justify-content-between align-items-center">
+                            Modifier la devise du compte
+                            <IconButton
+                                color="primary"
+                                aria-label="close"
+                                className="text-danger"
+                                onClick={() => { this.setState({ showCurrencyBox: false }) }}>
+                                <CancelIcon />
+                            </IconButton>
+                        </div>
+                    </DialogTitle>
+                    <DialogContent>
+                        <table className="table table-hover table-middle mb-0 text-center">
+                            <thead>
+                                <tr>
+                                    <th>Nom</th>
+                                    <th>Code</th>
+                                    <th>status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {
+                                    this.props.currencies.map(c => (
+                                        <tr>
+                                            <td>{c.name}</td>
+                                            <td>{c.code}</td>
+                                            <td style={{
+                                                display: 'flex',
+                                                justifyContent: 'center',
+                                                alignItems: 'center'
+                                            }}>
+                                                <div className="user-status-pending" style={{ position: 'relative' }}>
+                                                    <div className={`user-status-pending-circle rct-notify`} style={{
+                                                        background: c.code == currency ? 'green' : 'red'
+                                                    }} />
+                                                </div>
+                                            </td>
+                                            <td>
+                                                {
+                                                    c.code != currency ?
+                                                        <Button
+                                                            size="small"
+                                                            color="primary"
+                                                            variant="contained"
+                                                            className={"text-white font-weight-bold mr-3 bg-blue"}
+                                                            onClick={() => this.changeAccountCurrency(c.id)}
+                                                        >
+                                                            Sélectionner
+                                                        </Button>
+                                                        : null
+                                                }
+                                            </td>
+                                        </tr>
+                                    ))
+                                }
+                            </tbody>
+                        </table>
+                    </DialogContent>
+                </Dialog>
             </>
         );
     }
@@ -370,10 +468,11 @@ const useStyles = theme => ({
 });
 
 // map state to props
-const mapStateToProps = ({ requestGlobalLoader, authUser }) => {
+const mapStateToProps = ({ requestGlobalLoader, authUser, settings }) => {
     return {
         requestGlobalLoader,
-        authUser: authUser.data
+        authUser: authUser.data,
+        currencies: settings.currencies
     }
 };
 

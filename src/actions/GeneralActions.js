@@ -13,6 +13,9 @@ import {
     BRANCH_PRODUCT_SUCCESS,
     BRANCH_PRODUCT_FAILURE,
     CATALOG_PRODUCTS,
+    SET_CURRENCIES,
+    SET_CURRENCIES_SUCCESS,
+    SET_CURRENCIES_FAILURE,
     PRODUCT_TYPE,
     USER_PROFILE,
     USER_PERMISSIONS,
@@ -63,6 +66,7 @@ import {
     ACCESS as ACCESS_API,
     NOTIFICATIONS as NOTIFICATIONS_API,
     PROJECTS as PROJECTS_API,
+    SETTING as SETTING_API,
     joinBaseUrlWithParams,
     BRANCH, joinBaseUrlWithParamsId,
 } from 'Url/backendUrl';
@@ -147,6 +151,21 @@ export const getCategoryProducts = (branchId) => (dispatch) => {
 export const getProductTypes = (branchId) => (dispatch) => {
     const url = `${PRODUCT_TYPE_API.GET_ALL}?branch_id=${branchId}`;
     return makeActionRequest('get', url, PRODUCT_TYPE, dispatch);
+};
+
+export const getCurrencies = () => (dispatch) => {
+    const url = `${SETTING_API.CURRENCIES}`;    
+    dispatch({ type: SET_CURRENCIES });
+    return api
+        .get(url)
+        .then((response) => {
+            dispatch({ type: SET_CURRENCIES_SUCCESS, payload: response.data });
+            return Promise.resolve();
+        })
+        .catch(() => {
+            dispatch({ type: SET_CURRENCIES_FAILURE });
+            return Promise.reject();
+        });
 };
 
 export const getUserProfiles = (branchId, type) => (dispatch) => {

@@ -37,7 +37,7 @@ import Select from "@material-ui/core/Select";
 import Input from "@material-ui/core/Input";
 import Product from "Enums/Product";
 import CustomAsyncComponent from "Components/CustomAsyncComponent";
-import { createProductType } from "Actions/independentActions";
+import { createProductType, getCurrencies } from "Actions/independentActions";
 import { getProductTypes } from "Actions/GeneralActions";
 import { ERROR_500 } from "Constants/errors";
 
@@ -54,6 +54,7 @@ const CategoryProductsCreate = props => {
 
     const [products, setProducts] = useState(props.productTypes);
     const [chosenProducts, setChosenProducts] = useState([]);
+    const [currencies, setCurrencies] = useState([]);
     const [showCreateBox, setShowCreateBox] = useState(false);
     const [showDeleteBox, setShowDeleteBox] = useState(false);
     const [deleteProduct, setDeleteProduct] = useState(null);
@@ -77,6 +78,7 @@ const CategoryProductsCreate = props => {
         fetchCatalogTypes();
         // getProductTypes(authUser.user.branch.id);
         fetchSysProductNature();
+        fetchCurrencies();
         if (!authUser.isExploitant())
             fetchRootProductType();
     }, []);
@@ -133,6 +135,13 @@ const CategoryProductsCreate = props => {
                     data: null
                 })
             })
+    };
+
+    const fetchCurrencies = () => {
+        getCurrencies()
+            .then(result => {
+                setCurrencies(result)
+            });
     };
 
     const onAddProduct = (product) => {
@@ -304,7 +313,7 @@ const CategoryProductsCreate = props => {
                                 <div className="col-md-8 col-sm-12">
                                     <CustomAsyncComponent
                                         loading={false}
-                                        data={["EURO", "XAF", "USD"]}
+                                        data={currencies}
                                         component={data => (
                                             <div className="form-group text-left">
                                                 <FormControl fullWidth>
@@ -323,8 +332,8 @@ const CategoryProductsCreate = props => {
                                                         defaultValue={data[0]}
                                                         as={<Select input={<Input name="currency" id="currency-helper" />}>
                                                             {data.map((item, index) => (
-                                                                <MenuItem key={index} value={item} className="center-hor-ver">
-                                                                    {item}
+                                                                <MenuItem key={index} value={item.code} className="center-hor-ver">
+                                                                    {item.name}
                                                                 </MenuItem>
                                                             ))}
                                                         </Select>}

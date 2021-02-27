@@ -33,6 +33,7 @@ export const SETTING = {
     GET_ALL: 'api/settings/branchs/{id}',
     GET_ALL_BY_NAME: 'api/settings/branchs/{id}/by-name',
     CGU: 'api/settings/update/cgu',
+    CURRENCIES: 'api/settings/currencies',
 };
 
 export const SYSTEM_OBJECT = {
@@ -272,7 +273,8 @@ export const ACCOUNT = {
     GET_TRANSACTIONS: 'public/accounts/{id}/mouvements',
     GET_ACCOUNT_BY_AMOUNT: 'public/accounts/users/{id}/account-by-amount',
     APPROVISIONING_VOUCHER: 'public/accounts/{id}/approvisioning/voucher',
-    APPROVISIONING_CARD: 'public/accounts/{id}/approvisioning/card'
+    APPROVISIONING_CARD: 'public/accounts/{id}/approvisioning/card',
+    CHANGE_CURRENCY: 'public/accounts/{id}/currency'
 };
 
 export const SALES = {

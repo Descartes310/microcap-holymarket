@@ -8,6 +8,7 @@ import {
 	DARK_MODE,
 	BOXED_LAYOUT,
 	RTL_LAYOUT,
+	SET_CURRENCIES_SUCCESS,
 	MINI_SIDEBAR,
 	SEARCH_FORM_ENABLE,
 	CHANGE_THEME_COLOR,
@@ -32,6 +33,7 @@ const INIT_STATE = {
 	darkMode: AppConfig.darkMode,
 	boxLayout: AppConfig.boxLayout,
 	rtlLayout: AppConfig.rtlLayout,
+	currencies: [],
 	miniSidebar: AppConfig.miniSidebar,
 	searchFormOpen: false, // search form by default false
 	startUserTour: false,
@@ -153,6 +155,10 @@ export default (state = INIT_STATE, action) => {
 		// set language
 		case SET_LANGUAGE:
 			return { ...state, locale: action.payload };
+
+		// set currencies
+		case SET_CURRENCIES_SUCCESS:
+			return { ...state, currencies: action.payload };
 
 		// dark sidenav
 		case TOGGLE_DARK_SIDENAV:

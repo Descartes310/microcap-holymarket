@@ -18,6 +18,7 @@ import AppConfig from 'Constants/AppConfig';
 import {AUTH} from '../urls/backendUrl';
 import {removeAuthToken, saveAuthToken} from "Helpers/tokens";
 import {setAuthUser} from "Actions/AuthActions";
+import {getCurrencies} from "Actions/GeneralActions";
 import {getFullAuthorisationRequestConfig} from "Helpers/helpers";
 
 const errorDisplay = (error) => {
@@ -66,6 +67,8 @@ export const loginUserWithEmailAndPassword = (data) => (dispatch) => {
 
             // Fetch user data
             dispatch(setAuthUser(_data.gotServiceNumber ? _data.serviceNumber : null ));
+
+            dispatch(getCurrencies());
 
             // Persist data into store
             dispatch({ type: LOGIN_USER_SUCCESS, payload: data });

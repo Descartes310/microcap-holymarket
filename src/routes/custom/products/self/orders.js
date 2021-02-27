@@ -39,7 +39,7 @@ class Order extends Component {
     loadData = () => {
         getUserSales(this.props.authUser.user.id)
             .then(products => {
-                this.setState({ products });
+                this.setState({ products: products.reverse() });
             })
             .catch(() => {
                 NotificationManager.error(ERROR_500);
@@ -69,10 +69,10 @@ class Order extends Component {
                                         <table className="table table-hover table-middle mb-0 text-center">
                                             <thead>
                                                 <tr>
-                                                    <th><IntlMessages id="components.name" /></th>
-                                                    <th>Pays</th>
+                                                    <th>Numéro</th>
+                                                    {/* <th>Pays</th> */}
                                                     <th>Adresse</th>
-                                                    <th>Zip code</th>
+                                                    {/* <th>Zip code</th> */}
                                                     <th>Date de commande</th>
                                                     <th>Actions</th>
                                                 </tr>
@@ -87,13 +87,13 @@ class Order extends Component {
                                                                 </div>
                                                             </div>
                                                         </td>
-                                                        <td>
+                                                        {/* <td>
                                                             <div className="media">
                                                                 <div className="media-body pt-10">
                                                                     <h4 className="m-0 fw-bold text-dark">{item.country}</h4>
                                                                 </div>
                                                             </div>
-                                                        </td>
+                                                        </td> */}
                                                         <td>
                                                             <div className="media">
                                                                 <div className="media-body pt-10">
@@ -101,18 +101,18 @@ class Order extends Component {
                                                                 </div>
                                                             </div>
                                                         </td>
-                                                        <td>
+                                                        {/* <td>
                                                             <div className="media">
                                                                 <div className="media-body pt-10">
                                                                     <h4 className="m-0 fw-bold text-dark">{item.zip}</h4>
                                                                 </div>
                                                             </div>
-                                                        </td>
+                                                        </td> */}
                                                         <td>
                                                             <div className="media">
                                                                 <div className="media-body pt-10">
                                                                     <h4 className="m-0 fw-bold text-dark">
-                                                                        <TimeFromMoment time={item.updatedAt} />
+                                                                        <TimeFromMoment time={item.updatedAt} showFullDate />
                                                                     </h4>
                                                                 </div>
                                                             </div>
@@ -125,7 +125,7 @@ class Order extends Component {
                                                                 className={"text-white font-weight-bold mr-3 bg-blue"}
                                                                 onClick={() => this.onEnterClick(item)}
                                                             >
-                                                                Voir les produits
+                                                                Voir les détails
                                                             </Button>
                                                         </td>
                                                     </tr>

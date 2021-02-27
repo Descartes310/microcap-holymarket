@@ -15,6 +15,7 @@ import { ERROR_500 } from "Constants/errors";
 import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
 import FetchFailedComponent from "Components/FetchFailedComponent";
 import Button from "@material-ui/core/Button";
+import AmountCurrency from "Components/AmountCurrency";
 
 class Account extends Component {
     static contextType = AbilityContext;
@@ -118,7 +119,7 @@ class Account extends Component {
                                                                             <td>
                                                                                 <div className="media">
                                                                                     <div className="media-body pt-10">
-                                                                                        <h4 className="m-0 fw-bold text-dark"> { account.detailsProducts.filter(d => d.detailsType.name == 'SOLDE').length > 0 ? account.detailsProducts.filter(d => d.detailsType.name == 'SOLDE')[0].value : 0 } {account.typeProduct.currency}</h4>
+                                                                                        <h4 className="m-0 fw-bold text-dark"> <AmountCurrency amount={ account.detailsProducts.filter(d => d.detailsType.name == 'SOLDE').length > 0 ? account.detailsProducts.filter(d => d.detailsType.name == 'SOLDE')[0].value : 0 } from={account.detailsProducts.filter(d => d.detailsType.name == 'CURRENCY').length > 0 ? account.detailsProducts.filter(d => d.detailsType.name == 'CURRENCY')[0].value : 'EUR'} to={account.detailsProducts.filter(d => d.detailsType.name == 'CURRENCY').length > 0 ? account.detailsProducts.filter(d => d.detailsType.name == 'CURRENCY')[0].value : 'EUR'} /></h4>
                                                                                     </div>
                                                                                 </div>
                                                                             </td>

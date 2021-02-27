@@ -337,6 +337,11 @@ export const getUser = (userId) => {
     return makeRequest('get', url);
 };
 
+export const getCurrencies = () => {
+    const url = `${SETTING.CURRENCIES}`;
+    return makeRequest('get', url);
+};
+
 export const createUsers = (data, branchId) => {
     const url = `${USERS.CREATE.PERSON}?branch_id=${branchId}`;
     return makeRequest('post', url, data);
@@ -588,6 +593,11 @@ export const getRootProductType = (branchId) => {
 
 export const setPackageActivationStatus = (packageId, shouldActivate) => {
     const url = `${PACKAGES[shouldActivate ? 'ACTIVATE' : 'DEACTIVATE']}?package_id=${packageId}`;
+    return makeRequest('put', url);
+};
+
+export const changeCurrency = (accountId, currencyId) => {
+    const url = joinBaseUrlWithParamsId(`${ACCOUNT.CHANGE_CURRENCY}?currency_id=${currencyId}`, accountId);
     return makeRequest('put', url);
 };
 
