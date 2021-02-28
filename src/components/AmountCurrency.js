@@ -118,11 +118,10 @@ class AmountCurrency extends Component {
 
     render() {
         const { className, styles, amount, from, to, quantity, amounts, notShowCurrency } = this.props;
-        console.log('SORTIE => ', to)
         return (
             <>
                 {
-                    amount ?
+                    amount != null ?
                         <span className={className} style={styles} >
                             {
                                 quantity ?
