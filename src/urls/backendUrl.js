@@ -56,7 +56,7 @@ export const BRANCH = {
         STOP: 'public/branchs/close/configurations/{id}',
     },
     PRODUCTS: {
-        GET_ALL: '/public/type-products/get-all',
+        GET_ALL: '/api/type-products/get-all',
     },
     SAMPLE: {
         GET_ALL: "public/branchs/staging",
@@ -121,15 +121,15 @@ export const CATEGORY_PRODUCTS = {
 };
 
 export const PRODUCT_TYPE = {
-    ROOT: 'public/type-products/root',
-    GET_ALL: 'public/type-products/get-all',
-    CREATE: 'public/type-products',
-    GET_ONE: 'public/type-products/{id}',
-    GET_ONE_FROM_COM_OFFER: 'public/type-products/offer/{id}',
-    TYPE_PRODUCTS: 'public/type-catalogs/type-products',
-    SUB_CATEGORY: 'public/type-products/{id}/type-products',
-    GET_ALL_BY_SALE: 'public/type-products/by-catalogue-vente',
-    AVAILABLE: 'public/type-products/{id}/variations',
+    ROOT: 'api/type-products/root',
+    GET_ALL: 'api/type-products/get-all',
+    CREATE: 'api/type-products',
+    GET_ONE: 'api/type-products/{id}',
+    GET_ONE_FROM_COM_OFFER: 'api/type-products/offer/{id}',
+    TYPE_PRODUCTS: 'api/type-catalogs/type-products',
+    SUB_CATEGORY: 'api/type-products/{id}/type-products',
+    GET_ALL_BY_SALE: 'api/type-products/by-catalogue-vente',
+    AVAILABLE: 'api/type-products/{id}/variations',
 };
 
 export const PACKAGES = {
@@ -150,23 +150,24 @@ export const USER_PROFILE = {
 };
 
 export const USERS = {
-    BRANCH_USERS: 'public/users',
-    SEARCH: 'public/users/search',
-    GET_ONE: '/public/users/one',
-    GET_ALL: 'public/users/persons',
-    GET_ALL_BY_ORGANISATION: 'public/users/persons/by-organisation',
-    GET_ALL_PARTNER: 'public/users/organisations/branch/{id}/partner',
-    GET_ALL_PARTNER_OPERATOR: 'public/users/organisations/branch/{id}/partner/operator',
-    GET_ALL_PARTNER_OPERATOR_ME: 'public/users/organisations/partner/operator/me/{id}',
-    GET_ALL_ORGANISATIONS: 'public/users/organisations',
-    GET_ORGANISATION_REFERENCE: 'public/users/organisations/adhesion/{id}',
+    BRANCH_USERS: 'api/users',
+    SEARCH: 'api/users/search',
+    GET_ONE: '/api/users/one',
+    GET_ALL: 'api/users/persons',
+    UPDATE_CURRENCY: 'api/users/currency/{id}',
+    GET_ALL_BY_ORGANISATION: 'api/users/persons/by-organisation',
+    GET_ALL_PARTNER: 'api/users/organisations/branch/{id}/partner',
+    GET_ALL_PARTNER_OPERATOR: 'api/users/organisations/branch/{id}/partner/operator',
+    GET_ALL_PARTNER_OPERATOR_ME: 'api/users/organisations/partner/operator/me/{id}',
+    GET_ALL_ORGANISATIONS: 'api/users/organisations',
+    GET_ORGANISATION_REFERENCE: 'api/users/organisations/adhesion/{id}',
     CREATE: {
-        PERSON: 'public/users/persons/with-profile',
-        ORGANISATION: 'public/users/organisations/with-profile',
-        PARTNER: 'public/users/organisations/{id}/partner',
+        PERSON: 'api/users/persons/with-profile',
+        ORGANISATION: 'api/users/organisations/with-profile',
+        PARTNER: 'api/users/organisations/{id}/partner',
     },
     UPDATE: {
-        PERSON: '/public/users'
+        PERSON: '/api/users'
     },
     ACCOUNTS: {
         GET_ALL: '/public/type-network-profiles',
@@ -174,16 +175,16 @@ export const USERS = {
         CREATE: '/public/type-network-profiles',
     },
     VALIDATION: {
-        SEND_OTP: 'public/users/{id}/otp/mail',
-        VERIFY: 'public/users/{id}/otp'
+        SEND_OTP: 'api/users/{id}/otp/mail',
+        VERIFY: 'api/users/{id}/otp'
     },
     PIECE: {
-        GET_ALL: 'public/users/pieces/{id}/get',
-        GET_USER: 'public/users/pieces/user/{id}/get',
-        CREATE: 'public/users/pieces/create',
-        CREATE_FOR_USER: 'public/users/pieces/value/create',
-        UPDATE_FOR_USER: 'public/users/pieces/value/update',
-        DELETE_FOR_USER: 'public/users/pieces/value/{id}/delete'
+        GET_ALL: 'api/users/pieces/{id}/get',
+        GET_USER: 'api/users/pieces/user/{id}/get',
+        CREATE: 'api/users/pieces/create',
+        CREATE_FOR_USER: 'api/users/pieces/value/create',
+        UPDATE_FOR_USER: 'api/users/pieces/value/update',
+        DELETE_FOR_USER: 'api/users/pieces/value/{id}/delete'
     }
 };
 
@@ -263,25 +264,27 @@ export const COMMERCIAL_MANAGEMENT = {
 };
 
 export const ORDER = {
-    GET_ALL: 'public/order',
-    GET_ONE: 'public/order/{id}',
-    CREATE: 'public/order',
+    GET_ALL: 'api/order/users',
+    GET_ONE: 'api/order/{id}',
+    GET_ONE_SALE: 'api/order/{id}/sales',
+    CREATE: 'api/order',
+    // GET_: 'api/order/users',
 };
 
 export const ACCOUNT = {
-    GET_ONE: 'public/accounts/{id}',
-    GET_TRANSACTIONS: 'public/accounts/{id}/mouvements',
-    GET_ACCOUNT_BY_AMOUNT: 'public/accounts/users/{id}/account-by-amount',
-    APPROVISIONING_VOUCHER: 'public/accounts/{id}/approvisioning/voucher',
-    APPROVISIONING_CARD: 'public/accounts/{id}/approvisioning/card',
-    CHANGE_CURRENCY: 'public/accounts/{id}/currency'
+    GET_ONE: 'api/accounts/{id}',
+    GET_TRANSACTIONS: 'api/accounts/{id}/mouvements',
+    GET_ACCOUNT_BY_AMOUNT: 'api/accounts/users/{id}/account-by-amount',
+    APPROVISIONING_VOUCHER: 'api/accounts/{id}/approvisioning/voucher',
+    APPROVISIONING_CARD: 'api/accounts/{id}/approvisioning/card',
+    CHANGE_CURRENCY: 'api/accounts/{id}/currency'
 };
 
 export const SALES = {
-    GET_ALL: 'public/sales',
-    GET_ONE: 'public/sales/{id}',
-    GET_BY_USER: 'public/sales/users/{id}',
-    CREATE: 'public/sales',
+    GET_ALL: 'api/sales',
+    GET_ONE: 'api/sales/{id}',
+    GET_BY_USER: 'api/sales/users/{id}',
+    CREATE: 'api/sales',
 };
 
 export const GENERIC_OBJECT = {

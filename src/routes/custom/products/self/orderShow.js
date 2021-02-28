@@ -8,13 +8,15 @@ import { withStyles } from "@material-ui/core";
 import { AbilityContext } from "Permissions/Can";
 import CustomList from "Components/CustomList";
 import { setRequestGlobalAction } from "Actions";
-import { getSaleProducts } from "Actions/independentActions";
+import { getSaleProducts, getOrderDetails } from "Actions/independentActions";
 import { NotificationManager } from "react-notifications";
 import { ERROR_500 } from "Constants/errors";
 import Button from "@material-ui/core/Button";
 import TimeFromMoment from "Components/TimeFromMoment";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
+import AmountCurrency from "Components/AmountCurrency";
+import { joinUrlWithParamsId, STORE } from "Url/frontendUrl";
 // import { Button } from "reactstrap";
 
 class OrderShow extends Component {
@@ -33,9 +35,13 @@ class OrderShow extends Component {
     }
 
     componentDidMount() {
-        console.log('Je suis ici !')
         this.loadData();
     }
+
+    onContinueClick = () => {
+        const url = joinUrlWithParamsId(STORE.CHECKOUT, this.state.product.order.id);
+        this.props.history.push(url);
+    };
 
     computeTotal() {
         let total = 0;
@@ -46,7 +52,7 @@ class OrderShow extends Component {
     }
 
     loadData = () => {
-        getSaleProducts(this.props.match.params.id)
+        getOrderDetails(this.props.match.params.id)
             .then(product => {
                 console.log(product)
                 this.setState({ product });
@@ -110,7 +116,7 @@ class OrderShow extends Component {
                         </div>
                         <div style={{ marginBottom: 20 }}>
                             <h2>Date de la commande</h2>
-                            <span><TimeFromMoment time={product.createdAt} showFullDate /></span>
+                            <span>{ product.createdAt ? <TimeFromMoment time={product.createdAt} showFullDate /> : null }</span>
                         </div>
                     </div>
                 </div>
@@ -161,7 +167,7 @@ class OrderShow extends Component {
                                                         <td>
                                                             <div className="media">
                                                                 <div className="media-body pt-10">
-                                                                    <h4 className="m-0 fw-bold text-dark">{item.typeProduct.defaultPrice}</h4>
+                                                                    <h4 className="m-0 fw-bold text-dark"><AmountCurrency amount={item.typeProduct.price} from={item.typeProduct.product.currency} /></h4>
                                                                 </div>
                                                             </div>
                                                         </td>
@@ -175,20 +181,10 @@ class OrderShow extends Component {
                                                         <td>
                                                             <div className="media">
                                                                 <div className="media-body pt-10">
-                                                                    <h4 className="m-0 fw-bold text-dark">{item.quantity * item.typeProduct.defaultPrice}</h4>
+                                                                    <h4 className="m-0 fw-bold text-dark"><AmountCurrency amount={item.typeProduct.price} from={item.typeProduct.product.currency} quantity={item.quantity} /></h4>
                                                                 </div>
                                                             </div>
                                                         </td>
-                                                        {/* <td className="table-action">
-                                                            <Button
-                                                                size="small"
-                                                                color="primary"
-                                                                variant="contained"
-                                                                className={"text-white font-weight-bold mr-3 bg-blue"}
-                                                            >
-                                                                Details du produit
-                                                            </Button>
-                                                        </td> */}
                                                     </tr>
                                                 ))}
                                             </tbody>
@@ -206,7 +202,11 @@ class OrderShow extends Component {
                                                         <td>
                                                             <div className="media">
                                                                 <div className="media-body pt-10">
-                                                                    <h4 className="m-0 fw-bold text-dark">{this.computeTotal()}</h4>
+                                                                    <h4 className="m-0 fw-bold text-dark">
+                                                                        <AmountCurrency amounts={list.map((e) => {
+                                                                            return { amount: e.typeProduct.price, currency: e.typeProduct.product.currency, quantity: e.quantity }
+                                                                        })} />
+                                                                    </h4>
                                                                 </div>
                                                             </div>
                                                         </td>
@@ -219,16 +219,16 @@ class OrderShow extends Component {
                         </>
                     )}
                 />
-                <div style={{ 
+                <div style={{
                     display: 'flex',
                     justifyContent: 'flex-end'
-                 }}>
+                }}>
                     <Button
                         size="large"
                         color="primary"
                         variant="contained"
                         className={"text-white font-weight-bold mr-3"}
-                        // onClick={() => this.setState({ showQuantityBox: true })}
+                    // onClick={() => this.setState({ showQuantityBox: true })}
                     >
                         Confirmer une livraison
                     </Button>
@@ -238,7 +238,7 @@ class OrderShow extends Component {
                         variant="contained"
                         disabled={this.state.product.order.status}
                         className={"text-white font-weight-bold mr-3"}
-                        // onClick={() => this.setState({ paying: true })}
+                        onClick={() => this.onContinueClick()}
                     >
                         Payer la commande
                     </Button>

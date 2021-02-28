@@ -14,6 +14,12 @@ class AmountCurrency extends Component {
         super(props);
     }
 
+    formatter = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: this.props.to ? this.props.to : this.props.authUser.user.currency.code,
+        minimumFractionDigits: 2
+      })
+
     componentDidMount() {
     }
 
@@ -24,47 +30,113 @@ class AmountCurrency extends Component {
         if (from)
             if (to) {
                 let from_currency = this.props.settings.currencies.filter(c => c.code == from)[0];
+                if(!from_currency)
+                    from_currency = {code: 'EUR', value: 1};
                 let to_currency = this.props.settings.currencies.filter(c => c.code == to)[0];
                 let main_amount = amount * from_currency.value;
-                console.log('MID1 => ', main_amount);
-                console.log('END1 => ', main_amount / to_currency.value);
                 return main_amount / to_currency.value;
             } else {
                 let from_currency = this.props.settings.currencies.filter(c => c.code == from)[0];
-                let to_currency = this.props.settings.currencies.filter(c => c.main == true)[0];
+                if(!from_currency)
+                    from_currency = {code: 'EUR', value: 1};
+                let to_currency = null;
+                if (this.props.authUser.user.currency)
+                    to_currency = this.props.authUser.user.currency;
+                else
+                    to_currency = this.props.settings.currencies.filter(c => c.main == true)[0];
                 let main_amount = amount * from_currency.value;
-                console.log('MID2 => ', main_amount);
-                console.log('END2 => ', main_amount / to_currency.value);
                 return main_amount / to_currency.value;
             }
         else {
             let from_currency = this.props.settings.currencies.filter(c => c.main == true)[0];
-            let to_currency = this.props.settings.currencies.filter(c => c.main == true)[0];
+            if (!from_currency)
+                from_currency = { code: 'EUR', value: 1 };
+            let to_currency = null;
+            if (this.props.authUser.user.currency)
+                to_currency = this.props.authUser.user.currency;
+            else
+                to_currency = this.props.settings.currencies.filter(c => c.main == true)[0];
             let main_amount = amount * from_currency.value;
-            console.log('MID3 => ', main_amount);
-            console.log('END3 => ', main_amount / to_currency.value);
             return main_amount / to_currency.value;
         }
     }
 
-    getCurrency(from, to) {
-        if (currency) {
-            let from_currency = this.props.settings.currencies.filter(c => c.code == from)[0];
+    getAmounts(amounts, to = null) {
+        if (to) {
+            let amount = 0;
+            let from_currency = null;
             let to_currency = this.props.settings.currencies.filter(c => c.code == to)[0];
-            let main_currency = this.props.settings.currencies.filter(c => c.main == true)[0];
-            let main_amount = this.props.amount * from_currency.value;
-            let to_amount = main_amount * to_currency.value;
-        } else {
+            amounts.forEach(a => {
+                from_currency = this.props.settings.currencies.filter(c => c.code == a.currency)[0];
+                let main_amount = 0;
+                if (!from_currency)
+                    from_currency = { code: 'EUR', value: 1 };
+                if (a.quantity)
+                    main_amount = (a.amount * a.quantity) * from_currency.value;
+                else
+                    main_amount = a.amount * from_currency.value;
 
+                amount = amount + (main_amount / to_currency.value);
+            });
+            return amount;
+        } else {
+            let amount = 0;
+            let from_currency = null;
+            let to_currency = null;
+
+            if (this.props.authUser.user.currency)
+                to_currency = this.props.authUser.user.currency;
+            else
+                to_currency = this.props.settings.currencies.filter(c => c.main == true)[0];
+
+            amounts.forEach(a => {
+                from_currency = this.props.settings.currencies.filter(c => c.code == a.currency)[0];
+                let main_amount = 0;
+                if (!from_currency)
+                    from_currency = { code: 'EUR', value: 1 };
+                if (a.quantity != null)
+                    main_amount = (a.amount * a.quantity) * from_currency.value;
+                else
+                    main_amount = a.amount * from_currency.value;
+
+                amount = amount + (main_amount / to_currency.value);
+            });
+            return amount;
+        }
+    }
+
+    getCurrency(to) {
+        if (to) {
+            return to
+        } else {
+            if (this.props.authUser.user.currency)
+                return this.props.authUser.user.currency.code;
+            else
+                return this.props.settings.currencies.filter(c => c.main == true)[0].code;
         }
     }
 
     render() {
-        const { className, styles, amount, from, to } = this.props;
+        const { className, styles, amount, from, to, quantity, amounts, notShowCurrency } = this.props;
+        console.log('SORTIE => ', to)
         return (
-            <p className={className} style={styles} >
-                {this.getAmount(amount, from, to).toFixed(2)} {to ? to : 'EUR'}
-            </p >
+            <>
+                {
+                    amount ?
+                        <span className={className} style={styles} >
+                            {
+                                quantity ?
+                                    this.formatter.format(this.getAmount(amount, from, to).toFixed(2) * quantity)
+                                    :
+                                    this.formatter.format(this.getAmount(amount, from, to).toFixed(2))
+                             }
+                        </span>
+                        :
+                        <span className={className} style={styles} >
+                            {this.formatter.format(this.getAmounts(amounts, to).toFixed(2))}
+                        </span>
+                }
+            </>
         );
     }
 };

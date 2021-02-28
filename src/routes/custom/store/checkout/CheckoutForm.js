@@ -103,13 +103,13 @@ class CheckoutForm extends Component {
                         disabled
                         label={<IntlMessages id="components.billingAddress" />}
                      />
-                     <Tab
+                     {/* <Tab
                         disabled
                         label={<IntlMessages id="components.payment" />}
-                     />
+                     /> */}
                   </Tabs>
                </AppBar>
-               {value === 0 && <TabContainer><BillingForm data={this.state.data} onComplete={this.onFormComplete} /></TabContainer>}
+               {value === 0 && <TabContainer><BillingForm data={this.state.data} onComplete={this.onFormComplete} order={this.order} /></TabContainer>}
                {value === 1 && <TabContainer><PaymentInfo data={this.state.data} onBack={this.onBack} onComplete={this.onFormComplete} /></TabContainer>}
             </div>
             <SweetAlert

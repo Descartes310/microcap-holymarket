@@ -76,7 +76,6 @@ const UpdateProfileDisplay = props => {
                 .then(result => {
                     setOrganisationTypes({ loading: false, data: result });
                     resolve();
-                    console.log("Grace result", result);
                 })
                 .catch(error => {
                     setOrganisationTypes({ loading: false, data: null });

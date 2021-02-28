@@ -15,6 +15,7 @@ import { getUser} from "Actions";
 import UpdateProfileDisplay from './UpdateProfileDisplay';
 import UpdateAdressDisplay from './UpdateAdressDisplay';
 import UpdatePassword from './UpdatePassword';
+import UserCurrency from './UserCurrency';
 import EmailPrefrences from '../../../users/user-profile-1/component/EmailPrefrences';
 import Messages from '../../../users/user-profile-1/component/Messages';
 import Address from '../../../users/user-profile-1/component/Address';
@@ -53,7 +54,6 @@ function TabContainer(props) {
 
    render() {
       const currentUser = getUser(this.props.authUser.user.id);
-      console.log("currentUser =>", currentUser)
       const { authUser} = this.props;
       const { activeTab } = this.state;
       return (
@@ -85,11 +85,11 @@ function TabContainer(props) {
                            icon={<i className="ti-home"></i>}
                            label={<IntlMessages id="components.address" />}
                         />
-                        {/* <Tab
-                           icon={<i className="ti-email"></i>}
-                           label={<IntlMessages id="auth.password" />}
+                         <Tab
+                           icon={<i className="ti-money"></i>}
+                           label={'Devises'}
                         />
-                       <Tab
+                       {/* <Tab
                            icon={<i className="ti-comment-alt"></i>}
                            label={<IntlMessages id="widgets.messages" />}
                         />*/}
@@ -104,11 +104,11 @@ function TabContainer(props) {
                      <TabContainer>
                         <UpdateAdressDisplay userAdressInformations={authUser}/>
                      </TabContainer>}
-                 {/*activeTab === 2 &&
+                 { activeTab === 2 &&
                     <TabContainer>
-                        <UpdatePassword />props.setRequestGlobalAction(true
-                     </TabContainer>}
-                   activeTab === 3 &&
+                        <UserCurrency />
+                     </TabContainer> }
+                  {/* activeTab === 3 &&
                      <TabContainer>
                         <Address />
                   </TabContainer>*/}

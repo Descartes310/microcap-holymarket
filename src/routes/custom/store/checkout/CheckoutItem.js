@@ -12,18 +12,19 @@ import Button from '@material-ui/core/Button';
 // intl messages
 import IntlMessages from 'Util/IntlMessages';
 import UserAvatar from "Components/UserAvatar";
-import {textTruncate} from "Helpers/helpers";
+import { textTruncate } from "Helpers/helpers";
 import Cart from "Models/Cart";
+import AmountCurrency from "Components/AmountCurrency";
 
 class CheckoutItem extends Component {
 
-    constructor(props) {
-        super(props);
-        this.order = this.props.order;
-    }
+   constructor(props) {
+      super(props);
+      this.order = this.props.order;
+   }
 
 
-    state = {
+   state = {
       success: false,
    }
 
@@ -45,10 +46,11 @@ class CheckoutItem extends Component {
 
    render() {
       const cart = new Cart(this.order.orderItems.map(item => ({
-          ...item.typeProduct,
-          price: item.typeProduct.defaultPrice,
-          quantity: item.quantity
-      }))) ;
+         ...item.typeProduct,
+         price: item.typeProduct.price,
+         currency: item.typeProduct.product.currency,
+         quantity: item.quantity
+      })));
       const { success } = this.state;
       return (
          <div className="checkout-item-wrap p-4">
@@ -71,11 +73,11 @@ class CheckoutItem extends Component {
                               <div className="media overflow-hidden w-75">
                                  <div className="mr-15">
                                     <UserAvatar
-                                        avatar={cartItem.image}
-                                        name={cartItem.name}
-                                        className="media-object"
-                                        width="63"
-                                        height="63"
+                                       avatar={cartItem.image}
+                                       name={cartItem.name}
+                                       className="media-object"
+                                       width="63"
+                                       height="63"
                                     />
                                  </div>
                                  <div className="media-body text-truncate">
@@ -88,7 +90,7 @@ class CheckoutItem extends Component {
                                  <span className="text-muted fs-12 d-block mb-10">{cartItem.quantity}</span>
                               </div>
                               <div className="w-15">
-                                 <span className="text-muted fs-12 d-block mb-10">$ {cartItem.price}</span>
+                                 <span className="text-muted fs-12 d-block mb-10"><AmountCurrency amount={cartItem.price} from={cartItem.currency} /></span>
                               </div>
                            </li>
                         ))}
@@ -98,20 +100,10 @@ class CheckoutItem extends Component {
             }
             <div className="border-top d-flex justify-content-between align-items-center py-4">
                <span className="font-weight-bold text-muted"><IntlMessages id="components.totalPrice" /></span>
-               <span className="font-weight-bold">$ {cart.getTotalPrice()}</span>
+               <span className="font-weight-bold"><AmountCurrency amounts={cart.items.map((e) => {
+                  return { amount: e.price, currency: e.currency, quantity: e.quantity }
+               })} styles={{ fontWeight: 'bold' }} /></span>
             </div>
-            {/* <div className="d-flex justify-content-end align-items-center">
-               {!cart.isCartEmpty() ? (
-                  <Button variant="contained" color="primary" className="text-white" onClick={() => this.openAlert('success')}>
-                     <IntlMessages id="components.placeOrder" />
-                  </Button>
-               ) : (
-                     <Button variant="contained" color="secondary" component={Link} to="/app/ecommerce/shop" className="text-white">
-                        <IntlMessages id="components.goToShop" />
-                     </Button>
-                  )
-               }
-            </div> */}
             <SweetAlert
                success
                show={success}

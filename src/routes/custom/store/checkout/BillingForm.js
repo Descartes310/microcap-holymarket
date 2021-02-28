@@ -15,6 +15,8 @@ import { connect } from "react-redux";
 import { setRequestGlobalAction } from "Actions/RequestGlobalAction";
 import { withRouter } from "react-router-dom";
 import StripeCheckout from 'react-stripe-checkout';
+import { computeAmountFromCurrency } from 'Helpers/helpers'
+import Cart from "Models/Cart";
 
 // intl messages
 import IntlMessages from 'Util/IntlMessages';
@@ -73,6 +75,13 @@ class BillingForm extends Component {
 
    render() {
       const { showPaymentBox, entringCode, code, selectingAccount } = this.state;
+      const cart = new Cart(this.props.order.orderItems.map(item => ({
+         ...item.typeProduct,
+         price: item.typeProduct.price,
+         currency: item.typeProduct.product.currency,
+         quantity: item.quantity
+      })));
+
       return (
          <div className="billing-form-warp py-4">
             <Form>
@@ -132,10 +141,12 @@ class BillingForm extends Component {
                   <StripeCheckout
                      stripeKey="pk_test_51ILMcRF8O7K51xUUQ3rGe0lMNsDJWjM4DCxMH7zJwnxl2uFiVeC8hzrOYmAGHKiU4XAM5OIgHTZhjDrac7vP97yo00VO7op4Qx"
                      token={this.onToken}
-                     amount={(Number(this.props.cart.getTotalPrice())) * 100}
+                     amount={(Number(computeAmountFromCurrency(this.props.currencies, null, cart.items.map((e) => {
+                        return { amount: e.price, currency: e.currency, quantity: e.quantity }
+                     }), this.props.authUser.user.currency, null, null))) * this.props.authUser.user.currency.decimal}
                      name="Payer les produits"
                      opened={() => this.setState({ showPaymentBox: false })}
-                     currency='USD'
+                     currency={this.props.authUser.user.currency ? this.props.authUser.user.currency.code : 'EUR'}
                      label="Payement par carte"
                   />
                   <Button onClick={() => this.setState({ showPaymentBox: true })} color="primary" variant="contained" style={{ marginLeft: 10 }}>
@@ -218,8 +229,8 @@ class BillingForm extends Component {
       )
    }
 }
-const mapStateToProps = ({ authUser, cart }) => {
-   return { authUser: authUser.data, cart };
+const mapStateToProps = ({ authUser, cart, settings }) => {
+   return { authUser: authUser.data, cart, currencies: settings.currencies };
 };
 
 export default connect(mapStateToProps, {

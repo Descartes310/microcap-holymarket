@@ -23,7 +23,8 @@ import IntlMessages from 'Util/IntlMessages';
 import UserAvatar from "Components/UserAvatar";
 import SweetAlert from "react-bootstrap-sweetalert";
 import NatureType from "Enums/NatureType";
-import {STORE} from "Url/frontendUrl";
+import { STORE } from "Url/frontendUrl";
+import AmountCurrency from "Components/AmountCurrency";
 
 class Carts extends Component {
 	state = {
@@ -32,7 +33,7 @@ class Carts extends Component {
 	};
 
 	onWantToRemoveItem = (item) => {
-		this.setState({itemToRemove: item, showWarningBox: true});
+		this.setState({ itemToRemove: item, showWarningBox: true });
 	};
 
 	onRemoveItemFromCart = (item) => {
@@ -98,23 +99,16 @@ class Carts extends Component {
 														</div>
 														<div className="media-body">
 															<span className="fs-14 d-block">{textTruncate(cartItem.name, 25)}</span>
-															<span className="fs-12 d-block text-muted">{textTruncate(cartItem.description, 50)}</span>
-															{/*<span className="fs-12 d-block text-muted">{cartItem}</span>*/}
+															{/* <span className="fs-12 d-block text-muted">{textTruncate(cartItem.description, 50)}</span> */}
+															<span className="fs-12 d-block" style={{ fontWeight: 'bold' }}><AmountCurrency amount={cartItem.price} from={cartItem.currency} /> &times; {cartItem.quantity}</span>
 														</div>
 													</div>
 													<div className="text-center">
-														<span className="text-muted fs-12 d-block mb-10">$ {cartItem.price} X {cartItem.quantity}</span>
-														{/* <a
-															href="javascript:void(0);"
-															className="hover-close"
-															onClick={() => deleteItemFromCart(cart)}>
-															<i className="ti-close"></i>
-														</a> */}
 														<button
 															type="button"
 															className="hover-close rct-link-btn"
 															onClick={() => this.onRemoveItemFromCart(cartItem)}>
-															<i className="ti-close"/>
+															<i className="ti-close" />
 														</button>
 													</div>
 												</li>
@@ -132,51 +126,13 @@ class Carts extends Component {
 											>
 												Voir le panier
 											</Button>
-											{/* <Button
-												variant="contained"
-												component={Link}
-												to={`/${getAppLayout(location)}/ecommerce/checkout`}
-												color="primary"
-												className="btn-xs bg-primary text-white"
-											>
-												Payer
-											</Button> */}
 										</div>
 										<span className="fw-normal text-dark font-weight-bold font-xs">
-											Total: $ {cart.getTotalPrice()}
-											{/*<IntlMessages id="widgets.total" /> $ {this.getTotalPrice()}*/}
+											Total: <AmountCurrency amounts={cart.items.map((e) => {
+											return { amount: e.price, currency: e.currency, quantity: e.quantity }
+										})} styles={{ fontWeight: 'bold' }} />
 										</span>
 									</div>
-									{/*<SweetAlert
-										type="danger"
-										show={showWarningBox}
-										showCancel
-										showConfirm
-										title={"Confirmation"}
-										customButtons={(
-											<>
-												<Button
-													color="blue"
-													variant="outlined"
-													onClick={() => this.setState({showWarningBox: false})}
-													className="text-white bg-blue font-weight-bold mr-3"
-												>
-													<IntlMessages id="button.cancel" />
-												</Button>
-												<Button
-													color="primary"
-													variant="contained"
-													className="bg-danger text-white font-weight-bold"
-													onClick={() => this.onRemoveItemFromCart()}
-												>
-													<IntlMessages id="button.delete" />
-												</Button>
-											</>
-										)}
-										onConfirm={() => this.onRemoveItemFromCart()}
-									>
-										<IntlMessages id="branch.alert.deleteText" />
-									</SweetAlert>*/}
 								</Fragment>
 							)
 						}

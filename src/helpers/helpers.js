@@ -48,6 +48,93 @@ export function textTruncate(str, length, ending) {
     }
 }
 
+function getAmount(currencies, amount, from, to = null, currency = null) {
+    if (from)
+        if (to) {
+            let from_currency = currencies.filter(c => c.code == from)[0];
+            if(!from_currency)
+                from_currency = {code: 'EUR', value: 1};
+            let to_currency = currencies.filter(c => c.code == to)[0];
+            let main_amount = amount * from_currency.value;
+            return main_amount / to_currency.value;
+        } else {
+            let from_currency = currencies.filter(c => c.code == from)[0];
+            if(!from_currency)
+                from_currency = {code: 'EUR', value: 1};
+            let to_currency = null;
+            if (currency)
+                to_currency = currency;
+            else
+                to_currency = currencies.filter(c => c.main == true)[0];
+            let main_amount = amount * from_currency.value;
+            return main_amount / to_currency.value;
+        }
+    else {
+        let from_currency = currencies.filter(c => c.main == true)[0];
+        if (!from_currency)
+            from_currency = { code: 'EUR', value: 1 };
+        let to_currency = null;
+        if (currency)
+            to_currency = currency;
+        else
+            to_currency = currencies.filter(c => c.main == true)[0];
+        let main_amount = amount * from_currency.value;
+        return main_amount / to_currency.value;
+    }
+}
+
+function getAmounts(currencies, amounts, to = null, currency = null) {
+    if (to) {
+        let amount = 0;
+        let from_currency = null;
+        let to_currency = currencies.filter(c => c.code == to)[0];
+        amounts.forEach(a => {
+            from_currency = currencies.filter(c => c.code == a.currency)[0];
+            let main_amount = 0;
+            if (!from_currency)
+                from_currency = { code: 'EUR', value: 1 };
+            if (a.quantity)
+                main_amount = (a.amount * a.quantity) * from_currency.value;
+            else
+                main_amount = a.amount * from_currency.value;
+
+            amount = amount + (main_amount / to_currency.value);
+        });
+        return amount;
+    } else {
+        let amount = 0;
+        let from_currency = null;
+        let to_currency = null;
+
+        if (currency)
+            to_currency = currency;
+        else
+            to_currency = currencies.filter(c => c.main == true)[0];
+
+        amounts.forEach(a => {
+            from_currency = currencies.filter(c => c.code == a.currency)[0];
+            let main_amount = 0;
+            if (!from_currency)
+                from_currency = { code: 'EUR', value: 1 };
+            if (a.quantity != null)
+                main_amount = (a.amount * a.quantity) * from_currency.value;
+            else
+                main_amount = a.amount * from_currency.value;
+
+            amount = amount + (main_amount / to_currency.value);
+        });
+        return amount;
+    }
+}
+
+export function computeAmountFromCurrency(currencies, amount = null, amounts = null, currency = null, from = null, to = null) {
+    if(amount != null) {
+       return getAmount(currencies, amount, from, to, currency);
+    } else {
+        return getAmounts(currencies, amounts, to, currency);
+    }
+}
+
 /**
  * Get Date
  */

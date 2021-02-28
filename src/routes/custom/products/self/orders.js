@@ -9,11 +9,12 @@ import { AbilityContext } from "Permissions/Can";
 import CustomList from "Components/CustomList";
 import { PRODUCT, joinUrlWithParamsId } from 'Url/frontendUrl'
 import { getProductItemAvailable, setRequestGlobalAction } from "Actions";
-import { getUserSales } from "Actions/independentActions";
+import { getUserSales, getOrders } from "Actions/independentActions";
 import { NotificationManager } from "react-notifications";
 import { ERROR_500 } from "Constants/errors";
 import Button from "@material-ui/core/Button";
 import TimeFromMoment from "Components/TimeFromMoment";
+import AmountCurrency from "Components/AmountCurrency";
 
 class Order extends Component {
     static contextType = AbilityContext;
@@ -29,7 +30,7 @@ class Order extends Component {
 
     onEnterClick = (product) => {
         const url = joinUrlWithParamsId(PRODUCT.ORDERS_SHOW, product.id);
-        this.props.history.push(url, {sale: JSON.stringify(product)});
+        this.props.history.push(url);
     };
 
     componentDidMount() {
@@ -37,7 +38,7 @@ class Order extends Component {
     }
 
     loadData = () => {
-        getUserSales(this.props.authUser.user.id)
+        getOrders()
             .then(products => {
                 this.setState({ products: products.reverse() });
             })
@@ -70,10 +71,9 @@ class Order extends Component {
                                             <thead>
                                                 <tr>
                                                     <th>Numéro</th>
-                                                    {/* <th>Pays</th> */}
-                                                    <th>Adresse</th>
-                                                    {/* <th>Zip code</th> */}
+                                                    <th>Montant</th>
                                                     <th>Date de commande</th>
+                                                    <th>Status</th>
                                                     <th>Actions</th>
                                                 </tr>
                                             </thead>
@@ -87,27 +87,17 @@ class Order extends Component {
                                                                 </div>
                                                             </div>
                                                         </td>
-                                                        {/* <td>
-                                                            <div className="media">
-                                                                <div className="media-body pt-10">
-                                                                    <h4 className="m-0 fw-bold text-dark">{item.country}</h4>
-                                                                </div>
-                                                            </div>
-                                                        </td> */}
                                                         <td>
                                                             <div className="media">
                                                                 <div className="media-body pt-10">
-                                                                    <h4 className="m-0 fw-bold text-dark">{item.address1}</h4>
+                                                                    <h4 className="m-0 fw-bold text-dark">
+                                                                        <AmountCurrency amounts={item.orderItems.map((e) => {
+                                                                            return { amount: e.typeProduct.price, currency: e.typeProduct.product.currency, quantity: e.quantity }
+                                                                        })} />
+                                                                    </h4>
                                                                 </div>
                                                             </div>
                                                         </td>
-                                                        {/* <td>
-                                                            <div className="media">
-                                                                <div className="media-body pt-10">
-                                                                    <h4 className="m-0 fw-bold text-dark">{item.zip}</h4>
-                                                                </div>
-                                                            </div>
-                                                        </td> */}
                                                         <td>
                                                             <div className="media">
                                                                 <div className="media-body pt-10">
@@ -115,6 +105,22 @@ class Order extends Component {
                                                                         <TimeFromMoment time={item.updatedAt} showFullDate />
                                                                     </h4>
                                                                 </div>
+                                                            </div>
+                                                        </td>
+                                                        <td style={{
+                                                            display: 'flex',
+                                                            justifyContent: 'center',
+                                                            alignItems: 'center'
+                                                        }}>
+                                                            <div className="media">
+                                                                {item.status ?
+                                                                    <span style={{ backgroundColor: 'rgba(61, 146, 61, 1)', border: 5, width: 76, padding: 5, borderRadius: 5, color: 'white' }}>
+                                                                        Payée
+                                                                    </span> :
+                                                                    <span style={{ backgroundColor: 'rgba(200, 0, 0, 0.5)', border: 5, padding: 5, width: 76, borderRadius: 5, color: 'white' }}>
+                                                                        Non payée
+                                                                    </span>
+                                                                }
                                                             </div>
                                                         </td>
                                                         <td className="table-action">

@@ -30,6 +30,7 @@ import {placeOrder, onClearCart, setRequestGlobalAction} from "Actions";
 import {ERROR_500} from "Constants/errors";
 import InvitationType from "Enums/InvitationType";
 import SweetAlert from "react-bootstrap-sweetalert";
+import AmountCurrency from "Components/AmountCurrency";
 
 class CartView extends Component {
     state = {
@@ -123,8 +124,8 @@ class CartView extends Component {
                                                 onChange={(e) => this.onChangeQuantity(e.target.value, cartItem)}
                                             />
                                         </td>
-                                        <td className="text-danger text-center">$ {cartItem.price}</td>
-                                        <td className="text-bold text-center">$ {cartItem.totalPrice}</td>
+                                        <td className="text-danger text-center"><AmountCurrency amount={cartItem.price} from={cartItem.currency} /></td>
+                                        <td className="text-bold text-center"><AmountCurrency amount={cartItem.price} from={cartItem.currency} quantity={cartItem.quantity} /></td>
                                         <td className="text-center">
                                             <IconButton onClick={() => this.onDeleteItem(cartItem)}>
                                                 <i className="zmdi zmdi-close"/>
@@ -144,7 +145,9 @@ class CartView extends Component {
                             <tr className="text-center">
                                 <td colSpan="3"></td>
                                 <td><span className="font-weight-bold">Total</span></td>
-                                <td><span className="font-weight-bold">$ {cart.getTotalPrice()}</span></td>
+                                <td><span className="font-weight-bold"><AmountCurrency amounts={cart.items.map((e) => {
+											return { amount: e.price, currency: e.currency, quantity: e.quantity }
+										})} styles={{ fontWeight: 'bold' }} /></span></td>
                                 <td>
                                     {!cart.isCartEmpty() && (
                                         <Button

@@ -534,6 +534,11 @@ export const getSaleProducts = (id) => {
     return makeRequest('get', url);
 };
 
+export const getOrderDetails = (id) => {
+    const url = joinBaseUrlWithParamsId(ORDER.GET_ONE_SALE, id);
+    return makeRequest('get', url);
+};
+
 /* export const getAllPostProject = (branchId) => {
     const url = joinBaseUrlWithParams(PROJECTS.POST_PROJETS.GET_ALL, [{
         param: 'branchId',
@@ -601,6 +606,11 @@ export const changeCurrency = (accountId, currencyId) => {
     return makeRequest('put', url);
 };
 
+export const updateUserCurrency = (currencyId) => {
+    const url = joinBaseUrlWithParamsId(`${USERS.UPDATE_CURRENCY}`, currencyId);
+    return makeRequest('put', url);
+};
+
 export const setOfferActivationStatus = (partnerId, comId, shouldActivate) => {
     const url = `${COMMERCIAL_MANAGEMENT.OFFER[shouldActivate ? 'ACTIVATE' : 'DEACTIVATE']}?partner_id=${partnerId}&commercial_offer_id=${comId}`;
     return makeRequest('put', url);
@@ -628,6 +638,11 @@ export const placeOrder = (data) => {
 
 export const getOrder = (orderId) => {
     const url = joinBaseUrlWithParamsId(ORDER.GET_ONE, orderId);
+    return makeRequest('get', url);
+};
+
+export const getOrders = () => {
+    const url = ORDER.GET_ALL;
     return makeRequest('get', url);
 };
 

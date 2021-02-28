@@ -26,6 +26,7 @@ import DialogTitle from "@material-ui/core/DialogTitle/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent/DialogContent";
 import Dialog from "@material-ui/core/Dialog/Dialog";
 import CancelIcon from '@material-ui/icons/Cancel';
+import { computeAmountFromCurrency } from 'Helpers/helpers'
 
 class AccountShow extends Component {
     static contextType = AbilityContext;
@@ -79,7 +80,8 @@ class AccountShow extends Component {
     changeAccountCurrency = (id) => {
         changeCurrency(this.props.match.params.id, id)
             .then(response => {
-                this.loadData();
+                // this.loadData();
+                window.location.reload()
                 this.setState({ showCurrencyBox: false })
             })
             .catch((err) => {
@@ -210,7 +212,8 @@ class AccountShow extends Component {
                                     </DropdownMenu>
                                 </UncontrolledDropdown>
                             </div>
-                            <h1 className="mr-2"><span style={{ color: '#fed039' }}>Solde:</span> <AmountCurrency styles={{ fontSize: '1.1em' }} amount={balance} from={currency} to={currency} /></h1>
+                            <h1 className="mr-2"><span style={{ color: '#fed039' }}>Solde:</span> 
+                            { currency ? <AmountCurrency styles={{ fontSize: '1.1em' }} amount={balance} from={currency} to={currency} /> : '0 EUR' }</h1>
                         </div>
                         <div className="d-flex justify-content-between align-items-center" style={{ padding: 40 }}>
                             <FormControl>
@@ -263,7 +266,7 @@ class AccountShow extends Component {
                                         <StripeCheckout
                                             stripeKey="pk_test_51ILMcRF8O7K51xUUQ3rGe0lMNsDJWjM4DCxMH7zJwnxl2uFiVeC8hzrOYmAGHKiU4XAM5OIgHTZhjDrac7vP97yo00VO7op4Qx"
                                             token={this.handleApprovisioningCard}
-                                            amount={this.state.amount * 100}
+                                            amount={(Number(computeAmountFromCurrency(this.props.currencies, this.state.amount, null, this.props.authUser.user.currency, currency, currency))) * this.props.currencies.filter(c => c.code == currency)[0].decimal}
                                             name="Recharger le compte"
                                             currency={currency}
                                             label="Recharger"
