@@ -138,7 +138,7 @@ class BillingForm extends Component {
 
                </Form>
                <div className="d-flex justify-content-end">
-                  <StripeCheckout
+                  {/* <StripeCheckout
                      stripeKey="pk_test_51ILMcRF8O7K51xUUQ3rGe0lMNsDJWjM4DCxMH7zJwnxl2uFiVeC8hzrOYmAGHKiU4XAM5OIgHTZhjDrac7vP97yo00VO7op4Qx"
                      token={this.onToken}
                      amount={(Number(computeAmountFromCurrency(this.props.currencies, null, cart.items.map((e) => {
@@ -148,9 +148,13 @@ class BillingForm extends Component {
                      opened={() => this.setState({ showPaymentBox: false })}
                      currency={this.props.authUser.user.currency ? this.props.authUser.user.currency.code : 'EUR'}
                      label="Payement par carte"
-                  />
-                  <Button onClick={() => this.setState({ showPaymentBox: true })} color="primary" variant="contained" style={{ marginLeft: 10 }}>
-                     Autre Payement
+                  /> */}
+                  <Button disabled={
+                     this.state.billingInformation.addressLine1.length == 0 || 
+                     this.state.billingInformation.zipCode.length == 0 ||
+                     this.state.billingInformation.country.length == 0
+                  } onClick={() => this.props.onComplete(this.state.billingInformation)} color="primary" variant="contained" style={{ marginLeft: 10, color: 'white' }}>
+                     Procéder au paiement
                   </Button>
                </div>
             <Dialog
@@ -207,8 +211,8 @@ class BillingForm extends Component {
                   <div style={{ display: selectingAccount ? 'block' : 'none' }}>
                      <Label>Selectionnez le compte a débiter</Label>
 
-                     {this.state.accounts.map((account) => (
-                        <FormGroup row style={{ justifyContent: 'space-around', alignItems: 'center' }}>
+                     {this.state.accounts.map((account, index) => (
+                        <FormGroup row style={{ justifyContent: 'space-around', alignItems: 'center' }} key={index}>
                            <Col sm={7}>
                               <Label>{account.label} </Label>
                            </Col>
