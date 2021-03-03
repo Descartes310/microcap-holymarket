@@ -97,7 +97,7 @@ class AddProduct extends Component {
 
     loadCatalogs = (id) => {
         this.setState({ catalogLoading: true });
-        getAllCatalogs(id)
+        getAllCatalogs(id, 'VENTE')
             .then(res => {
                 this.setState({ catalogs: res });
             })
@@ -391,7 +391,7 @@ class AddProduct extends Component {
                                 className="text-white font-weight-bold"
                             >
                                 Soumettre
-                                </Button>
+                            </Button>
                         </FormGroup>
                     </Form>
 

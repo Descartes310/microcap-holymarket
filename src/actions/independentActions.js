@@ -307,8 +307,12 @@ export const getOneCatalog = (catalogId) => {
     return makeRequest('get', url);
 };
 
-export const getAllCatalogs = (partnerId) => {
-    let url = `${CATALOGS.GET_ALL}?partner_id=${partnerId}`;
+export const getAllCatalogs = (partnerId, type = null) => {
+    let url = '';
+    if(type != null)
+        url = `${CATALOGS.GET_ALL}?partner_id=${partnerId}&type=${type}`;
+    else
+        url = `${CATALOGS.GET_ALL}?partner_id=${partnerId}`;
     return makeRequest('get', url);
 };
 
@@ -646,8 +650,31 @@ export const getOrders = () => {
     return makeRequest('get', url);
 };
 
+export const getUnitTypes = () => {
+    const url = SETTING.UNIT_TYPE;
+    return makeRequest('get', url);
+};
+
+export const getUnits = (id) => {
+    const url = joinBaseUrlWithParamsId(SETTING.UNIT, id);
+    return makeRequest('get', url);
+};
+
+export const getUnitbyType = (id) => {
+    const url = joinBaseUrlWithParamsId(SETTING.GET_UNIT, id);
+    return makeRequest('get', url);
+};
+
 export const createSale = (data) => {
     return makeRequest('post', SALES.CREATE, data);
+};
+
+export const createUnitType = (data) => {
+    return makeRequest('post', SETTING.UNIT_TYPE, data);
+};
+
+export const createUnit = (data) => {
+    return makeRequest('post', SETTING.UNIT, data);
 };
 
 export const createGenericData = (data) => {

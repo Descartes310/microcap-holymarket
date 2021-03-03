@@ -31,6 +31,7 @@ import CommunityAdmins from "Routes/custom/communityT/admin";
 import CommunityMembersPostsProjects from "Routes/custom/communityT/postsProjects";
 import ClientPieceList from "Routes/custom/settings/client_folder/List";
 import ConfigurationsList from "Routes/custom/settings/configurations/List";
+import UnitList from "Routes/custom/settings/units";
 import PersonalSpace from "Routes/custom/users/users/personnal-space";
 import SingleProfile from 'Routes/custom/users/user-profile/Profile';
 import UserProfile from 'Routes/custom/users/user-profile';
@@ -102,6 +103,12 @@ const Dashboard = ({ match, authUser }) => {
                     <CanRoute
                         path={SETTINGS.CONFIGS.SELF}
                         component={ConfigurationsList}
+                        permissions={[]}
+                    />
+
+                    <CanRoute
+                        path={SETTINGS.UNITS.SELF}
+                        component={UnitList}
                         permissions={[]}
                     />
 

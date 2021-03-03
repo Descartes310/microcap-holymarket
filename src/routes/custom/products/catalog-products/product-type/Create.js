@@ -14,7 +14,9 @@ import {
     createCategoryProducts,
     getCatalogsOfOneType,
     getSysProductNature,
-    getRootProductType
+    getRootProductType,
+    getUnitTypes,
+    getUnitbyType
 } from "Actions";
 import { NotificationManager } from "react-notifications";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
@@ -40,6 +42,7 @@ import CustomAsyncComponent from "Components/CustomAsyncComponent";
 import { createProductType, getCurrencies } from "Actions/independentActions";
 import { getProductTypes } from "Actions/GeneralActions";
 import { ERROR_500 } from "Constants/errors";
+import {PRODUCT_TYPE} from "Url/frontendUrl";
 
 const CategoryProductsCreate = props => {
     const theme = useTheme();
@@ -58,6 +61,9 @@ const CategoryProductsCreate = props => {
     const [showCreateBox, setShowCreateBox] = useState(false);
     const [showDeleteBox, setShowDeleteBox] = useState(false);
     const [deleteProduct, setDeleteProduct] = useState(null);
+    const [types, setTypes] = useState([]);
+    const [type, setType] = useState(null);
+    const [units, setUnits] = useState([]);
 
     const { control, register, errors, handleSubmit, setValue, watch } = useForm({
         defaultValues: {
@@ -65,31 +71,66 @@ const CategoryProductsCreate = props => {
             isDefaultPfm: false,
             isDefaultMember: false,
             isAccount: false,
+            isNegativeBalance: false
         }
     });
 
     const isAvailableWatch = watch('isAvailable');
     const isAccountWatch = watch('isAccount');
+    const isNegativeBalanceWatch = watch('isNegativeBalance');
     const isDefaultPfmWatch = watch('isDefaultPfm');
     const isDefaultMemberWatch = watch('isDefaultMember');
 
     useEffect(() => {
         fetchCategoryProducts();
         fetchCatalogTypes();
-        // getProductTypes(authUser.user.branch.id);
+        fetchUnitType();
         fetchSysProductNature();
         fetchCurrencies();
         if (!authUser.isExploitant())
             fetchRootProductType();
     }, []);
 
+    useEffect(() => {
+        if (type)
+            if(type.id != 0)
+                fetchUnits(type.id);
+            else
+                setUnits(currencies)
+    }, [type]);
+
+
     /**
      * On submit
      */
     const onSubmit = (data) => {
-        setRequestGlobalAction(true);
 
         const _data = { ...data };
+
+        if(_data.isAccount) {
+            if(_data.minBalance == null || _data.maxBalance == null) {
+                NotificationManager.error("Le planché et le plafond sont obligatoire");
+                return;
+            }
+            if(!_data.isNegativeBalance && _data.minBalance < 0 ) {
+                NotificationManager.error("Le planché ne peut pas être inférieur à 0");
+                return;
+            }
+
+            if(_data.minBalance >= _data.maxBalance) {
+                NotificationManager.error("Le planché ne peut pas être supérieur au plafond");
+                return;
+            }
+        }
+
+        setRequestGlobalAction(true);
+
+        if(type.id == 0) {
+            _data.currency = currencies.filter(c => c.id == _data.unit_id)[0].code;
+            delete _data.unit_id;
+        } else {
+            delete _data.currency; 
+        }
 
         _data.organisationId = authUser.id;
         _data.type_products = JSON.stringify(chosenProducts.map(p => p.id));
@@ -98,12 +139,10 @@ const CategoryProductsCreate = props => {
             .then(() => {
                 NotificationManager.success("Type de produits créée avec succès");
                 getProductTypes(authUser.user.branch.id);
-                onClose();
+                props.history.push(PRODUCT_TYPE.LIST)
             })
             .catch((error) => {
-                // console.log("error => ", JSON.stringify(error));
                 NotificationManager.error("Une erreur est survenue");
-                // console.log("error => ", error.message);
             })
             .finally(() => setRequestGlobalAction(false));
     };
@@ -144,6 +183,20 @@ const CategoryProductsCreate = props => {
             });
     };
 
+    const fetchUnitType = () => {
+        getUnitTypes()
+            .then(result => {
+                setTypes(result)
+            });
+    };
+
+    const fetchUnits = (id) => {
+        getUnitbyType(id)
+            .then(result => {
+                setUnits(result)
+            });
+    };
+
     const onAddProduct = (product) => {
         setChosenProducts([...chosenProducts, { ...product }]);
         setShowCreateBox(false);
@@ -158,119 +211,100 @@ const CategoryProductsCreate = props => {
 
     return (
         <>
-            <Dialog
-                open={show}
-                onClose={onClose}
-                fullScreen={fullScreen}
-                aria-labelledby="responsive-dialog-title"
-                disableBackdropClick
-                disableEscapeKeyDown
-                maxWidth={'lg'}
-                fullWidth
-            >
-                <DialogTitle id="form-dialog-title">
-                    <div className="row justify-content-between align-items-center">
-                        Creation d'un nouveau type de produit
-                        <IconButton
-                            color="primary"
-                            aria-label="close"
-                            className="text-danger"
-                            onClick={onClose}>
-                            <CancelIcon />
-                        </IconButton>
-                    </div>
-                </DialogTitle>
-                <DialogContent>
-                    <RctCollapsibleCard>
-                        <Form onSubmit={handleSubmit(onSubmit)}>
 
-                            {!authUser.isExploitant() && (
-                                <CustomAsyncComponent
-                                    loading={rootProductType.loading}
-                                    data={rootProductType.data}
-                                    onRetryClick={fetchRootProductType}
-                                    component={data => (
-                                        <div className="form-group text-left">
-                                            <FormControl fullWidth>
-                                                <InputLabel className="text-left" htmlFor="nature-helper">
-                                                    Racine du produit
+            <div>
+                <h1 style={{
+                    marginBottom: '3%'
+                }}>Création d'un type de produit</h1>
+                <Form onSubmit={handleSubmit(onSubmit)}>
+
+                    {!authUser.isExploitant() && (
+                        <CustomAsyncComponent
+                            loading={rootProductType.loading}
+                            data={rootProductType.data}
+                            onRetryClick={fetchRootProductType}
+                            component={data => (
+                                <div className="form-group text-left">
+                                    <FormControl fullWidth>
+                                        <InputLabel className="text-left" htmlFor="nature-helper">
+                                            Racine du produit
                                                 </InputLabel>
-                                                <InputComponent
-                                                    isRequired
-                                                    className="mt-0"
-                                                    errors={errors}
-                                                    control={control}
-                                                    register={register}
-                                                    componentType="select"
-                                                    name={'parent_type'}
-                                                    defaultValue={data[0] ? data[0].id : undefined}
-                                                    as={<Select input={<Input name="nature" id="nature-helper" />}>
-                                                        {data.map((item, index) => (
-                                                            <MenuItem key={index} value={item.id} className="center-hor-ver">
-                                                                {item.label}
-                                                            </MenuItem>
-                                                        ))}
-                                                    </Select>}
-                                                />
-                                            </FormControl>
-                                        </div>
-                                    )}
-                                />
+                                        <InputComponent
+                                            isRequired
+                                            className="mt-0"
+                                            errors={errors}
+                                            control={control}
+                                            register={register}
+                                            componentType="select"
+                                            name={'parent_type'}
+                                            defaultValue={data[0] ? data[0].id : undefined}
+                                            as={<Select input={<Input name="nature" id="nature-helper" />}>
+                                                {data.map((item, index) => (
+                                                    <MenuItem key={index} value={item.id} className="center-hor-ver">
+                                                        {item.label}
+                                                    </MenuItem>
+                                                ))}
+                                            </Select>}
+                                        />
+                                    </FormControl>
+                                </div>
                             )}
+                        />
+                    )}
 
-                            <div className="row align-items-center">
-                                <div className="col-md-6 col-sm-12">
-                                    <FormGroup className="has-wrapper">
-                                        <InputLabel className="text-left" htmlFor="designation">
-                                            Code
-                                        </InputLabel>
-                                        <InputComponent
-                                            id="designation"
-                                            isRequired
-                                            errors={errors}
-                                            register={register}
-                                            name={'code'}
-                                            className="input-lg"
-                                        // placeholder={intl.formatMessage({id: "common.commercialName"})}
-                                        />
-                                        <span className="has-icon"><i className="ti-pencil" /></span>
-                                    </FormGroup>
-                                </div>
-                                <div className="col-md-6 col-sm-12">
-                                    <FormGroup className="has-wrapper">
-                                        <InputLabel className="text-left" htmlFor="designation">
-                                            Nom
-                                        </InputLabel>
-                                        <InputComponent
-                                            id="designation"
-                                            isRequired
-                                            errors={errors}
-                                            register={register}
-                                            name={'label'}
-                                            className="input-lg"
-                                        // placeholder={intl.formatMessage({id: "common.commercialName"})}
-                                        />
-                                        <span className="has-icon"><i className="ti-pencil" /></span>
-                                    </FormGroup>
-                                </div>
-                            </div>
-
+                    <div className="row align-items-center">
+                        <div className="col-md-6 col-sm-12">
                             <FormGroup className="has-wrapper">
-                                <InputLabel className="text-left" htmlFor="description">
-                                    <IntlMessages id="widgets.description" />
-                                </InputLabel>
+                                <InputLabel className="text-left" htmlFor="designation">
+                                    Code
+                                        </InputLabel>
                                 <InputComponent
-                                    id="description"
+                                    id="designation"
                                     isRequired
                                     errors={errors}
                                     register={register}
-                                    name={'description'}
+                                    name={'code'}
                                     className="input-lg"
                                 // placeholder={intl.formatMessage({id: "common.commercialName"})}
                                 />
-                                <span className="has-icon"><i className="ti-pencil" /></span>
+                                {/* <span className="has-icon"><i className="ti-pencil" /></span> */}
                             </FormGroup>
+                        </div>
+                        <div className="col-md-6 col-sm-12">
+                            <FormGroup className="has-wrapper">
+                                <InputLabel className="text-left" htmlFor="designation">
+                                    Nom
+                                        </InputLabel>
+                                <InputComponent
+                                    id="designation"
+                                    isRequired
+                                    errors={errors}
+                                    register={register}
+                                    name={'label'}
+                                    className="input-lg"
+                                // placeholder={intl.formatMessage({id: "common.commercialName"})}
+                                />
+                                {/* <span className="has-icon"><i className="ti-pencil" /></span> */}
+                            </FormGroup>
+                        </div>
+                    </div>
 
+                    <FormGroup className="has-wrapper">
+                        <InputLabel className="text-left" htmlFor="description">
+                            <IntlMessages id="widgets.description" />
+                        </InputLabel>
+                        <InputComponent
+                            id="description"
+                            isRequired
+                            errors={errors}
+                            register={register}
+                            name={'description'}
+                            className="input-lg"
+                        />
+                    </FormGroup>
+
+                    <div className="row align-items-center">
+                        <div className="col-md-6 col-sm-12">
                             <FormGroup className="has-wrapper">
                                 <InputLabel className="text-left" htmlFor="defaultPrice">
                                     Prix par defaut
@@ -281,10 +315,127 @@ const CategoryProductsCreate = props => {
                                     register={register}
                                     name={'defaultPrice'}
                                     className="input-lg"
-                                // placeholder={intl.formatMessage({id: "common.commercialName"})}
+                                    type='number'
                                 />
-                                <span className="has-icon"><i className="ti-pencil" /></span>
                             </FormGroup>
+                        </div>
+                        <div className="col-md-6 col-sm-12">
+                            <CustomAsyncComponent
+                                loading={false}
+                                data={currencies}
+                                component={data => (
+                                    <div className="form-group text-left">
+                                        <FormControl fullWidth>
+                                            <InputLabel className="text-left" htmlFor="currency-helper">
+                                                Devise
+                                            </InputLabel>
+                                            <InputComponent
+                                                isRequired
+                                                className="mt-0"
+                                                errors={errors}
+                                                control={control}
+                                                register={register}
+                                                componentType="select"
+                                                name={'price_currency'}
+                                                defaultValue={data[0]}
+                                                as={<Select input={<Input name="price_currency" id="currency-helper" />}>
+                                                    {data.map((item, index) => (
+                                                        <MenuItem key={index} value={item.code} className="center-hor-ver">
+                                                            {item.name}
+                                                        </MenuItem>
+                                                    ))}
+                                                </Select>}
+                                            />
+                                        </FormControl>
+                                    </div>
+                                )}
+                            />
+                        </div>
+                    </div>
+
+                    <div className="row align-items-center">
+                        <div className="col-md-4 col-sm-12">
+                            <FormControl fullWidth>
+                                <InputComponent
+                                    isRequired
+                                    className="mt-0"
+                                    errors={errors}
+                                    control={control}
+                                    register={register}
+                                    componentType="select"
+                                    id="isAccount"
+                                    name={'isAccount'}
+                                    // defaultValue={data[0]}
+                                    as={<FormControlLabel control={
+                                        <Checkbox
+                                            color="primary"
+                                            checked={isAccountWatch}
+                                            onChange={() => setValue('isAccount', !isAccountWatch)}
+                                        />
+                                    } label={"Associer une unité de compte"}
+                                    />}
+                                />
+                            </FormControl>
+                        </div>
+                        <div className="col-md-4 col-sm-12">
+                            <CustomAsyncComponent
+                                loading={false}
+                                data={[{name: 'Devise', id: 0}, ...types]}
+                                component={data => (
+                                    <div className="form-group text-left">
+                                        <FormControl fullWidth>
+                                            <InputLabel className="text-left" htmlFor="currency-helper">
+                                                Type d'unité
+                                            </InputLabel>
+                                            <Select onChange={e => setType(e.target.value)} disabled={!isAccountWatch}>
+                                                {[{name: 'Devise', id: 0}, ...types].map(item => (
+                                                    <MenuItem key={item.id} value={item} className="center-hor-ver">
+                                                        {item.name}
+                                                    </MenuItem>
+                                                ))}
+                                            </Select>
+                                        </FormControl>
+                                    </div>
+                                )}
+                            />
+                        </div>
+                        <div className="col-md-4 col-sm-12">
+                            <CustomAsyncComponent
+                                loading={false}
+                                data={units}
+                                component={data => (
+                                    <div className="form-group text-left">
+                                        <FormControl fullWidth>
+                                            <InputLabel className="text-left" htmlFor="currency-helper">
+                                                Unité de compte
+                                            </InputLabel>
+                                            <InputComponent
+                                                isRequired
+                                                disabled={!isAccountWatch}
+                                                className="mt-0"
+                                                errors={errors}
+                                                control={control}
+                                                register={register}
+                                                componentType="select"
+                                                name={'unit_id'}
+                                                defaultValue={data[0]}
+                                                as={<Select input={<Input name="unit_id" id="currency-helper" />}>
+                                                    {data.map((item, index) => (
+                                                        <MenuItem key={index} value={item.id} className="center-hor-ver">
+                                                            {item.name}
+                                                        </MenuItem>
+                                                    ))}
+                                                </Select>}
+                                            />
+                                        </FormControl>
+                                    </div>
+                                )}
+                            />
+                        </div>
+                    </div>
+
+                    {
+                        isAccountWatch ?
 
                             <div className="row align-items-center">
                                 <div className="col-md-4 col-sm-12">
@@ -296,334 +447,333 @@ const CategoryProductsCreate = props => {
                                             control={control}
                                             register={register}
                                             componentType="select"
-                                            id="isAccount"
-                                            name={'isAccount'}
+                                            id="isNegativeBalance"
+                                            name={'isNegativeBalance'}
                                             // defaultValue={data[0]}
                                             as={<FormControlLabel control={
                                                 <Checkbox
                                                     color="primary"
-                                                    checked={isAccountWatch}
-                                                    onChange={() => setValue('isAccount', !isAccountWatch)}
+                                                    checked={isNegativeBalanceWatch}
+                                                    onChange={() => setValue('isNegativeBalance', !isNegativeBalanceWatch)}
                                                 />
-                                            } label={"Associer une unité de compte"}
+                                            } label={"Autoriser les soldes négatifs"}
                                             />}
                                         />
                                     </FormControl>
                                 </div>
-                                <div className="col-md-8 col-sm-12">
-                                    <CustomAsyncComponent
-                                        loading={false}
-                                        data={currencies}
-                                        component={data => (
-                                            <div className="form-group text-left">
-                                                <FormControl fullWidth>
-                                                    <InputLabel className="text-left" htmlFor="currency-helper">
-                                                        Unité de compte
-                                                    </InputLabel>
-                                                    <InputComponent
-                                                        isRequired
-                                                        disabled={!isAccountWatch}
-                                                        className="mt-0"
-                                                        errors={errors}
-                                                        control={control}
-                                                        register={register}
-                                                        componentType="select"
-                                                        name={'currency'}
-                                                        defaultValue={data[0]}
-                                                        as={<Select input={<Input name="currency" id="currency-helper" />}>
-                                                            {data.map((item, index) => (
-                                                                <MenuItem key={index} value={item.code} className="center-hor-ver">
-                                                                    {item.name}
-                                                                </MenuItem>
-                                                            ))}
-                                                        </Select>}
-                                                    />
-                                                </FormControl>
-                                            </div>
-                                        )}
+                                <div className="col-md-4 col-sm-12">
+                                    <FormGroup className="has-wrapper">
+                                        <InputLabel className="text-left" htmlFor="min">
+                                            Plancher du compte
+                                        </InputLabel>
+                                        <InputComponent
+                                            id="min"
+                                            errors={errors}
+                                            min={!isNegativeBalanceWatch ? 0 : null }
+                                            register={register}
+                                            name={'minBalance'}
+                                            className="input-lg"
+                                            type='number'
+                                        />
+                                    </FormGroup>
+                                </div>
+                                <div className="col-md-4 col-sm-12">
+                                    <FormGroup className="has-wrapper">
+                                        <InputLabel className="text-left" htmlFor="max">
+                                            Plafond du compte
+                                        </InputLabel>
+                                        <InputComponent
+                                            id="max"
+                                            errors={errors}
+                                            register={register}
+                                            name={'maxBalance'}
+                                            className="input-lg"
+                                            type='number'
+                                        />
+                                    </FormGroup>
+                                </div>
+                            </div> : null
+                    }
+
+                    <InputLabel className="text-left" htmlFor="currency-helper">
+                        Associer des produits par défaut
+                    </InputLabel>
+                    <CustomList
+                        loading={false}
+                        // showSearch={false}
+                        list={chosenProducts}
+                        onAddClick={() => setShowCreateBox(true)}
+                        itemsFoundText={n => `${n} produit(s) sélectionné(s)`}
+                        addPermissions={{
+                            permissions: [],
+                        }}
+                        renderItem={list => (
+                            <>
+                                {list && list.length === 0 ? (
+                                    <div className="d-flex justify-content-center align-items-center py-50">
+                                        <h4>
+                                            Aucun produits sélectionnés
+                                        </h4>
+                                    </div>
+                                ) : (
+                                        <div className="table-responsive">
+                                            <table className="table table-hover table-middle mb-0 text-center">
+                                                <thead>
+                                                    <tr>
+                                                        <th><IntlMessages id="components.name" /></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {list && list.map((product, key) => (
+                                                        <tr key={key} className="cursor-pointer">
+                                                            <td>
+                                                                <div className="media">
+                                                                    <div className="media-body pt-10">
+                                                                        <h4 className="m-0 fw-bold text-dark">{product.label}</h4>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div className="media">
+                                                                    <div className="media-body pt-10">
+                                                                        <a href="#" className="text-danger" onClick={() => { setShowDeleteBox(true); setDeleteProduct(product); }}>
+                                                                            <span className="material-icons mr-10">delete</span>
+                                                                        </a>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    ))}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    )}
+                            </>
+                        )}
+                    />
+
+                    <CustomAsyncComponent
+                        loading={systemObject.productNature.loading}
+                        data={systemObject.productNature.data}
+                        onRetryClick={fetchSysProductNature}
+                        component={data => (
+                            <div className="form-group text-left">
+                                <FormControl fullWidth>
+                                    <InputLabel className="text-left" htmlFor="nature-helper">
+                                        Nature du produit
+                                            </InputLabel>
+                                    <InputComponent
+                                        isRequired
+                                        className="mt-0"
+                                        errors={errors}
+                                        control={control}
+                                        register={register}
+                                        componentType="select"
+                                        name={'nature'}
+                                        defaultValue={data[0]}
+                                        as={<Select input={<Input name="nature" id="nature-helper" />}>
+                                            {data.map((item, index) => (
+                                                <MenuItem key={index} value={item} className="center-hor-ver">
+                                                    {item}
+                                                </MenuItem>
+                                            ))}
+                                        </Select>}
                                     />
-                                </div>
+                                </FormControl>
                             </div>
+                        )}
+                    />
 
-                            <InputLabel className="text-left" htmlFor="currency-helper">
-                                Associer des produits par défaut
-                            </InputLabel>
-                            <CustomList
-                                loading={false}
-                                // showSearch={false}
-                                list={chosenProducts}
-                                onAddClick={() => setShowCreateBox(true)}
-                                itemsFoundText={n => `${n} produit(s) sélectionné(s)`}
-                                addPermissions={{
-                                    permissions: [],
-                                }}
-                                renderItem={list => (
-                                    <>
-                                        {list && list.length === 0 ? (
-                                            <div className="d-flex justify-content-center align-items-center py-50">
-                                                <h4>
-                                                    Aucun produits sélectionnés
-                                                </h4>
-                                            </div>
-                                        ) : (
-                                                <div className="table-responsive">
-                                                    <table className="table table-hover table-middle mb-0 text-center">
-                                                        <thead>
-                                                            <tr>
-                                                                <th><IntlMessages id="components.name" /></th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            {list && list.map((product, key) => (
-                                                                <tr key={key} className="cursor-pointer">
-                                                                    <td>
-                                                                        <div className="media">
-                                                                            <div className="media-body pt-10">
-                                                                                <h4 className="m-0 fw-bold text-dark">{product.label}</h4>
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
-                                                                    <td>
-                                                                        <div className="media">
-                                                                            <div className="media-body pt-10">
-                                                                                <a href="#" className="text-danger" onClick={() => { setShowDeleteBox(true); setDeleteProduct(product); }}>
-                                                                                    <span className="material-icons mr-10">delete</span>
-                                                                                </a>
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
-                                                                </tr>
-                                                            ))}
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            )}
-                                    </>
-                                )}
-                            />
+                    <div className="row">
+                        <div className="col-md-4 col-sm-6">
+                            <FormControl fullWidth>
+                                <InputComponent
+                                    isRequired
+                                    className="mt-0"
+                                    errors={errors}
+                                    control={control}
+                                    register={register}
+                                    componentType="select"
+                                    id="isAvailable"
+                                    name={'isAvailable'}
+                                    // defaultValue={data[0]}
+                                    as={<FormControlLabel control={
+                                        <Checkbox
+                                            color="primary"
+                                            checked={isAvailableWatch}
+                                            onChange={() => setValue('isAvailable', !isAvailableWatch)}
+                                        />
+                                    } label={"Disponible ?"}
+                                    />}
+                                />
+                            </FormControl>
+                        </div>
+                        <div className="col-md-4 col-sm-6">
+                            <FormControl fullWidth>
+                                <InputComponent
+                                    isRequired
+                                    className="mt-0"
+                                    errors={errors}
+                                    control={control}
+                                    register={register}
+                                    componentType="select"
+                                    id="isDefaultPfm"
+                                    name={'isDefaultPfm'}
+                                    // defaultValue={data[0]}
+                                    as={<FormControlLabel control={
+                                        <Checkbox
+                                            color="primary"
+                                            checked={isDefaultPfmWatch}
+                                            onChange={() => setValue('isDefaultPfm', !isDefaultPfmWatch)}
+                                        />
+                                    } label={"Par defaut pour ?"}
+                                    />}
+                                />
+                            </FormControl>
+                        </div>
 
-                            <CustomAsyncComponent
-                                loading={systemObject.productNature.loading}
-                                data={systemObject.productNature.data}
-                                onRetryClick={fetchSysProductNature}
-                                component={data => (
-                                    <div className="form-group text-left">
-                                        <FormControl fullWidth>
-                                            <InputLabel className="text-left" htmlFor="nature-helper">
-                                                Nature du produit
+                        <div className="col-md-4 col-sm-6">
+                            <FormControl fullWidth>
+                                <InputComponent
+                                    isRequired
+                                    className="mt-0"
+                                    errors={errors}
+                                    control={control}
+                                    register={register}
+                                    componentType="select"
+                                    id="isDefaultMember"
+                                    name={'isDefaultMember'}
+                                    // defaultValue={data[0]}
+                                    as={<FormControlLabel control={
+                                        <Checkbox
+                                            color="primary"
+                                            checked={isDefaultMemberWatch}
+                                            onChange={() => setValue('isDefaultMember', !isDefaultMemberWatch)}
+                                        />
+                                    } label={"Par defaut pour membre ?"}
+                                    />}
+                                />
+                            </FormControl>
+                        </div>
+                    </div>
+
+                    <CustomAsyncComponent
+                        loading={categoryProducts.loading}
+                        data={categoryProducts.data}
+                        onRetryClick={fetchCategoryProducts}
+                        component={data => (
+                            <div className="form-group text-left">
+                                <FormControl fullWidth>
+                                    <InputLabel className="text-left" htmlFor="categoryProductId-helper">
+                                        Categorie produit
                                             </InputLabel>
-                                            <InputComponent
-                                                isRequired
-                                                className="mt-0"
-                                                errors={errors}
-                                                control={control}
-                                                register={register}
-                                                componentType="select"
-                                                name={'nature'}
-                                                defaultValue={data[0]}
-                                                as={<Select input={<Input name="nature" id="nature-helper" />}>
-                                                    {data.map((item, index) => (
-                                                        <MenuItem key={index} value={item} className="center-hor-ver">
-                                                            {item}
-                                                        </MenuItem>
-                                                    ))}
-                                                </Select>}
-                                            />
-                                        </FormControl>
-                                    </div>
-                                )}
-                            />
-
-                            <div className="row">
-                                <div className="col-md-4 col-sm-6">
-                                    <FormControl fullWidth>
-                                        <InputComponent
-                                            isRequired
-                                            className="mt-0"
-                                            errors={errors}
-                                            control={control}
-                                            register={register}
-                                            componentType="select"
-                                            id="isAvailable"
-                                            name={'isAvailable'}
-                                            // defaultValue={data[0]}
-                                            as={<FormControlLabel control={
-                                                <Checkbox
-                                                    color="primary"
-                                                    checked={isAvailableWatch}
-                                                    onChange={() => setValue('isAvailable', !isAvailableWatch)}
-                                                />
-                                            } label={"Disponible ?"}
-                                            />}
-                                        />
-                                    </FormControl>
-                                </div>
-                                <div className="col-md-4 col-sm-6">
-                                    <FormControl fullWidth>
-                                        <InputComponent
-                                            isRequired
-                                            className="mt-0"
-                                            errors={errors}
-                                            control={control}
-                                            register={register}
-                                            componentType="select"
-                                            id="isDefaultPfm"
-                                            name={'isDefaultPfm'}
-                                            // defaultValue={data[0]}
-                                            as={<FormControlLabel control={
-                                                <Checkbox
-                                                    color="primary"
-                                                    checked={isDefaultPfmWatch}
-                                                    onChange={() => setValue('isDefaultPfm', !isDefaultPfmWatch)}
-                                                />
-                                            } label={"Par defaut pour ?"}
-                                            />}
-                                        />
-                                    </FormControl>
-                                </div>
-
-                                <div className="col-md-4 col-sm-6">
-                                    <FormControl fullWidth>
-                                        <InputComponent
-                                            isRequired
-                                            className="mt-0"
-                                            errors={errors}
-                                            control={control}
-                                            register={register}
-                                            componentType="select"
-                                            id="isDefaultMember"
-                                            name={'isDefaultMember'}
-                                            // defaultValue={data[0]}
-                                            as={<FormControlLabel control={
-                                                <Checkbox
-                                                    color="primary"
-                                                    checked={isDefaultMemberWatch}
-                                                    onChange={() => setValue('isDefaultMember', !isDefaultMemberWatch)}
-                                                />
-                                            } label={"Par defaut pour membre ?"}
-                                            />}
-                                        />
-                                    </FormControl>
-                                </div>
+                                    <InputComponent
+                                        isRequired
+                                        className="mt-0"
+                                        errors={errors}
+                                        control={control}
+                                        register={register}
+                                        componentType="select"
+                                        name={'categoryProductId'}
+                                        defaultValue={data[0] ? data[0].id : undefined}
+                                        as={<Select input={<Input name="categoryProductId" id="categoryProductId-helper" />}>
+                                            {data.map((item, index) => (
+                                                <MenuItem key={index} value={item.id} className="center-hor-ver">
+                                                    {item.label}
+                                                </MenuItem>
+                                            ))}
+                                        </Select>}
+                                    />
+                                </FormControl>
                             </div>
+                        )}
+                    />
 
-                            <CustomAsyncComponent
-                                loading={categoryProducts.loading}
-                                data={categoryProducts.data}
-                                onRetryClick={fetchCategoryProducts}
-                                component={data => (
-                                    <div className="form-group text-left">
-                                        <FormControl fullWidth>
-                                            <InputLabel className="text-left" htmlFor="categoryProductId-helper">
-                                                Categorie produit
+                    <CustomAsyncComponent
+                        loading={catalogTypes.loading}
+                        data={catalogTypes.data}
+                        onRetryClick={fetchCatalogTypes}
+                        component={data => (
+                            <div className="form-group text-left">
+                                <FormControl fullWidth>
+                                    <InputLabel className="text-left" htmlFor="catalogId-helper">
+                                        Catalog produit
                                             </InputLabel>
-                                            <InputComponent
-                                                isRequired
-                                                className="mt-0"
-                                                errors={errors}
-                                                control={control}
-                                                register={register}
-                                                componentType="select"
-                                                name={'categoryProductId'}
-                                                defaultValue={data[0] ? data[0].id : undefined}
-                                                as={<Select input={<Input name="categoryProductId" id="categoryProductId-helper" />}>
-                                                    {data.map((item, index) => (
-                                                        <MenuItem key={index} value={item.id} className="center-hor-ver">
-                                                            {item.label}
-                                                        </MenuItem>
-                                                    ))}
-                                                </Select>}
-                                            />
-                                        </FormControl>
-                                    </div>
-                                )}
-                            />
+                                    <InputComponent
+                                        isRequired
+                                        className="mt-0"
+                                        errors={errors}
+                                        control={control}
+                                        register={register}
+                                        componentType="select"
+                                        name={'catalogId'}
+                                        defaultValue={data[0] ? data[0].id : undefined}
+                                        as={<Select input={<Input name="catalogId" id="catalogId-helper" />}>
+                                            {data.map((item, index) => (
+                                                <MenuItem key={index} value={item.id} className="center-hor-ver">
+                                                    {item.label}
+                                                </MenuItem>
+                                            ))}
+                                        </Select>}
+                                    />
+                                </FormControl>
+                            </div>
+                        )}
+                    />
 
-                            <CustomAsyncComponent
-                                loading={catalogTypes.loading}
-                                data={catalogTypes.data}
-                                onRetryClick={fetchCatalogTypes}
-                                component={data => (
-                                    <div className="form-group text-left">
-                                        <FormControl fullWidth>
-                                            <InputLabel className="text-left" htmlFor="catalogId-helper">
-                                                Catalog produit
-                                            </InputLabel>
-                                            <InputComponent
-                                                isRequired
-                                                className="mt-0"
-                                                errors={errors}
-                                                control={control}
-                                                register={register}
-                                                componentType="select"
-                                                name={'catalogId'}
-                                                defaultValue={data[0] ? data[0].id : undefined}
-                                                as={<Select input={<Input name="catalogId" id="catalogId-helper" />}>
-                                                    {data.map((item, index) => (
-                                                        <MenuItem key={index} value={item.id} className="center-hor-ver">
-                                                            {item.label}
-                                                        </MenuItem>
-                                                    ))}
-                                                </Select>}
-                                            />
-                                        </FormControl>
-                                    </div>
-                                )}
-                            />
-
-                            <FormGroup className="mb-15">
-                                <Button
-                                    // type="submit"
-                                    color="primary"
-                                    disabled={loading}
-                                    variant="contained"
-                                    className="text-white font-weight-bold mr-3"
-                                    onClick={handleSubmit(onSubmit)}
-                                >
-                                    <IntlMessages id="button.submit" />
-                                </Button>
-                            </FormGroup>
-                        </Form>
-                        <AddProduct
-                            show={showCreateBox}
-                            products={products}
-                            onSave={onAddProduct}
-                            onClose={() => setShowCreateBox(false)}
-                        />
-
-                        <SweetAlert
-                            type="danger"
-                            show={showDeleteBox}
-                            showCancel
-                            showConfirm
-                            title={"Confirmation"}
-                            customButtons={(
-                                <>
-                                    <Button
-                                        color="blue"
-                                        variant="outlined"
-                                        onClick={() => setShowDeleteBox(false)}
-                                        className="text-white bg-blue font-weight-bold mr-3"
-                                    >
-                                        Non je ne veux pas
-                            </Button>
-                                    <Button
-                                        color="primary"
-                                        variant="contained"
-                                        className="bg-danger text-white font-weight-bold"
-                                        onClick={onDeleteProduct}
-                                    >
-                                        Oui je veux
-                            </Button>
-                                </>
-                            )}
-                            onConfirm={onDeleteProduct}
+                    <FormGroup className="mb-15">
+                        <Button
+                            // type="submit"
+                            color="primary"
+                            disabled={loading}
+                            variant="contained"
+                            className="text-white font-weight-bold mr-3"
+                            onClick={handleSubmit(onSubmit)}
                         >
-                            Etes-vous sur de vouloir supprimé ce produit ?
+                            <IntlMessages id="button.submit" />
+                        </Button>
+                    </FormGroup>
+                </Form>
+                <AddProduct
+                    show={showCreateBox}
+                    products={products}
+                    onSave={onAddProduct}
+                    onClose={() => setShowCreateBox(false)}
+                />
+
+                <SweetAlert
+                    type="danger"
+                    show={showDeleteBox}
+                    showCancel
+                    showConfirm
+                    title={"Confirmation"}
+                    customButtons={(
+                        <>
+                            <Button
+                                color="blue"
+                                variant="outlined"
+                                onClick={() => setShowDeleteBox(false)}
+                                className="text-white bg-blue font-weight-bold mr-3"
+                            >
+                                Non je ne veux pas
+                            </Button>
+                            <Button
+                                color="primary"
+                                variant="contained"
+                                className="bg-danger text-white font-weight-bold"
+                                onClick={onDeleteProduct}
+                            >
+                                Oui je veux
+                            </Button>
+                        </>
+                    )}
+                    onConfirm={onDeleteProduct}
+                >
+                    Etes-vous sur de vouloir supprimé ce produit ?
                 </SweetAlert>
-                    </RctCollapsibleCard>
-                </DialogContent>
-            </Dialog>
+            </div>
+            {/* </DialogContent>
+            </Dialog> */}
         </>
     );
 };

@@ -22,10 +22,11 @@ import {withStyles} from "@material-ui/core";
 
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import Create from './Create';
+// import Create from './Create';
 import {withRouter} from "react-router-dom";
 import IconButton from "@material-ui/core/IconButton";
 import VisibilityIcon from '@material-ui/icons/Visibility';
+import {PRODUCT_TYPE} from "Url/frontendUrl";
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 
 class ProductTypeList extends Component {
@@ -93,7 +94,7 @@ class ProductTypeList extends Component {
                                     <Button
                                         color="primary"
                                         className="mb-10 text-white mr-2"
-                                        onClick={() => this.setState({showCreateBox: true})}
+                                        onClick={() => this.props.history.push(PRODUCT_TYPE.CREATE)}
                                     >
                                         <IntlMessages id="button.add" />
                                         <i className="zmdi zmdi zmdi-plus ml-2" />
@@ -120,11 +121,11 @@ class ProductTypeList extends Component {
                                     </p>
                                 </Toolbar>
                             </AppBar>
-                            <Create
+                            {/* <Create
                                 show={showCreateBox}
                                 productTypes={productTypes}
                                 onClose={() => this.setState({showCreateBox: false})}
-                            />
+                            /> */}
                             {orderedItems.length === 0
                                 ? (
                                     <RctCollapsibleCard>

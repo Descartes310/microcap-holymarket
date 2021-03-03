@@ -14,9 +14,9 @@ const TimeFromMoment = ({time, showFullDate}) => {
 
     return (
         <Tooltip id="tooltip-createdAt" title={_time.format('LLL')}>
-            <h4 className={"m-0 fw-bold text-dark"}>
+            <p className={"m-0 fw-bold text-dark"}>
                 { showFullDate ? _time.format('LL') :  _time.fromNow()}
-            </h4>
+            </p>
         </Tooltip>
     );
 };

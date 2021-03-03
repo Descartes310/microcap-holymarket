@@ -34,6 +34,9 @@ export const SETTING = {
     GET_ALL_BY_NAME: 'api/settings/branchs/{id}/by-name',
     CGU: 'api/settings/update/cgu',
     CURRENCIES: 'api/settings/currencies',
+    UNIT_TYPE: 'api/settings/unit-types',
+    GET_UNIT: 'api/settings/units/unit-types/{id}',
+    UNIT: 'api/settings/units',
 };
 
 export const SYSTEM_OBJECT = {
@@ -156,15 +159,15 @@ export const USERS = {
     GET_ALL: 'api/users/persons',
     UPDATE_CURRENCY: 'api/users/currency/{id}',
     GET_ALL_BY_ORGANISATION: 'api/users/persons/by-organisation',
-    GET_ALL_PARTNER: 'api/users/organisations/branch/{id}/partner',
-    GET_ALL_PARTNER_OPERATOR: 'api/users/organisations/branch/{id}/partner/operator',
-    GET_ALL_PARTNER_OPERATOR_ME: 'api/users/organisations/partner/operator/me/{id}',
-    GET_ALL_ORGANISATIONS: 'api/users/organisations',
-    GET_ORGANISATION_REFERENCE: 'api/users/organisations/adhesion/{id}',
+    GET_ALL_PARTNER: 'public/users/organisations/branch/{id}/partner',
+    GET_ALL_PARTNER_OPERATOR: 'public/users/organisations/branch/{id}/partner/operator',
+    GET_ALL_PARTNER_OPERATOR_ME: 'public/users/organisations/partner/operator/me/{id}',
+    GET_ALL_ORGANISATIONS: 'public/users/organisations',
+    GET_ORGANISATION_REFERENCE: 'public/users/organisations/adhesion/{id}',
     CREATE: {
         PERSON: 'api/users/persons/with-profile',
-        ORGANISATION: 'api/users/organisations/with-profile',
-        PARTNER: 'api/users/organisations/{id}/partner',
+        ORGANISATION: 'public/users/organisations/with-profile',
+        PARTNER: 'public/users/organisations/{id}/partner',
     },
     UPDATE: {
         PERSON: '/api/users'
@@ -251,15 +254,15 @@ export const COMMERCIAL_MANAGEMENT = {
     },
     OFFER: {
         GET_ALL: {
-            FOR_PARTNER: 'public/commercial-offer/for-partner',
-            FOR_NETWORK: 'public/commercial-offer/for-network',
-            PRODUCT_AVAILABLE: 'public/commercial-offer/products-available',
+            FOR_PARTNER: 'api/commercial-offer/for-partner',
+            FOR_NETWORK: 'api/commercial-offer/for-network',
+            PRODUCT_AVAILABLE: 'api/commercial-offer/products-available',
         },
-        CREATE: 'public/commercial-offer',
-        ADD_PRODUCT: 'public/commercial-offer/{id}',
-        UPDATE: 'public/commercial-offer',
-        ACTIVATE: 'public/commercial-offer/active',
-        DEACTIVATE: 'public/commercial-offer/desactive'
+        CREATE: 'api/commercial-offer',
+        ADD_PRODUCT: 'api/commercial-offer/{id}',
+        UPDATE: 'api/commercial-offer',
+        ACTIVATE: 'api/commercial-offer/active',
+        DEACTIVATE: 'api/commercial-offer/desactive'
     },
 };
 

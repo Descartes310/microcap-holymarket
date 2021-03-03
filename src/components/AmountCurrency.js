@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 
+const CURRENCIES = ['EUR', 'XAF', 'XOF', 'GBP', 'CNY', 'USD', 'CAD']
 /**
  * Display amount in target currency
  * @param amount
@@ -10,35 +11,47 @@ import { connect } from "react-redux";
  */
 class AmountCurrency extends Component {
 
+    state = {
+        to: 'EUR'
+    }
+
     constructor(props) {
         super(props);
     }
 
     formatter = new Intl.NumberFormat('en-US', {
         style: 'currency',
-        currency: this.props.to ? this.props.to : this.props.authUser.user.currency.code,
+        currency: this.state.to ? this.state.to : this.props.authUser.user.currency.code,
         minimumFractionDigits: 2
-      })
+    })
 
     componentDidMount() {
     }
 
-    componentDidUpdate() {
+    componentDidUpdate(prevProps) {
+        if (this.props.to != prevProps.to) {
+            this.forceUpdate()
+            this.formatter = new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: this.props.to ? this.props.to : this.props.authUser.user.currency.code,
+                minimumFractionDigits: 2
+            })
+        }
     }
 
     getAmount(amount, from, to = null) {
         if (from)
             if (to) {
                 let from_currency = this.props.settings.currencies.filter(c => c.code == from)[0];
-                if(!from_currency)
-                    from_currency = {code: 'EUR', value: 1};
+                if (!from_currency)
+                    from_currency = { code: 'EUR', value: 1 };
                 let to_currency = this.props.settings.currencies.filter(c => c.code == to)[0];
                 let main_amount = amount * from_currency.value;
                 return main_amount / to_currency.value;
             } else {
                 let from_currency = this.props.settings.currencies.filter(c => c.code == from)[0];
-                if(!from_currency)
-                    from_currency = {code: 'EUR', value: 1};
+                if (!from_currency)
+                    from_currency = { code: 'EUR', value: 1 };
                 let to_currency = null;
                 if (this.props.authUser.user.currency)
                     to_currency = this.props.authUser.user.currency;
@@ -116,6 +129,7 @@ class AmountCurrency extends Component {
         }
     }
 
+
     render() {
         const { className, styles, amount, from, to, quantity, amounts, notShowCurrency } = this.props;
         return (
@@ -128,7 +142,7 @@ class AmountCurrency extends Component {
                                     this.formatter.format(this.getAmount(amount, from, to).toFixed(2) * quantity)
                                     :
                                     this.formatter.format(this.getAmount(amount, from, to).toFixed(2))
-                             }
+                            }
                         </span>
                         :
                         <span className={className} style={styles} >

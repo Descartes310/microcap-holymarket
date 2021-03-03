@@ -575,6 +575,12 @@ export default {
                "path": SETTINGS.CONFIGS.SELF,
                "permissions": [],
             },
+            {
+               "menu_title": "Unité de decompte",
+               "new_item": false,
+               "path": SETTINGS.UNITS.SELF,
+               "permissions": [],
+            },
          ]
       },
    ],

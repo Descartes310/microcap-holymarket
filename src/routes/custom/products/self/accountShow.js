@@ -38,12 +38,13 @@ class AccountShow extends Component {
             account: [],
             balance: '0',
             amount: 0,
-            currency: null,
+            account_currency: null,
             showQuantityBox: false,
             paying: false,
             transactions: {},
             printing: false,
-            showCurrencyBox: false
+            showCurrencyBox: false,
+            currency: this.props.authUser.user.currency.code
         }
         this.billRef = React.createRef();
     }
@@ -62,32 +63,38 @@ class AccountShow extends Component {
                         })
                 });
                 let balance = account.detailsProducts.filter(d => d.detailsType.name == 'SOLDE')
-                let currency = account.detailsProducts.filter(d => d.detailsType.name == 'CURRENCY')
+                let account_currency = account.detailsProducts.filter(d => d.detailsType.name == 'CURRENCY')
                 if (balance.length > 0) {
                     this.setState({ balance: balance[0].value })
                 }
-                if(currency.length > 0)
-                    this.setState({ currency: currency[0].value });
+                if(account_currency.length > 0)
+                    this.setState({ account_currency: account_currency[0].value });
                 else
-                    this.setState({ currency: 'EUR' });
+                    this.setState({ account_currency: 'EUR' });
             })
             .catch((err) => {
+                console.log(err)
                 NotificationManager.error(ERROR_500);
             })
             .finally(() => this.setState({ loading: false }));
     };
 
     changeAccountCurrency = (id) => {
-        changeCurrency(this.props.match.params.id, id)
-            .then(response => {
-                // this.loadData();
-                window.location.reload()
-                this.setState({ showCurrencyBox: false })
-            })
-            .catch((err) => {
-                NotificationManager.error(ERROR_500);
-            })
-            .finally(() => this.setState({ loading: false }));
+        let currency = this.props.currencies.filter(c => c.id == id )[0];
+        if(currency == null)
+            return;
+        
+        this.setState({ currency: currency.code, showCurrencyBox: false });
+        // changeCurrency(this.props.match.params.id, id)
+        //     .then(response => {
+        //         // this.loadData();
+        //         window.location.reload()
+        //         this.setState({ showCurrencyBox: false })
+        //     })
+        //     .catch((err) => {
+        //         NotificationManager.error(ERROR_500);
+        //     })
+        //     .finally(() => this.setState({ loading: false }));
     };
 
     handleApprovisioning = (value) => {
@@ -96,6 +103,7 @@ class AccountShow extends Component {
                 this.loadData()
             })
             .catch((err) => {
+                console.log(err)
                 NotificationManager.error(ERROR_500);
             })
             .finally(() => this.setState({ showQuantityBox: false }));
@@ -107,6 +115,7 @@ class AccountShow extends Component {
                 this.loadData()
             })
             .catch((err) => {
+                console.log(err)
                 NotificationManager.error(ERROR_500);
             })
             .finally(() => this.setState({ paying: false }));
@@ -141,7 +150,7 @@ class AccountShow extends Component {
     }
 
     render() {
-        const { loading, account, balance, currency, showQuantityBox, transactions, paying, printing, showCurrencyBox } = this.state;
+        const { account_currency, account, balance, currency, showQuantityBox, transactions, paying, printing, showCurrencyBox } = this.state;
         const { match, history, classes } = this.props;
 
         return (
@@ -213,7 +222,7 @@ class AccountShow extends Component {
                                 </UncontrolledDropdown>
                             </div>
                             <h1 className="mr-2"><span style={{ color: '#fed039' }}>Solde:</span> 
-                            { currency ? <AmountCurrency styles={{ fontSize: '1.1em' }} amount={balance} from={currency} to={currency} /> : '0 EUR' }</h1>
+                            { account_currency ? <AmountCurrency styles={{ fontSize: '1.1em' }} amount={balance} from={account_currency} to={currency} /> : '0 EUR' }</h1>
                         </div>
                         <div className="d-flex justify-content-between align-items-center" style={{ padding: 40 }}>
                             <FormControl>
@@ -266,7 +275,7 @@ class AccountShow extends Component {
                                         <StripeCheckout
                                             stripeKey="pk_test_51ILMcRF8O7K51xUUQ3rGe0lMNsDJWjM4DCxMH7zJwnxl2uFiVeC8hzrOYmAGHKiU4XAM5OIgHTZhjDrac7vP97yo00VO7op4Qx"
                                             token={this.handleApprovisioningCard}
-                                            amount={(Number(computeAmountFromCurrency(this.props.currencies, this.state.amount, null, this.props.authUser.user.currency, currency, currency))) * this.props.currencies.filter(c => c.code == currency)[0].decimal}
+                                            amount={(Number(computeAmountFromCurrency(this.props.currencies, this.state.amount, null, this.props.authUser.user.currency, account_currency, currency))) * this.props.currencies.filter(c => c.code == currency)[0].decimal}
                                             name="Recharger le compte"
                                             currency={currency}
                                             label="Recharger"
@@ -288,7 +297,7 @@ class AccountShow extends Component {
                             {
                                 Object.entries(transactions).map(function (transaction, index) {
                                     return (
-                                        <>
+                                        <div key={index}>
                                             <p>{<TimeFromMoment time={transaction[0]} showFullDate />}</p>
                                             <table className="table table-hover table-middle mb-60 text-center">
                                                 <thead>
@@ -306,8 +315,8 @@ class AccountShow extends Component {
                                                 </thead>
                                                 <tbody>
                                                     {
-                                                        transaction[1].map(transaction => (
-                                                            <tr>
+                                                        transaction[1].map((transaction, index) => (
+                                                            <tr key={index}>
                                                                 <td>
                                                                     <div className="media">
                                                                         <div className="media-body">
@@ -355,7 +364,7 @@ class AccountShow extends Component {
                                                         ))}
                                                 </tbody>
                                             </table>
-                                        </>
+                                        </div>
                                     )
                                 })}
                         </div>
@@ -409,8 +418,8 @@ class AccountShow extends Component {
                             </thead>
                             <tbody>
                                 {
-                                    this.props.currencies.map(c => (
-                                        <tr>
+                                    this.props.currencies.map((c, index) => (
+                                        <tr key={index}>
                                             <td>{c.name}</td>
                                             <td>{c.code}</td>
                                             <td style={{

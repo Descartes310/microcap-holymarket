@@ -202,6 +202,11 @@ export const SETTINGS = {
     },
     CONFIGS: {
         SELF: '/settings/configurations'
+    },
+    UNITS: {
+        SELF: '/settings/units',
+        TYPE: '/settings/units/types',
+        VALUE: '/settings/units/values'
     }
 };
 
