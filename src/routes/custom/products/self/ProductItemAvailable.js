@@ -140,7 +140,7 @@ class ProductItemAvailable extends Component {
                                                         <td>
                                                             <div className="media">
                                                                 <div className="media-body pt-10">
-                                                                    <h4 className="m-0 fw-bold text-dark">{item.distributor}</h4>
+                                                                    <h4 className="m-0 fw-bold text-dark">{item.distributor ? item.distributor : '-'}</h4>
                                                                 </div>
                                                             </div>
                                                         </td>
