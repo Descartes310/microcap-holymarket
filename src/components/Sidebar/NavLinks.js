@@ -7,6 +7,9 @@ export default {
    a: [
       
    ],
+   operateur_reseau: [
+      
+   ],
    menus: [
       {
          "menu_title": "Utilisateurs",

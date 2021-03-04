@@ -11,7 +11,7 @@ import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
 import {Button, Input, InputGroup, InputGroupAddon} from "reactstrap";
 import IconButton from "@material-ui/core/IconButton";
-import { getMembersOfCommunity, getVouchers } from 'Actions/independentActions';
+import { getMembersOfCommunity, getVouchers, getUserClient } from 'Actions/independentActions';
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
 import {AbilityContext} from "Permissions/Can";
 import DialogTitle from "@material-ui/core/DialogTitle/DialogTitle";
@@ -20,6 +20,7 @@ import Dialog from "@material-ui/core/Dialog/Dialog";
 import CancelIcon from '@material-ui/icons/Cancel';
 import TimeFromMoment from "Components/TimeFromMoment";
 import AmountCurrency from "Components/AmountCurrency";
+import SimpleProfile from './SimpleProfile';
 
 
 class ListMembers extends Component {
@@ -31,6 +32,7 @@ class ListMembers extends Component {
         users: [],
         codes: [],
         showVoucherBox: false,
+        showBox: false
     }
 
     handleChange = event => {
@@ -56,8 +58,14 @@ class ListMembers extends Component {
         this.getMembers();
     }
 
+    getClientFolder = (user) => {
+        getUserClient(user.id).then(data => {
+            this.setState({ userPieces: data, showBox: true });
+        })
+    }
+
     render() {
-        const { loading, users, showVoucherBox, codes } = this.state;
+        const { loading, users, showVoucherBox, codes, showBox } = this.state;
         const { classes } = this.props;
         return (
 
@@ -93,12 +101,38 @@ class ListMembers extends Component {
                             <div className="rct-tabs">
                                 <ul className="list-unstyled m-0">
                                     {users.length > 0 ? users.map((user, key) => (
+                                        <>
                                         <ListItem
                                             user={user}
                                             key={key}
                                             onViewVoucher={() => this.onViewVoucher(user)}
                                             isMe={this.props.authUser.user.id == user.id}
+                                            getClientFolder={() => this.getClientFolder(user)}
                                         />
+                                        <Dialog
+                                            open={showBox}
+                                            onClose={() => { this.setState({ showBox: false, codes: [] }) }}
+                                            aria-labelledby="responsive-dialog-title"
+                                            maxWidth={'lg'}
+                                            fullWidth
+                                        >
+                                            <DialogTitle id="form-dialog-title">
+                                                <div className="row justify-content-between align-items-center">
+                                                    Profile de l'utlisateur
+                                                    <IconButton
+                                                        color="primary"
+                                                        aria-label="close"
+                                                        className="text-danger"
+                                                        onClick={() => { this.setState({ showBox: false, codes: [] }) }}>
+                                                        <CancelIcon />
+                                                    </IconButton>
+                                                </div>
+                                            </DialogTitle>
+                                            <DialogContent>
+                                                <SimpleProfile currentUser={user} />
+                                            </DialogContent>
+                                        </Dialog>
+                                        </>
                                     ))
                                         :
                                         <div className="d-flex justify-content-center align-items-center py-50">
@@ -112,80 +146,7 @@ class ListMembers extends Component {
                         </RctCollapsibleCard>
                     )
                 }
-                <Dialog
-                    open={showVoucherBox}
-                    onClose={() => { this.setState({ showVoucherBox: false, codes: [] }) }}
-                    aria-labelledby="responsive-dialog-title"
-                    maxWidth={'lg'}
-                    fullWidth
-                >
-                    <DialogTitle id="form-dialog-title">
-                        <div className="row justify-content-between align-items-center">
-                            Codes de paiement actifs
-                            <IconButton
-                                color="primary"
-                                aria-label="close"
-                                className="text-danger"
-                                onClick={() => { this.setState({ showVoucherBox: false, codes: [] }) }}>
-                                <CancelIcon />
-                            </IconButton>
-                        </div>
-                    </DialogTitle>
-                    <DialogContent>
-                        <table className="table table-hover table-middle mb-0 text-center">
-                            <thead>
-                                <tr>
-                                    <th>Code de paiement</th>
-                                    <th>Type</th>
-                                    <th>Valeur</th>
-                                    <th>Unité</th>
-                                    <th>Date de création</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {codes && codes.map((item, key) => (
-                                    <tr key={key} className="cursor-pointer">
-                                        <td>
-                                            <div className="media">
-                                                <div className="media-body pt-10">
-                                                    <h4 className="m-0 fw-bold text-dark">{item.code}</h4>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div className="media">
-                                                <div className="media-body pt-10">
-                                                    <h4 className="m-0 fw-bold text-dark">{item.type}</h4>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div className="media">
-                                                <div className="media-body pt-10">
-                                                    <h4 className="m-0 fw-bold text-dark"><AmountCurrency amount={item.price} from={item.currency ? item.currency : 'EUR'} unit={item.unit} /></h4>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div className="media">
-                                                <div className="media-body pt-10">
-                                                    <h4 className="m-0 fw-bold text-dark">{item.unit ? item.unit.name : this.props.currencies.filter(c => c.code == item.currency)[0].name}</h4>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div className="media">
-                                                <div className="media-body pt-10">
-                                                    <h4 className="m-0 fw-bold text-dark"><TimeFromMoment time={item.updatedAt} /></h4>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </DialogContent>
-                </Dialog>
+                
             </div>
         )
     }
