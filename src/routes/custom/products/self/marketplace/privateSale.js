@@ -9,7 +9,7 @@ import {AbilityContext} from "Permissions/Can";
 import CustomList from "Components/CustomList";
 import {getProducts, setRequestGlobalAction} from "Actions";
 import Button from "@material-ui/core/Button";
-import {joinUrlWithParamsId, PRODUCT} from "Url/frontendUrl";
+import {joinUrlWithParams, PRODUCT} from "Url/frontendUrl";
 
 class PrivateSale extends Component {
     static contextType = AbilityContext;
