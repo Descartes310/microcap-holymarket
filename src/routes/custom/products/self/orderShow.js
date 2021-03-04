@@ -160,7 +160,7 @@ class OrderShow extends Component {
                                                         <td>
                                                             <div className="media">
                                                                 <div className="media-body pt-10">
-                                                                    <h4 className="m-0 fw-bold text-dark">{item.typeProduct.organisation.commercialName}</h4>
+                                                                    <h4 className="m-0 fw-bold text-dark">{item.typeProduct.organisation ? item.typeProduct.organisation.commercialName : '-'}</h4>
                                                                 </div>
                                                             </div>
                                                         </td>
