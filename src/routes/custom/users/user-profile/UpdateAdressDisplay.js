@@ -32,6 +32,7 @@ import _ from 'lodash';
 import {getIdentificationType} from "Actions/independentActions";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import {getAllNetworkProfile} from "Actions/NetworkProfileActions";
+import Countries from '../../../../data/countriesSpec.json';
 
 //const steps = [1, 2];
 
@@ -49,103 +50,113 @@ const UpdateAdressDisplay = props => {
  
    console.log("userAdressInformations =>", userAdressInformations);
 
+   const countries = Countries.data;
+
+   const nationalityFlag = countries.find(countryFlag => countryFlag.alpha3Code === userAdressInformations.user.nationality );
+   const nationalityHostCountry = countries.find(countryFlag => countryFlag.alpha3Code === userAdressInformations.user.hostCountry );
+   
+
         //const { loading, history } = this.props;
         return (
             <>
                 <div className={"center-holder"}>
                    
                     <div className="row align-items-flex-end">
-                        <div className="col-md-3 user-profile-item">
+                        <div className="col-md-4 user-profile-item">
                             <h3><IntlMessages id="common.nationality"/> : </h3> 
                         </div>
-                        <div className="col-md-9 user-profile-item-value">
-                            <span>{userAdressInformations.user.nationality}</span>
+                        <div className="col-md-8 user-profile-item-value">
+                            <span>
+                                <FlagCountry flag={nationalityFlag.flag} label={nationalityFlag.name} />
+                            </span>
                         </div>
                     </div>
 
                     <div className="row align-items-flex-end">
-                        <div className="col-md-3 user-profile-item">
+                        <div className="col-md-4 user-profile-item">
                             <h3> <IntlMessages id="common.residenceCountry"/> : </h3> 
                         </div>
-                        <div className="col-md-9 user-profile-item-value">
-                            <span>{userAdressInformations.user.hostCountry}</span>
+                        <div className="col-md-8 user-profile-item-value">
+                            <span>
+                                <FlagCountry flag={nationalityHostCountry.flag} label={nationalityHostCountry.name} />
+                            </span>
                         </div>
                     </div>
 
                     <div className="row align-items-flex-end">
-                        <div className="col-md-3 user-profile-item">
+                        <div className="col-md-4 user-profile-item">
                             <h3> <IntlMessages id="components.city"/> : </h3> 
                         </div>
-                        <div className="col-md-9 user-profile-item-value">
+                        <div className="col-md-8 user-profile-item-value">
                             <span>{userAdressInformations.user.city}</span>
                         </div>
                     </div>
-                    {authUser.identificationType ? (
+                    {authUser.user.userType === "PERSON" ? (
                         <div className="row align-items-flex-end">
-                            <div className="col-md-3 user-profile-item">
+                            <div className="col-md-4 user-profile-item">
                                 <h3> <IntlMessages id="common.identificationType"/> : </h3> 
                             </div>
-                            <div className="col-md-9 user-profile-item-value">
+                            <div className="col-md-8 user-profile-item-value">
                                 <span>{authUser.identificationType}</span>
                             </div>
                         </div>
                         ): (
                         
                         <div className="row align-items-flex-end">
-                            <div className="col-md-3 user-profile-item">
+                            <div className="col-md-4 user-profile-item">
                                 <h3> <IntlMessages id="common.registrationType" /> : </h3> 
                             </div>
-                            <div className="col-md-9 user-profile-item-value">
+                            <div className="col-md-8 user-profile-item-value">
                                 <span>{authUser.identificationType}</span>
                             </div>
                         </div>
                     )}
 
 
-                    {authUser.immatriculationValue ? (
+                    {authUser.user.userType === "PERSON" ? ( authUser.identificationNumber ? (
                        <div className="row align-items-flex-end">
-                            <div className="col-md-3 user-profile-item">
+                            <div className="col-md-4 user-profile-item">
                                 <h3> Numero d'identification : </h3> 
                             </div>
-                            <div className="col-md-9 user-profile-item-value">
+                            <div className="col-md-8 user-profile-item-value">
                                 <span>{authUser.identificationNumber}</span>
                             </div>
                         </div>
-                   ) : (
+                   ) : null ) : ( authUser.immatriculationValue ? (
                     <div className="row align-items-flex-end">
-                        <div className="col-md-3 user-profile-item">
+                        <div className="col-md-4 user-profile-item">
                             <h3> Numero d'immatriculation : </h3> 
                         </div>
-                        <div className="col-md-9 user-profile-item-value">
+                        <div className="col-md-8 user-profile-item-value">
                             <span>{authUser.immatriculationValue}</span>
                         </div>
-                    </div>
+                    </div>) : null 
 
                         )}
 
                     <div className="row align-items-flex-end">
-                        <div className="col-md-3 user-profile-item">
+                        <div className="col-md-4 user-profile-item">
                             <h3><IntlMessages id="date.validity.start"/> : </h3> 
                         </div>
-                        <div className="col-md-9 user-profile-item-value">
+                        <div className="col-md-8 user-profile-item-value">
                             <span>{authUser.beginingPieceValidity}</span>
                         </div>
                     </div>
 
                     <div className="row align-items-flex-end">
-                        <div className="col-md-3 user-profile-item">
+                        <div className="col-md-4 user-profile-item">
                             <h3><IntlMessages id="date.validity.end"/> : </h3> 
                         </div>
-                        <div className="col-md-9 user-profile-item-value">
+                        <div className="col-md-8 user-profile-item-value">
                             <span>{authUser.endPieceValidity}</span>
                         </div>
                     </div>
 
                     <div className="row align-items-flex-end">
-                        <div className="col-md-3 user-profile-item">
+                        <div className="col-md-4 user-profile-item">
                             <h3><IntlMessages id="date.birth"/> : </h3> 
                         </div>
-                        <div className="col-md-9 user-profile-item-value">
+                        <div className="col-md-8 user-profile-item-value">
                             <span>{authUser.dateBirth}</span>
                         </div>
                     </div>

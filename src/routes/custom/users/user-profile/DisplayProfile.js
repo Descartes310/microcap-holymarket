@@ -59,10 +59,11 @@ function TabContainer(props) {
       return (
          <div className="userProfile-wrapper">
             <Helmet>
-               <title>User Profile</title>
+               <title>Profil de l'utilisateur</title>
                <meta name="description" content="User Profile" />
             </Helmet>
-            <PageTitleBar title={<IntlMessages id="sidebar.userProfile" />} match={this.props.match} />
+            <PageTitleBar title={<IntlMessages id="sidebar.userProfile" />}/>
+
             <RctCard>
                <UserBlock 
                   userName={authUser.commercialName ? authUser.commercialName : authUser.firstName}  

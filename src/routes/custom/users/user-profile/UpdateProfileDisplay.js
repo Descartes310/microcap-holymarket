@@ -109,52 +109,52 @@ const UpdateProfileDisplay = props => {
                 {authUser.user.userType === "ORGANISATION" ?
                     (
                         <div className="row align-items-flex-end">
-                            <div className="col-md-3 user-profile-item">
+                            <div className="col-md-4 user-profile-item">
                                 <h3> Nom commercial : </h3>
                             </div>
-                            <div className="col-md-9 user-profile-item-value">
+                            <div className="col-md-8 user-profile-item-value">
                                 <span>{authUser.commercialName}</span>
                             </div>
 
-                            <div className="col-md-3 user-profile-item">
+                            <div className="col-md-4 user-profile-item">
                                 <h3> Nom de l'organisattion : </h3>
                             </div>
-                            <div className="col-md-9 user-profile-item-value">
+                            <div className="col-md-8 user-profile-item-value">
                                 <span>{authUser.corporateName}</span>
                             </div>
                         </div>
                     ) : (
                         <div className="row align-items-flex-end">
-                            <div className="col-md-3 user-profile-item">
+                            <div className="col-md-4 user-profile-item">
                                 <h3>Nom : </h3>
                             </div>
-                            <div className="col-md-9 user-profile-item-value">
+                            <div className="col-md-8 user-profile-item-value">
                                 <span>{authUser.firstName}</span>
                             </div>
 
-                            <div className="col-md-3 user-profile-item">
+                            <div className="col-md-4 user-profile-item">
                                 <h3> Prénom :  </h3>
                             </div>
-                            <div className="col-md-9 user-profile-item-value">
+                            <div className="col-md-8 user-profile-item-value">
                                 <span>{authUser.lastName}</span>
                             </div>
                         </div>
                     )}
 
                 <div className="row align-items-flex-end">
-                    <div className="col-md-3 user-profile-item">
+                    <div className="col-md-4 user-profile-item">
                         <h3>Email :</h3>
                     </div>
-                    <div className="col-md-9 user-profile-item-value">
+                    <div className="col-md-8 user-profile-item-value">
                         <span>{authUser.user.email}</span>
                     </div>
                 </div>
 
                 <div className="row align-items-flex-end">
-                    <div className="col-md-3 user-profile-item">
-                        <h3>Numéro d'utilisateur :</h3>
+                    <div className="col-md-4 user-profile-item">
+                        <h3>Numéro de l'utilisateur :</h3>
                     </div>
-                    <div className="col-md-9 user-profile-item-value">
+                    <div className="col-md-8 user-profile-item-value">
                         <span>{authUser.user.reference}</span>
                     </div>
                 </div>
@@ -162,10 +162,10 @@ const UpdateProfileDisplay = props => {
                 {
                     authUser.user.membershipNumber ?
                     <div className="row align-items-flex-end">
-                        <div className="col-md-3 user-profile-item">
+                        <div className="col-md-4 user-profile-item">
                             <h3>Numéro d'adhésion :</h3>
                         </div>
-                        <div className="col-md-9 user-profile-item-value">
+                        <div className="col-md-8 user-profile-item-value">
                             <span>{authUser.user.membershipNumber}</span>
                         </div>
                     </div> : null}
@@ -174,10 +174,10 @@ const UpdateProfileDisplay = props => {
                 {authUser.user.userType === "ORGANISATION" ?
                     (
                         <div className="row align-items-flex-end">
-                            <div className="col-md-3 user-profile-item">
+                            <div className="col-md-4 user-profile-item">
                                 <h3>Type d'organisation : </h3>
                             </div>
-                            <div className="col-md-9 user-profile-item-value">
+                            <div className="col-md-8 user-profile-item-value">
                                 <span>{authUser.legalForm}</span>
                             </div>
                         </div>
@@ -186,10 +186,10 @@ const UpdateProfileDisplay = props => {
 
 
                         <div className="row align-items-flex-end">
-                            <div className="col-md-3 user-profile-item">
+                            <div className="col-md-4 user-profile-item">
                                 <h3>Numéro de téléphone :</h3>
                             </div>
-                            <div className="col-md-9 user-profile-item-value">
+                            <div className="col-md-8 user-profile-item-value">
                                 <span>{authUser.user.phone}</span>
                             </div>
                         </div>
@@ -232,7 +232,7 @@ const UpdateProfileDisplay = props => {
                                         </div>
                                     )}  
                                 />
-                                                    </div>*/}
+                        </div>*/}
                 </div>)}
 
                 <div className=" row mb-15 mt-15">

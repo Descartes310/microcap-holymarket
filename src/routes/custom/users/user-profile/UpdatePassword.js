@@ -1,8 +1,9 @@
 import React, {useEffect, useState} from 'react';
+import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import IntlMessages from "Util/IntlMessages";
 import Step from "@material-ui/core/Step/Step";
-import {updateUsers, getUsers} from "Actions";
+import {updateUsers, getUsers, setAuthUser} from "Actions";
 import {NotificationManager} from "react-notifications";
 import {Form, FormGroup} from "reactstrap";
 import {injectIntl} from 'react-intl';
@@ -27,6 +28,7 @@ import ErrorInputComponent from "Components/ErrorInputComponent";
 import AppConfig from "Constants/AppConfig";
 import Button from "@material-ui/core/Button";
 import {useForm} from "react-hook-form";
+import { useDispatch } from 'react-redux';
 
 //const steps = [1, 2];
 const countryWithNumberAndFlag = CountryManager.countryWithNumberAndFlag();
@@ -81,17 +83,24 @@ const  UpdatePassword = props => {
         _getAllNetworkProfile();
     }, []);
 
+    const dispatch = useDispatch();
+
     const onSubmit = (data) => {
         props.setRequestGlobalAction(true);
-        updateUsers(data, props.authUser.user.id)
+        updateUsers(data)
             .then(() => {
                 props.getUsers(props.authUser.user.branch.id, props.authUser.userType);
                 props.history.push(USERS.USERS_PROFILE.DISPLAY_PROFILE);
+                dispatch(setAuthUser());
             })
             .catch(() => {
                 NotificationManager.error("Une erreur est survenue")
             })
             .finally(() => props.setRequestGlobalAction(false));
+    };
+
+    const cancelEdition = () => {
+        props.history.push(USERS.USERS_PROFILE.DISPLAY_PROFILE)
     };
         return (
             <>
@@ -110,9 +119,9 @@ const  UpdatePassword = props => {
                                 placeholder={"Ancien mot de passe"}
                                 otherValidator={{minLength: AppConfig.minPasswordLength}}
                             >
-                                {errors.password?.type === 'minLength' && (
+                                {/*errors.password?.type === 'minLength' && (
                                     <ErrorInputComponent text={intl.formatMessage({id: minMaxValidatorObject.minMessage}, {min: AppConfig.minPasswordLength})} />
-                                )}
+                                )*/}
                             </InputComponent>
                             <span className="has-icon"><i className="zmdi zmdi-lock-outline"></i></span>
                         </FormGroup>
@@ -161,6 +170,7 @@ const  UpdatePassword = props => {
                             disabled={loading}
                             variant="outlined"
                             className="font-weight-bold mr-2"
+                            onClick={cancelEdition}
                         >
                             {/*<i className="ti-arrow-left font-weight-bold mr-2"></i> <IntlMessages id="button.previous" />*/}
                             Annuler
@@ -188,4 +198,4 @@ const mapStateToProps = ({ requestGlobalLoader, authUser,userProfile  }) => {
     return { loading: requestGlobalLoader, authUser: authUser.data, userProfiles: userProfile}
 };
 
-export default connect(mapStateToProps, {getUserProfiles, getAllNetworkProfile, getUsers, setRequestGlobalAction})(injectIntl(UpdatePassword));
+export default  withRouter(connect(mapStateToProps, {getUserProfiles, getAllNetworkProfile, getUsers, setRequestGlobalAction})(injectIntl(UpdatePassword)));

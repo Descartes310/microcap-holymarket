@@ -336,8 +336,8 @@ export const createNetworkProfileType = (data, branchId) => {
     return makeRequest('post', url, data);
 };
 
-export const getUser = (userId) => {
-    const url = `${USERS.GET_ONE}?user_id=${userId}`;
+export const getUser = () => {
+    const url = `${USERS.GET_ONE}`;
     return makeRequest('get', url);
 };
 
@@ -351,8 +351,8 @@ export const createUsers = (data, branchId) => {
     return makeRequest('post', url, data);
 };
 
-export const updateUsers = (data, userId) => {
-    const url = `${USERS.UPDATE.PERSON}?user_id=${userId}`;
+export const updateUsers = (data) => {
+    const url = `${USERS.UPDATE.PERSON}`;
     return makeRequest('put', url, data);
 };
 

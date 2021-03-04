@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import { connect } from 'react-redux';
 import IntlMessages from "Util/IntlMessages";
 import { withRouter } from 'react-router-dom';
-import {updateUsers, getUsers,getUser, getRegistrationType} from "Actions";
+import {updateUsers, getUsers,getUser, getRegistrationType, setAuthUser} from "Actions";
 import {NotificationManager} from "react-notifications";
 import SecondStep from "./secondStep";
 import {setRequestGlobalAction} from "Actions/RequestGlobalAction";
@@ -32,6 +32,7 @@ import _ from 'lodash';
 import {getIdentificationType} from "Actions/independentActions";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import {getAllNetworkProfile} from "Actions/NetworkProfileActions";
+import { useDispatch } from 'react-redux';
 
 //const steps = [1, 2];
 
@@ -286,19 +287,26 @@ const UpdateAdress = props => {
         setOldFormState(formStateWatch);
     }
 
+    const dispatch = useDispatch();
+
     const onSubmit = (data) => {
         props.setRequestGlobalAction(true);
         
-        updateUsers(data, props.authUser.user.id)
+        updateUsers(data)
             .then(() => {
-                getUser(props.authUser.user.id);
+                getUser();
                 props.history.push(USERS.USERS_PROFILE.DISPLAY_PROFILE);
+                dispatch(setAuthUser());
             })
             .catch((error) => {
                 NotificationManager.error("Une erreur est survenue")
                 console.log(error);
             })
             .finally(() => props.setRequestGlobalAction(false));
+    };
+
+    const cancelEdition = () => {
+        props.history.push(USERS.USERS_PROFILE.DISPLAY_PROFILE)
     };
 
         //const { loading, history } = this.props;
@@ -554,7 +562,7 @@ const UpdateAdress = props => {
                             disabled={loading}
                             variant="outlined"
                             className="font-weight-bold mr-2"
-                            
+                            onClick={cancelEdition}
                         >
                             {/*<i className="ti-arrow-left font-weight-bold mr-2"></i> <IntlMessages id="button.previous" />*/}
                             Annuler
