@@ -23,7 +23,7 @@ class PrivateSale extends Component {
     }
 
     onEnterClick = (product) => {
-        const url = joinUrlWithParamsId(PRODUCT.SHOW, product.id);
+        let url = joinUrlWithParams(PRODUCT.SHOW, [{param: 'id', value: product.id}, {param: 'type', value: product.type}]);
         this.props.history.push(url, {currentProduct: JSON.stringify(product)});
     };
 
