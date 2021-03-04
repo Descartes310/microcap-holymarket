@@ -8,7 +8,7 @@ import { withStyles } from "@material-ui/core";
 import { AbilityContext } from "Permissions/Can";
 import CustomList from "Components/CustomList";
 import { PRODUCT, joinUrlWithParamsId } from 'Url/frontendUrl'
-import { getProductItemAvailable, setRequestGlobalAction } from "Actions";
+import { setRequestGlobalAction } from "Actions";
 import { getUserSales, getOrders } from "Actions/independentActions";
 import { NotificationManager } from "react-notifications";
 import { ERROR_500 } from "Constants/errors";
@@ -92,7 +92,7 @@ class Order extends Component {
                                                                 <div className="media-body pt-10">
                                                                     <h4 className="m-0 fw-bold text-dark">
                                                                         <AmountCurrency amounts={item.orderItems.map((e) => {
-                                                                            return { amount: e.typeProduct.price, currency: e.typeProduct.product.priceCurrency, quantity: e.quantity }
+                                                                            return { amount: e.typeProduct.price, currency: e.typeProduct.product ? e.typeProduct.product.priceCurrency : e.typeProduct.package1.currency, quantity: e.quantity }
                                                                         })} />
                                                                     </h4>
                                                                 </div>

@@ -24,6 +24,7 @@ class ProductItemAvailable extends Component {
     constructor(props) {
         super(props);
         this.productId = this.props.match.params.id;
+        this.productType = this.props.match.params.type;
         this.currentProduct = this.props.match.location?.state.currentProduct
             ? JSON.parse(this.props.match.location?.state.currentProduct)
             : null;
@@ -44,7 +45,7 @@ class ProductItemAvailable extends Component {
     }
 
     loadData = () => {
-        getProductItemAvailable(this.productId)
+        getProductItemAvailable(this.productId, this.productType)
             .then(products => this.setState({ products }))
             .catch(() => {
                 NotificationManager.error(ERROR_500);
@@ -53,7 +54,7 @@ class ProductItemAvailable extends Component {
 
         if (!this.currentProduct) {
             this.props.setRequestGlobalAction(true);
-            getOneProductTypeFromCommercialOffer(this.productId)
+            getOneProductTypeFromCommercialOffer(this.productId, this.productType)
                 .then(product => this.setState({ currentProduct: product }))
                 .catch(() => {
                     NotificationManager.error(ERROR_500);

@@ -141,7 +141,7 @@ export const PRODUCT = {
     FINANCIAL_SALES: '/products/financial-sales',
     ORDERS: '/products/orders',
     ORDERS_SHOW: '/products/orders/:id/show',
-    SHOW: '/products/:id/show',
+    SHOW: '/products/:id/show/:type',
     SHOW_ACCOUNT: '/products/accounts',
     ACCOUNT_DETAILS: '/products/accounts/:id'
 };

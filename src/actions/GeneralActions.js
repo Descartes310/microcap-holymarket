@@ -111,6 +111,25 @@ export const getBranchProducts = (branchId) => (dispatch) => {
     return api
         .get(url)
         .then((response) => {
+            console.log(response)
+            dispatch({ type: BRANCH_PRODUCT_SUCCESS, payload: response.data });
+            return Promise.resolve();
+        })
+        .catch((error) => {
+            dispatch({ type: BRANCH_PRODUCT_FAILURE });
+            NotificationManager.error(error.message);
+            return Promise.reject();
+        });
+};
+
+export const getBranchProductsOnly = (branchId) => (dispatch) => {
+    dispatch({ type: BRANCH_PRODUCT });
+
+    const url = `${BRANCH.PRODUCTS.GET_ALL_PRODUCTS}?branch_id=${branchId}`;
+    return api
+        .get(url)
+        .then((response) => {
+            console.log(response)
             dispatch({ type: BRANCH_PRODUCT_SUCCESS, payload: response.data });
             return Promise.resolve();
         })
@@ -149,7 +168,7 @@ export const getCategoryProducts = (branchId) => (dispatch) => {
 };
 
 export const getProductTypes = (branchId) => (dispatch) => {
-    const url = `${PRODUCT_TYPE_API.GET_ALL}?branch_id=${branchId}`;
+    const url = `${PRODUCT_TYPE_API.GET_ALL_PRODUCTS}?branch_id=${branchId}`;
     return makeActionRequest('get', url, PRODUCT_TYPE, dispatch);
 };
 

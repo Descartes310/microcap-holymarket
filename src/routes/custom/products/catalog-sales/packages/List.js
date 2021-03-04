@@ -12,6 +12,7 @@ import {PACKAGES} from "Url/frontendUrl";
 import Switch from "@material-ui/core/Switch/Switch";
 import {NotificationManager} from "react-notifications";
 import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
+import AmountCurrency from "Components/AmountCurrency";
 
 class PackageList extends Component {
     static contextType = AbilityContext;
@@ -76,7 +77,8 @@ class PackageList extends Component {
                                                 <th><IntlMessages id="components.name" /></th>
                                                 <th><IntlMessages id="widgets.description" /></th>
                                                 <th>Nombres de produits</th>
-                                                <th>Statut d'activation</th>
+                                                <th>Prix</th>
+                                                {/* <th>Statut d'activation</th> */}
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -100,16 +102,20 @@ class PackageList extends Component {
                                                     </div>
                                                 </td>
                                                 <td className="table-action">
-                                                    {catalog.packageItem.length}
-                                                    {/*{catalog.permissions.length} permissions(s)*/}
+                                                    <h4 className="m-0 fw-bold text-dark">{catalog.packageItem.length}</h4>
                                                 </td>
                                                 <td className="table-action">
+                                                    <AmountCurrency amounts={catalog.packageItem.map((e) => {
+                                                        return { amount: e.price, currency: e.currency, quantity: e.quantity }
+                                                    })} styles={{ fontWeight: 'bold', marginBottom: 40 }} />
+                                                </td>
+                                                {/* <td className="table-action">
                                                     <Switch
                                                         checked={catalog.active}
                                                         onChange={(event) => this.onToggleActivationStatus(catalog.id, event.target.value)}
                                                         aria-label="Activé"
                                                     />
-                                                </td>
+                                                </td> */}
                                             </tr>
                                         ))}
                                         </tbody>

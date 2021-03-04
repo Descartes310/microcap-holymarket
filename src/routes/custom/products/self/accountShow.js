@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { withRouter } from "react-router-dom";
 import { withStyles } from "@material-ui/core";
 import { AbilityContext } from "Permissions/Can";
-import { getProductItemAvailable, setRequestGlobalAction } from "Actions";
+import { setRequestGlobalAction } from "Actions";
 import { getAccountDetails, approvisioningVoucher, approvisioningCard, getAccountTransactions, changeCurrency } from "Actions/independentActions";
 import { NotificationManager } from "react-notifications";
 import { ERROR_500 } from "Constants/errors";

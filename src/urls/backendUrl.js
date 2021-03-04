@@ -60,6 +60,7 @@ export const BRANCH = {
     },
     PRODUCTS: {
         GET_ALL: '/api/type-products/get-all',
+        GET_ALL_PRODUCTS: '/api/type-products/get-all/products',
     },
     SAMPLE: {
         GET_ALL: "public/branchs/staging",
@@ -126,6 +127,7 @@ export const CATEGORY_PRODUCTS = {
 export const PRODUCT_TYPE = {
     ROOT: 'api/type-products/root',
     GET_ALL: 'api/type-products/get-all',
+    GET_ALL_PRODUCTS: 'api/type-products/get-all/products',
     CREATE: 'api/type-products',
     GET_ONE: 'api/type-products/{id}',
     GET_ONE_FROM_COM_OFFER: 'api/type-products/offer/{id}',
@@ -136,10 +138,10 @@ export const PRODUCT_TYPE = {
 };
 
 export const PACKAGES = {
-    LIST: 'public/packages',
-    CREATE: 'public/packages',
-    ACTIVATE: 'public/packages/activate',
-    DEACTIVATE: 'public/packages/desactivate',
+    LIST: 'api/packages',
+    CREATE: 'api/packages',
+    ACTIVATE: 'api/packages/activate',
+    DEACTIVATE: 'api/packages/desactivate',
 };
 
 export const USER_PROFILE = {

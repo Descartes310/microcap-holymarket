@@ -153,7 +153,7 @@ class OrderShow extends Component {
                                                         <td>
                                                             <div className="media">
                                                                 <div className="media-body pt-10">
-                                                                    <h4 className="m-0 fw-bold text-dark">{item.typeProduct.product.label}</h4>
+                                                                    <h4 className="m-0 fw-bold text-dark">{item.typeProduct.product ? item.typeProduct.product.label : item.typeProduct.package1.label}</h4>
                                                                 </div>
                                                             </div>
                                                         </td>
@@ -167,7 +167,7 @@ class OrderShow extends Component {
                                                         <td>
                                                             <div className="media">
                                                                 <div className="media-body pt-10">
-                                                                    <h4 className="m-0 fw-bold text-dark"><AmountCurrency amount={item.typeProduct.price} from={item.typeProduct.product.priceCurrency} /></h4>
+                                                                    <h4 className="m-0 fw-bold text-dark"><AmountCurrency amount={item.typeProduct.price} from={item.typeProduct.product ? item.typeProduct.product.priceCurrency : item.typeProduct.package1.currency} /></h4>
                                                                 </div>
                                                             </div>
                                                         </td>
@@ -181,7 +181,7 @@ class OrderShow extends Component {
                                                         <td>
                                                             <div className="media">
                                                                 <div className="media-body pt-10">
-                                                                    <h4 className="m-0 fw-bold text-dark"><AmountCurrency amount={item.typeProduct.price} from={item.typeProduct.product.priceCurrency} quantity={item.quantity} /></h4>
+                                                                    <h4 className="m-0 fw-bold text-dark"><AmountCurrency amount={item.typeProduct.price} from={item.typeProduct.product ? item.typeProduct.product.priceCurrency : item.typeProduct.package1.currency} quantity={item.quantity} /></h4>
                                                                 </div>
                                                             </div>
                                                         </td>
@@ -204,7 +204,7 @@ class OrderShow extends Component {
                                                                 <div className="media-body pt-10">
                                                                     <h4 className="m-0 fw-bold text-dark">
                                                                         <AmountCurrency amounts={list.map((e) => {
-                                                                            return { amount: e.typeProduct.price, currency: e.typeProduct.product.priceCurrency, quantity: e.quantity }
+                                                                            return { amount: e.typeProduct.price, currency: e.typeProduct.product ? e.typeProduct.product.priceCurrency : e.typeProduct.package1.currency, quantity: e.quantity }
                                                                         })} />
                                                                     </h4>
                                                                 </div>

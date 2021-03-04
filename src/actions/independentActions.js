@@ -620,8 +620,8 @@ export const setOfferActivationStatus = (partnerId, comId, shouldActivate) => {
     return makeRequest('put', url);
 };
 
-export const getProductItemAvailable = (productId) => {
-    const url = joinBaseUrlWithParamsId(PRODUCT_TYPE.AVAILABLE, productId);
+export const getProductItemAvailable = (productId, productType) => {
+    const url = joinBaseUrlWithParamsId(`${PRODUCT_TYPE.AVAILABLE}?type=${productType}`, productId);
     return makeRequest('get', url);
 };
 
@@ -631,8 +631,8 @@ export const getOneProductType = (productId) => {
 };
 
 
-export const getOneProductTypeFromCommercialOffer = (productId) => {
-    const url = joinBaseUrlWithParamsId(PRODUCT_TYPE.GET_ONE, productId);
+export const getOneProductTypeFromCommercialOffer = (productId, type) => {
+    const url = joinBaseUrlWithParamsId(`${PRODUCT_TYPE.GET_ONE}?type=${type}`, productId);
     return makeRequest('get', url);
 };
 

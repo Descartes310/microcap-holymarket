@@ -8,7 +8,7 @@ import { withStyles } from "@material-ui/core";
 import { AbilityContext } from "Permissions/Can";
 import CustomList from "Components/CustomList";
 import { PRODUCT, joinUrlWithParamsId } from "Url/frontendUrl";
-import { getProductItemAvailable, setRequestGlobalAction } from "Actions";
+import { setRequestGlobalAction } from "Actions";
 import { getUserAccounts } from "Actions/independentActions";
 import { NotificationManager } from "react-notifications";
 import { ERROR_500 } from "Constants/errors";

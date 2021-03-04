@@ -18,7 +18,7 @@ import {connect} from "react-redux";
 import {injectIntl} from "react-intl";
 import {withRouter} from "react-router-dom";
 import {withStyles} from "@material-ui/core";
-import {getProductItemAvailable, setRequestGlobalAction} from "Actions";
+import { setRequestGlobalAction} from "Actions";
 import {deleteItemFromCart, onAddItemToCart} from "Actions/CartActions";
 import {NotificationManager} from "react-notifications";
 import {ERROR_500} from "Constants/errors";
@@ -91,5 +91,5 @@ const mapStateToProps = ({ requestGlobalLoader, cart, authUser  }) => {
     }
 };
 
-export default connect(mapStateToProps, {onAddItemToCart, deleteItemFromCart, getProductItemAvailable, setRequestGlobalAction})
+export default connect(mapStateToProps, {onAddItemToCart, deleteItemFromCart, setRequestGlobalAction})
 ((withRouter(injectIntl(Checkout))));

@@ -1,15 +1,15 @@
-import React, {Component, useState} from 'react';
-import {Form, FormGroup, Input as InputStrap} from 'reactstrap';
-import {useForm} from "react-hook-form";
+import React, { Component, useState } from 'react';
+import { Form, FormGroup, Input as InputStrap } from 'reactstrap';
+import { useForm } from "react-hook-form";
 import IntlMessages from "Util/IntlMessages";
-import {injectIntl} from 'react-intl';
+import { injectIntl } from 'react-intl';
 import _ from 'lodash';
 
 import Button from "@material-ui/core/Button";
 import SweetAlert from 'react-bootstrap-sweetalert';
-import {getCatalogsOfOneType, getPackages, getProductTypes, getCatalogProducts} from "Actions/GeneralActions";
-import {connect} from "react-redux";
-import {setRequestGlobalAction} from "Actions/RequestGlobalAction";
+import { getCatalogsOfOneType, getPackages, getProductTypes, getCatalogProducts } from "Actions/GeneralActions";
+import { connect } from "react-redux";
+import { setRequestGlobalAction } from "Actions/RequestGlobalAction";
 import CustomList from "Components/CustomList";
 import InputLabel from "@material-ui/core/InputLabel/InputLabel";
 import IconButton from "@material-ui/core/IconButton";
@@ -19,7 +19,7 @@ import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
 import DialogTitle from "@material-ui/core/DialogTitle/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent/DialogContent";
 import Dialog from "@material-ui/core/Dialog/Dialog";
-import {useTheme} from "@material-ui/core";
+import { useTheme } from "@material-ui/core";
 import useMediaQuery from "@material-ui/core/useMediaQuery/useMediaQuery";
 import CancelIcon from '@material-ui/icons/Cancel';
 import Select from "@material-ui/core/Select/Select";
@@ -28,12 +28,13 @@ import FormControl from "@material-ui/core/FormControl";
 import MenuItem from "@material-ui/core/MenuItem";
 import ErrorInputComponent from "Components/ErrorInputComponent";
 import Input from "@material-ui/core/Input/Input";
-import {createPackage, getOneCatalog} from "Actions/independentActions";
-import {NotificationManager} from "react-notifications";
-import {ERROR_500} from "Constants/errors";
-import {PACKAGES} from "Url/frontendUrl";
+import { createPackage, getCurrencies } from "Actions/independentActions";
+import { NotificationManager } from "react-notifications";
+import { ERROR_500 } from "Constants/errors";
+import { PACKAGES } from "Url/frontendUrl";
 import Product from "Enums/Product";
 import FetchFailedComponent from "Components/FetchFailedComponent";
+import AmountCurrency from "Components/AmountCurrency";
 
 class Create extends Component {
     constructor(props) {
@@ -43,6 +44,10 @@ class Create extends Component {
             description: '',
             price: '',
             chosenProducts: [],
+            currencies: [],
+            types: [],
+            units: [],
+            currency: null,
             storeProducts: [],
             showCreateBox: false,
             showDeleteBox: false,
@@ -54,13 +59,22 @@ class Create extends Component {
 
     componentDidMount() {
         this.loadData();
+        this.fetchCurrencies();
     }
+
+
+    fetchCurrencies = () => {
+        getCurrencies()
+            .then(result => {
+                this.setState({ currencies: result })
+            });
+    };
 
     loadData = () => {
         this.props.getCatalogsOfOneType(Product.SALE, this.props.authUser.user.branch.id)
             .then(result => {
                 if (result.length > 0) {
-                    this.setState({catalogSale: result[0].id});
+                    this.setState({ catalogSale: result[0].id });
                     this.fetchProducts(result[0].id);
                 } else {
                     NotificationManager.warning("Vous devez d'abord créer un catalogue de vente avant de pousuivre cette action");
@@ -77,32 +91,32 @@ class Create extends Component {
     };
 
     fetchProducts = catalogId => {
-        this.setState({loadingProducts: true});
+        this.setState({ loadingProducts: true });
         // getOneCatalog(result[0].id)
         this.props.getCatalogProducts(catalogId)
             .then(res => {
                 if (res.length === 0) {
                     NotificationManager.warning("Aucun produit disponible pour ce catalogue");
                 }
-                this.setState({storeProducts: res});
+                this.setState({ storeProducts: res });
             })
             .catch(() => {
                 NotificationManager.error(ERROR_500);
             })
-            .finally(() => this.setState({loadingProducts: false}));
+            .finally(() => this.setState({ loadingProducts: false }));
     };
 
     handleOnCatalogChange = (value) => {
         if (value !== this.state.catalogSale) {
-            this.setState({catalogSale: value}, () => {
+            this.setState({ catalogSale: value }, () => {
                 this.fetchProducts(value);
             });
         }
     };
 
-    onAddProduct = (product, quantity) => {
+    onAddProduct = (product, quantity, price) => {
         this.setState(prevState => ({
-            chosenProducts: [...prevState.chosenProducts, {...product, quantity}],
+            chosenProducts: [...prevState.chosenProducts, { ...product, quantity, price }],
             storeProducts: prevState.storeProducts.filter(p => p.id !== product.id),
             showCreateBox: false,
         }));
@@ -127,16 +141,6 @@ class Create extends Component {
             return false;
         }
 
-        if (!this.state.price || (this.state.price && this.state.price.length === 0) || isNaN(Number(this.state.price))) {
-            NotificationManager.error("Veuillez bien remplir le champ prix");
-            return false;
-        }
-
-        if (this.state.price && Number(this.state.price) < 0) {
-            NotificationManager.error("Le prix minimum est de 0");
-            return false;
-        }
-
         if (!this.state.chosenProducts || (this.state.chosenProducts && this.state.chosenProducts.length === 0)) {
             NotificationManager.error("Veuillez Selectionner au moins un produit");
             return false;
@@ -153,9 +157,10 @@ class Create extends Component {
                 catalog_id: this.state.catalogSale,
                 label: this.state.name,
                 description: this.state.description,
-                price: this.state.price,
-                partner_id: this.props.authUser.user.id,
-                items: JSON.stringify(this.state.chosenProducts.map(p => ({type_product_id: p.id, quantity: p.quantity})))
+                // price: this.state.price,
+                // currency: this.state.currency,
+                // partner_id: this.props.authUser.user.id,
+                items: JSON.stringify(this.state.chosenProducts.map(p => ({ type_product_id: p.id, quantity: p.quantity, price: p.price })))
             };
 
             this.props.setRequestGlobalAction(true);
@@ -178,15 +183,19 @@ class Create extends Component {
         const { catalogSale, loadingProducts } = this.state;
 
         if (catalogTypes.loading) {
-            return (<RctSectionLoader/>);
+            return (<RctSectionLoader />);
         }
 
         if (!catalogTypes.loading && !catalogTypes.data) {
-           return ( <FetchFailedComponent _onRetryClick={this.loadData} />)
+            return (<FetchFailedComponent _onRetryClick={this.loadData} />)
         }
 
         return (
             <div>
+                <h1 style={{
+                    marginBottom: '3%'
+                }}>Création d'un package</h1>
+
                 <Form onSubmit={this.onSubmit}>
 
                     <CustomAsyncComponent
@@ -223,9 +232,9 @@ class Create extends Component {
                             name={'label'}
                             value={this.state.name}
                             className="has-input input-lg"
-                            onChange={event => this.setState({name: event.target.value})}
+                            onChange={event => this.setState({ name: event.target.value })}
                         />
-                        <span className="has-icon"><i className="ti-pencil"></i></span>
+                        {/* <span className="has-icon"><i className="ti-pencil"></i></span> */}
                     </FormGroup>
 
                     <FormGroup className="has-wrapper">
@@ -238,107 +247,140 @@ class Create extends Component {
                             name={'description'}
                             value={this.state.description}
                             className="has-input input-lg"
-                            onChange={event => this.setState({description: event.target.value})}
+                            onChange={event => this.setState({ description: event.target.value })}
                         />
-                        <span className="has-icon"><i className="ti-pencil"></i></span>
+                        {/* <span className="has-icon"><i className="ti-pencil"></i></span> */}
                     </FormGroup>
 
-                    <FormGroup className="has-wrapper">
-                        <InputLabel className="text-left" htmlFor="price">
-                            Prix
-                        </InputLabel>
-                        <InputStrap
-                            required
-                            id="price"
-                            type="number"
-                            name={'price'}
-                            value={this.state.price}
-                            className="has-input input-lg"
-                            onChange={event => this.setState({price: event.target.value})}
-                        />
-                        <span className="has-icon"><i className="ti-pencil"></i></span>
-                    </FormGroup>
+                    {/* <div className="row align-items-center">
+                        <div className="col-md-6 col-sm-12">
+                            <FormGroup className="has-wrapper">
+                                <InputLabel className="text-left" htmlFor="price">
+                                    Prix par defaut
+                                </InputLabel>
+                                <InputStrap
+                                    required
+                                    id="price"
+                                    type="number"
+                                    name={'price'}
+                                    value={this.state.price}
+                                    className="has-input input-lg"
+                                    onChange={event => this.setState({ price: event.target.value })}
+                                />
+                            </FormGroup>
+                        </div>
+                        <div className="col-md-6 col-sm-12">
+                            <FormControl fullWidth>
+                                <InputLabel className="text-left" htmlFor="currency-helper">
+                                    Devise
+                                </InputLabel>
+                                <Select onChange={e => this.setState({ currency: e.target.value })}>
+                                    {this.state.currencies.map(item => (
+                                        <MenuItem key={item.id} value={item.code} className="center-hor-ver">
+                                            {item.name}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+                        </div>
+                    </div> */}
+
 
                     {loadingProducts ? (
-                        <RctSectionLoader/>
+                        <RctSectionLoader />
                     ) : (
-                        <>
-                            <CustomList
-                                loading={false}
-                                // showSearch={false}
-                                list={this.state.chosenProducts}
-                                onAddClick={() => this.setState({showCreateBox: true})}
-                                itemsFoundText={n => `${n} produit(s) sélectionné(s)`}
-                                addPermissions={{
-                                    permissions: [],
-                                }}
-                                renderItem={list => (
-                                    <>
-                                        {list && list.length === 0 ? (
-                                            <div className="d-flex justify-content-center align-items-center py-50">
-                                                <h4>
-                                                    Aucun produits sélectionnés
+                            <>
+                                <CustomList
+                                    loading={false}
+                                    // showSearch={false}
+                                    list={this.state.chosenProducts}
+                                    onAddClick={() => this.setState({ showCreateBox: true })}
+                                    itemsFoundText={n => `${n} produit(s) sélectionné(s)`}
+                                    addPermissions={{
+                                        permissions: [],
+                                    }}
+                                    renderItem={list => (
+                                        <>
+                                            <h2>
+                                                Prix du package: &nbsp; &nbsp;
+                                                <AmountCurrency amounts={list.map((e) => {
+                                                    return { amount: e.price, currency: e.priceCurrency, quantity: e.quantity }
+                                                })} styles={{ fontWeight: 'bold', marginBottom: 40 }} />
+                                            </h2>
+                                            {list && list.length === 0 ? (
+                                                <div className="d-flex justify-content-center align-items-center py-50">
+                                                    <h4>
+                                                        Aucun produits sélectionnés
                                                 </h4>
-                                            </div>
-                                        ) : (
-                                            <div className="table-responsive">
-                                                <table className="table table-hover table-middle mb-0 text-center">
-                                                    <thead>
-                                                    <tr>
-                                                        <th><IntlMessages id="components.name" /></th>
-                                                        <th>Quantité</th>
-                                                    </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                    {list && list.map((product, key) => (
-                                                        <tr key={key} className="cursor-pointer">
-                                                            <td>
-                                                                <div className="media">
-                                                                    <div className="media-body pt-10">
-                                                                        <h4 className="m-0 fw-bold text-dark">{product.label}</h4>
-                                                                    </div>
-                                                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <div className="media">
-                                                                    <div className="media-body pt-10">
-                                                                        <h4 className="m-0 fw-bold text-dark">{product.quantity}</h4>
-                                                                    </div>
-                                                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <div className="media">
-                                                                    <div className="media-body pt-10">
-                                                                        <a href="#" className="text-danger" onClick={() => this.setState({showDeleteBox: true, deleteProduct: product})}>
-                                                                            <span className="material-icons mr-10">delete</span>
-                                                                        </a>
-                                                                    </div>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                    ))}
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        )}
-                                    </>
-                                )}
-                            />
+                                                </div>
+                                            ) : (
+                                                    <div className="table-responsive">
+                                                        <table className="table table-hover table-middle mb-0 text-center">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th><IntlMessages id="components.name" /></th>
+                                                                    <th>Prix</th>
+                                                                    <th>Quantité</th>
+                                                                    <th>Action</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                {list && list.map((product, key) => (
+                                                                    <tr key={key} className="cursor-pointer">
+                                                                        <td>
+                                                                            <div className="media">
+                                                                                <div className="media-body pt-10">
+                                                                                    <h4 className="m-0 fw-bold text-dark">{product.label}</h4>
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td>
+                                                                            <div className="media">
+                                                                                <div className="media-body pt-10">
+                                                                                    <h4 className="m-0 fw-bold text-dark">{product.price} {product.priceCurrency}</h4>
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td>
+                                                                            <div className="media">
+                                                                                <div className="media-body pt-10">
+                                                                                    <h4 className="m-0 fw-bold text-dark">{product.quantity}</h4>
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td>
+                                                                            <div className="media">
+                                                                                <div className="media-body pt-10">
+                                                                                    <a href="#" className="text-danger" onClick={() => this.setState({ showDeleteBox: true, deleteProduct: product })}>
+                                                                                        <span className="material-icons mr-10">delete</span>
+                                                                                    </a>
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                ))}
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                )}
+                                        </>
+                                    )}
+                                />
 
-                            <FormGroup className="mb-15">
-                                <Button
-                                    type="submit"
-                                    color="primary"
-                                    disabled={this.props.catalogTypes.data.length === 0 || this.props.requestGlobalLoader}
-                                    variant="contained"
-                                    // onClick={this.onSubmit}
-                                    className="bg-blue text-white font-weight-bold"
-                                >
-                                    Soumettre
+                                <FormGroup className="mb-15">
+                                    <Button
+                                        type="submit"
+                                        color="primary"
+                                        disabled={this.props.catalogTypes.data.length === 0 || this.props.requestGlobalLoader}
+                                        variant="contained"
+                                        // onClick={this.onSubmit}
+                                        className="bg-blue text-white font-weight-bold"
+                                    >
+                                        Soumettre
                                 </Button>
-                            </FormGroup>
-                        </>
-                    )}
+                                </FormGroup>
+                            </>
+                        )}
 
                 </Form>
 
@@ -346,7 +388,7 @@ class Create extends Component {
                     show={this.state.showCreateBox}
                     products={this.state.storeProducts}
                     onSave={this.onAddProduct}
-                    onClose={() => this.setState({showCreateBox: false})}
+                    onClose={() => this.setState({ showCreateBox: false })}
                 />
 
                 <SweetAlert
@@ -360,7 +402,7 @@ class Create extends Component {
                             <Button
                                 color="blue"
                                 variant="outlined"
-                                onClick={() => this.setState({showDeleteBox: false})}
+                                onClick={() => this.setState({ showDeleteBox: false })}
                                 className="text-white bg-blue font-weight-bold mr-3"
                             >
                                 Non je ne veux pas
@@ -397,17 +439,18 @@ const mapStateToProps = ({ requestGlobalLoader, productTypes, authUser, catalogT
     }
 };
 
-export default connect(mapStateToProps, {getPackages, getProductTypes, getCatalogsOfOneType, getCatalogProducts, setRequestGlobalAction})
-(injectIntl(Create));
+export default connect(mapStateToProps, { getPackages, getProductTypes, getCatalogsOfOneType, getCatalogProducts, setRequestGlobalAction })
+    (injectIntl(Create));
 
-const AddProduct = ({show, products, onSave, onClose}) => {
+const AddProduct = ({ show, products, onSave, onClose }) => {
 
     // const [product, setProduct] = useState(products[0]);
     // const [quantity, setQuantity] = useState(1);
     const theme = useTheme();
+    const [id, setId] = useState(null);
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
 
-    const { control, register, errors, handleSubmit, setValue, watch} = useForm();
+    const { control, register, errors, handleSubmit, setValue, watch } = useForm();
 
     const onSubmit = (data) => {
         const productId = data.product;
@@ -416,7 +459,7 @@ const AddProduct = ({show, products, onSave, onClose}) => {
             return;
         }
 
-        onSave(products.find(p => p.id === productId), data.quantity);
+        onSave(products.find(p => p.id === productId), data.quantity, data.price);
     };
 
     return (
@@ -466,10 +509,10 @@ const AddProduct = ({show, products, onSave, onClose}) => {
                                                 componentType="select"
                                                 name={'product'}
                                                 defaultValue={data.id ? data.id : undefined}
-                                                as={<Select input={<Input name="representativePosition" id="representativePosition" />}>
+                                                as={<Select >
                                                     {data.map((item, index) => (
                                                         <MenuItem key={item.id} value={item.id} className="center-hor-ver">
-                                                            {item.label}
+                                                            {item.label} ({item.priceCurrency})
                                                         </MenuItem>
                                                     ))}
                                                 </Select>}
@@ -478,6 +521,28 @@ const AddProduct = ({show, products, onSave, onClose}) => {
                                     </div>
                                 )}
                             />
+
+                            <FormGroup className="has-wrapper">
+                                <InputLabel className="text-left" htmlFor="price">
+                                    Prix unitaire
+                                    {/* Prix unitaire */}
+                                </InputLabel>
+                                <InputComponent
+                                    isRequired
+                                    type="number"
+                                    id="price"
+                                    errors={errors}
+                                    register={register}
+                                    className="input-lg"
+                                    name={'price'}
+                                    // placeholder="10"
+                                    otherValidator={{ minLength: 1 }}
+                                >
+                                    {errors.price?.type === 'pattern' && (
+                                        <ErrorInputComponent text="Entrer un prix supérieur à 0" />
+                                    )}
+                                </InputComponent>
+                            </FormGroup>
 
                             <FormGroup className="has-wrapper">
                                 <InputLabel className="text-left" htmlFor="quantity">
@@ -491,14 +556,13 @@ const AddProduct = ({show, products, onSave, onClose}) => {
                                     register={register}
                                     className="input-lg"
                                     name={'quantity'}
-                                    placeholder="10"
-                                    otherValidator={{minLength: 1 }}
+                                    // placeholder="10"
+                                    otherValidator={{ minLength: 1 }}
                                 >
                                     {errors.quantity?.type === 'pattern' && (
                                         <ErrorInputComponent text="Entrer une quantité supérieur à 0" />
                                     )}
                                 </InputComponent>
-                                <span className="has-icon"><i className="ti-pencil"></i></span>
                             </FormGroup>
                         </div>
 

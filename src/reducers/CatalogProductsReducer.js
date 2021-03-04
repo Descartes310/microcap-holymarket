@@ -21,7 +21,7 @@ export default (state = INIT_STATE, action) => {
             return { ...state, loading: true };
 
         case CATALOG_PRODUCTS_SUCCESS:
-            return { ...state, loading: false, data: action.payload.map(catalog => new BranchProduct(catalog)) };
+            return { ...state, loading: false, data: action.payload.map(catalog => catalog) };
 
         case CATALOG_PRODUCTS_FAILURE:
             return { ...state, loading: false, error: action.payload };
