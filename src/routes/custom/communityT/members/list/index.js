@@ -19,6 +19,7 @@ import DialogContent from "@material-ui/core/DialogContent/DialogContent";
 import Dialog from "@material-ui/core/Dialog/Dialog";
 import CancelIcon from '@material-ui/icons/Cancel';
 import TimeFromMoment from "Components/TimeFromMoment";
+import AmountCurrency from "Components/AmountCurrency";
 
 
 class ListMembers extends Component {
@@ -44,10 +45,9 @@ class ListMembers extends Component {
 
     onViewVoucher = user => {
         this.setState({ showVoucherBox: true });
-        getVouchers(this.props.communitySpace.data, user.id, 'PAYMENT').then(data => {
+        getVouchers(this.props.communitySpace.data, user.id, 'ALL').then(data => {
             this.setState({ codes: data })
         }).catch(err => {
-            console.log(err)
             this.setState({ codes: [] })
         }).finally(() => {})
     }
@@ -136,7 +136,9 @@ class ListMembers extends Component {
                             <thead>
                                 <tr>
                                     <th>Code de paiement</th>
-                                    <th>Montant</th>
+                                    <th>Type</th>
+                                    <th>Valeur</th>
+                                    <th>Unité</th>
                                     <th>Date de création</th>
                                 </tr>
                             </thead>
@@ -153,7 +155,21 @@ class ListMembers extends Component {
                                         <td>
                                             <div className="media">
                                                 <div className="media-body pt-10">
-                                                    <h4 className="m-0 fw-bold text-dark">{item.price}</h4>
+                                                    <h4 className="m-0 fw-bold text-dark">{item.type}</h4>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div className="media">
+                                                <div className="media-body pt-10">
+                                                    <h4 className="m-0 fw-bold text-dark"><AmountCurrency amount={item.price} from={item.currency ? item.currency : 'EUR'} unit={item.unit} /></h4>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div className="media">
+                                                <div className="media-body pt-10">
+                                                    <h4 className="m-0 fw-bold text-dark">{item.unit ? item.unit.name : this.props.currencies.filter(c => c.code == item.currency)[0].name}</h4>
                                                 </div>
                                             </div>
                                         </td>
@@ -194,9 +210,12 @@ const useStyles = theme => ({
     }
 });
 
-const mapStateToProps = ({ authUser, communitySpace }) => {
-    return { authUser: authUser.data, 
-        communitySpace: communitySpace };
+const mapStateToProps = ({ authUser, communitySpace, settings }) => {
+    return { 
+        authUser: authUser.data, 
+        communitySpace: communitySpace,
+        currencies: settings.currencies
+     };
 };
 
 export default withRouter(connect(mapStateToProps, {

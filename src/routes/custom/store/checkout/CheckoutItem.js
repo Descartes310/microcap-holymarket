@@ -49,7 +49,7 @@ class CheckoutItem extends Component {
          ...item.typeProduct,
          name: item.typeProduct.product.label,
          price: item.typeProduct.price,
-         currency: item.typeProduct.product.currency,
+         currency: item.typeProduct.product.priceCurrency,
          quantity: item.quantity
       })));
       const { success } = this.state;

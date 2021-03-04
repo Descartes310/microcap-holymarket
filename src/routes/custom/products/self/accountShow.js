@@ -67,7 +67,7 @@ class AccountShow extends Component {
                 if (balance.length > 0) {
                     this.setState({ balance: balance[0].value })
                 }
-                if(account_currency.length > 0)
+                if (account_currency.length > 0)
                     this.setState({ account_currency: account_currency[0].value });
                 else
                     this.setState({ account_currency: 'EUR' });
@@ -80,10 +80,10 @@ class AccountShow extends Component {
     };
 
     changeAccountCurrency = (id) => {
-        let currency = this.props.currencies.filter(c => c.id == id )[0];
-        if(currency == null)
+        let currency = this.props.currencies.filter(c => c.id == id)[0];
+        if (currency == null)
             return;
-        
+
         this.setState({ currency: currency.code, showCurrencyBox: false });
         // changeCurrency(this.props.match.params.id, id)
         //     .then(response => {
@@ -152,6 +152,7 @@ class AccountShow extends Component {
     render() {
         const { account_currency, account, balance, currency, showQuantityBox, transactions, paying, printing, showCurrencyBox } = this.state;
         const { match, history, classes } = this.props;
+        console.log('TEST => ', this.props.currencies, this.state.amount, null, this.props.authUser.user.currency, account_currency, currency, this.props.currencies.filter(c => c.code == currency)[0].decimal)
 
         return (
             <>
@@ -204,16 +205,20 @@ class AccountShow extends Component {
                                                             Modifier le libellé
                                                     </p>
                                                     </li>
-                                                    <li style={{ width: '98%' }} onClick={() => this.setState({ showCurrencyBox: true })}>
-                                                        <p style={{
-                                                            fontSize: '1.3em',
-                                                            textAlign: 'center',
-                                                            paddingTop: 5,
-                                                            cursor: 'pointer'
-                                                        }}>
-                                                            Modifier la devise
+                                                    {account.typeProduct ? account.typeProduct.unit == null && account.typeProduct.currency != null ?
+                                                        <li style={{ width: '98%' }} onClick={() => this.setState({ showCurrencyBox: true })}>
+                                                            <p style={{
+                                                                fontSize: '1.3em',
+                                                                textAlign: 'center',
+                                                                paddingTop: 5,
+                                                                cursor: 'pointer'
+                                                            }}>
+                                                                Modifier la devise
                                                         </p>
-                                                    </li>
+                                                        </li>
+                                                        : null
+                                                        : null
+                                                    }
 
                                                 </ul>
                                             </div>
@@ -221,9 +226,17 @@ class AccountShow extends Component {
                                     </DropdownMenu>
                                 </UncontrolledDropdown>
                             </div>
-                            <h1 className="mr-2"><span style={{ color: '#fed039' }}>Solde:</span> 
-                            { account_currency ? <AmountCurrency styles={{ fontSize: '1.1em' }} amount={balance} from={account_currency} to={currency} /> : '0 EUR' }</h1>
+                            <h1 className="mr-2"><span style={{ color: '#fed039' }}>Solde:</span>
+                                {account_currency ? <AmountCurrency styles={{ fontSize: '1.1em' }} amount={balance} from={account_currency} to={currency} unit={account.typeProduct ? account.typeProduct.unit : null} /> : '0 EUR'}</h1>
+                                
                         </div>
+                        <div className="page-title d-flex justify-content-between align-items-center" style={{ paddingLeft: 40, paddingRight: 40, paddingTop: 20 }}>
+                            <h1 className="mr-2"><span style={{ color: '#fed039' }}>Planché:</span>
+                                {account_currency ? <AmountCurrency styles={{ fontSize: '1.1em' }} amount={account.typeProduct.minBalance} from={account_currency} to={currency} unit={account.typeProduct ? account.typeProduct.unit : null} /> : '0 EUR'}</h1>
+                            <h1 className="mr-2"><span style={{ color: '#fed039' }}>Plafond:</span>
+                                {account_currency ? <AmountCurrency styles={{ fontSize: '1.1em' }} amount={account.typeProduct.maxBalance} from={account_currency} to={currency} unit={account.typeProduct ? account.typeProduct.unit : null} /> : '0 EUR'}</h1>
+                        </div>
+                        
                         <div className="d-flex justify-content-between align-items-center" style={{ padding: 40 }}>
                             <FormControl>
                                 <InputGroup>
@@ -252,16 +265,23 @@ class AccountShow extends Component {
                                             onClick={() => this.setState({ showQuantityBox: true })}
                                         >
                                             Approvisionnement coupon
-                                </Button>
-                                        <Button
-                                            size="large"
-                                            color="primary"
-                                            variant="contained"
-                                            className={"text-white font-weight-bold mr-3"}
-                                            onClick={() => this.setState({ paying: true })}
-                                        >
-                                            Approvisionnement carte
-                                </Button>
+                                        </Button>
+                                        {
+                                            account.typeProduct ? account.typeProduct.unit == null && account.typeProduct.currency != null ?
+
+                                                <Button
+                                                    size="large"
+                                                    color="primary"
+                                                    variant="contained"
+                                                    className={"text-white font-weight-bold mr-3"}
+                                                    onClick={() => this.setState({ paying: true })}
+                                                >
+                                                    Approvisionnement carte
+                                                </Button>
+                                                :
+                                                null
+                                                : null
+                                        }
                                     </div>
                                     :
                                     <div className='d-flex'>
@@ -305,7 +325,7 @@ class AccountShow extends Component {
                                                         <th>Date</th>
                                                         <th>Libellé</th>
                                                         <th>Nature</th>
-                                                        <th>Montant</th>
+                                                        <th>Valeur</th>
                                                         {
                                                             !printing ?
                                                                 <th>Action</th> :
@@ -341,7 +361,7 @@ class AccountShow extends Component {
                                                                 <td>
                                                                     <div className="media">
                                                                         <div className="media-body">
-                                                                            <h4 className="m-0 text-dark"><AmountCurrency amount={transaction.amount} from={transaction.currency} to={currency} /></h4>
+                                                                            <h4 className="m-0 text-dark"><AmountCurrency amount={transaction.amount} from={transaction.currency} to={currency} unit={account.typeProduct ? account.typeProduct.unit : null} /></h4>
                                                                         </div>
                                                                     </div>
                                                                 </td>

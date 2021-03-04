@@ -69,7 +69,7 @@ class OrderShow extends Component {
 
         return (
             <RctCollapsibleCard>
-                <PageTitleBar title={"Détails de la commande " + product.name} match={match} history={history} enableBreadCrumb={true} />
+                <PageTitleBar title={"Détails de la commande " + product.order.name} match={match} history={history} enableBreadCrumb={true} />
                 {product.order.status ?
                     <span style={{ backgroundColor: 'rgba(0, 2000, 0, 0.5)', border: 10, padding: 10, borderRadius: 5, color: 'white', marginBottom: 20 }}>
                         Commande payée
@@ -167,7 +167,7 @@ class OrderShow extends Component {
                                                         <td>
                                                             <div className="media">
                                                                 <div className="media-body pt-10">
-                                                                    <h4 className="m-0 fw-bold text-dark"><AmountCurrency amount={item.typeProduct.price} from={item.typeProduct.product.currency} /></h4>
+                                                                    <h4 className="m-0 fw-bold text-dark"><AmountCurrency amount={item.typeProduct.price} from={item.typeProduct.product.priceCurrency} /></h4>
                                                                 </div>
                                                             </div>
                                                         </td>
@@ -181,7 +181,7 @@ class OrderShow extends Component {
                                                         <td>
                                                             <div className="media">
                                                                 <div className="media-body pt-10">
-                                                                    <h4 className="m-0 fw-bold text-dark"><AmountCurrency amount={item.typeProduct.price} from={item.typeProduct.product.currency} quantity={item.quantity} /></h4>
+                                                                    <h4 className="m-0 fw-bold text-dark"><AmountCurrency amount={item.typeProduct.price} from={item.typeProduct.product.priceCurrency} quantity={item.quantity} /></h4>
                                                                 </div>
                                                             </div>
                                                         </td>
@@ -204,7 +204,7 @@ class OrderShow extends Component {
                                                                 <div className="media-body pt-10">
                                                                     <h4 className="m-0 fw-bold text-dark">
                                                                         <AmountCurrency amounts={list.map((e) => {
-                                                                            return { amount: e.typeProduct.price, currency: e.typeProduct.product.currency, quantity: e.quantity }
+                                                                            return { amount: e.typeProduct.price, currency: e.typeProduct.product.priceCurrency, quantity: e.quantity }
                                                                         })} />
                                                                     </h4>
                                                                 </div>

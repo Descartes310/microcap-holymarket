@@ -24,7 +24,8 @@ class Account extends Component {
 
         this.state = {
             loading: true,
-            products: {}
+            products: {},
+            total: 0
         }
     }
 
@@ -35,7 +36,7 @@ class Account extends Component {
     loadData = () => {
         getUserAccounts(this.props.authUser.user.id)
             .then(products => {
-                this.setState({ products: this.groups(products) });
+                this.setState({ products: this.groups(products), total: products.length });
             })
             .catch(() => {
                 NotificationManager.error(ERROR_500);
@@ -65,8 +66,8 @@ class Account extends Component {
     }
 
     render() {
-        const { loading, products } = this.state;
-        const { history } = this.props;
+        const { total, products } = this.state;
+        const { history, authUser } = this.props;
 
         return (
             <>
@@ -74,7 +75,7 @@ class Account extends Component {
                     loading={false}
                     list={products}
                     titleList={'Liste des comptes'}
-                    itemsFoundText={n => `${n} compte(s) trouvé(s)`}
+                    itemsFoundText={n => `${total} compte(s) trouvé(s)`}
                     renderItem={list => (
                         <>
                             {list && list.length === 0 ? (
@@ -86,7 +87,7 @@ class Account extends Component {
                             ) : (
                                     Object.entries(list).map(function (account, index) {
                                         return (
-                                            <>
+                                            <div key={index}>
                                                 <h2 style={{ marginBottom: 20 }}>{account[0]}</h2>
                                                  {
                                                     account[1].length == 0 ?
@@ -103,6 +104,7 @@ class Account extends Component {
                                                                     <tr>
                                                                         <th><IntlMessages id="components.name" /></th>
                                                                         <th>Solde</th>
+                                                                        <th>Unité</th>
                                                                         <th>Action</th>
                                                                     </tr>
                                                                 </thead>
@@ -112,14 +114,21 @@ class Account extends Component {
                                                                             <td>
                                                                                 <div className="media">
                                                                                     <div className="media-body pt-10">
-                                                                                        <h4 className="m-0 fw-bold text-dark">{account.name}</h4>
+                                                                                        <h4 className="m-0 fw-bold text-dark">{account.label}</h4>
                                                                                     </div>
                                                                                 </div>
                                                                             </td>
                                                                             <td>
                                                                                 <div className="media">
                                                                                     <div className="media-body pt-10">
-                                                                                        <h4 className="m-0 fw-bold text-dark"> <AmountCurrency amount={ account.detailsProducts.filter(d => d.detailsType.name == 'SOLDE').length > 0 ? account.detailsProducts.filter(d => d.detailsType.name == 'SOLDE')[0].value : 0 } from={account.detailsProducts.filter(d => d.detailsType.name == 'CURRENCY').length > 0 ? account.detailsProducts.filter(d => d.detailsType.name == 'CURRENCY')[0].value : 'EUR'} /></h4>
+                                                                                        <h4 className="m-0 fw-bold text-dark"> <AmountCurrency amount={ account.detailsProducts.filter(d => d.detailsType.name == 'SOLDE').length > 0 ? account.detailsProducts.filter(d => d.detailsType.name == 'SOLDE')[0].value : 0 } from={account.detailsProducts.filter(d => d.detailsType.name == 'CURRENCY').length > 0 ? account.detailsProducts.filter(d => d.detailsType.name == 'CURRENCY')[0].value : 'EUR'} unit={account.typeProduct.unit} to={authUser.user.currency.code} /></h4>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </td>
+                                                                            <td>
+                                                                                <div className="media">
+                                                                                    <div className="media-body pt-10">
+                                                                                        <h4 className="m-0 fw-bold text-dark"> { account.typeProduct.unit ? account.typeProduct.unit.name : authUser.user.currency.name}</h4>
                                                                                     </div>
                                                                                 </div>
                                                                             </td>
@@ -141,7 +150,7 @@ class Account extends Component {
                                                             </table>
                                                         </div>
                                                 }
-                                            </>
+                                            </div>
                                         )
                                     }
                                     )

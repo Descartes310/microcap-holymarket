@@ -84,7 +84,7 @@ class PaymentInfo extends Component {
       const cart = new Cart(this.props.order.orderItems.map(item => ({
          ...item.typeProduct,
          price: item.typeProduct.price,
-         currency: item.typeProduct.product.currency,
+         currency: item.typeProduct.product.priceCurrency,
          quantity: item.quantity
       })));
       return (

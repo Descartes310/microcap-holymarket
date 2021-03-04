@@ -4,7 +4,7 @@ import Select from '@material-ui/core/Select';
 import ListItem from './ListItem';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { readEmail, onSelectEmail } from 'Actions';
+import { readEmail, onSelectEmail, getUnitTypes, getUnitbyType } from 'Actions';
 import IntlMessages from 'Util/IntlMessages';
 import { withStyles } from "@material-ui/core";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
@@ -22,6 +22,11 @@ import DialogContent from "@material-ui/core/DialogContent/DialogContent";
 import Dialog from "@material-ui/core/Dialog/Dialog";
 import CancelIcon from '@material-ui/icons/Cancel';
 import TimeFromMoment from "Components/TimeFromMoment";
+import MenuItem from "@material-ui/core/MenuItem";
+import { Form, FormGroup } from "reactstrap";
+import InputLabel from "@material-ui/core/InputLabel/InputLabel";
+import InputComponent from "Components/InputComponent";
+import AmountCurrency from "Components/AmountCurrency";
 
 class ListMembers extends Component {
 
@@ -33,8 +38,27 @@ class ListMembers extends Component {
         showVoucherBox: false,
         selectedUser: null,
         code: [],
-        users: []
+        users: [],
+        unitTypes: [],
+        units: [],
+        amount: 0,
+        unit: null,
+        type: null
     }
+
+    fetchUnitType = () => {
+        getUnitTypes()
+            .then(result => {
+                this.setState({ unitTypes: result })
+            });
+    };
+
+    fetchUnits = (id) => {
+        getUnitbyType(id)
+            .then(result => {
+                this.setState({ units: result })
+            });
+    };
 
     handleChange = event => {
         this.setState({ [event.target.name]: event.target.value });
@@ -51,15 +75,23 @@ class ListMembers extends Component {
         }).catch(err => {
             console.log(err)
             this.setState({ codes: [] })
-        }).finally(() => {})
+        }).finally(() => { })
     }
 
-    onGenerate = value => {
-        createVoucher(this.props.communitySpace.data, {
+    onGenerate = () => {
+        let data = {
             user_id: this.state.selectedUser.id,
-            price: value,
+            price: this.state.amount,
             type: 'PAYMENT'
-        }).then(data => {
+        };
+
+        if(this.state.type.id == 0) {
+            data.currency = this.props.currencies.filter(c => c.id == this.state.unit.id)[0].code;
+        } else {
+            data.unit_id = this.state.unit.id;
+        }
+
+        createVoucher(this.props.communitySpace.data, data).then(data => {
             NotificationManager.success("Le code généré avec succès");
         }).catch(err => {
             NotificationManager.error("Une erreur est survenue")
@@ -72,8 +104,19 @@ class ListMembers extends Component {
         }).finally(() => this.setState({ loading: false }))
     }
 
+    changeType = (type) => {
+        if (type) {
+            if (type.id != 0)
+                this.fetchUnits(type.id);
+            else
+                this.setState({ units: this.props.currencies })
+            this.setState({ type: type })
+        }
+    }
+
     componentDidMount() {
         this.getMembers();
+        this.fetchUnitType()
     }
 
     render() {
@@ -116,7 +159,7 @@ class ListMembers extends Component {
                                         <ListItem
                                             user={user}
                                             key={key}
-                                            buttonLabel="paiement"
+                                            buttonLabel="recharge"
                                             onGenerate={() => this.handleGenerate(user)}
                                             onViewVoucher={() => this.onViewVoucher(user)}
                                         />
@@ -137,7 +180,7 @@ class ListMembers extends Component {
                 <SweetAlert
                     input
                     btnSize="sm"
-                    show={showQuantityBox}
+                    show={false}
                     showCancel
                     cancelBtnBsStyle="danger"
                     title="Montant"
@@ -152,6 +195,84 @@ class ListMembers extends Component {
                     Entrez le montant du code a générer
                 </SweetAlert>
                 <Dialog
+                    open={showQuantityBox}
+                    onClose={() => { this.setState({ showQuantityBox: false, codes: [] }) }}
+                    aria-labelledby="responsive-dialog-title"
+                    maxWidth={'sm'}
+                    fullWidth
+                >
+                    <DialogTitle id="form-dialog-title">
+                        <div className="row justify-content-between align-items-center">
+                            Créer un nouveau code
+                            <IconButton
+                                color="primary"
+                                aria-label="close"
+                                className="text-danger"
+                                onClick={() => { this.setState({ showQuantityBox: false, codes: [] }) }}>
+                                <CancelIcon />
+                            </IconButton>
+                        </div>
+                    </DialogTitle>
+                    <DialogContent>
+                        <div className="row align-items-center">
+                            <div className="col-md-12 col-sm-12">
+                                <FormGroup className="has-wrapper">
+                                    <InputLabel className="text-left" htmlFor="defaultPrice">
+                                        Montant du coupon
+                                    </InputLabel>
+                                    <Input
+                                        className="input-lg"
+                                        type='number'
+                                        onChange={(e) => this.setState({ amount: e.target.value })}
+                                    />
+                                </FormGroup>
+                            </div>
+                        </div>
+                        <div className="row align-items-center">
+                            <div className="col-md-12 col-sm-12">
+                                <FormControl fullWidth>
+                                    <InputLabel className="text-left" htmlFor="currency-helper">
+                                        Type d'unité
+                                    </InputLabel>
+                                    <Select onChange={e => this.changeType(e.target.value)}>
+                                        {[{ name: 'Devise', id: 0 }, ...this.state.unitTypes].map((item, index) => (
+                                            <MenuItem key={index} value={item} className="center-hor-ver">
+                                                {item.name}
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
+                            </div>
+                        </div>
+                        <div className="row align-items-center" style={{ marginTop: '5%' }}>
+                            <div className="col-md-12 col-sm-12">
+                                <FormControl fullWidth>
+                                    <InputLabel className="text-left" htmlFor="currency-helper">
+                                        Unité du coupon
+                                    </InputLabel>
+                                    <Select onChange={e => this.setState({ unit: e.target.value })}>
+                                        {this.state.units.map(item => (
+                                            <MenuItem key={item.id} value={item} className="center-hor-ver">
+                                                {item.name}
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
+                            </div>
+                        </div>
+                        <div className="row align-items-center" style={{ marginTop: '5%' }}>
+                            <Button
+                                color="primary"
+                                className="text-white"
+                                style={{ width: '100%' }}
+                                onClick={() => this.onGenerate()}
+                            >
+                                Générer le coupon
+                            </Button>
+                        </div>
+                    </DialogContent>
+                </Dialog>
+                <Dialog
                     open={showVoucherBox}
                     onClose={() => { this.setState({ showVoucherBox: false, codes: [] }) }}
                     aria-labelledby="responsive-dialog-title"
@@ -160,7 +281,7 @@ class ListMembers extends Component {
                 >
                     <DialogTitle id="form-dialog-title">
                         <div className="row justify-content-between align-items-center">
-                            Codes de paiement actifs
+                            Codes de recharge actifs
                             <IconButton
                                 color="primary"
                                 aria-label="close"
@@ -174,8 +295,9 @@ class ListMembers extends Component {
                         <table className="table table-hover table-middle mb-0 text-center">
                             <thead>
                                 <tr>
-                                    <th>Code de paiement</th>
-                                    <th>Montant</th>
+                                    <th>Code de recharge</th>
+                                    <th>Valeur</th>
+                                    <th>Unité</th>
                                     <th>Date de création</th>
                                 </tr>
                             </thead>
@@ -192,7 +314,14 @@ class ListMembers extends Component {
                                         <td>
                                             <div className="media">
                                                 <div className="media-body pt-10">
-                                                    <h4 className="m-0 fw-bold text-dark">{item.price}</h4>
+                                                    <h4 className="m-0 fw-bold text-dark"><AmountCurrency amount={item.price} from={item.currency ? item.currency : 'EUR'} unit={item.unit} /></h4>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div className="media">
+                                                <div className="media-body pt-10">
+                                                    <h4 className="m-0 fw-bold text-dark">{item.unit ? item.unit.name : this.props.currencies.filter(c => c.code == item.currency)[0].name}</h4>
                                                 </div>
                                             </div>
                                         </td>
@@ -233,10 +362,11 @@ const useStyles = theme => ({
     }
 });
 
-const mapStateToProps = ({ authUser, communitySpace }) => {
+const mapStateToProps = ({ authUser, communitySpace, settings }) => {
     return {
         authUser: authUser.data,
-        communitySpace: communitySpace
+        communitySpace: communitySpace,
+        currencies: settings.currencies
     };
 };
 

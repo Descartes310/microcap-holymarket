@@ -92,7 +92,7 @@ class Order extends Component {
                                                                 <div className="media-body pt-10">
                                                                     <h4 className="m-0 fw-bold text-dark">
                                                                         <AmountCurrency amounts={item.orderItems.map((e) => {
-                                                                            return { amount: e.typeProduct.price, currency: e.typeProduct.product.currency, quantity: e.quantity }
+                                                                            return { amount: e.typeProduct.price, currency: e.typeProduct.product.priceCurrency, quantity: e.quantity }
                                                                         })} />
                                                                     </h4>
                                                                 </div>

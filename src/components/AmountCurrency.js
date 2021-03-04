@@ -12,7 +12,7 @@ const CURRENCIES = ['EUR', 'XAF', 'XOF', 'GBP', 'CNY', 'USD', 'CAD']
 class AmountCurrency extends Component {
 
     state = {
-        to: 'EUR'
+        to: null
     }
 
     constructor(props) {
@@ -30,7 +30,7 @@ class AmountCurrency extends Component {
 
     componentDidUpdate(prevProps) {
         if (this.props.to != prevProps.to) {
-            this.forceUpdate()
+            this.forceUpdate();
             this.formatter = new Intl.NumberFormat('en-US', {
                 style: 'currency',
                 currency: this.props.to ? this.props.to : this.props.authUser.user.currency.code,
@@ -57,6 +57,7 @@ class AmountCurrency extends Component {
                     to_currency = this.props.authUser.user.currency;
                 else
                     to_currency = this.props.settings.currencies.filter(c => c.main == true)[0];
+
                 let main_amount = amount * from_currency.value;
                 return main_amount / to_currency.value;
             }
@@ -69,6 +70,7 @@ class AmountCurrency extends Component {
                 to_currency = this.props.authUser.user.currency;
             else
                 to_currency = this.props.settings.currencies.filter(c => c.main == true)[0];
+
             let main_amount = amount * from_currency.value;
             return main_amount / to_currency.value;
         }
@@ -131,23 +133,30 @@ class AmountCurrency extends Component {
 
 
     render() {
-        const { className, styles, amount, from, to, quantity, amounts, notShowCurrency } = this.props;
+        const { className, styles, amount, from, to, quantity, amounts, notShowCurrency, unit } = this.props;
+        console.log(to)
         return (
             <>
                 {
-                    amount != null ?
+                    unit != null ?
                         <span className={className} style={styles} >
-                            {
-                                quantity ?
-                                    this.formatter.format(this.getAmount(amount, from, to).toFixed(2) * quantity)
-                                    :
-                                    this.formatter.format(this.getAmount(amount, from, to).toFixed(2))
-                            }
+                            {amount} {unit.code}
                         </span>
                         :
-                        <span className={className} style={styles} >
-                            {this.formatter.format(this.getAmounts(amounts, to).toFixed(2))}
-                        </span>
+                        amount != null ?
+                            <span className={className} style={styles} >
+                                {
+                                    quantity ?
+                                        this.formatter.format(this.getAmount(amount, from, to).toFixed(2) * quantity)
+                                        :
+                                        this.formatter.format(this.getAmount(amount, from, to).toFixed(2))
+                                }
+                            </span>
+                            :
+                            <span className={className} style={styles} >
+                                {this.formatter.format(this.getAmounts(amounts, to).toFixed(2))}
+                            </span>
+
                 }
             </>
         );
