@@ -170,7 +170,8 @@ export const USERS = {
         PARTNER: 'public/users/organisations/{id}/partner',
     },
     UPDATE: {
-        PERSON: '/api/users'
+        PERSON: '/api/users',
+        AVATAR: '/api/users/update/avatar'
     },
     ACCOUNTS: {
         GET_ALL: '/public/type-network-profiles',

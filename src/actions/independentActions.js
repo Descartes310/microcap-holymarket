@@ -883,7 +883,7 @@ export const createUserPiece = (data, config) => {
             .catch(error => reject(error));
     });
 };
-
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
 export const createBranchCGU = (data, config) => {
     const url = `${SETTING.CGU}`;
     return new Promise((resolve, reject) => {
@@ -897,6 +897,15 @@ export const updateUserPieceValue = (data, config) => {
     const url = `${USERS.PIECE.UPDATE_FOR_USER}`;
     return new Promise((resolve, reject) => {
         api.post(url, data, config)
+            .then(result => resolve(result.data))
+            .catch(error => reject(error));
+    });
+};
+
+export const updateUserAvatar = (data, config) => {
+    const url = `${USERS.UPDATE.AVATAR}`;
+    return new Promise((resolve, reject) => {
+        api.put(url, data, config)
             .then(result => resolve(result.data))
             .catch(error => reject(error));
     });

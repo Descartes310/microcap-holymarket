@@ -14,7 +14,7 @@ import { getUser} from "Actions";
 // Components
 import SimpleProfileDisplay from './SimpleProfileDisplay';
 import SimpleAdressDisplay from './SimpleAdressDisplay';
-import UserBlock from '../../../../users/user-profile-1/component/UserBlock';
+import UserBlock from './UserBlock';
 import {getUserProfiles, setRequestGlobalAction, setAuthUser} from "Actions";
 
 // rct card box
@@ -49,16 +49,17 @@ function TabContainer(props) {
 
    render() {
       
-      const { currentUser} = this.props;
+      
       const { activeTab } = this.state;
-      console.log("currentUser =>", currentUser);
+      console.log("currentUser =>", this.props);
       return (
          <div className="userProfile-wrapper">
 
             <RctCard>
                <UserBlock 
-                  userName={currentUser.name}  
-                  userEmail={currentUser.email}
+                  userName={this.props.currentUser.name}  
+                  userEmail={this.props.currentUser.email}
+                  userAvatar= {this.props.currentUser.avatar}
                />
                <div className="rct-tabs">
                   <AppBar position="static">
@@ -83,11 +84,11 @@ function TabContainer(props) {
                   </AppBar>
                   {activeTab === 0 &&
                      <TabContainer>
-                        <SimpleProfileDisplay userProfileInformations={currentUser}/>
+                        <SimpleProfileDisplay userProfileInformations={this.props.currentUser}/>
                      </TabContainer>}
                   {activeTab === 1 &&
                      <TabContainer>
-                        <SimpleAdressDisplay userAdressInformations={currentUser}/>
+                        <SimpleAdressDisplay userAdressInformations={this.props.currentUser}/>
                      </TabContainer>}
                </div>
             </RctCard>

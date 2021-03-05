@@ -68,6 +68,7 @@ function TabContainer(props) {
                <UserBlock 
                   userName={authUser.commercialName ? authUser.commercialName : authUser.firstName}  
                   userEmail={authUser.user.email}
+                  userAvatar= {authUser.user.avatar}
                />
                <div className="rct-tabs">
                   <AppBar position="static">
