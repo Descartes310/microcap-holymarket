@@ -16,7 +16,7 @@ import TimeFromMoment from "Components/TimeFromMoment";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import AmountCurrency from "Components/AmountCurrency";
-import { joinUrlWithParamsId, STORE } from "Url/frontendUrl";
+import { joinUrlWithParamsId, STORE, PRODUCT, joinUrlWithParams } from "Url/frontendUrl";
 // import { Button } from "reactstrap";
 
 class OrderShow extends Component {
@@ -50,6 +50,11 @@ class OrderShow extends Component {
         })
         return total;
     }
+
+    onEnterClick = (product, type) => {
+        let url = joinUrlWithParams(PRODUCT.DETAILS, [{ param: 'id', value: product.id }, { param: 'type', value: type }]);
+        this.props.history.push(url);
+    };
 
     loadData = () => {
         getOrderDetails(this.props.match.params.id)
@@ -116,7 +121,7 @@ class OrderShow extends Component {
                         </div>
                         <div style={{ marginBottom: 20 }}>
                             <h2>Date de la commande</h2>
-                            <span>{ product.createdAt ? <TimeFromMoment time={product.createdAt} showFullDate /> : null }</span>
+                            <span>{product.createdAt ? <TimeFromMoment time={product.createdAt} showFullDate /> : null}</span>
                         </div>
                     </div>
                 </div>
@@ -144,7 +149,7 @@ class OrderShow extends Component {
                                                     <th>Prix unitaire</th>
                                                     <th>Quantité</th>
                                                     <th>Prix total</th>
-                                                    {/* <th>Actions</th> */}
+                                                    <th>Actions</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -185,6 +190,23 @@ class OrderShow extends Component {
                                                                 </div>
                                                             </div>
                                                         </td>
+                                                        <td>
+                                                            <div className="media">
+                                                                <div className="media-body pt-10">
+                                                                    <Button
+                                                                        size="small"
+                                                                        color="primary"
+                                                                        // disabled={loading}
+                                                                        variant="contained"
+                                                                        className={"text-white font-weight-bold mr-3 bg-blue"}
+                                                                        onClick={() => this.onEnterClick(item.typeProduct.product ? item.typeProduct.product : item.typeProduct.package1, item.type )}
+                                                                    >
+                                                                        Voir les détails
+                                                                            <i className="zmdi zmdi-arrow-right mr-2" />
+                                                                    </Button>
+                                                                </div>
+                                                            </div>
+                                                        </td>
                                                     </tr>
                                                 ))}
                                             </tbody>
@@ -209,6 +231,8 @@ class OrderShow extends Component {
                                                                     </h4>
                                                                 </div>
                                                             </div>
+                                                        </td>
+                                                        <td>
                                                         </td>
                                                     </tr>
                                                     : null}

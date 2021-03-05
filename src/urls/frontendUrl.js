@@ -142,6 +142,7 @@ export const PRODUCT = {
     ORDERS: '/products/orders',
     ORDERS_SHOW: '/products/orders/:id/show',
     SHOW: '/products/:id/show/:type',
+    DETAILS: '/products/:id/details/:type',
     SHOW_ACCOUNT: '/products/accounts',
     ACCOUNT_DETAILS: '/products/accounts/:id'
 };

@@ -630,9 +630,20 @@ export const getOneProductType = (productId) => {
     return makeRequest('get', url);
 };
 
-
 export const getOneProductTypeFromCommercialOffer = (productId, type) => {
     const url = joinBaseUrlWithParamsId(`${PRODUCT_TYPE.GET_ONE}?type=${type}`, productId);
+    return makeRequest('get', url);
+};
+
+export const getOneProductTypeFullInfos = (productId, type) => {
+    const url = joinBaseUrlWithParamsId(`${PRODUCT_TYPE.GET_ONE_FULL}?type=${type}`, productId);
+    return makeRequest('get', url);
+};
+
+export const getAccountsByUnit = (id = null) => {
+    let url = ACCOUNT.GET_ALL_BY_UNIT;
+    if(id)
+        url = url+'?id='+id
     return makeRequest('get', url);
 };
 

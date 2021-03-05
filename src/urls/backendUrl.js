@@ -130,6 +130,7 @@ export const PRODUCT_TYPE = {
     GET_ALL_PRODUCTS: 'api/type-products/get-all/products',
     CREATE: 'api/type-products',
     GET_ONE: 'api/type-products/{id}',
+    GET_ONE_FULL: 'api/type-products/{id}/full',
     GET_ONE_FROM_COM_OFFER: 'api/type-products/offer/{id}',
     TYPE_PRODUCTS: 'api/type-catalogs/type-products',
     SUB_CATEGORY: 'api/type-products/{id}/type-products',
@@ -282,6 +283,7 @@ export const ACCOUNT = {
     GET_ACCOUNT_BY_AMOUNT: 'api/accounts/users/{id}/account-by-amount',
     APPROVISIONING_VOUCHER: 'api/accounts/{id}/approvisioning/voucher',
     APPROVISIONING_CARD: 'api/accounts/{id}/approvisioning/card',
+    GET_ALL_BY_UNIT: 'api/accounts',
     CHANGE_CURRENCY: 'api/accounts/{id}/currency'
 };
 

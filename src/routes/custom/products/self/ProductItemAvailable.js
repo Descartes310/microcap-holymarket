@@ -18,6 +18,7 @@ import SweetAlert from "react-bootstrap-sweetalert";
 import { deleteItemFromCart, onAddItemToCart } from "Actions/CartActions";
 import Snackbar from "@material-ui/core/Snackbar/Snackbar";
 import AmountCurrency from "Components/AmountCurrency";
+import { PRODUCT, joinUrlWithParams } from "Url/frontendUrl";
 
 class ProductItemAvailable extends Component {
     static contextType = AbilityContext;
@@ -61,6 +62,11 @@ class ProductItemAvailable extends Component {
                 })
                 .finally(() => this.props.setRequestGlobalAction(false));
         }
+    };
+
+    onEnterClick = (product, type) => {
+        let url = joinUrlWithParams(PRODUCT.DETAILS, [{ param: 'id', value: product.pId }, { param: 'type', value: type }]);
+        this.props.history.push(url);
     };
 
     onWantToAddItemToCart = (item) => {
@@ -154,6 +160,17 @@ class ProductItemAvailable extends Component {
                                                             </div>
                                                         </td>
                                                         <td className="table-action">
+                                                            <Button
+                                                                size="small"
+                                                                color="primary"
+                                                                // disabled={loading}
+                                                                variant="contained"
+                                                                className={"text-white font-weight-bold mr-3 bg-blue"}
+                                                                onClick={() => this.onEnterClick(item, item.type)}
+                                                            >
+                                                                Voir les détails
+                                                                            <i className="zmdi zmdi-arrow-right mr-2" />
+                                                            </Button>
                                                             {cart.isProductPresent(item.id) ? (
                                                                 <Button
                                                                     size="small"
