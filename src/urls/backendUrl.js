@@ -95,7 +95,7 @@ export const NETWORK_PROFILE_TYPE = {
 };
 
 export const PRODUCTS = {
-    GET_FOR_USER: 'public/products/accounts/user/{id}',
+    GET_FOR_USER: 'api/products/accounts/user/{id}',
 };
 
 export const CATALOGS = {

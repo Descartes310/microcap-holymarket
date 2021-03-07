@@ -50,7 +50,7 @@ class Account extends Component {
             if (!groups[type]) {
                 groups[type] = [];
             }
-            groups[type].push(...account.accounts);
+            groups[type].push(...account.accounts.reverse());
             return groups;
         }, {});
         return result;
