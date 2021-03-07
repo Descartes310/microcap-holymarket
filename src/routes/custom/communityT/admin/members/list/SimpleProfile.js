@@ -12,14 +12,14 @@ import { Helmet } from "react-helmet";
 import {withRouter} from "react-router-dom";
 import { getUser} from "Actions";
 // Components
-import UpdateProfileDisplay from './UpdateProfileDisplay';
-import UpdateAdressDisplay from './UpdateAdressDisplay';
-import UpdatePassword from './UpdatePassword';
-import UserCurrency from './UserCurrency';
-import EmailPrefrences from '../../../users/user-profile-1/component/EmailPrefrences';
-import Messages from '../../../users/user-profile-1/component/Messages';
-import Address from '../../../users/user-profile-1/component/Address';
-import UserBlock from '../../../users/user-profile-1/component/UserBlock';
+import SimpleProfileDisplay from './SimpleProfileDisplay';
+import SimpleAdressDisplay from './SimpleAdressDisplay';
+//import UpdatePassword from './UpdatePassword';
+//import UserCurrency from './UserCurrency';
+/*import EmailPrefrences from '../../../../users/user-profile-1/component/EmailPrefrences';
+import Messages from '../../../../users/user-profile-1/component/Messages';
+import Address from '../../../../users/user-profile-1/component/Address';*/
+import UserBlock from '../../../../../users/user-profile-1/component/UserBlock';
 import {getUserProfiles, setRequestGlobalAction, setAuthUser} from "Actions";
 
 // rct card box
@@ -40,7 +40,7 @@ function TabContainer(props) {
    );
 }
 
- class DisplayProfile extends Component {
+ class SimpleProfile extends Component {
 
    state = {
       activeTab: this.props.location.state ? this.props.location.state.activeTab : 0
@@ -58,11 +58,11 @@ function TabContainer(props) {
       const { activeTab } = this.state;
       return (
          <div className="userProfile-wrapper">
-            <Helmet>
-               <title>Profil de l'utilisateur</title>
+            {/*<Helmet>
+               <title>Profil Utilisateur</title>
                <meta name="description" content="User Profile" />
             </Helmet>
-            <PageTitleBar title={<IntlMessages id="sidebar.userProfile" />}/>
+            <PageTitleBar title={<IntlMessages id="sidebar.userProfile" />}/>*/}
 
             <RctCard>
                <UserBlock 
@@ -87,11 +87,11 @@ function TabContainer(props) {
                            icon={<i className="ti-home"></i>}
                            label={<IntlMessages id="components.address" />}
                         />
-                         <Tab
+                         {/*<Tab
                            icon={<i className="ti-money"></i>}
                            label={'Devises'}
                         />
-                       {/* <Tab
+                        <Tab
                            icon={<i className="ti-comment-alt"></i>}
                            label={<IntlMessages id="widgets.messages" />}
                         />*/}
@@ -100,17 +100,17 @@ function TabContainer(props) {
                   </AppBar>
                   {activeTab === 0 &&
                      <TabContainer>
-                        <UpdateProfileDisplay userProfileInformations={authUser}/>
+                        <SimpleProfileDisplay userProfileInformations={authUser}/>
                      </TabContainer>}
                   {activeTab === 1 &&
                      <TabContainer>
-                        <UpdateAdressDisplay userAdressInformations={authUser}/>
+                        <SimpleAdressDisplay userAdressInformations={authUser}/>
                      </TabContainer>}
-                 { activeTab === 2 &&
+                   {/* activeTab === 2 &&
                     <TabContainer>
                         <UserCurrency />
                      </TabContainer> }
-                  {/* activeTab === 3 &&
+                 activeTab === 3 &&
                      <TabContainer>
                         <Address />
                   </TabContainer>*/}
@@ -133,4 +133,4 @@ const mapStateToProps = ({ requestGlobalLoader, userProfile, authUser  }) => {
 
 export default connect(mapStateToProps, {
 	getUserProfiles, setRequestGlobalAction
-})(withRouter(injectIntl(DisplayProfile)))
+})(withRouter(injectIntl(SimpleProfile)))

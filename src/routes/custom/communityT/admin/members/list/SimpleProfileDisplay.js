@@ -31,7 +31,7 @@ import { useForm } from "react-hook-form";
 
 const countryWithNumberAndFlag = CountryManager.countryWithNumberAndFlag();
 
-const UpdateProfileDisplay = props => {
+const SimpleProfileDisplay = props => {
 
     const { loading, intl, userProfiles, authUser, getUserProfiles, history } = props;
 
@@ -237,20 +237,6 @@ const UpdateProfileDisplay = props => {
                         </div>*/}
                 </div>)}
 
-                <div className=" row mb-15 mt-15">
-
-                    <Button
-                        type="submit"
-                        color="primary"
-                        disabled={loading}
-                        variant="contained"
-                        onClick={goToEdition}
-                        className="text-white font-weight-bold"
-                    >
-                        {/*<IntlMessages id="auth.signup" />*/}
-                            Modifier
-                        </Button>
-                </div>
             </div>
         </>
     );
@@ -262,4 +248,4 @@ const mapStateToProps = ({ requestGlobalLoader, authUser, userProfile }) => {
     return { loading: requestGlobalLoader, authUser: authUser.data, userProfiles: userProfile }
 };
 
-export default withRouter(connect(mapStateToProps, { getUserProfiles, getAllNetworkProfile, getUsers, setRequestGlobalAction })(injectIntl(UpdateProfileDisplay)));
+export default withRouter(connect(mapStateToProps, { getUserProfiles, getAllNetworkProfile, getUsers, setRequestGlobalAction })(injectIntl(SimpleProfileDisplay)));

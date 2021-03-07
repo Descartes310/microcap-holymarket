@@ -28,7 +28,7 @@ import ErrorInputComponent from "Components/ErrorInputComponent";
 import AppConfig from "Constants/AppConfig";
 import Button from "@material-ui/core/Button";
 import {useForm} from "react-hook-form";
-
+import { useDispatch } from 'react-redux';
 
 const countryWithNumberAndFlag = CountryManager.countryWithNumberAndFlag();
 
@@ -115,16 +115,15 @@ const  UpdateProfile = props => {
     }, []);
 
     
-
+    const dispatch = useDispatch();
 
     const onSubmit = (data) => {
         props.setRequestGlobalAction(true);
-        
-        updateUsers(data, props.authUser.user.id)
+        updateUsers(data)
             .then(() => {
-                getUser(props.authUser.user.id);
-                console.log("updated User =>",getUser(props.authUser.user.id));
+                getUser();
                 props.history.push(USERS.USERS_PROFILE.DISPLAY_PROFILE);
+                dispatch(setAuthUser());
             })
             .catch((error) => {
                 NotificationManager.error("Une erreur est survenue")
@@ -132,6 +131,11 @@ const  UpdateProfile = props => {
             })
             .finally(() => props.setRequestGlobalAction(false));
     };
+
+    const cancelEdition = () => {
+        props.history.push(USERS.USERS_PROFILE.DISPLAY_PROFILE)
+    };
+
         return (
             <>  
                 <Form onSubmit={handleSubmit(onSubmit)} className={"center-holder"}>
@@ -412,6 +416,7 @@ const  UpdateProfile = props => {
                             disabled={loading}
                             variant="outlined"
                             className="font-weight-bold mr-2"
+                            onClick={cancelEdition}
                         >
                             {/*<i className="ti-arrow-left font-weight-bold mr-2"></i> <IntlMessages id="button.previous" />*/}
                             Annuler

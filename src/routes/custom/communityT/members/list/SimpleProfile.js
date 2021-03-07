@@ -12,14 +12,9 @@ import { Helmet } from "react-helmet";
 import {withRouter} from "react-router-dom";
 import { getUser} from "Actions";
 // Components
-import UpdateProfileDisplay from './UpdateProfileDisplay';
-import UpdateAdressDisplay from './UpdateAdressDisplay';
-import UpdatePassword from './UpdatePassword';
-import UserCurrency from './UserCurrency';
-import EmailPrefrences from '../../../users/user-profile-1/component/EmailPrefrences';
-import Messages from '../../../users/user-profile-1/component/Messages';
-import Address from '../../../users/user-profile-1/component/Address';
-import UserBlock from '../../../users/user-profile-1/component/UserBlock';
+import SimpleProfileDisplay from './SimpleProfileDisplay';
+import SimpleAdressDisplay from './SimpleAdressDisplay';
+import UserBlock from './UserBlock';
 import {getUserProfiles, setRequestGlobalAction, setAuthUser} from "Actions";
 
 // rct card box
@@ -40,7 +35,7 @@ function TabContainer(props) {
    );
 }
 
- class DisplayProfile extends Component {
+ class SimpleProfile extends Component {
 
    state = {
       activeTab: this.props.location.state ? this.props.location.state.activeTab : 0
@@ -53,22 +48,18 @@ function TabContainer(props) {
 
 
    render() {
-      const currentUser = getUser(this.props.authUser.user.id);
-      const { authUser} = this.props;
+      
+      
       const { activeTab } = this.state;
+      console.log("currentUser =>", this.props);
       return (
          <div className="userProfile-wrapper">
-            <Helmet>
-               <title>Profil de l'utilisateur</title>
-               <meta name="description" content="User Profile" />
-            </Helmet>
-            <PageTitleBar title={<IntlMessages id="sidebar.userProfile" />}/>
 
             <RctCard>
                <UserBlock 
-                  userName={authUser.commercialName ? authUser.commercialName : authUser.firstName}  
-                  userEmail={authUser.user.email}
-                  userAvatar= {authUser.user.avatar}
+                  userName={this.props.currentUser.name}  
+                  userEmail={this.props.currentUser.email}
+                  userAvatar= {this.props.currentUser.avatar}
                />
                <div className="rct-tabs">
                   <AppBar position="static">
@@ -87,33 +78,18 @@ function TabContainer(props) {
                            icon={<i className="ti-home"></i>}
                            label={<IntlMessages id="components.address" />}
                         />
-                         <Tab
-                           icon={<i className="ti-money"></i>}
-                           label={'Devises'}
-                        />
-                       {/* <Tab
-                           icon={<i className="ti-comment-alt"></i>}
-                           label={<IntlMessages id="widgets.messages" />}
-                        />*/}
+                         
                        
                      </Tabs>
                   </AppBar>
                   {activeTab === 0 &&
                      <TabContainer>
-                        <UpdateProfileDisplay userProfileInformations={authUser}/>
+                        <SimpleProfileDisplay userProfileInformations={this.props.currentUser}/>
                      </TabContainer>}
                   {activeTab === 1 &&
                      <TabContainer>
-                        <UpdateAdressDisplay userAdressInformations={authUser}/>
+                        <SimpleAdressDisplay userAdressInformations={this.props.currentUser}/>
                      </TabContainer>}
-                 { activeTab === 2 &&
-                    <TabContainer>
-                        <UserCurrency />
-                     </TabContainer> }
-                  {/* activeTab === 3 &&
-                     <TabContainer>
-                        <Address />
-                  </TabContainer>*/}
                </div>
             </RctCard>
          </div>
@@ -133,4 +109,4 @@ const mapStateToProps = ({ requestGlobalLoader, userProfile, authUser  }) => {
 
 export default connect(mapStateToProps, {
 	getUserProfiles, setRequestGlobalAction
-})(withRouter(injectIntl(DisplayProfile)))
+})(withRouter(injectIntl(SimpleProfile)))

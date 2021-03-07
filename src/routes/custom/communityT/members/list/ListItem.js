@@ -10,7 +10,7 @@ import UserAvatar from "Components/UserAvatar";
 import { Link } from 'react-router-dom';
 import { USERS, joinUrlWithParamsId } from 'Url/frontendUrl';
 
-const ListItem = ({ user, isMe, onViewVoucher }) => {
+const ListItem = ({ user, isMe, onViewVoucher, getClientFolder }) => {
     return (
         <li className="d-flex justify-content-between align-items-center list-item">
             <div className="d-flex align-items-center w-100">
@@ -43,14 +43,15 @@ const ListItem = ({ user, isMe, onViewVoucher }) => {
                     : null
             }
             <div className="font-xs text-muted w-10" style={{ marginRight: '50px' }}>
-                <Link to={USERS.USERS_PROFILE.SHOW_PROFILE.replace('{id}', user.id)}>
+                {/*<Link to={USERS.USERS_PROFILE.SHOW_PROFILE.replace('{id}', user.id)}>*/}
                     <Button
                         color="primary"
                         className="text-white mr-2"
+                        onClick={getClientFolder}
                     >
-                        Consulter les détails
+                        Consulter les détails Tessa
                     </Button>
-                </Link>
+                {/*</Link>*/}
 
             </div>
         </li>

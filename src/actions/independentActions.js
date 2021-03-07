@@ -336,8 +336,8 @@ export const createNetworkProfileType = (data, branchId) => {
     return makeRequest('post', url, data);
 };
 
-export const getUser = (userId) => {
-    const url = `${USERS.GET_ONE}?user_id=${userId}`;
+export const getUser = () => {
+    const url = `${USERS.GET_ONE}`;
     return makeRequest('get', url);
 };
 
@@ -351,8 +351,8 @@ export const createUsers = (data, branchId) => {
     return makeRequest('post', url, data);
 };
 
-export const updateUsers = (data, userId) => {
-    const url = `${USERS.UPDATE.PERSON}?user_id=${userId}`;
+export const updateUsers = (data) => {
+    const url = `${USERS.UPDATE.PERSON}`;
     return makeRequest('put', url, data);
 };
 
@@ -894,7 +894,7 @@ export const createUserPiece = (data, config) => {
             .catch(error => reject(error));
     });
 };
-
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
 export const createBranchCGU = (data, config) => {
     const url = `${SETTING.CGU}`;
     return new Promise((resolve, reject) => {
@@ -908,6 +908,15 @@ export const updateUserPieceValue = (data, config) => {
     const url = `${USERS.PIECE.UPDATE_FOR_USER}`;
     return new Promise((resolve, reject) => {
         api.post(url, data, config)
+            .then(result => resolve(result.data))
+            .catch(error => reject(error));
+    });
+};
+
+export const updateUserAvatar = (data, config) => {
+    const url = `${USERS.UPDATE.AVATAR}`;
+    return new Promise((resolve, reject) => {
+        api.put(url, data, config)
             .then(result => resolve(result.data))
             .catch(error => reject(error));
     });

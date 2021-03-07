@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 import IntlMessages from "Util/IntlMessages";
 import {updateUsers, getUsers,getRegistrationType} from "Actions";
 import {NotificationManager} from "react-notifications";
-import SecondStep from "./secondStep";
+//import SecondStep from "./secondStep";
 import {setRequestGlobalAction} from "Actions/RequestGlobalAction";
 import {USERS} from "Url/frontendUrl";
 import {getUserProfiles} from "Actions/GeneralActions";
@@ -32,13 +32,13 @@ import _ from 'lodash';
 import {getIdentificationType} from "Actions/independentActions";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import {getAllNetworkProfile} from "Actions/NetworkProfileActions";
-import Countries from '../../../../data/countriesSpec.json';
+import Countries from '../../../../../../data/countriesSpec.json';
 
 //const steps = [1, 2];
 
 
 
-const UpdateAdressDisplay = props => {
+const SimpleAdressDisplay = props => {
     
     const { loading, authUser, userAdressInformations } = props;
 
@@ -161,20 +161,6 @@ const UpdateAdressDisplay = props => {
                         </div>
                     </div>) : null }
 
-                    <div className=" row mb-15 mt-15">
-
-                        <Button
-                            type="submit"
-                            color="primary"
-                            disabled={loading}
-                            variant="contained"
-                            onClick={goToEdition}
-                            className="text-white font-weight-bold"
-                        >
-                            {/*<IntlMessages id="auth.signup" />*/}
-                            Modifier
-                        </Button>
-                    </div>
                 </div>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
             </>
         );
@@ -186,4 +172,4 @@ const mapStateToProps = ({ requestGlobalLoader, authUser, userProfile }) => {
     return { loading: requestGlobalLoader, authUser: authUser.data, userProfiles: userProfile }
 };
 
-export default  withRouter(connect(mapStateToProps, {getUsers, setRequestGlobalAction,getUserProfiles, getAllNetworkProfile })(injectIntl(UpdateAdressDisplay)));
+export default  withRouter(connect(mapStateToProps, {getUsers, setRequestGlobalAction,getUserProfiles, getAllNetworkProfile })(injectIntl(SimpleAdressDisplay)));

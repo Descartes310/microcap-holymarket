@@ -18,6 +18,7 @@ import DialogTitle from "@material-ui/core/DialogTitle/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent/DialogContent";
 import Dialog from "@material-ui/core/Dialog/Dialog";
 import CancelIcon from '@material-ui/icons/Cancel';
+import SimpleProfile from './SimpleProfile';
 
 
 class ListMembers extends Component {
@@ -118,7 +119,7 @@ class ListMembers extends Component {
                 >
                     <DialogTitle id="form-dialog-title">
                         <div className="row justify-content-between align-items-center">
-                            Dossier client
+                            Profile Client 
                             <IconButton
                                 color="primary"
                                 aria-label="close"
@@ -129,41 +130,7 @@ class ListMembers extends Component {
                         </div>
                     </DialogTitle>
                     <DialogContent>
-                        <div className="row">
-                            <div className="col-md-12">
-                                <table className="table table-hover table-middle mb-0 text-center">
-                                    <thead>
-                                        <tr>
-                                            <th>Liste des pièces</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {
-                                            this.state.userPieces.map(p => (
-                                                <tr>
-                                                    <td>
-                                                        <div className="media">
-                                                            <div className="media-body pt-10">
-                                                                <h4 className="m-0 fw-bold" style={{ textAlign: 'left' }}>{p.userPiece.name}</h4>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div className="media">
-                                                            <div className="media-body pt-10">
-                                                                <Button color='primary' href={p.file} target='_blank' variant="contained">Consulter</Button>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            ))
-                                        }
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-
+                        <SimpleProfile />
                     </DialogContent>
                 </Dialog>
             </div>
