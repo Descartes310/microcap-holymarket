@@ -112,10 +112,11 @@ class AccountShow extends Component {
     };
 
     getBalance = () => {
-        getConsolidationBalance(this.state.account.id)
-            .then(data => {
-                this.setState({ consolidation: data })
-            });
+        if(this.state.account.typeProduct.isAggregation)
+            getConsolidationBalance(this.state.account.id)
+                .then(data => {
+                    this.setState({ consolidation: data })
+                });
     };
 
     handleApprovisioningCard = (token) => {
