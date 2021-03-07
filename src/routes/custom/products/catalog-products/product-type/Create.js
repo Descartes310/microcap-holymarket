@@ -66,6 +66,7 @@ const CategoryProductsCreate = props => {
     const [type, setType] = useState(null);
     const [units, setUnits] = useState([]);
     const [accounts, setAccounts] = useState([]);
+    const [file, setFile] = useState(null);
     const [accountsAdd, setAccountsAdd] = useState([]);
 
     const { control, register, errors, handleSubmit, setValue, watch } = useForm({
@@ -111,6 +112,11 @@ const CategoryProductsCreate = props => {
 
         const _data = { ...data };
 
+        if (_data.price_currency == null || _data.price_currency+"".length <= 1) {
+            NotificationManager.error("Selectionner une devise");
+            return;
+        }
+
         if (_data.isAccount) {
             if (_data.minBalance == null || _data.maxBalance == null) {
                 NotificationManager.error("Le planché et le plafond sont obligatoire");
@@ -129,21 +135,31 @@ const CategoryProductsCreate = props => {
 
         setRequestGlobalAction(true);
 
-        if (type.id == 0) {
-            _data.currency = currencies.filter(c => c.id == _data.unit_id)[0].code;
+        if (type != null)
+            if (type.id == 0) {
+                _data.currency = currencies.filter(c => c.id == _data.unit_id)[0].code;
+                delete _data.unit_id;
+            } else {
+                delete _data.currency;
+            }
+        else {
             delete _data.unit_id;
-        } else {
             delete _data.currency;
+            _data.is_negative_balance = false;
+            _data.is_aggregation = false;
         }
+        
 
         _data.organisationId = authUser.id;
-        
+
+        _data.image = file;
+
         _data.type_products = JSON.stringify(chosenProducts.map(p => p.id));
 
-        if(isAggregationWatch)
+        if (isAggregationWatch)
             _data.aggragated_products = JSON.stringify(accountsAdd.map(p => p.id));
 
-        createProductType(_data, authUser.user.branch.id)
+        createProductType(_data, authUser.user.branch.id, { fileData: ['image'], multipart: true })
             .then(() => {
                 NotificationManager.success("Type de produits créée avec succès");
                 getProductTypes(authUser.user.branch.id);
@@ -319,19 +335,55 @@ const CategoryProductsCreate = props => {
                         </div>
                     </div>
 
-                    <FormGroup className="has-wrapper">
-                        <InputLabel className="text-left" htmlFor="description">
-                            <IntlMessages id="widgets.description" />
-                        </InputLabel>
-                        <InputComponent
-                            id="description"
-                            isRequired
-                            errors={errors}
-                            register={register}
-                            name={'description'}
-                            className="input-lg"
-                        />
-                    </FormGroup>
+                    <div className="row align-items-center">
+                        <div className="col-md-12 col-sm-12">
+                            <FormGroup className="has-wrapper">
+                                <InputLabel className="text-left" htmlFor="description">
+                                    <IntlMessages id="widgets.description" />
+                                </InputLabel>
+                                <InputComponent
+                                    id="description"
+                                    isRequired
+                                    errors={errors}
+                                    register={register}
+                                    name={'description'}
+                                    className="input-lg"
+                                />
+                            </FormGroup>
+                        </div>
+                    </div>
+
+                    <div className="row align-items-center">
+                        <div className="col-md-8 col-sm-12">
+                            <FormGroup className="has-wrapper">
+                                <InputLabel className="text-left" htmlFor="max_user_product">
+                                    Nombre max par utilisateur
+                                </InputLabel>
+                                <InputComponent
+                                    id="max_user_product"
+                                    isRequired
+                                    type='number'
+                                    errors={errors}
+                                    register={register}
+                                    name={'max_user_product'}
+                                    className="input-lg"
+                                />
+                            </FormGroup>
+                        </div>
+                        <div className="col-md-4 col-sm-12">
+                            <FormGroup>
+                                <InputLabel className="text-left">
+                                    Image du produit
+                                </InputLabel>
+                                <Input
+                                    id="File"
+                                    type="file"
+                                    name="avatar"
+                                    onChange={event => setFile(event.target.files[0])}
+                                />
+                            </FormGroup>
+                        </div>
+                    </div>
 
                     <div className="row align-items-center">
                         <div className="col-md-6 col-sm-12">

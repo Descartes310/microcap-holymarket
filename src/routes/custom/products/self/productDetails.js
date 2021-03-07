@@ -82,7 +82,7 @@ class ProductDetails extends Component {
                     flexDirection: 'row',
                     marginTop: 50
                 }}>
-                    <div style={{ flex: 1 }}>
+                    <div style={{ flex: 3 }}>
                         <div style={{ marginBottom: 20 }}>
                             <h2>Description du {this.getType(product.type)}</h2>
                             <span>{product.product.description}</span>
@@ -109,6 +109,9 @@ class ProductDetails extends Component {
                                 </>
                                 : null
                         }
+                    </div>
+                    <div style={{ flex: 1 }}>
+                        <img src={product.product.image ? product.product.image : 'https://www.saunierdecamargue.fr/sites/default/files/image-not-found.jpg'} alt="Product image" className="mr-30 bordered" width="300" height="300" />  
                     </div>
                 </div>
                 <h1 style={{ marginTop: 40 }}>Liste des produits associés</h1>

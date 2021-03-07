@@ -40,7 +40,7 @@ class Order extends Component {
     loadData = () => {
         getOrders()
             .then(products => {
-                this.setState({ products: products.reverse() });
+                this.setState({ products: products });
             })
             .catch(() => {
                 NotificationManager.error(ERROR_500);

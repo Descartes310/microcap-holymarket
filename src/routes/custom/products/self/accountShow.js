@@ -35,7 +35,7 @@ class AccountShow extends Component {
 
         this.state = {
             loading: true,
-            account: [],
+            account: { typeProduct: { isAggregation: false }},
             balance: '0',
             amount: 0,
             account_currency: null,
@@ -228,7 +228,7 @@ class AccountShow extends Component {
                             </div>
                             <h1 className="mr-2"><span style={{ color: '#fed039' }}>Solde:</span>
                                 {account_currency ? <AmountCurrency styles={{ fontSize: '1.1em' }} amount={balance} from={account_currency} to={currency} unit={account.typeProduct ? account.typeProduct.unit : null} /> : '0 EUR'}</h1>
-                                
+
                         </div>
                         <div className="page-title d-flex justify-content-between align-items-center" style={{ paddingLeft: 40, paddingRight: 40, paddingTop: 20 }}>
                             <h1 className="mr-2"><span style={{ color: '#fed039' }}>Planché:</span>
@@ -236,7 +236,7 @@ class AccountShow extends Component {
                             <h1 className="mr-2"><span style={{ color: '#fed039' }}>Plafond:</span>
                                 {account_currency ? <AmountCurrency styles={{ fontSize: '1.1em' }} amount={account.typeProduct.maxBalance} from={account_currency} to={currency} unit={account.typeProduct ? account.typeProduct.unit : null} /> : '0 EUR'}</h1>
                         </div>
-                        
+
                         <div className="d-flex justify-content-between align-items-center" style={{ padding: 40 }}>
                             <FormControl>
                                 <InputGroup>
@@ -255,7 +255,10 @@ class AccountShow extends Component {
                                 </InputGroup>
                             </FormControl>
                             {
-                                !paying ?
+                                !account.typeProduct.isAggregation ?
+                                <>
+                                    {
+                                    !paying ?
                                     <div>
                                         <Button
                                             size="large"
@@ -308,9 +311,9 @@ class AccountShow extends Component {
                                             onClick={() => this.setState({ paying: false })}
                                         >
                                             Annuler
-                                </Button>
-                                    </div>
-                            }
+                                        </Button>
+                                    </div>}
+                                </> : null }
                         </div>
                         <div className="table-responsive" style={{ padding: 40 }} ref={this.billRef}>
                             <h1 style={{ marginBottom: 50 }}>Mouvements sur le compte {account.label}</h1>

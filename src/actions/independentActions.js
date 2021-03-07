@@ -200,7 +200,7 @@ export const getPartnersByBranch = (id) => {
 };
 
 export const getPartnersOperatorByBranch = (id, country) => {
-    const url = joinBaseUrlWithParams(USERS.GET_ALL_PARTNER_OPERATOR+'?country='+country, [{
+    const url = joinBaseUrlWithParams(USERS.GET_ALL_PARTNER_OPERATOR + '?country=' + country, [{
         param: 'id',
         value: id,
     }]);
@@ -309,7 +309,7 @@ export const getOneCatalog = (catalogId) => {
 
 export const getAllCatalogs = (partnerId, type = null) => {
     let url = '';
-    if(type != null)
+    if (type != null)
         url = `${CATALOGS.GET_ALL}?partner_id=${partnerId}&type=${type}`;
     else
         url = `${CATALOGS.GET_ALL}?partner_id=${partnerId}`;
@@ -321,9 +321,13 @@ export const createCategoryProducts = (data, branchId) => {
     return makeRequest('post', url, data);
 };
 
-export const createProductType = (data, branchId) => {
+export const createProductType = (data, branchId, config) => {
     const url = `${PRODUCT_TYPE.CREATE}?branch_id=${branchId}`;
-    return makeRequest('post', url, data);
+    return new Promise((resolve, reject) => {
+        api.post(url, data, config)
+            .then(result => resolve(result.data))
+            .catch(error => reject(error));
+    });
 };
 
 export const createUserProfile = (data, branchId) => {
@@ -338,7 +342,7 @@ export const createNetworkProfileType = (data, branchId) => {
 
 export const getUser = (id = null) => {
     let url = '';
-    if(id)
+    if (id)
         url = `${USERS.GET_ONE}?id=${id}`;
     else
         url = `${USERS.GET_ONE}`;
@@ -657,8 +661,8 @@ export const getOneProductTypeFullInfos = (productId, type) => {
 
 export const getAccountsByUnit = (id = null) => {
     let url = ACCOUNT.GET_ALL_BY_UNIT;
-    if(id)
-        url = url+'?id='+id
+    if (id)
+        url = url + '?id=' + id
     return makeRequest('get', url);
 };
 
@@ -766,7 +770,7 @@ export const createNotificationsService = (branchId, data) => {
 
 export const getUsersAccounts = (branchId, type = null) => {
     let url = '';
-    if(type)
+    if (type)
         url = `${USERS.ACCOUNTS.GET_ALL_BY_BRANCH}?branch_id=${branchId}&type=${type}`;
     else
         url = `${USERS.ACCOUNTS.GET_ALL_BY_BRANCH}?branch_id=${branchId}`;
@@ -909,7 +913,7 @@ export const createUserPiece = (data, config) => {
             .catch(error => reject(error));
     });
 };
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+
 export const createBranchCGU = (data, config) => {
     const url = `${SETTING.CGU}`;
     return new Promise((resolve, reject) => {
