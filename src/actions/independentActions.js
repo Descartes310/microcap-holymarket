@@ -336,8 +336,13 @@ export const createNetworkProfileType = (data, branchId) => {
     return makeRequest('post', url, data);
 };
 
-export const getUser = () => {
-    const url = `${USERS.GET_ONE}`;
+export const getUser = (id = null) => {
+    let url = '';
+    if(id)
+        url = `${USERS.GET_ONE}?id=${id}`;
+    else
+        url = `${USERS.GET_ONE}`;
+
     return makeRequest('get', url);
 };
 
@@ -483,6 +488,11 @@ export const getVouchers = (id, user, type) => {
     return makeRequest('get', url);
 };
 
+export const getUserVouchers = () => {
+    const url = COMMUNITY_MEMBER.USER.GROUPS.GET_VOUCHERS_FOR_USER;
+    return makeRequest('get', url);
+};
+
 export const getUserAccounts = (id) => {
     const url = joinBaseUrlWithParamsId(PRODUCTS.GET_FOR_USER, id);
     return makeRequest('get', url);
@@ -495,6 +505,11 @@ export const getUserClientExp = (id) => {
 
 export const getUserClient = (id) => {
     const url = joinBaseUrlWithParamsId(USERS.PIECE.GET_USER, id);
+    return makeRequest('get', url);
+};
+
+export const getUserPieces = () => {
+    const url = USERS.PIECE.GET_CONNECTED_USER;
     return makeRequest('get', url);
 };
 

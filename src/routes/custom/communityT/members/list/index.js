@@ -9,11 +9,11 @@ import IntlMessages from 'Util/IntlMessages';
 import { withStyles } from "@material-ui/core";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
-import {Button, Input, InputGroup, InputGroupAddon} from "reactstrap";
+import { Button, Input, InputGroup, InputGroupAddon } from "reactstrap";
 import IconButton from "@material-ui/core/IconButton";
-import { getMembersOfCommunity, getVouchers, getUserClient } from 'Actions/independentActions';
+import { getMembersOfCommunity, getVouchers, getUser } from 'Actions/independentActions';
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
-import {AbilityContext} from "Permissions/Can";
+import { AbilityContext } from "Permissions/Can";
 import DialogTitle from "@material-ui/core/DialogTitle/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent/DialogContent";
 import Dialog from "@material-ui/core/Dialog/Dialog";
@@ -32,7 +32,8 @@ class ListMembers extends Component {
         users: [],
         codes: [],
         showVoucherBox: false,
-        showBox: false
+        showBox: false,
+        user: null
     }
 
     handleChange = event => {
@@ -42,7 +43,7 @@ class ListMembers extends Component {
     getMembers = () => {
         getMembersOfCommunity(this.props.communitySpace.data).then(data => {
             this.setState({ users: data })
-        }).finally(() => this.setState({ loading: false}))
+        }).finally(() => this.setState({ loading: false }))
     }
 
     onViewVoucher = user => {
@@ -51,27 +52,27 @@ class ListMembers extends Component {
             this.setState({ codes: data })
         }).catch(err => {
             this.setState({ codes: [] })
-        }).finally(() => {})
+        }).finally(() => { })
     }
 
     componentDidMount() {
         this.getMembers();
     }
 
-    getClientFolder = (user) => {
-        getUserClient(user.id).then(data => {
-            this.setState({ userPieces: data, showBox: true });
+    getUserDetails = (id) => {
+        getUser(id).then(data => {
+            this.setState({ user: data, showBox: true });
         })
     }
 
     render() {
-        const { loading, users, showVoucherBox, codes, showBox } = this.state;
+        const { loading, users, user, showBox, codes, showVoucherBox } = this.state;
         const { classes } = this.props;
         return (
 
             <div className="page-list">
                 <PageTitleBar title={"Membres de la communautés"} />
-                {loading 
+                {loading
                     ? (<RctSectionLoader />)
                     : (
                         <RctCollapsibleCard>
@@ -102,36 +103,13 @@ class ListMembers extends Component {
                                 <ul className="list-unstyled m-0">
                                     {users.length > 0 ? users.map((user, key) => (
                                         <>
-                                        <ListItem
-                                            user={user}
-                                            key={key}
-                                            onViewVoucher={() => this.onViewVoucher(user)}
-                                            isMe={this.props.authUser.user.id == user.id}
-                                            getClientFolder={() => this.getClientFolder(user)}
-                                        />
-                                        <Dialog
-                                            open={showBox}
-                                            onClose={() => { this.setState({ showBox: false, codes: [] }) }}
-                                            aria-labelledby="responsive-dialog-title"
-                                            maxWidth={'lg'}
-                                            fullWidth
-                                        >
-                                            <DialogTitle id="form-dialog-title">
-                                                <div className="row justify-content-between align-items-center">
-                                                    Profile de l'utlisateur
-                                                    <IconButton
-                                                        color="primary"
-                                                        aria-label="close"
-                                                        className="text-danger"
-                                                        onClick={() => { this.setState({ showBox: false, codes: [] }) }}>
-                                                        <CancelIcon />
-                                                    </IconButton>
-                                                </div>
-                                            </DialogTitle>
-                                            <DialogContent>
-                                                <SimpleProfile currentUser={user} />
-                                            </DialogContent>
-                                        </Dialog>
+                                            <ListItem
+                                                user={user}
+                                                key={key}
+                                                onViewVoucher={() => this.onViewVoucher(user)}
+                                                isMe={this.props.authUser.user.id == user.id}
+                                                getUserDetails={() => this.getUserDetails(user.id)}
+                                            />
                                         </>
                                     ))
                                         :
@@ -146,7 +124,104 @@ class ListMembers extends Component {
                         </RctCollapsibleCard>
                     )
                 }
-                
+
+                <Dialog
+                    open={showBox && user != null}
+                    onClose={() => { this.setState({ showBox: false }) }}
+                    aria-labelledby="responsive-dialog-title"
+                    maxWidth={'lg'}
+                    fullWidth
+                >
+                    <DialogTitle id="form-dialog-title">
+                        <div className="row justify-content-between align-items-center">
+                            Profile de l'utlisateur
+                                                    <IconButton
+                                color="primary"
+                                aria-label="close"
+                                className="text-danger"
+                                onClick={() => { this.setState({ showBox: false }) }}>
+                                <CancelIcon />
+                            </IconButton>
+                        </div>
+                    </DialogTitle>
+                    <DialogContent>
+                        <SimpleProfile user={user} />
+                    </DialogContent>
+                </Dialog>
+                <Dialog
+                    open={showVoucherBox}
+                    onClose={() => { this.setState({ showVoucherBox: false, codes: [] }) }}
+                    aria-labelledby="responsive-dialog-title"
+                    maxWidth={'lg'}
+                    fullWidth
+                >
+                    <DialogTitle id="form-dialog-title">
+                        <div className="row justify-content-between align-items-center">
+                            Codes de paiement actifs
+                            <IconButton
+                                color="primary"
+                                aria-label="close"
+                                className="text-danger"
+                                onClick={() => { this.setState({ showVoucherBox: false, codes: [] }) }}>
+                                <CancelIcon />
+                            </IconButton>
+                        </div>
+                    </DialogTitle>
+                    <DialogContent>
+                        <table className="table table-hover table-middle mb-0 text-center">
+                            <thead>
+                                <tr>
+                                    <th>Code de paiement</th>
+                                    <th>Type</th>
+                                    <th>Valeur</th>
+                                    <th>Unité</th>
+                                    <th>Date de création</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {codes && codes.map((item, key) => (
+                                    <tr key={key} className="cursor-pointer">
+                                        <td>
+                                            <div className="media">
+                                                <div className="media-body pt-10">
+                                                    <h4 className="m-0 fw-bold text-dark">{item.code}</h4>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div className="media">
+                                                <div className="media-body pt-10">
+                                                    <h4 className="m-0 fw-bold text-dark">{item.type}</h4>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div className="media">
+                                                <div className="media-body pt-10">
+                                                    <h4 className="m-0 fw-bold text-dark"><AmountCurrency amount={item.price} from={item.currency ? item.currency : 'EUR'} unit={item.unit} /></h4>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div className="media">
+                                                <div className="media-body pt-10">
+                                                    <h4 className="m-0 fw-bold text-dark">{item.unit ? item.unit.name : this.props.currencies.filter(c => c.code == item.currency)[0].name}</h4>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div className="media">
+                                                <div className="media-body pt-10">
+                                                    <h4 className="m-0 fw-bold text-dark"><TimeFromMoment time={item.updatedAt} /></h4>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </DialogContent>
+                </Dialog>
             </div>
         )
     }
@@ -172,11 +247,11 @@ const useStyles = theme => ({
 });
 
 const mapStateToProps = ({ authUser, communitySpace, settings }) => {
-    return { 
-        authUser: authUser.data, 
+    return {
+        authUser: authUser.data,
         communitySpace: communitySpace,
         currencies: settings.currencies
-     };
+    };
 };
 
 export default withRouter(connect(mapStateToProps, {

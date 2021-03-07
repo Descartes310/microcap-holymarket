@@ -11,14 +11,14 @@ import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
 import { Button, Input, InputGroup, InputGroupAddon } from "reactstrap";
 import IconButton from "@material-ui/core/IconButton";
-import { getMembersOfCommunity, getUserClient } from 'Actions/independentActions';
+import { getMembersOfCommunity, getUser } from 'Actions/independentActions';
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
 import { AbilityContext } from "Permissions/Can";
 import DialogTitle from "@material-ui/core/DialogTitle/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent/DialogContent";
 import Dialog from "@material-ui/core/Dialog/Dialog";
 import CancelIcon from '@material-ui/icons/Cancel';
-import SimpleProfile from './SimpleProfile';
+import SimpleProfile from './../../../members/list/SimpleProfile';
 
 
 class ListMembers extends Component {
@@ -46,14 +46,14 @@ class ListMembers extends Component {
         this.getMembers();
     }
 
-    getClientFolder = (user) => {
-        getUserClient(user.id).then(data => {
-            this.setState({ userPieces: data, showBox: true });
+    getUserDetails = (id) => {
+        getUser(id).then(data => {
+            this.setState({ user: data, showBox: true });
         })
     }
 
     render() {
-        const { loading, users, showBox } = this.state;
+        const { loading, users, showBox, user } = this.state;
         const { classes } = this.props;
         console.log("Je suis dans membre admin !")
         return (
@@ -93,7 +93,7 @@ class ListMembers extends Component {
                                         <ListItem
                                             user={user}
                                             key={key}
-                                            getClientFolder={() => this.getClientFolder(user)}
+                                            getUserDetails={() => this.getUserDetails(user.id)}
                                             onSelectEmail={(e) => this.onSelectEmail(e, user)}
                                             onReadEmail={() => this.readEmail(user)}
                                         />
@@ -111,7 +111,7 @@ class ListMembers extends Component {
                     )
                 }
                 <Dialog
-                    open={showBox}
+                    open={showBox && user != null}
                     onClose={() => { this.setState({ showBox: false }) }}
                     aria-labelledby="responsive-dialog-title"
                     maxWidth={'md'}
@@ -119,7 +119,7 @@ class ListMembers extends Component {
                 >
                     <DialogTitle id="form-dialog-title">
                         <div className="row justify-content-between align-items-center">
-                            Profile Client 
+                            Profile de l'utlisateur
                             <IconButton
                                 color="primary"
                                 aria-label="close"
@@ -130,7 +130,7 @@ class ListMembers extends Component {
                         </div>
                     </DialogTitle>
                     <DialogContent>
-                        <SimpleProfile />
+                        <SimpleProfile user={user} />
                     </DialogContent>
                 </Dialog>
             </div>

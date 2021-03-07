@@ -188,6 +188,7 @@ export const USERS = {
     PIECE: {
         GET_ALL: 'api/users/pieces/{id}/get',
         GET_USER: 'api/users/pieces/user/{id}/get',
+        GET_CONNECTED_USER: 'api/users/pieces/user/get',
         CREATE: 'api/users/pieces/create',
         CREATE_FOR_USER: 'api/users/pieces/value/create',
         UPDATE_FOR_USER: 'api/users/pieces/value/update',
@@ -205,6 +206,7 @@ export const COMMUNITY_MEMBER = {
             GET_MEMBERS: 'groups/communities/{id}/members',
             GET_COMMUNITIES: 'groups/communities/users/{id}',
             CREATE_VOUCHER: 'groups/{id}/vouchers',
+            GET_VOUCHERS_FOR_USER: 'groups/users/vouchers',
             GET_VOUCHERS: 'groups/{id}/vouchers/users/{user_id}/type/{type}',
             GET_ADMINS: 'groups/communities/{id}/admins',
             ADD_OPERATOR: 'groups/communities/{id}/operator',

@@ -2,6 +2,7 @@
 import {CATALOG, COMMERCIAL_MANAGEMENT, COMMUNITY_ADMIN, COMMUNITY_MEMBER, COMMUNITY, NETWORK, PRODUCT, USERS, ACCESS, SETTINGS, PROJECTS, MICROCAP360} from 'Url/frontendUrl';
 import Branch from 'Models/Branch';
 import Permission from "Enums/Permissions";
+import { RESSOURCE } from '../../urls/frontendUrl';
 
 export default {
    a: [
@@ -662,11 +663,10 @@ export default {
       },{
          "menu_title": "Ressources",
          "menu_icon": "zmdi zmdi-accounts",
-         "path": NETWORK.LIST,
+         "path": RESSOURCE.VOUCHERS,
          "new_item": false,
          "child_routes": null,
-         "permissions": [Branch.permissionsRelated.READ],
-         'subject': Branch
+         "permissions": [],
       },
 
    ],
@@ -745,11 +745,10 @@ export default {
       },{
          "menu_title": "Ressources",
          "menu_icon": "zmdi zmdi-accounts",
-         "path": NETWORK.LIST,
+         "path": RESSOURCE.VOUCHERS,
          "new_item": false,
          "child_routes": null,
-         "permissions": [Branch.permissionsRelated.READ],
-         'subject': Branch
+         "permissions": [],
       },
 
    ],

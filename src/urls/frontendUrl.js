@@ -153,6 +153,12 @@ export const STORE = {
     CHECKOUT: '/store/checkout/:id',
 };
 
+export const RESSOURCE = {
+    SELF: '/ressources',
+    VOUCHERS: '/ressources/vouchers',
+    PIECES: '/ressources/pieces',
+};
+
 export const ACCESS = {
     SELF: '/access',
     LIST: '/access/list',
