@@ -355,6 +355,11 @@ export const getCurrencies = () => {
     return makeRequest('get', url);
 };
 
+export const getConsolidationBalance = (id) => {
+    const url = joinBaseUrlWithParamsId(`${ACCOUNT.CONSOLIDATION_BALANCE}`, id);
+    return makeRequest('get', url);
+};
+
 export const createUsers = (data, branchId) => {
     const url = `${USERS.CREATE.PERSON}?branch_id=${branchId}`;
     return makeRequest('post', url, data);

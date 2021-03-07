@@ -287,7 +287,8 @@ export const ACCOUNT = {
     APPROVISIONING_VOUCHER: 'api/accounts/{id}/approvisioning/voucher',
     APPROVISIONING_CARD: 'api/accounts/{id}/approvisioning/card',
     GET_ALL_BY_UNIT: 'api/accounts',
-    CHANGE_CURRENCY: 'api/accounts/{id}/currency'
+    CHANGE_CURRENCY: 'api/accounts/{id}/currency',
+    CONSOLIDATION_BALANCE: 'api/accounts/consolidated/{id}/balance'
 };
 
 export const SALES = {
