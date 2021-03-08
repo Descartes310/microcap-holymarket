@@ -567,6 +567,11 @@ export const getOrderDetails = (id) => {
     return makeRequest('get', url);
 };
 
+export const getOrderPayments = (id) => {
+    const url = joinBaseUrlWithParamsId(ORDER.GET_ALL_PAYMENT, id);
+    return makeRequest('get', url);
+};
+
 /* export const getAllPostProject = (branchId) => {
     const url = joinBaseUrlWithParams(PROJECTS.POST_PROJETS.GET_ALL, [{
         param: 'branchId',

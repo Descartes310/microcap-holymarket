@@ -113,12 +113,16 @@ class Order extends Component {
                                                             alignItems: 'center'
                                                         }}>
                                                             <div className="media">
-                                                                {item.status ?
+                                                                {item.orderStatus == 'PAID' ?
                                                                     <span style={{ backgroundColor: 'rgba(61, 146, 61, 1)', border: 5, width: 76, padding: 5, borderRadius: 5, color: 'white' }}>
                                                                         Payée
                                                                     </span> :
+                                                                    item.orderStatus == 'NOT_PAID' ?
                                                                     <span style={{ backgroundColor: 'rgba(200, 0, 0, 0.5)', border: 5, padding: 5, width: 76, borderRadius: 5, color: 'white' }}>
                                                                         Non payée
+                                                                    </span> :
+                                                                    <span style={{ backgroundColor: '#ffc107', border: 5, padding: 5, width: 76, borderRadius: 5, color: 'white' }}>
+                                                                        En cours
                                                                     </span>
                                                                 }
                                                             </div>

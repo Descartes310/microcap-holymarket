@@ -276,6 +276,7 @@ export const ORDER = {
     GET_ALL: 'api/order/users',
     GET_ONE: 'api/order/{id}',
     GET_ONE_SALE: 'api/order/{id}/sales',
+    GET_ALL_PAYMENT: 'api/order/{id}/sales/all',
     CREATE: 'api/order',
     // GET_: 'api/order/users',
 };

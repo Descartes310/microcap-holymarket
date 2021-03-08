@@ -9,12 +9,12 @@ import Tooltip from "@material-ui/core/Tooltip";
  * @returns {*}
  * @constructor
  */
-const TimeFromMoment = ({time, showFullDate}) => {
+const TimeFromMoment = ({time, showFullDate, style}) => {
     const _time = moment(time);
 
     return (
         <Tooltip id="tooltip-createdAt" title={_time.format('LLL')}>
-            <p className={"m-0 fw-bold text-dark"}>
+            <p className={"m-0 fw-bold text-dark"} style={style}>
                 { showFullDate ? _time.format('LL') :  _time.fromNow()}
             </p>
         </Tooltip>

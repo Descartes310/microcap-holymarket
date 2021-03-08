@@ -14,27 +14,52 @@ import DialogContent from "@material-ui/core/DialogContent/DialogContent";
 import Dialog from "@material-ui/core/Dialog/Dialog";
 import CancelIcon from '@material-ui/icons/Cancel';
 import IconButton from "@material-ui/core/IconButton";
-import { getAccountByAmount, createSale } from 'Actions/independentActions';
+import { getAccountByAmount, createSale, getOrderPayments } from 'Actions/independentActions';
 import AmountCurrency from "Components/AmountCurrency";
 import { PRODUCT } from "Url/frontendUrl";
 import SweetAlert from "react-bootstrap-sweetalert";
+import TimeFromMoment from "Components/TimeFromMoment";
 
 class PaymentInfo extends Component {
+
+   computeDate = (date, days) => {
+      date = new Date(date)
+      date.setDate(date.getDate() + days);
+      return date;
+   };
 
    state = {
       showPaymentBox: false,
       entringCode: false,
       accounts: [],
       code: '',
+      payments: {amount: 0, currency: 'EUR'},
       selectingAccount: false,
+      freePayment: this.props.order.orderStatus == 'NOT_PAID' ? false : true,
+      amount: 0,
+      percent: 0,
       showConfirmBox: false
    };
 
    onFormComplete = (voucher = null, account = null, token = null) => {
 
+      let _data = {};
+
       if (voucher != null || account != null || token != null) {
+
+         if (this.state.freePayment) {
+            if (this.state.amount <= 0) {
+               NotificationManager.error("Le montant n'est pas bien rempli");
+               return;
+            }
+            if (this.state.percent < this.props.order.orderItems[0].typeProduct.minimalPercentage && this.props.order.orderStatus == 'NOT_PAID') {
+               NotificationManager.error("Le montant n'est pas bien rempli est inférieur au minimum attendu");
+               return;
+            }
+
+            _data.amount_to_pay = this.state.amount;
+         }
          this.props.setRequestGlobalAction(true);
-         let _data = {};
          _data.address1 = this.props.data.addressLine1;
          _data.address2 = this.props.data.addressLine2;
          _data.zip = this.props.data.zipCode;
@@ -67,7 +92,20 @@ class PaymentInfo extends Component {
       getAccountByAmount(this.props.authUser.user.id, 0).then(data => {
          this.setState({ accounts: data })
       })
+      if (this.props.order.acceptManyPayment && this.props.order.orderStatus == 'PENDING')
+         this.loadPayments();
    }
+
+   loadPayments = () => {
+      getOrderPayments(this.props.order.id)
+         .then(payments => {
+            this.setState({ payments });
+         })
+         .catch((err) => {
+            console.log("Error => ", err)
+            NotificationManager.error(ERROR_500);
+         })
+   };
 
    onToken = (token) => {
       this.onFormComplete(null, null, token.id)
@@ -80,7 +118,7 @@ class PaymentInfo extends Component {
 
 
    render() {
-      const { showPaymentBox, entringCode, code, selectingAccount, showConfirmBox } = this.state;
+      const { showPaymentBox, entringCode, code, selectingAccount, showConfirmBox, freePayment } = this.state;
       const cart = new Cart(this.props.order.orderItems.map(item => ({
          ...item.typeProduct,
          price: item.typeProduct.price,
@@ -89,8 +127,98 @@ class PaymentInfo extends Component {
       })));
       return (
          <div className="payment-wrap">
+            {
+               freePayment ?
+                  <div style={{
+                     marginBottom: 40
+                  }}>
+                     <h1>Effectuer un paiement différé</h1>
+                     {
+                        this.props.order.orderStatus == 'NOT_PAID' ?
+                           <Button
+                              size="small"
+                              color="primary"
+                              variant="contained"
+                              className={"text-white font-weight-bold mr-3 bg-danger"}
+                              onClick={() => this.setState({ freePayment: false })}
+                           >
+                              Annuler
+                     </Button> : null}
+                     <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', marginTop: 50 }}>
+                        <ul className="list-unstyled dropdown-body" style={{ flex: 1 }}>
+                           <li className="d-flex justify-content-between p-3">
+                              <div className="media overflow-hidden w-75">
+                                 <div className="media-body text-truncate">
+                                    <span className="fs-14 d-block text-truncate" style={{ fontSize: '1.3em' }}>Versement initial minimal (%)</span>
+                                    <span className="fs-12 d-block text-truncate" style={{ fontSize: '1.3em', fontWeight: 'bold', color: 'black' }}>{this.props.order.orderItems[0].typeProduct.minimalPercentage} %</span>
+                                 </div>
+                              </div>
+                           </li>
+                           <li className="d-flex justify-content-between p-3">
+                              <div className="media overflow-hidden w-75">
+                                 <div className="media-body text-truncate">
+                                    <span className="fs-14 d-block text-truncate" style={{ fontSize: '1.3em' }}>Versement initial minimal ({this.props.authUser.user.currency.code})</span>
+                                    <span className="fs-12 d-block text-truncate" style={{ fontSize: '1.3em', fontWeight: 'bold', color: 'black' }}><AmountCurrency amount={(this.props.order.orderItems[0].typeProduct.price * this.props.order.orderItems[0].typeProduct.minimalPercentage) / 100} from={this.props.order.orderItems[0].typeProduct.product.priceCurrency} quantity={this.props.order.orderItems[0].quantity} /></span>
+                                 </div>
+                              </div>
+                           </li>
+                           <li className="d-flex justify-content-between p-3">
+                              <div className="media overflow-hidden w-75">
+                                 <div className="media-body text-truncate">
+                                    <span className="fs-14 d-block text-truncate" style={{ fontSize: '1.3em' }}>Total d'accompte versé ({this.props.authUser.user.currency.code})</span>
+                                    <span className="fs-12 d-block text-truncate" style={{ fontSize: '1.6em', fontWeight: 'bold', color: '#fed039' }}><AmountCurrency amount={this.state.payments.amount} from={this.state.payments.currency} /></span>
+                                 </div>
+                              </div>
+                           </li>
+                        </ul>
+                        <ul className="list-unstyled dropdown-body" style={{ flex: 1 }}>
+                           <li className="d-flex justify-content-between p-3">
+                              <div className="media overflow-hidden w-75">
+                                 <div className="media-body text-truncate">
+                                    <span className="fs-14 d-block text-truncate" style={{ fontSize: '1.3em' }}>Durée du différé (en jours)</span>
+                                    <span className="fs-12 d-block text-truncate" style={{ fontSize: '1.3em', fontWeight: 'bold', color: 'black' }}>{this.props.order.orderItems[0].typeProduct.numberMaxOfDaysPayment} jours</span>
+                                 </div>
+                              </div>
+                           </li>
+                           <li className="d-flex justify-content-between p-3">
+                              <div className="media overflow-hidden w-75">
+                                 <div className="media-body text-truncate">
+                                    <span className="fs-14 d-block text-truncate" style={{ fontSize: '1.3em' }}>Date d'echéance</span>
+                                    <span className="fs-12 d-block text-truncate" style={{ fontSize: '1.3em', fontWeight: 'bold', color: 'black' }}><TimeFromMoment style={{ fontSize: '1.1em', fontWeight: 'bold', color: 'black' }} time={this.computeDate(this.props.order.createdAt, this.props.order.orderItems[0].typeProduct.numberMaxOfDaysPayment)} showFullDate /></span>
+                                 </div>
+                              </div>
+                           </li>
+                        </ul >
+                     </div>
+                     <FormGroup row>
+                        <Col sm={12}>
+                           <Label style={{ fontSize: '1.3em', fontWeight: 'bold', color: 'black' }} for="amount">Montant a payer ({this.state.percent}%)</Label>
+                           <Input
+                              type="number"
+                              name="amount"
+                              id="amount"
+                              style={{ border: '1px solid #FFC107 '}}
+                              placeholder="Entrer le montant à payer"
+                              onChange={(e) => this.setState({
+                                 amount: e.target.value,
+                                 percent: (e.target.value * 100) / (Number(computeAmountFromCurrency(this.props.currencies, null, cart.items.map((e) => {
+                                    return { amount: e.price, currency: e.currency, quantity: e.quantity }
+                                 }), this.props.authUser.user.currency, null, null)))
+                              })}
+                           />
+                        </Col>
+                     </FormGroup>
+                  </div >
+                  : null
+            }
             <div className='row'>
-               <div className='col-md-4 col-lg-4 col-sm-12' style={{ textAlign: 'center', paddingTop: 20 }}>
+               <div className='col-md-4 col-lg-4 col-sm-12' style={{
+                  textAlign: 'center',
+                  paddingTop: 20,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center'
+               }}>
                   <h1>Paiement par carte</h1>
                   <div style={{ width: 250, height: 250, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                      <img src={require('Assets/img/card.png')} className="img-fluid" alt="cad" />
@@ -101,7 +229,7 @@ class PaymentInfo extends Component {
                   <StripeCheckout
                      stripeKey="pk_test_51ILMcRF8O7K51xUUQ3rGe0lMNsDJWjM4DCxMH7zJwnxl2uFiVeC8hzrOYmAGHKiU4XAM5OIgHTZhjDrac7vP97yo00VO7op4Qx"
                      token={this.onToken}
-                     amount={(Number(computeAmountFromCurrency(this.props.currencies, null, cart.items.map((e) => {
+                     amount={freePayment && this.state.amount > 0 ? this.state.amount * this.props.authUser.user.currency.decimal : (Number(computeAmountFromCurrency(this.props.currencies, null, cart.items.map((e) => {
                         return { amount: e.price, currency: e.currency, quantity: e.quantity }
                      }), this.props.authUser.user.currency, null, null))) * this.props.authUser.user.currency.decimal}
                      name="Payer les produits"
@@ -114,7 +242,13 @@ class PaymentInfo extends Component {
                      </Button>
                   </StripeCheckout>
                </div>
-               <div className='col-md-4 col-lg-4 col-sm-12' style={{ textAlign: 'center', paddingTop: 20 }}>
+               <div className='col-md-4 col-lg-4 col-sm-12' style={{
+                  textAlign: 'center',
+                  paddingTop: 20,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center'
+               }}>
                   <h1>Paiement par coupon</h1>
                   <div style={{ width: 250, height: 250, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                      <img src={require('Assets/img/voucher.png')} className="img-fluid" alt="cad" />
@@ -124,21 +258,30 @@ class PaymentInfo extends Component {
                   </p>
                   <Button onClick={() => this.setState({ showPaymentBox: true, entringCode: true, selectingAccount: false })} color="secondary" className="text-white" variant="contained">
                      Payer
-                  </Button>
+               </Button>
                </div>
-               <div className='col-md-4 col-lg-4 col-sm-12' style={{ textAlign: 'center', paddingTop: 20 }}>
-                  <h1>Paiement par compte</h1>
-                  <div style={{ width: 250, height: 250, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                     <img src={require('Assets/img/wallet.png')} className="img-fluid" alt="cad" />
-                  </div>
-                  <p>
-                     Utilisez un de vos compte crédité pour procéder au règlement
+               {
+                  this.state.accounts.length > 0
+                     ?
+                     <div className='col-md-4 col-lg-4 col-sm-12' style={{
+                        textAlign: 'center',
+                        paddingTop: 20,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center'
+                     }}>
+                        <h1>Paiement par compte</h1>
+                        <div style={{ width: 250, height: 250, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                           <img src={require('Assets/img/wallet.png')} className="img-fluid" alt="cad" />
+                        </div>
+                        <p>
+                           Utilisez un de vos compte crédité pour procéder au règlement
                   </p>
-                  <Button onClick={() => this.setState({ showPaymentBox: true, selectingAccount: true, entringCode: false })} color="secondary" className="text-white" variant="contained">
-                     Payer
+                        <Button onClick={() => this.setState({ showPaymentBox: true, selectingAccount: true, entringCode: false })} color="secondary" className="text-white" variant="contained">
+                           Payer
                   </Button>
-               </div>
-               <div className='col-md-4 col-lg-4 col-sm-12' style={{ textAlign: 'center', paddingTop: 20 }}>
+                     </div> : null}
+               {/* <div className='col-md-4 col-lg-4 col-sm-12' style={{ textAlign: 'center', paddingTop: 20 }}>
                   <h1>Offre prépayéé</h1>
                   <div style={{ width: 250, height: 250, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                      <img src={require('Assets/img/before.png')} className="img-fluid" alt="cad" />
@@ -149,19 +292,29 @@ class PaymentInfo extends Component {
                   <Button color="secondary" className="text-white" variant="contained">
                      Payer
                      </Button>
-               </div>
-               <div className='col-md-4 col-lg-4 col-sm-12' style={{ textAlign: 'center', paddingTop: 20 }}>
-                  <h1>Paiement libre</h1>
-                  <div style={{ width: 250, height: 250, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                     <img src={require('Assets/img/differed.png')} className="img-fluid" alt="cad" />
-                  </div>
-                  <p>
-                     Vous pouvez effectuer un paiement en plusieurs tranches pour l'achat
+               </div> */}
+               {
+                  this.props.order.acceptManyPayment && !freePayment && this.props.order.orderStatus == 'NOT_PAID' ?
+
+                     <div className='col-md-4 col-lg-4 col-sm-12' style={{
+                        textAlign: 'center',
+                        paddingTop: 20,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center'
+                     }}>
+                        <h1>Paiement différé</h1>
+                        <div style={{ width: 250, height: 250, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                           <img src={require('Assets/img/differed.png')} className="img-fluid" alt="cad" />
+                        </div>
+                        <p>
+                           Vous pouvez effectuer un paiement en plusieurs tranches pour l'achat
                      </p>
-                  <Button color="secondary" className="text-white" variant="contained">
-                     Payer
+                        <Button color="secondary" className="text-white" variant="contained" onClick={() => this.setState({ freePayment: !freePayment })}>
+                           Payer
                      </Button>
-               </div>
+                     </div>
+                     : null}
             </div>
             <Dialog
                open={showPaymentBox}
@@ -245,7 +398,7 @@ class PaymentInfo extends Component {
                   </div>
                </div>
             </SweetAlert>
-         </div>
+         </div >
       )
    }
 }
