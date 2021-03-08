@@ -41,6 +41,7 @@ class Order extends Component {
         setRequestGlobalAction(true);
         getOrders()
             .then(products => {
+                console.log(products)
                 this.setState({ products: products });
             })
             .catch((error) => {
@@ -48,7 +49,6 @@ class Order extends Component {
                 NotificationManager.error(ERROR_500);
             })
             .finally(() => {
-                this.setState({ loading: false });
                 setRequestGlobalAction(false)
             });
     };
