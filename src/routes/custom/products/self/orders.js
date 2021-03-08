@@ -38,7 +38,7 @@ class Order extends Component {
     }
 
     loadData = () => {
-        this.setRequestGlobalAction(true);
+        setRequestGlobalAction(true);
         getOrders()
             .then(products => {
                 this.setState({ products: products });
@@ -49,7 +49,7 @@ class Order extends Component {
             })
             .finally(() => {
                 this.setState({ loading: false });
-                this.setRequestGlobalAction(false)
+                setRequestGlobalAction(false)
             });
     };
     render() {
