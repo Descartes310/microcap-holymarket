@@ -38,14 +38,19 @@ class Order extends Component {
     }
 
     loadData = () => {
+        this.setRequestGlobalAction(true);
         getOrders()
             .then(products => {
                 this.setState({ products: products });
             })
-            .catch(() => {
+            .catch((error) => {
+                console.log(error)
                 NotificationManager.error(ERROR_500);
             })
-            .finally(() => this.setState({ loading: false }));
+            .finally(() => {
+                this.setState({ loading: false });
+                this.setRequestGlobalAction(false)
+            });
     };
     render() {
         const { loading, products } = this.state;
