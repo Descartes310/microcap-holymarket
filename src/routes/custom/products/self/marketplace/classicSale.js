@@ -10,17 +10,6 @@ import CustomList from "Components/CustomList";
 import {getProducts, setRequestGlobalAction} from "Actions";
 import Button from "@material-ui/core/Button";
 import {joinUrlWithParams, PRODUCT} from "Url/frontendUrl";
-import {
-	InstantSearch,
-	Hits,
-	Stats,
-	SortBy,
-	Pagination,
-	Configure,
-	MenuSelect,
-	Panel,
-	SearchBox
-} from 'react-instantsearch-dom';
 import Hit from './Hit';
 
 class ClassicSale extends Component {

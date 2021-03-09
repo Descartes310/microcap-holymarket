@@ -58,9 +58,9 @@ class Hit extends Component {
 					<div className="d-flex justify-content-between">
 						<h2 className="text-danger"> <AmountCurrency amount={hit.price} from={hit.currency} /></h2>
 					</div>
-					<h4 className="text-dark">{textTruncate(hit.label, 25)}</h4>
-					<p className="mb-5 text-muted font-xs">
-						{textTruncate(hit.description, 35)}
+					<h4 className="text-dark " style={{textOverflow: "ellipsis", whiteSpace: "nowrap",width:"100%", overflow: "hidden"}}>{hit.label}</h4>
+					<p className="mb-5 text-muted font-xs" style={{textOverflow: "ellipsis", whiteSpace: "nowrap",width:"100%", overflow: "hidden"}}>
+						{hit.description}
 					</p>
 				</div>
 			</RctCard>

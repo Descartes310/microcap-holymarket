@@ -10,6 +10,7 @@ import CustomList from "Components/CustomList";
 import {getProducts, setRequestGlobalAction} from "Actions";
 import Button from "@material-ui/core/Button";
 import {joinUrlWithParams, PRODUCT} from "Url/frontendUrl";
+import Hit from './Hit';
 
 class FinancialSale extends Component {
     static contextType = AbilityContext;
@@ -50,44 +51,15 @@ class FinancialSale extends Component {
                                     </h4>
                                 </div>
                             ) : (
-                                <div className="table-responsive">
-                                    <table className="table table-hover table-middle mb-0 text-center">
-                                        <thead>
-                                            <tr>
-                                                <th><IntlMessages id="components.name" /></th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                        {list && list.map((item, key) => (
-                                            <tr key={key} className="cursor-pointer">
-                                                <td>
-                                                    <div className="media">
-                                                        <div className="media-left media-middle mr-15">
-                                                            {/*<img src={item.label} alt="user profile" className="media-object rounded-circle" width="35" height="35" />*/}
-                                                        </div>
-                                                        <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{item.label}</h4>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td className="table-action">
-                                                    <Button
-                                                        size="small"
-                                                        color="primary"
-                                                        // disabled={loading}
-                                                        variant="contained"
-                                                        className={"text-white font-weight-bold mr-3 bg-blue"}
-                                                        onClick={() => this.onEnterClick(item)}
-                                                    >
-                                                        Voir les propositions
-                                                        <i className="zmdi zmdi-arrow-right mr-2"/>
-                                                    </Button>
-                                                </td>
-                                            </tr>
-                                        ))}
-                                        </tbody>
-                                    </table>
+                                <div className="row">
+                                    {list && list.map((item, key) => (
+                                        <div className="col-sm-4 col-md-3 col-lg-2 mb-20 ">
+                                            <Hit 
+                                                hit={item}
+                                                onPressViewProposition={this.onEnterClick}
+                                            />
+                                        </div>      
+                                    ))}   
                                 </div>
                             )}
                         </>
