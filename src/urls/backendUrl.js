@@ -60,6 +60,7 @@ export const BRANCH = {
     },
     PRODUCTS: {
         GET_ALL: '/api/type-products/get-all',
+        GET_ALL_PRODUCTS: '/api/type-products/get-all/products',
     },
     SAMPLE: {
         GET_ALL: "public/branchs/staging",
@@ -94,7 +95,7 @@ export const NETWORK_PROFILE_TYPE = {
 };
 
 export const PRODUCTS = {
-    GET_FOR_USER: 'public/products/accounts/user/{id}',
+    GET_FOR_USER: 'api/products/accounts/user/{id}',
 };
 
 export const CATALOGS = {
@@ -126,8 +127,10 @@ export const CATEGORY_PRODUCTS = {
 export const PRODUCT_TYPE = {
     ROOT: 'api/type-products/root',
     GET_ALL: 'api/type-products/get-all',
+    GET_ALL_PRODUCTS: 'api/type-products/get-all/products',
     CREATE: 'api/type-products',
     GET_ONE: 'api/type-products/{id}',
+    GET_ONE_FULL: 'api/type-products/{id}/full',
     GET_ONE_FROM_COM_OFFER: 'api/type-products/offer/{id}',
     TYPE_PRODUCTS: 'api/type-catalogs/type-products',
     SUB_CATEGORY: 'api/type-products/{id}/type-products',
@@ -136,10 +139,10 @@ export const PRODUCT_TYPE = {
 };
 
 export const PACKAGES = {
-    LIST: 'public/packages',
-    CREATE: 'public/packages',
-    ACTIVATE: 'public/packages/activate',
-    DEACTIVATE: 'public/packages/desactivate',
+    LIST: 'api/packages',
+    CREATE: 'api/packages',
+    ACTIVATE: 'api/packages/activate',
+    DEACTIVATE: 'api/packages/desactivate',
 };
 
 export const USER_PROFILE = {
@@ -185,6 +188,7 @@ export const USERS = {
     PIECE: {
         GET_ALL: 'api/users/pieces/{id}/get',
         GET_USER: 'api/users/pieces/user/{id}/get',
+        GET_CONNECTED_USER: 'api/users/pieces/user/get',
         CREATE: 'api/users/pieces/create',
         CREATE_FOR_USER: 'api/users/pieces/value/create',
         UPDATE_FOR_USER: 'api/users/pieces/value/update',
@@ -202,6 +206,7 @@ export const COMMUNITY_MEMBER = {
             GET_MEMBERS: 'groups/communities/{id}/members',
             GET_COMMUNITIES: 'groups/communities/users/{id}',
             CREATE_VOUCHER: 'groups/{id}/vouchers',
+            GET_VOUCHERS_FOR_USER: 'groups/users/vouchers',
             GET_VOUCHERS: 'groups/{id}/vouchers/users/{user_id}/type/{type}',
             GET_ADMINS: 'groups/communities/{id}/admins',
             ADD_OPERATOR: 'groups/communities/{id}/operator',
@@ -271,6 +276,7 @@ export const ORDER = {
     GET_ALL: 'api/order/users',
     GET_ONE: 'api/order/{id}',
     GET_ONE_SALE: 'api/order/{id}/sales',
+    GET_ALL_PAYMENT: 'api/order/{id}/sales/all',
     CREATE: 'api/order',
     // GET_: 'api/order/users',
 };
@@ -281,7 +287,9 @@ export const ACCOUNT = {
     GET_ACCOUNT_BY_AMOUNT: 'api/accounts/users/{id}/account-by-amount',
     APPROVISIONING_VOUCHER: 'api/accounts/{id}/approvisioning/voucher',
     APPROVISIONING_CARD: 'api/accounts/{id}/approvisioning/card',
-    CHANGE_CURRENCY: 'api/accounts/{id}/currency'
+    GET_ALL_BY_UNIT: 'api/accounts',
+    CHANGE_CURRENCY: 'api/accounts/{id}/currency',
+    CONSOLIDATION_BALANCE: 'api/accounts/consolidated/{id}/balance'
 };
 
 export const SALES = {

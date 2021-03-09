@@ -9,7 +9,7 @@ import {AbilityContext} from "Permissions/Can";
 import CustomList from "Components/CustomList";
 import {getProducts, setRequestGlobalAction} from "Actions";
 import Button from "@material-ui/core/Button";
-import {joinUrlWithParamsId, PRODUCT} from "Url/frontendUrl";
+import {joinUrlWithParams, PRODUCT} from "Url/frontendUrl";
 
 class ClassicSale extends Component {
     static contextType = AbilityContext;
@@ -23,7 +23,7 @@ class ClassicSale extends Component {
     }
 
     onEnterClick = (product) => {
-        const url = joinUrlWithParamsId(PRODUCT.SHOW, product.id);
+        let url = joinUrlWithParams(PRODUCT.SHOW, [{param: 'id', value: product.id}, {param: 'type', value: product.type}]);
         this.props.history.push(url, {currentProduct: JSON.stringify(product)});
     };
 

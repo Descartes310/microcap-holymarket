@@ -2,32 +2,37 @@
  * Employ Payroll
  */
 import React, { Component } from 'react';
-import {Form, Input} from 'reactstrap';
+import { Form, Input } from 'reactstrap';
 
 // rct section loader
 import RctSectionLoader from 'Components/RctSectionLoader/RctSectionLoader';
 
 // intl messages
-import {connect} from "react-redux";
-import {getOneCatalog, getCatalogProducts, getBranchProducts, setRequestGlobalAction, addProductsToOneCatalog} from "Actions";
-import {injectIntl} from "react-intl";
+import { connect } from "react-redux";
+import { getOneCatalog, getCatalogProducts, getBranchProducts, setRequestGlobalAction, addProductsToOneCatalog } from "Actions";
+import { injectIntl } from "react-intl";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
-import {withStyles} from "@material-ui/core";
+import { withStyles } from "@material-ui/core";
 
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import {CATALOG} from "Url/frontendUrl";
+import { CATALOG } from "Url/frontendUrl";
 import IconButton from "@material-ui/core/IconButton";
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
-import {NotificationManager} from "react-notifications";
-import {removeProductsToOneCatalog} from "Actions/independentActions";
+import { NotificationManager } from "react-notifications";
+import { removeProductsToOneCatalog } from "Actions/independentActions";
 
 const getAvailableProducts = (totalProducts, occupiedProducts) => {
     if (totalProducts && occupiedProducts) {
-        const occupiedProductsId = occupiedProducts.map(p => p.id);
-        return totalProducts.filter(p => !occupiedProductsId.includes(p.id));
+        let result = [];
+        totalProducts.forEach(p => {
+            let datas = occupiedProducts.filter(o => o.id == p.id && o.type == p.type);
+            if (datas.length <= 0)
+                result.push(p)
+        })
+        return result;
     }
     else return null;
 };
@@ -49,7 +54,7 @@ class CatalogShow extends Component {
         this.props.getCatalogProducts(this.catalogId);
         this.props.getBranchProducts(this.props.authUser.user.branch.id);
         getOneCatalog(this.catalogId)
-            .then(result => this.setState({catalog: result}))
+            .then(result => this.setState({ catalog: result }))
             .catch()
     }
 
@@ -59,7 +64,7 @@ class CatalogShow extends Component {
 
     handleSelect = (position, event) => {
         const values = Array.from(event.target.selectedOptions, option => option.value);
-        this.setState({[position === 'left' ? 'leftValuesSelected' : 'rightValuesSelected']: values});
+        this.setState({ [position === 'left' ? 'leftValuesSelected' : 'rightValuesSelected']: values });
     };
 
     handleOnSwitchPressed = position => {
@@ -70,9 +75,11 @@ class CatalogShow extends Component {
             return;
         }
 
-        dataToSend = JSON.stringify(dataToSend.map(i => Number(i)));
+        dataToSend = JSON.stringify(dataToSend.map(i => {
+            let data = this.props.branchProducts.data.filter(p => p.id == i.split('-')[0] && p.type == i.split('-')[1])[0];
+            return { id: data.id, type: data.type }
+        }));
 
-        // Function to execute
         const func = position === 'left' ? addProductsToOneCatalog : removeProductsToOneCatalog;
 
         // Display loader
@@ -84,7 +91,7 @@ class CatalogShow extends Component {
                 NotificationManager.success("Products added successfully");
 
                 // Reset the state
-                this.setState({leftValuesSelected: [], rightValuesSelected: []});
+                this.setState({ leftValuesSelected: [], rightValuesSelected: [] });
 
                 // Fetch data again
                 Promise.all([
@@ -93,7 +100,7 @@ class CatalogShow extends Component {
                 ]).finally(() => this.props.setRequestGlobalAction(false));
             })
             .catch(error => {
-                NotificationManager.error(this.props.intl.formatMessage({id: 'error.500'}));
+                NotificationManager.error(this.props.intl.formatMessage({ id: 'error.500' }));
                 this.props.setRequestGlobalAction(false);
             })
     };
@@ -139,7 +146,7 @@ class CatalogShow extends Component {
                                                 onChange={event => this.handleSelect('left', event)}
                                                 multiple>
                                                 {availableProducts.map(p => (
-                                                    <option key={p.id} value={p.id}>{p.name}</option>
+                                                    <option key={p.id} value={p.id + '-' + p.type}>{p.name}</option>
                                                 ))}
                                             </Input>
                                         </div>
@@ -172,7 +179,7 @@ class CatalogShow extends Component {
                                                 onChange={event => this.handleSelect('right', event)}
                                                 multiple>
                                                 {catalogProducts.data.map(p => (
-                                                    <option key={p.id} value={p.id}>{p.name}</option>
+                                                    <option key={p.id} value={p.id + '-' + p.type}>{p.name}</option>
                                                 ))}
                                             </Input>
                                         </div>
@@ -188,7 +195,7 @@ class CatalogShow extends Component {
 }
 
 // map state to props
-const mapStateToProps = ({ requestGlobalLoader, catalogProducts, branchProducts, authUser  }) => {
+const mapStateToProps = ({ requestGlobalLoader, catalogProducts, branchProducts, authUser }) => {
     return { requestGlobalLoader, catalogProducts, branchProducts, authUser: authUser.data }
 };
 
@@ -214,5 +221,5 @@ const useStyles = theme => ({
     }
 });
 
-export default connect(mapStateToProps, {getCatalogProducts, getBranchProducts, setRequestGlobalAction})
-(withStyles(useStyles, { withTheme: true })(injectIntl(CatalogShow)));
+export default connect(mapStateToProps, { getCatalogProducts, getBranchProducts, setRequestGlobalAction })
+    (withStyles(useStyles, { withTheme: true })(injectIntl(CatalogShow)));

@@ -14,6 +14,7 @@ import Account from './accounts';
 import AccountShow from './accountShow';
 import Order from './orders';
 import OrderShow from './orderShow';
+import ProductDetails from './productDetails';
 
 class Products extends Component {
     render() {
@@ -27,6 +28,7 @@ class Products extends Component {
                         <Route path={PRODUCT.ACCOUNT_DETAILS} component={AccountShow} />
                         <Route path={PRODUCT.SHOW} component={ProductItemAvailable} />
                         <Route path={PRODUCT.SHOW_ACCOUNT} component={Account} />
+                        <Route path={PRODUCT.DETAILS} component={ProductDetails} />
                         <Route path={PRODUCT.ORDERS} component={Order} />
                         <Route path={PRODUCT.LIST} component={List} />
                     </Switch>

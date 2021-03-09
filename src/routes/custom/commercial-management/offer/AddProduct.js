@@ -37,6 +37,7 @@ import { getComOffer } from "Actions/GeneralActions";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+import { computeAmountFromCurrency } from 'Helpers/helpers'
 
 const PROCESS = [
     { label: 'Demande de pièce', id: 'ASKING_PIECE' },
@@ -55,6 +56,7 @@ class AddProduct extends Component {
             description: '',
             endDate: '',
             startDate: '',
+            type: 'PRODUCT',
             saleWay: null,
             sellers: [],
             sellerLoading: true,
@@ -70,7 +72,10 @@ class AddProduct extends Component {
             loadingProducts: false,
             sellProcess: [],
             originalProcess: PROCESS,
-            indirectSell: false
+            indirectSell: false,
+            accept_many_payment: false,
+            minimal_percentage: 0,
+            number_max_of_days_payment: 0
         }
     }
 
@@ -96,7 +101,7 @@ class AddProduct extends Component {
     }
 
     loadCatalogs = (id) => {
-        this.setState({ catalogLoading: true });
+        this.setState({ catalogLoading: true, products: [] });
         getAllCatalogs(id, 'VENTE')
             .then(res => {
                 this.setState({ catalogs: res });
@@ -161,16 +166,25 @@ class AddProduct extends Component {
         event.preventDefault();
 
         if (this.validate()) {
-            const data = {
+            let data = {
                 price: this.state.price,
-                default_price: this.state.defaultPrice,
+                // default_price: this.state.defaultPrice,
                 quantity: this.state.quantity,
                 partner_id: this.state.seller,
                 catalog_id: this.state.catalog,
+                accept_many_payment: this.state.accept_many_payment,
+                number_max_of_days_payment: this.state.number_max_of_days_payment,
+                minimal_percentage: this.state.minimal_percentage,
                 product_id: this.state.product,
+                product_type: this.state.type,
                 sell_process: this.state.sellProcess.join(','),
                 inderect_sell: this.state.indirectSell
             };
+
+            if(!this.state.accept_many_payment) {
+                delete data.number_max_of_days_payment;
+                delete data.minimal_percentage;
+            }
 
             this.props.setRequestGlobalAction(true);
             addProductToOffer(data, this.props.match.params.id)
@@ -254,13 +268,19 @@ class AddProduct extends Component {
                                         <FormControl fullWidth>
                                             <InputLabel className="text-left" htmlFor="product-helper">
                                                 Produits
-                                    </InputLabel>
+                                            </InputLabel>
                                             <Select
                                                 value={this.state.product}
-                                                onChange={event => this.setState({ product: event.target.value })}
+                                                onChange={event => {
+                                                    this.setState({
+                                                        product: event.target.value.id, type: event.target.value.type, defaultPrice: event.target.value.type == 'PRODUCT' ? `${event.target.value.defaultPrice} ${event.target.value.priceCurrency}` : `${Number(computeAmountFromCurrency(this.props.currencies, null, event.target.value.products.map((e) => {
+                                                            return { amount: e.price, currency: e.currency, quantity: e.quantity }
+                                                        }), this.props.authUser.user.currency, null, null))} ${this.props.authUser.user.currency.code}`
+                                                    })
+                                                }}
                                                 input={<Input name="product" id="product-helper" />}>
                                                 {data.map((item, index) => (
-                                                    <MenuItem key={index} value={item.id} className="center-hor-ver">
+                                                    <MenuItem key={index} value={item} className="center-hor-ver">
                                                         {item.label}
                                                     </MenuItem>
                                                 ))}
@@ -282,7 +302,7 @@ class AddProduct extends Component {
                                     className="has-input input-lg"
                                     onChange={event => this.setState({ quantity: event.target.value })}
                                 />
-                                <span className="has-icon"><i className="ti-pencil"></i></span>
+                                {/* <span className="has-icon"><i className="ti-pencil"></i></span> */}
                             </FormGroup>
                         </div>
 
@@ -293,14 +313,14 @@ class AddProduct extends Component {
                             </InputLabel>
                                 <InputStrap
                                     required
+                                    disabled
                                     id="defautlPrice"
-                                    type="number"
+                                    type="text"
                                     name={'defaultPrice'}
                                     value={this.state.defaultPrice}
                                     className="has-input input-lg"
-                                    onChange={event => this.setState({ defaultPrice: event.target.value })}
                                 />
-                                <span className="has-icon"><i className="ti-pencil"></i></span>
+                                {/* <span className="has-icon"><i className="ti-pencil"></i></span> */}
                             </FormGroup>
                             <FormGroup className="col-md-6 col-sm-12 has-wrapper">
                                 <InputLabel className="text-left" htmlFor="price">
@@ -315,11 +335,55 @@ class AddProduct extends Component {
                                     className="has-input input-lg"
                                     onChange={event => this.setState({ price: event.target.value })}
                                 />
-                                <span className="has-icon"><i className="ti-pencil"></i></span>
+                                {/* <span className="has-icon"><i className="ti-pencil"></i></span> */}
                             </FormGroup>
                         </div>
 
-                        <FormGroup check>
+                        <FormGroup check style={{ marginBottom: 30 }}>
+                            <Label check>
+                                <InputStrap type="checkbox" onChange={event => this.setState({ accept_many_payment: event.target.checked })} />
+                                Accepter les paiements différés
+                            </Label>
+                        </FormGroup>
+
+                        {this.state.accept_many_payment ?
+                            <div className="row">
+                                <FormGroup className="col-md-6 col-sm-12 has-wrapper">
+                                    <InputLabel className="text-left" htmlFor="defautlPrice">
+                                        Pourcentage minimal de la première tranche
+                            </InputLabel>
+                                    <InputStrap
+                                        required
+                                        id="minimal_percentage"
+                                        type="number"
+                                        name={'minimal_percentage'}
+                                        value={this.state.minimal_percentage}
+                                        className="has-input input-lg"
+                                        onChange={event => this.setState({ minimal_percentage: event.target.value })}
+                                    />
+                                    {/* <span className="has-icon"><i className="ti-pencil"></i></span> */}
+                                </FormGroup>
+                                <FormGroup className="col-md-6 col-sm-12 has-wrapper">
+                                    <InputLabel className="text-left" htmlFor="price">
+                                        Nombre de jour d'échéance
+                            </InputLabel>
+                                    <InputStrap
+                                        required
+                                        id="number_max_of_days_payment"
+                                        type="number"
+                                        name={'number_max_of_days_payment'}
+                                        value={this.state.number_max_of_days_payment}
+                                        className="has-input input-lg"
+                                        onChange={event => this.setState({ number_max_of_days_payment: event.target.value })}
+                                    />
+                                    {/* <span className="has-icon"><i className="ti-pencil"></i></span> */}
+                                </FormGroup>
+                            </div>
+
+                            : null
+                        }
+
+                        <FormGroup check style={{ marginBottom: 30 }}>
                             <Label check>
                                 <InputStrap type="checkbox" onChange={event => this.setState({ indirectSell: event.target.checked })} />
                                     Produit en vente indirecte
@@ -403,7 +467,7 @@ class AddProduct extends Component {
 }
 
 // map state to props
-const mapStateToProps = ({ requestGlobalLoader, productTypes, authUser, comOperationType, systemObject, packages }) => {
+const mapStateToProps = ({ requestGlobalLoader, productTypes, authUser, comOperationType, systemObject, packages, settings }) => {
     return {
         requestGlobalLoader,
         loading: productTypes.loading,
@@ -411,6 +475,7 @@ const mapStateToProps = ({ requestGlobalLoader, productTypes, authUser, comOpera
         error: productTypes.error,
         authUser: authUser.data,
         comOperationType,
+        currencies: settings.currencies,
         systemObject,
         packages
     }

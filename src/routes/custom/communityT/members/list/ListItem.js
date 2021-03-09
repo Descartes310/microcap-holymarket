@@ -7,10 +7,8 @@ import { Button } from "reactstrap";
 // helpers functions
 import { textTruncate } from 'Helpers/helpers';
 import UserAvatar from "Components/UserAvatar";
-import { Link } from 'react-router-dom';
-import { USERS, joinUrlWithParamsId } from 'Url/frontendUrl';
 
-const ListItem = ({ user, isMe, onViewVoucher, getClientFolder }) => {
+const ListItem = ({ user, isMe, onViewVoucher, getUserDetails }) => {
     return (
         <li className="d-flex justify-content-between align-items-center list-item">
             <div className="d-flex align-items-center w-100">
@@ -47,9 +45,9 @@ const ListItem = ({ user, isMe, onViewVoucher, getClientFolder }) => {
                     <Button
                         color="primary"
                         className="text-white mr-2"
-                        onClick={getClientFolder}
+                        onClick={getUserDetails}
                     >
-                        Consulter les détails Tessa
+                        Consulter les détails
                     </Button>
                 {/*</Link>*/}
 

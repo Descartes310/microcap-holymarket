@@ -2,32 +2,33 @@
  * Employ Payroll
  */
 import React, { Component } from 'react';
-import {Badge, Button, FormGroup, Input, InputGroup, InputGroupAddon} from 'reactstrap';
+import { Badge, Button, FormGroup, Input, InputGroup, InputGroupAddon } from 'reactstrap';
 
 // rct section loader
 import RctSectionLoader from 'Components/RctSectionLoader/RctSectionLoader';
 
 // intl messages
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 import IntlMessages from 'Util/IntlMessages';
-import {getProductTypes, getCategoryProducts, setRequestGlobalAction, setActiveCatalog} from "Actions";
-import {injectIntl} from "react-intl";
+import { getProductTypes, getCategoryProducts, setRequestGlobalAction, setActiveCatalog } from "Actions";
+import { injectIntl } from "react-intl";
 import FormControl from "@material-ui/core/FormControl";
 import NetworkBranchIntlMessages from "Components/NetworkBranchIntlMessages";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
 import SweetAlert from "react-bootstrap-sweetalert";
-import {NotificationManager} from "react-notifications";
-import {globalSearch} from "Helpers/helpers";
-import {withStyles} from "@material-ui/core";
+import { NotificationManager } from "react-notifications";
+import { globalSearch } from "Helpers/helpers";
+import { withStyles } from "@material-ui/core";
 
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 // import Create from './Create';
-import {withRouter} from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import IconButton from "@material-ui/core/IconButton";
 import VisibilityIcon from '@material-ui/icons/Visibility';
-import {PRODUCT_TYPE} from "Url/frontendUrl";
+import { PRODUCT_TYPE } from "Url/frontendUrl";
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
+import { PRODUCT, joinUrlWithParams } from "Url/frontendUrl";
 
 class ProductTypeList extends Component {
     constructor(props) {
@@ -56,7 +57,7 @@ class ProductTypeList extends Component {
     };
 
     handleActiveChange = (catalogId) => {
-        this.setState({catalogId, showWarningBox: true});
+        this.setState({ catalogId, showWarningBox: true });
     };
 
     handleOnRowClick = (catalogId) => {
@@ -67,14 +68,19 @@ class ProductTypeList extends Component {
         this.props.setRequestGlobalAction(true);
         setActiveCatalog(this.state.catalogId)
             .then(result => {
-                NotificationManager.success(this.props.intl.formatMessage({id: 'activeCatalog.alert.successText'}));
+                NotificationManager.success(this.props.intl.formatMessage({ id: 'activeCatalog.alert.successText' }));
                 this.props.getCategoryProducts(this.props.authUser.user.branch.id);
-                this.setState({showWarningBox: false});
+                this.setState({ showWarningBox: false });
             })
             .catch(() => {
-                NotificationManager.error(this.props.intl.formatMessage({id: 'error.500'}));
+                NotificationManager.error(this.props.intl.formatMessage({ id: 'error.500' }));
             })
             .finally(() => this.props.setRequestGlobalAction(false));
+    };
+
+    onEnterClick = (product, type) => {
+        let url = joinUrlWithParams(PRODUCT.DETAILS, [{ param: 'id', value: product.id }, { param: 'type', value: type }]);
+        this.props.history.push(url);
     };
 
     render() {
@@ -109,9 +115,9 @@ class ProductTypeList extends Component {
                                                 </InputGroupAddon>
                                                 <Input
                                                     name="search"
-                                                    placeholder={this.props.intl.formatMessage({id: 'widgets.search'}) + '...'}
+                                                    placeholder={this.props.intl.formatMessage({ id: 'widgets.search' }) + '...'}
                                                     type="text"
-                                                    onChange={event => this.setState({searched: event.target.value})}
+                                                    onChange={event => this.setState({ searched: event.target.value })}
                                                 />
                                             </InputGroup>
                                         </FormControl>
@@ -129,7 +135,7 @@ class ProductTypeList extends Component {
                             {orderedItems.length === 0
                                 ? (
                                     <RctCollapsibleCard>
-                                        <IntlMessages id="list.noThingToDisplay" values={{thing: this.props.intl.formatMessage({id: 'catalog'})}} />
+                                        <IntlMessages id="list.noThingToDisplay" values={{ thing: this.props.intl.formatMessage({ id: 'catalog' }) }} />
                                     </RctCollapsibleCard>
                                 )
                                 : (
@@ -137,49 +143,52 @@ class ProductTypeList extends Component {
                                         <div className="table-responsive">
                                             <table className="table table-hover table-middle mb-0 text-center">
                                                 <thead>
-                                                <tr>
-                                                    <th><IntlMessages id="components.name" /></th>
-                                                    <th><IntlMessages id="widgets.description" /></th>
-                                                    <th><IntlMessages id="widgets.action" /></th>
-                                                </tr>
+                                                    <tr>
+                                                        <th><IntlMessages id="components.name" /></th>
+                                                        <th><IntlMessages id="widgets.description" /></th>
+                                                        <th><IntlMessages id="widgets.action" /></th>
+                                                    </tr>
                                                 </thead>
                                                 <tbody>
-                                                {orderedItems && orderedItems.map((catalog, key) => (
-                                                    <tr key={key} onClick={() => this.handleOnRowClick(catalog.id)} className="cursor-pointer">
-                                                        <td>
-                                                            <div className="media">
-                                                                <div className="media-left media-middle mr-15">
-                                                                    {/*<img src={catalog.label} alt="user profile" className="media-object rounded-circle" width="35" height="35" />*/}
+                                                    {orderedItems && orderedItems.map((catalog, key) => (
+                                                        <tr key={key} onClick={() => this.handleOnRowClick(catalog.id)} className="cursor-pointer">
+                                                            <td>
+                                                                <div className="media">
+                                                                    <div className="media-left media-middle mr-15">
+                                                                        {/*<img src={catalog.label} alt="user profile" className="media-object rounded-circle" width="35" height="35" />*/}
+                                                                    </div>
+                                                                    <div className="media-body pt-10">
+                                                                        <h4 className="m-0 fw-bold text-dark">{catalog.label}</h4>
+                                                                    </div>
                                                                 </div>
-                                                                <div className="media-body pt-10">
-                                                                    <h4 className="m-0 fw-bold text-dark">{catalog.label}</h4>
+                                                            </td>
+                                                            <td>
+                                                                <div className="media">
+                                                                    <div className="media-body pt-10">
+                                                                        <h4 className="m-0 fw-bold text-dark">{catalog.description}</h4>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div className="media">
-                                                                <div className="media-body pt-10">
-                                                                    <h4 className="m-0 fw-bold text-dark">{catalog.description}</h4>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                        <td className="table-action">
-                                                            <IconButton
-                                                                edge="start"
-                                                                className={classes.menuButton + ` ${catalog.available ? 'text-blue' : 'text-black'}`}
-                                                                color="inherit"
-                                                                // onClick={() => this.handleOnGoBack()}
-                                                                aria-label="menu">
-                                                                {catalog.available ? (<VisibilityIcon />) : (<VisibilityOffIcon/>) }
-                                                            </IconButton>
-                                                            {/*<Switch
+                                                            </td>
+                                                            <td className="table-action">
+                                                                <Button
+                                                                    size="small"
+                                                                    color="primary"
+                                                                    // disabled={loading}
+                                                                    variant="contained"
+                                                                    className={"text-white font-weight-bold mr-3 bg-blue"}
+                                                                    onClick={() => this.onEnterClick(catalog, 'PRODUCT')}
+                                                                >
+                                                                    Voir les détails
+                                                                            <i className="zmdi zmdi-arrow-right mr-2" />
+                                                                </Button>
+                                                                {/*<Switch
                                                                 checked={catalog.active}
                                                                 onChange={() => this.handleActiveChange(catalog.id)}
                                                                 aria-label="checkedA"
                                                             />*/}
-                                                        </td>
-                                                    </tr>
-                                                ))}
+                                                            </td>
+                                                        </tr>
+                                                    ))}
                                                 </tbody>
                                             </table>
                                             <SweetAlert
@@ -187,13 +196,13 @@ class ProductTypeList extends Component {
                                                 showCancel
                                                 showConfirm
                                                 show={showWarningBox}
-                                                title={this.props.intl.formatMessage({id: "activeCatalog.alert.title"})}
+                                                title={this.props.intl.formatMessage({ id: "activeCatalog.alert.title" })}
                                                 customButtons={(
                                                     <>
                                                         <Button
                                                             color="blue"
                                                             variant="outlined"
-                                                            onClick={() => this.setState({showWarningBox: false})}
+                                                            onClick={() => this.setState({ showWarningBox: false })}
                                                             className="text-white bg-blue font-weight-bold mr-3"
                                                         >
                                                             <IntlMessages id="button.cancel" />
@@ -224,7 +233,8 @@ class ProductTypeList extends Component {
 
 // map state to props
 const mapStateToProps = ({ requestGlobalLoader, productTypes, authUser }) => {
-    return { requestGlobalLoader,
+    return {
+        requestGlobalLoader,
         loading: productTypes.loading,
         productTypes: productTypes.data,
         error: productTypes.error,
@@ -251,5 +261,5 @@ const useStyles = theme => ({
     }
 });
 
-export default connect(mapStateToProps, {getProductTypes, setRequestGlobalAction})
-(withStyles(useStyles, { withTheme: true })(withRouter(injectIntl(ProductTypeList))));
+export default connect(mapStateToProps, { getProductTypes, setRequestGlobalAction })
+    (withStyles(useStyles, { withTheme: true })(withRouter(injectIntl(ProductTypeList))));

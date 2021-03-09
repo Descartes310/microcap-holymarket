@@ -141,7 +141,8 @@ export const PRODUCT = {
     FINANCIAL_SALES: '/products/financial-sales',
     ORDERS: '/products/orders',
     ORDERS_SHOW: '/products/orders/:id/show',
-    SHOW: '/products/:id/show',
+    SHOW: '/products/:id/show/:type',
+    DETAILS: '/products/:id/details/:type',
     SHOW_ACCOUNT: '/products/accounts',
     ACCOUNT_DETAILS: '/products/accounts/:id'
 };
@@ -150,6 +151,12 @@ export const STORE = {
     SELF: '/store',
     CART: '/store/cart',
     CHECKOUT: '/store/checkout/:id',
+};
+
+export const RESSOURCE = {
+    SELF: '/ressources',
+    VOUCHERS: '/ressources/vouchers',
+    PIECES: '/ressources/pieces',
 };
 
 export const ACCESS = {

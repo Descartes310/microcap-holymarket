@@ -4,8 +4,8 @@ import React, { Component } from 'react';
 import { withRouter } from "react-router-dom";
 import { withStyles } from "@material-ui/core";
 import { AbilityContext } from "Permissions/Can";
-import { getProductItemAvailable, setRequestGlobalAction } from "Actions";
-import { getAccountDetails, approvisioningVoucher, approvisioningCard, getAccountTransactions, changeCurrency } from "Actions/independentActions";
+import { setRequestGlobalAction } from "Actions";
+import { getAccountDetails, approvisioningVoucher, approvisioningCard, getAccountTransactions, getConsolidationBalance } from "Actions/independentActions";
 import { NotificationManager } from "react-notifications";
 import { ERROR_500 } from "Constants/errors";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
@@ -35,9 +35,10 @@ class AccountShow extends Component {
 
         this.state = {
             loading: true,
-            account: [],
+            account: { typeProduct: { isAggregation: false }},
             balance: '0',
             amount: 0,
+            consolidation: { amount: 0, currency: 'EUR'},
             account_currency: null,
             showQuantityBox: false,
             paying: false,
@@ -61,6 +62,7 @@ class AccountShow extends Component {
                         .then(transactions => {
                             this.setState({ transactions: this.groups(transactions) });
                         })
+                    this.getBalance();
                 });
                 let balance = account.detailsProducts.filter(d => d.detailsType.name == 'SOLDE')
                 let account_currency = account.detailsProducts.filter(d => d.detailsType.name == 'CURRENCY')
@@ -109,6 +111,14 @@ class AccountShow extends Component {
             .finally(() => this.setState({ showQuantityBox: false }));
     };
 
+    getBalance = () => {
+        if(this.state.account.typeProduct.isAggregation)
+            getConsolidationBalance(this.state.account.id)
+                .then(data => {
+                    this.setState({ consolidation: data })
+                });
+    };
+
     handleApprovisioningCard = (token) => {
         approvisioningCard(this.state.account.id, { amount: this.state.amount, token: token.id })
             .then(account => {
@@ -150,7 +160,7 @@ class AccountShow extends Component {
     }
 
     render() {
-        const { account_currency, account, balance, currency, showQuantityBox, transactions, paying, printing, showCurrencyBox } = this.state;
+        const { account_currency, account, balance, consolidation, currency, showQuantityBox, transactions, paying, printing, showCurrencyBox } = this.state;
         const { match, history, classes } = this.props;
         console.log('TEST => ', this.props.currencies, this.state.amount, null, this.props.authUser.user.currency, account_currency, currency, this.props.currencies.filter(c => c.code == currency)[0].decimal)
 
@@ -227,8 +237,10 @@ class AccountShow extends Component {
                                 </UncontrolledDropdown>
                             </div>
                             <h1 className="mr-2"><span style={{ color: '#fed039' }}>Solde:</span>
-                                {account_currency ? <AmountCurrency styles={{ fontSize: '1.1em' }} amount={balance} from={account_currency} to={currency} unit={account.typeProduct ? account.typeProduct.unit : null} /> : '0 EUR'}</h1>
-                                
+                            {account.typeProduct.isAggregation ? 
+                            <AmountCurrency styles={{ fontSize: '1.1em' }} amount={consolidation.amount} from={consolidation.currency} to={currency} unit={consolidation.unit} /> : 
+                                account_currency ? <AmountCurrency styles={{ fontSize: '1.1em' }} amount={balance} from={account_currency} to={currency} unit={account.typeProduct ? account.typeProduct.unit : null} /> : '0 EUR'}</h1>
+
                         </div>
                         <div className="page-title d-flex justify-content-between align-items-center" style={{ paddingLeft: 40, paddingRight: 40, paddingTop: 20 }}>
                             <h1 className="mr-2"><span style={{ color: '#fed039' }}>Planché:</span>
@@ -236,7 +248,7 @@ class AccountShow extends Component {
                             <h1 className="mr-2"><span style={{ color: '#fed039' }}>Plafond:</span>
                                 {account_currency ? <AmountCurrency styles={{ fontSize: '1.1em' }} amount={account.typeProduct.maxBalance} from={account_currency} to={currency} unit={account.typeProduct ? account.typeProduct.unit : null} /> : '0 EUR'}</h1>
                         </div>
-                        
+
                         <div className="d-flex justify-content-between align-items-center" style={{ padding: 40 }}>
                             <FormControl>
                                 <InputGroup>
@@ -255,7 +267,10 @@ class AccountShow extends Component {
                                 </InputGroup>
                             </FormControl>
                             {
-                                !paying ?
+                                !account.typeProduct.isAggregation ?
+                                <>
+                                    {
+                                    !paying ?
                                     <div>
                                         <Button
                                             size="large"
@@ -308,9 +323,9 @@ class AccountShow extends Component {
                                             onClick={() => this.setState({ paying: false })}
                                         >
                                             Annuler
-                                </Button>
-                                    </div>
-                            }
+                                        </Button>
+                                    </div>}
+                                </> : null }
                         </div>
                         <div className="table-responsive" style={{ padding: 40 }} ref={this.billRef}>
                             <h1 style={{ marginBottom: 50 }}>Mouvements sur le compte {account.label}</h1>

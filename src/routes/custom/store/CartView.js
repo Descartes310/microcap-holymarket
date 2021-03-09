@@ -52,7 +52,8 @@ class CartView extends Component {
         const items = this.props.cart.items.map(item => ({
             product_id: item.id,
             quantity: item.quantity,
-            type: item.nature,
+            type: item.type,
+            nature: item.nature
         }));
 
         const branchUrl = window.location.host;

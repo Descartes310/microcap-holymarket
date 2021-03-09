@@ -1,17 +1,21 @@
 import React, { Component } from 'react';
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 import IntlMessages from 'Util/IntlMessages';
-import {getPackages, setPackageActivationStatus, setRequestGlobalAction} from "Actions";
-import {injectIntl} from "react-intl";
-import {withStyles} from "@material-ui/core";
-import {withRouter} from "react-router-dom";
-import {AbilityContext} from "Permissions/Can";
+import { getPackages, setPackageActivationStatus, setRequestGlobalAction } from "Actions";
+import { Badge, Button, FormGroup, Input, InputGroup, InputGroupAddon } from 'reactstrap';
+import { injectIntl } from "react-intl";
+import { withStyles } from "@material-ui/core";
+import { withRouter } from "react-router-dom";
+import { AbilityContext } from "Permissions/Can";
 import Permission from "Enums/Permissions";
 import CustomList from "Components/CustomList";
-import {PACKAGES} from "Url/frontendUrl";
+import { PACKAGES } from "Url/frontendUrl";
 import Switch from "@material-ui/core/Switch/Switch";
-import {NotificationManager} from "react-notifications";
+import { NotificationManager } from "react-notifications";
 import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
+import AmountCurrency from "Components/AmountCurrency";
+import { PRODUCT, joinUrlWithParams } from "Url/frontendUrl";
+
 
 class PackageList extends Component {
     static contextType = AbilityContext;
@@ -30,7 +34,7 @@ class PackageList extends Component {
     }
 
     onToggleActivationStatus = (packageId, value) => {
-        this.setState({loading: true});
+        this.setState({ loading: true });
         setPackageActivationStatus(packageId, value)
             .then(() => {
                 this.props.getPackages(this.props.authUser.user.id, this.props.authUser.user.branch.id);
@@ -39,14 +43,19 @@ class PackageList extends Component {
             .catch(() => {
                 NotificationManager.error("Erreur lors du changement du status du paquetage");
             })
-            .finally(() => this.setState({loading: false}));
+            .finally(() => this.setState({ loading: false }));
+    };    
+    
+    onEnterClick = (product, type) => {
+        let url = joinUrlWithParams(PRODUCT.DETAILS, [{ param: 'id', value: product.id }, { param: 'type', value: type }]);
+        this.props.history.push(url);
     };
 
     render() {
         const { packages, loading, error, history } = this.props;
 
         if (this.state.loading) {
-            return (<RctSectionLoader/>);
+            return (<RctSectionLoader />);
         }
 
         return (
@@ -69,53 +78,72 @@ class PackageList extends Component {
                                     </h4>
                                 </div>
                             ) : (
-                                <div className="table-responsive">
-                                    <table className="table table-hover table-middle mb-0 text-center">
-                                        <thead>
-                                            <tr>
-                                                <th><IntlMessages id="components.name" /></th>
-                                                <th><IntlMessages id="widgets.description" /></th>
-                                                <th>Nombres de produits</th>
-                                                <th>Statut d'activation</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                        {list && list.map((catalog, key) => (
-                                            <tr key={key} className="cursor-pointer">
-                                                <td>
-                                                    <div className="media">
-                                                        <div className="media-left media-middle mr-15">
-                                                            {/*<img src={catalog.label} alt="user profile" className="media-object rounded-circle" width="35" height="35" />*/}
-                                                        </div>
-                                                        <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{catalog.label}</h4>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div className="media">
-                                                        <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{catalog.description}</h4>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td className="table-action">
-                                                    {catalog.packageItem.length}
-                                                    {/*{catalog.permissions.length} permissions(s)*/}
-                                                </td>
-                                                <td className="table-action">
+                                    <div className="table-responsive">
+                                        <table className="table table-hover table-middle mb-0 text-center">
+                                            <thead>
+                                                <tr>
+                                                    <th><IntlMessages id="components.name" /></th>
+                                                    <th><IntlMessages id="widgets.description" /></th>
+                                                    <th>Nombres de produits</th>
+                                                    <th>Prix</th>
+                                                    <th>Actions</th>
+                                                    {/* <th>Statut d'activation</th> */}
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {list && list.map((catalog, key) => (
+                                                    <tr key={key} className="cursor-pointer">
+                                                        <td>
+                                                            <div className="media">
+                                                                <div className="media-left media-middle mr-15">
+                                                                    {/*<img src={catalog.label} alt="user profile" className="media-object rounded-circle" width="35" height="35" />*/}
+                                                                </div>
+                                                                <div className="media-body pt-10">
+                                                                    <h4 className="m-0 fw-bold text-dark">{catalog.label}</h4>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div className="media">
+                                                                <div className="media-body pt-10">
+                                                                    <h4 className="m-0 fw-bold text-dark">{catalog.description}</h4>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td className="table-action">
+                                                            <h4 className="m-0 fw-bold text-dark">{catalog.packageItem.length}</h4>
+                                                        </td>
+                                                        <td className="table-action">
+                                                            <AmountCurrency amounts={catalog.packageItem.map((e) => {
+                                                                return { amount: e.price, currency: e.currency, quantity: e.quantity }
+                                                            })} styles={{ fontWeight: 'bold', marginBottom: 40 }} />
+                                                        </td>
+                                                        <td className="table-action">
+                                                            <Button
+                                                                size="small"
+                                                                color="primary"
+                                                                // disabled={loading}
+                                                                variant="contained"
+                                                                className={"text-white font-weight-bold mr-3 bg-blue"}
+                                                                onClick={() => this.onEnterClick(catalog, 'PACKAGE')}
+                                                            >
+                                                                Voir les détails
+                                                            <i className="zmdi zmdi-arrow-right mr-2" />
+                                                            </Button>
+                                                        </td>
+                                                        {/* <td className="table-action">
                                                     <Switch
                                                         checked={catalog.active}
                                                         onChange={(event) => this.onToggleActivationStatus(catalog.id, event.target.value)}
                                                         aria-label="Activé"
                                                     />
-                                                </td>
-                                            </tr>
-                                        ))}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            )}
+                                                </td> */}
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                )}
                         </>
                     )}
                 />
@@ -125,7 +153,7 @@ class PackageList extends Component {
 }
 
 // map state to props
-const mapStateToProps = ({ requestGlobalLoader, packages, authUser  }) => {
+const mapStateToProps = ({ requestGlobalLoader, packages, authUser }) => {
     return { requestGlobalLoader, authUser: authUser.data, loading: packages.loading, packages: packages.data, error: packages.error }
 };
 
@@ -148,5 +176,5 @@ const useStyles = theme => ({
     }
 });
 
-export default connect(mapStateToProps, {getPackages, setRequestGlobalAction})
-(withStyles(useStyles, { withTheme: true })(withRouter(injectIntl(PackageList))));
+export default connect(mapStateToProps, { getPackages, setRequestGlobalAction })
+    (withStyles(useStyles, { withTheme: true })(withRouter(injectIntl(PackageList))));

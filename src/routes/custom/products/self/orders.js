@@ -8,7 +8,7 @@ import { withStyles } from "@material-ui/core";
 import { AbilityContext } from "Permissions/Can";
 import CustomList from "Components/CustomList";
 import { PRODUCT, joinUrlWithParamsId } from 'Url/frontendUrl'
-import { getProductItemAvailable, setRequestGlobalAction } from "Actions";
+import { setRequestGlobalAction } from "Actions";
 import { getUserSales, getOrders } from "Actions/independentActions";
 import { NotificationManager } from "react-notifications";
 import { ERROR_500 } from "Constants/errors";
@@ -38,14 +38,19 @@ class Order extends Component {
     }
 
     loadData = () => {
+        setRequestGlobalAction(true);
         getOrders()
             .then(products => {
-                this.setState({ products: products.reverse() });
+                console.log(products)
+                this.setState({ products: products });
             })
-            .catch(() => {
+            .catch((error) => {
+                console.log(error)
                 NotificationManager.error(ERROR_500);
             })
-            .finally(() => this.setState({ loading: false }));
+            .finally(() => {
+                setRequestGlobalAction(false)
+            });
     };
     render() {
         const { loading, products } = this.state;
@@ -92,7 +97,7 @@ class Order extends Component {
                                                                 <div className="media-body pt-10">
                                                                     <h4 className="m-0 fw-bold text-dark">
                                                                         <AmountCurrency amounts={item.orderItems.map((e) => {
-                                                                            return { amount: e.typeProduct.price, currency: e.typeProduct.product.priceCurrency, quantity: e.quantity }
+                                                                            return { amount: e.typeProduct.price, currency: e.typeProduct.product ? e.typeProduct.product.priceCurrency : e.typeProduct.package1.currency, quantity: e.quantity }
                                                                         })} />
                                                                     </h4>
                                                                 </div>
@@ -113,12 +118,16 @@ class Order extends Component {
                                                             alignItems: 'center'
                                                         }}>
                                                             <div className="media">
-                                                                {item.status ?
+                                                                {item.orderStatus == 'PAID' ?
                                                                     <span style={{ backgroundColor: 'rgba(61, 146, 61, 1)', border: 5, width: 76, padding: 5, borderRadius: 5, color: 'white' }}>
                                                                         Payée
                                                                     </span> :
+                                                                    item.orderStatus == 'NOT_PAID' ?
                                                                     <span style={{ backgroundColor: 'rgba(200, 0, 0, 0.5)', border: 5, padding: 5, width: 76, borderRadius: 5, color: 'white' }}>
                                                                         Non payée
+                                                                    </span> :
+                                                                    <span style={{ backgroundColor: '#ffc107', border: 5, padding: 5, width: 76, borderRadius: 5, color: 'white' }}>
+                                                                        En cours
                                                                     </span>
                                                                 }
                                                             </div>

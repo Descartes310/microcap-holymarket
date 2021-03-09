@@ -200,7 +200,7 @@ export const getPartnersByBranch = (id) => {
 };
 
 export const getPartnersOperatorByBranch = (id, country) => {
-    const url = joinBaseUrlWithParams(USERS.GET_ALL_PARTNER_OPERATOR+'?country='+country, [{
+    const url = joinBaseUrlWithParams(USERS.GET_ALL_PARTNER_OPERATOR + '?country=' + country, [{
         param: 'id',
         value: id,
     }]);
@@ -309,7 +309,7 @@ export const getOneCatalog = (catalogId) => {
 
 export const getAllCatalogs = (partnerId, type = null) => {
     let url = '';
-    if(type != null)
+    if (type != null)
         url = `${CATALOGS.GET_ALL}?partner_id=${partnerId}&type=${type}`;
     else
         url = `${CATALOGS.GET_ALL}?partner_id=${partnerId}`;
@@ -321,9 +321,13 @@ export const createCategoryProducts = (data, branchId) => {
     return makeRequest('post', url, data);
 };
 
-export const createProductType = (data, branchId) => {
+export const createProductType = (data, branchId, config) => {
     const url = `${PRODUCT_TYPE.CREATE}?branch_id=${branchId}`;
-    return makeRequest('post', url, data);
+    return new Promise((resolve, reject) => {
+        api.post(url, data, config)
+            .then(result => resolve(result.data))
+            .catch(error => reject(error));
+    });
 };
 
 export const createUserProfile = (data, branchId) => {
@@ -336,13 +340,23 @@ export const createNetworkProfileType = (data, branchId) => {
     return makeRequest('post', url, data);
 };
 
-export const getUser = () => {
-    const url = `${USERS.GET_ONE}`;
+export const getUser = (id = null) => {
+    let url = '';
+    if (id)
+        url = `${USERS.GET_ONE}?id=${id}`;
+    else
+        url = `${USERS.GET_ONE}`;
+
     return makeRequest('get', url);
 };
 
 export const getCurrencies = () => {
     const url = `${SETTING.CURRENCIES}`;
+    return makeRequest('get', url);
+};
+
+export const getConsolidationBalance = (id) => {
+    const url = joinBaseUrlWithParamsId(`${ACCOUNT.CONSOLIDATION_BALANCE}`, id);
     return makeRequest('get', url);
 };
 
@@ -483,6 +497,11 @@ export const getVouchers = (id, user, type) => {
     return makeRequest('get', url);
 };
 
+export const getUserVouchers = () => {
+    const url = COMMUNITY_MEMBER.USER.GROUPS.GET_VOUCHERS_FOR_USER;
+    return makeRequest('get', url);
+};
+
 export const getUserAccounts = (id) => {
     const url = joinBaseUrlWithParamsId(PRODUCTS.GET_FOR_USER, id);
     return makeRequest('get', url);
@@ -495,6 +514,11 @@ export const getUserClientExp = (id) => {
 
 export const getUserClient = (id) => {
     const url = joinBaseUrlWithParamsId(USERS.PIECE.GET_USER, id);
+    return makeRequest('get', url);
+};
+
+export const getUserPieces = () => {
+    const url = USERS.PIECE.GET_CONNECTED_USER;
     return makeRequest('get', url);
 };
 
@@ -540,6 +564,11 @@ export const getSaleProducts = (id) => {
 
 export const getOrderDetails = (id) => {
     const url = joinBaseUrlWithParamsId(ORDER.GET_ONE_SALE, id);
+    return makeRequest('get', url);
+};
+
+export const getOrderPayments = (id) => {
+    const url = joinBaseUrlWithParamsId(ORDER.GET_ALL_PAYMENT, id);
     return makeRequest('get', url);
 };
 
@@ -620,8 +649,8 @@ export const setOfferActivationStatus = (partnerId, comId, shouldActivate) => {
     return makeRequest('put', url);
 };
 
-export const getProductItemAvailable = (productId) => {
-    const url = joinBaseUrlWithParamsId(PRODUCT_TYPE.AVAILABLE, productId);
+export const getProductItemAvailable = (productId, productType) => {
+    const url = joinBaseUrlWithParamsId(`${PRODUCT_TYPE.AVAILABLE}?type=${productType}`, productId);
     return makeRequest('get', url);
 };
 
@@ -630,9 +659,20 @@ export const getOneProductType = (productId) => {
     return makeRequest('get', url);
 };
 
+export const getOneProductTypeFromCommercialOffer = (productId, type) => {
+    const url = joinBaseUrlWithParamsId(`${PRODUCT_TYPE.GET_ONE}?type=${type}`, productId);
+    return makeRequest('get', url);
+};
 
-export const getOneProductTypeFromCommercialOffer = (productId) => {
-    const url = joinBaseUrlWithParamsId(PRODUCT_TYPE.GET_ONE, productId);
+export const getOneProductTypeFullInfos = (productId, type) => {
+    const url = joinBaseUrlWithParamsId(`${PRODUCT_TYPE.GET_ONE_FULL}?type=${type}`, productId);
+    return makeRequest('get', url);
+};
+
+export const getAccountsByUnit = (id = null) => {
+    let url = ACCOUNT.GET_ALL_BY_UNIT;
+    if (id)
+        url = url + '?id=' + id
     return makeRequest('get', url);
 };
 
@@ -740,7 +780,7 @@ export const createNotificationsService = (branchId, data) => {
 
 export const getUsersAccounts = (branchId, type = null) => {
     let url = '';
-    if(type)
+    if (type)
         url = `${USERS.ACCOUNTS.GET_ALL_BY_BRANCH}?branch_id=${branchId}&type=${type}`;
     else
         url = `${USERS.ACCOUNTS.GET_ALL_BY_BRANCH}?branch_id=${branchId}`;
@@ -883,7 +923,7 @@ export const createUserPiece = (data, config) => {
             .catch(error => reject(error));
     });
 };
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+
 export const createBranchCGU = (data, config) => {
     const url = `${SETTING.CGU}`;
     return new Promise((resolve, reject) => {

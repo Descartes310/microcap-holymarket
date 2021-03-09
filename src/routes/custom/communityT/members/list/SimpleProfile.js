@@ -49,17 +49,17 @@ function TabContainer(props) {
 
    render() {
       
-      
+      const { user } = this.props;
       const { activeTab } = this.state;
-      console.log("currentUser =>", this.props);
+
       return (
          <div className="userProfile-wrapper">
 
             <RctCard>
                <UserBlock 
-                  userName={this.props.currentUser.name}  
-                  userEmail={this.props.currentUser.email}
-                  userAvatar= {this.props.currentUser.avatar}
+                  userName={user.user.userType == 'ORGANISATION' ? user.commercialName : `${user.firstName} ${user.lastName}`}  
+                  userEmail={user.user.email}
+                  userAvatar= {user.user.avatar}
                />
                <div className="rct-tabs">
                   <AppBar position="static">
@@ -84,11 +84,11 @@ function TabContainer(props) {
                   </AppBar>
                   {activeTab === 0 &&
                      <TabContainer>
-                        <SimpleProfileDisplay userProfileInformations={this.props.currentUser}/>
+                        <SimpleProfileDisplay user={user}/>
                      </TabContainer>}
                   {activeTab === 1 &&
                      <TabContainer>
-                        <SimpleAdressDisplay userAdressInformations={this.props.currentUser}/>
+                        <SimpleAdressDisplay user={user}/>
                      </TabContainer>}
                </div>
             </RctCard>

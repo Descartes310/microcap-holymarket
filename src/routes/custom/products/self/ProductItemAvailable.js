@@ -18,12 +18,14 @@ import SweetAlert from "react-bootstrap-sweetalert";
 import { deleteItemFromCart, onAddItemToCart } from "Actions/CartActions";
 import Snackbar from "@material-ui/core/Snackbar/Snackbar";
 import AmountCurrency from "Components/AmountCurrency";
+import { PRODUCT, joinUrlWithParams } from "Url/frontendUrl";
 
 class ProductItemAvailable extends Component {
     static contextType = AbilityContext;
     constructor(props) {
         super(props);
         this.productId = this.props.match.params.id;
+        this.productType = this.props.match.params.type;
         this.currentProduct = this.props.match.location?.state.currentProduct
             ? JSON.parse(this.props.match.location?.state.currentProduct)
             : null;
@@ -44,7 +46,7 @@ class ProductItemAvailable extends Component {
     }
 
     loadData = () => {
-        getProductItemAvailable(this.productId)
+        getProductItemAvailable(this.productId, this.productType)
             .then(products => this.setState({ products }))
             .catch(() => {
                 NotificationManager.error(ERROR_500);
@@ -53,13 +55,18 @@ class ProductItemAvailable extends Component {
 
         if (!this.currentProduct) {
             this.props.setRequestGlobalAction(true);
-            getOneProductTypeFromCommercialOffer(this.productId)
+            getOneProductTypeFromCommercialOffer(this.productId, this.productType)
                 .then(product => this.setState({ currentProduct: product }))
                 .catch(() => {
                     NotificationManager.error(ERROR_500);
                 })
                 .finally(() => this.props.setRequestGlobalAction(false));
         }
+    };
+
+    onEnterClick = (product, type) => {
+        let url = joinUrlWithParams(PRODUCT.DETAILS, [{ param: 'id', value: product.pId }, { param: 'type', value: type }]);
+        this.props.history.push(url);
     };
 
     onWantToAddItemToCart = (item) => {
@@ -139,7 +146,7 @@ class ProductItemAvailable extends Component {
                                                         <td>
                                                             <div className="media">
                                                                 <div className="media-body pt-10">
-                                                                    <h4 className="m-0 fw-bold text-dark">{item.distributor}</h4>
+                                                                    <h4 className="m-0 fw-bold text-dark">{item.distributor ? item.distributor : '-'}</h4>
                                                                 </div>
                                                             </div>
                                                         </td>
@@ -153,6 +160,17 @@ class ProductItemAvailable extends Component {
                                                             </div>
                                                         </td>
                                                         <td className="table-action">
+                                                            <Button
+                                                                size="small"
+                                                                color="primary"
+                                                                // disabled={loading}
+                                                                variant="contained"
+                                                                className={"text-white font-weight-bold mr-3 bg-blue"}
+                                                                onClick={() => this.onEnterClick(item, item.type)}
+                                                            >
+                                                                Voir les détails
+                                                                            <i className="zmdi zmdi-arrow-right mr-2" />
+                                                            </Button>
                                                             {cart.isProductPresent(item.id) ? (
                                                                 <Button
                                                                     size="small"

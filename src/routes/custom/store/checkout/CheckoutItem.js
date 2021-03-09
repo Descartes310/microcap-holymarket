@@ -47,9 +47,9 @@ class CheckoutItem extends Component {
    render() {
       const cart = new Cart(this.order.orderItems.map(item => ({
          ...item.typeProduct,
-         name: item.typeProduct.product.label,
+         name: item.typeProduct.product ? item.typeProduct.product.label : item.typeProduct.package1.label,
          price: item.typeProduct.price,
-         currency: item.typeProduct.product.priceCurrency,
+         currency: item.typeProduct.product ? item.typeProduct.product.priceCurrency : item.typeProduct.package1.currency,
          quantity: item.quantity
       })));
       const { success } = this.state;

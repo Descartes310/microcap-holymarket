@@ -70,7 +70,7 @@ class PersonalSpace extends Component {
                                     <Typography>Utilisateurs</Typography>
                                 </AccordionSummary>
                                 <AccordionDetails>
-                                <NavLink to={USERS.USERS_PROFILE.PROFILE} className="nav-link" activeClassName="active">
+                                <NavLink to={USERS.USERS_PROFILE.DISPLAY_PROFILE} className="nav-link" activeClassName="active">
                                     <Button
                                         // type="submit"
                                         size="small"

@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
+import { AUTH } from "../urls/frontendUrl";
+import { withRouter } from "react-router-dom";
 
-const CURRENCIES = ['EUR', 'XAF', 'XOF', 'GBP', 'CNY', 'USD', 'CAD']
 /**
  * Display amount in target currency
  * @param amount
@@ -15,15 +16,20 @@ class AmountCurrency extends Component {
         to: null
     }
 
+    formatter = null;
+    
     constructor(props) {
         super(props);
+        if (this.props.authUser == null) {
+            this.props.history.push(AUTH.LOGIN);
+        } else {
+            this.formatter = new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: this.state.to ? this.state.to : this.props.authUser.user.currency.code,
+                minimumFractionDigits: 2
+            })
+        }
     }
-
-    formatter = new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: this.state.to ? this.state.to : this.props.authUser.user.currency.code,
-        minimumFractionDigits: 2
-    })
 
     componentDidMount() {
     }
@@ -134,10 +140,10 @@ class AmountCurrency extends Component {
 
     render() {
         const { className, styles, amount, from, to, quantity, amounts, notShowCurrency, unit } = this.props;
-        console.log(to)
         return (
             <>
-                {
+                {this.props.authUser != null ?
+
                     unit != null ?
                         <span className={className} style={styles} >
                             {amount} {unit.code}
@@ -156,6 +162,8 @@ class AmountCurrency extends Component {
                             <span className={className} style={styles} >
                                 {this.formatter.format(this.getAmounts(amounts, to).toFixed(2))}
                             </span>
+                    :
+                    null
 
                 }
             </>
@@ -170,4 +178,4 @@ const mapStateToProps = ({ authUser, settings }) => {
     }
 };
 
-export default connect(mapStateToProps, {})(AmountCurrency);
+export default connect(mapStateToProps, {})(withRouter(AmountCurrency));

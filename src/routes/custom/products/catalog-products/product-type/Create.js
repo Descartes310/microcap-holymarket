@@ -16,7 +16,8 @@ import {
     getSysProductNature,
     getRootProductType,
     getUnitTypes,
-    getUnitbyType
+    getUnitbyType,
+    getAccountsByUnit
 } from "Actions";
 import { NotificationManager } from "react-notifications";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
@@ -42,7 +43,7 @@ import CustomAsyncComponent from "Components/CustomAsyncComponent";
 import { createProductType, getCurrencies } from "Actions/independentActions";
 import { getProductTypes } from "Actions/GeneralActions";
 import { ERROR_500 } from "Constants/errors";
-import {PRODUCT_TYPE} from "Url/frontendUrl";
+import { PRODUCT_TYPE } from "Url/frontendUrl";
 
 const CategoryProductsCreate = props => {
     const theme = useTheme();
@@ -64,6 +65,9 @@ const CategoryProductsCreate = props => {
     const [types, setTypes] = useState([]);
     const [type, setType] = useState(null);
     const [units, setUnits] = useState([]);
+    const [accounts, setAccounts] = useState([]);
+    const [file, setFile] = useState(null);
+    const [accountsAdd, setAccountsAdd] = useState([]);
 
     const { control, register, errors, handleSubmit, setValue, watch } = useForm({
         defaultValues: {
@@ -71,13 +75,15 @@ const CategoryProductsCreate = props => {
             isDefaultPfm: false,
             isDefaultMember: false,
             isAccount: false,
-            isNegativeBalance: false
+            isNegativeBalance: false,
+            isAggregation: false
         }
     });
 
     const isAvailableWatch = watch('isAvailable');
     const isAccountWatch = watch('isAccount');
     const isNegativeBalanceWatch = watch('isNegativeBalance');
+    const isAggregationWatch = watch('isAggregation');
     const isDefaultPfmWatch = watch('isDefaultPfm');
     const isDefaultMemberWatch = watch('isDefaultMember');
 
@@ -93,12 +99,11 @@ const CategoryProductsCreate = props => {
 
     useEffect(() => {
         if (type)
-            if(type.id != 0)
+            if (type.id != 0)
                 fetchUnits(type.id);
             else
                 setUnits(currencies)
     }, [type]);
-
 
     /**
      * On submit
@@ -107,17 +112,22 @@ const CategoryProductsCreate = props => {
 
         const _data = { ...data };
 
-        if(_data.isAccount) {
-            if(_data.minBalance == null || _data.maxBalance == null) {
+        if (_data.price_currency == null || _data.price_currency+"".length <= 1) {
+            NotificationManager.error("Selectionner une devise");
+            return;
+        }
+
+        if (_data.isAccount) {
+            if (_data.minBalance == null || _data.maxBalance == null) {
                 NotificationManager.error("Le planché et le plafond sont obligatoire");
                 return;
             }
-            if(!_data.isNegativeBalance && _data.minBalance < 0 ) {
+            if (!_data.isNegativeBalance && _data.minBalance < 0) {
                 NotificationManager.error("Le planché ne peut pas être inférieur à 0");
                 return;
             }
 
-            if(_data.minBalance >= _data.maxBalance) {
+            if (_data.minBalance >= _data.maxBalance) {
                 NotificationManager.error("Le planché ne peut pas être supérieur au plafond");
                 return;
             }
@@ -125,17 +135,31 @@ const CategoryProductsCreate = props => {
 
         setRequestGlobalAction(true);
 
-        if(type.id == 0) {
-            _data.currency = currencies.filter(c => c.id == _data.unit_id)[0].code;
+        if (type != null)
+            if (type.id == 0) {
+                _data.currency = currencies.filter(c => c.id == _data.unit_id)[0].code;
+                delete _data.unit_id;
+            } else {
+                delete _data.currency;
+            }
+        else {
             delete _data.unit_id;
-        } else {
-            delete _data.currency; 
+            delete _data.currency;
+            _data.is_negative_balance = false;
+            _data.is_aggregation = false;
         }
+        
 
         _data.organisationId = authUser.id;
+
+        _data.image = file;
+
         _data.type_products = JSON.stringify(chosenProducts.map(p => p.id));
 
-        createProductType(_data, authUser.user.branch.id)
+        if (isAggregationWatch)
+            _data.aggragated_products = JSON.stringify(accountsAdd.map(p => p.id));
+
+        createProductType(_data, authUser.user.branch.id, { fileData: ['image'], multipart: true })
             .then(() => {
                 NotificationManager.success("Type de produits créée avec succès");
                 getProductTypes(authUser.user.branch.id);
@@ -159,6 +183,16 @@ const CategoryProductsCreate = props => {
         getSysProductNature();
     };
 
+    const changeAccount = (item, adding) => {
+        if (adding) {
+            setAccounts(accounts.filter(a => a.id != item.id));
+            setAccountsAdd([item, ...accountsAdd]);
+        } else {
+            setAccountsAdd(accountsAdd.filter(a => a.id != item.id));
+            setAccounts([item, ...accounts]);
+        }
+    };
+
     const fetchRootProductType = () => {
         getRootProductType(authUser.branchId)
             .then(result => {
@@ -173,6 +207,18 @@ const CategoryProductsCreate = props => {
                     loading: false,
                     data: null
                 })
+            })
+    };
+
+    const fetAccountsByUnit = (id) => {
+        getAccountsByUnit(id)
+            .then(result => {
+                setAccounts(result);
+                setAccountsAdd([]);
+            })
+            .catch(() => {
+                setAccounts([]);
+                setAccountsAdd([]);
             })
     };
 
@@ -289,19 +335,55 @@ const CategoryProductsCreate = props => {
                         </div>
                     </div>
 
-                    <FormGroup className="has-wrapper">
-                        <InputLabel className="text-left" htmlFor="description">
-                            <IntlMessages id="widgets.description" />
-                        </InputLabel>
-                        <InputComponent
-                            id="description"
-                            isRequired
-                            errors={errors}
-                            register={register}
-                            name={'description'}
-                            className="input-lg"
-                        />
-                    </FormGroup>
+                    <div className="row align-items-center">
+                        <div className="col-md-12 col-sm-12">
+                            <FormGroup className="has-wrapper">
+                                <InputLabel className="text-left" htmlFor="description">
+                                    <IntlMessages id="widgets.description" />
+                                </InputLabel>
+                                <InputComponent
+                                    id="description"
+                                    isRequired
+                                    errors={errors}
+                                    register={register}
+                                    name={'description'}
+                                    className="input-lg"
+                                />
+                            </FormGroup>
+                        </div>
+                    </div>
+
+                    <div className="row align-items-center">
+                        <div className="col-md-8 col-sm-12">
+                            <FormGroup className="has-wrapper">
+                                <InputLabel className="text-left" htmlFor="max_user_product">
+                                    Nombre max par utilisateur
+                                </InputLabel>
+                                <InputComponent
+                                    id="max_user_product"
+                                    isRequired
+                                    type='number'
+                                    errors={errors}
+                                    register={register}
+                                    name={'max_user_product'}
+                                    className="input-lg"
+                                />
+                            </FormGroup>
+                        </div>
+                        <div className="col-md-4 col-sm-12">
+                            <FormGroup>
+                                <InputLabel className="text-left">
+                                    Image du produit
+                                </InputLabel>
+                                <Input
+                                    id="File"
+                                    type="file"
+                                    name="avatar"
+                                    onChange={event => setFile(event.target.files[0])}
+                                />
+                            </FormGroup>
+                        </div>
+                    </div>
 
                     <div className="row align-items-center">
                         <div className="col-md-6 col-sm-12">
@@ -380,7 +462,7 @@ const CategoryProductsCreate = props => {
                         <div className="col-md-4 col-sm-12">
                             <CustomAsyncComponent
                                 loading={false}
-                                data={[{name: 'Devise', id: 0}, ...types]}
+                                data={[{ name: 'Devise', id: 0 }, ...types]}
                                 component={data => (
                                     <div className="form-group text-left">
                                         <FormControl fullWidth>
@@ -388,7 +470,7 @@ const CategoryProductsCreate = props => {
                                                 Type d'unité
                                             </InputLabel>
                                             <Select onChange={e => setType(e.target.value)} disabled={!isAccountWatch}>
-                                                {[{name: 'Devise', id: 0}, ...types].map(item => (
+                                                {[{ name: 'Devise', id: 0 }, ...types].map(item => (
                                                     <MenuItem key={item.id} value={item} className="center-hor-ver">
                                                         {item.name}
                                                     </MenuItem>
@@ -421,7 +503,7 @@ const CategoryProductsCreate = props => {
                                                 defaultValue={data[0]}
                                                 as={<Select input={<Input name="unit_id" id="currency-helper" />}>
                                                     {data.map((item, index) => (
-                                                        <MenuItem key={index} value={item.id} className="center-hor-ver">
+                                                        <MenuItem key={index} value={item.id} onClick={() => fetAccountsByUnit(item.value != null && item.decimal != null ? null : item.id)} className="center-hor-ver">
                                                             {item.name}
                                                         </MenuItem>
                                                     ))}
@@ -469,7 +551,7 @@ const CategoryProductsCreate = props => {
                                         <InputComponent
                                             id="min"
                                             errors={errors}
-                                            min={!isNegativeBalanceWatch ? 0 : null }
+                                            min={!isNegativeBalanceWatch ? 0 : null}
                                             register={register}
                                             name={'minBalance'}
                                             className="input-lg"
@@ -495,7 +577,129 @@ const CategoryProductsCreate = props => {
                             </div> : null
                     }
 
-                    <InputLabel className="text-left" htmlFor="currency-helper">
+                    {
+                        isAccountWatch ?
+                            <div className="row align-items-center">
+                                <div className="col-md-4 col-sm-12">
+                                    <FormControl fullWidth>
+                                        <InputComponent
+                                            isRequired
+                                            className="mt-0"
+                                            errors={errors}
+                                            control={control}
+                                            register={register}
+                                            componentType="select"
+                                            id="isAggregation"
+                                            name={'isAggregation'}
+                                            // defaultValue={data[0]}
+                                            as={<FormControlLabel control={
+                                                <Checkbox
+                                                    color="primary"
+                                                    checked={isAggregationWatch}
+                                                    onChange={() => setValue('isAggregation', !isAggregationWatch)}
+                                                />
+                                            } label={"Agrégation de compteurs"}
+                                            />}
+                                        />
+                                    </FormControl>
+                                </div>
+                            </div> : null
+                    }
+                    {
+                        isAggregationWatch ?
+                            <RctCollapsibleCard>
+                                <h3>Sélectionnez les comptes</h3>
+                                <div style={{
+                                    display: 'flex',
+                                    flexDirection: 'row',
+                                    marginTop: 50
+                                }}>
+                                    <div style={{ flex: 1, marginRight: 10 }}>
+                                        <h3>Liste des comptes</h3>
+                                        <table className="table table-hover table-middle mb-0 text-center">
+                                            <thead>
+                                                <tr>
+                                                    <th><IntlMessages id="components.name" /></th>
+                                                    <th><IntlMessages id="widgets.action" /></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {accounts && accounts.map((account, key) => (
+                                                    <tr key={key} className="cursor-pointer">
+                                                        <td>
+                                                            <div className="media">
+                                                                <div className="media-body pt-10">
+                                                                    <h4 className="m-0 fw-bold text-dark">{account.label}</h4>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div className="media">
+                                                                <div className="media-body pt-10">
+                                                                    <Button
+                                                                        size="small"
+                                                                        color="primary"
+                                                                        variant="contained"
+                                                                        className={"text-white font-weight-bold mr-3 bg-blue"}
+                                                                        onClick={() => changeAccount(account, true)}
+                                                                    >
+                                                                        Ajouter
+                                                                        <i className="zmdi zmdi-arrow-right mr-2" />
+                                                                    </Button>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div style={{ flex: 1, marginLeft: 10 }}>
+                                        <h3>Comptes agrégés</h3>
+                                        <table className="table table-hover table-middle mb-0 text-center">
+                                            <thead>
+                                                <tr>
+                                                    <th><IntlMessages id="components.name" /></th>
+                                                    <th><IntlMessages id="widgets.action" /></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {accountsAdd && accountsAdd.map((account, key) => (
+                                                    <tr key={key} className="cursor-pointer">
+                                                        <td>
+                                                            <div className="media">
+                                                                <div className="media-body pt-10">
+                                                                    <h4 className="m-0 fw-bold text-dark">{account.label}</h4>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div className="media">
+                                                                <div className="media-body pt-10">
+                                                                    <Button
+                                                                        size="small"
+                                                                        color="primary"
+                                                                        variant="contained"
+                                                                        className={"text-white font-weight-bold mr-3 bg-red"}
+                                                                        onClick={() => changeAccount(account, false)}
+                                                                    >
+                                                                        <i className="zmdi zmdi-arrow-left mr-2" />
+                                                                        Retirer
+                                                                    </Button>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </RctCollapsibleCard>
+                            : null
+                    }
+
+                    <InputLabel className="text-left" style={{ fontWeight: 'bold' }} htmlFor="currency-helper">
                         Associer des produits par défaut
                     </InputLabel>
                     <CustomList
