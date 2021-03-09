@@ -82,7 +82,7 @@ export default class ProjectTaskManagement extends Component {
                {
                   id: 1,
                   name: "Lucile",
-                  avatar: "https://reactify.theironnetwork.org/data/images/user-1.jpg",
+                  avatar: "https://reactify.theironnetwork.org/data/images/profile.jpg",
                }
             ]
          };

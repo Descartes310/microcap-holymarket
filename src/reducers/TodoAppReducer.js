@@ -3,8 +3,6 @@
  */
 import update from 'react-addons-update';
 // todo data
-import users from 'Assets/data/todo-app/users';
-import labels from 'Assets/data/todo-app/labels';
 
 // action types
 import {
@@ -41,8 +39,8 @@ import {
 // initial state
 const INIT_STATE = {
     toDos: null,
-    users,
-    labels,
+    users: [],
+    labels: [],
     activeFilter: 0,
     selectedTodo: null,
     loading: false,

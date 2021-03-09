@@ -66,11 +66,11 @@ class ChipsArray extends React.Component {
                   </RctCollapsibleCard>
                   <RctCollapsibleCard customClasses="text-center p-20" colClasses="col-sm-6 col-lg-4 col-xl-3">
                      <h5 className="mb-20">Chip With Avatar</h5>
-                     <Chip className="bg-primary text-white mr-10 mb-10" avatar={<Avatar src={require('Assets/img/user-5.jpg')} />} label="Deletable Chip" />
+                     <Chip className="bg-primary text-white mr-10 mb-10" avatar={<Avatar src={require('Assets/img/profile.jpg')} />} label="Deletable Chip" />
                   </RctCollapsibleCard>
                   <RctCollapsibleCard customClasses="text-center p-20" colClasses="col-sm-6 col-lg-4 col-xl-3">
                      <h5 className="mb-20">Chip With Avatar</h5>
-                     <Chip className="bg-danger text-white mr-10 mb-10" avatar={<Avatar src={require('Assets/img/user-5.jpg')} />} label="Deletable Chip" onDelete={handleDelete} />
+                     <Chip className="bg-danger text-white mr-10 mb-10" avatar={<Avatar src={require('Assets/img/profile.jpg')} />} label="Deletable Chip" onDelete={handleDelete} />
                   </RctCollapsibleCard>
                   <RctCollapsibleCard customClasses="text-center p-20" colClasses="col-sm-6 col-lg-4 col-xl-3">
                      <h5 className="mb-20">Chip With Icon Avatar</h5>
@@ -86,7 +86,7 @@ class ChipsArray extends React.Component {
                   </RctCollapsibleCard>
                   <RctCollapsibleCard customClasses="text-center p-20" colClasses="col-sm-6 col-lg-4 col-xl-3">
                      <h5 className="mb-20">Disable Chip</h5>
-                     <Chip disabled className="bg-warning text-white mr-10 mb-10" avatar={<Avatar src={require('Assets/img/user-4.jpg')} />} label="Disabled Chip" onDelete={handleDelete} />
+                     <Chip disabled className="bg-warning text-white mr-10 mb-10" avatar={<Avatar src={require('Assets/img/profile.jpg')} />} label="Disabled Chip" onDelete={handleDelete} />
                   </RctCollapsibleCard>
                </div>
             </RctCollapsibleCard>

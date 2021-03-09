@@ -230,7 +230,7 @@ export default class SweetAlertComponent extends Component {
 					cancelBtnText="No"
 					confirmBtnBsStyle="primary"
 					cancelBtnBsStyle="warning"
-					customIcon={require('Assets/avatars/user-1.jpg')}
+					customIcon={require('Assets/avatars/profile.jpg')}
 					title="Do you like thumbs?"
 					onConfirm={() => this.onConfirm('customIcon')}
 					onCancel={() => this.onCancel('customIcon')}

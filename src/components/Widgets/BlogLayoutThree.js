@@ -25,7 +25,7 @@ const BlogLayoutThree = ({ classes }) => (
     <Card className="rounded mb-30 text-white blog-layout-three position-relative">
         <CardMedia
             className={classes.media}
-            image={require('Assets/img/post-1.jpg')}
+            image={require('Assets/img/profile.jpg')}
             title="Contemplative Reptile"
         />
         <div className="position-absolute blog-overlay">

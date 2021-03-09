@@ -33,7 +33,7 @@ class ContactRequestWidget extends Component {
                <div className="media">
                   <div className="media-left mr-25">
                      <img
-                        src={require('Assets/avatars/user-8.jpg')}
+                        src={require('Assets/avatars/profile.jpg')}
                         className="img-fluid rounded-circle"
                         alt="user profile"
                         width="90"

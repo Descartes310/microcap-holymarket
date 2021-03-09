@@ -19,7 +19,7 @@ export default class PromoCoupons extends Component {
                </div>
                <p className="mb-10 text-white">*Offer valid through February 15. While supplies last.</p>
             </div>
-            <img className="img-fluid d-xs-none" alt="share" width="210" height="210" src={require('Assets/img/coupon.png')} />
+            <img className="img-fluid d-xs-none" alt="share" width="210" height="210" src={require('Assets/img/profile.jpg')} />
          </div>
       )
    }

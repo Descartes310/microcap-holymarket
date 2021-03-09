@@ -21,7 +21,7 @@ export default class ShareFriends extends Component {
 					</ul>
 				</div>
 				<div className="py-20 d-xs-none">
-					<img className="img-fluid" alt="share" src={require('Assets/img/share.png')} />
+					<img className="img-fluid" alt="share" src={require('Assets/img/profile.jpg')} />
 				</div>
 			</div>
 		)

@@ -33,16 +33,14 @@ import {
 } from 'Actions/types';
 
 // email data
-import folders from 'Assets/data/email-app/folders';
-import labels from 'Assets/data/email-app/labels';
 
 const INITIAL_STATE = {
    allEmail: null,
    emails: null,
-   labels,
+   labels: [],
    currentEmail: null,
    selectedEmails: 0,
-   folders,
+   folders: [],
    selectedFolder: 0,
    folderMails: [],
    searchEmailText: '',

@@ -10,7 +10,7 @@ const AppConfig = {
    rtlLayout: false,                                         // RTL Layout
    miniSidebar: false,                                       // Mini Sidebar
    enableSidebarBackgroundImage: false,                      // Enable Sidebar Background Image
-   sidebarImage: require('Assets/img/sidebar-4.jpg'),     // Select sidebar image
+   sidebarImage: require('Assets/img/profile.jpg'),     // Select sidebar image
    isDarkSidenav: true,                                   // Set true to dark sidebar
    enableThemeOptions: true,                              // Enable Theme Options
    locale: {
@@ -129,9 +129,9 @@ const AppConfig = {
       //baseUrl: 'http://microcap.skb.best:8080/',
       // baseUrl: 'http://microcap.skb.best:4200/',
       // baseUrl: 'http://192.168.1.8:8080/',
-      baseUrl: 'http://178.170.41.113:8080/',
+      // baseUrl: 'http://178.170.41.113:8080/',
       // baseUrl: 'http://192.168.43.83:8080/',
-      // baseUrl: 'http://localhost:8080/',
+      baseUrl: 'http://localhost:8080/',
       version: '',
       // forbiddenCode: 401,
      },

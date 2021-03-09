@@ -21,7 +21,7 @@ class LiveChatSupport extends Component {
                      <ListItem className="px-0 border-bottom py-10">
                         <div className="d-flex justify-content-center align-items-center">
                            <div className="avatar">
-                              <img src={require("Assets/avatars/user-13.jpg")} height="65" width="65" />
+                              <img src={require("Assets/avatars/profile.jpg")} height="65" width="65" />
                            </div>
                            <div className="content px-20">
                               <div className="d-flex justify-content-start align-items-center mb-5">
@@ -35,7 +35,7 @@ class LiveChatSupport extends Component {
                      <ListItem className="px-0 border-bottom py-10">
                         <div className="d-flex flex-row-reverse justify-content-start align-items-center">
                            <div className="avatar">
-                              <img src={require("Assets/avatars/user-14.jpg")} height="65" width="65" />
+                              <img src={require("Assets/avatars/profile.jpg")} height="65" width="65" />
                            </div>
                            <div className="content px-20">
                               <div className="d-flex justify-content-start align-items-center mb-5">
@@ -49,7 +49,7 @@ class LiveChatSupport extends Component {
                      <ListItem className="px-0 border-bottom py-10">
                         <div className="d-flex justify-content-center align-items-center">
                            <div className="avatar">
-                              <img src={require("Assets/avatars/user-13.jpg")} height="65" width="65" />
+                              <img src={require("Assets/avatars/profile.jpg")} height="65" width="65" />
                            </div>
                            <div className="content px-20">
                               <div className="d-flex justify-content-start align-items-center mb-5">
@@ -63,7 +63,7 @@ class LiveChatSupport extends Component {
                      <ListItem className="px-0 border-bottom py-10">
                         <div className="d-flex flex-row-reverse justify-content-center align-items-center">
                            <div className="avatar">
-                              <img src={require("Assets/avatars/user-14.jpg")} height="65" width="65" />
+                              <img src={require("Assets/avatars/profile.jpg")} height="65" width="65" />
                            </div>
                            <div className="content px-20">
                               <div className="d-flex justify-content-start align-items-center mb-5">

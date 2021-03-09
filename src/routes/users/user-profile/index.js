@@ -35,12 +35,12 @@ class UserComponent extends Component {
 				<PageTitleBar title={<IntlMessages id="sidebar.userProfile" />} match={this.props.match} />
 				<RctCard customClasses="profile-head">
 					<div className="profile-top">
-						<img src={require('Assets/img/profile-banner.jpg')} alt="profile banner" width="1920" height="200" />
+						<img src={require('Assets/img/profile-bg.jpg')} alt="profile banner" width="1920" height="200" />
 					</div>
 					<div className="profile-bottom border-bottom">
 						<div className="user-image text-center mb-30">
 							<img
-								src={require('Assets/avatars/user-11.jpg')}
+								src={require('Assets/avatars/profile.jpg')}
 								className="img-fluid rounded-circle rct-notify mx-auto"
 								alt="user images"
 								width="110"
@@ -108,7 +108,7 @@ class UserComponent extends Component {
 								<div className="card">
 									<div className="media">
 										<div className="media-left mr-25">
-											<img src={require('Assets/img/user-8.jpg')} className="img-fluid rounded-circle" alt="user profile" width="90" height="90" />
+											<img src={require('Assets/img/profile.jpg')} className="img-fluid rounded-circle" alt="user profile" width="90" height="90" />
 										</div>
 										<div className="media-body pt-10">
 											<span className="mb-5 text-primary fs-14 d-block">Contact Request</span>

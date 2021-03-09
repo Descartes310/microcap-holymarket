@@ -4,50 +4,7 @@ import React, { Component } from 'react'
 import Slider from "react-slick";
 
 const topAuthors = [
-	{
-		id: 1,
-		name: "Natasha Knight",
-		avatarSrc: require("Assets/img/user-1.jpg"),
-		phone: "+01 2345 67890",
-		email: "natasha@example.com",
-		address: "E-51 Phase-1 Mohali",
-		articles: 200,
-		followers: 1400,
-		likes: 580
-	},
-	{
-		id: 2,
-		name: "Lisa Roy",
-		avatarSrc: require("Assets/img/user-2.jpg"),
-		phone: "+01 2345 67890",
-		email: "lisa@example.com",
-		address: "London United Kingdom",
-		articles: 50,
-		followers: 400,
-		likes: 200
-	},
-	{
-		id: 3,
-		name: "Andre Hicks",
-		avatarSrc: require("Assets/img/user-3.jpg"),
-		phone: "+01 2345 67890",
-		email: "hicksandre@example.com",
-		address: "778 Nicole Station Suite 903",
-		articles: 75,
-		followers: 1700,
-		likes: 2000
-	},
-	{
-		id: 4,
-		name: "Jhon Smith",
-		avatarSrc: require("Assets/img/user-4.jpg"),
-		phone: "+01 2345 67890",
-		email: "jhon@example.com",
-		address: "E-51 Phase-1 Mohali",
-		articles: 175,
-		followers: 1200,
-		likes: 1800
-	}
+
 ]
 
 export default class TopAuthors extends Component {

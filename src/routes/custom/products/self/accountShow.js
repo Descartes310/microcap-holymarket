@@ -153,10 +153,7 @@ class AccountShow extends Component {
     }
 
     generateBills = (name) => {
-        this.setState({ printing: true }, () => {
-            DocService.createPdf(this.billRef.current, name, (new Date()).toISOString(), () => {
-            });
-        })
+        console.log('generate bills')
     }
 
     render() {

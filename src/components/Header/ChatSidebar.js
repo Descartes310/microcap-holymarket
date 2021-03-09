@@ -7,8 +7,6 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 
-// data
-import users from 'Assets/data/chat-app/users';
 
 // helpers
 import { textTruncate } from 'Helpers/helpers';
@@ -23,7 +21,7 @@ const ChatSidebar = () => (
          </Toolbar>
       </AppBar>
       <List>
-         {users.map((user, key) => (
+         {[].map((user, key) => (
             <ListItem key={key} button className="chat-list-item">
                <Avatar className="mr-2" src={user.photo_url} />
                <ListItemText

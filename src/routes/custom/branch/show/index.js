@@ -84,7 +84,7 @@ class BranchShow extends React.Component {
                 <div className="user-wrap d-flex justify-content-between">
                     <div className="media align-items-center">
                         <img
-                            src={require('Assets/avatars/user-15.jpg')}
+                            src={require('Assets/avatars/profilejpg')}
                             alt="user-profile"
                             className="img-fluid rounded-circle mr-3"
                             width="60"

@@ -70,10 +70,10 @@ const INIT_STATE = {
 	},
 	// sidebar background image
 	sidebarBackgroundImages: [
-		require('Assets/img/sidebar-1.jpg'),
-		require('Assets/img/sidebar-2.jpg'),
-		require('Assets/img/sidebar-3.jpg'),
-		require('Assets/img/sidebar-4.jpg'),
+		require('Assets/img/profile.jpg'),
+		require('Assets/img/profile.jpg'),
+		require('Assets/img/profile.jpg'),
+		require('Assets/img/profile.jpg'),
 	],
 	enableSidebarBackgroundImage: AppConfig.enableSidebarBackgroundImage, // default enable sidebar background
 	selectedSidebarImage: AppConfig.sidebarImage, // default sidebar background image

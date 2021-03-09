@@ -28,30 +28,6 @@ export default class ProjectStatusChart extends Component {
       }
 
       chart.data = [
-         {
-            "name": "Project 1",
-            "points": 35654,
-            "color": chart.colors.next(),
-            "bullet": require('Assets/img/logo-a.png')
-         },
-         {
-            "name": "Project 2",
-            "points": 65456,
-            "color": chart.colors.next(),
-            "bullet": require('Assets/img/logo-b.png')
-         },
-         {
-            "name": "Project 3",
-            "points": 45724,
-            "color": chart.colors.next(),
-            "bullet": require('Assets/img/logo-c.png')
-         },
-         {
-            "name": "Project 4",
-            "points": 13654,
-            "color": chart.colors.next(),
-            "bullet": require('Assets/img/logo-d.png')
-         }
       ];
 
       // Create axes

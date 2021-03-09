@@ -49,7 +49,7 @@ function CustomBar(props) {
             <UncontrolledDropdown nav className="list-inline-item vr-super">
               <DropdownToggle nav caret className="text-white">
                 <span className="mr-10">
-                  <img src={require('Assets/img/user-7.jpg')} alt="user profile" className="img-fluid rounded-circle" width="40" height="40" />
+                  <img src={require('Assets/img/profile.jpg')} alt="user profile" className="img-fluid rounded-circle" width="40" height="40" />
                 </span>
                 Lucile Beck
                 </DropdownToggle>

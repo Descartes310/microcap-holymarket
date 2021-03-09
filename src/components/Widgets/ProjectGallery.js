@@ -32,7 +32,7 @@ export default class ProjectGallery extends Component {
                         return (
                            <div key={index} className="gallery-item">
                               <div className="gallery-img">
-                                 <img src={require(`Assets/img/${slide}`)} height="252" alt="gallery" className="img-fluid d-block" />
+                                 <img src={require(`Assets/img/profile.jpg`)} height="252" alt="gallery" className="img-fluid d-block" />
                               </div>
                            </div>
                         )
