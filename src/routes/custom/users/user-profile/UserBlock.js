@@ -9,7 +9,7 @@ class UserBlock extends Component {
     render() {
         return (
             <div className="profile-top mb-20">
-                <img src={require('Assets/img/profile.jpg')} alt="profile banner" className="img-fluid" width="1920" height="345" />
+                <img src={require('Assets/img/profile-bg.jpg')} alt="profile banner" className="img-fluid" width="1920" height="345" />
                 <div className="profile-content">
                     <div className="media">
                     <div><img src={this.props.userAvatar ? this.props.userAvatar : require('Assets/avatars/profile.jpg')} alt="user profile" className="rounded-circle mr-30 bordered" width="140" height="140" />

@@ -44,7 +44,7 @@ class Hit extends Component {
 		const { loading } = this.state;
 		return (
 			<RctCard customClasses="d-flex  mb-0 flex-column justify-content-between overflow-hidden">
-				<div className="overlay-wrap overflow-hidden">
+				<div className="overlay-wrap overflow-hidden" style={{ maxHeight: 245 }}>
 					<div className="text-center p-4">
 						<img src={hit.image ? hit.image : require('Assets/avatars/img-default.gif') } className="img-fluid" alt="product" />
 					</div>
