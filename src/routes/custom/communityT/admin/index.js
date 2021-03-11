@@ -12,6 +12,8 @@ import List from './list/index';
 import ListCharging from './list/charging';
 import MemberList from './members/index';
 import Invitations from './members/index';
+import PostList from './postes/index';
+import RubriqueList from './rubriques/index';
 
 
 class GroupAdminIndex extends Component {
@@ -26,6 +28,8 @@ class GroupAdminIndex extends Component {
                         <Route path={COMMUNITY_ADMIN.VOUCHER.PAYMENT} component={List} />
                         <Route path={COMMUNITY_ADMIN.VOUCHER.CHARCHING} component={ListCharging} />
                         <Route path={COMMUNITY_ADMIN.MEMBERS.LIST} component={MemberList} />
+                        <Route path={COMMUNITY_ADMIN.POST.SELF} component={PostList} />
+                        <Route path={COMMUNITY_ADMIN.RUBRIQUE.SELF} component={RubriqueList} />
                         <Route path={COMMUNITY_ADMIN.INVITATIONS.SELF} component={Invitations} />
                     </Switch>
                 </>

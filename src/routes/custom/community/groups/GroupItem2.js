@@ -1,0 +1,88 @@
+/**
+ * Blog Layout One
+ */
+import React from 'react';
+import { withStyles } from '@material-ui/core/styles';
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import CardMedia from '@material-ui/core/CardMedia';
+import Button from '@material-ui/core/Button';
+
+const styles = {
+    media: {
+        height: 0,
+        paddingTop: '56.25%', // 16:9
+    },
+};
+
+const GroupItem2 = ({ classes, group, isMember, enterInCommunitySpace }) => (
+    <Card className="rounded mb-30">
+        <CardMedia
+            className={classes.media}
+            image={group.image ? group.image : require('Assets/img/groups.png')}
+            title={`${group.label} profile image`}
+        />
+        <CardContent className="py-30">
+            <h3 className="font-weight-bold" style={{ textOverflow: "ellipsis", whiteSpace: "nowrap", width: "100%", overflow: "hidden", marginBottom: 20 }}>{group.label}</h3>
+            {/* {
+                group.typeGroup.name == 'COMMUNAUTE_PROJET' ?
+                    <span style={{ backgroundColor: 'rgba(46, 178, 229, 0.8)', padding: 10, marginTop: 10, marginBottom: 10, width: 76, borderRadius: 5, color: 'white', fontSize: '0.8em' }}>
+                        Communuaté projet
+                </span>
+                    : null
+            }
+            {
+                group.typeGroup.name == 'COMMUNAUTE_CONVENTIONNEE' ?
+                    <span style={{ backgroundColor: 'rgba(200, 0, 0, 0.5)', padding: 10, marginTop: 10, marginBottom: 10, width: 76, borderRadius: 5, color: 'white', fontSize: '0.8em' }}>
+                        Communauté conventionnée
+                </span>
+                    : null
+            }
+            {
+                group.typeGroup.name == 'COMMUNAUTE_AFFINITE' ?
+                    <span style={{ backgroundColor: 'rgba(200, 0, 0, 0.5)', padding: 10, marginTop: 10, marginBottom: 10, width: 76, borderRadius: 5, color: 'white', fontSize: '0.8em' }}>
+                        Communauté d'affinité
+                </span>
+                    : null
+            } */}
+            <p className="mb-0" style={{ textOverflow: "ellipsis", whiteSpace: "nowrap", width: "100%", overflow: "hidden", marginTop: 20 }}>
+                {group.description}
+            </p>
+        </CardContent>
+        <CardActions className="d-flex justify-content-between border-top py-0">
+            <div style={{ padding: 20, display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
+                {
+                    isMember ?
+                    <Button
+                        color="primary"
+                        variant="contained"
+                        className="text-white font-weight-bold bg-blue"
+                        style={{ marginRight: 10 }}
+                        onClick={() => enterInCommunitySpace(group.id)}
+                    >
+                        Rejoindre
+                    </Button>
+                    :
+                    <Button
+                        color="primary"
+                        variant="contained"
+                        className="text-white font-weight-bold bg-danger"
+                        style={{ marginRight: 10 }}
+                    >
+                        Adhérer
+                    </Button>
+                }
+                <Button
+                    color="primary"
+                    variant="contained"
+                    className="text-white font-weight-bold"
+                >
+                    Consulter
+                </Button>
+            </div>
+        </CardActions>
+    </Card>
+);
+
+export default withStyles(styles)(GroupItem2);

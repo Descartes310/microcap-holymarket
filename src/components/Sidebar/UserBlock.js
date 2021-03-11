@@ -122,7 +122,7 @@ class UserBlock extends Component {
 											{this.props.authUser.user.login}
 										</span>
 									</li>
-									<li className="mt-3">
+									{/* <li className="mt-3">
 										<FieldsetComponent title={"Réference"} titleClass={"text-dark"}>
 											<p className="text-dark fw-bold mb-0">{this.props.authUser.user.reference}</p>
 										</FieldsetComponent>
@@ -135,7 +135,7 @@ class UserBlock extends Component {
 													<p className="text-dark fw-bold mb-0">{this.props.authUser.user.membershipNumber}</p>
 												</FieldsetComponent>
 											</li> : null
-									}
+									} */}
 									<li className="border-top">
 										<NavLink to={USERS.USERS_PROFILE.DISPLAY_PROFILE} className="nav-link" activeClassName="active">
 											<i className="zmdi zmdi-account text-primary mr-3"></i>

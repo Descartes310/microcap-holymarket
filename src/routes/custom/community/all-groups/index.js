@@ -15,6 +15,7 @@ import { ERROR_500 } from "Constants/errors";
 import { getInvitationsPending } from "Actions/GeneralActions";
 import { getCommunitiesByBranch, getCommunityAdmins } from "Actions/independentActions";
 import { COMMUNITY } from 'Url/frontendUrl';
+import GroupItem2 from '../groups/GroupItem2';
 
 class AllGroups extends Component {
     static contextType = AbilityContext;
@@ -73,95 +74,29 @@ class AllGroups extends Component {
 
         return (
             <>
-                <CustomList
+            <CustomList
                     loading={loading}
                     list={communities}
                     itemsFoundText={n => `${n} Groupe(s) trouvé(s)`}
                     renderItem={list => (
                         <>
-                            {list && list.length === 0 ? (
-                                <div className="d-flex justify-content-center align-items-center py-50">
-                                    <h4>
-                                        Aucun groupes trouvés
-                                    </h4>
+                            {!list || (list && list.length === 0) ? (
+                                <div className="no-found-user-wrap d-flex justify-content-center align-items-center py-50">
+                                    <h4> Aucune communauté trouvée</h4>
                                 </div>
                             ) : (
-                                    <div className="table-responsive">
-                                        <table className="table table-hover table-middle mb-0 text-center">
-                                            <thead>
-                                                <tr>
-                                                    <th><IntlMessages id="components.name" /></th>
-                                                    <th><IntlMessages id="widgets.description" /></th>
-                                                    <th>Type</th>
-                                                    <th />
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {list && list.map((group, key) => (
-                                                    <tr key={key} className="cursor-pointer">
-                                                        <td>
-                                                            <div className="media">
-                                                                <div className="media-left media-middle mr-15">
-                                                                    {/*<img src={group.label} alt="user profile" className="media-object rounded-circle" width="35" height="35" />*/}
-                                                                </div>
-                                                                <div className="media-body pt-10">
-                                                                    <h4 className="m-0 fw-bold text-dark">{group.label}</h4>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div className="media">
-                                                                <div className="media-body pt-10">
-                                                                    <h4 className="m-0 fw-bold text-dark">{group.description}</h4>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div className="media">
-                                                                <div className="media-body pt-10">
-                                                                    <h4 className="m-0 fw-bold text-dark">{group.convetionnated}</h4>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                        <td className="table-action">
-                                                            {
-                                                                !group.status ?
-
-                                                                    <Button
-                                                                        // type="submit"
-                                                                        size="small"
-                                                                        color="primary"
-                                                                        disabled={loading}
-                                                                        variant="contained"
-                                                                        className={"text-white font-weight-bold mr-3 bg-blue"}
-                                                                        onClick={() => this.onEnterClick(group)}
-                                                                    >
-                                                                        Demander l'adhésion
-                                                                    </Button>
-                                                                    :
-                                                                    <Button
-                                                                        // type="submit"
-                                                                        size="small"
-                                                                        color="primary"
-                                                                        disabled={loading}
-                                                                        variant="contained"
-                                                                        className={"text-white font-weight-bold mr-3"}
-                                                                        onClick={() => this.onJoinClick(group)}
-                                                                    >
-                                                                        Rejoindre la communauté
-                                                            </Button>
-                                                            }
-                                                        </td>
-                                                    </tr>
-                                                ))}
-                                            </tbody>
-                                        </table>
-
+                                    <div className="row" style={{ paddingBottom: 50 }}>
+                                        {list.map((community, key) => (
+                                            <div className="col-sm-6 col-md-4 col-lg-3" key={key}>
+                                                <GroupItem2 group={community} isMember={community.status}/>
+                                            </div>
+                                        ))}
                                     </div>
                                 )}
                         </>
                     )}
                 />
+                
             </>
         );
     }

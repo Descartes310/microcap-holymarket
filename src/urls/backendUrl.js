@@ -199,51 +199,61 @@ export const USERS = {
 export const COMMUNITY_MEMBER = {
     USER: {
         GROUPS: {
-            GET_ALL: 'groups/communities/user/me',
-            GET_BY_BRANCH: 'groups/communities/branch/{id}/user/{user_id}',
-            NOT_IN: 'groups/communities/user/{id}/not-in',
-            ADMIN: 'groups/communities/user/admin/me',
-            GET_MEMBERS: 'groups/communities/{id}/members',
-            GET_COMMUNITIES: 'groups/communities/users/{id}',
-            CREATE_VOUCHER: 'groups/{id}/vouchers',
-            GET_VOUCHERS_FOR_USER: 'groups/users/vouchers',
-            GET_VOUCHERS: 'groups/{id}/vouchers/users/{user_id}/type/{type}',
-            GET_ADMINS: 'groups/communities/{id}/admins',
-            ADD_OPERATOR: 'groups/communities/{id}/operator',
+            GET_ALL: 'api/groups/communities/user/me',
+            GET_BY_BRANCH: 'api/groups/communities/branch/{id}/user/{user_id}',
+            NOT_IN: 'api/groups/communities/user/{id}/not-in',
+            ADMIN: 'api/groups/communities/user/admin/me',
+            GET_MEMBERS: 'api/groups/communities/{id}/members',
+            GET_COMMUNITIES: 'api/groups/communities/users/{id}',
+            CREATE_VOUCHER: 'api/groups/{id}/vouchers',
+            GET_VOUCHERS_FOR_USER: 'api/groups/users/vouchers',
+            GET_VOUCHERS: 'api/groups/{id}/vouchers/users/{user_id}/type/{type}',
+            GET_ADMINS: 'api/groups/communities/{id}/admins',
+            ADD_OPERATOR: 'api/groups/communities/{id}/operator',
         },
         CREATE: {
-            NON_CONVENTIONAL: 'groups/communities/non-conventionated'
+            NON_CONVENTIONAL: 'api/groups/communities/non-conventionated'
         }
     },
+    GROUP: {
+        CREATE_POST: 'api/groups/posts',
+        CREATE_MOTIVATION: 'api/groups/posts/{id}/motivations',
+        CREATE_SECTION: 'api/groups/{id}/sections',
+        GET_MAIN_SECTIONS: 'api/groups/{id}/sections',
+        GET_ALL_SECTIONS: 'api/groups/{id}/sections/all',
+        GET_POSTS: 'api/groups/{id}/posts',
+        GET_MOTIVATION_POSTS: 'api/groups/posts/{id}/motivations',
+        GET_CHILD_SECTIONS: 'api/groups/sections/{id}/sections',
+    },
     INVITATIONS: {
-        GET_ALL: 'groups/communities/pending/invitation/{id}',
+        GET_ALL: 'api/groups/communities/pending/invitation/{id}',
         SEND: {
-            ONE: 'groups/communities/send/invitation/community/{group_id}',
-            MANY: 'groups/communities/send/invitation/community/{group_id}',
-            REQUEST: 'groups/communities/send/request/community/{group_id}/users/{user_id}',
-            TO_USER: 'groups/communities/send/invitation/community/user/{user_id}',
-            TO_GROUP: 'groups/communities/send/invitation/community/{group_id}',
-            INVITATIONS: 'groups/communities/{id}/pending/invitations',
-            REQUESTS: 'groups/communities/{id}/pending/requests',
+            ONE: 'api/groups/communities/send/invitation/community/{group_id}',
+            MANY: 'api/groups/communities/send/invitation/community/{group_id}',
+            REQUEST: 'api/groups/communities/send/request/community/{group_id}/users/{user_id}',
+            TO_USER: 'api/groups/communities/send/invitation/community/user/{user_id}',
+            TO_GROUP: 'api/groups/communities/send/invitation/community/{group_id}',
+            INVITATIONS: 'api/groups/communities/{id}/pending/invitations',
+            REQUESTS: 'api/groups/communities/{id}/pending/requests',
         },
-        ACCEPT: 'groups/communities/accept/invitation/{invitation_id}',
-        CANCEL: 'groups/communities/cancel/invitation/{invitation_id}',
-        DELETE: 'groups/communities/delete/invitation/{invitation_id}',
+        ACCEPT: 'api/groups/communities/accept/invitation/{invitation_id}',
+        CANCEL: 'api/groups/communities/cancel/invitation/{invitation_id}',
+        DELETE: 'api/groups/communities/delete/invitation/{invitation_id}',
     },
 };
 
 /* export const COMMUNITY = {
 
     INVITATIONS: {
-        GET_ALL: 'groups/communities/pending/invitation/me',
+        GET_ALL: 'api/groups/communities/pending/invitation/me',
         SEND: {
-            ONE: 'groups/communities/send/invitation/community/{group_id}/user/{user_id}',
-            MANY: 'groups/communities/send/invitation/community/{group_id}',
-            REQUEST: 'groups/communities/send/request/community/{group_id}',
+            ONE: 'api/groups/communities/send/invitation/community/{group_id}/user/{user_id}',
+            MANY: 'api/groups/communities/send/invitation/community/{group_id}',
+            REQUEST: 'api/groups/communities/send/request/community/{group_id}',
         },
-        ACCEPT: 'groups/communities/accept/invitation/{invitation_id}',
-        CANCEL: 'groups/communities/cancel/invitation/{invitation_id}',
-        DELETE: 'groups/communities/delete/invitation/{invitation_id}',
+        ACCEPT: 'api/groups/communities/accept/invitation/{invitation_id}',
+        CANCEL: 'api/groups/communities/cancel/invitation/{invitation_id}',
+        DELETE: 'api/groups/communities/delete/invitation/{invitation_id}',
     },
 };
  */

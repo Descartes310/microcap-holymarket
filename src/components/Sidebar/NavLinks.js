@@ -819,7 +819,13 @@ export default {
                "menu_title": "Postes",
                "new_item": false,
                'key': 'commnity_admin',
-               "path": PROJECTS.POST_PROJETS.LIST,
+               "path": COMMUNITY_ADMIN.POST.LIST,
+               "permissions": [],
+            },{
+               "menu_title": "Rubriques",
+               "new_item": false,
+               'key': 'commnity_admin',
+               "path": COMMUNITY_ADMIN.RUBRIQUE.LIST,
                "permissions": [],
             },
             {

@@ -296,6 +296,20 @@ export const COMMUNITY_ADMIN = {
         LIST: '/admin/community-t/members/list',
         INVITATION: '/admin/community-t/members/invitation'
     },
+    POST: {
+        SELF: '/admin/community-t/user-category',
+        LIST: '/admin/community-t/user-category/list',
+        CREATE: '/admin/community-t/user-category/create',
+        MOTIVATION: {
+            LIST: '/admin/community-t/user-category/post/:id/list',
+            CREATE: '/admin/community-t/user-category/post/:id/create',
+        }
+    },
+    RUBRIQUE: {
+        SELF: '/admin/community-t/rubrique',
+        LIST: '/admin/community-t/rubrique/list',
+        CREATE: '/admin/community-t/rubrique/create',
+    },
     INVITATIONS: {
         SELF: '/admin/community-t/members/invitation',
         LIST: {

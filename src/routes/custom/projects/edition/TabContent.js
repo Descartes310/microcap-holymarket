@@ -7,7 +7,7 @@ import Illustration from "./illustration";
 
 const TabContent = ({ match }) => {
     return (
-        <div className="vh-100">
+        <div>
             <Switch>
                 {/* <Redirect exact from={`${match.url}/`} to={PROJECTS.PROJECTS.EDITION.SELF} /> */}
                 <Route path={PROJECTS.PROJECTS.EDITION.ARTICLE} component={Article} />

@@ -961,3 +961,43 @@ export const getAccountByAmount = (userId, amount) => {
     const url = joinBaseUrlWithParamsId(`${ACCOUNT.GET_ACCOUNT_BY_AMOUNT}${data}`, userId);
     return makeRequest('get', url);
 };
+
+export const createGroupPost = (data) => {
+    const url = COMMUNITY_MEMBER.GROUP.CREATE_POST;
+    return makeRequest('post', url, data);
+};
+
+export const createGroupSection = (data, id) => {
+    const url = joinBaseUrlWithParamsId(`${COMMUNITY_MEMBER.GROUP.CREATE_SECTION}`, id);
+    return makeRequest('post', url, data);
+};
+
+export const createPostMotivation = (data, id) => {
+    const url = joinBaseUrlWithParamsId(`${COMMUNITY_MEMBER.GROUP.CREATE_MOTIVATION}`, id);
+    return makeRequest('post', url, data);
+};
+
+export const getMainSections = (id) => {
+    const url = joinBaseUrlWithParamsId(COMMUNITY_MEMBER.GROUP.GET_MAIN_SECTIONS, id);
+    return makeRequest('get', url);
+};
+
+export const getAllSections = (id) => {
+    const url = joinBaseUrlWithParamsId(COMMUNITY_MEMBER.GROUP.GET_ALL_SECTIONS, id);
+    return makeRequest('get', url);
+};
+
+export const getGroupPosts = (id) => {
+    const url = joinBaseUrlWithParamsId(COMMUNITY_MEMBER.GROUP.GET_POSTS, id);
+    return makeRequest('get', url);
+};
+
+export const getMotivations = (id) => {
+    const url = joinBaseUrlWithParamsId(COMMUNITY_MEMBER.GROUP.GET_MOTIVATION_POSTS, id);
+    return makeRequest('get', url);
+};
+
+export const getChildSections = (id) => {
+    const url = joinBaseUrlWithParamsId(COMMUNITY_MEMBER.GROUP.GET_CHILD_SECTIONS, id);
+    return makeRequest('get', url);
+};
