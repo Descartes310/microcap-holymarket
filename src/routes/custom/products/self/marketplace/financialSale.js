@@ -53,7 +53,8 @@ class FinancialSale extends Component {
                             ) : (
                                 <div className="row">
                                     {list && list.map((item, key) => (
-                                        <div className="col-sm-4 col-md-3 col-lg-2 mb-20 ">
+                                        <div className="
+                                        col-sm-4 col-md-3 col-lg-2 mb-20 ">
                                             <Hit 
                                                 hit={item}
                                                 onPressViewProposition={this.onEnterClick}
