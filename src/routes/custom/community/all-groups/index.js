@@ -97,11 +97,11 @@ class AllGroups extends Component {
             });
     };
 
-    onJoinClick = (group) => {
-        getCommunityAdmins(group.id).then(data => {
+    onJoinClick = (id) => {
+        getCommunityAdmins(id).then(data => {
             this.props.statusCommunitySpaceStatus(true);
             this.props.setCommunitySpaceAdmins(data);
-            this.props.setCommunitySpaceData(group.id);
+            this.props.setCommunitySpaceData(id);
             this.props.history.push(COMMUNITY.MEMBERS.LIST);
         })
     }
