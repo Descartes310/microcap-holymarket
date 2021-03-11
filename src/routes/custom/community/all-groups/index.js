@@ -133,7 +133,7 @@ class AllGroups extends Component {
                                     <div className="row" style={{ paddingBottom: 50 }}>
                                         {list.map((community, key) => (
                                             <div className="col-sm-6 col-md-4 col-lg-3" key={key}>
-                                                <GroupItem2 group={community} isMember={community.status} adhesion={this.onEnterClick} />
+                                                <GroupItem2 group={community} isMember={community.status} adhesion={this.onEnterClick} enterInCommunitySpace={this.onJoinClick} />
                                             </div>
                                         ))}
                                     </div>
