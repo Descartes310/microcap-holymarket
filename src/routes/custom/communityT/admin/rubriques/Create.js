@@ -9,7 +9,7 @@ import IntlMessages from "Util/IntlMessages";
 import { NotificationManager } from "react-notifications";
 import InputLabel from "@material-ui/core/InputLabel/InputLabel";
 import { Button, Form, FormGroup, Input as InputStrap } from 'reactstrap';
-import { setRequestGlobalAction, getMainSections } from "Actions";
+import { setRequestGlobalAction, getMainSections, createGroupSection } from "Actions";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
 import CustomAsyncComponent from "Components/CustomAsyncComponent";
 import FormControl from "@material-ui/core/FormControl";
@@ -46,12 +46,13 @@ class Create extends Component {
             label: '',
             description: '',
             sections: [],
-            content: '',
+            content: 'Aucune description',
             parent: null,
         }
     }
 
     componentDidMount() {
+        this.getRubriques()
     }
 
     handleOnFormChange = (field, value) => {
@@ -69,7 +70,7 @@ class Create extends Component {
 
     getRubriques = () => {
         setRequestGlobalAction(true)
-        getMainSections(this.props.communitySpace.data).then(data => {
+        getMainSections(this.props.communitySpace).then(data => {
             this.setState({ sections: data })
         }).finally(() => {
             setRequestGlobalAction(false)
@@ -86,12 +87,17 @@ class Create extends Component {
                 content: this.state.content
             };
 
-            createGroupPost(data)
+            if(this.state.parent == null) {
+                delete data.parent_id;
+            }
+
+            createGroupSection(data, this.props.communitySpace)
                 .then(() => {
                     NotificationManager.success("Rubrique créé avec succès");
                     this.props.history.push(COMMUNITY_ADMIN.RUBRIQUE.LIST);
                 })
-                .catch(() => {
+                .catch((err) => {
+                    console.log(err)
                     NotificationManager.error(ERROR_500);
                 })
                 .finally(() => this.props.setRequestGlobalAction(false));
@@ -153,10 +159,10 @@ class Create extends Component {
                                                         <InputLabel className="text-left" htmlFor="currency-helper">
                                                             Rubrique parent
                                                         </InputLabel>
-                                                        <Select onChange={e => this.setState({ parent: e })}>
+                                                        <Select onChange={e => this.setState({ parent: e.target.value })}>
                                                             {data.map(item => (
                                                                 <MenuItem key={item.id} value={item.id} className="center-hor-ver">
-                                                                    {item.name}
+                                                                    {item.title}
                                                                 </MenuItem>
                                                             ))}
                                                         </Select>
@@ -170,7 +176,7 @@ class Create extends Component {
                                         <InputLabel className="text-left" htmlFor="label">
                                             Contenu de la rubrique
                                         </InputLabel>
-                                        <ReactQuill modules={modules} formats={formats} onChange={(e) => this.setState(e)} placeholder="Entrez votre contenu..." />
+                                        <ReactQuill modules={modules} formats={formats} onChange={(e) => this.setState({ content: e })} placeholder="Entrez votre contenu..." />
                                     </FormGroup>
                                 </div>
 

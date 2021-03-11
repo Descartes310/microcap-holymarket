@@ -214,6 +214,11 @@ export const SETTINGS = {
         SELF: '/settings/units',
         TYPE: '/settings/units/types',
         VALUE: '/settings/units/values'
+    },
+    POST: {
+        SELF: '/settings/posts',
+        LIST: '/settings/posts/list',
+        CREATE: '/settings/posts/create'
     }
 };
 

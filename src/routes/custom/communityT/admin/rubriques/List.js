@@ -76,7 +76,7 @@ class List extends Component {
                                                 <tr>
                                                     <th>Titre</th>
                                                     <th>Description</th>
-                                                    <th>Section parent</th>
+                                                    {/* <th>Section parent</th> */}
                                                     <th>Actions</th>
                                                 </tr>
                                             </thead>
@@ -99,13 +99,13 @@ class List extends Component {
                                                                 </div>
                                                             </div>
                                                         </td>
-                                                        <td>
+                                                        {/* <td>
                                                             <div className="media">
                                                                 <div className="media-body pt-10">
                                                                     <h4 className="m-0 fw-bold text-dark">{item.parent ? item.parent.title : '-'}</h4>
                                                                 </div>
                                                             </div>
-                                                        </td>
+                                                        </td> */}
                                                         <td>
                                                             <div className="media">
                                                                 <div className="media-body pt-10">

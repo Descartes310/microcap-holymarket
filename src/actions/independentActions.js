@@ -419,7 +419,7 @@ export const requestsReceived = (groupId) => {
     return makeRequest('get', url);
 };
 
-export const sendRequestInvitation = (groupId, userId) => {
+export const sendRequestInvitation = (groupId, userId, data = null) => {
     let url = joinBaseUrlWithParams(COMMUNITY_MEMBER.INVITATIONS.SEND.REQUEST, [
         {
             param: 'group_id',
@@ -431,7 +431,7 @@ export const sendRequestInvitation = (groupId, userId) => {
         }
 
     ]);
-    return makeRequest('post', url, null, { shouldSkipDataParsing: true });
+    return makeRequest('post', url, data, { shouldSkipDataParsing: true });
 };
 
 export const acceptInvitation = (invitationId) => {

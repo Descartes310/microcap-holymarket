@@ -16,7 +16,7 @@ const styles = {
     },
 };
 
-const GroupItem2 = ({ classes, group, isMember, enterInCommunitySpace }) => (
+const GroupItem2 = ({ classes, group, isMember, enterInCommunitySpace, adhesion }) => (
     <Card className="rounded mb-30">
         <CardMedia
             className={classes.media}
@@ -69,6 +69,7 @@ const GroupItem2 = ({ classes, group, isMember, enterInCommunitySpace }) => (
                         variant="contained"
                         className="text-white font-weight-bold bg-danger"
                         style={{ marginRight: 10 }}
+                        onClick={() => adhesion(group)}
                     >
                         Adhérer
                     </Button>

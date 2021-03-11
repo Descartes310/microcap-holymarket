@@ -585,6 +585,12 @@ export default {
                "path": SETTINGS.UNITS.SELF,
                "permissions": [],
             },
+            {
+               "menu_title": "Poste communautés",
+               "new_item": false,
+               "path": SETTINGS.POST.LIST,
+               "permissions": [],
+            },
          ]
       },
    ],

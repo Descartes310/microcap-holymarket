@@ -21,6 +21,7 @@ import InvitationCreateDialog from '../../communityT/members/invitation/Invitati
 import { COMMUNITY } from 'Url/frontendUrl';
 import GroupItem2 from "./GroupItem2";
 import CustomList from "Components/CustomList";
+import CommunityCreate from "Routes/custom/community/groups/CommunityCreate";
 
 const drawerWidth = 310;
 
@@ -32,7 +33,8 @@ class Groups extends Component {
 
     state = {
         mobileOpen: false,
-        open: false
+        open: false,
+        showCreateBox: false,
     };
 
     constructor(props) {
@@ -77,6 +79,7 @@ class Groups extends Component {
                     loading={loading}
                     list={userCommunities}
                     itemsFoundText={n => `${n} Groupe(s) trouvé(s)`}
+                    onAddClick={() => this.setState({ showCreateBox: true })}
                     renderItem={list => (
                         <>
                             {!list || (list && list.length === 0) ? (
@@ -95,7 +98,10 @@ class Groups extends Component {
                         </>
                     )}
                 />
-                {/* </div> */}
+                <CommunityCreate
+                    show={this.state.showCreateBox}
+                    onClose={() => this.setState({showCreateBox: false})}
+                />
             </div>
         );
     }
