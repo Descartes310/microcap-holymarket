@@ -44,7 +44,8 @@ class Create extends Component {
             this.props.setRequestGlobalAction(true);
             const data = {
                 title: this.state.label,
-                description: this.state.description
+                description: this.state.description,
+                group_id: this.props.communitySpace
             };
 
             createPostMotivation(data, this.props.match.params.id)

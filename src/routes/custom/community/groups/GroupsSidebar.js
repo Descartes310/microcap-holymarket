@@ -90,9 +90,9 @@ class GroupsSidebar extends Component {
                                             {userCommunities.map((community, key) => (
                                                 <GroupItem
                                                     key={key}
-                                                    community={community}
+                                                    community={community.group}
                                                     // selectedCommunity={userCommunities[0]}
-                                                    onClickListItem={() => this.onCommunityClick(community)}
+                                                    onClickListItem={() => this.onCommunityClick(community.group)}
                                                 />
                                             ))}
                                         </List>

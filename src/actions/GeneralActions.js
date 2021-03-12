@@ -356,9 +356,9 @@ export const getProjectStandard = (branchId) => (dispatch) => {
 };
 
 /*** ************************************************/
-export const getAllPostProject = (branchId) => (dispatch) => {
+export const getAllPostProject = (branchId) => {
     const url = joinBaseUrlWithParamsId(PROJECTS_API.POST_PROJETS.GET_ALL, branchId);
-    return makeActionRequest('get', url, PROJECTS, dispatch);
+    return makeRequest('get', url);
 };
 /**** ******************************************************/
 export const getOneProjectStandard = (branchId) => (dispatch) => {
@@ -388,4 +388,12 @@ export const getProjects = (branchId) => (dispatch) => {
 export const getFolders = (userId) => (dispatch) => {
     const url = joinBaseUrlWithParamsId(PROJECTS_API.FOLDERS.GET_ALL, userId);
     return makeActionRequest('get', url, FOLDERS, dispatch);
+};
+
+const makeRequest = (verb, url, data = null, config = {}) => {
+    return new Promise((resolve, reject) => {
+        api[verb](url, data)
+            .then(result => resolve(result.data))
+            .catch(error => reject(error));
+    });
 };

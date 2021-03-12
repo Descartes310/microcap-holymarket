@@ -210,6 +210,8 @@ export const COMMUNITY_MEMBER = {
             GET_VOUCHERS: 'api/groups/{id}/vouchers/users/{user_id}/type/{type}',
             GET_ADMINS: 'api/groups/communities/{id}/admins',
             ADD_OPERATOR: 'api/groups/communities/{id}/operator',
+            GET_FAVOURITES: 'api/groups/communities/favourites',
+            ADD_FAVOURITES: 'api/groups/communities/{id}/favourites',
         },
         CREATE: {
             NON_CONVENTIONAL: 'api/groups/communities/non-conventionated'
@@ -360,22 +362,22 @@ export const NOTIFICATIONS = {
 
 export const PROJECTS = {
     SELF: {
-        GET_ALL: 'public/projects',
-        CREATE: 'public/projects',
+        GET_ALL: 'api/projects',
+        CREATE: 'api/projects',
     },
     FOLDERS: {
-        GET_ALL: 'public/projects/folders/users/{id}',
-        CREATE: 'public/projects/folders',
-        GET_ONE: 'public/projects/folders/{id}',
+        GET_ALL: 'api/projects/folders/users/{id}',
+        CREATE: 'api/projects/folders',
+        GET_ONE: 'api/projects/folders/{id}',
     },
     REACTIONS: {
-        GET_ALL: 'public/projects/reactions/projects/{id}',
-        CREATE: 'public/projects/reactions',
-        GET_ONE: 'public/projects/reactions/{id}',
+        GET_ALL: 'api/projects/reactions/projects/{id}',
+        CREATE: 'api/projects/reactions',
+        GET_ONE: 'api/projects/reactions/{id}',
     },
     POST_PROJETS: {
-        CREATE: 'public/branchs/{id}/posts',
-        GET_ALL: 'public/branchs/{id}/posts',
+        CREATE: 'api/projects/posts',
+        GET_ALL: 'public/branchs/{id}/project/posts',
     },
     CONFIGURATION: {
         WORKS: {
@@ -383,23 +385,23 @@ export const PROJECTS = {
             CREATE: 'public/books',
         },
         STANDARD: {
-            GET_ALL: 'public/projects/presentation-standard',
-            GET_ONE: 'public/projects/presentation-standard/{id}',
-            CREATE: 'public/projects/presentation-standard',
+            GET_ALL: 'api/projects/presentation-standard',
+            GET_ONE: 'api/projects/presentation-standard/{id}',
+            CREATE: 'api/projects/presentation-standard',
             MODELS: {
-                GET_ALL: 'public/projects/presentation-standard/{id}/models',
-                CREATE: 'public/projects/model',
-                DELETE: 'public/projects/models/{id}',
+                GET_ALL: 'api/projects/presentation-standard/{id}/models',
+                CREATE: 'api/projects/model',
+                DELETE: 'api/projects/models/{id}',
             },
             PRESENTATION:  {
-                GET_ALL: 'public/projects/presentation',
-                GET_ONE: 'public/projects/presentation/{id}',
-                CREATE: 'public/projects/presentation',
+                GET_ALL: 'api/projects/presentation',
+                GET_ONE: 'api/projects/presentation/{id}',
+                CREATE: 'api/projects/presentation',
             }
         },
         INITIALISATION: {
-            GET_ALL: 'public/projects/options',
-            CREATE: 'public/projects/options',
+            GET_ALL: 'api/projects/options',
+            CREATE: 'api/projects/options',
         }
     }
 };

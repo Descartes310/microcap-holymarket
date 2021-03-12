@@ -14,7 +14,7 @@ import { NotificationManager } from "react-notifications";
 import { ERROR_500 } from "Constants/errors";
 import { getInvitationsPending } from "Actions/GeneralActions";
 import { FormGroup, Input as InputStrap } from 'reactstrap';
-import { getCommunitiesByBranch, getCommunityAdmins } from "Actions/independentActions";
+import { getFavouritesGroups, getCommunityAdmins } from "Actions/independentActions";
 import { COMMUNITY } from 'Url/frontendUrl';
 import GroupItem2 from '../groups/GroupItem2';
 import DialogTitle from "@material-ui/core/DialogTitle/DialogTitle";
@@ -28,7 +28,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 import InputLabel from "@material-ui/core/InputLabel/InputLabel";
 
-class AllGroups extends Component {
+class FavouritesGroups extends Component {
     static contextType = AbilityContext;
 
     state = {
@@ -47,7 +47,7 @@ class AllGroups extends Component {
     }
 
     componentDidMount() {
-        getCommunitiesByBranch(this.props.authUser.user.branch.id, this.props.authUser.user.id).then(data => {
+        getFavouritesGroups().then(data => {
             this.setState({ communities: data });
         }).finally(() => this.setState({ loading: false }))
     }
@@ -83,7 +83,7 @@ class AllGroups extends Component {
         sendRequestInvitation(group.id, this.props.authUser.user.id, data)
             .then(() => {
                 NotificationManager.success("Votre demande pour le groupe " + group.label + " a été envoyé");
-                getCommunitiesByBranch(this.props.authUser.user.branch.id, this.props.authUser.user.id).then(data => {
+                getFavouritesGroups().then(data => {
                     this.setState({ communities: data });
                 }).finally(() => this.setState({ loading: false }))
                 this.props.getInvitationsPending(this.props.authUser.user.id);
@@ -272,4 +272,4 @@ const useStyles = theme => ({
 });
 
 export default connect(mapStateToProps, { getInvitationsPending, setRequestGlobalAction, setCommunitySpaceAdmins, statusCommunitySpaceStatus, setCommunitySpaceData })
-    (withStyles(useStyles, { withTheme: true })(withRouter(injectIntl(AllGroups))));
+    (withStyles(useStyles, { withTheme: true })(withRouter(injectIntl(FavouritesGroups))));

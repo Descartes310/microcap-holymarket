@@ -16,50 +16,83 @@ import EmailSearch from "Routes/mail/components/EmailSearch";
 import AppBar from "@material-ui/core/AppBar/AppBar";
 import AppsIcon from '@material-ui/icons/Apps';
 import MatButton from '@material-ui/core/Button';
-import { getCommunityAdmins, getUserCommunities } from 'Actions'
+import { getCommunityAdmins, addGroupToFavourites, setRequestGlobalAction } from 'Actions'
 import InvitationCreateDialog from '../../communityT/members/invitation/InvitationCreateDialog';
-import { COMMUNITY } from 'Url/frontendUrl';
-import GroupItem2 from "./GroupItem2";
-import CustomList from "Components/CustomList";
-import CommunityCreate from "Routes/custom/community/groups/CommunityCreate";
+import { COMMUNITY, COMMUNITY_MEMBER } from 'Url/frontendUrl';
 
 const drawerWidth = 310;
 
 const styles = theme => ({
-
+    root: {
+        flexGrow: 1,
+        zIndex: 1,
+        overflow: 'hidden',
+        position: 'relative',
+        display: 'flex',
+        width: '100%',
+    },
+    appBar: {
+        position: 'absolute',
+        marginLeft: theme.direction !== 'rtl' ? drawerWidth : 0,
+        marginRight: theme.direction === 'rtl' ? drawerWidth : 0,
+        [theme.breakpoints.up('md')]: {
+            width: `calc(100% - ${drawerWidth}px)`,
+        }
+    },
+    navIconHide: {
+        [theme.breakpoints.up('md')]: {
+            display: 'none',
+        },
+    },
+    toolbar: theme.mixins.toolbar,
+    drawerPaper: {
+        width: 230,
+        [theme.breakpoints.up('md')]: {
+            position: 'relative',
+            width: drawerWidth
+        },
+        backgroundColor: '#fff'
+    },
+    content: {
+        flexGrow: 1
+    },
 });
 
 class Groups extends Component {
 
     state = {
         mobileOpen: false,
-        open: false,
-        showCreateBox: false,
+        open: false
     };
 
     constructor(props) {
         super(props);
-    }
-
-    componentDidMount() {
-        this.props.getUserCommunities(this.props.authUser.user.id);
-    }
+     }
 
     handleDrawerToggle = () => {
         this.setState({ mobileOpen: !this.state.mobileOpen });
     };
 
-    enterInCommunitySpace = (id) => {
-        getCommunityAdmins(id).then(data => {
+    enterInCommunitySpace = () => {
+        getCommunityAdmins(this.props.currentCommunity.data.id).then(data => {
             this.props.statusCommunitySpaceStatus(true);
             this.props.setCommunitySpaceAdmins(data);
-            this.props.setCommunitySpaceData(id);
+            this.props.setCommunitySpaceData(this.props.currentCommunity.data.id);
             this.props.history.push(COMMUNITY.MEMBERS.LIST);
         })
     }
 
     join = () => {
         this.props.history.push(COMMUNITY.MEMBERS.LIST);
+    }
+
+    handleFavourite = () => {
+        setRequestGlobalAction(true);
+        addGroupToFavourites(this.props.currentCommunity.data.id).then(data => {
+            // this.props.history.push(COMMUNITY_MEMBER.GROUPS.FAVOURITES);
+        }).finally(() => {
+            setRequestGlobalAction(false);
+        })
     }
 
     handleClickOpenInvation = () => {
@@ -71,53 +104,80 @@ class Groups extends Component {
     };
 
     render() {
-        const { classes, userCommunities, loading } = this.props;
+        const { classes, theme, currentCommunity } = this.props;
+        const drawer = <GroupsSidebar />;
         return (
             <div className="chat-wrapper">
-                {/* <div> */}
-                <CustomList
-                    loading={loading}
-                    list={userCommunities}
-                    itemsFoundText={n => `${n} Groupe(s) trouvé(s)`}
-                    onAddClick={() => this.setState({ showCreateBox: true })}
-                    renderItem={list => (
+                <div className={classes.root}>
+                    <Hidden mdUp className="user-list-wrap">
                         <>
-                            {!list || (list && list.length === 0) ? (
-                                <div className="no-found-user-wrap d-flex justify-content-center align-items-center py-50">
-                                    <h4> Aucune communauté trouvée</h4>
-                                </div>
-                            ) : (
-                                    <div className="row" style={{ paddingBottom: 50 }}>
-                                        {list.map((community, key) => (
-                                            <div className="col-sm-6 col-md-4 col-lg-3" key={key}>
-                                                <GroupItem2 group={community} isMember={true} enterInCommunitySpace={this.enterInCommunitySpace} />
-                                            </div>
-                                        ))}
-                                    </div>
-                                )}
+                            <div className="rct-tabs">
+                                <AppBar className={classes.appBar}>
+                                    <Toolbar className="d-flex justify-content-between">
+                                        <IconButton
+                                            color="inherit"
+                                            aria-label="open drawer"
+                                            onClick={this.handleDrawerToggle}
+                                            className={classes.navIconHide}>
+                                            <AppsIcon />
+                                        </IconButton>
+                                    </Toolbar>
+                                </AppBar>
+                            </div>
+                            <Drawer
+                                variant="temporary"
+                                anchor={theme.direction === 'rtl' ? 'right' : 'left'}
+                                open={this.state.mobileOpen}
+                                onClose={this.handleDrawerToggle}
+                                classes={{
+                                    paper: classes.drawerPaper,
+                                }}
+                                ModalProps={{
+                                    keepMounted: true,
+                                }}
+                            >
+                                {drawer}
+                            </Drawer>
                         </>
-                    )}
-                />
-                <CommunityCreate
-                    show={this.state.showCreateBox}
-                    onClose={() => this.setState({showCreateBox: false})}
-                />
+                    </Hidden>
+                    <Hidden smDown implementation="css" className="user-list-wrap">
+                        <Drawer
+                            variant="permanent"
+                            open
+                            classes={{
+                                paper: classes.drawerPaper,
+                            }}
+                        >
+                            {drawer}
+                        </Drawer>
+                    </Hidden>
+                    <div className={`chat-content ${classes.content}`}>
+                        <CommunityItem onMenuIconPress={this.handleDrawerToggle} />
+                        {
+                            currentCommunity.data ?
+                                <div className="text-center" style={{ position: "absolute", top: "60%", padding: 10, width: "100%" }}>
+                                    <MatButton variant="contained" color="primary" className="mr-10 mb-10 text-white btn-icon" onClick={this.handleClickOpenInvation}>Envoyer une invitation</MatButton>
+                                    <MatButton variant="contained" className="btn-info ml-10 mb-10 text-white btn-icon" onClick={this.enterInCommunitySpace}>Rejoindre</MatButton>
+                                    <MatButton variant="contained" className="btn-info ml-10 mb-10 text-white btn-icon bg-blue" onClick={this.handleFavourite}>Ajouter/Rétirer des favoris</MatButton>
+                                    <InvitationCreateDialog open={this.state.open} handleClose={this.handleCloseInvation}/>
+                                </div>
+                                :
+                                null
+                        }
+                    </div>
+                </div>
             </div>
         );
     }
 }
 
-const mapStateToProps = ({ authUser, communitySpace, currentCommunity, userCommunities }) => {
+const mapStateToProps = ({ communitySpace, currentCommunity }) => {
     return {
         communitySpace: communitySpace,
-        currentCommunity: currentCommunity,
-        userCommunities: userCommunities.data,
-        loading: userCommunities.loading,
-        error: userCommunities.error,
-        authUser: authUser.data
+        currentCommunity: currentCommunity
     }
 };
 
 
-export default connect(mapStateToProps, { statusCommunitySpaceStatus, setCommunitySpaceData, getUserCommunities, setCommunitySpaceAdmins })
+export default connect(mapStateToProps, { setRequestGlobalAction, statusCommunitySpaceStatus, setCommunitySpaceData, setCommunitySpaceAdmins })
     (withStyles(styles, { withTheme: true })(Groups));

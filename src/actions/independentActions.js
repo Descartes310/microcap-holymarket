@@ -992,12 +992,30 @@ export const getGroupPosts = (id) => {
     return makeRequest('get', url);
 };
 
-export const getMotivations = (id) => {
-    const url = joinBaseUrlWithParamsId(COMMUNITY_MEMBER.GROUP.GET_MOTIVATION_POSTS, id);
+export const getMotivations = (post_id, group_id) => {
+    const url = joinBaseUrlWithParams(COMMUNITY_MEMBER.GROUP.GET_MOTIVATION_POSTS[
+        {
+            param: 'post_id',
+            value: post_id,
+        }, {
+            param: 'group_id',
+            value: group_id,
+        }
+    ])
     return makeRequest('get', url);
 };
 
 export const getChildSections = (id) => {
     const url = joinBaseUrlWithParamsId(COMMUNITY_MEMBER.GROUP.GET_CHILD_SECTIONS, id);
     return makeRequest('get', url);
+};
+
+export const getFavouritesGroups = () => {
+    const url = COMMUNITY_MEMBER.USER.GROUPS.GET_FAVOURITES;
+    return makeRequest('get', url);
+};
+
+export const addGroupToFavourites = ( id) => {
+    const url = joinBaseUrlWithParamsId(`${COMMUNITY_MEMBER.USER.GROUPS.ADD_FAVOURITES}`, id);
+    return makeRequest('post', url, null);
 };

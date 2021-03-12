@@ -358,6 +358,8 @@ export const COMMUNITY_MEMBER = {
         SELF: '/community/groups',
         LIST: '/community/groups/list',
         ME: '/community/groups/me',
+        CHAT: '/community/groups/chats',
+        FAVOURITES: '/community/groups/favourites',
         CREATE: '/community/groups/create',
     },
     INVITATIONS: {

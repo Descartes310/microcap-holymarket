@@ -21,7 +21,7 @@ export default (state = INIT_STATE, action) => {
             return { ...state, loading: true };
 
         case USER_COMMUNITIES_SUCCESS:
-            return { ...state, loading: false, data: action.payload.map(userCommunities => new Community(userCommunities)) };
+            return { ...state, loading: false, data: action.payload };
 
         case USER_COMMUNITIES_FAILURE:
             return { ...state, loading: false, error: action.payload };

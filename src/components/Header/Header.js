@@ -132,7 +132,7 @@ class Header extends Component {
 					<ul className="navbar-right list-inline mb-0">
 						<Notifications />
 						<Cart />
-						{!horizontalMenu &&
+						{/* {!horizontalMenu &&
 						<li className="list-inline-item text-white">
 							<FormControlLabel
 								control={
@@ -146,7 +146,7 @@ class Header extends Component {
 								className="m-0"
 							/>
 						</li>
-						}
+						} */}
 					</ul>
 				</Toolbar>
 				<DashboardOverlay
