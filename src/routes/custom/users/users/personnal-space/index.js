@@ -158,7 +158,7 @@ class PersonalSpace extends Component {
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        {userCommunities && userCommunities.filter(g => g.typeGroup.name == 'COMMUNAUTE_CONVENTIONNEE').map((group, key) => (
+                                                        {userCommunities && userCommunities.filter(g => g.group.typeGroup.name == 'COMMUNAUTE_CONVENTIONNEE').map((group, key) => (
                                                             <tr key={key} className="cursor-pointer">
                                                                 <td>
                                                                     <div className="media">
@@ -166,14 +166,14 @@ class PersonalSpace extends Component {
                                                                             {/*<img src={group.label} alt="user profile" className="media-object rounded-circle" width="35" height="35" />*/}
                                                                         </div>
                                                                         <div className="media-body pt-10">
-                                                                            <h4 className="m-0 fw-bold text-dark">{group.label}</h4>
+                                                                            <h4 className="m-0 fw-bold text-dark">{group.group.label}</h4>
                                                                         </div>
                                                                     </div>
                                                                 </td>
                                                                 <td>
                                                                     <div className="media">
                                                                         <div className="media-body pt-10">
-                                                                            <h4 className="m-0 fw-bold text-dark">{group.description}</h4>
+                                                                            <h4 className="m-0 fw-bold text-dark">{group.group.description}</h4>
                                                                         </div>
                                                                     </div>
                                                                 </td>
@@ -186,7 +186,7 @@ class PersonalSpace extends Component {
                                                                         disabled={loading}
                                                                         variant="contained"
                                                                         className={"text-white font-weight-bold mr-3"}
-                                                                        onClick={() => this.onJoinClick(group)}
+                                                                        onClick={() => this.onJoinClick(group.group)}
                                                                     >
                                                                         Rejoindre la communauté
                                                                     </Button>
