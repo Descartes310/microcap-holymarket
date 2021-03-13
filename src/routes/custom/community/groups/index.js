@@ -16,9 +16,10 @@ import EmailSearch from "Routes/mail/components/EmailSearch";
 import AppBar from "@material-ui/core/AppBar/AppBar";
 import AppsIcon from '@material-ui/icons/Apps';
 import MatButton from '@material-ui/core/Button';
-import { getCommunityAdmins, addGroupToFavourites, setRequestGlobalAction } from 'Actions'
+import { getCommunityAdmins, addGroupToFavourites, setRequestGlobalAction, getUserCommunities, setCurrentCommunity } from 'Actions'
 import InvitationCreateDialog from '../../communityT/members/invitation/InvitationCreateDialog';
 import { COMMUNITY, COMMUNITY_MEMBER } from 'Url/frontendUrl';
+import { NotificationManager } from "react-notifications";
 
 const drawerWidth = 310;
 
@@ -67,17 +68,17 @@ class Groups extends Component {
 
     constructor(props) {
         super(props);
-     }
+    }
 
     handleDrawerToggle = () => {
         this.setState({ mobileOpen: !this.state.mobileOpen });
     };
 
     enterInCommunitySpace = () => {
-        getCommunityAdmins(this.props.currentCommunity.data.id).then(data => {
+        getCommunityAdmins(this.props.currentCommunity.data.community.id).then(data => {
             this.props.statusCommunitySpaceStatus(true);
             this.props.setCommunitySpaceAdmins(data);
-            this.props.setCommunitySpaceData(this.props.currentCommunity.data.id);
+            this.props.setCommunitySpaceData(this.props.currentCommunity.data.community.id);
             this.props.history.push(COMMUNITY.MEMBERS.LIST);
         })
     }
@@ -87,11 +88,16 @@ class Groups extends Component {
     }
 
     handleFavourite = () => {
-        setRequestGlobalAction(true);
-        addGroupToFavourites(this.props.currentCommunity.data.id).then(data => {
-            // this.props.history.push(COMMUNITY_MEMBER.GROUPS.FAVOURITES);
+        this.props.setRequestGlobalAction(true);
+        addGroupToFavourites(this.props.currentCommunity.data.community.id).then(data => {
+            if (this.props.currentCommunity.data.favourite)
+                NotificationManager.success("Retiré des favoris");
+            else
+                NotificationManager.success("Ajouté aux favoris");
+            this.props.getUserCommunities(this.props.authUser.user.id);
+            this.props.setCurrentCommunity(this.props.currentCommunity.data.community, !this.props.currentCommunity.data.favourite);
         }).finally(() => {
-            setRequestGlobalAction(false);
+            this.props.setRequestGlobalAction(false);
         })
     }
 
@@ -158,8 +164,13 @@ class Groups extends Component {
                                 <div className="text-center" style={{ position: "absolute", top: "60%", padding: 10, width: "100%" }}>
                                     <MatButton variant="contained" color="primary" className="mr-10 mb-10 text-white btn-icon" onClick={this.handleClickOpenInvation}>Envoyer une invitation</MatButton>
                                     <MatButton variant="contained" className="btn-info ml-10 mb-10 text-white btn-icon" onClick={this.enterInCommunitySpace}>Rejoindre</MatButton>
-                                    <MatButton variant="contained" className="btn-info ml-10 mb-10 text-white btn-icon bg-blue" onClick={this.handleFavourite}>Ajouter/Rétirer des favoris</MatButton>
-                                    <InvitationCreateDialog open={this.state.open} handleClose={this.handleCloseInvation}/>
+                                    {
+                                        !currentCommunity.data.favourite ?
+                                            <MatButton variant="contained" className="btn-success ml-10 mb-10 text-white btn-icon" onClick={this.handleFavourite}>Ajouter aux favoris</MatButton>
+                                            :
+                                            <MatButton variant="contained" className="btn-danger ml-10 mb-10 text-white btn-icon" onClick={this.handleFavourite}>Retirer des favoris</MatButton>
+                                    }
+                                    <InvitationCreateDialog open={this.state.open} handleClose={this.handleCloseInvation} />
                                 </div>
                                 :
                                 null
@@ -171,13 +182,14 @@ class Groups extends Component {
     }
 }
 
-const mapStateToProps = ({ communitySpace, currentCommunity }) => {
+const mapStateToProps = ({ communitySpace, currentCommunity, authUser }) => {
     return {
         communitySpace: communitySpace,
+        authUser: authUser.data,
         currentCommunity: currentCommunity
     }
 };
 
 
-export default connect(mapStateToProps, { setRequestGlobalAction, statusCommunitySpaceStatus, setCommunitySpaceData, setCommunitySpaceAdmins })
+export default connect(mapStateToProps, { setRequestGlobalAction, setCurrentCommunity, statusCommunitySpaceStatus, getUserCommunities, setCommunitySpaceData, setCommunitySpaceAdmins })
     (withStyles(styles, { withTheme: true })(Groups));

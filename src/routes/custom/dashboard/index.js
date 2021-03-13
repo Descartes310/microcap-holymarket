@@ -38,6 +38,7 @@ import Ressource from "Routes/custom/ressources";
 import PersonalSpace from "Routes/custom/users/users/personnal-space";
 import SingleProfile from 'Routes/custom/users/user-profile/Profile';
 import UserProfile from 'Routes/custom/users/user-profile';
+import Stock from 'Routes/custom/stocks';
 
 import { useAbility } from "@casl/react";
 import {
@@ -51,6 +52,7 @@ import {
     COMMUNITY,
     COMMUNITY_ADMIN,
     COMMUNITY_MEMBER,
+    STOCK,
     PACKAGES,
     RESSOURCE,
     COMMERCIAL_MANAGEMENT, PRODUCT, STORE, ROOT, ACCESS, SETTINGS, NOTIFICATIONS, PROJECTS
@@ -229,6 +231,12 @@ const Dashboard = ({ match, authUser }) => {
                     <CanRoute
                         path={USERS.USERS_PROFILE.SELF}
                         component={UserProfile}
+                        permissions={[]}
+                    />
+
+                    <CanRoute
+                        path={STOCK.SELF}
+                        component={Stock}
                         permissions={[]}
                     />
 

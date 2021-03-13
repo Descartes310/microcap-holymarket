@@ -34,7 +34,7 @@ class CommunityItem extends Component {
     };
 
     componentDidMount() {
-        this.props.getMembersOfOneGroup(this.props.currentCommunity);
+        // this.props.getMembersOfOneGroup(this.props.currentCommunity);
     }
 
 
@@ -96,13 +96,13 @@ class CommunityItem extends Component {
                             </IconButton>
                             <div className="mr-10">
                                 <UserAvatar
-                                    name={currentCommunity.data.label}
-                                    avatar={currentCommunity.data.avatar}
+                                    name={currentCommunity.data.community.label}
+                                    avatar={currentCommunity.data.community.avatar ? currentCommunity.data.community.avatar : require('Assets/img/groups.png')}
                                 />
                             </div>
                             <div className="media-body mt-1">
-                                <h5 className="mb-0">{currentCommunity.data.label}</h5>
-                                <span className="font-xs text-muted">{currentCommunity.data.description}</span>
+                                <h5 className="mb-0">{currentCommunity.data.community.label}</h5>
+                                <span className="font-xs text-muted">{currentCommunity.data.community.description}</span>
                             </div>
                         </div>
                         <div>

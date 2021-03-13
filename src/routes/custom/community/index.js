@@ -17,10 +17,10 @@ class Community extends Component {
         super(props);
         const defaultState = (function (url) {
             if (url.includes(COMMUNITY_MEMBER.GROUPS.ME)) return 0;
-            else if (url.includes(COMMUNITY_MEMBER.GROUPS.FAVOURITES)) return 1;
-            else if (url.includes(COMMUNITY_MEMBER.GROUPS.LIST)) return 2;
-            else if (url.includes(COMMUNITY_MEMBER.INVITATIONS.SELF)) return 3;
-            else if (url.includes(COMMUNITY_MEMBER.GROUPS.CHAT)) return 4;
+            // else if (url.includes(COMMUNITY_MEMBER.GROUPS.FAVOURITES)) return 1;
+            else if (url.includes(COMMUNITY_MEMBER.GROUPS.LIST)) return 1;
+            else if (url.includes(COMMUNITY_MEMBER.INVITATIONS.SELF)) return 2;
+            else if (url.includes(COMMUNITY_MEMBER.GROUPS.CHAT)) return 3;
             else return 0;
         })(window.location.pathname);
 
@@ -36,10 +36,10 @@ class Community extends Component {
         if (oldActivateTab !== value) {
             switch (value) {
                 case 0: return this.props.history.push(COMMUNITY_MEMBER.GROUPS.ME);
-                case 1: return this.props.history.push(COMMUNITY_MEMBER.GROUPS.FAVOURITES);
-                case 2: return this.props.history.push(COMMUNITY_MEMBER.GROUPS.LIST);
-                case 3: return this.props.history.push(COMMUNITY_MEMBER.INVITATIONS.SELF);
-                case 4: return this.props.history.push(COMMUNITY_MEMBER.GROUPS.CHAT);
+                // case 1: return this.props.history.push(COMMUNITY_MEMBER.GROUPS.FAVOURITES);
+                case 1: return this.props.history.push(COMMUNITY_MEMBER.GROUPS.LIST);
+                case 2: return this.props.history.push(COMMUNITY_MEMBER.INVITATIONS.SELF);
+                case 3: return this.props.history.push(COMMUNITY_MEMBER.GROUPS.CHAT);
                 default: return this.props.history.push(COMMUNITY_MEMBER.GROUPS.ME);
             }
         }
@@ -72,10 +72,10 @@ class Community extends Component {
                                             icon={<i className="zmdi zmdi-group-work"/>}
                                             label={"Mon Reseau"}
                                         />
-                                        <Tab
+                                        {/* <Tab
                                             icon={<i className="zmdi zmdi-star"/>}
                                             label={"Favoris"}
-                                        />
+                                        /> */}
                                         <Tab
                                             icon={<i className="ti-world"></i>}
                                             label={"Reseau Microcap"}

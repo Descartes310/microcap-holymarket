@@ -1,5 +1,5 @@
 // sidebar nav links
-import {CATALOG, COMMERCIAL_MANAGEMENT, COMMUNITY_ADMIN, COMMUNITY_MEMBER, COMMUNITY, NETWORK, PRODUCT, USERS, ACCESS, SETTINGS, PROJECTS, MICROCAP360} from 'Url/frontendUrl';
+import {CATALOG, COMMERCIAL_MANAGEMENT, COMMUNITY_ADMIN, STOCK, COMMUNITY_MEMBER, COMMUNITY, NETWORK, PRODUCT, USERS, ACCESS, SETTINGS, PROJECTS, MICROCAP360} from 'Url/frontendUrl';
 import Branch from 'Models/Branch';
 import Permission from "Enums/Permissions";
 import { RESSOURCE } from '../../urls/frontendUrl';
@@ -632,19 +632,17 @@ export default {
       },{
          "menu_title": "Bourse de Financement",
          "menu_icon": "zmdi zmdi-accounts",
-         "path": NETWORK.LIST,
+         "path": STOCK.FINANCIAL.SELF,
          "new_item": false,
          "child_routes": null,
-         "permissions": [Branch.permissionsRelated.READ],
-         'subject': Branch
+         "permissions": [],
       },{
          "menu_title": "Bourse des opportunités",
          "menu_icon": "zmdi zmdi-accounts",
-         "path": NETWORK.LIST,
+         "path": STOCK.OPPORTUITY.SELF,
          "new_item": false,
          "child_routes": null,
-         "permissions": [Branch.permissionsRelated.READ],
-         'subject': Branch
+         "permissions": [],
       },
       {
          "menu_title": "Produits & Services",
@@ -714,19 +712,17 @@ export default {
       },{
          "menu_title": "Bourse de Financement",
          "menu_icon": "zmdi zmdi-accounts",
-         "path": NETWORK.LIST,
+         "path": STOCK.FINANCIAL.SELF,
          "new_item": false,
          "child_routes": null,
-         "permissions": [Branch.permissionsRelated.READ],
-         'subject': Branch
+         "permissions": [],
       },{
          "menu_title": "Bourse des opportunités",
          "menu_icon": "zmdi zmdi-accounts",
-         "path": NETWORK.LIST,
+         "path": STOCK.OPPORTUITY.SELF,
          "new_item": false,
          "child_routes": null,
-         "permissions": [Branch.permissionsRelated.READ],
-         'subject': Branch
+         "permissions": [],
       },
       {
          "menu_title": "Produits & Services",

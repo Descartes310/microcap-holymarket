@@ -956,6 +956,10 @@ export const getOneProjectFolder = (folderId) => {
     return makeRequest('get', url);
 };
 
+export const getBranchProjectFolder = () => {
+    return makeRequest('get', PROJECTS.FOLDERS.GET_ALL_BY_BRANCH);
+};
+
 export const getAccountByAmount = (userId, amount) => {
     const data = `?amount=${amount}`;
     const url = joinBaseUrlWithParamsId(`${ACCOUNT.GET_ACCOUNT_BY_AMOUNT}${data}`, userId);

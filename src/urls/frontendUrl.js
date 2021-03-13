@@ -385,6 +385,17 @@ export const MICROCAP360 = {
     }
 };
 
+export const STOCK = {
+    SELF: '/stocks',
+    OPPORTUITY: {
+        SELF: '/stocks/oppotunities',
+    },
+    FINANCIAL: {
+        SELF: '/stocks/financials',
+        PROJECT_SHOW: '/stocks/financials/project/:id',
+    }
+};
+
 
 export const joinUrlWithParams = (to, params) => {
     let url = to;

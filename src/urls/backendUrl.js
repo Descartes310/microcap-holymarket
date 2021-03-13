@@ -367,6 +367,7 @@ export const PROJECTS = {
     },
     FOLDERS: {
         GET_ALL: 'api/projects/folders/users/{id}',
+        GET_ALL_BY_BRANCH: 'api/projects/folders/branch',
         CREATE: 'api/projects/folders',
         GET_ONE: 'api/projects/folders/{id}',
     },

@@ -59,21 +59,21 @@ class AllGroups extends Component {
     };
 
     getPosts = (id) => {
-        setRequestGlobalAction(true)
+        this.props.setRequestGlobalAction(true)
         getGroupPosts(id).then(data => {
             this.setState({ posts: data })
         }).finally(() => {
-            setRequestGlobalAction(false)
+            this.props.setRequestGlobalAction(false)
         })
     }
 
     getPostMotivations = (post) => {
         this.setState({ post: post })
-        setRequestGlobalAction(true)
+        this.props.setRequestGlobalAction(true)
         getMotivations(post.id, this.state.group.id).then(data => {
             this.setState({ motivations: data })
         }).finally(() => {
-            setRequestGlobalAction(false)
+            this.props.setRequestGlobalAction(false)
         })
     }
 
@@ -203,7 +203,7 @@ class AllGroups extends Component {
                                                     <FormControl fullWidth>
                                                         <InputLabel className="text-left" htmlFor="currency-helper">
                                                             Selectionner votre motivation
-                                                </InputLabel>
+                                                        </InputLabel>
                                                         <Select onChange={e => this.setState({ motivation: e.target.value })}>
                                                             {data.map(item => (
                                                                 <MenuItem key={item.id} value={item.id} className="center-hor-ver">

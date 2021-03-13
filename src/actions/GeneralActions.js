@@ -232,8 +232,8 @@ export const getInvitationsPending = (userId) => (dispatch) => {
     return makeActionRequest('get', url, COM_INVITATIONS_PENDING, dispatch);
 };
 
-export const setCurrentCommunity = (community) => (dispatch) => {
-    dispatch({ type: SET_CURRENT_COMMUNITY_SUCCESS, payload: community });
+export const setCurrentCommunity = (community, favourite) => (dispatch) => {
+    dispatch({ type: SET_CURRENT_COMMUNITY_SUCCESS, payload: {community, favourite} });
 };
 
 export const getMembersOfOneGroup = (group) => (dispatch) => {
