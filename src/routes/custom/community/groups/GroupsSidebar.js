@@ -27,8 +27,8 @@ class GroupsSidebar extends Component {
         this.props.getUserCommunities(this.props.authUser.user.id);
     }
 
-    onCommunityClick = (community, favourite) => {
-        this.props.setCurrentCommunity(community, favourite);
+    onCommunityClick = (community, favourite, members) => {
+        this.props.setCurrentCommunity(community, favourite, members);
     };
 
     render() {
@@ -122,7 +122,7 @@ class GroupsSidebar extends Component {
                                                                     key={key}
                                                                     community={community.group}
                                                                     favourite={community.favourite}
-                                                                    onClickListItem={() => this.onCommunityClick(community.group, community.favourite)}
+                                                                    onClickListItem={() => this.onCommunityClick(community.group, community.favourite, community.members)}
                                                                 />
                                                             ))}
                                                         </List>

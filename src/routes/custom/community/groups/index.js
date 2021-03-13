@@ -20,6 +20,7 @@ import { getCommunityAdmins, addGroupToFavourites, setRequestGlobalAction, getUs
 import InvitationCreateDialog from '../../communityT/members/invitation/InvitationCreateDialog';
 import { COMMUNITY, COMMUNITY_MEMBER } from 'Url/frontendUrl';
 import { NotificationManager } from "react-notifications";
+import CardMedia from '@material-ui/core/CardMedia';
 
 const drawerWidth = 310;
 
@@ -158,10 +159,64 @@ class Groups extends Component {
                         </Drawer>
                     </Hidden>
                     <div className={`chat-content ${classes.content}`}>
-                        <CommunityItem onMenuIconPress={this.handleDrawerToggle} />
+                        {currentCommunity.data ?
+                            <div className='d-flex flex-row align-items-center justify-content-center mt-40'>
+                                <div style={{ flex: 1, paddingLeft: '5%' }}>
+                                    <img src={require('Assets/img/groups.png')} alt="Community image" width="80%" />
+                                </div>
+                                <div className='d-flex flex-column justify-content-center' style={{ flex: 1 }}>
+                                    <div style={{ marginBottom: 20 }}>
+                                        <h2>Nom de la communuaté</h2>
+                                        <span>{currentCommunity.data.community.label}</span>
+                                    </div>
+                                    <div style={{ marginBottom: 20 }}>
+                                        <h2>Numéro de référence</h2>
+                                        <span>{currentCommunity.data.community.reference}</span>
+                                    </div>
+                                    <div style={{ marginBottom: 20 }}>
+                                        <h2>Type de communauté</h2>
+                                        {
+                                            currentCommunity.data.community.typeGroup.name == 'COMMUNAUTE_PROJET' ?
+                                                <span style={{ backgroundColor: 'rgba(46, 178, 229, 0.8)', padding: 10, marginTop: 20, marginBottom: 20, width: 76, borderRadius: 5, color: 'white', fontSize: '0.8em' }}>
+                                                    Communuaté projet
+                                                </span>
+                                                : null
+                                        }
+                                        {
+                                            currentCommunity.data.community.typeGroup.name == 'COMMUNAUTE_CONVENTIONNEE' ?
+                                                <span style={{ backgroundColor: 'rgba(200, 0, 0, 0.5)', padding: 10, marginTop: 20, marginBottom: 20, width: 76, borderRadius: 5, color: 'white', fontSize: '0.8em' }}>
+                                                    Communauté conventionnée
+                                                </span>
+                                                : null
+                                        }
+                                        {
+                                            currentCommunity.data.community.typeGroup.name == 'COMMUNAUTE_AFFINITE' ?
+                                                <span style={{ backgroundColor: 'rgba(200, 0, 0, 0.5)', padding: 10, marginTop: 20, marginBottom: 20, width: 76, borderRadius: 5, color: 'white', fontSize: '0.8em' }}>
+                                                    Communauté d'affinité
+                                                </span>
+                                                : null
+                                        }
+                                    </div>
+                                    <div style={{ marginBottom: 20 }}>
+                                        <h2>Nombre de membre</h2>
+                                        <span>{currentCommunity.data.members}</span>
+                                    </div>
+                                </div>
+                            </div> : null}
                         {
                             currentCommunity.data ?
-                                <div className="text-center" style={{ position: "absolute", top: "60%", padding: 10, width: "100%" }}>
+                                <div style={{ marginLeft: '10%', marginTop: '5%', marginBottom: '5%' }}>
+                                    <div style={{ marginBottom: 20 }}>
+                                        <h2>Description de la communuaté</h2>
+                                    </div>
+
+                                    <span>{currentCommunity.data.community.description}</span>
+                                </div>
+                                : null
+                        }
+                        {
+                            currentCommunity.data ?
+                                <div className="text-center" style={{ padding: 10, width: "100%" }}>
                                     <MatButton variant="contained" color="primary" className="mr-10 mb-10 text-white btn-icon" onClick={this.handleClickOpenInvation}>Envoyer une invitation</MatButton>
                                     <MatButton variant="contained" className="btn-info ml-10 mb-10 text-white btn-icon" onClick={this.enterInCommunitySpace}>Rejoindre</MatButton>
                                     {

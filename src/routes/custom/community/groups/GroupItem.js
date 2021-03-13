@@ -27,9 +27,9 @@ const GroupItem = ({ community, selectedCommunity, onClickListItem, favourite })
                     
                     {/* <span className="badge badge-success badge-xs p-5 rct-notify">&nbsp;</span> */}
                 </div>
-                <div className="media-body">
-                    <h5 className="mb-0">{community.label}</h5>
-                    {community.description && (<span className="font-xs d-block">{textTruncate(community.description, 50)}</span>)}
+                <div className="media-body" style={{ width: '100%' }}>
+                    <h5 className="mb-0" style={{ textOverflow: "ellipsis", whiteSpace: "nowrap", width: "80%", overflow: "hidden" }}>{community.label}</h5>
+                    {community.description && (<span className="font-xs d-block" style={{ textOverflow: "ellipsis", whiteSpace: "nowrap", width: "80%", overflow: "hidden" }}>{community.description}</span>)}
                 </div>
             </div>
             <div className="text-right msg-count">

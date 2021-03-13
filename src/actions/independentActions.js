@@ -997,7 +997,7 @@ export const getGroupPosts = (id) => {
 };
 
 export const getMotivations = (post_id, group_id) => {
-    const url = joinBaseUrlWithParams(COMMUNITY_MEMBER.GROUP.GET_MOTIVATION_POSTS[
+    const url = joinBaseUrlWithParams(COMMUNITY_MEMBER.GROUP.GET_MOTIVATION_POSTS, [
         {
             param: 'post_id',
             value: post_id,
