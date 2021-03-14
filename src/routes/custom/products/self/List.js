@@ -17,6 +17,7 @@ class List extends Component {
             if (url.includes(PRODUCT.CLASSIC_SALES)) return 0;
             else if (url.includes(PRODUCT.FINANCIAL_SALES)) return 1;
             else if (url.includes(PRODUCT.PRIVATE_SALES)) return 2;
+            else if (url.includes(PRODUCT.MICROCAP_PRODUCT)) return 3;
             else return 0;
         })(window.location.pathname);
 
@@ -34,6 +35,7 @@ class List extends Component {
                 case 0: return this.props.history.push(PRODUCT.CLASSIC_SALES);
                 case 1: return this.props.history.push(PRODUCT.FINANCIAL_SALES);
                 case 2: return this.props.history.push(PRODUCT.PRIVATE_SALES);
+                case 3: return this.props.history.push(PRODUCT.MICROCAP_PRODUCT);
                 default: return this.props.history.push(PRODUCT.CLASSIC_SALES);
             }
         }
@@ -69,6 +71,10 @@ class List extends Component {
                                         <Tab
                                             icon={<i className="icon-shield"></i>}
                                             label={"Ventes privées"}
+                                        />
+                                        <Tab
+                                            icon={<i className="ti-cup"></i>}
+                                            label={"Produits Microcap"}
                                         />
                                     </Tabs>
                                 </div>

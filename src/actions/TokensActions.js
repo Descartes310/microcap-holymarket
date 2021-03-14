@@ -10,7 +10,9 @@ import {
     LOGOUT_USER,
     SIGNUP_USER,
     SIGNUP_USER_SUCCESS,
-    SIGNUP_USER_FAILURE, CLEAR_AUTH_USER
+    SIGNUP_USER_FAILURE, 
+    CLEAR_AUTH_USER,
+    SET_CURRENT_COMMUNITY_SUCCESS
 } from 'Actions/types';
 
 import api from './../api';
@@ -72,6 +74,8 @@ export const loginUserWithEmailAndPassword = (data) => (dispatch) => {
 
             // Persist data into store
             dispatch({ type: LOGIN_USER_SUCCESS, payload: data });
+
+            dispatch({ type: SET_CURRENT_COMMUNITY_SUCCESS, payload: null });
             // history.push('/');
             // NotificationManager.success('User Login Successfully!');
             return Promise.resolve();

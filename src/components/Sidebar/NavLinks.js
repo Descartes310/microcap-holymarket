@@ -652,7 +652,7 @@ export default {
          "permissions": [],
          "child_routes": [
             {
-               "menu_title": "Market place",
+               "menu_title": "Microcap Shop",
                "new_item": false,
                "path": PRODUCT.LIST,
                "permissions": [],
@@ -732,7 +732,7 @@ export default {
          "permissions": [],
          "child_routes": [
             {
-               "menu_title": "Market place",
+               "menu_title": "Microcap Shop",
                "new_item": false,
                "path": PRODUCT.LIST,
                "permissions": [],

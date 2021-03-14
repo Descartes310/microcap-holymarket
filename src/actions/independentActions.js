@@ -370,9 +370,13 @@ export const updateUsers = (data) => {
     return makeRequest('put', url, data);
 };
 
-export const createCommunityNonConventionated = (data, branchId, userId) => {
+export const createCommunityNonConventionated = (data, branchId, userId, config) => {
     const url = `${COMMUNITY_MEMBER.USER.CREATE.NON_CONVENTIONAL}?branch_id=${branchId}&user_id=${userId}`;
-    return makeRequest('post', url, data);
+    return new Promise((resolve, reject) => {
+        api.post(url, data, config)
+            .then(result => resolve(result.data))
+            .catch(error => reject(error));
+    });
 };
 
 export const searchUsers = (data) => {

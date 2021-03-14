@@ -162,7 +162,7 @@ class Groups extends Component {
                         {currentCommunity.data ?
                             <div className='d-flex flex-row align-items-center justify-content-center mt-40'>
                                 <div style={{ flex: 1, paddingLeft: '5%' }}>
-                                    <img src={require('Assets/img/groups.png')} alt="Community image" width="80%" />
+                                    <img src={currentCommunity.data.community.image ? currentCommunity.data.community.image : require('Assets/img/groups.png')} alt="Community image" width="80%" />
                                 </div>
                                 <div className='d-flex flex-column justify-content-center' style={{ flex: 1 }}>
                                     <div style={{ marginBottom: 20 }}>

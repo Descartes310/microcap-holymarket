@@ -139,6 +139,7 @@ export const PRODUCT = {
     CLASSIC_SALES: '/products/classic-sales',
     PRIVATE_SALES: '/products/private-sales',
     FINANCIAL_SALES: '/products/financial-sales',
+    MICROCAP_PRODUCT: '/products/microcap-sales',
     ORDERS: '/products/orders',
     ORDERS_SHOW: '/products/orders/:id/show',
     SHOW: '/products/:id/show/:type',

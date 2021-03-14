@@ -22,6 +22,9 @@ const saleWays = [{
 }, {
     label: 'Ventes privées',
     key: 'PRIVATE_SALE',
+}, {
+    label: 'Produits Microcap',
+    key: 'MICROCAP_PRODUCT',
 }]
 
 class List extends Component {

@@ -382,6 +382,9 @@ class Create extends Component {
                                 }, {
                                     label: 'Ventes privées',
                                     key: 'PRIVATE_SALE',
+                                }, {
+                                    label: 'Produits Microcap',
+                                    key: 'MICROCAP_PRODUCT',
                                 }]}
                                 component={data => (
                                     <div className="col-md-6 col-sm-12 form-group text-left">

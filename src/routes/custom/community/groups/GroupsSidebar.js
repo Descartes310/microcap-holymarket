@@ -111,6 +111,7 @@ class GroupsSidebar extends Component {
                                                                     key={key}
                                                                     community={community.group}
                                                                     favourite={community.favourite}
+                                                                    admin={community.isAdmin}
                                                                     onClickListItem={() => this.onCommunityClick(community.group, community.favourite)}
                                                                 />
                                                             ))}
@@ -122,6 +123,7 @@ class GroupsSidebar extends Component {
                                                                     key={key}
                                                                     community={community.group}
                                                                     favourite={community.favourite}
+                                                                    admin={community.isAdmin}
                                                                     onClickListItem={() => this.onCommunityClick(community.group, community.favourite, community.members)}
                                                                 />
                                                             ))}

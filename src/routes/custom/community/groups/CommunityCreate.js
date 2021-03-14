@@ -10,7 +10,7 @@ import { setRequestGlobalAction, getUserPermissions } from "Actions";
 import { NotificationManager } from "react-notifications";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
 import { connect } from "react-redux";
-
+import Input from "@material-ui/core/Input";
 // Material
 import DialogTitle from "@material-ui/core/DialogTitle/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent/DialogContent";
@@ -40,6 +40,8 @@ const CommunityCreate = props => {
         }
     });
 
+    const [file, setFile] = useState(null);
+
     const isPrivateWatch = watch('isPrivate');
     const isVisibleWatch = watch('iVisible');
     const isActiveWatch = watch('iActive');
@@ -50,8 +52,11 @@ const CommunityCreate = props => {
      */
     const onSubmit = (data) => {
         setRequestGlobalAction(true);
-
-        createCommunityNonConventionated(data, authUser.branchId, authUser.user.id)
+        data.image = file;
+        data.is_active = true;
+        data.is_visible = true;
+        data.is_private = false;
+        createCommunityNonConventionated(data, authUser.branchId, authUser.user.id, {fileData: ['image'], multipart: true})
             .then(() => {
                 NotificationManager.success("Communauté créée avec succès");
                 getUserCommunities(authUser.user.id);
@@ -123,6 +128,18 @@ const CommunityCreate = props => {
                                 <span className="has-icon"><i className="ti-pencil" /></span>
                             </FormGroup>
 
+                            <FormGroup>
+                                <InputLabel className="text-left">
+                                    Image de la communauté
+                                </InputLabel>
+                                <Input
+                                    id="File"
+                                    type="file"
+                                    name="avatar"
+                                    onChange={event => setFile(event.target.files[0])}
+                                />
+                            </FormGroup>
+
                             <div className="row">
                                 {
                                     authUser.isExploitant() ?
@@ -148,7 +165,7 @@ const CommunityCreate = props => {
                                                 />}
                                             />
                                         </div> : null}
-                                <div className="col-md-4 col-sm-12">
+                                {/* <div className="col-md-4 col-sm-12">
                                     <InputComponent
                                         isRequired
                                         className="mt-0"
@@ -210,7 +227,7 @@ const CommunityCreate = props => {
                                         } label={"Communauté active ?"}
                                         />}
                                     />
-                                </div>
+                                </div> */}
                             </div>
 
                             <FormGroup className="mb-15">
