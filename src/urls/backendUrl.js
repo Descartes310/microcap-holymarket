@@ -54,6 +54,7 @@ export const BRANCH = {
     ACTIVATION: 'public/branchs/activation',
     CREATE: 'public/branchs',
     GET_ALL: 'public/branchs',
+    GET_ALL_POSTS: 'public/branchs/{id}/posts',
     CONFIGURATION: {
         START: 'public/branchs/start/configurations/{id}',
         STOP: 'public/branchs/close/configurations/{id}',

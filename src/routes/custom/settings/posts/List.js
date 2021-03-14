@@ -7,7 +7,7 @@ import IntlMessages from 'Util/IntlMessages';
 import { withStyles } from "@material-ui/core";
 import { AbilityContext } from "Permissions/Can";
 import CustomList from "Components/CustomList";
-import { getAllPostProject, setRequestGlobalAction } from "Actions";
+import { getAllGroupPosts, setRequestGlobalAction } from "Actions";
 
 class List extends Component {
     static contextType = AbilityContext;
@@ -17,7 +17,7 @@ class List extends Component {
     };
 
     componentDidMount() {
-        this.props.getAllPostProject(this.props.authUser.branchId)
+        getAllGroupPosts(this.props.authUser.branchId)
         .then(result => {
             if (result) {
                 this.setState({data: result});
@@ -27,17 +27,6 @@ class List extends Component {
 
     handleOnClick = item => {
         this.setState({ selectedNotification: item, show: true });
-    };
-
-    createCGU = () => {
-        createBranchCGU({
-            file: this.state.file,
-        }, { fileData: ['file'], multipart: true }).then(data => {
-            this.setState({ show: false })
-            getAllSettings(this.props.authUser.user.branch.id).then(data => {
-                this.setState({ data })
-            })
-        });
     };
 
     render() {
@@ -130,5 +119,5 @@ const mapStateToProps = ({ requestGlobalLoader, projectWorks, authUser }) => {
     }
 };
 
-export default connect(mapStateToProps, { getAllPostProject, setRequestGlobalAction })
+export default connect(mapStateToProps, { setRequestGlobalAction })
     (withStyles(useStyles, { withTheme: true })(withRouter(injectIntl(List))));

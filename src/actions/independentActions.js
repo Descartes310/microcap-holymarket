@@ -1000,6 +1000,11 @@ export const getGroupPosts = (id) => {
     return makeRequest('get', url);
 };
 
+export const getAllGroupPosts = (id) => {
+    const url = joinBaseUrlWithParamsId(BRANCH.GET_ALL_POSTS, id);
+    return makeRequest('get', url);
+};
+
 export const getMotivations = (post_id, group_id) => {
     const url = joinBaseUrlWithParams(COMMUNITY_MEMBER.GROUP.GET_MOTIVATION_POSTS, [
         {
