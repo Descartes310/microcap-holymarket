@@ -22,8 +22,9 @@ class List extends Component {
     }
 
     getPostMotivations = () => {
+        console.log(this.props.match.params.id)
         setRequestGlobalAction(true)
-        getMotivations(this.props.match.params.id).then(data => {
+        getMotivations(this.props.match.params.id, this.props.communitySpace.data).then(data => {
             this.setState({ posts: data })
         }).finally(() => {
             setRequestGlobalAction(false)

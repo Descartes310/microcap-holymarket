@@ -66,7 +66,6 @@ class Invitations extends Component {
     render() {
         const { classes, theme, match } = this.props;
         const drawer = <InvitationsSidebar />;
-        console.log("Je suis dans invitation admin !")
         return (
             <div className="chat-wrapper">
                 <div className={classes.root}>
