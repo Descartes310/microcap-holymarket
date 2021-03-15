@@ -107,7 +107,7 @@ class List extends Component {
                                                                 <div className="media-body pt-10">
                                                                     <Button
                                                                         color="primary"
-                                                                        disabled={item.isNative}
+                                                                        disabled={item.native}
                                                                         variant="contained"
                                                                         className="text-white font-weight-bold bg-blue"
                                                                         style={{ marginRight: 10 }}

@@ -62,6 +62,7 @@ class List extends Component {
                                             <thead>
                                                 <tr>
                                                     <th><IntlMessages id="components.name" /></th>
+                                                    <th>Type de groupe</th>
                                                     <th>Description</th>
                                                     <th>Actions</th>
                                                 </tr>
@@ -81,6 +82,13 @@ class List extends Component {
                                                         <td>
                                                             <div className="media">
                                                                 <div className="media-body pt-10">
+                                                                    <h4 className="m-0 fw-bold text-dark">{item.typeGroup ? item.typeGroup.label : '-'}</h4>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div className="media">
+                                                                <div className="media-body pt-10">
                                                                     <h4 className="m-0 fw-bold text-dark">{item.description}</h4>
                                                                 </div>
                                                             </div>
@@ -90,7 +98,6 @@ class List extends Component {
                                                                 <div className="media-body pt-10">
                                                                     <Button
                                                                         color="primary"
-                                                                        disabled={item.isNative}
                                                                         variant="contained"
                                                                         className="text-white font-weight-bold bg-blue"
                                                                         style={{ marginRight: 10 }}
