@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 import { injectIntl } from "react-intl";
-import { SETTINGS } from "Url/frontendUrl";
+import { SETTINGS, joinUrlWithParamsId } from "Url/frontendUrl";
 import React, { Component } from 'react';
 import { withRouter } from "react-router-dom";
 import IntlMessages from 'Util/IntlMessages';
@@ -8,9 +8,11 @@ import { withStyles } from "@material-ui/core";
 import { AbilityContext } from "Permissions/Can";
 import CustomList from "Components/CustomList";
 import { getAllGroupPosts, setRequestGlobalAction } from "Actions";
+import Button from '@material-ui/core/Button';
 
 class List extends Component {
     static contextType = AbilityContext;
+    baseUrl = SETTINGS.POST;
 
     state = {
         data: [],
@@ -28,6 +30,11 @@ class List extends Component {
     handleOnClick = item => {
         this.setState({ selectedNotification: item, show: true });
     };
+
+    goToMotivation = (post) => {
+        console.log(post)
+        this.props.history.push(joinUrlWithParamsId(this.baseUrl.MOTIVATION.LIST, post.id), {post: post})
+    }
 
     render() {
         const { data } = this.state;
@@ -56,6 +63,7 @@ class List extends Component {
                                                 <tr>
                                                     <th><IntlMessages id="components.name" /></th>
                                                     <th>Description</th>
+                                                    <th>Actions</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -74,6 +82,22 @@ class List extends Component {
                                                             <div className="media">
                                                                 <div className="media-body pt-10">
                                                                     <h4 className="m-0 fw-bold text-dark">{item.description}</h4>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div className="media">
+                                                                <div className="media-body pt-10">
+                                                                    <Button
+                                                                        color="primary"
+                                                                        disabled={item.isNative}
+                                                                        variant="contained"
+                                                                        className="text-white font-weight-bold bg-blue"
+                                                                        style={{ marginRight: 10 }}
+                                                                        onClick={() => this.goToMotivation(item)}
+                                                                    >
+                                                                        Motivations
+                                                                    </Button>
                                                                 </div>
                                                             </div>
                                                         </td>

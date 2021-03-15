@@ -219,7 +219,11 @@ export const SETTINGS = {
     POST: {
         SELF: '/settings/posts',
         LIST: '/settings/posts/list',
-        CREATE: '/settings/posts/create'
+        CREATE: '/settings/posts/create',
+        MOTIVATION: {
+            LIST: '/settings/posts/:id/list',
+            CREATE: '/settings/posts/:id/create',
+        }
     }
 };
 

@@ -1,7 +1,7 @@
 import { connect } from "react-redux";
 import { injectIntl } from "react-intl";
 import React, { Component } from 'react';
-import { COMMUNITY_ADMIN, joinUrlWithParamsId } from "Url/frontendUrl";
+import { SETTINGS, joinUrlWithParamsId } from "Url/frontendUrl";
 import { withRouter } from "react-router-dom";
 import IntlMessages from 'Util/IntlMessages';
 import { AbilityContext } from "Permissions/Can";
@@ -11,7 +11,7 @@ import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 
 class List extends Component {
     static contextType = AbilityContext;
-    baseUrl = COMMUNITY_ADMIN.POST.MOTIVATION;
+    baseUrl = SETTINGS.POST.MOTIVATION;
 
     state = {
         posts: []
@@ -21,10 +21,10 @@ class List extends Component {
         this.getPostMotivations();
         if(this.props.location.state) {
             if(!this.props.location.state.post) {
-                this.props.history.push(COMMUNITY_ADMIN.POST.SELF)
+                this.props.history.push(SETTINGS.POST.SELF)
             }
         } else {
-            this.props.history.push(COMMUNITY_ADMIN.POST.SELF)
+            this.props.history.push(SETTINGS.POST.SELF)
         }
     }
 
@@ -47,7 +47,7 @@ class List extends Component {
                 <CustomList
                     list={posts}
                     loading={false}
-                    addingButton={this.props.location.state ? this.props.location.state.post ? this.props.location.state.post.native : true : true}
+                    // addingButton={this.props.location.state ? this.props.location.state.post ? this.props.location.state.post.isNative : true : true}
                     itemsFoundText={n => `${n} motivation(s) trouvée(s)`}
                     onAddClick={() => history.push(joinUrlWithParamsId(this.baseUrl.CREATE, match.params.id))}
                     renderItem={list => (

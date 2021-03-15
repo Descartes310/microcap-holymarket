@@ -32,8 +32,7 @@ import CommunityMembersPostsProjects from "Routes/custom/communityT/postsProject
 import ClientPieceList from "Routes/custom/settings/client_folder/List";
 import ConfigurationsList from "Routes/custom/settings/configurations/List";
 import UnitList from "Routes/custom/settings/units";
-import PostsList from "Routes/custom/settings/posts/List";
-import CreatePost from "Routes/custom/settings/posts/Create";
+import Posts from "Routes/custom/settings/posts";
 import Ressource from "Routes/custom/ressources";
 import PersonalSpace from "Routes/custom/users/users/personnal-space";
 import SingleProfile from 'Routes/custom/users/user-profile/Profile';
@@ -125,14 +124,8 @@ const Dashboard = ({ match, authUser }) => {
                     />
 
                     <CanRoute
-                        path={SETTINGS.POST.LIST}
-                        component={PostsList}
-                        permissions={[]}
-                    />
-
-                    <CanRoute
-                        path={SETTINGS.POST.CREATE}
-                        component={CreatePost}
+                        path={SETTINGS.POST.SELF}
+                        component={Posts}
                         permissions={[]}
                     />
 

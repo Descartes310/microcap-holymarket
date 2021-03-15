@@ -70,7 +70,7 @@ class FavouritesGroups extends Component {
     getPostMotivations = (post) => {
         this.setState({ post: post })
         setRequestGlobalAction(true)
-        getMotivations(post.id, this.state.group.id).then(data => {
+        getMotivations(post.id).then(data => {
             this.setState({ motivations: data })
         }).finally(() => {
             setRequestGlobalAction(false)

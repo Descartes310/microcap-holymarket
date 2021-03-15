@@ -35,8 +35,8 @@ class List extends Component {
         })
     }
 
-    goToMotivation = (id) => {
-        this.props.history.push(joinUrlWithParamsId(this.baseUrl.MOTIVATION.LIST, id))
+    goToMotivation = (post) => {
+        this.props.history.push(joinUrlWithParamsId(this.baseUrl.MOTIVATION.LIST, post.id), {post: post})
     }
 
     render() {
@@ -107,10 +107,11 @@ class List extends Component {
                                                                 <div className="media-body pt-10">
                                                                     <Button
                                                                         color="primary"
+                                                                        disabled={item.isNative}
                                                                         variant="contained"
                                                                         className="text-white font-weight-bold bg-blue"
                                                                         style={{ marginRight: 10 }}
-                                                                        onClick={() => this.goToMotivation(item.id)}
+                                                                        onClick={() => this.goToMotivation(item)}
                                                                     >
                                                                         Motivations
                                                                     </Button>

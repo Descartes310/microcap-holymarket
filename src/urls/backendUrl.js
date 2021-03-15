@@ -225,7 +225,7 @@ export const COMMUNITY_MEMBER = {
         GET_MAIN_SECTIONS: 'api/groups/{id}/sections',
         GET_ALL_SECTIONS: 'api/groups/{id}/sections/all',
         GET_POSTS: 'api/groups/{id}/posts',
-        GET_MOTIVATION_POSTS: 'api/groups/{group_id}/posts/{post_id}/motivations',
+        GET_MOTIVATION_POSTS: 'api/groups/posts/{post_id}/motivations',
         GET_CHILD_SECTIONS: 'api/groups/sections/{id}/sections',
     },
     INVITATIONS: {

@@ -70,7 +70,7 @@ class AllGroups extends Component {
     getPostMotivations = (post) => {
         this.setState({ post: post })
         this.props.setRequestGlobalAction(true)
-        getMotivations(post.id, this.state.group.id).then(data => {
+        getMotivations(post.id).then(data => {
             this.setState({ motivations: data })
         }).finally(() => {
             this.props.setRequestGlobalAction(false)
