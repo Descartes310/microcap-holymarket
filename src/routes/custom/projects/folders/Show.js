@@ -1,16 +1,16 @@
-import {projects} from "Data/index";
-import {withRouter} from "react-router-dom";
+import { projects } from "Data/index";
+import { withRouter } from "react-router-dom";
 import Button from "@material-ui/core/Button";
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import Tooltip from "@material-ui/core/Tooltip/Tooltip";
 import SingleTitleText from "Components/SingleTitleText";
 import FieldsetComponent from "Components/FieldsetComponent";
-import {joinUrlWithParamsId, PROJECTS} from "Url/frontendUrl";
-import {getOneProjectFolder} from "Actions/independentActions";
+import { joinUrlWithParamsId, PROJECTS } from "Url/frontendUrl";
+import { getOneProjectFolder } from "Actions/independentActions";
 import FetchFailedComponent from "Components/FetchFailedComponent";
 import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
 
-const Show = ({match, history}) => {
+const Show = ({ match, history }) => {
     const folderId = match.params.id;
     const baseUrl = PROJECTS.FOLDERS;
 
@@ -59,13 +59,22 @@ const Show = ({match, history}) => {
     };
 
     if (projectFolder.loading) {
-        return (<RctSectionLoader/>)
+        return (<RctSectionLoader />)
     }
 
     if (!projectFolder) {
         return (
             <FetchFailedComponent _onRetryClick={loadData} />
         )
+    }
+
+    const isRequired = (id) => {
+        let data = projectFolder.data.initializationOption.works.filter(w => w.book.id == id)[0];
+        if (data) {
+            return data.required;
+        } else {
+            return false
+        }
     }
 
     const details = projectFolder.data;
@@ -87,34 +96,37 @@ const Show = ({match, history}) => {
             </div>
             <div>
                 {details.works.map((work, index) => (
-                    <div key={index} className="row mb-20">
-                        <div className="col-sm-12">
-                            <FieldsetComponent title={(
-                                <Tooltip id={"tooltip-icon" + index} title={work.book.content}>
-                                    <strong>{work.book.title}</strong>
-                                </Tooltip>
-                            )}>
-                                <span>{work.content}</span>
-                            </FieldsetComponent>
-                        </div>
-                    </div>
+                    <>
+                        {work.required || isRequired(work.book.id) ?
+                            <div key={index} className="row mb-20">
+                                <div className="col-sm-12">
+                                    <FieldsetComponent title={(
+                                        <Tooltip id={"tooltip-icon" + index} title={work.book.content}>
+                                            <strong>{work.book.title}</strong>
+                                        </Tooltip>
+                                    )}>
+                                        <span>{work.content}</span>
+                                    </FieldsetComponent>
+                                </div>
+                            </div> : null}
+                    </>
                 ))}
             </div>
             {
                 projectFolder.mine ?
-            
-            <div className="row">
-                <Button
-                    // type="submit"
-                    color="primary"
-                    variant="contained"
-                    className="text-white font-weight-bold mr-3 col-sm-12"
-                    onClick={() => history.push(joinUrlWithParamsId(baseUrl.UPDATE, folderId))}
-                >
-                    Modifier
+
+                    <div className="row">
+                        <Button
+                            // type="submit"
+                            color="primary"
+                            variant="contained"
+                            className="text-white font-weight-bold mr-3 col-sm-12"
+                            onClick={() => history.push(joinUrlWithParamsId(baseUrl.UPDATE, folderId))}
+                        >
+                            Modifier
                 </Button>
-            </div>
-            : null }
+                    </div>
+                    : null}
         </div>
     );
 };
