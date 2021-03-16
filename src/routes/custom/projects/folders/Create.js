@@ -1,16 +1,17 @@
 import { projects } from "Data";
+import ReactQuill from 'react-quill';
 import { connect } from "react-redux";
 import { createFolder } from "Actions";
 import { injectIntl } from 'react-intl';
 import { useForm } from "react-hook-form";
 import { PROJECTS } from "Url/frontendUrl";
 import { ERROR_500 } from "Constants/errors";
-import { Form, FormGroup } from "reactstrap";
+import { Form, FormGroup, Input as FormItem } from "reactstrap";
 import IntlMessages from "Util/IntlMessages";
 import Button from "@material-ui/core/Button";
-import React, { useEffect, useState } from 'react';
 import Input from "@material-ui/core/Input/Input";
 import MenuItem from "@material-ui/core/MenuItem";
+import React, { useEffect, useState } from 'react';
 import Select from "@material-ui/core/Select/Select";
 import InputComponent from "Components/InputComponent";
 import { NotificationManager } from "react-notifications";
@@ -23,11 +24,34 @@ import { getInitialisationOptions, setRequestGlobalAction } from "Actions";
 import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
 
+const modules = {
+    toolbar: [
+        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+        [{ 'font': [] }],
+        ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+        [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
+        ['link', 'image'],
+        ['clean'],
+        [{ 'align': [] }],
+        ['code-block']
+    ],
+};
+
+const formats = [
+    'header',
+    'font',
+    'bold', 'italic', 'underline', 'strike', 'blockquote',
+    'list', 'bullet', 'indent',
+    'link', 'image', 'align',
+    'code-block'
+];
+
 const Create = props => {
     const { authUser, history, intl, getInitialisationOptions, setRequestGlobalAction } = props;
 
     const [oldFolderType, setOldFolderType] = useState(projects.initialisationOptions[0].value);
     const [initializationId, setInitializationId] = useState('');
+    const [worksData, setWorksData] = useState([]);
 
     const [initialisationData, setInitialisationData] = useState({
         data: null,
@@ -37,7 +61,7 @@ const Create = props => {
 
     const [file, setFile] = useState(null);
 
-    const { register, errors, handleSubmit } = useForm();
+    const { register, errors, handleSubmit, setValue } = useForm();
 
     useEffect(() => {
         loadData(oldFolderType);
@@ -76,21 +100,33 @@ const Create = props => {
         }
     };
 
+    const onSetWorks = (id, value) => {
+        // console.log('VALUE => ', value, id)
+        let data = worksData.filter(w => w.id != id);
+        data.push({id, value});
+        // console.log(data)
+        setWorksData(data);
+        // console.log(worksData);
+    };
+
     /**
      * On submit
      */
     const onSubmit = (data) => {
-        setRequestGlobalAction(true);
+        // setRequestGlobalAction(true);
 
-        const contents = Object.entries(data).filter(i => i[0].includes('content'));
-        const works = contents.map(i => {
-            const id = Number(i[0].split('-')[0]);
-            delete data[i[0]];
+        // const contents = Object.entries(data).filter(i => i[0].includes('content'));
+        const works = worksData.map(i => {
+            const id = Number(i.id);
+            // delete data[i[0]];
             return {
                 id,
-                content: i[1]
+                content: i.value
             }
         });
+
+        // console.log(works)
+        // console.log(works)
 
         const _data = {
             ...data,
@@ -101,6 +137,7 @@ const Create = props => {
             initializationId,
             works: JSON.stringify(works),
         };
+
         createFolder(_data, { fileData: ['file'], multipart: true })
             .then(() => {
                 NotificationManager.success("Projet crée avec succès");
@@ -221,16 +258,17 @@ const Create = props => {
                                                 <InputLabel className="text-left" htmlFor={label}>
                                                     {work.content}
                                                 </InputLabel>
-                                                <InputComponent
+                                                <ReactQuill modules={modules} name={`${work.book.id}`} onChange={(e) => onSetWorks(`${work.book.id}`, e)} formats={formats} placeholder="Entrez votre contenu..." />
+
+                                                {/* <InputComponent
                                                     isRequired
                                                     id={label}
                                                     name={label}
                                                     errors={errors}
                                                     register={register}
                                                     className="input-lg"
-                                                // placeholder={intl.formatMessage({id: "common.commercialName"})}
                                                 />
-                                                <span className="has-icon"><i className="ti-pencil" /></span>
+                                                <span className="has-icon"><i className="ti-pencil" /></span> */}
                                             </FormGroup>
                                         </div>
                                     )

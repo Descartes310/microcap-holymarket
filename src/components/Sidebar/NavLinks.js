@@ -630,7 +630,7 @@ export default {
                      "path": PROJECTS.FOLDERS.SELF,
                   },
                   {
-                     "menu_title": "Mes ouvrages",
+                     "menu_title": "Structures projets",
                      "new_item": false,
                      "permissions": [],
                      "path": PROJECTS.FOLDERS.WORKS.SELF,
@@ -724,7 +724,7 @@ export default {
                      "path": PROJECTS.FOLDERS.SELF,
                   },
                   {
-                     "menu_title": "Mes ouvrages",
+                     "menu_title": "Structures projets",
                      "new_item": false,
                      "permissions": [],
                      "path": PROJECTS.FOLDERS.WORKS.SELF

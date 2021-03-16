@@ -32,7 +32,7 @@ class List extends Component {
                 <CustomList
                     list={books}
                     loading={false}
-                    titleList={"Mes ouvrages projets"}
+                    titleList={"Structures projets"}
                     itemsFoundText={n => intl.formatMessage({id: "projects.configuration.works.found"}, {count: n})}
                     onAddClick={() => history.push(this.baseUrl.CREATE)}
                     /*addPermissions={{

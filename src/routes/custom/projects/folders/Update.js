@@ -139,7 +139,7 @@ const Update = ({ match, setRequestGlobalAction }) => {
                     {details ? details.works.map((work, index) => {
                         return (
                             <>
-                                {work.required || isRequired(work.book.id)?
+                                {work.required || isRequired(work.book.id) ?
                                     <div key={index} className="row mb-20">
                                         <div className="col-sm-12">
                                             <FieldsetComponent title={(
@@ -147,7 +147,9 @@ const Update = ({ match, setRequestGlobalAction }) => {
                                                     <strong>{work.book.title}</strong>
                                                 </Tooltip>
                                             )}>
-                                                <span>{work.content}</span>
+                                                <span dangerouslySetInnerHTML={{
+                                                    __html: work.content
+                                                }}></span>
                                             </FieldsetComponent>
                                         </div>
                                     </div>
@@ -171,24 +173,24 @@ const Update = ({ match, setRequestGlobalAction }) => {
                             </div>
                         </div>
                     )) : null}
-                    { projectFolder.data.type == 'IDEA' ?
-                    <Button
-                        // type="submit"
-                        color="primary"
-                        variant="contained"
-                        className="text-white font-weight-bold mr-3 col-sm-12"
-                        onClick={() => setShowModal(true)}
-                    >
-                        Type d'ouvrage personnalisé
-                    </Button> : null }
+                    {projectFolder.data.type == 'IDEA' ?
+                        <Button
+                            // type="submit"
+                            color="primary"
+                            variant="contained"
+                            className="text-white font-weight-bold mr-3 col-sm-12"
+                            onClick={() => setShowModal(true)}
+                        >
+                            Type d'ouvrage personnalisé
+                    </Button> : null}
                 </div>
-                { projectFolder.data.type == 'IDEA' ?
-                <AddWork
-                    onSave={onAddWork}
-                    works={works}
-                    show={showModal}
-                    onClose={() => setShowModal(false)}
-                /> : null }
+                {projectFolder.data.type == 'IDEA' ?
+                    <AddWork
+                        onSave={onAddWork}
+                        works={works}
+                        show={showModal}
+                        onClose={() => setShowModal(false)}
+                    /> : null}
             </div>
         </div>
     );
