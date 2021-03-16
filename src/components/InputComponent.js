@@ -5,7 +5,7 @@ import { requiredValidatorObject } from './../helpers/validator';
 import {injectIntl} from "react-intl";
 import {Controller} from "react-hook-form";
 
-const InputComponent = ({componentType = 'input', name, register, errors, control, options, defaultValue, isRequired = true, otherValidator = {}, handleOnChange, children, intl, customRequiredDisplay = false, ...restProps}) => {
+const InputComponent = ({componentType = 'input', name, type, register, errors, control, options, defaultValue, isRequired = true, otherValidator = {}, handleOnChange, children, intl, customRequiredDisplay = false, ...restProps}) => {
     const requiredProps = isRequired ? {...requiredValidatorObject} : {};
 
     const renderComponent = () => {
@@ -34,7 +34,7 @@ const InputComponent = ({componentType = 'input', name, register, errors, contro
         }
         else return (
                 <Input
-                    type="text"
+                    type={type ? type : 'text'}
                     name={name}
                     className="form-control"
                     innerRef={register({

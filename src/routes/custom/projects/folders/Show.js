@@ -1,14 +1,18 @@
 import {projects} from "Data/index";
+import {withRouter} from "react-router-dom";
+import Button from "@material-ui/core/Button";
 import React, {useEffect, useState} from 'react';
 import Tooltip from "@material-ui/core/Tooltip/Tooltip";
 import SingleTitleText from "Components/SingleTitleText";
 import FieldsetComponent from "Components/FieldsetComponent";
+import {joinUrlWithParamsId, PROJECTS} from "Url/frontendUrl";
 import {getOneProjectFolder} from "Actions/independentActions";
 import FetchFailedComponent from "Components/FetchFailedComponent";
 import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
 
-const Show = ({match}) => {
+const Show = ({match, history}) => {
     const folderId = match.params.id;
+    const baseUrl = PROJECTS.FOLDERS;
 
     if (folderId === '' || folderId === undefined) {
         return (
@@ -20,6 +24,7 @@ const Show = ({match}) => {
 
     const [projectFolder, setProjectFolder] = useState({
         data: null,
+        mine: false,
         loading: true
     });
 
@@ -35,7 +40,8 @@ const Show = ({match}) => {
         getOneProjectFolder(folderId)
             .then(result => {
                 setProjectFolder({
-                    data: result,
+                    data: result.project,
+                    mine: result.mine,
                     loading: false
                 });
             })
@@ -94,8 +100,23 @@ const Show = ({match}) => {
                     </div>
                 ))}
             </div>
+            {
+                projectFolder.mine ?
+            
+            <div className="row">
+                <Button
+                    // type="submit"
+                    color="primary"
+                    variant="contained"
+                    className="text-white font-weight-bold mr-3 col-sm-12"
+                    onClick={() => history.push(joinUrlWithParamsId(baseUrl.UPDATE, folderId))}
+                >
+                    Modifier
+                </Button>
+            </div>
+            : null }
         </div>
     );
 };
 
-export default Show;
+export default withRouter(Show);

@@ -1,6 +1,6 @@
 import React from 'react';
 import List from './../List';
-import Create from './Create';
+import Create from './../Create';
 import {PROJECTS} from "Url/frontendUrl";
 import {withRouter, Switch, Redirect, Route} from "react-router-dom";
 

@@ -233,11 +233,17 @@ export const PROJECTS = {
         SELF: '/projects/folder',
         LIST: '/projects/folder/list',
         SHOW: '/projects/folder/:id',
+        UPDATE: '/projects/folder/:id/update',
         CREATE: '/projects/folder/create',
         REACTIONS: {
             LIST: '/projects/folder/reactions/list',
             CREATE: '/projects/folder/reactions/create',
             CONSULTATION: '/projects/folder/reactions/consultation'
+        },
+        WORKS: {
+            LIST: '/projects/folder/works/list',
+            CREATE: '/projects/folder/works/create',
+            SELF: '/projects/folder/works'
         },
     },
     PROJECTS: {

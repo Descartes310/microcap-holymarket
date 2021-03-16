@@ -55,11 +55,6 @@ class Community extends Component {
                     <div className="rct-tabs">
                         <AppBar position="static">
                             <div className="d-flex align-items-center">
-                                {/* <Hidden smDown>
-                                    <div className="pl-3 page-title m-0">
-                                        <h2 className="">Communauté Membre</h2>
-                                    </div>
-                                </Hidden> */}
                                 <div className="w-100">
                                     <Tabs
                                         value={activeTab}

@@ -919,6 +919,20 @@ export const createFolder = (data, config) => {
     });
 };
 
+export const updateFolder = (id, data, config) => {
+    const url = joinBaseUrlWithParamsId(`${PROJECTS.FOLDERS.ADD_WORK}`, id);
+    return new Promise((resolve, reject) => {
+        api.post(url, data, config)
+            .then(result => resolve(result.data))
+            .catch(error => reject(error));
+    });
+};
+
+export const updateBook = (id) => {
+    const url = joinBaseUrlWithParamsId(`${PROJECTS.FOLDERS.UPDATE_WORK}`, id);
+    return makeRequest('get', url);
+};
+
 export const createUserPiece = (data, config) => {
     const url = `${USERS.PIECE.CREATE}`;
     return new Promise((resolve, reject) => {
@@ -1022,6 +1036,11 @@ export const getChildSections = (id) => {
 
 export const getFavouritesGroups = () => {
     const url = COMMUNITY_MEMBER.USER.GROUPS.GET_FAVOURITES;
+    return makeRequest('get', url);
+};
+
+export const getUsersBooks = () => {
+    const url = PROJECTS.CONFIGURATION.WORKS.GET_ALL_USER;
     return makeRequest('get', url);
 };
 

@@ -506,38 +506,38 @@ export default {
                      "permissions": [Permission.projects.configuration.initialisationOption.viewOne],
                      "path": PROJECTS.CONFIGURATION.INITIALISATION.SELF,
                   },
-                  {
-                     "menu_title": "Standard de présentation",
-                     "new_item": false,
-                     "permissions": [Permission.projects.configuration.standardPresentation.viewOne],
-                     "path": PROJECTS.CONFIGURATION.STANDARD.SELF,
-                  },
+                  // {
+                  //    "menu_title": "Standard de présentation",
+                  //    "new_item": false,
+                  //    "permissions": [Permission.projects.configuration.standardPresentation.viewOne],
+                  //    "path": PROJECTS.CONFIGURATION.STANDARD.SELF,
+                  // },
                ],
             },
-            {
-               "path": PROJECTS.PROJECTS.LIST,
-               "new_item": false,
-               "menu_title": "Projets",
-               "permissions": [Permission.projects.project.viewList],
-            },
+            // {
+            //    "path": PROJECTS.PROJECTS.LIST,
+            //    "new_item": false,
+            //    "menu_title": "Modèles de Projets",
+            //    "permissions": [Permission.projects.project.viewList],
+            // },
             {
                "path": PROJECTS.POST_PROJETS.LIST,
                "new_item": false,
                "menu_title": "Poste projets",
               "permissions": [Permission.projects.projectPost.viewOne],
             },
-            {
-               "path": PROJECTS.PROJECTS.EDITION.SELF,
-               "new_item": false,
-               "menu_title": "Edition",
-               "permissions": [Permission.projects.edition.viewOne],
-            },
-            {
-               "path": PROJECTS.PROJECTS.CONSULTATION,
-               "new_item": false,
-               "menu_title": "Consultation",
-               "permissions": [],
-            },
+            // {
+            //    "path": PROJECTS.PROJECTS.EDITION.SELF,
+            //    "new_item": false,
+            //    "menu_title": "Edition",
+            //    "permissions": [Permission.projects.edition.viewOne],
+            // },
+            // {
+            //    "path": PROJECTS.PROJECTS.CONSULTATION,
+            //    "new_item": false,
+            //    "menu_title": "Consultation",
+            //    "permissions": [],
+            // },
             {
                "path": PROJECTS.FOLDERS.SELF,
                "new_item": false,
@@ -607,6 +607,7 @@ export default {
          "menu_title": "Microcap360",
          "menu_icon": "icon-people",
          "new_item": false,
+         "type_multi": true,
          // "permissions": [Permission.navLinks.COMMUNITY.viewMenu],
          "permissions": [],
          "child_routes": [
@@ -619,8 +620,22 @@ export default {
             {
                "menu_title": "Projets",
                "new_item": false,
-               "path": PROJECTS.FOLDERS.SELF,
                "permissions": [],
+               "type_multi": true,
+               "child_routes": [
+                  {
+                     "menu_title": "Mes Projets",
+                     "new_item": false,
+                     "permissions": [],
+                     "path": PROJECTS.FOLDERS.SELF,
+                  },
+                  {
+                     "menu_title": "Mes ouvrages",
+                     "new_item": false,
+                     "permissions": [],
+                     "path": PROJECTS.FOLDERS.WORKS.SELF,
+                  },
+               ]
             },
             {
                "menu_title": "Reseau",
@@ -687,6 +702,7 @@ export default {
          "menu_title": "Microcap360",
          "menu_icon": "icon-people",
          "new_item": false,
+         "type_multi": true,
          // "permissions": [Permission.navLinks.COMMUNITY.viewMenu],
          "permissions": [],
          "child_routes": [
@@ -699,8 +715,21 @@ export default {
             {
                "menu_title": "Projets",
                "new_item": false,
-               "path": PROJECTS.FOLDERS.SELF,
                "permissions": [],
+               "child_routes": [
+                  {
+                     "menu_title": "Mes Projets",
+                     "new_item": false,
+                     "permissions": [],
+                     "path": PROJECTS.FOLDERS.SELF,
+                  },
+                  {
+                     "menu_title": "Mes ouvrages",
+                     "new_item": false,
+                     "permissions": [],
+                     "path": PROJECTS.FOLDERS.WORKS.SELF
+                  },
+               ]
             },
             {
                "menu_title": "Reseau",

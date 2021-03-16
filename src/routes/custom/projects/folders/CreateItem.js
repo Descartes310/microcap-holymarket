@@ -36,11 +36,11 @@ const AddWork = ({ show, works, onSave, onClose }) => {
 
         const work = works.find(i => i.id === id);
 
-        onSave({ ...work, content: data.content, max: Math.ceil(data.max), required: required });
+        onSave({ ...work, content: data.content, max: 1, required: false });
     };
 
     return (
-        <DialogComponent show={show} title={"Ajouté un ouvrage"} onClose={onClose}>
+        <DialogComponent show={show} title={"Ajouté une section"} onClose={onClose}>
             <RctCollapsibleCard>
                 <Form onSubmit={onSubmit}>
                     <div className="row">
@@ -93,40 +93,17 @@ const AddWork = ({ show, works, onSave, onClose }) => {
 
                         <FormGroup className="col-sm-12 has-wrapper">
                             <InputLabel className="text-left" htmlFor="max">
-                                Nombre maximal d'occurences
+                                Etiquettes
                             </InputLabel>
                             <InputComponent
                                 id="max"
-                                isRequired
                                 errors={errors}
-                                type='number'
                                 defaultValue={1}
-                                name={'max'}
+                                name={'etiquette'}
                                 register={register}
                                 className="input-lg"
                             />
                         </FormGroup>
-
-                        <FormControl className="col-sm-12 has-wrapper">
-                            <InputComponent
-                                isRequired
-                                className="mt-0"
-                                errors={errors}
-                                id="required"
-                                control={control}
-                                name={'required'}
-                                register={register}
-                                componentType="select"
-                                as={<FormControlLabel control={
-                                    <Checkbox
-                                        color="primary"
-                                        checked={required}
-                                        onChange={() => {setRequired(!required)}}
-                                    />
-                                } label={"Ouvrage obligatoire"}
-                                />}
-                            />
-                        </FormControl>
 
                     </div>
 

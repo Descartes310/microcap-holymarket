@@ -370,6 +370,8 @@ export const PROJECTS = {
         GET_ALL: 'api/projects/folders/users/{id}',
         GET_ALL_BY_BRANCH: 'api/projects/folders/branch',
         CREATE: 'api/projects/folders',
+        ADD_WORK: 'api/projects/folders/{id}/adding',
+        UPDATE_WORK: 'api/projects/folders/books/{id}',
         GET_ONE: 'api/projects/folders/{id}',
     },
     REACTIONS: {
@@ -384,7 +386,8 @@ export const PROJECTS = {
     CONFIGURATION: {
         WORKS: {
             GET_ALL: 'public/branchs/{id}/books',
-            CREATE: 'public/books',
+            CREATE: 'api/books',
+            GET_ALL_USER: 'api/books',
         },
         STANDARD: {
             GET_ALL: 'api/projects/presentation-standard',
