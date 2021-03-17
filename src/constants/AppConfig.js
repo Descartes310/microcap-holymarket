@@ -126,7 +126,7 @@ const AppConfig = {
    api: {
       //  baseUrl: 'http://192.168.225.220:8080/',
       //baseUrl: 'http://178.170.41.113:8080/',
-      // baseUrl: 'http://192.168.1.8:8080/',
+      // baseUrl: 'http://192.168.1.6:8080/',
       // baseUrl: 'http://178.170.41.113:8080/',
       // baseUrl: 'http://192.168.43.83:8080/',
       baseUrl: 'https://dev1.microcap.fr:8443/',

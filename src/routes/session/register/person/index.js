@@ -10,7 +10,8 @@ import StepLabel from "@material-ui/core/StepLabel/StepLabel";
 import Stepper from "@material-ui/core/Stepper/Stepper";
 import FirstStep from "Routes/session/register/person/firstStep";
 import SecondStep from "Routes/session/register/person/secondStep";
-import {HOME} from "../../../../urls/frontendUrl";
+import {HOME} from "Url/frontendUrl";
+import { withRouter } from "react-router-dom";
 
 const steps = [1, 2];
 
@@ -22,6 +23,8 @@ class PersonRegister extends Component {
             data: {}
         }
     }
+
+    token = new URLSearchParams(this.props.location.search).get("token");
 
     _setData = (newData, isEnd = false) => {
         this.setState(
@@ -40,6 +43,8 @@ class PersonRegister extends Component {
         _data.login = _data.acceptLogin ? _data.login : _data.email;
         // _data.microcapOperator = _data.operator;
 
+        if(this.token)
+            _data.token = this.token
         delete _data.phoneNumberPrefix;
         delete _data.residenceCountry;
         delete _data.identificationNumber;
@@ -104,4 +109,4 @@ const mapStateToProps = ({ requestGlobalLoader }) => {
     return { loading: requestGlobalLoader }
 };
 
-export default connect(mapStateToProps, {registerPersonUser, loginUserWithEmailAndPassword})(PersonRegister);
+export default connect(mapStateToProps, {registerPersonUser, loginUserWithEmailAndPassword})(withRouter(PersonRegister));

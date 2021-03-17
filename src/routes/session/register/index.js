@@ -11,24 +11,33 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 
 // components
-import { SessionSlider } from 'Components/Widgets';
 import PersonRegister from './person';
 
 // app config
 import AppConfig from 'Constants/AppConfig';
 
 // redux action
-import {loginUserWithEmailAndPassword} from 'Actions';
-import {AUTH, HOME} from "../../../urls/frontendUrl";
 import Tab from "@material-ui/core/Tab";
 import Tabs from "@material-ui/core/Tabs";
 import IntlMessages from 'Util/IntlMessages';
-import LanguageProvider from "Components/Header/LanguageProvider";
-import SwipeableViews from "react-swipeable-views";
-import OrganisationRegister from "Routes/session/register/organisation";
 import {DISCOVER} from "Url/frontendUrl";
+import {useQuery} from "Helpers/helpers";
+import {useLocation} from "react-router-dom";
+import { SessionSlider } from 'Components/Widgets';
+import SwipeableViews from "react-swipeable-views";
+import {AUTH, HOME} from "../../../urls/frontendUrl";
+import {loginUserWithEmailAndPassword} from 'Actions';
+import LanguageProvider from "Components/Header/LanguageProvider";
+import OrganisationRegister from "Routes/session/register/organisation";
 
 const Signup = (props) => {
+
+   const query = useQuery(useLocation);
+   const defaultToken = query.get('token');
+   // alert(defaultToken)
+
+   const [token, setToken] = useState(defaultToken ? defaultToken : '' );
+
    const { loading } = props;
    const [activeIndex, setActiveIndex] = useState(0);
 
