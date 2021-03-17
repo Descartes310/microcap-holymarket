@@ -89,7 +89,7 @@ class Create extends Component {
                 <PageTitleBar
                     match={match}
                     history={history}
-                    title={"Création d'un ouvrage personnalisé"}
+                    title={"Création d'un type d'ouvrage personnalisé"}
                 />
                 <div className="full-height row">
                     <div className="col-md-12 col-sm-12 pr-md-40">

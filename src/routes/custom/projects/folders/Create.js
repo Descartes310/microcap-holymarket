@@ -113,9 +113,7 @@ const Create = props => {
      * On submit
      */
     const onSubmit = (data) => {
-        // setRequestGlobalAction(true);
-
-        // const contents = Object.entries(data).filter(i => i[0].includes('content'));
+        setRequestGlobalAction(true);
         const works = worksData.map(i => {
             const id = Number(i.id);
             // delete data[i[0]];
@@ -124,9 +122,6 @@ const Create = props => {
                 content: i.value
             }
         });
-
-        // console.log(works)
-        // console.log(works)
 
         const _data = {
             ...data,
@@ -172,9 +167,9 @@ const Create = props => {
                             <div className="row">
                                 <div className="col-sm-12">
                                     <FormGroup className="has-wrapper">
-                                        <InputLabel className="text-left" htmlFor="title">
-                                            Titre
-                            </InputLabel>
+                                        <InputLabel className="text-left bold" style={{ color: 'black', fontSize: '1.3em' }} htmlFor="title">
+                                            Titre du projet
+                                        </InputLabel>
                                         <InputComponent
                                             isRequired
                                             id="title"
@@ -184,7 +179,7 @@ const Create = props => {
                                             className="input-lg"
                                         // placeholder={intl.formatMessage({id: "common.commercialName"})}
                                         />
-                                        <span className="has-icon"><i className="ti-pencil" /></span>
+                                        {/* <span className="has-icon"><i className="ti-pencil" /></span> */}
                                     </FormGroup>
                                 </div>
                             </div>
@@ -192,9 +187,9 @@ const Create = props => {
                             <div className="row">
                                 <div className="col-sm-12 mb-20">
                                     <FormControl fullWidth>
-                                        <InputLabel className="text-left" htmlFor="type">
-                                            Type
-                            </InputLabel>
+                                        <InputLabel className="text-left" style={{ color: 'black', fontSize: '1.3em' }} htmlFor="type">
+                                            Type du projet
+                                        </InputLabel>
                                         <Select
                                             value={oldFolderType}
                                             onChange={event => onFolderTypeChange(event.target.value)}
@@ -218,9 +213,9 @@ const Create = props => {
                                         component={data => (
                                             <div className="form-group text-left">
                                                 <FormControl fullWidth>
-                                                    <InputLabel className="text-left" htmlFor="registrationType-helper">
-                                                        Options d'initialisations
-                                        </InputLabel>
+                                                    <InputLabel className="text-left" style={{ color: 'black', fontSize: '1.3em' }} htmlFor="registrationType-helper">
+                                                        Options d'initialisation
+                                                    </InputLabel>
                                                     <Select
                                                         value={initializationId}
                                                         onChange={event => setInitializationId(event.target.value)}
@@ -255,8 +250,11 @@ const Create = props => {
                                     return (
                                         <div key={key} className="col-sm-12">
                                             <FormGroup className="has-wrapper">
-                                                <InputLabel className="text-left" htmlFor={label}>
+                                                <InputLabel className="text-left" style={{ color: 'black', fontSize: '1.3em' }} htmlFor={label}>
                                                     {work.content}
+                                                </InputLabel>
+                                                <InputLabel className="text-left" htmlFor={label}>
+                                                    Description: {work.description}
                                                 </InputLabel>
                                                 <ReactQuill modules={modules} name={`${work.book.id}`} onChange={(e) => onSetWorks(`${work.book.id}`, e)} formats={formats} placeholder="Entrez votre contenu..." />
 
@@ -278,9 +276,9 @@ const Create = props => {
                             <div className="row">
                                 <div className="col-sm-12 col-md-12">
                                     <FormGroup fullWidth>
-                                        <InputLabel className="text-left" htmlFor="file">
+                                        <InputLabel className="text-left" style={{ color: 'black', fontSize: '1.3em' }} htmlFor="file">
                                             Document du projet
-                            </InputLabel>
+                                        </InputLabel>
                                         <Input
                                             id="File"
                                             type="file"

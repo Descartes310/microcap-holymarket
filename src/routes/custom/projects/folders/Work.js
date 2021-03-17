@@ -1,40 +1,74 @@
-import {connect} from "react-redux";
-import {injectIntl} from "react-intl";
-import React, { Component } from 'react';
-import {PROJECTS} from "Url/frontendUrl";
-import {withRouter} from "react-router-dom";
-import IntlMessages from 'Util/IntlMessages';
-import {AbilityContext} from "Permissions/Can";
+import { projects } from "Data/index";
+import { withRouter } from "react-router-dom";
+import Button from "@material-ui/core/Button";
+import React, { useEffect, useState } from 'react';
+import SingleTitleText from "Components/SingleTitleText";
+import { getOneProjectFolder } from "Actions/independentActions";
+import FetchFailedComponent from "Components/FetchFailedComponent";
+import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
 import CustomList from "Components/CustomList";
-import {setRequestGlobalAction, getUsersBooks} from "Actions";
 import TimeFromMoment from "Components/TimeFromMoment";
 
-class List extends Component {
-    static contextType = AbilityContext;
-    baseUrl = PROJECTS.FOLDERS.WORKS;
-    state = {
-        books: []
-    }
+const Show = ({ match, history }) => {
+    const folderId = match.params.id;
 
-    componentDidMount() {
-        this.props.setRequestGlobalAction(true);
-        getUsersBooks().then(data => {
-            this.setState({ books: data })
-        }).finally(() => this.props.setRequestGlobalAction(false))
-    }
-
-    render() {
-        const { intl, history } = this.props;
-        const { books } = this.state;
-
+    if (folderId === '' || folderId === undefined) {
         return (
-            <>
-                <CustomList
-                    list={books}
+            <SingleTitleText
+                text={"Projet non trouvés"}
+            />
+        )
+    }
+
+    const [projectFolder, setProjectFolder] = useState({
+        data: null,
+        mine: false,
+        loading: true
+    });
+
+    useEffect(() => {
+        loadData();
+    }, []);
+
+    const loadData = () => {
+        setProjectFolder({
+            data: null,
+            loading: true
+        });
+        getOneProjectFolder(folderId)
+            .then(result => {
+                setProjectFolder({
+                    data: result.project,
+                    mine: result.mine,
+                    loading: false
+                });
+            })
+            .catch(() => {
+                setProjectFolder({
+                    data: null,
+                    loading: false
+                });
+            })
+    };
+
+    if (projectFolder.loading) {
+        return (<RctSectionLoader />)
+    }
+
+    if (!projectFolder) {
+        return (
+            <FetchFailedComponent _onRetryClick={loadData} />
+        )
+    }
+
+    return (
+        <>
+           <CustomList
+                    list={projectFolder.data.works}
                     loading={false}
-                    titleList={"Structures projets"}
-                    itemsFoundText={n => intl.formatMessage({id: "projects.configuration.works.found"}, {count: n})}
-                    onAddClick={() => history.push(this.baseUrl.CREATE)}
+                    titleList={"Ouvrage du projet"}
+                    itemsFoundText={n => `${n} ouvrage.s trouvé.s`}
+                    // onAddClick={() => history.push(this.baseUrl.CREATE)}
                     /*addPermissions={{
                         permissions: [Permission.roles.createOne.name],
                     }}*/
@@ -43,7 +77,7 @@ class List extends Component {
                             {list && list.length === 0 ? (
                                 <div className="d-flex justify-content-center align-items-center py-50">
                                     <h4>
-                                        <IntlMessages id="projects.configuration.works.found" values={{count: 0}} />
+                                        Aucun ouvrages trouvés
                                     </h4>
                                 </div>
                             ) : (
@@ -52,7 +86,6 @@ class List extends Component {
                                         <thead>
                                             <tr>
                                                 <th>Titre du type d'ouvrage</th>
-                                                {/*<th>Contenu</th>*/}
                                                 <th>Type d'Ouvrage Parent</th>
                                                 <th>Date de création</th>
                                             </tr>
@@ -65,7 +98,7 @@ class List extends Component {
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{item.title}</h4>
+                                                            <h4 className="m-0 fw-bold text-dark">{item.book.title}</h4>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -73,7 +106,7 @@ class List extends Component {
                                                     <div className="media">
                                                         <div className="media-body pt-10">
                                                             {item.parent ? (
-                                                                <h4 className="m-0 fw-bold text-dark">{ item.parent.title}</h4>
+                                                                <h4 className="m-0 fw-bold text-dark">{ item.book.parent.title}</h4>
                                                             ) : (
                                                                 <h4 className="m-0 fw-bold text-dark">&#x0005F;</h4>
                                                             )}
@@ -83,7 +116,7 @@ class List extends Component {
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <TimeFromMoment time={item.createdAt} />
+                                                            <TimeFromMoment time={item.book.createdAt} />
                                                         </div>
                                                     </div>
                                                 </td>
@@ -96,17 +129,8 @@ class List extends Component {
                         </>
                     )}
                 />
-            </>
-        );
-    }
-}
-
-// map state to props
-const mapStateToProps = ({ requestGlobalLoader, authUser  }) => {
-    return {
-        requestGlobalLoader,
-        authUser: authUser.data,
-    }
+        </>
+    );
 };
 
-export default connect(mapStateToProps, {setRequestGlobalAction})(withRouter(injectIntl(List)));
+export default withRouter(Show);

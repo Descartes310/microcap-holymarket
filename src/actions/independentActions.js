@@ -933,6 +933,11 @@ export const updateBook = (id) => {
     return makeRequest('get', url);
 };
 
+export const sortBook = (id, data) => {
+    const url = joinBaseUrlWithParamsId(`${PROJECTS.FOLDERS.SORT_WORK}`, id);
+    return makeRequest('post', url, data);
+};
+
 export const createUserPiece = (data, config) => {
     const url = `${USERS.PIECE.CREATE}`;
     return new Promise((resolve, reject) => {

@@ -234,6 +234,7 @@ export const PROJECTS = {
         LIST: '/projects/folder/list',
         SHOW: '/projects/folder/:id',
         UPDATE: '/projects/folder/:id/update',
+        WORK: '/projects/folder/:id/works',
         CREATE: '/projects/folder/create',
         REACTIONS: {
             LIST: '/projects/folder/reactions/list',

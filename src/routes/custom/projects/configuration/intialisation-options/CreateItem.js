@@ -36,7 +36,7 @@ const AddWork = ({ show, works, onSave, onClose }) => {
 
         const work = works.find(i => i.id === id);
 
-        onSave({ ...work, content: data.content, max: Math.ceil(data.max), required: required });
+        onSave({ ...work, content: data.content, max: Math.ceil(data.max), required: required, description: data.description });
     };
 
     return (
@@ -52,7 +52,7 @@ const AddWork = ({ show, works, onSave, onClose }) => {
                                     <div className="form-group text-left">
                                         <FormControl fullWidth>
                                             <InputLabel className="text-left" htmlFor="representativePosition">
-                                                Ouvrage
+                                                Type d'Ouvrage
                                             </InputLabel>
                                             <InputComponent
                                                 isRequired
@@ -79,13 +79,28 @@ const AddWork = ({ show, works, onSave, onClose }) => {
 
                         <FormGroup className="col-sm-12 has-wrapper">
                             <InputLabel className="text-left" htmlFor="description">
-                                Contenu
+                                Etiquette
                             </InputLabel>
                             <InputComponent
                                 id="name"
                                 isRequired
                                 errors={errors}
                                 name={'content'}
+                                register={register}
+                                className="input-lg"
+                            />
+                        </FormGroup>
+
+                        <FormGroup className="col-sm-12 has-wrapper">
+                            <InputLabel className="text-left" htmlFor="max">
+                                Description
+                            </InputLabel>
+                            <InputComponent
+                                id="description"
+                                isRequired
+                                errors={errors}
+                                type='text'
+                                name={'description'}
                                 register={register}
                                 className="input-lg"
                             />

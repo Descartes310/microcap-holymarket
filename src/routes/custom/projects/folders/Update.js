@@ -12,8 +12,24 @@ import SingleTitleText from "Components/SingleTitleText";
 import FieldsetComponent from "Components/FieldsetComponent";
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FetchFailedComponent from "Components/FetchFailedComponent";
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
-import { getOneProjectFolder, getUsersBooks, updateFolder, updateBook, setRequestGlobalAction } from "Actions";
+import { getOneProjectFolder, getUsersBooks, updateFolder, updateBook, setRequestGlobalAction, sortBook } from "Actions";
+
+// a little function to help us with reordering the result
+const reorder = (list, startIndex, endIndex) => {
+    const result = Array.from(list);
+    const [removed] = result.splice(startIndex, 1);
+    result.splice(endIndex, 0, removed);
+    return result;
+};
+// const grid = 8;
+const getItemStyle = (isDragging, draggableStyle) => ({
+    ...draggableStyle,
+});
+const getListStyle = isDraggingOver => ({
+
+});
 
 const Update = ({ match, setRequestGlobalAction }) => {
     const folderId = match.params.id;
@@ -43,13 +59,13 @@ const Update = ({ match, setRequestGlobalAction }) => {
     }, []);
 
     const loadData = () => {
+        setRequestGlobalAction(true)
         setProjectFolder({
             data: null,
             loading: true
         });
         getOneProjectFolder(folderId)
             .then(result => {
-                console.log(result.project.works)
                 setAllData(result.project.works)
                 setData(result.project.works)
                 setProjectFolder({
@@ -64,6 +80,9 @@ const Update = ({ match, setRequestGlobalAction }) => {
                     loading: false
                 });
             })
+            .finally(() => {
+                setRequestGlobalAction(false)
+            })
     };
 
     const loadWorks = () => {
@@ -72,13 +91,40 @@ const Update = ({ match, setRequestGlobalAction }) => {
         })
     };
 
+    const onDragEnd = (result) => {
+        // dropped outside the list
+        if (!result.destination) {
+            return;
+        }
+
+        const items = reorder(
+            projectFolder.data.works,
+            result.source.index,
+            result.destination.index
+        );
+
+        console.log(items.map((item, index) => {
+            return { id: item.id, index: index + 1 }
+        }));
+
+        sortBook(folderId, { works: JSON.stringify(items.map((item, index) => {
+            return { id: item.id, index: index + 1 }
+        }))}).then(result => {
+            loadData();
+        })
+
+        setProjectFolder({
+            data: { ...projectFolder.data, works: items }
+        });
+    }
+
     const getTypeLabel = (type) => {
         const item = projects.initialisationOptions.find(i => i.value === type);
         return item ? item.name : '';
     };
 
     const onAddWork = (work) => {
-        updateFolder(folderId, { works: JSON.stringify([work].map(i => ({ id: Number(i.id), content: i.content, required: i.required, max: i.max }))) }, {}).then(
+        updateFolder(folderId, { works: JSON.stringify([work].map(i => ({ id: Number(i.id), content: i.content, required: i.required, description: i.description, max: i.max }))) }, {}).then(
             data => {
                 loadData()
             }
@@ -108,8 +154,6 @@ const Update = ({ match, setRequestGlobalAction }) => {
         )
     }
 
-    const details = projectFolder.data;
-
     const isRequired = (id) => {
         let data = projectFolder.data.initializationOption.works.filter(w => w.book.id == id)[0];
         if (data) {
@@ -127,16 +171,16 @@ const Update = ({ match, setRequestGlobalAction }) => {
             <div className="banner" />
             <div className="event-show-header mb-70">
                 <h3 className="text-white event-title">
-                    Fiche technique du projet <strong>{details ? details.title : ''}</strong>
+                    Fiche technique du projet <strong>{projectFolder.data ? projectFolder.data.title : ''}</strong>
                 </h3>
                 <h5 className="text-white">
                     <i className="ti-package mr-2" />
-                    <span>{getTypeLabel(details ? details.type : '')}</span>
+                    <span>{getTypeLabel(projectFolder.data ? projectFolder.data.type : '')}</span>
                 </h5>
             </div>
             <div className="row">
-                <div className="col-sm-12 col-md-9 col-xl-9">
-                    {details ? details.works.map((work, index) => {
+                <div className="col-sm-12 col-md-9 col-xl-9 d-block">
+                    {projectFolder.data ? projectFolder.data.works.sort((a, b) => a.index < b.index ? -1 : 1).map((work, index) => {
                         return (
                             <>
                                 {work.required || isRequired(work.book.id) ?
@@ -158,31 +202,47 @@ const Update = ({ match, setRequestGlobalAction }) => {
                         )
                     }) : null}
                 </div>
-                <div className="col-sm-12 col-md-3 col-xl-3">
+                <div className="col-sm-12 col-md-3 col-xl-3 d-block">
                     <h2>Type d'ouvrage</h2>
-                    {details ? details.works.map((work, index) => (
-                        <div key={index} className="row mb-20">
-                            <div className="col-sm-12">
-                                <FormGroup>
-                                    <FormControlLabel
-                                        control={
-                                            <Checkbox disabled={isRequired(work.book.id)} color="primary" defaultChecked={isRequired(work.book.id) ? true : work.required} value="checkedJ" onChange={(e) => changeProject(work, e.target.checked, index)} />
-                                        } label={work.book.title}
-                                    />
-                                </FormGroup>
-                            </div>
-                        </div>
-                    )) : null}
-                    {projectFolder.data.type == 'IDEA' ?
-                        <Button
-                            // type="submit"
-                            color="primary"
-                            variant="contained"
-                            className="text-white font-weight-bold mr-3 col-sm-12"
-                            onClick={() => setShowModal(true)}
-                        >
-                            Type d'ouvrage personnalisé
-                    </Button> : null}
+                    <p>Faites glisser les types d'ouvrages pour les réorganiser</p>
+                    <DragDropContext onDragEnd={onDragEnd}>
+                        <Droppable droppableId="droppable">
+                            {(provided, snapshot) => (
+                                <div className=" drag-list-wrapper" ref={provided.innerRef} style={getListStyle(snapshot.isDraggingOver)}>
+                                    {projectFolder.data ? projectFolder.data.works.sort((a, b) => a.index < b.index ? -1 : 1).map((work, index) => (
+                                        <Draggable key={index} draggableId={work.book.id + "id"} index={index}>
+                                            {(provided, snapshot) => (
+                                                <div className="row mb-20">
+                                                    <div className="col-sm-12">
+                                                        <FormGroup
+                                                            ref={provided.innerRef}
+                                                            {...provided.draggableProps}
+                                                            {...provided.dragHandleProps}
+                                                            className="drag-list">
+                                                            <FormControlLabel
+                                                                control={
+                                                                    <Checkbox disabled={isRequired(work.book.id)} color="primary" defaultChecked={isRequired(work.book.id) ? true : work.required} value="checkedJ" onChange={(e) => changeProject(work, e.target.checked, index)} />
+                                                                } label={work.book.title}
+                                                            />
+                                                        </FormGroup>
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </Draggable>
+                                    )) : null}
+                                </div>
+                            )}
+                        </Droppable>
+                    </DragDropContext>
+                    <Button
+                        // type="submit"
+                        color="primary"
+                        variant="contained"
+                        className="text-white font-weight-bold mr-3 col-sm-12"
+                        onClick={() => setShowModal(true)}
+                    >
+                        Ajouter une section
+                    </Button>
                 </div>
                 {projectFolder.data.type == 'IDEA' ?
                     <AddWork

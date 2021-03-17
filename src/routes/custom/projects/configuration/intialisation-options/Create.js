@@ -78,7 +78,7 @@ class CreateProjectsCall extends Component {
             const data = {
                 type: this.props.type,
                 name: this.state.label,
-                works: JSON.stringify(this.state.chosenWorks.map(i => ({id: Number(i.id), content: i.content, required: i.required, max: i.max}))),
+                works: JSON.stringify(this.state.chosenWorks.map(i => ({id: Number(i.id), content: i.content, description: i.description, required: i.required, max: i.max}))),
                 branchId: this.props.authUser.branchId,
             };
 
@@ -129,7 +129,7 @@ class CreateProjectsCall extends Component {
                                 <div className="row">
                                     <FormGroup className="col-sm-12 has-wrapper">
                                         <InputLabel className="text-left" htmlFor="label">
-                                            Titre
+                                            Titre de l'option d'initialisation
                                         </InputLabel>
                                         <InputStrap
                                             required

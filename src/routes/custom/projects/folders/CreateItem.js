@@ -36,7 +36,7 @@ const AddWork = ({ show, works, onSave, onClose }) => {
 
         const work = works.find(i => i.id === id);
 
-        onSave({ ...work, content: data.content, max: 1, required: false });
+        onSave({ ...work, content: data.content, max: 1, description: data.description, required: false });
     };
 
     return (
@@ -52,7 +52,7 @@ const AddWork = ({ show, works, onSave, onClose }) => {
                                     <div className="form-group text-left">
                                         <FormControl fullWidth>
                                             <InputLabel className="text-left" htmlFor="representativePosition">
-                                                Ouvrage
+                                                Type d'Ouvrage
                                             </InputLabel>
                                             <InputComponent
                                                 isRequired
@@ -79,7 +79,7 @@ const AddWork = ({ show, works, onSave, onClose }) => {
 
                         <FormGroup className="col-sm-12 has-wrapper">
                             <InputLabel className="text-left" htmlFor="description">
-                                Contenu
+                                Etiquette
                             </InputLabel>
                             <InputComponent
                                 id="name"
@@ -93,13 +93,14 @@ const AddWork = ({ show, works, onSave, onClose }) => {
 
                         <FormGroup className="col-sm-12 has-wrapper">
                             <InputLabel className="text-left" htmlFor="max">
-                                Etiquettes
+                                Description
                             </InputLabel>
                             <InputComponent
-                                id="max"
+                                id="description"
+                                isRequired
                                 errors={errors}
-                                defaultValue={1}
-                                name={'etiquette'}
+                                type='text'
+                                name={'description'}
                                 register={register}
                                 className="input-lg"
                             />
