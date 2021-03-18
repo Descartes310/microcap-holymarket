@@ -57,7 +57,7 @@ class Create extends Component {
             this.props.setRequestGlobalAction(true);
             const data = {
                 title: this.state.label,
-                // content: this.state.description,
+                description: this.state.description,
                 branchId: this.props.authUser.branchId,
             };
             if (this.state.parentId !== '-1') {
@@ -106,9 +106,9 @@ class Create extends Component {
                                         <span className="has-icon"><i className="ti-pencil"/></span>
                                     </FormGroup>
 
-                                    {/*<FormGroup className="col-sm-12 has-wrapper">
+                                    <FormGroup className="col-sm-12 has-wrapper">
                                         <InputLabel className="text-left" htmlFor="description">
-                                            Texte
+                                            Description
                                         </InputLabel>
                                         <InputStrap
                                             required
@@ -119,7 +119,7 @@ class Create extends Component {
                                             onChange={event => this.handleOnFormChange('description', event.target.value)}
                                         />
                                         <span className="has-icon"><i className="ti-pencil"/></span>
-                                    </FormGroup>*/}
+                                    </FormGroup>
 
                                     <CustomAsyncComponent
                                         loading={false}
