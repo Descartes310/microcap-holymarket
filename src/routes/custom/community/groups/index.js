@@ -7,7 +7,7 @@ import Drawer from '@material-ui/core/Drawer';
 import Hidden from '@material-ui/core/Hidden';
 import { withStyles } from '@material-ui/core/styles';
 import { Helmet } from "react-helmet";
-import { statusCommunitySpaceStatus, setCommunitySpaceData, setCommunitySpaceAdmins } from 'Actions/CommunityAction';
+import { statusCommunitySpaceStatus, setCommunitySpaceData, setCommunitySpaceAdmins, setCommunitySpaceType} from 'Actions/CommunityAction';
 import GroupsSidebar from "Routes/custom/community/groups/GroupsSidebar";
 import CommunityItem from "Routes/custom/community/groups/CommunityItem";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -80,6 +80,7 @@ class Groups extends Component {
             this.props.statusCommunitySpaceStatus(true);
             this.props.setCommunitySpaceAdmins(data);
             this.props.setCommunitySpaceData(this.props.currentCommunity.data.community.id);
+            this.props.setCommunitySpaceType(this.props.currentCommunity.data.community.typeGroup.label);
             this.props.history.push(COMMUNITY.MEMBERS.LIST);
         })
     }
@@ -246,5 +247,5 @@ const mapStateToProps = ({ communitySpace, currentCommunity, authUser }) => {
 };
 
 
-export default connect(mapStateToProps, { setRequestGlobalAction, setCurrentCommunity, statusCommunitySpaceStatus, getUserCommunities, setCommunitySpaceData, setCommunitySpaceAdmins })
+export default connect(mapStateToProps, { setRequestGlobalAction, setCurrentCommunity, statusCommunitySpaceStatus, getUserCommunities, setCommunitySpaceData, setCommunitySpaceAdmins, setCommunitySpaceType })
     (withStyles(styles, { withTheme: true })(Groups));

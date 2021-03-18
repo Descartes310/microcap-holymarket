@@ -7,6 +7,7 @@ import {
     COMMUNITY_SPACE_SET_STATUS,
     COMMUNITY_SPACE_SET_VALUE,
     COMMUNITY_SPACE_SET_ADMINS,
+    COMMUNITY_SPACE_SET_TYPE
 } from 'Actions/types';
 
 export const statusCommunitySpaceStatus = (data) => (dispatch) => {
@@ -22,4 +23,10 @@ export const setCommunitySpaceData = (data) => (dispatch) => {
 export const setCommunitySpaceAdmins = (data) => (dispatch) => {
     // Persist data into store
     dispatch({ type: COMMUNITY_SPACE_SET_ADMINS, payload: data });
+};
+
+export const setCommunitySpaceType = (data) => (dispatch) => {
+    console.log("setCommunitySpaceType data =>", data);
+    // Persist data into store
+    dispatch({ type: COMMUNITY_SPACE_SET_TYPE, payload: data });
 };

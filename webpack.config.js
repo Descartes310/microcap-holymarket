@@ -129,7 +129,7 @@ module.exports = {
 		]
 	},
 	optimization: {
-		minimizer: [new TerserPlugin({
+		/*minimizer: [new TerserPlugin({
 			extractComments: true,
 			parallel: 8,
 			terserOptions: {
@@ -138,7 +138,7 @@ module.exports = {
 				}
 			}
 		})],
-		minimize: true,
+		minimize: true,*/
 	},
 	performance: {
 		hints: process.env.NODE_ENV === 'production' ? "warning" : false
