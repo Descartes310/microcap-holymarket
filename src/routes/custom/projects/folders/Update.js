@@ -122,7 +122,7 @@ const Update = ({ match, setRequestGlobalAction }) => {
 
     const getTypeLabel = (type) => {
         const item = projects.initialisationOptions.find(i => i.value === type);
-        return item ? item.name : '';
+        return item ? item.name : 'Idée personnelle';
     };
 
     const onAddWork = (work) => {

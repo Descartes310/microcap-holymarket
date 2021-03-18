@@ -55,7 +55,7 @@ const Show = ({ match, history }) => {
 
     const getTypeLabel = (type) => {
         const item = projects.initialisationOptions.find(i => i.value === type);
-        return item ? item.name : '';
+        return item ? item.name : 'Idée personnelle';
     };
 
     if (projectFolder.loading) {
