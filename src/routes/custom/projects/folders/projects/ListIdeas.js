@@ -7,48 +7,44 @@ import { withRouter } from "react-router-dom";
 import IntlMessages from 'Util/IntlMessages';
 import { AbilityContext } from "Permissions/Can";
 import CustomList from "Components/CustomList";
-import { setRequestGlobalAction, getFolders } from "Actions";
+import { setRequestGlobalAction, getUsersBooks } from "Actions";
 import Button from '@material-ui/core/Button';
 
 class List extends Component {
     static contextType = AbilityContext;
-    baseUrl = PROJECTS.FOLDERS;
+    baseUrl = PROJECTS.FOLDERS.PROJECTS;
 
-    componentDidMount() {
-        this.props.getItems(this.props.authUser.user.id);
+    state = {
+        ideas: []
     }
 
-    getTypeLabel = (type) => {
-        const item = projects.initialisationOptions.find(i => i.value === type);
-        return item ? item.name : '';
-    };
-
-    onItemClick = (projectId) => {
-        this.props.history.push(joinUrlWithParamsId(this.baseUrl.SHOW, projectId));
-    };
-
-    goToWork = (projectId) => {
-        this.props.history.push(joinUrlWithParamsId(this.baseUrl.WORK, projectId));
-    };
+    componentDidMount() {
+        this.props.setRequestGlobalAction(true)
+        getUsersBooks('PERSONNAL_IDEA').then(data => {
+            this.setState({ ideas: data })
+        }).finally(() => {
+            this.props.setRequestGlobalAction(false)
+        })
+    }
 
     render() {
-        const { list, loading, error, intl, history } = this.props;
+        const { intl, history } = this.props;
+        const { ideas } = this.state;
 
         return (
             <>
                 <CustomList
-                    list={list}
-                    error={error}
-                    loading={loading}
-                    titleList={"Mes projets"}
-                    itemsFoundText={n => intl.formatMessage({ id: "projects.found" }, { count: n })}
-                    onAddClick={() => history.push(this.baseUrl.CREATE)}
+                    list={ideas}
+                    loading={false}
+                    // titleList={"Mes projets"}
+                    itemsFoundText={n => `${n} idée.s trouvée.s`}
+                    onAddClick={() => history.push(this.baseUrl.CREATE_IDEAS)}
                     renderItem={list => (
                         <>
                             {list && list.length === 0 ? (
                                 <div className="d-flex justify-content-center align-items-center py-50">
                                     <h4>
-                                        <IntlMessages id="projects.found" values={{ count: 0 }} />
+                                        Aucune idée trouvée
                                     </h4>
                                 </div>
                             ) : (
@@ -58,7 +54,7 @@ class List extends Component {
                                                 <tr>
                                                     <th>Titre</th>
                                                     <th>Type</th>
-                                                    <th>Option d'initialisation</th>
+                                                    {/* <th>Description</th> */}
                                                     <th>Actions</th>
                                                 </tr>
                                             </thead>
@@ -78,17 +74,17 @@ class List extends Component {
                                                         <td>
                                                             <div className="media">
                                                                 <div className="media-body pt-10">
-                                                                    <h4 className="m-0 fw-bold text-dark">{this.getTypeLabel(item.type)}</h4>
+                                                                    <h4 className="m-0 fw-bold text-dark">Idée personnelle</h4>
                                                                 </div>
                                                             </div>
                                                         </td>
-                                                        <td>
+                                                        {/* <td>
                                                             <div className="media">
                                                                 <div className="media-body pt-10">
-                                                                    <h4 className="m-0 fw-bold text-dark">{item.initializationOption.name}</h4>
+                                                                    <h4 className="m-0 fw-bold text-dark">{item.description}</h4>
                                                                 </div>
                                                             </div>
-                                                        </td>
+                                                        </td> */}
                                                         <td>
                                                             <div className="media">
                                                                 <div className="media-body pt-10">
@@ -97,18 +93,9 @@ class List extends Component {
                                                                         variant="contained"
                                                                         className="text-white font-weight-bold"
                                                                         style={{ marginRight: 10 }}
-                                                                        onClick={() => this.onItemClick(item.id)}
+                                                                        // onClick={() => this.onItemClick(item.id)}
                                                                     >
-                                                                        Voir le projet
-                                                                    </Button>
-                                                                    <Button
-                                                                        color="primary"
-                                                                        variant="contained"
-                                                                        className="text-white font-weight-bold bg-blue"
-                                                                        style={{ marginRight: 10 }}
-                                                                        onClick={() => this.goToWork(item.id)}
-                                                                    >
-                                                                        Consulter les ouvrages
+                                                                        Voir le détails
                                                                     </Button>
                                                                 </div>
                                                             </div>
@@ -128,15 +115,11 @@ class List extends Component {
 }
 
 // map state to props
-const mapStateToProps = ({ requestGlobalLoader, folders, authUser }) => {
-    const list = folders;
+const mapStateToProps = ({ requestGlobalLoader, authUser }) => {
     return {
         requestGlobalLoader,
-        authUser: authUser.data,
-        loading: list.loading,
-        list: list.data,
-        error: list.error
+        authUser: authUser.data
     }
 };
 
-export default connect(mapStateToProps, { getItems: getFolders, setRequestGlobalAction })(withRouter(injectIntl(List)));
+export default connect(mapStateToProps, { setRequestGlobalAction })(withRouter(injectIntl(List)));

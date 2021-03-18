@@ -1044,12 +1044,16 @@ export const getFavouritesGroups = () => {
     return makeRequest('get', url);
 };
 
-export const getUsersBooks = () => {
-    const url = PROJECTS.CONFIGURATION.WORKS.GET_ALL_USER;
+export const getUsersBooks = (type = null) => {
+    let url = null;
+    if (type)
+        url = `${PROJECTS.CONFIGURATION.WORKS.GET_ALL_USER}?type=${type}`;
+    else
+        url = PROJECTS.CONFIGURATION.WORKS.GET_ALL_USER;
     return makeRequest('get', url);
 };
 
-export const addGroupToFavourites = ( id) => {
+export const addGroupToFavourites = (id) => {
     const url = joinBaseUrlWithParamsId(`${COMMUNITY_MEMBER.USER.GROUPS.ADD_FAVOURITES}`, id);
     return makeRequest('post', url, null);
 };

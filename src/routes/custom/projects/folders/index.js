@@ -1,5 +1,5 @@
 import React from 'react';
-import List from './List';
+import List from './projects';
 import ReactionList from './reactions/List';
 import ReactionCreate from './reactions/Create';
 import Show from './Show';
@@ -14,8 +14,8 @@ const FoldersManagement = ({ match }) => {
     return (
         <div className="full-height">
             <Switch>
-                <Redirect exact from={`${match.url}/`} to={PROJECTS.FOLDERS.LIST} />
-                <Route path={PROJECTS.FOLDERS.LIST} component={List} />
+                <Redirect exact from={`${match.url}/`} to={PROJECTS.FOLDERS.PROJECTS.SELF} />
+                <Route path={PROJECTS.FOLDERS.PROJECTS.SELF} component={List} />
                 <Route path={PROJECTS.FOLDERS.WORKS.SELF} component={Works} />
                 <Route path={PROJECTS.FOLDERS.REACTIONS.LIST} component={ReactionList} />
                 <Route path={PROJECTS.FOLDERS.REACTIONS.CREATE} component={ReactionCreate} />

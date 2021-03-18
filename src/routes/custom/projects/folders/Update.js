@@ -107,9 +107,11 @@ const Update = ({ match, setRequestGlobalAction }) => {
             return { id: item.id, index: index + 1 }
         }));
 
-        sortBook(folderId, { works: JSON.stringify(items.map((item, index) => {
-            return { id: item.id, index: index + 1 }
-        }))}).then(result => {
+        sortBook(folderId, {
+            works: JSON.stringify(items.map((item, index) => {
+                return { id: item.id, index: index + 1 }
+            }))
+        }).then(result => {
             loadData();
         })
 
@@ -244,13 +246,12 @@ const Update = ({ match, setRequestGlobalAction }) => {
                         Ajouter une section
                     </Button>
                 </div>
-                {projectFolder.data.type == 'IDEA' ?
-                    <AddWork
-                        onSave={onAddWork}
-                        works={works}
-                        show={showModal}
-                        onClose={() => setShowModal(false)}
-                    /> : null}
+                <AddWork
+                    onSave={onAddWork}
+                    works={works}
+                    show={showModal}
+                    onClose={() => setShowModal(false)}
+                />
             </div>
         </div>
     );

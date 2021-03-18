@@ -20,7 +20,7 @@ import SingleTitleText from "Components/SingleTitleText";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import InputLabel from "@material-ui/core/InputLabel/InputLabel";
 import CustomAsyncComponent from "Components/CustomAsyncComponent";
-import { getInitialisationOptions, setRequestGlobalAction } from "Actions";
+import { getInitialisationOptions, setRequestGlobalAction, getUsersBooks } from "Actions";
 import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
 
@@ -30,7 +30,6 @@ const modules = {
         [{ 'font': [] }],
         ['bold', 'italic', 'underline', 'strike', 'blockquote'],
         [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
-        ['link', 'image'],
         ['clean'],
         [{ 'align': [] }],
         ['code-block']
@@ -41,8 +40,7 @@ const formats = [
     'header',
     'font',
     'bold', 'italic', 'underline', 'strike', 'blockquote',
-    'list', 'bullet', 'indent',
-    'link', 'image', 'align',
+    'list', 'bullet', 'indent', 'align',
     'code-block'
 ];
 
@@ -95,15 +93,29 @@ const Create = props => {
 
     const onFolderTypeChange = (newValue) => {
         if (newValue !== oldFolderType) {
-            loadData(newValue);
-            setOldFolderType(newValue);
+            if (newValue != 'PERSONNAL_IDEA') {
+                loadData(newValue);
+                setOldFolderType(newValue);
+            } else {
+                setRequestGlobalAction(true)
+                getUsersBooks('PERSONNAL_IDEA').then(data => {
+                    setOldFolderType(newValue);
+                    setInitialisationData({
+                        data: data,
+                        error: null,
+                        loading: false
+                    })
+                }).finally(() => {
+                    setRequestGlobalAction(false)
+                })
+            }
         }
     };
 
     const onSetWorks = (id, value) => {
         // console.log('VALUE => ', value, id)
         let data = worksData.filter(w => w.id != id);
-        data.push({id, value});
+        data.push({ id, value });
         // console.log(data)
         setWorksData(data);
         // console.log(worksData);
@@ -129,9 +141,14 @@ const Create = props => {
             userId: authUser.user.id,
             branchId: authUser.user.branch.id,
             folderType: oldFolderType,
-            initializationId,
-            works: JSON.stringify(works),
         };
+
+        if(oldFolderType == 'PERSONNAL_IDEA') {
+            _data.ideaId = initializationId;
+        } else {
+            _data.works = JSON.stringify(works),
+            _data.initializationId = initializationId;
+        }
 
         createFolder(_data, { fileData: ['file'], multipart: true })
             .then(() => {
@@ -194,7 +211,7 @@ const Create = props => {
                                             value={oldFolderType}
                                             onChange={event => onFolderTypeChange(event.target.value)}
                                             input={<Input name="type" id="type" />}>
-                                            {projects.initialisationOptions.map((item, index) => (
+                                            {[...projects.initialisationOptions, { name: 'Idée personnel', value: 'PERSONNAL_IDEA' }].map((item, index) => (
                                                 <MenuItem key={index} value={item.value} className="center-hor-ver">
                                                     {item.name}
                                                 </MenuItem>
@@ -222,7 +239,7 @@ const Create = props => {
                                                         input={<Input name="registrationType" id="registrationType-helper" />}>
                                                         {data.map((item, index) => (
                                                             <MenuItem key={index} value={item.id} className="center-hor-ver">
-                                                                {item.name}
+                                                                {item.name ? item.name : item.title}
                                                             </MenuItem>
                                                         ))}
                                                     </Select>
@@ -240,11 +257,7 @@ const Create = props => {
                                     <SingleTitleText
                                         text={"Veuillez selectionner une options d'initialisation"}
                                     />
-                                ) : !works ? (
-                                    <SingleTitleText
-                                        text={"BNUll"}
-                                    />
-                                ) : works.map((work, index) => {
+                                ) : !works ? null : works.map((work, index) => {
                                     const key = initializationId + index;
                                     const label = `${work.book.id}-content`;
                                     return (
@@ -257,16 +270,6 @@ const Create = props => {
                                                     Description: {work.description}
                                                 </InputLabel>
                                                 <ReactQuill modules={modules} name={`${work.book.id}`} onChange={(e) => onSetWorks(`${work.book.id}`, e)} formats={formats} placeholder="Entrez votre contenu..." />
-
-                                                {/* <InputComponent
-                                                    isRequired
-                                                    id={label}
-                                                    name={label}
-                                                    errors={errors}
-                                                    register={register}
-                                                    className="input-lg"
-                                                />
-                                                <span className="has-icon"><i className="ti-pencil" /></span> */}
                                             </FormGroup>
                                         </div>
                                     )

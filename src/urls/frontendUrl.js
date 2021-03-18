@@ -231,7 +231,6 @@ export const PROJECTS = {
     SELF: '/projects',
     FOLDERS: {
         SELF: '/projects/folder',
-        LIST: '/projects/folder/list',
         SHOW: '/projects/folder/:id',
         UPDATE: '/projects/folder/:id/update',
         WORK: '/projects/folder/:id/works',
@@ -246,6 +245,12 @@ export const PROJECTS = {
             CREATE: '/projects/folder/works/create',
             SELF: '/projects/folder/works'
         },
+        PROJECTS: {
+            SELF: '/projects/folder/projects',
+            LIST: '/projects/folder/projects/list',
+            IDEAS: '/projects/folder/projects/ideas/list',
+            CREATE_IDEAS: '/projects/folder/projects/ideas/create',
+        }
     },
     PROJECTS: {
         LIST: '/projects/list',
