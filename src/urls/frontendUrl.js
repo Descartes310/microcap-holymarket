@@ -359,6 +359,11 @@ export const COMMUNITY = {
         LIST: '',
         CREATE: ''
     },
+    PROJECTS: {
+        SELF: '/admin/community-t/projects',
+        SHOW: '/admin/community-t/projects/show',
+        UPDATE: '/admin/community-t/projects/update',
+    },
     INVITATIONS: {
         SELF: '/community-t/members/invitation',
         LIST: {

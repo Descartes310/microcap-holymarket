@@ -979,6 +979,11 @@ export const getOneProjectFolder = (folderId) => {
     return makeRequest('get', url);
 };
 
+export const getOneProjectFolderByGroup = (groupId) => {
+    const url = joinBaseUrlWithParamsId(PROJECTS.FOLDERS.GET_ONE_BY_GROUP, groupId);
+    return makeRequest('get', url);
+};
+
 export const getBranchProjectFolder = () => {
     return makeRequest('get', PROJECTS.FOLDERS.GET_ALL_BY_BRANCH);
 };

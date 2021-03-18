@@ -67,14 +67,14 @@ class List extends Component {
                                                         <td>
                                                             <div className="media">
                                                                 <div className="media-body pt-10">
-                                                                    <h4 className="m-0 fw-bold text-dark">{item.title}</h4>
+                                                                    <h4 style={{ textAlign: 'start' }} className="m-0 fw-bold text-dark">{item.title}</h4>
                                                                 </div>
                                                             </div>
                                                         </td>
                                                         <td>
                                                             <div className="media">
                                                                 <div className="media-body pt-10">
-                                                                    <h4 className="m-0 fw-bold text-dark">Idée personnelle</h4>
+                                                                    <h4 style={{ textAlign: 'start' }} className="m-0 fw-bold text-dark">Idée personnelle</h4>
                                                                 </div>
                                                             </div>
                                                         </td>

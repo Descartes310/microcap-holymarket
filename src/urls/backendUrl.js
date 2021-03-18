@@ -374,6 +374,7 @@ export const PROJECTS = {
         UPDATE_WORK: 'api/projects/folders/books/{id}',
         SORT_WORK: 'api/projects/folders/{id}/sort',
         GET_ONE: 'api/projects/folders/{id}',
+        GET_ONE_BY_GROUP: 'api/projects/folders/group/{id}',
     },
     REACTIONS: {
         GET_ALL: 'api/projects/reactions/projects/{id}',

@@ -822,13 +822,13 @@ export default {
             {
                "menu_title": "Edition",
                "new_item": false,
-               "path": MICROCAP360.COMPTES.SELF,
+               "path": COMMUNITY.PROJECTS.UPDATE,
                "permissions": [],
             },
             {
                "menu_title": "Consultation",
                "new_item": false,
-               "path": PROJECTS.FOLDERS.SELF,
+               "path": COMMUNITY.PROJECTS.SHOW,
                "permissions": [],
             }
          ],

@@ -28,6 +28,7 @@ import Community from "Routes/custom/community";
 import CommunityMembersActivities from "Routes/custom/communityT/activities";
 import CommunityMembers from "Routes/custom/communityT/members";
 import CommunityAdmins from "Routes/custom/communityT/admin";
+import CommunityProject from "Routes/custom/communityT/projects";
 import CommunityMembersPostsProjects from "Routes/custom/communityT/postsProjects";
 import ClientPieceList from "Routes/custom/settings/client_folder/List";
 import ConfigurationsList from "Routes/custom/settings/configurations/List";
@@ -249,6 +250,12 @@ const Dashboard = ({ match, authUser }) => {
                     <CanRoute
                         path={COMMUNITY.POST_PROJECT.SELF}
                         component={CommunityMembersPostsProjects}
+                        permissions={[]}
+                    />
+
+                    <CanRoute
+                        path={COMMUNITY.PROJECTS.SELF}
+                        component={CommunityProject}
                         permissions={[]}
                     />
 
