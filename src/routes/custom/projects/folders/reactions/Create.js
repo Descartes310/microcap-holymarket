@@ -132,7 +132,7 @@ const Create = props => {
                                 onChange={event => onWorkChange(event.target.value)}
                                 input={<Input name="type" id="type" />}>
                                 {
-                                    currentCommunity.data ? currentCommunity.data.project ? currentCommunity.data.project.works.map(w => (
+                                    currentCommunity.data ? currentCommunity.data.community.projectFolder ? currentCommunity.data.community.projectFolder.works.map(w => (
                                         <MenuItem value={w.id} className="center-hor-ver">
                                             {w.book.title}
                                         </MenuItem>

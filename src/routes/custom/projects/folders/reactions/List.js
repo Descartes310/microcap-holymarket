@@ -61,6 +61,7 @@ class List extends Component {
                                                     <th>Titre</th>
                                                     <th>Type</th>
                                                     <th>Contenu</th>
+                                                    
                                                 </tr>
                                             </thead>
                                             <tbody>

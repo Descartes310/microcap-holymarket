@@ -70,13 +70,16 @@ class NavMenuItem extends Component {
    render() {
       const { menu, onToggleMenu, authUser } = this.props;
       const { subMenuOpen } = this.state;
+      //console.log("menu props currentCommunity =>", menu);
       // Check if the route has nested routes and if the user has at least one permission for one nested routes
       if ((menu.key != 'commnity_admin' && this.props.authUser.user.status != Status.PENDING) || (menu.key == 'commnity_admin' && this.props.communitySpace.admins.includes(authUser.user.id) && this.props.authUser.user.status != Status.PENDING))
-         if (menu.child_routes !== null && authUser.hasPermissions(_.flattenDeep(menu.child_routes.map(p => p.permissions.map(i => i.name))))) {
+         if (menu.child_routes !== null && authUser.hasPermissions(_.flattenDeep(menu.child_routes.map(p => p.permissions.map(i => i.name)))) ) {
 
             return (
                <Fragment>
+                  { (menu.menu_title === 'Projets' && this.props.communitySpace.type === 'Communaute projet') ? 
                   <ListItem button component="li" onClick={onToggleMenu} className={`list-item ${classNames({ 'item-active': menu.open })}`}>
+                   
                      <ListItemIcon className="menu-icon">
                         <i className={menu.menu_icon}></i>
                      </ListItemIcon>
@@ -89,7 +92,41 @@ class NavMenuItem extends Component {
                         :
                         ''
                      }
-                  </ListItem>
+                  </ListItem>  
+                  : (this.props.communitySpace.type === 'Communaute projet' && menu.menu_title !== 'Projets') ? 
+                  <ListItem button component="li" onClick={onToggleMenu} className={`list-item ${classNames({ 'item-active': menu.open })}`}>
+                   
+                        <ListItemIcon className="menu-icon">
+                           <i className={menu.menu_icon}></i>
+                        </ListItemIcon>
+                        <span className="menu text-capitalize">
+                           {/*<IntlMessages id={menu.menu_title} />*/}
+                           {menu.menu_title}
+                        </span>
+                        {menu.new_item && menu.new_item === true ?
+                           <Chip label="new" className="new-item" color="secondary" />
+                           :
+                           ''
+                        }
+                     </ListItem> 
+                  :(this.props.communitySpace.type !== 'Communaute projet' && menu.menu_title !== 'Projets') ? 
+                  
+                     <ListItem button component="li" onClick={onToggleMenu} className={`list-item ${classNames({ 'item-active': menu.open })}`}>
+                   
+                        <ListItemIcon className="menu-icon">
+                           <i className={menu.menu_icon}></i>
+                        </ListItemIcon>
+                        <span className="menu text-capitalize">
+                           {/*<IntlMessages id={menu.menu_title} />*/}
+                           {menu.menu_title}
+                        </span>
+                        {menu.new_item && menu.new_item === true ?
+                           <Chip label="new" className="new-item" color="secondary" />
+                           :
+                           ''
+                        }
+                     </ListItem> 
+                   : null }
                   <Collapse in={menu.open} timeout="auto" className="sub-menu">
                      <Fragment>
                         {menu.type_multi == null ?
