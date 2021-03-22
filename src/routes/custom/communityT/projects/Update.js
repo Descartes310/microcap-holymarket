@@ -13,15 +13,13 @@ import React, { useEffect, useState } from 'react';
 import Select from "@material-ui/core/Select/Select";
 import InputComponent from "Components/InputComponent";
 import FormControl from "@material-ui/core/FormControl";
-import SingleTitleText from "Components/SingleTitleText";
 import { NotificationManager } from "react-notifications";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import { Form, FormGroup, Input as FormItem } from "reactstrap";
 import InputLabel from "@material-ui/core/InputLabel/InputLabel";
 import CustomAsyncComponent from "Components/CustomAsyncComponent";
-import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
-import { getInitialisationOptions, setRequestGlobalAction, updateFolderData, getOneProjectFolderByGroup } from "Actions";
+import { getInitialisationOptions, setRequestGlobalAction, updateFolderData, getOneProjectFolderByGroup, getCurrencies } from "Actions";
 
 const modules = {
     toolbar: [
@@ -45,11 +43,11 @@ const formats = [
 
 const Update = props => {
 
-    const { authUser, history, intl, getInitialisationOptions, setRequestGlobalAction } = props;
+    const { history, setRequestGlobalAction } = props;
 
-    const [oldFolderType, setOldFolderType] = useState(projects.initialisationOptions[0].value);
     const [initializationId, setInitializationId] = useState('');
     const [worksData, setWorksData] = useState([]);
+    const [currencies, setCurrencies] = useState([]);
 
     const [initialisationData, setInitialisationData] = useState({
         data: null,
@@ -59,12 +57,10 @@ const Update = props => {
     
     const [projectFolder, setProjectFolder] = useState({});
 
-    const [file, setFile] = useState(null);
-
-    const { register, errors, handleSubmit, setValue } = useForm();
+    const { register, errors, handleSubmit, control } = useForm();
 
     useEffect(() => {
-        // loadData();
+        fetchCurrencies();
         loadProject();
     }, []);
 
@@ -80,12 +76,16 @@ const Update = props => {
     };
 
     const onSetWorks = (id, value) => {
-        // console.log('VALUE => ', value, id)
         let data = worksData.filter(w => w.id != id);
         data.push({ id, value });
-        // console.log(data)
         setWorksData(data);
-        // console.log(worksData);
+    };
+
+    const fetchCurrencies = () => {
+        getCurrencies()
+            .then(result => {
+                setCurrencies(result)
+            });
     };
 
     /**
@@ -157,6 +157,56 @@ const Update = props => {
                                 </div>
                             </div>
 
+                            <div className="row align-items-center">
+                                <div className="col-md-6 col-sm-12">
+                                    <FormGroup className="has-wrapper">
+                                        <InputLabel className="text-left" htmlFor="amount">
+                                            Besoin estimé
+                                        </InputLabel>
+                                        <InputComponent
+                                            id="amount"
+                                            errors={errors}
+                                            register={register}
+                                            name={'amount'}
+                                            className="input-lg"
+                                            type='number'
+                                        />
+                                    </FormGroup>
+                                </div>
+                                <div className="col-md-6 col-sm-12">
+                                    <CustomAsyncComponent
+                                        loading={false}
+                                        data={currencies}
+                                        component={data => (
+                                            <div className="form-group text-left">
+                                                <FormControl fullWidth>
+                                                    <InputLabel className="text-left" htmlFor="currency">
+                                                        Devise
+                                                    </InputLabel>
+                                                    <InputComponent
+                                                        isRequired
+                                                        className="mt-0"
+                                                        errors={errors}
+                                                        control={control}
+                                                        register={register}
+                                                        componentType="select"
+                                                        name={'currency'}
+                                                        defaultValue={data[0]}
+                                                        as={<Select input={<Input name="price_currency" id="currency" />}>
+                                                            {data.map((item, index) => (
+                                                                <MenuItem key={index} value={item.code} className="center-hor-ver">
+                                                                    {item.name}
+                                                                </MenuItem>
+                                                            ))}
+                                                        </Select>}
+                                                    />
+                                                </FormControl>
+                                            </div>
+                                        )}
+                                    />
+                                </div>
+                            </div>
+
                             <div className="row">
                                 { !projectFolder ? null : !projectFolder.works ? null : projectFolder.works.sort((a, b) => a.id < b.id ? -1 : 1).map((work, index) => {
                                     const key = initializationId + index;
@@ -196,10 +246,9 @@ const Update = props => {
     );
 };
 
-const mapStateToProps = ({ requestGlobalLoader, authUser, communitySpace }) => {
+const mapStateToProps = ({ authUser, communitySpace }) => {
     return {
         authUser: authUser.data,
-        loading: requestGlobalLoader,
         communitySpace: communitySpace.data
     };
 };
