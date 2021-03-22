@@ -83,7 +83,7 @@ class UserBlock extends Component {
 									<Tooltip id="tooltip-status" title={"Votre compte n'est pas activé"}>
 										<div className="user-profile position-relative">
 											<img
-												src={this.props.authUser.user.avatar ? 'https://'+this.props.authUser.user.avatar : require('Assets/avatars/profile.jpg')}
+												src={this.props.authUser.user.avatar ? this.props.authUser.user.avatar : require('Assets/avatars/profile.jpg')}
 												alt="user profile"
 												className="img-fluid rounded-circle"
 												width="50"
@@ -97,7 +97,7 @@ class UserBlock extends Component {
 								) : (
 										<div className="user-profile position-relative">
 											<img
-												src={this.props.authUser.user.avatar ? 'https://'+this.props.authUser.user.avatar : require('Assets/avatars/profile.jpg')}
+												src={this.props.authUser.user.avatar ? this.props.authUser.user.avatar : require('Assets/avatars/profile.jpg')}
 												alt="user profile"
 												className="img-fluid rounded-circle"
 												width="50"
