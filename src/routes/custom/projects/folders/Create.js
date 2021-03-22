@@ -6,7 +6,6 @@ import { injectIntl } from 'react-intl';
 import { useForm } from "react-hook-form";
 import { PROJECTS } from "Url/frontendUrl";
 import { ERROR_500 } from "Constants/errors";
-import { Form, FormGroup, Input as FormItem } from "reactstrap";
 import IntlMessages from "Util/IntlMessages";
 import Button from "@material-ui/core/Button";
 import Input from "@material-ui/core/Input/Input";
@@ -17,12 +16,14 @@ import InputComponent from "Components/InputComponent";
 import { NotificationManager } from "react-notifications";
 import FormControl from "@material-ui/core/FormControl";
 import SingleTitleText from "Components/SingleTitleText";
+import { Form, FormGroup, Input as FormItem } from "reactstrap";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import InputLabel from "@material-ui/core/InputLabel/InputLabel";
 import CustomAsyncComponent from "Components/CustomAsyncComponent";
-import { getInitialisationOptions, setRequestGlobalAction, getUsersBooks } from "Actions";
 import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
+import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
+import { getInitialisationOptions, setRequestGlobalAction, getUsersBooks, getCurrencies } from "Actions";
 
 const modules = {
     toolbar: [
@@ -50,6 +51,7 @@ const Create = props => {
     const [oldFolderType, setOldFolderType] = useState(projects.initialisationOptions[0].value);
     const [initializationId, setInitializationId] = useState('');
     const [worksData, setWorksData] = useState([]);
+    const [currencies, setCurrencies] = useState([]);
 
     const [initialisationData, setInitialisationData] = useState({
         data: null,
@@ -59,9 +61,10 @@ const Create = props => {
 
     const [file, setFile] = useState(null);
 
-    const { register, errors, handleSubmit, setValue } = useForm();
+    const { register, errors, handleSubmit, control } = useForm();
 
     useEffect(() => {
+        fetchCurrencies();
         loadData(oldFolderType);
     }, []);
 
@@ -88,6 +91,13 @@ const Create = props => {
                     error: error,
                     loading: false
                 });
+            });
+    };
+
+    const fetchCurrencies = () => {
+        getCurrencies()
+            .then(result => {
+                setCurrencies(result)
             });
     };
 
@@ -143,11 +153,11 @@ const Create = props => {
             folderType: oldFolderType,
         };
 
-        if(oldFolderType == 'PERSONNAL_IDEA') {
+        if (oldFolderType == 'PERSONNAL_IDEA') {
             _data.ideaId = initializationId;
         } else {
             _data.works = JSON.stringify(works),
-            _data.initializationId = initializationId;
+                _data.initializationId = initializationId;
         }
 
         createFolder(_data, { fileData: ['file'], multipart: true })
@@ -197,6 +207,56 @@ const Create = props => {
                                         />
                                         {/* <span className="has-icon"><i className="ti-pencil" /></span> */}
                                     </FormGroup>
+                                </div>
+                            </div>
+
+                            <div className="row align-items-center">
+                                <div className="col-md-6 col-sm-12">
+                                    <FormGroup className="has-wrapper">
+                                        <InputLabel className="text-left" htmlFor="amount">
+                                            Besoin estimé
+                                        </InputLabel>
+                                        <InputComponent
+                                            id="amount"
+                                            errors={errors}
+                                            register={register}
+                                            name={'amount'}
+                                            className="input-lg"
+                                            type='number'
+                                        />
+                                    </FormGroup>
+                                </div>
+                                <div className="col-md-6 col-sm-12">
+                                    <CustomAsyncComponent
+                                        loading={false}
+                                        data={currencies}
+                                        component={data => (
+                                            <div className="form-group text-left">
+                                                <FormControl fullWidth>
+                                                    <InputLabel className="text-left" htmlFor="currency">
+                                                        Devise
+                                                    </InputLabel>
+                                                    <InputComponent
+                                                        isRequired
+                                                        className="mt-0"
+                                                        errors={errors}
+                                                        control={control}
+                                                        register={register}
+                                                        componentType="select"
+                                                        name={'currency'}
+                                                        defaultValue={data[0]}
+                                                        as={<Select input={<Input name="price_currency" id="currency" />}>
+                                                            {data.map((item, index) => (
+                                                                <MenuItem key={index} value={item.code} className="center-hor-ver">
+                                                                    {item.name}
+                                                                </MenuItem>
+                                                            ))}
+                                                        </Select>}
+                                                    />
+                                                </FormControl>
+                                            </div>
+                                        )}
+                                    />
                                 </div>
                             </div>
 

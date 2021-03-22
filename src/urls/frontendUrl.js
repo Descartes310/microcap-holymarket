@@ -363,6 +363,7 @@ export const COMMUNITY = {
     PROJECTS: {
         SELF: '/admin/community-t/projects',
         SHOW: '/admin/community-t/projects/show',
+        GALLERY: '/admin/community-t/projects/gallery',
         UPDATE: '/admin/community-t/projects/update',
     },
     INVITATIONS: {

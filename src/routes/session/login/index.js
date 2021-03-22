@@ -151,7 +151,7 @@ const Signin = (props) => {
                                                 <span className="has-icon"><i className="ti-lock"></i></span>
                                             </FormGroup>
 
-                                            <FormControl fullWidth>
+                                            {/* <FormControl fullWidth>
                                                 <InputComponent
                                                     isRequired
                                                     className="mt-0"
@@ -171,7 +171,7 @@ const Signin = (props) => {
                                                     } label={"Accès nomade ?"}
                                                     />}
                                                 />
-                                            </FormControl>
+                                            </FormControl> */}
 
                                             {gotServiceNumberWatch && (
                                                 <FormGroup className="has-wrapper">

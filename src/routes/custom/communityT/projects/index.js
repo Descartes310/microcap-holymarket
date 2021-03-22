@@ -1,5 +1,6 @@
 import Show from './Show';
 import Update from './Update';
+import Gallery from './Gallery';
 import React, { Component } from 'react';
 import { COMMUNITY } from "Url/frontendUrl";
 import { Scrollbars } from 'react-custom-scrollbars';
@@ -18,6 +19,7 @@ const FoldersManagement = ({ match }) => {
                 <React.Fragment>
                     <Switch>
                         <Redirect exact from={`${match.url}/`} to={COMMUNITY.PROJECTS.SHOW} />
+                        <Route path={COMMUNITY.PROJECTS.GALLERY} component={Gallery} />
                         <Route path={COMMUNITY.PROJECTS.SHOW} component={Show} />
                         <Route path={COMMUNITY.PROJECTS.UPDATE} component={Update} />
                     </Switch>

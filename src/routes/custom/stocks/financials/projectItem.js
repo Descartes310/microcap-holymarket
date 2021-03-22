@@ -2,10 +2,11 @@
  * Visitor Area Chart Widget
  */
 import React from 'react';
+import { Button } from 'reactstrap';
 import CountUp from 'react-countup';
-import { RctCard, RctCardContent } from 'Components/RctCard';
-import { Button } from 'reactstrap'
 import { withRouter } from "react-router-dom";
+import AmountCurrency from "Components/AmountCurrency";
+import { RctCard, RctCardContent } from 'Components/RctCard';
 import { PROJECTS, joinUrlWithParamsId } from 'Url/frontendUrl';
 
 const ProjectItem = ({ project, history }) => (
@@ -17,14 +18,7 @@ const ProjectItem = ({ project, history }) => (
                     <div className="d-flex">
                         <div className="mr-50">
                             <span className="fs-14 d-block">Besoin estimé</span>
-                            <CountUp
-                                separator=","
-                                className="counter-point"
-                                start={0}
-                                end={120}
-                                duration={5}
-                                useEasing={true}
-                            />
+                            <AmountCurrency amount={project.project.amount ? project.project.amount: 0 } from={project.project.currency ? project.project.currency : 'EUR'} />
                         </div>
                         <div className="">
                             <span className="fs-14 d-block">Taille de la communauté</span>

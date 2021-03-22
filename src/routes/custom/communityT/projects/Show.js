@@ -1,16 +1,16 @@
 import {connect} from "react-redux";
 import { projects } from "Data/index";
 import {injectIntl} from "react-intl";
+import { COMMUNITY } from "Url/frontendUrl";
 import { withRouter } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import React, { useEffect, useState } from 'react';
 import Tooltip from "@material-ui/core/Tooltip/Tooltip";
 import SingleTitleText from "Components/SingleTitleText";
 import FieldsetComponent from "Components/FieldsetComponent";
-import { joinUrlWithParamsId, PROJECTS } from "Url/frontendUrl";
 import FetchFailedComponent from "Components/FetchFailedComponent";
-import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
 import { getOneProjectFolderByGroup } from "Actions/independentActions";
+import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
 
 const Show = (props) => {
 
@@ -105,6 +105,17 @@ const Show = (props) => {
                             </div> : null}
                     </>
                 ))}
+            </div>
+            <div className="row d-flex flex-row">
+                <Button
+                    // type="submit"
+                    color="primary"
+                    variant="contained"
+                    className="text-white font-weight-bold mr-3"
+                    onClick={() => props.history.push(COMMUNITY.PROJECTS.GALLERY)}
+                >
+                    Voir la gallerie
+                </Button>
             </div>
         </div>
     );
