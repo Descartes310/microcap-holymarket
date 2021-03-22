@@ -133,6 +133,11 @@ export const AsyncProjects = Loadable({
 	loading: () => <RctPageLoader />,
 });
 
+export const AsyncCommunityProject = Loadable({
+	loader: () => import("Routes/custom/communityT/projects"),
+	loading: () => <RctPageLoader />,
+});
+
 // ecommerce dashboard
 const AsyncEcommerceDashboardComponent = Loadable({
 	loader: () => import("Routes/dashboard/ecommerce"),

@@ -166,7 +166,6 @@ const Create = props => {
             const item = initialisationData.data.find(i => i.id === initializationId);
             return item ? item.works : null;
         }
-
         return null;
     };
 

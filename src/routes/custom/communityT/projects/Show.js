@@ -72,18 +72,18 @@ const Show = (props) => {
     const details = projectFolder.data;
 
     return (
-        <div className="event-show">
+        <div className="event-show" style={{ marginTop: '7rem' }}>
             {/*<PageTitleBar
                 title={"Fiche techinque du project " + details.title}
             />*/}
             <div className="banner" style={{ height: 200 }} />
             <div className="event-show-header mb-70">
                 <h3 className="text-white event-title">
-                    Fiche technique du projet <strong>{details.title}</strong>
+                    Fiche technique du projet <strong>{details ? details.title : ''}</strong>
                 </h3>
                 <h5 className="text-white">
                     <i className="ti-package mr-2" />
-                    <span>{getTypeLabel(details.type)}</span>
+                    <span>{getTypeLabel(details ? details.type : '')}</span>
                 </h5>
             </div>
             <div>

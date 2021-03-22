@@ -37,6 +37,7 @@ const InputComponent = ({componentType = 'input', name, type, register, errors, 
                     type={type ? type : 'text'}
                     name={name}
                     className="form-control"
+                    defaultValue={defaultValue}
                     innerRef={register({
                         ...requiredProps,
                         ...otherValidator})

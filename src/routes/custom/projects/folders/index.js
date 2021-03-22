@@ -3,6 +3,7 @@ import List from './projects';
 import ReactionList from './reactions/List';
 import ReactionCreate from './reactions/Create';
 import Show from './Show';
+import Gallery from './Gallery';
 import Update from './Update';
 import Create from './Create';
 import Works from './works';
@@ -22,6 +23,7 @@ const FoldersManagement = ({ match }) => {
                 <Route path={PROJECTS.FOLDERS.CREATE} component={Create} />
                 <Route path={PROJECTS.FOLDERS.UPDATE} component={Update} />
                 <Route path={PROJECTS.FOLDERS.WORK} component={Work} />
+                <Route path={PROJECTS.FOLDERS.GALLERY} component={Gallery} />
                 <Route path={PROJECTS.FOLDERS.SHOW} component={Show} />
             </Switch>
         </div>

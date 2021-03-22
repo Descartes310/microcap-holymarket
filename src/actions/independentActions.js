@@ -919,6 +919,15 @@ export const createFolder = (data, config) => {
     });
 };
 
+export const updateFolderData = (id, data, config) => {
+    const url = joinBaseUrlWithParamsId(PROJECTS.FOLDERS.UPDATE, id);
+    return new Promise((resolve, reject) => {
+        api.post(url, data, config)
+            .then(result => resolve(result.data))
+            .catch(error => reject(error));
+    });
+};
+
 export const updateFolder = (id, data, config) => {
     const url = joinBaseUrlWithParamsId(`${PROJECTS.FOLDERS.ADD_WORK}`, id);
     return new Promise((resolve, reject) => {

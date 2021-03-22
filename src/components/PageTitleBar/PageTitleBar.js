@@ -33,11 +33,11 @@ const getUrlString = (path, sub, index) => {
    }
 };
 
-const PageTitleBar = ({ title, match, enableBreadCrumb, history}) => {
+const PageTitleBar = ({ title, match, enableBreadCrumb, style}) => {
    const path = match.url.substr(1);
    const subPath = path.split('/');
    return (
-      <div className="page-title d-flex justify-content-between align-items-center">
+      <div className="page-title d-flex justify-content-between align-items-center" style={style}>
          {title &&
             <div className="page-title-wrap">
                {/* <i onClick={() => null} className="ti-angle-left cursor-pointer mr-2 icon-hover"/> */}

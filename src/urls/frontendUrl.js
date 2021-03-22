@@ -232,6 +232,7 @@ export const PROJECTS = {
     FOLDERS: {
         SELF: '/projects/folder',
         SHOW: '/projects/folder/:id',
+        GALLERY: '/projects/folder/:id/gallery',
         UPDATE: '/projects/folder/:id/update',
         WORK: '/projects/folder/:id/works',
         CREATE: '/projects/folder/create',

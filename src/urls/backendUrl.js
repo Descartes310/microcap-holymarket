@@ -370,6 +370,7 @@ export const PROJECTS = {
         GET_ALL: 'api/projects/folders/users/{id}',
         GET_ALL_BY_BRANCH: 'api/projects/folders/branch',
         CREATE: 'api/projects/folders',
+        UPDATE: 'api/projects/folders/{id}',
         ADD_WORK: 'api/projects/folders/{id}/adding',
         UPDATE_WORK: 'api/projects/folders/books/{id}',
         SORT_WORK: 'api/projects/folders/{id}/sort',

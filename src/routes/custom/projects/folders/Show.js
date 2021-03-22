@@ -86,9 +86,11 @@ const Show = ({ match, history }) => {
             />*/}
             <div className="banner" />
             <div className="event-show-header mb-70">
-                <h3 className="text-white event-title">
-                    Fiche technique du projet <strong>{details.title}</strong>
-                </h3>
+                <div className="d-flex flex-row justify-content-space-between">
+                    <h3 className="text-white event-title">
+                        Fiche technique du projet <strong>{details.title}</strong>
+                    </h3>
+                </div>
                 <h5 className="text-white">
                     <i className="ti-package mr-2" />
                     <span>{getTypeLabel(details.type)}</span>
@@ -114,21 +116,30 @@ const Show = ({ match, history }) => {
                     </>
                 ))}
             </div>
-            {
-                projectFolder.mine ?
 
-                    <div className="row">
+            <div className="row d-flex flex-row">
+                {
+                    projectFolder.mine ?
                         <Button
                             // type="submit"
                             color="primary"
                             variant="contained"
-                            className="text-white font-weight-bold mr-3 col-sm-12"
+                            className="text-white font-weight-bold mr-3"
                             onClick={() => history.push(joinUrlWithParamsId(baseUrl.UPDATE, folderId))}
                         >
                             Modifier
-                </Button>
-                    </div>
-                    : null}
+                        </Button>
+                        : null}
+                        <Button
+                            // type="submit"
+                            color="primary"
+                            variant="contained"
+                            className="text-white font-weight-bold mr-3"
+                            onClick={() => history.push(joinUrlWithParamsId(baseUrl.GALLERY, folderId))}
+                        >
+                            Voir la gallerie
+                        </Button>
+            </div>
         </div>
     );
 };

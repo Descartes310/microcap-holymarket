@@ -16,7 +16,6 @@ import BranchActivation from './../routes/session/token';
 import ResetPassword from './../routes/session/forgot-password/ResetPassword';
 import SendResetPasswordLink from './../routes/session/forgot-password/SendResetPasswordLink';
 
-// callback component
 import {AUTH, DISCOVER, STORE} from "../urls/frontendUrl";
 import {setAuthUser, loginIntoStore, disableAppLoading} from 'Actions';
 import {getCurrencies} from 'Actions/GeneralActions';

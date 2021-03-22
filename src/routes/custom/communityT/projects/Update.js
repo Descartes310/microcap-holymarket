@@ -1,260 +1,207 @@
+import { projects } from "Data";
+import ReactQuill from 'react-quill';
 import { connect } from "react-redux";
-import { injectIntl } from "react-intl";
-import { projects } from "Data/index";
-import { withRouter } from "react-router-dom";
+import { injectIntl } from 'react-intl';
+import { useForm } from "react-hook-form";
+import { PROJECTS } from "Url/frontendUrl";
+import { ERROR_500 } from "Constants/errors";
+import IntlMessages from "Util/IntlMessages";
 import Button from "@material-ui/core/Button";
-import Checkbox from '@material-ui/core/Checkbox';
+import Input from "@material-ui/core/Input/Input";
+import MenuItem from "@material-ui/core/MenuItem";
 import React, { useEffect, useState } from 'react';
-import FormGroup from '@material-ui/core/FormGroup';
-import Tooltip from "@material-ui/core/Tooltip/Tooltip";
+import Select from "@material-ui/core/Select/Select";
+import InputComponent from "Components/InputComponent";
+import FormControl from "@material-ui/core/FormControl";
 import SingleTitleText from "Components/SingleTitleText";
-import FieldsetComponent from "Components/FieldsetComponent";
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FetchFailedComponent from "Components/FetchFailedComponent";
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import { NotificationManager } from "react-notifications";
+import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
+import { Form, FormGroup, Input as FormItem } from "reactstrap";
+import InputLabel from "@material-ui/core/InputLabel/InputLabel";
+import CustomAsyncComponent from "Components/CustomAsyncComponent";
 import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
-import { getOneProjectFolder, getUsersBooks, updateFolder, updateBook, setRequestGlobalAction, sortBook } from "Actions";
+import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
+import { getInitialisationOptions, setRequestGlobalAction, updateFolderData, getOneProjectFolderByGroup } from "Actions";
 
-// a little function to help us with reordering the result
-const reorder = (list, startIndex, endIndex) => {
-    const result = Array.from(list);
-    const [removed] = result.splice(startIndex, 1);
-    result.splice(endIndex, 0, removed);
-    return result;
+const modules = {
+    toolbar: [
+        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+        [{ 'font': [] }],
+        ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+        [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
+        ['clean'],
+        [{ 'align': [] }],
+        ['code-block']
+    ],
 };
-// const grid = 8;
-const getItemStyle = (isDragging, draggableStyle) => ({
-    ...draggableStyle,
-});
-const getListStyle = isDraggingOver => ({
 
-});
+const formats = [
+    'header',
+    'font',
+    'bold', 'italic', 'underline', 'strike', 'blockquote',
+    'list', 'bullet', 'indent', 'align',
+    'code-block'
+];
 
-const Update = ({ match, setRequestGlobalAction }) => {
-    const folderId = match.params.id;
+const Update = props => {
 
-    if (folderId === '' || folderId === undefined) {
-        return (
-            <SingleTitleText
-                text={"Projet non trouvés"}
-            />
-        )
-    }
+    const { authUser, history, intl, getInitialisationOptions, setRequestGlobalAction } = props;
 
-    const [projectFolder, setProjectFolder] = useState({
+    const [oldFolderType, setOldFolderType] = useState(projects.initialisationOptions[0].value);
+    const [initializationId, setInitializationId] = useState('');
+    const [worksData, setWorksData] = useState([]);
+
+    const [initialisationData, setInitialisationData] = useState({
         data: null,
-        mine: false,
+        error: null,
         loading: true
-    });
+    });    
+    
+    const [projectFolder, setProjectFolder] = useState({});
 
-    const [allData, setAllData] = useState([]);
-    const [data, setData] = useState([]);
-    const [showModal, setShowModal] = useState(false);
-    const [works, setWorks] = useState([]);
+    const [file, setFile] = useState(null);
+
+    const { register, errors, handleSubmit, setValue } = useForm();
 
     useEffect(() => {
-        loadData();
-        loadWorks();
+        // loadData();
+        loadProject();
     }, []);
 
-    const loadData = () => {
-        setRequestGlobalAction(true)
-        setProjectFolder({
-            data: null,
-            loading: true
-        });
-        getOneProjectFolder(folderId)
+    const loadProject = () => {
+        setProjectFolder([]);
+        getOneProjectFolderByGroup(props.communitySpace)
             .then(result => {
-                setAllData(result.project.works)
-                setData(result.project.works)
-                setProjectFolder({
-                    data: result.project,
-                    mine: result.mine,
-                    loading: false
-                });
+                setProjectFolder(result.project);
             })
             .catch(() => {
-                setProjectFolder({
-                    data: null,
-                    loading: false
-                });
-            })
-            .finally(() => {
-                setRequestGlobalAction(false)
+                setProjectFolder({});
             })
     };
 
-    const loadWorks = () => {
-        getUsersBooks().then(data => {
-            setWorks(data);
-        })
+    const onSetWorks = (id, value) => {
+        // console.log('VALUE => ', value, id)
+        let data = worksData.filter(w => w.id != id);
+        data.push({ id, value });
+        // console.log(data)
+        setWorksData(data);
+        // console.log(worksData);
     };
 
-    const onDragEnd = (result) => {
-        // dropped outside the list
-        if (!result.destination) {
-            return;
-        }
-
-        const items = reorder(
-            projectFolder.data.works,
-            result.source.index,
-            result.destination.index
-        );
-
-        console.log(items.map((item, index) => {
-            return { id: item.id, index: index + 1 }
-        }));
-
-        sortBook(folderId, {
-            works: JSON.stringify(items.map((item, index) => {
-                return { id: item.id, index: index + 1 }
-            }))
-        }).then(result => {
-            loadData();
-        })
-
-        setProjectFolder({
-            data: { ...projectFolder.data, works: items }
-        });
-    }
-
-    const getTypeLabel = (type) => {
-        const item = projects.initialisationOptions.find(i => i.value === type);
-        return item ? item.name : 'Idée personnelle';
-    };
-
-    const onAddWork = (work) => {
-        updateFolder(folderId, { works: JSON.stringify([work].map(i => ({ id: Number(i.id), content: i.content, required: i.required, description: i.description, max: i.max }))) }, {}).then(
-            data => {
-                loadData()
+    /**
+     * On submit
+     */
+    const onSubmit = (data) => {
+        setRequestGlobalAction(true);
+        const works = worksData.map(i => {
+            const id = Number(i.id);
+            return {
+                id,
+                content: i.value
             }
-        ).catch(err => {
+        });
 
-        }).finally(() => {
-            setShowModal(false)
-        })
-    }
+        const _data = {
+            ...data,
+            works: JSON.stringify(works),
+        };
 
-    const changeProject = (work) => {
-        setRequestGlobalAction(true)
-        updateBook(work.id).then((id) => {
-            loadData()
-        }).finally(() => {
-            setRequestGlobalAction(false);
-        })
+        updateFolderData(projectFolder.id, _data, { fileData: ['file'], multipart: true })
+            .then(() => {
+                NotificationManager.success("Projet modifié avec succès");
+                history.push(PROJECTS.FOLDERS.LIST);
+            })
+            .catch(() => {
+                NotificationManager.error(ERROR_500);
+            })
+            .finally(() => setRequestGlobalAction(false));
     };
 
-    if (projectFolder.loading) {
-        return (<RctSectionLoader />)
-    }
-
-    if (!projectFolder) {
-        return (
-            <FetchFailedComponent _onRetryClick={loadData} />
-        )
-    }
-
-    const isRequired = (id) => {
-        let data = projectFolder.data.initializationOption.works.filter(w => w.book.id == id)[0];
-        if (data) {
-            return data.required;
-        } else {
-            return false
+    const getWorks = () => {
+        if (initialisationData.data) {
+            const item = initialisationData.data.find(i => i.id === initializationId);
+            return item ? item.works : null;
         }
-    }
+
+        return null;
+    };
+
+    const works = getWorks();
 
     return (
-        <div className="event-show">
-            {/*<PageTitleBar
-                title={"Fiche techinque du project " + details.title}
-            />*/}
-            <div className="banner" />
-            <div className="event-show-header mb-70">
-                <h3 className="text-white event-title">
-                    Fiche technique du projet <strong>{projectFolder.data ? projectFolder.data.title : ''}</strong>
-                </h3>
-                <h5 className="text-white">
-                    <i className="ti-package mr-2" />
-                    <span>{getTypeLabel(projectFolder.data ? projectFolder.data.type : '')}</span>
-                </h5>
-            </div>
+        <div style={{ padding: 24 }}>
+            <PageTitleBar
+                title={"Edition de projet"}
+                style={{ marginTop: '4rem' }}
+            />
             <div className="row">
-                <div className="col-sm-12 col-md-9 col-xl-9 d-block">
-                    {projectFolder.data ? projectFolder.data.works.sort((a, b) => a.index < b.index ? -1 : 1).map((work, index) => {
-                        return (
-                            <>
-                                {work.required || isRequired(work.book.id) ?
-                                    <div key={index} className="row mb-20">
-                                        <div className="col-sm-12">
-                                            <FieldsetComponent title={(
-                                                <Tooltip id={"tooltip-icon" + index} title={work.book.content}>
-                                                    <strong>{work.book.title}</strong>
-                                                </Tooltip>
-                                            )}>
-                                                <span dangerouslySetInnerHTML={{
-                                                    __html: work.content
-                                                }}></span>
-                                            </FieldsetComponent>
-                                        </div>
-                                    </div>
-                                    : null}
-                            </>
-                        )
-                    }) : null}
-                </div>
-                <div className="col-sm-12 col-md-3 col-xl-3 d-block">
-                    <h2>Type d'ouvrage</h2>
-                    <p>Faites glisser les types d'ouvrages pour les réorganiser</p>
-                    <DragDropContext onDragEnd={onDragEnd}>
-                        <Droppable droppableId="droppable">
-                            {(provided, snapshot) => (
-                                <div className=" drag-list-wrapper" ref={provided.innerRef} style={getListStyle(snapshot.isDraggingOver)}>
-                                    {projectFolder.data ? projectFolder.data.works.sort((a, b) => a.index < b.index ? -1 : 1).map((work, index) => (
-                                        <Draggable key={index} draggableId={work.book.id + "id"} index={index}>
-                                            {(provided, snapshot) => (
-                                                <div className="row mb-20">
-                                                    <div className="col-sm-12">
-                                                        <FormGroup
-                                                            ref={provided.innerRef}
-                                                            {...provided.draggableProps}
-                                                            {...provided.dragHandleProps}
-                                                            className="drag-list">
-                                                            <FormControlLabel
-                                                                control={
-                                                                    <Checkbox disabled={isRequired(work.book.id)} color="primary" defaultChecked={isRequired(work.book.id) ? true : work.required} value="checkedJ" onChange={(e) => changeProject(work, e.target.checked, index)} />
-                                                                } label={work.book.title}
-                                                            />
-                                                        </FormGroup>
-                                                    </div>
-                                                </div>
-                                            )}
-                                        </Draggable>
-                                    )) : null}
+                <div className="col-md-12 col-sm-12 pr-md-40">
+                    <RctCollapsibleCard>
+                        <Form onSubmit={handleSubmit(onSubmit)}>
+                            <div className="row">
+                                <div className="col-sm-12">
+                                    <FormGroup className="has-wrapper">
+                                        <InputLabel className="text-left bold" style={{ color: 'black', fontSize: '1.3em' }} htmlFor="title">
+                                            Titre du projet
+                                        </InputLabel>
+                                        <InputComponent
+                                            isRequired
+                                            id="title"
+                                            name={'title'}
+                                            defaultValue={projectFolder ? projectFolder.title : ''}
+                                            errors={errors}
+                                            register={register}
+                                            className="input-lg"
+                                        />
+                                    </FormGroup>
                                 </div>
-                            )}
-                        </Droppable>
-                    </DragDropContext>
-                    <Button
-                        // type="submit"
-                        color="primary"
-                        variant="contained"
-                        className="text-white font-weight-bold mr-3 col-sm-12"
-                        onClick={() => setShowModal(true)}
-                    >
-                        Ajouter une section
-                    </Button>
+                            </div>
+
+                            <div className="row">
+                                { !projectFolder ? null : !projectFolder.works ? null : projectFolder.works.sort((a, b) => a.id < b.id ? -1 : 1).map((work, index) => {
+                                    const key = initializationId + index;
+                                    const label = `${work.id}-content`;
+                                    return (
+                                        <div key={key} className="col-sm-12">
+                                            <FormGroup className="has-wrapper">
+                                                <InputLabel className="text-left" style={{ color: 'black', fontSize: '1.3em' }} htmlFor={label}>
+                                                    {work.book.title}
+                                                </InputLabel>
+                                                <InputLabel className="text-left" htmlFor={label}>
+                                                    Description: {work.book.description}
+                                                </InputLabel>
+                                                <ReactQuill defaultValue={work.content} modules={modules} name={`${work.id}`} onChange={(e) => onSetWorks(`${work.id}`, e)} formats={formats} placeholder="Entrez votre contenu..." />
+                                            </FormGroup>
+                                        </div>
+                                    )
+                                })}
+                            </div>
+
+                            <FormGroup className="mb-15">
+                                <Button
+                                    // type="submit"
+                                    color="primary"
+                                    variant="contained"
+                                    className="text-white font-weight-bold mr-3"
+                                    onClick={handleSubmit(onSubmit)}
+                                >
+                                    <IntlMessages id="button.submit" />
+                                </Button>
+                            </FormGroup>
+                        </Form>
+                    </RctCollapsibleCard>
                 </div>
             </div>
         </div>
     );
 };
 
-const mapStateToProps = ({ requestGlobalLoader, authUser }) => {
+const mapStateToProps = ({ requestGlobalLoader, authUser, communitySpace }) => {
     return {
-        requestGlobalLoader,
         authUser: authUser.data,
-    }
+        loading: requestGlobalLoader,
+        communitySpace: communitySpace.data
+    };
 };
 
-export default connect(mapStateToProps, { setRequestGlobalAction })(withRouter((injectIntl(Update))));
+export default connect(mapStateToProps, { getInitialisationOptions, setRequestGlobalAction })(injectIntl(Update));
