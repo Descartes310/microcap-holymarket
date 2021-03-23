@@ -2,13 +2,13 @@ import { projects } from "Data";
 import { connect } from "react-redux";
 import { injectIntl } from "react-intl";
 import React, { Component } from 'react';
-import { joinUrlWithParamsId, PROJECTS } from "Url/frontendUrl";
-import { withRouter } from "react-router-dom";
 import IntlMessages from 'Util/IntlMessages';
-import { AbilityContext } from "Permissions/Can";
-import CustomList from "Components/CustomList";
-import { setRequestGlobalAction, getFolders } from "Actions";
 import Button from '@material-ui/core/Button';
+import { withRouter } from "react-router-dom";
+import CustomList from "Components/CustomList";
+import { AbilityContext } from "Permissions/Can";
+import { setRequestGlobalAction, getFolders } from "Actions";
+import { joinUrlWithParamsId, PROJECTS } from "Url/frontendUrl";
 
 class List extends Component {
     static contextType = AbilityContext;

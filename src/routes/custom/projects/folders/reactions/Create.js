@@ -1,6 +1,6 @@
 import { projects } from "Data";
+import ReactQuill from 'react-quill';
 import { connect } from "react-redux";
-import { createProjectReaction } from "Actions/independentActions";
 import { injectIntl } from 'react-intl';
 import { useForm } from "react-hook-form";
 import { PROJECTS } from "Url/frontendUrl";
@@ -15,12 +15,30 @@ import Select from "@material-ui/core/Select/Select";
 import InputComponent from "Components/InputComponent";
 import { NotificationManager } from "react-notifications";
 import FormControl from "@material-ui/core/FormControl";
-import SingleTitleText from "Components/SingleTitleText";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import InputLabel from "@material-ui/core/InputLabel/InputLabel";
-import CustomAsyncComponent from "Components/CustomAsyncComponent";
+import { createProjectReaction } from "Actions/independentActions";
 import { getInitialisationOptions, setRequestGlobalAction } from "Actions";
-import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
+
+const modules = {
+    toolbar: [
+        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+        [{ 'font': [] }],
+        ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+        [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
+        ['clean'],
+        [{ 'align': [] }],
+        ['code-block']
+    ],
+};
+
+const formats = [
+    'header',
+    'font',
+    'bold', 'italic', 'underline', 'strike', 'blockquote',
+    'list', 'bullet', 'indent', 'align',
+    'code-block'
+];
 
 const Create = props => {
     const { authUser, history, intl, currentCommunity, setRequestGlobalAction, communitySpace } = props;
@@ -29,8 +47,9 @@ const Create = props => {
     const [work, setWork] = useState(currentCommunity.data ? currentCommunity.data.project ? currentCommunity.data.project.works[0].id : null : null);
 
     const [file, setFile] = useState(null);
+    const [description, setDescription] = useState('');
 
-    const { register, errors, handleSubmit } = useForm();
+    const { register, errors, handleSubmit, setValue } = useForm();
 
     const onTypeChange = (newValue) => {
         if (newValue !== type) {
@@ -58,6 +77,7 @@ const Create = props => {
             file,
             userId: authUser.user.id,
             type: type,
+            description: description,
             workId: work,
             groupId: communitySpace.data
         };
@@ -145,19 +165,10 @@ const Create = props => {
                 <div className="row">
                     <div className="col-sm-12">
                         <FormGroup className="has-wrapper">
-                            <InputLabel className="text-left" htmlFor="description">
+                            <InputLabel className="text-left" htmlFor='description'>
                                 Contenu
                             </InputLabel>
-                            <InputComponent
-                                isRequired
-                                errors={errors}
-                                id="description"
-                                register={register}
-                                name={'description'}
-                                className="input-lg"
-                            // placeholder={intl.formatMessage({id: "common.commercialName"})}
-                            />
-                            <span className="has-icon"><i className="ti-pencil" /></span>
+                            <ReactQuill modules={modules} onChange={(e) => setDescription(e)} formats={formats} placeholder="Entrez votre contenu..." />
                         </FormGroup>
                     </div>
                 </div>

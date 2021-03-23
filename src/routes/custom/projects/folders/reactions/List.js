@@ -2,12 +2,18 @@ import { projects } from "Data";
 import { connect } from "react-redux";
 import { injectIntl } from "react-intl";
 import React, { Component } from 'react';
-import { joinUrlWithParamsId, PROJECTS } from "Url/frontendUrl";
 import { withRouter } from "react-router-dom";
-import { AbilityContext } from "Permissions/Can";
+import Button from '@material-ui/core/Button';
 import CustomList from "Components/CustomList";
+import { AbilityContext } from "Permissions/Can";
 import { setRequestGlobalAction } from "Actions";
+import CancelIcon from '@material-ui/icons/Cancel';
+import Dialog from "@material-ui/core/Dialog/Dialog";
+import IconButton from "@material-ui/core/IconButton";
+import { joinUrlWithParamsId, PROJECTS } from "Url/frontendUrl";
 import { getAllProjectReaction } from "Actions/independentActions";
+import DialogTitle from "@material-ui/core/DialogTitle/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent/DialogContent";
 
 class List extends Component {
     static contextType = AbilityContext;
@@ -15,11 +21,13 @@ class List extends Component {
 
     state = {
         reactions: [],
-        loading: true
+        loading: true,
+        showBox: false,
+        selectedItem: {}
     }
 
     componentDidMount() {
-        getAllProjectReaction(this.props.communitySpace.data).then( data => {
+        getAllProjectReaction(this.props.communitySpace.data).then(data => {
             this.setState({ reactions: data })
         }).finally(() => this.setState({ loading: false }));
     }
@@ -35,7 +43,7 @@ class List extends Component {
 
     render() {
         const { communitySpace, history } = this.props;
-        const { reactions, loading } = this.state;
+        const { reactions, loading, showBox, selectedItem } = this.state;
 
         return (
             <>
@@ -60,8 +68,8 @@ class List extends Component {
                                                 <tr>
                                                     <th>Titre</th>
                                                     <th>Type</th>
-                                                    <th>Contenu</th>
-                                                    
+                                                    <th>Action</th>
+
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -86,11 +94,15 @@ class List extends Component {
                                                             </div>
                                                         </td>
                                                         <td>
-                                                            <div className="media">
-                                                                <div className="media-body pt-10">
-                                                                    <h4 className="m-0 fw-bold text-dark">{item.content}</h4>
-                                                                </div>
-                                                            </div>
+                                                            <Button
+                                                                color="primary"
+                                                                variant="contained"
+                                                                className="text-white font-weight-bold bg-blue"
+                                                                style={{ marginRight: 10 }}
+                                                                onClick={() => { this.setState({ showBox: true, selectedItem: item }) }}
+                                                            >
+                                                                Consulter
+                                                            </Button>
                                                         </td>
                                                     </tr>
                                                 ))}
@@ -101,6 +113,31 @@ class List extends Component {
                         </>
                     )}
                 />
+                <Dialog
+                    open={showBox}
+                    onClose={() => { this.setState({ showBox: false }) }}
+                    aria-labelledby="responsive-dialog-title"
+                    maxWidth={'md'}
+                    fullWidth
+                >
+                    <DialogTitle id="form-dialog-title">
+                        <div className="row justify-content-between align-items-center">
+                            Contenu de l'activité
+                            <IconButton
+                                color="primary"
+                                aria-label="close"
+                                className="text-danger"
+                                onClick={() => { this.setState({ showBox: false }) }}>
+                                <CancelIcon />
+                            </IconButton>
+                        </div>
+                    </DialogTitle>
+                    <DialogContent style={{ display: 'flex', flexDirection: 'column' }}>
+                        <span dangerouslySetInnerHTML={{
+                            __html: selectedItem.content
+                        }}></span>
+                    </DialogContent>
+                </Dialog>
             </>
         );
     }

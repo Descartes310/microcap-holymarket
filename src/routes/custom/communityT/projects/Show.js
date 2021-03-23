@@ -11,6 +11,11 @@ import Tooltip from "@material-ui/core/Tooltip/Tooltip";
 import FieldsetComponent from "Components/FieldsetComponent";
 import FetchFailedComponent from "Components/FetchFailedComponent";
 import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
+import DialogTitle from "@material-ui/core/DialogTitle/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent/DialogContent";
+import Dialog from "@material-ui/core/Dialog/Dialog";
+import CancelIcon from '@material-ui/icons/Cancel';
+import IconButton from "@material-ui/core/IconButton";
 import { getOneProjectFolderByGroup, getAllProjectReaction } from "Actions/independentActions";
 
 const Show = (props) => {
@@ -21,6 +26,8 @@ const Show = (props) => {
         loading: true
     });
     const [reactions, setReactions] = useState([]);
+    const [selectedItem, setSelectedItem] = useState({});
+    const [showBox, setShowBox] = useState(false);
 
     useEffect(() => {
         loadData();
@@ -144,7 +151,7 @@ const Show = (props) => {
                             <div className="d-flex justify-content-center align-items-center py-50">
                                 <h4>
                                     Activités trouvé.e.s
-                                    </h4>
+                                </h4>
                             </div>
                         ) : (
                                 <div className="table-responsive">
@@ -153,7 +160,7 @@ const Show = (props) => {
                                             <tr>
                                                 <th>Titre</th>
                                                 <th>Type</th>
-                                                <th>Contenu</th>
+                                                <th>Action</th>
 
                                             </tr>
                                         </thead>
@@ -179,11 +186,15 @@ const Show = (props) => {
                                                         </div>
                                                     </td>
                                                     <td>
-                                                        <div className="media">
-                                                            <div className="media-body pt-10">
-                                                                <h4 className="m-0 fw-bold text-dark">{item.content}</h4>
-                                                            </div>
-                                                        </div>
+                                                        <Button
+                                                            color="primary"
+                                                            variant="contained"
+                                                            className="text-white font-weight-bold bg-blue"
+                                                            style={{ marginRight: 10 }}
+                                                            onClick={() => { setShowBox(true), setSelectedItem(item) }}
+                                                        >
+                                                            Consulter
+                                                        </Button>
                                                     </td>
                                                 </tr>
                                             ))}
@@ -194,6 +205,32 @@ const Show = (props) => {
                     </>
                 )}
             />
+            <Dialog
+                open={showBox}
+                onClose={() => setShowBox(false)}
+                aria-labelledby="responsive-dialog-title"
+                maxWidth={'md'}
+                fullWidth
+            >
+                <DialogTitle id="form-dialog-title">
+                    <div className="row justify-content-between align-items-center">
+                        Contenu de l'activité
+                        <IconButton
+                            color="primary"
+                            aria-label="close"
+                            className="text-danger"
+                            onClick={() => setShowBox(false)}>
+                            <CancelIcon />
+                        </IconButton>
+                    </div>
+                </DialogTitle>
+                <DialogContent style={{ display: 'flex', flexDirection: 'column' }}>
+                    <span dangerouslySetInnerHTML={{
+                        __html: selectedItem.content
+                    }}></span>
+                </DialogContent>
+            </Dialog>
+
             <div className="row d-flex flex-row">
                 <Button
                     // type="submit"
