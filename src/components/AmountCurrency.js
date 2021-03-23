@@ -153,14 +153,14 @@ class AmountCurrency extends Component {
                             <span className={className} style={styles} >
                                 {
                                     quantity ?
-                                        this.formatter.format(this.getAmount(amount, from, to).toFixed(2) * quantity)
+                                        !notShowCurrency ? this.formatter.format(this.getAmount(amount, from, to).toFixed(2) * quantity) : this.getAmount(amount, from, to).toFixed(2) * quantity
                                         :
-                                        this.formatter.format(this.getAmount(amount, from, to).toFixed(2))
+                                        !notShowCurrency ? this.formatter.format(this.getAmount(amount, from, to).toFixed(2)) : this.getAmount(amount, from, to).toFixed(2)
                                 }
                             </span>
                             :
                             <span className={className} style={styles} >
-                                {this.formatter.format(this.getAmounts(amounts, to).toFixed(2))}
+                                { !notShowCurrency ? this.formatter.format(this.getAmounts(amounts, to).toFixed(2)) : this.getAmounts(amounts, to).toFixed(2)}
                             </span>
                     :
                     null

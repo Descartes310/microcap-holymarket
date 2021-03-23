@@ -331,13 +331,13 @@ class AccountShow extends Component {
                                     return (
                                         <div key={index}>
                                             <p>{<TimeFromMoment time={transaction[0]} showFullDate />}</p>
-                                            <table className="table table-hover table-middle mb-60 text-center">
+                                            <table className="table table-hover table-middle mb-60">
                                                 <thead>
                                                     <tr>
-                                                        <th>Date</th>
+                                                        {/* <th>Date</th> */}
                                                         <th>Libellé</th>
-                                                        <th>Nature</th>
-                                                        <th>Valeur</th>
+                                                        <th>Crédit</th>
+                                                        <th>Débit</th>
                                                         {
                                                             !printing ?
                                                                 <th>Action</th> :
@@ -349,13 +349,13 @@ class AccountShow extends Component {
                                                     {
                                                         transaction[1].map((transaction, index) => (
                                                             <tr key={index}>
-                                                                <td>
+                                                                {/* <td>
                                                                     <div className="media">
                                                                         <div className="media-body">
                                                                             <h4 className="m-0 text-dark"><TimeFromMoment showFullDate time={transaction.createdAt} /></h4>
                                                                         </div>
                                                                     </div>
-                                                                </td>
+                                                                </td> */}
                                                                 <td>
                                                                     <div className="media">
                                                                         <div className="media-body">
@@ -366,14 +366,14 @@ class AccountShow extends Component {
                                                                 <td>
                                                                     <div className="media">
                                                                         <div className="media-body">
-                                                                            <h4 className="m-0 text-dark">{transaction.direction}</h4>
+                                                                            <h4 className="m-0 text-dark">{ transaction.direction == 'CREDIT' ? <AmountCurrency notShowCurrency amount={transaction.amount} from={transaction.currency} to={currency} unit={account.typeProduct ? account.typeProduct.unit : null} /> : '-' }</h4>
                                                                         </div>
                                                                     </div>
                                                                 </td>
                                                                 <td>
                                                                     <div className="media">
                                                                         <div className="media-body">
-                                                                            <h4 className="m-0 text-dark"><AmountCurrency amount={transaction.amount} from={transaction.currency} to={currency} unit={account.typeProduct ? account.typeProduct.unit : null} /></h4>
+                                                                            <h4 className="m-0 text-dark">{ transaction.direction == 'DEBIT' ? <AmountCurrency notShowCurrency amount={transaction.amount} from={transaction.currency} to={currency} unit={account.typeProduct ? account.typeProduct.unit : null} /> : '-' }</h4>
                                                                         </div>
                                                                     </div>
                                                                 </td>

@@ -1,16 +1,17 @@
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 import { projects } from "Data/index";
-import {injectIntl} from "react-intl";
+import { injectIntl } from "react-intl";
 import { COMMUNITY } from "Url/frontendUrl";
 import { withRouter } from "react-router-dom";
 import Button from "@material-ui/core/Button";
+import CustomList from "Components/CustomList";
 import React, { useEffect, useState } from 'react';
+import AmountCurrency from "Components/AmountCurrency";
 import Tooltip from "@material-ui/core/Tooltip/Tooltip";
-import SingleTitleText from "Components/SingleTitleText";
 import FieldsetComponent from "Components/FieldsetComponent";
 import FetchFailedComponent from "Components/FetchFailedComponent";
-import { getOneProjectFolderByGroup } from "Actions/independentActions";
 import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
+import { getOneProjectFolderByGroup, getAllProjectReaction } from "Actions/independentActions";
 
 const Show = (props) => {
 
@@ -19,10 +20,21 @@ const Show = (props) => {
         mine: false,
         loading: true
     });
+    const [reactions, setReactions] = useState([]);
 
     useEffect(() => {
         loadData();
     }, []);
+
+    const loadActivities = (id) => {
+        getAllProjectReaction(id)
+            .then(result => {
+                setReactions(result);
+            })
+            .catch(() => {
+                setReactions([]);
+            })
+    };
 
     const loadData = () => {
         setProjectFolder({
@@ -36,6 +48,8 @@ const Show = (props) => {
                     mine: result.mine,
                     loading: false
                 });
+                if (result.group != null)
+                    loadActivities(result.group)
             })
             .catch(() => {
                 setProjectFolder({
@@ -87,6 +101,19 @@ const Show = (props) => {
                 </h5>
             </div>
             <div>
+                <div className="row mb-20">
+                    <div className="col-sm-12">
+                        <FieldsetComponent title={(
+                            <Tooltip title={details.title}>
+                                <strong>Besoin estimé</strong>
+                            </Tooltip>
+                        )}>
+                            <span>
+                                <AmountCurrency amount={details.amount ? details.amount : 0} from={details.currency ? details.currency : 'EUR'} />
+                            </span>
+                        </FieldsetComponent>
+                    </div>
+                </div>
                 {details.works.sort((a, b) => a.index < b.index ? -1 : 1).map((work, index) => (
                     <>
                         {work.required || isRequired(work.book.id) ?
@@ -106,6 +133,67 @@ const Show = (props) => {
                     </>
                 ))}
             </div>
+            <CustomList
+                list={reactions.filter(r => r.type != 'ILLUSTRATION')}
+                loading={false}
+                titleList={"Activités sur le projet"}
+                itemsFoundText={() => 'Activités trouvé.e.s'}
+                renderItem={reactions => (
+                    <>
+                        {reactions && reactions.length === 0 ? (
+                            <div className="d-flex justify-content-center align-items-center py-50">
+                                <h4>
+                                    Activités trouvé.e.s
+                                    </h4>
+                            </div>
+                        ) : (
+                                <div className="table-responsive">
+                                    <table className="table table-hover table-middle mb-0 text-center">
+                                        <thead>
+                                            <tr>
+                                                <th>Titre</th>
+                                                <th>Type</th>
+                                                <th>Contenu</th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {reactions && reactions.map((item, key) => (
+                                                <tr
+                                                    key={key}
+                                                    className="cursor-pointer"
+                                                    onClick={() => this.onItemClick(item.id)}
+                                                >
+                                                    <td>
+                                                        <div className="media">
+                                                            <div className="media-body pt-10">
+                                                                <h4 className="m-0 fw-bold text-dark">{item.title}</h4>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div className="media">
+                                                            <div className="media-body pt-10">
+                                                                <h4 className="m-0 fw-bold text-dark">{item.type}</h4>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div className="media">
+                                                            <div className="media-body pt-10">
+                                                                <h4 className="m-0 fw-bold text-dark">{item.content}</h4>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            )}
+                    </>
+                )}
+            />
             <div className="row d-flex flex-row">
                 <Button
                     // type="submit"

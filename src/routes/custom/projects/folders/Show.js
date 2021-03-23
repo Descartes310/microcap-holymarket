@@ -1,14 +1,16 @@
 import { projects } from "Data/index";
 import { withRouter } from "react-router-dom";
 import Button from "@material-ui/core/Button";
+import CustomList from "Components/CustomList";
 import React, { useEffect, useState } from 'react';
+import AmountCurrency from "Components/AmountCurrency";
 import Tooltip from "@material-ui/core/Tooltip/Tooltip";
 import SingleTitleText from "Components/SingleTitleText";
 import FieldsetComponent from "Components/FieldsetComponent";
 import { joinUrlWithParamsId, PROJECTS } from "Url/frontendUrl";
-import { getOneProjectFolder } from "Actions/independentActions";
 import FetchFailedComponent from "Components/FetchFailedComponent";
 import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
+import { getOneProjectFolder, getAllProjectReaction } from "Actions/independentActions";
 
 const Show = ({ match, history }) => {
     const folderId = match.params.id;
@@ -27,10 +29,21 @@ const Show = ({ match, history }) => {
         mine: false,
         loading: true
     });
+    const [reactions, setReactions] = useState([]);
 
     useEffect(() => {
         loadData();
     }, []);
+
+    const loadActivities = (id) => {
+        getAllProjectReaction(id)
+            .then(result => {
+                setReactions(result);
+            })
+            .catch(() => {
+                setReactions([]);
+            })
+    };
 
     const loadData = () => {
         setProjectFolder({
@@ -44,8 +57,11 @@ const Show = ({ match, history }) => {
                     mine: result.mine,
                     loading: false
                 });
+                if (result.group != null)
+                    loadActivities(result.group)
             })
-            .catch(() => {
+            .catch((err) => {
+                console.log(err)
                 setProjectFolder({
                     data: null,
                     loading: false
@@ -97,13 +113,26 @@ const Show = ({ match, history }) => {
                 </h5>
             </div>
             <div>
+                <div className="row mb-20">
+                    <div className="col-sm-12">
+                        <FieldsetComponent title={(
+                            <Tooltip title={details.title}>
+                                <strong>Besoin estimé</strong>
+                            </Tooltip>
+                        )}>
+                            <span>
+                                <AmountCurrency amount={details.amount ? details.amount : 0} from={details.currency ? details.currency : 'EUR'} />
+                            </span>
+                        </FieldsetComponent>
+                    </div>
+                </div>
                 {details.works.sort((a, b) => a.index < b.index ? -1 : 1).map((work, index) => (
                     <>
                         {work.required || isRequired(work.book.id) ?
                             <div key={index} className="row mb-20">
                                 <div className="col-sm-12">
                                     <FieldsetComponent title={(
-                                        <Tooltip id={"tooltip-icon" + index} title={work.book.content}>
+                                        <Tooltip id={"tooltip-icon" + index} title={work.book.title}>
                                             <strong>{work.book.title}</strong>
                                         </Tooltip>
                                     )}>
@@ -116,6 +145,68 @@ const Show = ({ match, history }) => {
                     </>
                 ))}
             </div>
+
+            <CustomList
+                list={reactions.filter(r => r.type != 'ILLUSTRATION')}
+                loading={false}
+                titleList={"Activités sur le projet"}
+                itemsFoundText={() => 'Activités trouvé.e.s'}
+                renderItem={reactions => (
+                    <>
+                        {reactions && reactions.length === 0 ? (
+                            <div className="d-flex justify-content-center align-items-center py-50">
+                                <h4>
+                                    Activités trouvé.e.s
+                                    </h4>
+                            </div>
+                        ) : (
+                                <div className="table-responsive">
+                                    <table className="table table-hover table-middle mb-0 text-center">
+                                        <thead>
+                                            <tr>
+                                                <th>Titre</th>
+                                                <th>Type</th>
+                                                <th>Contenu</th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {reactions && reactions.map((item, key) => (
+                                                <tr
+                                                    key={key}
+                                                    className="cursor-pointer"
+                                                    onClick={() => this.onItemClick(item.id)}
+                                                >
+                                                    <td>
+                                                        <div className="media">
+                                                            <div className="media-body pt-10">
+                                                                <h4 className="m-0 fw-bold text-dark">{item.title}</h4>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div className="media">
+                                                            <div className="media-body pt-10">
+                                                                <h4 className="m-0 fw-bold text-dark">{item.type}</h4>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div className="media">
+                                                            <div className="media-body pt-10">
+                                                                <h4 className="m-0 fw-bold text-dark">{item.content}</h4>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            )}
+                    </>
+                )}
+            />
 
             <div className="row d-flex flex-row">
                 {
@@ -130,14 +221,14 @@ const Show = ({ match, history }) => {
                             Modifier
                         </Button>
                         : null}
-                        <Button
-                            // type="submit"
-                            color="primary"
-                            variant="contained"
-                            className="text-white font-weight-bold mr-3"
-                            onClick={() => history.push(joinUrlWithParamsId(baseUrl.GALLERY, folderId))}
-                        >
-                            Voir la gallerie
+                <Button
+                    // type="submit"
+                    color="primary"
+                    variant="contained"
+                    className="text-white font-weight-bold mr-3"
+                    onClick={() => history.push(joinUrlWithParamsId(baseUrl.GALLERY, folderId))}
+                >
+                    Voir la gallerie
                         </Button>
             </div>
         </div>
