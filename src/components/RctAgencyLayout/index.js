@@ -27,8 +27,8 @@ class RctAgencyLayout extends Component {
       return (
          <Scrollbars
             className="rct-scroll"
-            autoHide
-            autoHideDuration={100}
+            // autoHide
+            // autoHideDuration={100}
             style={{ height: 'calc(100vh - 15.5rem)' }}
          >
             <div className="rct-page-content">

@@ -91,8 +91,8 @@ class MainApp extends Component {
 		return (
 			<Scrollbars
 				className="rct-scroll"
-				autoHide
-				autoHideDuration={100}
+				// autoHide
+				// autoHideDuration={100}
 				style={this.getScrollBarStyle()}
 			>
 				<div className="rct-page-content">
