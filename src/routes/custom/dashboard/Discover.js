@@ -132,7 +132,7 @@ const Discover = (props) => {
                     <Player
                         playsInline
                         poster="https://ucf71a9a3fc561e4a20d21a900fe.previews.dropboxusercontent.com/p/thumb/ABEXVRGoaXRi20AQImCJdrGdL3GTQZ4G2s5rZgs7pCuMNcAEcCPLj0-chyxKlxo_5gQI7l9SAeT70z3e1gh4N0MPYe7wLQZRR42WBD9Ens40sRsYzDKTRB8DdDqUzU0n564C4Cpu_INwD3XBoOPtUGoWs65QP2KVdDbn2As61_UR_UbXOJ_SnD6JoSubmhsrqWFR78SxilSaPWUMx1R6Yu2Kw3PLJ0j13P5yRaTKSIB2PoXV1qkee4pVFUDuR6OwERRS0VKqlZsOF7amDS7DEpsXRLgyunG_TDj3UqupL85t5gCLfAEdVQiOb-4of55GwEFIkrjzZqnL5vB1aDoDQwBHoWvbaZq8vA8FMbpM5I7J-A/p.png"
-                        src='https://streamable.com/e/bocvau'
+                        src='http://dev1.microcap.fr:8080/files/videos/video_accueil3.mp4'
                     />
                     <p style={{ fontSize: '1.2em', marginTop: 20, textAlign: 'center' }}>
                     Microcap finance votre épargne et vous accompagne dans votre projet: créer une entreprise, devenir actionnaire d'une entreprise, se former à la création d'entreprise​
@@ -157,7 +157,7 @@ const Discover = (props) => {
                                         <div className="discover-content" style={{ marginTop: '7vh', marginBottom: '7vh' }}>
                                             <div className="row align-items-center">
                                                 <div className="col-md-4">
-                                                    <img className="img-fluid" src={require('Assets/img/epargne.jpg')} alt="" />
+                                                    <img className="img-fluid" src={require('Assets/img/money.jpg')} alt="" />
                                                 </div>
                                                 <div className="col-md-8">
                                                     <h1>Le PIP Microcap</h1>
@@ -182,14 +182,14 @@ const Discover = (props) => {
                                                     </p>
                                                 </div>
                                                 <div className="col-md-4">
-                                                    <img className="img-fluid" src={require('Assets/img/cb.jpg')} alt="" />
+                                                    <img className="img-fluid" src={require('Assets/img/card.jpg')} alt="" />
                                                 </div>
                                             </div>
                                         </div>
                                         <div className="discover-content" style={{ marginTop: '7%', marginBottom: '7%' }}>
                                             <div className="row align-items-center">
                                                 <div className="col-md-4">
-                                                    <img className="img-fluid" src={require('Assets/img/reserve_credit.jpg')} alt="" />
+                                                    <img className="img-fluid" src={require('Assets/img/credit.jpg')} alt="" />
                                                 </div>
                                                 <div className="col-md-8">
                                                     <h1>La reserve Microcap</h1>
@@ -229,7 +229,7 @@ const Discover = (props) => {
                                         <div className="client-thumb mb-20">
                                             <img
                                                 className="rounded"
-                                                src={require(`Assets/img/bg-1.jpg`)}
+                                                src={require(`Assets/img/x4.jpg`)}
                                                 alt="client"
                                                 width="95"
                                                 height="95"
@@ -249,7 +249,7 @@ const Discover = (props) => {
                                         <div className="client-thumb mb-20">
                                             <img
                                                 className="rounded"
-                                                src={require(`Assets/img/bg-1.jpg`)}
+                                                src={require(`Assets/img/x2.jpg`)}
                                                 alt="client"
                                                 width="95"
                                                 height="95"
@@ -269,7 +269,7 @@ const Discover = (props) => {
                                         <div className="client-thumb mb-20">
                                             <img
                                                 className="rounded"
-                                                src={require(`Assets/img/bg-1.jpg`)}
+                                                src={require(`Assets/img/x3.jpg`)}
                                                 alt="client"
                                                 width="95"
                                                 height="95"
@@ -289,7 +289,7 @@ const Discover = (props) => {
                                         <div className="client-thumb mb-20">
                                             <img
                                                 className="rounded"
-                                                src={require(`Assets/img/bg-1.jpg`)}
+                                                src={require(`Assets/img/x1.jpg`)}
                                                 alt="client"
                                                 width="95"
                                                 height="95"
@@ -321,7 +321,7 @@ const Discover = (props) => {
                             </p>
                         </div>
                     </div>
-                    <div className="row" style={{ paddingLeft: '10%', paddingRight: '10%', paddingTop: '2%', paddingBottom: '2%' }}>
+                    {/* <div className="row" style={{ paddingLeft: '10%', paddingRight: '10%', paddingTop: '2%', paddingBottom: '2%' }}>
                         <div className="col-xs-12 col-sm-12 col-md-4 mb-30">
                             <Card>
                                 <CardImg top width="100%" className="img-fluid ripple-effect" src={require('Assets/img/bg-1.jpg')} alt="Card image cap" />
@@ -346,7 +346,7 @@ const Discover = (props) => {
                                 </CardBody>
                             </Card>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
 
 
