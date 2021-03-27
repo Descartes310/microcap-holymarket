@@ -7,6 +7,7 @@ import Slider from "react-slick";
 // api
 import api from 'Api';
 import sessionSlider from '../../services/sessionSlider';
+import travail from 'Assets/img/travail1.jpg'
 
 export default class SessionSlider extends Component {
 
@@ -51,9 +52,9 @@ export default class SessionSlider extends Component {
          <div className="session-slider">
             <Slider {...settings}>
                {(sessionUsersData && sessionUsersData !== null) && sessionUsersData.map((data, key) => (
-                  <div key={key}>
+                  <div>
                      <img
-                        src={data.profile}
+                        src={data.avatar}
                         alt="session-slider"
                         className="img-fluid"
                         width="377"
@@ -65,7 +66,7 @@ export default class SessionSlider extends Component {
                         <p className="mb-0 fs-14">{data.body}</p>*/}
                      </div>
                   </div>
-               ))}
+                ))}
             </Slider>
          </div>
       );

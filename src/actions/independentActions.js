@@ -956,6 +956,19 @@ export const createUserPiece = (data, config) => {
     });
 };
 
+export const createAgent = (data, config) => {
+    const url = `${SETTING.AGENTS}`;
+    return new Promise((resolve, reject) => {
+        api.post(url, data, config)
+            .then(result => resolve(result.data))
+            .catch(error => reject(error));
+    });
+};
+
+export const getAgents = (data) => {
+    return makeRequest('get', `${SETTING.AGENTS}/list?url=${window.location.host}`, null);
+};
+
 export const createBranchCGU = (data, config) => {
     const url = `${SETTING.CGU}`;
     return new Promise((resolve, reject) => {

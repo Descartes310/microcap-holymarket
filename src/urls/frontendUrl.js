@@ -224,6 +224,9 @@ export const SETTINGS = {
             LIST: '/settings/posts/:id/list',
             CREATE: '/settings/posts/:id/create',
         }
+    },
+    AGENTS: {
+        SELF: '/settings/agents',
     }
 };
 

@@ -591,6 +591,12 @@ export default {
                "path": SETTINGS.POST.LIST,
                "permissions": [],
             },
+            {
+               "menu_title": "Nos Agents",
+               "new_item": false,
+               "path": SETTINGS.AGENTS.SELF,
+               "permissions": [],
+            },
          ]
       },
    ],
