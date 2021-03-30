@@ -380,6 +380,7 @@ export const PROJECTS = {
     },
     REACTIONS: {
         GET_ALL: 'api/projects/reactions/projects/{id}',
+        GET_ALL_BY_BRANCH: 'api/projects/reactions/projects/all/branch',
         CREATE: 'api/projects/reactions',
         GET_ONE: 'api/projects/reactions/{id}',
     },

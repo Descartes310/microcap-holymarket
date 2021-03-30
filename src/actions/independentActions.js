@@ -910,6 +910,10 @@ export const getAllProjectReaction = (id) => {
     return makeRequest('get', url);
 };
 
+export const getAllProjectReactionByBranch = () => {
+    return makeRequest('get', `${PROJECTS.REACTIONS.GET_ALL_BY_BRANCH}?url=${window.location.host}`);
+};
+
 export const createFolder = (data, config) => {
     const url = `${PROJECTS.FOLDERS.CREATE}`;
     return new Promise((resolve, reject) => {

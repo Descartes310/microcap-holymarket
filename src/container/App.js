@@ -16,7 +16,7 @@ import BranchActivation from './../routes/session/token';
 import ResetPassword from './../routes/session/forgot-password/ResetPassword';
 import SendResetPasswordLink from './../routes/session/forgot-password/SendResetPasswordLink';
 
-import {AUTH, DISCOVER, STORE} from "../urls/frontendUrl";
+import {AUTH, DISCOVER, GALERY_PROJECT, STORE} from "../urls/frontendUrl";
 import {setAuthUser, loginIntoStore, disableAppLoading} from 'Actions';
 import {getCurrencies} from 'Actions/GeneralActions';
 import RctPageLoader from "Components/RctPageLoader/RctPageLoader";
@@ -26,7 +26,7 @@ import RequestGlobalLoader from "Components/RequestGlobalLoader";
 import {AbilityContext} from "Permissions/Can";
 import Dashboard from 'Routes/custom/dashboard';
 import PermissionAlertBox from "Components/PermissionAlertBox";
-import {AsyncDiscover, AsyncStoreWrapper} from "Components/AsyncComponent/AsyncComponent";
+import {AsyncDiscover, AsyncStoreWrapper, AsyncGallery} from "Components/AsyncComponent/AsyncComponent";
 import CanRoute from "Components/CanRoute";
 
 class App extends Component {
@@ -83,6 +83,7 @@ class App extends Component {
                                 ) : (
                                     <Switch>
                                         <Route exact path={DISCOVER} component={AsyncDiscover} />
+                                        <Route exact path={GALERY_PROJECT} component={AsyncGallery} />
                                         <Route path={AUTH.LOGIN} component={AppSignIn} />
                                         <Route path={AUTH.REGISTER} component={AppSignUp} />
                                         <Route path={AUTH.TOKEN} component={BranchActivation} />

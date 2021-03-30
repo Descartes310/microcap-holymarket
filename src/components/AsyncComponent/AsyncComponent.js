@@ -13,6 +13,11 @@ export const AsyncDiscover = Loadable({
 	loading: () => <RctPageLoader />,
 });
 
+export const AsyncGallery = Loadable({
+	loader: () => import("Routes/custom/dashboard/Gallery"),
+	loading: () => <RctPageLoader />,
+});
+
 export const AsyncBranchList = Loadable({
 	loader: () => import("Routes/custom/branch"),
 	loading: () => <RctPageLoader />,

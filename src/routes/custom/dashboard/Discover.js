@@ -7,7 +7,7 @@ import AppConfig from "Constants/AppConfig";
 import IntlMessages from "Util/IntlMessages";
 import Button from "@material-ui/core/Button";
 import Toolbar from "@material-ui/core/Toolbar";
-import { AUTH, DISCOVER, HOME } from "Url/frontendUrl";
+import { AUTH, GALERY_PROJECT, DISCOVER, HOME } from "Url/frontendUrl";
 import AppBar from "@material-ui/core/AppBar/AppBar";
 import headerImg from 'Assets/img/image_revolution.jpg';
 import {
@@ -21,10 +21,6 @@ import { getAgents } from "Actions/independentActions";
 import {
     Player
 } from 'video-react';
-
-// import Video from 'Assets/data/videos/video_accueil3.mp4'
-
-import Clientslider from './client-slider';
 
 const Discover = (props) => {
     const { loading, intl } = props;
@@ -60,18 +56,22 @@ const Discover = (props) => {
                                 </Link>
                             </div>
                             <div className="center-hor-ver">
-                                <a className="mr-30" style={{ fontSize: '1.2em' }}>
-                                    Microcap
-                                </a>
+                                <Link to={DISCOVER}>
+                                    <a className="mr-30" style={{ fontSize: '1.2em' }}>
+                                        Microcap
+                                   </a>
+                                </Link>
                                 <a className="mr-30" style={{ fontSize: '1.2em' }}>
                                     Produits et services
                                 </a>
                                 <a className="mr-30" style={{ fontSize: '1.2em' }}>
                                     Pass microcap
                                 </a>
-                                {/* <a className="mr-30" style={{ fontSize: '1.2em' }}>
-                                   Galerie projets
-                                </a> */}
+                                <Link to={GALERY_PROJECT}>
+                                    <a className="mr-30" style={{ fontSize: '1.2em' }}>
+                                        Gallerie projets
+                                    </a>
+                                </Link>
                                 <a className="mr-30" style={{ fontSize: '1.2em' }}>
                                     Réseau d'agent
                                 </a>
@@ -218,10 +218,10 @@ const Discover = (props) => {
                                                     <h1>Investisseur! ne manquez pas la Liga</h1>
                                                     <p style={{ textAlign: 'justify', fontSize: '1.1em', lineHeight: 2, marginTop: 20 }}>
                                                         La ligne d’investissement garantie (Liga)
-                                                        Tout placement est exposé au risque de perte partielle ou totale en capital. MicroCap propose aux investisseurs une convention de co-investissement pour limiter la perte en capital. 
+                                                        Tout placement est exposé au risque de perte partielle ou totale en capital. MicroCap propose aux investisseurs une convention de co-investissement pour limiter la perte en capital.
                                                         Les membres du réseau MicroCap verse une contribution de solidarité  réseau annuelle qui garantit une quotité de tout capital investi sur un projet éligible à la Liga. Cette quotité peut atteindre 100% du capital et, peut être assortie d’une prime de risque. Pour guider les utilisateurs dans leurs choix, les projets de la plateforme sont marqués par un système de notation donnant à titre indicatif le niveau de risque.
                                                         Liga x pour capital garantie à x%,
-                                                        Approved pour projet approuvé par une commission technique, 
+                                                        Approved pour projet approuvé par une commission technique,
                                                         n lovers pour n personnes qui suivent et aiment le projet
                                                     </p>
                                                 </div>
@@ -393,7 +393,7 @@ const Discover = (props) => {
                                             <div className="client-content">
                                                 <h4 className="fw-bold text-capitalize text-primary">{agent.name}</h4>
                                                 <span>{agent.email}</span>
-                                                <span>{agent.phonee}</span>
+                                                <span>{agent.phone}</span>
                                                 <span>{agent.address}</span>
                                             </div>
                                         </div>
