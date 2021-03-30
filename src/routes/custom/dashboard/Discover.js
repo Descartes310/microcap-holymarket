@@ -7,9 +7,10 @@ import AppConfig from "Constants/AppConfig";
 import IntlMessages from "Util/IntlMessages";
 import Button from "@material-ui/core/Button";
 import Toolbar from "@material-ui/core/Toolbar";
-import { AUTH, DISCOVER, HOME } from "Url/frontendUrl";
+import { AUTH, DISCOVER, HOME, TERMS, LEGAL_MENTION } from "Url/frontendUrl";
 import AppBar from "@material-ui/core/AppBar/AppBar";
 import headerImg from 'Assets/img/image_revolution.jpg';
+import Gallery from '../../pages/gallery/index.js';
 import {
     Card,
     CardImg,
@@ -409,6 +410,63 @@ const Discover = (props) => {
                 </RctCard> */}
             </div>
             {/* </div> */}
+            <footer id="fh5co-footer" className="fh5co-bg" role="contentinfo">
+                <div className="overlay"></div>
+                <div className="container">
+                <div className="row row-pb-md">
+                <div className="col-md-4 fh5co-widget">
+                    <h3>A Little About MicroCap.</h3>
+                    <p style={{color: "rgba(255, 255,255, 0.5)"}}>Facilis ipsum reprehenderit nemo molestias. Aut cum mollitia reprehenderit. Eos cumque dicta adipisci architecto culpa amet.</p>
+                    <p><a className="btn btn-primary" href="#" style={{color:'white'}}>Suscribe to Microcap</a></p>
+                </div>
+                <div className="col-md-8">
+                    <h3>Classes</h3>
+                    <div className="row">
+                        <div className="col-md-4 col-sm-4 col-xs-6">
+                            <ul className="fh5co-footer-links">
+                                <li><a href="#" className="activefooter">A Propos de MicroCap</a></li>
+                                <li><a href="#">Mission et valeur</a></li>
+                                <li><a href="#">Le projet</a></li>
+                                <li><a href="#">Les pionniers</a></li>
+                                <li><a href="#">L’entreprise</a></li>
+                                <li><a href="#">Faqs</a></li>
+                                <li><a href="#">contact</a></li>
+                            </ul>
+                        </div>
+
+                        <div className="col-md-4 col-sm-4 col-xs-6">
+                            <ul className="fh5co-footer-links">
+                                <li><a href="#" className="activefooter">Informtion legales</a></li>
+                                <li><a onClick={()=> props.history.push(TERMS)}>CGU</a></li>
+                                <li><a href="#">CGV</a></li>
+                                <li><a onClick={()=> props.history.push(LEGAL_MENTION)}>Mention légales</a></li>
+                            </ul>
+                        </div>
+
+                        <div className="col-md-4 col-sm-4 col-xs-6">
+                            <ul className="fh5co-footer-links">
+                                <li><a href="#" className="activefooter">Suivez-nous</a></li>
+                                <li><a href="#">Presse</a></li>
+                                <li><a href="#">New letter</a></li>
+                                <li><a href="#">Réseaux sociaux</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                </div>
+
+                <div className="row copyright">
+                <div className="col-md-12 text-center">
+                    <p style={{marginTop: '30px'}}>
+                        <small className="block">&copy; 2021 | All Rights Reserved.</small> 
+                        <small className="block">Powered by  dev1.microcap.fr</small>
+                    </p>
+                </div>
+                </div>
+
+                </div>
+                </footer>
+
         </div>
     );
 };

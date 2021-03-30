@@ -3,6 +3,8 @@ import { BASE } from "Url/backendUrl";
 export const ROOT = '/';
 export const HOME = '/home';
 export const DISCOVER = '/discover';
+export const TERMS = '/conditions-generales-d-utilisation';
+export const LEGAL_MENTION = '/mentions-legales';
 export const AUTH = {
     LOGIN: '/login',
     REGISTER: '/register',

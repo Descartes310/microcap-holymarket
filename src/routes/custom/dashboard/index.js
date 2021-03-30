@@ -66,6 +66,7 @@ import { loginIntoStore } from "Actions/TokensActions";
 import Permission from "Enums/Permissions";
 import HomePage from "Routes/custom/HomePage";
 import CanRoute from "Components/CanRoute";
+import Terms from "./Terms";
 
 const Dashboard = ({ match, authUser }) => {
     const ability = useAbility(AbilityContext);
@@ -77,6 +78,7 @@ const Dashboard = ({ match, authUser }) => {
                     <Route exact path={DISCOVER} component={AsyncDiscover} />
                     <Route exact path={ROOT} component={HomePage} />
                     <Route exact path={HOME} component={HomePage} />
+                    <Route exact path={TERMS} component={Terms} />
 
                     <CanRoute
                         path={NETWORK.ACTIVATION}
