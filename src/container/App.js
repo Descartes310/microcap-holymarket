@@ -15,8 +15,7 @@ import AppSignUp from './../routes/session/register';
 import BranchActivation from './../routes/session/token';
 import ResetPassword from './../routes/session/forgot-password/ResetPassword';
 import SendResetPasswordLink from './../routes/session/forgot-password/SendResetPasswordLink';
-
-import {AUTH, DISCOVER, GALERY_PROJECT, STORE} from "../urls/frontendUrl";
+import {AUTH, DISCOVER, STORE, TERMS, LEGAL_MENTION, GALERY_PROJECT} from "../urls/frontendUrl";
 import {setAuthUser, loginIntoStore, disableAppLoading} from 'Actions';
 import {getCurrencies} from 'Actions/GeneralActions';
 import RctPageLoader from "Components/RctPageLoader/RctPageLoader";
@@ -28,6 +27,9 @@ import Dashboard from 'Routes/custom/dashboard';
 import PermissionAlertBox from "Components/PermissionAlertBox";
 import {AsyncDiscover, AsyncStoreWrapper, AsyncGallery} from "Components/AsyncComponent/AsyncComponent";
 import CanRoute from "Components/CanRoute";
+import Terms from "./../routes/custom/dashboard/Terms.js";
+import LegalMention from "./../routes/custom/dashboard/LegalMention.js";
+
 
 class App extends Component {
     static contextType = AbilityContext;
@@ -84,6 +86,8 @@ class App extends Component {
                                     <Switch>
                                         <Route exact path={DISCOVER} component={AsyncDiscover} />
                                         <Route exact path={GALERY_PROJECT} component={AsyncGallery} />
+                                        <Route exact path={TERMS} component={Terms} />
+                                        <Route exact path={LEGAL_MENTION} component={LegalMention} />
                                         <Route path={AUTH.LOGIN} component={AppSignIn} />
                                         <Route path={AUTH.REGISTER} component={AppSignUp} />
                                         <Route path={AUTH.TOKEN} component={BranchActivation} />
