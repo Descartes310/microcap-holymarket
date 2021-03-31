@@ -64,6 +64,7 @@ import {
     COMMUNITY,
     COMMUNITY_ADMIN,
     COMMUNITY_MEMBER,
+    GETIN,
     STOCK,
     TERMS,
     PACKAGES,
