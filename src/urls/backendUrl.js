@@ -38,6 +38,7 @@ export const SETTING = {
     GET_UNIT: 'api/settings/units/unit-types/{id}',
     UNIT: 'api/settings/units',
     AGENTS: 'api/settings/agents',
+    PIONIERS: 'api/settings/pioniers',
 };
 
 export const SYSTEM_OBJECT = {

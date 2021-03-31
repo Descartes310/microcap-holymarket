@@ -13,7 +13,9 @@ import {
     AsyncBranchNetworkConfiguration,
     AsyncCatalogProducts,
     AsyncUserProfile,
+    AsyncPionier,
     AsyncUsers,
+    AsyncGetIn,
     AsyncCommunity,
     AsyncProjects,
     AsyncCommunityProject,
@@ -23,6 +25,8 @@ import {
     AsyncAccess, AsyncSettingNotifications, AsyncNotifications, AsyncUsersAccounts,
     AsyncActivateBranch, AsyncSampleBranchList,
     AsyncDiscover,
+    AsyncSolidarity,
+    AsyncMoneyManagement,
     AsyncGallery
 } from 'Components/AsyncComponent/AsyncComponent';
 import Community from "Routes/custom/community";
@@ -34,6 +38,7 @@ import CommunityAdmins from "Routes/custom/communityT/admin";
 import CommunityMembersPostsProjects from "Routes/custom/communityT/postsProjects";
 import ClientPieceList from "Routes/custom/settings/client_folder/List";
 import AgentList from "Routes/custom/settings/agents/List";
+import PionierList from "Routes/custom/settings/pioniers/List";
 import ConfigurationsList from "Routes/custom/settings/configurations/List";
 import UnitList from "Routes/custom/settings/units";
 import Posts from "Routes/custom/settings/posts";
@@ -47,6 +52,9 @@ import { useAbility } from "@casl/react";
 import {
     CATALOG,
     DISCOVER,
+    SOLIDARITY,
+    MONEY_MANAGEMENT,
+    PIONIERS,
     GALERY_PROJECT,
     HOME,
     NETWORK,
@@ -79,10 +87,14 @@ const Dashboard = ({ match, authUser }) => {
             <div className="dashboard-wrapper">
                 <Switch>
                     <Route exact path={DISCOVER} component={AsyncDiscover} />
+                    <Route exact path={GETIN} component={AsyncGetIn} />
+                    <Route exact path={PIONIERS} component={AsyncPionier} />
                     <Route exact path={GALERY_PROJECT} component={AsyncGallery} />
                     <Route exact path={ROOT} component={HomePage} />
                     <Route exact path={HOME} component={HomePage} />
                     <Route exact path={TERMS} component={Terms} />
+                    <Route exact path={SOLIDARITY} component={AsyncSolidarity} />
+                    <Route exact path={MONEY_MANAGEMENT} component={AsyncMoneyManagement} />
 
                     <CanRoute
                         path={NETWORK.ACTIVATION}
@@ -115,7 +127,7 @@ const Dashboard = ({ match, authUser }) => {
                     />
 
                     <CanRoute
-                        path={SETTINGS.USERPIECE.SELF}
+                    path={SETTINGS.USERPIECE.SELF}
                         component={ClientPieceList}
                         permissions={[]}
                     />
@@ -123,6 +135,12 @@ const Dashboard = ({ match, authUser }) => {
                     <CanRoute
                         path={SETTINGS.AGENTS.SELF}
                         component={AgentList}
+                        permissions={[]}
+                    />
+
+                    <CanRoute
+                        path={SETTINGS.PIONIERS.SELF}
+                        component={PionierList}
                         permissions={[]}
                     />
 

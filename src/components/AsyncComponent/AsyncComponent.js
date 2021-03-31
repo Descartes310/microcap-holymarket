@@ -18,6 +18,26 @@ export const AsyncGallery = Loadable({
 	loading: () => <RctPageLoader />,
 });
 
+export const AsyncPionier = Loadable({
+	loader: () => import("Routes/custom/dashboard/Pionier"),
+	loading: () => <RctPageLoader />,
+});
+
+export const AsyncSolidarity = Loadable({
+	loader: () => import("Routes/custom/dashboard/Solidarity"),
+	loading: () => <RctPageLoader />,
+});
+
+export const AsyncGetIn = Loadable({
+	loader: () => import("Routes/custom/dashboard/GetIn"),
+	loading: () => <RctPageLoader />,
+});
+
+export const AsyncMoneyManagement = Loadable({
+	loader: () => import("Routes/custom/dashboard/MoneyManagement"),
+	loading: () => <RctPageLoader />,
+});
+
 export const AsyncBranchList = Loadable({
 	loader: () => import("Routes/custom/branch"),
 	loading: () => <RctPageLoader />,

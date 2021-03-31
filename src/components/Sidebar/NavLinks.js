@@ -597,6 +597,12 @@ export default {
                "path": SETTINGS.AGENTS.SELF,
                "permissions": [],
             },
+            {
+               "menu_title": "Nos Pioniers",
+               "new_item": false,
+               "path": SETTINGS.PIONIERS.SELF,
+               "permissions": [],
+            },
          ]
       },
    ],

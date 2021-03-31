@@ -7,7 +7,7 @@ import AppConfig from "Constants/AppConfig";
 import IntlMessages from "Util/IntlMessages";
 import Button from "@material-ui/core/Button";
 import Toolbar from "@material-ui/core/Toolbar";
-import { AUTH, DISCOVER, HOME, TERMS, LEGAL_MENTION, GALERY_PROJECT } from "Url/frontendUrl";
+import { AUTH, DISCOVER, HOME, PIONIERS, TERMS, LEGAL_MENTION, GALERY_PROJECT, SOLIDARITY, MONEY_MANAGEMENT, GETIN } from "Url/frontendUrl";
 import AppBar from "@material-ui/core/AppBar/AppBar";
 import headerImg from 'Assets/img/image_revolution.jpg';
 import Gallery from '../../pages/gallery/index.js';
@@ -18,14 +18,15 @@ import {
     CardBody
 } from 'reactstrap';
 import { RctCard, RctCardContent } from 'Components/RctCard';
-import { getAgents } from "Actions/independentActions";
+import { getAgents, getMainPioniers } from "Actions/independentActions";
 import {
     Player
 } from 'video-react';
 
 const Discover = (props) => {
     const { loading, intl } = props;
-    const [data, setData] = useState([])
+    const [data, setData] = useState([]);
+    const [pioniers, setPioniers] = useState([]);
     /**
      * On navigate to Discover Microcap
      */
@@ -38,6 +39,9 @@ const Discover = (props) => {
     useEffect(() => {
         getAgents().then(data => {
             setData(data)
+        })
+        getMainPioniers().then(data => {
+            setPioniers(data)
         })
     }, []);
 
@@ -101,9 +105,11 @@ const Discover = (props) => {
                             <CardImg top width="100%" className="img-fluid ripple-effect" src={require('Assets/img/01-solidarite-1.jpg')} alt="Card image cap" />
                             <CardBody style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
                                 <CardText style={{ fontSize: '1.1em', textAlign: 'center' }}>En famille, entre camarades, entre collègues, entre compatriotes, adopter la solidarité comme principe. Besoin d'un soutien ou d'un coup de pouce pour entreprendre ?</CardText>
-                                <Button variant="contained" className="btn-primary mr-2 text-white">
-                                    Rejoindre le réseau de solidarité MicroCap
-                                </Button>
+                                <Link to={SOLIDARITY}>
+                                    <Button variant="contained" className="btn-primary mr-2 text-white">
+                                        Découvrir Microcap
+                                    </Button>
+                                </Link>
                             </CardBody>
                         </Card>
                     </div>
@@ -112,9 +118,11 @@ const Discover = (props) => {
                             <CardImg top width="100%" className="img-fluid ripple-effect" src={require('Assets/img/tradition-et-innovation.jpg')} alt="Card image cap" />
                             <CardBody style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
                                 <CardText style={{ fontSize: '1.1em', textAlign: 'center' }}>Entre tradition et innovation, le love money permet de collecter de l'argent auprès des proches pour vous financer. Avec MicroCap, vous collecter juste l'avis des membres du réseau</CardText>
-                                <Button variant="contained" className="btn-primary mr-2 text-white">
-                                    Developper son réseau
-                                </Button>
+                                <Link to={GETIN}>
+                                    <Button variant="contained" className="btn-primary mr-2 text-white">
+                                        Rejoindre Microcap
+                                    </Button>
+                                </Link>
                             </CardBody>
                         </Card>
                     </div>
@@ -123,9 +131,11 @@ const Discover = (props) => {
                             <CardImg top width="100%" className="img-fluid ripple-effect" src={require('Assets/img/budget.jpg')} alt="Card image cap" />
                             <CardBody style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
                                 <CardText style={{ fontSize: '1.1em', textAlign: 'center' }}>Sensibiliser et porter l’éducation financière économique et budgétaire à tous pour rationaliser le rapport avec l’argent</CardText>
-                                <Button variant="contained" className="btn-primary mr-2 text-white">
-                                    Reprendre le contrôle avec MicroCap
-                                </Button>
+                                <Link to={MONEY_MANAGEMENT}>
+                                    <Button variant="contained" className="btn-primary mr-2 text-white">
+                                        Reprendre le contrôle avec MicroCap
+                                    </Button>
+                                </Link>
                             </CardBody>
                         </Card>
                     </div>
@@ -371,6 +381,49 @@ const Discover = (props) => {
 
                 <div style={{ backgroundColor: '#eeeeee', marginBottom: '7vh' }}>
                     <h1 className="font-weight-bold text-black text-center" style={{ fontSize: '3em', padding: '4%' }}>
+                        Nos pioniers
+                    </h1>
+                </div>
+
+                <div className="container">
+                    <div className="row justify-content-center">
+                        {pioniers.map(agent => (
+                            <div className="col-sm-12 col-md-4 col-lg-3">
+                                <RctCard>
+                                    <RctCardContent>
+                                        <div className="client-post text-center">
+                                            <div className="client-thumb mb-20">
+                                                <img
+                                                    className="rounded"
+                                                    src={agent.avatar}
+                                                    alt="client"
+                                                    width="95"
+                                                    height="95"
+                                                />
+                                            </div>
+                                            <div className="client-content">
+                                                <h4 className="fw-bold text-capitalize text-primary">{agent.name}</h4>
+                                                <span>{agent.post}</span>
+                                                <span>{agent.email}</span>
+                                                <span>{agent.phone}</span>
+                                            </div>
+                                        </div>
+                                    </RctCardContent>
+                                </RctCard>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+                <div className="d-flex align-items-center justify-content-center mb-50">
+                    <Link to={PIONIERS}>
+                        <Button variant="contained" className="btn-primary mr-2 text-white">
+                            Voir les pioniers
+                        </Button>
+                    </Link>
+                </div>
+
+                <div style={{ backgroundColor: '#eeeeee', marginBottom: '7vh' }}>
+                    <h1 className="font-weight-bold text-black text-center" style={{ fontSize: '3em', padding: '4%' }}>
                         Réseau d'agents
                     </h1>
                 </div>
@@ -413,59 +466,59 @@ const Discover = (props) => {
             <footer id="fh5co-footer" className="fh5co-bg" role="contentinfo">
                 <div className="overlay"></div>
                 <div className="container">
-                <div className="row row-pb-md">
-                <div className="col-md-4 fh5co-widget">
-                    <h3>A Little About MicroCap.</h3>
-                    <p style={{color: "rgba(255, 255,255, 0.5)"}}>Facilis ipsum reprehenderit nemo molestias. Aut cum mollitia reprehenderit. Eos cumque dicta adipisci architecto culpa amet.</p>
-                    <p><a className="btn btn-primary" href="#" style={{color:'white'}}>Suscribe to Microcap</a></p>
-                </div>
-                <div className="col-md-8">
-                    <h3>Classes</h3>
-                    <div className="row">
-                        <div className="col-md-4 col-sm-4 col-xs-6">
-                            <ul className="fh5co-footer-links">
-                                <li><a href="#" className="activefooter">A Propos de MicroCap</a></li>
-                                <li><a href="#">Mission et valeur</a></li>
-                                <li><a href="#">Le projet</a></li>
-                                <li><a href="#">Les pionniers</a></li>
-                                <li><a href="#">L’entreprise</a></li>
-                                <li><a href="#">Faqs</a></li>
-                                <li><a href="#">contact</a></li>
-                            </ul>
+                    <div className="row row-pb-md">
+                        <div className="col-md-4 fh5co-widget">
+                            <h3>A Little About MicroCap.</h3>
+                            <p style={{ color: "rgba(255, 255,255, 0.5)" }}>Facilis ipsum reprehenderit nemo molestias. Aut cum mollitia reprehenderit. Eos cumque dicta adipisci architecto culpa amet.</p>
+                            <p><a className="btn btn-primary" href="#" style={{ color: 'white' }}>Suscribe to Microcap</a></p>
                         </div>
+                        <div className="col-md-8">
+                            <h3>Classes</h3>
+                            <div className="row">
+                                <div className="col-md-4 col-sm-4 col-xs-6">
+                                    <ul className="fh5co-footer-links">
+                                        <li><a href="#" className="activefooter">A Propos de MicroCap</a></li>
+                                        <li><a href="#">Mission et valeur</a></li>
+                                        <li><a href="#">Le projet</a></li>
+                                        <li><a href="#">Les pionniers</a></li>
+                                        <li><a href="#">L’entreprise</a></li>
+                                        <li><a href="#">Faqs</a></li>
+                                        <li><a href="#">contact</a></li>
+                                    </ul>
+                                </div>
 
-                        <div className="col-md-4 col-sm-4 col-xs-6">
-                            <ul className="fh5co-footer-links">
-                                <li><a href="#" className="activefooter">Informtion legales</a></li>
-                                <li><a onClick={()=> props.history.push(TERMS)}>CGU</a></li>
-                                <li><a href="#">CGV</a></li>
-                                <li><a onClick={()=> props.history.push(LEGAL_MENTION)}>Mention légales</a></li>
-                            </ul>
-                        </div>
+                                <div className="col-md-4 col-sm-4 col-xs-6">
+                                    <ul className="fh5co-footer-links">
+                                        <li><a href="#" className="activefooter">Informtion legales</a></li>
+                                        <li><a onClick={() => props.history.push(TERMS)}>CGU</a></li>
+                                        <li><a href="#">CGV</a></li>
+                                        <li><a onClick={() => props.history.push(LEGAL_MENTION)}>Mention légales</a></li>
+                                    </ul>
+                                </div>
 
-                        <div className="col-md-4 col-sm-4 col-xs-6">
-                            <ul className="fh5co-footer-links">
-                                <li><a href="#" className="activefooter">Suivez-nous</a></li>
-                                <li><a href="#">Presse</a></li>
-                                <li><a href="#">New letter</a></li>
-                                <li><a href="#">Réseaux sociaux</a></li>
-                            </ul>
+                                <div className="col-md-4 col-sm-4 col-xs-6">
+                                    <ul className="fh5co-footer-links">
+                                        <li><a href="#" className="activefooter">Suivez-nous</a></li>
+                                        <li><a href="#">Presse</a></li>
+                                        <li><a href="#">New letter</a></li>
+                                        <li><a href="#">Réseaux sociaux</a></li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-                </div>
 
-                <div className="row copyright">
-                <div className="col-md-12 text-center">
-                    <p style={{marginTop: '30px'}}>
-                        <small className="block">&copy; 2021 | All Rights Reserved.</small> 
-                        <small className="block">Powered by  dev1.microcap.fr</small>
-                    </p>
-                </div>
-                </div>
+                    <div className="row copyright">
+                        <div className="col-md-12 text-center">
+                            <p style={{ marginTop: '30px' }}>
+                                <small className="block">&copy; 2021 | All Rights Reserved.</small>
+                                <small className="block">Powered by  dev1.microcap.fr</small>
+                            </p>
+                        </div>
+                    </div>
 
                 </div>
-                </footer>
+            </footer>
 
         </div>
     );

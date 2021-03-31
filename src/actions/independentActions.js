@@ -973,6 +973,27 @@ export const getAgents = (data) => {
     return makeRequest('get', `${SETTING.AGENTS}/list?url=${window.location.host}`, null);
 };
 
+export const createPionier = (data, config) => {
+    const url = `${SETTING.PIONIERS}`;
+    return new Promise((resolve, reject) => {
+        api.post(url, data, config)
+            .then(result => resolve(result.data))
+            .catch(error => reject(error));
+    });
+};
+
+export const getPioniers = () => {
+    return makeRequest('get', `${SETTING.PIONIERS}/list?url=${window.location.host}`, null);
+};
+
+export const getMainPioniers = () => {
+    return makeRequest('get', `${SETTING.PIONIERS}/list/main?url=${window.location.host}`, null);
+};
+
+export const updatePioniers = (id) => {
+    return makeRequest('put', `${SETTING.PIONIERS}/${id}`, null);
+};
+
 export const createBranchCGU = (data, config) => {
     const url = `${SETTING.CGU}`;
     return new Promise((resolve, reject) => {

@@ -3,6 +3,10 @@ import { BASE } from "Url/backendUrl";
 export const ROOT = '/';
 export const HOME = '/home';
 export const DISCOVER = '/discover';
+export const GETIN = '/get-in';
+export const PIONIERS = '/pioniers';
+export const SOLIDARITY = '/solidarity';
+export const MONEY_MANAGEMENT = '/money-management';
 export const GALERY_PROJECT = '/projects-gallery';
 export const TERMS = '/conditions-generales-d-utilisation';
 export const LEGAL_MENTION = '/mentions-legales';
@@ -230,6 +234,9 @@ export const SETTINGS = {
     },
     AGENTS: {
         SELF: '/settings/agents',
+    },
+    PIONIERS: {
+        SELF: '/settings/pioniers',
     }
 };
 
