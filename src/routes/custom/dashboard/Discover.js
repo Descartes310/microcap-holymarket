@@ -276,7 +276,7 @@ const Discover = (props) => {
                                             />
                                         </div>
                                         <div className="client-content">
-                                            <h4 className="fw-bold text-capitalize text-primary">Garantie de Cautionnement bancaire</h4>
+                                            <h4 className="fw-bold text-capitalize text-primary">Obtenir facilement un crédit auprès des banques traditionnelles</h4>
                                         </div>
                                     </div>
                                 </RctCardContent>

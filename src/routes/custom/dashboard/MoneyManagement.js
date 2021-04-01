@@ -24,27 +24,33 @@ export default class MoneyManagement extends Component {
         <div className="terms-conditions-rules">
           <RctCollapsibleCard customClasses="p-30">
             <p>
-                Reprendre le controle sur votre argent
+              MicroCap est une entreprise de mission qui se propose de démocratiser l’entrepreneuriat par l’accès aux financement.
+              Nous parton du constat que ceux à qui les financements sont refusés ne sont pas conscient du pouvoir financier qui est le leur, mis en commun. Ils ne sont pas non
+              plus conscients du fait que le mode de consommation auquel nous nous soumettons de plus en plus participe à plus de pauvreté et que, cynique mais vais, leur pouvoir
+              collectif finance chaque jour le système qui les appauvrit. Ce qui conduit à des incompréhension et un fort sentiment d’injustice sociale. Nous proposons des
+              ressources, des sensibilisations et accompagnements totalement gratuits pour renforcer l’éducation financière, économique et budgétaire, afin de permettre à ce qui le
+              souhaitent, de reprendre le contrôle sur leur argent. Nos objectifs recherchés pour vous :
+
                 <ol style={{ paddingTop: 40, paddingBottom: 10 }}>
+                    <li>Distinguer pouvoir d’achat et vouloir d’achat</li>
                     <li>Rationnaliser votre budget</li>
-                    <li>Decider a qui et a quoi sert votre argent</li>
-                    <li>Soutenir et vivre la finance vertueuse ou utile</li>
+                    <li>Décider a qui et à quoi sert votre argent</li>
+                    <li>Soutenir et vivre une finance vertueuse et utile</li>
                 </ol>
 
                 <p>
-                    3 objectifs qui decoule de la mission de Microcap renforcer l'education financiere
-                    economique et budgetaire.
-                    Les utilisateurs de la plateforme Microcap on acces a un programme de sensibilisation, 
-                    monitoring et coaching a la finance vertueuse.
-                    Webinaire tous les jeudis a 13h pour une durée de 1h S'inscrire
-                    Atelier pratique pour adopter et profiter de la finance vertueuse.
+                  Les utilisateurs de la plateforme MicroCap ont accès a un programme de sensibilisation, monitoring et coaching a la finance vertueuse. Pour en profiter :
                 </p>
                 <p>
-                    Tous les derniers samedis du mois
+                  Un Webinaire d’une durée de 1H tous les jeudis à 13h.
                 </p>
                 <p>
-                    Prochaine date: 13 fevrier 2021
+                  Atelier pratique pour adopter et profiter de la finance vertueuse tous les derniers samedis du mois. Prochaines dates :
                 </p>
+                <ul style={{ paddingTop: 40, paddingBottom: 10 }}>
+                    <li>Exceptionnellement le samedi 3 avril 2021 à 15H00</li>
+                    <li>Cycle normal le samedi 24 avril 2021 à 15H00</li>
+                </ul>
                 
                 <Link to={AUTH.REGISTER}>
                     <Button variant="contained" className="btn-primary mr-2 text-white">
