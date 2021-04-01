@@ -24,13 +24,26 @@ export default class Solidarity extends Component {
                 <div className="terms-conditions-rules">
                     <RctCollapsibleCard customClasses="p-30">
                         <p>
-                            Sur l'année 2021, les projets de la plateforme Microcap sont présentés par appel à projet
-                            dans le cardre des programme de projets structurant. Ces projets participent a la
-                            consolidation du systeme de solidarité et de mutualisation des moyens.
-                            Vous pouvez presenter un projet pour:
+                            Sur l'année 2021, les projets de la plateforme MicroCap sont présentés par appel à projets dans le cadre des programmes de
+                            projets structurants. Ces projets participent à la consolidation service MicroCap par une forte capitalisation et le déploiement
+                            d’un système de solidarité et de mutualisation des moyens.
+                            <strong>LES PROGRAMMES STRUCTURANTS MICROCAP</strong>
                             <ul style={{ padding: 40 }}>
                                 <li>
+                                    <strong>Programme Reflex</strong>
+                                    <p>Créer une dynamique d’innovation en vue d’apporter plus de flexibilité et d’efficacité au TPE/PME. Les projets de ce
+                                    programme s’organisent en deux catégories :</p>
+                                    <ol style={{ marginTop: 20 }}>
+                                        <li>Développer ou renforcer l'agilité des TPE/PME</li>
+                                        <li>Faciliter l’internationalisation des TPE/PME</li>
+                                    </ol>
+                                </li>
+                                <li>
                                     <strong>Programme de banque alimentaire</strong>
+                                    <p>
+                                        Professionnaliser les filières agricoles et rapprocher le producteur du consommateur par les circuits courts géographique ou
+                                        économique. Proposer les projets dans l’une des rubriques suivantes :
+                                    </p>
                                     <ol style={{ marginTop: 20 }}>
                                         <li>Volet production</li>
                                         <li>Volet transformation</li>
@@ -41,18 +54,27 @@ export default class Solidarity extends Component {
                                 </li>
                                 <li>
                                     <strong>Progamme de SERHAB</strong>
-                                    <ol style={{ marginTop: 20 }}>
-                                        <li>Volet d'habitation</li>
-                                        <li>Volet de bureau</li>
-                                        <li>Volet de tourisme et loisir</li>
-                                    </ol>
+                                    <p>
+                                        Promouvoir l’accès au logement décent pour tous. Catégorie spécifique pour présenter un projet :
+                                    </p>
+                                    <ul style={{ marginTop: 20 }}>
+                                        <li>Volet immobilier d'habitation</li>
+                                        <li>Volet immobilier professionnel (bureaux et commerce)</li>
+                                        <li>Volet immobilier de tourisme et loisir</li>
+                                    </ul>
                                 </li>
-                                <li>
-                                    <strong>Programme Reflex</strong>
-                                    <ol style={{ marginTop: 20 }}>
-                                        <li>Pour les programmes permettant de developper l'agilité des TPE</li>
-                                        <li>Pour les programmes permettant de developper l'agilité des TME</li>
-                                    </ol>
+                                <li style={{ marginTop: 20 }}>
+                                    <strong>1004africa</strong>
+                                    <p>
+                                        Sélection et financement de 100 entrepreneurs Leaders d’une Afrique nouvelle. Celle-là qui se refuse au suivisme et qui se
+                                        refuse à demeurer un éternel champ de ruine. Pas de catégorie spécifiques.
+                                    </p>
+                                </li>
+                                <li style={{ marginTop: 20 }}>
+                                    <strong>Le programme sOs covid-19</strong>
+                                    <p>
+                                        Tout projet qui participe à réduire les effets économiques et sociaux de la pandémie du Covid-19
+                                    </p>
                                 </li>
                             </ul>
                             <Link to={AUTH.REGISTER}>

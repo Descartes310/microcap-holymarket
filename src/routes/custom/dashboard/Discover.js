@@ -98,16 +98,16 @@ const Discover = (props) => {
                 <h1 className="font-weight-bold text-black" style={{ fontSize: '2em', padding: '2%', textAlign: 'center' }}>
                     La solidarité, le pouvoir des petits capitaux
                 </h1>
-                <p style={{ fontSize: '1.1em', textAlign: 'center' }}>Concilier traditions et innovations pour réinventer une solidarité utile à promouvoir une finance inclusive et vertueuse</p>
+                <p style={{ fontSize: '1.1em', textAlign: 'center' }}>Concilier traditions et innovations pour réinventer une solidarité utile à promouvoir une finance inclusive et vertueuse.</p>
                 <div className="row" style={{ paddingLeft: '10%', paddingRight: '10%', paddingTop: '2%', paddingBottom: '2%' }}>
                     <div className="col-xs-12 col-sm-12 col-md-4 mb-30">
                         <Card>
                             <CardImg top width="100%" className="img-fluid ripple-effect" src={require('Assets/img/01-solidarite-1.jpg')} alt="Card image cap" />
                             <CardBody style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
-                                <CardText style={{ fontSize: '1.1em', textAlign: 'center' }}>En famille, entre camarades, entre collègues, entre compatriotes, adopter la solidarité comme principe. Besoin d'un soutien ou d'un coup de pouce pour entreprendre ?</CardText>
+                                <CardText style={{ fontSize: '1.1em', textAlign: 'center' }}>En famille, entre camarades, entre collègues, entre compatriotes, adopter la solidarité comme principe. Besoin d'un soutien ou d'un coup de pouce pour entreprendre ? 50 000€ à gagner pour démarrer !</CardText>
                                 <Link to={SOLIDARITY}>
                                     <Button variant="contained" className="btn-primary mr-2 text-white">
-                                        Découvrir Microcap
+                                        Nos projets solidaires
                                     </Button>
                                 </Link>
                             </CardBody>
@@ -117,7 +117,7 @@ const Discover = (props) => {
                         <Card>
                             <CardImg top width="100%" className="img-fluid ripple-effect" src={require('Assets/img/tradition-et-innovation.jpg')} alt="Card image cap" />
                             <CardBody style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
-                                <CardText style={{ fontSize: '1.1em', textAlign: 'center' }}>Entre tradition et innovation, le love money permet de collecter de l'argent auprès des proches pour vous financer. Avec MicroCap, vous collecter juste l'avis des membres du réseau</CardText>
+                                <CardText style={{ fontSize: '1.1em', textAlign: 'center' }}>Entre tradition et innovation, le love money permet de collecter de l'argent auprès des proches pour vous financer. MicroCap développe votre réseau et vous apport un effet de levier</CardText>
                                 <Link to={GETIN}>
                                     <Button variant="contained" className="btn-primary mr-2 text-white">
                                         Rejoindre Microcap
@@ -133,7 +133,7 @@ const Discover = (props) => {
                                 <CardText style={{ fontSize: '1.1em', textAlign: 'center' }}>Sensibiliser et porter l’éducation financière économique et budgétaire à tous pour rationaliser le rapport avec l’argent</CardText>
                                 <Link to={MONEY_MANAGEMENT}>
                                     <Button variant="contained" className="btn-primary mr-2 text-white">
-                                        Reprendre le contrôle avec MicroCap
+                                        Education financière
                                     </Button>
                                 </Link>
                             </CardBody>
@@ -151,8 +151,8 @@ const Discover = (props) => {
                         src='http://dev1.microcap.fr:8080/files/videos/video_accueil3.mp4'
                     />
                     <p style={{ fontSize: '1.2em', marginTop: 20, textAlign: 'center' }}>
-                        Microcap finance votre épargne et vous accompagne dans votre projet: créer une entreprise, devenir actionnaire d'une entreprise, se former
-                        à la création d'entreprise
+                        Microcap finance votre épargne et vous accompagne dans votre projet: création d’entreprise, actionnariat, formation à l’entrepreneuriat
+                        Ouvrir votre Plan d'Investissement Programmé MicroCap et Rejoignez le premier réseau international de solidarité financière
                     </p>
                     {/* <p style={{ fontSize: '1.2em', marginTop: 10, textAlign: 'center' }}>
                         Ouvrir votre Plan d'Investissement Programmé MicroCap et Rejoignez le premier réseau international de solidarité financière
@@ -229,8 +229,13 @@ const Discover = (props) => {
                                                     <h1>Investisseur! ne manquez pas la Liga</h1>
                                                     <p style={{ textAlign: 'justify', fontSize: '1.1em', lineHeight: 2, marginTop: 20 }}>
                                                         La ligne d’investissement garantie (Liga)
-                                                        Tout placement est exposé au risque de perte partielle ou totale en capital. MicroCap propose aux investisseurs une convention de co-investissement pour limiter la perte en capital.
-                                                        Les membres du réseau MicroCap verse une contribution de solidarité  réseau annuelle qui garantit une quotité de tout capital investi sur un projet éligible à la Liga. Cette quotité peut atteindre 100% du capital et, peut être assortie d’une prime de risque. Pour guider les utilisateurs dans leurs choix, les projets de la plateforme sont marqués par un système de notation donnant à titre indicatif le niveau de risque.
+                                                        Tout placement est exposé au risque de perte partielle ou totale en capital. MicroCap propose aux
+                                                        investisseurs une convention de co-investissement pour limiter la perte en capital.
+                                                        Les membres du réseau MicroCap verse une contribution de solidarité réseau annuelle qui garantit
+                                                        une quotité de tout capital investi sur un projet éligible à la Liga. Cette quotité peut atteindre 100% du
+                                                        capital et, peut être assortie d’une prime de risque. Pour guider les utilisateurs dans leurs choix, les
+                                                        projets de la plateforme sont marqués par un système de notation donnant à titre indicatif le niveau de
+                                                        risque.
                                                         Liga x pour capital garantie à x%,
                                                         Approved pour projet approuvé par une commission technique,
                                                         n lovers pour n personnes qui suivent et aiment le projet
@@ -360,18 +365,18 @@ const Discover = (props) => {
                                     </li>
                                     <li>
                                         <p style={{ fontSize: '1.2em', fontWeight: 'bold' }}>Pass ANY-Cycle revelation</p>
-                                        <p>Le pass any pour any whère and anytime, est réservé au entrepreneurs de la plateforme pour se lancer à tout moment et ceci
-                                        n’importe où si le service microcap y est disponible. Le cycle R ou révélation est un cycle long de trois ans pour créer son entreprise en partant juste d’une intention ou une envie d’entreprendre</p>
+                                        <p>Le pass any pour any whère and anytime, est réservé au entrepreneurs de la plateforme pour se lancer à tout moment et ceci n’importe où si le service microcap y est disponible. Le cycle R ou révélation est un cycle long de trois ans pour créer son entreprise en partant juste d’une intention ou une envie d’entreprendre.</p>
                                     </li>
                                     <li>
                                         <p style={{ fontSize: '1.2em', fontWeight: 'bold' }}>Pass ANY-Cycle incubation </p>
-                                        <p>Le pass any pour any whère and anytime, est réservé aux entrepreneurs de la plateforme pour se lancer à tout moment et ceci
-                                        n’importe où si le service microcap y est disponible. Le cycle I ou incubation est un cycle de 12 mois pour créer son entreprise en partant d’une idée.</p>
+                                        <p> Le pass any pour any whère and anytime, est réservé aux entrepreneurs de la plateforme pour se lancer à tout moment et ceci
+                                            n’importe où si le service microcap y est disponible. Le cycle I ou incubation est un cycle de 12 mois pour créer son entreprise en
+                                            partant d’une idée.
+                                        </p>
                                     </li>
                                     <li>
                                         <p style={{ fontSize: '1.2em', fontWeight: 'bold' }}>Pass ANY-Cycle acceleration</p>
-                                        <p>Le pass any pour any whère and anytime, est réservé aux entrepreneurs de la plateforme pour se lancer à tout moment et ceci
-                                        n’importe où si le service microcap y est disponible. Le cycle A ou accélération est un cycle court de trois ans pour valider une idée ou un projet et lancer son entreprise.</p>
+                                        <p>Le pass any pour any whère and anytime, est réservé aux entrepreneurs de la plateforme pour se lancer à tout moment et ceci n’importe où si le service microcap y est disponible. Le cycle A ou accélération est un cycle court de trois ans pour valider une idée ou un projet et lancer son entreprise.</p>
                                     </li>
                                 </ol>
                             </p>

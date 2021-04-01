@@ -16,36 +16,35 @@ export default class MoneyManagement extends Component {
           <meta name="description" content="Reactify Blank Page" />
         </Helmet>
         <div className="page-title d-flex align-items-center">
-            <IconButton to="/discover" className="mr-15" aria-label="zmdi-arrow-left" component={Link}>
-                <i className="zmdi zmdi-arrow-left"></i>
-            </IconButton>
-            <h2>REJOINDRE LE RESEAU MICROCAP</h2>
+          <IconButton to="/discover" className="mr-15" aria-label="zmdi-arrow-left" component={Link}>
+            <i className="zmdi zmdi-arrow-left"></i>
+          </IconButton>
+          <h2>REJOINDRE LE RESEAU MICROCAP</h2>
         </div>
         <div className="terms-conditions-rules">
           <RctCollapsibleCard customClasses="p-30">
             <p>
-                Le réseau Microcap est un international de solidarité financière auprès duquel chaque membre peut solliciter
-                des cautionnement pour obtenir un financement 
+                MicroCap est un réseau international de solidarité financière auprès duquel chaque membre peut solliciter des cautionnements pour obtenir un financement
                 <ul style={{ paddingTop: 40, paddingBottom: 10 }}>
-                    <li>Credit banquaire</li>
-                    <li>Paiement a credit des achats sur la place de marché Microcap </li>
-                    <li>Paiement différé des operations aupres des prestataires: transfert d'argent, loyer, caution pour acceder au bail. </li>
-                </ul>
+                <li>Credit banquaire</li>
+                <li>Paiement a crédit des achats sur la place de marché MicroCap</li>
+                <li>Paiement différé des opérations auprès des prestataires: transfert d'argent, loyer, caution pour accéder au bail.</li>
+              </ul>
 
-                <p>
-                    Pour adherer:
+              <p>
+                Pour adherer:
                 </p>
 
-                <ul style={{ paddingTop: 10, paddingBottom: 10 }}>
-                    <li>S'inscrire</li>
-                    <li>Choisir une communauté d'accueil</li>
-                </ul>
-                
-                <Link to={AUTH.REGISTER}>
-                    <Button variant="contained" className="btn-primary mr-2 text-white">
-                        Adhérer
+              <ul style={{ paddingTop: 10, paddingBottom: 10 }}>
+                <li>S'inscrire</li>
+                <li>Choisir une communauté d'accueil</li>
+              </ul>
+
+              <Link to={AUTH.REGISTER}>
+                <Button variant="contained" className="btn-primary mr-2 text-white">
+                  Adhérer
                     </Button>
-                </Link>
+              </Link>
             </p>
           </RctCollapsibleCard>
         </div>
