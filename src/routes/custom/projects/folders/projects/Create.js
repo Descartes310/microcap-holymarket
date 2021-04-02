@@ -83,6 +83,7 @@ class Create extends Component {
                 type: 'PERSONNAL_IDEA',
                 description: this.state.description,
                 branchId: this.props.authUser.branchId,
+                admin: false
             };
 
             createProjectWork(data)

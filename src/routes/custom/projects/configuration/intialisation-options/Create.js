@@ -78,7 +78,7 @@ class CreateProjectsCall extends Component {
             const data = {
                 type: this.props.type,
                 name: this.state.label,
-                works: JSON.stringify(this.state.chosenWorks.map(i => ({id: Number(i.id), content: i.content, description: i.description, required: i.required, max: i.max}))),
+                works: JSON.stringify(this.state.chosenWorks.map(i => ({id: Number(i.id), content: i.content, description: i.description, required: i.required, editable: i.editable, max: i.max}))),
                 branchId: this.props.authUser.branchId,
             };
 

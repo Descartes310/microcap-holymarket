@@ -14,13 +14,13 @@ import InputLabel from "@material-ui/core/InputLabel/InputLabel";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import CustomAsyncComponent from "Components/CustomAsyncComponent";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
+import { truncate } from "lodash";
 
 const AddWork = ({ show, works, onSave, onClose }) => {
     const { control, register, errors, handleSubmit, watch } = useForm();
 
     const [required, setRequired] = useState(false);
-
-    const requiredWatch = watch('required');
+    const [editable, setEditable] = useState(true);
 
     const onSubmit = (data) => {
         const id = data.id;
@@ -36,7 +36,7 @@ const AddWork = ({ show, works, onSave, onClose }) => {
 
         const work = works.find(i => i.id === id);
 
-        onSave({ ...work, content: data.content, max: Math.ceil(data.max), required: required, description: data.description });
+        onSave({ ...work, content: data.content, max: Math.ceil(data.max), required: required, editable: editable, description: data.description });
     };
 
     return (
@@ -136,9 +136,30 @@ const AddWork = ({ show, works, onSave, onClose }) => {
                                     <Checkbox
                                         color="primary"
                                         checked={required}
-                                        onChange={() => {setRequired(!required)}}
+                                        onChange={() => { setRequired(!required) }}
                                     />
                                 } label={"Ouvrage obligatoire"}
+                                />}
+                            />
+                        </FormControl>
+
+                        <FormControl className="col-sm-12 has-wrapper">
+                            <InputComponent
+                                isRequired
+                                className="mt-0"
+                                errors={errors}
+                                id="editable"
+                                control={control}
+                                name={'editable'}
+                                register={register}
+                                componentType="select"
+                                as={<FormControlLabel control={
+                                    <Checkbox
+                                        color="primary"
+                                        checked={editable}
+                                        onChange={() => { setEditable(!editable) }}
+                                    />
+                                } label={"Ouvrage éditable"}
                                 />}
                             />
                         </FormControl>

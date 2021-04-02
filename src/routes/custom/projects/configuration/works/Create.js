@@ -59,6 +59,7 @@ class Create extends Component {
                 title: this.state.label,
                 description: this.state.description,
                 branchId: this.props.authUser.branchId,
+                admin: true
             };
             if (this.state.parentId !== '-1') {
                 data.parentId = Number(this.state.parentId);

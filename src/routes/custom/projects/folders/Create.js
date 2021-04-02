@@ -328,7 +328,10 @@ const Create = props => {
                                                 <InputLabel className="text-left" htmlFor={label}>
                                                     Description: {work.description}
                                                 </InputLabel>
-                                                <ReactQuill modules={modules} name={`${work.book.id}`} onChange={(e) => onSetWorks(`${work.book.id}`, e)} formats={formats} placeholder="Entrez votre contenu..." />
+                                                {
+                                                    work.editable ?
+                                                        <ReactQuill modules={modules} name={`${work.book.id}`} onChange={(e) => onSetWorks(`${work.book.id}`, e)} formats={formats} placeholder="Entrez votre contenu..." />
+                                                        : null}
                                             </FormGroup>
                                         </div>
                                     )
@@ -350,26 +353,6 @@ const Create = props => {
                                     </FormGroup>
                                 </div>
                             </div>
-
-                            {/*<div className="row">
-                    <div className="col-sm-12">
-                        <FormGroup className="has-wrapper">
-                            <InputLabel className="text-left" htmlFor="description">
-                                Description
-                            </InputLabel>
-                            <InputComponent
-                                isRequired
-                                errors={errors}
-                                id="description"
-                                register={register}
-                                name={'description'}
-                                className="input-lg"
-                                // placeholder={intl.formatMessage({id: "common.commercialName"})}
-                            />
-                            <span className="has-icon"><i className="ti-pencil"/></span>
-                        </FormGroup>
-                    </div>
-                </div>*/}
 
                             <FormGroup className="mb-15">
                                 <Button
