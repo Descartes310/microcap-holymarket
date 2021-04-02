@@ -497,52 +497,28 @@ export default {
                   {
                      "menu_title": "Ouvrages",
                      "new_item": false,
-                     "permissions": [Permission.projects.configuration.handiwork.viewOne],
+                     "permissions": [],
                      "path": PROJECTS.CONFIGURATION.WORKS.SELF,
                   },
                   {
                      "menu_title": "Options d'initialisation",
                      "new_item": false,
-                     "permissions": [Permission.projects.configuration.initialisationOption.viewOne],
+                     "permissions": [],
                      "path": PROJECTS.CONFIGURATION.INITIALISATION.SELF,
                   },
-                  // {
-                  //    "menu_title": "Standard de présentation",
-                  //    "new_item": false,
-                  //    "permissions": [Permission.projects.configuration.standardPresentation.viewOne],
-                  //    "path": PROJECTS.CONFIGURATION.STANDARD.SELF,
-                  // },
                ],
             },
-            // {
-            //    "path": PROJECTS.PROJECTS.LIST,
-            //    "new_item": false,
-            //    "menu_title": "Modèles de Projets",
-            //    "permissions": [Permission.projects.project.viewList],
-            // },
             {
                "path": PROJECTS.POST_PROJETS.LIST,
                "new_item": false,
                "menu_title": "Poste projets",
-              "permissions": [Permission.projects.projectPost.viewOne],
+              "permissions": [],
             },
-            // {
-            //    "path": PROJECTS.PROJECTS.EDITION.SELF,
-            //    "new_item": false,
-            //    "menu_title": "Edition",
-            //    "permissions": [Permission.projects.edition.viewOne],
-            // },
-            // {
-            //    "path": PROJECTS.PROJECTS.CONSULTATION,
-            //    "new_item": false,
-            //    "menu_title": "Consultation",
-            //    "permissions": [],
-            // },
             {
                "path": PROJECTS.FOLDERS.SELF,
                "new_item": false,
                "menu_title": "Gestion des projets",
-               "permissions": [Permission.navLinks.projects.folders.viewMenu],
+               "permissions": [],
             }
          ]
       },
@@ -551,7 +527,6 @@ export default {
          "menu_icon": "zmdi zmdi-key",
          "new_item": false,
          "path": ACCESS.SELF,
-         // "permissions": [Permission.navLinks.COMMUNITY_MEMBER.viewMenu],
          "permissions": [],
          "child_routes": null
       },

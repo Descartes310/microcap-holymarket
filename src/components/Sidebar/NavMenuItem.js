@@ -70,14 +70,14 @@ class NavMenuItem extends Component {
    render() {
       const { menu, onToggleMenu, authUser } = this.props;
       const { subMenuOpen } = this.state;
-      //console.log("menu props currentCommunity =>", menu);
+      console.log(this.props.communitySpace);
       // Check if the route has nested routes and if the user has at least one permission for one nested routes
       if ((menu.key != 'commnity_admin' && this.props.authUser.user.status != Status.PENDING) || (menu.key == 'commnity_admin' && this.props.communitySpace.admins.includes(authUser.user.id) && this.props.authUser.user.status != Status.PENDING))
          if (menu.child_routes !== null && authUser.hasPermissions(_.flattenDeep(menu.child_routes.map(p => p.permissions.map(i => i.name)))) ) {
 
             return (
                <Fragment>
-                  { (menu.menu_title === 'Projets' && this.props.communitySpace.type === 'Communaute projet') ? 
+                  { ((this.props.communitySpace.status && menu.menu_title === 'Projets' && this.props.communitySpace.type === 'Communaute projet') || !this.props.communitySpace.status ) ? 
                   <ListItem button component="li" onClick={onToggleMenu} className={`list-item ${classNames({ 'item-active': menu.open })}`}>
                    
                      <ListItemIcon className="menu-icon">
@@ -93,7 +93,7 @@ class NavMenuItem extends Component {
                         ''
                      }
                   </ListItem>  
-                  : (this.props.communitySpace.type === 'Communaute projet' && menu.menu_title !== 'Projets') ? 
+                  : ((this.props.communitySpace.status && this.props.communitySpace.type === 'Communaute projet' && menu.menu_title !== 'Projets') || !this.props.communitySpace.status ) ? 
                   <ListItem button component="li" onClick={onToggleMenu} className={`list-item ${classNames({ 'item-active': menu.open })}`}>
                    
                         <ListItemIcon className="menu-icon">
@@ -109,7 +109,7 @@ class NavMenuItem extends Component {
                            ''
                         }
                      </ListItem> 
-                  :(this.props.communitySpace.type !== 'Communaute projet' && menu.menu_title !== 'Projets') ? 
+                  :((this.props.communitySpace.status && this.props.communitySpace.type !== 'Communaute projet' && menu.menu_title !== 'Projets') || !this.props.communitySpace.status ) ? 
                   
                      <ListItem button component="li" onClick={onToggleMenu} className={`list-item ${classNames({ 'item-active': menu.open })}`}>
                    
