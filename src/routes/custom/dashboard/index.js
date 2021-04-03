@@ -47,6 +47,7 @@ import PersonalSpace from "Routes/custom/users/users/personnal-space";
 import SingleProfile from 'Routes/custom/users/user-profile/Profile';
 import UserProfile from 'Routes/custom/users/user-profile';
 import Stock from 'Routes/custom/stocks';
+import UpdateInitializationOption from 'Routes/custom/projects/configuration/intialisation-options/Update';
 
 import { useAbility } from "@casl/react";
 import {
@@ -106,6 +107,12 @@ const Dashboard = ({ match, authUser }) => {
                     <CanRoute
                         path={NETWORK.ONGOING_CREATE}
                         component={AsyncSampleBranchList}
+                        permissions={[]}
+                    />
+
+                    <CanRoute
+                        path={PROJECTS.CONFIGURATION.INITIALISATION.UPDATE}
+                        component={UpdateInitializationOption}
                         permissions={[]}
                     />
 

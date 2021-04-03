@@ -300,6 +300,7 @@ export const PROJECTS = {
         },
         INITIALISATION: {
             SELF: '/projects/configuration/initialisation-options',
+            UPDATE: '/projects/configuration/initialisation-options/:id/update',
             IDEA: {
                 SELF: '/projects/configuration/initialisation-options/idea',
                 LIST: '/projects/configuration/initialisation-options/idea/list',

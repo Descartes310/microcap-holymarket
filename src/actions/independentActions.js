@@ -876,6 +876,16 @@ export const createInitialisationOption = (data) => {
     return makeRequest('post', url, data);
 };
 
+export const updateInitialisationOption = (id, data) => {
+    const url = joinBaseUrlWithParamsId(`${PROJECTS.CONFIGURATION.INITIALISATION.UPDATE}`, id);
+    return makeRequest('post', url, data);
+};
+
+export const getInitialisationOption = (id) => {
+    const url = joinBaseUrlWithParamsId(PROJECTS.CONFIGURATION.INITIALISATION.GET_ONE, id);
+    return makeRequest('get', url);
+};
+
 export const createProjectStandardPresentation = (data) => {
     const url = `${PROJECTS.CONFIGURATION.STANDARD.PRESENTATION.CREATE}`;
     return makeRequest('post', url, data);

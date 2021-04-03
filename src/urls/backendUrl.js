@@ -412,7 +412,9 @@ export const PROJECTS = {
         },
         INITIALISATION: {
             GET_ALL: 'api/projects/options',
+            GET_ONE: 'api/projects/options/{id}',
             CREATE: 'api/projects/options',
+            UPDATE: 'api/projects/options/{id}',
         }
     }
 };
