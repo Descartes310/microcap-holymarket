@@ -13,9 +13,6 @@ import headerImg from 'Assets/img/image_revolution.jpg';
 import api from 'Api';
 import { RctCard, RctCardContent } from 'Components/RctCard';
 import { getPioniers } from "Actions/independentActions";
-import {
-    Player
-} from 'video-react';
 
 const Discover = (props) => {
     const { loading, intl } = props;
@@ -81,7 +78,7 @@ const Discover = (props) => {
             <div className="session-inner-wrapper video-player-wrapper">
                 <div style={{ height: '35vh', backgroundImage: `url(${headerImg})`, backgroundSize: 'contain' }}>
                     <h1 className="font-weight-bold text-white" style={{ fontSize: '3em', padding: '4%' }}>
-                        La solidarité, le pouvoir des petits capitaux
+                        La révolution des petits capitaux
                     </h1>
                 </div>
 
@@ -91,7 +88,7 @@ const Discover = (props) => {
 
                 <div className="container">
                     <div className="row justify-content-center">
-                        {data.map(agent => (
+                        {data.filter(a => a.active == true).map(agent => (
                             <div className="col-sm-12 col-md-4 col-lg-3">
                                 <RctCard>
                                     <RctCardContent>
@@ -107,9 +104,9 @@ const Discover = (props) => {
                                             </div>
                                             <div className="client-content">
                                                 <h4 className="fw-bold text-capitalize text-primary">{agent.name}</h4>
-                                                <span>{agent.post}</span>
-                                                <span>{agent.email}</span>
-                                                <span>{agent.phone}</span>
+                                                <p>{agent.post}</p>
+                                                <p>{agent.email}</p>
+                                                <p>{agent.phone}</p>
                                             </div>
                                         </div>
                                     </RctCardContent>

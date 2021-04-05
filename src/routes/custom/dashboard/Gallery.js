@@ -82,7 +82,7 @@ const Discover = (props) => {
             <div className="session-inner-wrapper video-player-wrapper">
                 <div style={{ height: '35vh', backgroundImage: `url(${headerImg})`, backgroundSize: 'contain' }}>
                     <h1 className="font-weight-bold text-white" style={{ fontSize: '3em', padding: '4%' }}>
-                        La solidarité, le pouvoir des petits capitaux
+                        La révolution des petits capitaux
                     </h1>
                 </div>
 

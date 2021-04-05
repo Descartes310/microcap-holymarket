@@ -970,8 +970,12 @@ export const createUserPiece = (data, config) => {
     });
 };
 
-export const createAgent = (data, config) => {
-    const url = `${SETTING.AGENTS}`;
+export const createAgent = (id, data, config) => {
+    let url = ''
+    if(id)
+        url = joinBaseUrlWithParamsId(`${SETTING.AGENTS.UPDATE}`, id);
+    else
+        url = `${SETTING.AGENTS.CREATE}`;
     return new Promise((resolve, reject) => {
         api.post(url, data, config)
             .then(result => resolve(result.data))
@@ -979,12 +983,26 @@ export const createAgent = (data, config) => {
     });
 };
 
-export const getAgents = (data) => {
-    return makeRequest('get', `${SETTING.AGENTS}/list?url=${window.location.host}`, null);
+export const getAgents = () => {
+    return makeRequest('get', `${SETTING.AGENTS.GET_ALL}?url=${window.location.host}`, null);
 };
 
-export const createPionier = (data, config) => {
-    const url = `${SETTING.PIONIERS}`;
+export const activeAgent = (id) => {
+    const url = joinBaseUrlWithParamsId(SETTING.AGENTS.ACTIVE, id);
+    return makeRequest('put', url, null);
+};
+
+export const getOneAgent = (id) => {
+    const url = joinBaseUrlWithParamsId(SETTING.AGENTS.GET_ONE, id);
+    return makeRequest('get', url);
+};
+
+export const createPionier = (id, data, config) => {
+    let url = ''
+    if(id)
+        url = joinBaseUrlWithParamsId(`${SETTING.PIONIERS.UPDATE}`, id);
+    else
+        url = `${SETTING.PIONIERS.CREATE}`;
     return new Promise((resolve, reject) => {
         api.post(url, data, config)
             .then(result => resolve(result.data))
@@ -993,15 +1011,26 @@ export const createPionier = (data, config) => {
 };
 
 export const getPioniers = () => {
-    return makeRequest('get', `${SETTING.PIONIERS}/list?url=${window.location.host}`, null);
+    return makeRequest('get', `${SETTING.PIONIERS.GET_ALL}?url=${window.location.host}`, null);
 };
 
 export const getMainPioniers = () => {
-    return makeRequest('get', `${SETTING.PIONIERS}/list/main?url=${window.location.host}`, null);
+    return makeRequest('get', `${SETTING.PIONIERS.GET_MAIN}?url=${window.location.host}`, null);
 };
 
-export const updatePioniers = (id) => {
-    return makeRequest('put', `${SETTING.PIONIERS}/${id}`, null);
+export const mainPioniers = (id) => {
+    const url = joinBaseUrlWithParamsId(SETTING.PIONIERS.MAIN, id);
+    return makeRequest('put', url, null);
+};
+
+export const activePioniers = (id) => {
+    const url = joinBaseUrlWithParamsId(SETTING.PIONIERS.ACTIVE, id);
+    return makeRequest('put', url, null);
+};
+
+export const getOnePionier = (id) => {
+    const url = joinBaseUrlWithParamsId(SETTING.PIONIERS.GET_ONE, id);
+    return makeRequest('get', url);
 };
 
 export const createBranchCGU = (data, config) => {

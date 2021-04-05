@@ -91,14 +91,15 @@ const Discover = (props) => {
             <div className="session-inner-wrapper video-player-wrapper">
                 <div style={{ height: '35vh', backgroundImage: `url(${headerImg})`, backgroundSize: 'contain' }}>
                     <h1 className="font-weight-bold text-white" style={{ fontSize: '3em', padding: '4%' }}>
-                        La solidarité, le pouvoir des petits capitaux
+                        La révolution des petits capitaux
                     </h1>
                 </div>
 
                 <h1 className="font-weight-bold text-black" style={{ fontSize: '2em', padding: '2%', textAlign: 'center' }}>
-                    La solidarité, le pouvoir des petits capitaux
+                    La révolution des petits capitaux
                 </h1>
-                <p style={{ fontSize: '1.1em', textAlign: 'center' }}>Concilier traditions et innovations pour réinventer une solidarité utile à promouvoir une finance inclusive et vertueuse.</p>
+                <p style={{ fontSize: '1.1em', textAlign: 'center' }}>Concilier tradition et innovation, étendre votre réseau de love money au -delà du cercle familial et amical!</p>
+                <p style={{ fontSize: '1.1em', textAlign: 'center' }}>Réinventer une solidarité utilise et promouvoir une finance inclusive et vertueuse</p>
                 <div className="row" style={{ paddingLeft: '10%', paddingRight: '10%', paddingTop: '2%', paddingBottom: '2%' }}>
                     <div className="col-xs-12 col-sm-12 col-md-4 mb-30">
                         <Card>
@@ -392,7 +393,7 @@ const Discover = (props) => {
 
                 <div className="container">
                     <div className="row justify-content-center">
-                        {pioniers.map(agent => (
+                        {pioniers.filter(a => a.active == true).map(agent => (
                             <div className="col-sm-12 col-md-4 col-lg-3">
                                 <RctCard>
                                     <RctCardContent>
@@ -408,9 +409,9 @@ const Discover = (props) => {
                                             </div>
                                             <div className="client-content">
                                                 <h4 className="fw-bold text-capitalize text-primary">{agent.name}</h4>
-                                                <span>{agent.post}</span>
-                                                <span>{agent.email}</span>
-                                                <span>{agent.phone}</span>
+                                                <p>{agent.post}</p>
+                                                <p>{agent.email}</p>
+                                                <p>{agent.phone}</p>
                                             </div>
                                         </div>
                                     </RctCardContent>
@@ -435,7 +436,7 @@ const Discover = (props) => {
 
                 <div className="container">
                     <div className="row justify-content-center">
-                        {data.map(agent => (
+                        {data.filter(a => a.active == true).map(agent => (
                             <div className="col-sm-12 col-md-4 col-lg-3">
                                 <RctCard>
                                     <RctCardContent>
@@ -451,9 +452,9 @@ const Discover = (props) => {
                                             </div>
                                             <div className="client-content">
                                                 <h4 className="fw-bold text-capitalize text-primary">{agent.name}</h4>
-                                                <span>{agent.email}</span>
-                                                <span>{agent.phone}</span>
-                                                <span>{agent.address}</span>
+                                                <p>{agent.email}</p>
+                                                <p>{agent.phone}</p>
+                                                <p>{agent.address}</p>
                                             </div>
                                         </div>
                                     </RctCardContent>

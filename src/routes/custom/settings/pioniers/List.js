@@ -13,16 +13,12 @@ import IconButton from "@material-ui/core/IconButton";
 import InputLabel from "@material-ui/core/InputLabel";
 import Input from "@material-ui/core/Input";
 import Button from "@material-ui/core/Button";
-import TimeFromMoment from "Components/TimeFromMoment";
 import { Form, FormGroup, Input as InputStrap } from "reactstrap";
 import DialogTitle from "@material-ui/core/DialogTitle/DialogTitle";
 import { getModelNotifications, setRequestGlobalAction } from "Actions";
-import { getPioniers, createPionier, updatePioniers } from "Actions/independentActions";
+import { getPioniers, createPionier, getOnePionier, activePioniers, mainPioniers } from "Actions/independentActions";
 import DialogContent from "@material-ui/core/DialogContent/DialogContent";
 import Switch from "@material-ui/core/Switch";
-import FormControl from '@material-ui/core/FormControl';
-import InputComponent from "Components/InputComponent";
-import { useForm } from "react-hook-form";
 import Select from "@material-ui/core/Select/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import CountryManager from 'Helpers/CountryManager';
@@ -40,9 +36,13 @@ class List extends Component {
         data: [],
         name: '',
         email: '',
+        post: '',
         phone: '',
         address: '',
+        id: null,
+        about: '',
         avatar: null,
+        update: false,
         coutry: '',
         selectedNotification: {}
     };
@@ -58,30 +58,82 @@ class List extends Component {
     };
 
     createNewPionier = () => {
-        createPionier({
+        createPionier(this.state.id, {
             name: this.state.name,
             email: this.state.email,
             address: this.state.address,
             phone: this.state.phone,
+            about: this.state.about,
             post: this.state.post,
             country: this.state.country,
             avatar: this.state.avatar
         }, { fileData: ['avatar'], multipart: true }).then(data => {
             this.setState({ show: false })
             getPioniers().then(data => {
-                this.setState({ data })
+                this.setState({
+                    show: false,
+                    data: [],
+                    name: '',
+                    email: '',
+                    post: '',
+                    phone: '',
+                    address: '',
+                    id: null,
+                    about: '',
+                    avatar: null,
+                    update: false,
+                    coutry: '',
+                    data: data,
+                    selectedNotification: {}
+                })
             })
         });
     };
 
-    onToggleActivationStatus = (id) => {
-        updatePioniers(id)
+    onToggleMainStatus = (id) => {
+        mainPioniers(id)
             .then(() => {
                 getPioniers().then(data => {
                     this.setState({ data })
                 })
             })
-            .catch(() => {
+            .catch((err) => {
+                NotificationManager.error("Erreur lors de la mise a jour du pionier");
+            })
+            .finally(() => this.setState({ loading: false }));
+    };
+
+    getOne = (id) => {
+        getOnePionier(id)
+            .then((pionier) => {
+                this.setState({
+                    show: true,
+                    name: pionier.name,
+                    email: pionier.email,
+                    phone: pionier.phone,
+                    address: pionier.address,
+                    post: pionier.post,
+                    about: pionier.about,
+                    coutry: pionier.country,
+                    id: pionier.id,
+                    update: true
+                })
+            })
+            .catch((err) => {
+                NotificationManager.error("Erreur lors de la recherche du pionier");
+            })
+            .finally(() => this.setState({ loading: false }));
+    };
+
+    onToggleActivationStatus = (id) => {
+        activePioniers(id)
+            .then(() => {
+                getPioniers().then(data => {
+                    this.setState({ data })
+                })
+            })
+            .catch((err) => {
+                console.log(err)
                 NotificationManager.error("Erreur lors de la mise a jour du pionier");
             })
             .finally(() => this.setState({ loading: false }));
@@ -117,7 +169,9 @@ class List extends Component {
                                                     <th>Email</th>
                                                     <th>Téléphone</th>
                                                     <th>Adresse</th>
-                                                    <th>Actions</th>
+                                                    <th>Principal</th>
+                                                    <th>Actif</th>
+                                                    <th>Editer</th>
                                                     {/*<th>Nombres de permissions</th>*/}
                                                 </tr>
                                             </thead>
@@ -158,9 +212,27 @@ class List extends Component {
                                                         <td>
                                                             <Switch
                                                                 checked={item.main}
+                                                                onChange={(event) => { this.onToggleMainStatus(item.id, event.target.checked) }}
+                                                                aria-label="Principal"
+                                                            />
+                                                        </td>
+                                                        <td>
+                                                            <Switch
+                                                                checked={item.active}
                                                                 onChange={(event) => { this.onToggleActivationStatus(item.id, event.target.checked) }}
                                                                 aria-label="Activé"
                                                             />
+                                                        </td>
+                                                        <td>
+                                                            <Button
+                                                                size="small"
+                                                                color="primary"
+                                                                variant="contained"
+                                                                className={"text-white font-weight-bold mr-3"}
+                                                                onClick={() => this.getOne(item.id)}
+                                                            >
+                                                                Editer
+                                                            </Button>
                                                         </td>
                                                     </tr>
                                                 ))}
@@ -223,6 +295,22 @@ class List extends Component {
                                             className="input-lg"
                                             onChange={(e) => this.setState({ post: e.target.value })}
                                             value={this.state.post}
+                                        />
+                                    </FormGroup>
+                                </div>
+
+                                <div className="col-12 my-3">
+                                    <FormGroup className="has-wrapper">
+                                        <InputLabel className="text-left" htmlFor="name">
+                                            Description du pionier
+                                        </InputLabel>
+                                        <InputStrap
+                                            isRequired
+                                            id="about"
+                                            name={'about'}
+                                            className="input-lg"
+                                            onChange={(e) => this.setState({ about: e.target.value })}
+                                            value={this.state.about}
                                         />
                                     </FormGroup>
                                 </div>

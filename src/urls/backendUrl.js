@@ -37,8 +37,22 @@ export const SETTING = {
     UNIT_TYPE: 'api/settings/unit-types',
     GET_UNIT: 'api/settings/units/unit-types/{id}',
     UNIT: 'api/settings/units',
-    AGENTS: 'api/settings/agents',
-    PIONIERS: 'api/settings/pioniers',
+    AGENTS: {
+        GET_ALL: 'api/settings/agents/list',
+        ACTIVE: 'api/settings/agents/active/{id}',
+        GET_ONE: 'api/settings/agents/{id}',
+        CREATE: 'api/settings/agents',
+        UPDATE: 'api/settings/agents/{id}',
+    },
+    PIONIERS: {
+        GET_ALL: 'api/settings/pioniers/list',
+        GET_MAIN: 'api/settings/pioniers/list/main',
+        GET_ONE: 'api/settings/pioniers/{id}',
+        ACTIVE: 'api/settings/pioniers/active/{id}',
+        MAIN: 'api/settings/pioniers/main/{id}',
+        CREATE: 'api/settings/pioniers',
+        UPDATE: 'api/settings/pioniers/{id}'
+    }
 };
 
 export const SYSTEM_OBJECT = {

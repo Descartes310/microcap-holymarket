@@ -47,7 +47,6 @@ export default class SessionSlider extends Component {
          draggable: true
       };
       const { sessionUsersData } = this.state;
-      console.log('user info', sessionUsersData);
       return (
          <div className="session-slider">
             <Slider {...settings}>
