@@ -13,6 +13,7 @@ import headerImg from 'Assets/img/image_revolution.jpg';
 import api from 'Api';
 import { RctCard, RctCardContent } from 'Components/RctCard';
 import { getPioniers } from "Actions/independentActions";
+import { HashLink } from 'react-router-hash-link';
 
 const Discover = (props) => {
     const { loading, intl } = props;
@@ -49,24 +50,29 @@ const Discover = (props) => {
                             </div>
                             <div className="center-hor-ver">
                                 <Link to={DISCOVER}>
-                                    <a className="mr-30" style={{ fontSize: '1.2em' }}>
+                                    <a className="mr-30" style={{ fontSize: '1.2em', color: 'black' }}>
                                         Microcap
                                    </a>
                                 </Link>
-                                <a className="mr-30" style={{ fontSize: '1.2em' }}>
-                                    Produits et services
-                                </a>
-                                <a className="mr-30" style={{ fontSize: '1.2em' }}>
-                                    Pass microcap
-                                </a>
+                                <HashLink to={`${DISCOVER}/#services`}>
+                                    <a className="mr-30" style={{ fontSize: '1.2em', color: 'black' }}>
+                                        Produits et services
+                                    </a>
+                                </HashLink>
+                                <HashLink to={`${DISCOVER}/#pass`}>
+                                    <a className="mr-30" style={{ fontSize: '1.2em', color: 'black' }}>
+                                        Pass microcap
+                                    </a>
+                                </HashLink>
                                 <Link to={GALERY_PROJECT}>
-                                    <a className="mr-30" style={{ fontSize: '1.2em' }}>
+                                    <a className="mr-30" style={{ fontSize: '1.2em', color: 'black' }}>
                                         Gallerie projets
                                     </a>
                                 </Link>
-                                <a className="mr-30" style={{ fontSize: '1.2em' }}>
-                                    Réseau d'agent
-                                </a>
+                                <HashLink to={`${DISCOVER}/#agents`}>
+                                    <a className="mr-30" style={{ fontSize: '1.2em', color: 'black' }}>
+                                        Réseau d'agent
+                                    </a></HashLink>
                                 <Button variant="contained" className="btn-primary mr-2 text-white" onClick={onUserLogin}>
                                     <IntlMessages id="auth.signin" />
                                 </Button>
@@ -76,7 +82,7 @@ const Discover = (props) => {
                 </Toolbar>
             </AppBar>
             <div className="session-inner-wrapper video-player-wrapper">
-                <div style={{ height: '35vh', backgroundImage: `url(${headerImg})`, backgroundSize: 'contain' }}>
+                <div style={{ height: '35vh', backgroundImage: `url(${headerImg})`, backgroundSize: 'cover' }}>
                     <h1 className="font-weight-bold text-white" style={{ fontSize: '3em', padding: '4%' }}>
                         La révolution des petits capitaux
                     </h1>

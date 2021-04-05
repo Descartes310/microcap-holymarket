@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from "react-redux";
 import { injectIntl } from "react-intl";
-import QueueAnim from "rc-queue-anim";
 import { Link } from "react-router-dom";
 import AppConfig from "Constants/AppConfig";
 import IntlMessages from "Util/IntlMessages";
@@ -10,7 +9,6 @@ import Toolbar from "@material-ui/core/Toolbar";
 import { AUTH, DISCOVER, HOME, PIONIERS, TERMS, LEGAL_MENTION, GALERY_PROJECT, SOLIDARITY, MONEY_MANAGEMENT, GETIN } from "Url/frontendUrl";
 import AppBar from "@material-ui/core/AppBar/AppBar";
 import headerImg from 'Assets/img/image_revolution.jpg';
-import Gallery from '../../pages/gallery/index.js';
 import {
     Card,
     CardImg,
@@ -22,7 +20,8 @@ import { getAgents, getMainPioniers } from "Actions/independentActions";
 import {
     Player
 } from 'video-react';
-
+import { HashLink } from 'react-router-hash-link';
+ 
 const Discover = (props) => {
     const { loading, intl } = props;
     const [data, setData] = useState([]);
@@ -62,24 +61,29 @@ const Discover = (props) => {
                             </div>
                             <div className="center-hor-ver">
                                 <Link to={DISCOVER}>
-                                    <a className="mr-30" style={{ fontSize: '1.2em' }}>
+                                    <a className="mr-30" style={{ fontSize: '1.2em', color: 'black' }}>
                                         Microcap
                                    </a>
                                 </Link>
-                                <a className="mr-30" style={{ fontSize: '1.2em' }}>
-                                    Produits et services
-                                </a>
-                                <a className="mr-30" style={{ fontSize: '1.2em' }}>
-                                    Pass microcap
-                                </a>
+                                <HashLink to={`${DISCOVER}/#services`}>
+                                    <a className="mr-30" style={{ fontSize: '1.2em', color: 'black' }}>
+                                        Produits et services
+                                    </a>
+                                </HashLink>
+                                <HashLink to={`${DISCOVER}/#pass`}>
+                                    <a className="mr-30" style={{ fontSize: '1.2em', color: 'black' }}>
+                                        Pass microcap
+                                    </a>
+                                </HashLink>
                                 <Link to={GALERY_PROJECT}>
-                                    <a className="mr-30" style={{ fontSize: '1.2em' }}>
+                                    <a className="mr-30" style={{ fontSize: '1.2em', color: 'black' }}>
                                         Gallerie projets
                                     </a>
                                 </Link>
-                                <a className="mr-30" style={{ fontSize: '1.2em' }}>
-                                    Réseau d'agent
-                                </a>
+                                <HashLink to={`${DISCOVER}/#agents`}>
+                                    <a className="mr-30" style={{ fontSize: '1.2em', color: 'black' }}>
+                                        Réseau d'agent
+                                    </a></HashLink>
                                 <Button variant="contained" className="btn-primary mr-2 text-white" onClick={onUserLogin}>
                                     <IntlMessages id="auth.signin" />
                                 </Button>
@@ -89,14 +93,14 @@ const Discover = (props) => {
                 </Toolbar>
             </AppBar>
             <div className="session-inner-wrapper video-player-wrapper">
-                <div style={{ height: '35vh', backgroundImage: `url(${headerImg})`, backgroundSize: 'contain' }}>
-                    <h1 className="font-weight-bold text-white" style={{ fontSize: '3em', padding: '4%' }}>
+                <div style={{ height: '35vh', backgroundImage: `url(${headerImg})`, backgroundSize: 'cover' }}>
+                    {/* <h1 className="font-weight-bold text-white" style={{ fontSize: '3em', padding: '4%' }}>
                         La révolution des petits capitaux
-                    </h1>
+                    </h1> */}
                 </div>
 
                 <h1 className="font-weight-bold text-black" style={{ fontSize: '2em', padding: '2%', textAlign: 'center' }}>
-                    La révolution des petits capitaux
+                    Les trois introductions qui posent notre vision
                 </h1>
                 <p style={{ fontSize: '1.1em', textAlign: 'center' }}>Concilier tradition et innovation, étendre votre réseau de love money au -delà du cercle familial et amical!</p>
                 <p style={{ fontSize: '1.1em', textAlign: 'center' }}>Réinventer une solidarité utilise et promouvoir une finance inclusive et vertueuse</p>
@@ -180,10 +184,12 @@ const Discover = (props) => {
                                                 <div className="col-md-8">
                                                     <h1>Le PIP Microcap</h1>
                                                     <p style={{ textAlign: 'justify', fontSize: '1.1em', lineHeight: 2, marginTop: 20 }}>
-                                                        - Vous êtes solidaire avec un entrepreneur proche de vous ou, avec les entrepreneurs en général,<br />
-                                                        - Vous voulez fructufier ou diversifier votre épargne, <br />
-                                                        - Vous rêvez de créer votre entreprise, vous avez déja un idée, voir un projet, <br />
-                                                        - Vous avez déjà crée votre entreprise et vous rencontrez des difficultés de financement,<br />
+                                                        <ul style={{ paddingLeft: 40, fontSize: '1em' }}>
+                                                            <li>Vous êtes solidaire avec un entrepreneur proche de vous ou, avec les entrepreneurs en général,</li>
+                                                            <li>Vous voulez fructufier ou diversifier votre épargne,</li>
+                                                            <li>Vous rêvez de créer votre entreprise, vous avez déja un idée, voir un projet,</li>
+                                                            <li>Vous avez déjà crée votre entreprise et vous rencontrez des difficultés de financement,</li>
+                                                        </ul>
                                                         Ouvrez votre PIP MicroCap et beneficier du soutien de tous les membres du réseau MicroCap détententeur chacun d'un PIP MicroCap
                                                         Le PIP MicroCap est un plan d'épargne qui vous permet d'investir à partir de 5€ dans l'économie réelle et dans les entreprises de proximité. Vous pouvez participer à la création ou au developpement d'une entreprise portée par un proche, d'une entreprise qui représente mieux vos valeurs, d'une entreprise qui repond à vos besoins.
                                                         Le PIP MicroCap est un compte d'épargne en titres financiers qui agrège en valeur les poduits d'épargnes et de placements proposés des établissements financiers partenaires et exclusivement distribués et opérés sur la plateforme MicroCap.
@@ -214,10 +220,12 @@ const Discover = (props) => {
                                                     <p style={{ textAlign: 'justify', fontSize: '1.1em', lineHeight: 2, marginTop: 20 }}>
                                                         La reserve MicroCap vous dépanne sur du très court terme, 1 à 90 jours sur des besoins essentiels. MicroCap vous engage à la finance vertueuse et vous protège contre la consommation à outrance et apauvrissante. Conformement à cet engagement de MicroCap, la reserve proposée est une facilité de caisse qui repond à une notion d'urgence ou d'avance sur un revenu certain à très court terme.
                                                         Votre reserve MicroCap est utilisable sur une liste de services restreintes benéficiant chacun d'un délai de remboursement prédéfini.<br />
-                                                        - Transfert d'argent vers des réseaux partenaires (5 jours)<br />
-                                                        - paiement marchand pour tout commerçant agrée(15 jours)<br />
-                                                        - Règlement de loyer chez un promoteurs conventionné (30 jours)<br />
-                                                        - dépot de garantie pour un bail (90 jours)<br />
+                                                        <ul style={{ paddingLeft: 40, fontSize: '1em' }}>
+                                                            <li>Transfert d'argent vers des réseaux partenaires (5 jours)</li>
+                                                            <li>paiement marchand pour tout commerçant agrée(15 jours)</li>
+                                                            <li>Règlement de loyer chez un promoteurs conventionné (30 jours)</li>
+                                                            <li>dépot de garantie pour un bail (90 jours)</li>
+                                                        </ul>
                                                         l'usage de la reserve est gratuit sur 3 jours puis facturé à un interêt journalier de 0,045 %
                                                     </p>
                                                 </div>
@@ -255,7 +263,7 @@ const Discover = (props) => {
                     </div>
                 </div>
 
-                <div style={{ backgroundColor: '#eeeeee', marginBottom: '7vh' }}>
+                <div style={{ backgroundColor: '#eeeeee', marginBottom: '7vh' }} id="services">
                     <h1 className="font-weight-bold text-black text-center" style={{ fontSize: '3em', padding: '4%' }}>
                         Les services MicroCap
                     </h1>
@@ -277,7 +285,7 @@ const Discover = (props) => {
                                             />
                                         </div>
                                         <div className="client-content">
-                                            <h4 className="fw-bold text-capitalize text-primary">Obtenir facilement un crédit auprès des banques traditionnelles</h4>
+                                            <h4 className="fw-bold text-capitalize text-primary">Obtenir un crédit auprès des banques traditionnelles</h4>
                                         </div>
                                     </div>
                                 </RctCardContent>
@@ -345,38 +353,49 @@ const Discover = (props) => {
                         </div>
                     </div>
 
-                    <div className="col-sm-12 discover-block" style={{ marginTop: '5vh' }}>
+                    <div className="col-sm-12 discover-block" style={{ marginTop: '5vh' }} id="pass">
                         <div className="discover-heading center-hor-ver">
                             <h1 style={{ fontSize: '3em', padding: '4%' }}>Les Pass Microcap</h1>
                         </div>
+                        <div className="col-md-12">
+                            <img className="img-fluid" src={require('Assets/identity/banner.jpg')} alt="" />
+                        </div>
+                        <p style={{ fontSize: '1.1em', textAlign: 'center', marginTop: 40 }}>
+                            Les services de la plateforme sont accessibles sur abonnement ou Pass: à chacun son rythme, à chacun son Pass. Les prix sont H.T.
+                            <Link to={GETIN} style={{ marginTop: 40, marginBottom: 20 }}>
+                                <Button variant="contained" className="btn-primary mr-2 text-white">
+                                    Voir les détails
+                                </Button>
+                            </Link>
+                        </p>
                         <div className="discover-content">
                             <p className="ctext">
                                 <ol className="custom-list ml-20">
                                     <li>
-                                        <p style={{ fontSize: '1.2em', fontWeight: 'bold' }}>Pass découvert</p>
+                                        <p style={{ fontSize: '1.2em', fontWeight: 'bold', display: 'flex', justifyContent: 'space-between' }}>Pass découvert <span style={{ color: '#feba3a', fontSize: '1.7em' }}> 0 € </span></p>
                                         <p>Gratuit et sans conditions, il permet un accès restreint à la plateforme pour se familiariser avec le service et découvrir nos projets</p>
                                     </li>
                                     <li>
-                                        <p style={{ fontSize: '1.2em', fontWeight: 'bold' }}>Pass réseau</p>
+                                        <p style={{ fontSize: '1.2em', fontWeight: 'bold', display: 'flex', justifyContent: 'space-between' }}>Pass réseau <span style={{ color: '#feba3a', fontSize: '1.7em' }}> 160 € </span></p>
                                         <p>C’est la carte de membre qui est attribué à toute personne qui ouvre un plan d’investissement MicroCap à fin de contribuer ou bénéficier de la solidarité du réseau</p>
                                     </li>
                                     <li>
-                                        <p style={{ fontSize: '1.2em', fontWeight: 'bold' }}>Pass club business</p>
+                                        <p style={{ fontSize: '1.2em', fontWeight: 'bold', display: 'flex', justifyContent: 'space-between' }}>Pass club business <span style={{ color: '#feba3a', fontSize: '1.7em' }}> 3 000 € </span></p>
                                         <p>Les porteurs des projets de la plateforme bénéficient des service des professionnels et du concours de partenaires investisseurs ou institutionnels pour le succès de leur entreprise. ils sont soumis au regime de solidarité par l’obligation d’un Pass club business</p>
                                     </li>
                                     <li>
-                                        <p style={{ fontSize: '1.2em', fontWeight: 'bold' }}>Pass ANY-Cycle revelation</p>
+                                        <p style={{ fontSize: '1.2em', fontWeight: 'bold', display: 'flex', justifyContent: 'space-between' }}>Pass ANY-Cycle revelation <span style={{ color: '#feba3a', fontSize: '1.7em' }}> 5 400 € </span></p>
                                         <p>Le pass any pour any whère and anytime, est réservé au entrepreneurs de la plateforme pour se lancer à tout moment et ceci n’importe où si le service microcap y est disponible. Le cycle R ou révélation est un cycle long de trois ans pour créer son entreprise en partant juste d’une intention ou une envie d’entreprendre.</p>
                                     </li>
                                     <li>
-                                        <p style={{ fontSize: '1.2em', fontWeight: 'bold' }}>Pass ANY-Cycle incubation </p>
+                                        <p style={{ fontSize: '1.2em', fontWeight: 'bold', display: 'flex', justifyContent: 'space-between' }}>Pass ANY-Cycle incubation  <span style={{ color: '#feba3a', fontSize: '1.7em' }}> 13 900 € </span></p>
                                         <p> Le pass any pour any whère and anytime, est réservé aux entrepreneurs de la plateforme pour se lancer à tout moment et ceci
-                                            n’importe où si le service microcap y est disponible. Le cycle I ou incubation est un cycle de 12 mois pour créer son entreprise en
-                                            partant d’une idée.
+                                        n’importe où si le service microcap y est disponible. Le cycle I ou incubation est un cycle de 12 mois pour créer son entreprise en
+                                        partant d’une idée.
                                         </p>
                                     </li>
                                     <li>
-                                        <p style={{ fontSize: '1.2em', fontWeight: 'bold' }}>Pass ANY-Cycle acceleration</p>
+                                        <p style={{ fontSize: '1.2em', fontWeight: 'bold', display: 'flex', justifyContent: 'space-between' }}>Pass ANY-Cycle acceleration <span style={{ color: '#feba3a', fontSize: '1.7em' }}> 2 600 € </span></p>
                                         <p>Le pass any pour any whère and anytime, est réservé aux entrepreneurs de la plateforme pour se lancer à tout moment et ceci n’importe où si le service microcap y est disponible. Le cycle A ou accélération est un cycle court de trois ans pour valider une idée ou un projet et lancer son entreprise.</p>
                                     </li>
                                 </ol>
@@ -385,7 +404,7 @@ const Discover = (props) => {
                     </div>
                 </div>
 
-                <div style={{ backgroundColor: '#eeeeee', marginBottom: '7vh' }}>
+                <div style={{ backgroundColor: '#eeeeee', marginBottom: '7vh' }} id="pioniers">
                     <h1 className="font-weight-bold text-black text-center" style={{ fontSize: '3em', padding: '4%' }}>
                         Nos pioniers
                     </h1>
@@ -428,7 +447,7 @@ const Discover = (props) => {
                     </Link>
                 </div>
 
-                <div style={{ backgroundColor: '#eeeeee', marginBottom: '7vh' }}>
+                <div style={{ backgroundColor: '#eeeeee', marginBottom: '7vh' }} id="agents">
                     <h1 className="font-weight-bold text-black text-center" style={{ fontSize: '3em', padding: '4%' }}>
                         Réseau d'agents
                     </h1>
