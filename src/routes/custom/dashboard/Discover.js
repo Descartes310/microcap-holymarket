@@ -100,7 +100,7 @@ const Discover = (props) => {
                 </div>
 
                 <h1 className="font-weight-bold text-black" style={{ fontSize: '2em', padding: '2%', textAlign: 'center' }}>
-                    Les trois introductions qui posent notre vision
+                    Comment concilier tradition et innovation
                 </h1>
                 <p style={{ fontSize: '1.1em', textAlign: 'center' }}>Concilier tradition et innovation, étendre votre réseau de love money au -delà du cercle familial et amical!</p>
                 <p style={{ fontSize: '1.1em', textAlign: 'center' }}>Réinventer une solidarité utilise et promouvoir une finance inclusive et vertueuse</p>
@@ -153,7 +153,8 @@ const Discover = (props) => {
                     <Player
                         playsInline
                         poster={require('Assets/img/microcap.png')}
-                        src='http://dev1.microcap.fr:8080/files/videos/video_accueil3.mp4'
+                        //src='http://api-preprod.microcap.fr/files/videos/video.mp4'
+                        src='http://api.microcap.fr/files/videos/video.mp4'
                     />
                     <p style={{ fontSize: '1.2em', marginTop: 20, textAlign: 'center' }}>
                         Microcap finance votre épargne et vous accompagne dans votre projet: création d’entreprise, actionnariat, formation à l’entrepreneuriat
