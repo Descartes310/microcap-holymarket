@@ -6,7 +6,7 @@ import AppConfig from "Constants/AppConfig";
 import IntlMessages from "Util/IntlMessages";
 import Button from "@material-ui/core/Button";
 import Toolbar from "@material-ui/core/Toolbar";
-import { AUTH, DISCOVER, HOME, PIONIERS, TERMS, LEGAL_MENTION, GALERY_PROJECT, SOLIDARITY, MONEY_MANAGEMENT, GETIN } from "Url/frontendUrl";
+import { AUTH, DISCOVER, HOME, PIONIERS, TERMS, LEGAL_MENTION, GALERY_PROJECT, SOLIDARITY, MONEY_MANAGEMENT, GETIN, MISSION, VALUES } from "Url/frontendUrl";
 import AppBar from "@material-ui/core/AppBar/AppBar";
 import headerImg from 'Assets/img/image_revolution.jpg';
 import {
@@ -503,31 +503,29 @@ const Discover = (props) => {
                 <div className="container">
                     <div className="row row-pb-md">
                         <div className="col-md-4 fh5co-widget">
-                            <h3>A Little About MicroCap.</h3>
-                            <p style={{ color: "rgba(255, 255,255, 0.5)" }}>Facilis ipsum reprehenderit nemo molestias. Aut cum mollitia reprehenderit. Eos cumque dicta adipisci architecto culpa amet.</p>
+                            <h3>A propos de MicroCap.</h3>
+                            <p style={{ color: "rgba(255, 255,255, 0.5)" }}>MicroCap est un service d’accompagnement des entrepreneurs proposé par :</p>
                             <p><a className="btn btn-primary" href="#" style={{ color: 'white' }}>Suscribe to Microcap</a></p>
                         </div>
                         <div className="col-md-8">
-                            <h3>Classes</h3>
+                            {/* <h3>Classes</h3> */}
                             <div className="row">
                                 <div className="col-md-4 col-sm-4 col-xs-6">
                                     <ul className="fh5co-footer-links">
-                                        <li><a href="#" className="activefooter">A Propos de MicroCap</a></li>
-                                        <li><a href="#">Mission et valeur</a></li>
-                                        <li><a href="#">Le projet</a></li>
-                                        <li><a href="#">Les pionniers</a></li>
-                                        <li><a href="#">L’entreprise</a></li>
+                                        <li><a href="#" className="activefooter">Tout MicroCap</a></li>
+                                        <li><a onClick={() => props.history.push(MISSION)}>Mission et valeur</a></li>
+                                        <li><a onClick={() => props.history.push(VALUES)}>Réseau Microcap</a></li>
+                                        <li><a onClick={() => props.history.push(PIONIERS)}>Les pionniers</a></li>
                                         <li><a href="#">Faqs</a></li>
-                                        <li><a href="#">contact</a></li>
                                     </ul>
                                 </div>
 
                                 <div className="col-md-4 col-sm-4 col-xs-6">
                                     <ul className="fh5co-footer-links">
-                                        <li><a href="#" className="activefooter">Informtion legales</a></li>
+                                        <li><a href="#" className="activefooter">Informtions légales</a></li>
                                         <li><a onClick={() => props.history.push(TERMS)}>CGU</a></li>
                                         <li><a href="#">CGV</a></li>
-                                        <li><a onClick={() => props.history.push(LEGAL_MENTION)}>Mention légales</a></li>
+                                        <li><a onClick={() => props.history.push(LEGAL_MENTION)}>Mentions légales</a></li>
                                     </ul>
                                 </div>
 

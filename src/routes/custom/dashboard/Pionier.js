@@ -92,12 +92,17 @@ const Discover = (props) => {
                     </IconButton>
                     <h3>Retour sur Découvrir Microcap</h3>
                 </div>
-
-                <h1 className="font-weight-bold text-black" style={{ fontSize: '2em', padding: '2%', textAlign: 'center' }}>
-                    Nos pioniers
-                </h1>
-
                 <div className="container">
+                    <p>
+                        MicroCap est aujourd’hui un produit qui permet des services  que nous sommes fiers de présenter. Mais c’est d’abord un mouvement de cœur, de personnes originaires ou sympathisantes des pays du sud en général et de l’Afrique subsaharienne plus particulièrement.
+                    </p>
+                    <p>
+                        Depuis 2017, le mouvement ne cesse de grandir et compte aujourd’hui des contributeurs sur les 5 continent, des personnes grâce à qui nous pouvons vous proposer ce service. Rejoint le mouvement.
+                    </p>
+                    <h1 className="font-weight-bold text-black" style={{ fontSize: '2em', padding: '2%', textAlign: 'center' }}>
+                        Nos pioniers
+                    </h1>
+
                     <div className="row justify-content-center">
                         {data.filter(a => a.active == true).map(agent => (
                             <div className="col-sm-12 col-md-4 col-lg-3">

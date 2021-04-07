@@ -54,6 +54,7 @@ import {
     CATALOG,
     DISCOVER,
     SOLIDARITY,
+    MISSION, VALUES,
     MONEY_MANAGEMENT,
     PIONIERS,
     GALERY_PROJECT,
@@ -80,6 +81,8 @@ import Permission from "Enums/Permissions";
 import HomePage from "Routes/custom/HomePage";
 import CanRoute from "Components/CanRoute";
 import Terms from "./Terms";
+import Mission from "./Mission";
+import Values from "./Values";
 
 const Dashboard = ({ match, authUser }) => {
     const ability = useAbility(AbilityContext);
@@ -94,6 +97,8 @@ const Dashboard = ({ match, authUser }) => {
                     <Route exact path={GALERY_PROJECT} component={AsyncGallery} />
                     <Route exact path={ROOT} component={HomePage} />
                     <Route exact path={HOME} component={HomePage} />
+                    <Route exact path={MISSION} component={Mission} />
+                    <Route exact path={VALUES} component={Values} />
                     <Route exact path={TERMS} component={Terms} />
                     <Route exact path={SOLIDARITY} component={AsyncSolidarity} />
                     <Route exact path={MONEY_MANAGEMENT} component={AsyncMoneyManagement} />

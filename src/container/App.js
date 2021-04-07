@@ -15,7 +15,7 @@ import AppSignUp from './../routes/session/register';
 import BranchActivation from './../routes/session/token';
 import ResetPassword from './../routes/session/forgot-password/ResetPassword';
 import SendResetPasswordLink from './../routes/session/forgot-password/SendResetPasswordLink';
-import {AUTH, DISCOVER, PIONIERS, STORE, TERMS, LEGAL_MENTION, GALERY_PROJECT, GETIN, SOLIDARITY, MONEY_MANAGEMENT} from "../urls/frontendUrl";
+import {AUTH, DISCOVER,MISSION, VALUES, PIONIERS, STORE, TERMS, LEGAL_MENTION, GALERY_PROJECT, GETIN, SOLIDARITY, MONEY_MANAGEMENT} from "../urls/frontendUrl";
 import {setAuthUser, loginIntoStore, disableAppLoading} from 'Actions';
 import {getCurrencies} from 'Actions/GeneralActions';
 import RctPageLoader from "Components/RctPageLoader/RctPageLoader";
@@ -28,6 +28,8 @@ import PermissionAlertBox from "Components/PermissionAlertBox";
 import {AsyncDiscover, AsyncStoreWrapper, AsyncGallery, AsyncGetIn, AsyncPionier, AsyncSolidarity, AsyncMoneyManagement} from "Components/AsyncComponent/AsyncComponent";
 import CanRoute from "Components/CanRoute";
 import Terms from "./../routes/custom/dashboard/Terms.js";
+import Mission from "./../routes/custom/dashboard/Mission";
+import Values from "./../routes/custom/dashboard/Values";
 import LegalMention from "./../routes/custom/dashboard/LegalMention.js";
 
 
@@ -91,6 +93,8 @@ class App extends Component {
                                         <Route exact path={SOLIDARITY} component={AsyncSolidarity} />
                                         <Route exact path={MONEY_MANAGEMENT} component={AsyncMoneyManagement} />
                                         <Route exact path={TERMS} component={Terms} />
+                                        <Route exact path={MISSION} component={Mission} />
+                                        <Route exact path={VALUES} component={Values} />
                                         <Route exact path={LEGAL_MENTION} component={LegalMention} />
                                         <Route path={AUTH.LOGIN} component={AppSignIn} />
                                         <Route path={AUTH.REGISTER} component={AppSignUp} />

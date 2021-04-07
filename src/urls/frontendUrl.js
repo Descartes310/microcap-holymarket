@@ -3,6 +3,8 @@ import { BASE } from "Url/backendUrl";
 export const ROOT = '/';
 export const HOME = '/home';
 export const DISCOVER = '/discover';
+export const MISSION = '/mission-microcap';
+export const VALUES = '/reseau-microcap';
 export const GETIN = '/get-in';
 export const PIONIERS = '/pioniers';
 export const SOLIDARITY = '/solidarity';
