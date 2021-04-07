@@ -14,6 +14,8 @@ import api from 'Api';
 import { RctCard, RctCardContent } from 'Components/RctCard';
 import { getPioniers } from "Actions/independentActions";
 import { HashLink } from 'react-router-hash-link';
+import { Tooltip } from '@material-ui/core';
+import IconButton from '@material-ui/core/IconButton';
 
 const Discover = (props) => {
     const { loading, intl } = props;
@@ -83,9 +85,12 @@ const Discover = (props) => {
             </AppBar>
             <div className="session-inner-wrapper video-player-wrapper">
                 <div style={{ height: '35vh', backgroundImage: `url(${headerImg})`, backgroundSize: 'cover' }}>
-                    <h1 className="font-weight-bold text-white" style={{ fontSize: '3em', padding: '4%' }}>
-                        La révolution des petits capitaux
-                    </h1>
+                </div>
+                <div className="page-title d-flex align-items-center" style={{ padding: 40 }}>
+                    <IconButton to="/discover" className="mr-15" aria-label="zmdi-arrow-left" component={Link}>
+                        <i className="zmdi zmdi-arrow-left"></i>
+                    </IconButton>
+                    <h3>Retour sur Découvrir Microcap</h3>
                 </div>
 
                 <h1 className="font-weight-bold text-black" style={{ fontSize: '2em', padding: '2%', textAlign: 'center' }}>
@@ -109,7 +114,9 @@ const Discover = (props) => {
                                                 />
                                             </div>
                                             <div className="client-content">
-                                                <h4 className="fw-bold text-capitalize text-primary">{agent.name}</h4>
+                                                <Tooltip title={agent.about}>
+                                                    <h4 className="fw-bold text-capitalize text-primary">{agent.name}</h4>
+                                                </Tooltip>
                                                 <p>{agent.post}</p>
                                                 <p>{agent.email}</p>
                                                 <p>{agent.phone}</p>

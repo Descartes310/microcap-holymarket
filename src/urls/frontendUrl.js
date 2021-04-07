@@ -158,6 +158,7 @@ export const PRODUCT = {
 export const STORE = {
     SELF: '/store',
     CART: '/store/cart',
+    ORDER: '/store/order',
     CHECKOUT: '/store/checkout/:id',
 };
 
@@ -346,6 +347,10 @@ export const COMMUNITY_ADMIN = {
         SELF: '/admin/community-t/rubrique',
         LIST: '/admin/community-t/rubrique/list',
         CREATE: '/admin/community-t/rubrique/create',
+    },
+    PROJECT: {
+        SELF: '/admin/community-t/project',
+        CREATE: '/admin/community-t/project/create',
     },
     INVITATIONS: {
         SELF: '/admin/community-t/members/invitation',

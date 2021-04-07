@@ -17,6 +17,7 @@ import {
     Player
 } from 'video-react';
 import { HashLink } from 'react-router-hash-link';
+import IconButton from '@material-ui/core/IconButton';
 
 const Discover = (props) => {
     const { loading, intl } = props;
@@ -87,9 +88,12 @@ const Discover = (props) => {
             </AppBar>
             <div className="session-inner-wrapper video-player-wrapper">
                 <div style={{ height: '35vh', backgroundImage: `url(${headerImg})`, backgroundSize: 'cover' }}>
-                    <h1 className="font-weight-bold text-white" style={{ fontSize: '3em', padding: '4%' }}>
-                        La révolution des petits capitaux
-                    </h1>
+                </div>
+                <div className="page-title d-flex align-items-center" style={{ padding: 40 }}>
+                    <IconButton to="/discover" className="mr-15" aria-label="zmdi-arrow-left" component={Link}>
+                        <i className="zmdi zmdi-arrow-left"></i>
+                    </IconButton>
+                    <h3>Retour sur Découvrir Microcap</h3>
                 </div>
 
                 <h1 className="font-weight-bold text-black" style={{ fontSize: '2em', padding: '2%', textAlign: 'center' }}>

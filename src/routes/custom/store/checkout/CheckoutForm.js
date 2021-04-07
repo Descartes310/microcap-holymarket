@@ -99,18 +99,18 @@ class CheckoutForm extends Component {
                      textColor="primary"
                      variant="fullWidth"
                   >
-                     <Tab
+                     {/* <Tab
                         disabled
                         label={<IntlMessages id="components.billingAddress" />}
-                     />
+                     /> */}
                      <Tab
                         disabled
                         label={<IntlMessages id="components.payment" />}
                      />
                   </Tabs>
                </AppBar>
-               {value === 0 && <TabContainer><BillingForm data={this.state.data} onComplete={(data) => this.setState({ value: 1, data })} order={this.order} /></TabContainer>}
-               {value === 1 && <TabContainer><PaymentInfo data={this.state.data} onBack={this.onBack} order={this.order} /></TabContainer>}
+               {/* {value === 0 && <TabContainer><BillingForm data={this.state.data} onComplete={(data) => this.setState({ value: 1, data })} order={this.order} /></TabContainer>} */}
+               {value === 0 && <TabContainer><PaymentInfo data={this.state.data} onBack={this.onBack} order={this.order} /></TabContainer>}
             </div>
             <SweetAlert
                success

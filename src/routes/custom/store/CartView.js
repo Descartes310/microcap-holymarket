@@ -155,7 +155,7 @@ class CartView extends Component {
                                             variant="contained"
                                             color="secondary"
                                             className="text-white"
-                                            onClick={() => this.onInitPayment()}
+                                            onClick={() => this.props.history.push(STORE.ORDER)}
                                         >
                                             Commander
                                         </Button>

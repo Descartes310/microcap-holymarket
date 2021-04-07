@@ -800,7 +800,7 @@ export default {
             }
          ],
       },{
-         "menu_title": "Projets",
+         "menu_title": "Projet",
          "menu_icon": "icon-people",
          "new_item": false,
          // "permissions": [Permission.navLinks.COMMUNITY.viewMenu],
@@ -838,6 +838,12 @@ export default {
                "new_item": false,
                'key': 'commnity_admin',
                "path": COMMUNITY_ADMIN.POST.LIST,
+               "permissions": [],
+            },{
+               "menu_title": "Projet",
+               "new_item": false,
+               'key': 'commnity_admin',
+               "path": COMMUNITY_ADMIN.PROJECT.CREATE,
                "permissions": [],
             },{
                "menu_title": "Rubriques",

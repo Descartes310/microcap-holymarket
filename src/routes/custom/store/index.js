@@ -4,6 +4,7 @@ import {injectIntl} from "react-intl";
 import {STORE} from "Url/frontendUrl";
 import CartView from "./CartView";
 import Checkout from "./checkout";
+import Order from "./BillingForm";
 import {withRouter, Switch, Redirect, Route} from "react-router-dom";
 
 class Store extends Component {
@@ -17,6 +18,7 @@ class Store extends Component {
                         <Redirect exact from={`${match.url}/`} to={STORE.CART} />
                         <Route path={STORE.CART} component={CartView} />
                         <Route path={STORE.CHECKOUT} component={Checkout} />
+                        <Route path={STORE.ORDER} component={Order} />
                         {/*<Route path={CART.LIST} component={List} />*/}
                         {/*<CanRoute
                             path={PRODUCT.CREATE}

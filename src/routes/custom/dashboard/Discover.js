@@ -21,6 +21,8 @@ import {
     Player
 } from 'video-react';
 import { HashLink } from 'react-router-hash-link';
+import { Tooltip } from '@material-ui/core';
+import IconButton from '@material-ui/core/IconButton';
  
 const Discover = (props) => {
     const { loading, intl } = props;
@@ -94,15 +96,18 @@ const Discover = (props) => {
             </AppBar>
             <div className="session-inner-wrapper video-player-wrapper">
                 <div style={{ height: '35vh', backgroundImage: `url(${headerImg})`, backgroundSize: 'cover' }}>
-                    {/* <h1 className="font-weight-bold text-white" style={{ fontSize: '3em', padding: '4%' }}>
-                        La révolution des petits capitaux
-                    </h1> */}
+                </div>
+                <div className="page-title d-flex align-items-center" style={{ padding: 40 }}>
+                    <IconButton to="/login" className="mr-15" aria-label="zmdi-arrow-left" component={Link}>
+                        <i className="zmdi zmdi-arrow-left"></i>
+                    </IconButton>
+                    <h3>Retour sur Connexion</h3>
                 </div>
 
                 <h1 className="font-weight-bold text-black" style={{ fontSize: '2em', padding: '2%', textAlign: 'center' }}>
                     Comment concilier tradition et innovation
                 </h1>
-                <p style={{ fontSize: '1.1em', textAlign: 'center' }}>Concilier tradition et innovation, étendre votre réseau de love money au -delà du cercle familial et amical!</p>
+                <p style={{ fontSize: '1.1em', textAlign: 'center' }}>Etendre votre réseau de love money au -delà du cercle familial et amical, pour réinventer une solidarité utilise ainsi que promouvoir une finance inclusive et vertueuse</p>
                 <p style={{ fontSize: '1.1em', textAlign: 'center' }}>Réinventer une solidarité utilise et promouvoir une finance inclusive et vertueuse</p>
                 <div className="row" style={{ paddingLeft: '10%', paddingRight: '10%', paddingTop: '2%', paddingBottom: '2%' }}>
                     <div className="col-xs-12 col-sm-12 col-md-4 mb-30">
@@ -286,7 +291,7 @@ const Discover = (props) => {
                                             />
                                         </div>
                                         <div className="client-content">
-                                            <h4 className="fw-bold text-capitalize text-primary">Obtenir un crédit auprès des banques traditionnelles</h4>
+                                            <h4 className="fw-bold text-capitalize text-primary">Cautionnement bancaire</h4>
                                         </div>
                                     </div>
                                 </RctCardContent>
@@ -428,7 +433,9 @@ const Discover = (props) => {
                                                 />
                                             </div>
                                             <div className="client-content">
-                                                <h4 className="fw-bold text-capitalize text-primary">{agent.name}</h4>
+                                                <Tooltip title={agent.about}>
+                                                    <h4 className="fw-bold text-capitalize text-primary">{agent.name}</h4>
+                                                </Tooltip>
                                                 <p>{agent.post}</p>
                                                 <p>{agent.email}</p>
                                                 <p>{agent.phone}</p>
@@ -471,7 +478,9 @@ const Discover = (props) => {
                                                 />
                                             </div>
                                             <div className="client-content">
-                                                <h4 className="fw-bold text-capitalize text-primary">{agent.name}</h4>
+                                                <Tooltip title={agent.about}>
+                                                    <h4 className="fw-bold text-capitalize text-primary">{agent.name}</h4>
+                                                </Tooltip>
                                                 <p>{agent.email}</p>
                                                 <p>{agent.phone}</p>
                                                 <p>{agent.address}</p>

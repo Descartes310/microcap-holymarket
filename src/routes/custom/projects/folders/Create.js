@@ -326,7 +326,7 @@ const Create = props => {
                                                     {work.content}
                                                 </InputLabel>
                                                 <InputLabel className="text-left" htmlFor={label}>
-                                                    Description: {work.description}
+                                                    {work.description}
                                                 </InputLabel>
                                                 {
                                                     work.editable ?

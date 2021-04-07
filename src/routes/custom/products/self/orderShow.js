@@ -112,37 +112,33 @@ class OrderShow extends Component {
                     <div style={{ flex: 1 }}>
                         <div style={{ marginBottom: 20 }}>
                             <h2>Numéro de la commande</h2>
-                            <span>{product.name}</span>
+                            <span>{product.order.name}</span>
                         </div>
                         <div style={{ marginBottom: 20 }}>
                             <h2>Adresse de livraison 1</h2>
-                            <span>{product.address1}</span>
+                            <span>{product.order.address1}</span>
                         </div>
                         <div style={{ marginBottom: 20 }}>
                             <h2>Adresse de livraison 2</h2>
-                            <span>{product.address2}</span>
-                        </div>
-                        <div style={{ marginBottom: 20 }}>
-                            <h2>Pays</h2>
-                            <span>{product.country}</span>
+                            <span>{product.order.address2}</span>
                         </div>
                     </div>
                     <div style={{ flex: 1 }}>
                         <div style={{ marginBottom: 20 }}>
-                            <h2>Email</h2>
-                            <span>{product.email}</span>
+                            <h2>Pays</h2>
+                            <span>{product.order.country}</span>
                         </div>
                         <div style={{ marginBottom: 20 }}>
-                            <h2>Numéro de téléphone</h2>
-                            <span>{product.phone}</span>
+                            <h2>Ville</h2>
+                            <span>{product.order.city}</span>
                         </div>
                         <div style={{ marginBottom: 20 }}>
                             <h2>Code zip</h2>
-                            <span>{product.zip}</span>
+                            <span>{product.order.zip}</span>
                         </div>
                         <div style={{ marginBottom: 20 }}>
                             <h2>Date de la commande</h2>
-                            <span>{product.createdAt ? <TimeFromMoment time={product.createdAt} showFullDate /> : null}</span>
+                            <span>{product.order.createdAt ? <TimeFromMoment time={product.order.createdAt} showFullDate /> : null}</span>
                         </div>
                     </div>
                 </div>
