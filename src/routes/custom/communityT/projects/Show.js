@@ -45,7 +45,7 @@ const Show = (props) => {
 
     const loadData = () => {
         setProjectFolder({
-            data: null,
+            data: {},
             loading: true
         });
         getOneProjectFolderByGroup(props.communitySpace)
@@ -60,7 +60,7 @@ const Show = (props) => {
             })
             .catch(() => {
                 setProjectFolder({
-                    data: null,
+                    data: {},
                     loading: false
                 });
             })
