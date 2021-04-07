@@ -121,7 +121,7 @@ const Show = (props) => {
                         </FieldsetComponent>
                     </div>
                 </div>
-                {details.works.sort((a, b) => a.index < b.index ? -1 : 1).map((work, index) => (
+                {details.works && details.works.sort((a, b) => a.index < b.index ? -1 : 1).map((work, index) => (
                     <>
                         {work.required || isRequired(work.book.id) ?
                             <div key={index} className="row mb-20">
