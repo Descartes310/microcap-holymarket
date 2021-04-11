@@ -652,7 +652,7 @@ export default {
                "permissions": [],
             },
             {
-               "path": ROOT,
+               "path": PRODUCT.UNAPPROVED_ORDERS,
                "new_item": false,
                "menu_title": "Ventes",
                "permissions": [],
@@ -679,7 +679,7 @@ export default {
                "permissions": [],
             },
             {
-               "menu_title": " Mes Demandes d'achats",
+               "menu_title": "Mes Demandes de souscriptions",
                "new_item": false,
                "path": PRODUCT.UNAPPROVED_ORDERS,
                "permissions": [],
@@ -824,7 +824,7 @@ export default {
                "permissions": [],
             },
             {
-               "menu_title": "Demandes d'achats",
+               "menu_title": "Mes Demandes de souscriptions",
                "new_item": false,
                "path": PRODUCT.UNAPPROVED_ORDERS,
                "permissions": [],
