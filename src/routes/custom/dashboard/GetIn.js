@@ -24,15 +24,33 @@ export default class MoneyManagement extends Component {
         <div className="terms-conditions-rules">
           <RctCollapsibleCard customClasses="p-30">
             <p>
-                MicroCap est un réseau international de solidarité financière auprès duquel chaque membre peut solliciter des cautionnements pour obtenir un financement
-                <ul style={{ paddingTop: 40, paddingBottom: 10 }}>
+              <p>Le love money permet de collecter de l'argent auprès des proches pour vous financer. </p>
+              <p>En famille, entre amis, collègues ou compatriotes, … c’est un bon début. Avez MicroCap, vous pouvez désormais étendre votre réseau au-delà du cercle proche et financer plus facilement vos projets. </p>
+              <p>Adopter la solidarité comme principe </p>
+              <p>MicroCap est un réseau international de solidarité financière auprès duquel chaque membre peut solliciter des cautionnements pour obtenir un financement</p>
+
+              <ul style={{ paddingTop: 40, paddingBottom: 10 }}>
                 <li>Credit banquaire</li>
                 <li>Paiement a crédit des achats sur la place de marché MicroCap</li>
-                <li>Paiement différé des opérations auprès des prestataires: transfert d'argent, loyer, caution pour accéder au bail.</li>
+                <li>Paiement différé des opérations auprès des prestataires: transfert d'argent, loyer, caution pour accéder au bail. </li>
               </ul>
 
+              {/* <p>
+                  Les utilisateurs de la plateforme MicroCap ont accès a un programme de sensibilisation, monitoring et coaching a la finance vertueuse. Pour en profiter :
+                </p>
+                <p>
+                  Un Webinaire d’une durée de 1H tous les jeudis à 13h.
+                </p>
+                <p>
+                  Atelier pratique pour adopter et profiter de la finance vertueuse tous les derniers samedis du mois. Prochaines dates :
+                </p>
+                <ul style={{ paddingTop: 40, paddingBottom: 10 }}>
+                    <li>Exceptionnellement le samedi 3 avril 2021 à 15H00</li>
+                    <li>Cycle normal le samedi 24 avril 2021 à 15H00</li>
+                </ul> */}
+
               <p>
-                Pour adherer:
+                Pour adhérer:
                 </p>
 
               <ul style={{ paddingTop: 10, paddingBottom: 10 }}>
@@ -43,7 +61,7 @@ export default class MoneyManagement extends Component {
               <Link to={AUTH.REGISTER}>
                 <Button variant="contained" className="btn-primary mr-2 text-white">
                   Adhérer
-                    </Button>
+                </Button>
               </Link>
             </p>
           </RctCollapsibleCard>

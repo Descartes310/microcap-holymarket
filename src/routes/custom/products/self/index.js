@@ -13,6 +13,8 @@ import ProductItemAvailable from './ProductItemAvailable';
 import Account from './accounts';
 import AccountShow from './accountShow';
 import Order from './orders';
+import UnapprovedOrders from './unapprovedOrders';
+import OperatorOrders from './ordersOperator';
 import OrderShow from './orderShow';
 import ProductDetails from './productDetails';
 
@@ -29,6 +31,8 @@ class Products extends Component {
                         <Route path={PRODUCT.SHOW} component={ProductItemAvailable} />
                         <Route path={PRODUCT.SHOW_ACCOUNT} component={Account} />
                         <Route path={PRODUCT.DETAILS} component={ProductDetails} />
+                        <Route path={PRODUCT.UNAPPROVED_ORDERS} component={UnapprovedOrders} />
+                        <Route path={PRODUCT.OPERATOR_ORDERS} component={OperatorOrders} />
                         <Route path={PRODUCT.ORDERS} component={Order} />
                         <Route path={PRODUCT.LIST} component={List} />
                     </Switch>

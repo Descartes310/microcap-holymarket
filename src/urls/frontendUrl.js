@@ -120,6 +120,7 @@ export const USERS = {
     ACCOUNTS: {
         SELF: '/users-accounts',
         LIST: '/users-accounts/list',
+        ALL: '/all-users',
         CREATE: '/users-accounts/create',
     },
 };
@@ -150,6 +151,8 @@ export const PRODUCT = {
     FINANCIAL_SALES: '/products/financial-sales',
     MICROCAP_PRODUCT: '/products/microcap-sales',
     ORDERS: '/products/orders',
+    UNAPPROVED_ORDERS: '/products/orders/unapproved',
+    OPERATOR_ORDERS: '/products/orders/operators',
     ORDERS_SHOW: '/products/orders/:id/show',
     SHOW: '/products/:id/show/:type',
     DETAILS: '/products/:id/details/:type',

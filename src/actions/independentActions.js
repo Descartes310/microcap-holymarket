@@ -694,6 +694,16 @@ export const getOrders = () => {
     return makeRequest('get', url);
 };
 
+export const getOperatorsOrders = () => {
+    const url = ORDER.GET_ALL_OPERATORS;
+    return makeRequest('get', url);
+};
+
+export const getUnapprovedOrders = () => {
+    const url = ORDER.GET_ALL_UNAPPROVED;
+    return makeRequest('get', url);
+};
+
 export const getUnitTypes = () => {
     const url = SETTING.UNIT_TYPE;
     return makeRequest('get', url);
@@ -1147,4 +1157,23 @@ export const getUsersBooks = (type = null) => {
 export const addGroupToFavourites = (id) => {
     const url = joinBaseUrlWithParamsId(`${COMMUNITY_MEMBER.USER.GROUPS.ADD_FAVOURITES}`, id);
     return makeRequest('post', url, null);
+};
+
+export const uploadOrderPiece = (id, data, config) => {
+    const url = joinBaseUrlWithParamsId(`${ORDER.PIECES}`, id);
+    return new Promise((resolve, reject) => {
+        api.post(url, data, config)
+            .then(result => resolve(result.data))
+            .catch(error => reject(error));
+    });
+};
+
+export const getOrderPieces = (id) => {
+    const url = joinBaseUrlWithParamsId(`${ORDER.PIECES}`, id);
+    return makeRequest('get', url);
+};
+
+export const approveOrder = (id) => {
+    const url = joinBaseUrlWithParamsId(`${ORDER.APPROVE_ORDER}`, id);
+    return makeRequest('put', url, null);
 };

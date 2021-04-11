@@ -9,7 +9,7 @@ import { AbilityContext } from "Permissions/Can";
 import CustomList from "Components/CustomList";
 import { PRODUCT, joinUrlWithParamsId } from 'Url/frontendUrl'
 import { setRequestGlobalAction } from "Actions";
-import { getUserSales, getOrders } from "Actions/independentActions";
+import { getUserSales, getUnapprovedOrders } from "Actions/independentActions";
 import { NotificationManager } from "react-notifications";
 import { ERROR_500 } from "Constants/errors";
 import Button from "@material-ui/core/Button";
@@ -39,7 +39,7 @@ class Order extends Component {
 
     loadData = () => {
         setRequestGlobalAction(true);
-        getOrders()
+        getUnapprovedOrders()
             .then(products => {
                 this.setState({ products: products });
             })
@@ -58,7 +58,7 @@ class Order extends Component {
                 <CustomList
                     loading={false}
                     list={products}
-                    titleList={"Commandes"}
+                    titleList={"Commandes en attentes"}
                     itemsFoundText={n => `${n} commandes trouvées`}
                     renderItem={list => (
                         <>

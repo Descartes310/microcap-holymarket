@@ -73,6 +73,7 @@ class List extends Component {
                     loading={loading}
                     list={comOffer}
                     titleList={"Offres commerciale"}
+                    addingButton={!this.props.authUser.isExploitant()}
                     onAddClick={() => history.push(COMMERCIAL_MANAGEMENT.COMMERCIAL_OFFER.CREATE)}
                     itemsFoundText={n => `${n} offre(s) commerciale(s) trouvée(s)`}
                     addPermissions={{
@@ -94,7 +95,10 @@ class List extends Component {
                                                     <th><IntlMessages id="components.name" /></th>
                                                     <th>Canal de vente</th>
                                                     <th><IntlMessages id="widgets.description" /></th>
-                                                    <th>Status d'activation</th>
+                                                    {this.props.authUser.isExploitant() ?
+                                                        <th>Status d'activation</th>
+                                                        : null
+                                                    }
                                                     <th>Actions</th>
                                                 </tr>
                                             </thead>
@@ -122,13 +126,17 @@ class List extends Component {
                                                                 </div>
                                                             </div>
                                                         </td>
-                                                        <td className="table-action">
-                                                            <Switch
-                                                                checked={item.isActive}
-                                                                onChange={(event) => { this.onToggleActivationStatus(item.id, event.target.checked) }}
-                                                                aria-label="Activé"
-                                                            />
-                                                        </td>
+                                                        {
+                                                            this.props.authUser.isExploitant() ?
+                                                                <td className="table-action">
+                                                                    <Switch
+                                                                        checked={item.isActive}
+                                                                        onChange={(event) => { this.onToggleActivationStatus(item.id, event.target.checked) }}
+                                                                        aria-label="Activé"
+                                                                    />
+                                                                </td>
+                                                                : null
+                                                        }
                                                         <td className="table-action">
                                                             <Button
                                                                 size="small"

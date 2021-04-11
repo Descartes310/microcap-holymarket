@@ -7,14 +7,19 @@ import IntlMessages from 'Util/IntlMessages';
 import { withStyles } from "@material-ui/core";
 import { AbilityContext } from "Permissions/Can";
 import CustomList from "Components/CustomList";
-import { PRODUCT, joinUrlWithParamsId } from 'Url/frontendUrl'
 import { setRequestGlobalAction } from "Actions";
-import { getUserSales, getOrders } from "Actions/independentActions";
-import { NotificationManager } from "react-notifications";
 import { ERROR_500 } from "Constants/errors";
 import Button from "@material-ui/core/Button";
 import TimeFromMoment from "Components/TimeFromMoment";
 import AmountCurrency from "Components/AmountCurrency";
+import Dialog from "@material-ui/core/Dialog/Dialog";
+import CancelIcon from '@material-ui/icons/Cancel';
+import IconButton from "@material-ui/core/IconButton";
+import { NotificationManager } from "react-notifications";
+import { PRODUCT, joinUrlWithParamsId } from 'Url/frontendUrl'
+import DialogTitle from "@material-ui/core/DialogTitle/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent/DialogContent";
+import { getOrderPieces, getOperatorsOrders, approveOrder } from "Actions/independentActions";
 
 class Order extends Component {
     static contextType = AbilityContext;
@@ -24,6 +29,8 @@ class Order extends Component {
 
         this.state = {
             loading: true,
+            pieces: [],
+            showBox: false,
             products: []
         }
     }
@@ -39,7 +46,7 @@ class Order extends Component {
 
     loadData = () => {
         setRequestGlobalAction(true);
-        getOrders()
+        getOperatorsOrders()
             .then(products => {
                 this.setState({ products: products });
             })
@@ -50,15 +57,38 @@ class Order extends Component {
                 setRequestGlobalAction(false)
             });
     };
+
+    loadPieces = (id) => {
+        setRequestGlobalAction(true);
+        getOrderPieces(id)
+            .then(pieces => {
+                this.setState({ pieces, showBox: true });
+            })
+            .finally(() => {
+                setRequestGlobalAction(false)
+            });
+    };
+
+    approvingOrder = (id) => {
+        setRequestGlobalAction(true);
+        approveOrder(id)
+            .then(piece => {
+                this.loadData();
+            })
+            .finally(() => {
+                setRequestGlobalAction(false)
+            });
+    };
+
     render() {
-        const { loading, products } = this.state;
+        const { loading, products, pieces } = this.state;
 
         return (
             <>
                 <CustomList
                     loading={false}
                     list={products}
-                    titleList={"Commandes"}
+                    titleList={"Commandes en attentes"}
                     itemsFoundText={n => `${n} commandes trouvées`}
                     renderItem={list => (
                         <>
@@ -121,11 +151,11 @@ class Order extends Component {
                                                                         Payée
                                                                     </span> :
                                                                     item.orderStatus == 'NOT_PAID' ?
-                                                                    <span style={{ backgroundColor: 'rgba(200, 0, 0, 0.5)', border: 5, padding: 5, width: 76, borderRadius: 5, color: 'white' }}>
-                                                                        Non payée
+                                                                        <span style={{ backgroundColor: 'rgba(200, 0, 0, 0.5)', border: 5, padding: 5, width: 76, borderRadius: 5, color: 'white' }}>
+                                                                            Non payée
                                                                     </span> :
-                                                                    <span style={{ backgroundColor: '#ffc107', border: 5, padding: 5, width: 76, borderRadius: 5, color: 'white' }}>
-                                                                        En cours
+                                                                        <span style={{ backgroundColor: '#ffc107', border: 5, padding: 5, width: 76, borderRadius: 5, color: 'white' }}>
+                                                                            En cours
                                                                     </span>
                                                                 }
                                                             </div>
@@ -136,9 +166,18 @@ class Order extends Component {
                                                                 color="primary"
                                                                 variant="contained"
                                                                 className={"text-white font-weight-bold mr-3 bg-blue"}
-                                                                onClick={() => this.onEnterClick(item)}
+                                                                onClick={() => this.loadPieces(item.id)}
                                                             >
                                                                 Voir les détails
+                                                            </Button>
+                                                            <Button
+                                                                size="small"
+                                                                color="primary"
+                                                                variant="contained"
+                                                                className={"text-white font-weight-bold mr-3"}
+                                                                onClick={() => this.approvingOrder(item.id)}
+                                                            >
+                                                                Approuver la commande
                                                             </Button>
                                                         </td>
                                                     </tr>
@@ -150,6 +189,71 @@ class Order extends Component {
                         </>
                     )}
                 />
+                <Dialog
+                    open={this.state.showBox}
+                    onClose={() => { this.setState({ showBox: false }) }}
+                    aria-labelledby="responsive-dialog-title"
+                    maxWidth={'md'}
+                    fullWidth
+                >
+                    <DialogTitle id="form-dialog-title">
+                        <div className="row justify-content-between align-items-center">
+                            Liste des pièces renseignées
+                            <IconButton
+                                color="primary"
+                                aria-label="close"
+                                className="text-danger"
+                                onClick={() => { this.setState({ showBox: false }) }}>
+                                <CancelIcon />
+                            </IconButton>
+                        </div>
+                    </DialogTitle>
+                    <DialogContent>
+                        <div className="row">
+                            <div className="col-md-12">
+                                <div className="col-12 my-3">
+                                    <div className="table-responsive">
+                                        <table className="table table-hover table-middle mb-0 text-center">
+                                            <thead>
+                                                <tr>
+                                                    <th>Nom de la pièce</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {pieces && pieces.map((item, key) => (
+                                                    <tr key={key} className="cursor-pointer">
+                                                        <td>
+                                                            <div className="media">
+                                                                <div className="media-body pt-10">
+                                                                    <h4 className="m-0 fw-bold text-dark">{item.name}</h4>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td className="table-action">
+                                                            <Button
+                                                                size="small"
+                                                                color="primary"
+                                                                variant="contained"
+                                                                className={"text-white font-weight-bold mr-3 bg-blue"}
+                                                                href={item.file}
+                                                                target="_blank"
+                                                                download
+                                                            >
+                                                                Consulter la pièce
+                                                            </Button>
+                                                        </td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </DialogContent>
+                </Dialog>
             </>
         );
     }

@@ -15,6 +15,7 @@ import {
     AsyncUserProfile,
     AsyncPionier,
     AsyncUsers,
+    AsyncAllUsersAccounts,
     AsyncGetIn,
     AsyncCommunity,
     AsyncProjects,
@@ -47,6 +48,7 @@ import PersonalSpace from "Routes/custom/users/users/personnal-space";
 import SingleProfile from 'Routes/custom/users/user-profile/Profile';
 import UserProfile from 'Routes/custom/users/user-profile';
 import Stock from 'Routes/custom/stocks';
+import AllUsers from 'Routes/custom/users/all-users/List';
 import UpdateInitializationOption from 'Routes/custom/projects/configuration/intialisation-options/Update';
 
 import { useAbility } from "@casl/react";
@@ -109,6 +111,13 @@ const Dashboard = ({ match, authUser }) => {
                         permissions={[]}
                     />
 
+
+                    <CanRoute
+                        path={USERS.ACCOUNTS.ALL}
+                        component={AllUsers}
+                        permissions={[Permission.users.accounts.viewList.name]}
+                    />
+
                     <CanRoute
                         path={NETWORK.ONGOING_CREATE}
                         component={AsyncSampleBranchList}
@@ -127,6 +136,7 @@ const Dashboard = ({ match, authUser }) => {
                         permissions={[Permission.users.accounts.viewList.name]}
                     />
 
+
                     <CanRoute
                         path={SETTINGS.NOTIFICATION.SELF}
                         component={AsyncSettingNotifications}
@@ -140,7 +150,7 @@ const Dashboard = ({ match, authUser }) => {
                     />
 
                     <CanRoute
-                    path={SETTINGS.USERPIECE.SELF}
+                        path={SETTINGS.USERPIECE.SELF}
                         component={ClientPieceList}
                         permissions={[]}
                     />

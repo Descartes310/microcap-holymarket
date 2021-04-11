@@ -8,7 +8,7 @@ import { withStyles } from "@material-ui/core";
 import { AbilityContext } from "Permissions/Can";
 import CustomList from "Components/CustomList";
 import { setRequestGlobalAction } from "Actions";
-import { getOrderPayments, getOrderDetails } from "Actions/independentActions";
+import { getOrderPayments, getOrderDetails, uploadOrderPiece } from "Actions/independentActions";
 import { NotificationManager } from "react-notifications";
 import { ERROR_500 } from "Constants/errors";
 import Button from "@material-ui/core/Button";
@@ -17,6 +17,14 @@ import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import AmountCurrency from "Components/AmountCurrency";
 import { joinUrlWithParamsId, STORE, PRODUCT, joinUrlWithParams } from "Url/frontendUrl";
+import DialogTitle from "@material-ui/core/DialogTitle/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent/DialogContent";
+import Dialog from "@material-ui/core/Dialog/Dialog";
+import CancelIcon from '@material-ui/icons/Cancel';
+import IconButton from "@material-ui/core/IconButton";
+import { FormGroup, Input as InputStrap } from "reactstrap";
+import InputLabel from "@material-ui/core/InputLabel";
+import Input from "@material-ui/core/Input";
 // import { Button } from "reactstrap";
 
 class OrderShow extends Component {
@@ -30,6 +38,9 @@ class OrderShow extends Component {
             : null;
         this.state = {
             loading: true,
+            showBox: false,
+            name: '',
+            file: null,
             product: { order: { orderItems: [] } },
             payments: {}
         }
@@ -84,8 +95,25 @@ class OrderShow extends Component {
             })
     };
 
+    createPiece = () => {
+        this.props.setRequestGlobalAction(true);
+        uploadOrderPiece(this.state.product.order.id, {
+            file: this.state.file,
+            name: this.state.name
+        }, { fileData: ['file'], multipart: true }).then(data => {
+            this.setState({ show: false })
+            NotificationManager.success("La pièce a été renseignée avec succès");
+        }).catch(err => {
+            console.log(err);
+            NotificationManager.error("La pièce n'a pas pu etre renseignée");
+        }).finally(() => {
+            this.setState({ showBox: false });
+            this.props.setRequestGlobalAction(false);
+        });
+    };
+
     render() {
-        const { payments, product } = this.state;
+        const { payments, product, showBox } = this.state;
         const { match, history } = this.props;
 
         return (
@@ -146,8 +174,8 @@ class OrderShow extends Component {
                     product.order.acceptManyPayment && payments.sales ?
                         <>
                             <h1 style={{ marginTop: 40 }}>Liste des paiements effectués (<AmountCurrency amount={payments.amount} from={payments.currency} /> sur <AmountCurrency style={{ color: '#ffc107' }} amounts={product.order.orderItems.map((e) => {
-                                                                            return { amount: e.typeProduct.price, currency: e.typeProduct.product ? e.typeProduct.product.priceCurrency : e.typeProduct.package1.currency, quantity: e.quantity }
-                                                                        })} />)</h1>
+                                return { amount: e.typeProduct.price, currency: e.typeProduct.product ? e.typeProduct.product.priceCurrency : e.typeProduct.package1.currency, quantity: e.quantity }
+                            })} />)</h1>
                             <CustomList
                                 loading={false}
                                 list={payments.sales}
@@ -336,26 +364,94 @@ class OrderShow extends Component {
                     display: 'flex',
                     justifyContent: 'flex-end'
                 }}>
+                    {
+                        !this.state.product.order.approved ?
+
+                            <Button
+                                size="large"
+                                color="primary"
+                                variant="contained"
+                                className={"text-white font-weight-bold mr-3"}
+                                onClick={() => this.setState({ showBox: true })}
+                            >
+                                Verser une piece
+                            </Button>
+                            : null
+                    }
                     <Button
                         size="large"
                         color="primary"
                         variant="contained"
-                        className={"text-white font-weight-bold mr-3"}
-                    // onClick={() => this.setState({ showQuantityBox: true })}
-                    >
-                        Confirmer une livraison
-                    </Button>
-                    <Button
-                        size="large"
-                        color="primary"
-                        variant="contained"
-                        disabled={this.state.product.order.orderStatus == 'PAID'}
+                        disabled={this.state.product.order.orderStatus == 'PAID' || !this.state.product.order.approved}
                         className={"text-white font-weight-bold mr-3"}
                         onClick={() => this.onContinueClick()}
                     >
                         Payer la commande
                     </Button>
                 </div>
+                <Dialog
+                    open={this.state.showBox}
+                    onClose={() => { this.setState({ showBox: false }) }}
+                    aria-labelledby="responsive-dialog-title"
+                    maxWidth={'md'}
+                    fullWidth
+                >
+                    <DialogTitle id="form-dialog-title">
+                        <div className="row justify-content-between align-items-center">
+                            Reseigner une pièce
+                            <IconButton
+                                color="primary"
+                                aria-label="close"
+                                className="text-danger"
+                                onClick={() => { this.setState({ showBox: false }) }}>
+                                <CancelIcon />
+                            </IconButton>
+                        </div>
+                    </DialogTitle>
+                    <DialogContent>
+                        <div className="row">
+                            <div className="col-md-12">
+                                <div className="col-12 my-3">
+                                    <FormGroup style={{ width: '100%' }}>
+                                        <InputLabel className="text-left">
+                                            Nom de la pièce
+                                        </InputLabel>
+                                        <InputStrap
+                                            required
+                                            type="text"
+                                            value={this.state.name}
+                                            className="has-input input-lg"
+                                            onChange={(e) => this.setState({ name: e.target.value })}
+                                        />
+                                        {/* <span className="has-icon"><i className="ti-pencil"></i></span> */}
+                                    </FormGroup>
+                                    <FormGroup style={{ width: '100%' }}>
+                                        <InputLabel className="text-left">
+                                            Fichier
+                                        </InputLabel>
+                                        <Input
+                                            style={{ width: '100%' }}
+                                            id="File"
+                                            type="file"
+                                            name="file"
+                                            onChange={event => this.setState({ file: event.target.files[0] })}
+                                        />
+                                    </FormGroup>
+                                    <Button
+                                        size="large"
+                                        color="primary"
+                                        variant="contained"
+                                        className={"text-white font-weight-bold mr-3"}
+                                        onClick={() => this.createPiece()}
+                                    >
+                                        Soumettre
+                                    </Button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </DialogContent>
+                </Dialog>
             </RctCollapsibleCard>
         );
     }

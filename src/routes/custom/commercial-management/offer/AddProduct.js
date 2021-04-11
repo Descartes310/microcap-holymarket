@@ -41,8 +41,9 @@ import { computeAmountFromCurrency } from 'Helpers/helpers'
 
 const PROCESS = [
     { label: 'Demande de pièce', id: 'ASKING_PIECE' },
-    { label: "Demande d'accord de vente", id: 'SELL_APPROBATION' },
-    { label: "Demande d'accord d'achat", id: 'BUY_APPROBATION' }];
+    // { label: "Demande d'accord de vente", id: 'SELL_APPROBATION' },
+    // { label: "Demande d'accord d'achat", id: 'BUY_APPROBATION' }
+];
 
 class AddProduct extends Component {
 
@@ -177,7 +178,7 @@ class AddProduct extends Component {
                 minimal_percentage: this.state.minimal_percentage,
                 product_id: this.state.product,
                 product_type: this.state.type,
-                sell_process: this.state.sellProcess.join(','),
+                sell_process: this.state.sellProcess.map(sp => { return sp.id}).join(','),
                 inderect_sell: this.state.indirectSell
             };
 
@@ -310,7 +311,7 @@ class AddProduct extends Component {
                             <FormGroup className="col-md-6 col-sm-12 has-wrapper">
                                 <InputLabel className="text-left" htmlFor="defautlPrice">
                                     Prix par defaut
-                            </InputLabel>
+                                </InputLabel>
                                 <InputStrap
                                     required
                                     disabled

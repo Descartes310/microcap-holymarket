@@ -24,9 +24,9 @@ export default class MoneyManagement extends Component {
         <div className="terms-conditions-rules">
           <RctCollapsibleCard customClasses="p-30">
             <p>
-              Le réseau MicroCap est constitué de personnes membres d’une organisation signataire d’une convention de délégation de mission ou de représentation avec MicroCap ou un partenaire de MicroCap. Cela peut être spécifiquement désignées comme telles parmi :
+                Le réseau MicroCap est constitué de personnes membres d’une organisation signataire d’une convention de délégation de mission ou de représentation avec MicroCap ou un partenaire de MicroCap. Cela peut être spécifiquement désignées comme telles parmi :
                 <ul style={{ paddingTop: 40, paddingBottom: 10 }}>
-                <li>les membres ou les usagers d’une association,</li>
+                <li>les membres ou les usagers d’une association, </li>
                 <li>les employés, les clients, les fournisseurs d’une entreprise, …</li>
               </ul>
 
@@ -41,7 +41,7 @@ export default class MoneyManagement extends Component {
 
               <Link to={AUTH.REGISTER}>
                 <Button variant="contained" className="btn-primary mr-2 text-white">
-                  Demander une convention Microcap
+                  Demander une convention MicroCap
                 </Button>
               </Link>
             </p>

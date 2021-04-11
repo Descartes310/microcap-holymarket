@@ -1,5 +1,5 @@
 // sidebar nav links
-import {CATALOG, COMMERCIAL_MANAGEMENT, COMMUNITY_ADMIN, STOCK, COMMUNITY_MEMBER, COMMUNITY, NETWORK, PRODUCT, USERS, ACCESS, SETTINGS, PROJECTS, MICROCAP360} from 'Url/frontendUrl';
+import {CATALOG, COMMERCIAL_MANAGEMENT, ROOT, COMMUNITY_ADMIN, STOCK, COMMUNITY_MEMBER, COMMUNITY, NETWORK, PRODUCT, USERS, ACCESS, SETTINGS, PROJECTS, MICROCAP360} from 'Url/frontendUrl';
 import Branch from 'Models/Branch';
 import Permission from "Enums/Permissions";
 import { RESSOURCE } from '../../urls/frontendUrl';
@@ -370,7 +370,7 @@ export default {
             {
                "menu_title": "Utilisateurs",
                "new_item": false,
-               "path": USERS.USERS.SELF,
+               "path": USERS.ACCOUNTS.ALL,
                "permissions": [Permission.navLinks.users.childLinks.users.viewMenu],
             },
             {
@@ -478,6 +478,12 @@ export default {
                "menu_title": "Offre commerciale",
                "permissions": [],
             },
+            {
+               "menu_title": "Demandes d'achats reçus",
+               "new_item": false,
+               "path": PRODUCT.OPERATOR_ORDERS,
+               "permissions": [],
+            }
          ]
       },
       {
@@ -581,6 +587,158 @@ export default {
          ]
       },
    ],
+   operateur_reseau: [
+      {
+         "menu_title": "Microcap360",
+         "menu_icon": "icon-people",
+         "new_item": false,
+         // "permissions": [Permission.navLinks.COMMUNITY.viewMenu],
+         "permissions": [],
+         "child_routes": [
+            {
+               "menu_title": "Reseau",
+               "new_item": false,
+               "path": MICROCAP360.RESEAU.SELF,
+               "permissions": [],
+            },{
+               "menu_title": "Comptes opérations",
+               "new_item": false,
+               "path": ROOT,
+               "permissions": [],
+            },
+         ],
+      },{
+         "menu_title": "Produits & services",
+         "menu_icon": "zmdi zmdi-widgets",
+         "new_item": false,
+         "permissions": [Permission.navLinks.products.viewMenu],
+         "child_routes": [
+            {
+               "menu_title": "Catalogue produits",
+               "new_item": false,
+               "path": CATALOG.PRODUCT.SELF,
+               "permissions": [Permission.navLinks.products.childLinks.catalogProducts.viewMenu],
+            },
+            {
+               "path": CATALOG.SALE.SELF,
+               "new_item": false,
+               "menu_title": "Catalogue ventes",
+               "permissions": [Permission.navLinks.products.childLinks.catalogProducts.viewMenu],
+            },
+            {
+               "path": NETWORK.COVERAGE,
+               "new_item": false,
+               "menu_title": "Catalogue distributions",
+               "permissions": [Permission.navLinks.products.childLinks.catalogDistribution.viewMenu],
+            },
+         ]
+      },
+      {
+         "menu_title": "Supervision",
+         "menu_icon": "zmdi zmdi-case",
+         "new_item": false,
+         "permissions": [],
+         "child_routes": [
+            {
+               "path": ROOT,
+               "new_item": false,
+               "menu_title": "Communautés",
+               "permissions": [],
+            },
+            {
+               "path": ROOT,
+               "new_item": false,
+               "menu_title": "Membres",
+               "permissions": [],
+            },
+            {
+               "path": ROOT,
+               "new_item": false,
+               "menu_title": "Ventes",
+               "permissions": [],
+            },
+         ]
+      },
+      {
+         "menu_title": "Produits & Services",
+         "menu_icon": "zmdi zmdi-shopping-cart",
+         "new_item": false,
+         // "permissions": [Permission.navLinks.COMMUNITY_MEMBER.viewMenu],
+         "permissions": [],
+         "child_routes": [
+            {
+               "menu_title": "Microcap Shop",
+               "new_item": false,
+               "path": PRODUCT.LIST,
+               "permissions": [],
+            },
+            {
+               "menu_title": "Mes commandes",
+               "new_item": false,
+               "path": PRODUCT.ORDERS,
+               "permissions": [],
+            },
+            {
+               "menu_title": " Mes Demandes d'achats",
+               "new_item": false,
+               "path": PRODUCT.UNAPPROVED_ORDERS,
+               "permissions": [],
+            }
+         ],
+      },
+      {
+         "menu_title": "Gestion commerciale",
+         "menu_icon": "zmdi zmdi-case",
+         "new_item": false,
+         "permissions": [],
+         "child_routes": [
+            {
+               "path": COMMERCIAL_MANAGEMENT.COMMERCIAL_OFFER.SELF,
+               "new_item": false,
+               "menu_title": "Offre commerciale",
+               "permissions": [],
+            },
+            {
+               "menu_title": "Demandes d'achats reçus",
+               "new_item": false,
+               "path": PRODUCT.OPERATOR_ORDERS,
+               "permissions": [],
+            }
+         ]
+      },
+      {
+         "menu_title": "Adminitration",
+         "menu_icon": "zmdi zmdi-settings",
+         "new_item": false,
+         "permissions": [],
+         "child_routes": [
+            {
+               "path": ROOT,
+               "new_item": false,
+               "menu_title": "Utilisateurs",
+               "permissions": [],
+            },
+            {
+               "path": ROOT,
+               "new_item": false,
+               "menu_title": "Roles",
+               "permissions": [],
+            },
+            {
+               "path": ROOT,
+               "new_item": false,
+               "menu_title": "Notifications",
+               "permissions": [],
+            },
+            {
+               "path": ROOT,
+               "new_item": false,
+               "menu_title": "Dossier utilisateur",
+               "permissions": [],
+            },
+         ]
+      }
+   ],
    pfm: [
       {
          "menu_title": "Profile",
@@ -663,6 +821,12 @@ export default {
                "menu_title": "Mes commandes",
                "new_item": false,
                "path": PRODUCT.ORDERS,
+               "permissions": [],
+            },
+            {
+               "menu_title": "Demandes d'achats",
+               "new_item": false,
+               "path": PRODUCT.UNAPPROVED_ORDERS,
                "permissions": [],
             }
          ],
@@ -757,6 +921,12 @@ export default {
                "menu_title": "Mes commandes",
                "new_item": false,
                "path": PRODUCT.ORDERS,
+               "permissions": [],
+            },
+            {
+               "menu_title": "Demandes d'achats",
+               "new_item": false,
+               "path": PRODUCT.UNAPPROVED_ORDERS,
                "permissions": [],
             }
          ],

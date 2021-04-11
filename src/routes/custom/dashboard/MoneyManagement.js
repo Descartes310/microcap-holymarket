@@ -24,12 +24,12 @@ export default class MoneyManagement extends Component {
         <div className="terms-conditions-rules">
           <RctCollapsibleCard customClasses="p-30">
             <p>
-              MicroCap est une entreprise de mission qui se propose de démocratiser l’entrepreneuriat par l’accès aux financement.
-              Nous parton du constat que ceux à qui les financements sont refusés ne sont pas conscient du pouvoir financier qui est le leur, mis en commun. Ils ne sont pas non
-              plus conscients du fait que le mode de consommation auquel nous nous soumettons de plus en plus participe à plus de pauvreté et que, cynique mais vais, leur pouvoir
-              collectif finance chaque jour le système qui les appauvrit. Ce qui conduit à des incompréhension et un fort sentiment d’injustice sociale. Nous proposons des
-              ressources, des sensibilisations et accompagnements totalement gratuits pour renforcer l’éducation financière, économique et budgétaire, afin de permettre à ce qui le
-              souhaitent, de reprendre le contrôle sur leur argent. Nos objectifs recherchés pour vous :
+              <p>Donner l’argents à vos proches ! c’est aliénant et humiliant. </p>
+              <p>Sensibiliser et porter l’éducation financière, économique et budgétaire pour rationaliser le rapport avec l’argent, c’est ce que nous promettons gratuitement à ceux qui vous tiennent à cœur.</p>
+              <p>Vous pouvez leur apporter la caution pour financer un projet, s’émanciper et devenir autonome financièrement</p>
+              <p>L’argent ne se donne pas, il se prête ou il se mérite ! voilà un vieille adage que nous tendons à oublier, cloisonnant ainsi près de 25%  de la population mondiale dans la mendicité et totalement démunie de dignité (24,1% exactement en 2017 : source banque mondiale).</p>
+              <p>MicroCap est une entreprise de mission qui se propose de démocratiser l’entrepreneuriat par l’accès aux financement. L’objectif est de permettre à tout ce qui le souhaite de créer leur emploi.</p>
+              <p>Nous parton du constat que ceux à qui les financements sont refusés ne sont pas conscient du pouvoir financier qui est le leur, mis en commun. Ils ne sont pas non plus conscients du fait que le mode de consommation auquel nous nous soumettons de plus en plus participe à plus de pauvreté et que, cynique mais vrai, leur pouvoir collectif finance chaque jour le système qui les appauvrit. Ce qui conduit à des incompréhension et un fort sentiment d’injustice sociale. Nous proposons des ressources, des sensibilisations et accompagnements totalement gratuits pour renforcer l’éducation financière, économique et budgétaire, afin de permettre à ce qui le souhaitent, de reprendre le contrôle sur leur argent. Nos objectifs recherchés pour vous :</p>
 
                 <ol style={{ paddingTop: 40, paddingBottom: 10 }}>
                     <li>Distinguer pouvoir d’achat et vouloir d’achat</li>
@@ -38,7 +38,7 @@ export default class MoneyManagement extends Component {
                     <li>Soutenir et vivre une finance vertueuse et utile</li>
                 </ol>
 
-                <p>
+                {/* <p>
                   Les utilisateurs de la plateforme MicroCap ont accès a un programme de sensibilisation, monitoring et coaching a la finance vertueuse. Pour en profiter :
                 </p>
                 <p>
@@ -50,7 +50,7 @@ export default class MoneyManagement extends Component {
                 <ul style={{ paddingTop: 40, paddingBottom: 10 }}>
                     <li>Exceptionnellement le samedi 3 avril 2021 à 15H00</li>
                     <li>Cycle normal le samedi 24 avril 2021 à 15H00</li>
-                </ul>
+                </ul> */}
                 
                 <Link to={AUTH.REGISTER}>
                     <Button variant="contained" className="btn-primary mr-2 text-white">

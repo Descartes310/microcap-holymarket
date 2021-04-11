@@ -138,6 +138,11 @@ export const AsyncUsersAccounts = Loadable({
 	loading: () => <RctPageLoader />,
 });
 
+export const AsyncAllUsersAccounts = Loadable({
+	loader: () => import("Routes/custom/users/all-users"),
+	loading: () => <RctPageLoader />,
+});
+
 export const AsyncSettingNotifications = Loadable({
 	loader: () => import("Routes/custom/settings/notifications"),
 	loading: () => <RctPageLoader />,
