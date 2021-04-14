@@ -16,6 +16,7 @@ import { getPioniers } from "Actions/independentActions";
 import { HashLink } from 'react-router-hash-link';
 import { Tooltip } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
+import { getFilePath } from "Helpers/helpers";
 
 const Discover = (props) => {
     const { loading, intl } = props;
@@ -112,7 +113,7 @@ const Discover = (props) => {
                                             <div className="client-thumb mb-20">
                                                 <img
                                                     className="rounded"
-                                                    src={agent.avatar}
+                                                    src={getFilePath(agent.avatar)}
                                                     alt="client"
                                                     width="95"
                                                     height="95"

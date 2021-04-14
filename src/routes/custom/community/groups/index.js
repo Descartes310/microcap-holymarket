@@ -21,6 +21,7 @@ import InvitationCreateDialog from '../../communityT/members/invitation/Invitati
 import { COMMUNITY, COMMUNITY_MEMBER } from 'Url/frontendUrl';
 import { NotificationManager } from "react-notifications";
 import CardMedia from '@material-ui/core/CardMedia';
+import { getFilePath } from 'Helpers/helpers';
 
 const drawerWidth = 310;
 
@@ -163,7 +164,7 @@ class Groups extends Component {
                         {currentCommunity.data ?
                             <div className='d-flex flex-row align-items-center justify-content-center mt-40'>
                                 <div style={{ flex: 1, paddingLeft: '5%' }}>
-                                    <img src={currentCommunity.data.community.image ? currentCommunity.data.community.image : require('Assets/img/groups.png')} alt="Community image" width="80%" />
+                                    <img src={currentCommunity.data.community.image ? getFilePath(currentCommunity.data.community.image) : require('Assets/img/groups.png')} alt="Community image" width="80%" />
                                 </div>
                                 <div className='d-flex flex-column justify-content-center' style={{ flex: 1 }}>
                                     <div style={{ marginBottom: 20 }}>

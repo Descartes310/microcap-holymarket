@@ -26,6 +26,7 @@ import { getTheDate, convertDateToTimeStamp } from 'Helpers/helpers';
 
 // intl messages
 import IntlMessages from 'Util/IntlMessages';
+import { getFilePath } from "Helpers/helpers";
 
 export default class ProjectTaskManagement extends Component {
    constructor(props) {
@@ -139,7 +140,7 @@ export default class ProjectTaskManagement extends Component {
                                           {data.team.map((member, nestedSubkey) => (
                                              <li className="list-inline-item" key={nestedSubkey}>
                                                 <Tooltip id="tooltip-top" title={member.name} placement="top">
-                                                   <Avatar src={member.avatar} alt="avatar" className="rounded-circle" />
+                                                   <Avatar src={getFilePath(member.avatar)} alt="avatar" className="rounded-circle" />
                                                 </Tooltip>
                                              </li>
                                           ))}

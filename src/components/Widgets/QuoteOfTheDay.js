@@ -3,6 +3,7 @@
  */
 import React, { Component } from 'react';
 import Slider from "react-slick";
+import { getFilePath } from "Helpers/helpers";
 
 const quotes = [
 ]
@@ -25,7 +26,7 @@ class QuoteOfTheDay extends Component {
 						<div key={key} className="pb-20">
 							<div className="d-flex mb-25 align-items-center">
 								<div className="user-img mr-25">
-									<img src={quote.avatar} alt="reviewer profile" className="d-inline-block img-fluid rounded-circle" width="60" height="60" />
+									<img src={getFilePath(quote.avatar)} alt="reviewer profile" className="d-inline-block img-fluid rounded-circle" width="60" height="60" />
 								</div>
 								<div>
 									<h5 className="mb-0">{quote.author}</h5>

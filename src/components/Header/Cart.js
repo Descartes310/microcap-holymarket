@@ -25,6 +25,7 @@ import SweetAlert from "react-bootstrap-sweetalert";
 import NatureType from "Enums/NatureType";
 import { STORE } from "Url/frontendUrl";
 import AmountCurrency from "Components/AmountCurrency";
+import { getFilePath } from "Helpers/helpers";
 
 class Carts extends Component {
 	state = {
@@ -90,7 +91,7 @@ class Carts extends Component {
 													<div className="media overflow-hidden w-75">
 														<div className="mr-15">
 															<UserAvatar
-																avatar={cartItem.image}
+																avatar={getFilePath(cartItem.image)}
 																name={cartItem.name}
 																className="media-object"
 																width="63"

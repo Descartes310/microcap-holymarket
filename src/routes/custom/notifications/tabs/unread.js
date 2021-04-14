@@ -22,6 +22,7 @@ import { NotificationManager } from "react-notifications";
 import { Form, FormGroup, Input as InputStrap } from "reactstrap";
 import InputLabel from "@material-ui/core/InputLabel";
 import Input from "@material-ui/core/Input";
+import { getFilePath } from "Helpers/helpers";
 
 class Unread extends Component {
     constructor(props) {
@@ -168,7 +169,7 @@ class Unread extends Component {
                                     <Button
                                         color="primary"
                                         className="text-white mr-2"
-                                        href={this.state.notif ? this.state.notif.userPiece ? this.state.notif.userPiece.file : null : null}
+                                        href={this.state.notif ? this.state.notif.userPiece ? getFilePath(this.state.notif.userPiece.file) : null : null}
                                         target="_blank"
                                         download
                                     >

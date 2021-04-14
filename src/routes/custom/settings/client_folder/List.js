@@ -20,6 +20,7 @@ import { getModelNotifications, setRequestGlobalAction } from "Actions";
 import { getUserClientExp, createUserPiece } from "Actions/independentActions";
 import DialogContent from "@material-ui/core/DialogContent/DialogContent";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
+import { getFilePath } from "Helpers/helpers";
 
 class List extends Component {
     static contextType = AbilityContext;
@@ -113,7 +114,7 @@ class List extends Component {
                                                             <div className="media">
                                                                 <div className="media-body pt-10">
                                                                     <h4 className="m-0 fw-bold text-dark">
-                                                                        <a href={item.file} target='_blank' >{item.file.length > 30 ? item.file.substring(0, 30)+'...' : item.file}</a>
+                                                                        <a href={getFilePath(item.file)} target='_blank' >{item.file.length > 30 ? getFilePath(item.file.substring(0, 30)+'...') : getFilePath(item.file)}</a>
                                                                     </h4>
                                                                 </div>
                                                             </div>

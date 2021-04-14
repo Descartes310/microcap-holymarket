@@ -8,6 +8,7 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
+import { getFilePath } from 'Helpers/helpers';
 
 const styles = {
     media: {
@@ -20,7 +21,7 @@ const GroupItem2 = ({ classes, group, isMember, enterInCommunitySpace, adhesion 
     <Card className="rounded mb-30">
         <CardMedia
             className={classes.media}
-            image={group.image ? group.image : require('Assets/img/groups.png')}
+            image={group.image ? getFilePath(group.image) : require('Assets/img/groups.png')}
             title={`${group.label} profile image`}
         />
         <CardContent className="py-30">

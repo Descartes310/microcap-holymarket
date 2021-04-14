@@ -27,6 +27,7 @@ import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
 import Button from "@material-ui/core/Button";
 import {sendManyInvitations} from "Actions/independentActions";
 import {COMMUNITY} from "Url/frontendUrl";
+import { getFilePath } from "Helpers/helpers";
 
 class InvitationCreate extends Component {
     constructor(props) {
@@ -224,7 +225,7 @@ class InvitationCreate extends Component {
                                                     className="chip-outline-primary text-black mr-10 mb-10"
                                                     avatar={(
                                                         <UserAvatar
-                                                            avatar={user.avatar}
+                                                            avatar={getFilePath(user.avatar)}
                                                             name={user.name}
                                                         />
                                                     )}
@@ -276,7 +277,7 @@ class InvitationCreate extends Component {
                                                                 <div className="center-hor-ver emails media w-100">
                                                                     <div className="avatar-wrap w-10 align-self-center">
                                                                         <UserAvatar
-                                                                            avatar={user.avatar}
+                                                                            avatar={getFilePath(user.avatar)}
                                                                             name={user.name}
                                                                         />
                                                                     </div>
@@ -317,7 +318,7 @@ class InvitationCreate extends Component {
                                                     className="chip-outline-primary text-black mr-10 mb-10"
                                                     avatar={(
                                                         <UserAvatar
-                                                            avatar={groupSelected.avatar}
+                                                            avatar={getFilePath(groupSelected.avatar)}
                                                             name={groupSelected.label}
                                                         />
                                                     )}
@@ -369,7 +370,7 @@ class InvitationCreate extends Component {
                                                                 <div className="center-hor-ver emails media w-100">
                                                                     <div className="avatar-wrap w-10 align-self-center">
                                                                         <UserAvatar
-                                                                            avatar={group.avatar}
+                                                                            avatar={getFilePath(group.avatar)}
                                                                             name={group.label}
                                                                         />
                                                                     </div>

@@ -17,6 +17,7 @@ import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import AmountCurrency from "Components/AmountCurrency";
 import { joinUrlWithParams, PRODUCT } from "Url/frontendUrl";
+import { getFilePath } from 'Helpers/helpers';
 // import { Button } from "reactstrap";
 
 class ProductDetails extends Component {
@@ -111,7 +112,7 @@ class ProductDetails extends Component {
                         }
                     </div>
                     <div style={{ flex: 1 }}>
-                        <img src={product.product.image ? product.product.image : 'https://www.saunierdecamargue.fr/sites/default/files/image-not-found.jpg'} alt="Product image" className="mr-30 bordered" width="300" height="300" />  
+                        <img src={product.product.image ? getFilePath(product.product.image) : 'https://www.saunierdecamargue.fr/sites/default/files/image-not-found.jpg'} alt="Product image" className="mr-30 bordered" width="300" height="300" />  
                     </div>
                 </div>
                 <h1 style={{ marginTop: 40 }}>Liste des produits associés</h1>

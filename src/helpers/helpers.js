@@ -401,6 +401,15 @@ export const getSessonId = () => {
     }
 };
 
+export function getFilePath(file) {
+    if(file)
+        if(file.startsWith('http') && file.includes(':')) {
+            return file;
+        } else {
+            return `${AppConfig.api.baseUrl}${file}`
+        }
+}
+
 export const copyToClipboard = (text) => {
     return new Promise(async (resolve, reject) => {
         try {

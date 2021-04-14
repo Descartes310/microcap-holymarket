@@ -7,6 +7,7 @@ import {Button} from "reactstrap";
 // helpers functions
 import { textTruncate } from 'Helpers/helpers';
 import UserAvatar from "Components/UserAvatar";
+import { getFilePath } from "Helpers/helpers";
 
 const ListItem = ({ user, onReadEmail, getUserDetails }) => {
     return (
@@ -15,7 +16,7 @@ const ListItem = ({ user, onReadEmail, getUserDetails }) => {
                 <div className="emails media w-100">
                     <div className="avatar-wrap w-10 align-self-center d-sm-r-none">
                         <UserAvatar
-                            avatar={user.avatar}
+                            avatar={getFilePath(user.avatar)}
                             name={user.name}
                         />
                     </div>

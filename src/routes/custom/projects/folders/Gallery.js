@@ -12,6 +12,7 @@ import { getOneProjectFolder } from "Actions/independentActions";
 import { getAllProjectReaction } from "Actions/independentActions";
 import FetchFailedComponent from "Components/FetchFailedComponent";
 import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
+import { getFilePath } from "Helpers/helpers";
 
 const Gallery = ({ match, history }) => {
     const folderId = match.params.id;
@@ -153,7 +154,7 @@ const Gallery = ({ match, history }) => {
                                                                 color="primary"
                                                                 variant="contained"
                                                                 className="text-white font-weight-bold mr-3"
-                                                                href={item.file}
+                                                                href={getFilePath(item.file)}
                                                                 target="_blank"
                                                                 download
                                                             >

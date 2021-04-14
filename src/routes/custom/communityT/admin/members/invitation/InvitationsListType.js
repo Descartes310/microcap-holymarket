@@ -12,7 +12,7 @@ import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard
 import FormControl from "@material-ui/core/FormControl";
 import { Input, InputGroup, InputGroupAddon, Media } from "reactstrap";
 import IconButton from "@material-ui/core/IconButton";
-import { globalSearch } from "Helpers/helpers";
+import { globalSearch, getFilePath } from "Helpers/helpers";
 import { requestsReceived, invitationSent, getUserClient, getUserClientExp, createUserPieceValue, deleteUserClient } from "Actions/independentActions";
 import InvitationType from "Enums/InvitationType";
 import { Scrollbars } from "react-custom-scrollbars";
@@ -247,7 +247,7 @@ class InvitationsListType extends Component {
                                                                     Reclamer
                                                                 </Button>
                                                                 <Button
-                                                                    href={p.file}
+                                                                    href={getFilePath(p.file)}
                                                                     target='_blank'
                                                                     size="small"
                                                                     color="primary"
@@ -286,7 +286,7 @@ class InvitationsListType extends Component {
                                                                         <div className="media-body pt-10">
                                                                             {
                                                                                 p.file != null ?
-                                                                                    <Button href={p.file} target='_blank' variant="contained">Consulter</Button>
+                                                                                    <Button href={getFilePath(p.file)} target='_blank' variant="contained">Consulter</Button>
                                                                                     :
                                                                                     <Button className="btn-danger text-white" onClick={() => this.onDeletePiece(p)} variant="contained">Retirer</Button>
                                                                             }

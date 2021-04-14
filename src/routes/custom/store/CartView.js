@@ -15,7 +15,7 @@ import { RctCard, RctCardContent } from 'Components/RctCard';
 import { deleteItemFromCart, onUpdateItemToCart } from "Actions/CartActions";
 
 //Helper
-import {copyToClipboard, getSessonId, textTruncate} from "Helpers/helpers";
+import {copyToClipboard, getSessonId, textTruncate, getFilePath} from "Helpers/helpers";
 
 // intl messages
 import IntlMessages from 'Util/IntlMessages';
@@ -105,7 +105,7 @@ class CartView extends Component {
                                     <tr key={key}>
                                         <td className="w-10 text-center">
                                             <UserAvatar
-                                                avatar={cartItem.image}
+                                                avatar={getFilePath(cartItem.image)}
                                                 name={cartItem.name}
                                                 className="media-object"
                                                 witdh="100"

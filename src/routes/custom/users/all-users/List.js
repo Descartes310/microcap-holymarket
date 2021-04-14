@@ -11,6 +11,7 @@ import { AbilityContext } from "Permissions/Can";
 import TimeFromMoment from "Components/TimeFromMoment";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import { getBranchUsers, setRequestGlobalAction, getUser } from "Actions";
+import { getFilePath } from "Helpers/helpers";
 
 class UsersAccountsList extends Component {
     static contextType = AbilityContext;
@@ -76,7 +77,7 @@ class UsersAccountsList extends Component {
                                                         <td>
                                                             <div className="avatar-wrap w-10 align-self-center d-sm-r-none">
                                                                 <UserAvatar
-                                                                    avatar={user.avatar}
+                                                                    avatar={getFilePath(user.avatar)}
                                                                     name={user.name}
                                                                 />
                                                             </div>

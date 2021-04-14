@@ -330,7 +330,7 @@ const ThirdStep = props => {
                         />
                     } label={
                         <>
-                        J'accepte les <a href={cgu.value} target='_blank' >conditions générales d'utilisation</a>
+                        J'accepte les <a href={cgu ? cgu.value : '/home'} target='_blank' >conditions générales d'utilisation</a>
                         </>
                     }
                     />}

@@ -21,6 +21,7 @@ import {getMembersOfOneGroup} from "Actions";
 import {NotificationManager} from "react-notifications";
 import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
 import UserAvatar from "Components/UserAvatar";
+import { getFilePath } from "Helpers/helpers";
 
 class CommunityItem extends Component {
     state = {
@@ -97,7 +98,7 @@ class CommunityItem extends Component {
                             <div className="mr-10">
                                 <UserAvatar
                                     name={currentCommunity.data.community.label}
-                                    avatar={currentCommunity.data.community.avatar ? currentCommunity.data.community.avatar : require('Assets/img/groups.png')}
+                                    avatar={currentCommunity.data.community.avatar ? getFilePath(currentCommunity.data.community.avatar) : require('Assets/img/groups.png')}
                                 />
                             </div>
                             <div className="media-body mt-1">

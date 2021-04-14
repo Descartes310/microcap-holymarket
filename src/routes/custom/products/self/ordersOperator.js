@@ -20,6 +20,7 @@ import { PRODUCT, joinUrlWithParamsId } from 'Url/frontendUrl'
 import DialogTitle from "@material-ui/core/DialogTitle/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent/DialogContent";
 import { getOrderPieces, getOperatorsOrders, approveOrder } from "Actions/independentActions";
+import { getFilePath } from "Helpers/helpers";
 
 class Order extends Component {
     static contextType = AbilityContext;
@@ -236,7 +237,7 @@ class Order extends Component {
                                                                 color="primary"
                                                                 variant="contained"
                                                                 className={"text-white font-weight-bold mr-3 bg-blue"}
-                                                                href={item.file}
+                                                                href={getFilePath(item.file)}
                                                                 target="_blank"
                                                                 download
                                                             >

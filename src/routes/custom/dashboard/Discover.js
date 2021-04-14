@@ -23,6 +23,7 @@ import {
 import { HashLink } from 'react-router-hash-link';
 import { Tooltip } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
+import { getFilePath } from "Helpers/helpers";
 
 const Discover = (props) => {
     const { loading, intl } = props;
@@ -107,8 +108,8 @@ const Discover = (props) => {
                 <h1 className="font-weight-bold text-black" style={{ fontSize: '2em', padding: '2%', textAlign: 'center' }}>
                     Concilier traditions et innovations
                 </h1>
-                <p style={{ fontSize: '1.1em', textAlign: 'center' }}>Etendre votre réseau de love money au -delà du cercle familial et amical, réinventer une solidarité utile et promouvoir une finance inclusive</p>
-                <p style={{ fontSize: '1.1em', textAlign: 'center' }}>Réinventer une solidarité utilise et promouvoir une finance inclusive et vertueuse</p>
+                <p style={{ fontSize: '1.1em', textAlign: 'center' }}>Etendre votre réseau de love money au -delà du cercle familial et amical, </p>
+                <p style={{ fontSize: '1.1em', textAlign: 'center' }}>réinventer une solidarité utile et promouvoir une finance inclusive</p>
                 <div className="row" style={{ paddingLeft: '10%', paddingRight: '10%', paddingTop: '2%', paddingBottom: '2%' }}>
                     <div className="col-xs-12 col-sm-12 col-md-4 mb-30">
                         <Card>
@@ -462,7 +463,7 @@ const Discover = (props) => {
                                             <div className="client-thumb mb-20">
                                                 <img
                                                     className="rounded"
-                                                    src={agent.avatar}
+                                                    src={getFilePath(agent.avatar)}
                                                     alt="client"
                                                     width="95"
                                                     height="95"
@@ -507,7 +508,7 @@ const Discover = (props) => {
                                             <div className="client-thumb mb-20">
                                                 <img
                                                     className="rounded"
-                                                    src={agent.avatar}
+                                                    src={getFilePath(agent.avatar)}
                                                     alt="client"
                                                     width="95"
                                                     height="95"

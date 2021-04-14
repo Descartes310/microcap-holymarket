@@ -652,7 +652,7 @@ export default {
                "permissions": [],
             },
             {
-               "path": PRODUCT.UNAPPROVED_ORDERS,
+               "path": ROOT,
                "new_item": false,
                "menu_title": "Ventes",
                "permissions": [],

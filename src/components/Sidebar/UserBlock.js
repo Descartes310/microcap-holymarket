@@ -20,6 +20,7 @@ import IntlMessages from 'Util/IntlMessages';
 import Tooltip from "@material-ui/core/Tooltip/Tooltip";
 import Status from "Enums/Status";
 import FieldsetComponent from "Components/FieldsetComponent";
+import { getFilePath } from "Helpers/helpers";
 
 class UserBlock extends Component {
 
@@ -83,7 +84,7 @@ class UserBlock extends Component {
 									<Tooltip id="tooltip-status" title={"Votre compte n'est pas activé"}>
 										<div className="user-profile position-relative">
 											<img
-												src={this.props.authUser.user.avatar ? this.props.authUser.user.avatar : require('Assets/avatars/profile.jpg')}
+												src={this.props.authUser.user.avatar ? getFilePath(this.props.authUser.user.avatar) : require('Assets/avatars/profile.jpg')}
 												alt="user profile"
 												className="img-fluid rounded-circle"
 												width="50"
@@ -97,7 +98,7 @@ class UserBlock extends Component {
 								) : (
 										<div className="user-profile position-relative">
 											<img
-												src={this.props.authUser.user.avatar ? this.props.authUser.user.avatar : require('Assets/avatars/profile.jpg')}
+												src={this.props.authUser.user.avatar ? getFilePath(this.props.authUser.user.avatar) : require('Assets/avatars/profile.jpg')}
 												alt="user profile"
 												className="img-fluid rounded-circle"
 												width="50"

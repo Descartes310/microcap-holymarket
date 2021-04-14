@@ -12,7 +12,7 @@ import Button from '@material-ui/core/Button';
 // intl messages
 import IntlMessages from 'Util/IntlMessages';
 import UserAvatar from "Components/UserAvatar";
-import { textTruncate } from "Helpers/helpers";
+import { textTruncate, getFilePath } from "Helpers/helpers";
 import Cart from "Models/Cart";
 import AmountCurrency from "Components/AmountCurrency";
 
@@ -74,7 +74,7 @@ class CheckoutItem extends Component {
                               <div className="media overflow-hidden w-75">
                                  <div className="mr-15">
                                     <UserAvatar
-                                       avatar={cartItem.image}
+                                       avatar={getFilePath(cartItem.image)}
                                        name={cartItem.name}
                                        className="media-object"
                                        width="63"

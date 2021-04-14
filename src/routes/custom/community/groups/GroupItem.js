@@ -6,7 +6,7 @@ import ListItem from '@material-ui/core/ListItem';
 import classnames from 'classnames';
 
 // helpers
-import { textTruncate } from 'Helpers/helpers';
+import { textTruncate, getFilePath } from 'Helpers/helpers';
 import UserAvatar from "Components/UserAvatar";
 
 const GroupItem = ({ community, selectedCommunity, onClickListItem, favourite, admin }) => (
@@ -20,7 +20,7 @@ const GroupItem = ({ community, selectedCommunity, onClickListItem, favourite, a
             <div className="media align-items-center w-90">
                 <div className="media-left position-relative mr-10">
                     <UserAvatar
-                        avatar={community.image ? community.image : require('Assets/img/groups.png')}
+                        avatar={community.image ? getFilePath(community.image) : require('Assets/img/groups.png')}
                         name={community.label}
                     />
                     {/*<img src={community.photo_url} className="img-fluid rounded-circle" alt="community profile" width="40" height="40" />*/}

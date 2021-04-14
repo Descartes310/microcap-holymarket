@@ -18,6 +18,7 @@ import {
 } from 'video-react';
 import { HashLink } from 'react-router-hash-link';
 import IconButton from '@material-ui/core/IconButton';
+import { getFilePath } from "Helpers/helpers";
 
 const Discover = (props) => {
     const { loading, intl } = props;
@@ -109,7 +110,7 @@ const Discover = (props) => {
                         <ul className="mb-0 list-inline attachment-wrap">
                             {data[key].map((item, key) => (
                                 <li className="list-inline-item overlay-wrap overflow-hidden rounded">
-                                    <img src={item.file} className="size-120 rounded img-fluid" alt="img" />
+                                    <img src={getFilePath(item.file)} className="size-120 rounded img-fluid" alt="img" />
                                     <div className="overlay-content">
                                         <a href="#" onClick={e => e.preventDefault()} className="d-flex align-items-center justify-content-center h-100 font-2x text-white">
                                             <i className="zmdi zmdi-download"></i>

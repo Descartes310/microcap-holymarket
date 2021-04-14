@@ -20,6 +20,8 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import { NotificationManager } from 'react-notifications';
 import Avatar from '@material-ui/core/Avatar';
+import { getFilePath } from "Helpers/helpers";
+
 
 // api
 import api from 'Api';
@@ -322,7 +324,7 @@ export default class UserProfile extends Component {
 										<td>
 											<div className="media">
 												{user.avatar !== '' ?
-													<img src={user.avatar} alt="user prof" className="rounded-circle mr-15" width="50" height="50" />
+													<img src={getFilePath(user.avatar)} alt="user prof" className="rounded-circle mr-15" width="50" height="50" />
 													: <Avatar className="mr-15">{user.name.charAt(0)}</Avatar>
 												}
 												<div className="media-body">
@@ -420,7 +422,7 @@ export default class UserProfile extends Component {
 							<div>
 								<div className="clearfix d-flex">
 									<div className="media pull-left">
-										<img src={selectedUser.avatar} alt="user prof" className="rounded-circle mr-15" width="50" height="50" />
+										<img src={getFilePath(selectedUser.avatar)} alt="user prof" className="rounded-circle mr-15" width="50" height="50" />
 										<div className="media-body">
 											<p>Name: <span className="fw-bold">{selectedUser.name}</span></p>
 											<p>Email: <span className="fw-bold">{selectedUser.emailAddress}</span></p>

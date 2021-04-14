@@ -15,6 +15,7 @@ import AmountCurrency from "Components/AmountCurrency";
 
 //Helper
 import { textTruncate } from "Helpers/helpers"
+import { getFilePath } from 'Helpers/helpers';
 
 class Hit extends Component {
 	state = {
@@ -46,7 +47,7 @@ class Hit extends Component {
 			<RctCard customClasses="d-flex  mb-0 flex-column justify-content-between overflow-hidden">
 				<div className="overlay-wrap overflow-hidden" style={{ maxHeight: 245 }}>
 					<div className="text-center p-4">
-						<img src={hit.image ? hit.image : require('Assets/avatars/img-default.gif') } className="img-fluid" alt="product" />
+						<img src={hit.image ? getFilePath(hit.image) : require('Assets/avatars/img-default.gif') } className="img-fluid" alt="product" />
 					</div>
 					<div className="overlay-content d-flex align-items-end">
 						<a href="#" className="bg-primary text-center w-100 cart-link text-white py-2" onClick={() => this.props.onPressViewProposition(hit)} >

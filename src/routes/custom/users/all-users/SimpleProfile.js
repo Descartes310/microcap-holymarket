@@ -25,6 +25,7 @@ import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
 
 // intl messages
 import IntlMessages from 'Util/IntlMessages';
+import { getFilePath } from "Helpers/helpers";
 
 // For Tab Content
 function TabContainer(props) {
@@ -59,7 +60,7 @@ function TabContainer(props) {
                <UserBlock 
                   userName={user.user.userType == 'ORGANISATION' ? user.commercialName : `${user.firstName} ${user.lastName}`}  
                   userEmail={user.user.email}
-                  userAvatar= {user.user.avatar}
+                  userAvatar={getFilePath(user.user.avatar)}
                />
                <div className="rct-tabs">
                   <AppBar position="static">

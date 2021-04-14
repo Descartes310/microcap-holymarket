@@ -10,6 +10,7 @@ import { getAllProjectReaction } from "Actions/independentActions";
 import FetchFailedComponent from "Components/FetchFailedComponent";
 import { getOneProjectFolderByGroup } from "Actions/independentActions";
 import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
+import { getFilePath } from "Helpers/helpers";
 
 const Gallery = ({ history, communitySpace }) => {
     const baseUrl = COMMUNITY.PROJECTS;
@@ -142,7 +143,7 @@ const Gallery = ({ history, communitySpace }) => {
                                                                 color="primary"
                                                                 variant="contained"
                                                                 className="text-white font-weight-bold mr-3"
-                                                                href={item.file}
+                                                                href={getFilePath(item.file)}
                                                                 target="_blank"
                                                                 download
                                                             >

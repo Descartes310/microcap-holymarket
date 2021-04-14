@@ -16,6 +16,7 @@ import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard
 import { Form, FormGroup, Input as InputStrap } from "reactstrap";
 import InputLabel from "@material-ui/core/InputLabel";
 import Input from "@material-ui/core/Input";
+import { getFilePath } from "Helpers/helpers";
 
 
 class ListPieces extends Component {
@@ -118,7 +119,7 @@ class ListPieces extends Component {
                                                                     <Button
                                                                         color="primary"
                                                                         className="text-white mr-2"
-                                                                        href={item.userPiece.file}
+                                                                        href={getFilePath(item.userPiece.file)}
                                                                         target="_blank"
                                                                         download
                                                                     >
@@ -139,7 +140,7 @@ class ListPieces extends Component {
                                                                             <Button
                                                                                 color="primary"
                                                                                 className="text-white mr-2"
-                                                                                href={item.file}
+                                                                                href={getFilePath(item.file)}
                                                                                 target="_blank"
                                                                                 download
                                                                             >
