@@ -607,31 +607,6 @@ export default {
                "permissions": [],
             },
          ],
-      },{
-         "menu_title": "Produits & services",
-         "menu_icon": "zmdi zmdi-widgets",
-         "new_item": false,
-         "permissions": [Permission.navLinks.products.viewMenu],
-         "child_routes": [
-            {
-               "menu_title": "Catalogue produits",
-               "new_item": false,
-               "path": CATALOG.PRODUCT.SELF,
-               "permissions": [Permission.navLinks.products.childLinks.catalogProducts.viewMenu],
-            },
-            {
-               "path": CATALOG.SALE.SELF,
-               "new_item": false,
-               "menu_title": "Catalogue ventes",
-               "permissions": [Permission.navLinks.products.childLinks.catalogProducts.viewMenu],
-            },
-            {
-               "path": NETWORK.COVERAGE,
-               "new_item": false,
-               "menu_title": "Catalogue distributions",
-               "permissions": [Permission.navLinks.products.childLinks.catalogDistribution.viewMenu],
-            },
-         ]
       },
       {
          "menu_title": "Supervision",
@@ -703,7 +678,13 @@ export default {
                "new_item": false,
                "path": PRODUCT.OPERATOR_ORDERS,
                "permissions": [],
-            }
+            },
+            {
+               "path": CATALOG.SALE.SELF,
+               "new_item": false,
+               "menu_title": "Catalogue ventes",
+               "permissions": [],
+            },
          ]
       },
       {

@@ -73,7 +73,7 @@ class CatalogList extends Component {
 
     handleOnRowClick = (catalogId) => {
         // console.log("handleOnRowClick => ", catalogId);
-        this.props.history.push(joinUrlWithParams(CATALOG.PRODUCT.SHOW, [{param: 'id', value: catalogId}]));
+        this.props.history.push(joinUrlWithParams(CATALOG.SALE.SHOW, [{param: 'id', value: catalogId}]));
         // this.setState({catalogId, showWarningBox: true});
     };
 
