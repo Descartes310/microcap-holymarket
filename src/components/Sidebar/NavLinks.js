@@ -641,16 +641,22 @@ export default {
          // "permissions": [Permission.navLinks.COMMUNITY_MEMBER.viewMenu],
          "permissions": [],
          "child_routes": [
+            // {
+            //    "menu_title": "Microcap Shop",
+            //    "new_item": false,
+            //    "path": PRODUCT.LIST,
+            //    "permissions": [],
+            // },
+            // {
+            //    "menu_title": "Mes commandes",
+            //    "new_item": false,
+            //    "path": PRODUCT.ORDERS,
+            //    "permissions": [],
+            // },
             {
-               "menu_title": "Microcap Shop",
+               "path": CATALOG.SALE.SELF,
                "new_item": false,
-               "path": PRODUCT.LIST,
-               "permissions": [],
-            },
-            {
-               "menu_title": "Mes commandes",
-               "new_item": false,
-               "path": PRODUCT.ORDERS,
+               "menu_title": "Catalogue ventes",
                "permissions": [],
             },
             {
@@ -677,12 +683,6 @@ export default {
                "menu_title": "Demandes d'achats reçus",
                "new_item": false,
                "path": PRODUCT.OPERATOR_ORDERS,
-               "permissions": [],
-            },
-            {
-               "path": CATALOG.SALE.SELF,
-               "new_item": false,
-               "menu_title": "Catalogue ventes",
                "permissions": [],
             },
          ]
