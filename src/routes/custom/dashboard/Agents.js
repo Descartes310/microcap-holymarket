@@ -12,14 +12,14 @@ import AppBar from "@material-ui/core/AppBar/AppBar";
 import headerImg from 'Assets/img/image_revolution.jpg';
 import api from 'Api';
 import { RctCard, RctCardContent } from 'Components/RctCard';
-import { getPioniers } from "Actions/independentActions";
+import { getAgents } from "Actions/independentActions";
 import { HashLink } from 'react-router-hash-link';
 import { Tooltip } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import { getFilePath } from "Helpers/helpers";
 import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 
-const Discover = (props) => {
+const Agents = (props) => {
     const { loading, intl } = props;
     const [data, setData] = useState([])
     /**
@@ -32,7 +32,7 @@ const Discover = (props) => {
     document.body.style.overflow = "auto";
 
     useEffect(() => {
-        getPioniers().then(data => {
+        getAgents().then(data => {
             setData(data)
         })
     }, []);
@@ -129,7 +129,7 @@ const Discover = (props) => {
                         Depuis 2017, le mouvement ne cesse de grandir et compte aujourd’hui des contributeurs sur les 5 continent, des personnes grâce à qui nous pouvons vous proposer ce service. Rejoint le mouvement.
                     </p>
                     <h1 className="font-weight-bold text-black" style={{ fontSize: '2em', padding: '2%', textAlign: 'center' }}>
-                        Nos pioniers
+                        Nos agents
                     </h1>
 
                     <div className="row justify-content-center">
@@ -172,4 +172,4 @@ const mapStateToProps = ({ requestGlobalLoader }) => {
     return { loading: requestGlobalLoader }
 };
 
-export default connect(mapStateToProps, {})(injectIntl(Discover));
+export default connect(mapStateToProps, {})(injectIntl(Agents));

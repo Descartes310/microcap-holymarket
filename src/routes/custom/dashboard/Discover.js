@@ -6,7 +6,11 @@ import AppConfig from "Constants/AppConfig";
 import IntlMessages from "Util/IntlMessages";
 import Button from "@material-ui/core/Button";
 import Toolbar from "@material-ui/core/Toolbar";
-import { AUTH, DISCOVER, HOME, PIONIERS, TERMS, LEGAL_MENTION, GALERY_PROJECT, SOLIDARITY, MONEY_MANAGEMENT, GETIN, MISSION, VALUES } from "Url/frontendUrl";
+import {
+    AUTH, DISCOVER, HOME, PIONIERS, TERMS, LEGAL_MENTION,
+    GALERY_PROJECT, SOLIDARITY, MONEY_MANAGEMENT, GETIN, MISSION,
+    VALUES, PASS_DETAILS, AGENTS
+} from "Url/frontendUrl";
 import AppBar from "@material-ui/core/AppBar/AppBar";
 import headerImg from 'Assets/img/image_revolution.jpg';
 import {
@@ -16,7 +20,7 @@ import {
     CardBody
 } from 'reactstrap';
 import { RctCard, RctCardContent } from 'Components/RctCard';
-import { getAgents, getMainPioniers } from "Actions/independentActions";
+import { getMainAgents, getMainPioniers } from "Actions/independentActions";
 import {
     Player
 } from 'video-react';
@@ -24,6 +28,7 @@ import { HashLink } from 'react-router-hash-link';
 import { Tooltip } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import { getFilePath } from "Helpers/helpers";
+import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 
 const Discover = (props) => {
     const { loading, intl } = props;
@@ -39,7 +44,7 @@ const Discover = (props) => {
     document.body.style.overflow = "auto";
 
     useEffect(() => {
-        getAgents().then(data => {
+        getMainAgents().then(data => {
             setData(data)
         })
         getMainPioniers().then(data => {
@@ -63,16 +68,49 @@ const Discover = (props) => {
                                 </Link>
                             </div>
                             <div className="center-hor-ver">
-                                <Link to={DISCOVER}>
+                                {/* <Link to={DISCOVER}>
                                     <a className="mr-30" style={{ fontSize: '1.2em', color: 'black' }}>
                                         Microcap
                                    </a>
-                                </Link>
-                                <HashLink to={`${DISCOVER}/#services`}>
-                                    <a className="mr-30" style={{ fontSize: '1.2em', color: 'black' }}>
-                                        Produits et services
-                                    </a>
-                                </HashLink>
+                                </Link> */}
+                                <UncontrolledDropdown nav className="list-inline-item vr-super">
+                                    <DropdownToggle nav caret className="text-white">
+                                        <a className="mr-30" style={{ fontSize: '1.2em', color: 'black' }}>
+                                            Découvir
+                                        </a>
+                                    </DropdownToggle>
+                                    <DropdownMenu>
+                                        <DropdownItem>
+                                            <HashLink to={`${DISCOVER}/#services`}>
+                                                <a className="mr-30" style={{ fontSize: '1.2em', color: 'black' }}>
+                                                    Produits pour entreprendre
+                                                </a>
+                                            </HashLink>
+                                        </DropdownItem>
+                                        <DropdownItem>
+                                            <HashLink to={`${DISCOVER}/#investir`}>
+                                                <a className="mr-30" style={{ fontSize: '1.2em', color: 'black' }}>
+                                                    Produits pour investir MicroCap
+                                                </a>
+                                            </HashLink>
+                                        </DropdownItem>
+                                        <DropdownItem>
+                                            <HashLink to={`${DISCOVER}/#produits`}>
+                                                <a className="mr-30" style={{ fontSize: '1.2em', color: 'black' }}>
+                                                    Produits des Partenaires
+                                                </a>
+                                            </HashLink>
+                                        </DropdownItem>
+                                        <DropdownItem>
+                                            <HashLink to={`${DISCOVER}`}>
+                                                <a className="mr-30" style={{ fontSize: '1.2em', color: 'black' }}>
+                                                    Point d'accueil
+                                                </a>
+                                            </HashLink>
+                                        </DropdownItem>
+                                    </DropdownMenu>
+                                </UncontrolledDropdown>
+                                
                                 <HashLink to={`${DISCOVER}/#pass`}>
                                     <a className="mr-30" style={{ fontSize: '1.2em', color: 'black' }}>
                                         Pass microcap
@@ -133,7 +171,7 @@ const Discover = (props) => {
                             <CardImg top width="100%" className="img-fluid ripple-effect" src={require('Assets/img/01-solidarite-1.jpg')} alt="Card image cap" />
                             <CardBody style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
                                 <CardText style={{ fontSize: '1.1em', textAlign: 'center' }}>
-                                    <p>Sur MicroCap, pas de sélection de projet mais des prix chaque trimestre pour les cinq meilleurs projets à impact.</p>
+                                    <p>Sur MicroCap, pas de sélection de projet mais des dotations chaque trimestre pour les cinq meilleurs projets à impact.</p>
                                     <p>Ensemble, construisons un monde durable</p>
                                     <p><span style={{ fontSize: '1.3em', color: '#ffce39', fontWeight: 'bold' }}>50 000€</span> à gagner pour démarrer !</p>
                                 </CardText>
@@ -150,7 +188,7 @@ const Discover = (props) => {
                             <CardImg top width="100%" className="img-fluid ripple-effect" src={require('Assets/img/budget.jpg')} alt="Card image cap" />
                             <CardBody style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
                                 <CardText style={{ fontSize: '1.1em', textAlign: 'center' }}>
-                                    <p>Notre programme à l’éducation financière pour des personne en exclusion financière est totalement gratuit.</p>
+                                    <p>Notre programme à l’éducation financière pour des personnes en exclusion financière est totalement gratuit.</p>
                                     <p>Vous pouvez aider vos proches dans cette situation à s’en sortir. </p>
                                 </CardText>
                                 <Link to={MONEY_MANAGEMENT}>
@@ -181,7 +219,7 @@ const Discover = (props) => {
                     </p> */}
                 </div>
 
-                <div style={{ backgroundColor: '#eeeeee', marginTop: '7vh' }}>
+                <div style={{ backgroundColor: '#eeeeee', marginTop: '7vh' }} id='produits'>
                     <h1 className="font-weight-bold text-black text-center" style={{ fontSize: '3em', padding: '4%' }}>
                         Les produits MicroCap
                     </h1>
@@ -202,21 +240,17 @@ const Discover = (props) => {
                                                     <h1>Le PIP Microcap</h1>
                                                     <p style={{ textAlign: 'justify', fontSize: '1.1em', lineHeight: 2, marginTop: 20 }}>
                                                         <h2>Un compte qui conte des comptes</h2>
-                                                        <p style={{ textAlign: 'justify', fontSize: '1em', lineHeight: 2,}}>
-                                                            Notre expertise consiste à concevoir des produits d’épargne et de placement pour nos partenaires bancaires habilités à les commercialiser. Ces produits sont exclusivement distribués et opérés depuis la plateforme MicroCap
-                                                            Le Plan d’Investissement Programmé (PIP) MicroCap est un compte agrégateur, conçu et commercialisé par MicroCap. Ce compte totalise les valeurs de toutes vos épargnes en compte chez nos partenaires établissements financiers. Votre PIP MicroCap reproduit fidèlement l’évolution de l’ensemble de vos comptes d’épargne MicroCap auprès des partenaires : versement, intérêts … Nous ne recevons pas les fonds qui restent cantonnés et sécurisés auprès d’un établissement financier traditionnel. 
+                                                        <p style={{ textAlign: 'justify', fontSize: '1em', lineHeight: 2, }}>
+                                                            Le Plan d’Investissement Programmé (PIP) MicroCap est un compte agrégateur qui indique votre épargne ESH disponible auprès de nos partenaires. . Il reproduit fidèlement l’évolution de l’ensemble de vos comptes ESH: versement, intérêts …
                                                         </p>
-                                                        <h2>Une épargne pour se réaliser </h2>
-                                                        <p style={{ textAlign: 'justify', fontSize: '1em', lineHeight: 2,}}>
-                                                            Le service MicroCap propose le renforcement de l’éducation financière, économique et budgétaire aux utilisateurs ainsi que des solutions financières pour leur permettre de se réaliser socialement sur trois aspects à travers l’entrepreneuriat : trouver ou créer un emplois, accéder au soins de santé, accéder au logement. Pour faire fonctionner votre PIP MicroCap nous avons conçu sous la marque ESH, pour Emploi, Santé et Habitat, et proposons sur la plateforme deux produits d’épargne : le compte ESH Titre et le compte ESH cash. ESH Cash est un compte de dépôt à terme et le ESH Titre est un compte titre ordinaire qui reçoit uniquement des titres compatibles.
+                                                        <p style={{ textAlign: 'justify', fontSize: '1em', lineHeight: 2, }}>
+                                                            Le PIP MicroCap constitue une capacité financière qui vous sert de sureté pour cautionner les membres du réseau. Vous constituez ainsi progressivement votre propre réseau de solidarité qui vous soutiendra  en retour lors d’une future demande de financement
                                                         </p>
-                                                        <h2>Une épargne qui crée du lien</h2>
-                                                        <p style={{ textAlign: 'justify', fontSize: '1em', lineHeight: 2,}}>
-                                                            Le PIP est l’outils de solidarité des membres du réseau MicroCap. En adhérent au réseau, vous ouvrez automatiquement votre PIP et au moins un compte d’épargne sous-jacent. Le solde de votre PIP constitue une capacité financière que vous pouvez utiliser pour cautionner d’autres membres et, ainsi développer ou entretenir un réseau de solidarité financière. 
-                                                        </p>
-                                                        <ul style={{ paddingLeft: 40, fontSize: '1em',textAlign: 'justify', fontSize: '1em', lineHeight: 2, }}>
+                                                        <h2>Le PIP MicroCap donne du sens et de la puissance à votre épargne ESH.</h2>
+
+                                                        <ul style={{ paddingLeft: 40, fontSize: '1em', textAlign: 'justify', fontSize: '1em', lineHeight: 2, }}>
                                                             <li>Vous êtes solidaire d’un entrepreneur de votre localité ou de l’entrepreneuriat en général,</li>
-                                                            <li>Vous voulez fructifier ou diversifier votre épargne,</li>
+                                                            <li>Vous voulez fructifier ou diversifier une épargne non essentielle,</li>
                                                             <li>Vous rêvez de créer votre entreprise, vous avez déjà une idée, voir un projet,</li>
                                                             <li>Vous avez déjà créé votre entreprise et vous rencontrez des difficultés de financement,</li>
                                                         </ul>
@@ -251,27 +285,37 @@ const Discover = (props) => {
                                                     <p style={{ textAlign: 'justify', fontSize: '1.1em', lineHeight: 2, marginTop: 20 }}>
                                                         Fort de son engagement pour une finance plus vertueuse,  MicroCap vous protège de la surconsommation et vous octroie un fonds de dépannage sur du très court terme (1-90 jours), destinée à pourvoir aux besoins essentiels. La réserve MicroCap est une facilité de trésorerie sous forme de crédit d’urgence ou d’avance sur revenu certains. Elle est utilisable sur une durée prédéfinie pour les services autorisés : <br />
                                                         <ul style={{ paddingLeft: 40, fontSize: '1em' }}>
-                                                            <li>Transfert d’argent vers des réseaux partenaires (5 jours)</li>
-                                                            <li>Règlement de tout commerçant agréé (15 jours) ou de tout prestataire conventionné (30 jours)</li>
-                                                            <li>Dépôt de garantie pour un bail (90 jours) </li>
+                                                            <li>Transfert d’argent vers des réseaux partenaires <em>5 jours</em></li>
+                                                            <li>Règlement de tout commerçant ou de tout prestataire conventionné <em>15 à 30 jours</em></li>
+                                                            <li>Dépôt de garantie pour un bail <em>90 jours</em></li>
                                                         </ul>
                                                         l'usage de la réserve est gratuit sur 3 jours puis facturé à un intérêt journalier de 0,045 %
                                                     </p>
                                                 </div>
                                             </div>
                                         </div>
-                                        <h1 style={{ textAlign: 'center', fontSize: '3em' }}>Pour investisseurs</h1>
+                                        <h1 style={{ textAlign: 'center', fontSize: '3em' }} id="investir">Pour investisseurs</h1>
                                         <div className="discover-content" style={{ marginTop: '7%', marginBottom: '7%' }}>
                                             <div className="row align-items-center">
                                                 <div className="col-md-8">
-                                                    <h1>Pour investisseurs</h1>
+                                                    <h1>La Liga</h1>
                                                     <p style={{ textAlign: 'justify', fontSize: '1.1em', lineHeight: 2, marginTop: 20 }}>
-                                                        <p style={{ textAlign: 'justify', fontSize: '1em', lineHeight: 2,}}>Vous êtes une institution ou un Investisseur professionnel! ne manquez pas la Liga</p>
-                                                        <p style={{ textAlign: 'justify', fontSize: '1em', lineHeight: 2,}}>La ligne d’investissement garantie (Liga) vous garantit la liquidité et le sécurité de votre capital investi</p>
-                                                        <p style={{ textAlign: 'justify', fontSize: '1em', lineHeight: 2,}}>Tout placement est exposé au risque de perte partielle ou totale en capital. MicroCap propose aux investisseurs une convention de co-investissement pour limiter la perte en capital. </p>
-                                                        <p style={{ textAlign: 'justify', fontSize: '1em', lineHeight: 2,}}>Les membres du réseau MicroCap verse une contribution de solidarité  réseau annuelle qui garantit une quotité de tout capital investi sur un projet éligible à la Liga. Cette quotité peut atteindre 100% du capital et, peut être assortie d’une prime de risque. Pour guider les utilisateurs dans leurs choix, les projets de la plateforme sont marqués par un système de notation donnant à titre indicatif le niveau de risque.</p>
-                                                        <p style={{ textAlign: 'justify', fontSize: '1em', lineHeight: 2,}}>Exemple : </p>
-                                                        <p style={{ textAlign: 'justify', fontSize: '1em', lineHeight: 2,}}>Score projet : 80-approved-234 pour un projet dont le capital investi est garanti à 80%, approuvé par une commission technique et suivi régulièrement par 234 personnes. </p>
+                                                        <p style={{ textAlign: 'justify', fontSize: '1.1em', lineHeight: 2, color: 'gray' }}>Investir en toute sérénité : Capital garantie</p>
+                                                        <p style={{ textAlign: 'justify', fontSize: '1em', lineHeight: 2, }}>La ligne d’investissement garantie (Liga) vous garantit la liquidité et le sécurité de votre capital investi</p>
+                                                        <p style={{ textAlign: 'justify', fontSize: '1em', lineHeight: 2, }}>Tout placement est exposé au risque de perte partielle ou totale en capital. MicroCap propose aux investisseurs une convention de co-investissement pour limiter la perte en capital. </p>
+                                                        <p style={{ textAlign: 'justify', fontSize: '1em', lineHeight: 2, }}>Les membres du réseau MicroCap verse une contribution de solidarité  réseau annuelle qui garantit une quotité de tout capital investi sur un projet éligible à la Liga. Cette quotité peut atteindre 100% du capital et, peut être assortie d’une prime de risque. Pour guider les utilisateurs dans leurs choix, les projets de la plateforme sont marqués par un système de notation donnant à titre indicatif le niveau de risque.</p>
+                                                        <p style={{ textAlign: 'justify', fontSize: '1em', lineHeight: 2, }}>Exemple : </p>
+                                                        <p style={{ textAlign: 'justify', fontSize: '1em', lineHeight: 2, }}>Score projet : 80-approved-234 pour un projet dont le capital investi est garanti à 80%, approuvé par une commission technique et suivi régulièrement par 234 personnes.</p>
+                                                        <p style={{ textAlign: 'justify', fontSize: '1em', lineHeight: 2, }}>
+                                                            Vous êtes :
+                                                        </p>
+                                                        <ul style={{ paddingTop: 10, paddingBottom: 10 }}>
+                                                            <li>Une institution</li>
+                                                            <li>Un Investisseur professionnel</li>
+                                                        </ul>
+                                                        <p style={{ textAlign: 'justify', fontSize: '1em', lineHeight: 2, }}>
+                                                            Ne manquez pas la Liga
+                                                        </p>
                                                     </p>
                                                 </div>
                                                 <div className="col-md-4">
@@ -288,12 +332,12 @@ const Discover = (props) => {
                                                 <div className="col-md-8">
                                                     <h1>Compte ISUS</h1>
                                                     <p style={{ textAlign: 'justify', fontSize: '1.1em', lineHeight: 2, marginTop: 20 }}>
-                                                        Investir dans les TPE et PME non cotées en toute sérénité <br />
-                                                        Le compte ISUS est un compte titre  ordinaire qui vous permet de domicilier des titres d’entreprises que vous céder à MicroCap en gérance, en jouissance, ou en propriété avec option de reprise sur une période donnée.<br />
-                                                        La convention ISUS vous permet d’investir dans les TPE et PME non cotés et d’assurer une gestion professionnelle du portefeuille de titres d’entreprises. Elle vous permet ainsi sans vous soucier du le  suivi et la responsabilité investisseur sont couverts en toute sérénité par le dispositif de mutualisation de MicroCap.<br />
+                                                        Investir en toute sérénité : Gestion professionnelle assurée <br />
+                                                        Le compte ISUS est un compte titre  ordinaire ouvert auprès d’un établissement financier partenaire, qui vous permet Investir dans les TPE et PME non cotées du réseau MicroCap . Les titres de votre comptes ISUS peuvent être céder à MicroCap en gérance, en jouissance, ou en propriété avec option de reprise sur une période donnée.<br />
+                                                        La convention ISUS vous permet d’assurer une gestion professionnelle d’un portefeuille de titres d’entreprises non cotées. Elle vous permet ainsi d’investir dans les TPE et PME non cotés sans vous soucier du suivi et de la responsabilité investisseur. Celle ceux-ci étant couverts par un dispositif de mutualisation de MicroCap. <br />
                                                         <ul style={{ paddingLeft: 40, fontSize: '1em' }}>
                                                             <li>Information financière</li>
-                                                            <li>Participation à au décision stratégique de l’entreprise</li>
+                                                            <li>Participation aux décisions stratégiques de l’entreprise</li>
                                                             <li>L’option et l’opportunité de sortie</li>
                                                             <li>La gestion administrative et fiscale</li>
                                                         </ul>
@@ -332,6 +376,7 @@ const Discover = (props) => {
                                         </div>
                                         <div className="client-content">
                                             <h4 className="fw-bold text-capitalize text-primary">Cautionnement bancaire</h4>
+                                            <p>Pour obtenir facilement un crédit auprès de votre établissement bancaire habituel.</p>
                                         </div>
                                     </div>
                                 </RctCardContent>
@@ -351,7 +396,8 @@ const Discover = (props) => {
                                             />
                                         </div>
                                         <div className="client-content">
-                                            <h4 className="fw-bold text-capitalize text-primary">Garantie des livraisons des commandes en prévente</h4>
+                                            <h4 className="fw-bold text-capitalize text-primary">Garantie des livraisons</h4>
+                                            <p>Depuis votre espace personnel, profitez des préventes et des ventes privées de nos entrepreneurs. La livraison de vos commandes est garantie.  </p>
                                         </div>
                                     </div>
                                 </RctCardContent>
@@ -371,7 +417,8 @@ const Discover = (props) => {
                                             />
                                         </div>
                                         <div className="client-content">
-                                            <h4 className="fw-bold text-capitalize text-primary">Préfinancement du PIP Microcap</h4>
+                                            <h4 className="fw-bold text-capitalize text-primary">Préfinancement du PIP</h4>
+                                            <p>Votre PIP MicroCap est destiné à la réalisation d’un projet. Vous pouvez obtenir à tout moment sous forme de crédit bancaire le capital que vous souhaitez constituer à terme sur votre PIP.</p>
                                         </div>
                                     </div>
                                 </RctCardContent>
@@ -391,7 +438,8 @@ const Discover = (props) => {
                                             />
                                         </div>
                                         <div className="client-content">
-                                            <h4 className="fw-bold text-capitalize text-primary">Cofinancement en capital et quasi fonds propres</h4>
+                                            <h4 className="fw-bold text-capitalize text-primary">Cofinancement de projets</h4>
+                                            <p>Les partenaires MicroCap sont des acteurs engagés qui partage nos valeurs et soutiennent notre création d’impact. Ils interviennent systématiquement en capital ou en quasi-fonds propres, sur les projets labellisés ESH de la plateforme.</p>
                                         </div>
                                     </div>
                                 </RctCardContent>
@@ -407,8 +455,8 @@ const Discover = (props) => {
                             <img className="img-fluid" src={require('Assets/identity/banner.jpg')} alt="" />
                         </div>
                         <p style={{ fontSize: '1.1em', textAlign: 'center', marginTop: 40 }}>
-                            Les services de la plateforme sont accessibles sur abonnement ou Pass: à chacun son rythme, à chacun son Pass. Les prix sont H.T.
-                            <Link to={GETIN} style={{ marginTop: 40, marginBottom: 20 }}>
+                            Les services de la plateforme sont accessibles sur abonnement ou Pass: à chacun son rythme, à chacun son Pass. <br />
+                            <Link to={PASS_DETAILS} style={{ marginTop: 40, marginBottom: 20 }}>
                                 <Button variant="contained" className="btn-primary mr-2 text-white">
                                     Voir les détails
                                 </Button>
@@ -530,6 +578,14 @@ const Discover = (props) => {
                     </div>
                 </div>
 
+                <div className="d-flex align-items-center justify-content-center mb-50">
+                    <Link to={AGENTS}>
+                        <Button variant="contained" className="btn-primary mr-2 text-white">
+                            Voir les agents
+                        </Button>
+                    </Link>
+                </div>
+
                 {/* <RctCard customClasses="p-60">
                     <Clientslider />
                 </RctCard> */}
@@ -548,57 +604,57 @@ const Discover = (props) => {
                             <p style={{ color: "rgba(255, 255,255, 0.5)" }}>
                                 7 PL du 11 Novembre 1918
                             </p>
-                            <p style={{ color: "rgba(255, 255,255, 0.5)" }}>   
+                            <p style={{ color: "rgba(255, 255,255, 0.5)" }}>
                                 93 000 BOBIGNY
                             </p>
                             <h3>Contact</h3>
                             <p style={{ color: "rgba(255, 255,255, 0.5)" }}>Email: </p>
                             <p style={{ color: "rgba(255, 255,255, 0.5)" }}>Tel: 0811 030 089</p>
-                </div>
-                <div className="col-md-8">
-                    {/* <h3>Classes</h3> */}
-                    <div className="row">
-                        <div className="col-md-4 col-sm-4 col-xs-6">
-                            <ul className="fh5co-footer-links">
-                                <li><a href="#" className="activefooter">Tout MicroCap</a></li>
-                                <li><a onClick={() => props.history.push(MISSION)}>Mission et valeur</a></li>
-                                <li><a onClick={() => props.history.push(VALUES)}>Réseau Microcap</a></li>
-                                <li><a onClick={() => props.history.push(PIONIERS)}>Les pionniers</a></li>
-                                <li><a href="#">Faqs</a></li>
-                            </ul>
                         </div>
+                        <div className="col-md-8">
+                            {/* <h3>Classes</h3> */}
+                            <div className="row">
+                                <div className="col-md-4 col-sm-4 col-xs-6">
+                                    <ul className="fh5co-footer-links">
+                                        <li><a href="#" className="activefooter">Tout MicroCap</a></li>
+                                        <li><a onClick={() => props.history.push(MISSION)}>Mission et valeur</a></li>
+                                        <li><a onClick={() => props.history.push(VALUES)}>Réseau Microcap</a></li>
+                                        <li><a onClick={() => props.history.push(PIONIERS)}>Les pionniers</a></li>
+                                        <li><a href="#">Faqs</a></li>
+                                    </ul>
+                                </div>
 
-                        <div className="col-md-4 col-sm-4 col-xs-6">
-                            <ul className="fh5co-footer-links">
-                                <li><a href="#" className="activefooter">Informtions légales</a></li>
-                                <li><a onClick={() => props.history.push(TERMS)}>CGU</a></li>
-                                <li><a href="#">CGV</a></li>
-                                <li><a onClick={() => props.history.push(LEGAL_MENTION)}>Mentions légales</a></li>
-                            </ul>
-                        </div>
+                                <div className="col-md-4 col-sm-4 col-xs-6">
+                                    <ul className="fh5co-footer-links">
+                                        <li><a href="#" className="activefooter">Informtions légales</a></li>
+                                        <li><a onClick={() => props.history.push(TERMS)}>CGU</a></li>
+                                        <li><a href="#">CGV</a></li>
+                                        <li><a onClick={() => props.history.push(LEGAL_MENTION)}>Mentions légales</a></li>
+                                    </ul>
+                                </div>
 
-                        <div className="col-md-4 col-sm-4 col-xs-6">
-                            <ul className="fh5co-footer-links">
-                                <li><a href="#" className="activefooter">Suivez-nous</a></li>
-                                <li><a href="#">Presse</a></li>
-                                <li><a href="#">News letter</a></li>
-                                <li><a href="#">Réseaux sociaux</a></li>
-                            </ul>
+                                <div className="col-md-4 col-sm-4 col-xs-6">
+                                    <ul className="fh5co-footer-links">
+                                        <li><a href="#" className="activefooter">Suivez-nous</a></li>
+                                        <li><a href="#">Presse</a></li>
+                                        <li><a href="#">News letter</a></li>
+                                        <li><a href="#">Réseaux sociaux</a></li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
+
+                    <div className="row copyright">
+                        <div className="col-md-12 text-center">
+                            <p style={{ marginTop: '30px' }}>
+                                <small className="block">&copy; 2021 | All Rights Reserved.</small>
+                                <small className="block">Powered by  dev1.microcap.fr</small>
+                            </p>
+                        </div>
                     </div>
 
-            <div className="row copyright">
-                <div className="col-md-12 text-center">
-                    <p style={{ marginTop: '30px' }}>
-                        <small className="block">&copy; 2021 | All Rights Reserved.</small>
-                        <small className="block">Powered by  dev1.microcap.fr</small>
-                    </p>
                 </div>
-            </div>
-
-        </div>
             </footer >
 
         </div >

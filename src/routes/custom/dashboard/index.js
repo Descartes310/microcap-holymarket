@@ -56,6 +56,7 @@ import {
     CATALOG,
     DISCOVER,
     SOLIDARITY,
+    PASS_DETAILS,
     MISSION, VALUES,
     MONEY_MANAGEMENT,
     PIONIERS,
@@ -73,6 +74,7 @@ import {
     TERMS,
     PACKAGES,
     RESSOURCE,
+    AGENTS,
     COMMERCIAL_MANAGEMENT, PRODUCT, STORE, ROOT, ACCESS, SETTINGS, NOTIFICATIONS, PROJECTS
 } from "Url/frontendUrl";
 import { AbilityContext } from "Permissions/Can";
@@ -85,6 +87,8 @@ import CanRoute from "Components/CanRoute";
 import Terms from "./Terms";
 import Mission from "./Mission";
 import Values from "./Values";
+import OfferDetails from './OfferDetails';
+import Agents from './Agents';
 
 const Dashboard = ({ match, authUser }) => {
     const ability = useAbility(AbilityContext);
@@ -96,12 +100,14 @@ const Dashboard = ({ match, authUser }) => {
                     <Route exact path={DISCOVER} component={AsyncDiscover} />
                     <Route exact path={GETIN} component={AsyncGetIn} />
                     <Route exact path={PIONIERS} component={AsyncPionier} />
+                    <Route exact path={AGENTS} component={Agents} />
                     <Route exact path={GALERY_PROJECT} component={AsyncGallery} />
                     <Route exact path={ROOT} component={HomePage} />
                     <Route exact path={HOME} component={HomePage} />
                     <Route exact path={MISSION} component={Mission} />
                     <Route exact path={VALUES} component={Values} />
                     <Route exact path={TERMS} component={Terms} />
+                    <Route exact path={PASS_DETAILS} component={OfferDetails} />
                     <Route exact path={SOLIDARITY} component={AsyncSolidarity} />
                     <Route exact path={MONEY_MANAGEMENT} component={AsyncMoneyManagement} />
 

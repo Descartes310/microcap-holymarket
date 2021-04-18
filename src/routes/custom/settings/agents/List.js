@@ -16,7 +16,7 @@ import Button from "@material-ui/core/Button";
 import { Form, FormGroup, Input as InputStrap } from "reactstrap";
 import DialogTitle from "@material-ui/core/DialogTitle/DialogTitle";
 import { getModelNotifications, setRequestGlobalAction } from "Actions";
-import { getAgents, createAgent, activeAgent, getOneAgent } from "Actions/independentActions";
+import { getAgents, createAgent, activeAgent, getOneAgent, mainAgents } from "Actions/independentActions";
 import DialogContent from "@material-ui/core/DialogContent/DialogContent";
 import Switch from "@material-ui/core/Switch";
 import Select from "@material-ui/core/Select/Select";
@@ -123,6 +123,19 @@ class List extends Component {
             .finally(() => this.setState({ loading: false }));
     };
 
+    onToggleMainStatus = (id) => {
+        mainAgents(id)
+            .then(() => {
+                getAgents().then(data => {
+                    this.setState({ data })
+                })
+            })
+            .catch((err) => {
+                NotificationManager.error("Erreur lors de la mise a jour du l'agent");
+            })
+            .finally(() => this.setState({ loading: false }));
+    };
+
     render() {
         const { modelNotifications, loading, error, history } = this.props;
         const { show, selectedNotification, data } = this.state;
@@ -153,6 +166,7 @@ class List extends Component {
                                                     <th>Email</th>
                                                     <th>Téléphone</th>
                                                     <th>Adresse</th>
+                                                    <th>Principal</th>
                                                     <th>Activer</th>
                                                     <th>Action</th>
                                                     {/*<th>Nombres de permissions</th>*/}
@@ -191,6 +205,13 @@ class List extends Component {
                                                                     <h4 className="m-0 fw-bold text-dark">{item.address}</h4>
                                                                 </div>
                                                             </div>
+                                                        </td>
+                                                        <td>
+                                                            <Switch
+                                                                checked={item.main}
+                                                                onChange={(event) => { this.onToggleMainStatus(item.id, event.target.checked) }}
+                                                                aria-label="Principal"
+                                                            />
                                                         </td>
                                                         <td>
                                                             <Switch

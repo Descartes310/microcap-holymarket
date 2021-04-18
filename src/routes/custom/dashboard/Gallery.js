@@ -19,6 +19,7 @@ import {
 import { HashLink } from 'react-router-hash-link';
 import IconButton from '@material-ui/core/IconButton';
 import { getFilePath } from "Helpers/helpers";
+import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 
 const Discover = (props) => {
     const { loading, intl } = props;
@@ -55,16 +56,43 @@ const Discover = (props) => {
                                 </Link>
                             </div>
                             <div className="center-hor-ver">
-                                <Link to={DISCOVER}>
-                                    <a className="mr-30" style={{ fontSize: '1.2em', color: 'black' }}>
-                                        Microcap
-                                   </a>
-                                </Link>
-                                <HashLink to={`${DISCOVER}/#services`}>
-                                    <a className="mr-30" style={{ fontSize: '1.2em', color: 'black' }}>
-                                        Produits et services
-                                    </a>
-                                </HashLink>
+                            <UncontrolledDropdown nav className="list-inline-item vr-super">
+                                    <DropdownToggle nav caret className="text-white">
+                                        <a className="mr-30" style={{ fontSize: '1.2em', color: 'black' }}>
+                                            Découvir
+                                        </a>
+                                    </DropdownToggle>
+                                    <DropdownMenu>
+                                        <DropdownItem>
+                                            <HashLink to={`${DISCOVER}/#services`}>
+                                                <a className="mr-30" style={{ fontSize: '1.2em', color: 'black' }}>
+                                                    Produits pour entreprendre
+                                                </a>
+                                            </HashLink>
+                                        </DropdownItem>
+                                        <DropdownItem>
+                                            <HashLink to={`${DISCOVER}/#investir`}>
+                                                <a className="mr-30" style={{ fontSize: '1.2em', color: 'black' }}>
+                                                    Produits pour investir MicroCap
+                                                </a>
+                                            </HashLink>
+                                        </DropdownItem>
+                                        <DropdownItem>
+                                            <HashLink to={`${DISCOVER}/#produits`}>
+                                                <a className="mr-30" style={{ fontSize: '1.2em', color: 'black' }}>
+                                                    Produits des Partenaires
+                                                </a>
+                                            </HashLink>
+                                        </DropdownItem>
+                                        <DropdownItem>
+                                            <HashLink to={`${DISCOVER}`}>
+                                                <a className="mr-30" style={{ fontSize: '1.2em', color: 'black' }}>
+                                                    Point d'accueil
+                                                </a>
+                                            </HashLink>
+                                        </DropdownItem>
+                                    </DropdownMenu>
+                                </UncontrolledDropdown>
                                 <HashLink to={`${DISCOVER}/#pass`}>
                                     <a className="mr-30" style={{ fontSize: '1.2em', color: 'black' }}>
                                         Pass microcap

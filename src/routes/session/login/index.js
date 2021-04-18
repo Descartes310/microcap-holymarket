@@ -76,14 +76,14 @@ const Signin = (props) => {
                                         <img src={AppConfig.appLogo} alt="session-logo" className="img-fluid" width="110" height="35" />
                                     </Link>
                                 </div>
-                                <div className="center-hor-ver">
-                                    <a className="mr-15 text-white" onClick={onUserSignUp}>
+                                <div className="center-hor-ver" style={{ marginRight: '10%' }}>
+                                    {/* <a className="mr-15 text-white" onClick={onUserSignUp}>
                                         <IntlMessages id="auth.createAccount" />
-                                    </a>
-                                    <Button variant="contained" className="btn-light mr-2" onClick={onUserSignUp}>
+                                    </a> */}
+                                    <Button variant="contained" className="btn-light mr-2 p-10" onClick={onUserSignUp}>
                                         <IntlMessages id="auth.signup" />
                                     </Button>
-                                    <Button variant="contained" className="btn-primary mr-2 text-white" onClick={onDiscoverClick}>
+                                    <Button variant="contained" className="btn-primary mr-2 text-white p-10" onClick={onDiscoverClick}>
                                         Découvrir Microcap
                                     </Button>
                                 </div>

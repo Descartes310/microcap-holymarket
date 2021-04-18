@@ -1028,8 +1028,17 @@ export const getMainPioniers = () => {
     return makeRequest('get', `${SETTING.PIONIERS.GET_MAIN}?url=${window.location.host}`, null);
 };
 
+export const getMainAgents = () => {
+    return makeRequest('get', `${SETTING.AGENTS.GET_MAIN}?url=${window.location.host}`, null);
+};
+
 export const mainPioniers = (id) => {
     const url = joinBaseUrlWithParamsId(SETTING.PIONIERS.MAIN, id);
+    return makeRequest('put', url, null);
+};
+
+export const mainAgents = (id) => {
+    const url = joinBaseUrlWithParamsId(SETTING.AGENTS.MAIN, id);
     return makeRequest('put', url, null);
 };
 

@@ -39,10 +39,12 @@ export const SETTING = {
     UNIT: 'api/settings/units',
     AGENTS: {
         GET_ALL: 'api/settings/agents/list',
+        GET_MAIN: 'api/settings/agents/list/main',
         ACTIVE: 'api/settings/agents/active/{id}',
         GET_ONE: 'api/settings/agents/{id}',
         CREATE: 'api/settings/agents',
         UPDATE: 'api/settings/agents/{id}',
+        MAIN: 'api/settings/agents/main/{id}',
     },
     PIONIERS: {
         GET_ALL: 'api/settings/pioniers/list',
