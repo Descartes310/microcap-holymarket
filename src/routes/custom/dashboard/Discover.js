@@ -471,9 +471,12 @@ const Discover = (props) => {
                         </div>
                         <p style={{ fontSize: '1.1em', textAlign: 'center', marginTop: 40 }}>
                             Les services de la plateforme sont accessibles sur abonnement ou Pass: à chacun son rythme, à chacun son Pass. <br />
+                            Chaque PASS MicroCap donne accès à une combinaison de services selon les objectifs de chacun : entreprendre, investir, épargner, soutenir un porteur de projet, … <br />
+                            Les produits financiers de nos partenaires dans chaque passe se différencient sur les plafond autorisés, les délais. <br />
+                            Pour bénéficier des avantages exceptionnels ajoutez une option à votre PASS MicroCap <br />
                             <Link to={PASS_DETAILS} style={{ marginTop: 40, marginBottom: 20 }}>
                                 <Button variant="contained" className="btn-primary mr-2 text-white">
-                                    Voir les détails
+                                    Tout nos pass
                                 </Button>
                             </Link>
                         </p>
