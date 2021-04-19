@@ -9,7 +9,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import {
     AUTH, DISCOVER, HOME, PIONIERS, TERMS, LEGAL_MENTION,
     GALERY_PROJECT, SOLIDARITY, MONEY_MANAGEMENT, GETIN, MISSION,
-    VALUES, PASS_DETAILS, AGENTS
+    VALUES, PASS_DETAILS, AGENTS, SERVICES
 } from "Url/frontendUrl";
 import AppBar from "@material-ui/core/AppBar/AppBar";
 import headerImg from 'Assets/img/image_revolution.jpg';
@@ -26,7 +26,6 @@ import {
 } from 'video-react';
 import { HashLink } from 'react-router-hash-link';
 import { Tooltip } from '@material-ui/core';
-import IconButton from '@material-ui/core/IconButton';
 import { getFilePath } from "Helpers/helpers";
 import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 
@@ -81,16 +80,16 @@ const Discover = (props) => {
                                     </DropdownToggle>
                                     <DropdownMenu>
                                         <DropdownItem>
-                                            <HashLink to={`${DISCOVER}/#services`}>
+                                            <HashLink to={`${DISCOVER}/#produits`}>
                                                 <a className="mr-30" style={{ fontSize: '1.2em', color: 'black' }}>
-                                                    Produits pour entreprendre
+                                                    Produits pour se financer
                                                 </a>
                                             </HashLink>
                                         </DropdownItem>
                                         <DropdownItem>
                                             <HashLink to={`${DISCOVER}/#investir`}>
                                                 <a className="mr-30" style={{ fontSize: '1.2em', color: 'black' }}>
-                                                    Produits pour investir MicroCap
+                                                    Produits pour investir
                                                 </a>
                                             </HashLink>
                                         </DropdownItem>
@@ -110,7 +109,7 @@ const Discover = (props) => {
                                         </DropdownItem>
                                     </DropdownMenu>
                                 </UncontrolledDropdown>
-                                
+
                                 <HashLink to={`${DISCOVER}/#pass`}>
                                     <a className="mr-30" style={{ fontSize: '1.2em', color: 'black' }}>
                                         Pass microcap
@@ -135,13 +134,16 @@ const Discover = (props) => {
             </AppBar>
             <div className="session-inner-wrapper video-player-wrapper">
                 <div style={{ height: '35vh', backgroundImage: `url(${headerImg})`, backgroundSize: 'cover' }}>
+                    <p style={{ paddingTop: '17vh', textAlign: 'center', marginLeft: '10%' }}>
+                        Rejoignez le  <b>réseau de solidarité MicroCap</b>, vos versements sont libres à partir de 3€ sur votre <Link to={SERVICES} style={{ color: 'black', fontSize: '1.1em', fontWeight: 'bold' }}>compte ESH</Link> auprès d’un établissement financier partenaire
+                    </p>
                 </div>
-                <div className="page-title d-flex align-items-center" style={{ padding: 40 }}>
+                {/* <div className="page-title d-flex align-items-center" style={{ padding: 40 }}>
                     <IconButton to="/login" className="mr-15" aria-label="zmdi-arrow-left" component={Link}>
                         <i className="zmdi zmdi-arrow-left"></i>
                     </IconButton>
                     <h3>Retour sur Connexion</h3>
-                </div>
+                </div> */}
 
                 <h1 className="font-weight-bold text-black" style={{ fontSize: '2em', padding: '2%', textAlign: 'center' }}>
                     Concilier traditions et innovations
@@ -153,7 +155,7 @@ const Discover = (props) => {
                         <Card>
                             <CardImg top width="100%" className="img-fluid ripple-effect" src={require('Assets/img/tradition-et-innovation.jpg')} alt="Card image cap" />
                             <CardBody style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
-                                <CardText style={{ fontSize: '1.1em', textAlign: 'center' }}>
+                                <CardText style={{ fontSize: '1.1em', textAlign: 'center', minHeight: 132 }}>
                                     <p> La solidarité ! une valeur essentielle chez MicroCap. </p>
                                     <p> Entre tradition et innovation, découvrez le love money par MicroCap pour financer vos projets. </p>
                                     <p> Rejoignez le réseau MicroCap, plus large, plus dynamique </p>
@@ -170,7 +172,7 @@ const Discover = (props) => {
                         <Card>
                             <CardImg top width="100%" className="img-fluid ripple-effect" src={require('Assets/img/01-solidarite-1.jpg')} alt="Card image cap" />
                             <CardBody style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
-                                <CardText style={{ fontSize: '1.1em', textAlign: 'center' }}>
+                                <CardText style={{ fontSize: '1.1em', textAlign: 'center', minHeight: 132 }}>
                                     <p>Sur MicroCap, pas de sélection de projet mais des dotations chaque trimestre pour les cinq meilleurs projets à impact.</p>
                                     <p>Ensemble, construisons un monde durable</p>
                                     <p><span style={{ fontSize: '1.3em', color: '#ffce39', fontWeight: 'bold' }}>50 000€</span> à gagner pour démarrer !</p>
@@ -187,7 +189,7 @@ const Discover = (props) => {
                         <Card>
                             <CardImg top width="100%" className="img-fluid ripple-effect" src={require('Assets/img/budget.jpg')} alt="Card image cap" />
                             <CardBody style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
-                                <CardText style={{ fontSize: '1.1em', textAlign: 'center' }}>
+                                <CardText style={{ fontSize: '1.1em', textAlign: 'center', minHeight: 132 }}>
                                     <p>Notre programme à l’éducation financière pour des personnes en exclusion financière est totalement gratuit.</p>
                                     <p>Vous pouvez aider vos proches dans cette situation à s’en sortir. </p>
                                 </CardText>
@@ -212,7 +214,8 @@ const Discover = (props) => {
                         src='http://api.microcap.fr/files/videos/video.mp4'
                     />
                     <p style={{ fontSize: '1.2em', marginTop: 20, textAlign: 'center' }}>
-                        Microcap finance votre épargne et vous accompagne dans votre projet:  création d’entreprise, actionnariat, formation à l’entrepreneuriat ...
+                        Microcap vous accompagne dans la réalisation de votre projet:  création ou développement d’entreprise, actionnariat, formation à l’entrepreneuriat ...<br />
+                        <Link to={AUTH.REGISTER} style={{ color: '#e19d00' }}>İnscrivez-vous</Link> et choississez l’abonnement qui vous correspond parmi <Link to={PASS_DETAILS} style={{ color: '#e19d00' }}>nos PASS</Link>
                     </p>
                     {/* <p style={{ fontSize: '1.2em', marginTop: 10, textAlign: 'center' }}>
                         Ouvrir votre Plan d'Investissement Programmé MicroCap et Rejoignez le premier réseau international de solidarité financière
@@ -221,7 +224,7 @@ const Discover = (props) => {
 
                 <div style={{ backgroundColor: '#eeeeee', marginTop: '7vh' }} id='produits'>
                     <h1 className="font-weight-bold text-black text-center" style={{ fontSize: '3em', padding: '4%' }}>
-                        Les produits MicroCap
+                        Produits pour se financer
                     </h1>
                 </div>
 
@@ -237,36 +240,30 @@ const Discover = (props) => {
                                                     <img className="img-fluid" src={require('Assets/img/money.jpg')} alt="" />
                                                 </div>
                                                 <div className="col-md-8">
-                                                    <h1>Le PIP Microcap</h1>
+                                                    <h1 style={{ textAlign: 'left', width: '70%' }}>PIP MicroCap, un compte qui conte des comptes et qui atteste de votre capacité financière</h1>
                                                     <p style={{ textAlign: 'justify', fontSize: '1.1em', lineHeight: 2, marginTop: 20 }}>
-                                                        <h2>Un compte qui conte des comptes</h2>
-                                                        <p style={{ textAlign: 'justify', fontSize: '1em', lineHeight: 2, }}>
+                                                        {/* <h2>Un compte qui conte des comptes</h2> */}
+                                                        <p style={{ textAlign: 'justify', fontSize: '0.9em', lineHeight: 1.5, }}>
                                                             Le Plan d’Investissement Programmé (PIP) MicroCap est un compte agrégateur qui indique votre épargne ESH disponible auprès de nos partenaires. . Il reproduit fidèlement l’évolution de l’ensemble de vos comptes ESH: versement, intérêts …
                                                         </p>
-                                                        <p style={{ textAlign: 'justify', fontSize: '1em', lineHeight: 2, }}>
+                                                        <p style={{ textAlign: 'justify', fontSize: '0.9em', lineHeight: 1.5, }}>
                                                             Le PIP MicroCap constitue une capacité financière qui vous sert de sureté pour cautionner les membres du réseau. Vous constituez ainsi progressivement votre propre réseau de solidarité qui vous soutiendra  en retour lors d’une future demande de financement
                                                         </p>
-                                                        <h2>Le PIP MicroCap donne du sens et de la puissance à votre épargne ESH.</h2>
-
-                                                        <ul style={{ paddingLeft: 40, fontSize: '1em', textAlign: 'justify', fontSize: '1em', lineHeight: 2, }}>
-                                                            <li>Vous êtes solidaire d’un entrepreneur de votre localité ou de l’entrepreneuriat en général,</li>
-                                                            <li>Vous voulez fructifier ou diversifier une épargne non essentielle,</li>
-                                                            <li>Vous rêvez de créer votre entreprise, vous avez déjà une idée, voir un projet,</li>
-                                                            <li>Vous avez déjà créé votre entreprise et vous rencontrez des difficultés de financement,</li>
-                                                        </ul>
-                                                        Ouvrez votre PIP MicroCap et Rejoignez notre réseau international de solidarité financière
+                                                        <p style={{ textAlign: 'justify', fontSize: '1em', lineHeight: 1.5, color: 'black', fontWeight: 'bold' }}>
+                                                            Le PIP MicroCap donne du sens et de la puissance à votre épargne ESH.
+                                                        </p>
                                                     </p>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="discover-content" style={{ marginTop: '7%', marginBottom: '7%' }}>
+                                        <div className="discover-content" style={{ marginTop: '5%', marginBottom: '7%' }}>
                                             <div className="row align-items-center">
                                                 <div className="col-md-8">
-                                                    <h1>La carte ESH Microcap</h1>
-                                                    <p style={{ textAlign: 'justify', fontSize: '1.1em', lineHeight: 2, marginTop: 20 }}>
+                                                    <h1 style={{ textAlign: 'right' }}>La carte ESH Microcap</h1>
+                                                    <p style={{ textAlign: 'justify', fontSize: '1em', lineHeight: 1.5, marginTop: 20 }}>
                                                         Adossée à votre PIP MicroCap, la carte Emploi-Santé-Habitat vous permet de gagner des services gratuit pour chaque investissement réalisé sur les projets de la plateforme MicroCap. Bénéficiez de droits à la formation, de facilités pour l’insertion ou la reconversion professionnelle, de soins de santé, d’un hébergement. Vos droits aux services gratuit sont valables auprès de tous les entrepreneurs sous convention avec MicroCap.
                                                     </p>
-                                                    <p style={{ textAlign: 'justify', fontSize: '1.1em', lineHeight: 2, marginTop: 20 }}>
+                                                    <p style={{ textAlign: 'justify', fontSize: '1em', lineHeight: 1.5, marginTop: 20 }}>
                                                         La carte qui protège votre pouvoir d'achat grâce à l’accès gratuit aux services essentiels : emploi, santé, logement.
                                                     </p>
                                                 </div>
@@ -275,16 +272,16 @@ const Discover = (props) => {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="discover-content" style={{ marginTop: '7%', marginBottom: '7%' }}>
+                                        <div className="discover-content" style={{ marginTop: '5%', marginBottom: '7%' }}>
                                             <div className="row align-items-center">
                                                 <div className="col-md-4">
                                                     <img className="img-fluid" src={require('Assets/img/credit.jpg')} alt="" />
                                                 </div>
                                                 <div className="col-md-8">
-                                                    <h1>La reserve Microcap</h1>
-                                                    <p style={{ textAlign: 'justify', fontSize: '1.1em', lineHeight: 2, marginTop: 20 }}>
+                                                    <h1 style={{ textAlign: 'left' }}>La reserve Microcap</h1>
+                                                    <p style={{ textAlign: 'justify', fontSize: '1em', lineHeight: 1.5, marginTop: 20 }}>
                                                         Fort de son engagement pour une finance plus vertueuse,  MicroCap vous protège de la surconsommation et vous octroie un fonds de dépannage sur du très court terme (1-90 jours), destinée à pourvoir aux besoins essentiels. La réserve MicroCap est une facilité de trésorerie sous forme de crédit d’urgence ou d’avance sur revenu certains. Elle est utilisable sur une durée prédéfinie pour les services autorisés : <br />
-                                                        <ul style={{ paddingLeft: 40, fontSize: '1em' }}>
+                                                        <ul style={{ paddingLeft: 40, fontSize: '1.1em' }}>
                                                             <li>Transfert d’argent vers des réseaux partenaires <em>5 jours</em></li>
                                                             <li>Règlement de tout commerçant ou de tout prestataire conventionné <em>15 à 30 jours</em></li>
                                                             <li>Dépôt de garantie pour un bail <em>90 jours</em></li>
@@ -294,60 +291,78 @@ const Discover = (props) => {
                                                 </div>
                                             </div>
                                         </div>
-                                        <h1 style={{ textAlign: 'center', fontSize: '3em' }} id="investir">Pour investisseurs</h1>
-                                        <div className="discover-content" style={{ marginTop: '7%', marginBottom: '7%' }}>
-                                            <div className="row align-items-center">
-                                                <div className="col-md-8">
-                                                    <h1>La Liga</h1>
-                                                    <p style={{ textAlign: 'justify', fontSize: '1.1em', lineHeight: 2, marginTop: 20 }}>
-                                                        <p style={{ textAlign: 'justify', fontSize: '1.1em', lineHeight: 2, color: 'gray' }}>Investir en toute sérénité : Capital garantie</p>
-                                                        <p style={{ textAlign: 'justify', fontSize: '1em', lineHeight: 2, }}>La ligne d’investissement garantie (Liga) vous garantit la liquidité et le sécurité de votre capital investi</p>
-                                                        <p style={{ textAlign: 'justify', fontSize: '1em', lineHeight: 2, }}>Tout placement est exposé au risque de perte partielle ou totale en capital. MicroCap propose aux investisseurs une convention de co-investissement pour limiter la perte en capital. </p>
-                                                        <p style={{ textAlign: 'justify', fontSize: '1em', lineHeight: 2, }}>Les membres du réseau MicroCap verse une contribution de solidarité  réseau annuelle qui garantit une quotité de tout capital investi sur un projet éligible à la Liga. Cette quotité peut atteindre 100% du capital et, peut être assortie d’une prime de risque. Pour guider les utilisateurs dans leurs choix, les projets de la plateforme sont marqués par un système de notation donnant à titre indicatif le niveau de risque.</p>
-                                                        <p style={{ textAlign: 'justify', fontSize: '1em', lineHeight: 2, }}>Exemple : </p>
-                                                        <p style={{ textAlign: 'justify', fontSize: '1em', lineHeight: 2, }}>Score projet : 80-approved-234 pour un projet dont le capital investi est garanti à 80%, approuvé par une commission technique et suivi régulièrement par 234 personnes.</p>
-                                                        <p style={{ textAlign: 'justify', fontSize: '1em', lineHeight: 2, }}>
-                                                            Vous êtes :
-                                                        </p>
-                                                        <ul style={{ paddingTop: 10, paddingBottom: 10 }}>
-                                                            <li>Une institution</li>
-                                                            <li>Un Investisseur professionnel</li>
-                                                        </ul>
-                                                        <p style={{ textAlign: 'justify', fontSize: '1em', lineHeight: 2, }}>
-                                                            Ne manquez pas la Liga
-                                                        </p>
-                                                    </p>
-                                                </div>
-                                                <div className="col-md-4">
-                                                    <img className="img-fluid" src={require('Assets/img/invest.jpg')} alt="" />
-                                                </div>
-                                            </div>
-                                        </div>
 
-                                        <div className="discover-content" style={{ marginTop: '7%', marginBottom: '7%' }}>
-                                            <div className="row align-items-center">
-                                                <div className="col-md-4">
-                                                    <img className="img-fluid" src={require('Assets/img/credit.jpg')} alt="" />
-                                                </div>
-                                                <div className="col-md-8">
-                                                    <h1>Compte ISUS</h1>
-                                                    <p style={{ textAlign: 'justify', fontSize: '1.1em', lineHeight: 2, marginTop: 20 }}>
-                                                        Investir en toute sérénité : Gestion professionnelle assurée <br />
-                                                        Le compte ISUS est un compte titre  ordinaire ouvert auprès d’un établissement financier partenaire, qui vous permet Investir dans les TPE et PME non cotées du réseau MicroCap . Les titres de votre comptes ISUS peuvent être céder à MicroCap en gérance, en jouissance, ou en propriété avec option de reprise sur une période donnée.<br />
-                                                        La convention ISUS vous permet d’assurer une gestion professionnelle d’un portefeuille de titres d’entreprises non cotées. Elle vous permet ainsi d’investir dans les TPE et PME non cotés sans vous soucier du suivi et de la responsabilité investisseur. Celle ceux-ci étant couverts par un dispositif de mutualisation de MicroCap. <br />
-                                                        <ul style={{ paddingLeft: 40, fontSize: '1em' }}>
-                                                            <li>Information financière</li>
-                                                            <li>Participation aux décisions stratégiques de l’entreprise</li>
-                                                            <li>L’option et l’opportunité de sortie</li>
-                                                            <li>La gestion administrative et fiscale</li>
-                                                        </ul>
-                                                    </p>
-                                                </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style={{ backgroundColor: '#eeeeee', marginTop: '7vh' }} id='investir'>
+                    <h1 className="font-weight-bold text-black text-center" style={{ fontSize: '3em', padding: '4%' }}>
+                        Produits pour investir
+                    </h1>
+                </div>
+
+                <div className="container">
+                    <div className="row justify-content-center">
+                        <div className="col-sm-11">
+                            <div className="center-hor-ver session-body text-center">
+                                <div className="row discover">
+                                    <div className="col-sm-12 discover-block"></div>
+                                    <div className="discover-content" style={{ marginTop: '5%', marginBottom: '7%' }}>
+                                        <div className="row align-items-center">
+                                            <div className="col-md-8">
+                                                <h1 style={{ textAlign: 'right' }}>La Liga</h1>
+                                                <p style={{ textAlign: 'justify', fontSize: '1.2em', lineHeight: 2, marginTop: 20 }}>
+                                                    <p style={{ textAlign: 'justify', fontSize: '1.2em', lineHeight: 2, color: 'gray' }}>Investir en toute sérénité : Capital garantie</p>
+                                                    <p style={{ textAlign: 'justify', fontSize: '0.9em', lineHeight: 1.5, }}>La ligne d’investissement garantie (Liga) vous garantit la liquidité et le sécurité de votre capital investi</p>
+                                                    <p style={{ textAlign: 'justify', fontSize: '0.9em', lineHeight: 1.5, }}>Tout placement est exposé au risque de perte partielle ou totale en capital. MicroCap propose aux investisseurs une convention de co-investissement pour limiter la perte en capital. </p>
+                                                    <p style={{ textAlign: 'justify', fontSize: '0.9em', lineHeight: 1.5, }}>Les membres du réseau MicroCap verse une contribution de solidarité  réseau annuelle qui garantit une quotité de tout capital investi sur un projet éligible à la Liga. Cette quotité peut atteindre 100% du capital et, peut être assortie d’une prime de risque. Pour guider les utilisateurs dans leurs choix, les projets de la plateforme sont marqués par un système de notation donnant à titre indicatif le niveau de risque.</p>
+                                                    <p style={{ textAlign: 'justify', fontSize: '0.9em', lineHeight: 1.5, }}>Exemple : </p>
+                                                    <p style={{ textAlign: 'justify', fontSize: '0.9em', lineHeight: 1.5, }}>Score projet : 80-approved-234 pour un projet dont le capital investi est garanti à 80%, approuvé par une commission technique et suivi régulièrement par 234 personnes.</p>
+                                                    <p style={{ textAlign: 'justify', fontSize: '0.9em', lineHeight: 1.5, }}>
+                                                        Vous êtes :
+                                                        </p>
+                                                    <ul style={{ paddingTop: 10, paddingBottom: 10, fontSize: '0.9em' }}>
+                                                        <li>Une institution</li>
+                                                        <li>Un Investisseur professionnel</li>
+                                                    </ul>
+                                                    <p style={{ textAlign: 'justify', fontSize: '0.9em', lineHeight: 2, }}>
+                                                        Ne manquez pas la Liga
+                                                        </p>
+                                                </p>
+                                            </div>
+                                            <div className="col-md-4">
+                                                <img className="img-fluid" src={require('Assets/img/invest.jpg')} alt="" />
                                             </div>
                                         </div>
                                     </div>
 
+                                    <div className="discover-content" style={{ marginTop: '5%', marginBottom: '7%' }}>
+                                        <div className="row align-items-center">
+                                            <div className="col-md-4">
+                                                <img className="img-fluid" src={require('Assets/img/credit.jpg')} alt="" />
+                                            </div>
+                                            <div className="col-md-8">
+                                                <h1 style={{ textAlign: 'left' }}>Compte ISUS</h1>
+                                                <p style={{ textAlign: 'justify', fontSize: '1em', lineHeight: 2, marginTop: 20 }}>
+                                                    Investir en toute sérénité : Gestion professionnelle assurée <br />
+                                                        Le compte ISUS est un compte titre  ordinaire ouvert auprès d’un établissement financier partenaire, qui vous permet Investir dans les TPE et PME non cotées du réseau MicroCap . Les titres de votre comptes ISUS peuvent être céder à MicroCap en gérance, en jouissance, ou en propriété avec option de reprise sur une période donnée.<br />
+                                                        La convention ISUS vous permet d’assurer une gestion professionnelle d’un portefeuille de titres d’entreprises non cotées. Elle vous permet ainsi d’investir dans les TPE et PME non cotés sans vous soucier du suivi et de la responsabilité investisseur. Celle ceux-ci étant couverts par un dispositif de mutualisation de MicroCap. <br />
+                                                    <ul style={{ paddingLeft: 40, fontSize: '1.1em' }}>
+                                                        <li>Information financière</li>
+                                                        <li>Participation aux décisions stratégiques de l’entreprise</li>
+                                                        <li>L’option et l’opportunité de sortie</li>
+                                                        <li>La gestion administrative et fiscale</li>
+                                                    </ul>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
+
                             </div>
                         </div>
                     </div>

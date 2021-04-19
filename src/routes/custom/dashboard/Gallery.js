@@ -64,16 +64,16 @@ const Discover = (props) => {
                                     </DropdownToggle>
                                     <DropdownMenu>
                                         <DropdownItem>
-                                            <HashLink to={`${DISCOVER}/#services`}>
+                                            <HashLink to={`${DISCOVER}/#produits`}>
                                                 <a className="mr-30" style={{ fontSize: '1.2em', color: 'black' }}>
-                                                    Produits pour entreprendre
+                                                Produits pour se financer
                                                 </a>
                                             </HashLink>
                                         </DropdownItem>
                                         <DropdownItem>
                                             <HashLink to={`${DISCOVER}/#investir`}>
                                                 <a className="mr-30" style={{ fontSize: '1.2em', color: 'black' }}>
-                                                    Produits pour investir MicroCap
+                                                    Produits pour investir
                                                 </a>
                                             </HashLink>
                                         </DropdownItem>

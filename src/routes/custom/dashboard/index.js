@@ -62,6 +62,7 @@ import {
     PIONIERS,
     GALERY_PROJECT,
     HOME,
+    SERVICES,
     NETWORK,
     CATEGORY,
     PRODUCT_TYPE,
@@ -89,6 +90,7 @@ import Mission from "./Mission";
 import Values from "./Values";
 import OfferDetails from './OfferDetails';
 import Agents from './Agents';
+import Services from './Service';
 
 const Dashboard = ({ match, authUser }) => {
     const ability = useAbility(AbilityContext);
@@ -106,6 +108,7 @@ const Dashboard = ({ match, authUser }) => {
                     <Route exact path={HOME} component={HomePage} />
                     <Route exact path={MISSION} component={Mission} />
                     <Route exact path={VALUES} component={Values} />
+                    <Route exact path={SERVICES} component={Services} />
                     <Route exact path={TERMS} component={Terms} />
                     <Route exact path={PASS_DETAILS} component={OfferDetails} />
                     <Route exact path={SOLIDARITY} component={AsyncSolidarity} />

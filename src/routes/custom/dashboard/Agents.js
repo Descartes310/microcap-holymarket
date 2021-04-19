@@ -70,7 +70,7 @@ const Agents = (props) => {
                                         <DropdownItem>
                                             <HashLink to={`${DISCOVER}/#investir`}>
                                                 <a className="mr-30" style={{ fontSize: '1.2em', color: 'black' }}>
-                                                    Produits pour investir MicroCap
+                                                    Produits pour investir
                                                 </a>
                                             </HashLink>
                                         </DropdownItem>

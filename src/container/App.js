@@ -15,7 +15,7 @@ import AppSignUp from './../routes/session/register';
 import BranchActivation from './../routes/session/token';
 import ResetPassword from './../routes/session/forgot-password/ResetPassword';
 import SendResetPasswordLink from './../routes/session/forgot-password/SendResetPasswordLink';
-import {AUTH, DISCOVER,MISSION, VALUES, PIONIERS, AGENTS, STORE, TERMS, LEGAL_MENTION, GALERY_PROJECT, GETIN, SOLIDARITY, MONEY_MANAGEMENT, PASS_DETAILS} from "../urls/frontendUrl";
+import {AUTH, DISCOVER,MISSION, VALUES, PIONIERS, AGENTS, STORE, TERMS, LEGAL_MENTION, SERVICES, GALERY_PROJECT, GETIN, SOLIDARITY, MONEY_MANAGEMENT, PASS_DETAILS} from "../urls/frontendUrl";
 import {setAuthUser, loginIntoStore, disableAppLoading} from 'Actions';
 import {getCurrencies} from 'Actions/GeneralActions';
 import RctPageLoader from "Components/RctPageLoader/RctPageLoader";
@@ -33,6 +33,7 @@ import Values from "./../routes/custom/dashboard/Values";
 import LegalMention from "./../routes/custom/dashboard/LegalMention.js";
 import OfferDetails from '../routes/custom/dashboard/OfferDetails';
 import Agents from '../routes/custom/dashboard/Agents';
+import Services from '../routes/custom/dashboard/Service';
 
 
 class App extends Component {
@@ -91,6 +92,7 @@ class App extends Component {
                                         <Route exact path={DISCOVER} component={AsyncDiscover} />
                                         <Route exact path={PIONIERS} component={AsyncPionier} />
                                         <Route exact path={AGENTS} component={Agents} />
+                                        <Route exact path={SERVICES} component={Services} />
                                         <Route exact path={GALERY_PROJECT} component={AsyncGallery} />
                                         <Route exact path={GETIN} component={AsyncGetIn} />
                                         <Route exact path={SOLIDARITY} component={AsyncSolidarity} />
