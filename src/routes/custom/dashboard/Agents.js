@@ -7,7 +7,7 @@ import AppConfig from "Constants/AppConfig";
 import IntlMessages from "Util/IntlMessages";
 import Button from "@material-ui/core/Button";
 import Toolbar from "@material-ui/core/Toolbar";
-import { AUTH, DISCOVER, HOME, GALERY_PROJECT } from "Url/frontendUrl";
+import { AUTH, DISCOVER, HOME, GALERY_PROJECT, PASS_DETAILS, AGENTS } from "Url/frontendUrl";
 import AppBar from "@material-ui/core/AppBar/AppBar";
 import headerImg from 'Assets/img/image_revolution.jpg';
 import api from 'Api';
@@ -75,14 +75,26 @@ const Agents = (props) => {
                                             </HashLink>
                                         </DropdownItem>
                                         <DropdownItem>
-                                            <HashLink to={`${DISCOVER}/#produits`}>
+                                            <HashLink to={`${DISCOVER}/#services`}>
                                                 <a className="mr-30" style={{ fontSize: '1.2em', color: 'black' }}>
                                                     Produits des Partenaires
                                                 </a>
                                             </HashLink>
                                         </DropdownItem>
                                         <DropdownItem>
-                                            <HashLink to={`${DISCOVER}`}>
+                                            <HashLink to={`${DISCOVER}/#pass`}>
+                                                <a className="mr-30" style={{ fontSize: '1.2em', color: 'black' }}>
+                                                    Pass Microcap
+                                                </a>
+                                            </HashLink>
+                                        </DropdownItem><DropdownItem>
+                                            <HashLink to={`${DISCOVER}/#pioniers`}>
+                                                <a className="mr-30" style={{ fontSize: '1.2em', color: 'black' }}>
+                                                    L'équipe
+                                                </a>
+                                            </HashLink>
+                                        </DropdownItem><DropdownItem>
+                                            <HashLink to={`${DISCOVER}/#agents`}>
                                                 <a className="mr-30" style={{ fontSize: '1.2em', color: 'black' }}>
                                                     Point d'accueil
                                                 </a>
@@ -90,7 +102,7 @@ const Agents = (props) => {
                                         </DropdownItem>
                                     </DropdownMenu>
                                 </UncontrolledDropdown>
-                                <HashLink to={`${DISCOVER}/#pass`}>
+                                <HashLink to={`${PASS_DETAILS}`}>
                                     <a className="mr-30" style={{ fontSize: '1.2em', color: 'black' }}>
                                         Pass microcap
                                     </a>
@@ -100,7 +112,7 @@ const Agents = (props) => {
                                         Gallerie projets
                                     </a>
                                 </Link>
-                                <HashLink to={`${DISCOVER}/#agents`}>
+                                <HashLink to={`${AGENTS}`}>
                                     <a className="mr-30" style={{ fontSize: '1.2em', color: 'black' }}>
                                         Réseau d'agent
                                     </a></HashLink>
@@ -161,6 +173,13 @@ const Agents = (props) => {
                             </div>
                         ))}
                     </div>
+                    <h1 className="font-weight-bold text-black" style={{ fontSize: '2em', padding: '2%', textAlign: 'center' }}>
+                        Assistance
+                    </h1>
+                    <p>
+                        Le service MicroCap est proposé par la société A+ Conseils, Spécialiste de la création et du développement de la PME. <br />
+                        Toute réclamation doit être portée directement à notre attention en utilisant un des <HashLink to={`${DISCOVER}/#fh5co-footer`}>contacts Microcap</HashLink>. Vous pouvez également enregistrer une réclamation auprès d’un agent de notre réseau. Nous vous garantissons une prise en charge et un retour en moins de 48H 
+                    </p>
                 </div>
             </div>
         </div>

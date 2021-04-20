@@ -24,10 +24,10 @@ export default class MoneyManagement extends Component {
         <div className="terms-conditions-rules">
           <RctCollapsibleCard customClasses="p-30">
             <p>
-            MicroCap  est un établissement de la société A+ Conseils qui porte la mission qui promouvoir l'inclusion et l’indépendance financière par la solidarité et le love money. 
+            MicroCap est un établissement de la société A+ Conseils, qui porte la mission de promouvoir l'inclusion et l’indépendance financière par la solidarité et le love money. 
             </p>
             <p>
-              <b>Le love money</b> (traduit littéralement par « argent de l’amour ») représente l’argent de ceux qui nous aiment. Ce concept consiste à faire appel à des proches (amis, familles) pour qu’ils s’impliquent financièrement à la création ou au développement d’une entreprise. Le love money constitue ainsi un <b>moyen de financer son entreprise</b> en renforçant ses fonds propres.
+              <b>Le love money</b> (traduit littéralement par « argent de l’amour ») représente l’argent de ceux qui nous aiment. Ce concept consiste à faire appel à des proches (amis, familles) pour qu’ils s’impliquent financièrement à la création ou au développement d’une entreprise en devenant actionnaires. Le love money constitue ainsi un <b>moyen de financer son entreprise</b> en renforçant ses fonds propres.  Les montants sont très variables (de quelques dixaines à plusieurs milliers d’euros), la logique est bien particulière: elle implique <b>proximité et confiance</b>. Il s’agit généralement pour les proches d’une <b>démarche affective</b>: la principale raison de leur investissement est d’aider un proche à développer son entreprise et non de faire un placement rentable.
             </p>
             <p>
             MicroCap propose une plateforme de financement par cautionnement mutuel qui permet d'étendre une campagne de collecte de fonds love money, dans le cadre d'un projet entrepreneurial, au-delà de la sphère familiale ou amicale pour, toucher en toute sérénité les collègues, les camarades ou de parfaits inconnus avec lesquels le collecteur pourrait se trouver des affinités.
@@ -40,12 +40,6 @@ export default class MoneyManagement extends Component {
             </p>
             <p style={{ textAlign: 'center', fontSize: '1.3em', fontWeight: 'bold' }}>
               La solidarité – l’innovation – l’engagement – la persévérance
-            </p>
-            <p>
-              Cette méthode consiste à <b>faire appel à ses proches</b> (amis, famille) pour qu’ils s’impliquent financièrement dans le développement de l’entreprise en en devenant <b>actionnaires</b>. 
-            </p>
-            <p>
-              Si les montants sont variables (de quelques centaines à plusieurs milliers d’euros), la logique est bien particulière : elle implique <b>proximité et confiance</b>. Il s’agit généralement pour les proches d’une <b>démarche affective</b>: la principale raison de leur investissement est d’aider un proche à développer son entreprise et non de faire un placement rentable. 
             </p>
 
             <Link to={AUTH.REGISTER}>

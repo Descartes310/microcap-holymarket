@@ -12,31 +12,34 @@ export default class Service extends Component {
     return (
       <div className="terms-wrapper p-20" >
         <Helmet>
-          <title>Produits Microcap</title>
+          <title>Le service Microcap</title>
           <meta name="description" content="Reactify Blank Page" />
         </Helmet>
         <div className="page-title d-flex align-items-center">
           <IconButton to="/discover" className="mr-15" aria-label="zmdi-arrow-left" component={Link}>
             <i className="zmdi zmdi-arrow-left"></i>
           </IconButton>
-          <h2>LES PRODUITS MICROCAP</h2>
+          <h2>LE SERVICE MICROCAP</h2>
         </div>
         <div className="terms-conditions-rules">
           <RctCollapsibleCard customClasses="p-30">
             <p>
 
+              <p>MicroCap conçoit des produits d’épargne et placement accessibles aux très petits capitaux. Ces produits sont proposés à des partenaires bancaires et autres établissements financiers , seuls habilités selon la règlementation à les commercialiser. Notre positionnement en qualité d’architecte produit permet à nos partenaires financiers de capter des flux marginaux. </p>
+              <p style={{ fontWeight: 'bold' }}>l’entrepreneuriat pour tous </p>
+              <p style={{ textAlign: 'justify', lineHeight: 1.5, }}>
+                Ouvrez votre PIP MicroCap et Rejoignez notre réseau international de solidarité financière
+              </p>
               <ul style={{ paddingLeft: 40, textAlign: 'justify', lineHeight: 1.5, }}>
                 <li>Vous êtes solidaire d’un entrepreneur de votre localité ou de l’entrepreneuriat en général,</li>
                 <li>Vous voulez fructifier ou diversifier une épargne non essentielle,</li>
                 <li>Vous rêvez de créer votre entreprise, vous avez déjà une idée, voir un projet,</li>
                 <li>Vous avez déjà créé votre entreprise et vous rencontrez des difficultés de financement,</li>
               </ul>
-              <p style={{ textAlign: 'justify', lineHeight: 1.5, }}>
-                Ouvrez votre PIP MicroCap et Rejoignez notre réseau international de solidarité financière
+              <p>
+                Le réseau MicroCap et le mécanisme de solidarité de la plateforme valorisent votre action et vous rendent acteur d’une économie de proximité.
               </p>
-              <p>MicroCap conçoit des produits d’épargne et placement accessibles aux très petits capitaux. Ces produits sont proposés à des partenaires bancaires et autres établissements financiers , seuls habilités selon la règlementation à les commercialiser. Notre positionnement en qualité d’architecte produit permet à nos partenaires financiers de capter des flux marginaux. </p>
-              <p style={{ fontWeight: 'bold' }}>l’entrepreneuriat pour tous </p>
-              <p>En commercialisant nos produits, les établissements financiers partenaires nous permettent  de disposer des cas d’application pour nos activités d’éducation financière. Ils peuvent en retour toucher des cibles éloignées de leurs offres habituelles en particulier des personnes en situation d’exclusion financière.</p>
+              <p>En commercialisant nos produits, les établissements financiers partenaires nous permettent  de disposer des cas d’application pour nos activités d’éducation financière. Ils peuvent en retour toucher des cibles éloignées de leurs offres habituelles en particulier des personnes en situation d’exclusion financière que vous pouvez soutenir.</p>
               <p>MicroCap a une parfaite connaissance des personnes en marge du système bancaire, c’est-à-dire des profils difficilement exposés aux services bancaires. L’entreprise  jouit d’une expertise avérée à la gestion des personnes en situation de fragilité.  Le service MicroCap c’est ;</p>
               <ul style={{ paddingTop: 40, paddingBottom: 10, paddingLeft: 40 }}>
                 <li>La possibilité de développer un réseau de solidarité financière</li>

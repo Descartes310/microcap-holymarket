@@ -30,7 +30,7 @@ module.exports = {
    "auth.createAccount": "Create new account?",
    "auth.haveAccount": "Already have an account?",
    "auth.haveAccountLogin": "Already have an account? Login",
-   "auth.login.title": "Get started with {name}",
+   "auth.login.title": "{name} Network",
    "auth.login.subTitle": "My interesting slogan here",
    "auth.termOfService": "By signing up you agree to {name}",
    "auth.signin": "Sign in",

@@ -19,7 +19,7 @@ import ErrorInputComponent from "Components/ErrorInputComponent";
 import {emailValidatorObject, minMaxValidatorObject} from "Helpers/validator";
 
 // route
-import {AUTH, HOME, DISCOVER} from "../../../urls/frontendUrl";
+import {AUTH, HOME, DISCOVER, TERMS} from "../../../urls/frontendUrl";
 
 // app config
 import AppConfig from 'Constants/AppConfig';
@@ -208,7 +208,7 @@ const Signin = (props) => {
                                             <IntlMessages id="auth.termOfService" values={{name: AppConfig.brandName}}/>
                                         </p>
                                         <p>
-                                            <a target="_blank" href="#/terms-condition" className="text-muted">
+                                            <a target="_blank" href={TERMS} className="text-muted">
                                                 <IntlMessages id="common.termOfService" />
                                             </a>
                                         </p>

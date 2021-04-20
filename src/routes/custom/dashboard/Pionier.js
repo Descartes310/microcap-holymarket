@@ -7,7 +7,7 @@ import AppConfig from "Constants/AppConfig";
 import IntlMessages from "Util/IntlMessages";
 import Button from "@material-ui/core/Button";
 import Toolbar from "@material-ui/core/Toolbar";
-import { AUTH, DISCOVER, HOME, GALERY_PROJECT } from "Url/frontendUrl";
+import { AUTH, DISCOVER, HOME, GALERY_PROJECT, AGENTS, PASS_DETAILS } from "Url/frontendUrl";
 import AppBar from "@material-ui/core/AppBar/AppBar";
 import headerImg from 'Assets/img/image_revolution.jpg';
 import api from 'Api';
@@ -75,14 +75,26 @@ const Discover = (props) => {
                                             </HashLink>
                                         </DropdownItem>
                                         <DropdownItem>
-                                            <HashLink to={`${DISCOVER}/#produits`}>
+                                            <HashLink to={`${DISCOVER}/#services`}>
                                                 <a className="mr-30" style={{ fontSize: '1.2em', color: 'black' }}>
                                                     Produits des Partenaires
                                                 </a>
                                             </HashLink>
                                         </DropdownItem>
                                         <DropdownItem>
-                                            <HashLink to={`${DISCOVER}`}>
+                                            <HashLink to={`${DISCOVER}/#pass`}>
+                                                <a className="mr-30" style={{ fontSize: '1.2em', color: 'black' }}>
+                                                    Pass Microcap
+                                                </a>
+                                            </HashLink>
+                                        </DropdownItem><DropdownItem>
+                                            <HashLink to={`${DISCOVER}/#pioniers`}>
+                                                <a className="mr-30" style={{ fontSize: '1.2em', color: 'black' }}>
+                                                    L'équipe
+                                                </a>
+                                            </HashLink>
+                                        </DropdownItem><DropdownItem>
+                                            <HashLink to={`${DISCOVER}/#agents`}>
                                                 <a className="mr-30" style={{ fontSize: '1.2em', color: 'black' }}>
                                                     Point d'accueil
                                                 </a>
@@ -90,7 +102,7 @@ const Discover = (props) => {
                                         </DropdownItem>
                                     </DropdownMenu>
                                 </UncontrolledDropdown>
-                                <HashLink to={`${DISCOVER}/#pass`}>
+                                <HashLink to={`${PASS_DETAILS}`}>
                                     <a className="mr-30" style={{ fontSize: '1.2em', color: 'black' }}>
                                         Pass microcap
                                     </a>
@@ -100,7 +112,7 @@ const Discover = (props) => {
                                         Gallerie projets
                                     </a>
                                 </Link>
-                                <HashLink to={`${DISCOVER}/#agents`}>
+                                <HashLink to={`${AGENTS}`}>
                                     <a className="mr-30" style={{ fontSize: '1.2em', color: 'black' }}>
                                         Réseau d'agent
                                     </a></HashLink>
@@ -126,7 +138,7 @@ const Discover = (props) => {
                         MicroCap est aujourd’hui un produit qui permet des services  que nous sommes fiers de présenter. Mais c’est d’abord un mouvement de cœur, de personnes originaires ou sympathisantes des pays du sud en général et de l’Afrique subsaharienne plus particulièrement.
                     </p>
                     <p>
-                        Depuis 2017, le mouvement ne cesse de grandir et compte aujourd’hui des contributeurs sur les 5 continent, des personnes grâce à qui nous pouvons vous proposer ce service. Rejoint le mouvement.
+                        Depuis 2017, le mouvement ne cesse de grandir et compte aujourd’hui des contributeurs sur les 5 continents, des personnes grâce à qui nous pouvons vous proposer ce service. <b>Rejoingez le mouvement.</b>
                     </p>
                     <h1 className="font-weight-bold text-black" style={{ fontSize: '2em', padding: '2%', textAlign: 'center' }}>
                         Nos pioniers
