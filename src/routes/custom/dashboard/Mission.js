@@ -43,7 +43,7 @@ export default class MoneyManagement extends Component {
             </p>
 
             <Link to={AUTH.REGISTER}>
-                <Button variant="contained" className="btn-primary mr-2 text-white">
+                <Button variant="contained" className="btn-primary mr-2">
                   Rejoignez nous
                 </Button>
               </Link>

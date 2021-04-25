@@ -119,7 +119,7 @@ const Discover = (props) => {
                                     <a className="mr-30" style={{ fontSize: '1.2em', color: 'black' }}>
                                         Réseau d'agent
                                     </a></HashLink>
-                                <Button variant="contained" className="btn-primary mr-2 text-white" onClick={onUserLogin}>
+                                <Button variant="contained" className="btn-primary mr-2" onClick={onUserLogin}>
                                     <IntlMessages id="auth.signin" />
                                 </Button>
                             </div>
@@ -152,7 +152,7 @@ const Discover = (props) => {
                                 <li className="list-inline-item overlay-wrap overflow-hidden rounded">
                                     <img src={getFilePath(item.file)} className="size-120 rounded img-fluid" alt="img" />
                                     <div className="overlay-content">
-                                        <a href="#" onClick={e => e.preventDefault()} className="d-flex align-items-center justify-content-center h-100 font-2x text-white">
+                                        <a href="#" onClick={e => e.preventDefault()} className="d-flex align-items-center justify-content-center h-100 font-2x">
                                             <i className="zmdi zmdi-download"></i>
                                         </a>
                                     </div>

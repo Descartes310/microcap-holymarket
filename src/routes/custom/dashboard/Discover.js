@@ -28,6 +28,11 @@ import { HashLink } from 'react-router-hash-link';
 import { Tooltip } from '@material-ui/core';
 import { getFilePath } from "Helpers/helpers";
 import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+import "./styles.css";
+import ScrollToTopBtn from "./ScrollToTop";
+import {
+	SocialFeedsWidget
+} from "Components/Widgets";
 
 const Discover = (props) => {
     const { loading, intl } = props;
@@ -137,7 +142,7 @@ const Discover = (props) => {
                                     <a className="mr-30" style={{ fontSize: '1.2em', color: 'black' }}>
                                         Réseau d'agent
                                     </a></HashLink>
-                                <Button variant="contained" className="btn-primary mr-2 text-white" onClick={onUserLogin}>
+                                <Button variant="contained" className="btn-primary mr-2" onClick={onUserLogin}>
                                     <IntlMessages id="auth.signin" />
                                 </Button>
                             </div>
@@ -174,7 +179,7 @@ const Discover = (props) => {
                                     <p> Rejoignez le réseau MicroCap, plus large, plus dynamique </p>
                                 </CardText>
                                 <Link to={GETIN}>
-                                    <Button variant="contained" className="btn-primary mr-2 text-white">
+                                    <Button variant="contained" className="btn-primary mr-2">
                                         Rejoindre Microcap
                                     </Button>
                                 </Link>
@@ -191,7 +196,7 @@ const Discover = (props) => {
                                     <p><span style={{ fontSize: '1.3em', color: '#ffce39', fontWeight: 'bold' }}>50 000€</span> à gagner pour démarrer !</p>
                                 </CardText>
                                 <Link to={SOLIDARITY}>
-                                    <Button variant="contained" className="btn-primary mr-2 text-white">
+                                    <Button variant="contained" className="btn-primary mr-2">
                                         Nos projets solidaires
                                     </Button>
                                 </Link>
@@ -207,7 +212,7 @@ const Discover = (props) => {
                                     <p>Vous pouvez aider vos proches dans cette situation à s’en sortir. </p>
                                 </CardText>
                                 <Link to={MONEY_MANAGEMENT}>
-                                    <Button variant="contained" className="btn-primary mr-2 text-white">
+                                    <Button variant="contained" className="btn-primary mr-2">
                                         Education financière
                                     </Button>
                                 </Link>
@@ -218,7 +223,7 @@ const Discover = (props) => {
 
 
                 <div
-                     className="row" style={{ paddingLeft: '10%', paddingRight: '10%', paddingTop: '2%', paddingBottom: '2%' }}
+                    className="row" style={{ paddingLeft: '10%', paddingRight: '10%', paddingTop: '2%', paddingBottom: '2%' }}
                 >
                     <Player
                         playsInline
@@ -300,7 +305,7 @@ const Discover = (props) => {
                                                             <li>Dépôt de garantie pour un bail &rarr; <em>90 jours</em></li>
                                                         </ul>
                                                         <p style={{ textAlign: 'justify', fontSize: '1.1em', lineHeight: 1.5, color: 'black', fontWeight: 'bold' }}>
-                                                            Utilisez votre réserve gratuitement sur 3 jours ! Au-delà, facturation d’un intérêt journalier. 
+                                                            Utilisez votre réserve gratuitement sur 3 jours ! Au-delà, facturation d’un intérêt journalier.
                                                         </p>
                                                     </p>
                                                 </div>
@@ -392,7 +397,7 @@ const Discover = (props) => {
                                             />
                                         </div>
                                         <div className="client-content">
-                                            <h4 className="fw-bold text-capitalize text-primary">Cautionnement bancaire</h4>
+                                            <h4 className="fw-bold text-capitalize">Cautionnement bancaire</h4>
                                             <p>Pour obtenir facilement un crédit auprès de votre établissement bancaire habituel.</p>
                                         </div>
                                     </div>
@@ -413,7 +418,7 @@ const Discover = (props) => {
                                             />
                                         </div>
                                         <div className="client-content">
-                                            <h4 className="fw-bold text-capitalize text-primary">Garantie des livraisons</h4>
+                                            <h4 className="fw-bold text-capitalize">Garantie des livraisons</h4>
                                             <p>Depuis votre espace personnel, profitez des préventes et des ventes privées de nos entrepreneurs. La livraison de vos commandes est garantie.  </p>
                                         </div>
                                     </div>
@@ -434,7 +439,7 @@ const Discover = (props) => {
                                             />
                                         </div>
                                         <div className="client-content">
-                                            <h4 className="fw-bold text-capitalize text-primary">Préfinancement du PIP</h4>
+                                            <h4 className="fw-bold text-capitalize">Préfinancement du PIP</h4>
                                             <p>Votre PIP MicroCap est destiné à la réalisation d’un projet. Vous pouvez obtenir à tout moment sous forme de crédit bancaire le capital que vous souhaitez constituer à terme sur votre PIP.</p>
                                         </div>
                                     </div>
@@ -455,7 +460,7 @@ const Discover = (props) => {
                                             />
                                         </div>
                                         <div className="client-content">
-                                            <h4 className="fw-bold text-capitalize text-primary">Cofinancement de projets</h4>
+                                            <h4 className="fw-bold text-capitalize">Cofinancement de projets</h4>
                                             <p>Les partenaires MicroCap sont des acteurs engagés qui partage nos valeurs et soutiennent notre création d’impact. Ils interviennent systématiquement en capital ou en quasi-fonds propres, sur les projets labellisés ESH de la plateforme.</p>
                                         </div>
                                     </div>
@@ -482,7 +487,7 @@ const Discover = (props) => {
                             Les produits financiers de nos partenaires dans chaque PASS se différencient sur les plafonds autorisés, les délais. <br />
                                 <b>Pour bénéficier des avantages exceptionnels ajoutez une option à votre PASS MicroCap</b></p> <br />
                             <Link to={PASS_DETAILS} style={{ marginTop: 20, marginBottom: 20, padding: 20 }}>
-                                <Button variant="contained" className="btn-primary mr-2 text-white" style={{ padding: 20 }}>
+                                <Button variant="contained" className="btn-primary mr-2" style={{ padding: 20 }}>
                                     Tout nos PASS
                                 </Button>
                             </Link>
@@ -501,7 +506,7 @@ const Discover = (props) => {
                         MicroCap est le fruit de l’investissement des hommes et de femmes engagés qui partagent nos valeurs de solidarité et de justice sociale. Ces personnes d’horizon divers apportent leur concours quotidiennement à notre développement : ce sont nos pionniers. Vous pouvez en faire partir et renforcer le mouvement, il vous suffit de prendre une option sur un abonnement MicroCap.
                     </p>
                     <p className="mt-40" style={{ color: 'black', fontSize: '1.1em', fontWeight: 'bold' }}>
-                        Pour vous servir et assurer la qualité du service, vous avez en responsabilité : 
+                        Pour vous servir et assurer la qualité du service, vous avez en responsabilité :
                     </p>
                     <div className="row justify-content-center">
                         {pioniers.filter(a => a.active == true).map(agent => (
@@ -525,6 +530,7 @@ const Discover = (props) => {
                                                 <p>{agent.post}</p>
                                                 <p>{agent.email}</p>
                                                 <p>{agent.phone}</p>
+                                                <p>{agent.about}</p>
                                             </div>
                                         </div>
                                     </RctCardContent>
@@ -535,7 +541,7 @@ const Discover = (props) => {
                 </div>
                 <div className="d-flex align-items-center justify-content-center mb-50">
                     <Link to={PIONIERS}>
-                        <Button variant="contained" className="btn-primary mr-2 text-white">
+                        <Button variant="contained" className="btn-primary mr-2">
                             Voir les pioniers
                         </Button>
                     </Link>
@@ -549,7 +555,7 @@ const Discover = (props) => {
 
                 <div className="container">
                     <p>
-                        Les services MicroCap sont 100% disponibles en ligne. Par soucis de proximité, nous nouons des conventions avec des structures offrant des capacités d’accueil physique pour vous informer ou vous assister : Ce sont les agents MicroCap communément appelé « communauté conventionnée » ou « communauté MicroCap ». Le réseau de communautés capable de vous accueillir croit tous les jours, n’hésitez pas à nous contacter par mail ou par téléphone pour avoir le point d’accueil le plus proche pour vous. 
+                        Les services MicroCap sont 100% disponibles en ligne. Par soucis de proximité, nous nouons des conventions avec des structures offrant des capacités d’accueil physique pour vous informer ou vous assister : Ce sont les agents MicroCap communément appelé « communauté conventionnée » ou « communauté MicroCap ». Le réseau de communautés capable de vous accueillir croit tous les jours, n’hésitez pas à nous contacter par mail ou par téléphone pour avoir le point d’accueil le plus proche pour vous.
                     </p>
                     <p className="mt-40" style={{ color: 'black', fontSize: '1.1em', fontWeight: 'bold' }}>
                         Ils ont récemment rejoint notre réseau d’agent :
@@ -576,6 +582,7 @@ const Discover = (props) => {
                                                 <p>{agent.email}</p>
                                                 <p>{agent.phone}</p>
                                                 <p>{agent.address}</p>
+                                                <p>{agent.about}</p>
                                             </div>
                                         </div>
                                     </RctCardContent>
@@ -587,7 +594,7 @@ const Discover = (props) => {
 
                 <div className="d-flex align-items-center justify-content-center mb-50">
                     <Link to={AGENTS}>
-                        <Button variant="contained" className="btn-primary mr-2 text-white">
+                        <Button variant="contained" className="btn-primary mr-2">
                             Voir les agents
                         </Button>
                     </Link>
@@ -647,7 +654,34 @@ const Discover = (props) => {
                                         <li><a className="activefooter">Suivez-nous</a></li>
                                         <li><a>Presse</a></li>
                                         <li><a>News letter</a></li>
-                                        <li><a>Réseaux sociaux</a></li>
+                                        <li>
+                                            <a>Réseaux sociaux</a>
+                                            <div className="social-card-wrapper">
+                                                <div className="row">
+                                                    <div className="col-sm-6 col-md-3 col-lg-3 w-xs-half-block">
+                                                        <SocialFeedsWidget
+                                                            type="facebook"
+                                                            icon="ti-facebook"
+                                                            link="https://www.facebook.com/MicroCap-104224985150023/"
+                                                        />
+                                                    </div>
+                                                    <div className="col-sm-6 col-md-3 col-lg-3 w-xs-half-block">
+                                                        <SocialFeedsWidget
+                                                            type="twitter"
+                                                            icon="ti-twitter"
+                                                            link="https://twitter.com/MicrocapService"
+                                                        />
+                                                    </div>
+                                                    <div className="col-sm-6 col-md-3 col-lg-3 w-xs-half-block">
+                                                        <SocialFeedsWidget
+                                                            type="linkedin"
+                                                            icon="ti-linkedin"
+                                                            link="https://www.linkedin.com/company/appmicrocap/"
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
                                     </ul>
                                 </div>
                             </div>
@@ -663,6 +697,7 @@ const Discover = (props) => {
                     </div>
 
                 </div>
+                <ScrollToTopBtn />
             </footer >
 
         </div >

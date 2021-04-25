@@ -83,7 +83,7 @@ const Signin = (props) => {
                                     <Button variant="contained" className="btn-light mr-2 p-10" onClick={onUserSignUp}>
                                         <IntlMessages id="auth.signup" />
                                     </Button>
-                                    <Button variant="contained" className="btn-primary mr-2 text-white p-10" onClick={onDiscoverClick}>
+                                    <Button variant="contained" className="btn-primary mr-2 p-10" onClick={onDiscoverClick}>
                                         Découvrir Microcap
                                     </Button>
                                 </div>

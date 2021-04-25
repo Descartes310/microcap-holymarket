@@ -116,7 +116,7 @@ const Discover = (props) => {
                                     <a className="mr-30" style={{ fontSize: '1.2em', color: 'black' }}>
                                         Réseau d'agent
                                     </a></HashLink>
-                                <Button variant="contained" className="btn-primary mr-2 text-white" onClick={onUserLogin}>
+                                <Button variant="contained" className="btn-primary mr-2" onClick={onUserLogin}>
                                     <IntlMessages id="auth.signin" />
                                 </Button>
                             </div>
@@ -166,6 +166,7 @@ const Discover = (props) => {
                                                 <p>{agent.post}</p>
                                                 <p>{agent.email}</p>
                                                 <p>{agent.phone}</p>
+                                                <p>{agent.about}</p>
                                             </div>
                                         </div>
                                     </RctCardContent>
