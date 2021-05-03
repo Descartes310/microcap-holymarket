@@ -14,4 +14,33 @@
       opacity: 1;
     }
   }
+
+  .footer {
+    text-align: right;
+    /* media queries */
+    @media  {
+      text-align: center;
+    }
+
+  }
+
+
+  .gapes-top {
+    margin-top: 15%;
+    margin-bottom: 5%;
+
+    @media  {
+      text-align: center;
+    } 
+
+    @media only screen and (max-width: 768px) {
+      
+    }
+
+  }
+
+  .gapes-between {
+    margin-top: 5%; 
+    margin-bottom: 5%; 
+  }
   
