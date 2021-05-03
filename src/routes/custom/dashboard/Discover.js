@@ -609,9 +609,9 @@ const Discover = (props) => {
                 <div className="overlay"></div>
                 <div className="container">
                     <div className="row row-pb-md">
-                        <div className="col-md-4 fh5co-widget">
+                        <div className="col-md-3 fh5co-widget">
                             <h3>A propos de MicroCap.</h3>
-                            <p style={{ color: "rgba(255, 255,255, 0.5)" }}>MicroCap est un service d’accompagnement des entrepreneurs proposé par :</p>
+                            <p style={{ marginTop: '5%', color: "rgba(255, 255,255, 0.5)" }}>MicroCap est un service d’accompagnement des entrepreneurs proposé par :</p>
                             <p style={{ color: "rgba(255, 255,255, 0.5)" }}>
                                 A+ Conseils SAS
                             </p>
@@ -621,41 +621,38 @@ const Discover = (props) => {
                             <p style={{ color: "rgba(255, 255,255, 0.5)" }}>
                                 93 000 BOBIGNY
                             </p>
-                            <h3>Contact</h3>
-                            <p style={{ color: "rgba(255, 255,255, 0.5)" }}>Email: </p>
-                            <p style={{ color: "rgba(255, 255,255, 0.5)" }}>Tel: 0811 030 089</p>
                         </div>
-                        <div className="col-md-8">
+                        <div className="col-md-9">
                             {/* <h3>Classes</h3> */}
                             <div className="row">
-                                <div className="col-md-4 col-sm-4 col-xs-6">
+                                <div className="col-md-3 col-sm-4 col-xs-6">
                                     <ul className="fh5co-footer-links">
                                         <li><a href="#" className="activefooter">Tout MicroCap</a></li>
-                                        <li><a onClick={() => props.history.push(MISSION)}>Mission et valeur</a></li>
+                                        <li><a style={{ marginTop: '15%', marginBottom: '5%' }} onClick={() => props.history.push(MISSION)}>Mission et valeur</a></li>
                                         <li><a onClick={() => props.history.push(VALUES)}>Réseau Microcap</a></li>
-                                        <li><a onClick={() => props.history.push(SERVICES)}>Le service Microcap</a></li>
+                                        <li><a style={{ marginTop: '5%', marginBottom: '5%' }} onClick={() => props.history.push(SERVICES)}>Le service Microcap</a></li>
                                         <li><a onClick={() => props.history.push(PIONIERS)}>Les pionniers</a></li>
-                                        <li><a onClick={() => props.history.push(AGENTS)}>Assistances</a></li>
+                                        <li><a style={{ marginTop: '5%', marginBottom: '5%' }} onClick={() => props.history.push(AGENTS)}>Assistances</a></li>
                                         <li><a>Faqs</a></li>
                                     </ul>
                                 </div>
 
-                                <div className="col-md-4 col-sm-4 col-xs-6">
+                                <div className="col-md-3 col-sm-4 col-xs-6">
                                     <ul className="fh5co-footer-links">
                                         <li><a href="#" className="activefooter">Informtions légales</a></li>
-                                        <li><a onClick={() => props.history.push(TERMS)}>CGU</a></li>
+                                        <li><a style={{ marginTop: '15%', marginBottom: '5%' }} onClick={() => props.history.push(TERMS)}>CGU</a></li>
                                         <li><a>CGV</a></li>
-                                        <li><a onClick={() => props.history.push(LEGAL_MENTION)}>Mentions légales</a></li>
+                                        <li><a style={{ marginTop: '5%', marginBottom: '5%' }}  onClick={() => props.history.push(LEGAL_MENTION)}>Mentions légales</a></li>
                                     </ul>
                                 </div>
 
-                                <div className="col-md-4 col-sm-4 col-xs-6">
+                                <div className="col-md-3 col-sm-4 col-xs-6">
                                     <ul className="fh5co-footer-links">
                                         <li><a className="activefooter">Suivez-nous</a></li>
-                                        <li><a>Presse</a></li>
+                                        <li style={{ marginTop: '15%', marginBottom: '5%' }}><a>Presse</a></li>
                                         <li><a>News letter</a></li>
                                         <li>
-                                            <a>Réseaux sociaux</a>
+                                            <a style={{ marginTop: '5%', marginBottom: '5%' }}>Réseaux sociaux</a>
                                             <div className="social-card-wrapper">
                                                 <div className="row">
                                                     <div className="col-sm-6 col-md-3 col-lg-3 w-xs-half-block">
@@ -684,15 +681,24 @@ const Discover = (props) => {
                                         </li>
                                     </ul>
                                 </div>
+
+                                <div className="col-md-3 col-sm-4 col-xs-6">
+                                    <ul className="fh5co-footer-links">
+                                        <h3>Contact</h3>
+                                        <li><p style={{ marginTop: '15%', marginBottom: '10%', color: "rgba(255, 255,255, 0.5)" }}>Email: </p></li>
+                                        <li><p style={{ color: "rgba(255, 255,255, 0.5)" }}>Tel: 0811 030 089</p></li>
+                                    </ul>
+                                </div>
+
                             </div>
                         </div>
                     </div>
 
                     <div className="row copyright">
                         <div className="col-md-12 text-center">
-                            <p style={{ marginTop: '30px' }}>
-                                <small className="block">&copy; 2021 | All Rights Reserved.</small>
-                            </p>
+                            <h4 style={{ marginTop: '30px' }}>
+                                <p className="block" >&copy; 2021 | All Rights Reserved.</p>
+                            </h4>
                         </div>
                     </div>
 
