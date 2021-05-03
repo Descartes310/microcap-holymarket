@@ -609,7 +609,7 @@ const Discover = (props) => {
                 <div className="overlay"></div>
                 <div className="container">
                     <div className="row row-pb-md">
-                        <div className="col-md-3 fh5co-widget">
+                        <div className="col-md-3 fh5co-widget gapes-mobile">
                             <h3>A propos de MicroCap.</h3>
                             <p style={{ marginTop: '5%', color: "rgba(255, 255,255, 0.5)" }}>MicroCap est un service d’accompagnement des entrepreneurs proposé par :</p>
                             <p style={{ color: "rgba(255, 255,255, 0.5)" }}>
@@ -618,41 +618,41 @@ const Discover = (props) => {
                             <p style={{ color: "rgba(255, 255,255, 0.5)" }}>
                                 7 PL du 11 Novembre 1918
                             </p>
-                            <p style={{ color: "rgba(255, 255,255, 0.5)", marginBottom: '5%' }}>
+                            <p style={{ color: "rgba(255, 255,255, 0.5)" }}>
                                 93 000 BOBIGNY
                             </p>
                         </div>
-                        <div className="col-md-9">
+                        <div className="col-md-9 gapes-mobile">
                             {/* <h3>Classes</h3> */}
                             <div className="row">
-                                <div className="col-md-3 col-sm-4 col-xs-6">
+                                <div className="col-md-3 col-sm-4 col-xs-6 gapes-bottom">
                                     <ul className="fh5co-footer-links">
-                                        <li><a href="#" className="activefooter">Tout MicroCap</a></li>
-                                        <li><a className="gapes-top" onClick={() => props.history.push(MISSION)}>Mission et valeur</a></li>
-                                        <li><a onClick={() => props.history.push(VALUES)}>Réseau Microcap</a></li>
-                                        <li><a className="gapes-between" onClick={() => props.history.push(SERVICES)}>Le service Microcap</a></li>
-                                        <li><a onClick={() => props.history.push(PIONIERS)}>Les pionniers</a></li>
-                                        <li><a className="gapes-between" onClick={() => props.history.push(AGENTS)}>Assistances</a></li>
-                                        <li><a style={{ marginBottom: '15%' }} >Faqs</a></li>
+                                        <h3>Tout MicroCap</h3>
+                                        <li><a className="gapes-top" onClick={() => props.history.push(MISSION)}><span className="ti-angle-right"/> Mission et valeur</a></li>
+                                        <li><a onClick={() => props.history.push(VALUES)}><span className="ti-angle-right"/> Réseau Microcap</a></li>
+                                        <li><a className="gapes-between" onClick={() => props.history.push(SERVICES)}><span className="ti-angle-right"/> Le service Microcap</a></li>
+                                        <li><a onClick={() => props.history.push(PIONIERS)}><span className="ti-angle-right"/> Les pionniers</a></li>
+                                        <li><a className="gapes-between" onClick={() => props.history.push(AGENTS)}><span className="ti-angle-right"/> Assistances</a></li>
+                                        <li><a><span className="ti-angle-right"/> Faqs</a></li>
                                     </ul>
                                 </div>
 
-                                <div className="col-md-3 col-sm-4 col-xs-6">
+                                <div className="col-md-3 col-sm-4 col-xs-6 gapes-bottom">
                                     <ul className="fh5co-footer-links">
-                                        <li><a href="#" className="activefooter">Informtions légales</a></li>
-                                        <li><a className="gapes-top" onClick={() => props.history.push(TERMS)}>CGU</a></li>
-                                        <li><a>CGV</a></li>
-                                        <li><a style={{ marginTop: '5%', marginBottom: '15%' }}  onClick={() => props.history.push(LEGAL_MENTION)}>Mentions légales</a></li>
+                                        <h3>Informations légales</h3>
+                                        <li><a className="gapes-top" onClick={() => props.history.push(TERMS)}><span className="ti-angle-right"/> CGU</a></li>
+                                        <li><a><span className="ti-angle-right"/> CGV</a></li>
+                                        <li><a  className="gapes-between" onClick={() => props.history.push(LEGAL_MENTION)}><span className="ti-angle-right"/> Mentions légales</a></li>
                                     </ul>
                                 </div>
 
-                                <div className="col-md-3 col-sm-4 col-xs-6 mb-20">
+                                <div className="col-md-3 col-sm-4 col-xs-6 gapes-bottom">
                                     <ul className="fh5co-footer-links">
-                                        <li><a className="activefooter">Suivez-nous</a></li>
-                                        <li><a className="gapes-top">Presse</a></li>
-                                        <li><a>News letter</a></li>
+                                        <h3>Suivez-nous</h3>
+                                        <li><a className="gapes-top"><span className="ti-angle-right"/> Presse</a></li>
+                                        <li><a><span className="ti-angle-right"/> News letter</a></li>
                                         <li>
-                                            <a className="gapes-between">Réseaux sociaux</a>
+                                            <a className="gapes-between"> <span className="ti-angle-right"/> Réseaux sociaux</a>
                                             <div className="social-card-wrapper">
                                                 <div className="row">
                                                     <div className="col-sm-6 col-md-3 col-lg-3 w-xs-half-block">
