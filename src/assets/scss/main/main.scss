@@ -704,5 +704,15 @@ ol.custom-list > li + li {
       }
 
     }
+
+    #mobile-center {
+      //display: none;
+      /*position: absolute;
+      left: 0;
+      top: -1000px;
+      right: 0;
+      background: #F4F7FA !important;
+      transition: all .4s;*/
+    }
   }
 }

@@ -23,21 +23,53 @@ const getHeight = () => {
 };
 
 
-function menu() {
-    const width = getWidth();
-    console.log("width => ", width);
-    if (width < 1200) {
-        const mainNav = document.getElementById('main-nav');
-        const mobileNav = document.getElementById('mobile-nav');
+/*
+Element to slide gets the following CSS:
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease 0s;
+*/
 
-        mainNav.classList.toggle('main-nav-opened');
-        mobileNav.classList.toggle('main-nav-opened');
-    }
+/**
+ * Like jQuery's slideDown function - uses CSS3 transitions
+ * @param  {Node} elem Element to show and hide
+ */
+function slideDown(elem) {
+    elem.style.maxHeight = '1000px';
+    // We're using a timer to set opacity = 0 because setting max-height = 0 doesn't (completely) hide the element.
+    elem.style.opacity   = '1';
 }
 
+/**
+ * Slide element up (like jQuery's slideUp)
+ * @param  {Node} elem Element
+ * @return {[type]}      [description]
+ */
+function slideUp(elem) {
+    elem.style.maxHeight = '0';
+    once( 1, function () {
+        elem.style.opacity = '0';
+    });
+}
+
+/**
+ * Call once after timeout
+ * @param  {Number}   seconds  Number of seconds to wait
+ * @param  {Function} callback Callback function
+ */
+function once (seconds, callback) {
+    var counter = 0;
+    var time = window.setInterval( function () {
+        counter++;
+        if ( counter >= seconds ) {
+            callback();
+            window.clearInterval( time );
+        }
+    }, 400 );
+}
 
 class DiscoverMenu extends Component {
-
     constructor(props) {
         super(props);
         this.state = {
@@ -45,9 +77,10 @@ class DiscoverMenu extends Component {
         }
     }
 
-
     componentDidMount() {
-        window.addEventListener('resize', this.resize)
+        window.addEventListener('resize', this.resize);
+        const menuToggler = document.getElementById('menu-toggler');
+        this.onTogglerClick(menuToggler);
     }
 
     componentWillUnmount() {
@@ -58,12 +91,21 @@ class DiscoverMenu extends Component {
         this.setState({width: getWidth()})
     };
 
+    onTogglerClick = (menuToggler) => {
+        const mobileContent = document.getElementById('mobile-center');
+        mobileContent.style.transition = "all 1s ease-in-out";
+        let isActive = menuToggler.classList.contains('active');
+
+        const f = !isActive ? slideUp : slideDown;
+        f(mobileContent)
+    };
+
 
     render() {
         // const width = getWidth();
         const { width } = this.state;
         const isMainNav = width > MAX_MOBILE_SCREEN_WIDTH;
-        console.log("width => ", width);
+
         return (
             <section id="nav">
                 <nav
@@ -127,15 +169,17 @@ class DiscoverMenu extends Component {
 
                         <div
                             className="menu-toggler"
-                            onClick={function (event) {
-                                event.currentTarget.classList.toggle('active')
+                            id="menu-toggler"
+                            onClick={event => {
+                                event.currentTarget.classList.toggle('active');
+                                this.onTogglerClick(event.currentTarget);
                             }}
                         >
                             <div><span /></div>
                         </div>
                     </div>
 
-                    <div className="row">
+                    <div id="mobile-center">
                         <ul className="">
                             <li className="nav-item nav-item-border" style={{marginRight:"30px"}}>
                                 <HashLink to={`${PASS_DETAILS}`}>
