@@ -33,29 +33,15 @@ import ScrollToTopBtn from "./ScrollToTop";
 import {
 	SocialFeedsWidget
 } from "Components/Widgets";
-
-
-
+import DiscoverMenu from "Routes/custom/dashboard/DiscoverMenu";
 
 const Discover = (props) => {
-    
+
     const { loading, intl } = props;
     const [data, setData] = useState([]);
     const [onCollapse, setOnCollapse] = useState(false);
     const [pioniers, setPioniers] = useState([]);
     const [dropdownOpen, setDropdownOpen] = useState(false);
-
-
-
-    /**
-     * On navigate to Discover Microcap
-     */
-
-    const toggle = () => setDropdownOpen(prevState => !prevState);
-
-    const onUserLogin = () => {
-        props.history.push(AUTH.LOGIN);
-    };
 
     document.body.style.overflow = "auto";
 
@@ -68,14 +54,6 @@ const Discover = (props) => {
         })
     }, []);
 
-    const displayMenu = () =>{
-        if (onCollapse === false){
-        setOnCollapse(true)
-        } else {
-            setOnCollapse(false)
-        }
-    }
-
 
     return (
         <div>
@@ -83,98 +61,9 @@ const Discover = (props) => {
             <div className={'global-loader'}>
                 {loading && <LinearProgress />}
             </div>
-            
-            <nav className="navbar navbar-expand-lg  navbar-light bg-light fixed-top scrolling-navbar" id="navbar" >
-                <div className="container">
-                    <div className="session-logo">
-                        <Link to={HOME}>
-                            <img src={AppConfig.appLogo} alt="session-logo" className="img-fluid" width="110" height="35" />
-                        </Link>
-                    </div>
-                    <button onClick={displayMenu} className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent"
-                            aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
-                            <span className="navbar-toggler-icon"></span>
-                    </button>
-                    <div className={onCollapse ? "navbar-collapse collapse" : "navbar-collapse"} id="navbarContent">
-                        <ul className="navbar-nav ml-auto">
-                            <Dropdown isOpen={dropdownOpen} toggle={toggle} style={{marginRight:"30px"}} className="nav-item-border">
-                                <DropdownToggle style={{background: "none", color: "lightslategray", border:"none", boxShadow: "none"}}>
-                                    Découvir
-                                    <img class="inline-nav-arrow" src="https://sqy7rm.media.zestyio.com/Downward-Carat.svg" alt="Downward arrow"></img>
-                                </DropdownToggle>
-                                <DropdownMenu>
-                                    <DropdownItem>
-                                        <HashLink to={`${DISCOVER}/#produits`}>
-                                            <a className="mr-30" style={{ fontSize: '1.2em', color: 'black' }}>
-                                                Produits pour se financer
-                                            </a>
-                                        </HashLink>
-                                    </DropdownItem>
-                                    <DropdownItem>
-                                        <HashLink to={`${DISCOVER}/#investir`}>
-                                            <a className="mr-30" style={{ fontSize: '1.2em', color: 'black' }}>
-                                                Produits pour investir
-                                            </a>
-                                        </HashLink>
-                                    </DropdownItem>
-                                    <DropdownItem>
-                                        <HashLink to={`${DISCOVER}/#services`}>
-                                            <a className="mr-30" style={{ fontSize: '1.2em', color: 'black' }}>
-                                                Produits des Partenaires
-                                            </a>
-                                        </HashLink>
-                                    </DropdownItem>
-                                    
-                                    <DropdownItem>
-                                        <HashLink to={`${DISCOVER}/#pass`}>
-                                            <a className="mr-30" style={{ fontSize: '1.2em', color: 'black' }}>
-                                                Pass Microcap
-                                            </a>
-                                        </HashLink>
-                                    </DropdownItem>
-                                    <DropdownItem>
-                                        <HashLink to={`${DISCOVER}/#pioniers`}>
-                                            <a className="mr-30" style={{ fontSize: '1.2em', color: 'black' }}>
-                                                L'équipe
-                                            </a>
-                                        </HashLink>
-                                    </DropdownItem>
-                                    <DropdownItem>
-                                        <HashLink to={`${DISCOVER}/#agents`}>
-                                            <a className="mr-30" style={{ fontSize: '1.2em', color: 'black' }}>
-                                                Point d'accueil
-                                            </a>
-                                        </HashLink>
-                                    </DropdownItem>
-                                </DropdownMenu>
-                            </Dropdown>
-                            <li className="nav-item nav-item-border" style={{marginRight:"30px"}}>
-                                <HashLink to={`${PASS_DETAILS}`}>
-                                    <a className="nav-link" href="#">
-                                        Pass microcap
-                                    </a>
-                                </HashLink>       
-                            </li>
-                            <li className="nav-item nav-item-border" style={{marginRight:"30px"}}>
-                                <Link to={GALERY_PROJECT}>
-                                    <a className="nav-link" href="#">Gallerie projets</a>
-                                </Link>
-                            </li>
-                            <li className="nav-item nav-item-border" style={{marginRight:"30px"}}>
-                                <HashLink to={`${AGENTS}`}> 
-                                    <a className="nav-link" href="#">Réseau d'agent</a>
-                                </HashLink>
-                            </li>
-                            <Button variant="contained" className="btn-primary mr-2" onClick={onUserLogin}>
-                                <IntlMessages id="auth.signin" />
-                            </Button>
-                         </ul>{/*<a className="btn btn-primary btn-rounded my-0"
-                            href="https://templateflip.com/templates/material-landing" target="_blank">Download</a> */}
-                    </div>
-                </div>
-            </nav>
-            
-            
+
+            <DiscoverMenu />
+
             <div className="session-inner-wrapper video-player-wrapper">
                 <div style={{ height: '35vh', backgroundImage: `url(${headerImg})`, backgroundSize: 'cover' }}>
                     <p style={{ paddingTop: '17vh', textAlign: 'center', marginLeft: '10%' }}>
