@@ -517,8 +517,15 @@ ol.custom-list > li + li {
   list-style: none;
   transition: all .4s;
 
-  &:hover {
+  &:not(.no-link):hover {
     transform: translateX(5px);
+  }
+
+  &.no-link {
+    &:hover a {
+      cursor: initial !important;
+      color: rgba(255, 255, 255, 0.5) !important;
+    }
   }
 }
 

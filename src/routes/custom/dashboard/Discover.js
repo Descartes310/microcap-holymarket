@@ -605,8 +605,8 @@ const Discover = (props) => {
                 </RctCard> */}
             </div>
             {/* </div> */}
-            <footer id="fh5co-footer" className="fh5co-bg" role="contentinfo">
-                <div className="overlay"></div>
+            <footer id="fh5co-footer" className="fh5co-bg pb-0" role="contentinfo">
+                <div className="overlay" />
                 <div className="container">
                     <div className="row row-pb-md">
                         <div className="col-md-3 fh5co-widget gapes-mobile">
@@ -651,7 +651,7 @@ const Discover = (props) => {
                                         <h3>Suivez-nous</h3>
                                         <li><a className="gapes-top"><span className="ti-angle-right"/> Presse</a></li>
                                         <li><a><span className="ti-angle-right"/> News letter</a></li>
-                                        <li>
+                                        <li className="no-link">
                                             <a className="gapes-between"> <span className="ti-angle-right"/> Réseaux sociaux</a>
                                             <div className="social-card-wrapper">
                                                 <div className="row">
@@ -693,16 +693,13 @@ const Discover = (props) => {
                             </div>
                         </div>
                     </div>
-                    <div className="container">
-                        <div className="row copyright">
-                            <div className="col-md-12 text-center">
-                                <h4 style={{ marginTop: '30px' }}>
-                                    <p style={{ color: "rgba(255, 255,255, 0.5)" }} size = '0.9em' >&copy; 2021 | All Rights Reserved.</p>
-                                </h4>
-                            </div>
+                </div>
+                <div className="bg-black">
+                    <div className="row copyright">
+                        <div className="col-md-12 text-center text-white py-25">
+                            <h4>&copy; 2021 | All Rights Reserved.</h4>
                         </div>
                     </div>
-
                 </div>
                 <ScrollToTopBtn />
             </footer >
