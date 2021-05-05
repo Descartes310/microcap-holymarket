@@ -34,9 +34,14 @@ import {
 	SocialFeedsWidget
 } from "Components/Widgets";
 
+// import { makeStyles } from '@material-ui/core/styles';
+// import DialogTitle from '@material-ui/core/DialogTitle';
+// import Dialog from '@material-ui/core/Dialog';
+
 const Discover = (props) => {
     const { loading, intl } = props;
     const [data, setData] = useState([]);
+    const [viewVideo, setViewVideo] = useState(false);
     const [pioniers, setPioniers] = useState([]);
     /**
      * On navigate to Discover Microcap
@@ -220,6 +225,26 @@ const Discover = (props) => {
                         </Card>
                     </div>
                 </div>
+
+
+                <div className="row video-section">
+                    <div className="col-md-6">
+                        <p>
+                            Microcap vous accompagne dans la réalisation de votre projet:  création ou développement d’entreprise, actionnariat, formation à l’entrepreneuriat ...<br />
+                            <Link to={AUTH.REGISTER} style={{ color: '#e19d00' }}>İnscrivez-vous</Link> et choississez l’abonnement qui vous correspond parmi <Link to={PASS_DETAILS} style={{ color: '#e19d00' }}>nos PASS</Link>
+                        </p>
+                    </div>
+                    <div className="col-md-6">
+                        <div className="img-wrapper">
+                            <img src={require('Assets/img/microcap.png')} alt="" className="img-fluid"/>
+                        </div>
+                    </div>
+                </div>
+
+                {/*<VideoModal
+                    open={viewVideo}
+                    onClose={() => setViewVideo(false)}
+                />*/}
 
 
                 <div
@@ -752,3 +777,13 @@ const mapStateToProps = ({ requestGlobalLoader }) => {
 };
 
 export default connect(mapStateToProps, {})(injectIntl(Discover));
+
+
+const VideoModal = () => {
+    return (
+        <div>
+            VideoModal;
+        </div>
+    );
+};
+
