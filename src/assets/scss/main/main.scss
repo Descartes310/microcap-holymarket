@@ -548,6 +548,65 @@ ol.custom-list > li + li {
   display: block;
 }
 
+.inline-nav-arrow{
+  margin-left: 10px;
+  transform: rotate(180deg);
+}
+
+.inline-nav-arrow:hover{
+  margin-left: 10px;
+  transform: rotate(0);
+  transition: transform 500ms;
+}
+
+.nav-item-border{
+  border: none;
+}
+
+.nav-item-border:hover{
+  border-bottom: solid #e8a200 1px;
+  transform: translateX(50px, 0);
+  transition: transform 500ms;
+  animation:example 2s;
+ 
+}
 
 
+@keyframes example {
+  0%   {border-bottom-color: #e8a200; left:0px; top:0px; right:0px; bottom:0px;}
+  25%  {border-bottom-color: #e8a200; left:0px; top:0px; right:5px; bottom:0px;}
+  50%  {border-bottom-color: #e8a200; left:0px; top:0px; right:10px; bottom:0px;}
+  100% {border-bottom-color: #e8a200; left:0px; top:0px; right:15px; bottom:0px;}
+}
+
+#navbarContent {
+  transition: all .5s;
+
+  &.animated {
+    animation: fadeIn 1s ease-in both;
+  }
+
+  &.mobile {
+    position: absolute;
+    top: 0;
+    opacity: 0;
+  }
+
+  &.mobile-visible {
+    opacity: 1;
+    bottom: 0;
+    top: unset;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -20%, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
 
