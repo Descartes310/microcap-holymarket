@@ -241,7 +241,11 @@ const Discover = (props) => {
                 </div>
 
                 <div className="product-section-title" id='produits'>
-                    <h2 className="font-weight-bold text-white text-center" style={{ fontSize: '3em', padding: '4%' }}>
+                    <h2
+                        data-aos="fade-down"
+                        style={{ fontSize: '3em', padding: '4%' }}
+                        className="font-weight-bold text-white text-center"
+                    >
                         Produits pour se financer
                     </h2>
                 </div>
@@ -324,7 +328,11 @@ const Discover = (props) => {
                 </div>
 
                 <div className="product-section-title" id='investir'>
-                    <h2 className="font-weight-bold text-white text-center" style={{ fontSize: '3em', padding: '4%' }}>
+                    <h2
+                        data-aos="fade-down"
+                        style={{ fontSize: '3em', padding: '4%' }}
+                        className="font-weight-bold text-white text-center"
+                    >
                         Produits pour investir
                     </h2>
                 </div>
