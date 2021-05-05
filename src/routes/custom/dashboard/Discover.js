@@ -609,18 +609,13 @@ const Discover = (props) => {
                 <div className="overlay" />
                 <div className="container">
                     <div className="row row-pb-md">
-                        <div className="col-md-3 fh5co-widget gapes-mobile">
-                            <h3>A propos de MicroCap.</h3>
-                            <p style={{ marginTop: '5%', color: "rgba(255, 255,255, 0.5)" }}>MicroCap est un service d’accompagnement des entrepreneurs proposé par :</p>
-                            <p style={{ color: "rgba(255, 255,255, 0.5)" }}>
-                                A+ Conseils SAS
-                            </p>
-                            <p style={{ color: "rgba(255, 255,255, 0.5)" }}>
-                                7 PL du 11 Novembre 1918
-                            </p>
-                            <p style={{ color: "rgba(255, 255,255, 0.5)" }}>
-                                93 000 BOBIGNY
-                            </p>
+                        <div className="col-md-3 fh5co-widget">
+                            <ul className="fh5co-footer-links">
+                                <h3>A propos de MicroCap</h3>
+                                <p className="font-size-medium">
+                                    MicroCap est un service d’accompagnement des entrepreneurs proposé par: <strong>A+ Conseils SAS</strong>, 7 PL du 11 Novembre 1918, 93 000 BOBIGNY.
+                                </p>
+                            </ul>
                         </div>
                         <div className="col-md-9 gapes-mobile">
                             {/* <h3>Classes</h3> */}
@@ -628,11 +623,11 @@ const Discover = (props) => {
                                 <div className="col-md-3 col-sm-4 col-xs-6 gapes-bottom">
                                     <ul className="fh5co-footer-links">
                                         <h3>Tout MicroCap</h3>
-                                        <li><a className="gapes-top" onClick={() => props.history.push(MISSION)}><span className="ti-angle-right"/> Mission et valeur</a></li>
+                                        <li><a onClick={() => props.history.push(MISSION)}><span className="ti-angle-right"/> Mission et valeur</a></li>
                                         <li><a onClick={() => props.history.push(VALUES)}><span className="ti-angle-right"/> Réseau Microcap</a></li>
-                                        <li><a className="gapes-between" onClick={() => props.history.push(SERVICES)}><span className="ti-angle-right"/> Le service Microcap</a></li>
+                                        <li><a className="" onClick={() => props.history.push(SERVICES)}><span className="ti-angle-right"/> Le service Microcap</a></li>
                                         <li><a onClick={() => props.history.push(PIONIERS)}><span className="ti-angle-right"/> Les pionniers</a></li>
-                                        <li><a className="gapes-between" onClick={() => props.history.push(AGENTS)}><span className="ti-angle-right"/> Assistances</a></li>
+                                        <li><a className="" onClick={() => props.history.push(AGENTS)}><span className="ti-angle-right"/> Assistances</a></li>
                                         <li><a><span className="ti-angle-right"/> Faqs</a></li>
                                     </ul>
                                 </div>
@@ -640,25 +635,26 @@ const Discover = (props) => {
                                 <div className="col-md-3 col-sm-4 col-xs-6 gapes-bottom">
                                     <ul className="fh5co-footer-links">
                                         <h3>Informations légales</h3>
-                                        <li><a className="gapes-top" onClick={() => props.history.push(TERMS)}><span className="ti-angle-right"/> CGU</a></li>
+                                        <li><a onClick={() => props.history.push(TERMS)}><span className="ti-angle-right"/> CGU</a></li>
                                         <li><a><span className="ti-angle-right"/> CGV</a></li>
-                                        <li><a  className="gapes-between" onClick={() => props.history.push(LEGAL_MENTION)}><span className="ti-angle-right"/> Mentions légales</a></li>
+                                        <li><a onClick={() => props.history.push(LEGAL_MENTION)}><span className="ti-angle-right"/> Mentions légales</a></li>
                                     </ul>
                                 </div>
 
                                 <div className="col-md-3 col-sm-4 col-xs-6 gapes-bottom">
                                     <ul className="fh5co-footer-links">
                                         <h3>Suivez-nous</h3>
-                                        <li><a className="gapes-top"><span className="ti-angle-right"/> Presse</a></li>
+                                        <li><a><span className="ti-angle-right"/> Presse</a></li>
                                         <li><a><span className="ti-angle-right"/> News letter</a></li>
                                         <li className="no-link">
-                                            <a className="gapes-between"> <span className="ti-angle-right"/> Réseaux sociaux</a>
+                                            <a> <span className="ti-angle-right"/> Réseaux sociaux</a>
                                             <div className="social-card-wrapper">
                                                 <div className="row">
                                                     <div className="col-sm-6 col-md-3 col-lg-3 w-xs-half-block">
                                                         <SocialFeedsWidget
                                                             type="facebook"
                                                             icon="ti-facebook"
+                                                            className="icon-social icon-hover"
                                                             link="https://www.facebook.com/MicroCap-104224985150023/"
                                                         />
                                                     </div>
@@ -666,6 +662,7 @@ const Discover = (props) => {
                                                         <SocialFeedsWidget
                                                             type="twitter"
                                                             icon="ti-twitter"
+                                                            className="icon-social icon-hover"
                                                             link="https://twitter.com/MicrocapService"
                                                         />
                                                     </div>
@@ -673,6 +670,7 @@ const Discover = (props) => {
                                                         <SocialFeedsWidget
                                                             type="linkedin"
                                                             icon="ti-linkedin"
+                                                            className="icon-social icon-hover"
                                                             link="https://www.linkedin.com/company/appmicrocap/"
                                                         />
                                                     </div>
@@ -682,11 +680,27 @@ const Discover = (props) => {
                                     </ul>
                                 </div>
 
-                                <div className="col-md-3 col-sm-4 col-xs-6">
+                                <div className="col-md-3 col-sm-4 col-xs-6 contact">
                                     <ul className="fh5co-footer-links">
                                         <h3>Contact</h3>
-                                        <li><p className="gapes-top" style={{ color: "rgba(255, 255,255, 0.5)" }}>Email: </p></li>
-                                        <li><p style={{ color: "rgba(255, 255,255, 0.5)" }}>Tel: 0811 030 089</p></li>
+                                        <li className="no-link">
+                                            <a
+                                                href="mailto:contact@microcap.fr"
+                                                className="m-0 d-inline-block icon-text center-ver">
+                                                    <i className="material-icons icon mr-2 icon-rounded-bg">mail</i>
+                                                    {/*<i className="icon ti-email mr-2 icon-rounded-bg" />*/}
+                                                    <span>Contact@microcap.fr</span>
+                                            </a>
+                                        </li>
+                                        <li className="no-link mt-2">
+                                            <a
+                                                href="tel:+330811030089"
+                                                className="m-0 d-inline-block icon-text center-ver">
+                                                <i className="material-icons icon mr-2 icon-rounded-bg">call</i>
+                                                {/*<i className="material-icons icon ti-android mr-2 icon-rounded-bg" />*/}
+                                                <span>+33 0811 030 089</span>
+                                            </a>
+                                        </li>
                                     </ul>
                                 </div>
 
