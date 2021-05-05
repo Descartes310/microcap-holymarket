@@ -240,71 +240,75 @@ const Discover = (props) => {
                     </p> */}
                 </div>
 
-                <div style={{ backgroundColor: '#eeeeee', marginTop: '7vh' }} id='produits'>
-                    <h1 className="font-weight-bold text-black text-center" style={{ fontSize: '3em', padding: '4%' }}>
+                <div className="product-section-title" id='produits'>
+                    <h2 className="font-weight-bold text-white text-center" style={{ fontSize: '3em', padding: '4%' }}>
                         Produits pour se financer
-                    </h1>
+                    </h2>
                 </div>
 
-                <div className="container">
+                <div className="container discover-products">
                     <div className="row justify-content-center">
                         <div className="col-sm-11">
                             <div className="center-hor-ver session-body text-center">
                                 <div className="row discover">
                                     <div className="col-sm-12 discover-block">
-                                        <div className="discover-content" style={{ marginTop: '7vh', marginBottom: '7vh' }}>
-                                            <div className="row align-items-center">
-                                                <div className="col-md-4">
-                                                    <img className="img-fluid" src={require('Assets/img/money.jpg')} alt="" />
+                                        <div className="discover-content">
+                                            <div className="row align-items-center justify-content-lg-between">
+                                                <div className="col-md-5" data-aos="fade-right">
+                                                    <img className="img-fluid" src={require('Assets/img/large/compressed/money.png')} alt="" />
                                                 </div>
-                                                <div className="col-md-8">
-                                                    <h1 style={{ textAlign: 'left', width: '70%' }}>PIP MicroCap, un compte qui conte des comptes et qui atteste de votre capacité financière</h1>
-                                                    <p style={{ textAlign: 'justify', fontSize: '1.1em', lineHeight: 2, marginTop: 20 }}>
+                                                <div className="col-md-5 mt-sm-4" data-aos="fade-left">
+                                                    <h4>PIP MicroCap, un compte qui conte des comptes et qui atteste de votre capacité financière</h4>
+                                                    <p className="p-block">
                                                         {/* <h2>Un compte qui conte des comptes</h2> */}
-                                                        <p style={{ textAlign: 'justify', fontSize: '0.9em', lineHeight: 1.5, }}>
+                                                        <p>
                                                             Le Plan d’Investissement Programmé (PIP) MicroCap est un compte agrégateur qui indique votre épargne ESH disponible auprès de nos partenaires. . Il reproduit fidèlement l’évolution de l’ensemble de vos comptes ESH: versement, intérêts …
                                                         </p>
-                                                        <p style={{ textAlign: 'justify', fontSize: '0.9em', lineHeight: 1.5, }}>
+                                                        <p>
                                                             Le PIP MicroCap constitue une capacité financière qui vous sert de sureté pour cautionner les membres du réseau. Vous constituez ainsi progressivement votre propre réseau de solidarité qui vous soutiendra  en retour lors d’une future demande de financement
                                                         </p>
-                                                        <p style={{ textAlign: 'justify', fontSize: '1em', lineHeight: 1.5, color: 'black', fontWeight: 'bold' }}>
+                                                        <p className="p-end">
                                                             Le PIP MicroCap donne du sens et de la puissance à votre épargne ESH.
                                                         </p>
                                                     </p>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="discover-content" style={{ marginTop: '5%', marginBottom: '7%' }}>
-                                            <div className="row align-items-center">
-                                                <div className="col-md-8">
-                                                    <h1 style={{ textAlign: 'right' }}>La carte ESH, pour protéger votre pouvoir d'achat </h1>
-                                                    <p style={{ textAlign: 'justify', fontSize: '1em', lineHeight: 1.5, marginTop: 20 }}>
-                                                        Adossée à votre PIP MicroCap, la carte Emploi-Santé-Habitat vous permet de gagner des services gratuit pour chaque investissement réalisé sur les projets de la plateforme MicroCap. Bénéficiez de droits à la formation, de facilités pour l’insertion ou la reconversion professionnelle, de soins de santé, d’un hébergement. Vos droits aux services gratuit sont valables auprès de tous les entrepreneurs sous convention avec MicroCap.
-                                                    </p>
-                                                    <p style={{ textAlign: 'justify', fontSize: '1.1em', lineHeight: 1.5, color: 'black', fontWeight: 'bold' }}>
-                                                        Accédez gratuitement à des services essentiels : insertion ou conversion professionnelle, soins de santé, logement décent.
+                                        <div className="discover-content">
+                                            <div className="row align-items-center justify-content-lg-between">
+                                                <div className="col-md-5 mt-sm-4 order-2 order-md-1" data-aos="fade-up-right">
+                                                    <h4>La carte ESH, pour protéger votre pouvoir d'achat </h4>
+                                                    <p className="p-block">
+                                                        <p>
+                                                            Adossée à votre PIP MicroCap, la carte Emploi-Santé-Habitat vous permet de gagner des services gratuit pour chaque investissement réalisé sur les projets de la plateforme MicroCap. Bénéficiez de droits à la formation, de facilités pour l’insertion ou la reconversion professionnelle, de soins de santé, d’un hébergement. Vos droits aux services gratuit sont valables auprès de tous les entrepreneurs sous convention avec MicroCap.
+                                                        </p>
+                                                        <p className="p-end">
+                                                            Accédez gratuitement à des services essentiels : insertion ou conversion professionnelle, soins de santé, logement décent.
+                                                        </p>
                                                     </p>
                                                 </div>
-                                                <div className="col-md-4">
-                                                    <img className="img-fluid" src={require('Assets/img/card-w.jpg')} alt="" />
+                                                <div className="col-md-5 order-sm-first order-md-2 order-1" data-aos="fade-up-left">
+                                                    <img className="img-fluid" src={require('Assets/img/large/compressed/card.png')} alt="" />
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="discover-content" style={{ marginTop: '5%', marginBottom: '7%' }}>
-                                            <div className="row align-items-center">
-                                                <div className="col-md-4">
-                                                    <img className="img-fluid" src={require('Assets/img/credit.jpg')} alt="" />
+                                        <div className="discover-content">
+                                            <div className="row align-items-center justify-content-lg-between">
+                                                <div className="col-md-5" data-aos="fade-down-right">
+                                                    <img className="img-fluid" src={require('Assets/img/large/compressed/cash-out.png')} alt="" />
                                                 </div>
-                                                <div className="col-md-8">
-                                                    <h1 style={{ textAlign: 'left' }}>La reserve Microcap</h1>
-                                                    <p style={{ textAlign: 'justify', fontSize: '1em', lineHeight: 1.5, marginTop: 20 }}>
-                                                        Fort de son engagement pour une finance plus vertueuse,  MicroCap vous protège de la surconsommation et négocie pour vous auprès de ses partenaires. Chaque compte ESH est associé à une ligne de crédit renouvelable : la réserve ESH. La réserve MicroCap, sur le modèle du PIP MicroCap, est le compte agrégateur de vos réserves ESH qui vous donne droit à une trésorerie de dépannage sur du très court terme (1-90 jours), destinée à pourvoir aux besoins essentiels. La réserve MicroCap est une facilité de trésorerie sous forme de crédit d’urgence ou d’avance sur revenu certains. Elle est utilisable sur une durée prédéfinie pour les services autorisés :  <br />
-                                                        <ul style={{ paddingLeft: 40, fontSize: '1em' }}>
+                                                <div className="col-md-5" data-aos="fade-down-left">
+                                                    <h4>La reserve Microcap</h4>
+                                                    <p className="p-block">
+                                                        <p>
+                                                            Fort de son engagement pour une finance plus vertueuse,  MicroCap vous protège de la surconsommation et négocie pour vous auprès de ses partenaires. Chaque compte ESH est associé à une ligne de crédit renouvelable : la réserve ESH. La réserve MicroCap, sur le modèle du PIP MicroCap, est le compte agrégateur de vos réserves ESH qui vous donne droit à une trésorerie de dépannage sur du très court terme (1-90 jours), destinée à pourvoir aux besoins essentiels. La réserve MicroCap est une facilité de trésorerie sous forme de crédit d’urgence ou d’avance sur revenu certains. Elle est utilisable sur une durée prédéfinie pour les services autorisés :  <br />
+                                                        </p>
+                                                        <ul className="p-list ml-40">
                                                             <li>Transfert d’argent vers des réseaux partenaires &rarr; <em>5 jours</em></li>
                                                             <li>Règlement de tout commerçant ou de tout prestataire conventionné &rarr; <em>15 à 30 jours</em></li>
                                                             <li>Dépôt de garantie pour un bail &rarr; <em>90 jours</em></li>
                                                         </ul>
-                                                        <p style={{ textAlign: 'justify', fontSize: '1.1em', lineHeight: 1.5, color: 'black', fontWeight: 'bold' }}>
+                                                        <p className="p-end">
                                                             Utilisez votre réserve gratuitement sur 3 jours ! Au-delà, facturation d’un intérêt journalier.
                                                         </p>
                                                     </p>
@@ -319,52 +323,63 @@ const Discover = (props) => {
                     </div>
                 </div>
 
-                <div style={{ backgroundColor: '#eeeeee', marginTop: '7vh' }} id='investir'>
-                    <h1 className="font-weight-bold text-black text-center" style={{ fontSize: '3em', padding: '4%' }}>
+                <div className="product-section-title" id='investir'>
+                    <h2 className="font-weight-bold text-white text-center" style={{ fontSize: '3em', padding: '4%' }}>
                         Produits pour investir
-                    </h1>
+                    </h2>
                 </div>
 
-                <div className="container">
+                <div className="container discover-products">
                     <div className="row justify-content-center">
                         <div className="col-sm-11">
                             <div className="center-hor-ver session-body text-center">
                                 <div className="row discover">
-                                    <div className="col-sm-12 discover-block"></div>
-                                    <div className="discover-content" style={{ marginTop: '5%', marginBottom: '7%' }}>
-                                        <div className="row align-items-center">
-                                            <div className="col-md-8">
-                                                <h1 style={{ textAlign: 'right' }}>La Liga, Investir en toute sérénité : Capital garantie</h1>
-                                                <p style={{ textAlign: 'justify', fontSize: '1.2em', lineHeight: 2, marginTop: 20 }}>
-                                                    <p style={{ textAlign: 'justify', fontSize: '0.9em', lineHeight: 1.5, }}>Tout placement est exposé au risque de perte partielle ou totale en capital. MicroCap propose aux investisseurs une convention de co-investissement sous la forme d’une Ligne d’Investissement Garantie, pour limiter la perte en capital. </p>
-                                                    <p style={{ textAlign: 'justify', fontSize: '0.9em', lineHeight: 1.5, }}>Les membres du réseau MicroCap verse une contribution de solidarité  réseau annuelle qui garantit une quotité de tout capital investi sur un projet éligible à la Liga. Cette quotité peut atteindre 100% du capital et, peut être assortie d’une prime de risque. Pour guider les utilisateurs dans leurs choix, les projets de la plateforme sont marqués par un système de notation donnant à titre indicatif le niveau de risque.</p>
-                                                    <p style={{ textAlign: 'justify', fontSize: '1.1em', lineHeight: 1.5, color: 'black', fontWeight: 'bold' }}>
-                                                        Institutions, Investisseurs professionnels, ne manquez pas La liga ! la garantie de la liquidité et la sécurité de votre capital investi
+                                    <div className="col-sm-12 discover-block">
+                                        <div className="discover-content">
+                                            <div className="row align-items-center justify-content-lg-between">
+                                                <div className="col-md-5" data-aos="fade-up-right">
+                                                    <h4>La Liga, Investir en toute sérénité: Capital garantie</h4>
+                                                    <p className="p-block">
+                                                        <p>Tout placement est exposé au risque de perte partielle ou totale en capital. MicroCap propose aux investisseurs une convention de co-investissement sous la forme d’une Ligne d’Investissement Garantie, pour limiter la perte en capital. </p>
+                                                        <p>Les membres du réseau MicroCap verse une contribution de solidarité  réseau annuelle qui garantit une quotité de tout capital investi sur un projet éligible à la Liga. Cette quotité peut atteindre 100% du capital et, peut être assortie d’une prime de risque. Pour guider les utilisateurs dans leurs choix, les projets de la plateforme sont marqués par un système de notation donnant à titre indicatif le niveau de risque.</p>
+                                                        <p className="p-end">
+                                                            Institutions, Investisseurs professionnels, ne manquez pas La liga ! la garantie de la liquidité et la sécurité de votre capital investi
+                                                        </p>
+                                                        <div className="mt-2">
+                                                            <div className="d-flex align-items-center mb-1">
+                                                                <div className="bare small rounded d-inline-block" />
+                                                                <p className="d-inline-block mb-0">Exemple de notation d'un projet </p>
+                                                                <div className="bare small rounded d-inline-block" />
+                                                            </div>
+                                                            <div>
+                                                                <p>Score projet: <strong>80-approved-234</strong> <span>(pour un projet dont le capital investi est garanti à 80%, approuvé par une commission technique et suivi régulièrement par 234 personnes.)</span></p>
+                                                            </div>
+                                                        </div>
                                                     </p>
-                                                    <p style={{ textAlign: 'justify', fontSize: '0.7em', lineHeight: 1.5, }}>Exemple de notation d'un projet: </p>
-                                                    <p style={{ textAlign: 'justify', fontSize: '0.7em', lineHeight: 1.2, }}>Score projet : 80-approved-234 <span style={{ fontSize: '0.8em' }}>(pour un projet dont le capital investi est garanti à 80%, approuvé par une commission technique et suivi régulièrement par 234 personnes.)</span></p>
-                                                </p>
-                                            </div>
-                                            <div className="col-md-4">
-                                                <img className="img-fluid" src={require('Assets/img/invest.jpg')} alt="" />
+                                                </div>
+                                                <div className="col-md-5" data-aos="fade-up-left">
+                                                    <img className="img-fluid" src={require('Assets/img/large/compressed/invest.png')} alt="" />
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
 
-                                    <div className="discover-content" style={{ marginTop: '5%', marginBottom: '7%' }}>
-                                        <div className="row align-items-center">
-                                            <div className="col-md-4">
-                                                <img className="img-fluid" src={require('Assets/img/credit.jpg')} alt="" />
-                                            </div>
-                                            <div className="col-md-8">
-                                                <h1 style={{ textAlign: 'left' }}>Le compte ISUS, Investir en toute sérénité : Gestion professionnelle assurée</h1>
-                                                <p style={{ textAlign: 'justify', fontSize: '1em', lineHeight: 2, marginTop: 20 }}>
-                                                    Le compte ISUS est un compte titre  ordinaire ouvert auprès d’un établissement financier partenaire, qui vous permet Investir dans les TPE et PME non cotées du réseau MicroCap . Les titres de votre comptes ISUS peuvent être céder à MicroCap en gérance, en jouissance, ou en propriété avec option de reprise sur une période donnée.<br />
-                                                    La convention ISUS vous permet d’assurer une gestion professionnelle d’un portefeuille de titres d’entreprises non cotées. Elle vous donne l'opportunité d’investir dans les TPE et PME sans vous soucier du suivi et de la responsabilité investisseur. Ceux-ci étant couverts par un dispositif de mutualisation de MicroCap. <br />
-                                                    <p style={{ textAlign: 'justify', fontSize: '1.1em', lineHeight: 1.5, color: 'black', fontWeight: 'bold' }}>
-                                                        Information financière, participation aux décisions stratégiques de l’entreprise, l’option et l’opportunité de sortie, la gestion administrative et fiscale, … MicroCap s’occupe de tout
+                                        <div className="discover-content">
+                                            <div className="row align-items-center justify-content-lg-between">
+                                                <div className="col-md-5 order-sm-first order-md-2 order-1" data-aos="fade-down-right">
+                                                    <h4>Le compte ISUS, Investir en toute sérénité: Gestion professionnelle assurée</h4>
+                                                    <p className="p-block">
+                                                        <p>
+                                                            Le compte ISUS est un compte titre  ordinaire ouvert auprès d’un établissement financier partenaire, qui vous permet Investir dans les TPE et PME non cotées du réseau MicroCap . Les titres de votre comptes ISUS peuvent être céder à MicroCap en gérance, en jouissance, ou en propriété avec option de reprise sur une période donnée.<br />
+                                                            La convention ISUS vous permet d’assurer une gestion professionnelle d’un portefeuille de titres d’entreprises non cotées. Elle vous donne l'opportunité d’investir dans les TPE et PME sans vous soucier du suivi et de la responsabilité investisseur. Ceux-ci étant couverts par un dispositif de mutualisation de MicroCap. <br />
+                                                        </p>
+                                                        <p className="p-end">
+                                                            Information financière, participation aux décisions stratégiques de l’entreprise, l’option et l’opportunité de sortie, la gestion administrative et fiscale, … MicroCap s’occupe de tout
+                                                        </p>
                                                     </p>
-                                                </p>
+                                                </div>
+                                                <div className="col-md-5 mt-sm-4 order-2 order-md-1" data-aos="fade-down-left">
+                                                    <img className="img-fluid" src={require('Assets/img/large/compressed/cash-out.png')} alt="" />
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
