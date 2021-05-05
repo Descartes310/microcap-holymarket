@@ -617,10 +617,10 @@ const Discover = (props) => {
                                 </p>
                             </ul>
                         </div>
-                        <div className="col-md-9 gapes-mobile">
+                        <div className="col-md-9">
                             {/* <h3>Classes</h3> */}
                             <div className="row">
-                                <div className="col-md-3 col-sm-4 col-xs-6 gapes-bottom">
+                                <div className="col-md-3 col-sm-4 col-xs-6">
                                     <ul className="fh5co-footer-links">
                                         <h3>Tout MicroCap</h3>
                                         <li><a onClick={() => props.history.push(MISSION)}><span className="ti-angle-right"/> Mission et valeur</a></li>
@@ -632,7 +632,7 @@ const Discover = (props) => {
                                     </ul>
                                 </div>
 
-                                <div className="col-md-3 col-sm-4 col-xs-6 gapes-bottom">
+                                <div className="col-md-3 col-sm-4 col-xs-6">
                                     <ul className="fh5co-footer-links">
                                         <h3>Informations légales</h3>
                                         <li><a onClick={() => props.history.push(TERMS)}><span className="ti-angle-right"/> CGU</a></li>
@@ -641,7 +641,7 @@ const Discover = (props) => {
                                     </ul>
                                 </div>
 
-                                <div className="col-md-3 col-sm-4 col-xs-6 gapes-bottom">
+                                <div className="col-md-3 col-sm-4 col-xs-6">
                                     <ul className="fh5co-footer-links">
                                         <h3>Suivez-nous</h3>
                                         <li><a><span className="ti-angle-right"/> Presse</a></li>
@@ -649,31 +649,32 @@ const Discover = (props) => {
                                         <li className="no-link">
                                             <a> <span className="ti-angle-right"/> Réseaux sociaux</a>
                                             <div className="social-card-wrapper">
-                                                <div className="row">
-                                                    <div className="col-sm-6 col-md-3 col-lg-3 w-xs-half-block">
+                                                <div className="row justify-content-sm-center">
+                                                    {/*<div className="col-md-3">*/}
                                                         <SocialFeedsWidget
                                                             type="facebook"
                                                             icon="ti-facebook"
                                                             className="icon-social icon-hover"
                                                             link="https://www.facebook.com/MicroCap-104224985150023/"
                                                         />
-                                                    </div>
-                                                    <div className="col-sm-6 col-md-3 col-lg-3 w-xs-half-block">
+                                                    {/*</div>*/}
+                                                    {/*<div className="col-md-3">*/}
                                                         <SocialFeedsWidget
                                                             type="twitter"
                                                             icon="ti-twitter"
+                                                            wrapClassName="mx-2"
                                                             className="icon-social icon-hover"
                                                             link="https://twitter.com/MicrocapService"
                                                         />
-                                                    </div>
-                                                    <div className="col-sm-6 col-md-3 col-lg-3 w-xs-half-block">
+                                                    {/*</div>*/}
+                                                    {/*<div className="col-md-3">*/}
                                                         <SocialFeedsWidget
                                                             type="linkedin"
                                                             icon="ti-linkedin"
                                                             className="icon-social icon-hover"
                                                             link="https://www.linkedin.com/company/appmicrocap/"
                                                         />
-                                                    </div>
+                                                    {/*</div>*/}
                                                 </div>
                                             </div>
                                         </li>
@@ -683,7 +684,7 @@ const Discover = (props) => {
                                 <div className="col-md-3 col-sm-4 col-xs-6 contact">
                                     <ul className="fh5co-footer-links">
                                         <h3>Contact</h3>
-                                        <li className="no-link">
+                                        <li className="no-link mb-sm-2">
                                             <a
                                                 href="mailto:contact@microcap.fr"
                                                 className="m-0 d-inline-block icon-text center-ver">

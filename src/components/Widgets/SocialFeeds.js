@@ -3,7 +3,7 @@
  */
 import React from 'react';
 
-const SocialFeedsWidget = ({ type, icon, link, className, wrapClassName }) => (
+const SocialFeedsWidget = ({ type, icon, link, className = '', wrapClassName = '' }) => (
     <span
         style={{ cursor: 'pointer' }}
         onClick={() => window.open(link, '_blank')}

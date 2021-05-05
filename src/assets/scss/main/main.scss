@@ -531,6 +531,12 @@ ol.custom-list > li + li {
     margin-bottom: 0;
   }
 
+  @media screen and (max-width: 768px) {
+    h3, p, li, a {
+      text-align: center !important;
+    }
+  }
+
   .fh5co-footer-links {
     padding: 0;
     margin: 0;
@@ -594,9 +600,18 @@ ol.custom-list > li + li {
       }
     }
 
-    li a {
-      cursor: pointer;
-      font-weight: 700;
+    li {
+      &.no-link {
+        @media screen and (max-width: 768px) {
+          display: flex;
+          justify-content: center;
+        }
+      }
+
+      a {
+        cursor: pointer;
+        font-weight: 700;
+      }
     }
 
     li a:hover {
