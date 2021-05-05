@@ -257,7 +257,7 @@ const Discover = (props) => {
                                                 <div className="col-md-5" data-aos="fade-right">
                                                     <img className="img-fluid" src={require('Assets/img/large/compressed/money.png')} alt="" />
                                                 </div>
-                                                <div className="col-md-5 mt-sm-4" data-aos="fade-left">
+                                                <div className="col-md-5 mmt-sm-4" data-aos="fade-left">
                                                     <h4>PIP MicroCap, un compte qui conte des comptes et qui atteste de votre capacité financière</h4>
                                                     <p className="p-block">
                                                         {/* <h2>Un compte qui conte des comptes</h2> */}
@@ -276,7 +276,7 @@ const Discover = (props) => {
                                         </div>
                                         <div className="discover-content">
                                             <div className="row align-items-center justify-content-lg-between">
-                                                <div className="col-md-5 mt-sm-4 order-2 order-md-1" data-aos="fade-up-right">
+                                                <div className="col-md-5 mmt-sm-4 order-2 order-md-1" data-aos="fade-up-right">
                                                     <h4>La carte ESH, pour protéger votre pouvoir d'achat </h4>
                                                     <p className="p-block">
                                                         <p>
@@ -377,7 +377,7 @@ const Discover = (props) => {
                                                         </p>
                                                     </p>
                                                 </div>
-                                                <div className="col-md-5 mt-sm-4 order-2 order-md-1" data-aos="fade-down-left">
+                                                <div className="col-md-5 mmt-sm-4 order-2 order-md-1" data-aos="fade-down-left">
                                                     <img className="img-fluid" src={require('Assets/img/large/compressed/cash-out.png')} alt="" />
                                                 </div>
                                             </div>
@@ -620,104 +620,116 @@ const Discover = (props) => {
                 </RctCard> */}
             </div>
             {/* </div> */}
-            <footer id="fh5co-footer" className="fh5co-bg" role="contentinfo">
-                <div className="overlay"></div>
+            <footer id="fh5co-footer" className="fh5co-bg pb-0" role="contentinfo">
+                <div className="overlay" />
                 <div className="container">
                     <div className="row row-pb-md">
-                        <div className="col-md-3 fh5co-widget gapes-mobile">
-                            <h3>A propos de MicroCap.</h3>
-                            <p style={{ marginTop: '5%', color: "rgba(255, 255,255, 0.5)" }}>MicroCap est un service d’accompagnement des entrepreneurs proposé par :</p>
-                            <p style={{ color: "rgba(255, 255,255, 0.5)" }}>
-                                A+ Conseils SAS
-                            </p>
-                            <p style={{ color: "rgba(255, 255,255, 0.5)" }}>
-                                7 PL du 11 Novembre 1918
-                            </p>
-                            <p style={{ color: "rgba(255, 255,255, 0.5)" }}>
-                                93 000 BOBIGNY
-                            </p>
+                        <div className="col-md-3 fh5co-widget">
+                            <ul className="fh5co-footer-links">
+                                <h3 className="mmb-sm-0">A propos de MicroCap</h3>
+                                <p className="font-size-medium">
+                                    MicroCap est un service d’accompagnement des entrepreneurs proposé par: <strong>A+ Conseils SAS</strong>, 7 PL du 11 Novembre 1918, 93 000 BOBIGNY.
+                                </p>
+                            </ul>
                         </div>
-                        <div className="col-md-9 gapes-mobile">
+                        <div className="col-md-9">
                             {/* <h3>Classes</h3> */}
                             <div className="row">
-                                <div className="col-md-3 col-sm-4 col-xs-6 gapes-bottom">
+                                <div className="col-md-3 col-sm-4 col-xs-6">
                                     <ul className="fh5co-footer-links">
-                                        <h3>Tout MicroCap</h3>
-                                        <li><a className="gapes-top" onClick={() => props.history.push(MISSION)}><span className="ti-angle-right"/> Mission et valeur</a></li>
+                                        <h3 className="mmb-sm-0 mmt-sm-4">Tout MicroCap</h3>
+                                        <li><a onClick={() => props.history.push(MISSION)}><span className="ti-angle-right"/> Mission et valeur</a></li>
                                         <li><a onClick={() => props.history.push(VALUES)}><span className="ti-angle-right"/> Réseau Microcap</a></li>
-                                        <li><a className="gapes-between" onClick={() => props.history.push(SERVICES)}><span className="ti-angle-right"/> Le service Microcap</a></li>
+                                        <li><a className="" onClick={() => props.history.push(SERVICES)}><span className="ti-angle-right"/> Le service Microcap</a></li>
                                         <li><a onClick={() => props.history.push(PIONIERS)}><span className="ti-angle-right"/> Les pionniers</a></li>
-                                        <li><a className="gapes-between" onClick={() => props.history.push(AGENTS)}><span className="ti-angle-right"/> Assistances</a></li>
+                                        <li><a className="" onClick={() => props.history.push(AGENTS)}><span className="ti-angle-right"/> Assistances</a></li>
                                         <li><a><span className="ti-angle-right"/> Faqs</a></li>
                                     </ul>
                                 </div>
 
-                                <div className="col-md-3 col-sm-4 col-xs-6 gapes-bottom">
+                                <div className="col-md-3 col-sm-4 col-xs-6">
                                     <ul className="fh5co-footer-links">
-                                        <h3>Informations légales</h3>
-                                        <li><a className="gapes-top" onClick={() => props.history.push(TERMS)}><span className="ti-angle-right"/> CGU</a></li>
+                                        <h3 className="mmb-sm-0 mmt-sm-4">Informations légales</h3>
+                                        <li><a onClick={() => props.history.push(TERMS)}><span className="ti-angle-right"/> CGU</a></li>
                                         <li><a><span className="ti-angle-right"/> CGV</a></li>
-                                        <li><a  className="gapes-between" onClick={() => props.history.push(LEGAL_MENTION)}><span className="ti-angle-right"/> Mentions légales</a></li>
+                                        <li><a onClick={() => props.history.push(LEGAL_MENTION)}><span className="ti-angle-right"/> Mentions légales</a></li>
                                     </ul>
                                 </div>
 
-                                <div className="col-md-3 col-sm-4 col-xs-6 gapes-bottom">
+                                <div className="col-md-3 col-sm-4 col-xs-6">
                                     <ul className="fh5co-footer-links">
-                                        <h3>Suivez-nous</h3>
-                                        <li><a className="gapes-top"><span className="ti-angle-right"/> Presse</a></li>
+                                        <h3 className="mmb-sm-0 mmt-sm-4">Suivez-nous</h3>
+                                        <li><a><span className="ti-angle-right"/> Presse</a></li>
                                         <li><a><span className="ti-angle-right"/> News letter</a></li>
-                                        <li>
-                                            <a className="gapes-between"> <span className="ti-angle-right"/> Réseaux sociaux</a>
+                                        <li className="no-link">
+                                            <a> <span className="ti-angle-right"/> Réseaux sociaux</a>
                                             <div className="social-card-wrapper">
-                                                <div className="row">
-                                                    <div className="col-sm-6 col-md-3 col-lg-3 w-xs-half-block">
+                                                <div className="row justify-content-center justify-content-sm-start row">
+                                                    {/*<div className="col-md-3">*/}
                                                         <SocialFeedsWidget
                                                             type="facebook"
                                                             icon="ti-facebook"
+                                                            className="icon-social icon-hover"
                                                             link="https://www.facebook.com/MicroCap-104224985150023/"
                                                         />
-                                                    </div>
-                                                    <div className="col-sm-6 col-md-3 col-lg-3 w-xs-half-block">
+                                                    {/*</div>*/}
+                                                    {/*<div className="col-md-3">*/}
                                                         <SocialFeedsWidget
                                                             type="twitter"
                                                             icon="ti-twitter"
+                                                            wrapClassName="mx-2"
+                                                            className="icon-social icon-hover"
                                                             link="https://twitter.com/MicrocapService"
                                                         />
-                                                    </div>
-                                                    <div className="col-sm-6 col-md-3 col-lg-3 w-xs-half-block">
+                                                    {/*</div>*/}
+                                                    {/*<div className="col-md-3">*/}
                                                         <SocialFeedsWidget
                                                             type="linkedin"
                                                             icon="ti-linkedin"
+                                                            className="icon-social icon-hover"
                                                             link="https://www.linkedin.com/company/appmicrocap/"
                                                         />
-                                                    </div>
+                                                    {/*</div>*/}
                                                 </div>
                                             </div>
                                         </li>
                                     </ul>
                                 </div>
 
-                                <div className="col-md-3 col-sm-4 col-xs-6">
+                                <div className="col-md-3 col-sm-4 col-xs-6 contact">
                                     <ul className="fh5co-footer-links">
-                                        <h3>Contact</h3>
-                                        <li><p className="gapes-top" style={{ color: "rgba(255, 255,255, 0.5)" }}>Email: </p></li>
-                                        <li><p style={{ color: "rgba(255, 255,255, 0.5)" }}>Tel: 0811 030 089</p></li>
+                                        <h3 className="mmb-sm-0 mmt-sm-4">Contact</h3>
+                                        <li className="no-link mb-sm-2">
+                                            <a
+                                                href="mailto:contact@microcap.fr"
+                                                className="m-0 d-inline-block icon-text center-ver">
+                                                    <i className="material-icons icon mr-2 icon-rounded-bg">mail</i>
+                                                    {/*<i className="icon ti-email mr-2 icon-rounded-bg" />*/}
+                                                    <span>Contact@microcap.fr</span>
+                                            </a>
+                                        </li>
+                                        <li className="no-link mt-2">
+                                            <a
+                                                href="tel:+330811030089"
+                                                className="m-0 d-inline-block icon-text center-ver">
+                                                <i className="material-icons icon mr-2 icon-rounded-bg">call</i>
+                                                {/*<i className="material-icons icon ti-android mr-2 icon-rounded-bg" />*/}
+                                                <span>+33 0811 030 089</span>
+                                            </a>
+                                        </li>
                                     </ul>
                                 </div>
 
                             </div>
                         </div>
                     </div>
-                    <div className="container">
-                        <div className="row copyright">
-                            <div className="col-md-12 text-center">
-                                <h4 style={{ marginTop: '30px' }}>
-                                    <p style={{ color: "rgba(255, 255,255, 0.5)" }} size = '0.9em' >&copy; 2021 | All Rights Reserved.</p>
-                                </h4>
-                            </div>
+                </div>
+                <div className="bg-black">
+                    <div className="row copyright">
+                        <div className="col-md-12 text-center text-white py-25">
+                            <h4>&copy; 2021 | All Rights Reserved.</h4>
                         </div>
                     </div>
-
                 </div>
                 <ScrollToTopBtn />
             </footer >
