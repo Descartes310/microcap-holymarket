@@ -17,7 +17,8 @@ import {
     Card,
     CardImg,
     CardText,
-    CardBody
+    CardBody,
+    CardFooter
 } from 'reactstrap';
 import { RctCard, RctCardContent } from 'Components/RctCard';
 import { getMainAgents, getMainPioniers } from "Actions/independentActions";
@@ -173,14 +174,16 @@ const Discover = (props) => {
                     <h3>Retour sur Connexion</h3>
                 </div> */}
 
-                <div className="showcase-card-block">
-                    <h1 className="font-weight-bold text-black" style={{ fontSize: '2em', padding: '2%', textAlign: 'center' }}>
-                        Concilier traditions et innovations
-                    </h1>
-                    <p style={{ fontSize: '1.1em', textAlign: 'center' }}>Etendre votre réseau de love money au -delà du cercle familial et amical, </p>
-                    <p style={{ fontSize: '1.1em', textAlign: 'center' }}>réinventer une solidarité utile et promouvoir une finance inclusive</p>
-                    <div className="row" style={{ paddingLeft: '10%', paddingRight: '10%', paddingTop: '2%', paddingBottom: '2%' }}>
-                        <div className="col-xs-12 col-sm-12 col-md-4 mb-30">
+                <div className="showcase-card-block" style={{backgroundImage: `url(${require('Assets/img/bg-shape-gray.png')})`}}>
+                    <div className="row center-hor-ver mb-70 flex-column intro">
+                        <h2 className="font-weight-bold text-black" data-aos="fade-right">
+                            Concilier traditions et innovations
+                        </h2>
+                        <p data-aos="fade-left">Etendre votre réseau de love money au -delà du cercle familial et amical, </p>
+                        <p data-aos="fade-left">réinventer une solidarité utile et promouvoir une finance inclusive</p>
+                    </div>
+                    <div className="row">
+                        <div className="col-xs-12 col-sm-12 col-md-4 mb-30" data-aos="fade-down" data-aos-duration="300">
                             <Card>
                                 <CardImg top width="100%" className="img-fluid ripple-effect" src={require('Assets/img/tradition-et-innovation.jpg')} alt="Card image cap" />
                                 <CardBody style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
@@ -189,12 +192,14 @@ const Discover = (props) => {
                                         <p> Entre tradition et innovation, découvrez le love money par MicroCap pour financer vos projets. </p>
                                         <p> Rejoignez le réseau MicroCap, plus large, plus dynamique </p>
                                     </CardText>
+                                </CardBody>
+                                <CardFooter className="border-0 center-hor-ver">
                                     <Link to={GETIN}>
                                         <Button variant="contained" className="btn-primary mr-2">
                                             Rejoindre Microcap
                                         </Button>
                                     </Link>
-                                </CardBody>
+                                </CardFooter>
                             </Card>
                         </div>
                         <div className="col-xs-12 col-sm-12 col-md-4 mb-30">
@@ -206,12 +211,14 @@ const Discover = (props) => {
                                         <p>Ensemble, construisons un monde durable</p>
                                         <p><span style={{ fontSize: '1.3em', color: '#ffce39', fontWeight: 'bold' }}>50 000€</span> à gagner pour démarrer !</p>
                                     </CardText>
+                                </CardBody>
+                                <CardFooter className="border-0 center-hor-ver">
                                     <Link to={SOLIDARITY}>
                                         <Button variant="contained" className="btn-primary mr-2">
                                             Nos projets solidaires
                                         </Button>
                                     </Link>
-                                </CardBody>
+                                </CardFooter>
                             </Card>
                         </div>
                         <div className="col-xs-12 col-sm-12 col-md-4 mb-30">
@@ -222,12 +229,14 @@ const Discover = (props) => {
                                         <p>Notre programme à l’éducation financière pour des personnes en exclusion financière est totalement gratuit.</p>
                                         <p>Vous pouvez aider vos proches dans cette situation à s’en sortir. </p>
                                     </CardText>
+                                </CardBody>
+                                <CardFooter className="border-0 center-hor-ver">
                                     <Link to={MONEY_MANAGEMENT}>
                                         <Button variant="contained" className="btn-primary mr-2">
                                             Education financière
                                         </Button>
                                     </Link>
-                                </CardBody>
+                                </CardFooter>
                             </Card>
                         </div>
                     </div>
