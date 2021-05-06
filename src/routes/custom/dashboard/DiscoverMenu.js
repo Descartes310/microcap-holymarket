@@ -29,7 +29,8 @@ class DiscoverMenu extends Component {
         this.state = {
             width: getWidth(),
             showMobile: false,
-            showMobileDorpdown:false
+            showMobileDorpdown: false,
+            showDesktopDorpdown: false
         }
     }
 
@@ -55,9 +56,14 @@ class DiscoverMenu extends Component {
         this.setState(state => ({showMobileDorpdown: !state.showMobileDorpdown}))
     };
 
+    onTClickDesktopDropdown = (event) => {
+        event.preventDefault();
+        this.setState(state => ({showDesktopDorpdown: !state.showDesktopDorpdown}))
+    };
+
 
     render() {
-        const { width, showMobile, showMobileDorpdown} = this.state;
+        const { width, showMobile, showMobileDorpdown, showDesktopDorpdown} = this.state;
         const isMainNav = width > MAX_MOBILE_SCREEN_WIDTH;
 
         return (
@@ -74,10 +80,10 @@ class DiscoverMenu extends Component {
                         <div id="navbarContent">
                             <ul className="navbar-nav ml-auto">
                                 <li className="nav-item">
-                                <Dropdown isOpen={showMobileDorpdown} toggle={(event)=> this.onTClickDropdown(event)} className="nav-item-border">
+                                <Dropdown isOpen={showDesktopDorpdown} toggle={(event)=> this.onTClickDesktopDropdown(event)} className="nav-item-border">
                                     <DropdownToggle style={{background: "none", color: "lightslategray", border:"none", boxShadow: "none", color: "#464D69", padding: "0.70rem 1rem", fontSize: "inherit", fontWeight: "bold"}}>
                                         Découvrir
-                                        <img class={showMobileDorpdown ? "inline-nav-arrow-final" : "inline-nav-arrow-initial"} src="https://sqy7rm.media.zestyio.com/Downward-Carat.svg" alt="Downward arrow"></img>
+                                        <img class={showDesktopDorpdown ? "inline-nav-arrow-final" : "inline-nav-arrow-initial"} src="https://sqy7rm.media.zestyio.com/Downward-Carat.svg" alt="Downward arrow"></img>
                                     </DropdownToggle>
                                     <DropdownMenu className="desktop-dropdown">
                                         <DropdownItem>
