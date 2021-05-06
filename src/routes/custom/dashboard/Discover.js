@@ -153,7 +153,7 @@ const Discover = (props) => {
             </AppBar>
 
             <div className="session-inner-wrapper video-player-wrapper">
-                <Parallax className="custom-class" y={[-50, 50]}>
+                {/*<Parallax className="custom-class" y={[-50, 50]}>*/}
                     <div className="intro-banner" style={{ backgroundImage: `url(${headerImg})` }}>
                         <div className="revolution">
                             {/*TODO: ADD IMAGE HERE*/}
@@ -163,7 +163,7 @@ const Discover = (props) => {
                             Rejoignez le  <b>réseau de solidarité MicroCap</b>, vos versements sont libres à partir de 3€ sur votre <Link to={SERVICES} style={{ color: 'black', fontSize: '1.1em', fontWeight: 'bold' }}>compte ESH</Link> auprès d’un établissement financier partenaire
                         </p>
                     </div>
-                </Parallax>
+                {/*</Parallax>*/}
 
 
                 {/* <div className="page-title d-flex align-items-center" style={{ padding: 40 }}>
@@ -173,7 +173,7 @@ const Discover = (props) => {
                     <h3>Retour sur Connexion</h3>
                 </div> */}
 
-                <div>
+                <div className="showcase-card-block">
                     <h1 className="font-weight-bold text-black" style={{ fontSize: '2em', padding: '2%', textAlign: 'center' }}>
                         Concilier traditions et innovations
                     </h1>
