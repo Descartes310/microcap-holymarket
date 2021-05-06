@@ -34,6 +34,9 @@ const MainApp = () => {
 	useEffect(()=>{
 		AOS.init({
 			// duration: 2000
+            duration: 2000,
+            easing: 'slide',
+            once: true
 		});
 	}, []);
 
