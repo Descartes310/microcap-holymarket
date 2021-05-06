@@ -21,6 +21,7 @@ import store, { configureStore } from './store';
 
 import ability from './permissions/ability';
 import {getSessonId} from "Helpers/helpers";
+import { ParallaxProvider } from 'react-scroll-parallax';
 
 // Set session id if it doest not exits
 getSessonId();
@@ -29,7 +30,9 @@ const MainApp = () => (
 	<Provider store={store}>
 		<AbilityContext.Provider value={ability}>
 			<MuiPickersUtilsProvider utils={MomentUtils}>
-				<App />
+				<ParallaxProvider>
+					<App />
+				</ParallaxProvider>
 			</MuiPickersUtilsProvider>
 		</AbilityContext.Provider>
 	</Provider>
