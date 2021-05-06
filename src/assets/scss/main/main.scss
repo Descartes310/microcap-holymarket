@@ -648,5 +648,72 @@ ol.custom-list > li + li {
   }
 }
 
+.intro-banner {
+  background-position: center;
+  height: 50vh;
+  background-size: cover;
+  background-repeat: no-repeat;
+  position: relative;
+
+  .revolution {
+    display: none;
+  }
+
+  p {
+    position: absolute;
+    top: 43%;
+    //left: 25%;
+    left: calc((100vw - 980px) / 2);
+    font-weight: 600;
+    text-align: center;
+  }
+
+  /*@media screen and (max-width: 1450px) {
+    //height: 60vh;
+    p {
+      //top: 43%;
+      left: 20%;
+    }
+  }*/
+
+  @media screen and (max-width: 1225px) {
+    height: 60vh;
+    p {
+      //top: 43%;
+      left: 10%;
+    }
+  }
+
+  @media screen and (max-width: 1082px) {
+    height: 40vh;
+    p {
+      //top: 43%;
+      left: 3%;
+      text-shadow: #fc0 1px 0 10px;
+    }
+  }
+
+  @media screen and (max-width: 800px) {
+    height: 100vh;
+    background-position: left;
+
+    .revolution {
+      display: block;
+      position: absolute;
+      top: 25%;
+      left: 3%;
+      text-align: center;
+    }
+
+    p {
+
+    }
+  }
+
+}
+
+.showcase-text {
+  position: absolute;
+}
 
 
