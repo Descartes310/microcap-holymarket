@@ -17,7 +17,8 @@ import {
     Card,
     CardImg,
     CardText,
-    CardBody
+    CardBody,
+    CardFooter
 } from 'reactstrap';
 import { RctCard, RctCardContent } from 'Components/RctCard';
 import { getMainAgents, getMainPioniers } from "Actions/independentActions";
@@ -33,6 +34,7 @@ import ScrollToTopBtn from "./ScrollToTop";
 import {
 	SocialFeedsWidget
 } from "Components/Widgets";
+import { Parallax, ParallaxBanner } from 'react-scroll-parallax';
 import DiscoverMenu from "Routes/custom/dashboard/DiscoverMenu";
 
 // import { makeStyles } from '@material-ui/core/styles';
@@ -68,11 +70,19 @@ const Discover = (props) => {
             <DiscoverMenu />
 
             <div className="session-inner-wrapper video-player-wrapper">
-                <div style={{ height: '35vh', backgroundImage: `url(${headerImg})`, backgroundSize: 'cover' }}>
-                    <p style={{ paddingTop: '17vh', textAlign: 'center', marginLeft: '10%' }}>
-                        Rejoignez le  <b>réseau de solidarité MicroCap</b>, vos versements sont libres à partir de 3€ sur votre <Link to={SERVICES} style={{ color: 'black', fontSize: '1.1em', fontWeight: 'bold' }}>compte ESH</Link> auprès d’un établissement financier partenaire
-                    </p>
-                </div>
+                {/*<Parallax className="custom-class" y={[-50, 50]}>*/}
+                    <div className="intro-banner" style={{ backgroundImage: `url(${headerImg})` }}>
+                        <div className="revolution">
+                            {/*TODO: ADD IMAGE HERE*/}
+                            <h4>La révolution des petits capitaux</h4>
+                        </div>
+                        <p>
+                            Rejoignez le  <b>réseau de solidarité MicroCap</b>, vos versements sont libres à partir de 3€ sur votre <Link to={SERVICES} style={{ color: 'black', fontSize: '1.1em', fontWeight: 'bold' }}>compte ESH</Link> auprès d’un établissement financier partenaire
+                        </p>
+                    </div>
+                {/*</Parallax>*/}
+
+
                 {/* <div className="page-title d-flex align-items-center" style={{ padding: 40 }}>
                     <IconButton to="/login" className="mr-15" aria-label="zmdi-arrow-left" component={Link}>
                         <i className="zmdi zmdi-arrow-left"></i>
@@ -80,68 +90,75 @@ const Discover = (props) => {
                     <h3>Retour sur Connexion</h3>
                 </div> */}
 
-                <h1 className="font-weight-bold text-black" style={{ fontSize: '2em', padding: '2%', textAlign: 'center' }}>
-                    Concilier traditions et innovations
-                </h1>
-                <p style={{ fontSize: '1.1em', textAlign: 'center' }}>Etendre votre réseau de love money au -delà du cercle familial et amical, </p>
-                <p style={{ fontSize: '1.1em', textAlign: 'center' }}>réinventer une solidarité utile et promouvoir une finance inclusive</p>
-                <div className="row" style={{ paddingLeft: '10%', paddingRight: '10%', paddingTop: '2%', paddingBottom: '2%' }}>
-                    <div className="col-xs-12 col-sm-12 col-md-4 mb-30">
-                        <Card>
-                            <CardImg top width="100%" className="img-fluid ripple-effect" src={require('Assets/img/tradition-et-innovation.jpg')} alt="Card image cap" />
-                            <CardBody style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
-                                <CardText style={{ fontSize: '1.1em', textAlign: 'center', minHeight: 132 }}>
-                                    <p> La solidarité ! une valeur essentielle chez MicroCap. </p>
-                                    <p> Entre tradition et innovation, découvrez le love money par MicroCap pour financer vos projets. </p>
-                                    <p> Rejoignez le réseau MicroCap, plus large, plus dynamique </p>
-                                </CardText>
-                                <Link to={GETIN}>
-                                    <Button variant="contained" className="btn-primary mr-2">
-                                        Rejoindre Microcap
-                                    </Button>
-                                </Link>
-                            </CardBody>
-                        </Card>
+                <div className="showcase-card-block" style={{backgroundImage: `url(${require('Assets/img/bg-shape-gray.png')})`}}>
+                    <div className="row center-hor-ver mb-70 flex-column intro">
+                        <h2 className="font-weight-bold text-black" data-aos="fade-right">
+                            Concilier traditions et innovations
+                        </h2>
+                        <p data-aos="fade-left">Etendre votre réseau de love money au -delà du cercle familial et amical, </p>
+                        <p data-aos="fade-left">réinventer une solidarité utile et promouvoir une finance inclusive</p>
                     </div>
-                    <div className="col-xs-12 col-sm-12 col-md-4 mb-30">
-                        <Card>
-                            <CardImg top width="100%" className="img-fluid ripple-effect" src={require('Assets/img/01-solidarite-1.jpg')} alt="Card image cap" />
-                            <CardBody style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
-                                <CardText style={{ fontSize: '1.1em', textAlign: 'center', minHeight: 132 }}>
-                                    <p>Sur MicroCap, pas de sélection de projet mais des dotations chaque trimestre pour les cinq meilleurs projets à impact.</p>
-                                    <p>Ensemble, construisons un monde durable</p>
-                                    <p><span style={{ fontSize: '1.3em', color: '#ffce39', fontWeight: 'bold' }}>50 000€</span> à gagner pour démarrer !</p>
-                                </CardText>
-                                <Link to={SOLIDARITY}>
-                                    <Button variant="contained" className="btn-primary mr-2">
-                                        Nos projets solidaires
-                                    </Button>
-                                </Link>
-                            </CardBody>
-                        </Card>
-                    </div>
-                    <div className="col-xs-12 col-sm-12 col-md-4 mb-30">
-                        <Card>
-                            <CardImg top width="100%" className="img-fluid ripple-effect" src={require('Assets/img/budget.jpg')} alt="Card image cap" />
-                            <CardBody style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
-                                <CardText style={{ fontSize: '1.1em', textAlign: 'center', minHeight: 132 }}>
-                                    <p>Notre programme à l’éducation financière pour des personnes en exclusion financière est totalement gratuit.</p>
-                                    <p>Vous pouvez aider vos proches dans cette situation à s’en sortir. </p>
-                                </CardText>
-                                <Link to={MONEY_MANAGEMENT}>
-                                    <Button variant="contained" className="btn-primary mr-2">
-                                        Education financière
-                                    </Button>
-                                </Link>
-                            </CardBody>
-                        </Card>
+                    <div className="row">
+                        <div className="col-xs-12 col-sm-12 col-md-4 mb-30" data-aos="fade-down" data-aos-duration="300">
+                            <Card>
+                                <CardImg top width="100%" className="img-fluid ripple-effect" src={require('Assets/img/tradition-et-innovation.jpg')} alt="Card image cap" />
+                                <CardBody style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
+                                    <CardText style={{ fontSize: '1.1em', textAlign: 'center', minHeight: 132 }}>
+                                        <p> La solidarité ! une valeur essentielle chez MicroCap. </p>
+                                        <p> Entre tradition et innovation, découvrez le love money par MicroCap pour financer vos projets. </p>
+                                        <p> Rejoignez le réseau MicroCap, plus large, plus dynamique </p>
+                                    </CardText>
+                                </CardBody>
+                                <CardFooter className="border-0 center-hor-ver">
+                                    <Link to={GETIN}>
+                                        <Button variant="contained" className="btn-primary mr-2">
+                                            Rejoindre Microcap
+                                        </Button>
+                                    </Link>
+                                </CardFooter>
+                            </Card>
+                        </div>
+                        <div className="col-xs-12 col-sm-12 col-md-4 mb-30">
+                            <Card>
+                                <CardImg top width="100%" className="img-fluid ripple-effect" src={require('Assets/img/01-solidarite-1.jpg')} alt="Card image cap" />
+                                <CardBody style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
+                                    <CardText style={{ fontSize: '1.1em', textAlign: 'center', minHeight: 132 }}>
+                                        <p>Sur MicroCap, pas de sélection de projet mais des dotations chaque trimestre pour les cinq meilleurs projets à impact.</p>
+                                        <p>Ensemble, construisons un monde durable</p>
+                                        <p><span style={{ fontSize: '1.3em', color: '#ffce39', fontWeight: 'bold' }}>50 000€</span> à gagner pour démarrer !</p>
+                                    </CardText>
+                                </CardBody>
+                                <CardFooter className="border-0 center-hor-ver">
+                                    <Link to={SOLIDARITY}>
+                                        <Button variant="contained" className="btn-primary mr-2">
+                                            Nos projets solidaires
+                                        </Button>
+                                    </Link>
+                                </CardFooter>
+                            </Card>
+                        </div>
+                        <div className="col-xs-12 col-sm-12 col-md-4 mb-30">
+                            <Card>
+                                <CardImg top width="100%" className="img-fluid ripple-effect" src={require('Assets/img/budget.jpg')} alt="Card image cap" />
+                                <CardBody style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
+                                    <CardText style={{ fontSize: '1.1em', textAlign: 'center', minHeight: 132 }}>
+                                        <p>Notre programme à l’éducation financière pour des personnes en exclusion financière est totalement gratuit.</p>
+                                        <p>Vous pouvez aider vos proches dans cette situation à s’en sortir. </p>
+                                    </CardText>
+                                </CardBody>
+                                <CardFooter className="border-0 center-hor-ver">
+                                    <Link to={MONEY_MANAGEMENT}>
+                                        <Button variant="contained" className="btn-primary mr-2">
+                                            Education financière
+                                        </Button>
+                                    </Link>
+                                </CardFooter>
+                            </Card>
+                        </div>
                     </div>
                 </div>
 
-
-                <div
-                    className="row" style={{ paddingLeft: '10%', paddingRight: '10%', paddingTop: '2%', paddingBottom: '2%' }}
-                >
+                <div className="row" style={{ paddingLeft: '10%', paddingRight: '10%', paddingTop: '2%', paddingBottom: '2%' }}>
                     <Player
                         playsInline
                         poster={require('Assets/img/microcap.png')}
