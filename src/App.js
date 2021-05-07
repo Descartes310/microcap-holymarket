@@ -2,12 +2,16 @@
 * Main App
 */
 import React from 'react';
+import  { useEffect } from 'react';
 import { Provider } from 'react-redux';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import MomentUtils from '@date-io/moment';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { AbilityContext } from './permissions/Can';
-
+import "aos/dist/aos.css";
+ 
+// animation
+import AOS from 'aos';
 // css
 import './lib/reactifyCss';
 
@@ -25,14 +29,23 @@ import {getSessonId} from "Helpers/helpers";
 // Set session id if it doest not exits
 getSessonId();
 
-const MainApp = () => (
-	<Provider store={store}>
-		<AbilityContext.Provider value={ability}>
-			<MuiPickersUtilsProvider utils={MomentUtils}>
-				<App />
-			</MuiPickersUtilsProvider>
-		</AbilityContext.Provider>
-	</Provider>
-);
+const MainApp = () => {
+
+	useEffect(()=>{
+		AOS.init({
+			duration: 2000
+		});
+	}, []);
+
+	return(
+		<Provider store={store}>
+			<AbilityContext.Provider value={ability}>
+				<MuiPickersUtilsProvider utils={MomentUtils}>
+					<App />
+				</MuiPickersUtilsProvider>
+			</AbilityContext.Provider>
+		</Provider>
+	)
+};
 
 export default MainApp;
