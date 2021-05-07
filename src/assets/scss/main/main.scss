@@ -593,7 +593,7 @@ ol.custom-list > li + li {
 
 .nav-item-border:hover {
   border-bottom: solid #e8a200 1px;
-  transform: translateX(50px, 0);
+  transform: translateX(50px);
   transition: transform 500ms;
   animation:example 2s;
 
@@ -614,33 +614,63 @@ ol.custom-list > li + li {
 }
 
 /*Handle Video*/
-.btn-over{
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  background: #00000061;
-  border-radius: 50px;
-  color: white;
-  width: 75px;
-  height: 75px;
-}
+.video {
+  .video-text-content {
+    padding: 8%;
+    p {
+      font-size: larger;
+    }
+  }
+  .btn-over {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background: #00000061;
+    border-radius: 50px;
+    color: white;
+    width: 75px;
+    height: 75px;
+  }
 
-.btn-round {
-  transition: .5s;
-  -webkit-transition: .5s;
-  position: relative;
-  border-radius: 50%;
-  font-size: 22px;
-  height: 80px;
-  width: 80px;
-  display: flex;
-  color: #fff;
-  justify-content: center;
-  align-items: center;
-  margin: 0 auto;
-}
+  .btn-round {
+    transition: .5s;
+    -webkit-transition: .5s;
+    position: relative;
+    border-radius: 50%;
+    font-size: 22px;
+    height: 80px;
+    width: 80px;
+    display: flex;
+    color: #fff;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+  }
 
+}
+.main-dialog {
+  .MuiDialog-container {
+    .MuiPaper-root {
+      background: none !important;
+      box-shadow: none !important;
+      .MuiDialogTitle-root {
+        padding-bottom: unset !important;
+      }
+      .MuiDialogContent-root {
+        .video-react-controls-enabled {
+          .video-react-big-play-button {
+            display: none !important;
+          }
+        }
+      }
+    }
+  }
+  .close-cross {
+    float: right;
+    color: white;
+  }
+}
 /**/
 
 #navbarContent {
