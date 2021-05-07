@@ -793,7 +793,6 @@ ol.custom-list > li + li {
 
 .nav-item-border:hover {
   border-bottom: solid #e8a200 1px;
-  transform: translateX(50px);
   transition: transform 500ms;
   animation:example 2s;
 
@@ -972,6 +971,40 @@ ol.custom-list > li + li {
         top: -8px;
       }
 
+      span::after {
+        top: 8px;
+      }
+      &.active span  {
+        background: transparent;
+      }
+      &.active span::before,
+      &.active span::after {
+        background: black;
+        top: 0px;
+      }
+
+      &.active span::before  {
+        @include transform(rotate(-225deg));
+      }
+
+      &.active span::after  {
+        @include transform(rotate(225deg));
+      }
+
+    }
+
+    #mobile-center {
+      //display: none;
+      /*position: absolute;
+      left: 0;
+      top: -1000px;
+      right: 0;
+      background: #F4F7FA !important;
+      transition: all .4s;*/
+    }
+  }
+}
+
 .intro-banner {
   background-position: center;
   height: 50vh;
@@ -1035,16 +1068,10 @@ ol.custom-list > li + li {
   }
 
 }
-      span::after {
-        top: 8px;
-      }
 
 .showcase-text {
   position: absolute;
 }
-      &.active span  {
-        background: transparent;
-      }
 
 .showcase-card-block {
   background: white;
@@ -1063,33 +1090,6 @@ ol.custom-list > li + li {
     p {
       margin-bottom: 0;
       font-size: 1.2em;
-    }
-  }
-}
-      &.active span::before,
-      &.active span::after {
-        background: black;
-        top: 0px;
-      }
-
-      &.active span::before  {
-        @include transform(rotate(-225deg));
-      }
-
-      &.active span::after  {
-        @include transform(rotate(225deg));
-      }
-
-    }
-
-    #mobile-center {
-      //display: none;
-      /*position: absolute;
-      left: 0;
-      top: -1000px;
-      right: 0;
-      background: #F4F7FA !important;
-      transition: all .4s;*/
     }
   }
 }

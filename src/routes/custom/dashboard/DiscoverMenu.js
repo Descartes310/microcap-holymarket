@@ -81,7 +81,7 @@ class DiscoverMenu extends Component {
                             <ul className="navbar-nav ml-auto">
                                 <li className="nav-item">
                                 <Dropdown isOpen={showDesktopDorpdown} toggle={(event)=> this.onTClickDesktopDropdown(event)} className="nav-item-border">
-                                    <DropdownToggle style={{background: "none", color: "lightslategray", border:"none", boxShadow: "none", color: "#464D69", padding: "0.70rem 1rem", fontSize: "inherit", fontWeight: "bold"}}>
+                                    <DropdownToggle style={{background: "none", border:"none", boxShadow: "none", color: "#464D69", padding: "0.70rem 1rem", fontSize: "inherit", fontWeight: "bold"}}>
                                         Découvrir
                                         <img class={showDesktopDorpdown ? "inline-nav-arrow-final" : "inline-nav-arrow-initial"} src="https://sqy7rm.media.zestyio.com/Downward-Carat.svg" alt="Downward arrow"></img>
                                     </DropdownToggle>
@@ -107,7 +107,7 @@ class DiscoverMenu extends Component {
                                                 </a>
                                             </HashLink>
                                         </DropdownItem>
-                                        
+
                                         <DropdownItem>
                                             <HashLink to={`${DISCOVER}/#pass`}>
                                                 <a className="nav-link-mobile-sub">
@@ -162,7 +162,7 @@ class DiscoverMenu extends Component {
                         </div>
                     </div>
                 </nav>
-                
+
 
                 <nav
                     className={`bg-light ${!isMainNav ? 'show-mobile-nav' : ''}`}
@@ -187,13 +187,13 @@ class DiscoverMenu extends Component {
                                 <ul className="">
                                     <li className="nav-item" style={{marginRight:"30px"}}>
                                         <HashLink to={`${PASS_DETAILS}`}>
-                                            <a className="nav-link-mobile" href="#" 
+                                            <a className="nav-link-mobile" href="#"
                                             onClick={(event)=>this.onTClickDropdown(event)}>
                                                 Découvrir
                                                 <img class={showMobileDorpdown ? "inline-nav-arrow-final" : "inline-nav-arrow-initial"} src="https://sqy7rm.media.zestyio.com/Downward-Carat.svg" alt="Downward arrow"></img>
                                             </a>
                                             <SlideDown className={'second-dropdown-mobile'}>
-                                                {showMobileDorpdown ? ( 
+                                                {showMobileDorpdown ? (
                                                 <div id="dropdown-mobile-center">
                                                     <ul>
                                                         <li className="nav-item nav-item-border">
