@@ -613,6 +613,36 @@ ol.custom-list > li + li {
   100% {border-bottom-color: #e8a200; left:0px; top:0px; right:15px; bottom:0px;}
 }
 
+/*Handle Video*/
+.btn-over{
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background: #00000061;
+  border-radius: 50px;
+  color: white;
+  width: 75px;
+  height: 75px;
+}
+
+.btn-round {
+  transition: .5s;
+  -webkit-transition: .5s;
+  position: relative;
+  border-radius: 50%;
+  font-size: 22px;
+  height: 80px;
+  width: 80px;
+  display: flex;
+  color: #fff;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+}
+
+/**/
+
 #navbarContent {
   transition: all .5s;
 

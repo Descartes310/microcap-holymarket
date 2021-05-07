@@ -34,6 +34,7 @@ import {
 	SocialFeedsWidget
 } from "Components/Widgets";
 import DiscoverMenu from "Routes/custom/dashboard/DiscoverMenu";
+import DiscoverVideo from "Routes/custom/dashboard/DiscoverVideo";
 
 const Discover = (props) => {
 
@@ -135,24 +136,8 @@ const Discover = (props) => {
                     </div>
                 </div>
 
-
-                <div
-                    className="row" style={{ paddingLeft: '10%', paddingRight: '10%', paddingTop: '2%', paddingBottom: '2%' }}
-                >
-                    <Player
-                        playsInline
-                        poster={require('Assets/img/microcap.png')}
-                        //src='http://api-preprod.microcap.fr/files/videos/video.mp4'
-                        src='http://api.microcap.fr/files/videos/video.mp4'
-                    />
-                    <p style={{ fontSize: '1.2em', marginTop: 20, textAlign: 'center' }}>
-                        Microcap vous accompagne dans la réalisation de votre projet:  création ou développement d’entreprise, actionnariat, formation à l’entrepreneuriat ...<br />
-                        <Link to={AUTH.REGISTER} style={{ color: '#e19d00' }}>İnscrivez-vous</Link> et choississez l’abonnement qui vous correspond parmi <Link to={PASS_DETAILS} style={{ color: '#e19d00' }}>nos PASS</Link>
-                    </p>
-                    {/* <p style={{ fontSize: '1.2em', marginTop: 10, textAlign: 'center' }}>
-                        Ouvrir votre Plan d'Investissement Programmé MicroCap et Rejoignez le premier réseau international de solidarité financière
-                    </p> */}
-                </div>
+                <DiscoverVideo />
+               
 
                 <div style={{ backgroundColor: '#eeeeee', marginTop: '7vh' }} id='produits'>
                     <h1 className="font-weight-bold text-black text-center" style={{ fontSize: '3em', padding: '4%' }}>
