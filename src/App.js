@@ -9,7 +9,7 @@ import MomentUtils from '@date-io/moment';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { AbilityContext } from './permissions/Can';
 import "aos/dist/aos.css";
- 
+
 // animation
 import AOS from 'aos';
 // css
@@ -33,7 +33,10 @@ const MainApp = () => {
 
 	useEffect(()=>{
 		AOS.init({
-			duration: 2000
+			// duration: 2000
+            duration: 2000,
+            easing: 'slide',
+            once: true
 		});
 	}, []);
 
