@@ -409,111 +409,120 @@ const Discover = (props) => {
                     </div>
                 </div>
 
-                <div style={{ backgroundColor: '#eeeeee', marginBottom: '7vh' }} id="pioniers">
-                    <h1 className="font-weight-bold text-black text-center" style={{ fontSize: '3em', padding: '4%' }}>
-                        Nos pioniers
-                    </h1>
-                </div>
 
-                <div className="container">
-                    <p>
-                        MicroCap est le fruit de l’investissement des hommes et de femmes engagés qui partagent nos valeurs de solidarité et de justice sociale. Ces personnes d’horizon divers apportent leur concours quotidiennement à notre développement : ce sont nos pionniers. Vous pouvez en faire partir et renforcer le mouvement, il vous suffit de prendre une option sur un abonnement MicroCap.
-                    </p>
-                    <p className="mt-40" style={{ color: 'black', fontSize: '1.1em', fontWeight: 'bold' }}>
-                        Pour vous servir et assurer la qualité du service, vous avez en responsabilité :
-                    </p>
-                    <div className="row justify-content-center">
-                        {pioniers.filter(a => a.active == true).map(agent => (
-                            <div className="col-sm-12 col-md-4 col-lg-3">
-                                <RctCard>
-                                    <RctCardContent>
-                                        <div className="client-post text-center">
-                                            <div className="client-thumb mb-20">
-                                                <img
-                                                    className="rounded"
-                                                    src={getFilePath(agent.avatar)}
-                                                    alt="client"
-                                                    width="95"
-                                                    height="95"
-                                                />
-                                            </div>
-                                            <div className="client-content">
-                                                <Tooltip title={agent.about}>
-                                                    <h4 className="fw-bold text-capitalize text-primary">{agent.name}</h4>
-                                                </Tooltip>
-                                                <p>{agent.post}</p>
-                                                <p>{agent.email}</p>
-                                                <p>{agent.phone}</p>
-                                                <p>{agent.about}</p>
-                                            </div>
-                                        </div>
-                                    </RctCardContent>
-                                </RctCard>
+                {/* Agent  et Pionier*/}
+                <div className="row">
+                    <div className="col-md-6 pioniers">
+                        <div className="pionier-wrapper">
+                            <div id="pioniers">
+                                <h1 className="font-weight-bold text-center" >
+                                    Nos pioniers
+                                </h1>
                             </div>
-                        ))}
+
+                            <div className="container">
+                                <p>
+                                    MicroCap est le fruit de l’investissement des hommes et de femmes engagés qui partagent nos valeurs de solidarité et de justice sociale. Ces personnes d’horizon divers apportent leur concours quotidiennement à notre développement : ce sont nos pionniers. Vous pouvez en faire partir et renforcer le mouvement, il vous suffit de prendre une option sur un abonnement MicroCap.
+                                </p>
+                                <p className="mt-40">
+                                    Pour vous servir et assurer la qualité du service, vous avez en responsabilité :
+                                </p>
+                                <div className="row justify-content-center">
+                                    {pioniers.filter(a => a.active == true).map(agent => (
+                                        <div className="col-sm-12 col-md-4 col-lg-3">
+                                            <RctCard>
+                                                <RctCardContent>
+                                                    <div className="client-post text-center">
+                                                        <div className="client-thumb mb-20">
+                                                            <img
+                                                                className="rounded"
+                                                                src={getFilePath(agent.avatar)}
+                                                                alt="client"
+                                                                width="95"
+                                                                height="95"
+                                                            />
+                                                        </div>
+                                                        <div className="client-content">
+                                                            <Tooltip title={agent.about}>
+                                                                <h4 className="fw-bold text-capitalize text-primary">{agent.name}</h4>
+                                                            </Tooltip>
+                                                            <p>{agent.post}</p>
+                                                            <p>{agent.email}</p>
+                                                            <p>{agent.phone}</p>
+                                                            <p>{agent.about}</p>
+                                                        </div>
+                                                    </div>
+                                                </RctCardContent>
+                                            </RctCard>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                            <div className="d-flex align-items-center justify-content-center mb-50">
+                                <Link to={PIONIERS}>
+                                    <Button variant="contained" className="btn-primary mr-2">
+                                        Voir les pioniers
+                                    </Button>
+                                </Link>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="col-md-6">
+                        <div id="agents">
+                            <h1 className="font-weight-bold text-center" style={{ fontSize: '3em', padding: '4%' }}>
+                                Réseau d'agents
+                            </h1>
+                        </div>
+
+                        <div className="container">
+                            <p>
+                                Les services MicroCap sont 100% disponibles en ligne. Par soucis de proximité, nous nouons des conventions avec des structures offrant des capacités d’accueil physique pour vous informer ou vous assister : Ce sont les agents MicroCap communément appelé « communauté conventionnée » ou « communauté MicroCap ». Le réseau de communautés capable de vous accueillir croit tous les jours, n’hésitez pas à nous contacter par mail ou par téléphone pour avoir le point d’accueil le plus proche pour vous.
+                            </p>
+                            <p className="mt-40" style={{ color: 'black', fontSize: '1.1em', fontWeight: 'bold' }}>
+                                Ils ont récemment rejoint notre réseau d’agent :
+                            </p>
+                            <div className="row justify-content-center">
+                                {data.filter(a => a.active == true).map(agent => (
+                                    <div className="col-sm-12 col-md-4 col-lg-3">
+                                        <RctCard>
+                                            <RctCardContent>
+                                                <div className="client-post text-center">
+                                                    <div className="client-thumb mb-20">
+                                                        <img
+                                                            className="rounded"
+                                                            src={getFilePath(agent.avatar)}
+                                                            alt="client"
+                                                            width="95"
+                                                            height="95"
+                                                        />
+                                                    </div>
+                                                    <div className="client-content">
+                                                        <Tooltip title={agent.about}>
+                                                            <h4 className="fw-bold text-capitalize text-primary">{agent.name}</h4>
+                                                        </Tooltip>
+                                                        <p>{agent.email}</p>
+                                                        <p>{agent.phone}</p>
+                                                        <p>{agent.address}</p>
+                                                        <p>{agent.about}</p>
+                                                    </div>
+                                                </div>
+                                            </RctCardContent>
+                                        </RctCard>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        <div className="d-flex align-items-center justify-content-center mb-50">
+                            <Link to={AGENTS}>
+                                <Button variant="contained" className="btn-primary mr-2">
+                                    Voir les agents
+                                </Button>
+                            </Link>
+                        </div>
                     </div>
                 </div>
-                <div className="d-flex align-items-center justify-content-center mb-50">
-                    <Link to={PIONIERS}>
-                        <Button variant="contained" className="btn-primary mr-2">
-                            Voir les pioniers
-                        </Button>
-                    </Link>
-                </div>
-
-                <div style={{ backgroundColor: '#eeeeee', marginBottom: '7vh' }} id="agents">
-                    <h1 className="font-weight-bold text-black text-center" style={{ fontSize: '3em', padding: '4%' }}>
-                        Réseau d'agents
-                    </h1>
-                </div>
-
-                <div className="container">
-                    <p>
-                        Les services MicroCap sont 100% disponibles en ligne. Par soucis de proximité, nous nouons des conventions avec des structures offrant des capacités d’accueil physique pour vous informer ou vous assister : Ce sont les agents MicroCap communément appelé « communauté conventionnée » ou « communauté MicroCap ». Le réseau de communautés capable de vous accueillir croit tous les jours, n’hésitez pas à nous contacter par mail ou par téléphone pour avoir le point d’accueil le plus proche pour vous.
-                    </p>
-                    <p className="mt-40" style={{ color: 'black', fontSize: '1.1em', fontWeight: 'bold' }}>
-                        Ils ont récemment rejoint notre réseau d’agent :
-                    </p>
-                    <div className="row justify-content-center">
-                        {data.filter(a => a.active == true).map(agent => (
-                            <div className="col-sm-12 col-md-4 col-lg-3">
-                                <RctCard>
-                                    <RctCardContent>
-                                        <div className="client-post text-center">
-                                            <div className="client-thumb mb-20">
-                                                <img
-                                                    className="rounded"
-                                                    src={getFilePath(agent.avatar)}
-                                                    alt="client"
-                                                    width="95"
-                                                    height="95"
-                                                />
-                                            </div>
-                                            <div className="client-content">
-                                                <Tooltip title={agent.about}>
-                                                    <h4 className="fw-bold text-capitalize text-primary">{agent.name}</h4>
-                                                </Tooltip>
-                                                <p>{agent.email}</p>
-                                                <p>{agent.phone}</p>
-                                                <p>{agent.address}</p>
-                                                <p>{agent.about}</p>
-                                            </div>
-                                        </div>
-                                    </RctCardContent>
-                                </RctCard>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-
-                <div className="d-flex align-items-center justify-content-center mb-50">
-                    <Link to={AGENTS}>
-                        <Button variant="contained" className="btn-primary mr-2">
-                            Voir les agents
-                        </Button>
-                    </Link>
-                </div>
-
+                {/*End Agent  et  Pionier*/}
                 {/* <RctCard customClasses="p-60">
                     <Clientslider />
                 </RctCard> */}
