@@ -37,14 +37,10 @@ class DiscoverVideo extends Component {
 
     handleCloseConfirmationAlert = () => {
         this.setState({openModal: false});
-    }
-    
-
+    };
 
     render() {
         const { } = this.state;
-        
-
         return (
             <div className="row video" >
                 <div className="col-md-6 video-text-content">
@@ -85,14 +81,12 @@ class DiscoverVideo extends Component {
                     </div>
                 </DialogTitle>
                 <DialogContent>
-                    
-                        <Player
-                            autoPlay
-                            poster={require('Assets/img/microcap.png')}
-                            //src='http://api-preprod.microcap.fr/files/videos/video.mp4'
-                            src='http://api.microcap.fr/files/videos/video.mp4'
-                        /> 
-                      
+                    <Player
+                        autoPlay
+                        poster={require('Assets/img/microcap.png')}
+                        //src='http://api-preprod.microcap.fr/files/videos/video.mp4'
+                        src='http://api.microcap.fr/files/videos/video.mp4'
+                    />
                 </DialogContent>
             
             </Dialog>
