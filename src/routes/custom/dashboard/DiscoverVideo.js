@@ -23,11 +23,11 @@ class DiscoverVideo extends Component {
     }
 
     componentDidMount() {
-       
+
     }
 
     componentWillUnmount() {
-       
+
     }
 
     onModal = (event) => {
@@ -42,7 +42,7 @@ class DiscoverVideo extends Component {
     render() {
         const { } = this.state;
         return (
-            <div className="row video" >
+            <div className="row video">
                 <div className="col-md-6 video-text-content">
                     <p className="text-center">
                         Microcap vous accompagne dans la réalisation
@@ -56,21 +56,21 @@ class DiscoverVideo extends Component {
                             nos PASS</Link>
                     </p>
                 </div>
-                <div className="col-md-6">
-                    <img src={require('Assets/img/microcap.png')} className="img-fluid"/>
+                <div className="col-md-6 video-display">
+                    <img src={require('Assets/img/microcap.png')} className="img-fluid w-100 h-100"/>
                     <div className="text-center btn-over">
-                        <a className="btn-round" onClick={(event)=>this.onModal(event)} >
+                        <div onClick={(event)=>this.onModal(event)} className="center-hor-ver w-100 h-100 cursor-pointer">
                             <i className="ti-control-play font-2x" aria-hidden="true"/>
-                        </a>
+                        </div>
                     </div>
                 </div>
-            
+
             <Dialog
                 open={this.state.openModal}
                 onClose={this.handleCloseConfirmationAlert}
                 aria-labelledby="alert-dialog-title"
                 fullWidth='false'
-                maxWidth='md'  
+                maxWidth='md'
                 className="main-dialog"
             >
                 <DialogTitle id="alert-dialog-title">
@@ -88,7 +88,7 @@ class DiscoverVideo extends Component {
                         src='http://api.microcap.fr/files/videos/video.mp4'
                     />
                 </DialogContent>
-            
+
             </Dialog>
             </div>
         );

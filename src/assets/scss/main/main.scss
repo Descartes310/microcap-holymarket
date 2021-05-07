@@ -814,39 +814,59 @@ ol.custom-list > li + li {
 
 /*Handle Video*/
 .video {
+  padding: 15vh 10vw;
+
+  @media screen and (max-width: 768px) {
+    padding: 0 5vw;
+  }
+
   .video-text-content {
     padding: 8%;
     p {
       font-size: larger;
     }
   }
-  .btn-over {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    background: #00000061;
-    border-radius: 50px;
-    color: white;
-    width: 75px;
-    height: 75px;
-  }
 
-  .btn-round {
-    transition: .5s;
-    -webkit-transition: .5s;
+  .video-display {
     position: relative;
-    border-radius: 50%;
-    font-size: 22px;
-    height: 80px;
-    width: 80px;
-    display: flex;
-    color: #fff;
-    justify-content: center;
-    align-items: center;
-    margin: 0 auto;
-  }
 
+    .btn-over {
+      $size: 75px;
+      position: absolute;
+      left: calc(50% - (#{$size} / 2));
+      top: calc(50% - (#{$size} / 2));
+      background: #00000061;
+      border-radius: 50px;
+      color: white;
+      width: $size;
+      height: $size;
+
+      i:after {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        border-radius: 50%;
+        -o-transform: translate(-50%, -50%);
+        -moz-transform: translate(-50%, -50%);
+        -webkit-transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+        content: '';
+        border-radius: 50%;
+        display: block;
+        background: rgba(255, 255, 255, .8);
+        width: 80%;
+        height: 80%;
+        animation: grow-scnd 1.5s infinite;
+        -o-animation: grow-scnd 1.5s infinite;
+        -moz-animation: grow-scnd 1.5s infinite;
+        -webkit-animation: grow-scnd 1.5s infinite;
+        -ms-animation: grow-scnd 1.5s infinite;
+        animation-delay: 0s;
+        animation-timing-function: ease-in-out;
+      }
+    }
+  }
 }
 .main-dialog {
   .MuiDialog-container {
@@ -1091,5 +1111,23 @@ ol.custom-list > li + li {
       margin-bottom: 0;
       font-size: 1.2em;
     }
+  }
+}
+
+@keyframes grow-scnd {
+  0% {
+    width: 0;
+    height: 0;
+    opacity: 1
+  }
+  50% {
+    width: 0;
+    height: 0;
+    opacity: 1
+  }
+  100% {
+    width: 200%;
+    height: 200%;
+    opacity: 0
   }
 }
