@@ -1,18 +1,10 @@
+import { Player } from 'video-react';
 import {Link} from "react-router-dom";
 import React, {Component} from 'react';
-import {SlideDown} from 'react-slidedown';
-import 'react-slidedown/lib/slidedown.css';
 import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
+import {AUTH, PASS_DETAILS} from "Url/frontendUrl";
 import DialogTitle from '@material-ui/core/DialogTitle';
-import Button from "@material-ui/core/Button";
-import IntlMessages from "Util/IntlMessages";
-import { Player } from 'video-react';
-// import "node_modules/video-react/dist/video-react.css";
-import {AGENTS, AUTH, GALERY_PROJECT, HOME, PASS_DETAILS, DISCOVER} from "Url/frontendUrl";
-import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem, Dropdown} from 'reactstrap';
+import DialogContent from '@material-ui/core/DialogContent';
 
 class DiscoverVideo extends Component {
     constructor(props) {
@@ -20,14 +12,6 @@ class DiscoverVideo extends Component {
         this.state = {
             openModal: false,
         }
-    }
-
-    componentDidMount() {
-
-    }
-
-    componentWillUnmount() {
-
     }
 
     onModal = (event) => {
@@ -43,20 +27,20 @@ class DiscoverVideo extends Component {
         const { } = this.state;
         return (
             <div className="row video">
-                <div className="col-md-6 video-text-content">
+                <div className="col-md-6 video-text-content" data-aos="fade-right">
                     <p className="text-center">
                         Microcap vous accompagne dans la réalisation
                         de votre projet:  création ou développement
                         d’entreprise, actionnariat, formation à l’entrepreneuriat ...
                         <br />
-                        <Link to={AUTH.REGISTER} style={{ color: '#e19d00' }}>
+                        <Link to={AUTH.REGISTER} className="text-primary">
                             İnscrivez-vous</Link> et choississez l’abonnement
                         qui vous correspond parmi
-                        <Link to={PASS_DETAILS} style={{ color: '#e19d00' }}>
+                        <Link to={PASS_DETAILS} className="text-primary">
                             nos PASS</Link>
                     </p>
                 </div>
-                <div className="col-md-6 video-display">
+                <div className="col-md-6 video-display" data-aos="fade-left">
                     <img src={require('Assets/img/microcap.png')} className="img-fluid w-100 h-100"/>
                     <div className="text-center btn-over">
                         <div onClick={(event)=>this.onModal(event)} className="center-hor-ver w-100 h-100 cursor-pointer">

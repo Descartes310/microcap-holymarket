@@ -119,7 +119,7 @@ const Discover = (props) => {
                                 </CardFooter>
                             </Card>
                         </div>
-                        <div className="col-xs-12 col-sm-12 col-md-4 mb-30">
+                        <div className="col-xs-12 col-sm-12 col-md-4 mb-30" data-aos="fade-down" data-aos-duration="500">
                             <Card>
                                 <CardImg top width="100%" className="img-fluid ripple-effect" src={require('Assets/img/01-solidarite-1.jpg')} alt="Card image cap" />
                                 <CardBody style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
@@ -138,7 +138,7 @@ const Discover = (props) => {
                                 </CardFooter>
                             </Card>
                         </div>
-                        <div className="col-xs-12 col-sm-12 col-md-4 mb-30">
+                        <div className="col-xs-12 col-sm-12 col-md-4 mb-30" data-aos="fade-down" data-aos-duration="700">
                             <Card>
                                 <CardImg top width="100%" className="img-fluid ripple-effect" src={require('Assets/img/budget.jpg')} alt="Card image cap" />
                                 <CardBody style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
@@ -320,101 +320,100 @@ const Discover = (props) => {
                     </div>
                 </div>
 
-                <div style={{ backgroundColor: '#eeeeee', marginBottom: '7vh' }} id="services">
-                    <h1 className="font-weight-bold text-black text-center" style={{ fontSize: '3em', padding: '4%' }}>
-                        Solutions de financement des partenaires Microcap
-                    </h1>
-                </div>
-
-                <div className="container">
-                    <div className="row justify-content-center">
-                        <div className="col-sm-12 col-md-4 col-lg-3">
-                            <RctCard>
-                                <RctCardContent>
-                                    <div className="client-post" style={{ minHeight: 300 }}>
-                                        <div className="client-thumb mb-20">
-                                            <img
-                                                className="rounded"
-                                                src={require(`Assets/img/x4.jpg`)}
-                                                alt="client"
-                                                width="95"
-                                                height="95"
-                                            />
-                                        </div>
-                                        <div className="client-content">
-                                            <h4 className="fw-bold text-capitalize">Cautionnement bancaire</h4>
-                                            <p>Pour obtenir facilement un crédit auprès de votre établissement bancaire habituel.</p>
-                                        </div>
-                                    </div>
-                                </RctCardContent>
-                            </RctCard>
+                <div id="services" data-aos="fade-up">
+                    <div className="container">
+                        <div className="row title-block">
+                            <h2 className="font-weight-bold text-black text-center" data-aos="fade-down" data-aos-duration="1500">
+                                Solutions de financement des partenaires Microcap
+                            </h2>
                         </div>
-                        <div className="col-sm-12 col-md-4 col-lg-3">
-                            <RctCard>
-                                <RctCardContent>
-                                    <div className="client-post" style={{ minHeight: 300 }}>
-                                        <div className="client-thumb mb-20">
-                                            <img
-                                                className="rounded"
-                                                src={require(`Assets/img/x2.jpg`)}
-                                                alt="client"
-                                                width="95"
-                                                height="95"
-                                            />
-                                        </div>
-                                        <div className="client-content">
-                                            <h4 className="fw-bold text-capitalize">Garantie des livraisons</h4>
-                                            <p>Depuis votre espace personnel, profitez des préventes et des ventes privées de nos entrepreneurs. La livraison de vos commandes est garantie.  </p>
-                                        </div>
-                                    </div>
-                                </RctCardContent>
-                            </RctCard>
-                        </div>
-                        <div className="col-sm-12 col-md-4 col-lg-3">
-                            <RctCard>
-                                <RctCardContent>
-                                    <div className="client-post" style={{ minHeight: 300 }}>
-                                        <div className="client-thumb mb-20">
-                                            <img
-                                                className="rounded"
-                                                src={require(`Assets/img/x3.jpg`)}
-                                                alt="client"
-                                                width="95"
-                                                height="95"
-                                            />
-                                        </div>
-                                        <div className="client-content">
-                                            <h4 className="fw-bold text-capitalize">Préfinancement du PIP</h4>
-                                            <p>Votre PIP MicroCap est destiné à la réalisation d’un projet. Vous pouvez obtenir à tout moment sous forme de crédit bancaire le capital que vous souhaitez constituer à terme sur votre PIP.</p>
-                                        </div>
-                                    </div>
-                                </RctCardContent>
-                            </RctCard>
-                        </div>
-                        <div className="col-sm-12 col-md-4 col-lg-3">
-                            <RctCard>
-                                <RctCardContent>
-                                    <div className="client-post" style={{ minHeight: 300 }}>
-                                        <div className="client-thumb mb-20">
-                                            <img
-                                                className="rounded"
-                                                src={require(`Assets/img/x1.jpg`)}
-                                                alt="client"
-                                                width="95"
-                                                height="95"
-                                            />
-                                        </div>
-                                        <div className="client-content">
-                                            <h4 className="fw-bold text-capitalize">Cofinancement de projets</h4>
-                                            <p>Les partenaires MicroCap sont des acteurs engagés qui partage nos valeurs et soutiennent notre création d’impact. Ils interviennent systématiquement en capital ou en quasi-fonds propres, sur les projets labellisés ESH de la plateforme.</p>
-                                        </div>
-                                    </div>
-                                </RctCardContent>
-                            </RctCard>
+                        <div className="row item-block">
+                            <div className="row justify-content-center">
+                                <div className="col-sm-12 col-md-4 col-lg-3">
+                                    <RctCard>
+                                        <RctCardContent>
+                                            <div className="client-post">
+                                                <div className="center-holder center-hor-ver client-thumb mb-20">
+                                                    <div className="img-block first">
+                                                        <img
+                                                            alt="client"
+                                                            src={require(`Assets/img/x4.jpg`)}
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div className="client-content text-center">
+                                                    <h4 className="fw-bold text-capitalize">Cautionnement bancaire</h4>
+                                                    <p>Pour obtenir facilement un crédit auprès de votre établissement bancaire habituel.</p>
+                                                </div>
+                                            </div>
+                                        </RctCardContent>
+                                    </RctCard>
+                                </div>
+                                <div className="col-sm-12 col-md-4 col-lg-3">
+                                    <RctCard>
+                                        <RctCardContent>
+                                            <div className="client-post">
+                                                <div className="center-holder center-hor-ver client-thumb mb-20">
+                                                    <div className="img-block second">
+                                                        <img
+                                                            alt="client"
+                                                            src={require(`Assets/img/x2.jpg`)}
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div className="client-content text-center">
+                                                    <h4 className="fw-bold text-capitalize">Garantie des livraisons</h4>
+                                                    <p>Depuis votre espace personnel, profitez des préventes et des ventes privées de nos entrepreneurs. La livraison de vos commandes est garantie.  </p>
+                                                </div>
+                                            </div>
+                                        </RctCardContent>
+                                    </RctCard>
+                                </div>
+                                <div className="col-sm-12 col-md-4 col-lg-3">
+                                    <RctCard>
+                                        <RctCardContent>
+                                            <div className="client-post">
+                                                <div className="center-holder center-hor-ver client-thumb mb-20">
+                                                    <div className="img-block third">
+                                                        <img
+                                                            alt="client"
+                                                            src={require(`Assets/img/x3.jpg`)}
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div className="client-content text-center">
+                                                    <h4 className="fw-bold text-capitalize">Préfinancement du PIP</h4>
+                                                    <p>Votre PIP MicroCap est destiné à la réalisation d’un projet. Vous pouvez obtenir à tout moment sous forme de crédit bancaire le capital que vous souhaitez constituer à terme sur votre PIP.</p>
+                                                </div>
+                                            </div>
+                                        </RctCardContent>
+                                    </RctCard>
+                                </div>
+                                <div className="col-sm-12 col-md-4 col-lg-3">
+                                    <RctCard>
+                                        <RctCardContent>
+                                            <div className="client-post">
+                                                <div className="center-holder center-hor-ver client-thumb mb-20">
+                                                    <div className="img-block four">
+                                                        <img
+                                                            alt="client"
+                                                            src={require(`Assets/img/x1.jpg`)}
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div className="client-content text-center">
+                                                    <h4 className="fw-bold text-capitalize">Cofinancement de projets</h4>
+                                                    <p>Les partenaires MicroCap sont des acteurs engagés qui partage nos valeurs et soutiennent notre création d’impact. Ils interviennent systématiquement en capital ou en quasi-fonds propres, sur les projets labellisés ESH de la plateforme.</p>
+                                                </div>
+                                            </div>
+                                        </RctCardContent>
+                                    </RctCard>
+                                </div>
+                            </div>
                         </div>
                     </div>
-
                 </div>
+
                 <div style={{ backgroundColor: '#eeeeee', marginBottom: '7vh' }} id="pass">
                     <h1 className="font-weight-bold text-black text-center" style={{ fontSize: '3em', padding: '4%' }}>
                         Les Pass Microcap
