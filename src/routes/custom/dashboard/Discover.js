@@ -36,6 +36,7 @@ import {
 } from "Components/Widgets";
 import { Parallax, ParallaxBanner } from 'react-scroll-parallax';
 import DiscoverMenu from "Routes/custom/dashboard/DiscoverMenu";
+import DiscoverVideo from "Routes/custom/dashboard/DiscoverVideo";
 
 // import { makeStyles } from '@material-ui/core/styles';
 // import DialogTitle from '@material-ui/core/DialogTitle';
@@ -158,21 +159,8 @@ const Discover = (props) => {
                     </div>
                 </div>
 
-                <div className="row" style={{ paddingLeft: '10%', paddingRight: '10%', paddingTop: '2%', paddingBottom: '2%' }}>
-                    <Player
-                        playsInline
-                        poster={require('Assets/img/microcap.png')}
-                        //src='http://api-preprod.microcap.fr/files/videos/video.mp4'
-                        src='http://api.microcap.fr/files/videos/video.mp4'
-                    />
-                    <p style={{ fontSize: '1.2em', marginTop: 20, textAlign: 'center' }}>
-                        Microcap vous accompagne dans la réalisation de votre projet:  création ou développement d’entreprise, actionnariat, formation à l’entrepreneuriat ...<br />
-                        <Link to={AUTH.REGISTER} style={{ color: '#e19d00' }}>İnscrivez-vous</Link> et choississez l’abonnement qui vous correspond parmi <Link to={PASS_DETAILS} style={{ color: '#e19d00' }}>nos PASS</Link>
-                    </p>
-                    {/* <p style={{ fontSize: '1.2em', marginTop: 10, textAlign: 'center' }}>
-                        Ouvrir votre Plan d'Investissement Programmé MicroCap et Rejoignez le premier réseau international de solidarité financière
-                    </p> */}
-                </div>
+                <DiscoverVideo />
+
 
                 <div className="product-section-title" id='produits'>
                     <h2
