@@ -18,6 +18,7 @@ import { Tooltip } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import { getFilePath } from "Helpers/helpers";
 import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+import DiscoverMenu from "Routes/custom/dashboard/DiscoverMenu";
 
 const Agents = (props) => {
     const { loading, intl } = props;
@@ -43,87 +44,7 @@ const Agents = (props) => {
             <div className={'global-loader'}>
                 {loading && <LinearProgress />}
             </div>
-            <AppBar position="static" className="session-header">
-                <Toolbar>
-                    <div className="container">
-                        <div className="d-flex justify-content-between">
-                            <div className="session-logo">
-                                <Link to={HOME}>
-                                    <img src={AppConfig.appLogo} alt="session-logo" className="img-fluid" width="110" height="35" />
-                                </Link>
-                            </div>
-                            <div className="center-hor-ver">
-                            <UncontrolledDropdown nav className="list-inline-item vr-super">
-                                    <DropdownToggle nav caret className="text-white">
-                                        <a className="mr-30" style={{ fontSize: '1.2em', color: 'black' }}>
-                                            Découvir
-                                        </a>
-                                    </DropdownToggle>
-                                    <DropdownMenu>
-                                        <DropdownItem>
-                                            <HashLink to={`${DISCOVER}/#services`}>
-                                                <a className="mr-30" style={{ fontSize: '1.2em', color: 'black' }}>
-                                                    Produits pour entreprendre
-                                                </a>
-                                            </HashLink>
-                                        </DropdownItem>
-                                        <DropdownItem>
-                                            <HashLink to={`${DISCOVER}/#investir`}>
-                                                <a className="mr-30" style={{ fontSize: '1.2em', color: 'black' }}>
-                                                    Produits pour investir
-                                                </a>
-                                            </HashLink>
-                                        </DropdownItem>
-                                        <DropdownItem>
-                                            <HashLink to={`${DISCOVER}/#services`}>
-                                                <a className="mr-30" style={{ fontSize: '1.2em', color: 'black' }}>
-                                                    Produits des Partenaires
-                                                </a>
-                                            </HashLink>
-                                        </DropdownItem>
-                                        <DropdownItem>
-                                            <HashLink to={`${DISCOVER}/#pass`}>
-                                                <a className="mr-30" style={{ fontSize: '1.2em', color: 'black' }}>
-                                                    Pass Microcap
-                                                </a>
-                                            </HashLink>
-                                        </DropdownItem><DropdownItem>
-                                            <HashLink to={`${DISCOVER}/#pioniers`}>
-                                                <a className="mr-30" style={{ fontSize: '1.2em', color: 'black' }}>
-                                                    L'équipe
-                                                </a>
-                                            </HashLink>
-                                        </DropdownItem><DropdownItem>
-                                            <HashLink to={`${DISCOVER}/#agents`}>
-                                                <a className="mr-30" style={{ fontSize: '1.2em', color: 'black' }}>
-                                                    Point d'accueil
-                                                </a>
-                                            </HashLink>
-                                        </DropdownItem>
-                                    </DropdownMenu>
-                                </UncontrolledDropdown>
-                                <HashLink to={`${PASS_DETAILS}`}>
-                                    <a className="mr-30" style={{ fontSize: '1.2em', color: 'black' }}>
-                                        Pass microcap
-                                    </a>
-                                </HashLink>
-                                <Link to={GALERY_PROJECT}>
-                                    <a className="mr-30" style={{ fontSize: '1.2em', color: 'black' }}>
-                                        Gallerie projets
-                                    </a>
-                                </Link>
-                                <HashLink to={`${AGENTS}`}>
-                                    <a className="mr-30" style={{ fontSize: '1.2em', color: 'black' }}>
-                                        Réseau d'agent
-                                    </a></HashLink>
-                                <Button variant="contained" className="btn-primary mr-2" onClick={onUserLogin}>
-                                    <IntlMessages id="auth.signin" />
-                                </Button>
-                            </div>
-                        </div>
-                    </div>
-                </Toolbar>
-            </AppBar>
+            <DiscoverMenu/>
             <div className="session-inner-wrapper video-player-wrapper">
                 <div style={{ height: '35vh', backgroundImage: `url(${headerImg})`, backgroundSize: 'cover' }}>
                 </div>

@@ -650,7 +650,19 @@ ol.custom-list > li + li {
     }
 
   }
+/*pionier and agent Page*/
+.pionier-content {
+  .pionier-content-text {
+    color: #FFFFFF;
+    background-image: url("Assets/img/pionier.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
 
+    .back-to-discover {
+      color: #FFFFFF !important;
+    }
+  }
+}
 
 .inline-nav-arrow-initial {
   margin-left: 10px;
