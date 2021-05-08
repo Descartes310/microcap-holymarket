@@ -1408,3 +1408,89 @@ ol.custom-list > li + li {
 
   }
 }
+
+.pioniers {
+  color: #FFFFFF;
+  background-image: url("Assets/img/pionier.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  .pionier-wrapper1 {
+    padding: 5%;
+    margin: 15%;
+    margin-right: 0%;
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 5px;
+
+    #pioniers {
+      h1 {
+        font-size: xx-large !important;
+        font-family: sans-serif;
+      }
+    }
+
+    .container {
+      p {
+        font-size: large;
+      }
+    }
+  }
+
+  @media only screen and (max-width: 964px)  {
+    .pionier-wrapper1 {
+      padding: 5%;
+      margin: 3%;
+      background: rgba(0, 0, 0, 0.6);
+      border-radius: 5px;
+      #pioniers {
+        h1 {
+          font-size: xx-large !important;
+          font-family: sans-serif;
+        }
+      }
+      .container {
+        p {
+          font-size: large;
+        }
+      }
+    }
+
+  }
+  .pionier-wrapper2 {
+    padding: 5%;
+    margin: 15%;
+    margin-left: 0%;
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 5px;
+    #agents {
+      h1 {
+        font-size: xx-large !important;
+        font-family: sans-serif;
+      }
+    }
+    .container {
+      p {
+        font-size: large;
+      }
+    }
+  }
+  @media only screen and (max-width: 964px)  {
+    .pionier-wrapper2 {
+      padding: 5%;
+      margin: 3%;
+      background: rgba(0, 0, 0, 0.6);
+      border-radius: 5px;
+      #agents {
+        h1 {
+          font-size: xx-large !important;
+          font-family: sans-serif;
+        }
+      }
+      .container {
+        p {
+          font-size: large;
+        }
+      }
+    }
+  }
+
+}
