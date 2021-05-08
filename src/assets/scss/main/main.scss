@@ -798,7 +798,12 @@ ol.custom-list > li + li {
   display: block;
   padding: 0.70rem 1rem;
   font-size: inherit;
-  font-weight: bold
+  font-weight: bold;
+
+  i.drop-arrow {
+    font-size: 12px;
+    transition: all .4s;
+  }
 }
 
 .nav-item-border:hover {

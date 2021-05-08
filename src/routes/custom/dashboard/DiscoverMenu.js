@@ -187,10 +187,13 @@ class DiscoverMenu extends Component {
                                 <ul className="">
                                     <li className="nav-item" style={{marginRight:"30px"}}>
                                         <HashLink to={`${PASS_DETAILS}`}>
-                                            <a className="nav-link-mobile" href="#"
-                                            onClick={(event)=>this.onTClickDropdown(event)}>
+                                            <a
+                                                href="#"
+                                                className="nav-link-mobile"
+                                                onClick={(event)=>this.onTClickDropdown(event)}
+                                            >
                                                 Découvrir
-                                                <img class={showMobileDorpdown ? "inline-nav-arrow-final" : "inline-nav-arrow-initial"} src="https://sqy7rm.media.zestyio.com/Downward-Carat.svg" alt="Downward arrow"></img>
+                                                <i className={`drop-arrow ti-angle-${showMobileDorpdown ? 'up' : 'down'}`} />
                                             </a>
                                             <SlideDown className={'second-dropdown-mobile'}>
                                                 {showMobileDorpdown ? (
