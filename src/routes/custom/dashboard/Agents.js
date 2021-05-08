@@ -42,7 +42,7 @@ const Agents = (props) => {
                         Depuis 2017, le mouvement ne cesse de grandir et compte aujourd’hui des contributeurs sur les 5 continent, des personnes grâce à qui nous pouvons vous proposer ce service. Rejoint le mouvement.
                     </p>
 
-                    <div className="row my-70">
+                    <div className="row my-70 person-block">
                         {data.filter(a => a.active === true).map(agent => (
                             <div className="single-item col-lg-4 col-md-5">
                                 <div className="item">
