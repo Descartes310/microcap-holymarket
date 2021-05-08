@@ -1233,8 +1233,13 @@ ol.custom-list > li + li {
     }
 
     .client-content {
-      H4 {
+      h4 {
         font-size: 1.3em;
+        min-height: 50px;
+      }
+
+      p {
+        text-align: justify;
       }
     }
   }
