@@ -47,12 +47,6 @@ const Discover = (props) => {
             <DiscoverMenu/>
             <div className="session-inner-wrapper video-player-wrapper pionier-content">
                 <div className="pionier-content-text mt-70 py-30 my-50" >
-                    {/*<div className="page-title d-flex align-items-center p-5" >*/}
-                    {/*    <IconButton to="/discover" className="mr-15" aria-label="zmdi-arrow-left" component={Link}>*/}
-                    {/*        <i className="zmdi zmdi-arrow-left back-to-discover font-2x"></i>*/}
-                    {/*    </IconButton>*/}
-                    {/*    <h3>Retour sur Découvrir Microcap</h3>*/}
-                    {/*</div>*/}
                     <div className="p-30 text-center">
                         <h1 className="font-4x">
                             Nos pioniers

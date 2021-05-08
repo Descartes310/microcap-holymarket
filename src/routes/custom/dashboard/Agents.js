@@ -45,25 +45,21 @@ const Agents = (props) => {
                 {loading && <LinearProgress />}
             </div>
             <DiscoverMenu/>
-            <div className="session-inner-wrapper video-player-wrapper">
-                <div style={{ height: '35vh', backgroundImage: `url(${headerImg})`, backgroundSize: 'cover' }}>
-                </div>
-                <div className="page-title d-flex align-items-center" style={{ padding: 40 }}>
-                    <IconButton to="/discover" className="mr-15" aria-label="zmdi-arrow-left" component={Link}>
-                        <i className="zmdi zmdi-arrow-left"></i>
-                    </IconButton>
-                    <h3>Retour sur Découvrir Microcap</h3>
+            <div className="session-inner-wrapper video-player-wrapper pionier-content">
+                <div className="pionier-content-text mt-70 py-30 my-50" >
+                    <div className="p-30 text-center">
+                        <h1 className="font-4x">
+                            Nos agents
+                        </h1>
+                    </div>
                 </div>
                 <div className="container">
-                    <p>
+                    <p className="font-lg">
                         MicroCap est aujourd’hui un produit qui permet des services  que nous sommes fiers de présenter. Mais c’est d’abord un mouvement de cœur, de personnes originaires ou sympathisantes des pays du sud en général et de l’Afrique subsaharienne plus particulièrement.
                     </p>
-                    <p>
+                    <p className="font-lg mb-50">
                         Depuis 2017, le mouvement ne cesse de grandir et compte aujourd’hui des contributeurs sur les 5 continent, des personnes grâce à qui nous pouvons vous proposer ce service. Rejoint le mouvement.
                     </p>
-                    <h1 className="font-weight-bold text-black" style={{ fontSize: '2em', padding: '2%', textAlign: 'center' }}>
-                        Nos agents
-                    </h1>
 
                     <div className="row justify-content-center">
                         {data.filter(a => a.active === true).map(agent => (
@@ -95,10 +91,10 @@ const Agents = (props) => {
                             </div>
                         ))}
                     </div>
-                    <h1 className="font-weight-bold text-black" style={{ fontSize: '2em', padding: '2%', textAlign: 'center' }}>
+                    <h1 className="font-weight-bold text-black text-center font-3x">
                         Assistance
                     </h1>
-                    <p>
+                    <p className="font-lg">
                         Le service MicroCap est proposé par la société A+ Conseils, Spécialiste de la création et du développement de la PME. <br />
                         Toute réclamation doit être portée directement à notre attention en utilisant un des <HashLink to={`${DISCOVER}/#fh5co-footer`}>contacts Microcap</HashLink>. Vous pouvez également enregistrer une réclamation auprès d’un agent de notre réseau. Nous vous garantissons une prise en charge et un retour en moins de 48H 
                     </p>
