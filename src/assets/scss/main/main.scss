@@ -1248,3 +1248,163 @@ ol.custom-list > li + li {
     }
   }
 }
+
+#pass-section {
+  background: #24262d;
+  position: relative;
+  padding-top: 90px;
+  padding-bottom: 90px;
+
+  .services-box {
+    background: #ffffff;
+    padding: 100px;
+  }
+
+  .area-img {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: 66.6%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    max-width: 100%;
+    transition: all 0.3s ease-out 0s;
+
+    img {
+      height: 100%;
+      width: 100%;
+    }
+  }
+
+  .visibRight {
+    visibility: visible;
+    animation-name: fadeInRight;
+
+    .title-block {
+      margin: 30% 0 0 0;
+
+      h3 {
+        font-size: 35px;
+        font-weight: 700;
+        line-height: 35px;
+      }
+
+      h4 {
+        text-transform: uppercase;
+        font-weight: 500;
+        font-size: 20px;
+        position: relative;
+        //padding-left: 30px;
+        margin-bottom: 15px;
+
+        /*&:before {
+          background: #ff9800;
+          height: 2px;
+          width: 20px;
+          content: "";
+          position: absolute;
+          left: 0;
+          top: 11px;
+        }*/
+      }
+    }
+
+    .title-block.lite h4, .title-block.lite h3 {
+      color: #fff;
+    }
+
+  }
+
+  .visibLeft {
+    visibility: visible;
+    animation-name: fadeInLeft;
+
+    .services-box {
+      background: #ffffff;
+      padding: 100px;
+    }
+
+    .single-services {
+      display: flex;
+      margin-bottom: 36px;
+      transition: all 0.3s;
+      position: relative;
+
+      &:before {
+        content: ' ';
+        position: absolute;
+        left: -18px;
+        top: 12px;
+        width: 0px;
+        height: 0px;
+        /* background: red; */
+        border-left: 15px solid transparent;
+        border-right: 15px solid transparent;
+        border-top: 20px solid #fabb35;
+        border-radius: 50%;
+      }
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      .services-content-box {
+        margin-left: 30px;
+
+        h3 {
+          font-size: 24px;
+          font-weight: 500;
+          line-height: 1;
+          margin: 0 0 15px;
+          text-transform: capitalize;
+        }
+
+        p {
+          margin-bottom: 0;
+        }
+      }
+    }
+
+
+  }
+
+  @media (min-width: 768px) and (max-width: 991px) {
+    .title-block {
+      margin: 0 0 50px;
+    }
+
+    .order-2 {
+      order: 0;
+    }
+  }
+
+  @media (max-width: 575px) {
+
+    .title-block {
+      margin: 0 0 50px;
+    }
+
+    .order-2 {
+      order: 0;
+    }
+  }
+
+
+  @media only screen and (min-width: 576px) and (max-width: 767px) {
+
+    .title-block {
+      margin: 0 0 50px;
+    }
+
+    .order-2 {
+      order: 0;
+    }
+
+    .services-box {
+      padding: 50px 40px;
+    }
+
+  }
+}

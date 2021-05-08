@@ -411,30 +411,45 @@ const Discover = (props) => {
                     </div>
                 </div>
 
-                <div style={{ backgroundColor: '#eeeeee', marginBottom: '7vh' }} id="pass">
-                    <h1 className="font-weight-bold text-black text-center" style={{ fontSize: '3em', padding: '4%' }}>
-                        Les Pass Microcap
-                    </h1>
-                </div>
-                <div className="container">
-                    <div className="col-sm-12 discover-block" style={{ marginTop: '5vh' }} id="pass">
-                        <div className="col-md-12">
-                            <img className="img-fluid" src={require('Assets/identity/banner.jpg')} alt="" />
+                <div id="pass-section" className="merox-services-area pt-90 pb-90">
+                    <div className="area-img">
+                        <img src={require('Assets/identity/services-bg.57d4413a.jpg')} alt="img"/>
+                    </div>
+                    <div className="container">
+                        <div className="row">
+                            <div className="visibRight col-xl-4 offset-xl-1 col-lg-4 order-2 wow fadeInRight">
+                                <div className="title-block lite">
+                                    <h4>booster votre abonnement grâce à nos </h4> <h3>Options en <br/> Séries <br/> Limitées</h3>
+                                    <Link to={PASS_DETAILS} className="mt-4">
+                                        <Button variant="outlined" className="btn-primary mr-2 py-5" >
+                                            Tout nos PASS
+                                        </Button>
+                                    </Link>
+                                </div>
+                            </div>
+                            <div className="visibLeft col-xl-7 col-lg-8 wow fadeInLeft">
+                                <div className="services-box">
+                                    <div className="single-services">
+                                        <div className="services-content-box">Les services de la plateforme sont accessibles sur abonnement ou PASS: à chacun son rythme, à chacun son Pass.
+                                        </div>
+                                    </div>
+                                    <div className="single-services">
+                                        <div className="services-content-box"><p>Chaque PASS MicroCap donne accès à une combinaison de services selon les objectifs de chacun : entreprendre, investir, épargner, soutenir un porteur de projet, … <br />
+                                            Les produits financiers de nos partenaires dans chaque PASS se différencient sur les plafonds autorisés, les délais. <br/></p>
+                                        </div>
+                                    </div>
+                                    <div className="single-services">
+                                        <div className="services-content-box"><p>
+                                            <b>Pour bénéficier des avantages exceptionnels ajoutez une option à votre PASS MicroCap</b>
+                                        </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <p style={{ fontSize: '1.1em', textAlign: 'center', marginTop: 40 }}>
-                            Les services de la plateforme sont accessibles sur abonnement ou PASS: <b>à chacun son rythme, à chacun son Pass.</b> <br />
-
-                            <p style={{ textAlign: 'left', fontSize: '1em', marginTop: 40 }}>Chaque PASS MicroCap donne accès à une combinaison de services selon les objectifs de chacun : entreprendre, investir, épargner, soutenir un porteur de projet, … <br />
-                            Les produits financiers de nos partenaires dans chaque PASS se différencient sur les plafonds autorisés, les délais. <br />
-                                <b>Pour bénéficier des avantages exceptionnels ajoutez une option à votre PASS MicroCap</b></p> <br />
-                            <Link to={PASS_DETAILS} style={{ marginTop: 20, marginBottom: 20, padding: 20 }}>
-                                <Button variant="contained" className="btn-primary mr-2" style={{ padding: 20 }}>
-                                    Tout nos PASS
-                                </Button>
-                            </Link>
-                        </p>
                     </div>
                 </div>
+
 
                 <div style={{ backgroundColor: '#eeeeee', marginBottom: '7vh' }} id="pioniers">
                     <h1 className="font-weight-bold text-black text-center" style={{ fontSize: '3em', padding: '4%' }}>
