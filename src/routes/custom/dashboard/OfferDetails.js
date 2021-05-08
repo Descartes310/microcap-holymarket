@@ -24,10 +24,10 @@ export default class OfferDetails extends Component {
         </div>
         <div className="terms-conditions-rules">
           <RctCollapsibleCard customClasses="p-30">
-            <p>
+            <p className="font-size-medium">
               MicroCap propose des abonnement pour profiter pleinement des services de la plateforme et faciliter la gestion des parcours de professionnalisation de nos utilisateurs vers l’entrepreneuriat. MicroCap a également fait le choix de l’indépendance financière afin de pouvoir conduire sa mission d’inclusion financière et de soutiens aux personnes en situation de fragilité. Pour capitaliser et soutenir le fonctionnement indépendant, nous proposons des options payantes sur nos abonnements.
             </p>
-            <p>
+            <p className="font-size-medium">
               Les options MicroCap sur abonnement sont disponibles en série limitée du 1er avril 2021 au 30 septembre 2021.
             </p>
             <h1 className="font-weight-bold text-black" style={{ fontSize: '2em', padding: '2%', textAlign: 'center' }}>
