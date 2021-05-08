@@ -459,7 +459,7 @@ const Discover = (props) => {
 
 
                 {/* Agent  et Pionier*/}
-                <div className="row pioniers">
+                <div className="row pioniers" id="team-section">
                     <div className="col-md-6 ">
                         <div className="pionier-wrapper1">
                             <div id="pioniers">
