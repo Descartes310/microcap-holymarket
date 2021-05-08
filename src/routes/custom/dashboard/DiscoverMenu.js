@@ -1,4 +1,4 @@
-import {Link} from "react-router-dom";
+import {Link, withRouter} from "react-router-dom";
 import React, {Component} from 'react';
 import {SlideDown} from 'react-slidedown';
 import 'react-slidedown/lib/slidedown.css';
@@ -153,7 +153,7 @@ class DiscoverMenu extends Component {
                                     <Button
                                         variant="contained"
                                         className="btn-primary ml-30 mr-2"
-                                        onClick={() => props.history.push(AUTH.LOGIN)}>
+                                        onClick={() => this.props.history.push(AUTH.LOGIN)}>
                                         <IntlMessages id="auth.signin" />
                                     </Button>
                                 </li>
@@ -261,4 +261,4 @@ class DiscoverMenu extends Component {
     }
 }
 
-export default DiscoverMenu;
+export default withRouter(DiscoverMenu);
