@@ -1528,3 +1528,112 @@ ol.custom-list > li + li {
   }
 
 }
+
+/*pionier and agent Page*/
+.pionier-content {
+  .pionier-content-text {
+    color: #FFFFFF;
+    background-image: url("Assets/img/pionier.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    .back-to-discover {
+      color: #FFFFFF !important;
+    }
+  }
+}
+
+.person-block {
+  .single-item {
+    margin-bottom: 30px;
+  }
+
+  .thumb {
+    max-width: 350px;
+    max-height: 370px;
+    width: 350px;
+    height: 370px;
+    overflow: hidden;
+
+    position: relative;
+    padding: 10px;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px #cccccc;
+
+    .img-wrapper {
+      width: 100%;
+      height: 100%;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+
+    img {
+      max-width: 100%;
+      max-height: 100%;
+    }
+
+    .social {
+      position: absolute;
+      right: 30px;
+      bottom: -22px;
+
+      .share-button {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 45px;
+        height: 45px;
+        color: #ffffff;
+        background: linear-gradient(
+                        45deg
+                ,#02ebad 0%,#5a57fb 100%);
+        border-radius: 10px;
+        box-shadow: 0px 0px 0px 5px #ffffff;
+        cursor: pointer;
+        transition: .3s ease;
+        transform: rotate(45deg);
+        font-weight: normal;
+        margin-bottom: 5px;
+        max-width: 100%;
+
+        .share-icon {
+          position: absolute;
+          top: 0;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 45px;
+          height: 45px;
+          border-radius: 45px;
+          transform: translateX(0) rotate(
+                          180deg
+          );
+          cursor: pointer;
+          transition: .3s ease-in-out;
+        }
+      }
+    }
+
+    .share-toggle:checked ~ .share-icon:nth-child(3) {
+      transform: translateY(-70px) rotate(0);
+    }
+  }
+
+  .info {
+    padding: 20px 20px 0 10px;
+    margin-bottom: -5px;
+
+    h4 {
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+    span {
+      color: $primary;
+      font-weight: 600;
+      text-transform: capitalize;
+    }
+  }
+}
