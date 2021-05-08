@@ -145,7 +145,7 @@ const Agents = (props) => {
                     </h1>
 
                     <div className="row justify-content-center">
-                        {data.filter(a => a.active == true).map(agent => (
+                        {data.filter(a => a.active === true).map(agent => (
                             <div className="col-sm-12 col-md-4 col-lg-3">
                                 <RctCard>
                                     <RctCardContent>

@@ -54,7 +54,7 @@ const Discover = (props) => {
         })
     }, []);
 
-
+    console.log("datas=> ", data);
     return (
         <div>
             {/* <div className="rct-session-wrapper"> */}
@@ -427,36 +427,6 @@ const Discover = (props) => {
                                 <p>
                                     Pour vous servir et assurer la qualité du service, vous avez en responsabilité :
                                 </p>
-                                <div className="row justify-content-center">
-                                    {pioniers.filter(a => a.active == true).map(agent => (
-                                        <div className="col-sm-12 col-md-4 col-lg-3">
-                                            <RctCard>
-                                                <RctCardContent>
-                                                    <div className="client-post text-center">
-                                                        <div className="client-thumb mb-20">
-                                                            <img
-                                                                className="rounded"
-                                                                src={getFilePath(agent.avatar)}
-                                                                alt="client"
-                                                                width="95"
-                                                                height="95"
-                                                            />
-                                                        </div>
-                                                        <div className="client-content">
-                                                            <Tooltip title={agent.about}>
-                                                                <h4 className="fw-bold text-capitalize text-primary">{agent.name}</h4>
-                                                            </Tooltip>
-                                                            <p>{agent.post}</p>
-                                                            <p>{agent.email}</p>
-                                                            <p>{agent.phone}</p>
-                                                            <p>{agent.about}</p>
-                                                        </div>
-                                                    </div>
-                                                </RctCardContent>
-                                            </RctCard>
-                                        </div>
-                                    ))}
-                                </div>
                             </div>
                             <div className="d-flex align-items-center justify-content-center mb-50" style={{ position: "relative"}}>
                                 <Link to={PIONIERS}>
@@ -488,36 +458,6 @@ const Discover = (props) => {
                                 <p>
                                     Ils ont récemment rejoint notre réseau d’agent :
                                 </p>
-                                <div className="row justify-content-center">
-                                    {data.filter(a => a.active == true).map(agent => (
-                                        <div className="col-sm-12 col-md-4 col-lg-3">
-                                            <RctCard>
-                                                <RctCardContent>
-                                                    <div className="client-post text-center">
-                                                        <div className="client-thumb mb-20">
-                                                            <img
-                                                                className="rounded"
-                                                                src={getFilePath(agent.avatar)}
-                                                                alt="client"
-                                                                width="95"
-                                                                height="95"
-                                                            />
-                                                        </div>
-                                                        <div className="client-content">
-                                                            <Tooltip title={agent.about}>
-                                                                <h4 className="fw-bold text-capitalize text-primary">{agent.name}</h4>
-                                                            </Tooltip>
-                                                            <p>{agent.email}</p>
-                                                            <p>{agent.phone}</p>
-                                                            <p>{agent.address}</p>
-                                                            <p>{agent.about}</p>
-                                                        </div>
-                                                    </div>
-                                                </RctCardContent>
-                                            </RctCard>
-                                        </div>
-                                    ))}
-                                </div>
                             </div>
 
                             <div className="d-flex align-items-center justify-content-center mb-50" style={{ position: "relative"}}>
