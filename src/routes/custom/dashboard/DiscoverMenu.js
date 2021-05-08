@@ -109,21 +109,21 @@ class DiscoverMenu extends Component {
                                         </DropdownItem>
 
                                         <DropdownItem>
-                                            <HashLink to={`${DISCOVER}/#pass`}>
+                                            <HashLink to={`${DISCOVER}/#pass-section`}>
                                                 <a className="nav-link-mobile-sub">
                                                     Pass Microcap
                                                 </a>
                                             </HashLink>
                                         </DropdownItem>
                                         <DropdownItem>
-                                            <HashLink to={`${DISCOVER}/#pioniers`}>
+                                            <HashLink to={`${DISCOVER}/#team-section`}>
                                                 <a className="nav-link-mobile-sub">
                                                     L'équipe
                                                 </a>
                                             </HashLink>
                                         </DropdownItem>
                                         <DropdownItem>
-                                            <HashLink to={`${DISCOVER}/#agents`}>
+                                            <HashLink to={`${DISCOVER}/#team-section`}>
                                                 <a className="nav-link-mobile-sub">
                                                     Point d'accueil
                                                 </a>
@@ -140,7 +140,7 @@ class DiscoverMenu extends Component {
                                     </HashLink>
                                 </li>
                                 <li className="nav-item nav-item-border">
-                                    <Link to={GALERY_PROJECT}>
+                                    <Link to={'#'}>
                                         <a className="nav-link-mobile" href="#">Gallerie projets</a>
                                     </Link>
                                 </li>
@@ -220,7 +220,7 @@ class DiscoverMenu extends Component {
                                                             </a>
                                                         </li>
                                                         <li className="nav-item nav-item-border">
-                                                            <a className="nav-link-mobile ml-30" href="#">
+                                                            <a className="nav-link-mobile ml-30" href="#team-section">
                                                                 L'équipe
                                                             </a>
                                                         </li>
@@ -237,7 +237,8 @@ class DiscoverMenu extends Component {
                                         </HashLink>
                                     </li>
                                     <li className="nav-item nav-item-border" style={{marginRight:"30px"}}>
-                                        <Link to={GALERY_PROJECT}>
+                                        {/*<Link to={GALERY_PROJECT}>*/}
+                                        <Link to={'#'}>
                                             <a className="nav-link-mobile" href="#">Gallerie projets</a>
                                         </Link>
                                     </li>
