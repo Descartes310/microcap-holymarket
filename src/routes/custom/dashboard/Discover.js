@@ -45,10 +45,7 @@ import DiscoverVideo from "Routes/custom/dashboard/DiscoverVideo";
 const Discover = (props) => {
     const { loading, intl } = props;
     const [data, setData] = useState([]);
-    const [onCollapse, setOnCollapse] = useState(false);
-    const [viewVideo, setViewVideo] = useState(false);
     const [pioniers, setPioniers] = useState([]);
-    const [dropdownOpen, setDropdownOpen] = useState(false);
 
     document.body.style.overflow = "auto";
 
@@ -62,7 +59,7 @@ const Discover = (props) => {
     }, []);
 
     return (
-        <div>
+        <div id="discover-page">
             {/* <div className="rct-session-wrapper"> */}
             <div className={'global-loader'}>
                 {loading && <LinearProgress />}
@@ -551,7 +548,7 @@ const Discover = (props) => {
             {/* </div> */}
             <footer id="fh5co-footer" className="fh5co-bg pb-0" role="contentinfo">
                 <div className="overlay" />
-                <div className="container">
+                <div className="container pb-40">
                     <div className="row row-pb-md">
                         <div className="col-md-3 fh5co-widget">
                             <ul className="fh5co-footer-links">
