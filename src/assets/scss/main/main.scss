@@ -263,6 +263,12 @@
 
 #discover-page {
   font-family: Roboto, sans-serif !important;
+
+  .btn-discovery {
+    border: 1px solid;
+    padding: 10px;
+    border-radius: 5px;
+  }
 }
 
 .discover {
@@ -1159,6 +1165,13 @@ ol.custom-list > li + li {
         border-radius: 0 100%;
       }
     }
+
+    a {
+      &:hover {
+        color: white;
+        background: white;
+      }
+    }
   }
 
   .item-block {
@@ -1250,10 +1263,16 @@ ol.custom-list > li + li {
 }
 
 #pass-section {
-  background: #24262d;
+  //background: #24262d;
+  background: #e7e8ea;
   position: relative;
-  padding-top: 90px;
-  padding-bottom: 90px;
+  padding-top: 150px;
+  padding-bottom: 150px;
+
+  @media screen and (max-width: 578px) {
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
 
   .services-box {
     background: #ffffff;
@@ -1284,6 +1303,12 @@ ol.custom-list > li + li {
 
     .title-block {
       margin: 30% 0 0 0;
+      color: black;
+
+      @media screen and (max-width: 578px) {
+        padding-left: 15px;
+        padding-bottom: 15%;
+      }
 
       h3 {
         font-size: 35px;
@@ -1310,11 +1335,6 @@ ol.custom-list > li + li {
         }*/
       }
     }
-
-    .title-block.lite h4, .title-block.lite h3 {
-      color: #fff;
-    }
-
   }
 
   .visibLeft {
@@ -1324,6 +1344,10 @@ ol.custom-list > li + li {
     .services-box {
       background: #ffffff;
       padding: 100px;
+
+      @media screen and (max-width: 578px) {
+        padding: 30px;
+      }
     }
 
     .single-services {
@@ -1414,6 +1438,12 @@ ol.custom-list > li + li {
   background-image: url("Assets/img/pionier.jpg");
   background-repeat: no-repeat;
   background-size: cover;
+
+  @media screen and (max-width: 578px) {
+    padding-top: 60px;
+    padding-bottom: 60px;
+  }
+
   .pionier-wrapper1 {
     padding: 5%;
     margin: 15%;

@@ -412,23 +412,28 @@ const Discover = (props) => {
                     </div>
                 </div>
 
-                <div id="pass-section" className="merox-services-area pt-90 pb-90">
-                    <div className="area-img">
+                <div id="pass-section" className="merox-services-area">
+                    {/*<div className="area-img">
                         <img src={require('Assets/identity/services-bg.57d4413a.jpg')} alt="img"/>
-                    </div>
+                    </div>*/}
                     <div className="container">
                         <div className="row">
                             <div className="visibRight col-xl-4 offset-xl-1 col-lg-4 order-2 wow fadeInRight">
-                                <div className="title-block lite">
+                                <div className="title-block lite" data-aos="fade-down">
                                     <h4>booster votre abonnement grâce à nos </h4> <h3>Options en <br/> Séries <br/> Limitées</h3>
-                                    <Link to={PASS_DETAILS} className="mt-4">
-                                        <Button variant="outlined" className="btn-primary mr-2 py-5" >
-                                            Tout nos PASS
-                                        </Button>
+                                    <Link to={PASS_DETAILS}>
+                                        <button className="MuiButtonBase-root btn-discovery mr-2 mt-4"
+                                                tabIndex="0" type="button">
+                                            <span className="MuiButton-label fw-bold">
+                                                Tout nos PASS
+                                                <i className="ti-arrow-right ml-10"/>
+                                            </span>
+                                            <span className="MuiTouchRipple-root"/>
+                                        </button>
                                     </Link>
                                 </div>
                             </div>
-                            <div className="visibLeft col-xl-7 col-lg-8 wow fadeInLeft">
+                            <div className="visibLeft col-xl-7 col-lg-8 wow fadeInLeft px-0">
                                 <div className="services-box">
                                     <div className="single-services">
                                         <div className="services-content-box">Les services de la plateforme sont accessibles sur abonnement ou PASS: à chacun son rythme, à chacun son Pass.
@@ -472,14 +477,15 @@ const Discover = (props) => {
                             </div>
                             <div className="d-flex align-items-center justify-content-center mb-50" style={{ position: "relative"}}>
                                 <Link to={PIONIERS}>
-                                    <button className="MuiButtonBase-root mr-2 mt-30"
-                                            tabIndex="0" type="button"
-                                            style={{border: "solid 1px", padding: "10px",borderRadius: "5px",position: "absolute", left: "35%"}}>
+                                    <button
+                                        className="MuiButtonBase-root mr-2 mt-30 btn-discovery"
+                                        tabIndex="0"
+                                        type="button">
                                             <span className="MuiButton-label">
                                                 Voir les pioniers
-                                                <i className="ti-arrow-right ml-10"></i>
+                                                <i className="ti-arrow-right ml-10"/>
                                             </span>
-                                        <span className="MuiTouchRipple-root"></span>
+                                        <span className="MuiTouchRipple-root"/>
                                     </button>
                                 </Link>
                             </div>
@@ -504,14 +510,13 @@ const Discover = (props) => {
 
                             <div className="d-flex align-items-center justify-content-center mb-50" style={{ position: "relative"}}>
                                 <Link to={AGENTS}>
-                                    <button className="MuiButtonBase-root mr-2 "
-                                            tabIndex="0" type="button"
-                                            style={{border: "solid 1px", padding: "10px",borderRadius: "5px", position: "absolute", left: "35%"}}>
+                                    <button className="MuiButtonBase-root btn-discovery mr-2"
+                                            tabIndex="0" type="button">
                                             <span className="MuiButton-label">
                                                 Voir les agents
-                                                <i className="ti-arrow-right ml-10"></i>
+                                                <i className="ti-arrow-right ml-10"/>
                                             </span>
-                                        <span className="MuiTouchRipple-root"></span>
+                                        <span className="MuiTouchRipple-root"/>
                                     </button>
                                 </Link>
                             </div>
