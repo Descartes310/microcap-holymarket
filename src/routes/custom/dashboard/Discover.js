@@ -73,7 +73,8 @@ const Discover = (props) => {
                     <div className="intro-banner" style={{ backgroundImage: `url(${headerImg})` }}>
                         <div className="revolution">
                             {/*TODO: ADD IMAGE HERE*/}
-                            <h4>La révolution des petits capitaux</h4>
+                            <img src={require('Assets/img/large/revolution.png')} alt="" className="img-fluid"/>
+                            {/*<h4>La révolution des petits capitaux</h4>*/}
                         </div>
                         <p>
                             Rejoignez le  <b>réseau de solidarité MicroCap</b>, vos versements sont libres à partir de 3€ sur votre <Link to={SERVICES} style={{ color: 'black', fontSize: '1.1em', fontWeight: 'bold' }}>compte ESH</Link> auprès d’un établissement financier partenaire
@@ -91,11 +92,11 @@ const Discover = (props) => {
 
                 <div className="showcase-card-block" style={{backgroundImage: `url(${require('Assets/img/bg-shape-gray.png')})`}}>
                     <div className="row center-hor-ver mb-70 flex-column intro">
-                        <h2 className="font-weight-bold text-black" data-aos="fade-right">
+                        <h2 className="font-weight-bold text-black text-center" data-aos="fade-right">
                             Concilier traditions et innovations
                         </h2>
-                        <p data-aos="fade-left">Etendre votre réseau de love money au -delà du cercle familial et amical, </p>
-                        <p data-aos="fade-left">réinventer une solidarité utile et promouvoir une finance inclusive</p>
+                        <p data-aos="fade-left" className="text-center">Etendre votre réseau de love money au -delà du cercle familial et amical, </p>
+                        <p data-aos="fade-left" className="text-center">réinventer une solidarité utile et promouvoir une finance inclusive</p>
                     </div>
                     <div className="row">
                         <div className="col-xs-12 col-sm-12 col-md-4 mb-30" data-aos="fade-down" data-aos-duration="300">
