@@ -74,7 +74,7 @@ class DiscoverMenu extends Component {
             <section id="nav">
                 <nav
                     id="main-nav"
-                    className={`navbar navbar-expand-lg navbar-light bg-light fixed-top scrolling-navbar ${!isMainNav ? 'show-mobile-nav' : ''}`}>
+                    className={`navbar navbar-expand-lg navbar-light bg-light fixed-top scrolling-navbar px-0 ${!isMainNav ? 'show-mobile-nav' : ''}`}>
                     <div className="container">
                         <div className="session-logo">
                             <Link to={HOME}>
@@ -175,7 +175,7 @@ class DiscoverMenu extends Component {
                 <nav
                     className={`bg-light ${!isMainNav ? 'show-mobile-nav' : ''}`}
                     id="mobile-nav">
-                    <div className="row justify-content-between px-2">
+                    <div className="row justify-content-between">
                         <div className="logo-block">
                             <Link to={HOME}>
                                 <img src={AppConfig.appLogo} alt="session-logo" className="img-fluid" width="110" height="35" />

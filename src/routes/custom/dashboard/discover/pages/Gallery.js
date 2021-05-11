@@ -1,16 +1,34 @@
+import Slider from "react-slick";
 import { getFilePath } from "Helpers/helpers";
+import EmptyResult from "Components/EmptyResult";
 import React, { useState, useEffect } from 'react';
+import HourGlassLoader from "Components/Loaders/HourGlass";
 import { getAllProjectReactionByBranch } from "Actions/independentActions";
 import DiscoverLayout from "Routes/custom/dashboard/discover/DiscoverLayout";
 import TitleHeader from "Routes/custom/dashboard/discover/components/TitleHeader";
 
+const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    adaptiveHeight: true,
+    prevArrow: <button type='button' className='slick-prev discover-arrow'><i className='font-2x icon-hover text-primary ti-angle-left' aria-hidden='true'/></button>,
+    nextArrow: <button type='button' className='slick-next discover-arrow pull-right'><i className='font-2x icon-hover text-primary ti-angle-right' aria-hidden='true'/></button>,
+};
+
 const DiscoverGallery = (props) => {
     const [data, setData] = useState(undefined);
+
     useEffect(() => {
-        getAllProjectReactionByBranch().then(data => {
-            console.log(data);
-            setData(data)
-        })
+        getAllProjectReactionByBranch()
+            .then(data => {
+                setData(data ? data : null);
+            })
+            .catch(err => {
+                setData(null);
+            })
     }, []);
 
     return (
@@ -20,29 +38,56 @@ const DiscoverGallery = (props) => {
                     title="Gallerie projets"
                     subTitle="Decouvrez un aperçu de l'activité des projets déjà présent sur la plateforme Microcap"
                 />
-                <div className="container">
-                    <div className="row">
-                        {data && Object.keys(data).map((key, index) => (
-                            <div className="container" key={index}>
-                                <h1 className="font-weight-bold" style={{ fontSize: '1.5em', padding: '2%', }}>
-                                    {key}
-                                </h1>
-                                <ul className="mb-0 list-inline attachment-wrap">
-                                    {data[key].map((item, key) => (
-                                        <li className="list-inline-item overlay-wrap overflow-hidden rounded">
-                                            <img src={getFilePath(item.file)} className="size-120 rounded img-fluid" alt="img" />
-                                            <div className="overlay-content">
-                                                <a href="#" onClick={e => e.preventDefault()} className="d-flex align-items-center justify-content-center h-100 font-2x">
-                                                    <i className="zmdi zmdi-download"></i>
-                                                </a>
-                                            </div>
-                                        </li>
-                                    ))}
-                                </ul>
+                {data === undefined ? (
+                    <HourGlassLoader color="#FFB70F" />
+                ) : data === null ? (
+                   <EmptyResult
+                       wrapperClassName="mb-70"
+                       message="Aucun projects trouvés pour le moment"
+                   />
+                ) : Object.keys(data).map((projectName, index) => {
+                    const projectNameSplitted = projectName.split(' ');
+                    return (
+                        <div key={index} className="container gallery-item">
+                            <div className="row">
+                                <h2 className="gallery-title px-sm-3">
+                                    <span className="text-primary">{projectNameSplitted[0]}</span>
+                                    {' ' + projectNameSplitted.slice(1, projectNameSplitted.length).join(' ')}
+                                </h2>
                             </div>
-                        ))}
-                    </div>
-                </div>
+                            <div className="gallery-item-wrapper mb-70">
+                                <Slider {...settings}>
+                                    {data[projectName].map((item, key) => (
+                                    <div key={key}>
+                                        <div className="gallery-item-block">
+                                            <div className="row px-0">
+                                                <div className="img-holder col-md-6 col-sm-12 px-0 bg-repeat-no bg-size-cover" style={{ backgroundImage: `url(${getFilePath(item.file)})` }}>
+                                                    {/*<div className="img-wrapper">
+                                                        <div className="center-hor-ver h-100">
+                                                            <div className="img-holder" style={{ backgroundImage: `url(${getFilePath(item.file)})` }} />
+                                                            <img
+                                                        src={getFilePath(item.file)}
+                                                        // src={getFilePath("files/projects/8576c73c47184736be61f33106faf346_1620723956259.jpg")}
+                                                        alt="work"
+                                                    />
+                                                        </div>
+                                                    </div>*/}
+                                                </div>
+                                                <div className="col-md-6 col-sm-12 px-0">
+                                                    <div className="gallery-item-content">
+                                                        <h2>{item.title}</h2>
+                                                        <p dangerouslySetInnerHTML={{__html: item.content}} />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    ))}
+                                </Slider>
+                            </div>
+                        </div>
+                    )
+                })}
             </div>
         </DiscoverLayout>
     );
