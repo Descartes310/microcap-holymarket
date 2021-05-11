@@ -1,15 +1,11 @@
-import { connect } from "react-redux";
-import { injectIntl } from "react-intl";
 import { getFilePath } from "Helpers/helpers";
 import React, { useState, useEffect } from 'react';
 import { getPioniers } from "Actions/independentActions";
-import DiscoverMenu from "Routes/custom/dashboard/DiscoverMenu";
+import DiscoverLayout from "Routes/custom/dashboard/discover/DiscoverLayout";
+import TitleHeader from "Routes/custom/dashboard/discover/components/TitleHeader";
 
-const Discover = (props) => {
-    const { loading, intl } = props;
+const DiscoverPioner = () => {
     const [data, setData] = useState([]);
-
-    document.body.style.overflow = "auto";
 
     useEffect(() => {
         getPioniers().then(data => {
@@ -18,19 +14,12 @@ const Discover = (props) => {
     }, []);
 
     return (
-        <div>
-            <div className={'global-loader'}>
-                {loading && <LinearProgress />}
-            </div>
-            <DiscoverMenu/>
+        <DiscoverLayout
+            title="Nos pioniers"
+            description="MicroCap est aujourd’hui un produit qui permet des services  que nous sommes fiers de présenter. Mais c’est d’abord un mouvement de cœur, de personnes originaires ou sympathisantes des pays du sud en général et de l’Afrique subsaharienne plus particulièrement."
+        >
             <div className="session-inner-wrapper video-player-wrapper pionier-content">
-                <div className="pionier-content-text mt-70 py-30 my-50" >
-                    <div className="p-30 text-center">
-                        <h1 className="font-4x">
-                            Nos pioniers
-                        </h1>
-                    </div>
-                </div>
+                <TitleHeader title="Nos pioniers" />
                 <div className="container">
                     <p className="font-lg">
                         MicroCap est aujourd’hui un produit qui permet des services  que nous sommes fiers de présenter. Mais c’est d’abord un mouvement de cœur, de personnes originaires ou sympathisantes des pays du sud en général et de l’Afrique subsaharienne plus particulièrement.
@@ -70,13 +59,8 @@ const Discover = (props) => {
                     </div>
                 </div>
             </div>
-        </div>
+        </DiscoverLayout>
     );
 };
 
-// map state to props
-const mapStateToProps = ({ requestGlobalLoader }) => {
-    return { loading: requestGlobalLoader }
-};
-
-export default connect(mapStateToProps, {})(injectIntl(Discover));
+export default DiscoverPioner;

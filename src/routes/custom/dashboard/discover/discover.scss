@@ -1,0 +1,40 @@
+body {
+  overflow: auto !important;
+}
+
+.scroll-to-top {
+  position: fixed;
+  bottom: 0.5rem;
+  right: 0.5rem;
+  animation: fadeIn 700ms ease-in-out 1s both;
+  cursor: pointer;
+}
+
+.title-header {
+  color: #FFFFFF;
+  background-image: url("Assets/img/pionier.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  .back-to-discover {
+    color: #FFFFFF !important;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+
+.offer-details {
+  &-list {
+    .rct-block-content {
+      padding-left: 0 !important;
+    }
+  }
+}

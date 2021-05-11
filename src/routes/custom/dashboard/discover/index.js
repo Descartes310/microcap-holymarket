@@ -2,17 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { connect } from "react-redux";
 import { injectIntl } from "react-intl";
 import { Link } from "react-router-dom";
-import AppConfig from "Constants/AppConfig";
-import IntlMessages from "Util/IntlMessages";
 import Button from "@material-ui/core/Button";
-import Toolbar from "@material-ui/core/Toolbar";
-import {
-    AUTH, DISCOVER, HOME, PIONIERS, TERMS, LEGAL_MENTION,
-    GALERY_PROJECT, SOLIDARITY, MONEY_MANAGEMENT, GETIN, MISSION,
-    VALUES, PASS_DETAILS, AGENTS, SERVICES
-} from "Url/frontendUrl";
-import AppBar from "@material-ui/core/AppBar/AppBar";
 import headerImg from 'Assets/img/image_revolution.jpg';
+import { RctCard, RctCardContent } from 'Components/RctCard';
+import { Parallax, ParallaxBanner } from 'react-scroll-parallax';
+import { getMainAgents, getMainPioniers } from "Actions/independentActions";
+import DiscoverLayout from "Routes/custom/dashboard/discover/DiscoverLayout";
+import DiscoverVideo from "Routes/custom/dashboard/discover/components/DiscoverVideo";
 import {
     Card,
     CardImg,
@@ -20,66 +16,27 @@ import {
     CardBody,
     CardFooter
 } from 'reactstrap';
-import { RctCard, RctCardContent } from 'Components/RctCard';
-import { getMainAgents, getMainPioniers } from "Actions/independentActions";
 import {
-    Player
-} from 'video-react';
-import { HashLink } from 'react-router-hash-link';
-import { Tooltip } from '@material-ui/core';
-import { getFilePath } from "Helpers/helpers";
-import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem, Dropdown} from 'reactstrap';
-import "./styles.css";
-import ScrollToTopBtn from "./ScrollToTop";
-import {
-	SocialFeedsWidget
-} from "Components/Widgets";
-import { Parallax, ParallaxBanner } from 'react-scroll-parallax';
-import DiscoverMenu from "Routes/custom/dashboard/DiscoverMenu";
-import DiscoverVideo from "Routes/custom/dashboard/DiscoverVideo";
-
-// import { makeStyles } from '@material-ui/core/styles';
-// import DialogTitle from '@material-ui/core/DialogTitle';
-// import Dialog from '@material-ui/core/Dialog';
+    AUTH, DISCOVER, HOME, PIONIERS, TERMS, LEGAL_MENTION,
+    GALERY_PROJECT, SOLIDARITY, MONEY_MANAGEMENT, GETIN, MISSION,
+    VALUES, PASS_DETAILS, AGENTS, SERVICES
+} from "Url/frontendUrl";
 
 const Discover = (props) => {
-    const { loading, intl } = props;
-    const [data, setData] = useState([]);
-    const [pioniers, setPioniers] = useState([]);
-
-    document.body.style.overflow = "auto";
-
-    useEffect(() => {
-        getMainAgents().then(data => {
-            setData(data)
-        })
-        getMainPioniers().then(data => {
-            setPioniers(data)
-        })
-    }, []);
-
-
     return (
-        <div id="discover-page">
-            {/* <div className="rct-session-wrapper"> */}
-            <div className={'global-loader'}>
-                {loading && <LinearProgress />}
-            </div>
-
-            <DiscoverMenu />
-
+        <DiscoverLayout>
             <div className="session-inner-wrapper video-player-wrapper">
                 {/*<Parallax className="custom-class" y={[-50, 50]}>*/}
-                    <div className="intro-banner" style={{ backgroundImage: `url(${headerImg})` }}>
-                        <div className="revolution">
-                            {/*TODO: ADD IMAGE HERE*/}
-                            <img src={require('Assets/img/large/revolution.png')} alt="" className="img-fluid"/>
-                            {/*<h4>La révolution des petits capitaux</h4>*/}
-                        </div>
-                        <p>
-                            Rejoignez le  <b>réseau de solidarité MicroCap</b>, vos versements sont libres à partir de 3€ sur votre <Link to={SERVICES} style={{ color: 'black', fontSize: '1.1em', fontWeight: 'bold' }}>compte ESH</Link> auprès d’un établissement financier partenaire
-                        </p>
+                <div className="intro-banner" style={{ backgroundImage: `url(${headerImg})` }}>
+                    <div className="revolution">
+                        {/*TODO: ADD IMAGE HERE*/}
+                        <img src={require('Assets/img/large/revolution.png')} alt="" className="img-fluid"/>
+                        {/*<h4>La révolution des petits capitaux</h4>*/}
                     </div>
+                    <p>
+                        Rejoignez le  <b>réseau de solidarité MicroCap</b>, vos versements sont libres à partir de 3€ sur votre <Link to={SERVICES} style={{ color: 'black', fontSize: '1.1em', fontWeight: 'bold' }}>compte ESH</Link> auprès d’un établissement financier partenaire
+                    </p>
+                </div>
                 {/*</Parallax>*/}
 
 
@@ -529,122 +486,7 @@ const Discover = (props) => {
                     <Clientslider />
                 </RctCard> */}
             </div>
-            {/* </div> */}
-            <footer id="fh5co-footer" className="fh5co-bg pb-0" role="contentinfo">
-                <div className="overlay" />
-                <div className="container pb-40">
-                    <div className="row row-pb-md">
-                        <div className="col-md-3 fh5co-widget">
-                            <ul className="fh5co-footer-links">
-                                <h3 className="mmb-sm-0">A propos de MicroCap</h3>
-                                <p className="font-size-medium">
-                                    MicroCap est un service d’accompagnement des entrepreneurs proposé par: <strong>A+ Conseils SAS</strong>, 7 PL du 11 Novembre 1918, 93 000 BOBIGNY.
-                                </p>
-                            </ul>
-                        </div>
-                        <div className="col-md-9">
-                            {/* <h3>Classes</h3> */}
-                            <div className="row">
-                                <div className="col-md-3 col-sm-4 col-xs-6">
-                                    <ul className="fh5co-footer-links">
-                                        <h3 className="mmb-sm-0 mmt-sm-4">Tout MicroCap</h3>
-                                        <li><a onClick={() => props.history.push(MISSION)}><span className="ti-angle-right"/> Mission et valeur</a></li>
-                                        <li><a onClick={() => props.history.push(VALUES)}><span className="ti-angle-right"/> Réseau Microcap</a></li>
-                                        <li><a className="" onClick={() => props.history.push(SERVICES)}><span className="ti-angle-right"/> Le service Microcap</a></li>
-                                        <li><a onClick={() => props.history.push(PIONIERS)}><span className="ti-angle-right"/> Les pionniers</a></li>
-                                        <li><a className="" onClick={() => props.history.push(AGENTS)}><span className="ti-angle-right"/> Assistances</a></li>
-                                        <li><a><span className="ti-angle-right"/> Faqs</a></li>
-                                    </ul>
-                                </div>
-
-                                <div className="col-md-3 col-sm-4 col-xs-6">
-                                    <ul className="fh5co-footer-links">
-                                        <h3 className="mmb-sm-0 mmt-sm-4">Informations légales</h3>
-                                        <li><a onClick={() => props.history.push(TERMS)}><span className="ti-angle-right"/> CGU</a></li>
-                                        <li><a><span className="ti-angle-right"/> CGV</a></li>
-                                        <li><a onClick={() => props.history.push(LEGAL_MENTION)}><span className="ti-angle-right"/> Mentions légales</a></li>
-                                    </ul>
-                                </div>
-
-                                <div className="col-md-3 col-sm-4 col-xs-6">
-                                    <ul className="fh5co-footer-links">
-                                        <h3 className="mmb-sm-0 mmt-sm-4">Suivez-nous</h3>
-                                        <li><a><span className="ti-angle-right"/> Presse</a></li>
-                                        <li><a><span className="ti-angle-right"/> News letter</a></li>
-                                        <li className="no-link">
-                                            <a> <span className="ti-angle-right"/> Réseaux sociaux</a>
-                                            <div className="social-card-wrapper">
-                                                <div className="row justify-content-center justify-content-sm-start row">
-                                                    {/*<div className="col-md-3">*/}
-                                                        <SocialFeedsWidget
-                                                            type="facebook"
-                                                            icon="ti-facebook"
-                                                            className="icon-social icon-hover"
-                                                            link="https://www.facebook.com/MicroCap-104224985150023/"
-                                                        />
-                                                    {/*</div>*/}
-                                                    {/*<div className="col-md-3">*/}
-                                                        <SocialFeedsWidget
-                                                            type="twitter"
-                                                            icon="ti-twitter"
-                                                            wrapClassName="mx-2"
-                                                            className="icon-social icon-hover"
-                                                            link="https://twitter.com/MicrocapService"
-                                                        />
-                                                    {/*</div>*/}
-                                                    {/*<div className="col-md-3">*/}
-                                                        <SocialFeedsWidget
-                                                            type="linkedin"
-                                                            icon="ti-linkedin"
-                                                            className="icon-social icon-hover"
-                                                            link="https://www.linkedin.com/company/appmicrocap/"
-                                                        />
-                                                    {/*</div>*/}
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
-
-                                <div className="col-md-3 col-sm-4 col-xs-6 contact">
-                                    <ul className="fh5co-footer-links">
-                                        <h3 className="mmb-sm-0 mmt-sm-4">Contact</h3>
-                                        <li className="no-link mb-sm-2">
-                                            <a
-                                                href="mailto:contact@microcap.fr"
-                                                className="m-0 d-inline-block icon-text center-ver">
-                                                    <i className="material-icons icon mr-2 icon-rounded-bg">mail</i>
-                                                    {/*<i className="icon ti-email mr-2 icon-rounded-bg" />*/}
-                                                    <span>Contact@microcap.fr</span>
-                                            </a>
-                                        </li>
-                                        <li className="no-link mt-2">
-                                            <a
-                                                href="tel:+330811030089"
-                                                className="m-0 d-inline-block icon-text center-ver">
-                                                <i className="material-icons icon mr-2 icon-rounded-bg">call</i>
-                                                {/*<i className="material-icons icon ti-android mr-2 icon-rounded-bg" />*/}
-                                                <span>+33 0811 030 089</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div className="bg-black">
-                    <div className="row copyright">
-                        <div className="col-md-12 text-center text-white py-25">
-                            <h4>&copy; 2021 | All Rights Reserved.</h4>
-                        </div>
-                    </div>
-                </div>
-                <ScrollToTopBtn />
-            </footer >
-
-        </div >
+        </DiscoverLayout >
     );
 };
 
