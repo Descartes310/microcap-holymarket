@@ -8,6 +8,7 @@ import Button from "@material-ui/core/Button";
 import {HashLink} from "react-router-hash-link";
 import {AGENTS, AUTH, GALERY_PROJECT, HOME, PASS_DETAILS, DISCOVER} from "Url/frontendUrl";
 import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem, Dropdown} from 'reactstrap';
+import {connect} from "react-redux";
 
 const MAX_MOBILE_SCREEN_WIDTH = 996;
 
@@ -63,7 +64,10 @@ class DiscoverMenu extends Component {
 
 
     render() {
+        const { authUser, history } = this.props;
+        console.log("this.props => ", this.props);
         const { width, showMobile, showMobileDorpdown, showDesktopDorpdown} = this.state;
+
         const isMainNav = width > MAX_MOBILE_SCREEN_WIDTH;
 
         return (
@@ -133,36 +137,40 @@ class DiscoverMenu extends Component {
                                 </Dropdown>
                                 </li>
                                 <li className="nav-item nav-item-border" >
-                                    <HashLink to={`${PASS_DETAILS}`}>
-                                        <a className="nav-link-mobile" href="#">
-                                            Pass microcap
-                                        </a>
+                                    <HashLink to={`${PASS_DETAILS}`} className="nav-link-mobile">
+                                        Pass microcap
                                     </HashLink>
                                 </li>
                                 <li className="nav-item nav-item-border">
-                                    <Link to={GALERY_PROJECT}>
-                                        <a className="nav-link-mobile" href="#">Gallerie projets</a>
+                                    <Link to={GALERY_PROJECT} className="nav-link-mobile">
+                                        Gallerie projets
                                     </Link>
                                 </li>
                                 <li className="nav-item nav-item-border">
-                                    <HashLink to={`${AGENTS}`}>
-                                        <a className="nav-link-mobile" href="#">Réseau d'agent</a>
+                                    <HashLink to={`${AGENTS}`} className="nav-link-mobile">
+                                        Réseau d'agent
                                     </HashLink>
                                 </li>
-                                <li>
-                                    <Button
-                                        variant="contained"
-                                        className="btn-primary ml-30 mr-2"
-                                        onClick={() => this.props.history.push(AUTH.LOGIN)}>
-                                        <IntlMessages id="auth.signin" />
-                                    </Button>
+                                <li className="center-hor-ver">
+                                    {authUser.data ? (
+                                        <Link
+                                            to={HOME}
+                                            className="mr-2 btn-inflated font-size-inherit outlined">
+                                            Tableau de bord
+                                        </Link>
+                                    ): (
+                                        <Link
+                                            to={AUTH.LOGIN}
+                                            className="mr-2 btn-inflated font-size-inherit">
+                                            Se connecter
+                                        </Link>
+                                    )}
                                 </li>
                             </ul>{/*<a className="btn btn-primary btn-rounded my-0"
                             href="https://templateflip.com/templates/material-landing" target="_blank">Download</a> */}
                         </div>
                     </div>
                 </nav>
-
 
                 <nav
                     className={`bg-light ${!isMainNav ? 'show-mobile-nav' : ''}`}
@@ -173,7 +181,6 @@ class DiscoverMenu extends Component {
                                 <img src={AppConfig.appLogo} alt="session-logo" className="img-fluid" width="110" height="35" />
                             </Link>
                         </div>
-
                         <div
                             id="menu-toggler"
                             onClick={event => this.onTClick(event)}
@@ -247,12 +254,19 @@ class DiscoverMenu extends Component {
                                         </HashLink>
                                     </li>
                                     <li>
-                                        <Button
-                                            variant="contained"
-                                            className="btn-primary mr-2"
-                                            onClick={() => props.history.push(AUTH.LOGIN)}>
-                                            <IntlMessages id="auth.signin" />
-                                        </Button>
+                                        {authUser.data ? (
+                                            <Link
+                                                to={HOME}
+                                                className="mr-2 btn-inflated font-size-inherit outlined">
+                                                Tableau de bord
+                                            </Link>
+                                        ): (
+                                            <Link
+                                                to={AUTH.LOGIN}
+                                                className="mr-2 btn-inflated font-size-inherit">
+                                                Se connecter
+                                            </Link>
+                                        )}
                                     </li>
                                 </ul>
                             </div>
@@ -264,4 +278,7 @@ class DiscoverMenu extends Component {
     }
 }
 
-export default withRouter(DiscoverMenu);
+// map state to props
+const mapStateToProps = ({ authUser }) => ({authUser});
+
+export default connect(mapStateToProps, {})(withRouter(DiscoverMenu));

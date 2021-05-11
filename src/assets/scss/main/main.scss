@@ -37,14 +37,6 @@
   padding-right: 15px !important;
 }
 
-.bg-none {
-  background: none !important;
-}
-
-.box-shadow-none {
-  box-shadow: none !important;
-}
-
 .displayErrorMessage {
   margin-top: 10px !important;
 }
@@ -266,6 +258,32 @@
     //padding-top: 20px;
     //padding: 0 1.6rem;
     padding-top: 20px !important;
+  }
+}
+
+.btn-inflated {
+  background-color: $primary;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 16px;
+  display: inline-block;
+  font-weight: 700;
+  line-height: 1;
+  text-shadow: 0 0.5px 0.3px #0000001a;
+  box-shadow: 0 2px 4px -1px #091e4299;
+  background-image: linear-gradient(to bottom, $primary, $primary-bolded);
+
+  &.outlined {
+    background: $gray-200;
+    color: $primary;
+    border: 1px solid $primary;
+    box-shadow: none;
+
+    &:hover {
+      color: $black;
+      border-color: $black;
+    }
   }
 }
 

@@ -1,6 +1,27 @@
-/*
-Juns catch!!!!!
-*/
+.font-size-inherit {
+  font-size: inherit !important;
+}
+
+.bg-none {
+  background: none !important;
+}
+
+.bg-image-none {
+  background-image: none !important;
+}
+
+.color-gray-muted {
+  color: $gray-muted !important;
+}
+
+.fw-500 {
+  font-weight: 500 !important;
+}
+
+.box-shadow-none {
+  box-shadow: none !important;
+}
+
 @media (max-width: 576px) {
   .mm-sm-0 {
     margin: 0 !important;
