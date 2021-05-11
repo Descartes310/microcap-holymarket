@@ -28,12 +28,12 @@ import PermissionAlertBox from "Components/PermissionAlertBox";
 import {AsyncDiscover, AsyncStoreWrapper, AsyncGallery, AsyncGetIn, AsyncPionier, AsyncSolidarity, AsyncMoneyManagement} from "Components/AsyncComponent/AsyncComponent";
 import CanRoute from "Components/CanRoute";
 import Terms from "./../routes/custom/dashboard/Terms.js";
-import Mission from "./../routes/custom/dashboard/Mission";
+import Mission from "Routes/custom/dashboard/discover/pages/Mission";
 import Values from "./../routes/custom/dashboard/Values";
 import LegalMention from "./../routes/custom/dashboard/LegalMention.js";
-import OfferDetails from '../routes/custom/dashboard/OfferDetails';
-import Agents from '../routes/custom/dashboard/Agents';
-import Services from '../routes/custom/dashboard/Service';
+import OfferDetails from 'Routes/custom/dashboard/discover/pages/OfferDetails';
+import Agents from 'Routes/custom/dashboard/discover/pages/Agents';
+import Services from 'Routes/custom/dashboard/discover/pages/Service';
 
 
 class App extends Component {
@@ -85,6 +85,19 @@ class App extends Component {
                         <Router>
                                 {_isUserIntoStoreValid ? (
                                     <Switch>
+                                        <Route exact path={DISCOVER} component={AsyncDiscover} />
+                                        <Route exact path={PIONIERS} component={AsyncPionier} />
+                                        <Route exact path={AGENTS} component={Agents} />
+                                        <Route exact path={SERVICES} component={Services} />
+                                        <Route exact path={GALERY_PROJECT} component={AsyncGallery} />
+                                        <Route exact path={GETIN} component={AsyncGetIn} />
+                                        <Route exact path={SOLIDARITY} component={AsyncSolidarity} />
+                                        <Route exact path={MONEY_MANAGEMENT} component={AsyncMoneyManagement} />
+                                        <Route exact path={TERMS} component={Terms} />
+                                        <Route exact path={MISSION} component={Mission} />
+                                        <Route exact path={VALUES} component={Values} />
+                                        <Route exact path={PASS_DETAILS} component={OfferDetails} />
+                                        <Route exact path={LEGAL_MENTION} component={LegalMention} />
                                         <Route path={'/'} component={Dashboard} />
                                     </Switch>
                                 ) : (
