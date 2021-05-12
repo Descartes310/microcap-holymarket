@@ -86,11 +86,11 @@ import Permission from "Enums/Permissions";
 import HomePage from "Routes/custom/HomePage";
 import CanRoute from "Components/CanRoute";
 import Terms from "./Terms";
-import Mission from "./Mission";
+import Mission from "./discover/pages/Mission";
 import Values from "./Values";
-import OfferDetails from './OfferDetails';
-import Agents from './Agents';
-import Services from './Service';
+import OfferDetails from './discover/pages/OfferDetails';
+import Agents from './discover/pages/Agents';
+import Services from './discover/pages/Service';
 
 const Dashboard = ({ match, authUser }) => {
     const ability = useAbility(AbilityContext);

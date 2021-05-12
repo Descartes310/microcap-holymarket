@@ -1,14 +1,12 @@
-import { connect } from "react-redux";
-import { injectIntl } from "react-intl";
 import { DISCOVER } from "Url/frontendUrl";
 import { getFilePath } from "Helpers/helpers";
 import { HashLink } from 'react-router-hash-link';
 import React, { useState, useEffect } from 'react';
 import { getAgents } from "Actions/independentActions";
-import DiscoverMenu from "Routes/custom/dashboard/DiscoverMenu";
+import DiscoverLayout from "Routes/custom/dashboard/discover/DiscoverLayout";
+import TitleHeader from "Routes/custom/dashboard/discover/components/TitleHeader";
 
-const Agents = (props) => {
-    const { loading, intl } = props;
+const Agents = () => {
     const [data, setData] = useState([]);
 
     document.body.style.overflow = "auto";
@@ -16,24 +14,13 @@ const Agents = (props) => {
     useEffect(() => {
         getAgents().then(data => {
             setData(data)
-        })
+        });
     }, []);
 
     return (
-        <div>
-            {/* <div className="rct-session-wrapper"> */}
-            <div className={'global-loader'}>
-                {loading && <LinearProgress />}
-            </div>
-            <DiscoverMenu/>
+        <DiscoverLayout title="Nos agents">
             <div className="session-inner-wrapper video-player-wrapper pionier-content">
-                <div className="pionier-content-text mt-70 py-30 my-50" >
-                    <div className="p-30 text-center">
-                        <h1 className="font-4x">
-                            Nos agents
-                        </h1>
-                    </div>
-                </div>
+                <TitleHeader title="Nos agents" />
                 <div className="container">
                     <p className="font-lg">
                         MicroCap est aujourd’hui un produit qui permet des services  que nous sommes fiers de présenter. Mais c’est d’abord un mouvement de cœur, de personnes originaires ou sympathisantes des pays du sud en général et de l’Afrique subsaharienne plus particulièrement.
@@ -81,13 +68,8 @@ const Agents = (props) => {
                     </p>
                 </div>
             </div>
-        </div>
+        </DiscoverLayout>
     );
 };
 
-// map state to props
-const mapStateToProps = ({ requestGlobalLoader }) => {
-    return { loading: requestGlobalLoader }
-};
-
-export default connect(mapStateToProps, {})(injectIntl(Agents));
+export default Agents;
