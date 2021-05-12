@@ -91,7 +91,7 @@ const Agents = (props) => {
                             </div>
                         ))}
                     </div>
-                    <h1 className="font-weight-bold text-black text-center font-3x">
+                    <h1 className="font-weight-bold text-black text-center font-3x mt-50">
                         Assistance
                     </h1>
                     <p className="font-lg">
