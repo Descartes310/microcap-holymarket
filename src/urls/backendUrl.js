@@ -157,6 +157,10 @@ export const PRODUCT_TYPE = {
     AVAILABLE: 'api/type-products/{id}/variations',
 };
 
+export const PDF_GENERATOR = {
+    GET_MOVEMENTS: 'api/pdf/accounts/{id}/mouvements',
+};
+
 export const PACKAGES = {
     LIST: 'api/packages',
     CREATE: 'api/packages',
