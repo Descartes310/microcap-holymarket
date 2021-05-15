@@ -305,7 +305,8 @@ class AccountShow extends Component {
                                             onChange={(e) => this.setState({ amount: e.target.value })}
                                         />
                                         <StripeCheckout
-                                            stripeKey="pk_live_dQAsIO66Cia9lIbect33UWEa"
+                                            stripeKey="pk_test_51ILMcRF8O7K51xUUQ3rGe0lMNsDJWjM4DCxMH7zJwnxl2uFiVeC8hzrOYmAGHKiU4XAM5OIgHTZhjDrac7vP97yo00VO7op4Qx"
+                                            // stripeKey="pk_live_dQAsIO66Cia9lIbect33UWEa"
                                             token={this.handleApprovisioningCard}
                                             amount={(Number(computeAmountFromCurrency(this.props.currencies, this.state.amount, null, this.props.authUser.user.currency, account_currency, currency))) * this.props.currencies.filter(c => c.code == currency)[0].decimal}
                                             name="Recharger le compte"
