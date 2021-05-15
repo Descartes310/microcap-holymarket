@@ -12,6 +12,7 @@ import List from './List';
 import ProductItemAvailable from './ProductItemAvailable';
 import Account from './accounts';
 import AccountShow from './accountShow';
+import AccountLogs from './accountLogs';
 import Order from './orders';
 import UnapprovedOrders from './unapprovedOrders';
 import OperatorOrders from './ordersOperator';
@@ -27,6 +28,7 @@ class Products extends Component {
                     <Switch>
                         <Redirect exact from={`${match.url}/`} to={PRODUCT.LIST} />
                         <Route path={PRODUCT.ORDERS_SHOW} component={OrderShow} />
+                        <Route path={PRODUCT.ACCOUNT_LOGS} component={AccountLogs} />
                         <Route path={PRODUCT.ACCOUNT_DETAILS} component={AccountShow} />
                         <Route path={PRODUCT.SHOW} component={ProductItemAvailable} />
                         <Route path={PRODUCT.SHOW_ACCOUNT} component={Account} />

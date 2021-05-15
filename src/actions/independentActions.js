@@ -11,6 +11,7 @@ import {
     SETTING,
     PRODUCTS,
     PRODUCT_TYPE,
+    PDF_GENERATOR,
     USER_PROFILE, NETWORK_PROFILE_TYPE, USERS,
     COMMUNITY_MEMBER, COMMUNITY, PACKAGES, COMMERCIAL_MANAGEMENT, joinBaseUrlWithParamsId,
     ORDER, SALES, GENERIC_OBJECT,
@@ -328,6 +329,11 @@ export const createProductType = (data, branchId, config) => {
             .then(result => resolve(result.data))
             .catch(error => reject(error));
     });
+};
+
+export const printingAccountLogs = (accountId) => {
+    const url = joinBaseUrlWithParamsId(`${PDF_GENERATOR.GET_MOVEMENTS}`, accountId);
+    return makeRequest('get', url);
 };
 
 export const createUserProfile = (data, branchId) => {

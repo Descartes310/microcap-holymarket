@@ -5,12 +5,6 @@ import Permission from "Enums/Permissions";
 import { RESSOURCE } from '../../urls/frontendUrl';
 
 export default {
-   a: [
-      
-   ],
-   operateur_reseau: [
-      
-   ],
    menus: [
       {
          "menu_title": "Utilisateurs",

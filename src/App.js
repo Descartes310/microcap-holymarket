@@ -9,7 +9,7 @@ import MomentUtils from '@date-io/moment';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { AbilityContext } from './permissions/Can';
 import "aos/dist/aos.css";
- 
+
 // animation
 import AOS from 'aos';
 // css
@@ -25,6 +25,7 @@ import store, { configureStore } from './store';
 
 import ability from './permissions/ability';
 import {getSessonId} from "Helpers/helpers";
+import { ParallaxProvider } from 'react-scroll-parallax';
 
 // Set session id if it doest not exits
 getSessonId();
@@ -33,7 +34,10 @@ const MainApp = () => {
 
 	useEffect(()=>{
 		AOS.init({
-			duration: 2000
+			// duration: 2000
+            duration: 2000,
+            easing: 'slide',
+            once: true
 		});
 	}, []);
 
@@ -41,7 +45,9 @@ const MainApp = () => {
 		<Provider store={store}>
 			<AbilityContext.Provider value={ability}>
 				<MuiPickersUtilsProvider utils={MomentUtils}>
-					<App />
+                    <ParallaxProvider>
+					    <App />
+                    </ParallaxProvider>
 				</MuiPickersUtilsProvider>
 			</AbilityContext.Provider>
 		</Provider>

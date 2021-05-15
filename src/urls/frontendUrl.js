@@ -160,7 +160,8 @@ export const PRODUCT = {
     SHOW: '/products/:id/show/:type',
     DETAILS: '/products/:id/details/:type',
     SHOW_ACCOUNT: '/products/accounts',
-    ACCOUNT_DETAILS: '/products/accounts/:id'
+    ACCOUNT_DETAILS: '/products/accounts/:id',
+    ACCOUNT_LOGS: '/products/accounts/:id/logs',
 };
 
 export const STORE = {

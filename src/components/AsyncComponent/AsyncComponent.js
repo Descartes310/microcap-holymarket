@@ -9,17 +9,17 @@ import Loadable from 'react-loadable';
 import RctPageLoader from 'Components/RctPageLoader/RctPageLoader';
 
 export const AsyncDiscover = Loadable({
-	loader: () => import("Routes/custom/dashboard/Discover"),
+	loader: () => import("Routes/custom/dashboard/discover/index"),
 	loading: () => <RctPageLoader />,
 });
 
 export const AsyncGallery = Loadable({
-	loader: () => import("Routes/custom/dashboard/Gallery"),
+	loader: () => import("Routes/custom/dashboard/discover/pages/Gallery"),
 	loading: () => <RctPageLoader />,
 });
 
 export const AsyncPionier = Loadable({
-	loader: () => import("Routes/custom/dashboard/Pionier"),
+	loader: () => import("Routes/custom/dashboard/discover/pages/Pionier"),
 	loading: () => <RctPageLoader />,
 });
 
