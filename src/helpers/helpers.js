@@ -432,3 +432,16 @@ export const copyToClipboard = (text) => {
         }
     })
 };
+
+export const downloadContent = (url) => {
+    const a = document.createElement("a");
+    a.style.display = "none";
+    document.body.appendChild(a);
+
+    a.href = url;
+
+    a.click();
+    window.URL.revokeObjectURL(a.href);
+    document.body.removeChild(a);
+
+}

@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { withRouter } from "react-router-dom";
 import { withStyles } from "@material-ui/core";
 import { AbilityContext } from "Permissions/Can";
-import { setRequestGlobalAction } from "Actions";
+import {printingAccountLogs, setRequestGlobalAction} from "Actions";
 import { getAccountDetails, approvisioningVoucher, approvisioningCard, getAccountTransactions, getConsolidationBalance } from "Actions/independentActions";
 import { NotificationManager } from "react-notifications";
 import { ERROR_500 } from "Constants/errors";
@@ -26,7 +26,10 @@ import DialogTitle from "@material-ui/core/DialogTitle/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent/DialogContent";
 import Dialog from "@material-ui/core/Dialog/Dialog";
 import CancelIcon from '@material-ui/icons/Cancel';
-import { computeAmountFromCurrency } from 'Helpers/helpers'
+import {computeAmountFromCurrency, downloadContent} from 'Helpers/helpers'
+import {joinUrlWithParamsId, PRODUCT} from "Url/frontendUrl";
+import PrintWrapper from "Routes/custom/products/self/PrintWrapper";
+import {joinBaseUrlWithParams} from "Url/backendUrl";
 
 class AccountShow extends Component {
     static contextType = AbilityContext;
@@ -156,6 +159,13 @@ class AccountShow extends Component {
         console.log('generate bills')
     }
 
+    onPrintAccountLogs = async (accounId) => {
+        this.props.setRequestGlobalAction(true);
+        const fileToDownload = await printingAccountLogs(accounId);
+        this.props.setRequestGlobalAction(false);
+        downloadContent(joinBaseUrlWithParams(fileToDownload.substring(1,fileToDownload.length), []));
+    }
+
     render() {
         const { account_currency, account, balance, consolidation, currency, showQuantityBox, transactions, paying, printing, showCurrencyBox } = this.state;
         const { match, history, classes } = this.props;
@@ -182,7 +192,10 @@ class AccountShow extends Component {
                                                     <span className="text-white font-weight-bold">Liste des actions</span>
                                                 </div>
                                                 <ul className="list-unstyled mb-0 dropdown-list d-flex" style={{ flexDirection: 'column' }}>
-                                                    <li style={{ width: '98%' }}>
+                                                    <li style={{ width: '98%' }}
+                                                        onClick={() => history.push(joinUrlWithParamsId(PRODUCT.ACCOUNT_LOGS, account.id))}
+
+                                                    >
                                                         <p style={{
                                                             fontSize: '1.3em',
                                                             textAlign: 'center',
@@ -192,13 +205,17 @@ class AccountShow extends Component {
                                                             Voir le relévé
                                                     </p>
                                                     </li>
-                                                    <li style={{ width: '98%' }} onClick={() => this.generateBills(account.label)}>
-                                                        <p style={{
+                                                    <li
+                                                        style={{ width: '98%' }}
+                                                        onClick={() => this.onPrintAccountLogs(account.id)}
+                                                    >
+
+                                                       <p style={{
                                                             fontSize: '1.3em',
                                                             textAlign: 'center',
-                                                            paddingTop: 5,
-                                                            cursor: 'pointer'
-                                                        }}>
+                                                          paddingTop: 5,
+                                                           cursor: 'pointer'
+                                                       }}>
                                                             Imprimer
                                                     </p>
                                                     </li>
