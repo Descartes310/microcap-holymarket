@@ -15,6 +15,7 @@ import Invitations from './members/index';
 import PostList from './postes/index';
 import Project from './projet/Create';
 import RubriqueList from './rubriques/index';
+import OperatorList from './operator/index';
 import { Scrollbars } from 'react-custom-scrollbars';
 
 
@@ -38,6 +39,7 @@ class GroupAdminIndex extends Component {
                         <Route path={COMMUNITY_ADMIN.POST.SELF} component={PostList} />
                         <Route path={COMMUNITY_ADMIN.PROJECT.CREATE} component={Project} />
                         <Route path={COMMUNITY_ADMIN.RUBRIQUE.SELF} component={RubriqueList} />
+                        <Route path={COMMUNITY_ADMIN.OPERATOR.SELF} component={OperatorList} />
                         <Route path={COMMUNITY_ADMIN.INVITATIONS.SELF} component={Invitations} />
                     </Switch>
                 </React.Fragment>

@@ -40,17 +40,17 @@ class ListMembers extends Component {
         getMembersOfCommunity(this.props.communitySpace.data).then(data => {
             this.setState({ users: data })
         }).finally(() => this.setState({ loading: false }))
-    }
+    };
 
     componentDidMount() {
         this.getMembers();
-    }
+    };
 
     getUserDetails = (id) => {
         getUser(id).then(data => {
             this.setState({ user: data, showBox: true });
         })
-    }
+    };
 
     render() {
         const { loading, users, showBox, user } = this.state;

@@ -1,4 +1,5 @@
 import api from 'Api';
+import { makeRequest } from '../helpers/helpers';
 import {
     AUTH,
     SYSTEM_OBJECT,
@@ -163,14 +164,6 @@ export const getNetworkProfile = () => {
 export const createNetworkProfile = (data) => {
     return new Promise((resolve, reject) => {
         api.post(NETWORK_PROFILE.CREATE, data)
-            .then(result => resolve(result.data))
-            .catch(error => reject(error));
-    });
-};
-
-const makeRequest = (verb, url, data = null, config = {}) => {
-    return new Promise((resolve, reject) => {
-        api[verb](url, data)
             .then(result => resolve(result.data))
             .catch(error => reject(error));
     });
@@ -450,6 +443,15 @@ export const acceptInvitation = (invitationId) => {
         value: invitationId,
     }]);
     return makeRequest('put', url);
+};
+
+export const acceptOperatorInvitation = (id, status) => {
+    const url = `${COMMUNITY_MEMBER.GROUP.VALIDATE_COMMUNITY}`;
+    const data = {
+        group_operator_id: id,
+        value: status
+    };
+    return makeRequest('post', url, data);
 };
 
 export const cancelInvitation = (invitationId) => {
@@ -1128,6 +1130,41 @@ export const getMainSections = (id) => {
 export const getAllSections = (id) => {
     const url = joinBaseUrlWithParamsId(COMMUNITY_MEMBER.GROUP.GET_ALL_SECTIONS, id);
     return makeRequest('get', url);
+};
+
+export const getAllOperators = (id, groupId) => {
+    const data = {
+        group_id: groupId
+    };
+
+    const url = joinBaseUrlWithParams(BRANCH.GET_ALL_OPERATORS, [
+        {
+            param: 'id',
+            value: id,
+        }
+        ]);
+    return makeRequest('get', url, data);
+};
+
+export const getOperatorPendingCommunities = () => {
+    const url = `${COMMUNITY_MEMBER.GROUP.GET_PENDING_COMMUNITIES}`;
+    return makeRequest('get', url);
+};
+
+export const choosedOperator = (id, groupId) => {
+    const url = joinBaseUrlWithParams(`${BRANCH.SELECTED_OPERATOR}`, [
+        {
+            param: 'group_id',
+            value: groupId,
+        },
+        {
+            param: 'organisation_id',
+            value: id,
+        },
+
+    ]);
+    console.log("choosedOperator URL", url);
+    return makeRequest('post', url);
 };
 
 export const getGroupPosts = (id) => {

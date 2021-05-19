@@ -357,6 +357,14 @@ export const COMMUNITY_ADMIN = {
         LIST: '/admin/community-t/rubrique/list',
         CREATE: '/admin/community-t/rubrique/create',
     },
+    OPERATOR: {
+        SELF: '/admin/community-t/operateur',
+        LIST: '/admin/community-t/operateur/list',
+        SUPERVISION: {
+            SELF: '/admin/community-t/operateur/supervision',
+            COMMUNITIES: '/admin/community-t/operateur/supervision/communities',
+        }
+    },
     PROJECT: {
         SELF: '/admin/community-t/project',
         CREATE: '/admin/community-t/project/create',

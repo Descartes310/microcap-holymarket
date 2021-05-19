@@ -73,6 +73,8 @@ export const BRANCH = {
     CREATE: 'public/branchs',
     GET_ALL: 'public/branchs',
     GET_ALL_POSTS: 'public/branchs/{id}/posts',
+    GET_ALL_OPERATORS: 'public/branchs/{id}/operators',
+    SELECTED_OPERATOR: 'api/groups/communities/send/request/community/{group_id}/organisation/{organisation_id}',
     CONFIGURATION: {
         START: 'public/branchs/start/configurations/{id}',
         STOP: 'public/branchs/close/configurations/{id}',
@@ -249,6 +251,8 @@ export const COMMUNITY_MEMBER = {
         GET_POSTS: 'api/groups/{id}/posts',
         GET_MOTIVATION_POSTS: 'api/groups/posts/{post_id}/motivations',
         GET_CHILD_SECTIONS: 'api/groups/sections/{id}/sections',
+        GET_PENDING_COMMUNITIES: 'api/groups/communities/operators/invitations',
+        VALIDATE_COMMUNITY: 'api/groups/communities/operators/invitations/validation',
     },
     INVITATIONS: {
         GET_ALL: 'api/groups/communities/pending/invitation/{id}',
