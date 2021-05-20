@@ -57,7 +57,7 @@ class List extends Component {
         removeChosenOperator(this.props.communitySpace.data)
             .then(() => {
                 NotificationManager.success("Opérateur destitué avec succès");
-                this.getOperators();
+                this.getOperators(); 
             })
             .catch(() => {
                 NotificationManager.error(ERROR_500);
