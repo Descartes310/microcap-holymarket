@@ -6,7 +6,7 @@ import { withRouter } from "react-router-dom";
 import IntlMessages from 'Util/IntlMessages';
 import { AbilityContext } from "Permissions/Can";
 import CustomList from "Components/CustomList";
-import { setRequestGlobalAction, getAllOperators, choosedOperator} from "Actions";
+import { setRequestGlobalAction, getAllOperators, choosedOperator, removeChosenOperator} from "Actions";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import Button from '@material-ui/core/Button';
 import {Fab} from "@material-ui/core";
@@ -45,6 +45,19 @@ class List extends Component {
             .then(() => {
                 NotificationManager.success("Opérqteur selectionné avec succès");
                 this.props.history.push(this.baseUrl.LIST);
+            })
+            .catch(() => {
+                NotificationManager.error(ERROR_500);
+            })
+            .finally(() => this.props.setRequestGlobalAction(false));
+    };
+
+    removeOperator = () => {
+        this.props.setRequestGlobalAction(true);
+        removeChosenOperator(this.props.communitySpace.data)
+            .then(() => {
+                NotificationManager.success("Opérateur destitué avec succès");
+                this.getOperators();
             })
             .catch(() => {
                 NotificationManager.error(ERROR_500);
@@ -158,6 +171,21 @@ class List extends Component {
                                                         <i className="zmdi zmdi-pin"></i>
                                                     </span>
                                                     <span>{list[0].user.nationality}</span>
+                                                </li>
+                                                <li className="list-inline-item">
+                                                    <div className="media">
+                                                        <div className="media-body pt-10">
+                                                            <Button
+                                                                color="primary"
+                                                                variant="contained"
+                                                                className="text-white font-weight-bold bg-blue"
+                                                                style={{ marginRight: 10 }}
+                                                                onClick={() => this.removeOperator()}
+                                                            >
+                                                                Destituer l'opérateur
+                                                            </Button>
+                                                        </div>
+                                                    </div>
                                                 </li>
                                             </ul>
                                         </div>

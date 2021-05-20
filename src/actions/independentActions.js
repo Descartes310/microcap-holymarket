@@ -1151,6 +1151,11 @@ export const getOperatorPendingCommunities = () => {
     return makeRequest('get', url);
 };
 
+export const getOperatorCurrentCommunities = () => {
+    const url = `${COMMUNITY_MEMBER.GROUP.GET_CURRENT_COMMUNITIES}`;
+    return makeRequest('get', url);
+};
+
 export const choosedOperator = (id, groupId) => {
     const url = joinBaseUrlWithParams(`${BRANCH.SELECTED_OPERATOR}`, [
         {
@@ -1163,8 +1168,15 @@ export const choosedOperator = (id, groupId) => {
         },
 
     ]);
-    console.log("choosedOperator URL", url);
     return makeRequest('post', url);
+};
+
+export const removeChosenOperator = (groupId) => {
+    const data = {
+        group_id: groupId
+    };
+    const url = `${BRANCH.REMOVE_OPERATOR}`;
+    return makeRequest('put', url, data);
 };
 
 export const getGroupPosts = (id) => {
@@ -1183,7 +1195,7 @@ export const getMotivations = (post_id) => {
             param: 'post_id',
             value: post_id,
         }
-    ])
+    ]);
     return makeRequest('get', url);
 };
 
