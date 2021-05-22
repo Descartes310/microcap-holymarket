@@ -320,6 +320,7 @@ export const ORDER = {
     GET_ALL_UNAPPROVED: 'api/order/users/unapproved',
     GET_ONE: 'api/order/{id}',
     APPROVE_ORDER: 'api/order/{id}/approve',
+    DISAPPROVE_ORDER: 'api/order/{id}/disapprove',
     GET_ONE_SALE: 'api/order/{id}/sales',
     GET_ALL_PAYMENT: 'api/order/{id}/sales/all',
     CREATE: 'api/order',
