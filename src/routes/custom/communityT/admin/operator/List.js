@@ -135,8 +135,8 @@ class List extends Component {
                                             </div>
                                             <div className="user-list-content">
                                                 <div className="text-center">
-                                                    <h3 className="fw-bold">{list.operators.user.profile.name}</h3>
-                                                    <p>{list.operators.user.profile.type}</p>
+                                                    <h3 className="fw-bold">{list.operators.commercialName}</h3>
+                                                    <p>{list.operators.user.userType}</p>
                                                     <div className="social-list clearfix mb-40">
                                                         <ul className="list-inline d-inline-block mb-0">
                                                             <li className="list-inline-item">

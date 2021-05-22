@@ -15,6 +15,7 @@ import {
 } from "Actions";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import Button from '@material-ui/core/Button';
+import Status from "Enums/Status";
 import SweetAlert from "react-bootstrap-sweetalert";
 import InvitationType from "Enums/InvitationType";
 import {NotificationManager} from "react-notifications";
@@ -66,7 +67,7 @@ class List extends Component {
         acceptOperatorInvitation(id, confirmationStatus)
             .then(() => {
                 NotificationManager.success("Votre sollicitation a été refusée avec succès ");
-                this.getCommunities();
+                this.getOperatorCommunities();
             })
             .catch(() => {
                 NotificationManager.error(ERROR_500);
@@ -80,7 +81,7 @@ class List extends Component {
         acceptOperatorInvitation(id, confirmationStatus)
             .then(() => {
                 NotificationManager.success("Vous êtes maintenant opérateur du groupe ");
-                this.getCommunities();
+                this.getOperatorCommunities();
             })
             .catch(() => {
                 NotificationManager.error(ERROR_500);
@@ -114,13 +115,13 @@ class List extends Component {
                 <div className="page-list mt-70 pt-20">
                 <PageTitleBar title={"Communautés Impétrantes"} enableBreadCrumb={true} match={this.props.match} history={history} />
                 <CustomList
-                    list={posts}
+                    list={communities}
                     loading={false}
                     itemsFoundText={n => `${n} communauté(s) trouvée(s)`}
                     // onAddClick={() => history.push(this.baseUrl.CREATE)}
                     renderItem={list => (
                         <>
-                            {list && list.length === 0 ? (
+                            {list && list.filter(p => p.status === Status.PENDING).length === 0 ? (
                                 <div>
                                     <table className="table table-hover table-middle mb-0 text-center">
                                         <thead>
@@ -149,7 +150,7 @@ class List extends Component {
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        {list && list.map((item, key) => (
+                                        {list && list.filter(p => p.status === Status.PENDING).map((item, key) => (
                                             <tr
                                                 key={key}
                                                 className="cursor-pointer">
@@ -246,7 +247,7 @@ class List extends Component {
                         // onAddClick={() => history.push(this.baseUrl.CREATE)}
                         renderItem={list => (
                             <>
-                                {list && list.length === 0 ? (
+                                {list && list.filter(p => p.status === Status.ACCEPTED).length === 0 ? (
                                     <div>
                                         <table className="table table-hover table-middle mb-0 text-center">
                                             <thead>
@@ -276,28 +277,28 @@ class List extends Component {
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            {list && list.map((item, key) => (
+                                            {list && list.filter(p => p.status === Status.ACCEPTED).map((item, key) => (
                                                 <tr
                                                     key={key}
                                                     className="cursor-pointer">
                                                     <td>
                                                         <div className="media">
                                                             <div className="media-body pt-10">
-                                                                <h4 className="m-0 fw-bold text-dark">{item.name}</h4>
+                                                                <h4 className="m-0 fw-bold text-dark">{item.group.name}</h4>
                                                             </div>
                                                         </div>
                                                     </td>
                                                     <td>
                                                         <div className="media">
                                                             <div className="media-body pt-10">
-                                                                <h4 className="m-0 fw-bold text-dark">{item.typeGroup.label}</h4>
+                                                                <h4 className="m-0 fw-bold text-dark">{item.group.typeGroup.label}</h4>
                                                             </div>
                                                         </div>
                                                     </td>
                                                     <td>
                                                         <div className="media">
                                                             <div className="media-body pt-10">
-                                                                <h4 className="m-0 fw-bold text-dark">{item.description}</h4>
+                                                                <h4 className="m-0 fw-bold text-dark">{item.group.description}</h4>
                                                             </div>
                                                         </div>
                                                     </td>
