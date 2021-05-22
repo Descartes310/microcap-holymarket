@@ -1,6 +1,22 @@
 /**
  * App Config File
  */
+
+const backendBaseUrl = (function (mode) {
+   switch (mode) {
+      case 'DEV1':
+         return process.env.API_URL_DEV1;
+      case 'DEV2':
+         return process.env.API_URL_DEV2;
+      case 'PRE_PROD':
+         return process.env.API_URL_PRE_PROD;
+      case 'PROD':
+         return process.env.API_URL_PROD;
+      default:
+         return process.env.API_URL_LOCAL;
+   }
+})(process.env.BACKEND_MODE);
+
 const AppConfig = {
    appLogo: require('Assets/identity/logomicrocap.png'),          // App Logo
    brandName: 'Microcap',                                    // Brand Name
@@ -124,15 +140,7 @@ const AppConfig = {
    },
 
    api: {
-      //  baseUrl: 'http://192.168.225.220:8080/',
-      //  baseUrl: 'http://178.170.41.113:8080/',
-      // baseUrl: 'http://192.168.225.115:8080/',
-      //  baseUrl: 'http://178.170.41.113:8080/',
-        baseUrl: 'http://192.168.1.3:8080/',
-       // baseUrl: 'https://dev1.microcap.fr:8443/',
-      //  baseUrl: 'https://api-preprod.microcap.fr/',
-      //  baseUrl: 'https://api.microcap.fr/',
-      // baseUrl: 'http://localhost:8080/',
+      baseUrl: backendBaseUrl,
       version: '1.0',
       // forbiddenCode: 401,
      },
