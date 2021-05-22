@@ -5,6 +5,7 @@ import moment from 'moment';
 import AppConfig from 'Constants/AppConfig';
 import NavLinks from "Components/Sidebar/NavLinks";
 import {NotificationManager} from 'react-notifications';
+import api from "Api/index";
 
 const TABLE_OF_256_HEXADECIMAL = (function () {
     const arr = [];
@@ -444,4 +445,34 @@ export const downloadContent = (url) => {
     window.URL.revokeObjectURL(a.href);
     document.body.removeChild(a);
 
-}
+};
+
+export const makeRequest = (verb, url, data = null, config = {}) => {
+    return new Promise((resolve, reject) => {
+        let _url = url;
+        if ((verb === 'get' || verb === 'delete') && data) {
+            Object.entries(data).map(item => {
+                const encoded = encodeURIComponent(item[1]);
+                const character = _url.includes('?') ? '&' : '?';
+                _url = `${_url}${character}${toSnakeCase(item[0])}=${encoded}`
+            });
+        }
+        const params = (verb === 'get' || verb === 'delete') ? [_url, config] : [_url, data, config];
+        api[verb](...params)
+            .then(result => resolve(result.data))
+            .catch(error => reject(error));
+    });
+};
+
+export const makeActionRequest = (verb, url, typeBase, dispatch, data = null, config = {} ) => {
+    dispatch({ type: typeBase });
+    return makeRequest(verb, url, data, config)
+        .then((response) => {
+            dispatch({ type: `${typeBase}_SUCCESS`, payload: response });
+            return Promise.resolve(response);
+        })
+        .catch((error) => {
+            dispatch({ type: `${typeBase}_FAILURE` });
+            return Promise.reject(error);
+        });
+};

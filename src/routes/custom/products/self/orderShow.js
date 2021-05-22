@@ -25,6 +25,8 @@ import IconButton from "@material-ui/core/IconButton";
 import { FormGroup, Input as InputStrap } from "reactstrap";
 import InputLabel from "@material-ui/core/InputLabel";
 import Input from "@material-ui/core/Input";
+import {getFilePath} from "Helpers/helpers";
+import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
 // import { Button } from "reactstrap";
 
 class OrderShow extends Component {
@@ -42,7 +44,12 @@ class OrderShow extends Component {
             name: '',
             file: null,
             product: { order: { orderItems: [] } },
-            payments: {}
+            payments: {},
+            docs: null,
+            pieceAction: {
+                doc: null,
+                action: 'add'
+            }
         }
     }
 
@@ -71,8 +78,9 @@ class OrderShow extends Component {
     loadData = () => {
         this.setState({ loading: true });
         getOrderDetails(this.props.match.params.id)
-            .then(product => {
-                this.setState({ product });
+            .then(res => {
+                const product = res.sale, docs = res.docs;
+                this.setState({ product, docs });
                 if (product.order.acceptManyPayment) {
                     this.loadPayments();
                 }
@@ -95,14 +103,30 @@ class OrderShow extends Component {
             })
     };
 
+    onActionOnPiece = (doc, action) => {
+          this.setState({pieceAction: {doc, action}, showBox: true});
+    };
+
     createPiece = () => {
         this.props.setRequestGlobalAction(true);
         uploadOrderPiece(this.state.product.order.id, {
             file: this.state.file,
-            name: this.state.name
-        }, { fileData: ['file'], multipart: true }).then(data => {
-            this.setState({ show: false })
-            NotificationManager.success("La pièce a été renseignée avec succès");
+            commercialPieceId: this.state.pieceAction.doc.id
+        }, { fileData: ['file'], multipart: true })
+            .then(data => {
+                const _docs = [...this.state.docs];
+                const doc = _docs.find(d => d.id === this.state.pieceAction.doc.id);
+                if (doc) {
+                    doc.file = data.file;
+                    this.setState({
+                        docs: _docs,
+                        showBox: false,
+                        pieceAction: {doc: null, action: 'add'}
+                    });
+                } else {
+                    this.setState({ showBox: false, pieceAction: {doc: null, action: 'add'}});
+                }
+                NotificationManager.success("La pièce a été renseignée avec succès");
         }).catch(err => {
             console.log(err);
             NotificationManager.error("La pièce n'a pas pu etre renseignée");
@@ -113,8 +137,14 @@ class OrderShow extends Component {
     };
 
     render() {
-        const { payments, product, showBox } = this.state;
+        const { payments, product, showBox, loading, docs } = this.state;
         const { match, history } = this.props;
+
+        console.log("docs => ", docs);
+
+        if (loading) {
+            return (<RctSectionLoader />)
+        }
 
         return (
             <RctCollapsibleCard>
@@ -242,6 +272,107 @@ class OrderShow extends Component {
                             />
                         </> : null}
 
+                {product.order.indirectSale && (
+                    <CustomList
+                        list={docs}
+                        loading={false}
+                        titleList={"List des pieces"}
+                        itemsFoundText={n => ``}
+                        showSearch={false}
+                        renderItem={list => (
+                            <>
+                                {list && list.length === 0 ? (
+                                    <div className="d-flex justify-content-center align-items-center py-50">
+                                        <h4>
+                                            Aucune pieces trouvés
+                                        </h4>
+                                    </div>
+                                ) : (
+                                    <div className="table-responsive">
+                                        <table className="table table-hover table-middle mb-0 text-center">
+                                            <thead>
+                                                <tr>
+                                                    <th>Nom de la piece</th>
+                                                    <th>Exemple de piece</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            {list && list.map((doc, key) => (
+                                                <tr key={key} className="cursor-pointer">
+                                                    <td>
+                                                        <div className="media">
+                                                            <div className="media-body pt-10">
+                                                                <h4 className="m-0 fw-bold text-dark">{doc.userPiece.name}</h4>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div className="media">
+                                                            <div className="media-body pt-10">
+                                                                <h4 className="m-0 fw-bold text-dark">
+                                                                    <a href={getFilePath(doc.userPiece.file)} target="_blank">
+                                                                        Cliquer pour voir un exemple
+                                                                    </a>
+                                                                </h4>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div className="media">
+                                                            <div className="media-body pt-10">
+                                                                {doc.file ? (
+                                                                    <div className="center-ver">
+                                                                        <a href={getFilePath(doc.file)} target="_blank" className="btn btn-outline-info">
+                                                                            Voir la piece uploadé
+                                                                        </a>
+                                                                        <Button
+                                                                            size="small"
+                                                                            color="primary"
+                                                                            // disabled={loading}
+                                                                            variant="contained"
+                                                                            className={"text-white font-weight-bold ml-2 bg-blue"}
+                                                                            onClick={() => this.onActionOnPiece(doc, 'replace')}
+                                                                        >
+                                                                            Remplacer la piece
+                                                                        </Button>
+                                                                        {/*<Button
+                                                                            size="small"
+                                                                            color="primary"
+                                                                            // disabled={loading}
+                                                                            variant="contained"
+                                                                            className={"text-white font-weight-bold mr-3 bg-danger"}
+                                                                            onClick={() => this.onEnterClick(item.typeProduct.product ? item.typeProduct.product : item.typeProduct.package1, item.type)}
+                                                                        >
+                                                                            Supprimer le document
+                                                                        </Button>*/}
+                                                                    </div>
+                                                                ) : (
+                                                                    <Button
+                                                                        size="small"
+                                                                        color="primary"
+                                                                        // disabled={loading}
+                                                                        variant="contained"
+                                                                        className={"text-white font-weight-bold mr-3"}
+                                                                        onClick={() => this.onActionOnPiece(doc, 'add')}
+                                                                    >
+                                                                        Téléverser la piece
+                                                                    </Button>
+                                                                )}
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                )}
+                            </>
+                        )}
+                    />
+                )}
+
                 <h1 style={{ marginTop: 40 }}>Liste des produits commandés</h1>
                 <CustomList
                     loading={false}
@@ -364,30 +495,20 @@ class OrderShow extends Component {
                     display: 'flex',
                     justifyContent: 'flex-end'
                 }}>
-                    {
-                        !this.state.product.order.approved ?
-
-                            <Button
-                                size="large"
-                                color="primary"
-                                variant="contained"
-                                className={"text-white font-weight-bold mr-3"}
-                                onClick={() => this.setState({ showBox: true })}
-                            >
-                                Verser une piece
-                            </Button>
-                            : null
-                    }
-                    <Button
-                        size="large"
-                        color="primary"
-                        variant="contained"
-                        disabled={this.state.product.order.orderStatus == 'PAID' || !this.state.product.order.approved}
-                        className={"text-white font-weight-bold mr-3"}
-                        onClick={() => this.onContinueClick()}
-                    >
-                        Payer la commande
-                    </Button>
+                    {(product.order.indirectSale && !product.order.approved) ? (
+                        <h2 className="mr-sm-25 mt-2">Commande en attente de confimation</h2>
+                    ) : (
+                        <Button
+                            size="large"
+                            color="primary"
+                            variant="contained"
+                            onClick={() => this.onContinueClick()}
+                            className={"text-white font-weight-bold mr-3"}
+                            disabled={product.order.orderStatus == 'PAID' || !product.order.approved}
+                        >
+                            Payer la commande
+                        </Button>
+                    )}
                 </div>
                 <Dialog
                     open={this.state.showBox}
@@ -412,7 +533,7 @@ class OrderShow extends Component {
                         <div className="row">
                             <div className="col-md-12">
                                 <div className="col-12 my-3">
-                                    <FormGroup style={{ width: '100%' }}>
+                                    {/*<FormGroup style={{ width: '100%' }}>
                                         <InputLabel className="text-left">
                                             Nom de la pièce
                                         </InputLabel>
@@ -423,8 +544,17 @@ class OrderShow extends Component {
                                             className="has-input input-lg"
                                             onChange={(e) => this.setState({ name: e.target.value })}
                                         />
-                                        {/* <span className="has-icon"><i className="ti-pencil"></i></span> */}
-                                    </FormGroup>
+                                         <span className="has-icon"><i className="ti-pencil"></i></span>
+                                    </FormGroup>*/}
+                                    {this.state.pieceAction.doc && this.state.pieceAction.doc.file && (
+                                        <FormGroup style={{ width: '100%' }}>
+                                            <InputLabel className="text-left">
+                                                <a href={getFilePath(this.state.pieceAction.doc.file)} target="_blank">
+                                                    Voir la piece actuelle
+                                                </a>
+                                            </InputLabel>
+                                        </FormGroup>
+                                    )}
                                     <FormGroup style={{ width: '100%' }}>
                                         <InputLabel className="text-left">
                                             Fichier

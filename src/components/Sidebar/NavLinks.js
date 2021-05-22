@@ -609,7 +609,7 @@ export default {
          "permissions": [],
          "child_routes": [
             {
-               "path": ROOT,
+               "path": COMMUNITY_ADMIN.OPERATOR.SUPERVISION.COMMUNITIES,
                "new_item": false,
                "menu_title": "Communautés",
                "permissions": [],
@@ -983,6 +983,12 @@ export default {
                "new_item": false,
                'key': 'commnity_admin',
                "path": COMMUNITY_ADMIN.POST.LIST,
+               "permissions": [],
+            },{
+               "menu_title": "Opérateurs",
+               "new_item": false,
+               'key': 'commnity_admin',
+               "path": COMMUNITY_ADMIN.OPERATOR.LIST,
                "permissions": [],
             },{
                "menu_title": "Projet",

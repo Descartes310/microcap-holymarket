@@ -38,6 +38,7 @@ import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import { computeAmountFromCurrency } from 'Helpers/helpers'
+import IndirectProducts from "Routes/custom/commercial-management/offer/IndirectProducts";
 
 const PROCESS = [
     { label: 'Demande de pièce', id: 'ASKING_PIECE' },
@@ -76,7 +77,8 @@ class AddProduct extends Component {
             indirectSell: false,
             accept_many_payment: false,
             minimal_percentage: 0,
-            number_max_of_days_payment: 0
+            number_max_of_days_payment: 0,
+            docsChosen: [],
         }
     }
 
@@ -137,6 +139,11 @@ class AddProduct extends Component {
             return false;
         }
 
+        if (this.state.indirectSell && this.state.docsChosen.length === 0) {
+            NotificationManager.error("Veuillez sélectionner au moins un documents");
+            return false;
+        }
+
         return true;
     };
 
@@ -176,11 +183,15 @@ class AddProduct extends Component {
                 accept_many_payment: this.state.accept_many_payment,
                 number_max_of_days_payment: this.state.number_max_of_days_payment,
                 minimal_percentage: this.state.minimal_percentage,
-                product_id: this.state.product,
+                product_id: this.state.product.id,
                 product_type: this.state.type,
                 sell_process: this.state.sellProcess.map(sp => { return sp.id}).join(','),
-                inderect_sell: this.state.indirectSell
+                inderect_sell: this.state.indirectSell,
             };
+
+            if (this.state.indirectSell) {
+                data.product_piece_id = JSON.stringify(this.state.docsChosen);
+            }
 
             if(!this.state.accept_many_payment) {
                 delete data.number_max_of_days_payment;
@@ -197,6 +208,12 @@ class AddProduct extends Component {
                     NotificationManager.error(ERROR_500);
                 })
                 .finally(() => this.props.setRequestGlobalAction(false));
+        }
+    };
+
+    onDocsChange = docsChosen => {
+        if (!_.isEqual(this.state.docsChosen, docsChosen)) {
+            this.setState({docsChosen});
         }
     };
 
@@ -271,17 +288,22 @@ class AddProduct extends Component {
                                                 Produits
                                             </InputLabel>
                                             <Select
-                                                value={this.state.product}
+                                                value={this.state.product && `${this.state.product.id}_${this.state.product.type}`}
                                                 onChange={event => {
+                                                    const _product = data.find(p => `${p.id}_${p.type}` === event.target.value);
                                                     this.setState({
-                                                        product: event.target.value.id, type: event.target.value.type, defaultPrice: event.target.value.type == 'PRODUCT' ? `${event.target.value.defaultPrice} ${event.target.value.priceCurrency}` : `${Number(computeAmountFromCurrency(this.props.currencies, null, event.target.value.products.map((e) => {
-                                                            return { amount: e.price, currency: e.currency, quantity: e.quantity }
-                                                        }), this.props.authUser.user.currency, null, null))} ${this.props.authUser.user.currency.code}`
+                                                        product: _product,
+                                                        type: _product.type,
+                                                        defaultPrice: _product.type === 'PRODUCT'
+                                                            ? `${_product.defaultPrice} ${_product.priceCurrency}`
+                                                            : `${Number(computeAmountFromCurrency(this.props.currencies, null, _product.products.map((e) => {
+                                                                return { amount: e.price, currency: e.currency, quantity: e.quantity }
+                                                            }), this.props.authUser.user.currency, null, null))} ${this.props.authUser.user.currency.code}`
                                                     })
                                                 }}
                                                 input={<Input name="product" id="product-helper" />}>
                                                 {data.map((item, index) => (
-                                                    <MenuItem key={index} value={item} className="center-hor-ver">
+                                                    <MenuItem key={index} value={`${item.id}_${item.type}`} className="center-hor-ver">
                                                         {item.label}
                                                     </MenuItem>
                                                 ))}
@@ -352,7 +374,7 @@ class AddProduct extends Component {
                                 <FormGroup className="col-md-6 col-sm-12 has-wrapper">
                                     <InputLabel className="text-left" htmlFor="defautlPrice">
                                         Pourcentage minimal de la première tranche
-                            </InputLabel>
+                                    </InputLabel>
                                     <InputStrap
                                         required
                                         id="minimal_percentage"
@@ -387,10 +409,10 @@ class AddProduct extends Component {
                         <FormGroup check style={{ marginBottom: 30 }}>
                             <Label check>
                                 <InputStrap type="checkbox" onChange={event => this.setState({ indirectSell: event.target.checked })} />
-                                    Produit en vente indirecte
-                                    </Label>
+                                Produit en vente indirecte
+                            </Label>
                         </FormGroup>
-                        <RctCollapsibleCard>
+                        {/*<RctCollapsibleCard>
                             <h1 className='mb-20'>
                                 Processus de vente préalable
                             </h1>
@@ -443,8 +465,11 @@ class AddProduct extends Component {
                                     </div>
                                 </div>
                             </Form>
-                        </RctCollapsibleCard>
-
+                        </RctCollapsibleCard>*/}
+                        <IndirectProducts
+                            showProcess={indirectSell}
+                            onDocsChange={this.onDocsChange}
+                        />
 
                         <FormGroup className="mb-15">
                             <Button

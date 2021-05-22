@@ -71,8 +71,21 @@ class Order extends Component {
     };
 
     approvingOrder = (id) => {
+        const action = true;
         setRequestGlobalAction(true);
-        approveOrder(id)
+        approveOrder(id, action)
+            .then(piece => {
+                this.loadData();
+            })
+            .finally(() => {
+                setRequestGlobalAction(false)
+            });
+    };
+
+    disapprovingOrder = (id) => {
+        const action = false;
+        setRequestGlobalAction(true);
+        approveOrder(id, action)
             .then(piece => {
                 this.loadData();
             })
@@ -161,26 +174,41 @@ class Order extends Component {
                                                                 }
                                                             </div>
                                                         </td>
-                                                        <td className="table-action">
-                                                            <Button
-                                                                size="small"
-                                                                color="primary"
-                                                                variant="contained"
-                                                                className={"text-white font-weight-bold mr-3 bg-blue"}
-                                                                onClick={() => this.loadPieces(item.id)}
-                                                            >
-                                                                Voir les détails
-                                                            </Button>
-                                                            <Button
-                                                                size="small"
-                                                                color="primary"
-                                                                variant="contained"
-                                                                className={"text-white font-weight-bold mr-3"}
-                                                                onClick={() => this.approvingOrder(item.id)}
-                                                            >
-                                                                Approuver la commande
-                                                            </Button>
-                                                        </td>
+                                                        {item.orderStatus !== 'PAID' && (
+                                                            <td className="table-action">
+                                                                <a
+                                                                    href="#"
+                                                                    onClick={e => {
+                                                                        e.preventDefault();
+                                                                        this.loadPieces(item.id)
+                                                                    }}
+                                                                    className="text-decoration-underline text-blue">
+                                                                    Voir les détails
+                                                                </a>
+                                                                {!item.approved && (
+                                                                    <>
+                                                                        <Button
+                                                                            size="small"
+                                                                            color="primary"
+                                                                            variant="contained"
+                                                                            className={"text-white font-weight-bold mx-2"}
+                                                                            onClick={() => this.approvingOrder(item.id)}
+                                                                        >
+                                                                            Approuver
+                                                                        </Button>
+                                                                        <Button
+                                                                            size="small"
+                                                                            color="primary"
+                                                                            variant="contained"
+                                                                            className={"text-white font-weight-bold bg-danger"}
+                                                                            onClick={() => this.disapprovingOrder(item.id)}
+                                                                        >
+                                                                            Désapprouver
+                                                                        </Button>
+                                                                    </>
+                                                                )}
+                                                            </td>
+                                                        )}
                                                     </tr>
                                                 ))}
                                             </tbody>

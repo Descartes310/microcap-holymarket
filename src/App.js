@@ -14,6 +14,7 @@ import "aos/dist/aos.css";
 import AOS from 'aos';
 // css
 import './lib/reactifyCss';
+import 'react-image-lightbox/style.css';
 
 // firebase
 import './firebase';
