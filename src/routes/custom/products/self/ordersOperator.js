@@ -174,35 +174,41 @@ class Order extends Component {
                                                                 }
                                                             </div>
                                                         </td>
-                                                        <td className="table-action">
-                                                            <Button
-                                                                size="small"
-                                                                color="primary"
-                                                                variant="outlined"
-                                                                className={"text-white font-weight-bold bg-blue"}
-                                                                onClick={() => this.loadPieces(item.id)}
-                                                            >
-                                                                Voir les détails
-                                                            </Button>
-                                                            <Button
-                                                                size="small"
-                                                                color="primary"
-                                                                variant="contained"
-                                                                className={"text-white font-weight-bold mx-2"}
-                                                                onClick={() => this.approvingOrder(item.id)}
-                                                            >
-                                                                Approuver la commande
-                                                            </Button>
-                                                            <Button
-                                                                size="small"
-                                                                color="primary"
-                                                                variant="contained"
-                                                                className={"text-white font-weight-bold bg-danger"}
-                                                                onClick={() => this.disapprovingOrder(item.id)}
-                                                            >
-                                                                désapprouver la commande
-                                                            </Button>
-                                                        </td>
+                                                        {item.orderStatus !== 'PAID' && (
+                                                            <td className="table-action">
+                                                                <a
+                                                                    href="#"
+                                                                    onClick={e => {
+                                                                        e.preventDefault();
+                                                                        this.loadPieces(item.id)
+                                                                    }}
+                                                                    className="text-decoration-underline text-blue">
+                                                                    Voir les détails
+                                                                </a>
+                                                                {!item.approved && (
+                                                                    <>
+                                                                        <Button
+                                                                            size="small"
+                                                                            color="primary"
+                                                                            variant="contained"
+                                                                            className={"text-white font-weight-bold mx-2"}
+                                                                            onClick={() => this.approvingOrder(item.id)}
+                                                                        >
+                                                                            Approuver
+                                                                        </Button>
+                                                                        <Button
+                                                                            size="small"
+                                                                            color="primary"
+                                                                            variant="contained"
+                                                                            className={"text-white font-weight-bold bg-danger"}
+                                                                            onClick={() => this.disapprovingOrder(item.id)}
+                                                                        >
+                                                                            Désapprouver
+                                                                        </Button>
+                                                                    </>
+                                                                )}
+                                                            </td>
+                                                        )}
                                                     </tr>
                                                 ))}
                                             </tbody>

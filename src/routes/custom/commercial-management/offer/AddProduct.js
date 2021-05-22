@@ -183,7 +183,7 @@ class AddProduct extends Component {
                 accept_many_payment: this.state.accept_many_payment,
                 number_max_of_days_payment: this.state.number_max_of_days_payment,
                 minimal_percentage: this.state.minimal_percentage,
-                product_id: this.state.product,
+                product_id: this.state.product.id,
                 product_type: this.state.type,
                 sell_process: this.state.sellProcess.map(sp => { return sp.id}).join(','),
                 inderect_sell: this.state.indirectSell,
@@ -288,17 +288,22 @@ class AddProduct extends Component {
                                                 Produits
                                             </InputLabel>
                                             <Select
-                                                value={this.state.product}
+                                                value={this.state.product && `${this.state.product.id}_${this.state.product.type}`}
                                                 onChange={event => {
+                                                    const _product = data.find(p => `${p.id}_${p.type}` === event.target.value);
                                                     this.setState({
-                                                        product: event.target.value.id, type: event.target.value.type, defaultPrice: event.target.value.type == 'PRODUCT' ? `${event.target.value.defaultPrice} ${event.target.value.priceCurrency}` : `${Number(computeAmountFromCurrency(this.props.currencies, null, event.target.value.products.map((e) => {
-                                                            return { amount: e.price, currency: e.currency, quantity: e.quantity }
-                                                        }), this.props.authUser.user.currency, null, null))} ${this.props.authUser.user.currency.code}`
+                                                        product: _product,
+                                                        type: _product.type,
+                                                        defaultPrice: _product.type === 'PRODUCT'
+                                                            ? `${_product.defaultPrice} ${_product.priceCurrency}`
+                                                            : `${Number(computeAmountFromCurrency(this.props.currencies, null, _product.products.map((e) => {
+                                                                return { amount: e.price, currency: e.currency, quantity: e.quantity }
+                                                            }), this.props.authUser.user.currency, null, null))} ${this.props.authUser.user.currency.code}`
                                                     })
                                                 }}
                                                 input={<Input name="product" id="product-helper" />}>
                                                 {data.map((item, index) => (
-                                                    <MenuItem key={index} value={item} className="center-hor-ver">
+                                                    <MenuItem key={index} value={`${item.id}_${item.type}`} className="center-hor-ver">
                                                         {item.label}
                                                     </MenuItem>
                                                 ))}

@@ -45,6 +45,7 @@ class OrderShow extends Component {
             file: null,
             product: { order: { orderItems: [] } },
             payments: {},
+            docs: null,
             pieceAction: {
                 doc: null,
                 action: 'add'
@@ -77,8 +78,9 @@ class OrderShow extends Component {
     loadData = () => {
         this.setState({ loading: true });
         getOrderDetails(this.props.match.params.id)
-            .then(product => {
-                this.setState({ product });
+            .then(res => {
+                const product = res.sale, docs = res.docs;
+                this.setState({ product, docs });
                 if (product.order.acceptManyPayment) {
                     this.loadPayments();
                 }
@@ -105,15 +107,26 @@ class OrderShow extends Component {
           this.setState({pieceAction: {doc, action}, showBox: true});
     };
 
-    createPiece = (pieceId, ) => {
+    createPiece = () => {
         this.props.setRequestGlobalAction(true);
         uploadOrderPiece(this.state.product.order.id, {
             file: this.state.file,
-            pieceId: this.state.pieceAction.doc.piece.id
+            commercialPieceId: this.state.pieceAction.doc.id
         }, { fileData: ['file'], multipart: true })
             .then(data => {
-            this.setState({ showBox: false, pieceAction: {doc: null, action: 'add'}});
-            NotificationManager.success("La pièce a été renseignée avec succès");
+                const _docs = [...this.state.docs];
+                const doc = _docs.find(d => d.id === this.state.pieceAction.doc.id);
+                if (doc) {
+                    doc.file = data.file;
+                    this.setState({
+                        docs: _docs,
+                        showBox: false,
+                        pieceAction: {doc: null, action: 'add'}
+                    });
+                } else {
+                    this.setState({ showBox: false, pieceAction: {doc: null, action: 'add'}});
+                }
+                NotificationManager.success("La pièce a été renseignée avec succès");
         }).catch(err => {
             console.log(err);
             NotificationManager.error("La pièce n'a pas pu etre renseignée");
@@ -124,8 +137,10 @@ class OrderShow extends Component {
     };
 
     render() {
-        const { payments, product, showBox, loading } = this.state;
+        const { payments, product, showBox, loading, docs } = this.state;
         const { match, history } = this.props;
+
+        console.log("docs => ", docs);
 
         if (loading) {
             return (<RctSectionLoader />)
@@ -259,8 +274,9 @@ class OrderShow extends Component {
 
                 {product.order.indirectSale && (
                     <CustomList
+                        list={docs}
                         loading={false}
-                        list={product.order.docs}
+                        titleList={"List des pieces"}
                         itemsFoundText={n => ``}
                         showSearch={false}
                         renderItem={list => (
@@ -287,7 +303,7 @@ class OrderShow extends Component {
                                                     <td>
                                                         <div className="media">
                                                             <div className="media-body pt-10">
-                                                                <h4 className="m-0 fw-bold text-dark">{doc.piece.name}</h4>
+                                                                <h4 className="m-0 fw-bold text-dark">{doc.userPiece.name}</h4>
                                                             </div>
                                                         </div>
                                                     </td>
@@ -295,7 +311,7 @@ class OrderShow extends Component {
                                                         <div className="media">
                                                             <div className="media-body pt-10">
                                                                 <h4 className="m-0 fw-bold text-dark">
-                                                                    <a href={getFilePath(doc.piece.file)} target="_blank">
+                                                                    <a href={getFilePath(doc.userPiece.file)} target="_blank">
                                                                         Cliquer pour voir un exemple
                                                                     </a>
                                                                 </h4>
@@ -307,7 +323,7 @@ class OrderShow extends Component {
                                                             <div className="media-body pt-10">
                                                                 {doc.file ? (
                                                                     <div className="center-ver">
-                                                                        <a href={getFilePath(doc.file)} target="_blank">
+                                                                        <a href={getFilePath(doc.file)} target="_blank" className="btn btn-outline-info">
                                                                             Voir la piece uploadé
                                                                         </a>
                                                                         <Button
@@ -480,7 +496,7 @@ class OrderShow extends Component {
                     justifyContent: 'flex-end'
                 }}>
                     {(product.order.indirectSale && !product.order.approved) ? (
-                        <h4>Commande en attente de confimation</h4>
+                        <h2 className="mr-sm-25 mt-2">Commande en attente de confimation</h2>
                     ) : (
                         <Button
                             size="large"
@@ -530,7 +546,7 @@ class OrderShow extends Component {
                                         />
                                          <span className="has-icon"><i className="ti-pencil"></i></span>
                                     </FormGroup>*/}
-                                    {this.state.pieceAction.doc.file && (
+                                    {this.state.pieceAction.doc && this.state.pieceAction.doc.file && (
                                         <FormGroup style={{ width: '100%' }}>
                                             <InputLabel className="text-left">
                                                 <a href={getFilePath(this.state.pieceAction.doc.file)} target="_blank">

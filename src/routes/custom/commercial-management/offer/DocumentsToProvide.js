@@ -97,7 +97,11 @@ const DocumentsToProvide = ({show, onSelectedChange, authUser}) => {
                                         />
                                     </div>
                                 </FormControl>
-                                <a href="#" className="ml-2" onClick={(e) => onImageClick(e, index)}>
+                                <a
+                                    href={getFilePath(doc.file)}
+                                    className="ml-2"
+                                    target="_blank">
+                                    {/*onClick={(e) => onImageClick(e, index)}>*/}
                                     <Tooltip title={"Aperçu"}>
                                         <i className="mt-1 font-size-20px zmdi zmdi-zoom-out" />
                                     </Tooltip>

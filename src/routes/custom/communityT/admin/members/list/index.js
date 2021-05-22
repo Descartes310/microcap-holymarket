@@ -55,7 +55,6 @@ class ListMembers extends Component {
     render() {
         const { loading, users, showBox, user } = this.state;
         const { classes } = this.props;
-        console.log("Je suis dans membre admin !")
         return (
 
             <div className="page-list">
