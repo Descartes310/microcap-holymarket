@@ -1132,19 +1132,19 @@ export const getAllSections = (id) => {
     return makeRequest('get', url);
 };
 
-export const getAllOperators = (id, groupId) => {
-    const data = {
-        group_id: groupId
-    };
-
-    const url = joinBaseUrlWithParams(BRANCH.GET_ALL_OPERATORS, [
-        {
-            param: 'id',
-            value: id,
-        }
-        ]);
-    return makeRequest('get', url, data);
-};
+// export const getAllOperators = (id, groupId) => {
+//     const data = {
+//         group_id: groupId
+//     };
+//
+//     const url = joinBaseUrlWithParams(BRANCH.GET_ALL_OPERATORS, [
+//         {
+//             param: 'id',
+//             value: id,
+//         }
+//         ]);
+//     return makeRequest('get', url, data);
+// };
 
 export const getOperatorPendingCommunities = () => {
     const url = `${COMMUNITY_MEMBER.GROUP.GET_PENDING_COMMUNITIES}`;
@@ -1176,6 +1176,15 @@ export const removeChosenOperator = (groupId) => {
         group_id: groupId
     };
     const url = `${BRANCH.REMOVE_OPERATOR}`;
+    return makeRequest('put', url, data);
+};
+
+export const cancelChosenOperator = (operatorId, groupId) => {
+    const data = {
+        operator_id: operatorId,
+        group_id: groupId
+    };
+    const url = `${BRANCH.CANCEL_OPERATOR}`;
     return makeRequest('put', url, data);
 };
 

@@ -76,6 +76,7 @@ export const BRANCH = {
     GET_ALL_OPERATORS: 'public/branchs/{id}/operators',
     SELECTED_OPERATOR: 'api/groups/communities/send/request/community/{group_id}/organisation/{organisation_id}',
     REMOVE_OPERATOR: 'api/groups/operators/remove',
+    CANCEL_OPERATOR: 'api/groups/operators/invitation/cancel',
     CONFIGURATION: {
         START: 'public/branchs/start/configurations/{id}',
         STOP: 'public/branchs/close/configurations/{id}',

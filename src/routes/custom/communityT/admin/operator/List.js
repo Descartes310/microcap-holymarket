@@ -4,9 +4,10 @@ import React, { Component } from 'react';
 import { COMMUNITY_ADMIN, joinUrlWithParamsId } from "Url/frontendUrl";
 import { withRouter } from "react-router-dom";
 import IntlMessages from 'Util/IntlMessages';
+import Status from "Enums/Status";
 import { AbilityContext } from "Permissions/Can";
 import CustomList from "Components/CustomList";
-import { setRequestGlobalAction, getAllOperators, choosedOperator, removeChosenOperator} from "Actions";
+import { setRequestGlobalAction, getAllOperators, choosedOperator, removeChosenOperator, cancelChosenOperator } from "Actions";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import Button from '@material-ui/core/Button';
 import {Fab} from "@material-ui/core";
@@ -19,7 +20,8 @@ class List extends Component {
     baseUrl = COMMUNITY_ADMIN.OPERATOR;
 
     state = {
-        operators: []
+        operators: [],
+        operatorResponse: {},
     };
 
     constructor(props) {
@@ -32,9 +34,8 @@ class List extends Component {
 
     getOperators = () => {
         this.props.setRequestGlobalAction(true);
-        getAllOperators(this.props.authUser.user.branch.id, this.props.communitySpace.data).then(data => {
-            this.setState({ operators: data })
-        }).finally(() => {
+        this.props.getAllOperators(this.props.authUser.user.branch.id, this.props.communitySpace.data)
+            .finally(() => {
             this.props.setRequestGlobalAction(false)
         })
     };
@@ -42,9 +43,11 @@ class List extends Component {
     selectedOperator = (id) => {
         this.props.setRequestGlobalAction(true);
         choosedOperator(id, this.props.communitySpace.data)
-            .then(() => {
+            .then(data => {
+                this.setState({ operatorResponse: data });
                 NotificationManager.success("Opérqteur selectionné avec succès");
-                this.props.history.push(this.baseUrl.LIST);
+                this.getOperators();
+                console.log("operatorResponse =>", this.state.operatorResponse);
             })
             .catch(() => {
                 NotificationManager.error(ERROR_500);
@@ -57,7 +60,20 @@ class List extends Component {
         removeChosenOperator(this.props.communitySpace.data)
             .then(() => {
                 NotificationManager.success("Opérateur destitué avec succès");
-                this.getOperators(); 
+                this.getOperators();
+            })
+            .catch(() => {
+                NotificationManager.error(ERROR_500);
+            })
+            .finally(() => this.props.setRequestGlobalAction(false));
+    };
+
+    cancelOperator = (id) => {
+        this.props.setRequestGlobalAction(true);
+        cancelChosenOperator(id, this.props.communitySpace.data)
+            .then(() => {
+                NotificationManager.success("Opérateur annulé avec succès");
+                this.getOperators();
             })
             .catch(() => {
                 NotificationManager.error(ERROR_500);
@@ -66,20 +82,21 @@ class List extends Component {
     };
 
     render() {
-        const { history } = this.props;
-        const { operators } = this.state;
+        const { history, comSollicitationsPending } = this.props;
+        const { operatorResponse, operators, cancelSelection, selected} = this.state;
 
         return (
             <div className="page-list mt-70 pt-20">
                 <PageTitleBar title={"Liste des opérateurs de la communauté"} enableBreadCrumb={true} match={this.props.match} history={history} />
                 <CustomList
-                    list={operators}
+                    list={comSollicitationsPending}
                     loading={false}
-                    itemsFoundText={n => `${n} opérateur(s) trouvé(s)`}
+                    itemsFoundText={Array.isArray(comSollicitationsPending
+                    ) ? n => `${n} opérateur(s) trouvé(s)`: null}
                     // onAddClick={() => history.push(this.baseUrl.CREATE)}
                     renderItem={list => (
                         <>
-                            {list && list.length === 0 ? (
+                            {Array.isArray(list.operators) && list.operators.length === 0 ? (
                                 <div>
                                     <table className="table table-hover table-middle mb-0 text-center">
                                         <thead>
@@ -100,7 +117,7 @@ class List extends Component {
                                     </div>
                                 </div>
                             ) : (
-                                list && list.length === 1 ? (
+                                !Array.isArray(list.operators) ? (
                                     <RctCard customClasses="profile-head">
                                         <div className="profile-top">
                                             <img src={require('Assets/img/profile-bg.jpg')}
@@ -109,7 +126,7 @@ class List extends Component {
                                         <div className="profile-bottom border-bottom">
                                             <div className="user-image text-center mb-30">
                                                 <img
-                                                    src={!list[0].user.avatar ? require('Assets/avatars/profile.jpg') : list[0].user.avatar}
+                                                    src={!list.operators.user.avatar ? require('Assets/avatars/profile.jpg') : list.operators.user.avatar}
                                                     className="img-fluid rounded-circle rct-notify mx-auto"
                                                     alt="user images"
                                                     width="110"
@@ -118,8 +135,8 @@ class List extends Component {
                                             </div>
                                             <div className="user-list-content">
                                                 <div className="text-center">
-                                                    <h3 className="fw-bold">{list[0].user.profile.name}</h3>
-                                                    <p>{list[0].user.profile.type}</p>
+                                                    <h3 className="fw-bold">{list.operators.user.profile.name}</h3>
+                                                    <p>{list.operators.user.profile.type}</p>
                                                     <div className="social-list clearfix mb-40">
                                                         <ul className="list-inline d-inline-block mb-0">
                                                             <li className="list-inline-item">
@@ -158,24 +175,27 @@ class List extends Component {
                                                     <span className="fw-bold">
                                                        <i className="zmdi zmdi-phone"></i>
                                                     </span>
-                                                    <span>{list[0].user.phone ? list[0].user.phone : 'Add phone number' }</span>
+                                                    <span>{list.operators.user.phone ? list.operators.user.phone : 'Add phone number' }</span>
                                                 </li>
                                                 <li className="list-inline-item">
                                                     <span className="fw-bold">
                                                         <i className="zmdi zmdi-email"></i>
                                                     </span>
-                                                    <span>{list[0].user.email}</span>
+                                                    <span>{list.operators.user.email}</span>
                                                 </li>
                                                 <li className="list-inline-item">
                                                     <span className="fw-bold">
                                                         <i className="zmdi zmdi-pin"></i>
                                                     </span>
-                                                    <span>{list[0].user.nationality}</span>
+                                                    <span>{list.operators.user.nationality}</span>
                                                 </li>
+                                                { list.status === Status.PENDING ? <li className="list-inline-item">
+                                                    <span>Requête en cours...</span>
+                                                </li> : null}
                                                 <li className="list-inline-item">
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <Button
+                                                           { list.status === Status.ACCEPTED ? <Button
                                                                 color="primary"
                                                                 variant="contained"
                                                                 className="text-white font-weight-bold bg-blue"
@@ -183,48 +203,57 @@ class List extends Component {
                                                                 onClick={() => this.removeOperator()}
                                                             >
                                                                 Destituer l'opérateur
-                                                            </Button>
+                                                            </Button> : list.status === Status.PENDING ?
+                                                            <Button
+                                                                color="primary"
+                                                                variant="contained"
+                                                                className="text-white font-weight-bold bg-danger"
+                                                                style={{ marginRight: 10 }}
+                                                                onClick={() => this.cancelOperator(list.operators.user.profile.id)}
+                                                            >
+                                                                Annuler l'opérateur
+                                                            </Button> : null}
                                                         </div>
                                                     </div>
                                                 </li>
                                             </ul>
                                         </div>
                                     </RctCard>
-                                ) : (
+                                ) : (Array.isArray(list.operators) && list.operators.length >= 2 ?
                                     <div className="table-responsive">
                                         <table className="table table-hover table-middle mb-0 text-center">
                                             <thead>
                                                 <tr>
-                                                    <th>Nom</th>
-                                                    <th>Type</th>
+                                                    <th>Noms et prénom</th>
+                                                    <th>Adresse email</th>
                                                     {/* <th>Section parent</th> */}
-                                                    <th>Description</th>
+                                                    <th>Numero de téléphone</th>
                                                     <th>Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                {list && list.map((item, key) => (
+                                                {list && list.operators.map((item, key) => (
                                                     <tr
                                                         key={key}
                                                         className="cursor-pointer">
                                                         <td>
                                                             <div className="media">
                                                                 <div className="media-body pt-10">
-                                                                    <h4 className="m-0 fw-bold text-dark">{item.user.profile.name}</h4>
+                                                                    <h4 className="m-0 fw-bold text-dark">{item.commercialName}</h4>
                                                                 </div>
                                                             </div>
                                                         </td>
                                                         <td>
                                                             <div className="media">
                                                                 <div className="media-body pt-10">
-                                                                    <h4 className="m-0 fw-bold text-dark">{item.user.profile.type}</h4>
+                                                                    <h4 className="m-0 fw-bold text-dark">{item.user.email}</h4>
                                                                 </div>
                                                             </div>
                                                         </td>
                                                         <td>
                                                             <div className="media">
                                                                 <div className="media-body pt-10">
-                                                                    <h4 className="m-0 fw-bold text-dark">{item.user.profile.description}</h4>
+                                                                    <h4 className="m-0 fw-bold text-dark">{item.user.phone}</h4>
                                                                 </div>
                                                             </div>
                                                         </td>
@@ -238,8 +267,7 @@ class List extends Component {
                                                                         className="text-white font-weight-bold bg-blue"
                                                                         style={{ marginRight: 10 }}
                                                                         onClick={() => this.selectedOperator(item.id)}
-                                                                    >
-                                                                       Selectionner
+                                                                    >Selectionner
                                                                     </Button>
                                                                 </div>
                                                             </div>
@@ -248,7 +276,7 @@ class List extends Component {
                                                 ))}
                                             </tbody>
                                         </table>
-                                    </div>
+                                    </div> : null
                                 ))}
                         </>
                     )}
@@ -259,12 +287,13 @@ class List extends Component {
 }
 
 // map state to props
-const mapStateToProps = ({ requestGlobalLoader, authUser, communitySpace }) => {
+const mapStateToProps = ({ requestGlobalLoader, authUser, communitySpace, comSollicitationsPending }) => {
     return {
         requestGlobalLoader,
         authUser: authUser.data,
-        communitySpace: communitySpace
+        communitySpace: communitySpace,
+        comSollicitationsPending: comSollicitationsPending.data,
     }
 };
 
-export default connect(mapStateToProps, { setRequestGlobalAction })(withRouter(injectIntl(List)));
+export default connect(mapStateToProps, { setRequestGlobalAction, getAllOperators })(withRouter(injectIntl(List)));

@@ -463,3 +463,16 @@ export const makeRequest = (verb, url, data = null, config = {}) => {
             .catch(error => reject(error));
     });
 };
+
+export const makeActionRequest = (verb, url, typeBase, dispatch, data = null, config = {} ) => {
+    dispatch({ type: typeBase });
+    return makeRequest(verb, url, data, config)
+        .then((response) => {
+            dispatch({ type: `${typeBase}_SUCCESS`, payload: response });
+            return Promise.resolve(response);
+        })
+        .catch((error) => {
+            dispatch({ type: `${typeBase}_FAILURE` });
+            return Promise.reject(error);
+        });
+};
