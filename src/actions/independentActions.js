@@ -1246,12 +1246,10 @@ export const getOrderPieces = (id) => {
     return makeRequest('get', url);
 };
 
-export const approveOrder = (id) => {
+export const approveOrder = (id, action) => {
+    const  data = {
+        action : action,
+    };
     const url = joinBaseUrlWithParamsId(`${ORDER.APPROVE_ORDER}`, id);
-    return makeRequest('put', url, null);
-};
-
-export const disapproveOrder = (id) => {
-    const url = joinBaseUrlWithParamsId(`${ORDER.DISAPPROVE_ORDER}`, id);
-    return makeRequest('put', url, null);
+    return makeRequest('put', url, data);
 };

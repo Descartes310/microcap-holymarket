@@ -19,7 +19,7 @@ import { NotificationManager } from "react-notifications";
 import { PRODUCT, joinUrlWithParamsId } from 'Url/frontendUrl'
 import DialogTitle from "@material-ui/core/DialogTitle/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent/DialogContent";
-import { getOrderPieces, getOperatorsOrders, approveOrder, disapproveOrder } from "Actions/independentActions";
+import { getOrderPieces, getOperatorsOrders, approveOrder } from "Actions/independentActions";
 import { getFilePath } from "Helpers/helpers";
 
 class Order extends Component {
@@ -71,8 +71,9 @@ class Order extends Component {
     };
 
     approvingOrder = (id) => {
+        const action = true;
         setRequestGlobalAction(true);
-        approveOrder(id)
+        approveOrder(id, action)
             .then(piece => {
                 this.loadData();
             })
@@ -82,8 +83,9 @@ class Order extends Component {
     };
 
     disapprovingOrder = (id) => {
+        const action = false;
         setRequestGlobalAction(true);
-        disapproveOrder(id)
+        approveOrder(id, action)
             .then(piece => {
                 this.loadData();
             })
