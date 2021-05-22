@@ -28,6 +28,7 @@ import UserCommunitiesReducer from './UserCommunitiesReducer';
 import UserCommunitiesAdminReducer from './UserCommunitiesAdminReducer';
 import UserCommunitiesNotInReducer from './UserCommunitiesNotInReducer';
 import ComInvitationsPendingReducer from './ComInvitationsPendingReducer';
+import ComSollicitationsPendingReducer from './ComSollicitationsPendingReducer';
 import CurrentCommunityReducer from './CurrentCommunityReducer';
 import PackagesReducer from './PackagesReducer';
 import SystemObjectReducer from './SystemObjectReducer';
@@ -82,6 +83,7 @@ const reducers = combineReducers({
    userCommunitiesAdmin: UserCommunitiesAdminReducer,
    userCommunitiesNotIn: UserCommunitiesNotInReducer,
    comInvitationsPending: ComInvitationsPendingReducer,
+   comSollicitationsPending: ComSollicitationsPendingReducer,
    currentCommunity: CurrentCommunityReducer,
    packages: PackagesReducer,
    systemObject: SystemObjectReducer,

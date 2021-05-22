@@ -19,7 +19,7 @@ import { NotificationManager } from "react-notifications";
 import { PRODUCT, joinUrlWithParamsId } from 'Url/frontendUrl'
 import DialogTitle from "@material-ui/core/DialogTitle/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent/DialogContent";
-import { getOrderPieces, getOperatorsOrders, approveOrder } from "Actions/independentActions";
+import { getOrderPieces, getOperatorsOrders, approveOrder, disapproveOrder } from "Actions/independentActions";
 import { getFilePath } from "Helpers/helpers";
 
 class Order extends Component {
@@ -73,6 +73,17 @@ class Order extends Component {
     approvingOrder = (id) => {
         setRequestGlobalAction(true);
         approveOrder(id)
+            .then(piece => {
+                this.loadData();
+            })
+            .finally(() => {
+                setRequestGlobalAction(false)
+            });
+    };
+
+    disapprovingOrder = (id) => {
+        setRequestGlobalAction(true);
+        disapproveOrder(id)
             .then(piece => {
                 this.loadData();
             })
@@ -165,8 +176,8 @@ class Order extends Component {
                                                             <Button
                                                                 size="small"
                                                                 color="primary"
-                                                                variant="contained"
-                                                                className={"text-white font-weight-bold mr-3 bg-blue"}
+                                                                variant="outlined"
+                                                                className={"text-white font-weight-bold bg-blue"}
                                                                 onClick={() => this.loadPieces(item.id)}
                                                             >
                                                                 Voir les détails
@@ -175,10 +186,19 @@ class Order extends Component {
                                                                 size="small"
                                                                 color="primary"
                                                                 variant="contained"
-                                                                className={"text-white font-weight-bold mr-3"}
+                                                                className={"text-white font-weight-bold mx-2"}
                                                                 onClick={() => this.approvingOrder(item.id)}
                                                             >
                                                                 Approuver la commande
+                                                            </Button>
+                                                            <Button
+                                                                size="small"
+                                                                color="primary"
+                                                                variant="contained"
+                                                                className={"text-white font-weight-bold bg-danger"}
+                                                                onClick={() => this.disapprovingOrder(item.id)}
+                                                            >
+                                                                désapprouver la commande
                                                             </Button>
                                                         </td>
                                                     </tr>

@@ -1,4 +1,5 @@
 import api from 'Api';
+import { makeRequest } from '../helpers/helpers';
 import {
     AUTH,
     SYSTEM_OBJECT,
@@ -163,14 +164,6 @@ export const getNetworkProfile = () => {
 export const createNetworkProfile = (data) => {
     return new Promise((resolve, reject) => {
         api.post(NETWORK_PROFILE.CREATE, data)
-            .then(result => resolve(result.data))
-            .catch(error => reject(error));
-    });
-};
-
-const makeRequest = (verb, url, data = null, config = {}) => {
-    return new Promise((resolve, reject) => {
-        api[verb](url, data)
             .then(result => resolve(result.data))
             .catch(error => reject(error));
     });
@@ -450,6 +443,15 @@ export const acceptInvitation = (invitationId) => {
         value: invitationId,
     }]);
     return makeRequest('put', url);
+};
+
+export const acceptOperatorInvitation = (id, status) => {
+    const url = `${COMMUNITY_MEMBER.GROUP.VALIDATE_COMMUNITY}`;
+    const data = {
+        group_operator_id: id,
+        value: status
+    };
+    return makeRequest('post', url, data);
 };
 
 export const cancelInvitation = (invitationId) => {
@@ -1130,6 +1132,62 @@ export const getAllSections = (id) => {
     return makeRequest('get', url);
 };
 
+// export const getAllOperators = (id, groupId) => {
+//     const data = {
+//         group_id: groupId
+//     };
+//
+//     const url = joinBaseUrlWithParams(BRANCH.GET_ALL_OPERATORS, [
+//         {
+//             param: 'id',
+//             value: id,
+//         }
+//         ]);
+//     return makeRequest('get', url, data);
+// };
+
+export const getOperatorPendingCommunities = () => {
+    const url = `${COMMUNITY_MEMBER.GROUP.GET_PENDING_COMMUNITIES}`;
+    return makeRequest('get', url);
+};
+
+export const getOperatorCurrentCommunities = () => {
+    const url = `${COMMUNITY_MEMBER.GROUP.GET_CURRENT_COMMUNITIES}`;
+    return makeRequest('get', url);
+};
+
+export const choosedOperator = (id, groupId) => {
+    const url = joinBaseUrlWithParams(`${BRANCH.SELECTED_OPERATOR}`, [
+        {
+            param: 'group_id',
+            value: groupId,
+        },
+        {
+            param: 'organisation_id',
+            value: id,
+        },
+
+    ]);
+    return makeRequest('post', url);
+};
+
+export const removeChosenOperator = (groupId) => {
+    const data = {
+        group_id: groupId
+    };
+    const url = `${BRANCH.REMOVE_OPERATOR}`;
+    return makeRequest('put', url, data);
+};
+
+export const cancelChosenOperator = (operatorId, groupId) => {
+    const data = {
+        operator_id: operatorId,
+        group_id: groupId
+    };
+    const url = `${BRANCH.CANCEL_OPERATOR}`;
+    return makeRequest('put', url, data);
+};
+
 export const getGroupPosts = (id) => {
     const url = joinBaseUrlWithParamsId(COMMUNITY_MEMBER.GROUP.GET_POSTS, id);
     return makeRequest('get', url);
@@ -1146,7 +1204,7 @@ export const getMotivations = (post_id) => {
             param: 'post_id',
             value: post_id,
         }
-    ])
+    ]);
     return makeRequest('get', url);
 };
 
@@ -1190,5 +1248,10 @@ export const getOrderPieces = (id) => {
 
 export const approveOrder = (id) => {
     const url = joinBaseUrlWithParamsId(`${ORDER.APPROVE_ORDER}`, id);
+    return makeRequest('put', url, null);
+};
+
+export const disapproveOrder = (id) => {
+    const url = joinBaseUrlWithParamsId(`${ORDER.DISAPPROVE_ORDER}`, id);
     return makeRequest('put', url, null);
 };
