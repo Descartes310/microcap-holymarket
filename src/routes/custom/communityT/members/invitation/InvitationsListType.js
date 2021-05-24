@@ -72,6 +72,7 @@ class InvitationsListType extends Component {
     render() {
         const { classes, title } = this.props;
         const { loading, datas } = this.state;
+        console.log("this.state =>",this.state);
 
         if (loading) {
             return (<RctSectionLoader />)
