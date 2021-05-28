@@ -1,11 +1,13 @@
 /**
  * Helpers Functions
  */
+import _ from 'lodash';
 import moment from 'moment';
+import api from "Api/index";
 import AppConfig from 'Constants/AppConfig';
+import ERRORS, {ERROR_500} from 'Data/errors';
 import NavLinks from "Components/Sidebar/NavLinks";
 import {NotificationManager} from 'react-notifications';
-import api from "Api/index";
 
 const TABLE_OF_256_HEXADECIMAL = (function () {
     const arr = [];
@@ -475,4 +477,35 @@ export const makeActionRequest = (verb, url, typeBase, dispatch, data = null, co
             dispatch({ type: `${typeBase}_FAILURE` });
             return Promise.reject(error);
         });
+};
+
+/**
+ * Get all error into an array
+ * @type {Array}
+ */
+const errorItems = _.flattenDeep(Object.values(ERRORS).map(i => Object.values(i)));
+
+
+/**
+ * Map errors and display them
+ * @param errors
+ * @param customOptions
+ */
+export const errorManager = (errors, customOptions = null) => {
+    let found = false;
+
+    if (errors) {
+        errors.forEach(error => {
+            const errorItem = errorItems.find(e => e.NAME === error.code);
+            if (errorItem) {
+                NotificationManager.error(errorItem.MESSAGE);
+                found = true;
+            }
+        });
+    }
+
+    // Display Error 500 in case of no match
+    if (!found) {
+        NotificationManager.error(ERROR_500);
+    }
 };
