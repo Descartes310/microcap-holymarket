@@ -30,17 +30,31 @@ class InvitationsListType extends Component {
     }
 
     componentDidMount() {
-        this.getDatas()
-    }
+        this.getDatas();
+    };
+
+
 
     getDatas = () => {
-        if (this.props.type == InvitationType.INVITATION) {
+        if (this.props.type === InvitationType.INVITATION) {
             this.getRequests();
         }
-        if (this.props.type == InvitationType.INVITATION_SEND) {
+        if (this.props.type === InvitationType.INVITATION_SEND) {
             this.getInvitations();
         }
-    }
+    };
+
+    getInvitations = () => {
+        invitationSent(this.props.communitySpace.data).then(data => {
+            this.setState({ datas: data });
+        }).finally(() => this.setState({ loading: false }))
+    };
+
+    getRequests = () => {
+        requestsReceived(this.props.communitySpace.data).then(data => {
+            this.setState({ datas: data });
+        }).finally(() => this.setState({ loading: false }))
+    };
 
     onSearchChanged = (event) => {
         this.setState({ searched: event.target.value });
@@ -73,6 +87,7 @@ class InvitationsListType extends Component {
         const { classes, title } = this.props;
         const { loading, datas } = this.state;
         console.log("this.state =>",this.state);
+        console.log("this.props =>",this.props);
 
         if (loading) {
             return (<RctSectionLoader />)

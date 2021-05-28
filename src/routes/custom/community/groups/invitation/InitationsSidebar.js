@@ -9,7 +9,7 @@ import {Badge, Input, InputGroup, InputGroupAddon} from "reactstrap";
 import {Scrollbars} from "react-custom-scrollbars";
 import List from "@material-ui/core/List";
 import GroupItem from "Routes/custom/community/groups/GroupItem";
-import {getUserCommunities} from "Actions";
+import {getInvitationsPending, getUserCommunities} from "Actions";
 import Button from "@material-ui/core/Button";
 import IntlMessages from "Util/IntlMessages";
 import FormControl from "@material-ui/core/FormControl";
@@ -36,7 +36,7 @@ class InvitationsSidebar extends Component {
      };
 
     componentDidMount() {
-        // this.props.getUserCommunities();
+        this.props.getInvitationsPending(this.props.authUser.user.id);
     }
 
     render() {
@@ -101,5 +101,5 @@ const mapStateToProps = ({ requestGlobalLoader, authUser, userCommunities, comIn
     return { requestGlobalLoader, authUser: authUser.data, userCommunities: userCommunities.data, comInvitationsPending: comInvitationsPending.data }
 };
 
-export default connect(mapStateToProps, {setRequestGlobalAction})(withRouter(InvitationsSidebar));
+export default connect(mapStateToProps, {getInvitationsPending, setRequestGlobalAction})(withRouter(InvitationsSidebar));
 

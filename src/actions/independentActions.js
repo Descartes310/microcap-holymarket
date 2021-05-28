@@ -407,10 +407,7 @@ export const addOperator = (id, userId) => {
 };
 
 export const invitationSent = (groupId) => {
-    let url = joinBaseUrlWithParams(COMMUNITY_MEMBER.INVITATIONS.SEND.INVITATIONS, [{
-        param: 'id',
-        value: groupId,
-    }]);
+    let url = joinBaseUrlWithParamsId(`${COMMUNITY_MEMBER.INVITATIONS.SEND.INVITATIONS}`, groupId);
     return makeRequest('get', url);
 };
 
@@ -472,14 +469,13 @@ export const deleteInvitation = (invitationId) => {
 
 /********************************  ***************************************** */
 export const sendInvitationCommunityMember = (data) => {
-    console.log(data)
     const url = joinBaseUrlWithParams(COMMUNITY_MEMBER.INVITATIONS.SEND.ONE, [
         {
             param: 'group_id',
             value: data.group_id,
         }
     ]);
-    return makeRequest('post', url, data, { shouldSkipDataParsing: true });
+    return makeRequest('post', url, data);
 };
 /********************************************************************** */
 /*****************************  ***************************************** */
