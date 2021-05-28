@@ -1,17 +1,17 @@
 
-import React, {Component} from 'react';
 import { connect } from 'react-redux';
+import React, {Component} from 'react';
 
 // redux action
-import {registerPersonUser, loginUserWithEmailAndPassword} from 'Actions';
+import {HOME} from "Url/frontendUrl";
 import IntlMessages from "Util/IntlMessages";
+import { withRouter } from "react-router-dom";
 import Step from "@material-ui/core/Step/Step";
-import StepLabel from "@material-ui/core/StepLabel/StepLabel";
 import Stepper from "@material-ui/core/Stepper/Stepper";
+import StepLabel from "@material-ui/core/StepLabel/StepLabel";
 import FirstStep from "Routes/session/register/person/firstStep";
 import SecondStep from "Routes/session/register/person/secondStep";
-import {HOME} from "Url/frontendUrl";
-import { withRouter } from "react-router-dom";
+import {registerPersonUser, loginUserWithEmailAndPassword} from 'Actions';
 
 const steps = [1, 2];
 
@@ -41,7 +41,7 @@ class PersonRegister extends Component {
         _data.startPieceValidity = _data.startingValidityDate;
         _data.endPieceValidity = _data.endingValidityDate;
         _data.login = _data.acceptLogin ? _data.login : _data.email;
-        // _data.microcapOperator = _data.operator;
+
 
         if(this.token)
             _data.token = this.token
