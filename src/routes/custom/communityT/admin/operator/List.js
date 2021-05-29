@@ -49,9 +49,7 @@ class List extends Component {
                 this.getOperators();
                 console.log("operatorResponse =>", this.state.operatorResponse);
             })
-            .catch(() => {
-                NotificationManager.error(ERROR_500);
-            })
+            .catch(() => null)
             .finally(() => this.props.setRequestGlobalAction(false));
     };
 
@@ -62,9 +60,7 @@ class List extends Component {
                 NotificationManager.success("Opérateur destitué avec succès");
                 this.getOperators();
             })
-            .catch(() => {
-                NotificationManager.error(ERROR_500);
-            })
+            .catch(() => null)
             .finally(() => this.props.setRequestGlobalAction(false));
     };
 
@@ -75,9 +71,7 @@ class List extends Component {
                 NotificationManager.success("Opérateur annulé avec succès");
                 this.getOperators();
             })
-            .catch(() => {
-                NotificationManager.error(ERROR_500);
-            })
+            .catch(() => null)
             .finally(() => this.props.setRequestGlobalAction(false));
     };
 

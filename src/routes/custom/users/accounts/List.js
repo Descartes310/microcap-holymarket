@@ -55,7 +55,7 @@ class UsersAccountsList extends Component {
                     });
                 })
                 .catch(error => {
-                    NotificationManager.error(ERROR_500);
+
                     this.setState(prevState => ({ branches: {data: null, loading: false}, selectedBranch: null }), () => {
                         reject();
                     });

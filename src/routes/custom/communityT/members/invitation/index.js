@@ -113,9 +113,9 @@ class Invitations extends Component {
                     </Hidden>
                     <div className={`chat-content ${classes.content}`}>
                         <Switch>
+                            <Route exact path={COMMUNITY.INVITATIONS.LIST.RECEIVED} component={InvitationsReceived} />
+                            <Route exact path={COMMUNITY.INVITATIONS.LIST.SEND} component={InvitationsSend} />
                             <Redirect exact from={`${match.url}/`} to={COMMUNITY.INVITATIONS.LIST.RECEIVED} />
-                            <Route path={COMMUNITY.INVITATIONS.LIST.RECEIVED} component={InvitationsReceived} />
-                            <Route path={COMMUNITY.INVITATIONS.LIST.SEND} component={InvitationsSend} />
                         </Switch>
                     </div>
                 </div>

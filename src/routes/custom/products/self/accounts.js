@@ -38,9 +38,7 @@ class Account extends Component {
             .then(products => {
                 this.setState({ products: this.groups(products), total: products.length });
             })
-            .catch(() => {
-                NotificationManager.error(ERROR_500);
-            })
+            .catch(() => null)
             .finally(() => this.setState({ loading: false }));
     };
 

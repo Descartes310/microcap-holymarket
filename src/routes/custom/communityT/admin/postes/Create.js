@@ -64,9 +64,7 @@ class Create extends Component {
                     NotificationManager.success("Categorie créé avec succès");
                     this.props.history.push(COMMUNITY_ADMIN.POST.LIST);
                 })
-                .catch(() => {
-                    NotificationManager.error(ERROR_500);
-                })
+                .catch(() => null)
                 .finally(() => this.props.setRequestGlobalAction(false));
         }
     };

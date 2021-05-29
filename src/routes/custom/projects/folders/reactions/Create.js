@@ -86,9 +86,7 @@ const Create = props => {
                 NotificationManager.success("Activité crée avec succès");
                 history.push(PROJECTS.FOLDERS.REACTIONS.LIST);
             })
-            .catch(() => {
-                NotificationManager.error(ERROR_500);
-            })
+            .catch(() => null)
             .finally(() => setRequestGlobalAction(false));
     };
 

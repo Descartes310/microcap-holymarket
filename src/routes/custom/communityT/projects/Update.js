@@ -111,9 +111,7 @@ const Update = props => {
                 NotificationManager.success("Projet modifié avec succès");
                 history.push(PROJECTS.FOLDERS.LIST);
             })
-            .catch(() => {
-                NotificationManager.error(ERROR_500);
-            })
+            .catch(() => null)
             .finally(() => setRequestGlobalAction(false));
     };
 

@@ -48,18 +48,14 @@ class ProductItemAvailable extends Component {
     loadData = () => {
         getProductItemAvailable(this.productId, this.productType)
             .then(products => this.setState({ products }))
-            .catch(() => {
-                NotificationManager.error(ERROR_500);
-            })
+            .catch(() => null)
             .finally(() => this.setState({ loading: false }));
 
         if (!this.currentProduct) {
             this.props.setRequestGlobalAction(true);
             getOneProductTypeFromCommercialOffer(this.productId, this.productType)
                 .then(product => this.setState({ currentProduct: product }))
-                .catch(() => {
-                    NotificationManager.error(ERROR_500);
-                })
+                .catch(() => null)
                 .finally(() => this.props.setRequestGlobalAction(false));
         }
     };

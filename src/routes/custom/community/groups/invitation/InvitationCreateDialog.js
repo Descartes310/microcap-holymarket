@@ -96,11 +96,8 @@ class InvitationCreateDialog extends React.Component {
      };
     
     handleSubmit = () => {
-        const {handleClose} = this.props
-        //handleClose();
-        
+        const {handleClose} = this.props;
         let data = {};
-
         if (this.state.activeIndex == 0) {
             data = {
                 group_id: this.props.currentCommunity.id,
@@ -108,7 +105,6 @@ class InvitationCreateDialog extends React.Component {
                 id: this.props.authUser.user.id
             };
         }
-
         if (this.state.activeIndex == 1) {
             data = {
                 group_id: this.props.currentCommunity.id,
@@ -118,17 +114,12 @@ class InvitationCreateDialog extends React.Component {
                 id: this.props.authUser.user.id
             };
         }
-
-       
-
         this.props.setRequestGlobalAction(true);
-    
         sendInvitationCommunityMember(data)
         .then((res) => {
-            console.log(res);
             NotificationManager.success("Invitation envoyé avec succès");
             if (this.state.userOrProject === 'project')
-            this.setState({ currentDialogNotOpened: true, showNextDialog: true })
+            this.setState({ currentDialogNotOpened: true, showNextDialog: true });
             else{
                 handleClose();
             }
@@ -137,10 +128,10 @@ class InvitationCreateDialog extends React.Component {
             NotificationManager.error("L'invitation n'a pas pu être envoyé. Veuillez réessayer.");
         })
         .finally(() => this.props.setRequestGlobalAction(false));
-    }
+        };
 
     render() {
-        const {open, handleClose} = this.props
+        const {open, handleClose} = this.props;
         
         return (
             <Fragment>

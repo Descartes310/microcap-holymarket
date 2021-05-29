@@ -66,6 +66,7 @@ class Invitations extends Component {
     render() {
         const { classes, theme, match } = this.props;
         const drawer = <InvitationsSidebar />;
+
         return (
             <div className="chat-wrapper">
                 <div className={classes.root}>

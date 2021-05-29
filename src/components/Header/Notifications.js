@@ -33,10 +33,7 @@ class HeaderNotifications extends Component {
    componentDidMount() {
       getCountUnreadNotifications(this.props.authUser.user.id)
           .then(unreadCount => this.setState({unreadCount}))
-          .catch((error) => {
-             NotificationManager.error(ERROR_500);
-          });
-
+          .catch(() => null);
       this.props.getAllNotifications(this.props.authUser.user.id, 'UNREAD');
    }
 
