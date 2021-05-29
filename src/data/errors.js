@@ -52,7 +52,7 @@ export default {
         IMMATRICULATION_ORGANISATION_ALREADY_EXIST: {
             NAME: 'IMMATRICULATION_ORGANISATION_ALREADY_EXIST',
             MESSAGE: "L'immatriculation de l'organiation existe deja",
-            DESCRIPTION: `"IMMATRICULATION_VALUE","Immatriculation value '" + immatriculation_value + "' is already assigned !"`,
+            DESCRIPTION: `"Immatriculation value '" + immatriculation_value + "' is already assigned !"`,
         },
         USER_WITH_REFERENCE_NOT_FOUND: {
             NAME: 'USER_WITH_REFERENCE_NOT_FOUND',
