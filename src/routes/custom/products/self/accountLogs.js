@@ -75,10 +75,7 @@ class AccountLogs extends Component {
                 else
                     this.setState({ account_currency: 'EUR' });
             })
-            .catch((err) => {
-                console.log(err)
-                NotificationManager.error(ERROR_500);
-            })
+            .catch(() => null)
             .finally(() => this.setState({ loading: false }));
     };
 
@@ -105,10 +102,7 @@ class AccountLogs extends Component {
             .then(account => {
                 this.loadData()
             })
-            .catch((err) => {
-                console.log(err)
-                NotificationManager.error(ERROR_500);
-            })
+            .catch(() => null)
             .finally(() => this.setState({ showQuantityBox: false }));
     };
 
@@ -125,10 +119,7 @@ class AccountLogs extends Component {
             .then(account => {
                 this.loadData()
             })
-            .catch((err) => {
-                console.log(err)
-                NotificationManager.error(ERROR_500);
-            })
+            .catch(() => null)
             .finally(() => this.setState({ paying: false }));
     };
 

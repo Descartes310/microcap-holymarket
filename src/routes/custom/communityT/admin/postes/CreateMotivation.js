@@ -53,9 +53,7 @@ class Create extends Component {
                     NotificationManager.success("Motivation créés avec succès");
                     this.props.history.push(joinUrlWithParamsId(COMMUNITY_ADMIN.POST.MOTIVATION.LIST, this.props.match.params.id));
                 })
-                .catch(() => {
-                    NotificationManager.error(ERROR_500);
-                })
+                .catch(() => null)
                 .finally(() => this.props.setRequestGlobalAction(false));
         }
     };

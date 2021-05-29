@@ -456,7 +456,7 @@ export const makeRequest = (verb, url, data = null, config = {}) => {
             Object.entries(data).map(item => {
                 const encoded = encodeURIComponent(item[1]);
                 const character = _url.includes('?') ? '&' : '?';
-                _url = `${_url}${character}${toSnakeCase(item[0])}=${encoded}`
+                _url = `${_url}${character}${toSnakeCase(item[0])}=${encoded}`;
             });
         }
         const params = (verb === 'get' || verb === 'delete') ? [_url, config] : [_url, data, config];

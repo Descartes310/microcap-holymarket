@@ -96,10 +96,7 @@ class Create extends Component {
                     NotificationManager.success("Rubrique créé avec succès");
                     this.props.history.push(COMMUNITY_ADMIN.RUBRIQUE.LIST);
                 })
-                .catch((err) => {
-                    console.log(err)
-                    NotificationManager.error(ERROR_500);
-                })
+                .catch(() => null)
                 .finally(() => this.props.setRequestGlobalAction(false));
         }
     };

@@ -91,9 +91,7 @@ class Create extends Component {
                     NotificationManager.success("Idée créée avec succès");
                     this.props.history.push(PROJECTS.FOLDERS.PROJECTS.IDEAS);
                 })
-                .catch(() => {
-                    NotificationManager.error(ERROR_500);
-                })
+                .catch(() => null)
                 .finally(() => this.props.setRequestGlobalAction(false));
         }
     };

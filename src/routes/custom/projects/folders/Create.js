@@ -165,9 +165,7 @@ const Create = props => {
                 NotificationManager.success("Projet crée avec succès");
                 history.push(PROJECTS.FOLDERS.LIST);
             })
-            .catch(() => {
-                NotificationManager.error(ERROR_500);
-            })
+            .catch(() => null   )
             .finally(() => setRequestGlobalAction(false));
     };
 

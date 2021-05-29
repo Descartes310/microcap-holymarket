@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {connect} from "react-redux";
 import IntlMessages from 'Util/IntlMessages';
-import {getInvitationsPending, setRequestGlobalAction} from "Actions";
+import {getInvitationsPending, invitationSent, requestsReceived, setRequestGlobalAction} from "Actions";
 import {injectIntl} from "react-intl";
 import {Fab, withStyles} from "@material-ui/core";
 import {withRouter} from "react-router-dom";
@@ -27,8 +27,32 @@ class InvitationsListType extends Component {
     }
 
     componentDidMount() {
-        this.props.getInvitationsPending(this.props.authUser.user.id);
-    }
+        console.log('this.props Invitation type=>',this.props );
+        // this.props.getInvitationsPending(this.props.authUser.user.id);
+        this.getDatas();
+    };
+
+    getDatas = () => {
+        if (this.props.type === InvitationType.REQUEST) {
+            this.getRequests();
+        }
+        if (this.props.type === InvitationType.INVITATION) {
+            this.getInvitations();
+        }
+    };
+
+    getInvitations = () => {
+        invitationSent(this.props.authUser.user.id).then(data => {
+            this.setState({ datas: data });
+        }).finally(() => this.setState({ loading: false }))
+    };
+
+    getRequests = () => {
+        requestsReceived(this.props.authUser.user.id).then(data => {
+            this.setState({ datas: data });
+        }).finally(() => this.setState({ loading: false }))
+    };
+
 
     onSearchChanged = (event) => {
         this.setState({searched: event.target.value});
@@ -47,7 +71,6 @@ class InvitationsListType extends Component {
 
     render() {
         const { classes, comInvitationsPending, loading, type } = this.props;
-
         if (!loading && comInvitationsPending === null) {
             return (<p>Un problème est survenue</p>)
         }
@@ -120,8 +143,8 @@ class InvitationsListType extends Component {
 }
 
 // map state to props
-const mapStateToProps = ({ requestGlobalLoader, comInvitationsPending, authUser  }) => {
-    return { requestGlobalLoader, authUser: authUser.data, loading: comInvitationsPending.loading, comInvitationsPending: comInvitationsPending.data, error: comInvitationsPending.error }
+const mapStateToProps = ({ requestGlobalLoader, comInvitationsPending, authUser, communitySpace  }) => {
+    return { requestGlobalLoader, authUser: authUser.data, loading: comInvitationsPending.loading, comInvitationsPending: comInvitationsPending.data, error: comInvitationsPending.error, communitySpace: communitySpace }
 };
 
 const useStyles = theme => ({

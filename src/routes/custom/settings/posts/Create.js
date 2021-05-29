@@ -70,10 +70,7 @@ class Create extends Component {
                     NotificationManager.success("Categorie créé avec succès");
                     this.props.history.push(SETTINGS.POST.LIST);
                 })
-                .catch((err) => {
-                    console.log(err)
-                    NotificationManager.error(ERROR_500);
-                })
+                .catch((err) => null)
                 .finally(() => this.props.setRequestGlobalAction(false));
         }
     };

@@ -88,9 +88,7 @@ class FavouritesGroups extends Component {
                 }).finally(() => this.setState({ loading: false }))
                 this.props.getInvitationsPending(this.props.authUser.user.id);
             })
-            .catch(() => {
-                NotificationManager.error(ERROR_500);
-            })
+            .catch(() => null)
             .finally(() => {
                 this.props.setRequestGlobalAction(false);
                 this.setState({ showAskingBox: false, group: null, posts: [], post: null, motivations: [], motivation: null });

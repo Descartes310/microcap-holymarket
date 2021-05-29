@@ -44,6 +44,7 @@ class PersonRegister extends Component {
         // _data.identificationType = _data.identificationType.value;
         // _data.identificationType = _data.identificationType.value;
         _data.login = _data.acceptLogin ? _data.login : _data.email;
+        // _data.microcapOperator = _data.operator;
 
         if(this.token)
             _data.token = this.token;
