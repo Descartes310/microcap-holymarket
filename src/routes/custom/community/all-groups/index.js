@@ -169,18 +169,22 @@ class AllGroups extends Component {
                                     data={this.state.posts}
                                     component={data => (
                                         <div className="form-group text-left">
-                                            <FormControl fullWidth>
-                                                <InputLabel className="text-left" htmlFor="currency-helper">
-                                                    Catégorie d'utilisateur
-                                                </InputLabel>
-                                                <Select onChange={e => this.getPostMotivations(e.target.value)}>
-                                                    {data.map(item => (
-                                                        <MenuItem key={item.id} value={item} className="center-hor-ver">
-                                                            {item.title}
-                                                        </MenuItem>
-                                                    ))}
-                                                </Select>
-                                            </FormControl>
+                                            {data.length === 0 ? (
+                                                <></>
+                                            ) : (
+                                                <FormControl fullWidth>
+                                                    <InputLabel className="text-left" htmlFor="currency-helper">
+                                                        Catégorie d'utilisateur
+                                                    </InputLabel>
+                                                    <Select onChange={e => this.getPostMotivations(e.target.value)}>
+                                                        {data.map(item => (
+                                                            <MenuItem key={item.id} value={item} className="center-hor-ver">
+                                                                {item.title}
+                                                            </MenuItem>
+                                                        ))}
+                                                    </Select>
+                                                </FormControl>
+                                            )}
                                         </div>
                                     )}
                                 />

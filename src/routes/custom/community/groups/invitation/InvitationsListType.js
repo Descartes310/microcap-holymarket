@@ -26,15 +26,13 @@ class InvitationsListType extends Component {
         }
     }
 
-    
-
     componentDidMount() {
         this.props.getInvitationsPending(this.props.authUser.user.id);
     }
 
     onSearchChanged = (event) => {
         this.setState({searched: event.target.value});
-        console.log('event', event)
+        // console.log('event', event)
     };
 
     handleSearch = (value, data) => {
@@ -59,7 +57,7 @@ class InvitationsListType extends Component {
         }
 
         let orderedItems = this.handleSearch(this.state.searched, comInvitationsPending.filter(invitation => invitation.type === this.props.type));
-       
+
         return (
             <>
                 <div className="page-list">

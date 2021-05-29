@@ -26,11 +26,11 @@ class InvitationsSidebar extends Component {
     state = {
         open: false,
      };
-  
+
      handleClickOpenInvation = () => {
         this.setState({ open: true });
      };
-  
+
      handleCloseInvation = () => {
         this.setState({ open: false });
      };
@@ -79,7 +79,7 @@ class InvitationsSidebar extends Component {
                                         >
                                             <i className={`mr-20 zmdi zmdi-view-web`} />
                                             <span className="filter-title">
-                                                Demande d'adhesion
+                                                Demandes d'adhesion
                                                 {comInvitationsPending && nbInvRequest > 0 && (<Badge className="ml-2" color="primary" pill>
                                                     {comInvitationsPending.filter(i => i.type === InvitationType.REQUEST).length}
                                                 </Badge>)}

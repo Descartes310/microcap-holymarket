@@ -279,7 +279,7 @@ export const getFullAuthorisationRequestConfig = () => {
         Accept: 'application/json',
         Authorization: 'Basic ' + btoa(AppConfig.oauth.clientId + ":" + AppConfig.oauth.clientSecret)
     };
-    return { headers, shouldSkipToken: true, withCredentials: true };
+    return { headers, shouldSkipToken: true, withCredentials: true, skipError: true };
 };
 /*"KEY_1": {
     "ERROR_1": ERROR_1_MESSAGE,
