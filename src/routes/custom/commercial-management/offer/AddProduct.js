@@ -97,9 +97,7 @@ class AddProduct extends Component {
             .then(res => {
                 this.setState({ sellers: res });
             })
-            .catch((error) => {
-                NotificationManager.error(ERROR_500);
-            })
+            .catch(() => null)
             .finally(() => this.setState({ sellerLoading: false }));
     }
 
@@ -109,10 +107,7 @@ class AddProduct extends Component {
             .then(res => {
                 this.setState({ catalogs: res });
             })
-            .catch((error) => {
-                console.log("error => ", error);
-                NotificationManager.error(ERROR_500);
-            })
+            .catch(() => null)
             .finally(() => this.setState({ catalogLoading: false }));
     }
 
@@ -126,10 +121,7 @@ class AddProduct extends Component {
                 }
                 this.setState({ products: res });
             })
-            .catch((error) => {
-                console.log("error => ", error);
-                NotificationManager.error(ERROR_500);
-            })
+            .catch(() => null)
             .finally(() => this.setState({ productLoading: false }));
     };
 
@@ -204,9 +196,7 @@ class AddProduct extends Component {
                     NotificationManager.success("Produit ajouté avec succèss");
                     this.props.history.push(COMMERCIAL_MANAGEMENT.COMMERCIAL_OFFER.LIST);
                 })
-                .catch(() => {
-                    NotificationManager.error(ERROR_500);
-                })
+                .catch(() => null)
                 .finally(() => this.props.setRequestGlobalAction(false));
         }
     };

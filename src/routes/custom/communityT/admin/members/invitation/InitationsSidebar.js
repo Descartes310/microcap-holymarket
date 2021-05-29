@@ -69,7 +69,7 @@ class InvitationsSidebar extends Component {
                                             <span className="filter-title">
                                                 Demande d'adhésions
                                                 {comInvitationsPending  && nbInvReceived > 0 && (<Badge className="ml-2" color="primary" pill>
-                                                    {comInvitationsPending.filter(i => i.type === InvitationType.INVITATION).length}
+                                                    {comInvitationsPending.filter(i => i.type === InvitationType.REQUEST).length}
                                                 </Badge>)}
                                             </span>
                                         </ListItem>

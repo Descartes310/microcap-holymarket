@@ -53,9 +53,7 @@ const CreateModel = props => {
                 loadData();
                 onClose();
             })
-            .catch(() => {
-                NotificationManager.error(ERROR_500);
-            })
+            .catch(() => null)
             .finally(() => setRequestGlobalAction(false))
     };
 

@@ -85,10 +85,7 @@ class OrderShow extends Component {
                     this.loadPayments();
                 }
             })
-            .catch((err) => {
-                console.log("Error => ", err)
-                NotificationManager.error(ERROR_500);
-            })
+            .catch(() => null)
             .finally(() => this.setState({ loading: false }));
     };
 
@@ -97,10 +94,7 @@ class OrderShow extends Component {
             .then(payments => {
                 this.setState({ payments });
             })
-            .catch((err) => {
-                console.log("Error => ", err)
-                NotificationManager.error(ERROR_500);
-            })
+            .catch(() => null)
     };
 
     onActionOnPiece = (doc, action) => {

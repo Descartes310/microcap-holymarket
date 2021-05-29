@@ -45,7 +45,7 @@ class Checkout extends Component {
                 this.setState({order: order});
             })
             .catch(() => {
-                NotificationManager.error(ERROR_500);
+
             })
             .finally(() => this.props.setRequestGlobalAction(false));
     };

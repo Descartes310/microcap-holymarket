@@ -80,9 +80,7 @@ class Create extends Component {
                     NotificationManager.warning("Vous devez d'abord créer un catalogue de vente avant de pousuivre cette action");
                 }
             })
-            .catch(error => {
-                NotificationManager.error(ERROR_500);
-            })
+            .catch(() => null)
 
         /*this.props.getProductTypes(this.props.authUser.user.branch.id)
             .then(products => {
@@ -100,9 +98,7 @@ class Create extends Component {
                 }
                 this.setState({ storeProducts: res });
             })
-            .catch(() => {
-                NotificationManager.error(ERROR_500);
-            })
+            .catch(() => null)
             .finally(() => this.setState({ loadingProducts: false }));
     };
 
@@ -171,9 +167,7 @@ class Create extends Component {
                     this.props.getPackages(this.props.authUser.user.id, this.props.authUser.user.branch.id);
                     this.props.history.push(PACKAGES.LIST);
                 })
-                .catch(() => {
-                    NotificationManager.error(ERROR_500);
-                })
+                .catch(() => null)
                 .finally(() => this.props.setRequestGlobalAction(false));
         }
     };

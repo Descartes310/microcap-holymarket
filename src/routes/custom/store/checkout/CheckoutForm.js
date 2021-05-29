@@ -75,8 +75,7 @@ class CheckoutForm extends Component {
                this.setState({ showConfirmBox: true, response: resp }, () => { console.log('Update fine !') })
             })
             .catch((error) => {
-               console.log(error)
-               NotificationManager.error(ERROR_500);
+
             })
             .finally(() => this.props.setRequestGlobalAction(false));
       }

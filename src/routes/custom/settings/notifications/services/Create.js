@@ -78,9 +78,7 @@ const Create = props => {
                 NotificationManager.success("Notification de service envoyé avec succès");
                 history.push(SETTINGS.NOTIFICATION.SERVICE.LIST);
             })
-            .catch((error) => {
-                NotificationManager.error(ERROR_500);
-            })
+            .catch(() => null)
             .finally(() => setRequestGlobalAction(false));
     };
 

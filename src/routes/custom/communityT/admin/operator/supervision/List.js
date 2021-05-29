@@ -69,9 +69,7 @@ class List extends Component {
                 NotificationManager.success("Votre sollicitation a été refusée avec succès ");
                 this.getOperatorCommunities();
             })
-            .catch(() => {
-                NotificationManager.error(ERROR_500);
-            })
+            .catch(() => null)
             .finally(() => this.props.setRequestGlobalAction(false));
     };
 
@@ -83,9 +81,7 @@ class List extends Component {
                 NotificationManager.success("Vous êtes maintenant opérateur du groupe ");
                 this.getOperatorCommunities();
             })
-            .catch(() => {
-                NotificationManager.error(ERROR_500);
-            })
+            .catch(() => null)
             .finally(() => this.props.setRequestGlobalAction(false));
     };
 

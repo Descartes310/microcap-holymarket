@@ -50,7 +50,6 @@ class ClassicSale extends Component {
         getOrganisationByReference(this.state.adhesion).then(data => {
             this.setState({ organisation: data })
         }).catch(err => {
-            NotificationManager.error("Organisation non trouvée")
             this.setState({ organisation: null })
         })
     };

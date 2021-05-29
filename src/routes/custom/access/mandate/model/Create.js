@@ -73,10 +73,7 @@ const Create = props => {
                 NotificationManager.success("Model de mandat créée avec succès");
                 onClose();
             })
-            .catch((error) => {
-                NotificationManager.error(ERROR_500);
-                // console.log("error => ", error.message);
-            })
+            .catch(() => null)
             .finally(() => setRequestGlobalAction(false));
     };
 

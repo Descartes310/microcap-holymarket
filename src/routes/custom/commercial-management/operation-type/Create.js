@@ -44,11 +44,7 @@ const Create = props => {
                 getComOperationType(authUser.user.branch.id, authUser.userType);
                 onClose();
             })
-            .catch((error) => {
-                console.log("error => ", JSON.stringify(error));
-                NotificationManager.error(ERROR_500);
-                // console.log("error => ", error.message);
-            })
+            .catch(() => null)
             .finally(() => setRequestGlobalAction(false));
     };
 

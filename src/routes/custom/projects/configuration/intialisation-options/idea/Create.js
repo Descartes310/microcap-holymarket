@@ -73,9 +73,7 @@ class InitialisationItemCreate extends Component {
                     NotificationManager.success("Ouvrage de projets créé avec succès");
                     this.props.history.push(PROJECTS.CONFIGURATION.INITIALISATION[this.props.type].LIST);
                 })
-                .catch(() => {
-                    NotificationManager.error(ERROR_500);
-                })
+                .catch(() => null)
                 .finally(() => this.props.setRequestGlobalAction(false));
         }
     };

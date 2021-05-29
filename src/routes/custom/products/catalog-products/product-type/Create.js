@@ -202,7 +202,6 @@ const CategoryProductsCreate = props => {
                 })
             })
             .catch(() => {
-                NotificationManager.error(ERROR_500);
                 setRootProductType({
                     loading: false,
                     data: null
