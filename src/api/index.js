@@ -1,5 +1,4 @@
 import axios from 'axios';
-import {formatMessage} from "../lang";
 import AppConfig from 'Constants/AppConfig';
 import {getAuthToken} from "Helpers/tokens";
 import {NotificationManager} from "react-notifications";
@@ -84,19 +83,19 @@ customAxios.interceptors.response.use(
                             errorManager(error.response.data.errorss);
                             return Promise.reject(error);
                         case 401:
-                            NotificationManager.error(formatMessage(ERROR_401));
+                            NotificationManager.error(ERROR_401);
                             return Promise.reject(error);
                         case 403:
-                            NotificationManager.error(formatMessage(ERROR_403));
+                            NotificationManager.error(ERROR_403);
                             return Promise.reject(error);
                         case 404:
-                            NotificationManager.error(formatMessage(ERROR_404));
+                            NotificationManager.error(ERROR_404);
                             return Promise.reject(error);
                         case 500:
-                            NotificationManager.error(formatMessage(ERROR_500));
+                            NotificationManager.error(ERROR_500);
                             return Promise.reject(error);
                         default:
-                            NotificationManager.error(formatMessage(ERROR_500));
+                            NotificationManager.error(ERROR_500);
                             return Promise.reject(error);
                     }
                 }

@@ -1,33 +1,31 @@
-import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
-import { Alert, Form, FormGroup } from "reactstrap";
-import FormControl from '@material-ui/core/FormControl';
-import InputComponent from "Components/InputComponent";
-import ErrorInputComponent from "Components/ErrorInputComponent";
-import Button from "@material-ui/core/Button";
+import _ from 'lodash';
+import * as moment from "moment";
+import { injectIntl } from 'react-intl';
 import { useForm } from "react-hook-form";
 import IntlMessages from "Util/IntlMessages";
-import Select from "@material-ui/core/Select/Select";
-import MenuItem from "@material-ui/core/MenuItem";
-import { injectIntl } from 'react-intl';
-import CountryManager from 'Helpers/CountryManager';
+import { Form, FormGroup } from "reactstrap";
+import Button from "@material-ui/core/Button";
 import FlagCountry from "Components/FlagCountry";
-import InputLabel from "@material-ui/core/InputLabel/InputLabel";
 import Input from "@material-ui/core/Input/Input";
-import CustomAsyncComponent from "Components/CustomAsyncComponent";
+import MenuItem from "@material-ui/core/MenuItem";
+import React, { useEffect, useState } from 'react';
+import CountryManager from 'Helpers/CountryManager';
+import Select from "@material-ui/core/Select/Select";
+import InputComponent from "Components/InputComponent";
+import FormControl from '@material-ui/core/FormControl';
 import { NotificationManager } from 'react-notifications';
-import * as moment from "moment";
-import { Link } from 'react-router-dom';
-import _ from 'lodash';
-import { getOperators, getRegistrationType, getResidenceCountries, getAllSettingsByNameAndUrl } from "Actions/independentActions";
 import Checkbox from "@material-ui/core/Checkbox/Checkbox";
+import ErrorInputComponent from "Components/ErrorInputComponent";
+import InputLabel from "@material-ui/core/InputLabel/InputLabel";
+import CustomAsyncComponent from "Components/CustomAsyncComponent";
 import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
+import { getOperators, getRegistrationType, getResidenceCountries, getAllSettingsByNameAndUrl } from "Actions/independentActions";
 
 
 const countryWithNameAndFlag = CountryManager.countryWithNameAndFlag();
 
 const ThirdStep = props => {
-    const { loading, nextStep, previousStep, setData, defaultState, intl } = props;
+    const { loading, previousStep, setData, defaultState, intl } = props;
     const { register, errors, handleSubmit, watch, control, getValues, setValue } = useForm({
         defaultValues: !_.isEqual(defaultState, {}) ? defaultState : {}
     });
@@ -90,7 +88,7 @@ const ThirdStep = props => {
                 setOperator({ loading: false, data: null });
                 NotificationManager.error("An error occur " + error);
             });
-    };    
+    };
 
     const getCGU = () => {
         getAllSettingsByNameAndUrl(window.location.host, 'CGU').then(data => {
@@ -138,7 +136,6 @@ const ThirdStep = props => {
         const now = moment();
 
         if (!startingDate.isValid()) {
-            // setErrorMessages({...errorMessages, startingDate: "Start date should be a valid one"});
             setErrorMessages({
                 ...errorMessages,
                 startingDate: {
@@ -152,7 +149,6 @@ const ThirdStep = props => {
         }
 
         if (now.diff(startingDate) < 0) {
-            // setErrorMessages({...errorMessages, startingDate: "Start date must not be upper than today date"});
             setErrorMessages({
                 ...errorMessages,
                 startingDate: {
@@ -170,9 +166,6 @@ const ThirdStep = props => {
     };
 
     if (!_.isEqual(formStateWatch, oldFormState)) {
-        // console.log("formStateWatch => ", formStateWatch);
-        // console.log("oldFormState => ", oldFormState);
-        // console.log("formStateWatch.registrationCountry !== oldFormState.registrationCountry => ", formStateWatch.registrationCountry !== oldFormState.registrationCountry);
         if (formStateWatch.registrationCountry !== oldFormState.registrationCountry) {
             _getOperator(formStateWatch.registrationCountry);
         }
@@ -204,39 +197,6 @@ const ThirdStep = props => {
                     />
                 </FormControl>
             </div>
-
-            {/* <CustomAsyncComponent
-                loading={registrationCountries.loading}
-                data={registrationCountries.data}
-                onRetryClick={_getRegistrationCountries}
-                component={data => (
-                    <div className="form-group text-left">
-                        <FormControl fullWidth>
-                            <InputLabel className="text-left" htmlFor="registrationCountry"><IntlMessages id="common.registrationCountry" /></InputLabel>
-                            <InputComponent
-                                isRequired
-                                className="mt-0"
-                                errors={errors}
-                                control={control}
-                                register={register}
-                                componentType="select"
-                                name={'registrationCountry'}
-                                defaultValue={data[0]}
-                                as={<Select input={<Input name="registrationCountry" id="registrationCountry" />}>
-                                    {data.map((item, index) => {
-                                        const countrySpec = CountryManager.getCountryWithNameAndFlagFromId(item);
-                                        return (
-                                            <MenuItem key={index} value={item} className="center-hor-ver">
-                                                <FlagCountry flag={countrySpec.flag} label={countrySpec.name} />
-                                            </MenuItem>
-                                        )
-                                    })}
-                                </Select>}
-                            />
-                        </FormControl>
-                    </div>
-                )}
-            /> */}
 
             <CustomAsyncComponent
                 loading={registrationType.loading}
@@ -280,7 +240,6 @@ const ThirdStep = props => {
                     id="registrationNumber"
                     name={'registrationNumber'}
                     className="has-input input-lg"
-                // placeholder={intl.formatMessage({id: "common.registrationType"})}
                 />
                 <span className="has-icon"><i className="zmdi zmdi-card"></i></span>
             </FormGroup>
@@ -296,7 +255,6 @@ const ThirdStep = props => {
                     className="has-input input-lg"
                     id="registrationBeginningDate"
                     name={'registrationBeginningDate'}
-                    // placeholder={intl.formatMessage({id: "date.birth"})}
                     otherValidator={{ validate: value => validateRegistrationBeginningDate(value) }}
                 >
                     {errors.birthDate && errors.birthDate?.type !== 'required' && (
@@ -321,7 +279,6 @@ const ThirdStep = props => {
                     componentType="select"
                     id="hasAcceptedTermsOfServices"
                     name={'hasAcceptedTermsOfServices'}
-                    // defaultValue={data[0]}
                     as={<FormControlLabel control={
                         <Checkbox
                             color="primary"
@@ -330,7 +287,7 @@ const ThirdStep = props => {
                         />
                     } label={
                         <>
-                        J'accepte les <a href={cgu ? cgu.value : '/home'} target='_blank' >conditions générales d'utilisation</a>
+                            J'accepte les <a href={cgu ? cgu.value : '/home'} target='_blank' >conditions générales d'utilisation</a>
                         </>
                     }
                     />}

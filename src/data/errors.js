@@ -1,4 +1,31 @@
 export default {
+    OTHERS: {
+        BRANCH_NOT_FOUND: {
+            NAME: 'BRANCH_NOT_FOUND',
+            MESSAGE: "Branche non trouvé",
+            DESCRIPTION: `"the branch with url "+branch_url+" was not found"`
+        },
+        USER_EMAIL_ALREADY_EXIST: {
+            NAME: 'USER_EMAIL_ALREADY_EXIST',
+            MESSAGE: "Cette email est deja pris. Veuillez en choisis en autre.",
+            DESCRIPTION: `"the branch with url "+branch_url+" was not found"`
+        },
+        PERSON_IDENTIFICATION_ALREADY_ASSIGNED: {
+            NAME: 'PERSON_IDENTIFICATION_ALREADY_ASSIGNED',
+            MESSAGE: "Cette identification est deja en cours d'utilisation",
+            DESCRIPTION: `"Identification value '" + identification_value + "' is already assigned !"`
+        },
+        USER_NOT_CREATED: {
+            NAME: 'USER_NOT_CREATED',
+            MESSAGE: "L'utilisateur n'a pas pu être créé",
+            DESCRIPTION: `"The user was not created"`
+        },
+        PERSON_NOT_CREATED: {
+            NAME: 'PERSON_NOT_CREATED',
+            MESSAGE: "L'utilisateur n'a pas pu être créé",
+            DESCRIPTION: `"The user was not created"`
+        },
+    },
     PLAN: {
         NAME_ASSIGNED: {
             NAME: 'plan/name-assigned',

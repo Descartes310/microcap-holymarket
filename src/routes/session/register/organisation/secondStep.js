@@ -1,19 +1,19 @@
-import React from 'react';
-import {Form, FormGroup} from "reactstrap";
-import InputComponent from "Components/InputComponent";
-import {emailValidatorObject, minMaxValidatorObject, passwordValidatorObject} from "Helpers/validator";
-import ErrorInputComponent from "Components/ErrorInputComponent";
-import AppConfig from "Constants/AppConfig";
-import Button from "@material-ui/core/Button";
-import {useForm} from "react-hook-form";
-import IntlMessages from "Util/IntlMessages";
-import {injectIntl} from 'react-intl';
 import _ from 'lodash';
-import InputLabel from "@material-ui/core/InputLabel/InputLabel";
+import React from 'react';
+import {injectIntl} from 'react-intl';
+import {useForm} from "react-hook-form";
+import {Form, FormGroup} from "reactstrap";
+import AppConfig from "Constants/AppConfig";
+import IntlMessages from "Util/IntlMessages";
+import Button from "@material-ui/core/Button";
+import InputComponent from "Components/InputComponent";
 import {NotificationManager} from "react-notifications";
-import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox/Checkbox";
 import FormControl from "@material-ui/core/FormControl";
+import Checkbox from "@material-ui/core/Checkbox/Checkbox";
+import InputLabel from "@material-ui/core/InputLabel/InputLabel";
+import ErrorInputComponent from "Components/ErrorInputComponent";
+import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
+import {emailValidatorObject, minMaxValidatorObject, passwordValidatorObject} from "Helpers/validator";
 
 const SecondStep = props => {
     const { loading, nextStep, previousStep, setData, intl, defaultState } = props;
@@ -158,7 +158,6 @@ const SecondStep = props => {
                 </Button>
 
                 <Button
-                    // type="submit"
                     color="primary"
                     disabled={loading}
                     variant="contained"

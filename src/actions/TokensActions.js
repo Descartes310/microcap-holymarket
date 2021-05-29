@@ -10,7 +10,7 @@ import {
     LOGOUT_USER,
     SIGNUP_USER,
     SIGNUP_USER_SUCCESS,
-    SIGNUP_USER_FAILURE, 
+    SIGNUP_USER_FAILURE,
     CLEAR_AUTH_USER,
     SET_CURRENT_COMMUNITY_SUCCESS
 } from 'Actions/types';
@@ -107,7 +107,7 @@ export const registerPersonUser = (data) => (dispatch) => {
         .catch((error) => {
             dispatch({ type: SIGNUP_USER_FAILURE, payload: error });
             // errorDisplay(error);
-            NotificationManager.error(error.message);
+            // NotificationManager.error(error.message);
             return Promise.reject();
         });
 };
@@ -126,7 +126,7 @@ export const registerOrganisation = (data) => (dispatch) => {
         .catch((error) => {
             dispatch({ type: SIGNUP_USER_FAILURE, payload: error });
             // errorDisplay(error);
-            NotificationManager.error(error.message);
+            // NotificationManager.error(error.message);
             return Promise.reject();
         });
 };

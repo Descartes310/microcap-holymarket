@@ -15,18 +15,16 @@ import CountryManager from 'Helpers/CountryManager';
 import InputComponent from "Components/InputComponent";
 import FormControl from '@material-ui/core/FormControl';
 import { NotificationManager } from 'react-notifications';
+import {Select as MaterialSelect} from "@material-ui/core";
 import {getResidenceCountries, getOperators} from "Actions";
 import ErrorInputComponent from "Components/ErrorInputComponent";
 import InputLabel from "@material-ui/core/InputLabel/InputLabel";
-import CustomAsyncComponent from "Components/CustomAsyncComponent";
 import {getIdentificationType} from "Actions/independentActions";
-
-const countryWithNameAndFlag = CountryManager.countryWithNameAndFlag();
-const countryWithNumberAndFlag = CountryManager.countryWithNumberAndFlag();
+import CustomAsyncComponent from "Components/CustomAsyncComponent";
 
 const SecondStep = props => {
     const { loading, nextStep, previousStep, setData, defaultState, intl } = props;
-    const { register, errors, handleSubmit, watch, control, getValues} = useForm({
+    const { register, errors, handleSubmit, watch, control, getValues, setValue} = useForm({
         defaultValues: !_.isEqual(defaultState, {}) ? defaultState : {}
     });
 
@@ -91,6 +89,8 @@ const SecondStep = props => {
             setIdentificationType({loading: true, data: null});
             getIdentificationType()
                 .then(result => {
+                    // setValue('identificationType', {label: result[0], value: result[0]});
+                    // console.log("{label: result[0], value: result[0]} => ", {label: result[0], value: result[0]})
                     setIdentificationType({loading: false, data: result});
                     resolve();
                 })
@@ -291,6 +291,25 @@ const SecondStep = props => {
                                         <IntlMessages id="common.identificationType"/>
                                     </InputLabel>
                                     <InputComponent
+                                        isRequired
+                                        className="mt-0"
+                                        errors={errors}
+                                        control={control}
+                                        register={register}
+                                        componentType="select"
+                                        name={'identificationType'}
+                                        defaultValue={data[0]}
+                                        as={(
+                                            <MaterialSelect input={<Input name="identificationType" id="identificationType-helper" />}>
+                                                {data.map((item, index) => (
+                                                    <MenuItem key={index} value={item} className="center-hor-ver">
+                                                        {item}
+                                                    </MenuItem>
+                                                ))}
+                                            </MaterialSelect>
+                                        )}
+                                    />
+                                    {/*<InputComponent
                                         errors={errors}
                                         control={control}
                                         isRequired={false}
@@ -304,7 +323,7 @@ const SecondStep = props => {
                                                 defaultValue={options[0]}
                                             />
                                         )}
-                                    />
+                                    />*/}
                                 </FormControl>
                             </div>
                         )
