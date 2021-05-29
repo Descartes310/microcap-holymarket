@@ -472,14 +472,13 @@ export const deleteInvitation = (invitationId) => {
 
 /********************************  ***************************************** */
 export const sendInvitationCommunityMember = (data) => {
-    console.log(data)
     const url = joinBaseUrlWithParams(COMMUNITY_MEMBER.INVITATIONS.SEND.ONE, [
         {
             param: 'group_id',
             value: data.group_id,
         }
     ]);
-    return makeRequest('post', url, data, { shouldSkipDataParsing: true });
+    return makeRequest('post', url, data, { shouldSkipDataParsing: false });
 };
 /********************************************************************** */
 /*****************************  ***************************************** */

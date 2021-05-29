@@ -29,9 +29,8 @@ class Checkout extends Component {
     constructor(props) {
         super(props);
         this.orderId = this.props.match.params.id;
-        console.log("this.orderId => ", this.orderId);
         this.state = {
-            order: null
+            order: undefined
         }
     }
 
@@ -45,6 +44,7 @@ class Checkout extends Component {
                 this.setState({order: order});
             })
             .catch(() => {
+                this.setState({order: null});
                 NotificationManager.error(ERROR_500);
             })
             .finally(() => this.props.setRequestGlobalAction(false));
@@ -54,12 +54,12 @@ class Checkout extends Component {
     render() {
         const { match, requestGlobalLoader } = this.props;
 
-        if (requestGlobalLoader) {
+        if (this.state.order === undefined) {
             return (<RctSectionLoader/>);
         }
 
-        if (!this.state.order) {
-            return (<FetchFailedComponent _onRetryClick={this.loadData} />);
+        if (this.state.order === null) {
+            return <FetchFailedComponent _onRetryClick={this.loadData} />
         }
 
         return (
