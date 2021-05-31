@@ -23,7 +23,7 @@ export default (state = INIT_STATE, action) => {
 			return new Cart(items);
 
 		case CART_CLEAR:
-			localStorage.removeItem('cartItems');
+			localStorage.removeItem("cartItems");
 			return new Cart([]);
 
 		default:
