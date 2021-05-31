@@ -33,6 +33,7 @@ export const SETTING = {
     GET_ALL: 'api/settings/branchs/{id}',
     GET_ALL_BY_NAME: 'api/settings/branchs/{id}/by-name',
     CGU: 'api/settings/update/cgu',
+    UPDATE_CGU: 'api/settings/update/cgu/{id}',
     CURRENCIES: 'api/settings/currencies',
     UNIT_TYPE: 'api/settings/unit-types',
     GET_UNIT: 'api/settings/units/unit-types/{id}',

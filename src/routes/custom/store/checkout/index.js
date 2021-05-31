@@ -19,7 +19,7 @@ import {injectIntl} from "react-intl";
 import {withRouter} from "react-router-dom";
 import {withStyles} from "@material-ui/core";
 import { setRequestGlobalAction} from "Actions";
-import {deleteItemFromCart, onAddItemToCart} from "Actions/CartActions";
+import {deleteItemFromCart, onAddItemToCart } from "Actions/CartActions";
 import {NotificationManager} from "react-notifications";
 import {ERROR_500} from "Constants/errors";
 import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
@@ -29,7 +29,6 @@ class Checkout extends Component {
     constructor(props) {
         super(props);
         this.orderId = this.props.match.params.id;
-        console.log("this.orderId => ", this.orderId);
         this.state = {
             order: null
         }

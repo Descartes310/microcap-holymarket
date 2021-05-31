@@ -1069,6 +1069,15 @@ export const createBranchCGU = (data, config) => {
     });
 };
 
+export const updateBranchCGU = (data, config) => {
+    const url = joinBaseUrlWithParamsId(SETTING.UPDATE_CGU, data.id);
+    return new Promise((resolve, reject) => {
+        api.post(url, data, config)
+            .then(result => resolve(result.data))
+            .catch(error => reject(error));
+    });
+};
+
 export const updateUserPieceValue = (data, config) => {
     const url = `${USERS.PIECE.UPDATE_FOR_USER}`;
     return new Promise((resolve, reject) => {
