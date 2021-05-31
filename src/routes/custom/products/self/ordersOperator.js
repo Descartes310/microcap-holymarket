@@ -51,9 +51,7 @@ class Order extends Component {
             .then(products => {
                 this.setState({ products: products });
             })
-            .catch((error) => {
-                NotificationManager.error(ERROR_500);
-            })
+            .catch((error) => null)
             .finally(() => {
                 setRequestGlobalAction(false)
             });

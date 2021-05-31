@@ -104,9 +104,7 @@ class Create extends Component {
                     NotificationManager.success("Project créé avec succès");
                     this.props.history.push(PROJECTS.PROJECTS.LIST);
                 })
-                .catch(() => {
-                    NotificationManager.error(ERROR_500);
-                })
+                .catch(() => null)
                 .finally(() => this.props.setRequestGlobalAction(false));
         }
     };

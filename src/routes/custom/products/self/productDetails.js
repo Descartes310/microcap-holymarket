@@ -43,9 +43,7 @@ class ProductDetails extends Component {
             .then(product => {
                 this.setState({ product });
             })
-            .catch((err) => {
-                NotificationManager.error(ERROR_500);
-            })
+            .catch(() => null)
             .finally(() => this.setState({ loading: false }));
     };
 

@@ -93,9 +93,7 @@ class UpdateInitiOption extends Component {
                     NotificationManager.success("Ouvrage de projets mis a jour avec succès");
                     this.props.history.push(PROJECTS.CONFIGURATION.INITIALISATION[this.state.option.type].LIST);
                 })
-                .catch(() => {
-                    NotificationManager.error(ERROR_500);
-                })
+                .catch(() => null)
                 .finally(() => this.props.setRequestGlobalAction(false));
         }
     };

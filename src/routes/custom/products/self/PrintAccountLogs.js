@@ -74,10 +74,7 @@ class PrintAccountLogs extends Component {
                 else
                     this.setState({ account_currency: 'EUR' });
             })
-            .catch((err) => {
-                console.log(err)
-                NotificationManager.error(ERROR_500);
-            })
+            .catch(() => null)
             .finally(() => this.setState({ loading: false }));
     };
 
@@ -104,10 +101,7 @@ class PrintAccountLogs extends Component {
             .then(account => {
                 this.loadData()
             })
-            .catch((err) => {
-                console.log(err)
-                NotificationManager.error(ERROR_500);
-            })
+            .catch(() => null)
             .finally(() => this.setState({ showQuantityBox: false }));
     };
 
@@ -124,10 +118,7 @@ class PrintAccountLogs extends Component {
             .then(account => {
                 this.loadData()
             })
-            .catch((err) => {
-                console.log(err)
-                NotificationManager.error(ERROR_500);
-            })
+            .catch((err) => null)
             .finally(() => this.setState({ paying: false }));
     };
 

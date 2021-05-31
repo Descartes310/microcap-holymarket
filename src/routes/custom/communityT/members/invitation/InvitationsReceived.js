@@ -8,5 +8,4 @@ const InvitationsReceived = () => (
         type={InvitationType.INVITATION}
     />
 );
-
 export default InvitationsReceived;

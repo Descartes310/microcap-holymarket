@@ -77,10 +77,7 @@ class AccountShow extends Component {
                 else
                     this.setState({ account_currency: 'EUR' });
             })
-            .catch((err) => {
-                console.log(err)
-                NotificationManager.error(ERROR_500);
-            })
+            .catch(() => null)
             .finally(() => this.setState({ loading: false }));
     };
 
@@ -107,10 +104,7 @@ class AccountShow extends Component {
             .then(account => {
                 this.loadData()
             })
-            .catch((err) => {
-                console.log(err)
-                NotificationManager.error(ERROR_500);
-            })
+            .catch(() => null)
             .finally(() => this.setState({ showQuantityBox: false }));
     };
 
@@ -127,10 +121,7 @@ class AccountShow extends Component {
             .then(account => {
                 this.loadData()
             })
-            .catch((err) => {
-                console.log(err)
-                NotificationManager.error(ERROR_500);
-            })
+            .catch(() => null)
             .finally(() => this.setState({ paying: false }));
     };
 

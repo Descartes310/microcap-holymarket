@@ -100,10 +100,7 @@ class Create extends Component {
                 }
                 this.setState({ storeProducts: res });
             })
-            .catch((error) => {
-                console.log("error => ", error);
-                NotificationManager.error(ERROR_500);
-            })
+            .catch(() => null)
             .finally(() => this.setState({ loadingProducts: false }));
     };
 
@@ -191,9 +188,7 @@ class Create extends Component {
                     this.props.getComOffer(this.props.authUser.branchId);
                     this.props.history.push(COMMERCIAL_MANAGEMENT.COMMERCIAL_OFFER.LIST);
                 })
-                .catch(() => {
-                    NotificationManager.error(ERROR_500);
-                })
+                .catch(() => null)
                 .finally(() => this.props.setRequestGlobalAction(false));
         }
     };

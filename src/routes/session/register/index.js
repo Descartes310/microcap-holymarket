@@ -5,29 +5,22 @@
 import React, {useState} from 'react';
 import { connect } from 'react-redux';
 import QueueAnim from 'rc-queue-anim';
-import { Link } from 'react-router-dom';
-import Button from '@material-ui/core/Button';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-
-// components
 import PersonRegister from './person';
-
-// app config
-import AppConfig from 'Constants/AppConfig';
-
-// redux action
+import { Link } from 'react-router-dom';
 import Tab from "@material-ui/core/Tab";
-import Tabs from "@material-ui/core/Tabs";
-import IntlMessages from 'Util/IntlMessages';
-import {DISCOVER} from "Url/frontendUrl";
 import {useQuery} from "Helpers/helpers";
+import {DISCOVER} from "Url/frontendUrl";
+import Tabs from "@material-ui/core/Tabs";
+import AppConfig from 'Constants/AppConfig';
+import IntlMessages from 'Util/IntlMessages';
 import {useLocation} from "react-router-dom";
+import AppBar from '@material-ui/core/AppBar';
+import Button from '@material-ui/core/Button';
+import Toolbar from '@material-ui/core/Toolbar';
 import { SessionSlider } from 'Components/Widgets';
 import SwipeableViews from "react-swipeable-views";
 import {AUTH, HOME} from "../../../urls/frontendUrl";
 import {loginUserWithEmailAndPassword} from 'Actions';
-import LanguageProvider from "Components/Header/LanguageProvider";
 import OrganisationRegister from "Routes/session/register/organisation";
 
 const Signup = (props) => {
@@ -79,9 +72,6 @@ const Signup = (props) => {
                             </Link>
                          </div>
                          <div className="center-hor-ver" style={{ marginRight: '10%' }}>
-                            {/* <a className="mr-15 text-white" onClick={onUserLogin}>
-                               <IntlMessages id="auth.haveAccount" />
-                            </a> */}
                             <Button variant="contained" className="btn-light mr-2 p-10" onClick={onUserLogin}>
                                <IntlMessages id="auth.signin" />
                             </Button>

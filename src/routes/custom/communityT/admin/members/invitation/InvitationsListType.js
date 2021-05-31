@@ -92,9 +92,7 @@ class InvitationsListType extends Component {
                 console.log("La communauté est ==> ", this.props.communitySpace.data, this.state.invitation)
                 this.getDatas();
             })
-            .catch(() => {
-                NotificationManager.error(ERROR_500);
-            })
+            .catch(() => null)
             .finally(() => { this.props.setRequestGlobalAction(false); this.setState({ showBox: false}) });
     };
 

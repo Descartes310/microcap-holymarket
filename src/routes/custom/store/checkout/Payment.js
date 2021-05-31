@@ -81,8 +81,7 @@ class PaymentInfo extends Component {
                this.props.history.push(PRODUCT.ORDERS);
             })
             .catch((error) => {
-               console.log(error)
-               NotificationManager.error(ERROR_500);
+
             })
             .finally(() => this.props.setRequestGlobalAction(false));
       };
@@ -103,7 +102,7 @@ class PaymentInfo extends Component {
          })
          .catch((err) => {
             console.log("Error => ", err)
-            NotificationManager.error(ERROR_500);
+
          })
    };
 

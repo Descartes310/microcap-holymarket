@@ -1,18 +1,15 @@
-
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-
-// redux action
-import { loginUserWithEmailAndPassword, registerOrganisation } from 'Actions';
-import IntlMessages from "Util/IntlMessages";
-import Step from "@material-ui/core/Step/Step";
-import StepLabel from "@material-ui/core/StepLabel/StepLabel";
-import Stepper from "@material-ui/core/Stepper/Stepper";
+import ThirdStep from "./thirdStep";
 import FirstStep from "./firstStep";
 import SecondStep from "./secondStep";
-import ThirdStep from "./thirdStep";
+import { connect } from 'react-redux';
 import { HOME } from "Url/frontendUrl";
+import React, { Component } from 'react';
+import IntlMessages from "Util/IntlMessages";
 import { withRouter } from "react-router-dom";
+import Step from "@material-ui/core/Step/Step";
+import Stepper from "@material-ui/core/Stepper/Stepper";
+import StepLabel from "@material-ui/core/StepLabel/StepLabel";
+import { loginUserWithEmailAndPassword, registerOrganisation } from 'Actions';
 
 const steps = [1, 2, 3];
 
@@ -43,7 +40,6 @@ class OrganisationRegister extends Component {
         _data.legalForm = _data.organisationType;
         _data.corporateName = _data.socialReason;
         _data.login = _data.acceptLogin ? _data.login : _data.email;
-        // _data.microcapOperator = _data.operator;
         if (this.token)
             _data.token = this.token
 
@@ -94,15 +90,15 @@ class OrganisationRegister extends Component {
                         previousStep={this.previousStep}
                     />
                 ) : (this.state.activeStep === 1 ? (
-                    <SecondStep
-                        history={history}
-                        loading={loading}
-                        setData={this._setData}
-                        nextStep={this.nextStep}
-                        defaultState={this.state.data}
-                        previousStep={this.previousStep}
-                    />
-                ) : (
+                        <SecondStep
+                            history={history}
+                            loading={loading}
+                            setData={this._setData}
+                            nextStep={this.nextStep}
+                            defaultState={this.state.data}
+                            previousStep={this.previousStep}
+                        />
+                    ) : (
                         <ThirdStep
                             history={history}
                             loading={loading}
@@ -112,7 +108,7 @@ class OrganisationRegister extends Component {
                             previousStep={this.previousStep}
                         />
                     )
-                    )}
+                )}
             </>
         );
     }

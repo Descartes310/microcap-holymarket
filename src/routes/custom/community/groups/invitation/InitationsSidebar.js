@@ -9,7 +9,7 @@ import {Badge, Input, InputGroup, InputGroupAddon} from "reactstrap";
 import {Scrollbars} from "react-custom-scrollbars";
 import List from "@material-ui/core/List";
 import GroupItem from "Routes/custom/community/groups/GroupItem";
-import {getUserCommunities} from "Actions";
+import {getInvitationsPending, getUserCommunities} from "Actions";
 import Button from "@material-ui/core/Button";
 import IntlMessages from "Util/IntlMessages";
 import FormControl from "@material-ui/core/FormControl";
@@ -26,17 +26,17 @@ class InvitationsSidebar extends Component {
     state = {
         open: false,
      };
-  
+
      handleClickOpenInvation = () => {
         this.setState({ open: true });
      };
-  
+
      handleCloseInvation = () => {
         this.setState({ open: false });
      };
 
     componentDidMount() {
-        // this.props.getUserCommunities();
+        this.props.getInvitationsPending(this.props.authUser.user.id);
     }
 
     render() {
@@ -79,7 +79,7 @@ class InvitationsSidebar extends Component {
                                         >
                                             <i className={`mr-20 zmdi zmdi-view-web`} />
                                             <span className="filter-title">
-                                                Demande d'adhesion
+                                                Demandes d'adhesion
                                                 {comInvitationsPending && nbInvRequest > 0 && (<Badge className="ml-2" color="primary" pill>
                                                     {comInvitationsPending.filter(i => i.type === InvitationType.REQUEST).length}
                                                 </Badge>)}
@@ -101,5 +101,5 @@ const mapStateToProps = ({ requestGlobalLoader, authUser, userCommunities, comIn
     return { requestGlobalLoader, authUser: authUser.data, userCommunities: userCommunities.data, comInvitationsPending: comInvitationsPending.data }
 };
 
-export default connect(mapStateToProps, {setRequestGlobalAction})(withRouter(InvitationsSidebar));
+export default connect(mapStateToProps, {getInvitationsPending, setRequestGlobalAction})(withRouter(InvitationsSidebar));
 

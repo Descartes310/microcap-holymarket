@@ -1,11 +1,13 @@
 /**
  * Helpers Functions
  */
+import _ from 'lodash';
 import moment from 'moment';
+import api from "Api/index";
 import AppConfig from 'Constants/AppConfig';
+import ERRORS, {ERROR_500} from 'Data/errors';
 import NavLinks from "Components/Sidebar/NavLinks";
 import {NotificationManager} from 'react-notifications';
-import api from "Api/index";
 
 const TABLE_OF_256_HEXADECIMAL = (function () {
     const arr = [];
@@ -277,7 +279,7 @@ export const getFullAuthorisationRequestConfig = () => {
         Accept: 'application/json',
         Authorization: 'Basic ' + btoa(AppConfig.oauth.clientId + ":" + AppConfig.oauth.clientSecret)
     };
-    return { headers, shouldSkipToken: true, withCredentials: true };
+    return { headers, shouldSkipToken: true, withCredentials: true, skipError: true };
 };
 /*"KEY_1": {
     "ERROR_1": ERROR_1_MESSAGE,
@@ -454,7 +456,7 @@ export const makeRequest = (verb, url, data = null, config = {}) => {
             Object.entries(data).map(item => {
                 const encoded = encodeURIComponent(item[1]);
                 const character = _url.includes('?') ? '&' : '?';
-                _url = `${_url}${character}${toSnakeCase(item[0])}=${encoded}`
+                _url = `${_url}${character}${toSnakeCase(item[0])}=${encoded}`;
             });
         }
         const params = (verb === 'get' || verb === 'delete') ? [_url, config] : [_url, data, config];
@@ -475,4 +477,35 @@ export const makeActionRequest = (verb, url, typeBase, dispatch, data = null, co
             dispatch({ type: `${typeBase}_FAILURE` });
             return Promise.reject(error);
         });
+};
+
+/**
+ * Get all error into an array
+ * @type {Array}
+ */
+const errorItems = _.flattenDeep(Object.values(ERRORS).map(i => Object.values(i)));
+
+
+/**
+ * Map errors and display them
+ * @param errors
+ * @param customOptions
+ */
+export const errorManager = (errors, customOptions = null) => {
+    let found = false;
+
+    if (errors) {
+        errors.forEach(error => {
+            const errorItem = errorItems.find(e => e.NAME === error.code);
+            if (errorItem) {
+                NotificationManager.error(errorItem.MESSAGE);
+                found = true;
+            }
+        });
+    }
+
+    // Display Error 500 in case of no match
+    if (!found) {
+        NotificationManager.error(ERROR_500);
+    }
 };

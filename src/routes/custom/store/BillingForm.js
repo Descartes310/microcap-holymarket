@@ -91,7 +91,6 @@ class BillingForm extends Component {
               this.setState({showConfirmBox: true, orderRef: result.reference, orderId: result.id});
           })
           .catch(() => {
-              NotificationManager.error(ERROR_500);
           })
           .finally(() => this.props.setRequestGlobalAction(false));
   };
