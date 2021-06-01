@@ -20,12 +20,14 @@ import { getModelNotifications, setRequestGlobalAction } from "Actions";
 import { getAllSettings, createBranchCGU } from "Actions/independentActions";
 import DialogContent from "@material-ui/core/DialogContent/DialogContent";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
+import {getFilePath} from "Helpers/helpers";
 
 class List extends Component {
     static contextType = AbilityContext;
 
     state = {
         show: false,
+        loading: true,
         data: [],
         name: '',
         description: '',
@@ -34,24 +36,31 @@ class List extends Component {
     };
 
     componentDidMount() {
-        getAllSettings(this.props.authUser.user.branch.id).then(data => {
-            this.setState({ data })
-        })
+        this.loadData();
     }
+
+    loadData = () => {
+        this.setState({loading: true});
+        getAllSettings(this.props.authUser.user.branch.id)
+            .then(data => {
+                this.setState({ data });
+            })
+            .finally(() => this.setState({loading: false}));
+    };
 
     handleOnClick = item => {
         this.setState({ selectedNotification: item, show: true });
     };
 
     createCGU = () => {
-        createBranchCGU({
-            file: this.state.file,
-        }, { fileData: ['file'], multipart: true }).then(data => {
-            this.setState({ show: false })
-            getAllSettings(this.props.authUser.user.branch.id).then(data => {
-                this.setState({ data })
+        this.props.setRequestGlobalAction(true);
+        createBranchCGU({file: this.state.file,}, { fileData: ['file'], multipart: true })
+            .then(data => {
+                this.setState({ show: false });
+                this.loadData();
             })
-        });
+            .catch(() => null)
+            .finally(() => this.props.setRequestGlobalAction(false));
     };
 
     render() {
@@ -60,6 +69,7 @@ class List extends Component {
             <>
                 <CustomList
                     list={data}
+                    loading={this.state.loading}
                     titleList={"Configurations"}
                     onAddClick={() => this.setState({ show: true })}
                     itemsFoundText={n => `${n} configurations trouvées`}
@@ -110,9 +120,8 @@ class List extends Component {
                                                                 <div className="media-body pt-10">
                                                                     {
                                                                         item.name == 'CGU' ?
-
                                                                             <h4 className="m-0 fw-bold text-dark">
-                                                                                <a href={item.value} target='_blank' >{item.value.length > 30 ? item.value.substring(0, 30) + '...' : item.value}</a>
+                                                                                <a href={getFilePath(item.value)} target='_blank' >{item.value.length > 30 ? item.value.substring(0, 30) + '...' : item.value}</a>
                                                                             </h4> : null
                                                                     }
                                                                 </div>
