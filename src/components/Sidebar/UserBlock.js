@@ -107,10 +107,10 @@ class UserBlock extends Component {
 										</div>
 									)}
 								<div className="user-info">
-									<span className="user-name ml-4">
+									<span className="user-name">
 										{this.props.authUser.userName}
 									</span>
-									<i className="zmdi zmdi-chevron-down dropdown-icon ml-2"></i>
+									<i className="zmdi zmdi-chevron-down dropdown-icon"></i>
 								</div>
 							</DropdownToggle>
 							<DropdownMenu>
