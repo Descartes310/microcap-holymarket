@@ -16,7 +16,6 @@ import InputComponent from "Components/InputComponent";
 import FormControl from '@material-ui/core/FormControl';
 import { NotificationManager } from 'react-notifications';
 import {Select as MaterialSelect} from "@material-ui/core";
-import {getResidenceCountries, getOperators} from "Actions";
 import ErrorInputComponent from "Components/ErrorInputComponent";
 import InputLabel from "@material-ui/core/InputLabel/InputLabel";
 import {getIdentificationType} from "Actions/independentActions";
@@ -24,27 +23,16 @@ import CustomAsyncComponent from "Components/CustomAsyncComponent";
 
 const SecondStep = props => {
     const { loading, nextStep, previousStep, setData, defaultState, intl } = props;
-    const { register, errors, handleSubmit, watch, control, getValues, setValue} = useForm({
+    const { register, errors, handleSubmit, watch, control, getValues } = useForm({
         defaultValues: !_.isEqual(defaultState, {}) ? defaultState : {}
     });
 
-    const formStateWatch = watch();
+    // const formStateWatch = watch();
 
-    const [oldFormState, setOldFormState] = useState({});
     const [errorMessages, setErrorMessages] = useState({
         startingDate: '',
         endingDate: '',
         birthDate: '',
-    });
-
-    const [residenceCountries, setResidenceCountries] = useState({
-        loading: true,
-        data: null
-    });
-
-    const [operator, setOperator] = useState({
-        loading: true,
-        data: null
     });
 
     const [identificationType, setIdentificationType] = useState({
@@ -53,44 +41,14 @@ const SecondStep = props => {
     });
 
     useEffect(() => {
-        _getResidenceCountry().then(() => _getIdentificationType());
+        _getIdentificationType();
     }, []);
-
-    const _getResidenceCountry = () => {
-        return new Promise((resolve, reject) => {
-            setResidenceCountries({loading: true, data: null});
-            getResidenceCountries()
-                .then(result => {
-                    setResidenceCountries({loading: false, data: result});
-                    resolve();
-                })
-                .catch(error => {
-                    setResidenceCountries({loading: false, data: null});
-                    NotificationManager.error("An error occur " + error);
-                    reject();
-                });
-        });
-    };
-
-    const _getOperator = (residenceCountry) => {
-        setOperator({loading: true, data: null});
-        getOperators(residenceCountry)
-            .then(result => {
-                setOperator({loading: false, data: result});
-            })
-            .catch(error => {
-                setOperator({loading: false, data: null});
-                NotificationManager.error("An error occur " + error);
-            });
-    };
 
     const _getIdentificationType = () => {
         return new Promise((resolve, reject) => {
             setIdentificationType({loading: true, data: null});
             getIdentificationType()
                 .then(result => {
-                    // setValue('identificationType', {label: result[0], value: result[0]});
-                    // console.log("{label: result[0], value: result[0]} => ", {label: result[0], value: result[0]})
                     setIdentificationType({loading: false, data: result});
                     resolve();
                 })
@@ -221,13 +179,6 @@ const SecondStep = props => {
 
         return true;
     };
-
-    if (!_.isEqual(formStateWatch, oldFormState)) {
-        if (formStateWatch.residenceCountry !== oldFormState.residenceCountry) {
-            _getOperator(formStateWatch.residenceCountry);
-        }
-        setOldFormState(formStateWatch);
-    }
 
     return (
         <Form onSubmit={handleSubmit(onSubmit)} className={"center-holder"}>
