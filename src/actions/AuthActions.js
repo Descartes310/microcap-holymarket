@@ -31,7 +31,7 @@ export const setAuthUser = (serviceNumber = null) => (dispatch) => {
         : `${PROFILE.INFORMATION_WITH_SERVICE_NUMBER}?access_id=${accessId}&service_number=${serviceNumber}&branch_url=${branchUrl}`;
 
     return api
-        .get(url)
+        .get(url, {skipError: true})
         .then((response) => {
             dispatch({ type: SET_AUTH_USER_SUCCESS, payload: response.data });
             return Promise.resolve();

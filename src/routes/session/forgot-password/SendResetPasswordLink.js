@@ -1,26 +1,21 @@
-import React, {Component, useState} from 'react';
-import { Form, FormGroup, Input } from 'reactstrap';
+import React from 'react';
+import {connect} from "react-redux";
+import {injectIntl} from "react-intl";
+import QueueAnim from 'rc-queue-anim';
+import { Link } from 'react-router-dom';
+import {useForm} from "react-hook-form";
+import AppConfig from 'Constants/AppConfig';
+import IntlMessages from "Util/IntlMessages";
+import { Form, FormGroup } from 'reactstrap';
 import Button from '@material-ui/core/Button';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
-import { Link } from 'react-router-dom';
-import QueueAnim from 'rc-queue-anim';
-
-// app config
-import AppConfig from 'Constants/AppConfig';
-import LanguageProvider from "Components/Header/LanguageProvider";
-import {connect} from "react-redux";
-import {sendResetPasswordLink, setRequestGlobalAction} from "Actions";
-import {injectIntl} from "react-intl";
-import IntlMessages from "Util/IntlMessages";
 import {HOME, AUTH} from "../../../urls/frontendUrl";
 import InputComponent from "Components/InputComponent";
 import {emailValidatorObject} from "Helpers/validator";
-import ErrorInputComponent from "Components/ErrorInputComponent";
-import {useForm} from "react-hook-form";
 import {NotificationManager} from "react-notifications";
-import {requestErrorProcessing} from "Helpers/helpers";
+import ErrorInputComponent from "Components/ErrorInputComponent";
+import {sendResetPasswordLink, setRequestGlobalAction} from "Actions";
 
 const SendResetPasswordLink = ({intl, loading, setRequestGlobalAction}) => {
    const { register, errors, handleSubmit } = useForm();
@@ -29,18 +24,9 @@ const SendResetPasswordLink = ({intl, loading, setRequestGlobalAction}) => {
       setRequestGlobalAction(true);
       sendResetPasswordLink(email)
           .then(() => {
-             NotificationManager.success(intl.formatMessage({id: "auth.resetPasswordLink.successText"}))
+             NotificationManager.success("Nous venons de vous envoyez un email. Merci de bien vouloir le consulter")
           })
-          .catch(error => {
-             if (error && error.response && error.response.data) {
-                const errorTab = requestErrorProcessing(error.response.data);
-                errorTab.forEach(item => {
-                   NotificationManager.error(item);
-                });
-             } else {
-                NotificationManager.success(intl.formatMessage({id: "error.500"}))
-             }
-          })
+          .catch(error => null)
           .finally(() =>  setRequestGlobalAction(false));
    };
 
@@ -56,7 +42,6 @@ const SendResetPasswordLink = ({intl, loading, setRequestGlobalAction}) => {
                                <img src={AppConfig.appLogo} alt="session-logo" className="img-fluid" width="110" height="35" />
                             </Link>
                          </div>
-                         <LanguageProvider />
                       </div>
                    </div>
                 </Toolbar>
