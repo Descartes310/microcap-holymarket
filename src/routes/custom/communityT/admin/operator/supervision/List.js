@@ -1,29 +1,23 @@
-import { connect } from "react-redux";
-import { injectIntl } from "react-intl";
-import React, { Component } from 'react';
-import { COMMUNITY_ADMIN, joinUrlWithParamsId } from "Url/frontendUrl";
-import { withRouter } from "react-router-dom";
-import { AbilityContext } from "Permissions/Can";
-import CustomList from "Components/CustomList";
 import {
     setRequestGlobalAction,
-    getOperatorPendingCommunities,
+    acceptOperatorInvitation,
     getOperatorCurrentCommunities,
-    cancelInvitation,
-    deleteInvitation,
-    acceptOperatorInvitation
+    getOperatorPendingCommunities,
 } from "Actions";
-import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
-import Button from '@material-ui/core/Button';
 import Status from "Enums/Status";
+import {connect} from "react-redux";
+import {injectIntl} from "react-intl";
+import React, {Component} from 'react';
+import {withRouter} from "react-router-dom";
+import Button from '@material-ui/core/Button';
+import CustomList from "Components/CustomList";
+import {AbilityContext} from "Permissions/Can";
 import SweetAlert from "react-bootstrap-sweetalert";
-import InvitationType from "Enums/InvitationType";
 import {NotificationManager} from "react-notifications";
-import {ERROR_500} from "Constants/errors";
+import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 
 class List extends Component {
     static contextType = AbilityContext;
-    baseUrl = COMMUNITY_ADMIN.POST;
 
     state = {
         posts: [],
@@ -114,7 +108,6 @@ class List extends Component {
                     list={communities}
                     loading={false}
                     itemsFoundText={n => `${n} communauté(s) trouvée(s)`}
-                    // onAddClick={() => history.push(this.baseUrl.CREATE)}
                     renderItem={list => (
                         <>
                             {list && list.filter(p => p.status === Status.PENDING).length === 0 ? (
@@ -240,7 +233,6 @@ class List extends Component {
                         list={communities}
                         loading={false}
                         itemsFoundText={n => `${n} communauté(s) trouvée(s)`}
-                        // onAddClick={() => history.push(this.baseUrl.CREATE)}
                         renderItem={list => (
                             <>
                                 {list && list.filter(p => p.status === Status.ACCEPTED).length === 0 ? (
