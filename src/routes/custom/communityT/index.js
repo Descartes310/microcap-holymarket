@@ -10,8 +10,8 @@ import EmptyResult from "Components/EmptyResult";
 import {COMMUNITY, COMMUNITY_ADMIN} from "Url/frontendUrl";
 import CommunityAdmins from "Routes/custom/communityT/admin";
 import {getCommunityAdmins} from "Actions/independentActions";
-import CommunityMembers from "Routes/custom/communityT/members";
 import {Route, Switch, withRouter, Redirect} from 'react-router-dom';
+import CommunityMembersList from "Routes/custom/communityT/members/list";
 import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
 import CommunityMembersActivities from "Routes/custom/communityT/activities";
 import {AsyncCommunityProject} from "Components/AsyncComponent/AsyncComponent";
@@ -57,10 +57,10 @@ const CommunityTIndex = (props) => {
     }
 
     return (
-        <div className="vh-100">
+        <div className="full-height">
             <Switch>
                 <Route path={COMMUNITY_ADMIN.SELF} component={CommunityAdmins} />
-                <Route path={COMMUNITY.MEMBERS.SELF} component={CommunityMembers} />
+                <Route path={COMMUNITY.MEMBERS.LIST} component={CommunityMembersList} />
                 <Route path={COMMUNITY.PROJECTS.SELF} component={AsyncCommunityProject} />
                 <Route path={COMMUNITY.POST_PROJECT.SELF} component={CommunityMembersPostsProjects} />
                 <Route path={COMMUNITY.ACTIVITY.SELF} component={CommunityMembersActivities} />

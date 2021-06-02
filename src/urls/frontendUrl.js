@@ -348,8 +348,8 @@ export const COMMUNITY_ADMIN = {
         LIST: '/community-t/:id/admin/user-category/list',
         CREATE: '/community-t/:id/admin/user-category/create',
         MOTIVATION: {
-            LIST: '/community-t/:id/admin/user-category/post/:id/list',
-            CREATE: '/community-t/:id/admin/user-category/post/:id/create',
+            LIST: '/community-t/:id/admin/user-category/post/:postId/list',
+            CREATE: '/community-t/:id/admin/user-category/post/:postId/create',
         }
     },
     RUBRIQUE: {
@@ -397,18 +397,18 @@ export const COMMUNITY = {
         CREATE: ''
     },
     PROJECTS: {
-        SELF: '/community-t/:id/admin/:id/projects',
-        SHOW: '/community-t/:id/admin/:id/projects/show',
-        GALLERY: '/community-t/:id/admin/:id/projects/gallery',
-        UPDATE: '/community-t/:id/admin/:id/projects/update',
+        SELF: '/community-t/:id/admin/projects',
+        SHOW: '/community-t/:id/admin/projects/show',
+        GALLERY: '/community-t/:id/admin/projects/gallery',
+        UPDATE: '/community-t/:id/admin/projects/update',
     },
     INVITATIONS: {
-        SELF: '/community-t/members/invitation',
+        SELF: '/community-t/:id/members/invitation',
         LIST: {
-            SEND: '/community-t/members/invitation/send',
-            RECEIVED: '/community-t/members/invitation/integration-request',
+            SEND: '/community-t/:id/members/invitation/send',
+            RECEIVED: '/community-t/:id/members/invitation/integration-request',
         },
-        CREATE: '/community-t/members/invitation/create'
+        CREATE: '/community-t/:id/members/invitation/create'
     },
 };
 

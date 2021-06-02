@@ -1,33 +1,22 @@
-/**
- * Email Listing
- */
-import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-import classnames from 'classnames';
-
-// redux action
-import {readEmail, onSelectEmail, markAsStarEmail, setRequestGlobalAction} from 'Actions';
-
-//Intl Message
+import React, { Component } from 'react';
+import Chip from "@material-ui/core/Chip";
+import {COMMUNITY} from "Url/frontendUrl";
+import {globalSearch} from "Helpers/helpers";
 import IntlMessages from 'Util/IntlMessages';
-import {Input, InputGroup, InputGroupAddon} from "reactstrap";
+import { withRouter } from 'react-router-dom';
+import Button from "@material-ui/core/Button";
+import { getFilePath } from "Helpers/helpers";
+import UserAvatar from "Components/UserAvatar";
 import IconButton from "@material-ui/core/IconButton";
+import {NotificationManager} from "react-notifications";
 import FormControl from "@material-ui/core/FormControl";
 import Checkbox from "@material-ui/core/Checkbox/Checkbox";
-import Avatar from "@material-ui/core/Avatar";
-import {globalSearch, textTruncate} from "Helpers/helpers";
-import Chip from "@material-ui/core/Chip";
-import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
-import {Scrollbars} from "react-custom-scrollbars";
 import {searchUsers, getUserCommunitiesAdmin} from "Actions";
-import {NotificationManager} from "react-notifications";
-import UserAvatar from "Components/UserAvatar";
-import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
-import Button from "@material-ui/core/Button";
+import {Input, InputGroup, InputGroupAddon} from "reactstrap";
 import {sendManyInvitations} from "Actions/independentActions";
-import {COMMUNITY} from "Url/frontendUrl";
-import { getFilePath } from "Helpers/helpers";
+import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
+import {onSelectEmail, markAsStarEmail, setRequestGlobalAction} from 'Actions';
 
 class InvitationCreate extends Component {
     constructor(props) {
@@ -46,7 +35,6 @@ class InvitationCreate extends Component {
     componentDidMount() {
         this.props.getUserCommunitiesAdmin();
     }
-
 
     onSearchChanged = (event, can) => {
         this.setState({searched: event.target.value}, () => {
