@@ -6,6 +6,7 @@ import { Form, FormGroup } from "reactstrap";
 import { withRouter } from 'react-router-dom';
 import Select from '@material-ui/core/Select';
 import { withStyles } from "@material-ui/core";
+import CustomList from "Components/CustomList";
 import { AbilityContext } from "Permissions/Can";
 import EmptyResult from "Components/EmptyResult";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -24,7 +25,6 @@ import DialogContent from "@material-ui/core/DialogContent/DialogContent";
 import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
 import { readEmail, onSelectEmail, getUnitTypes, getUnitbyType } from 'Actions';
 import { setRequestGlobalAction, createVoucher, getMembersOfCommunity, getVouchers } from 'Actions';
-import CustomList from "Components/CustomList";
 
 class ListMembers extends Component {
     static contextType = AbilityContext;
