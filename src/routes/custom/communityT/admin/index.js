@@ -18,7 +18,7 @@ class GroupAdminIndex extends Component {
     render() {
         const { match } = this.props;
         return (
-            <div className="list-wrap">
+            <div className="list-wrap pt-70 mt-2">
                 <Scrollbars
                     className="rct-scroll"
                     autoHide
