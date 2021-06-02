@@ -80,7 +80,7 @@ class MainApp extends Component {
 		if (pathname === '/app/chat'
 			|| pathname.startsWith('/app/mail')
 			|| pathname === '/app/todo'
-			|| pathname.includes(COMMUNITY.SELF)
+			|| pathname.includes(COMMUNITY.SELF.replace(':id', ''))
 			|| pathname.includes(NETWORK.CONFIGURATION.SELF)) {
 			return (
 				<div className="rct-page-content p-0">
