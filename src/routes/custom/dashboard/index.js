@@ -28,7 +28,8 @@ import {
     AsyncDiscover,
     AsyncSolidarity,
     AsyncMoneyManagement,
-    AsyncGallery
+    AsyncGallery,
+    AsyncCommunitySpace
 } from 'Components/AsyncComponent/AsyncComponent';
 import Community from "Routes/custom/community";
 
@@ -312,29 +313,10 @@ const Dashboard = ({ match, authUser }) => {
                     />
 
                     <CanRoute
-                        path={COMMUNITY.POST_PROJECT.SELF}
-                        component={CommunityMembersPostsProjects}
+                        path={COMMUNITY.SELF}
+                        component={AsyncCommunitySpace}
                         permissions={[]}
                     />
-
-                    <CanRoute
-                        path={COMMUNITY.PROJECTS.SELF}
-                        component={AsyncCommunityProject}
-                        permissions={[]}
-                    />
-
-                    <CanRoute
-                        path={COMMUNITY.MEMBERS.SELF}
-                        component={CommunityMembers}
-                        permissions={[]}
-                    />
-
-                    <CanRoute
-                        path={COMMUNITY_ADMIN.SELF}
-                        component={CommunityAdmins}
-                        permissions={[]}
-                    />
-
 
                     <CanRoute
                         path={USERS.USERS.PERSONNAL_SPACE}
@@ -343,15 +325,8 @@ const Dashboard = ({ match, authUser }) => {
                     />
 
                     <CanRoute
-                        path={COMMUNITY.ACTIVITY.SELF}
-                        component={CommunityMembersActivities}
-                        permissions={[]}
-                    />
-
-                    <CanRoute
                         path={ACCESS.SELF}
                         component={AsyncAccess}
-                        // component={AsyncCommunity}
                         permissions={[]}
                     />
 

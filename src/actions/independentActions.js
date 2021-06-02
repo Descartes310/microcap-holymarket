@@ -535,9 +535,9 @@ export const deleteUserClient = (id) => {
     return makeRequest('get', url);
 };
 
-export const getCommunityAdmins = (id) => {
+export const getCommunityAdmins = (id, config = {}) => {
     const url = joinBaseUrlWithParamsId(COMMUNITY_MEMBER.USER.GROUPS.GET_ADMINS, id);
-    return makeRequest('get', url);
+    return makeRequest('get', url, null, config);
 };
 
 export const getAccountDetails = (id) => {

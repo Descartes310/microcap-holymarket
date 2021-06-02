@@ -8,6 +8,11 @@ import Loadable from 'react-loadable';
 // rct page loader
 import RctPageLoader from 'Components/RctPageLoader/RctPageLoader';
 
+export const AsyncCommunitySpace = Loadable({
+	loader: () => import("Routes/custom/communityT"),
+	loading: () => <RctPageLoader />,
+});
+
 export const AsyncDiscover = Loadable({
 	loader: () => import("Routes/custom/dashboard/discover/index"),
 	loading: () => <RctPageLoader />,

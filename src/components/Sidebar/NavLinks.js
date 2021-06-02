@@ -1,8 +1,35 @@
 // sidebar nav links
-import {CATALOG, COMMERCIAL_MANAGEMENT, ROOT, COMMUNITY_ADMIN, STOCK, COMMUNITY_MEMBER, COMMUNITY, NETWORK, PRODUCT, USERS, ACCESS, SETTINGS, PROJECTS, MICROCAP360} from 'Url/frontendUrl';
+import {
+   ROOT,
+   STOCK,
+   USERS,
+   ACCESS,
+   NETWORK,
+   PRODUCT,
+   CATALOG,
+   PROJECTS,
+   SETTINGS,
+   COMMUNITY,
+   MICROCAP360,
+   COMMUNITY_ADMIN,
+   COMMUNITY_MEMBER,
+   joinUrlWithParamsId,
+   COMMERCIAL_MANAGEMENT,
+} from 'Url/frontendUrl';
 import Branch from 'Models/Branch';
 import Permission from "Enums/Permissions";
-import { RESSOURCE } from '../../urls/frontendUrl';
+import {RESSOURCE} from '../../urls/frontendUrl';
+
+// Get pathname of the current url i.e everything after app domain name
+const pathname = window.location.pathname;
+
+// Get the id present into the url in case if it's a community space url
+const communitySpaceId = (function () {
+   // Construct regex to recognize community space url
+   const communitySpaceRegex = new RegExp(COMMUNITY.SELF.replace(':id', '[0-9]+'));
+   // Return the id or null in case if it's not the community space url
+   return communitySpaceRegex.test(pathname) ? pathname.match(/\d+/gi)[0] : null
+})();
 
 export default {
    menus: [
@@ -934,13 +961,13 @@ export default {
             {
                "menu_title": "Membres",
                "new_item": false,
-               "path": COMMUNITY.MEMBERS.LIST,
+               "path": joinUrlWithParamsId(COMMUNITY.MEMBERS.LIST, communitySpaceId),
                "permissions": [],
             },
             {
                "menu_title": "Activités",
                "new_item": false,
-               "path": PROJECTS.FOLDERS.REACTIONS.LIST,
+               "path": joinUrlWithParamsId(PROJECTS.FOLDERS.REACTIONS.LIST, communitySpaceId),
                "permissions": [],
             }
          ],
@@ -954,13 +981,13 @@ export default {
             {
                "menu_title": "Edition",
                "new_item": false,
-               "path": COMMUNITY.PROJECTS.UPDATE,
+               "path": joinUrlWithParamsId(COMMUNITY.PROJECTS.UPDATE, communitySpaceId),
                "permissions": [],
             },
             {
                "menu_title": "Consultation",
                "new_item": false,
-               "path": COMMUNITY.PROJECTS.SHOW,
+               "path": joinUrlWithParamsId(COMMUNITY.PROJECTS.SHOW, communitySpaceId),
                "permissions": [],
             }
          ],
@@ -976,31 +1003,31 @@ export default {
                "menu_title": "Membres",
                "new_item": false,
                'key': 'commnity_admin',
-               "path": COMMUNITY_ADMIN.MEMBERS.LIST,
+               "path": joinUrlWithParamsId(COMMUNITY_ADMIN.MEMBERS.LIST, communitySpaceId),
                "permissions": [],
             },{
                "menu_title": "Postes",
                "new_item": false,
                'key': 'commnity_admin',
-               "path": COMMUNITY_ADMIN.POST.LIST,
+               "path": joinUrlWithParamsId(COMMUNITY_ADMIN.POST.LIST, communitySpaceId),
                "permissions": [],
             },{
                "menu_title": "Opérateurs",
                "new_item": false,
                'key': 'commnity_admin',
-               "path": COMMUNITY_ADMIN.OPERATOR.LIST,
+               "path": joinUrlWithParamsId(COMMUNITY_ADMIN.OPERATOR.LIST, communitySpaceId),
                "permissions": [],
             },{
                "menu_title": "Projet",
                "new_item": false,
                'key': 'commnity_admin',
-               "path": COMMUNITY_ADMIN.PROJECT.CREATE,
+               "path": joinUrlWithParamsId(COMMUNITY_ADMIN.PROJECT.CREATE, communitySpaceId),
                "permissions": [],
             },{
                "menu_title": "Rubriques",
                "new_item": false,
                'key': 'commnity_admin',
-               "path": COMMUNITY_ADMIN.RUBRIQUE.LIST,
+               "path": joinUrlWithParamsId(COMMUNITY_ADMIN.RUBRIQUE.LIST, communitySpaceId),
                "permissions": [],
             },
             {
@@ -1013,20 +1040,20 @@ export default {
                      "menu_title": "Paiement",
                      "new_item": false,
                      'key': 'commnity_admin',
-                     "path": COMMUNITY_ADMIN.SELF,
+                     "path": joinUrlWithParamsId(COMMUNITY_ADMIN.SELF, communitySpaceId),
                      "permissions": [],
                   },{
                      "menu_title": "Recharge",
                      "new_item": false,
                      'key': 'commnity_admin',
-                     "path": COMMUNITY_ADMIN.VOUCHER.CHARCHING,
+                     "path": joinUrlWithParamsId(COMMUNITY_ADMIN.VOUCHER.CHARCHING, communitySpaceId),
                      "permissions": [],
                   },
                   {
                      "menu_title": "Confirmation",
                      "new_item": false,
                      'key': 'commnity_admin',
-                     "path": COMMUNITY.MEMBERS.LIST,
+                     "path": joinUrlWithParamsId(COMMUNITY.MEMBERS.LIST, communitySpaceId),
                      "permissions": [],
                   }
                ],
