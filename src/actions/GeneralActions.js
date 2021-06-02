@@ -226,14 +226,7 @@ export const getAllOperators = (id, groupId) => (dispatch) => {
      const data = {
         group_id: groupId
      };
-
-     const url = joinBaseUrlWithParams(BRANCH.GET_ALL_OPERATORS, [
-         {
-            param: 'id',
-             value: id,
-         }
-         ]);
-    console.log("Operateurs URL =>", url);
+     const url = joinBaseUrlWithParams(BRANCH.GET_ALL_OPERATORS, [{param: 'id', value: id,}]);
      return makeActionRequest('get', url, COM_SOLLICITATION_PENDING, dispatch, data);
  };
 

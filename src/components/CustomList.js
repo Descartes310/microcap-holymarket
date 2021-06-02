@@ -48,6 +48,7 @@ class CustomList extends Component {
             loading, list, error, renderItem, style,
             match, history, classes, showSearch, onRetryClick,
             addText, onAddClick, addPermissions, searchPermissions,
+            showBackBtn, titleClassName, wrapClassName,
         } = this.props;
 
         let orderedItems = this.handleSearch(this.state.searched, list);
@@ -56,8 +57,17 @@ class CustomList extends Component {
         const canSearch = canArray(this.mapPermissions(searchPermissions.permissions), searchPermissions.some);
 
         return (
-            <div className="page-list" style={style}>
-                {titleList && (<PageTitleBar title={titleList} match={match} history={history} enableBreadCrumb={false} />)}
+            <div className={`page-list ${wrapClassName}`} style={style}>
+                {titleList && (
+                    <PageTitleBar
+                        match={match}
+                        title={titleList}
+                        history={history}
+                        enableBreadCrumb={false}
+                        showBackBtn={showBackBtn}
+                        titleClassName={titleClassName}
+                    />
+                )}
                 {loading
                     ? (<RctSectionLoader />)
                     : orderedItems === null ? (
@@ -163,6 +173,10 @@ CustomList.propTypes = {
     list: PropTypes.any,
     error: PropTypes.any,
     itemsFoundText: PropTypes.func,
+    onRetryClick: PropTypes.func,
+    showBackBtn: PropTypes.bool,
+    wrapClassName: PropTypes.string,
+    titleClassName: PropTypes.string,
 };
 
 CustomList.defaultProps = {
@@ -175,7 +189,10 @@ CustomList.defaultProps = {
         permissions: [],
         some: true,
     },
-    showSearch: true
+    showSearch: true,
+    showBackBtn: true,
+    titleClassName: '',
+    wrapClassName: '',
 };
 
 export default withRouter(connect(() => ({}), {

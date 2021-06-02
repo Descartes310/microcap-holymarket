@@ -33,7 +33,7 @@ const getUrlString = (path, sub, index) => {
    }
 };
 
-const PageTitleBar = ({ title, match, history, enableBreadCrumb, style, showBackBtn, onBackClick }) => {
+const PageTitleBar = ({ title, match, history, enableBreadCrumb, titleClassName, style, showBackBtn, onBackClick }) => {
    const path = match.url.substr(1);
    const subPath = path.split('/');
    return (
@@ -47,7 +47,7 @@ const PageTitleBar = ({ title, match, history, enableBreadCrumb, style, showBack
                        onClick={() => onBackClick ? onBackClick() : history ? history.goBack() : null}
                    />
                )}
-               <h2 className="">{title}</h2>
+               <h2 className={titleClassName}>{title}</h2>
             </div>
          }
 
@@ -70,6 +70,7 @@ PageTitleBar.propTypes = {
    enableBreadCrumb: PropTypes.bool,
    style: PropTypes.object,
    onBackClick: PropTypes.func,
+   titleClassName: PropTypes.string,
 };
 
 // default props value
@@ -77,6 +78,7 @@ PageTitleBar.defaultProps = {
    enableBreadCrumb: false,
    style: {},
    showBackBtn: true,
+   titleClassName: '',
 };
 
 export default withRouter(PageTitleBar);
