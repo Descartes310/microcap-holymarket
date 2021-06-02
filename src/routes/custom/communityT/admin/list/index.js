@@ -1,9 +1,10 @@
 import ListItem from './ListItem';
 import { connect } from 'react-redux';
 import React, { Component } from 'react'
-import Select from '@material-ui/core/Select';
+import { Button, Input } from "reactstrap";
 import { Form, FormGroup } from "reactstrap";
 import { withRouter } from 'react-router-dom';
+import Select from '@material-ui/core/Select';
 import { withStyles } from "@material-ui/core";
 import { AbilityContext } from "Permissions/Can";
 import EmptyResult from "Components/EmptyResult";
@@ -16,16 +17,14 @@ import TimeFromMoment from "Components/TimeFromMoment";
 import AmountCurrency from "Components/AmountCurrency";
 import FormControl from '@material-ui/core/FormControl';
 import { NotificationManager } from "react-notifications";
-import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import InputLabel from "@material-ui/core/InputLabel/InputLabel";
 import FetchFailedComponent from "Components/FetchFailedComponent";
 import DialogTitle from "@material-ui/core/DialogTitle/DialogTitle";
-import { Button, Input, InputGroup, InputGroupAddon } from "reactstrap";
 import DialogContent from "@material-ui/core/DialogContent/DialogContent";
 import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
 import { readEmail, onSelectEmail, getUnitTypes, getUnitbyType } from 'Actions';
-import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
-import { createVoucher, getMembersOfCommunity, getVouchers } from 'Actions/independentActions';
+import { setRequestGlobalAction, createVoucher, getMembersOfCommunity, getVouchers } from 'Actions';
+import CustomList from "Components/CustomList";
 
 class ListMembers extends Component {
     static contextType = AbilityContext;
@@ -40,9 +39,9 @@ class ListMembers extends Component {
         users: [],
         unitTypes: [],
         units: [],
-        amount: 0,
+        amount: "0",
         unit: null,
-        type: null
+        typeId: null,
     };
 
     componentDidMount() {
@@ -84,24 +83,51 @@ class ListMembers extends Component {
             .finally(() => this.setState({ loadingCodes: false }));
     };
 
-    onGenerate = () => {
-        let data = {
-            user_id: this.state.selectedUser.id,
-            price: this.state.amount,
-            type: 'PAYMENT'
-        };
+    validate = () => {
+        const amount = Number(this.state.amount);
 
-        if (this.state.type.id === 0) {
-            data.currency = this.props.currencies.filter(c => c.id === this.state.unit.id)[0].code;
-        } else {
-            data.unit_id = this.state.unit.id;
+        if (isNaN(amount)) {
+            NotificationManager.warning("Veuillez inserer un montant valide");
+            return false;
         }
 
-        createVoucher(this.props.communitySpace.data, data)
-            .then(data => {
-                NotificationManager.success("Le code généré avec succès");
-            })
-            .finally(() => this.setState({ showQuantityBox: false }));
+        if (this.state.typeId === null || isNaN(this.state.typeId)) {
+            NotificationManager.warning("Veuillez selectionner un type d'unité");
+            return false;
+        }
+
+        if (!this.state.unit) {
+            NotificationManager.warning("Veuillez selectionner une unité de coupon");
+            return false;
+        }
+
+        return true;
+    };
+
+    onGenerate = () => {
+        if (this.validate()) {
+            this.props.setRequestGlobalAction(true);
+            const data = {
+                user_id: this.state.selectedUser.id,
+                price: this.state.amount,
+                type: 'PAYMENT'
+            };
+
+            if (this.state.typeId === 0) {
+                data.currency = this.props.currencies.filter(c => c.id === this.state.unit.id)[0].code;
+            } else {
+                data.unit_id = this.state.unit.id;
+            }
+
+            createVoucher(this.props.communitySpace.data, data)
+                .then(data => {
+                    NotificationManager.success("Le code généré avec succès");
+                })
+                .finally(() => {
+                    this.props.setRequestGlobalAction(false);
+                    this.setState({ showQuantityBox: false });
+                });
+        }
     };
 
     getMembers = () => {
@@ -113,74 +139,42 @@ class ListMembers extends Component {
             .finally(() => this.setState({ loading: false }));
     };
 
-    changeType = (type) => {
-        if (type) {
-            if (type.id !== 0)
-                this.fetchUnits(type.id);
-            else
-                this.setState({ units: this.props.currencies });
-            this.setState({ type: type });
-        }
+    changeType = (typeId) => {
+        if (typeId !== 0)
+            this.fetchUnits(typeId);
+        else
+            this.setState({ units: this.props.currencies });
+        this.setState({ typeId });
     };
 
     render() {
-        const { loading, users, showQuantityBox, showVoucherBox, codes, loadingCodes } = this.state;
+        const { loading, amount, users, showQuantityBox, showVoucherBox, codes, loadingCodes } = this.state;
         const { classes } = this.props;
         return (
-
-            <div className="page-list mt-40">
-                <PageTitleBar title={"Membres de la communautés"} />
-                {loading
-                    ? (<RctSectionLoader />)
-                    : (
-                        <RctCollapsibleCard>
-                            <div className="align-items-center mb-30 px-15 row">
-                                <div className={classes.flex}>
-                                    <FormControl>
-                                        <InputGroup>
-                                            <InputGroupAddon addonType="prepend">
-                                                <IconButton aria-label="facebook">
-                                                    <i className="zmdi zmdi-search"></i>
-                                                </IconButton>
-                                            </InputGroupAddon>
-                                            <Input
-                                                type="text"
-                                                name="search"
-                                                value={this.state.searched}
-                                                placeholder={'Recherchez...'}
-                                                onChange={event => this.onSearchChanged(event)}
-                                            />
-                                        </InputGroup>
-                                    </FormControl>
-                                </div>
-                                <p className={classes.title}>
-                                    {users.length} utilisateur(s) trouvé(s)
-                                </p>
-                            </div>
-                            <div className="rct-tabs">
-                                <ul className="list-unstyled m-0">
-                                    {users.length > 0 ? users.map((user, key) => (
-                                        <ListItem
-                                            user={user}
-                                            key={key}
-                                            buttonLabel="recharge"
-                                            onGenerate={() => this.handleGenerate(user)}
-                                            onViewVoucher={() => this.onViewVoucher(user)}
-                                        />
-                                    ))
-                                        :
-                                        <div className="d-flex justify-content-center align-items-center py-50">
-                                            <h4>
-                                                Aucun utilisateurs trouvés
-                                            </h4>
-                                        </div>
-                                    }
-                                </ul>
-                            </div>
-                        </RctCollapsibleCard>
-
-                    )
-                }
+            <div className="page-list">
+                <CustomList
+                    list={users}
+                    loading={loading}
+                    titleList="Membres de la communautés"
+                    itemsFoundText={n => `${n} utilisateur(s) trouvé(s)`}
+                    renderItem={list => (
+                        <div className="rct-tabs">
+                            <ul className="list-unstyled m-0">
+                                {list.length === 0 ? (
+                                    <EmptyResult message="Aucun utilisateurs trouvés" />
+                                ) : list.map((user, key) => (
+                                    <ListItem
+                                        key={key}
+                                        user={user}
+                                        buttonLabel="recharge"
+                                        onGenerate={() => this.handleGenerate(user)}
+                                        onViewVoucher={() => this.onViewVoucher(user)}
+                                    />
+                                ))}
+                            </ul>
+                        </div>
+                    )}
+                />
                 <SweetAlert
                     input
                     btnSize="sm"
@@ -225,8 +219,9 @@ class ListMembers extends Component {
                                         Montant du coupon
                                     </InputLabel>
                                     <Input
-                                        className="input-lg"
                                         type='number'
+                                        value={amount}
+                                        className="input-lg"
                                         onChange={(e) => this.setState({ amount: e.target.value })}
                                     />
                                 </FormGroup>
@@ -238,9 +233,11 @@ class ListMembers extends Component {
                                     <InputLabel className="text-left" htmlFor="currency-helper">
                                         Type d'unité
                                     </InputLabel>
-                                    <Select onChange={e => this.changeType(e.target.value)}>
+                                    <Select
+                                        // value={this.state.type}
+                                        onChange={e => this.changeType(e.target.value)}>
                                         {[{ name: 'Devise', id: 0 }, ...this.state.unitTypes].map((item, index) => (
-                                            <MenuItem key={index} value={item} className="center-hor-ver">
+                                            <MenuItem key={index} value={item.id} className="center-hor-ver">
                                                 {item.name}
                                             </MenuItem>
                                         ))}
@@ -300,6 +297,8 @@ class ListMembers extends Component {
                             <RctSectionLoader/>
                         ) : !codes ? (
                             <FetchFailedComponent />
+                        ) : codes.length === 0 ? (
+                            <EmptyResult message="Aucun codes trouvés" />
                         ) : (
                             <table className="table table-hover table-middle mb-0 text-center">
                                 <thead>
@@ -311,9 +310,7 @@ class ListMembers extends Component {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                {codes.length === 0 ? (
-                                   <EmptyResult message="Aucun codes trouvés" />
-                                ) : codes.map((item, key) => (
+                                {codes.map((item, key) => (
                                     <tr key={key} className="cursor-pointer">
                                         <td>
                                             <div className="media">
@@ -385,4 +382,5 @@ const mapStateToProps = ({ authUser, communitySpace, settings }) => {
 export default withRouter(connect(mapStateToProps, {
     readEmail,
     onSelectEmail,
+    setRequestGlobalAction,
 })(withStyles(useStyles, { withTheme: true })(ListMembers)));
