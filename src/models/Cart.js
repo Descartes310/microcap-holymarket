@@ -4,12 +4,11 @@ import { isEmpty } from "lodash";
 export default class Cart {
     constructor(objectCart) {
 
-        if (isEmpty(objectCart) || objectCart.auth === null) {
+        if (isEmpty(objectCart.data) || objectCart.auth === null) {
             const obj = {};
             this.items= [];
             obj[objectCart.auth]  = [];
-            localStorage.setItem('cartItems', obj);
-
+            localStorage.setItem('cartItems', JSON.stringify(obj));
         } else {
 
             this.items = objectCart.data[objectCart.auth].map(item => new CartItem(item));

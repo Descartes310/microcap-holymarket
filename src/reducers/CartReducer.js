@@ -43,15 +43,15 @@ export default (state = INIT_STATE, action) => {
 			return new Cart([]);
 
 		case  CART_INIT_ITEM:
-            const oldItems = localStorage.getItem('cartItems');
+            const oldItems = JSON.parse(localStorage.getItem('cartItems'));
 			const objectCart = {};
-            console.log("CART_INIT_ITEM");
-			if(oldItems[action.authId] === undefined || oldItems) {
-                objectCart[action.authId] = [];
 
+			if(oldItems[action.authId] === null || oldItems) {
+                objectCart[action.authId] = [];
             } else {
+
                 objectCart[action.authId] = oldItems[action.authId];
-                console.log("objectCart[action.authId]",objectCart[action.authId])
+                console.log("objectCart",objectCart)
             }
 
             obj.data = objectCart;
