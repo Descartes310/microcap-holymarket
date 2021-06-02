@@ -1,35 +1,32 @@
-import React, { Component } from 'react'
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
 import ListItem from './ListItem';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-import { readEmail, onSelectEmail, getUnitTypes, getUnitbyType } from 'Actions';
-import IntlMessages from 'Util/IntlMessages';
-import { withStyles } from "@material-ui/core";
-import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
-import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
-import { Button, Input, InputGroup, InputGroupAddon } from "reactstrap";
-import IconButton from "@material-ui/core/IconButton";
-import { createVoucher, getMembersOfCommunity, getVouchers } from 'Actions/independentActions';
-import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
-import { AbilityContext } from "Permissions/Can";
-import User from "Models/User";
+import {connect} from 'react-redux';
+import React, {Component} from 'react'
+import {withRouter} from 'react-router-dom';
+import {withStyles} from "@material-ui/core";
+import Select from '@material-ui/core/Select';
+import {AbilityContext} from "Permissions/Can";
+import EmptyResult from "Components/EmptyResult";
+import MenuItem from "@material-ui/core/MenuItem";
+import CancelIcon from '@material-ui/icons/Cancel';
 import SweetAlert from "react-bootstrap-sweetalert";
-import { NotificationManager } from "react-notifications";
+import Dialog from "@material-ui/core/Dialog/Dialog";
+import IconButton from "@material-ui/core/IconButton";
+import TimeFromMoment from "Components/TimeFromMoment";
+import AmountCurrency from "Components/AmountCurrency";
+import {NotificationManager} from "react-notifications";
+import FormControl from '@material-ui/core/FormControl';
+import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
+import InputLabel from "@material-ui/core/InputLabel/InputLabel";
+import FetchFailedComponent from "Components/FetchFailedComponent";
 import DialogTitle from "@material-ui/core/DialogTitle/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent/DialogContent";
-import Dialog from "@material-ui/core/Dialog/Dialog";
-import CancelIcon from '@material-ui/icons/Cancel';
-import TimeFromMoment from "Components/TimeFromMoment";
-import MenuItem from "@material-ui/core/MenuItem";
-import { Form, FormGroup } from "reactstrap";
-import InputLabel from "@material-ui/core/InputLabel/InputLabel";
-import InputComponent from "Components/InputComponent";
-import AmountCurrency from "Components/AmountCurrency";
+import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
+import {getUnitbyType, getUnitTypes, onSelectEmail, readEmail} from 'Actions';
+import {Button, FormGroup, Input, InputGroup, InputGroupAddon} from "reactstrap";
+import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
+import {createVoucher, getMembersOfCommunity, getVouchers} from 'Actions/independentActions';
 
 class ListMembers extends Component {
-
     static contextType = AbilityContext;
 
     state = {
@@ -38,13 +35,14 @@ class ListMembers extends Component {
         showVoucherBox: false,
         selectedUser: null,
         code: [],
+        loadingCodes: false,
         users: [],
         unitTypes: [],
         units: [],
         amount: 0,
         unit: null,
         type: null
-    }
+    };
 
     fetchUnitType = () => {
         getUnitTypes()
@@ -69,14 +67,16 @@ class ListMembers extends Component {
     };
 
     onViewVoucher = user => {
-        this.setState({ showVoucherBox: true });
-        getVouchers(this.props.communitySpace.data, user.id, 'CHARGING').then(data => {
-            this.setState({ codes: data })
-        }).catch(err => {
-            console.log(err)
-            this.setState({ codes: [] })
-        }).finally(() => { })
-    }
+        this.setState({ showVoucherBox: true, loadingCodes: true });
+        getVouchers(this.props.communitySpace.data, user.id, 'CHARGING')
+            .then(data => {
+                this.setState({ codes: data });
+            })
+            .catch(err => {
+                this.setState({ codes: [] });
+            })
+            .finally(() => this.setState({ loadingCodes: false }));
+    };
 
     onGenerate = () => {
         let data = {
@@ -85,34 +85,37 @@ class ListMembers extends Component {
             type: 'CHARGING'
         };
 
-        if(this.state.type.id == 0) {
-            data.currency = this.props.currencies.filter(c => c.id == this.state.unit.id)[0].code;
+        if (this.state.type.id === 0) {
+            data.currency = this.props.currencies.filter(c => c.id === this.state.unit.id)[0].code;
         } else {
             data.unit_id = this.state.unit.id;
         }
 
-        createVoucher(this.props.communitySpace.data, data).then(data => {
-            NotificationManager.success("Le code généré avec succès");
-        }).catch(err => {
-            NotificationManager.error("Une erreur est survenue")
-        }).finally(() => this.setState({ showQuantityBox: false }))
+        createVoucher(this.props.communitySpace.data, data)
+            .then(() => {
+                NotificationManager.success("Code généré avec succès");
+            })
+            .finally(() => this.setState({ showQuantityBox: false }))
     };
 
     getMembers = () => {
-        getMembersOfCommunity(this.props.communitySpace.data).then(data => {
-            this.setState({ users: data })
-        }).finally(() => this.setState({ loading: false }))
-    }
+        this.setState({ loading: true });
+        getMembersOfCommunity(this.props.communitySpace.data)
+            .then(data => {
+                this.setState({ users: data });
+            })
+            .finally(() => this.setState({ loading: false }));
+    };
 
     changeType = (type) => {
         if (type) {
-            if (type.id != 0)
+            if (type.id !== 0)
                 this.fetchUnits(type.id);
             else
-                this.setState({ units: this.props.currencies })
+                this.setState({ units: this.props.currencies });
             this.setState({ type: type })
         }
-    }
+    };
 
     componentDidMount() {
         this.getMembers();
@@ -120,7 +123,7 @@ class ListMembers extends Component {
     }
 
     render() {
-        const { loading, users, showQuantityBox, showVoucherBox, codes } = this.state;
+        const { loading, users, showQuantityBox, showVoucherBox, codes, loadingCodes } = this.state;
         const { classes } = this.props;
         return (
 
@@ -292,50 +295,58 @@ class ListMembers extends Component {
                         </div>
                     </DialogTitle>
                     <DialogContent>
-                        <table className="table table-hover table-middle mb-0 text-center">
-                            <thead>
-                                <tr>
-                                    <th>Code de recharge</th>
-                                    <th>Valeur</th>
-                                    <th>Unité</th>
-                                    <th>Date de création</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {codes && codes.map((item, key) => (
-                                    <tr key={key} className="cursor-pointer">
-                                        <td>
-                                            <div className="media">
-                                                <div className="media-body pt-10">
-                                                    <h4 className="m-0 fw-bold text-dark">{item.code}</h4>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div className="media">
-                                                <div className="media-body pt-10">
-                                                    <h4 className="m-0 fw-bold text-dark"><AmountCurrency amount={item.price} from={item.currency ? item.currency : 'EUR'} unit={item.unit} /></h4>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div className="media">
-                                                <div className="media-body pt-10">
-                                                    <h4 className="m-0 fw-bold text-dark">{item.unit ? item.unit.name : this.props.currencies.filter(c => c.code == item.currency)[0].name}</h4>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div className="media">
-                                                <div className="media-body pt-10">
-                                                    <h4 className="m-0 fw-bold text-dark"><TimeFromMoment time={item.updatedAt} /></h4>
-                                                </div>
-                                            </div>
-                                        </td>
+                        {loadingCodes ? (
+                            <RctSectionLoader/>
+                        ) : !codes ? (
+                            <FetchFailedComponent />
+                        ) : (
+                            <table className="table table-hover table-middle mb-0 text-center">
+                                <thead>
+                                    <tr>
+                                        <th>Code de recharge</th>
+                                        <th>Valeur</th>
+                                        <th>Unité</th>
+                                        <th>Date de création</th>
                                     </tr>
-                                ))}
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    {codes.length === 0 ? (
+                                        <EmptyResult message="Aucun codes trouvés" />
+                                    ) : codes.map((item, key) => (
+                                        <tr key={key} className="cursor-pointer">
+                                            <td>
+                                                <div className="media">
+                                                    <div className="media-body pt-10">
+                                                        <h4 className="m-0 fw-bold text-dark">{item.code}</h4>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div className="media">
+                                                    <div className="media-body pt-10">
+                                                        <h4 className="m-0 fw-bold text-dark"><AmountCurrency amount={item.price} from={item.currency ? item.currency : 'EUR'} unit={item.unit} /></h4>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div className="media">
+                                                    <div className="media-body pt-10">
+                                                        <h4 className="m-0 fw-bold text-dark">{item.unit ? item.unit.name : this.props.currencies.filter(c => c.code == item.currency)[0].name}</h4>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div className="media">
+                                                    <div className="media-body pt-10">
+                                                        <h4 className="m-0 fw-bold text-dark"><TimeFromMoment time={item.updatedAt} /></h4>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        )}
                     </DialogContent>
                 </Dialog>
             </div>
