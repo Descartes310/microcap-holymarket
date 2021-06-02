@@ -17,44 +17,36 @@ const INIT_STATE = {
 export default (state = INIT_STATE, action) => {
     const obj = {
         data: {},
+        authId: action.authId,
     };
+    const oldItems = JSON.parse(localStorage.getItem('cartItems'));
+
+    if (oldCartItemChecked(oldItems)) {
+        obj.data = oldItems;
+    }
 
 	switch (action.type) {
 		case CART_ADD_ITEM:
 		    obj.data[action.authId] = [...state.items, action.payload];
-            obj.auth = action.authId;
 			return new Cart(obj);
 
 		case CART_REMOVE_ITEM:
             obj.data[action.authId] = state.items.filter(item => item.id !== action.payload.id);
-            obj.auth = action.authId;
             return new Cart(obj);
 
 		case CART_UPDATE_ITEM:
 			const items = state.items.map(item => item.id === action.payload.id ? action.payload : item);
             obj.data[action.authId] = items;
-            obj.auth = action.authId;
 			return new Cart(obj);
 
 		case CART_CLEAR:
-			localStorage.removeItem("cartItems");
-            obj.data = delete state.items[action.authId] ;
-            obj.auth = action.authId;
-			return new Cart([]);
+            obj.data[action.authId] = [];
+			return new Cart(obj);
 
 		case  CART_INIT_ITEM:
-            const oldItems = JSON.parse(localStorage.getItem('cartItems'));
-			const objectCart = {};
-
-			if (oldItems && oldItems[action.authId] === null) {
-                objectCart[action.authId] = oldItems[action.authId];
-            } else {
-                objectCart[action.authId] = [];
-                console.log("objectCart",objectCart)
+            if (!obj.data.hasOwnProperty(obj.authId)) {
+                obj.data[obj.authId] = [];
             }
-
-            obj.data = objectCart;
-            obj.auth = action.authId;
 			return new Cart(obj);
 
 		default:

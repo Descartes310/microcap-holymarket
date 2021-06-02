@@ -1,21 +1,9 @@
 import CartItem from "Models/CartItem";
-import { isEmpty } from "lodash";
 
 export default class Cart {
     constructor(objectCart) {
-
-        if (isEmpty(objectCart.data) || objectCart.auth === null) {
-            const obj = {};
-            this.items= [];
-            obj[objectCart.auth]  = [];
-            localStorage.setItem('cartItems', JSON.stringify(obj));
-        } else {
-
-            this.items = objectCart.data[objectCart.auth].map(item => new CartItem(item));
-            localStorage.setItem('cartItems', JSON.stringify(objectCart.data));
-
-        }
-
+        this.items = objectCart.data[objectCart.authId].map(item => new CartItem(item));
+        localStorage.setItem('cartItems', JSON.stringify(objectCart.data));
     }
 
     getTotalPrice() {
