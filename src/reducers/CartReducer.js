@@ -6,14 +6,16 @@ import {
 	CART_INIT_ITEM
 } from "../actions/types";
 import Cart from "Models/Cart";
-
 const isObject = (obj) => {
 	return Object.prototype.toString.call(obj) === '[object Object]';
 };
-
 const oldItems = localStorage.getItem('cartItems');
-const INIT_STATE = new Cart(isObject(oldItems) ? oldItems : {});
-
+const newOb = (isObject(oldItems) || oldItems === undefined) ? oldItems : "{}" ;
+const object = {
+    data:newOb,
+    auth: null
+};
+const INIT_STATE = new Cart(object);
 export default (state = INIT_STATE, action) => {
     const obj = {};
 	switch (action.type) {
@@ -43,12 +45,13 @@ export default (state = INIT_STATE, action) => {
 		case  CART_INIT_ITEM:
             const oldItems = localStorage.getItem('cartItems');
 			const objectCart = {};
-
-			if (oldItems[action.authId] === undefined) {
+            console.log("CART_INIT_ITEM");
+			if(oldItems[action.authId] === undefined || oldItems) {
                 objectCart[action.authId] = [];
 
             } else {
                 objectCart[action.authId] = oldItems[action.authId];
+                console.log("objectCart[action.authId]",objectCart[action.authId])
             }
 
             obj.data = objectCart;
