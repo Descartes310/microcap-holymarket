@@ -6,33 +6,33 @@ import {
 	CART_INIT_ITEM
 } from "../actions/types";
 import Cart from "Models/Cart";
-const isObject = (obj) => {
-	return Object.prototype.toString.call(obj) === '[object Object]';
+ const oldCartItemChecked = (oldItems) => {
+     return oldItems
+         && typeof oldItems === "object"
+         && !Array.isArray(oldItems)
+}
+const INIT_STATE = {
+    items: [],
 };
-const oldItems = localStorage.getItem('cartItems');
-const newOb = (isObject(oldItems) || oldItems === undefined) ? oldItems : "{}" ;
-const object = {
-    data:newOb,
-    auth: null
-};
-const INIT_STATE = new Cart(object);
 export default (state = INIT_STATE, action) => {
-    const obj = {};
-	switch (action.type) {
+    const obj = {
+        data: {},
+    };
 
+	switch (action.type) {
 		case CART_ADD_ITEM:
-		    obj.data = [...state.items[action.authId], action.payload];
+		    obj.data[action.authId] = [...state.items, action.payload];
             obj.auth = action.authId;
 			return new Cart(obj);
 
 		case CART_REMOVE_ITEM:
-            obj.data = state.items[action.authId].filter(item => item.id !== action.payload.id);
+            obj.data[action.authId] = state.items.filter(item => item.id !== action.payload.id);
             obj.auth = action.authId;
             return new Cart(obj);
 
 		case CART_UPDATE_ITEM:
-			const items = state.items[action.authId].map(item => item.id === action.payload.id ? action.payload : item);
-            obj.data = items;
+			const items = state.items.map(item => item.id === action.payload.id ? action.payload : item);
+            obj.data[action.authId] = items;
             obj.auth = action.authId;
 			return new Cart(obj);
 
@@ -46,11 +46,10 @@ export default (state = INIT_STATE, action) => {
             const oldItems = JSON.parse(localStorage.getItem('cartItems'));
 			const objectCart = {};
 
-			if(oldItems[action.authId] === null || oldItems) {
-                objectCart[action.authId] = [];
-            } else {
-
+			if (oldItems && oldItems[action.authId] === null) {
                 objectCart[action.authId] = oldItems[action.authId];
+            } else {
+                objectCart[action.authId] = [];
                 console.log("objectCart",objectCart)
             }
 
