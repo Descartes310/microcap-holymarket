@@ -3,28 +3,51 @@ import {
 	CART_REMOVE_ITEM,
 	CART_UPDATE_ITEM,
 	CART_CLEAR,
+	CART_INIT_ITEM
 } from "../actions/types";
 import Cart from "Models/Cart";
-
-const oldItems = JSON.parse(localStorage.getItem('cartItems'));
-const INIT_STATE = new Cart(Array.isArray(oldItems) ? oldItems : []);
-
+ const oldCartItemChecked = (oldItems) => {
+     return oldItems
+         && typeof oldItems === "object"
+         && !Array.isArray(oldItems)
+}
+const INIT_STATE = {
+    items: [],
+};
 export default (state = INIT_STATE, action) => {
-	switch (action.type) {
+    const obj = {
+        data: {},
+        authId: action.authId,
+    };
+    const oldItems = JSON.parse(localStorage.getItem('cartItems'));
 
+    if (oldCartItemChecked(oldItems)) {
+        obj.data = oldItems;
+    }
+
+	switch (action.type) {
 		case CART_ADD_ITEM:
-			return new Cart([...state.items, action.payload]);
+		    obj.data[action.authId] = [...state.items, action.payload];
+			return new Cart(obj);
 
 		case CART_REMOVE_ITEM:
-			return new Cart(state.items.filter(item => item.id !== action.payload.id));
+            obj.data[action.authId] = state.items.filter(item => item.id !== action.payload.id);
+            return new Cart(obj);
 
 		case CART_UPDATE_ITEM:
 			const items = state.items.map(item => item.id === action.payload.id ? action.payload : item);
-			return new Cart(items);
+            obj.data[action.authId] = items;
+			return new Cart(obj);
 
 		case CART_CLEAR:
-			localStorage.removeItem('cartItems');
-			return new Cart([]);
+            obj.data[action.authId] = [];
+			return new Cart(obj);
+
+		case  CART_INIT_ITEM:
+            if (!obj.data.hasOwnProperty(obj.authId)) {
+                obj.data[obj.authId] = [];
+            }
+			return new Cart(obj);
 
 		default:
 			return state;

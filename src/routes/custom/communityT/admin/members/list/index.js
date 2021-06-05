@@ -1,28 +1,21 @@
-import React, { Component } from 'react'
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
 import ListItem from './ListItem';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-import { readEmail, onSelectEmail } from 'Actions';
-import IntlMessages from 'Util/IntlMessages';
-import { withStyles } from "@material-ui/core";
-import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
-import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
-import { Button, Input, InputGroup, InputGroupAddon } from "reactstrap";
-import IconButton from "@material-ui/core/IconButton";
-import { getMembersOfCommunity, getUser } from 'Actions/independentActions';
-import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
-import { AbilityContext } from "Permissions/Can";
-import DialogTitle from "@material-ui/core/DialogTitle/DialogTitle";
-import DialogContent from "@material-ui/core/DialogContent/DialogContent";
-import Dialog from "@material-ui/core/Dialog/Dialog";
+import {connect} from 'react-redux';
+import React, {Component} from 'react';
+import {withRouter} from 'react-router-dom';
+import {withStyles} from "@material-ui/core";
+import {AbilityContext} from "Permissions/Can";
+import CustomList from "Components/CustomList";
+import EmptyResult from "Components/EmptyResult";
+import {onSelectEmail, readEmail} from 'Actions';
 import CancelIcon from '@material-ui/icons/Cancel';
+import Dialog from "@material-ui/core/Dialog/Dialog";
+import IconButton from "@material-ui/core/IconButton";
 import SimpleProfile from './../../../members/list/SimpleProfile';
-
+import DialogTitle from "@material-ui/core/DialogTitle/DialogTitle";
+import {getMembersOfCommunity, getUser} from 'Actions/independentActions';
+import DialogContent from "@material-ui/core/DialogContent/DialogContent";
 
 class ListMembers extends Component {
-
     static contextType = AbilityContext;
 
     state = {
@@ -30,85 +23,65 @@ class ListMembers extends Component {
         showBox: false,
         userPieces: [],
         users: []
-    }
-
-    handleChange = event => {
-        this.setState({ [event.target.name]: event.target.value });
-    };
-
-    getMembers = () => {
-        getMembersOfCommunity(this.props.communitySpace.data).then(data => {
-            this.setState({ users: data })
-        }).finally(() => this.setState({ loading: false }))
     };
 
     componentDidMount() {
         this.getMembers();
     };
 
+    handleChange = event => {
+        this.setState({ [event.target.name]: event.target.value });
+    };
+
+    getMembers = () => {
+        this.setState({loading: true});
+        getMembersOfCommunity(this.props.communitySpace.data)
+            .then(data => {
+                this.setState({ users: data });
+            })
+            .catch(() => {
+                this.setState({ users: null });
+            })
+            .finally(() => this.setState({ loading: false }));
+    };
+
     getUserDetails = (id) => {
-        getUser(id).then(data => {
-            this.setState({ user: data, showBox: true });
-        })
+        getUser(id)
+            .then(data => {
+                this.setState({ user: data, showBox: true });
+            });
     };
 
     render() {
         const { loading, users, showBox, user } = this.state;
         const { classes } = this.props;
         return (
-
             <div className="page-list">
-                <PageTitleBar title={"Membres de la communautés"} />
-                {loading
-                    ? (<RctSectionLoader />)
-                    : (
-                        <RctCollapsibleCard>
-                            <div className="align-items-center mb-30 px-15 row">
-                                <div className={classes.flex}>
-                                    <FormControl>
-                                        <InputGroup>
-                                            <InputGroupAddon addonType="prepend">
-                                                <IconButton aria-label="facebook">
-                                                    <i className="zmdi zmdi-search"></i>
-                                                </IconButton>
-                                            </InputGroupAddon>
-                                            <Input
-                                                type="text"
-                                                name="search"
-                                                value={this.state.searched}
-                                                placeholder={'Recherchez...'}
-                                                onChange={event => this.onSearchChanged(event)}
-                                            />
-                                        </InputGroup>
-                                    </FormControl>
-                                </div>
-                                <p className={classes.title}>
-                                    {users.length} utilisateur(s) trouvé(s)
-                                </p>
-                            </div>
-                            <div className="rct-tabs">
-                                <ul className="list-unstyled m-0">
-                                    {users.length > 0 ? users.map((user, key) => (
-                                        <ListItem
-                                            user={user}
-                                            key={key}
-                                            getUserDetails={() => this.getUserDetails(user.id)}
-                                            onSelectEmail={(e) => this.onSelectEmail(e, user)}
-                                            onReadEmail={() => this.readEmail(user)}
-                                        />
-                                    ))
-                                        :
-                                        <div className="d-flex justify-content-center align-items-center py-50">
-                                            <h4>
-                                                Aucun utilisateurs trouvés
-                                            </h4>
-                                        </div>
-                                    }
-                                </ul>
-                            </div>
-                        </RctCollapsibleCard>
-                    )
-                }
+                <CustomList
+                    list={users}
+                    error={!!users}
+                    loading={loading}
+                    showBackBtn={false}
+                    onRetryClick={this.getMembers}
+                    itemsFoundText={n => `${n} utilisateur(s) trouvé(s)`}
+                    renderItem={list => (
+                        <div className="rct-tabs">
+                            <ul className="list-unstyled m-0">
+                                {list.length === 0 ? (
+                                    <EmptyResult message="Aucun utilisateurs trouvés" />
+                                ) : list.map((user, key) => (
+                                    <ListItem
+                                        key={key}
+                                        user={user}
+                                        onReadEmail={() => this.readEmail(user)}
+                                        getUserDetails={() => this.getUserDetails(user.id)}
+                                        onSelectEmail={(e) => this.onSelectEmail(e, user)}
+                                    />
+                                ))}
+                            </ul>
+                        </div>
+                    )}
+                />
                 <Dialog
                     open={showBox && user != null}
                     onClose={() => { this.setState({ showBox: false }) }}

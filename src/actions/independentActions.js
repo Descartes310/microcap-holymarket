@@ -77,26 +77,22 @@ export const getOrganisationPosts = () => {
     });
 };
 
-export const sendResetPasswordLink = (email) => {
-    return new Promise((resolve, reject) => {
-        /*const url = joinBaseUrlWithParams(AUTH.RESET_PASSWORD.LINK, [{
-            param: 'email',
-            value: email,
-        }]);*/
-        const url = AUTH.RESET_PASSWORD.LINK + `?email=${email}`;
+export const sendResetPasswordLink = async (email) => {
+    const _data = {
+        email,
+        branchUrl: window.location.origin
+    };
 
-        api.get(url)
-            .then(result => resolve(result.data))
-            .catch(error => reject(error));
-    });
+    return await makeRequest('get', AUTH.RESET_PASSWORD.LINK, _data);
 };
 
-export const resetPassword = (data) => {
-    return new Promise((resolve, reject) => {
-        api.post(AUTH.RESET_PASSWORD.MAIN, data)
-            .then(result => resolve(result.data))
-            .catch(error => reject(error));
-    });
+export const resetPassword = async (data) => {
+    const _data = {
+        ...data,
+        branchUrl: window.location.origin
+    };
+
+    return await makeRequest('post', AUTH.RESET_PASSWORD.MAIN, _data);
 };
 
 export const createBranch = (data, config) => {
@@ -535,9 +531,9 @@ export const deleteUserClient = (id) => {
     return makeRequest('get', url);
 };
 
-export const getCommunityAdmins = (id) => {
+export const getCommunityAdmins = (id, config = {}) => {
     const url = joinBaseUrlWithParamsId(COMMUNITY_MEMBER.USER.GROUPS.GET_ADMINS, id);
-    return makeRequest('get', url);
+    return makeRequest('get', url, null, config);
 };
 
 export const getAccountDetails = (id) => {
@@ -1058,6 +1054,15 @@ export const getOnePionier = (id) => {
 
 export const createBranchCGU = (data, config) => {
     const url = `${SETTING.CGU}`;
+    return new Promise((resolve, reject) => {
+        api.post(url, data, config)
+            .then(result => resolve(result.data))
+            .catch(error => reject(error));
+    });
+};
+
+export const updateBranchCGU = (data, config) => {
+    const url = joinBaseUrlWithParamsId(SETTING.UPDATE_CGU, data.id);
     return new Promise((resolve, reject) => {
         api.post(url, data, config)
             .then(result => resolve(result.data))

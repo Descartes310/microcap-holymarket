@@ -1,56 +1,63 @@
 import { connect } from "react-redux";
 import { injectIntl } from "react-intl";
 import React, { Component } from 'react';
-import { COMMUNITY_ADMIN, joinUrlWithParamsId } from "Url/frontendUrl";
 import { withRouter } from "react-router-dom";
-import IntlMessages from 'Util/IntlMessages';
-import { AbilityContext } from "Permissions/Can";
-import CustomList from "Components/CustomList";
-import { setRequestGlobalAction, getGroupPosts } from "Actions";
-import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import Button from '@material-ui/core/Button';
+import CustomList from "Components/CustomList";
+import { AbilityContext } from "Permissions/Can";
+import { setRequestGlobalAction, getGroupPosts } from "Actions";
+import {COMMUNITY_ADMIN, joinUrlWithParams, joinUrlWithParamsId} from "Url/frontendUrl";
 
 class List extends Component {
     static contextType = AbilityContext;
+
+    communitySpaceId = this.props.match.params.id;
+
     baseUrl = COMMUNITY_ADMIN.POST;
 
     state = {
+        loading: true,
         posts: []
-    }
-
-    constructor(props) {
-        super(props)
-    }
+    };
 
     componentDidMount() {
         this.getPosts();
     }
 
     getPosts = () => {
-        setRequestGlobalAction(true)
-        getGroupPosts(this.props.communitySpace.data).then(data => {
-            this.setState({ posts: data })
-        }).finally(() => {
-            setRequestGlobalAction(false)
-        })
-    }
+        this.setState({loading: true});
+        getGroupPosts(this.props.communitySpace.data)
+            .then(data => {
+                this.setState({ posts: data });
+            }).finally(() => {
+                this.setState({loading: false});
+            });
+    };
 
     goToMotivation = (post) => {
-        this.props.history.push(joinUrlWithParamsId(this.baseUrl.MOTIVATION.LIST, post.id), {post: post})
-    }
+        this.props.history.push(
+            joinUrlWithParams(
+                this.baseUrl.MOTIVATION.LIST,
+            [
+                {param: 'postId', value: post.id},
+                {param: 'id', value: this.communitySpaceId}
+            ]),
+            {post: post}
+        );
+    };
 
     render() {
         const { history } = this.props;
-        const { posts } = this.state;
+        const { loading, posts } = this.state;
 
         return (
-            <div className="page-list">
-                <PageTitleBar title={"Categories de membre"} enableBreadCrumb={true} match={this.props.match} history={history} />
+            <div className="">
                 <CustomList
                     list={posts}
-                    loading={false}
+                    loading={loading}
+                    titleList={"Categories de membre"}
                     itemsFoundText={n => `${n} catégorie(s) trouvée(s)`}
-                    onAddClick={() => history.push(this.baseUrl.CREATE)}
+                    onAddClick={() => history.push(joinUrlWithParamsId(this.baseUrl.CREATE, this.communitySpaceId))}
                     renderItem={list => (
                         <>
                             {list && list.length === 0 ? (

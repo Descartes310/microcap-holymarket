@@ -105,8 +105,8 @@ export default {
             DESCRIPTION: `"The old link sent to '"+ email +"' was not used yet !"`,
         },
         TOKEN_NOT_CORRECT_FOR_EMAIL: {
-            NAME: 'BRANCH_NOT_RUNNING',
-            MESSAGE: "Le token envoyé n'est pas correct !",
+            NAME: 'TOKEN_NOT_CORRECT_FOR_EMAIL',
+            MESSAGE: "Le token envoyé n'est pas valide. Veuillez vérifier vos paramètres d'URL",
             DESCRIPTION: `"The token provided is not correct for this email."`,
         },
         TOKEN_EXPIRED: {
@@ -144,7 +144,6 @@ export default {
             MESSAGE: "Les types de produit sont incorrect",
             DESCRIPTION: `"The array of type product was not correct: " + e.getMessage()`,
         },
-
     },
     PLAN: {
         NAME_ASSIGNED: {
@@ -217,4 +216,5 @@ export const ERROR_401 = 'Connexion expiré. Veuillez vous reconnecté à nouvea
 export const ERROR_403 = "Vous n'avez pas les droits pour effectuer cette action.";
 export const ERROR_404 = "Non trouvé. Veuillez ressayer plus tard.";
 export const ERROR_500 = 'Une erreur est survenue. Veuillez ressayer plus tard';
+export const ERROR_UNKNOWN = "Impossible d'effectuer toutes requetes. Veuillez verifier votre connexion internet et ressayer. Si le problème persiste veuillez contacter le support.";
 

@@ -1,25 +1,25 @@
 import { connect } from "react-redux";
 import { projects } from "Data/index";
 import { injectIntl } from "react-intl";
-import { COMMUNITY } from "Url/frontendUrl";
 import { withRouter } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import CustomList from "Components/CustomList";
 import React, { useEffect, useState } from 'react';
+import CancelIcon from '@material-ui/icons/Cancel';
+import Dialog from "@material-ui/core/Dialog/Dialog";
+import IconButton from "@material-ui/core/IconButton";
 import AmountCurrency from "Components/AmountCurrency";
 import Tooltip from "@material-ui/core/Tooltip/Tooltip";
 import FieldsetComponent from "Components/FieldsetComponent";
+import {COMMUNITY, joinUrlWithParamsId} from "Url/frontendUrl";
 import FetchFailedComponent from "Components/FetchFailedComponent";
-import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
 import DialogTitle from "@material-ui/core/DialogTitle/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent/DialogContent";
-import Dialog from "@material-ui/core/Dialog/Dialog";
-import CancelIcon from '@material-ui/icons/Cancel';
-import IconButton from "@material-ui/core/IconButton";
+import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
 import { getOneProjectFolderByGroup, getAllProjectReaction } from "Actions/independentActions";
 
 const Show = (props) => {
-
+    const communitySpaceId = match.params.id;
     const [projectFolder, setProjectFolder] = useState({
         data: null,
         mine: false,
@@ -40,7 +40,7 @@ const Show = (props) => {
             })
             .catch(() => {
                 setReactions([]);
-            })
+            });
     };
 
     const loadData = () => {
@@ -88,7 +88,7 @@ const Show = (props) => {
         } else {
             return false
         }
-    }
+    };
 
     const details = projectFolder.data;
 
@@ -237,7 +237,7 @@ const Show = (props) => {
                     color="primary"
                     variant="contained"
                     className="text-white font-weight-bold mr-3"
-                    onClick={() => props.history.push(COMMUNITY.PROJECTS.GALLERY)}
+                    onClick={() => props.history.push(joinUrlWithParamsId(COMMUNITY.PROJECTS.GALLERY, communitySpaceId))}
                 >
                     Voir la gallerie
                 </Button>

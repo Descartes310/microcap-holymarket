@@ -1,7 +1,7 @@
 /**
  * Dasboard Routes
  */
-import React from 'react';
+import React, {useEffect} from 'react';
 import RctAppLayout from 'Components/RctAppLayout';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
@@ -28,7 +28,8 @@ import {
     AsyncDiscover,
     AsyncSolidarity,
     AsyncMoneyManagement,
-    AsyncGallery
+    AsyncGallery,
+    AsyncCommunitySpace
 } from 'Components/AsyncComponent/AsyncComponent';
 import Community from "Routes/custom/community";
 
@@ -91,9 +92,14 @@ import Values from "./Values";
 import OfferDetails from './discover/pages/OfferDetails';
 import Agents from './discover/pages/Agents';
 import Services from './discover/pages/Service';
+import {onInitCart} from "Actions/CartActions";
 
-const Dashboard = ({ match, authUser }) => {
+const Dashboard = ({ onInitCart }) => {
     const ability = useAbility(AbilityContext);
+
+    useEffect(()=>{
+        onInitCart();
+    }, []);
 
     return (
         <RctAppLayout>
@@ -312,29 +318,10 @@ const Dashboard = ({ match, authUser }) => {
                     />
 
                     <CanRoute
-                        path={COMMUNITY.POST_PROJECT.SELF}
-                        component={CommunityMembersPostsProjects}
+                        path={COMMUNITY.SELF}
+                        component={AsyncCommunitySpace}
                         permissions={[]}
                     />
-
-                    <CanRoute
-                        path={COMMUNITY.PROJECTS.SELF}
-                        component={AsyncCommunityProject}
-                        permissions={[]}
-                    />
-
-                    <CanRoute
-                        path={COMMUNITY.MEMBERS.SELF}
-                        component={CommunityMembers}
-                        permissions={[]}
-                    />
-
-                    <CanRoute
-                        path={COMMUNITY_ADMIN.SELF}
-                        component={CommunityAdmins}
-                        permissions={[]}
-                    />
-
 
                     <CanRoute
                         path={USERS.USERS.PERSONNAL_SPACE}
@@ -343,15 +330,8 @@ const Dashboard = ({ match, authUser }) => {
                     />
 
                     <CanRoute
-                        path={COMMUNITY.ACTIVITY.SELF}
-                        component={CommunityMembersActivities}
-                        permissions={[]}
-                    />
-
-                    <CanRoute
                         path={ACCESS.SELF}
                         component={AsyncAccess}
-                        // component={AsyncCommunity}
                         permissions={[]}
                     />
 
@@ -378,4 +358,4 @@ const mapStateToProps = ({ authUser, tokens, appLoading }) => {
     return { tokens, authUser: authUser.data, appLoading };
 };
 
-export default connect(mapStateToProps, { disableAppLoading, loginIntoStore })(Dashboard);
+export default connect(mapStateToProps, { disableAppLoading, onInitCart, loginIntoStore })(Dashboard);

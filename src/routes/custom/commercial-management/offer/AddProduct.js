@@ -1,44 +1,33 @@
-import React, { Component, useState } from 'react';
-import { Form, FormGroup, Input as InputStrap, Col, Label } from 'reactstrap';
-import { useForm } from "react-hook-form";
-import IntlMessages from "Util/IntlMessages";
-import { injectIntl } from 'react-intl';
-import _ from 'lodash';
-
-import Button from "@material-ui/core/Button";
-import SweetAlert from 'react-bootstrap-sweetalert';
 import {
     getPackages,
+    getSysTimeUnit,
     getProductTypes,
     getCatalogProducts,
     getComOperationType,
     getAllProductTypeBySale,
-    getSysTimeUnit
 } from "Actions";
-import Checkbox from "@material-ui/core/Checkbox/Checkbox";
-import InputComponent from "Components/InputComponent";
+import _ from 'lodash';
 import { connect } from "react-redux";
-import { setRequestGlobalAction } from "Actions/RequestGlobalAction";
-import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
+import { injectIntl } from 'react-intl';
+import Button from "@material-ui/core/Button";
 import { withStyles } from "@material-ui/core";
-import InputLabel from "@material-ui/core/InputLabel/InputLabel";
-import IconButton from "@material-ui/core/IconButton";
-import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
-import Select from "@material-ui/core/Select/Select";
-import CustomAsyncComponent from "Components/CustomAsyncComponent";
-import FormControl from "@material-ui/core/FormControl";
-import MenuItem from "@material-ui/core/MenuItem";
 import Input from "@material-ui/core/Input/Input";
-import { getPartnersByBranch, getOrganisations, getAllCatalogs, getProductsFromCatalog, addProductToOffer } from "Actions/independentActions";
-import { NotificationManager } from "react-notifications";
-import { ERROR_500 } from "Constants/errors";
-import { COMMERCIAL_MANAGEMENT, PACKAGES } from "Url/frontendUrl";
+import MenuItem from "@material-ui/core/MenuItem";
+import React, { Component, useState } from 'react';
 import { getComOffer } from "Actions/GeneralActions";
+import Select from "@material-ui/core/Select/Select";
+import FormControl from "@material-ui/core/FormControl";
+import { NotificationManager } from "react-notifications";
+import { computeAmountFromCurrency } from 'Helpers/helpers';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
-import { computeAmountFromCurrency } from 'Helpers/helpers'
+import InputLabel from "@material-ui/core/InputLabel/InputLabel";
+import { COMMERCIAL_MANAGEMENT, PACKAGES } from "Url/frontendUrl";
+import CustomAsyncComponent from "Components/CustomAsyncComponent";
+import { setRequestGlobalAction } from "Actions/RequestGlobalAction";
+import { Form, FormGroup, Input as InputStrap, Col, Label } from 'reactstrap';
+import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
 import IndirectProducts from "Routes/custom/commercial-management/offer/IndirectProducts";
+import { getPartnersByBranch, getOrganisations, getAllCatalogs, getProductsFromCatalog, addProductToOffer } from "Actions/independentActions";
 
 const PROCESS = [
     { label: 'Demande de pièce', id: 'ASKING_PIECE' },
@@ -84,11 +73,11 @@ class AddProduct extends Component {
 
     componentDidMount() {
         this.loadData();
-    }
+    };
 
     loadData = () => {
         this.fetchSeller();
-        // this.fetchProducts();
+        this.loadCatalogs(this.props.authUser.id);
     };
 
     fetchSeller = () => {
@@ -99,7 +88,7 @@ class AddProduct extends Component {
             })
             .catch(() => null)
             .finally(() => this.setState({ sellerLoading: false }));
-    }
+    };
 
     loadCatalogs = (id) => {
         this.setState({ catalogLoading: true, products: [] });
@@ -109,11 +98,10 @@ class AddProduct extends Component {
             })
             .catch(() => null)
             .finally(() => this.setState({ catalogLoading: false }));
-    }
+    };
 
     fetchProducts = () => {
         this.setState({ productLoading: true });
-        // getOneCatalog(result[0].id)
         getProductsFromCatalog(this.state.catalog)
             .then(res => {
                 if (res.length === 0) {
@@ -168,9 +156,8 @@ class AddProduct extends Component {
         if (this.validate()) {
             let data = {
                 price: this.state.price,
-                // default_price: this.state.defaultPrice,
                 quantity: this.state.quantity,
-                partner_id: this.state.seller,
+                partner_id: this.props.authUser.id,
                 catalog_id: this.state.catalog,
                 accept_many_payment: this.state.accept_many_payment,
                 number_max_of_days_payment: this.state.number_max_of_days_payment,
@@ -216,40 +203,16 @@ class AddProduct extends Component {
                 <PageTitleBar title={"Ajout d'un produit"} />
                 <RctCollapsibleCard>
                     <Form onSubmit={this.onSubmit}>
-                        {/* <h1>Contexte de vente</h1> */}
                         <div className="row">
-                            <CustomAsyncComponent
-                                loading={sellerLoading}
-                                data={sellers}
-                                component={data => (
-                                    <div className="col-md-6 col-sm-12 form-group text-left">
-                                        <FormControl fullWidth>
-                                            <InputLabel className="text-left" htmlFor="partnerId-helper">
-                                                Vendeur
-                                            </InputLabel>
-                                            <Select
-                                                value={this.state.seller}
-                                                onChange={event => { this.setState({ seller: event.target.value }, () => { this.loadCatalogs(this.state.seller) }) }}
-                                                input={<Input name="partnerId" id="partnerId-helper" />}>
-                                                {data.map((item, index) => (
-                                                    <MenuItem key={index} value={item.organisation ? item.organisation.user.id : item.person.user.id} className="center-hor-ver">
-                                                        {item.organisation ? item.organisation.commercialName : item.person.firstName + ' ' + item.person.lastName}
-                                                    </MenuItem>
-                                                ))}
-                                            </Select>
-                                        </FormControl>
-                                    </div>
-                                )}
-                            />
                             <CustomAsyncComponent
                                 loading={catalogLoading}
                                 data={catalogs}
                                 component={data => (
-                                    <div className="col-md-6 col-sm-12 form-group text-left">
+                                    <div className="col-md-12 col-sm-12 form-group text-left">
                                         <FormControl fullWidth>
                                             <InputLabel className="text-left" htmlFor="catalogId-helper">
                                                 Catalogue de vente
-                                    </InputLabel>
+                                            </InputLabel>
                                             <Select
                                                 value={this.state.catalog}
                                                 onChange={event => this.setState({ catalog: event.target.value }, () => { this.fetchProducts(this.state.catalog) })}
@@ -266,7 +229,6 @@ class AddProduct extends Component {
                             />
                         </div>
 
-                        {/* <h1>Informations sur le produit</h1> */}
                         <div className="row">
                             <CustomAsyncComponent
                                 loading={productLoading}
@@ -305,7 +267,7 @@ class AddProduct extends Component {
                             <FormGroup className="col-md-6 col-sm-12 has-wrapper">
                                 <InputLabel className="text-left" htmlFor="name">
                                     Quantité
-                            </InputLabel>
+                                </InputLabel>
                                 <InputStrap
                                     required
                                     id="quantity"
@@ -315,7 +277,6 @@ class AddProduct extends Component {
                                     className="has-input input-lg"
                                     onChange={event => this.setState({ quantity: event.target.value })}
                                 />
-                                {/* <span className="has-icon"><i className="ti-pencil"></i></span> */}
                             </FormGroup>
                         </div>
 
@@ -333,12 +294,11 @@ class AddProduct extends Component {
                                     value={this.state.defaultPrice}
                                     className="has-input input-lg"
                                 />
-                                {/* <span className="has-icon"><i className="ti-pencil"></i></span> */}
                             </FormGroup>
                             <FormGroup className="col-md-6 col-sm-12 has-wrapper">
                                 <InputLabel className="text-left" htmlFor="price">
                                     Prix de vente
-                            </InputLabel>
+                                </InputLabel>
                                 <InputStrap
                                     required
                                     id="price"
@@ -348,7 +308,6 @@ class AddProduct extends Component {
                                     className="has-input input-lg"
                                     onChange={event => this.setState({ price: event.target.value })}
                                 />
-                                {/* <span className="has-icon"><i className="ti-pencil"></i></span> */}
                             </FormGroup>
                         </div>
 
@@ -374,12 +333,11 @@ class AddProduct extends Component {
                                         className="has-input input-lg"
                                         onChange={event => this.setState({ minimal_percentage: event.target.value })}
                                     />
-                                    {/* <span className="has-icon"><i className="ti-pencil"></i></span> */}
                                 </FormGroup>
                                 <FormGroup className="col-md-6 col-sm-12 has-wrapper">
                                     <InputLabel className="text-left" htmlFor="price">
                                         Nombre de jour d'échéance
-                            </InputLabel>
+                                    </InputLabel>
                                     <InputStrap
                                         required
                                         id="number_max_of_days_payment"
@@ -389,7 +347,6 @@ class AddProduct extends Component {
                                         className="has-input input-lg"
                                         onChange={event => this.setState({ number_max_of_days_payment: event.target.value })}
                                     />
-                                    {/* <span className="has-icon"><i className="ti-pencil"></i></span> */}
                                 </FormGroup>
                             </div>
 
@@ -402,60 +359,7 @@ class AddProduct extends Component {
                                 Produit en vente indirecte
                             </Label>
                         </FormGroup>
-                        {/*<RctCollapsibleCard>
-                            <h1 className='mb-20'>
-                                Processus de vente préalable
-                            </h1>
-                            <Form>
-                                <div className="row">
-                                    <div className="col-md-5 col-sm-5">
-                                        <InputStrap
-                                            type="select"
-                                            name="selectMulti"
-                                            id="SelectMulti"
-                                            onChange={event => this.handleSelect('left', event)}
-                                            multiple>
-                                            {originalProcess.map(p => (
-                                                <option key={p.id} value={p.id}>{p.label}</option>
-                                            ))}
-                                        </InputStrap>
-                                    </div>
 
-                                    <div className="col-1">
-                                        <IconButton
-                                            edge="start"
-                                            className={classes.menuButton + ' text-black mr-2'}
-                                            color="inherit"
-                                            onClick={() => this.handleOnSwitchPressed('left')}
-                                            aria-label="menu">
-                                            <ArrowForwardIcon />
-                                        </IconButton>
-
-                                        <IconButton
-                                            edge="start"
-                                            className={classes.menuButton + ' text-black'}
-                                            color="inherit"
-                                            onClick={() => this.handleOnSwitchPressed('right')}
-                                            aria-label="menu">
-                                            <ArrowBackIcon />
-                                        </IconButton>
-                                    </div>
-
-                                    <div className="col-md-5 col-sm-5">
-                                        <InputStrap
-                                            type="select"
-                                            name="selectMultiRight"
-                                            id="SelectMultiRight"
-                                            onChange={event => this.handleSelect('right', event)}
-                                            multiple>
-                                            {sellProcess.map(p => (
-                                                <option key={p.id} value={p.id}>{p.label}</option>
-                                            ))}
-                                        </InputStrap>
-                                    </div>
-                                </div>
-                            </Form>
-                        </RctCollapsibleCard>*/}
                         <IndirectProducts
                             showProcess={indirectSell}
                             onDocsChange={this.onDocsChange}
@@ -467,7 +371,6 @@ class AddProduct extends Component {
                                 color="primary"
                                 disabled={this.props.requestGlobalLoader}
                                 variant="contained"
-                                // onClick={this.onSubmit}
                                 className="text-white font-weight-bold"
                             >
                                 Soumettre
@@ -520,4 +423,4 @@ const useStyles = theme => ({
 });
 
 export default connect(mapStateToProps, { getComOffer, getPackages, getProductTypes, getComOperationType, getCatalogProducts, getSysTimeUnit, setRequestGlobalAction })
-    (withStyles(useStyles, { withTheme: true })(injectIntl(AddProduct)));
+(withStyles(useStyles, { withTheme: true })(injectIntl(AddProduct)));

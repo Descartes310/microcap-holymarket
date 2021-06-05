@@ -1,10 +1,5 @@
-/**
- * Email List Item
- */
 import React from 'react';
 import {Button} from "reactstrap";
-
-// helpers functions
 import { textTruncate } from 'Helpers/helpers';
 import UserAvatar from "Components/UserAvatar";
 import { getFilePath } from "Helpers/helpers";

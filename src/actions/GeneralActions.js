@@ -162,11 +162,11 @@ export const getProductTypes = (branchId) => (dispatch) => {
     return makeActionRequest('get', url, PRODUCT_TYPE, dispatch);
 };
 
-export const getCurrencies = () => (dispatch) => {
-    const url = `${SETTING_API.CURRENCIES}`;    
+export const getCurrencies = (shouldSkipError = false) => (dispatch) => {
+    const url = `${SETTING_API.CURRENCIES}`;
     dispatch({ type: SET_CURRENCIES });
     return api
-        .get(url)
+        .get(url, {skipError: shouldSkipError})
         .then((response) => {
             dispatch({ type: SET_CURRENCIES_SUCCESS, payload: response.data });
             return Promise.resolve();
@@ -226,14 +226,7 @@ export const getAllOperators = (id, groupId) => (dispatch) => {
      const data = {
         group_id: groupId
      };
-
-     const url = joinBaseUrlWithParams(BRANCH.GET_ALL_OPERATORS, [
-         {
-            param: 'id',
-             value: id,
-         }
-         ]);
-    console.log("Operateurs URL =>", url);
+     const url = joinBaseUrlWithParams(BRANCH.GET_ALL_OPERATORS, [{param: 'id', value: id,}]);
      return makeActionRequest('get', url, COM_SOLLICITATION_PENDING, dispatch, data);
  };
 

@@ -2,7 +2,7 @@ import axios from 'axios';
 import AppConfig from 'Constants/AppConfig';
 import {getAuthToken} from "Helpers/tokens";
 import {NotificationManager} from "react-notifications";
-import {ERROR_500, ERROR_401, ERROR_403, ERROR_404} from 'Data/errors';
+import {ERROR_500, ERROR_401, ERROR_403, ERROR_404, ERROR_UNKNOWN} from 'Data/errors';
 import {errorManager, objectToFormData, toCamelCase, toSnakeCase} from "Helpers/helpers";
 
 const customAxios =
@@ -74,9 +74,9 @@ customAxios.interceptors.response.use(
        return response;
     },
     error => {
+        const originalRequest = error.config;
         if (error) {
             if (error.response) {
-                const originalRequest = error.config;
                 if (!originalRequest.skipError) {
                     switch (error.response.status) {
                         case 400:
@@ -99,8 +99,8 @@ customAxios.interceptors.response.use(
                             return Promise.reject(error);
                     }
                 }
-            }
-        }
+            } else if (!originalRequest.skipError) NotificationManager.error(ERROR_UNKNOWN);
+        } else if (!originalRequest.skipError) NotificationManager.error(ERROR_UNKNOWN);
 
         return Promise.reject(error);
     });

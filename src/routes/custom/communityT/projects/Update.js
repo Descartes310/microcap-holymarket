@@ -1,10 +1,8 @@
-import { projects } from "Data";
 import ReactQuill from 'react-quill';
 import { connect } from "react-redux";
 import { injectIntl } from 'react-intl';
 import { useForm } from "react-hook-form";
-import { PROJECTS } from "Url/frontendUrl";
-import { ERROR_500 } from "Constants/errors";
+import { Form, FormGroup } from "reactstrap";
 import IntlMessages from "Util/IntlMessages";
 import Button from "@material-ui/core/Button";
 import Input from "@material-ui/core/Input/Input";
@@ -14,8 +12,8 @@ import Select from "@material-ui/core/Select/Select";
 import InputComponent from "Components/InputComponent";
 import FormControl from "@material-ui/core/FormControl";
 import { NotificationManager } from "react-notifications";
+import {COMMUNITY, joinUrlWithParamsId} from "Url/frontendUrl";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
-import { Form, FormGroup, Input as FormItem } from "reactstrap";
 import InputLabel from "@material-ui/core/InputLabel/InputLabel";
 import CustomAsyncComponent from "Components/CustomAsyncComponent";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
@@ -53,8 +51,8 @@ const Update = props => {
         data: null,
         error: null,
         loading: true
-    });    
-    
+    });
+
     const [projectFolder, setProjectFolder] = useState({});
 
     const { register, errors, handleSubmit, control } = useForm();
@@ -109,7 +107,7 @@ const Update = props => {
         updateFolderData(projectFolder.id, _data, { fileData: ['file'], multipart: true })
             .then(() => {
                 NotificationManager.success("Projet modifié avec succès");
-                history.push(PROJECTS.FOLDERS.LIST);
+                history.push(joinUrlWithParamsId(COMMUNITY.PROJECTS.GALLERY));
             })
             .catch(() => null)
             .finally(() => setRequestGlobalAction(false));

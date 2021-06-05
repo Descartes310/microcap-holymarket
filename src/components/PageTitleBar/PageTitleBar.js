@@ -6,7 +6,7 @@ import React from 'react';
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap';
 import {Link, withRouter} from 'react-router-dom';
 import _ from "lodash";
-
+import PropTypes from 'prop-types';
 // intl messages
 import IntlMessages from 'Util/IntlMessages';
 
@@ -33,7 +33,7 @@ const getUrlString = (path, sub, index) => {
    }
 };
 
-const PageTitleBar = ({ title, match, enableBreadCrumb, style}) => {
+const PageTitleBar = ({ title, match, history, enableBreadCrumb, titleClassName, style, showBackBtn, onBackClick }) => {
    const path = match.url.substr(1);
    const subPath = path.split('/');
    return (
@@ -41,11 +41,16 @@ const PageTitleBar = ({ title, match, enableBreadCrumb, style}) => {
          {title &&
             <div className="page-title-wrap">
                {/* <i onClick={() => null} className="ti-angle-left cursor-pointer mr-2 icon-hover"/> */}
-               {/* <i onClick={() => history ? history.goBack() : null} className="ti-angle-left cursor-pointer mr-2 icon-hover"/> */}
-               <h2 className="">{title}</h2>
+               {showBackBtn && (
+                   <i
+                       className="ti-angle-left mr-0 cursor-pointer icon-hover"
+                       onClick={() => onBackClick ? onBackClick() : history ? history.goBack() : null}
+                   />
+               )}
+               <h2 className={titleClassName}>{title}</h2>
             </div>
          }
-         
+
             {/*<Breadcrumb className="mb-0 tour-step-7" tag="nav">
                {subPath.map((sub, index) => {
                   return <BreadcrumbItem active={subPath.length === index + 1}
@@ -54,14 +59,26 @@ const PageTitleBar = ({ title, match, enableBreadCrumb, style}) => {
                }
                )}
             </Breadcrumb>*/}
-         
+
       </div>
    )
 };
 
+PageTitleBar.propTypes = {
+   title: PropTypes.string,
+   showBackBtn: PropTypes.bool,
+   enableBreadCrumb: PropTypes.bool,
+   style: PropTypes.object,
+   onBackClick: PropTypes.func,
+   titleClassName: PropTypes.string,
+};
+
 // default props value
 PageTitleBar.defaultProps = {
-   enableBreadCrumb: false
-}
+   enableBreadCrumb: false,
+   style: {},
+   showBackBtn: true,
+   titleClassName: '',
+};
 
 export default withRouter(PageTitleBar);
