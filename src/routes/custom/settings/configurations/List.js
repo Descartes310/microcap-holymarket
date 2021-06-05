@@ -17,7 +17,7 @@ import TimeFromMoment from "Components/TimeFromMoment";
 import { Form, FormGroup, Input as InputStrap } from "reactstrap";
 import DialogTitle from "@material-ui/core/DialogTitle/DialogTitle";
 import { getModelNotifications, setRequestGlobalAction } from "Actions";
-import { getAllSettings, createBranchCGU } from "Actions/independentActions";
+import {getAllSettings, createBranchCGU, updateBranchCGU} from "Actions/independentActions";
 import DialogContent from "@material-ui/core/DialogContent/DialogContent";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
 import {getFilePath} from "Helpers/helpers";
@@ -71,14 +71,11 @@ class List extends Component {
     };
 
     updateCGU = () => {
-        updateBranchCGU({
-            file: this.state.file,
-            id: this.state.gcuId,
-        }, { fileData: ['file'], multipart: true }).then(data => {
-            this.setState({ showUpdate: false })
-            getAllSettings(this.props.authUser.user.branch.id).then(data => {
-                this.setState({ data })
-            })
+        this.props.setRequestGlobalAction(true);
+        updateBranchCGU({file: this.state.file, id: this.state.gcuId}, { fileData: ['file'], multipart: true })
+            .then(data => {
+                this.setState({ showUpdate: false });
+                this.loadData();
         });
     };
 
@@ -119,7 +116,7 @@ class List extends Component {
                                                     <tr
                                                         key={key}
                                                         className="cursor-pointer"
-                                                        onClick={() => this.handleOnRowClick(item.id)}
+                                                        // onClick={() => this.handleOnRowClick(item.id)}
                                                     >
                                                         <td>
                                                             <div className="media">
