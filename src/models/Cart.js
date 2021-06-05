@@ -3,7 +3,8 @@ import CartItem from "Models/CartItem";
 export default class Cart {
     constructor(objectCart) {
         this.items = objectCart.data[objectCart.authId].map(item => new CartItem(item));
-        localStorage.setItem('cartItems', JSON.stringify(objectCart.data));
+        if (!objectCart.shouldSkipSaving)
+            localStorage.setItem('cartItems', JSON.stringify(objectCart.data));
     }
 
     getTotalPrice() {

@@ -118,12 +118,19 @@ class PaymentInfo extends Component {
 
    render() {
       const { showPaymentBox, entringCode, code, selectingAccount, showConfirmBox, freePayment } = this.state;
-      const cart = new Cart(this.props.order.orderItems.map(item => ({
-         ...item.typeProduct,
-         price: item.typeProduct.price,
-         currency: item.typeProduct.product ? item.typeProduct.product.priceCurrency : item.typeProduct.package1.currency,
-         quantity: item.quantity
-      })));
+      const authId = authUser.id;
+
+
+      const cart = new Cart({
+         data: this.props.order.orderItems.map(item => ({
+            ...item.typeProduct,
+            price: item.typeProduct.price,
+            currency: item.typeProduct.product ? item.typeProduct.product.priceCurrency : item.typeProduct.package1.currency,
+            quantity: item.quantity
+         })),
+         authId,
+         shouldSkipSaving: true
+      });
       return (
          <div className="payment-wrap">
             {
