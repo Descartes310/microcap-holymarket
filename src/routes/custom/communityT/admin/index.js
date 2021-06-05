@@ -21,7 +21,7 @@ class GroupAdminIndex extends Component {
             <div className="list-wrap pt-70 mt-2">
                 <Scrollbars
                     className="rct-scroll"
-                    autoHide
+                    // autoHide
                     style={{ height: 'calc(100vh - 128px)', position: 'unset', padding: 24 }}
                 >
                     <div className="rct-scroll pt-70 mt-2">

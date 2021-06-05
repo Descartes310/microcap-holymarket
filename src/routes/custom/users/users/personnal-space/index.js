@@ -34,7 +34,7 @@ class PersonalSpace extends Component {
     }
 
     onJoinClick = (groupId) => {
-        this.props.history.push(joinUrlWithParamsId(COMMUNITY.MEMBERS.LIST, groupId));
+        window.location = joinUrlWithParamsId(COMMUNITY.MEMBERS.LIST, groupId);
     };
 
     getOperators = () => {
