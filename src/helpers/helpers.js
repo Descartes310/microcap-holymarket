@@ -449,6 +449,27 @@ export const downloadContent = (url) => {
 
 };
 
+/**
+ * Convert a string to snake case
+ * @param str
+ * @returns {*}
+ */
+export function toStringSnakeCase(str) {
+    // call a generic method
+    return str.replace(/\W+/g, " ")
+        .split(/ |\B(?=[A-Z])/)
+        .map(word => word.toLowerCase())
+        .join('_');
+}
+
+/**
+ *
+ * @param verb
+ * @param url
+ * @param data
+ * @param config
+ * @returns {Promise<any>}
+ */
 export const makeRequest = (verb, url, data = null, config = {}) => {
     return new Promise((resolve, reject) => {
         let _url = url;
@@ -456,7 +477,7 @@ export const makeRequest = (verb, url, data = null, config = {}) => {
             Object.entries(data).map(item => {
                 const encoded = encodeURIComponent(item[1]);
                 const character = _url.includes('?') ? '&' : '?';
-                _url = `${_url}${character}${toSnakeCase(item[0])}=${encoded}`;
+                _url = `${_url}${character}${toStringSnakeCase(item[0])}=${encoded}`;
             });
         }
         const params = (verb === 'get' || verb === 'delete') ? [_url, config] : [_url, data, config];
@@ -466,6 +487,16 @@ export const makeRequest = (verb, url, data = null, config = {}) => {
     });
 };
 
+/**
+ *
+ * @param verb
+ * @param url
+ * @param typeBase
+ * @param dispatch
+ * @param data
+ * @param config
+ * @returns {Promise<any | never>}
+ */
 export const makeActionRequest = (verb, url, typeBase, dispatch, data = null, config = {} ) => {
     dispatch({ type: typeBase });
     return makeRequest(verb, url, data, config)
