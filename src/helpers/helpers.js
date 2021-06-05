@@ -540,3 +540,24 @@ export const errorManager = (errors, customOptions = null) => {
         NotificationManager.error(ERROR_500);
     }
 };
+
+export const oldCartItemChecked = (oldItems) => {
+    return oldItems
+        && typeof oldItems === "object"
+        && !Array.isArray(oldItems)
+}
+
+export const normalizeCartItems = (data, authId) => {
+    const obj = {
+        data: {},
+        authId,
+    };
+    const oldItems = JSON.parse(localStorage.getItem('cartItems'));
+
+    if (oldCartItemChecked(oldItems)) {
+        obj.data = oldItems;
+    }
+
+    obj.data[authId] = data;
+    return obj;
+}

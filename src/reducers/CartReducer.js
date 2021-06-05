@@ -6,11 +6,8 @@ import {
 	CART_INIT_ITEM
 } from "../actions/types";
 import Cart from "Models/Cart";
- const oldCartItemChecked = (oldItems) => {
-     return oldItems
-         && typeof oldItems === "object"
-         && !Array.isArray(oldItems)
-}
+import {oldCartItemChecked} from "Helpers/helpers";
+
 const INIT_STATE = {
     items: [],
 };
