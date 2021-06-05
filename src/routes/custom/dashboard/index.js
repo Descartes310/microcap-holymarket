@@ -1,7 +1,7 @@
 /**
  * Dasboard Routes
  */
-import React from 'react';
+import React, {useEffect} from 'react';
 import RctAppLayout from 'Components/RctAppLayout';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
@@ -92,9 +92,14 @@ import Values from "./Values";
 import OfferDetails from './discover/pages/OfferDetails';
 import Agents from './discover/pages/Agents';
 import Services from './discover/pages/Service';
+import {onInitCart} from "Actions/CartActions";
 
-const Dashboard = ({ match, authUser }) => {
+const Dashboard = ({ onInitCart }) => {
     const ability = useAbility(AbilityContext);
+
+    useEffect(()=>{
+        onInitCart();
+    }, []);
 
     return (
         <RctAppLayout>
@@ -353,4 +358,4 @@ const mapStateToProps = ({ authUser, tokens, appLoading }) => {
     return { tokens, authUser: authUser.data, appLoading };
 };
 
-export default connect(mapStateToProps, { disableAppLoading, loginIntoStore })(Dashboard);
+export default connect(mapStateToProps, { disableAppLoading, onInitCart, loginIntoStore })(Dashboard);

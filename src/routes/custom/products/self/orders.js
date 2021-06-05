@@ -41,11 +41,13 @@ class Order extends Component {
         setRequestGlobalAction(true);
         getOrders()
             .then(products => {
+                this.setState({ loading: true });
                 this.setState({ products: products });
             })
             .catch(() => null)
             .finally(() => {
                 setRequestGlobalAction(false)
+                this.setState({ loading: false });
             });
     };
     render() {
@@ -54,7 +56,7 @@ class Order extends Component {
         return (
             <>
                 <CustomList
-                    loading={false}
+                    loading={loading}
                     list={products}
                     titleList={"Commandes"}
                     itemsFoundText={n => `${n} commandes trouvées`}
