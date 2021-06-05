@@ -4,7 +4,7 @@ import Button from '@material-ui/core/Button';
 import MaskedInput from 'react-text-mask'
 import { NotificationManager } from 'react-notifications';
 import StripeCheckout from 'react-stripe-checkout';
-import { computeAmountFromCurrency } from 'Helpers/helpers'
+import {computeAmountFromCurrency, normalizeCartItems} from 'Helpers/helpers'
 import Cart from "Models/Cart";
 import { connect } from "react-redux";
 import { setRequestGlobalAction } from "Actions/RequestGlobalAction";
@@ -118,19 +118,19 @@ class PaymentInfo extends Component {
 
    render() {
       const { showPaymentBox, entringCode, code, selectingAccount, showConfirmBox, freePayment } = this.state;
-      const authId = authUser.id;
+      const { authUser } = this.props;
 
-
-      const cart = new Cart({
-         data: this.props.order.orderItems.map(item => ({
+      const cart = new Cart(normalizeCartItems(
+         this.props.order.orderItems.map(item => ({
             ...item.typeProduct,
             price: item.typeProduct.price,
             currency: item.typeProduct.product ? item.typeProduct.product.priceCurrency : item.typeProduct.package1.currency,
             quantity: item.quantity
          })),
-         authId,
-         shouldSkipSaving: true
-      });
+         authUser.id,
+         true
+      ));
+
       return (
          <div className="payment-wrap">
             {

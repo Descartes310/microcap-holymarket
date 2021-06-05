@@ -142,6 +142,7 @@ const mapStateToProps = ({ requestGlobalLoader, authUser, userPermissions  }) =>
         requestGlobalLoader,
         authUser: authUser.data,
         userPermissions: userPermissions.data,
+        loading: userPermissions.loading,
     }
 };
 

@@ -547,10 +547,11 @@ export const oldCartItemChecked = (oldItems) => {
         && !Array.isArray(oldItems)
 }
 
-export const normalizeCartItems = (data, authId) => {
+export const normalizeCartItems = (data, authId, shouldSkipSaving = false) => {
     const obj = {
         data: {},
         authId,
+        shouldSkipSaving
     };
     const oldItems = JSON.parse(localStorage.getItem('cartItems'));
 
@@ -560,4 +561,4 @@ export const normalizeCartItems = (data, authId) => {
 
     obj.data[authId] = data;
     return obj;
-}
+};

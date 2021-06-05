@@ -1,9 +1,7 @@
-import ListItem from './ListItem';
 import { connect } from "react-redux";
 import { injectIntl } from "react-intl";
 import React, { Component } from 'react';
 import { withRouter } from "react-router-dom";
-import Button from "@material-ui/core/Button";
 import CustomList from "Components/CustomList";
 import UserAvatar from "Components/UserAvatar";
 import { withStyles } from "@material-ui/core";
@@ -28,26 +26,20 @@ class UsersAccountsList extends Component {
         }
     }
 
-    getUserDetails = (id) => {
-        getUser(id).then(data => {
-            this.setState({ user: data, showBox: true });
-        })
-    }
-
     componentDidMount() {
         this.props.getBranchUsers(this.props.authUser.branchId);
     }
 
     render() {
-        const { branchUsers } = this.props;
-        console.log(branchUsers)
+        const { branchUsers, loading } = this.props;
+
         return (
             <>
                 <PageTitleBar
                     title={"Liste des utilisateurs"}
                 />
                 <CustomList
-                    loading={false}
+                    loading={loading}
                     list={branchUsers}
                     itemsFoundText={n => `${n} utilisateurs trouvés`}
                     renderItem={list => (
@@ -118,16 +110,6 @@ class UsersAccountsList extends Component {
                                                                 </div>
                                                             </div>
                                                         </td>
-                                                        {/* <td>
-                                                            <Button
-                                                                color="primary"
-                                                                // variant={"outlined"}
-                                                                className={`text-white font-weight-bold btn-primary btn-xs mr-2`}
-                                                            // onClick={() => this.setState({ showAddBox: true, profileId: item.id })}
-                                                            >
-                                                                Voir les details
-                                                            </Button>
-                                                        </td> */}
                                                     </tr>
                                                 ))}
                                             </tbody>
@@ -167,7 +149,8 @@ const mapStateToProps = ({ requestGlobalLoader, branchUsers, authUser }) => {
     return {
         requestGlobalLoader,
         authUser: authUser.data,
-        branchUsers: branchUsers.data
+        branchUsers: branchUsers.data,
+        loading: branchUsers.loading,
     }
 };
 

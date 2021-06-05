@@ -75,12 +75,6 @@ class BillingForm extends Component {
 
    render() {
       const { showPaymentBox, entringCode, code, selectingAccount } = this.state;
-      const cart = new Cart(this.props.order.orderItems.map(item => ({
-         ...item.typeProduct,
-         price: item.typeProduct.price,
-         currency: item.typeProduct.product ? item.typeProduct.product.priceCurrency : item.typeProduct.package1.currency,
-         quantity: item.quantity
-      })));
 
       return (
          <div className="billing-form-warp py-4">
@@ -150,7 +144,7 @@ class BillingForm extends Component {
                      label="Payement par carte"
                   /> */}
                   <Button disabled={
-                     this.state.billingInformation.addressLine1.length == 0 || 
+                     this.state.billingInformation.addressLine1.length == 0 ||
                      this.state.billingInformation.zipCode.length == 0 ||
                      this.state.billingInformation.country.length == 0
                   } onClick={() => this.props.onComplete(this.state.billingInformation)} color="primary" variant="contained" style={{ marginLeft: 10, color: 'white' }}>
