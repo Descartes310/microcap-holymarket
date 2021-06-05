@@ -100,9 +100,9 @@ class UsersAccountsList extends Component {
                                 <InputLabel className="text-left" htmlFor="institution-helper">
                                     Branche
                                 </InputLabel>
-                                {branches.loading ? (
-                                    <RctSectionLoader/>
-                                ) : branches.data ? (
+                                { branches.loading === false ? (
+                                    <FetchFailedComponent _onRetryClick={this.getBranches} />
+                                ) : (
                                     <Select
                                         value={selectedBranch}
                                         onChange={event => this.handleOnBranchChange(event.target.value)}
@@ -113,8 +113,6 @@ class UsersAccountsList extends Component {
                                             </MenuItem>
                                         ))}
                                     </Select>
-                                ) : (
-                                    <FetchFailedComponent _onRetryClick={this.getBranches} />
                                 )}
                             </FormControl>
                         </div>
