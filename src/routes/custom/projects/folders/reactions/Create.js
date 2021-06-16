@@ -17,8 +17,8 @@ import { NotificationManager } from "react-notifications";
 import FormControl from "@material-ui/core/FormControl";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import InputLabel from "@material-ui/core/InputLabel/InputLabel";
-import { createProjectReaction } from "Actions/independentActions";
 import { getInitialisationOptions, setRequestGlobalAction } from "Actions";
+import { createProjectReaction, getOneProjectFolderByGroup } from "Actions/independentActions";
 
 const modules = {
     toolbar: [
@@ -41,13 +41,14 @@ const formats = [
 ];
 
 const Create = props => {
-    const { authUser, history, intl, currentCommunity, setRequestGlobalAction, communitySpace } = props;
+    const { authUser, history, intl, setRequestGlobalAction, communitySpace } = props;
 
     const [type, setType] = useState('ARGUMENT');
-    const [work, setWork] = useState(currentCommunity.data ? currentCommunity.data.project ? currentCommunity.data.project.works[0].id : null : null);
+    const [work, setWork] = useState(null);
 
     const [file, setFile] = useState(null);
     const [description, setDescription] = useState('');
+    const [project, setProject] = useState(null);
 
     const { register, errors, handleSubmit, setValue } = useForm();
 
@@ -63,8 +64,16 @@ const Create = props => {
         }
     };
 
+    const getProject = () => {
+        getOneProjectFolderByGroup(communitySpace.data).then(data => {
+            setProject(data.project);
+        }).catch(err => {
+            console.log(err)
+        })
+    };
+
     useEffect(() => {
-        console.log(currentCommunity);
+        getProject();
     }, [])
 
     /**
@@ -150,11 +159,11 @@ const Create = props => {
                                 onChange={event => onWorkChange(event.target.value)}
                                 input={<Input name="type" id="type" />}>
                                 {
-                                    currentCommunity.data ? currentCommunity.data.community.projectFolder ? currentCommunity.data.community.projectFolder.works.map(w => (
+                                    project ? project.works.map(w => (
                                         <MenuItem value={w.id} className="center-hor-ver">
                                             {w.book.title}
                                         </MenuItem>
-                                    )) : null : null}
+                                    )) : null}
                             </Select>
                         </FormControl>
                     </div>
@@ -205,12 +214,11 @@ const Create = props => {
     );
 };
 
-const mapStateToProps = ({ requestGlobalLoader, authUser, communitySpace, currentCommunity }) => {
+const mapStateToProps = ({ requestGlobalLoader, authUser, communitySpace }) => {
     return {
         authUser: authUser.data,
         loading: requestGlobalLoader,
-        communitySpace,
-        currentCommunity
+        communitySpace
     };
 };
 
