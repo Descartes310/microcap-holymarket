@@ -58,7 +58,7 @@ class List extends Component {
                                         <thead>
                                             <tr>
                                                 <th>Désignation</th>
-                                                <th>Nombres d'ouvrages</th>
+                                                {/* <th>Nombres d'ouvrages</th> */}
                                                 <th>Actions</th>
                                             </tr>
                                         </thead>
@@ -74,13 +74,13 @@ class List extends Component {
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td>
+                                                {/* <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
                                                             <h4 className="m-0 fw-bold text-dark">{item.works.length}</h4>
                                                         </div>
                                                     </div>
-                                                </td>
+                                                </td> */}
                                                 <td>
                                                     <Button
                                                         size="small"

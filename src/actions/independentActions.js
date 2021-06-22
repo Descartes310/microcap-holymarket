@@ -1254,3 +1254,13 @@ export const approveOrder = (id, action) => {
     const url = joinBaseUrlWithParamsId(`${ORDER.APPROVE_ORDER}`, id);
     return makeRequest('put', url, data);
 };
+
+export const suspendAccount = (reference) => {
+    const url = joinBaseUrlWithParamsId(`${USERS.SUSPEND}`, reference);
+    return makeRequest('put', url, null);
+};
+
+export const deleteAccount = (reference) => {
+    const url = joinBaseUrlWithParamsId(`${USERS.DELETE}`, reference);
+    return makeRequest('put', url, null);
+};

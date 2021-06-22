@@ -187,6 +187,8 @@ export const USERS = {
     BRANCH_USERS: 'api/users',
     SEARCH: 'api/users/search',
     GET_ONE: '/api/users/one',
+    SUSPEND: 'api/users/{id}/suspend',
+    DELETE: 'api/users/{id}/delete',
     GET_ALL: 'api/users/persons',
     UPDATE_CURRENCY: 'api/users/currency/{id}',
     GET_ALL_BY_ORGANISATION: 'api/users/persons/by-organisation',
