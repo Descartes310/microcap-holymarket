@@ -26,7 +26,7 @@ const BlogLayoutOne = ({ classes }) => (
     <Card className="rounded mb-30">
         <CardMedia
             className={classes.media}
-            image={require('Assets/img/post-1.jpg')}
+            image={require('Assets/img/profile.jpg')}
             title="Contemplative Reptile"
         />
         <CardContent className="py-30">

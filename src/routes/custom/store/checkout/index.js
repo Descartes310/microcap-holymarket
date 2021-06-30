@@ -18,8 +18,8 @@ import {connect} from "react-redux";
 import {injectIntl} from "react-intl";
 import {withRouter} from "react-router-dom";
 import {withStyles} from "@material-ui/core";
-import {getProductItemAvailable, setRequestGlobalAction} from "Actions";
-import {deleteItemFromCart, onAddItemToCart} from "Actions/CartActions";
+import { setRequestGlobalAction} from "Actions";
+import {deleteItemFromCart, onAddItemToCart } from "Actions/CartActions";
 import {NotificationManager} from "react-notifications";
 import {ERROR_500} from "Constants/errors";
 import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
@@ -29,9 +29,8 @@ class Checkout extends Component {
     constructor(props) {
         super(props);
         this.orderId = this.props.match.params.id;
-        console.log("this.orderId => ", this.orderId);
         this.state = {
-            order: null
+            order: undefined
         }
     }
 
@@ -45,7 +44,7 @@ class Checkout extends Component {
                 this.setState({order: order});
             })
             .catch(() => {
-                NotificationManager.error(ERROR_500);
+                this.setState({order: null});
             })
             .finally(() => this.props.setRequestGlobalAction(false));
     };
@@ -54,12 +53,12 @@ class Checkout extends Component {
     render() {
         const { match, requestGlobalLoader } = this.props;
 
-        if (requestGlobalLoader) {
+        if (this.state.order === undefined) {
             return (<RctSectionLoader/>);
         }
 
-        if (!this.state.order) {
-            return (<FetchFailedComponent _onRetryClick={this.loadData} />);
+        if (this.state.order === null) {
+            return <FetchFailedComponent _onRetryClick={this.loadData} />
         }
 
         return (
@@ -91,5 +90,5 @@ const mapStateToProps = ({ requestGlobalLoader, cart, authUser  }) => {
     }
 };
 
-export default connect(mapStateToProps, {onAddItemToCart, deleteItemFromCart, getProductItemAvailable, setRequestGlobalAction})
+export default connect(mapStateToProps, {onAddItemToCart, deleteItemFromCart, setRequestGlobalAction})
 ((withRouter(injectIntl(Checkout))));

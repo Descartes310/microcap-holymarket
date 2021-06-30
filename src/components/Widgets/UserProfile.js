@@ -17,7 +17,7 @@ export default class UserProfile extends Component {
                <div className="d-flex user-avatar">
                   <Avatar
                      alt="user 2"
-                     src={require('Assets/avatars/user-2.jpg')}
+                     src={require('Assets/avatars/profile.jpg')}
                      className="size-100 rounded-circle mr-15"
                   />
                   <div className="user-info text-white pt-20">

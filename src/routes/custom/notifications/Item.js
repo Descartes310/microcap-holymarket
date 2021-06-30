@@ -7,9 +7,9 @@ import NotificationType from "Enums/NotificationType";
 
 class Item extends Component {
     render() {
-        const { notification, onActivationClick, authUser } = this.props;
+        const { notification, onActivationClick, authUser, onAskingPieceClick, markAsRead, state } = this.props;
         return (
-            <ListItem className="row px-20 py-3 align-items-center notification-hover-wrapper" button>
+            <ListItem className="row px-20 py-3 align-items-center" button>
                 <div className="col-md-9">
                     <div className="d-flex align-items-start">
                         <div className="avatar-wrap mr-15">
@@ -24,7 +24,7 @@ class Item extends Component {
                 </div>
                 <div className="col-md-3 comment-action w-20 text-right">
                     {notification.notificationType === NotificationType.ACTIVATE_ACCOUNT ? (
-                        <div className="notification-hover d-flex align-items-center justify-content-end">
+                        <div className="d-flex align-items-center justify-content-end">
                             {authUser.user.status === Status.PENDING ? (
                                 <Button
                                     color="primary"
@@ -40,11 +40,21 @@ class Item extends Component {
                                 </span>
                             )}
                         </div>
-                    ) : (
+                    ) : notification.notificationType === NotificationType.PIECE_REQUEST && state != 'TREATED' ? (
                         <>
                           <span className="font-xs text-muted font-weight-light d-block comment-date">{notification.createdAt.fromNow()}</span>
                           <div className="notification-hover d-flex align-items-center justify-content-end">
-                              <Fab variant="round" size="small" color="primary" className="btn-sm mx-1 bg-primary text-white">
+                              <Fab variant="round" size="small" className="bg-blue text-white btn-sm mx-1" onClick={onAskingPieceClick}>
+                                  <i className="zmdi zmdi-menu"/>
+                              </Fab>
+                          </div>
+                        </>
+                    ) : state == 'UNREAD' ? (
+                        <>
+                          <span className="font-xs text-muted font-weight-light d-block comment-date">{notification.createdAt.fromNow()}</span>
+                          <div className="notification-hover d-flex align-items-center justify-content-end">
+                              <Fab variant="round" size="small" color="primary" className="btn-sm mx-1 bg-primary text-white"
+                                    onClick={() => markAsRead()}>
                                   <i className="zmdi zmdi-check"/>
                               </Fab>
                               <Fab variant="round" size="small" className="bg-blue text-white btn-sm mx-1">
@@ -52,7 +62,7 @@ class Item extends Component {
                               </Fab>
                           </div>
                         </>
-                    )}
+                    ) : null}
                 </div>
             </ListItem>
         );

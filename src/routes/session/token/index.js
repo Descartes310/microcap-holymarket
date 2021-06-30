@@ -93,6 +93,18 @@ const BranchActivation = ({ setRequestGlobalAction }) => {
                                                             <h2 className="text-success">
                                                                 Branche activé avec succès
                                                             </h2>
+                                                            <Link to={HOME}>
+                                                                <Button
+                                                                    type="button"
+                                                                    size="large"
+                                                                    color="primary"
+                                                                    variant="contained"
+                                                                    className="btn-block text-white w-100"
+                                                                    style={{ margin: '20px' }}
+                                                                >
+                                                                    Connectez-vous ici
+                                                                </Button>
+                                                            </Link>
                                                         </div>
                                                     ) : (
                                                             <div>

@@ -1,17 +1,37 @@
 import React, { Component } from 'react';
 
+// page title bar
+import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
+import IntlMessages from 'Util/IntlMessages';
+
+import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
+
+
+import {
+	VisitorAreaChartWidget,
+	SalesAreaChartWidget,
+	OrdersAreaChartWidget,
+	RecentOrdersWidget,
+	Notifications,
+	
+} from "Components/Widgets";
+
+// widgets data
+import {
+	visitorsData,
+	salesData,
+	ordersData
+} from '../dashboard/ecommerce/data';
+
+
 export default class HomePage extends Component {
     render() {
+        const { match } = this.props;
         return (
-            <div className="text-center pt-50" style={{ height: 'calc(100vh - 180px)'}}>
-                <div className="center-hor-ver h-50 row">
-                    <div className="px-4">
-                        <h2 className="font-3x mb-3">
-                            Bienvenue sur microcap
-                        </h2>
-                    </div>
-                </div>
-            </div>
+			<div className="full-height col-sm-12 col-md-9 col-lg-7 mx-auto text-center">
+				<h1 className="mb-20">
+				Welcome to microcap</h1>
+			</div>
         )
     }
 }

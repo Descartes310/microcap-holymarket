@@ -49,7 +49,6 @@ export default class MAxHeightMenu extends React.Component {
           onClose={this.handleClose}
           PaperProps={{
             style: {
-              maxHeight: ITEM_HEIGHT * 4.5,
               width: 200,
             },
           }}>

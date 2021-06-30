@@ -35,7 +35,7 @@ export default class CardsMasonry extends Component {
                   </CardBody>
                </Card>
                <Card>
-                  <CardImg top width="100%" src={require('Assets/img/gallery-7.jpg')} className="img-fluid" alt="Card image cap" />
+                  <CardImg top width="100%" src={require('Assets/img/profile.jpg')} className="img-fluid" alt="Card image cap" />
                   <CardBody>
                      <CardTitle>Card title</CardTitle>
                      <CardSubtitle>Card subtitle</CardSubtitle>
@@ -52,7 +52,7 @@ export default class CardsMasonry extends Component {
                   </CardBody>
                </Card>
                <Card>
-                  <CardImg width="100%" src={require('Assets/img/gallery-10.jpg')} className="img-fluid" alt="Card image cap" />
+                  <CardImg width="100%" src={require('Assets/img/profile.jpg')} className="img-fluid" alt="Card image cap" />
                   <CardImgOverlay className="gradient-warning">
                      <CardTitle>Card Title</CardTitle>
                      <CardText>This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</CardText>
@@ -62,7 +62,7 @@ export default class CardsMasonry extends Component {
                   </CardImgOverlay>
                </Card>
                <Card>
-                  <CardImg top width="100%" src={require('Assets/img/gallery-8.jpg')} className="img-fluid" alt="Card image cap" />
+                  <CardImg top width="100%" src={require('Assets/img/profile.jpg')} className="img-fluid" alt="Card image cap" />
                </Card>
                <Card body style={{ borderColor: '#333' }}>
                   <CardTitle>Special Title Treatment</CardTitle>
@@ -81,7 +81,7 @@ export default class CardsMasonry extends Component {
                      <CardText>This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</CardText>
                      <Button variant="contained" color="primary" className="text-white">Button</Button>
                   </CardBody>
-                  <CardImg bottom width="100%" src={require('Assets/img/gallery-9.jpg')} className="img-fluid" alt="Card image cap" />
+                  <CardImg bottom width="100%" src={require('Assets/img/profile.jpg')} className="img-fluid" alt="Card image cap" />
                </Card>
             </CardColumns>
          </div>

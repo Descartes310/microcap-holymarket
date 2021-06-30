@@ -1,7 +1,7 @@
 /**
  * Dasboard Routes
  */
-import React from 'react';
+import React, {useEffect} from 'react';
 import RctAppLayout from 'Components/RctAppLayout';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
@@ -13,61 +13,124 @@ import {
     AsyncBranchNetworkConfiguration,
     AsyncCatalogProducts,
     AsyncUserProfile,
+    AsyncPionier,
     AsyncUsers,
+    AsyncAllUsersAccounts,
+    AsyncGetIn,
     AsyncCommunity,
     AsyncProjects,
+    AsyncCommunityProject,
     AsyncCatalogSales,
     AsyncComOperationType,
-    AsyncComOperation, AsyncComOffer, AsyncProducts, AsyncStore,
+    AsyncComOperation, AsyncComOffer, AsyncGroupAdmin, AsyncProducts, AsyncStore,
     AsyncAccess, AsyncSettingNotifications, AsyncNotifications, AsyncUsersAccounts,
     AsyncActivateBranch, AsyncSampleBranchList,
-    AsyncDiscover
+    AsyncDiscover,
+    AsyncSolidarity,
+    AsyncMoneyManagement,
+    AsyncGallery,
+    AsyncCommunitySpace
 } from 'Components/AsyncComponent/AsyncComponent';
 import Community from "Routes/custom/community";
 
 import CommunityMembersActivities from "Routes/custom/communityT/activities";
 import CommunityMembers from "Routes/custom/communityT/members";
+import CommunityAdmins from "Routes/custom/communityT/admin";
+// import CommunityProject from "Routes/custom/communityT/projects";
 import CommunityMembersPostsProjects from "Routes/custom/communityT/postsProjects";
+import ClientPieceList from "Routes/custom/settings/client_folder/List";
+import AgentList from "Routes/custom/settings/agents/List";
+import PionierList from "Routes/custom/settings/pioniers/List";
+import ConfigurationsList from "Routes/custom/settings/configurations/List";
+import UnitList from "Routes/custom/settings/units";
+import Posts from "Routes/custom/settings/posts";
+import Ressource from "Routes/custom/ressources";
+import PersonalSpace from "Routes/custom/users/users/personnal-space";
+import SingleProfile from 'Routes/custom/users/user-profile/Profile';
+import UserProfile from 'Routes/custom/users/user-profile';
+import Stock from 'Routes/custom/stocks';
+import AllUsers from 'Routes/custom/users/all-users/List';
+import UpdateInitializationOption from 'Routes/custom/projects/configuration/intialisation-options/Update';
 
-import Branch from "Models/Branch";
-import {useAbility} from "@casl/react";
+import { useAbility } from "@casl/react";
 import {
     CATALOG,
     DISCOVER,
+    SOLIDARITY,
+    PASS_DETAILS,
+    MISSION, VALUES,
+    MONEY_MANAGEMENT,
+    PIONIERS,
+    GALERY_PROJECT,
     HOME,
+    SERVICES,
     NETWORK,
     CATEGORY,
     PRODUCT_TYPE,
     USERS,
     COMMUNITY,
+    COMMUNITY_ADMIN,
     COMMUNITY_MEMBER,
+    GETIN,
+    STOCK,
+    TERMS,
     PACKAGES,
+    RESSOURCE,
+    AGENTS,
     COMMERCIAL_MANAGEMENT, PRODUCT, STORE, ROOT, ACCESS, SETTINGS, NOTIFICATIONS, PROJECTS
 } from "Url/frontendUrl";
-import {AbilityContext} from "Permissions/Can";
-import {connect} from "react-redux";
-import {disableAppLoading} from "Actions/AppLoadingAction";
-import {loginIntoStore} from "Actions/TokensActions";
-import {getPermissionOfPath} from "Helpers/helpers";
+import { AbilityContext } from "Permissions/Can";
+import { connect } from "react-redux";
+import { disableAppLoading } from "Actions/AppLoadingAction";
+import { loginIntoStore } from "Actions/TokensActions";
 import Permission from "Enums/Permissions";
 import HomePage from "Routes/custom/HomePage";
 import CanRoute from "Components/CanRoute";
+import Terms from "./Terms";
+import Mission from "./discover/pages/Mission";
+import Values from "./Values";
+import OfferDetails from './discover/pages/OfferDetails';
+import Agents from './discover/pages/Agents';
+import Services from './discover/pages/Service';
+import {onInitCart} from "Actions/CartActions";
 
-const Dashboard = ({ match, authUser }) => {
+const Dashboard = ({ onInitCart }) => {
     const ability = useAbility(AbilityContext);
+
+    useEffect(()=>{
+        onInitCart();
+    }, []);
 
     return (
         <RctAppLayout>
             <div className="dashboard-wrapper">
                 <Switch>
                     <Route exact path={DISCOVER} component={AsyncDiscover} />
+                    <Route exact path={GETIN} component={AsyncGetIn} />
+                    <Route exact path={PIONIERS} component={AsyncPionier} />
+                    <Route exact path={AGENTS} component={Agents} />
+                    <Route exact path={GALERY_PROJECT} component={AsyncGallery} />
                     <Route exact path={ROOT} component={HomePage} />
                     <Route exact path={HOME} component={HomePage} />
+                    <Route exact path={MISSION} component={Mission} />
+                    <Route exact path={VALUES} component={Values} />
+                    <Route exact path={SERVICES} component={Services} />
+                    <Route exact path={TERMS} component={Terms} />
+                    <Route exact path={PASS_DETAILS} component={OfferDetails} />
+                    <Route exact path={SOLIDARITY} component={AsyncSolidarity} />
+                    <Route exact path={MONEY_MANAGEMENT} component={AsyncMoneyManagement} />
 
                     <CanRoute
                         path={NETWORK.ACTIVATION}
                         component={AsyncActivateBranch}
                         permissions={[]}
+                    />
+
+
+                    <CanRoute
+                        path={USERS.ACCOUNTS.ALL}
+                        component={AllUsers}
+                        permissions={[Permission.users.accounts.viewList.name]}
                     />
 
                     <CanRoute
@@ -77,14 +140,63 @@ const Dashboard = ({ match, authUser }) => {
                     />
 
                     <CanRoute
+                        path={PROJECTS.CONFIGURATION.INITIALISATION.UPDATE}
+                        component={UpdateInitializationOption}
+                        permissions={[]}
+                    />
+
+                    <CanRoute
                         path={USERS.ACCOUNTS.SELF}
                         component={AsyncUsersAccounts}
                         permissions={[Permission.users.accounts.viewList.name]}
                     />
 
+
                     <CanRoute
                         path={SETTINGS.NOTIFICATION.SELF}
                         component={AsyncSettingNotifications}
+                        permissions={[]}
+                    />
+
+                    <CanRoute
+                        path={RESSOURCE.SELF}
+                        component={Ressource}
+                        permissions={[]}
+                    />
+
+                    <CanRoute
+                        path={SETTINGS.USERPIECE.SELF}
+                        component={ClientPieceList}
+                        permissions={[]}
+                    />
+
+                    <CanRoute
+                        path={SETTINGS.AGENTS.SELF}
+                        component={AgentList}
+                        permissions={[]}
+                    />
+
+                    <CanRoute
+                        path={SETTINGS.PIONIERS.SELF}
+                        component={PionierList}
+                        permissions={[]}
+                    />
+
+                    <CanRoute
+                        path={SETTINGS.CONFIGS.SELF}
+                        component={ConfigurationsList}
+                        permissions={[]}
+                    />
+
+                    <CanRoute
+                        path={SETTINGS.UNITS.SELF}
+                        component={UnitList}
+                        permissions={[]}
+                    />
+
+                    <CanRoute
+                        path={SETTINGS.POST.SELF}
+                        component={Posts}
                         permissions={[]}
                     />
 
@@ -117,7 +229,7 @@ const Dashboard = ({ match, authUser }) => {
                         path={NETWORK.LIST}
                         permissions={[Permission.branch.viewList.name]}
                         component={AsyncBranchList}
-                        // can={ability.can(Branch.permissionsRelated.READ, Branch)}
+                    // can={ability.can(Branch.permissionsRelated.READ, Branch)}
                     />
 
                     <CanRoute
@@ -182,8 +294,14 @@ const Dashboard = ({ match, authUser }) => {
 
                     <CanRoute
                         path={USERS.USERS_PROFILE.SELF}
-                        component={AsyncUserProfile}
-                        permissions={[Permission.userProfile.viewList.name]}
+                        component={UserProfile}
+                        permissions={[]}
+                    />
+
+                    <CanRoute
+                        path={STOCK.SELF}
+                        component={Stock}
+                        permissions={[]}
                     />
 
                     <CanRoute
@@ -200,33 +318,32 @@ const Dashboard = ({ match, authUser }) => {
                     />
 
                     <CanRoute
-                        path={COMMUNITY.POST_PROJECT.SELF}
-                        component={CommunityMembersPostsProjects}
+                        path={COMMUNITY.SELF}
+                        component={AsyncCommunitySpace}
                         permissions={[]}
                     />
 
                     <CanRoute
-                        path={COMMUNITY.MEMBERS.SELF}
-                        component={CommunityMembers}
-                        permissions={[]}
-                    />
-
-                    <CanRoute
-                        path={COMMUNITY.ACTIVITY.SELF}
-                        component={CommunityMembersActivities}
+                        path={USERS.USERS.PERSONNAL_SPACE}
+                        component={PersonalSpace}
                         permissions={[]}
                     />
 
                     <CanRoute
                         path={ACCESS.SELF}
                         component={AsyncAccess}
-                        // component={AsyncCommunity}
                         permissions={[]}
                     />
 
                     <CanRoute
                         path={PRODUCT.SELF}
                         component={AsyncProducts}
+                        permissions={[]}
+                    />
+
+                    <CanRoute
+                        path={USERS.USERS_PROFILE.PROFILE}
+                        component={SingleProfile}
                         permissions={[]}
                     />
 
@@ -241,4 +358,4 @@ const mapStateToProps = ({ authUser, tokens, appLoading }) => {
     return { tokens, authUser: authUser.data, appLoading };
 };
 
-export default connect(mapStateToProps, {disableAppLoading, loginIntoStore})(Dashboard);
+export default connect(mapStateToProps, { disableAppLoading, onInitCart, loginIntoStore })(Dashboard);

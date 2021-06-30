@@ -9,6 +9,7 @@ const publicPrefix = shouldHavePublic ? 'public/' : '';
 export const AUTH = {
     LOGIN: 'oauth/token',
     LOGIN_WITH_SERVICE_NUMBER: 'auth/login',
+    GET_ALL_BY_NAME_AND_URL: 'auth/cgu/by-url',
     COUNTRY: {
         LIST: 'auth/countries',
         OPERATORS: 'auth/countries/{country}/microcap-operators'
@@ -28,6 +29,35 @@ export const PROFILE = {
     INFORMATION_WITH_SERVICE_NUMBER: 'auth/me/mandate',
 };
 
+export const SETTING = {
+    GET_ALL: 'api/settings/branchs/{id}',
+    GET_ALL_BY_NAME: 'api/settings/branchs/{id}/by-name',
+    CGU: 'api/settings/update/cgu',
+    UPDATE_CGU: 'api/settings/update/cgu/{id}',
+    CURRENCIES: 'api/settings/currencies',
+    UNIT_TYPE: 'api/settings/unit-types',
+    GET_UNIT: 'api/settings/units/unit-types/{id}',
+    UNIT: 'api/settings/units',
+    AGENTS: {
+        GET_ALL: 'api/settings/agents/list',
+        GET_MAIN: 'api/settings/agents/list/main',
+        ACTIVE: 'api/settings/agents/active/{id}',
+        GET_ONE: 'api/settings/agents/{id}',
+        CREATE: 'api/settings/agents',
+        UPDATE: 'api/settings/agents/{id}',
+        MAIN: 'api/settings/agents/main/{id}',
+    },
+    PIONIERS: {
+        GET_ALL: 'api/settings/pioniers/list',
+        GET_MAIN: 'api/settings/pioniers/list/main',
+        GET_ONE: 'api/settings/pioniers/{id}',
+        ACTIVE: 'api/settings/pioniers/active/{id}',
+        MAIN: 'api/settings/pioniers/main/{id}',
+        CREATE: 'api/settings/pioniers',
+        UPDATE: 'api/settings/pioniers/{id}'
+    }
+};
+
 export const SYSTEM_OBJECT = {
     IDENTIFICATION: 'public/system/objects/identification-type',
     REGISTRATION_TYPE: 'public/system/objects/immatriculation-type',
@@ -43,12 +73,18 @@ export const BRANCH = {
     ACTIVATION: 'public/branchs/activation',
     CREATE: 'public/branchs',
     GET_ALL: 'public/branchs',
+    GET_ALL_POSTS: 'public/branchs/{id}/posts',
+    GET_ALL_OPERATORS: 'public/branchs/{id}/operators',
+    SELECTED_OPERATOR: 'api/groups/communities/send/request/community/{group_id}/organisation/{organisation_id}',
+    REMOVE_OPERATOR: 'api/groups/operators/remove',
+    CANCEL_OPERATOR: 'api/groups/operators/invitation/cancel',
     CONFIGURATION: {
         START: 'public/branchs/start/configurations/{id}',
         STOP: 'public/branchs/close/configurations/{id}',
     },
     PRODUCTS: {
-        GET_ALL: '/public/type-products/get-all',
+        GET_ALL: '/api/type-products/get-all',
+        GET_ALL_PRODUCTS: '/api/type-products/get-all/products',
     },
     SAMPLE: {
         GET_ALL: "public/branchs/staging",
@@ -82,6 +118,10 @@ export const NETWORK_PROFILE_TYPE = {
     GET_ALL: 'public/type-network-profiles',
 };
 
+export const PRODUCTS = {
+    GET_FOR_USER: 'api/products/accounts/user/{id}',
+};
+
 export const CATALOGS = {
     GET_ALL: 'public/catalogs',
     CREATE: 'public/catalogs',
@@ -109,21 +149,28 @@ export const CATEGORY_PRODUCTS = {
 };
 
 export const PRODUCT_TYPE = {
-    ROOT: 'public/type-products/root',
-    GET_ALL: 'public/type-products/get-all',
-    CREATE: 'public/type-products',
-    GET_ONE: 'public/type-products/{id}',
-    TYPE_PRODUCTS: 'public/type-catalogs/type-products',
-    SUB_CATEGORY: 'public/type-products/{id}/type-products',
-    GET_ALL_BY_SALE: 'public/type-products/by-catalogue-vente',
-    AVAILABLE: 'public/type-products/{id}/variations',
+    ROOT: 'api/type-products/root',
+    GET_ALL: 'api/type-products/get-all',
+    GET_ALL_PRODUCTS: 'api/type-products/get-all/products',
+    CREATE: 'api/type-products',
+    GET_ONE: 'api/type-products/{id}',
+    GET_ONE_FULL: 'api/type-products/{id}/full',
+    GET_ONE_FROM_COM_OFFER: 'api/type-products/offer/{id}',
+    TYPE_PRODUCTS: 'api/type-catalogs/type-products',
+    SUB_CATEGORY: 'api/type-products/{id}/type-products',
+    GET_ALL_BY_SALE: 'api/type-products/by-catalogue-vente',
+    AVAILABLE: 'api/type-products/{id}/variations',
+};
+
+export const PDF_GENERATOR = {
+    GET_MOVEMENTS: 'api/pdf/accounts/{id}/mouvements',
 };
 
 export const PACKAGES = {
-    LIST: 'public/packages',
-    CREATE: 'public/packages',
-    ACTIVATE: 'public/packages/activate',
-    DEACTIVATE: 'public/packages/desactivate',
+    LIST: 'api/packages',
+    CREATE: 'api/packages',
+    ACTIVATE: 'api/packages/activate',
+    DEACTIVATE: 'api/packages/desactivate',
 };
 
 export const USER_PROFILE = {
@@ -137,13 +184,27 @@ export const USER_PROFILE = {
 };
 
 export const USERS = {
-    BRANCH_USERS: 'public/users',
-    SEARCH: 'public/users/search',
-    GET_ALL: 'public/users/persons',
-    GET_ALL_BY_ORGANISATION: 'public/users/persons/by-organisation',
+    BRANCH_USERS: 'api/users',
+    SEARCH: 'api/users/search',
+    GET_ONE: '/api/users/one',
+    SUSPEND: 'api/users/{id}/suspend',
+    DELETE: 'api/users/{id}/delete',
+    GET_ALL: 'api/users/persons',
+    UPDATE_CURRENCY: 'api/users/currency/{id}',
+    GET_ALL_BY_ORGANISATION: 'api/users/persons/by-organisation',
+    GET_ALL_PARTNER: 'public/users/organisations/branch/{id}/partner',
+    GET_ALL_PARTNER_OPERATOR: 'public/users/organisations/branch/{id}/partner/operator',
+    GET_ALL_PARTNER_OPERATOR_ME: 'public/users/organisations/partner/operator/me/{id}',
+    GET_ALL_ORGANISATIONS: 'public/users/organisations',
+    GET_ORGANISATION_REFERENCE: 'public/users/organisations/adhesion/{id}',
     CREATE: {
-        PERSON: 'public/users/persons/with-profile',
+        PERSON: 'api/users/persons/with-profile',
         ORGANISATION: 'public/users/organisations/with-profile',
+        PARTNER: 'public/users/organisations/{id}/partner',
+    },
+    UPDATE: {
+        PERSON: '/api/users',
+        AVATAR: '/api/users/update/avatar'
     },
     ACCOUNTS: {
         GET_ALL: '/public/type-network-profiles',
@@ -151,54 +212,83 @@ export const USERS = {
         CREATE: '/public/type-network-profiles',
     },
     VALIDATION: {
-        SEND_OTP: 'public/users/{id}/otp/mail',
-        VERIFY: 'public/users/{id}/otp'
+        SEND_OTP: 'api/users/{id}/otp/mail',
+        VERIFY: 'api/users/{id}/otp'
+    },
+    PIECE: {
+        GET_ALL: 'api/users/pieces/{id}/get',
+        GET_USER: 'api/users/pieces/user/{id}/get',
+        GET_CONNECTED_USER: 'api/users/pieces/user/get',
+        CREATE: 'api/users/pieces/create',
+        CREATE_FOR_USER: 'api/users/pieces/value/create',
+        UPDATE_FOR_USER: 'api/users/pieces/value/update',
+        DELETE_FOR_USER: 'api/users/pieces/value/{id}/delete'
     }
 };
 
 export const COMMUNITY_MEMBER = {
     USER: {
         GROUPS: {
-            GET_ALL: 'groups/communities/user/me',
-            GET_BY_BRANCH: 'groups/communities/branch/{id}/user/{user_id}',
-            NOT_IN: 'groups/communities/user/{id}/not-in',
-            ADMIN: 'groups/communities/user/admin/me',
-            GET_MEMBERS: 'groups/communities/{id}/members',
-            GET_COMMUNITIES: 'groups/communities/users/{id}',
+            GET_ALL: 'api/groups/communities/user/me',
+            GET_BY_BRANCH: 'api/groups/communities/branch/{id}/user/{user_id}',
+            NOT_IN: 'api/groups/communities/user/{id}/not-in',
+            ADMIN: 'api/groups/communities/user/admin/me',
+            GET_MEMBERS: 'api/groups/communities/{id}/members',
+            GET_COMMUNITIES: 'api/groups/communities/users/{id}',
+            CREATE_VOUCHER: 'api/groups/{id}/vouchers',
+            GET_VOUCHERS_FOR_USER: 'api/groups/users/vouchers',
+            GET_VOUCHERS: 'api/groups/{id}/vouchers/users/{user_id}/type/{type}',
+            GET_ADMINS: 'api/groups/communities/{id}/admins',
+            ADD_OPERATOR: 'api/groups/communities/{id}/operator',
+            GET_FAVOURITES: 'api/groups/communities/favourites',
+            ADD_FAVOURITES: 'api/groups/communities/{id}/favourites',
         },
         CREATE: {
-            NON_CONVENTIONAL: 'groups/communities/non-conventionated'
+            NON_CONVENTIONAL: 'api/groups/communities/non-conventionated'
         }
     },
+    GROUP: {
+        CREATE_POST: 'api/groups/posts',
+        CREATE_MOTIVATION: 'api/groups/posts/{id}/motivations',
+        CREATE_SECTION: 'api/groups/{id}/sections',
+        GET_MAIN_SECTIONS: 'api/groups/{id}/sections',
+        GET_ALL_SECTIONS: 'api/groups/{id}/sections/all',
+        GET_POSTS: 'api/groups/{id}/posts',
+        GET_MOTIVATION_POSTS: 'api/groups/posts/{post_id}/motivations',
+        GET_CHILD_SECTIONS: 'api/groups/sections/{id}/sections',
+        GET_PENDING_COMMUNITIES: 'api/groups/communities/operators/invitations',
+        GET_CURRENT_COMMUNITIES: 'api/groups/operators/communities',
+        VALIDATE_COMMUNITY: 'api/groups/communities/operators/invitations/validation',
+    },
     INVITATIONS: {
-        GET_ALL: 'groups/communities/pending/invitation/{id}',
+        GET_ALL: 'api/groups/communities/pending/invitation/{id}',
         SEND: {
-            ONE: 'groups/communities/send/invitation/community/{group_id}',
-            MANY: 'groups/communities/send/invitation/community/{group_id}',
-            REQUEST: 'groups/communities/send/request/community/{group_id}/users/{user_id}',
-            TO_USER: 'groups/communities/send/invitation/community/user/{user_id}',
-            TO_GROUP: 'groups/communities/send/invitation/community/{group_id}',
-            INVITATIONS: 'groups/communities/{id}/pending/invitations',
-            REQUESTS: 'groups/communities/{id}/pending/requests',
+            ONE: 'api/groups/communities/send/invitation/community/{group_id}',
+            MANY: 'api/groups/communities/send/invitation/community/{group_id}',
+            REQUEST: 'api/groups/communities/send/request/community/{group_id}/users/{user_id}',
+            TO_USER: 'api/groups/communities/send/invitation/community/user/{user_id}',
+            TO_GROUP: 'api/groups/communities/send/invitation/community/{group_id}',
+            INVITATIONS: 'api/groups/communities/{id}/pending/invitations',
+            REQUESTS: 'api/groups/communities/{id}/pending/requests',
         },
-        ACCEPT: 'groups/communities/accept/invitation/{invitation_id}',
-        CANCEL: 'groups/communities/cancel/invitation/{invitation_id}',
-        DELETE: 'groups/communities/delete/invitation/{invitation_id}',
+        ACCEPT: 'api/groups/communities/accept/invitation/{invitation_id}',
+        CANCEL: 'api/groups/communities/cancel/invitation/{invitation_id}',
+        DELETE: 'api/groups/communities/delete/invitation/{invitation_id}',
     },
 };
 
 /* export const COMMUNITY = {
 
     INVITATIONS: {
-        GET_ALL: 'groups/communities/pending/invitation/me',
+        GET_ALL: 'api/groups/communities/pending/invitation/me',
         SEND: {
-            ONE: 'groups/communities/send/invitation/community/{group_id}/user/{user_id}',
-            MANY: 'groups/communities/send/invitation/community/{group_id}',
-            REQUEST: 'groups/communities/send/request/community/{group_id}',
+            ONE: 'api/groups/communities/send/invitation/community/{group_id}/user/{user_id}',
+            MANY: 'api/groups/communities/send/invitation/community/{group_id}',
+            REQUEST: 'api/groups/communities/send/request/community/{group_id}',
         },
-        ACCEPT: 'groups/communities/accept/invitation/{invitation_id}',
-        CANCEL: 'groups/communities/cancel/invitation/{invitation_id}',
-        DELETE: 'groups/communities/delete/invitation/{invitation_id}',
+        ACCEPT: 'api/groups/communities/accept/invitation/{invitation_id}',
+        CANCEL: 'api/groups/communities/cancel/invitation/{invitation_id}',
+        DELETE: 'api/groups/communities/delete/invitation/{invitation_id}',
     },
 };
  */
@@ -215,26 +305,46 @@ export const COMMERCIAL_MANAGEMENT = {
     },
     OFFER: {
         GET_ALL: {
-            FOR_PARTNER: 'public/commercial-offer/for-partner',
-            FOR_NETWORK: 'public/commercial-offer/for-network',
-            PRODUCT_AVAILABLE: 'public/commercial-offer/products-available',
+            FOR_PARTNER: 'api/commercial-offer/for-partner',
+            FOR_NETWORK: 'api/commercial-offer/for-network',
+            PRODUCT_AVAILABLE: 'api/commercial-offer/products-available',
         },
-        CREATE: 'public/commercial-offer',
-        UPDATE: 'public/commercial-offer',
-        ACTIVATE: 'public/commercial-offer/active'
+        CREATE: 'api/commercial-offer',
+        ADD_PRODUCT: 'api/commercial-offer/{id}',
+        UPDATE: 'api/commercial-offer',
+        ACTIVATE: 'api/commercial-offer/active',
+        DEACTIVATE: 'api/commercial-offer/desactive'
     },
 };
 
 export const ORDER = {
-    GET_ALL: 'public/order',
-    GET_ONE: 'public/order/{id}',
-    CREATE: 'public/order',
+    GET_ALL: 'api/order/users',
+    GET_ALL_OPERATORS: 'api/order/operator',
+    GET_ALL_UNAPPROVED: 'api/order/users/unapproved',
+    GET_ONE: 'api/order/{id}',
+    APPROVE_ORDER: 'api/order/{id}/status',
+    GET_ONE_SALE: 'api/order/{id}/sales',
+    GET_ALL_PAYMENT: 'api/order/{id}/sales/all',
+    CREATE: 'api/order',
+    PIECES: 'api/order/{id}/pieces',
+};
+
+export const ACCOUNT = {
+    GET_ONE: 'api/accounts/{id}',
+    GET_TRANSACTIONS: 'api/accounts/{id}/mouvements',
+    GET_ACCOUNT_BY_AMOUNT: 'api/accounts/users/{id}/account-by-amount',
+    APPROVISIONING_VOUCHER: 'api/accounts/{id}/approvisioning/voucher',
+    APPROVISIONING_CARD: 'api/accounts/{id}/approvisioning/card',
+    GET_ALL_BY_UNIT: 'api/accounts',
+    CHANGE_CURRENCY: 'api/accounts/{id}/currency',
+    CONSOLIDATION_BALANCE: 'api/accounts/consolidated/{id}/balance'
 };
 
 export const SALES = {
-    GET_ALL: 'public/sales',
-    GET_ONE: 'public/sales/{id}',
-    CREATE: 'public/sales',
+    GET_ALL: 'api/sales',
+    GET_ONE: 'api/sales/{id}',
+    GET_BY_USER: 'api/sales/users/{id}',
+    CREATE: 'api/sales',
 };
 
 export const GENERIC_OBJECT = {
@@ -288,41 +398,56 @@ export const NOTIFICATIONS = {
 
 export const PROJECTS = {
     SELF: {
-        GET_ALL: 'public/projects',
-        CREATE: 'public/projects',
+        GET_ALL: 'api/projects',
+        CREATE: 'api/projects',
     },
     FOLDERS: {
-        GET_ALL: 'public/projects/folders/users/{id}',
-        CREATE: 'public/projects/folders',
-        GET_ONE: 'public/projects/folders/{id}',
+        GET_ALL: 'api/projects/folders/users/{id}',
+        GET_ALL_BY_BRANCH: 'api/projects/folders/branch',
+        CREATE: 'api/projects/folders',
+        UPDATE: 'api/projects/folders/{id}',
+        ADD_WORK: 'api/projects/folders/{id}/adding',
+        UPDATE_WORK: 'api/projects/folders/books/{id}',
+        SORT_WORK: 'api/projects/folders/{id}/sort',
+        GET_ONE: 'api/projects/folders/{id}',
+        GET_ONE_BY_GROUP: 'api/projects/folders/group/{id}',
+    },
+    REACTIONS: {
+        GET_ALL: 'api/projects/reactions/projects/{id}',
+        GET_ALL_BY_BRANCH: 'api/projects/reactions/projects/all/branch',
+        CREATE: 'api/projects/reactions',
+        GET_ONE: 'api/projects/reactions/{id}',
     },
     POST_PROJETS: {
-        CREATE: 'public/branchs/{id}/posts',
-        GET_ALL: 'public/branchs/{id}/posts',
+        CREATE: 'api/projects/posts',
+        GET_ALL: 'public/branchs/{id}/project/posts',
     },
     CONFIGURATION: {
         WORKS: {
             GET_ALL: 'public/branchs/{id}/books',
-            CREATE: 'public/books',
+            CREATE: 'api/books',
+            GET_ALL_USER: 'api/books',
         },
         STANDARD: {
-            GET_ALL: 'public/projects/presentation-standard',
-            GET_ONE: 'public/projects/presentation-standard/{id}',
-            CREATE: 'public/projects/presentation-standard',
+            GET_ALL: 'api/projects/presentation-standard',
+            GET_ONE: 'api/projects/presentation-standard/{id}',
+            CREATE: 'api/projects/presentation-standard',
             MODELS: {
-                GET_ALL: 'public/projects/presentation-standard/{id}/models',
-                CREATE: 'public/projects/model',
-                DELETE: 'public/projects/models/{id}',
+                GET_ALL: 'api/projects/presentation-standard/{id}/models',
+                CREATE: 'api/projects/model',
+                DELETE: 'api/projects/models/{id}',
             },
             PRESENTATION:  {
-                GET_ALL: 'public/projects/presentation',
-                GET_ONE: 'public/projects/presentation/{id}',
-                CREATE: 'public/projects/presentation',
+                GET_ALL: 'api/projects/presentation',
+                GET_ONE: 'api/projects/presentation/{id}',
+                CREATE: 'api/projects/presentation',
             }
         },
         INITIALISATION: {
-            GET_ALL: 'public/projects/options',
-            CREATE: 'public/projects/options',
+            GET_ALL: 'api/projects/options',
+            GET_ONE: 'api/projects/options/{id}',
+            CREATE: 'api/projects/options',
+            UPDATE: 'api/projects/options/{id}',
         }
     }
 };
@@ -334,6 +459,19 @@ export const joinBaseUrlWithParams = (to, params) => {
 
     params.forEach(param => {
         url = url.replace(`{${param.param}}`, `${encodeURIComponent(param.value)}`);
+    });
+
+    return url;
+};
+
+export const joinBaseUrlWithRequestParams = (to, params) => {
+    let url = BASE + to;
+    let i = 0;
+    params.forEach(param => {
+        if(i == 0)
+            url = url + '?' + param.param + '=' + param.value
+        else
+        url = url + '&' + param.param + '=' + param.value
     });
 
     return url;

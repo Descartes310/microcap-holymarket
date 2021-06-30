@@ -3,6 +3,18 @@ import { BASE } from "Url/backendUrl";
 export const ROOT = '/';
 export const HOME = '/home';
 export const DISCOVER = '/discover';
+export const MISSION = '/mission-microcap';
+export const VALUES = '/reseau-microcap';
+export const GETIN = '/get-in';
+export const PIONIERS = '/pioniers';
+export const AGENTS = '/agents';
+export const SERVICES = '/services';
+export const PASS_DETAILS = '/pass-details';
+export const SOLIDARITY = '/solidarity';
+export const MONEY_MANAGEMENT = '/money-management';
+export const GALERY_PROJECT = '/projects-gallery';
+export const TERMS = '/conditions-generales-d-utilisation';
+export const LEGAL_MENTION = '/mentions-legales';
 export const AUTH = {
     LOGIN: '/login',
     REGISTER: '/register',
@@ -39,6 +51,12 @@ export const NETWORK = {
         },
     },
     COVERAGE: '/network/coverage',
+    COVERAGE_TABS: {
+        AREA: '/network/coverage/areas',
+        AREA_TYPE: '/network/coverage/area-types',
+        PARTNER: '/network/coverage/partners'
+    },
+
     CREATE: '/branch/create',
     ONGOING_CREATE: '/branch/ongoing/create',
     EDIT: '/branch/edit',
@@ -87,11 +105,15 @@ export const USERS = {
         SELF: '/users',
         LIST: '/users/list',
         CREATE: '/users/create',
+        PERSONNAL_SPACE: '/personal-space'
     },
     USERS_PROFILE: {
         SELF: '/users-profile',
         LIST: '/users-profile/list',
         CREATE: '/users-profile/create',
+        PROFILE: '/users-profile/profile',
+        DISPLAY_PROFILE: '/users-profile/display-profile',
+        SHOW_PROFILE: '/users-profile/display-profile/:id',
         USERS_PERMISSION: {
             SELF: '/users-profile/users-permission',
             LIST: '/users-profile/users-permission/list',
@@ -101,8 +123,9 @@ export const USERS = {
     ACCOUNTS: {
         SELF: '/users-accounts',
         LIST: '/users-accounts/list',
+        ALL: '/all-users',
         CREATE: '/users-accounts/create',
-    }
+    },
 };
 
 export const COMMERCIAL_MANAGEMENT = {
@@ -110,6 +133,7 @@ export const COMMERCIAL_MANAGEMENT = {
         SELF: '/commercial/offer',
         LIST: '/commercial/offer/list',
         CREATE: '/commercial/offer/create',
+        ADD_PRODUCT: '/commercial/offer/:id/add-product'
     },
     COMMERCIAL_OPERATION: {
         SELF: '/commercial/operation',
@@ -125,13 +149,32 @@ export const COMMERCIAL_MANAGEMENT = {
 
 export const PRODUCT = {
     LIST: '/products',
-    SHOW: '/products/:id/show',
+    CLASSIC_SALES: '/products/classic-sales',
+    PRIVATE_SALES: '/products/private-sales',
+    FINANCIAL_SALES: '/products/financial-sales',
+    MICROCAP_PRODUCT: '/products/microcap-sales',
+    ORDERS: '/products/orders',
+    UNAPPROVED_ORDERS: '/products/orders/unapproved',
+    OPERATOR_ORDERS: '/products/orders/operators',
+    ORDERS_SHOW: '/products/orders/:id/show',
+    SHOW: '/products/:id/show/:type',
+    DETAILS: '/products/:id/details/:type',
+    SHOW_ACCOUNT: '/products/accounts',
+    ACCOUNT_DETAILS: '/products/accounts/:id',
+    ACCOUNT_LOGS: '/products/accounts/:id/logs',
 };
 
 export const STORE = {
     SELF: '/store',
     CART: '/store/cart',
+    ORDER: '/store/order',
     CHECKOUT: '/store/checkout/:id',
+};
+
+export const RESSOURCE = {
+    SELF: '/ressources',
+    VOUCHERS: '/ressources/vouchers',
+    PIECES: '/ressources/pieces',
 };
 
 export const ACCESS = {
@@ -159,7 +202,9 @@ export const ACCESS = {
 
 export const NOTIFICATIONS = {
     SELF: '/notifications',
-    LIST: '/notifications/list',
+    LIST: '/notifications/unread',
+    READ: '/notifications/read',
+    TREATED: '/notifications/treated',
     // CREATE: '/notifications/create',
 };
 
@@ -176,6 +221,32 @@ export const SETTINGS = {
             LIST: '/settings/notifications/service/list',
             CREATE: '/settings/notifications/service/create',
         }
+    },
+    USERPIECE: {
+        SELF: '/settings/users-pieces'
+    },
+    CONFIGS: {
+        SELF: '/settings/configurations'
+    },
+    UNITS: {
+        SELF: '/settings/units',
+        TYPE: '/settings/units/types',
+        VALUE: '/settings/units/values'
+    },
+    POST: {
+        SELF: '/settings/posts',
+        LIST: '/settings/posts/list',
+        CREATE: '/settings/posts/create',
+        MOTIVATION: {
+            LIST: '/settings/posts/:id/list',
+            CREATE: '/settings/posts/:id/create',
+        }
+    },
+    AGENTS: {
+        SELF: '/settings/agents',
+    },
+    PIONIERS: {
+        SELF: '/settings/pioniers',
     }
 };
 
@@ -183,9 +254,27 @@ export const PROJECTS = {
     SELF: '/projects',
     FOLDERS: {
         SELF: '/projects/folder',
-        LIST: '/projects/folder/list',
         SHOW: '/projects/folder/:id',
+        GALLERY: '/projects/folder/:id/gallery',
+        UPDATE: '/projects/folder/:id/update',
+        WORK: '/projects/folder/:id/works',
         CREATE: '/projects/folder/create',
+        REACTIONS: {
+            LIST: '/projects/folder/reactions/list',
+            CREATE: '/projects/folder/reactions/create',
+            CONSULTATION: '/projects/folder/reactions/consultation'
+        },
+        WORKS: {
+            LIST: '/projects/folder/works/list',
+            CREATE: '/projects/folder/works/create',
+            SELF: '/projects/folder/works'
+        },
+        PROJECTS: {
+            SELF: '/projects/folder/projects',
+            LIST: '/projects/folder/projects/list',
+            IDEAS: '/projects/folder/projects/ideas/list',
+            CREATE_IDEAS: '/projects/folder/projects/ideas/create',
+        }
     },
     PROJECTS: {
         LIST: '/projects/list',
@@ -221,6 +310,7 @@ export const PROJECTS = {
         },
         INITIALISATION: {
             SELF: '/projects/configuration/initialisation-options',
+            UPDATE: '/projects/configuration/initialisation-options/:id/update',
             IDEA: {
                 SELF: '/projects/configuration/initialisation-options/idea',
                 LIST: '/projects/configuration/initialisation-options/idea/list',
@@ -242,30 +332,83 @@ export const PROJECTS = {
     },
 };
 
+export const COMMUNITY_ADMIN = {
+    SELF: '/community-t/:id/admin',
+    VOUCHER: {
+        PAYMENT: '/community-t/:id/admin/members/vouchers/payment',
+        CHARCHING: '/community-t/:id/admin/members/vouchers/charging'
+    },
+    MEMBERS: {
+        SELF: '/community-t/:id/admin/members',
+        LIST: '/community-t/:id/admin/members/list',
+        INVITATION: '/community-t/:id/admin/members/invitation'
+    },
+    POST: {
+        SELF: '/community-t/:id/admin/user-category',
+        LIST: '/community-t/:id/admin/user-category/list',
+        CREATE: '/community-t/:id/admin/user-category/create',
+        MOTIVATION: {
+            LIST: '/community-t/:id/admin/user-category/post/:postId/list',
+            CREATE: '/community-t/:id/admin/user-category/post/:postId/create',
+        }
+    },
+    RUBRIQUE: {
+        SELF: '/community-t/:id/admin/rubrique',
+        LIST: '/community-t/:id/admin/rubrique/list',
+        CREATE: '/community-t/:id/admin/rubrique/create',
+    },
+    OPERATOR: {
+        SELF: '/community-t/:id/admin/operateur',
+        LIST: '/community-t/:id/admin/operateur/list',
+        SUPERVISION: {
+            SELF: '/community-t/:id/admin/operateur/supervision',
+            COMMUNITIES: '/community-t/:id/admin/operateur/supervision/communities',
+        }
+    },
+    PROJECT: {
+        SELF: '/community-t/:id/admin/project',
+        CREATE: '/community-t/:id/admin/project/create',
+    },
+    INVITATIONS: {
+        SELF: '/community-t/:id/admin/members/invitation',
+        LIST: {
+            SEND: '/community-t/:id/admin/members/invitation/send',
+            RECEIVED: '/community-t/:id/admin/members/invitation/integration-request',
+        },
+        CREATE: '/community-t/:id/admin/members/invitation/create'
+    },
+};
+
 export const COMMUNITY = {
-    SELF: '/community-t',
+    SELF: '/community-t/:id',
     POST_PROJECT: {
-        SELF: '/community-t/projects',
+        SELF: '/community-t/:id/projects',
         LIST: '',
         CREATE: ''
     },
     MEMBERS: {
-        SELF: '/community-t/members',
-        LIST: '/community-t/members/list',
-        INVITATION: '/community-t/members/invitation'
+        SELF: '/community-t/:id/members',
+        LIST: '/community-t/:id/members/list',
+        INVITATION: '/community-t/:id/members/invitation'
     },
     ACTIVITY: {
         SELF: '/community-t/activities',
         LIST: '',
         CREATE: ''
     },
+    PROJECTS: {
+        SELF: '/community-t/:id/admin/projects',
+        SHOW: '/community-t/:id/admin/projects/show',
+        GALLERY: '/community-t/:id/admin/projects/gallery',
+        UPDATE: '/community-t/:id/admin/projects/update',
+    },
     INVITATIONS: {
-        SELF: '/community-t/members/invitation',
+        SELF: '/community-t/:id/members/invitation',
         LIST: {
-            SEND: '/community-t/members/invitation/send',
-            RECEIVED: '/community-t/members/invitation/integration-request',
+            SEND: '/community-t/:id/members/invitation/send',
+            RECEIVED: '/community-t/:id/members/invitation/integration-request',
         },
-        CREATE: '/community-t/members/invitation/create'
+        CREATE: '/community-t/:id/members/invitation/create'
     },
 };
 
@@ -275,6 +418,8 @@ export const COMMUNITY_MEMBER = {
         SELF: '/community/groups',
         LIST: '/community/groups/list',
         ME: '/community/groups/me',
+        CHAT: '/community/groups/chats',
+        FAVOURITES: '/community/groups/favourites',
         CREATE: '/community/groups/create',
     },
     INVITATIONS: {
@@ -300,6 +445,16 @@ export const MICROCAP360 = {
     }
 };
 
+export const STOCK = {
+    SELF: '/stocks',
+    OPPORTUITY: {
+        SELF: '/stocks/oppotunities',
+    },
+    FINANCIAL: {
+        SELF: '/stocks/financials',
+        PROJECT_SHOW: '/stocks/financials/project/:id',
+    }
+};
 
 export const joinUrlWithParams = (to, params) => {
     let url = to;

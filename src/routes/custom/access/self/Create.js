@@ -119,10 +119,7 @@ const Create = props => {
                 NotificationManager.success("Accès créée avec succès");
                 onClose();
             })
-            .catch((error) => {
-                NotificationManager.error(ERROR_500);
-                // console.log("error => ", error.message);
-            })
+            .catch(() => null)
             .finally(() => setRequestGlobalAction(false));
     };
 

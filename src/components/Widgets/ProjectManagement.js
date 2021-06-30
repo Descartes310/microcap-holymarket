@@ -23,6 +23,7 @@ import { getTheDate } from 'Helpers/helpers';
 
 // intl messages
 import IntlMessages from 'Util/IntlMessages';
+import { getFilePath } from "Helpers/helpers";
 
 class ProjectItem extends Component {
 	constructor(props) {
@@ -57,7 +58,7 @@ class ProjectItem extends Component {
 								{data.team.map((member, subkey) => (
 									<li className="list-inline-item" key={subkey}>
 										<Tooltip id="tooltip-top" title={member.name} placement="top">
-											<Avatar alt="user 4" src={member.avatar} alt="avatar" className="rounded-circle" />
+											<Avatar alt="user 4" src={getFilePath(member.avatar)} alt="avatar" className="rounded-circle" />
 										</Tooltip>
 									</li>
 								))}

@@ -57,8 +57,9 @@ class Create extends Component {
             this.props.setRequestGlobalAction(true);
             const data = {
                 title: this.state.label,
-                // content: this.state.description,
+                description: this.state.description,
                 branchId: this.props.authUser.branchId,
+                admin: true
             };
             if (this.state.parentId !== '-1') {
                 data.parentId = Number(this.state.parentId);
@@ -69,9 +70,7 @@ class Create extends Component {
                     NotificationManager.success("Ouvrage de projets créé avec succès");
                     this.props.history.push(PROJECTS.CONFIGURATION.WORKS.LIST);
                 })
-                .catch(() => {
-                    NotificationManager.error(ERROR_500);
-                })
+                .catch(() => null)
                 .finally(() => this.props.setRequestGlobalAction(false));
         }
     };
@@ -106,9 +105,9 @@ class Create extends Component {
                                         <span className="has-icon"><i className="ti-pencil"/></span>
                                     </FormGroup>
 
-                                    {/*<FormGroup className="col-sm-12 has-wrapper">
+                                    <FormGroup className="col-sm-12 has-wrapper">
                                         <InputLabel className="text-left" htmlFor="description">
-                                            Texte
+                                            Description
                                         </InputLabel>
                                         <InputStrap
                                             required
@@ -119,7 +118,7 @@ class Create extends Component {
                                             onChange={event => this.handleOnFormChange('description', event.target.value)}
                                         />
                                         <span className="has-icon"><i className="ti-pencil"/></span>
-                                    </FormGroup>*/}
+                                    </FormGroup>
 
                                     <CustomAsyncComponent
                                         loading={false}

@@ -12,19 +12,28 @@ class List extends Component {
     static contextType = AbilityContext;
     baseUrl = PROJECTS.POST_PROJETS;
 
+    state = {
+        posts: []
+    }
+
     componentDidMount() {
-        this.props.getItems(this.props.authUser.branchId);
+        setRequestGlobalAction(true)
+        getAllPostProject(this.props.authUser.branchId).then(data => {
+            this.setState({ posts: data })
+        }).finally(() => {
+            setRequestGlobalAction(false)
+        })
     }
 
     render() {
-        const { list, loading, error, intl, history } = this.props;
+        const { intl, history } = this.props;
+        const { posts } = this.state;
 
         return (
             <>
                 <CustomList
-                    list={list}
-                    error={error}
-                    loading={loading}
+                    list={posts}
+                    loading={false}
                     titleList={"Poste Projets"}
                     itemsFoundText={n => intl.formatMessage({id: "projects.found"}, {count: n})}
                     onAddClick={() => history.push(this.baseUrl.CREATE)}
@@ -92,15 +101,11 @@ class List extends Component {
 }
 
 // map state to props
-const mapStateToProps = ({ requestGlobalLoader, projects, authUser  }) => {
-    const list = projects;
+const mapStateToProps = ({ requestGlobalLoader, authUser  }) => {
     return {
         requestGlobalLoader,
-        authUser: authUser.data,
-        loading: list.loading,
-        list: list.data,
-        error: list.error
+        authUser: authUser.data
     }
 };
 
-export default connect(mapStateToProps, {getItems: getAllPostProject, setRequestGlobalAction})(withRouter(injectIntl(List)));
+export default connect(mapStateToProps, {setRequestGlobalAction})(withRouter(injectIntl(List)));

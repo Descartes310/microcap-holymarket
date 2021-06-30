@@ -33,11 +33,8 @@ class HeaderNotifications extends Component {
    componentDidMount() {
       getCountUnreadNotifications(this.props.authUser.user.id)
           .then(unreadCount => this.setState({unreadCount}))
-          .catch((error) => {
-             NotificationManager.error(ERROR_500);
-          });
-
-      this.props.getAllNotifications(this.props.authUser.user.id);
+          .catch(() => null);
+      this.props.getAllNotifications(this.props.authUser.user.id, 'UNREAD');
    }
 
    viewAll = () => {
@@ -87,7 +84,7 @@ class HeaderNotifications extends Component {
                          />
                      ) : (
                          <ul className="list-unstyled dropdown-list">
-                            {data && data.map((notification, index) => (
+                            {data && data.reverse().map((notification, index) => (
                                 <li key={index}>
                                    <div className="media">
                                       {/*<div className="mr-10">

@@ -69,9 +69,7 @@ class Create extends Component {
                     NotificationManager.success("Présentation créée avec succès");
                     this.props.history.push(PROJECTS.CONFIGURATION.STANDARD.PRESENTATION.LIST);
                 })
-                .catch(() => {
-                    NotificationManager.error(ERROR_500);
-                })
+                .catch(() => null)
                 .finally(() => this.props.setRequestGlobalAction(false));
         }
     };

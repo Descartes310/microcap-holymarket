@@ -1,28 +1,28 @@
-import React, {useEffect, useState} from 'react';
-import {Form, FormGroup} from "reactstrap";
+import React, { useEffect, useState } from 'react';
+import { Form, FormGroup } from "reactstrap";
 import InputComponent from "Components/InputComponent";
 import Button from "@material-ui/core/Button";
-import {useForm} from "react-hook-form";
+import { useForm } from "react-hook-form";
 import IntlMessages from "Util/IntlMessages";
-import {injectIntl} from 'react-intl';
+import { injectIntl } from 'react-intl';
 import InputLabel from "@material-ui/core/InputLabel/InputLabel";
-import {setRequestGlobalAction, getUserPermissions} from "Actions";
-import {NotificationManager} from "react-notifications";
+import { setRequestGlobalAction, getUserPermissions } from "Actions";
+import { NotificationManager } from "react-notifications";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
-import {connect} from "react-redux";
-
+import { connect } from "react-redux";
+import Input from "@material-ui/core/Input";
 // Material
 import DialogTitle from "@material-ui/core/DialogTitle/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent/DialogContent";
 import Dialog from "@material-ui/core/Dialog/Dialog";
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import {useTheme, withStyles} from '@material-ui/core/styles';
+import { useTheme, withStyles } from '@material-ui/core/styles';
 import CancelIcon from '@material-ui/icons/Cancel';
 import FormControl from "@material-ui/core/FormControl";
 import Checkbox from "@material-ui/core/Checkbox/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
 import IconButton from "@material-ui/core/IconButton";
-import {createCommunityNonConventionated, getUserCommunities} from "Actions";
+import { createCommunityNonConventionated, getUserCommunities } from "Actions";
 import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
 
 const CommunityCreate = props => {
@@ -31,27 +31,32 @@ const CommunityCreate = props => {
 
     const { classes, getUserCommunities, authUser, loading, intl, onClose, show, setRequestGlobalAction } = props;
 
-    const { control, register, errors, handleSubmit, setValue, watch} = useForm({
+    const { control, register, errors, handleSubmit, setValue, watch } = useForm({
         defaultValues: {
             isPrivate: false,
             isVisible: false,
             isActive: false,
+            isConvention: false,
         }
     });
+
+    const [file, setFile] = useState(null);
 
     const isPrivateWatch = watch('isPrivate');
     const isVisibleWatch = watch('iVisible');
     const isActiveWatch = watch('iActive');
+    const isConventionWatch = watch('conventionated');
 
     /**
      * On submit
      */
     const onSubmit = (data) => {
         setRequestGlobalAction(true);
-        
-        console.log('Create Group', authUser.user.id)
-
-        createCommunityNonConventionated(data, authUser.branchId, authUser.user.id)
+        data.image = file;
+        data.is_active = true;
+        data.is_visible = true;
+        data.is_private = false;
+        createCommunityNonConventionated(data, authUser.branchId, authUser.user.id, {fileData: ['image'], multipart: true})
             .then(() => {
                 NotificationManager.success("Communauté créée avec succès");
                 getUserCommunities(authUser.user.id);
@@ -103,9 +108,9 @@ const CommunityCreate = props => {
                                     register={register}
                                     name={'label'}
                                     className="input-lg"
-                                    // placeholder={intl.formatMessage({id: "common.commercialName"})}
+                                // placeholder={intl.formatMessage({id: "common.commercialName"})}
                                 />
-                                <span className="has-icon"><i className="ti-pencil"/></span>
+                                <span className="has-icon"><i className="ti-pencil" /></span>
                             </FormGroup>
 
                             <FormGroup className="has-wrapper">
@@ -118,13 +123,49 @@ const CommunityCreate = props => {
                                     register={register}
                                     name={'description'}
                                     className="input-lg"
-                                    // placeholder={intl.formatMessage({id: "common.commercialName"})}
+                                // placeholder={intl.formatMessage({id: "common.commercialName"})}
                                 />
-                                <span className="has-icon"><i className="ti-pencil"/></span>
+                                <span className="has-icon"><i className="ti-pencil" /></span>
+                            </FormGroup>
+
+                            <FormGroup>
+                                <InputLabel className="text-left">
+                                    Image de la communauté
+                                </InputLabel>
+                                <Input
+                                    id="File"
+                                    type="file"
+                                    name="avatar"
+                                    onChange={event => setFile(event.target.files[0])}
+                                />
                             </FormGroup>
 
                             <div className="row">
-                                <div className="col-md-4 col-sm-12">
+                                {
+                                    authUser.isExploitant() ?
+
+                                        <div className="col-md-4 col-sm-12">
+                                            <InputComponent
+                                                isRequired
+                                                className="mt-0"
+                                                errors={errors}
+                                                control={control}
+                                                register={register}
+                                                componentType="select"
+                                                id="conventionated"
+                                                name={'conventionated'}
+                                                // defaultValue={data[0]}
+                                                as={<FormControlLabel control={
+                                                    <Checkbox
+                                                        color="primary"
+                                                        checked={isConventionWatch}
+                                                        onChange={() => setValue('conventionated', !isConventionWatch)}
+                                                    />
+                                                } label={"Communauté conventionnée ?"}
+                                                />}
+                                            />
+                                        </div> : null}
+                                {/* <div className="col-md-4 col-sm-12">
                                     <InputComponent
                                         isRequired
                                         className="mt-0"
@@ -186,7 +227,7 @@ const CommunityCreate = props => {
                                         } label={"Communauté active ?"}
                                         />}
                                     />
-                                </div>
+                                </div> */}
                             </div>
 
                             <FormGroup className="mb-15">
@@ -209,8 +250,8 @@ const CommunityCreate = props => {
     );
 };
 
-const mapStateToProps = ({ requestGlobalLoader, authUser, userPermissions}) => {
-    return {loading: requestGlobalLoader, authUser: authUser.data, userPermissions: userPermissions};
+const mapStateToProps = ({ requestGlobalLoader, authUser, userPermissions }) => {
+    return { loading: requestGlobalLoader, authUser: authUser.data, userPermissions: userPermissions };
 };
 
 
@@ -236,5 +277,5 @@ const useStyles = theme => ({
     }
 });
 
-export default connect(mapStateToProps, {getUserCommunities, setRequestGlobalAction })
-(withStyles(useStyles, { withTheme: true })(injectIntl(CommunityCreate)));
+export default connect(mapStateToProps, { getUserCommunities, setRequestGlobalAction })
+    (withStyles(useStyles, { withTheme: true })(injectIntl(CommunityCreate)));

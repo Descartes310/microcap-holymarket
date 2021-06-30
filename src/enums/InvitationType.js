@@ -5,3 +5,5 @@ export default class InvitationType extends BaseEnum {
     static INVITATION = 'INVITATION';
     static REQUEST = 'REQUEST';
 }
+
+

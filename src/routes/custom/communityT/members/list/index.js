@@ -1,29 +1,39 @@
-import React, { Component } from 'react'
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
 import ListItem from './ListItem';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-import { readEmail, onSelectEmail } from 'Actions';
-import IntlMessages from 'Util/IntlMessages';
-import { withStyles } from "@material-ui/core";
-import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
-import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
-import {Button, Input, InputGroup, InputGroupAddon} from "reactstrap";
-import IconButton from "@material-ui/core/IconButton";
-import { getMembersOfCommunity } from 'Actions/independentActions';
-import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
+import {connect} from 'react-redux';
+import React, {Component} from 'react';
+import {withRouter} from 'react-router-dom';
+import SimpleProfile from './SimpleProfile';
+import {withStyles} from "@material-ui/core";
 import {AbilityContext} from "Permissions/Can";
-import User from "Models/User";
-
+import CustomList from "Components/CustomList";
+import EmptyResult from "Components/EmptyResult";
+import {onSelectEmail, readEmail} from 'Actions';
+import CancelIcon from '@material-ui/icons/Cancel';
+import Dialog from "@material-ui/core/Dialog/Dialog";
+import IconButton from "@material-ui/core/IconButton";
+import TimeFromMoment from "Components/TimeFromMoment";
+import AmountCurrency from "Components/AmountCurrency";
+import FetchFailedComponent from "Components/FetchFailedComponent";
+import DialogTitle from "@material-ui/core/DialogTitle/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent/DialogContent";
+import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
+import {getMembersOfCommunity, getUser, getVouchers} from 'Actions/independentActions';
 
 class ListMembers extends Component {
-
     static contextType = AbilityContext;
 
     state = {
         loading: true,
-        users: []
+        users: [],
+        codes: [],
+        showVoucherBox: false,
+        showBox: false,
+        user: null,
+        loadingCodes: false,
+    };
+
+    componentDidMount() {
+        this.getMembers();
     }
 
     handleChange = event => {
@@ -31,71 +41,165 @@ class ListMembers extends Component {
     };
 
     getMembers = () => {
-        getMembersOfCommunity(this.props.communitySpace.data).then(data => {
-            this.setState({ users: data })
-        }).finally(() => this.setState({ loading: false}))
-    }
+        getMembersOfCommunity(this.props.communitySpace.data)
+            .then(data => {
+                this.setState({ users: data });
+            })
+            .finally(() => this.setState({ loading: false }));
+    };
 
-    componentDidMount() {
-        this.getMembers();
-    }
+    onViewVoucher = user => {
+        this.setState({ showVoucherBox: true, loadingCodes: true });
+        getVouchers(this.props.communitySpace.data, user.id, 'ALL')
+            .then(data => {
+                this.setState({ codes: data });
+            }).catch(err => {
+                this.setState({ codes: null });
+            })
+            .finally(() => this.setState({ loadingCodes: false }));
+    };
+
+    getUserDetails = (id) => {
+        getUser(id).then(data => {
+            this.setState({ user: data, showBox: true });
+        })
+    };
 
     render() {
-        const { loading, users } = this.state;
+        const { loading, users, user, showBox, codes, showVoucherBox, loadingCodes } = this.state;
         const { classes } = this.props;
         return (
-
-            <div className="page-list">
-                <PageTitleBar title={"Membres de la communautés"} />
-                {loading 
-                    ? (<RctSectionLoader />)
-                    : (
-                        <RctCollapsibleCard>
-                            <div className="align-items-center mb-30 px-15 row">
-                                <div className={classes.flex}>
-                                    <FormControl>
-                                        <InputGroup>
-                                            <InputGroupAddon addonType="prepend">
-                                                <IconButton aria-label="facebook">
-                                                    <i className="zmdi zmdi-search"></i>
-                                                </IconButton>
-                                            </InputGroupAddon>
-                                            <Input
-                                                type="text"
-                                                name="search"
-                                                value={this.state.searched}
-                                                placeholder={'Recherchez...'}
-                                                onChange={event => this.onSearchChanged(event)}
-                                            />
-                                        </InputGroup>
-                                    </FormControl>
-                                </div>
-                                <p className={classes.title}>
-                                    {users.length} utilisateur(s) trouvé(s)
-                                </p>
-                            </div>
-                            <div className="rct-tabs">
-                                <ul className="list-unstyled m-0">
-                                    {users.length > 0 ? users.map((user, key) => (
-                                        <ListItem
-                                            user={user}
-                                            key={key}
-                                            onSelectEmail={(e) => this.onSelectEmail(e, user)}
-                                            onReadEmail={() => this.readEmail(user)}
-                                        />
-                                    ))
-                                        :
-                                        <div className="d-flex justify-content-center align-items-center py-50">
-                                            <h4>
-                                                Aucun utilisateurs trouvés
-                                            </h4>
-                                        </div>
-                                    }
-                                </ul>
-                            </div>
-                        </RctCollapsibleCard>
-                    )
-                }
+            <div className="page-list mt-2">
+                <CustomList
+                    list={users}
+                    loading={loading}
+                    showBackBtn={false}
+                    wrapClassName="mt-15 mx-4"
+                    titleList="Membres de la communautés"
+                    itemsFoundText={n => `${n} utilisateur(s) trouvé(s)`}
+                    renderItem={list => (
+                        <div className="rct-tabs">
+                            <ul className="list-unstyled m-0">
+                                {list.length === 0 ? (
+                                    <EmptyResult message="Aucun utilisateurs trouvés" />
+                                ) : list.map((user, key) => (
+                                    <ListItem
+                                        key={key}
+                                        user={user}
+                                        onViewVoucher={() => this.onViewVoucher(user)}
+                                        isMe={this.props.authUser.user.id === user.id}
+                                        getUserDetails={() => this.getUserDetails(user.id)}
+                                    />
+                                ))}
+                            </ul>
+                        </div>
+                    )}
+                />
+                <Dialog
+                    open={showBox && user != null}
+                    onClose={() => { this.setState({ showBox: false }) }}
+                    aria-labelledby="responsive-dialog-title"
+                    maxWidth={'lg'}
+                    fullWidth
+                >
+                    <DialogTitle id="form-dialog-title">
+                        <div className="row justify-content-between align-items-center">
+                            Profile de l'utlisateur
+                                                    <IconButton
+                                color="primary"
+                                aria-label="close"
+                                className="text-danger"
+                                onClick={() => { this.setState({ showBox: false }) }}>
+                                <CancelIcon />
+                            </IconButton>
+                        </div>
+                    </DialogTitle>
+                    <DialogContent>
+                        <SimpleProfile user={user} />
+                    </DialogContent>
+                </Dialog>
+                <Dialog
+                    open={showVoucherBox}
+                    onClose={() => { this.setState({ showVoucherBox: false, codes: [] }) }}
+                    aria-labelledby="responsive-dialog-title"
+                    maxWidth={'lg'}
+                    fullWidth
+                >
+                    <DialogTitle id="form-dialog-title">
+                        <div className="row justify-content-between align-items-center">
+                            Codes de paiement actifs
+                            <IconButton
+                                color="primary"
+                                aria-label="close"
+                                className="text-danger"
+                                onClick={() => { this.setState({ showVoucherBox: false, codes: [] }) }}>
+                                <CancelIcon />
+                            </IconButton>
+                        </div>
+                    </DialogTitle>
+                    <DialogContent>
+                        {loadingCodes ? (
+                            <RctSectionLoader/>
+                        ) : !codes ? (
+                            <FetchFailedComponent />
+                        ) : codes.length === 0 ? (
+                            <EmptyResult message="Aucun codes trouvés" />
+                        ) : (
+                            <table className="table table-hover table-middle mb-0 text-center">
+                                <thead>
+                                <tr>
+                                    <th>Code de paiement</th>
+                                    <th>Type</th>
+                                    <th>Valeur</th>
+                                    <th>Unité</th>
+                                    <th>Date de création</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {codes.map((item, key) => (
+                                    <tr key={key} className="cursor-pointer">
+                                        <td>
+                                            <div className="media">
+                                                <div className="media-body pt-10">
+                                                    <h4 className="m-0 fw-bold text-dark">{item.code}</h4>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div className="media">
+                                                <div className="media-body pt-10">
+                                                    <h4 className="m-0 fw-bold text-dark">{item.type}</h4>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div className="media">
+                                                <div className="media-body pt-10">
+                                                    <h4 className="m-0 fw-bold text-dark"><AmountCurrency amount={item.price} from={item.currency ? item.currency : 'EUR'} unit={item.unit} /></h4>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div className="media">
+                                                <div className="media-body pt-10">
+                                                    <h4 className="m-0 fw-bold text-dark">{item.unit ? item.unit.name : this.props.currencies.filter(c => c.code == item.currency)[0].name}</h4>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div className="media">
+                                                <div className="media-body pt-10">
+                                                    <h4 className="m-0 fw-bold text-dark"><TimeFromMoment time={item.updatedAt} /></h4>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))}
+                                </tbody>
+                            </table>
+                        )}
+                    </DialogContent>
+                </Dialog>
             </div>
         )
     }
@@ -120,9 +224,12 @@ const useStyles = theme => ({
     }
 });
 
-const mapStateToProps = ({ authUser, communitySpace }) => {
-    return { authUser: authUser.data, 
-        communitySpace: communitySpace };
+const mapStateToProps = ({ authUser, communitySpace, settings }) => {
+    return {
+        authUser: authUser.data,
+        communitySpace: communitySpace,
+        currencies: settings.currencies
+    };
 };
 
 export default withRouter(connect(mapStateToProps, {

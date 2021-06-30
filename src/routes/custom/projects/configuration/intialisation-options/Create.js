@@ -78,7 +78,7 @@ class CreateProjectsCall extends Component {
             const data = {
                 type: this.props.type,
                 name: this.state.label,
-                works: JSON.stringify(this.state.chosenWorks.map(i => ({id: Number(i.id), content: i.content}))),
+                works: JSON.stringify(this.state.chosenWorks.map(i => ({id: Number(i.id), content: i.content, description: i.description, required: i.required, editable: i.editable, max: i.max}))),
                 branchId: this.props.authUser.branchId,
             };
 
@@ -87,9 +87,7 @@ class CreateProjectsCall extends Component {
                     NotificationManager.success("Ouvrage de projets créé avec succès");
                     this.props.history.push(PROJECTS.CONFIGURATION.INITIALISATION[this.props.type].LIST);
                 })
-                .catch(() => {
-                    NotificationManager.error(ERROR_500);
-                })
+                .catch(() => null)
                 .finally(() => this.props.setRequestGlobalAction(false));
         }
     };
@@ -106,7 +104,7 @@ class CreateProjectsCall extends Component {
     getText = () => {
         return this.props.type === 'IDEA'
             ? "Création d'une idée"
-            : this.props.type === 'APP'
+            : this.props.type === 'PROJECTS_CALL'
                 ? "Création d'un appel à projet"
                 : "Création d'un programme"
     };
@@ -117,7 +115,7 @@ class CreateProjectsCall extends Component {
         return (
             <div className="my-3">
                 <div className="my-3 pl-3 page-title m-0">
-                    <i onClick={this.onBackClick} className="ti-angle-left cursor-pointer mr-2 icon-hover d-inline-flex"/>
+                    {/* <i onClick={this.onBackClick} className="ti-angle-left cursor-pointer mr-2 icon-hover d-inline-flex"/> */}
                     <h3 className="font-lg d-inline-flex">
                         {this.getText()}
                     </h3>
@@ -129,7 +127,7 @@ class CreateProjectsCall extends Component {
                                 <div className="row">
                                     <FormGroup className="col-sm-12 has-wrapper">
                                         <InputLabel className="text-left" htmlFor="label">
-                                            Titre
+                                            Titre de l'option d'initialisation
                                         </InputLabel>
                                         <InputStrap
                                             required
@@ -164,6 +162,9 @@ class CreateProjectsCall extends Component {
                                                                 <tr>
                                                                     <th>Titre</th>
                                                                     <th>Contenu</th>
+                                                                    <th>Maximum</th>
+                                                                    <th>Obligatoire</th>
+                                                                    <th>Actions</th>
                                                                 </tr>
                                                                 </thead>
                                                                 <tbody>
@@ -180,6 +181,20 @@ class CreateProjectsCall extends Component {
                                                                             <div className="media">
                                                                                 <div className="media-body pt-10">
                                                                                     <h4 className="m-0 font-weight-light text-dark">{item.content}</h4>
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td>
+                                                                            <div className="media">
+                                                                                <div className="media-body pt-10">
+                                                                                    <h4 className="m-0 font-weight-light text-dark">{item.max}</h4>
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td>
+                                                                            <div className="media">
+                                                                                <div className="media-body pt-10">
+                                                                                    <h4 className="m-0 font-weight-light text-dark">{item.required ? 'Oui' : 'Non'}</h4>
                                                                                 </div>
                                                                             </div>
                                                                         </td>

@@ -4,6 +4,7 @@
 // const webpack = require('webpack');
 const path = require('path');
 const fs = require('fs');
+const Dotenv = require('dotenv-webpack');
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
@@ -20,7 +21,8 @@ const resolveApp = relativePath => path.resolve(appDirectory, relativePath);
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+// const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const TerserPlugin = require("terser-webpack-plugin");
 
 module.exports = {
 	entry: ["babel-polyfill", "react-hot-loader/patch", "./src/index.js"],
@@ -41,7 +43,7 @@ module.exports = {
 		contentBase: './src/index.js',
 		host: '0.0.0.0',
 		compress: true,
-		port: 80, // port number
+		port: 3000, // port number
 		disableHostCheck: true,
 		historyApiFallback: true,
 		quiet: true
@@ -94,8 +96,8 @@ module.exports = {
 						loader: 'url-loader',
 						options: {
 							limit: 10000,
-                     name: 'static/media/[name].[hash:8].[ext]',
-                     esModule: false
+							name: 'static/media/[name].[hash:8].[ext]',
+							esModule: false
 						}
 					}
 				]
@@ -128,28 +130,24 @@ module.exports = {
 		]
 	},
 	optimization: {
-		minimizer: [
-			new UglifyJsPlugin({
-				// Enable file caching
-				cache: true,
-				// Use multi-process parallel running to improve the build speed
-				// Default number of concurrent runs: os.cpus().length - 1
-				parallel: true,
-
-				uglifyOptions: {
-					compress: false,
-					ecma: 8,
-					mangle: true
-				},
-				sourceMap: true
-			})
-		]
+		/*minimizer: [new TerserPlugin({
+			extractComments: true,
+			parallel: 8,
+			terserOptions: {
+				compress: {
+					warnings: false
+				}
+			}
+		})],
+		minimize: true,*/
 	},
 	performance: {
 		hints: process.env.NODE_ENV === 'production' ? "warning" : false
 	},
 	plugins: [
+		new Dotenv(),
 		new FriendlyErrorsWebpackPlugin(),
+		// new webpack.optimize.UglifyJsPlugin(),
 		new CleanWebpackPlugin({
 			dry: false,
 			verbose: false,
@@ -157,7 +155,7 @@ module.exports = {
 		new HtmlWebPackPlugin({
 			template: "./public/index.html",
 			filename: "./index.html",
-			favicon: './public/favicon.ico'
+			favicon: './public/microcap.png'
 		}),
 		new MiniCssExtractPlugin({
 			filename: "[name].css",

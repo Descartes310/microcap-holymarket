@@ -17,26 +17,7 @@ import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard
 
 // list item
 const listItems = [
-	{
-		itemName: 'Line item 1',
-		status: false,
-		imageURL: require('Assets/img/user-5.jpg')
-	},
-	{
-		itemName: 'Line item 2',
-		status: false,
-		imageURL: require('Assets/img/user-5.jpg')
-	},
-	{
-		itemName: 'Line item 3',
-		status: false,
-		imageURL: require('Assets/img/user-5.jpg')
-	},
-	{
-		itemName: 'Line item 4',
-		status: false,
-		imageURL: require('Assets/img/user-5.jpg')
-	}
+
 ]
 
 class ListItemWithImage extends Component {

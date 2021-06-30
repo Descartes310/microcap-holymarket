@@ -229,7 +229,7 @@ const mapStateToProps = ({ requestGlobalAction, currentCommunity, communitySpace
     return {
         loading: requestGlobalAction,
         userCommunitiesAdmin,
-        currentCommunity: currentCommunity.data,
+        currentCommunity: currentCommunity.data.community,
         authUser: authUser.data,
         communitySpace: communitySpace
     };

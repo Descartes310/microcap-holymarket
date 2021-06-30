@@ -15,7 +15,7 @@ import { RctCard, RctCardContent } from 'Components/RctCard';
 import { deleteItemFromCart, onUpdateItemToCart } from "Actions/CartActions";
 
 //Helper
-import {copyToClipboard, getSessonId, textTruncate} from "Helpers/helpers";
+import {copyToClipboard, getSessonId, textTruncate, getFilePath} from "Helpers/helpers";
 
 // intl messages
 import IntlMessages from 'Util/IntlMessages';
@@ -30,6 +30,7 @@ import {placeOrder, onClearCart, setRequestGlobalAction} from "Actions";
 import {ERROR_500} from "Constants/errors";
 import InvitationType from "Enums/InvitationType";
 import SweetAlert from "react-bootstrap-sweetalert";
+import AmountCurrency from "Components/AmountCurrency";
 
 class CartView extends Component {
     state = {
@@ -51,7 +52,8 @@ class CartView extends Component {
         const items = this.props.cart.items.map(item => ({
             product_id: item.id,
             quantity: item.quantity,
-            type: item.nature,
+            type: item.type,
+            nature: item.nature
         }));
 
         const branchUrl = window.location.host;
@@ -63,7 +65,7 @@ class CartView extends Component {
                 this.setState({showConfirmBox: true, orderRef: result.reference, orderId: result.id});
             })
             .catch(() => {
-                NotificationManager.error(ERROR_500);
+
             })
             .finally(() => this.props.setRequestGlobalAction(false));
     };
@@ -79,7 +81,6 @@ class CartView extends Component {
     };
 
     render() {
-        console.log("CartView");
         const { cart, match, history } = this.props;
         const { showConfirmBox } = this.state;
 
@@ -104,7 +105,7 @@ class CartView extends Component {
                                     <tr key={key}>
                                         <td className="w-10 text-center">
                                             <UserAvatar
-                                                avatar={cartItem.image}
+                                                avatar={getFilePath(cartItem.image)}
                                                 name={cartItem.name}
                                                 className="media-object"
                                                 witdh="100"
@@ -124,8 +125,8 @@ class CartView extends Component {
                                                 onChange={(e) => this.onChangeQuantity(e.target.value, cartItem)}
                                             />
                                         </td>
-                                        <td className="text-danger text-center">$ {cartItem.price}</td>
-                                        <td className="text-bold text-center">$ {cartItem.totalPrice}</td>
+                                        <td className="text-danger text-center"><AmountCurrency amount={cartItem.price} from={cartItem.currency} /></td>
+                                        <td className="text-bold text-center"><AmountCurrency amount={cartItem.price} from={cartItem.currency} quantity={cartItem.quantity} /></td>
                                         <td className="text-center">
                                             <IconButton onClick={() => this.onDeleteItem(cartItem)}>
                                                 <i className="zmdi zmdi-close"/>
@@ -145,16 +146,18 @@ class CartView extends Component {
                             <tr className="text-center">
                                 <td colSpan="3"></td>
                                 <td><span className="font-weight-bold">Total</span></td>
-                                <td><span className="font-weight-bold">$ {cart.getTotalPrice()}</span></td>
+                                <td><span className="font-weight-bold"><AmountCurrency amounts={cart.items.map((e) => {
+											return { amount: e.price, currency: e.currency, quantity: e.quantity }
+										})} styles={{ fontWeight: 'bold' }} /></span></td>
                                 <td>
                                     {!cart.isCartEmpty() && (
                                         <Button
                                             variant="contained"
                                             color="secondary"
                                             className="text-white"
-                                            onClick={() => this.onInitPayment()}
+                                            onClick={() => this.props.history.push(STORE.ORDER)}
                                         >
-                                            Payer
+                                            Commander
                                         </Button>
                                     )}
                                 </td>

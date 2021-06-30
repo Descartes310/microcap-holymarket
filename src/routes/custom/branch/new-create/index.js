@@ -27,7 +27,7 @@ class CreateBranch extends Component {
     constructor(props) {
         super(props);
 
-        this.sampleBranchId = this.props.location.search ? new URLSearchParams(this.props.location.search) : undefined;
+        this.sampleBranchId = new URLSearchParams(this.props.location.search).get("q");
         // this.sampleBranchId = this.props.location.state ? this.props.location.state.sampleBranchId : undefined;
         console.log("this.sampleBranchId => ", this.sampleBranchId);
 
@@ -48,7 +48,7 @@ class CreateBranch extends Component {
     mapDataToFormData = (data) => {
         const _data = {};
         _data.stepUpdate = [];
-        _data.branchId = this.sampleBranchId ? this.sampleBranchId.get('q') : '';
+        _data.branchId = this.sampleBranchId ? this.sampleBranchId : '';
 
         // Step 1
         _data.stepUpdate[0] = true;
@@ -109,7 +109,7 @@ class CreateBranch extends Component {
             _data[`${_index}institution`] = representant.user.institution;
             _data[`${_index}representativeNationality`] = representant.hostCountry;
 
-            const ___country = CountryManager.getCountryFromId(representant.hostCountry);
+            const ___country = CountryManager.getCountryFromId(representant.user.hostCountry);
             if (___country) {
                 const [___prefix, ___phone] = representant.user.phone.split(___country.phonePrefixes[0]);
 
@@ -128,7 +128,7 @@ class CreateBranch extends Component {
     loadData = () => {
         this.setState({ loading: true });
         if (this.sampleBranchId !== undefined) {
-            const id = this.sampleBranchId.get('q');
+            const id = this.sampleBranchId;
             getOneSampleBranch(id)
                 .then(result => {
                     const _data = this.mapDataToFormData(result);
@@ -139,8 +139,9 @@ class CreateBranch extends Component {
                         }
                     }));
                 })
-                .catch(() => {
-                    NotificationManager.error("La branche ayant pour identifiant " + id + " n'a pas pu être trouvé");
+                .catch((err) => {
+                    console.log(err)
+                    NotificationManager.error("La branches ayant pour identifiant " + id + " n'a pas pu être trouvé");
                     this.setState({ data: {stepUpdate : []} });
                 })
                 .finally(() => this.setState({ loading: false }));
@@ -154,7 +155,6 @@ class CreateBranch extends Component {
             {data: {...this.state.data, ...newData}},
             () => {
                 const objectData = this.getFormData(this.state.data);
-                console.log("object => ", objectData);
                 if (!this.state.data.stepUpdate[step - 1]) {
                     if (step < 5) {
                         this.saveStepData(step, objectData);

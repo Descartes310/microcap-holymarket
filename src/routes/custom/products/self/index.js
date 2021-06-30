@@ -10,8 +10,14 @@ import {PRODUCT} from "Url/frontendUrl";
 import {withRouter, Switch, Redirect, Route} from "react-router-dom";
 import List from './List';
 import ProductItemAvailable from './ProductItemAvailable';
-import Permission from "Enums/Permissions";
-import CanRoute from "Components/CanRoute";
+import Account from './accounts';
+import AccountShow from './accountShow';
+import AccountLogs from './accountLogs';
+import Order from './orders';
+import UnapprovedOrders from './unapprovedOrders';
+import OperatorOrders from './ordersOperator';
+import OrderShow from './orderShow';
+import ProductDetails from './productDetails';
 
 class Products extends Component {
     render() {
@@ -21,14 +27,16 @@ class Products extends Component {
                 <>
                     <Switch>
                         <Redirect exact from={`${match.url}/`} to={PRODUCT.LIST} />
-                        {/*<Route path={USERS.USERS_PROFILE.} component={Show} />*/}
+                        <Route path={PRODUCT.ORDERS_SHOW} component={OrderShow} />
+                        <Route path={PRODUCT.ACCOUNT_LOGS} component={AccountLogs} />
+                        <Route path={PRODUCT.ACCOUNT_DETAILS} component={AccountShow} />
                         <Route path={PRODUCT.SHOW} component={ProductItemAvailable} />
+                        <Route path={PRODUCT.SHOW_ACCOUNT} component={Account} />
+                        <Route path={PRODUCT.DETAILS} component={ProductDetails} />
+                        <Route path={PRODUCT.UNAPPROVED_ORDERS} component={UnapprovedOrders} />
+                        <Route path={PRODUCT.OPERATOR_ORDERS} component={OperatorOrders} />
+                        <Route path={PRODUCT.ORDERS} component={Order} />
                         <Route path={PRODUCT.LIST} component={List} />
-                        {/*<CanRoute
-                            path={PRODUCT.CREATE}
-                            component={Create}
-                            permissions={[Permission.users.createOne.name]}
-                        />*/}
                     </Switch>
                 </>
             </div>

@@ -10,6 +10,21 @@ class CountryManager {
         return  this.countries.map(c => ({phonePrefixes: c.callingCodes, flag: c.flag, id: c.alpha3Code}));
     };
 
+    get optionsNameAndFlag() {
+        return this.countryWithNameAndFlag();
+    };
+
+    get optionsNumberAndFlag() {
+        return this.countryWithNumberAndFlag();
+    };
+
+    filterOptionsNameAndFlag = (candidate, input) => {
+        if (input) {
+            return candidate.data.name.toLowerCase().includes(input.toLowerCase());
+        }
+        return true;
+    };
+
     countryWithNameAndFlag = () => {
         return  this.countries.map(c => ({name: c.name, flag: c.flag, id: c.alpha3Code}));
     };

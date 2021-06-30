@@ -13,19 +13,18 @@ class List extends Component {
     baseUrl = PROJECTS.PROJECTS;
 
     componentDidMount() {
-        this.props.getItems(this.props.authUser.branchId);
+        this.props.getProjects(this.props.authUser.branchId);
     }
 
     render() {
         const { list, loading, error, intl, history } = this.props;
-
         return (
             <>
                 <CustomList
                     list={list}
                     error={error}
                     loading={loading}
-                    titleList={"Projets"}
+                    titleList={"Modèles de Projets"}
                     itemsFoundText={n => intl.formatMessage({id: "projects.found"}, {count: n})}
                     onAddClick={() => history.push(this.baseUrl.CREATE)}
                     renderItem={list => (
@@ -98,4 +97,4 @@ const mapStateToProps = ({ requestGlobalLoader, projects, authUser  }) => {
     }
 };
 
-export default connect(mapStateToProps, {getItems: getProjects, setRequestGlobalAction})(withRouter(injectIntl(List)));
+export default connect(mapStateToProps, {getProjects, setRequestGlobalAction})(withRouter(injectIntl(List)));

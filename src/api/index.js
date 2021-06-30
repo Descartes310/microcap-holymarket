@@ -1,7 +1,9 @@
 import axios from 'axios';
 import AppConfig from 'Constants/AppConfig';
-import {objectToFormData, toCamelCase, toSnakeCase} from "Helpers/helpers";
 import {getAuthToken} from "Helpers/tokens";
+import {NotificationManager} from "react-notifications";
+import {ERROR_500, ERROR_401, ERROR_403, ERROR_404, ERROR_UNKNOWN} from 'Data/errors';
+import {errorManager, objectToFormData, toCamelCase, toSnakeCase} from "Helpers/helpers";
 
 const customAxios =
    axios.create({
@@ -70,6 +72,37 @@ customAxios.interceptors.response.use(
        }
 
        return response;
+    },
+    error => {
+        const originalRequest = error.config;
+        if (error) {
+            if (error.response) {
+                if (!originalRequest.skipError) {
+                    switch (error.response.status) {
+                        case 400:
+                            errorManager(error.response.data.errorss);
+                            return Promise.reject(error);
+                        case 401:
+                            NotificationManager.error(ERROR_401);
+                            return Promise.reject(error);
+                        case 403:
+                            NotificationManager.error(ERROR_403);
+                            return Promise.reject(error);
+                        case 404:
+                            NotificationManager.error(ERROR_404);
+                            return Promise.reject(error);
+                        case 500:
+                            NotificationManager.error(ERROR_500);
+                            return Promise.reject(error);
+                        default:
+                            NotificationManager.error(ERROR_500);
+                            return Promise.reject(error);
+                    }
+                }
+            } else if (!originalRequest.skipError) NotificationManager.error(ERROR_UNKNOWN);
+        } else if (!originalRequest.skipError) NotificationManager.error(ERROR_UNKNOWN);
+
+        return Promise.reject(error);
     });
 
 export default customAxios;

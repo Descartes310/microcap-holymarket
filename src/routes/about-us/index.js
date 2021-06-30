@@ -36,7 +36,7 @@ export default class AboutUS extends Component {
 							</div>
 							<div className="col-sm-12 col-md-6">
 								<div className="about-image">
-									<img src={require('Assets/img/about-1.png')} alt="about gallery" className="img-fluid" width="743" height="495" />
+									<img src={require('Assets/img/profile.jpg')} alt="about gallery" className="img-fluid" width="743" height="495" />
 								</div>
 							</div>
 						</div>
@@ -52,7 +52,7 @@ export default class AboutUS extends Component {
 							</div>
 							<div className="col-sm-12 col-md-6 order-1">
 								<div className="about-image">
-									<img src={require('Assets/img/about-2.png')} alt="about gallery" className="img-fluid" width="743" height="495" />
+									<img src={require('Assets/img/profile.jpg')} alt="about gallery" className="img-fluid" width="743" height="495" />
 								</div>
 							</div>
 						</div>
@@ -61,7 +61,7 @@ export default class AboutUS extends Component {
 						<div className="col-sm-12 col-md-4">
 							<RctCard>
 								<div className="card-image">
-									<img src={require('Assets/img/about-card-1.png')} alt="about card" className="img-fluid" width="485" height="323" />
+									<img src={require('Assets/img/profile.jpg')} alt="about card" className="img-fluid" width="485" height="323" />
 								</div>
 								<div className="card-content text-center p-30">
 									<div className="section-title mb-40">
@@ -76,7 +76,7 @@ export default class AboutUS extends Component {
 						<div className="col-sm-12 col-md-4">
 							<RctCard>
 								<div className="card-image">
-									<img src={require('Assets/img/about-card-2.png')} alt="about card" className="img-fluid" width="485" height="323" />
+									<img src={require('Assets/img/profile.jpg')} alt="about card" className="img-fluid" width="485" height="323" />
 								</div>
 								<div className="card-content text-center p-30">
 									<div className="section-title mb-40">
@@ -91,7 +91,7 @@ export default class AboutUS extends Component {
 						<div className="col-sm-12 col-md-4">
 							<RctCard>
 								<div className="card-image">
-									<img src={require('Assets/img/about-card-3.png')} alt="about card" className="img-fluid" width="485" height="323" />
+									<img src={require('Assets/img/profile.jpg')} alt="about card" className="img-fluid" width="485" height="323" />
 								</div>
 								<div className="card-content text-center p-30">
 									<div className="section-title mb-40">

@@ -2,11 +2,12 @@ import PropTypes from 'prop-types';
 import {connect} from "react-redux";
 import {injectIntl} from "react-intl";
 import React, { Component } from 'react';
-import {PROJECTS} from "Url/frontendUrl";
 import {withRouter} from "react-router-dom";
 import IntlMessages from 'Util/IntlMessages';
+import Button from "@material-ui/core/Button";
 import {AbilityContext} from "Permissions/Can";
 import CustomList from "Components/CustomList";
+import {PROJECTS, joinUrlWithParamsId} from "Url/frontendUrl";
 import {setRequestGlobalAction, getInitialisationOptions} from "Actions";
 
 class List extends Component {
@@ -57,7 +58,8 @@ class List extends Component {
                                         <thead>
                                             <tr>
                                                 <th>Désignation</th>
-                                                <th>Nombres d'ouvrages</th>
+                                                {/* <th>Nombres d'ouvrages</th> */}
+                                                <th>Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -72,12 +74,24 @@ class List extends Component {
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td>
+                                                {/* <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
                                                             <h4 className="m-0 fw-bold text-dark">{item.works.length}</h4>
                                                         </div>
                                                     </div>
+                                                </td> */}
+                                                <td>
+                                                    <Button
+                                                        size="small"
+                                                        color="primary"
+                                                        // disabled={loading}
+                                                        variant="contained"
+                                                        className={"text-white font-weight-bold mr-3"}
+                                                        onClick={() => history.push(joinUrlWithParamsId(PROJECTS.CONFIGURATION.INITIALISATION.UPDATE, item.id))}
+                                                    >
+                                                        Editer
+                                                    </Button>
                                                 </td>
                                             </tr>
                                         ))}

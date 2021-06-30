@@ -1,6 +1,22 @@
 /**
  * App Config File
  */
+
+const backendBaseUrl = (function (mode) {
+   switch (mode) {
+      case 'DEV1':
+         return process.env.API_URL_DEV1;
+      case 'DEV2':
+         return process.env.API_URL_DEV2;
+      case 'PRE_PROD':
+         return process.env.API_URL_PRE_PROD;
+      case 'PROD':
+         return process.env.API_URL_PROD;
+      default:
+         return process.env.API_URL_LOCAL;
+   }
+})(process.env.BACKEND_MODE);
+
 const AppConfig = {
    appLogo: require('Assets/identity/logomicrocap.png'),          // App Logo
    brandName: 'Microcap',                                    // Brand Name
@@ -10,7 +26,7 @@ const AppConfig = {
    rtlLayout: false,                                         // RTL Layout
    miniSidebar: false,                                       // Mini Sidebar
    enableSidebarBackgroundImage: false,                      // Enable Sidebar Background Image
-   sidebarImage: require('Assets/img/sidebar-4.jpg'),     // Select sidebar image
+   sidebarImage: require('Assets/img/profile.jpg'),     // Select sidebar image
    isDarkSidenav: true,                                   // Set true to dark sidebar
    enableThemeOptions: true,                              // Enable Theme Options
    locale: {
@@ -94,7 +110,7 @@ const AppConfig = {
       }
    ],
    enableUserTour: process.env.NODE_ENV === 'production' ? true : false,  // Enable / Disable User Tour
-   copyRightText: 'Reactify © 2019 All Rights Reserved.',      // Copy Right Text
+   copyRightText: 'Microcap © 2021 All Rights Reserved.',      // Copy Right Text
    // light theme colors
    themeColors: {
       'primary': '#FFB70F',
@@ -124,16 +140,9 @@ const AppConfig = {
    },
 
    api: {
-      //baseUrl: 'http://dev.microkap.com:8080/',
-      //baseUrl: 'http://51.15.228.41:8080/',
-      //baseUrl: 'http://microcap.skb.best:8080/',
-      // baseUrl: 'http://microcap.skb.best:4200/',
-      //baseUrl: 'http://192.168.1.8:8080/',
-      baseUrl: 'http://178.170.41.113:8080/',
-      // baseUrl: 'http://192.168.43.83:8080/',
-      // baseUrl: 'http://localhost:8080/',
-      version: '',
-      forbiddenCode: 401,
+      baseUrl: backendBaseUrl,
+      version: '1.0',
+      // forbiddenCode: 401,
      },
    };
 

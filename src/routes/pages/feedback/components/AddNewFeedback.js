@@ -27,7 +27,7 @@ class AddNewFeedback extends Component {
                 id: currentTime.getTime(),
                 idea: newIdea,
                 description,
-                userAvatar: require('Assets/img/user-7.jpg'),
+                userAvatar: require('Assets/img/profile.jpg'),
                 userName: 'Admin',
                 time: 'Just Now',
                 planned: false,

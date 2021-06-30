@@ -25,19 +25,19 @@ export default class AvatarsComponent extends Component {
 					>
 						<ul className="list-inline d-flex align-items-center justify-content-around flex-wrap">
 							<li className="list-inline-item">
-								<Avatar alt="user 1" src={require('Assets/img/user-5.jpg')} className="size-120 rounded-circle border-primary rct-notify" />
+								<Avatar alt="user 1" src={require('Assets/img/profile.jpg')} className="size-120 rounded-circle border-primary rct-notify" />
 							</li>
 							<li className="list-inline-item">
-								<Avatar alt="user 2" src={require('Assets/img/user-2.jpg')} className="size-100 rounded-circle border-success rct-notify" />
+								<Avatar alt="user 2" src={require('Assets/img/profile.jpg')} className="size-100 rounded-circle border-success rct-notify" />
 							</li>
 							<li className="list-inline-item">
-								<Avatar alt="user 3" src={require('Assets/img/user-3.jpg')} className="size-80 rounded-circle border-warning rct-notify" />
+								<Avatar alt="user 3" src={require('Assets/img/profile.jpg')} className="size-80 rounded-circle border-warning rct-notify" />
 							</li>
 							<li className="list-inline-item">
-								<Avatar alt="user 4" src={require('Assets/img/user-4.jpg')} className="size-60 rounded-circle border-danger rct-notify" />
+								<Avatar alt="user 4" src={require('Assets/img/profile.jpg')} className="size-60 rounded-circle border-danger rct-notify" />
 							</li>
 							<li className="list-inline-item">
-								<Avatar alt="user 4" src={require('Assets/img/user-1.jpg')} className="rounded-circle border-info rct-notify" />
+								<Avatar alt="user 4" src={require('Assets/img/profile.jpg')} className="rounded-circle border-info rct-notify" />
 							</li>
 						</ul>
 					</RctCollapsibleCard>

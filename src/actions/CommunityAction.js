@@ -3,9 +3,11 @@
  * Auth Action With Google, Facebook, Twitter and Github
  */
 import {
-    COMMUNITY_SPACE_GET_STATUS,
+    COMMUNITY_SPACE_SET_LOADING,
     COMMUNITY_SPACE_SET_STATUS,
-    COMMUNITY_SPACE_SET_VALUE
+    COMMUNITY_SPACE_SET_VALUE,
+    COMMUNITY_SPACE_SET_ADMINS,
+    COMMUNITY_SPACE_SET_TYPE
 } from 'Actions/types';
 
 export const statusCommunitySpaceStatus = (data) => (dispatch) => {
@@ -16,4 +18,19 @@ export const statusCommunitySpaceStatus = (data) => (dispatch) => {
 export const setCommunitySpaceData = (data) => (dispatch) => {
     // Persist data into store
     dispatch({ type: COMMUNITY_SPACE_SET_VALUE, payload: data });
+};
+
+export const setCommunitySpaceAdmins = (data) => (dispatch) => {
+    // Persist data into store
+    dispatch({ type: COMMUNITY_SPACE_SET_ADMINS, payload: data });
+};
+
+export const setCommunitySpaceType = (data) => (dispatch) => {
+    // Persist data into store
+    dispatch({ type: COMMUNITY_SPACE_SET_TYPE, payload: data });
+};
+
+export const setCommunitySpaceLoader = (load) => (dispatch) => {
+    // Persist data into store
+    dispatch({ type: COMMUNITY_SPACE_SET_LOADING, payload: load });
 };

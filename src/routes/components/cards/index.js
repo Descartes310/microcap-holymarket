@@ -35,7 +35,7 @@ export default class Cards extends Component {
 					<div className="row">
 						<div className="col-xs-12 col-sm-12 col-md-4 mb-30">
 							<Card>
-								<CardImg top width="100%" className="img-fluid ripple-effect" src={require('Assets/img/gallery-1.jpg')} alt="Card image cap" />
+								<CardImg top width="100%" className="img-fluid ripple-effect" src={require('Assets/img/profile.jpg')} alt="Card image cap" />
 								<CardBody>
 									<CardTitle>Card Title</CardTitle>
 									<CardSubtitle>Card Subtitle</CardSubtitle>
@@ -50,7 +50,7 @@ export default class Cards extends Component {
 									<CardTitle>Card Title</CardTitle>
 									<CardSubtitle>Card Subtitle</CardSubtitle>
 								</CardBody>
-								<img width="100%" className="img-fluid" src={require('Assets/img/gallery-7.jpg')} alt="Card cap" />
+								<img width="100%" className="img-fluid" src={require('Assets/img/profile.jpg')} alt="Card cap" />
 								<CardBody>
 									<CardText>Some quick example text to build on the card title and make up the bulk of the cards content.</CardText>
 									<CardLink href="#" onClick={e => e.preventDefault()} color="primary">Card Link</CardLink>
@@ -67,7 +67,7 @@ export default class Cards extends Component {
 										<small className="text-muted">Last updated 3 mins ago</small>
 									</CardText>
 								</CardBody>
-								<CardImg bottom width="100%" className="img-fluid" src={require('Assets/img/gallery-9.jpg')} alt="Card image cap" />
+								<CardImg bottom width="100%" className="img-fluid" src={require('Assets/img/profile.jpg')} alt="Card image cap" />
 							</Card>
 						</div>
 					</div>
@@ -174,7 +174,7 @@ export default class Cards extends Component {
 					<div className="row">
 						<div className="col-sm-6 col-md-6 col-xl-3 mb-30 b-50">
 							<Card>
-								<CardImg width="100%" src={require('Assets/img/gallery-10.jpg')} className="img-fluid" alt="Card image cap" />
+								<CardImg width="100%" src={require('Assets/img/profile.jpg')} className="img-fluid" alt="Card image cap" />
 								<CardImgOverlay className="gradient-primary">
 									<CardTitle>Card Title</CardTitle>
 									<CardText>This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</CardText>
@@ -183,7 +183,7 @@ export default class Cards extends Component {
 						</div>
 						<div className="col-sm-6 col-md-6 col-xl-3 mb-30 b-50">
 							<Card>
-								<CardImg width="100%" src={require('Assets/img/gallery-9.jpg')} className="img-fluid" alt="Card image cap" />
+								<CardImg width="100%" src={require('Assets/img/profile.jpg')} className="img-fluid" alt="Card image cap" />
 								<CardImgOverlay className="gradient-warning">
 									<CardTitle>Card Title</CardTitle>
 									<CardText>This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</CardText>
@@ -192,7 +192,7 @@ export default class Cards extends Component {
 						</div>
 						<div className="col-sm-6 col-md-6 col-xl-3 mb-30 b-50">
 							<Card>
-								<CardImg width="100%" src={require('Assets/img/gallery-7.jpg')} className="img-fluid" alt="Card image cap" />
+								<CardImg width="100%" src={require('Assets/img/profile.jpg')} className="img-fluid" alt="Card image cap" />
 								<CardImgOverlay className="gradient-success">
 									<CardTitle>Card Title</CardTitle>
 									<CardText>This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</CardText>
@@ -201,7 +201,7 @@ export default class Cards extends Component {
 						</div>
 						<div className="col-sm-6 col-md-6 col-xl-3 mb-30 b-50">
 							<Card>
-								<CardImg width="100%" src={require('Assets/img/gallery-8.jpg')} className="img-fluid" alt="Card image cap" />
+								<CardImg width="100%" src={require('Assets/img/profile.jpg')} className="img-fluid" alt="Card image cap" />
 								<CardImgOverlay className="gradient-danger">
 									<CardTitle>Card Title</CardTitle>
 									<CardText>This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</CardText>
@@ -215,7 +215,7 @@ export default class Cards extends Component {
 				>
 					<CardGroup>
 						<Card>
-							<CardImg top width="100%" className="img-fluid" src={require('Assets/img/gallery-2.jpg')} alt="Card image cap" />
+							<CardImg top width="100%" className="img-fluid" src={require('Assets/img/profile.jpg')} alt="Card image cap" />
 							<CardBody>
 								<CardTitle>Card Title</CardTitle>
 								<CardSubtitle>Card Subtitle</CardSubtitle>
@@ -224,7 +224,7 @@ export default class Cards extends Component {
 							</CardBody>
 						</Card>
 						<Card>
-							<CardImg top width="100%" className="img-fluid" src={require('Assets/img/gallery-3.jpg')} alt="Card image cap" />
+							<CardImg top width="100%" className="img-fluid" src={require('Assets/img/profile.jpg')} alt="Card image cap" />
 							<CardBody>
 								<CardTitle>Card Title</CardTitle>
 								<CardSubtitle>Card Subtitle</CardSubtitle>
@@ -233,7 +233,7 @@ export default class Cards extends Component {
 							</CardBody>
 						</Card>
 						<Card>
-							<CardImg top width="100%" className="img-fluid" src={require('Assets/img/gallery-4.jpg')} alt="Card image cap" />
+							<CardImg top width="100%" className="img-fluid" src={require('Assets/img/profile.jpg')} alt="Card image cap" />
 							<CardBody>
 								<CardTitle>Card Title</CardTitle>
 								<CardSubtitle>Card Subtitle</CardSubtitle>

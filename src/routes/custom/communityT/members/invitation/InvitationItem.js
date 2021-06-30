@@ -18,6 +18,7 @@ import {NotificationManager} from "react-notifications";
 import {connect} from "react-redux";
 import {ERROR_500} from "Constants/errors";
 import {withRouter} from "react-router-dom";
+import { getFilePath } from "Helpers/helpers";
 
 class InvitationItem extends Component {
     constructor(props) {
@@ -36,9 +37,7 @@ class InvitationItem extends Component {
                 NotificationManager.success("Vous faite maintenant partir du groupe " + this.props.invitation.group.label);
                 this.props.getInvitationsPending(this.props.authUser.user.id);
             })
-            .catch(() => {
-                NotificationManager.error(ERROR_500);
-            })
+            .catch(() => null)
             .finally(() => this.props.setRequestGlobalAction(false));
     };
 
@@ -59,9 +58,7 @@ class InvitationItem extends Component {
                 );
                 this.props.reload();
             })
-            .catch(() => {
-                NotificationManager.error(ERROR_500);
-            })
+            .catch(() => null)
             .finally(() => {
                 this.props.setRequestGlobalAction(false);
                 this.setState({showWarningBox: false})
@@ -78,7 +75,7 @@ class InvitationItem extends Component {
                         <Media className="mb-10">
                             <UserAvatar
                                 name={invitation.group.label}
-                                avatar={invitation.group.avatar}
+                                avatar={getFilePath(invitation.group.avatar)}
                             />
                             <Media body>
                                 <h5 className="m-0 pt-5 fs-14">{invitation.group.label}</h5>

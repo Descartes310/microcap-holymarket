@@ -7,46 +7,6 @@ import update from 'react-addons-update';
 
 const INIT_STATE = {
 	cart: [
-		{
-			objectID: '1',
-			image: require('../assets/img/product-1.png'),
-			name: 'Speaker',
-			description: 'Rechargeable Battery',
-			brand: 'JBL',
-			price: 50,
-			productQuantity: 1,
-			totalPrice: 50
-		},
-		{
-			objectID: '2',
-			image: require('../assets/img/product-2.png'),
-			name: 'Headphone',
-			description: 'Clear Sound',
-			brand: 'JBL',
-			price: 45,
-			productQuantity: 1,
-			totalPrice: 45
-		},
-		{
-			objectID: '3',
-			image: require('../assets/img/product-3.png'),
-			name: 'Bluetooth Speaker',
-			description: 'Rechargeable Battery',
-			brand: 'JBL',
-			price: 96,
-			productQuantity: 1,
-			totalPrice: 96
-		},
-		{
-			objectID: '4',
-			image: require('../assets/img/product-4.png'),
-			name: 'D.J. Speaker',
-			description: '3d Surround Sound',
-			brand: 'JBL',
-			price: 87,
-			productQuantity: 1,
-			totalPrice: 87
-		}
 	],
 	newCartItem: {
 		objectID: "",

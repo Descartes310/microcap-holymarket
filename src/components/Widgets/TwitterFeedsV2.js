@@ -5,21 +5,6 @@ import { Badge } from 'reactstrap';
 import Slider from "react-slick";
 
 const twitterFeeds = [
-   {
-      id: 1,
-      userAvatar: require("Assets/img/user-1.jpg"),
-      tweets: "Contrary to popular belief,<a href=\"javascript:void(0)\">#LoremIpsum<\/a> is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney <a href=\"javascript:void(0)\">t.co/Milksed/t.co/43jffse3<\/a>"
-   },
-   {
-      id: 2,
-      userAvatar: require("Assets/img/user-2.jpg"),
-      tweets: "Contrary to popular belief,<a href=\"javascript:void(0)\">#LoremIpsum<\/a> is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney <a href=\"javascript:void(0)\">t.co/Milksed/t.co/43jffse3<\/a>"
-   },
-   {
-      id: 3,
-      userAvatar: require("Assets/img/user-3.jpg"),
-      tweets: "Contrary to popular belief,<a href=\"javascript:void(0)\">#LoremIpsum<\/a> is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney <a href=\"javascript:void(0)\">t.co/Milksed/t.co/43jffse3<\/a>"
-   }
 ]
 
 export default class TwitterFeedsV2 extends Component {

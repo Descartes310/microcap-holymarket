@@ -1,43 +1,20 @@
-import React, { Component } from 'react';
-import IconButton from '@material-ui/core/IconButton';
-
-// components
+import {Badge} from "reactstrap";
 import {connect} from "react-redux";
-import {setRequestGlobalAction} from "Actions/RequestGlobalAction";
-import {withRouter} from "react-router-dom";
-import {Badge, Input, InputGroup, InputGroupAddon} from "reactstrap";
-import {Scrollbars} from "react-custom-scrollbars";
+import React, { Component } from 'react';
 import List from "@material-ui/core/List";
-import GroupItem from "Routes/custom/community/groups/GroupItem";
-import {getUserCommunities} from "Actions";
-import Button from "@material-ui/core/Button";
-import IntlMessages from "Util/IntlMessages";
-import FormControl from "@material-ui/core/FormControl";
-import UserProfileCreate from "Routes/custom/users/user-profile/Create";
-import CommunityCreate from "Routes/custom/community/groups/CommunityCreate";
-import classnames from "classnames";
+import {withRouter} from "react-router-dom";
 import ListItem from "@material-ui/core/ListItem";
-import {COMMUNITY} from "Url/frontendUrl";
 import InvitationType from "Enums/InvitationType";
-import InvitationCreateDialog from './InvitationCreateDialog'
+import {Scrollbars} from "react-custom-scrollbars";
+import {COMMUNITY, joinUrlWithParamsId} from "Url/frontendUrl";
+import {setRequestGlobalAction} from "Actions/RequestGlobalAction";
 
 class InvitationsSidebar extends Component {
+    communitySpaceId = this.props.match.params.id;
 
     state = {
         open: false,
-     };
-  
-     handleClickOpenInvation = () => {
-        this.setState({ open: true });
-     };
-  
-     handleCloseInvation = () => {
-        this.setState({ open: false });
-     };
-
-    componentDidMount() {
-        // this.props.getUserCommunities();
-    }
+    };
 
     render() {
         const { userCommunities, history, comInvitationsPending } = this.props;
@@ -62,7 +39,7 @@ class InvitationsSidebar extends Component {
                                     <List className="p-0 mb-0 filters list-unstyled">
                                         <ListItem
                                             button
-                                            onClick={() => this.props.history.push(COMMUNITY.INVITATIONS.LIST.RECEIVED)}
+                                            onClick={() => this.props.history.push(joinUrlWithParamsId(COMMUNITY.INVITATIONS.LIST.RECEIVED, this.communitySpaceId))}
                                             // className={classnames({ 'item-active': selectedFolder === folder.id })}
                                         >
                                             <i className={`mr-20 zmdi zmdi-inbox`} />
@@ -75,7 +52,7 @@ class InvitationsSidebar extends Component {
                                         </ListItem>
                                         <ListItem
                                             button
-                                            onClick={() => this.props.history.push(COMMUNITY.INVITATIONS.LIST.SEND)}
+                                            onClick={() => this.props.history.push(joinUrlWithParamsId(COMMUNITY.INVITATIONS.LIST.SEND, this.communitySpaceId))}
                                             // className={classnames({ 'item-active': selectedFolder === folder.id })}
                                         >
                                             <i className={`mr-20 zmdi zmdi-mail-send`} />

@@ -5,30 +5,32 @@
 import React, {useState} from 'react';
 import { connect } from 'react-redux';
 import QueueAnim from 'rc-queue-anim';
-import { Link } from 'react-router-dom';
-import Button from '@material-ui/core/Button';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-
-// components
-import { SessionSlider } from 'Components/Widgets';
 import PersonRegister from './person';
-
-// app config
-import AppConfig from 'Constants/AppConfig';
-
-// redux action
-import {loginUserWithEmailAndPassword} from 'Actions';
-import {AUTH, HOME} from "../../../urls/frontendUrl";
+import { Link } from 'react-router-dom';
 import Tab from "@material-ui/core/Tab";
-import Tabs from "@material-ui/core/Tabs";
-import IntlMessages from 'Util/IntlMessages';
-import LanguageProvider from "Components/Header/LanguageProvider";
-import SwipeableViews from "react-swipeable-views";
-import OrganisationRegister from "Routes/session/register/organisation";
+import {useQuery} from "Helpers/helpers";
 import {DISCOVER} from "Url/frontendUrl";
+import Tabs from "@material-ui/core/Tabs";
+import AppConfig from 'Constants/AppConfig';
+import IntlMessages from 'Util/IntlMessages';
+import {useLocation} from "react-router-dom";
+import AppBar from '@material-ui/core/AppBar';
+import Button from '@material-ui/core/Button';
+import Toolbar from '@material-ui/core/Toolbar';
+import { SessionSlider } from 'Components/Widgets';
+import SwipeableViews from "react-swipeable-views";
+import {AUTH, HOME} from "../../../urls/frontendUrl";
+import {loginUserWithEmailAndPassword} from 'Actions';
+import OrganisationRegister from "Routes/session/register/organisation";
 
 const Signup = (props) => {
+
+   const query = useQuery(useLocation);
+   const defaultToken = query.get('token');
+   // alert(defaultToken)
+
+   const [token, setToken] = useState(defaultToken ? defaultToken : '' );
+
    const { loading } = props;
    const [activeIndex, setActiveIndex] = useState(0);
 
@@ -69,14 +71,11 @@ const Signup = (props) => {
                                <img src={AppConfig.appLogo} alt="session-logo" className="img-fluid" width="110" height="35" />
                             </Link>
                          </div>
-                         <div className="center-hor-ver">
-                            <a className="mr-15 text-white" onClick={onUserLogin}>
-                               <IntlMessages id="auth.haveAccount" />
-                            </a>
-                            <Button variant="contained" className="btn-light mr-2" onClick={onUserLogin}>
+                         <div className="center-hor-ver" style={{ marginRight: '10%' }}>
+                            <Button variant="contained" className="btn-light mr-2 p-10" onClick={onUserLogin}>
                                <IntlMessages id="auth.signin" />
                             </Button>
-                            <Button variant="contained" className="btn-primary mr-2 text-white" onClick={onDiscoverClick}>
+                            <Button variant="contained" className="btn-primary mr-2 text-white p-10" onClick={onDiscoverClick}>
                                Découvrir Microcap
                             </Button>
                          </div>

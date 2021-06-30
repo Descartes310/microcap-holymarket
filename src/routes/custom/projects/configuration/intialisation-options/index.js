@@ -8,7 +8,7 @@ import Tabs from '@material-ui/core/Tabs';
 import ProjectsCall from "./projects-call";
 import { RctCard } from 'Components/RctCard';
 import AppBar from '@material-ui/core/AppBar';
-import Hidden from '@material-ui/core/Hidden';
+import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import {setRequestGlobalAction} from "Actions/RequestGlobalAction";
 import { Redirect, Route, Switch, withRouter } from 'react-router-dom';
 
@@ -43,21 +43,15 @@ class InitialisationOptions extends Component {
 
     render() {
         const { activeTab } = this.state;
-        const { match, currentForm } = this.props;
 
         return (
             <div className="userProfile-wrapper overflow-hidden">
-                {/*<PageTitleBar title={"Communauté"} match={this.props.match} enableBreadCrumb={false} />*/}
+                <PageTitleBar title={"Options d'initialisations"} match={this.props.match} enableBreadCrumb={true} />
                 <RctCard>
                     <div className="rct-tabs">
                         <AppBar position="static">
                             <div className="d-flex align-items-center">
-                                <Hidden smDown>
-                                    <div className="pl-3 page-title m-0">
-                                        <h2 className="">Options d'initialisation</h2>
-                                    </div>
-                                </Hidden>
-                                <div className="">
+                                <div className="w-100">
                                     <Tabs
                                         centered
                                         value={activeTab}
@@ -67,7 +61,7 @@ class InitialisationOptions extends Component {
                                     >
                                         <Tab
                                             icon={<i className="zmdi zmdi-group-work"/>}
-                                            label={"Idée"}
+                                            label={"Idées"}
                                         />
                                         <Tab
                                             icon={<i className="ti-world"></i>}
@@ -75,7 +69,7 @@ class InitialisationOptions extends Component {
                                         />
                                         <Tab
                                             icon={<i className="zmdi zmdi-inbox"></i>}
-                                            label={"Programme"}
+                                            label={"Programmes"}
                                         />
                                     </Tabs>
                                 </div>

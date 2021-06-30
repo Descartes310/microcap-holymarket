@@ -10,6 +10,7 @@ import {PRODUCT_TYPE} from "Url/frontendUrl";
 import {withRouter, Switch, Redirect, Route} from "react-router-dom";
 import List from './List';
 import Show from './Show';
+import Create from './Create';
 
 class ProductType extends Component {
     componentDidMount() {
@@ -25,6 +26,7 @@ class ProductType extends Component {
                         <Redirect exact from={`${match.url}/`} to={PRODUCT_TYPE.LIST} />
                         <Route path={PRODUCT_TYPE.SHOW} component={Show} />
                         <Route path={PRODUCT_TYPE.LIST} component={List} />
+                        <Route path={PRODUCT_TYPE.CREATE} component={Create} />
                     </Switch>
                 </>
             </div>

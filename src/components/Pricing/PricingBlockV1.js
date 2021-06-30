@@ -13,7 +13,7 @@ import IntlMessages from 'Util/IntlMessages'
 const PricingBlockV1 = ({ planType, type, description, price, users, features, color, buttonText }) => (
    <RctCollapsibleCard customClasses="text-center" colClasses="col-md-4">
       <div className="pricing-icon mb-40">
-         <img src={require('Assets/img/pricing-icon.png')} alt="pricing icon" className="img-fluid" width="" height="" />
+         <img src={require('Assets/img/pricing.png')} alt="pricing icon" className="img-fluid" width="" height="" />
       </div>
       <h2 className={`text-${color} pricing-title`}><IntlMessages id={type} /></h2>
       <p>{description}</p>

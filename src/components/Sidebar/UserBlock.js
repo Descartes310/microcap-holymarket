@@ -3,10 +3,11 @@
  */
 import React, { Component } from 'react';
 import { Dropdown, DropdownToggle, DropdownMenu } from 'reactstrap';
-import { Link } from 'react-router-dom';
+import { Link, NavLink, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Badge } from 'reactstrap';
 import { NotificationManager } from 'react-notifications';
+import { USERS } from 'Url/frontendUrl';
 
 // components
 import SupportPage from '../Support/Support';
@@ -19,6 +20,7 @@ import IntlMessages from 'Util/IntlMessages';
 import Tooltip from "@material-ui/core/Tooltip/Tooltip";
 import Status from "Enums/Status";
 import FieldsetComponent from "Components/FieldsetComponent";
+import { getFilePath } from "Helpers/helpers";
 
 class UserBlock extends Component {
 
@@ -67,76 +69,95 @@ class UserBlock extends Component {
 	render() {
 		return (
 			<div className="top-sidebar">
-				<div className="sidebar-user-block">
-					<Dropdown
-						isOpen={this.state.userDropdownMenu}
-						toggle={() => this.toggleUserDropdownMenu()}
-						className="rct-dropdown"
-					>
-						<DropdownToggle
-							tag="div"
-							className="d-flex align-items-center"
+				{this.props.authUser != null ?
+					<div className="sidebar-user-block">
+						<Dropdown
+							isOpen={this.state.userDropdownMenu}
+							toggle={() => this.toggleUserDropdownMenu()}
+							className="rct-dropdown"
 						>
-							{this.props.authUser.user.status === Status.PENDING ? (
-								<Tooltip id="tooltip-status" title={"Votre compte n'est pas activé"}>
-									<div className="user-profile position-relative">
-										<img
-											src={require('Assets/avatars/user-15.jpg')}
-											alt="user profile"
-											className="img-fluid rounded-circle"
-											width="50"
-											height="100"
-										/>
-										<div className="user-status-pending">
-											<div className={`user-status-pending-circle rct-notify`} />
+							<DropdownToggle
+								tag="div"
+								className="d-flex align-items-center"
+							>
+								{this.props.authUser.user.status === Status.PENDING ? (
+									<Tooltip id="tooltip-status" title={"Votre compte n'est pas activé"}>
+										<div className="user-profile position-relative">
+											<img
+												src={this.props.authUser.user.avatar ? getFilePath(this.props.authUser.user.avatar) : require('Assets/avatars/profile.jpg')}
+												alt="user profile"
+												className="img-fluid rounded-circle"
+												width="50"
+												height="100"
+											/>
+											<div className="user-status-pending">
+												<div className={`user-status-pending-circle rct-notify`} />
+											</div>
 										</div>
-									</div>
-								</Tooltip>
-							) : (
-								<div className="user-profile position-relative">
-									<img
-										src={require('Assets/avatars/user-15.jpg')}
-										alt="user profile"
-										className="img-fluid rounded-circle"
-										width="50"
-										height="100"
-									/>
-								</div>
-							)}
-							<div className="user-info">
-								<span className="user-name ml-4">
-									{this.props.authUser.userName}
-								</span>
-								<i className="zmdi zmdi-chevron-down dropdown-icon ml-2"></i>
-							</div>
-						</DropdownToggle>
-						<DropdownMenu>
-							<ul className="list-unstyled mb-0">
-								<li className="p-15 border-bottom user-profile-top bg-primary rounded-top">
-									<p className="text-white mb-0 fs-14">
+									</Tooltip>
+								) : (
+										<div className="user-profile position-relative">
+											<img
+												src={this.props.authUser.user.avatar ? getFilePath(this.props.authUser.user.avatar) : require('Assets/avatars/profile.jpg')}
+												alt="user profile"
+												className="img-fluid rounded-circle"
+												width="50"
+												height="100"
+											/>
+										</div>
+									)}
+								<div className="user-info">
+									<span className="user-name">
 										{this.props.authUser.userName}
-									</p>
-									<span className="text-white fs-14">
-										{this.props.authUser.user.login}
 									</span>
-								</li>
-								<li className="mt-3">
-									<FieldsetComponent title={"Réference"} titleClass={"text-dark"}>
-										<p className="text-dark fw-bold mb-0">{this.props.authUser.user.reference}</p>
-									</FieldsetComponent>
-								</li>
-								<li className="border-top">
-									<a href="#" onClick={(e) => this.logoutUser(e)}>
-										<i className="zmdi zmdi-power text-danger mr-3"></i>
-										<span>
-											Deconnexion
+									<i className="zmdi zmdi-chevron-down dropdown-icon"></i>
+								</div>
+							</DropdownToggle>
+							<DropdownMenu>
+								<ul className="list-unstyled mb-0">
+									<li className="p-15 border-bottom user-profile-top bg-primary rounded-top">
+										<p className="text-white mb-0 fs-14">
+											{this.props.authUser.userName}
+										</p>
+										<span className="text-white fs-14">
+											{this.props.authUser.user.login}
 										</span>
-									</a>
-								</li>
-							</ul>
-						</DropdownMenu>
-					</Dropdown>
-				</div>
+									</li>
+									{/* <li className="mt-3">
+										<FieldsetComponent title={"Réference"} titleClass={"text-dark"}>
+											<p className="text-dark fw-bold mb-0">{this.props.authUser.user.reference}</p>
+										</FieldsetComponent>
+									</li>
+									{
+										this.props.authUser.user.membershipNumber ?
+
+											<li className="mt-3">
+												<FieldsetComponent title={"Adhesion"} titleClass={"text-dark"}>
+													<p className="text-dark fw-bold mb-0">{this.props.authUser.user.membershipNumber}</p>
+												</FieldsetComponent>
+											</li> : null
+									} */}
+									<li className="border-top">
+										<NavLink to={USERS.USERS_PROFILE.DISPLAY_PROFILE} className="nav-link" activeClassName="active">
+											<i className="zmdi zmdi-account text-primary mr-3"></i>
+											<span>
+												Profile
+										</span>
+										</NavLink>
+									</li>
+
+									<li className="border-top">
+										<a href="#" onClick={(e) => this.logoutUser(e)}>
+											<i className="zmdi zmdi-power text-danger mr-3"></i>
+											<span>
+												Deconnexion
+										</span>
+										</a>
+									</li>
+								</ul>
+							</DropdownMenu>
+						</Dropdown>
+					</div> : null}
 				<SupportPage
 					isOpen={this.state.isSupportModal}
 					onCloseSupportPage={() => this.onCloseSupportPage()}
@@ -154,4 +175,4 @@ const mapStateToProps = ({ settings, authUser }) => {
 
 export default connect(mapStateToProps, {
 	logout
-})(UserBlock);
+})(withRouter((UserBlock)));

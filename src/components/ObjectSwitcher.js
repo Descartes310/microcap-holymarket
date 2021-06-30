@@ -10,14 +10,24 @@ import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
 import FetchFailedComponent from "Components/FetchFailedComponent";
 
+/**
+ * data [{label: String, id: Number}]
+ * @param props
+ */
 const ObjectSwitcher = props => {
-    const { loading, label, data, onRetryClick, onItemsChanged } = props;
+    const { loading, label, data, onRetryClick, onItemsChanged, onRemoveSelected } = props;
 
     const [permissionsSelected, setPermissionsSelected] = useState([]);
     const [permissions, setPermissions] = useState({
         leftValuesSelected: [],
         rightValuesSelected: [],
     });
+
+    useEffect(() => {
+        if (onRemoveSelected && typeof onRemoveSelected === "function") {
+            onRemoveSelected(permissionsSelected, setPermissionsSelected)
+        }
+    }, [onRemoveSelected]);
 
     const handleSelect = (position, event) => {
         const values = Array.from(event.target.selectedOptions, option => option.value);

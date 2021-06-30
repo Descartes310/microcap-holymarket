@@ -8,8 +8,38 @@ import Loadable from 'react-loadable';
 // rct page loader
 import RctPageLoader from 'Components/RctPageLoader/RctPageLoader';
 
+export const AsyncCommunitySpace = Loadable({
+	loader: () => import("Routes/custom/communityT"),
+	loading: () => <RctPageLoader />,
+});
+
 export const AsyncDiscover = Loadable({
-	loader: () => import("Routes/custom/dashboard/Discover"),
+	loader: () => import("Routes/custom/dashboard/discover/index"),
+	loading: () => <RctPageLoader />,
+});
+
+export const AsyncGallery = Loadable({
+	loader: () => import("Routes/custom/dashboard/discover/pages/Gallery"),
+	loading: () => <RctPageLoader />,
+});
+
+export const AsyncPionier = Loadable({
+	loader: () => import("Routes/custom/dashboard/discover/pages/Pionier"),
+	loading: () => <RctPageLoader />,
+});
+
+export const AsyncSolidarity = Loadable({
+	loader: () => import("Routes/custom/dashboard/Solidarity"),
+	loading: () => <RctPageLoader />,
+});
+
+export const AsyncGetIn = Loadable({
+	loader: () => import("Routes/custom/dashboard/GetIn"),
+	loading: () => <RctPageLoader />,
+});
+
+export const AsyncMoneyManagement = Loadable({
+	loader: () => import("Routes/custom/dashboard/MoneyManagement"),
 	loading: () => <RctPageLoader />,
 });
 
@@ -63,6 +93,11 @@ export const AsyncComOffer = Loadable({
 	loading: () => <RctPageLoader />,
 });
 
+export const AsyncGroupAdmin = Loadable({
+	loader: () => import("Routes/custom/communityT/admin"),
+	loading: () => <RctPageLoader />,
+});
+
 export const AsyncUserProfile = Loadable({
 	loader: () => import("Routes/custom/users/user-profile"),
 	loading: () => <RctPageLoader />,
@@ -108,6 +143,11 @@ export const AsyncUsersAccounts = Loadable({
 	loading: () => <RctPageLoader />,
 });
 
+export const AsyncAllUsersAccounts = Loadable({
+	loader: () => import("Routes/custom/users/all-users"),
+	loading: () => <RctPageLoader />,
+});
+
 export const AsyncSettingNotifications = Loadable({
 	loader: () => import("Routes/custom/settings/notifications"),
 	loading: () => <RctPageLoader />,
@@ -125,6 +165,11 @@ export const AsyncSampleBranchList = Loadable({
 
 export const AsyncProjects = Loadable({
 	loader: () => import("Routes/custom/projects"),
+	loading: () => <RctPageLoader />,
+});
+
+export const AsyncCommunityProject = Loadable({
+	loader: () => import("Routes/custom/communityT/projects"),
 	loading: () => <RctPageLoader />,
 });
 
@@ -178,120 +223,6 @@ const AsyncAboutUsComponent = Loadable({
 	loading: () => <RctPageLoader />,
 });
 
-// chat app
-const AsyncChatComponent = Loadable({
-	loader: () => import("Routes/chat"),
-	loading: () => <RctPageLoader />,
-});
-
-// mail app
-const AsyncMailComponent = Loadable({
-	loader: () => import("Routes/mail"),
-	loading: () => <RctPageLoader />,
-});
-
-// todo app
-const AsyncTodoComponent = Loadable({
-	loader: () => import("Routes/todo"),
-	loading: () => <RctPageLoader />,
-});
-
-// gallery
-const AsyncGalleryComponent = Loadable({
-	loader: () => import("Routes/pages/gallery"),
-	loading: () => <RctPageLoader />,
-});
-
-// feedback
-const AsyncFeedbackComponent = Loadable({
-	loader: () => import("Routes/pages/feedback"),
-	loading: () => <RctPageLoader />,
-});
-
-// report
-const AsyncReportComponent = Loadable({
-	loader: () => import("Routes/pages/report"),
-	loading: () => <RctPageLoader />,
-});
-
-// faq
-const AsyncFaqComponent = Loadable({
-	loader: () => import("Routes/pages/faq"),
-	loading: () => <RctPageLoader />,
-});
-
-// pricing
-const AsyncPricingComponent = Loadable({
-	loader: () => import("Routes/pages/pricing"),
-	loading: () => <RctPageLoader />,
-});
-
-// blank
-const AsyncBlankComponent = Loadable({
-	loader: () => import("Routes/pages/blank"),
-	loading: () => <RctPageLoader />,
-});
-
-// google maps
-const AsyncGooleMapsComponent = Loadable({
-	loader: () => import("Routes/maps/google-map"),
-	loading: () => <RctPageLoader />,
-});
-
-// google maps
-const AsyncLeafletMapComponent = Loadable({
-	loader: () => import("Routes/maps/leaflet-map"),
-	loading: () => <RctPageLoader />,
-});
-
-// shop list
-const AsyncShoplistComponent = Loadable({
-	loader: () => import("Routes/ecommerce/shop-list"),
-	loading: () => <RctPageLoader />,
-});
-
-// shop grid
-const AsyncShopGridComponent = Loadable({
-	loader: () => import("Routes/ecommerce/shop-grid"),
-	loading: () => <RctPageLoader />,
-});
-
-// shop
-const AsyncShopComponent = Loadable({
-	loader: () => import("Routes/ecommerce/shop"),
-	loading: () => <RctPageLoader />,
-});
-
-// cart
-const AsyncCartComponent = Loadable({
-	loader: () => import("Routes/ecommerce/cart"),
-	loading: () => <RctPageLoader />,
-});
-
-// checkout
-const AsyncCheckoutComponent = Loadable({
-	loader: () => import("Routes/ecommerce/checkout"),
-	loading: () => <RctPageLoader />,
-});
-
-// invoice
-const AsyncInvoiceComponent = Loadable({
-	loader: () => import("Routes/ecommerce/invoice"),
-	loading: () => <RctPageLoader />,
-});
-
-// react dragula
-const AsyncReactDragulaComponent = Loadable({
-	loader: () => import("Routes/drag-drop/react-dragula"),
-	loading: () => <RctPageLoader />,
-});
-
-// react dnd
-const AsyncReactDndComponent = Loadable({
-	loader: () => import("Routes/drag-drop/react-dnd"),
-	loading: () => <RctPageLoader />,
-});
-
 // themify icons
 const AsyncThemifyIconsComponent = Loadable({
 	loader: () => import("Routes/icons/themify-icons"),
@@ -307,24 +238,6 @@ const AsyncSimpleLineIconsComponent = Loadable({
 // Material Icons
 const AsyncMaterialIconsComponent = Loadable({
 	loader: () => import("Routes/icons/material-icons"),
-	loading: () => <RctPageLoader />,
-});
-
-// Basic Table
-const AsyncBasicTableComponent = Loadable({
-	loader: () => import("Routes/tables/basic"),
-	loading: () => <RctPageLoader />,
-});
-
-// Basic Table
-const AsyncDataTableComponent = Loadable({
-	loader: () => import("Routes/tables/data-table"),
-	loading: () => <RctPageLoader />,
-});
-
-// Responsive Table
-const AsyncResponsiveTableComponent = Loadable({
-	loader: () => import("Routes/tables/responsive"),
 	loading: () => <RctPageLoader />,
 });
 
@@ -630,60 +543,15 @@ const AsyncAdvanceUIAutoCompleteComponent = Loadable({
 	loading: () => <RctPageLoader />,
 });
 
-// crm dashboard
-const AsyncCrmComponent = Loadable({
-	loader: () => import("Routes/crm/dashboard"),
-	loading: () => <RctPageLoader />,
-});
-// projects
-const AsyncProjectsComponent = Loadable({
-	loader: () => import("Routes/crm/projects"),
-	loading: () => <RctPageLoader />,
-});
-// project detail
-const AsyncProjectDetailComponent = Loadable({
-	loader: () => import("Routes/crm/project-detail"),
-	loading: () => <RctPageLoader />,
-});
-// clients
-const AsyncClientsComponent = Loadable({
-	loader: () => import("Routes/crm/clients"),
-	loading: () => <RctPageLoader />,
-});
-// reports
-const AsyncReportsComponent = Loadable({
-	loader: () => import("Routes/crm/reports"),
-	loading: () => <RctPageLoader />,
-});
-
 export {
 	AsyncUserWidgetComponent,
 	AsyncUserChartsComponent,
 	AsyncGeneralWidgetsComponent,
 	AsyncPromoWidgetsComponent,
 	AsyncAboutUsComponent,
-	AsyncChatComponent,
-	AsyncMailComponent,
-	AsyncTodoComponent,
-	AsyncGalleryComponent,
-	AsyncFeedbackComponent,
-	AsyncReportComponent,
-	AsyncFaqComponent,
-	AsyncPricingComponent,
-	AsyncBlankComponent,
-	AsyncGooleMapsComponent,
-	AsyncLeafletMapComponent,
-	AsyncShoplistComponent,
-	AsyncShopGridComponent,
-	AsyncInvoiceComponent,
-	AsyncReactDragulaComponent,
-	AsyncReactDndComponent,
 	AsyncThemifyIconsComponent,
 	AsyncSimpleLineIconsComponent,
 	AsyncMaterialIconsComponent,
-	AsyncBasicTableComponent,
-	AsyncDataTableComponent,
-	AsyncResponsiveTableComponent,
 	AsyncUsersListComponent,
 	AsyncUserProfileComponent,
 	AsyncUserProfile1Component,
@@ -732,16 +600,8 @@ export {
 	AsyncAdvanceUINotificationComponent,
 	AsyncAdvanceUISweetAlertComponent,
 	AsyncAdvanceUIAutoCompleteComponent,
-	AsyncShopComponent,
-	AsyncCartComponent,
-	AsyncCheckoutComponent,
 	AsyncEcommerceDashboardComponent,
 	AsyncSaasDashboardComponent,
 	AsyncAgencyDashboardComponent,
-	AsyncNewsDashboardComponent,
-	AsyncCrmComponent,
-	AsyncProjectsComponent,
-	AsyncProjectDetailComponent,
-	AsyncClientsComponent,
-	AsyncReportsComponent
+	AsyncNewsDashboardComponent
 };

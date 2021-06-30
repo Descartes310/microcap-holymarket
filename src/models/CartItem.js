@@ -5,6 +5,8 @@ export default class CartItem {
         this.nature = item.nature;
         this.price = Number(item.price);
         this.image = item.image;
+        this.currency = item.currency;
+        this.type = item.type;
         this.distributor = item.distributor;
         this.quantity = Number(item.quantity);
     }

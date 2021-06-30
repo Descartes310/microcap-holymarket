@@ -80,7 +80,7 @@ class CatalogProducts extends Component {
 
         return (
             <div className="userProfile-wrapper">
-                <PageTitleBar title="Catalogue Produits" match={this.props.match}  enableBreadCrumb={false}/>
+                <PageTitleBar title="Catalogue Produits" match={this.props.match}  enableBreadCrumb={true}/>
                 <RctCard>
                     <div className="rct-tabs">
                         <AppBar position="static">

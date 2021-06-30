@@ -256,85 +256,9 @@ class BranchList extends Component {
 export default withRouter(BranchList);
 
 export const listItems = [
-    {
-        itemName: 'Dr. Paul Dupont',
-        status: false,
-        count: 235,
-        imageURL: require('Assets/img/user-5.jpg')
-    },
-    {
-        itemName: 'Dr. Jean Marie',
-        status: false,
-        count: 765,
-        imageURL: require('Assets/img/user-5.jpg')
-    },
-    {
-        itemName: 'Dr. Francine Penauld',
-        status: false,
-        count: 410,
-        imageURL: require('Assets/img/user-5.jpg')
-    },
+
 ];
 
 export const reviews = [
-    {
-        name: 'Christelle Dupond',
-        profession: 'Enseigante',
-        ratings: 4.5,
-        date: moment('2019-02-14 04:12:05'),
-        imageURL: require('Assets/avatars/user-1.jpg'),
-        message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi dolore dolores et " +
-            "ipsum nam neque quisquam. Ad amet dolorem eaque eligendi, facere impedit modi, " +
-            "nam rerum sapiente tempora vel voluptate.",
-    },
-    {
-        name: 'Johnatan Hubert',
-        profession: 'Musicien',
-        ratings: 2,
-        date: moment('2020-02-14 04:12:05'),
-        imageURL: require('Assets/avatars/user-4.jpg'),
-        message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi dolore dolores et " +
-            "ipsum nam neque quisquam. Ad amet dolorem eaque eligendi, facere impedit modi, " +
-            "nam rerum sapiente tempora vel voluptate.",
-    },
-    {
-        name: 'Jack Sparrow',
-        profession: 'Ecrivain',
-        ratings: 5,
-        date: moment('2020-10-14 05:12:05'),
-        imageURL: require('Assets/avatars/user-16.jpg'),
-        message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi dolore dolores et " +
-            "ipsum nam neque quisquam. Ad amet dolorem eaque eligendi, facere impedit modi, " +
-            "nam rerum sapiente tempora vel voluptate.",
-    },
-    {
-        name: 'Marine Anne',
-        profession: 'Présentatrice',
-        ratings: 3,
-        date: moment('2004-12-14 04:12:05'),
-        imageURL: require('Assets/avatars/user-2.jpg'),
-        message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi dolore dolores et " +
-            "ipsum nam neque quisquam. Ad amet dolorem eaque eligendi, facere impedit modi, " +
-            "nam rerum sapiente tempora vel voluptate.",
-    },
-    {
-        name: 'Floren Marvin',
-        profession: 'Charpentier',
-        ratings: 4,
-        date: moment('2014-12-14 04:12:05'),
-        imageURL: require('Assets/avatars/user-23.jpg'),
-        message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi dolore dolores et " +
-            "ipsum nam neque quisquam. Ad amet dolorem eaque eligendi, facere impedit modi, " +
-            "nam rerum sapiente tempora vel voluptate.",
-    },
-    {
-        name: 'Luc François',
-        profession: 'Comédien',
-        ratings: 1,
-        date: moment('2020-09-22 13:12:05'),
-        imageURL: require('Assets/avatars/user-19.jpg'),
-        message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi dolore dolores et " +
-            "ipsum nam neque quisquam. Ad amet dolorem eaque eligendi, facere impedit modi, " +
-            "nam rerum sapiente tempora vel voluptate.",
-    },
+
 ];

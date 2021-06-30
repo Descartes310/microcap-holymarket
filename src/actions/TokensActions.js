@@ -10,7 +10,9 @@ import {
     LOGOUT_USER,
     SIGNUP_USER,
     SIGNUP_USER_SUCCESS,
-    SIGNUP_USER_FAILURE, CLEAR_AUTH_USER
+    SIGNUP_USER_FAILURE,
+    CLEAR_AUTH_USER,
+    SET_CURRENT_COMMUNITY_SUCCESS
 } from 'Actions/types';
 
 import api from './../api';
@@ -18,6 +20,7 @@ import AppConfig from 'Constants/AppConfig';
 import {AUTH} from '../urls/backendUrl';
 import {removeAuthToken, saveAuthToken} from "Helpers/tokens";
 import {setAuthUser} from "Actions/AuthActions";
+import {getCurrencies} from "Actions/GeneralActions";
 import {getFullAuthorisationRequestConfig} from "Helpers/helpers";
 
 const errorDisplay = (error) => {
@@ -67,8 +70,12 @@ export const loginUserWithEmailAndPassword = (data) => (dispatch) => {
             // Fetch user data
             dispatch(setAuthUser(_data.gotServiceNumber ? _data.serviceNumber : null ));
 
+            dispatch(getCurrencies());
+
             // Persist data into store
             dispatch({ type: LOGIN_USER_SUCCESS, payload: data });
+
+            dispatch({ type: SET_CURRENT_COMMUNITY_SUCCESS, payload: null });
             // history.push('/');
             // NotificationManager.success('User Login Successfully!');
             return Promise.resolve();
@@ -100,7 +107,7 @@ export const registerPersonUser = (data) => (dispatch) => {
         .catch((error) => {
             dispatch({ type: SIGNUP_USER_FAILURE, payload: error });
             // errorDisplay(error);
-            NotificationManager.error(error.message);
+            // NotificationManager.error(error.message);
             return Promise.reject();
         });
 };
@@ -119,7 +126,7 @@ export const registerOrganisation = (data) => (dispatch) => {
         .catch((error) => {
             dispatch({ type: SIGNUP_USER_FAILURE, payload: error });
             // errorDisplay(error);
-            NotificationManager.error(error.message);
+            // NotificationManager.error(error.message);
             return Promise.reject();
         });
 };

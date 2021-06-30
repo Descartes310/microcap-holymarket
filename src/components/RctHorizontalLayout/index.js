@@ -26,8 +26,8 @@ class RctHorizontalLayout extends Component {
         return (
             <Scrollbars
                 className="rct-scroll"
-                autoHide
-                autoHideDuration={100}
+                // autoHide
+                // autoHideDuration={100}
                 style={{ height: 'calc(100vh - 100px)' }}
             >
                 <div className="rct-page-content">

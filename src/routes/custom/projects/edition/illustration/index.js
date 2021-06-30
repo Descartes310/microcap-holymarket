@@ -17,17 +17,17 @@ import IntlMessages from 'Util/IntlMessages';
 
 // Function for interactive List
 function generate(element) {
-	return [0, 1, 2].map(value =>
-		React.cloneElement(element, {
-			key: value,
-		}),
-	);
+    return [0, 1, 2].map(value =>
+        React.cloneElement(element, {
+            key: value,
+        }),
+    );
 }
 
 class Illustration extends React.Component {
-    
+
     state = {
-		dense: false,
+        dense: false,
         secondary: false,
         age: '',
         name: 'hai',
@@ -35,31 +35,31 @@ class Illustration extends React.Component {
 
     handleChange = event => {
         this.setState({ [event.target.name]: event.target.value });
-      };
-    
+    };
+
     render() {
         const { dense, secondary } = this.state;
         return (
 
-           <div className="container justify-content-center"> 
+            <div className="container justify-content-center">
 
                 <form autoComplete="off">
                     <div className="row">
-                    <div className="col-sm-6 col-md-6 col-xl-3">
-                        <div className="form-group">
-                        <FormControl fullWidth>
-                            <span>Filtre</span>
-                            {/* <InputLabel htmlFor="age-simple"></InputLabel> */}
-                            <Select value={this.state.age} onChange={this.handleChange}
-                            inputProps={{ name: 'age', id: 'age-simple', }}>
-                            <MenuItem value=""><em>None</em></MenuItem>
-                            <MenuItem value={10}>Ten</MenuItem>
-                            <MenuItem value={20}>Twenty</MenuItem>
-                            <MenuItem value={30}>Thirty</MenuItem>
-                            </Select>
-                        </FormControl>
+                        <div className="col-sm-6 col-md-6 col-xl-3">
+                            <div className="form-group">
+                                <FormControl fullWidth>
+                                    <span>Filtre</span>
+                                    {/* <InputLabel htmlFor="age-simple"></InputLabel> */}
+                                    <Select value={this.state.age} onChange={this.handleChange}
+                                        inputProps={{ name: 'age', id: 'age-simple', }}>
+                                        <MenuItem value=""><em>None</em></MenuItem>
+                                        <MenuItem value={10}>Ten</MenuItem>
+                                        <MenuItem value={20}>Twenty</MenuItem>
+                                        <MenuItem value={30}>Thirty</MenuItem>
+                                    </Select>
+                                </FormControl>
+                            </div>
                         </div>
-                    </div>
                     </div>
                 </form>
 

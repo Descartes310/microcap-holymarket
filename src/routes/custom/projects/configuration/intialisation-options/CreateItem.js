@@ -1,21 +1,26 @@
-import React from "react";
-import {useForm} from "react-hook-form";
-import {Form, FormGroup} from "reactstrap";
-import {useTheme} from "@material-ui/core";
+import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import { Form, FormGroup } from "reactstrap";
 import Button from "@material-ui/core/Button";
-import Input from "@material-ui/core/Input/Input";
+import Checkbox from "@material-ui/core/Checkbox";
 import MenuItem from "@material-ui/core/MenuItem";
+import Input from "@material-ui/core/Input/Input";
 import Select from "@material-ui/core/Select/Select";
 import InputComponent from "Components/InputComponent";
 import FormControl from "@material-ui/core/FormControl";
-import {NotificationManager} from "react-notifications";
 import DialogComponent from "Components/DialogComponent";
-import CustomAsyncComponent from "Components/CustomAsyncComponent";
+import { NotificationManager } from "react-notifications";
 import InputLabel from "@material-ui/core/InputLabel/InputLabel";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import CustomAsyncComponent from "Components/CustomAsyncComponent";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
+import { truncate } from "lodash";
 
-const AddWork = ({show, works, onSave, onClose}) => {
-    const { control, register, errors, handleSubmit } = useForm();
+const AddWork = ({ show, works, onSave, onClose }) => {
+    const { control, register, errors, handleSubmit, watch } = useForm();
+
+    const [required, setRequired] = useState(false);
+    const [editable, setEditable] = useState(true);
 
     const onSubmit = (data) => {
         const id = data.id;
@@ -23,8 +28,15 @@ const AddWork = ({show, works, onSave, onClose}) => {
             NotificationManager.error("Vous devez choisir un ouvrage ou en créé un d'abord");
             return;
         }
+
+        if (data.max < 1) {
+            NotificationManager.error("Vous devez définir un nombre maximal d'occurence correcte");
+            return;
+        }
+
         const work = works.find(i => i.id === id);
-        onSave({...work, content: data.content});
+
+        onSave({ ...work, content: data.content, max: Math.ceil(data.max), required: required, editable: editable, description: data.description });
     };
 
     return (
@@ -40,7 +52,7 @@ const AddWork = ({show, works, onSave, onClose}) => {
                                     <div className="form-group text-left">
                                         <FormControl fullWidth>
                                             <InputLabel className="text-left" htmlFor="representativePosition">
-                                                Ouvrage
+                                                Type d'Ouvrage
                                             </InputLabel>
                                             <InputComponent
                                                 isRequired
@@ -67,7 +79,7 @@ const AddWork = ({show, works, onSave, onClose}) => {
 
                         <FormGroup className="col-sm-12 has-wrapper">
                             <InputLabel className="text-left" htmlFor="description">
-                                Contenu
+                                Etiquette
                             </InputLabel>
                             <InputComponent
                                 id="name"
@@ -77,8 +89,80 @@ const AddWork = ({show, works, onSave, onClose}) => {
                                 register={register}
                                 className="input-lg"
                             />
-                            <span className="has-icon"><i className="ti-pencil"/></span>
                         </FormGroup>
+
+                        <FormGroup className="col-sm-12 has-wrapper">
+                            <InputLabel className="text-left" htmlFor="max">
+                                Description
+                            </InputLabel>
+                            <InputComponent
+                                id="description"
+                                isRequired
+                                errors={errors}
+                                type='text'
+                                name={'description'}
+                                register={register}
+                                className="input-lg"
+                            />
+                        </FormGroup>
+
+                        <FormGroup className="col-sm-12 has-wrapper">
+                            <InputLabel className="text-left" htmlFor="max">
+                                Nombre maximal d'occurences
+                            </InputLabel>
+                            <InputComponent
+                                id="max"
+                                isRequired
+                                errors={errors}
+                                type='number'
+                                defaultValue={1}
+                                name={'max'}
+                                register={register}
+                                className="input-lg"
+                            />
+                        </FormGroup>
+
+                        <FormControl className="col-sm-12 has-wrapper">
+                            <InputComponent
+                                isRequired
+                                className="mt-0"
+                                errors={errors}
+                                id="required"
+                                control={control}
+                                name={'required'}
+                                register={register}
+                                componentType="select"
+                                as={<FormControlLabel control={
+                                    <Checkbox
+                                        color="primary"
+                                        checked={required}
+                                        onChange={() => { setRequired(!required) }}
+                                    />
+                                } label={"Ouvrage obligatoire"}
+                                />}
+                            />
+                        </FormControl>
+
+                        <FormControl className="col-sm-12 has-wrapper">
+                            <InputComponent
+                                isRequired
+                                className="mt-0"
+                                errors={errors}
+                                id="editable"
+                                control={control}
+                                name={'editable'}
+                                register={register}
+                                componentType="select"
+                                as={<FormControlLabel control={
+                                    <Checkbox
+                                        color="primary"
+                                        checked={editable}
+                                        onChange={() => { setEditable(!editable) }}
+                                    />
+                                } label={"Ouvrage éditable"}
+                                />}
+                            />
+                        </FormControl>
 
                     </div>
 

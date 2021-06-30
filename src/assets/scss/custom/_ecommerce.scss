@@ -137,6 +137,12 @@
           font-weight: 500;
         }
       }
+      .product-text-truncate{
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        width:100%; 
+        overflow: hidden;
+      }
       .overlay-wrap{
         min-height: 16rem;
         max-height: 16rem;

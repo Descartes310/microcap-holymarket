@@ -13,56 +13,7 @@ import { RctCardFooter } from 'Components/RctCard';
 
 //Data
 const headlinesData = [
-   {
-      id: 1,
-      title: "Telecom Commission approves net neutrality, new telecom policy",
-      place: "New Delhi",
-      category: "Technology",
-      badgeColor: "danger",
-      imgUrl: require("Assets/img/gallery-1.jpg"),
-      time: "4 Hours Ago",
-      date: "July 11 2018"
-   },
-   {
-      id: 2,
-      title: "Check status of Mumbai local, long-distance trains as rains continue",
-      place: "Mumbai",
-      category: "Weather",
-      badgeColor: "info",
-      imgUrl: require("Assets/img/gallery-2.jpg"),
-      time: "6 Hours Ago",
-      date: "July 11 2018"
-   },
-   {
-      id: 3,
-      title: "Croatia lowest ranked team in history to reach World Cup final",
-      place: "Croatia",
-      category: "Sports",
-      badgeColor: "primary",
-      imgUrl: require("Assets/img/gallery-3.jpg"),
-      time: "12 Hours Ago",
-      date: "July 11 2018"
-   },
-   {
-      id: 4,
-      title: "Vistara orders Boeing, Airbus jets worth $3.1 billion",
-      place: "USA",
-      category: "World",
-      badgeColor: "success",
-      imgUrl: require("Assets/img/gallery-4.jpg"),
-      time: "Yesterday",
-      date: "July 10 2018"
-   },
-   {
-      id: 5,
-      title: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-      place: "India",
-      category: "Entertainment",
-      badgeColor: "warning",
-      imgUrl: require("Assets/img/gallery-5.jpg"),
-      time: "1 hour ago",
-      date: "July 11 2018"
-   }
+
 ]
 
 export default class TopHeadlines extends Component {

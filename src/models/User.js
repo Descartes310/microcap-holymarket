@@ -1,6 +1,7 @@
 import ProfileType from 'Models/ProfileType';
 import Status from "Enums/Status";
 import UserType from "Enums/UserType";
+import { getFilePath } from "Helpers/helpers";
 
 export default class User {
     // userType;
@@ -29,7 +30,7 @@ export default class User {
     }
 
     get avatar() {
-        return this.user.avatar ? this.user.avatar : require('Assets/avatars/profile.jpg');
+        return this.user.avatar ? getFilePath(this.user.avatar) : require('Assets/avatars/profile.jpg');
     }
 
     isExploitant = () => {

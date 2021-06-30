@@ -15,6 +15,8 @@ import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard
 
 // rct section loader
 import RctSectionLoader from 'Components/RctSectionLoader/RctSectionLoader';
+import { getFilePath } from "Helpers/helpers";
+
 
 class FeedbackDetails extends Component {
 
@@ -81,7 +83,7 @@ class FeedbackDetails extends Component {
                            {selectedFeedback.comments.length > 0 && selectedFeedback.comments.map((comment, key) => (
                               <li className="media" key={key}>
                                  {comment.avatar !== '' ?
-                                    <img src={comment.avatar} alt="user profile" className="img-fluid rounded-circle mr-20" width="50" height="50" />
+                                    <img src={getFilePath(comment.avatar)} alt="user profile" className="img-fluid rounded-circle mr-20" width="50" height="50" />
                                     : <Avatar className="mr-20">{comment.userName.charAt(0)}</Avatar>
                                  }
                                  <div className="media-body">
@@ -89,7 +91,7 @@ class FeedbackDetails extends Component {
                                     {comment.reply !== null && comment.reply.map((reply, subkey) => (
                                        <div className="media mt-30 mb-0" key={subkey}>
                                           {reply.avatar !== '' ?
-                                             <img src={reply.avatar} alt="user profile" className="img-fluid rounded-circle mr-20" width="50" height="50" />
+                                             <img src={getFilePath(reply.avatar)} alt="user profile" className="img-fluid rounded-circle mr-20" width="50" height="50" />
                                              : <Avatar className="mr-20">{reply.userName.charAt(0)}</Avatar>
                                           }
                                           <div className="media-body">

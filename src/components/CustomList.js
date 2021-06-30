@@ -4,14 +4,14 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
-import {Button, Input, InputGroup, InputGroupAddon} from "reactstrap";
+import { Button, Input, InputGroup, InputGroupAddon, FormGroup } from "reactstrap";
 import FormControl from "@material-ui/core/FormControl";
 import IconButton from "@material-ui/core/IconButton";
-import {withStyles} from "@material-ui/core";
-import {canArray, globalSearch} from "Helpers/helpers";
+import { withStyles } from "@material-ui/core";
+import { canArray, globalSearch } from "Helpers/helpers";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
-import {permissionMiddleware} from "Actions/PermissionAlertBoxAction";
-import {AbilityContext} from "Permissions/Can";
+import { permissionMiddleware } from "Actions/PermissionAlertBoxAction";
+import { AbilityContext } from "Permissions/Can";
 import Permission from "Enums/Permissions";
 import FetchFailedComponent from "Components/FetchFailedComponent";
 
@@ -28,7 +28,7 @@ class CustomList extends Component {
     onSearchChanged = (event, can) => {
         if (this.props.permissionMiddleware(can)) return;
 
-        this.setState({searched: event.target.value});
+        this.setState({ searched: event.target.value });
     };
 
     handleSearch = (value, data) => {
@@ -45,9 +45,10 @@ class CustomList extends Component {
     render() {
         const {
             titleList, itemsFoundText, addingButton,
-            loading, list, error, renderItem,
+            loading, list, error, renderItem, style,
             match, history, classes, showSearch, onRetryClick,
             addText, onAddClick, addPermissions, searchPermissions,
+            showBackBtn, titleClassName, wrapClassName,
         } = this.props;
 
         let orderedItems = this.handleSearch(this.state.searched, list);
@@ -56,54 +57,79 @@ class CustomList extends Component {
         const canSearch = canArray(this.mapPermissions(searchPermissions.permissions), searchPermissions.some);
 
         return (
-            <div className="page-list">
-                {titleList && (<PageTitleBar title={titleList} match={match} history={history} enableBreadCrumb={false} />)}
+            <div className={`page-list ${wrapClassName}`} style={style}>
+                {titleList && (
+                    <PageTitleBar
+                        match={match}
+                        title={titleList}
+                        history={history}
+                        enableBreadCrumb={false}
+                        showBackBtn={showBackBtn}
+                        titleClassName={titleClassName}
+                    />
+                )}
                 {loading
-                    ? (<RctSectionLoader/>)
+                    ? (<RctSectionLoader />)
                     : orderedItems === null ? (
                         <FetchFailedComponent _onRetryClick={onRetryClick} />
                     ) : (
-                        <RctCollapsibleCard>
-                            <div className="align-items-center mb-30 px-15 row">
-                                {(onAddClick && canAdd && !addingButton) && (
-                                    <Button
-                                        color="primary"
-                                        className="text-white mr-2"
-                                        onClick={() => onAddClick()}
-                                    >
-                                        {addText}
-                                        <i className="zmdi zmdi zmdi-plus ml-2" />
-                                    </Button>
-                                )}
-                                {showSearch && (
-                                    <div className={classes.flex}>
-                                        <FormControl>
-                                            <InputGroup>
-                                                <InputGroupAddon addonType="prepend">
-                                                    <IconButton aria-label="facebook">
-                                                        <i className="zmdi zmdi-search" />
-                                                    </IconButton>
-                                                </InputGroupAddon>
-                                                <Input
-                                                    type="text"
-                                                    name="search"
-                                                    value={this.state.searched}
-                                                    placeholder={'Recherchez...'}
-                                                    onChange={event => this.onSearchChanged(event, canSearch)}
-                                                />
-                                            </InputGroup>
-                                        </FormControl>
-                                    </div>
-                                )}
-                                {itemsFoundText && (
-                                    <p className={classes.title}>
-                                        {itemsFoundText(orderedItems.length)}
-                                    </p>
-                                )}
-                            </div>
-                            {renderItem(orderedItems)}
-                        </RctCollapsibleCard>
-                    )
+                            <RctCollapsibleCard>
+                                <div className="align-items-center mb-30 px-15 row">
+                                    {(onAddClick && canAdd && !addingButton) && (
+                                        <Button
+                                            color="primary"
+                                            className="text-white mr-2"
+                                            onClick={() => onAddClick()}
+                                        >
+                                            {addText}
+                                            <i className="zmdi zmdi zmdi-plus ml-2" />
+                                        </Button>
+                                    )}
+                                    {showSearch && (
+                                        <>
+                                            <div className={classes.flex}>
+                                                <FormControl>
+                                                    <InputGroup>
+                                                        <InputGroupAddon addonType="prepend">
+                                                            <IconButton aria-label="facebook">
+                                                                <i className="zmdi zmdi-search" />
+                                                            </IconButton>
+                                                        </InputGroupAddon>
+                                                        <Input
+                                                            type="text"
+                                                            name="search"
+                                                            value={this.state.searched}
+                                                            placeholder={'Recherchez...'}
+                                                            onChange={event => this.onSearchChanged(event, canSearch)}
+                                                        />
+                                                    </InputGroup>
+                                                </FormControl>
+                                            </div>
+                                            {/* <div className="col-sm-12 col-md-3 col-xl-3 mb-10">
+                                                <div className="app-selectbox">
+                                                    <FormGroup className="mb-0">
+                                                        <Input type="select" name="select" id="exampleSelect">
+                                                            <option>Filter: Popularity</option>
+                                                            <option>1</option>
+                                                            <option>2</option>
+                                                            <option>3</option>
+                                                            <option>4</option>
+                                                            <option>5</option>
+                                                        </Input>
+                                                    </FormGroup>
+                                                </div>
+                                            </div> */}
+                                        </>
+                                    )}
+                                    {itemsFoundText && (
+                                        <p className={classes.title}>
+                                            {itemsFoundText(orderedItems.length)}
+                                        </p>
+                                    )}
+                                </div>
+                                {renderItem(orderedItems)}
+                            </RctCollapsibleCard>
+                        )
                 }
             </div>
         );
@@ -147,6 +173,10 @@ CustomList.propTypes = {
     list: PropTypes.any,
     error: PropTypes.any,
     itemsFoundText: PropTypes.func,
+    onRetryClick: PropTypes.func,
+    showBackBtn: PropTypes.bool,
+    wrapClassName: PropTypes.string,
+    titleClassName: PropTypes.string,
 };
 
 CustomList.defaultProps = {
@@ -159,7 +189,10 @@ CustomList.defaultProps = {
         permissions: [],
         some: true,
     },
-    showSearch: true
+    showSearch: true,
+    showBackBtn: true,
+    titleClassName: '',
+    wrapClassName: '',
 };
 
 export default withRouter(connect(() => ({}), {

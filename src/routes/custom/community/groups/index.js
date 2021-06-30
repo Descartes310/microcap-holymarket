@@ -1,23 +1,20 @@
-/**
- * Chat
- */
-import { connect } from "react-redux";
-import React, { Component } from 'react';
+import {connect} from "react-redux";
+import React, {Component} from 'react';
+import {getFilePath} from 'Helpers/helpers';
 import Drawer from '@material-ui/core/Drawer';
 import Hidden from '@material-ui/core/Hidden';
-import { withStyles } from '@material-ui/core/styles';
-import { Helmet } from "react-helmet";
-import { statusCommunitySpaceStatus, setCommunitySpaceData } from 'Actions/CommunityAction';
-import GroupsSidebar from "Routes/custom/community/groups/GroupsSidebar";
-import CommunityItem from "Routes/custom/community/groups/CommunityItem";
-import Toolbar from "@material-ui/core/Toolbar";
-import IconButton from "@material-ui/core/IconButton";
-import EmailSearch from "Routes/mail/components/EmailSearch";
-import AppBar from "@material-ui/core/AppBar/AppBar";
 import AppsIcon from '@material-ui/icons/Apps';
+import Toolbar from "@material-ui/core/Toolbar";
+import CommunityType from "Enums/CommunityType";
 import MatButton from '@material-ui/core/Button';
+import {withStyles} from '@material-ui/core/styles';
+import AppBar from "@material-ui/core/AppBar/AppBar";
+import IconButton from "@material-ui/core/IconButton";
+import {NotificationManager} from "react-notifications";
+import {COMMUNITY, joinUrlWithParamsId} from 'Url/frontendUrl';
+import GroupsSidebar from "Routes/custom/community/groups/GroupsSidebar";
 import InvitationCreateDialog from '../../communityT/members/invitation/InvitationCreateDialog';
-import { COMMUNITY } from 'Url/frontendUrl';
+import {addGroupToFavourites, getUserCommunities, setCurrentCommunity, setRequestGlobalAction,} from 'Actions';
 
 const drawerWidth = 310;
 
@@ -66,20 +63,31 @@ class Groups extends Component {
 
     constructor(props) {
         super(props);
-     }
+    }
 
     handleDrawerToggle = () => {
         this.setState({ mobileOpen: !this.state.mobileOpen });
     };
 
     enterInCommunitySpace = () => {
-        this.props.statusCommunitySpaceStatus(true);
-        this.props.setCommunitySpaceData(this.props.currentCommunity.data.id);
-        this.props.history.push(COMMUNITY.MEMBERS.LIST);
-    }
+        // this.props.history.push(joinUrlWithParamsId(COMMUNITY.MEMBERS.LIST, this.props.currentCommunity.data.community.id));
+        window.location = joinUrlWithParamsId(COMMUNITY.MEMBERS.LIST, this.props.currentCommunity.data.community.id);
+    };
 
-    join = () => {
-        this.props.history.push(COMMUNITY.MEMBERS.LIST);
+    handleFavourite = () => {
+        this.props.setRequestGlobalAction(true);
+        addGroupToFavourites(this.props.currentCommunity.data.community.id)
+            .then(data => {
+                if (this.props.currentCommunity.data.favourite)
+                    NotificationManager.success("Retiré des favoris");
+                else
+                    NotificationManager.success("Ajouté aux favoris");
+                this.props.getUserCommunities(this.props.authUser.user.id);
+                this.props.setCurrentCommunity(this.props.currentCommunity.data.community, !this.props.currentCommunity.data.favourite);
+            })
+            .finally(() => {
+                this.props.setRequestGlobalAction(false);
+            })
     }
 
     handleClickOpenInvation = () => {
@@ -139,13 +147,73 @@ class Groups extends Component {
                         </Drawer>
                     </Hidden>
                     <div className={`chat-content ${classes.content}`}>
-                        <CommunityItem onMenuIconPress={this.handleDrawerToggle} />
+                        {currentCommunity.data ?
+                            <div className='d-flex flex-row align-items-center justify-content-center mt-40'>
+                                <div style={{ flex: 1, paddingLeft: '5%' }}>
+                                    <img src={currentCommunity.data.community.image ? getFilePath(currentCommunity.data.community.image) : require('Assets/img/groups.png')} alt="Community image" width="80%" />
+                                </div>
+                                <div className='d-flex flex-column justify-content-center' style={{ flex: 1 }}>
+                                    <div style={{ marginBottom: 20 }}>
+                                        <h2>Nom de la communuaté</h2>
+                                        <span>{currentCommunity.data.community.label}</span>
+                                    </div>
+                                    <div style={{ marginBottom: 20 }}>
+                                        <h2>Numéro de référence</h2>
+                                        <span>{currentCommunity.data.community.reference}</span>
+                                    </div>
+                                    <div style={{ marginBottom: 20 }}>
+                                        <h2>Type de communauté</h2>
+                                        {
+                                            currentCommunity.data.community.typeGroup.name === CommunityType.COMMUNAUTE_PROJET ?
+                                                <span style={{ backgroundColor: 'rgba(46, 178, 229, 0.8)', padding: 10, marginTop: 20, marginBottom: 20, width: 76, borderRadius: 5, color: 'white', fontSize: '0.8em' }}>
+                                                    Communuaté projet
+                                                </span>
+                                                : null
+                                        }
+                                        {
+                                            currentCommunity.data.community.typeGroup.name === CommunityType.COMMUNAUTE_CONVENTIONNEE ?
+                                                <span style={{ backgroundColor: 'rgba(200, 0, 0, 0.5)', padding: 10, marginTop: 20, marginBottom: 20, width: 76, borderRadius: 5, color: 'white', fontSize: '0.8em' }}>
+                                                    Communauté conventionnée
+                                                </span>
+                                                : null
+                                        }
+                                        {
+                                            currentCommunity.data.community.typeGroup.name === CommunityType.COMMUNAUTE_AFFINITE ?
+                                                <span style={{ backgroundColor: 'rgba(200, 0, 0, 0.5)', padding: 10, marginTop: 20, marginBottom: 20, width: 76, borderRadius: 5, color: 'white', fontSize: '0.8em' }}>
+                                                    Communauté d'affinité
+                                                </span>
+                                                : null
+                                        }
+                                    </div>
+                                    <div style={{ marginBottom: 20 }}>
+                                        <h2>Nombre de membre</h2>
+                                        <span>{currentCommunity.data.members}</span>
+                                    </div>
+                                </div>
+                            </div> : null}
                         {
                             currentCommunity.data ?
-                                <div className="text-center" style={{ position: "absolute", top: "60%", padding: 10, width: "100%" }}>
+                                <div style={{ marginLeft: '10%', marginTop: '5%', marginBottom: '5%' }}>
+                                    <div style={{ marginBottom: 20 }}>
+                                        <h2>Description de la communuaté</h2>
+                                    </div>
+
+                                    <span>{currentCommunity.data.community.description}</span>
+                                </div>
+                                : null
+                        }
+                        {
+                            currentCommunity.data ?
+                                <div className="text-center" style={{ padding: 10, width: "100%" }}>
                                     <MatButton variant="contained" color="primary" className="mr-10 mb-10 text-white btn-icon" onClick={this.handleClickOpenInvation}>Envoyer une invitation</MatButton>
                                     <MatButton variant="contained" className="btn-info ml-10 mb-10 text-white btn-icon" onClick={this.enterInCommunitySpace}>Rejoindre</MatButton>
-                                    <InvitationCreateDialog open={this.state.open} handleClose={this.handleCloseInvation}/>
+                                    {
+                                        !currentCommunity.data.favourite ?
+                                            <MatButton variant="contained" className="btn-success ml-10 mb-10 text-white btn-icon" onClick={this.handleFavourite}>Ajouter aux favoris</MatButton>
+                                            :
+                                            <MatButton variant="contained" className="btn-danger ml-10 mb-10 text-white btn-icon" onClick={this.handleFavourite}>Retirer des favoris</MatButton>
+                                    }
+                                    <InvitationCreateDialog open={this.state.open} handleClose={this.handleCloseInvation} />
                                 </div>
                                 :
                                 null
@@ -157,13 +225,16 @@ class Groups extends Component {
     }
 }
 
-const mapStateToProps = ({ communitySpace, currentCommunity }) => {
+const mapStateToProps = ({ communitySpace, currentCommunity, authUser }) => {
     return {
         communitySpace: communitySpace,
+        authUser: authUser.data,
         currentCommunity: currentCommunity
     }
 };
 
 
-export default connect(mapStateToProps, { statusCommunitySpaceStatus, setCommunitySpaceData })
-    (withStyles(styles, { withTheme: true })(Groups));
+export default connect(
+    mapStateToProps,
+    {setRequestGlobalAction, setCurrentCommunity, getUserCommunities}
+)(withStyles(styles, {withTheme: true})(Groups));

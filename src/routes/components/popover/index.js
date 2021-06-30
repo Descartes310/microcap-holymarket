@@ -71,7 +71,7 @@ class PopoverTooltip extends React.Component {
                   <RctCollapsibleCard customClasses="text-center p-20" colClasses="col-sm-6 col-md-6 col-xl-3">
                      <h5 className="mb-20">Avatar Tooltip</h5>
                      <Tooltip id="tooltip-icon" title="User Icon">
-                        <Avatar alt="User Image" className="img-fluid d-inline-block" src={require('Assets/img/user-5.jpg')} />
+                        <Avatar alt="User Image" className="img-fluid d-inline-block" src={require('Assets/img/profile.jpg')} />
                      </Tooltip>
                   </RctCollapsibleCard>
                   <RctCollapsibleCard customClasses="text-center p-20" colClasses="col-sm-6 col-md-6 col-xl-3">

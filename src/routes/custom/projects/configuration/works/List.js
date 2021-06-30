@@ -7,6 +7,7 @@ import IntlMessages from 'Util/IntlMessages';
 import {AbilityContext} from "Permissions/Can";
 import CustomList from "Components/CustomList";
 import {setRequestGlobalAction, getProjectWorks} from "Actions";
+import TimeFromMoment from "Components/TimeFromMoment";
 
 class List extends Component {
     static contextType = AbilityContext;
@@ -47,6 +48,7 @@ class List extends Component {
                                                 <th>Titre</th>
                                                 {/*<th>Contenu</th>*/}
                                                 <th>Ouvrage Parent</th>
+                                                <th>Date de création</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -76,6 +78,13 @@ class List extends Component {
                                                             ) : (
                                                                 <h4 className="m-0 fw-bold text-dark">&#x0005F;</h4>
                                                             )}
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="media">
+                                                        <div className="media-body pt-10">
+                                                            <TimeFromMoment time={item.createdAt} />
                                                         </div>
                                                     </div>
                                                 </td>

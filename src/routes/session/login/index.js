@@ -19,7 +19,7 @@ import ErrorInputComponent from "Components/ErrorInputComponent";
 import {emailValidatorObject, minMaxValidatorObject} from "Helpers/validator";
 
 // route
-import {AUTH, HOME, DISCOVER} from "../../../urls/frontendUrl";
+import {AUTH, HOME, DISCOVER, TERMS} from "../../../urls/frontendUrl";
 
 // app config
 import AppConfig from 'Constants/AppConfig';
@@ -76,14 +76,14 @@ const Signin = (props) => {
                                         <img src={AppConfig.appLogo} alt="session-logo" className="img-fluid" width="110" height="35" />
                                     </Link>
                                 </div>
-                                <div className="center-hor-ver">
-                                    <a className="mr-15 text-white" onClick={onUserSignUp}>
+                                <div className="center-hor-ver" style={{ marginRight: '10%' }}>
+                                    {/* <a className="mr-15 text-white" onClick={onUserSignUp}>
                                         <IntlMessages id="auth.createAccount" />
-                                    </a>
-                                    <Button variant="contained" className="btn-light mr-2" onClick={onUserSignUp}>
+                                    </a> */}
+                                    <Button variant="contained" className="btn-light mr-2 p-10" onClick={onUserSignUp}>
                                         <IntlMessages id="auth.signup" />
                                     </Button>
-                                    <Button variant="contained" className="btn-primary mr-2 text-white" onClick={onDiscoverClick}>
+                                    <Button variant="contained" className="btn-primary mr-2 p-10" onClick={onDiscoverClick}>
                                         Découvrir Microcap
                                     </Button>
                                 </div>
@@ -151,7 +151,7 @@ const Signin = (props) => {
                                                 <span className="has-icon"><i className="ti-lock"></i></span>
                                             </FormGroup>
 
-                                            <FormControl fullWidth>
+                                            {/* <FormControl fullWidth>
                                                 <InputComponent
                                                     isRequired
                                                     className="mt-0"
@@ -171,7 +171,7 @@ const Signin = (props) => {
                                                     } label={"Accès nomade ?"}
                                                     />}
                                                 />
-                                            </FormControl>
+                                            </FormControl> */}
 
                                             {gotServiceNumberWatch && (
                                                 <FormGroup className="has-wrapper">
@@ -208,7 +208,7 @@ const Signin = (props) => {
                                             <IntlMessages id="auth.termOfService" values={{name: AppConfig.brandName}}/>
                                         </p>
                                         <p>
-                                            <a target="_blank" href="#/terms-condition" className="text-muted">
+                                            <a target="_blank" href={TERMS} className="text-muted">
                                                 <IntlMessages id="common.termOfService" />
                                             </a>
                                         </p>

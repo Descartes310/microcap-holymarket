@@ -186,7 +186,7 @@ class ThemeOptions extends Component {
 													<Tooltip title={theme.name} placement="top" key={key}>
 														<img
 															onClick={() => this.changeThemeColor(theme)}
-															src={require(`Assets/img/${theme.name}-theme.png`)}
+															src={require(`Assets/img/profile.jpg`)}
 															alt="theme"
 															className={classnames('img-fluid mr-5', { 'active': theme.id === activeTheme.id })}
 														/>

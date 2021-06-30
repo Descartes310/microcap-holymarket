@@ -1,4 +1,5 @@
 import { NotificationManager } from 'react-notifications';
+import { makeActionRequest } from '../helpers/helpers';
 import {
     CATALOG,
     CATALOG_SUCCESS,
@@ -13,6 +14,9 @@ import {
     BRANCH_PRODUCT_SUCCESS,
     BRANCH_PRODUCT_FAILURE,
     CATALOG_PRODUCTS,
+    SET_CURRENCIES,
+    SET_CURRENCIES_SUCCESS,
+    SET_CURRENCIES_FAILURE,
     PRODUCT_TYPE,
     USER_PROFILE,
     USER_PERMISSIONS,
@@ -22,6 +26,7 @@ import {
     USER_COMMUNITIES_ADMIN,
     USER_COMMUNITIES_NOT_IN,
     COM_INVITATIONS_PENDING,
+    COM_SOLLICITATION_PENDING,
     SET_CURRENT_COMMUNITY,
     SET_CURRENT_COMMUNITY_SUCCESS,
     SET_CURRENT_COMMUNITY_FAILURE,
@@ -63,8 +68,10 @@ import {
     ACCESS as ACCESS_API,
     NOTIFICATIONS as NOTIFICATIONS_API,
     PROJECTS as PROJECTS_API,
+    SETTING as SETTING_API,
+    BRANCH,
     joinBaseUrlWithParams,
-    BRANCH, joinBaseUrlWithParamsId,
+    joinBaseUrlWithParamsId,
 } from 'Url/backendUrl';
 
 export const getCatalogs = () => (dispatch) => {
@@ -107,6 +114,7 @@ export const getBranchProducts = (branchId) => (dispatch) => {
     return api
         .get(url)
         .then((response) => {
+            console.log(response)
             dispatch({ type: BRANCH_PRODUCT_SUCCESS, payload: response.data });
             return Promise.resolve();
         })
@@ -117,19 +125,24 @@ export const getBranchProducts = (branchId) => (dispatch) => {
         });
 };
 
-export const makeActionRequest = (verb, url, typeBase, dispatch, data = null, config = {} ) => {
-    dispatch({ type: typeBase });
-    return api[verb](url, data)
+export const getBranchProductsOnly = (branchId) => (dispatch) => {
+    dispatch({ type: BRANCH_PRODUCT });
+
+    const url = `${BRANCH.PRODUCTS.GET_ALL_PRODUCTS}?branch_id=${branchId}`;
+    return api
+        .get(url)
         .then((response) => {
-            dispatch({ type: `${typeBase}_SUCCESS`, payload: response.data });
-            return Promise.resolve(response.data);
+            console.log(response)
+            dispatch({ type: BRANCH_PRODUCT_SUCCESS, payload: response.data });
+            return Promise.resolve();
         })
         .catch((error) => {
-            dispatch({ type: `${typeBase}_FAILURE` });
+            dispatch({ type: BRANCH_PRODUCT_FAILURE });
             NotificationManager.error(error.message);
-            return Promise.reject(error);
+            return Promise.reject();
         });
 };
+
 
 export const getCatalogProducts = (catalogId) => (dispatch) => {
     const url = joinBaseUrlWithParams(CATALOGS_API.TYPE_PRODUCTS.GET, [{
@@ -145,8 +158,23 @@ export const getCategoryProducts = (branchId) => (dispatch) => {
 };
 
 export const getProductTypes = (branchId) => (dispatch) => {
-    const url = `${PRODUCT_TYPE_API.GET_ALL}?branch_id=${branchId}`;
+    const url = `${PRODUCT_TYPE_API.GET_ALL_PRODUCTS}?branch_id=${branchId}`;
     return makeActionRequest('get', url, PRODUCT_TYPE, dispatch);
+};
+
+export const getCurrencies = (shouldSkipError = false) => (dispatch) => {
+    const url = `${SETTING_API.CURRENCIES}`;
+    dispatch({ type: SET_CURRENCIES });
+    return api
+        .get(url, {skipError: shouldSkipError})
+        .then((response) => {
+            dispatch({ type: SET_CURRENCIES_SUCCESS, payload: response.data });
+            return Promise.resolve();
+        })
+        .catch(() => {
+            dispatch({ type: SET_CURRENCIES_FAILURE });
+            return Promise.reject();
+        });
 };
 
 export const getUserProfiles = (branchId, type) => (dispatch) => {
@@ -194,8 +222,17 @@ export const getInvitationsPending = (userId) => (dispatch) => {
     return makeActionRequest('get', url, COM_INVITATIONS_PENDING, dispatch);
 };
 
-export const setCurrentCommunity = (community) => (dispatch) => {
-    dispatch({type: SET_CURRENT_COMMUNITY_SUCCESS, payload: community});
+export const getAllOperators = (id, groupId) => (dispatch) => {
+     const data = {
+        group_id: groupId
+     };
+     const url = joinBaseUrlWithParams(BRANCH.GET_ALL_OPERATORS, [{param: 'id', value: id,}]);
+     return makeActionRequest('get', url, COM_SOLLICITATION_PENDING, dispatch, data);
+ };
+
+
+export const setCurrentCommunity = (community, favourite, members) => (dispatch) => {
+    dispatch({ type: SET_CURRENT_COMMUNITY_SUCCESS, payload: {community, favourite, members} });
 };
 
 export const getMembersOfOneGroup = (group) => (dispatch) => {
@@ -207,7 +244,7 @@ export const getMembersOfOneGroup = (group) => (dispatch) => {
     return api
         .get(url)
         .then((response) => {
-            dispatch({ type: SET_CURRENT_COMMUNITY_SUCCESS, payload: {...group, members: response.data} });
+            dispatch({ type: SET_CURRENT_COMMUNITY_SUCCESS, payload: { ...group, members: response.data } });
             return Promise.resolve();
         })
         .catch(() => {
@@ -237,8 +274,12 @@ export const getComOffer = (partnerId) => (dispatch) => {
     return makeActionRequest('get', url, COMMERCIAL_OFFER, dispatch);
 };
 
-export const getProducts = (branchId) => (dispatch) => {
-    const url = `${COMMERCIAL_MANAGEMENT_API.OFFER.GET_ALL.PRODUCT_AVAILABLE}?branch_id=${branchId}`;
+export const getProducts = (branchId, saleway = null) => (dispatch) => {
+    let url = ''
+    if (saleway != null)
+        url = `${COMMERCIAL_MANAGEMENT_API.OFFER.GET_ALL.PRODUCT_AVAILABLE}?branch_id=${branchId}&sale_way=${saleway}`;
+    else
+        url = `${COMMERCIAL_MANAGEMENT_API.OFFER.GET_ALL.PRODUCT_AVAILABLE}?branch_id=${branchId}`;
     return makeActionRequest('get', url, PRODUCT, dispatch);
 };
 
@@ -277,8 +318,8 @@ export const getServicesNotifications = (branchId) => (dispatch) => {
     return makeActionRequest('get', url, NOTIFICATION_SERVICE, dispatch);
 };
 
-export const getAllNotifications = (userId) => (dispatch) => {
-    const url = `${NOTIFICATIONS_API.SELF.GET_ALL.SELF}?user_id=${userId}`;
+export const getAllNotifications = (userId, state) => (dispatch) => {
+    const url = `${NOTIFICATIONS_API.SELF.GET_ALL.SELF}?user_id=${userId}&state=${state}`;
     return makeActionRequest('get', url, NOTIFICATION, dispatch);
 };
 
@@ -314,9 +355,9 @@ export const getProjectStandard = (branchId) => (dispatch) => {
 };
 
 /*** ************************************************/
-export const getAllPostProject = (branchId) => (dispatch) => {
+export const getAllPostProject = (branchId) => {
     const url = joinBaseUrlWithParamsId(PROJECTS_API.POST_PROJETS.GET_ALL, branchId);
-    return makeActionRequest('get', url, PROJECTS, dispatch);
+    return makeRequest('get', url);
 };
 /**** ******************************************************/
 export const getOneProjectStandard = (branchId) => (dispatch) => {
@@ -330,7 +371,7 @@ export const getInitialisationOptions = (type, branchId) => (dispatch) => {
         : type === 'PROGRAM'
             ? INITIALISATION_PROGRAM
             : INITIALISATION_PROJECTS_CALL;
-    return makeActionRequest('get', url, actionType , dispatch);
+    return makeActionRequest('get', url, actionType, dispatch);
 };
 
 export const getProjectStandardPresentation = (branchId) => (dispatch) => {
@@ -346,4 +387,12 @@ export const getProjects = (branchId) => (dispatch) => {
 export const getFolders = (userId) => (dispatch) => {
     const url = joinBaseUrlWithParamsId(PROJECTS_API.FOLDERS.GET_ALL, userId);
     return makeActionRequest('get', url, FOLDERS, dispatch);
+};
+
+const makeRequest = (verb, url, data = null, config = {}) => {
+    return new Promise((resolve, reject) => {
+        api[verb](url, data)
+            .then(result => resolve(result.data))
+            .catch(error => reject(error));
+    });
 };

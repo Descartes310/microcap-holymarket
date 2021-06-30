@@ -3,36 +3,9 @@
  */
 import React, { Component } from 'react';
 import Slider from "react-slick";
+import { getFilePath } from "Helpers/helpers";
 
 const quotes = [
-	{
-		id: 1,
-		author: 'John Doe',
-		avatar: require('Assets/avatars/user-1.jpg'),
-		date: 'Yesterday',
-		body: 'Watching the news the other day, it occurred to me that people who have “words to live by” often begin to attack and even kill others. I thought back to my own angry youth, when I could easily use words to justify violent thoughts which might have become violent actions.Watching the news the other day, it occurred to me that people who have “words to live by” often begin to attack and even kill others. '
-	},
-	{
-		id: 2,
-		author: 'Shelby Caldwell',
-		avatar: require('Assets/avatars/user-2.jpg'),
-		date: '10 min ago',
-		body: 'Watching the news the other day, it occurred to me that people who have “words to live by” often begin to attack and even kill others. I thought back to my own angry youth, when I could easily use words to justify violent thoughts which might have become violent actions.Watching the news the other day, it occurred to me that people who have “words to live by” often begin to attack and even kill others. '
-	},
-	{
-		id: 3,
-		author: 'Beau Salinas',
-		avatar: require('Assets/avatars/user-3.jpg'),
-		date: 'Yesterday',
-		body: 'Watching the news the other day, it occurred to me that people who have “words to live by” often begin to attack and even kill others. I thought back to my own angry youth, when I could easily use words to justify violent thoughts which might have become violent actions. Watching the news the other day, it occurred to me that people who have “words to live by” often begin to attack and even kill others.'
-	},
-	{
-		id: 4,
-		author: 'Kelsey Beck',
-		avatar: require('Assets/avatars/user-3.jpg'),
-		date: 'Yesterday',
-		body: 'Watching the news the other day, it occurred to me that people who have “words to live by” often begin to attack and even kill others. I thought back to my own angry youth, when I could easily use words to justify violent thoughts which might have become violent actions.Watching the news the other day, it occurred to me that people who have “words to live by” often begin to attack and even kill others. '
-	}
 ]
 
 class QuoteOfTheDay extends Component {
@@ -53,7 +26,7 @@ class QuoteOfTheDay extends Component {
 						<div key={key} className="pb-20">
 							<div className="d-flex mb-25 align-items-center">
 								<div className="user-img mr-25">
-									<img src={quote.avatar} alt="reviewer profile" className="d-inline-block img-fluid rounded-circle" width="60" height="60" />
+									<img src={getFilePath(quote.avatar)} alt="reviewer profile" className="d-inline-block img-fluid rounded-circle" width="60" height="60" />
 								</div>
 								<div>
 									<h5 className="mb-0">{quote.author}</h5>

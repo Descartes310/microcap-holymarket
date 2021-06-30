@@ -8,6 +8,7 @@ import {
 	DARK_MODE,
 	BOXED_LAYOUT,
 	RTL_LAYOUT,
+	SET_CURRENCIES_SUCCESS,
 	MINI_SIDEBAR,
 	SEARCH_FORM_ENABLE,
 	CHANGE_THEME_COLOR,
@@ -32,6 +33,7 @@ const INIT_STATE = {
 	darkMode: AppConfig.darkMode,
 	boxLayout: AppConfig.boxLayout,
 	rtlLayout: AppConfig.rtlLayout,
+	currencies: [],
 	miniSidebar: AppConfig.miniSidebar,
 	searchFormOpen: false, // search form by default false
 	startUserTour: false,
@@ -68,10 +70,10 @@ const INIT_STATE = {
 	},
 	// sidebar background image
 	sidebarBackgroundImages: [
-		require('Assets/img/sidebar-1.jpg'),
-		require('Assets/img/sidebar-2.jpg'),
-		require('Assets/img/sidebar-3.jpg'),
-		require('Assets/img/sidebar-4.jpg'),
+		require('Assets/img/profile.jpg'),
+		require('Assets/img/profile.jpg'),
+		require('Assets/img/profile.jpg'),
+		require('Assets/img/profile.jpg'),
 	],
 	enableSidebarBackgroundImage: AppConfig.enableSidebarBackgroundImage, // default enable sidebar background
 	selectedSidebarImage: AppConfig.sidebarImage, // default sidebar background image
@@ -153,6 +155,10 @@ export default (state = INIT_STATE, action) => {
 		// set language
 		case SET_LANGUAGE:
 			return { ...state, locale: action.payload };
+
+		// set currencies
+		case SET_CURRENCIES_SUCCESS:
+			return { ...state, currencies: action.payload };
 
 		// dark sidenav
 		case TOGGLE_DARK_SIDENAV:
