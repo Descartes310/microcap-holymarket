@@ -35,9 +35,8 @@ class DiscoverVideo extends Component {
                         <br />
                         <Link to={AUTH.REGISTER} className="text-primary">
                             İnscrivez-vous</Link> et choississez l’abonnement
-                        qui vous correspond parmi
-                        <Link to={PASS_DETAILS} className="text-primary">
-                            nos PASS</Link>
+                        qui vous correspond parmi 
+                        <Link to={PASS_DETAILS} className="text-primary"> nos PASS</Link>
                     </p>
                 </div>
                 <div className="col-md-6 video-display" data-aos="fade-left">

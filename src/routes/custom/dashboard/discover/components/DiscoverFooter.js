@@ -1,9 +1,10 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import {SocialFeedsWidget} from "Components/Widgets";
 import ScrollToTopBtn from "Routes/custom/dashboard/discover/components/ScrollToTop";
 import {AGENTS, LEGAL_MENTION, MISSION, PIONIERS, SERVICES, TERMS, VALUES} from "Url/frontendUrl";
 
-const DiscoverFooter = () => {
+const DiscoverFooter = ({props}) => {
     return (
         <footer id="fh5co-footer" className="fh5co-bg pb-0" role="contentinfo">
             <div className="overlay" />
@@ -23,12 +24,12 @@ const DiscoverFooter = () => {
                             <div className="col-md-3 col-sm-4 col-xs-6">
                                 <ul className="fh5co-footer-links">
                                     <h3 className="mmb-sm-0 mmt-sm-4">Tout MicroCap</h3>
-                                    <li><a onClick={() => props.history.push(MISSION)}><span className="ti-angle-right"/> Mission et valeur</a></li>
-                                    <li><a onClick={() => props.history.push(VALUES)}><span className="ti-angle-right"/> Réseau Microcap</a></li>
-                                    <li><a className="" onClick={() => props.history.push(SERVICES)}><span className="ti-angle-right"/> Le service Microcap</a></li>
-                                    <li><a onClick={() => props.history.push(PIONIERS)}><span className="ti-angle-right"/> Les pionniers</a></li>
-                                    <li><a className="" onClick={() => props.history.push(AGENTS)}><span className="ti-angle-right"/> Assistances</a></li>
-                                    <li><a><span className="ti-angle-right"/> Faqs</a></li>
+                                    <li><Link to={MISSION}><a><span className="ti-angle-right"/> Mission et valeur</a></Link></li>
+                                    <li><Link to={VALUES}><a><span className="ti-angle-right"/> Réseau Microcap</a></Link></li>
+                                    <li><Link to={SERVICES}><a><span className="ti-angle-right"/> Le service Microcap</a></Link></li>
+                                    <li><Link to={PIONIERS}><a><span className="ti-angle-right"/> Les pionniers</a></Link></li>
+                                    <li><Link to={AGENTS}><a><span className="ti-angle-right"/> Assistances</a></Link></li>
+                                    <li><Link to={'#'}><a><span className="ti-angle-right"/> Faqs</a></Link></li>
                                 </ul>
                             </div>
 
