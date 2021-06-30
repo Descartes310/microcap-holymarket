@@ -24,28 +24,37 @@ export default class MoneyManagement extends Component {
         <div className="terms-conditions-rules">
           <RctCollapsibleCard customClasses="p-30">
             <p>
-              <p>Donner l’argents à vos proches ! c’est aliénant et humiliant. </p>
-              <p>Sensibiliser et porter l’éducation financière, économique et budgétaire pour rationaliser le rapport avec l’argent, c’est ce que nous promettons gratuitement à ceux qui vous tiennent à cœur.</p>
-              <p>Vous pouvez leur apporter la caution pour financer un projet, s’émanciper et devenir autonome financièrement</p>
-              <p>L’argent ne se donne pas, il se prête ou il se mérite ! voilà un vieille adage que nous tendons à oublier, cloisonnant ainsi près de 25%  de la population mondiale dans la mendicité et totalement démunie de dignité (24,1% de pauvres exactement en 2017 dans le monde: source banque mondiale).</p>
-              <p>MicroCap est une entreprise à mission qui se propose de démocratiser l’entrepreneuriat par l’accès aux financement. L’objectif est de permettre à tout ce qui le souhaite de cocréer leur emploi.</p>
-              <p>Nous parton du constat que ceux à qui les financements sont refusés ne sont pas conscient du pouvoir financier qui est le leur, mis en commun. Ils ne sont pas non plus conscients du fait que le mode de consommation auquel nous nous soumettons de plus en plus participe à plus de pauvreté et que, cynique mais vrai, leur pouvoir collectif finance chaque jour le système qui les appauvrit. Ce qui conduit à des incompréhensions et à un fort sentiment d’injustice sociale. Nous proposons des ressources, des sensibilisations et accompagnements totalement gratuits pour renforcer l’éducation financière, économique et budgétaire, afin de permettre à ce qui le souhaitent, de reprendre le contrôle sur leur argent. Nos objectifs recherchés pour vous :</p>
+              <p>« Si tu donnes un poisson à un homme, il se nourrit une fois. Si tu lui apprends à pêcher, 
+                il se nourrira toute sa vie », Lao Tseu</p>
+              <p>MicroCap est une entreprise à mission qui se propose de démocratiser l’accès au financement. 
+                L’objectif est de permettre à tous ceux qui le souhaitent 
+                de cocréer leur emploi.</p>
+
+              <p>Nous partons du postulat que les individus à qui les financements sont refusés n’ont pas conscience 
+                du pouvoir financier qui est le leur, une fois réuni. Ils ne sont pas non plus conscients du fait 
+                que le mode de consommation auquel nous nous soumettons de plus en plus participe à plus de pauvreté 
+                et que, leur pouvoir collectif finance chaque jour le système qui les appauvrit. Ce qui peut conduire 
+                à des incompréhensions et à un fort sentiment d’injustice sociale. Nous proposons des ressources, des 
+                sensibilisations et accompagnement totalement gratuits pour renforcer l’éducation à l’économie et la 
+                finance, afin de permettre à ceux qui le souhaitent, de reprendre le contrôle sur leurs ressources. 
+                Nos objectifs fixés pour vous :</p>
 
                 <ol style={{ paddingTop: 40, paddingBottom: 10 }}>
                     <li>Distinguer pouvoir d’achat et vouloir d’achat</li>
                     <li>Rationnaliser votre budget</li>
-                    <li>Décider a qui et à quoi sert votre argent</li>
+                    <li>Décider à qui et à quoi sert votre argent</li>
                     <li>Soutenir et vivre une finance vertueuse et utile</li>
                 </ol>
 
                 <p>
-                  Les utilisateurs de la plateforme MicroCap ont accès à un programme de sensibilisation, monitoring et coaching a la finance vertueuse. Pour en profiter :
+                  Les utilisateurs de la plateforme MicroCap ont accès à un programme de sensibilisation, monitoring 
+                  et coaching a la finance responsable. Pour en profiter :
                 </p>
                 <p>
-                  Un Webinaire d’une durée de 1H tous les jeudis à 13h. 
+                  Un webinaire d’une durée de 1H tous les jeudis à 13h. 
                 </p>
                 <p>
-                  Atelier pratique pour adopter et profiter de la finance vertueuse tous les derniers samedis du mois. Prochaines dates : 
+                  Atélier pratique pour adopter et profiter de la finance vertueuse tous les derniers samedis du mois. Prochaines dates: 
                 </p>
                 <ul style={{ paddingTop: 40, paddingBottom: 10 }}>
                     <li>Exceptionnellement le samedi 3 avril 2021 à 15H00</li>
