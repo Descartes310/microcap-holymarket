@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import {SocialFeedsWidget} from "Components/Widgets";
 import ScrollToTopBtn from "Routes/custom/dashboard/discover/components/ScrollToTop";
-import {AGENTS, LEGAL_MENTION, MISSION, PIONIERS, SERVICES, TERMS, VALUES} from "Url/frontendUrl";
+import {AGENTS, LEGAL_MENTION, MISSION, PIONIERS, SERVICES, TERMS, VALUES, CGU} from "Url/frontendUrl";
 
 const DiscoverFooter = ({props}) => {
     return (
@@ -36,9 +36,9 @@ const DiscoverFooter = ({props}) => {
                             <div className="col-md-3 col-sm-4 col-xs-6">
                                 <ul className="fh5co-footer-links">
                                     <h3 className="mmb-sm-0 mmt-sm-4">Informations légales</h3>
-                                    <li><a onClick={() => props.history.push(TERMS)}><span className="ti-angle-right"/> CGU</a></li>
-                                    <li><a><span className="ti-angle-right"/> CGV</a></li>
-                                    <li><a onClick={() => props.history.push(LEGAL_MENTION)}><span className="ti-angle-right"/> Mentions légales</a></li>
+                                    <li><Link to={CGU}><a><span className="ti-angle-right"/> CGU</a></Link></li>
+                                    <li><Link to={CGU}><a><span className="ti-angle-right"/> CGV</a></Link></li>
+                                    <li><Link to={CGU}><a><span className="ti-angle-right"/> Mentions légales</a></Link></li>
                                 </ul>
                             </div>
 

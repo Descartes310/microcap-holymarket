@@ -2,6 +2,7 @@
  * App.js Layout Start Here
  */
 import {
+    CGU,
     AUTH,
     STORE,
     TERMS,
@@ -40,6 +41,7 @@ import PermissionAlertBox from "Components/PermissionAlertBox";
 import CanRoute from "Components/CanRoute";
 import Terms from "./../routes/custom/dashboard/Terms.js";
 import Mission from "Routes/custom/dashboard/discover/pages/Mission";
+import Cgu from "Routes/custom/dashboard/discover/pages/CGU";
 import Values from "./../routes/custom/dashboard/Values";
 import LegalMention from "./../routes/custom/dashboard/LegalMention.js";
 import OfferDetails from 'Routes/custom/dashboard/discover/pages/OfferDetails';
@@ -116,6 +118,7 @@ class App extends Component {
                                         <Route exact path={MONEY_MANAGEMENT} component={AsyncMoneyManagement} />
                                         <Route exact path={TERMS} component={Terms} />
                                         <Route exact path={MISSION} component={Mission} />
+                                        <Route exact path={CGU} component={Cgu} />
                                         <Route exact path={VALUES} component={Values} />
                                         <Route exact path={PASS_DETAILS} component={OfferDetails} />
                                         <Route exact path={LEGAL_MENTION} component={LegalMention} />
@@ -132,6 +135,7 @@ class App extends Component {
                                         <Route exact path={SOLIDARITY} component={AsyncSolidarity} />
                                         <Route exact path={MONEY_MANAGEMENT} component={AsyncMoneyManagement} />
                                         <Route exact path={TERMS} component={Terms} />
+                                        <Route exact path={CGU} component={Cgu} />
                                         <Route exact path={MISSION} component={Mission} />
                                         <Route exact path={VALUES} component={Values} />
                                         <Route exact path={PASS_DETAILS} component={OfferDetails} />

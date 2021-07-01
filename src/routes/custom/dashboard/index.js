@@ -63,6 +63,7 @@ import {
     PIONIERS,
     GALERY_PROJECT,
     HOME,
+    CGU,
     SERVICES,
     NETWORK,
     CATEGORY,

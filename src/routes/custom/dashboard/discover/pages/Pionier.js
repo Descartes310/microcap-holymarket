@@ -22,10 +22,12 @@ const DiscoverPioner = () => {
                 <TitleHeader title="Nos pioniers" />
                 <div className="container">
                     <p className="font-lg">
-                        MicroCap est aujourd’hui un produit qui permet des services  que nous sommes fiers de présenter. Mais c’est d’abord un mouvement de cœur, de personnes originaires ou sympathisantes des pays du sud en général et de l’Afrique subsaharienne plus particulièrement.
+                        MicroCap permet aujourd’hui de proposer des services dont nous sommes fiers. Mais c’est d’abord un mouvement de cœur, 
+                        de personnes des personnes qui œuvrent quotidiennement pour soutenir l’entrepreneuriat des plus fragiles.
                     </p>
                     <p className="font-lg mb-50">
-                        Depuis 2017, le mouvement ne cesse de grandir et compte aujourd’hui des contributeurs sur les 5 continents, des personnes grâce à qui nous pouvons vous proposer ce service. <b>Rejoingez le mouvement.</b>
+                        Depuis 2017, le mouvement ne cesse de grandir et compte aujourd’hui des contributeurs sur les 5 continents, des personnes 
+                        grâce à qui nous pouvons vous proposer ce service. Rejoint le mouvement.
                     </p>
                     <div className="row person-block">
                         {data.filter(a => a.active === true).map(agent => (

@@ -9,6 +9,7 @@ export const GETIN = '/get-in';
 export const PIONIERS = '/pioniers';
 export const AGENTS = '/agents';
 export const SERVICES = '/services';
+export const CGU = '/cgu';
 export const PASS_DETAILS = '/pass-details';
 export const SOLIDARITY = '/solidarity';
 export const MONEY_MANAGEMENT = '/money-management';
