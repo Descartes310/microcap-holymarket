@@ -252,11 +252,11 @@ const Discover = (props) => {
                                         <div className="discover-content">
                                             <div className="row align-items-center justify-content-lg-between">
                                                 <div className="col-md-5 order-sm-first order-md-2 order-1" data-aos="fade-down-right">
-                                                    <h4>Le compte ISUS, Investir en toute sérénité: Gestion professionnelle assurée</h4>
+                                                    <h4>Le compte USUS, Investir en toute sérénité: Gestion professionnelle assurée</h4>
                                                     <p className="p-block">
                                                         <p>
-                                                            Le compte ISUS est un compte titre  ordinaire ouvert auprès d’un établissement financier partenaire, qui vous permet Investir dans les TPE et PME non cotées du réseau MicroCap . Les titres de votre comptes ISUS peuvent être céder à MicroCap en gérance, en jouissance, ou en propriété avec option de reprise sur une période donnée.<br />
-                                                            La convention ISUS vous permet d’assurer une gestion professionnelle d’un portefeuille de titres d’entreprises non cotées. Elle vous donne l'opportunité d’investir dans les TPE et PME sans vous soucier du suivi et de la responsabilité investisseur. Ceux-ci étant couverts par un dispositif de mutualisation de MicroCap. <br />
+                                                            Le compte USUS est un compte titre  ordinaire ouvert auprès d’un établissement financier partenaire, qui vous permet Investir dans les TPE et PME . Les titres de votre comptes USUS peuvent être céder à MicroCap en gérance, en jouissance, ou en propriété avec option de reprise sur une période donnée.<br />
+                                                            La convention USUS vous permet d’assurer une gestion professionnelle d’un portefeuille de titres d’entreprises non cotées. Elle vous donne l'opportunité d’investir dans les TPE et PME sans vous soucier du suivi et de la responsabilité investisseur. Ceux-ci étant couverts par un dispositif de mutualisation de MicroCap. <br />
                                                         </p>
                                                         <p className="p-end">
                                                             Information financière, participation aux décisions stratégiques de l’entreprise, l’option et l’opportunité de sortie, la gestion administrative et fiscale, … MicroCap s’occupe de tout

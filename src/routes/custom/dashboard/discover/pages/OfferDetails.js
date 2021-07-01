@@ -14,11 +14,19 @@ const OfferDetails = () => {
                 <div className="container">
                     <div className="row">
                         <p className="font-lg">
-                            MicroCap propose des abonnement pour profiter pleinement des services de la plateforme et faciliter la gestion des parcours de professionnalisation de nos utilisateurs vers l’entrepreneuriat. MicroCap a également fait le choix de l’indépendance financière afin de pouvoir conduire sa mission d’inclusion financière et de soutiens aux personnes en situation de fragilité. Pour capitaliser et soutenir le fonctionnement indépendant, nous proposons des options payantes sur nos abonnements.
+                                MicroCap propose des abonnements pour profiter pleinement des services de la plateforme et faciliter 
+                            la gestion des parcours de professionnalisation de nos utilisateurs vers l’entrepreneuriat. MicroCap a 
+                            également fait le choix de l’indépendance financière afin de pouvoir conduire sa mission d’inclusion 
+                            financière et de soutien aux personnes en situation de fragilité. Pour capitaliser et soutenir le 
+                            fonctionnement indépendant, nous proposons des options payantes sur nos abonnements.
                         </p>
                         <p className="font-lg">
-                            Les options MicroCap sur abonnement sont disponibles en série limitée du 1er avril 2021 au 30 septembre 2021.
+                            Les options ne sont disponibles qu’en série limitée pendant la période de démarrage de nos activités 
+                            soit du 1er avril 2021 au 30 septembre 2021. Les détenteurs d’une option sont actionnaires du fonds 
+                            MicroCap Invest et participent par la voix de leur représentant au conseil d’administration, aux 
+                            décisions stratégiques et à la vie de l’entreprise.
                         </p>
+                        
                     </div>
                     <div className="row">
                         <div className="offer-details-list">
@@ -48,7 +56,7 @@ const OfferDetails = () => {
                                             </li>
                                             <li>
                                                 <p style={{ fontSize: '1.2em', fontWeight: 'bold', display: 'flex', justifyContent: 'space-between' }}>Pass ANY-Cycle acceleration <span style={{ color: '#feba3a', fontSize: '1.7em' }}> 2 640 € </span></p>
-                                                <p>Le pass any pour any whère and anytime, est réservé aux entrepreneurs de la plateforme pour se lancer à tout moment et ceci n’importe où si le service MicroCap y est disponible. Le cycle A ou accélération est un cycle court de trois ans pour valider une idée ou un projet et lancer son entreprise.</p>
+                                                <p>Le pass any pour any whère and anytime, est réservé aux entrepreneurs de la plateforme pour se lancer à tout moment et ceci n’importe où si le service MicroCap y est disponible. Le cycle A ou accélération est un cycle court de trois mois pour valider une idée ou un projet et lancer son entreprise.</p>
                                             </li>
                                         </ol>
                                     </p>
