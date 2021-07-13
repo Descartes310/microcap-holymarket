@@ -27,7 +27,7 @@ import { setRequestGlobalAction } from "Actions/RequestGlobalAction";
 import { Form, FormGroup, Input as InputStrap, Col, Label } from 'reactstrap';
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
 import IndirectProducts from "Routes/custom/commercial-management/offer/IndirectProducts";
-import { getPartnersByBranch, getOrganisations, getAllCatalogs, getProductsFromCatalog, addProductToOffer } from "Actions/independentActions";
+import { getPartnersByBranch, getUserCommunities, getAllCatalogs, getProductsFromCatalog, addProductToOffer } from "Actions";
 
 const PROCESS = [
     { label: 'Demande de pièce', id: 'ASKING_PIECE' },
@@ -53,7 +53,11 @@ class AddProduct extends Component {
             sellerLoading: true,
             seller: null,
             catalogs: [],
+            range: "NETWORK",
             catalogLoading: false,
+            availability: false,
+            showCommunities: false,
+            community: null,
             catalog: null,
             products: [],
             productLoading: false,
@@ -73,6 +77,7 @@ class AddProduct extends Component {
 
     componentDidMount() {
         this.loadData();
+        this.props.getUserCommunities(this.props.authUser.user.id);
     };
 
     loadData = () => {
@@ -164,7 +169,7 @@ class AddProduct extends Component {
                 minimal_percentage: this.state.minimal_percentage,
                 product_id: this.state.product.id,
                 product_type: this.state.type,
-                sell_process: this.state.sellProcess.map(sp => { return sp.id}).join(','),
+                sell_process: this.state.sellProcess.map(sp => { return sp.id }).join(','),
                 inderect_sell: this.state.indirectSell,
             };
 
@@ -172,7 +177,14 @@ class AddProduct extends Component {
                 data.product_piece_id = JSON.stringify(this.state.docsChosen);
             }
 
-            if(!this.state.accept_many_payment) {
+            if (this.state.range) {
+                data.range = this.state.range;
+                if(this.state.range == 'COMMUNITY') {
+                    data.community_id = this.state.community;
+                }
+            }
+
+            if (!this.state.accept_many_payment) {
                 delete data.number_max_of_days_payment;
                 delete data.minimal_percentage;
             }
@@ -190,7 +202,7 @@ class AddProduct extends Component {
 
     onDocsChange = docsChosen => {
         if (!_.isEqual(this.state.docsChosen, docsChosen)) {
-            this.setState({docsChosen});
+            this.setState({ docsChosen });
         }
     };
 
@@ -355,6 +367,71 @@ class AddProduct extends Component {
 
                         <FormGroup check style={{ marginBottom: 30 }}>
                             <Label check>
+                                <InputStrap type="checkbox" onChange={event => this.setState({ availability: event.target.checked })} />
+                                Disponibilité du produit
+                            </Label>
+                        </FormGroup>
+
+
+
+                        {this.state.availability && (
+                            <CustomAsyncComponent
+                                loading={false}
+                                data={[{ label: 'Communauté', id: 'COMMUNITY' }, { label: 'Opérateur', id: 'OPERATOR' }, { label: 'Pays', id: 'COUNTRY' }, { label: 'Réseau', id: 'NETWORK' }]}
+                                component={data => (
+                                    <div className="form-group text-left mt-10">
+                                        <FormControl fullWidth>
+                                            <InputLabel className="text-left" htmlFor="productAvailability-helper">
+                                                Portée du produit
+                                            </InputLabel>
+                                            <Select
+                                                value={this.state.range}
+                                                onChange={event => {
+                                                    this.setState({ range: event.target.value, showCommunities: event.target.value == 'COMMUNITY' });
+                                                }}
+                                                input={<Input name="productAvailability" id="productAvailability-helper" />}>
+                                                {data.map((item, index) => (
+                                                    <MenuItem key={index} value={item.id}>
+                                                        {item.label}
+                                                    </MenuItem>
+                                                ))}
+                                            </Select>
+                                        </FormControl>
+                                    </div>
+                                )}
+                            />
+                        )}
+
+                        {this.state.showCommunities && (
+                            <CustomAsyncComponent
+                                loading={false}
+                                data={this.props.userCommunities}
+                                component={data => (
+                                    <div className="form-group text-left mt-10">
+                                        <FormControl fullWidth>
+                                            <InputLabel className="text-left" htmlFor="community-helper">
+                                                Sélectionner la communauté
+                                            </InputLabel>
+                                            <Select
+                                                value={this.state.community}
+                                                onChange={event => {
+                                                    this.setState({ community: event.target.value });
+                                                }}
+                                                input={<Input name="community" id="community-helper" />}>
+                                                {data.map((item, index) => (
+                                                    <MenuItem key={index} value={item.group.id}>
+                                                        {item.group.label}
+                                                    </MenuItem>
+                                                ))}
+                                            </Select>
+                                        </FormControl>
+                                    </div>
+                                )}
+                            />
+                        )}
+
+                        <FormGroup check style={{ marginBottom: 30 }}>
+                            <Label check>
                                 <InputStrap type="checkbox" onChange={event => this.setState({ indirectSell: event.target.checked })} />
                                 Produit en vente indirecte
                             </Label>
@@ -386,13 +463,14 @@ class AddProduct extends Component {
 }
 
 // map state to props
-const mapStateToProps = ({ requestGlobalLoader, productTypes, authUser, comOperationType, systemObject, packages, settings }) => {
+const mapStateToProps = ({ requestGlobalLoader, userCommunities, productTypes, authUser, comOperationType, systemObject, packages, settings }) => {
     return {
         requestGlobalLoader,
         loading: productTypes.loading,
         productTypes: productTypes.data,
         error: productTypes.error,
         authUser: authUser.data,
+        userCommunities: userCommunities.data,
         comOperationType,
         currencies: settings.currencies,
         systemObject,
@@ -422,5 +500,5 @@ const useStyles = theme => ({
     }
 });
 
-export default connect(mapStateToProps, { getComOffer, getPackages, getProductTypes, getComOperationType, getCatalogProducts, getSysTimeUnit, setRequestGlobalAction })
-(withStyles(useStyles, { withTheme: true })(injectIntl(AddProduct)));
+export default connect(mapStateToProps, { getUserCommunities, getComOffer, getPackages, getProductTypes, getComOperationType, getCatalogProducts, getSysTimeUnit, setRequestGlobalAction })
+    (withStyles(useStyles, { withTheme: true })(injectIntl(AddProduct)));
