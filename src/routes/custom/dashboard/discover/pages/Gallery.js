@@ -18,6 +18,8 @@ const settings = {
     nextArrow: <button type='button' className='slick-next discover-arrow pull-right'><i className='font-2x icon-hover text-primary ti-angle-right' aria-hidden='true'/></button>,
 };
 
+const imageExts = ['jpg', 'jpeg', 'png'];
+
 const DiscoverGallery = (props) => {
     const [data, setData] = useState(undefined);
 
@@ -60,18 +62,8 @@ const DiscoverGallery = (props) => {
                                     {data[projectName].map((item, key) => (
                                     <div key={key}>
                                         <div className="gallery-item-block">
-                                            <div className="row px-0">
-                                                <div className="img-holder col-md-6 col-sm-12 px-0 bg-repeat-no bg-size-cover" style={{ backgroundImage: `url(${getFilePath(item.file)})` }}>
-                                                    {/*<div className="img-wrapper">
-                                                        <div className="center-hor-ver h-100">
-                                                            <div className="img-holder" style={{ backgroundImage: `url(${getFilePath(item.file)})` }} />
-                                                            <img
-                                                        src={getFilePath(item.file)}
-                                                        // src={getFilePath("files/projects/8576c73c47184736be61f33106faf346_1620723956259.jpg")}
-                                                        alt="work"
-                                                    />
-                                                        </div>
-                                                    </div>*/}
+                                            <div className="row px-0" onClick={() => window.open(getFilePath(item.file), 'blank')}>
+                                                <div className="img-holder col-md-6 col-sm-12 px-0 bg-repeat-no bg-size-cover" style={{ backgroundImage: `url(${imageExts.includes(item.file.split('.')[item.file.split('.').length -1].toLowerCase()) ? getFilePath(item.file) : 'https://cdn.pixabay.com/photo/2014/05/02/21/50/laptop-336378_960_720.jpg'})` }}>
                                                 </div>
                                                 <div className="col-md-6 col-sm-12 px-0">
                                                     <div className="gallery-item-content">
