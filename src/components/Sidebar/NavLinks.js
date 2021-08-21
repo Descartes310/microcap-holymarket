@@ -10,9 +10,11 @@ import {
    PROJECTS,
    SETTINGS,
    COMMUNITY,
+   PREVISIONS,
    MICROCAP360,
    COMMUNITY_ADMIN,
    COMMUNITY_MEMBER,
+   PREVISIONS_ADMIN,
    joinUrlWithParamsId,
    COMMERCIAL_MANAGEMENT,
 } from 'Url/frontendUrl';
@@ -449,6 +451,20 @@ export default {
                "permissions": [],
             },
          ],
+      },
+      {
+         "menu_title": "Prévisions",
+         "menu_icon": "icon-people",
+         "new_item": false,
+         "permissions": [],
+         "child_routes": [
+            {
+               "menu_title": "Objectifs",
+               "new_item": false,
+               "path": PREVISIONS_ADMIN.GOALS.SELF,
+               "permissions": [],
+            },
+         ],
       },{
          "menu_title": "Produits & services",
          "menu_icon": "zmdi zmdi-widgets",
@@ -790,6 +806,12 @@ export default {
                "path": MICROCAP360.RESEAU.SELF,
                "permissions": [],
             },
+            {
+               "menu_title": "Plan prévisionnel",
+               "new_item": false,
+               "path": MICROCAP360.RESEAU.SELF,
+               "permissions": [],
+            },
          ],
       },{
          "menu_title": "Bourse de Financement",
@@ -885,9 +907,15 @@ export default {
                ]
             },
             {
-               "menu_title": "Reseau",
+               "menu_title": "Réseau",
                "new_item": false,
                "path": MICROCAP360.RESEAU.SELF,
+               "permissions": [],
+            },
+            {
+               "menu_title": "Plan prévisionnel",
+               "new_item": false,
+               "path": PREVISIONS.SELF,
                "permissions": [],
             },
          ],

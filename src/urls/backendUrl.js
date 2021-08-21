@@ -183,6 +183,13 @@ export const USER_PROFILE = {
     },
 };
 
+export const PREVISIONS = {
+    GOALS: {
+        GET_ALL: 'users/previsions/goals',
+        CREATE: 'users/previsions/goals',
+    },
+};
+
 export const USERS = {
     BRANCH_USERS: 'api/users',
     SEARCH: 'api/users/search',

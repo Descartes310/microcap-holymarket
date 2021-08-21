@@ -10,6 +10,7 @@ import {
     CATEGORY_PRODUCTS,
     ACCOUNT,
     SETTING,
+    PREVISIONS,
     PRODUCTS,
     PRODUCT_TYPE,
     PDF_GENERATOR,
@@ -1263,4 +1264,12 @@ export const suspendAccount = (reference) => {
 export const deleteAccount = (reference) => {
     const url = joinBaseUrlWithParamsId(`${USERS.DELETE}`, reference);
     return makeRequest('put', url, null);
+};
+
+export const getPrevisionGoals = () => {
+    return makeRequest('get', PREVISIONS.GOALS.GET_ALL);
+};
+
+export const createGoal = (data) => {
+    return makeRequest('post', PREVISIONS.GOALS.CREATE, data);
 };

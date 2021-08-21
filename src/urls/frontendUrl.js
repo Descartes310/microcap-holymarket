@@ -24,6 +24,21 @@ export const AUTH = {
     RESET_PASSWORD: '/reset-password',
 };
 
+export const PREVISIONS = {
+    SELF: '/previsions',
+    LIST: '/previsions/list',
+    CREATE: '/previsions/create'
+};
+
+export const PREVISIONS_ADMIN = {
+    SELF: '/admin/previsions',
+    LIST: '/admin/previsions/list',
+    GOALS: {
+        SELF: '/admin/previsions/goals',
+        LIST: '/admin/previsions/goals/list',
+    }
+};
+
 export const NETWORK = {
     LIST: '/branch',
     ACTIVATION: '/branches/activation',

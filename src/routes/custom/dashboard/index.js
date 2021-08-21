@@ -32,24 +32,24 @@ import {
     AsyncCommunitySpace
 } from 'Components/AsyncComponent/AsyncComponent';
 import Community from "Routes/custom/community";
-
-import CommunityMembersActivities from "Routes/custom/communityT/activities";
-import CommunityMembers from "Routes/custom/communityT/members";
-import CommunityAdmins from "Routes/custom/communityT/admin";
-// import CommunityProject from "Routes/custom/communityT/projects";
-import CommunityMembersPostsProjects from "Routes/custom/communityT/postsProjects";
-import ClientPieceList from "Routes/custom/settings/client_folder/List";
-import AgentList from "Routes/custom/settings/agents/List";
-import PionierList from "Routes/custom/settings/pioniers/List";
-import ConfigurationsList from "Routes/custom/settings/configurations/List";
-import UnitList from "Routes/custom/settings/units";
-import Posts from "Routes/custom/settings/posts";
-import Ressource from "Routes/custom/ressources";
-import PersonalSpace from "Routes/custom/users/users/personnal-space";
-import SingleProfile from 'Routes/custom/users/user-profile/Profile';
-import UserProfile from 'Routes/custom/users/user-profile';
 import Stock from 'Routes/custom/stocks';
+import Posts from "Routes/custom/settings/posts";
+import Previsions from "Routes/custom/previsions";
+import Ressource from "Routes/custom/ressources";
+import UnitList from "Routes/custom/settings/units";
 import AllUsers from 'Routes/custom/users/all-users/List';
+import UserProfile from 'Routes/custom/users/user-profile';
+import AgentList from "Routes/custom/settings/agents/List";
+import PrevisionsAdmin from "Routes/custom/previsions_admin";
+import CommunityAdmins from "Routes/custom/communityT/admin";
+import PionierList from "Routes/custom/settings/pioniers/List";
+import CommunityMembers from "Routes/custom/communityT/members";
+import SingleProfile from 'Routes/custom/users/user-profile/Profile';
+import PersonalSpace from "Routes/custom/users/users/personnal-space";
+import ClientPieceList from "Routes/custom/settings/client_folder/List";
+import ConfigurationsList from "Routes/custom/settings/configurations/List";
+import CommunityMembersActivities from "Routes/custom/communityT/activities";
+import CommunityMembersPostsProjects from "Routes/custom/communityT/postsProjects";
 import UpdateInitializationOption from 'Routes/custom/projects/configuration/intialisation-options/Update';
 
 import { useAbility } from "@casl/react";
@@ -61,6 +61,7 @@ import {
     MISSION, VALUES,
     MONEY_MANAGEMENT,
     PIONIERS,
+    PREVISIONS_ADMIN,
     GALERY_PROJECT,
     HOME,
     CGU,
@@ -72,6 +73,7 @@ import {
     COMMUNITY,
     COMMUNITY_ADMIN,
     COMMUNITY_MEMBER,
+    PREVISIONS,
     GETIN,
     STOCK,
     TERMS,
@@ -174,6 +176,18 @@ const Dashboard = ({ onInitCart }) => {
                     <CanRoute
                         path={SETTINGS.AGENTS.SELF}
                         component={AgentList}
+                        permissions={[]}
+                    />
+
+                    <CanRoute
+                        path={PREVISIONS_ADMIN.SELF}
+                        component={PrevisionsAdmin}
+                        permissions={[]}
+                    />
+
+                    <CanRoute
+                        path={PREVISIONS.SELF}
+                        component={Previsions}
                         permissions={[]}
                     />
 
