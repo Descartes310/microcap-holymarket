@@ -809,7 +809,7 @@ export default {
             {
                "menu_title": "Plan prévisionnel",
                "new_item": false,
-               "path": MICROCAP360.RESEAU.SELF,
+               "path": PREVISIONS.SELF,
                "permissions": [],
             },
          ],
