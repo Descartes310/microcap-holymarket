@@ -576,3 +576,22 @@ export const formatDate = (date) => {
 
     return [year, month, day].join('-');
 }
+
+export const computeValueFromPercent = (value, amount) => {
+    return (value*amount)/100;
+}
+
+export const computePercentFromValue = (value, amount) => {
+    return (value/amount)*100;
+}
+
+export const parseDate = (str) => {
+    var mdy = str.split('-');
+    return new Date(mdy[0], mdy[1]-1, mdy[2]);
+}
+
+export const datediff = (first, second, time = 1) => {
+    let start = parseDate(first);
+    let end = parseDate(second);
+    return Math.round((end-start)/(1000*60*60*24*time));
+}

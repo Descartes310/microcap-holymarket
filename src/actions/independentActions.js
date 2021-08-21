@@ -1286,3 +1286,13 @@ export const getPrevisionPeriodes = (id) => {
     const url = joinBaseUrlWithParamsId(`${PREVISIONS.PERIODES.GET_ALL}`, id);
     return makeRequest('get', url);
 };
+
+export const getOnePrevision = (id) => {
+    const url = joinBaseUrlWithParamsId(`${PREVISIONS.PREVISIONS.GET_ONE}`, id);
+    return makeRequest('get', url);
+};
+
+export const createPeriode = (id, data) => {
+    const url = joinBaseUrlWithParamsId(`${PREVISIONS.PERIODES.CREATE}`, id);
+    return makeRequest('post', url, data);
+};

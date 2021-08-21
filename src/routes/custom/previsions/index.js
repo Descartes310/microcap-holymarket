@@ -1,10 +1,11 @@
 import List from './List';
-import PeriodesList from './periodes/List';
 import Create from './Create';
 import {connect} from "react-redux";
 import {injectIntl} from "react-intl";
-import {PREVISIONS} from "Url/frontendUrl";
 import React, { Component } from 'react';
+import {PREVISIONS} from "Url/frontendUrl";
+import PeriodesList from './periodes/List';
+import PeriodesCreate from './periodes/Create';
 import {withRouter, Switch, Redirect, Route} from "react-router-dom";
 
 class Products extends Component {
@@ -18,6 +19,7 @@ class Products extends Component {
                         <Route path={PREVISIONS.LIST} component={List} />
                         <Route path={PREVISIONS.CREATE} component={Create} />
                         <Route path={PREVISIONS.PERIODES.LIST} component={PeriodesList} />
+                        <Route path={PREVISIONS.PERIODES.CREATE} component={PeriodesCreate} />
                     </Switch>
                 </>
             </div>

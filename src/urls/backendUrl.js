@@ -191,6 +191,7 @@ export const PREVISIONS = {
     PREVISIONS: {
         CREATE: 'users/previsions',
         GET_ALL: 'users/previsions',
+        GET_ONE: 'users/previsions/{id}',
     },
     PERIODES: {
         GET_ALL: 'users/previsions/{id}/periods',

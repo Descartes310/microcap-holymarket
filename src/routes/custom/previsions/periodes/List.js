@@ -1,10 +1,12 @@
 import { connect } from "react-redux";
 import { injectIntl } from "react-intl";
 import React, { Component } from 'react';
-import { PREVISIONS } from "Url/frontendUrl";
+import { datediff } from 'Helpers/helpers';
 import { withRouter } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import CustomList from "Components/CustomList";
+import AmountCurrency from "Components/AmountCurrency";
+import { PREVISIONS, joinUrlWithParams } from "Url/frontendUrl";
 import { setRequestGlobalAction, getPrevisionPeriodes } from "Actions";
 
 class List extends Component {
@@ -29,6 +31,36 @@ class List extends Component {
         })
     };
 
+    getRythme = (rythme) => {
+        switch (rythme) {
+            case 'DAY':
+                return 'Jour'; 
+            case 'WEEK':
+                return 'Semaine'; 
+            case 'MONTH':
+                return 'Mois'; 
+            case 'TRIMESTER':
+                return 'Trimestre';        
+            default:
+                return 'Jour';
+        }
+    }
+
+    getRythmeValue = (rythme) => {
+        switch (rythme) {
+            case 'DAY':
+                return 1; 
+            case 'WEEK':
+                return 7; 
+            case 'MONTH':
+                return 30; 
+            case 'TRIMESTER':
+                return 90;        
+            default:
+                return 1;
+        }
+    }
+
     render() {
         const { history } = this.props;
         const { periodes, show } = this.state;
@@ -40,7 +72,7 @@ class List extends Component {
                     loading={false}
                     titleList={"Liste des périodes"}
                     itemsFoundText={n => n + " périodes(s) trouvée(s)"}
-                    onAddClick={() => history.push(PREVISIONS.CREATE)}
+                    onAddClick={() => history.push(joinUrlWithParams(PREVISIONS.PERIODES.CREATE, [{param: 'id', value: this.id}]))}
                     renderItem={list => (
                         <>
                             {list && list.length === 0 ? (
@@ -54,10 +86,12 @@ class List extends Component {
                                         <table className="table table-hover table-middle mb-0">
                                             <thead>
                                                 <tr>
-                                                    <th>Label</th>
                                                     <th>Date de début</th>
                                                     <th>Date de fin</th>
-                                                    <th>Numéro</th>
+                                                    <th>Montant</th>
+                                                    <th>Rythme</th>
+                                                    <th>Abondements</th>
+                                                    <th>Montant Total</th>
                                                     <th>Actions</th>
                                                 </tr>
                                             </thead>
@@ -67,13 +101,6 @@ class List extends Component {
                                                         key={key}
                                                         className="cursor-pointer"
                                                     >
-                                                        <td>
-                                                            <div className="media">
-                                                                <div className="media-body pt-10">
-                                                                    <h4 style={{ textAlign: 'start' }} className="m-0 fw-bold text-dark">{item.label}</h4>
-                                                                </div>
-                                                            </div>
-                                                        </td>
                                                         <td>
                                                             <div className="media">
                                                                 <div className="media-body pt-10">
@@ -91,7 +118,28 @@ class List extends Component {
                                                         <td>
                                                             <div className="media">
                                                                 <div className="media-body pt-10">
-                                                                    <h4 style={{ textAlign: 'start' }} className="m-0 fw-bold text-dark">{item.reference}</h4>
+                                                                    <h4 style={{ textAlign: 'start' }} className="m-0 fw-bold text-dark"><AmountCurrency amount={item.amount} /></h4>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div className="media">
+                                                                <div className="media-body pt-10">
+                                                                    <h4 style={{ textAlign: 'start' }} className="m-0 fw-bold text-dark">{this.getRythme(item.frequence)}</h4>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div className="media">
+                                                                <div className="media-body pt-10">
+                                                                    <h4 style={{ textAlign: 'start' }} className="m-0 fw-bold text-dark">{ datediff(item.startDate, item.endDate, this.getRythmeValue(item.frequence)) }</h4>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div className="media">
+                                                                <div className="media-body pt-10">
+                                                                    <h4 style={{ textAlign: 'start' }} className="m-0 fw-bold text-dark"><AmountCurrency amount={item.amount * datediff(item.startDate, item.endDate, this.getRythmeValue(item.frequence))} /></h4>
                                                                 </div>
                                                             </div>
                                                         </td>
@@ -100,9 +148,8 @@ class List extends Component {
                                                                 size="small"
                                                                 variant="contained"
                                                                 className={"text-white bg-blue"}
-                                                                // onClick={() => this.setState({ show: true, goal: item })}
                                                             >
-                                                                Périodes
+                                                                Versements
                                                             </Button>
                                                         </td>
                                                     </tr>
