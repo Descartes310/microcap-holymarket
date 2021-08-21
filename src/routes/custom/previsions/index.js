@@ -1,4 +1,5 @@
 import List from './List';
+import PeriodesList from './periodes/List';
 import Create from './Create';
 import {connect} from "react-redux";
 import {injectIntl} from "react-intl";
@@ -16,6 +17,7 @@ class Products extends Component {
                         <Redirect exact from={`${match.url}/`} to={PREVISIONS.LIST} />
                         <Route path={PREVISIONS.LIST} component={List} />
                         <Route path={PREVISIONS.CREATE} component={Create} />
+                        <Route path={PREVISIONS.PERIODES.LIST} component={PeriodesList} />
                     </Switch>
                 </>
             </div>

@@ -1,54 +1,52 @@
 import { connect } from "react-redux";
 import { injectIntl } from "react-intl";
 import React, { Component } from 'react';
+import { PREVISIONS } from "Url/frontendUrl";
 import { withRouter } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import CustomList from "Components/CustomList";
-import { PREVISIONS, joinUrlWithParams } from "Url/frontendUrl";
-import { setRequestGlobalAction, getUserPrevisions } from "Actions";
+import { setRequestGlobalAction, getPrevisionPeriodes } from "Actions";
 
 class List extends Component {
 
     state = {
-        previsions: []
+        periodes: []
     };
 
     componentDidMount() {
-        this.getPrevisions();
+        this.id = this.props.match.params.id
+        this.getPeriodes();
     }
 
-    getPrevisions = () => {
+    getPeriodes = () => {
         this.props.setRequestGlobalAction(true);
-        getUserPrevisions().then(previsions => {
-            this.setState({ previsions })
+        getPrevisionPeriodes(this.id).then(periodes => {
+            this.setState({ periodes })
+        }).catch(err => {
+            this.props.history.push(PREVISIONS.PREVISIONS.LIST);
         }).finally(() => {
             this.props.setRequestGlobalAction(false);
         })
     };
 
-    onEnterClick = (id) => {
-        let url = joinUrlWithParams(PREVISIONS.PERIODES.LIST, [{param: 'id', value: id}]);
-        this.props.history.push(url);
-    };
-
     render() {
         const { history } = this.props;
-        const { previsions, show } = this.state;
+        const { periodes, show } = this.state;
 
         return (
             <>
                 <CustomList
-                    list={previsions}
+                    list={periodes}
                     loading={false}
-                    titleList={"Mes prévisions"}
-                    itemsFoundText={n => n + " prévision(s) trouvée(s)"}
+                    titleList={"Liste des périodes"}
+                    itemsFoundText={n => n + " périodes(s) trouvée(s)"}
                     onAddClick={() => history.push(PREVISIONS.CREATE)}
                     renderItem={list => (
                         <>
                             {list && list.length === 0 ? (
                                 <div className="d-flex justify-content-center align-items-center py-50">
                                     <h4>
-                                        Aucun prévision trouvée
+                                        Aucun période trouvée
                                     </h4>
                                 </div>
                             ) : (
@@ -102,7 +100,7 @@ class List extends Component {
                                                                 size="small"
                                                                 variant="contained"
                                                                 className={"text-white bg-blue"}
-                                                                onClick={() => this.onEnterClick(item.id)}
+                                                                // onClick={() => this.setState({ show: true, goal: item })}
                                                             >
                                                                 Périodes
                                                             </Button>

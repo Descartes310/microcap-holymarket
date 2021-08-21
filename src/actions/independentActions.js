@@ -1273,3 +1273,16 @@ export const getPrevisionGoals = () => {
 export const createGoal = (data) => {
     return makeRequest('post', PREVISIONS.GOALS.CREATE, data);
 };
+
+export const createPrevision = (data) => {
+    return makeRequest('post', PREVISIONS.PREVISIONS.CREATE, data);
+};
+
+export const getUserPrevisions = () => {
+    return makeRequest('get', PREVISIONS.PREVISIONS.GET_ALL);
+};
+
+export const getPrevisionPeriodes = (id) => {
+    const url = joinBaseUrlWithParamsId(`${PREVISIONS.PERIODES.GET_ALL}`, id);
+    return makeRequest('get', url);
+};

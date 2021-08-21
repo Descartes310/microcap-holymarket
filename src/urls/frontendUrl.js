@@ -27,7 +27,11 @@ export const AUTH = {
 export const PREVISIONS = {
     SELF: '/previsions',
     LIST: '/previsions/list',
-    CREATE: '/previsions/create'
+    CREATE: '/previsions/create',
+    PERIODES: {
+        LIST: '/previsions/:id/periodes/list',
+        CREATE: '/previsions/:id/periodes/create'
+    }
 };
 
 export const PREVISIONS_ADMIN = {

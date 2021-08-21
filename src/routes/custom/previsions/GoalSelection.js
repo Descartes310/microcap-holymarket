@@ -13,31 +13,21 @@ import { Button, FormGroup, Input as InputStrap } from "reactstrap";
 import DialogTitle from "@material-ui/core/DialogTitle/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent/DialogContent";
 
-class Create extends Component {
+class GoalSelection extends Component {
 
     state = {
-        label: '',
-        description: ''
-    };
-
-    componentDidMount() {
+        date: null
     }
-
-    createNewUnit() {
-        this.setState({ show: false })
-        this.props.setRequestGlobalAction(true)
-        createGoal({ label: this.state.label, description: this.state.description }).then(data => {
-            NotificationManager.success('Objectif créé avec succès');
-        }).finally(() => {
-            this.props.close();
-            this.setState({ label: '', description: '' })
-            this.props.setRequestGlobalAction(false)
-        })
+    selectGoal() {
+        if(!this.state.date)
+            return;
+        else {
+            this.props.selectDate(this.state.date);
+        }
     }
 
     render() {
-        const { data } = this.state;
-        const { show } = this.props;
+        const { show, goal } = this.props;
 
         return (
             <Dialog
@@ -46,12 +36,12 @@ class Create extends Component {
                 aria-labelledby="responsive-dialog-title"
                 disableBackdropClick
                 disableEscapeKeyDown
-                maxWidth={'lg'}
+                maxWidth={'md'}
                 fullWidth
             >
                 <DialogTitle id="form-dialog-title">
                     <div className="row justify-content-between align-items-center">
-                        Création d'un Objectif
+                        Sélection de l'objectif {goal.label}
                             <IconButton
                             color="primary"
                             aria-label="close"
@@ -65,30 +55,16 @@ class Create extends Component {
                     <div className="row">
                         <div className="col-12 my-3">
                             <FormGroup className="has-wrapper">
-                                <InputLabel className="text-left" htmlFor="label">
-                                    Nom
+                                <InputLabel className="text-left" htmlFor="date">
+                                    Date d'échéance de réalisation
                                 </InputLabel>
                                 <InputStrap
                                     isRequired
-                                    id="label"
-                                    name={'label'}
+                                    id="date"
+                                    name={'date'}
+                                    type={'date'}
                                     className="input-lg"
-                                    onChange={event => this.setState({ label: event.target.value })}
-                                />
-                            </FormGroup>
-                        </div>
-
-                        <div className="col-12 my-3">
-                            <FormGroup className="has-wrapper">
-                                <InputLabel className="text-left" htmlFor="description">
-                                    Description
-                                </InputLabel>
-                                <InputStrap
-                                    id="description"
-                                    name={'description'}
-                                    type="textarea"
-                                    className="input-lg"
-                                    onChange={event => this.setState({ description: event.target.value })}
+                                    onChange={event => this.setState({ date: event.target.value })}
                                 />
                             </FormGroup>
                         </div>
@@ -98,10 +74,10 @@ class Create extends Component {
                                 color="primary"
                                 variant="contained"
                                 className="text-white font-weight-bold"
-                                onClick={() => this.createNewUnit()}
+                                onClick={() => this.selectGoal()}
                             >
-                                Créer l'objectif
-                                </Button>
+                                Terminer
+                            </Button>
                         </div>
 
 
@@ -140,4 +116,4 @@ const mapStateToProps = ({ requestGlobalLoader, authUser }) => {
 };
 
 export default connect(mapStateToProps, { setRequestGlobalAction })
-    (withStyles(useStyles, { withTheme: true })(withRouter(injectIntl(Create))));
+    (withStyles(useStyles, { withTheme: true })(withRouter(injectIntl(GoalSelection))));

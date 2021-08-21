@@ -188,6 +188,14 @@ export const PREVISIONS = {
         GET_ALL: 'users/previsions/goals',
         CREATE: 'users/previsions/goals',
     },
+    PREVISIONS: {
+        CREATE: 'users/previsions',
+        GET_ALL: 'users/previsions',
+    },
+    PERIODES: {
+        GET_ALL: 'users/previsions/{id}/periods',
+        CREATE: 'users/previsions/{id}/periods',
+    }
 };
 
 export const USERS = {
