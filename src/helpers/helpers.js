@@ -5,13 +5,13 @@ import _ from 'lodash';
 import moment from 'moment';
 import api from "Api/index";
 import AppConfig from 'Constants/AppConfig';
-import ERRORS, {ERROR_500} from 'Data/errors';
+import ERRORS, { ERROR_500 } from 'Data/errors';
 import NavLinks from "Components/Sidebar/NavLinks";
-import {NotificationManager} from 'react-notifications';
+import { NotificationManager } from 'react-notifications';
 
 const TABLE_OF_256_HEXADECIMAL = (function () {
     const arr = [];
-    for (let i = 0; i < 256; i++) { arr[i] = (i < 16 ? '0': '') + (i).toString(16); }
+    for (let i = 0; i < 256; i++) { arr[i] = (i < 16 ? '0' : '') + (i).toString(16); }
     return arr;
 })();
 
@@ -55,15 +55,15 @@ function getAmount(currencies, amount, from, to = null, currency = null) {
     if (from)
         if (to) {
             let from_currency = currencies.filter(c => c.code == from)[0];
-            if(!from_currency)
-                from_currency = {code: 'EUR', value: 1};
+            if (!from_currency)
+                from_currency = { code: 'EUR', value: 1 };
             let to_currency = currencies.filter(c => c.code == to)[0];
             let main_amount = amount * from_currency.value;
             return main_amount / to_currency.value;
         } else {
             let from_currency = currencies.filter(c => c.code == from)[0];
-            if(!from_currency)
-                from_currency = {code: 'EUR', value: 1};
+            if (!from_currency)
+                from_currency = { code: 'EUR', value: 1 };
             let to_currency = null;
             if (currency)
                 to_currency = currency;
@@ -131,8 +131,8 @@ function getAmounts(currencies, amounts, to = null, currency = null) {
 }
 
 export function computeAmountFromCurrency(currencies, amount = null, amounts = null, currency = null, from = null, to = null) {
-    if(amount != null) {
-       return getAmount(currencies, amount, from, to, currency);
+    if (amount != null) {
+        return getAmount(currencies, amount, from, to, currency);
     } else {
         return getAmounts(currencies, amounts, to, currency);
     }
@@ -259,7 +259,7 @@ export const isUserIntoStoreValid = (
     tokens,
 ) => {
     return ((authUser !== null &&
-            authUser !== undefined)
+        authUser !== undefined)
         // ||
         // (tokens.token !== null &&
         //     tokens.token !== undefined)
@@ -289,16 +289,16 @@ export const getFullAuthorisationRequestConfig = () => {
     "ERROR_1": ERROR_1_MESSAGE
 }*/
 export const requestErrorProcessing = (data) => {
-      /*const result = {};
-      Object.entries(data.errors).map(error => {
-          // error[0] = KEY_1
-          result[error[0]] = typeof error[1] === 'object' ? Object.values(error[1]) : error[1];
-      });*/
-      const result = [];
-      Object.entries(data.errors).map(error => {
-          result.push(typeof error[1] === 'object' ? Object.values(error[1]) : error[1]);
-      });
-      return result;
+    /*const result = {};
+    Object.entries(data.errors).map(error => {
+        // error[0] = KEY_1
+        result[error[0]] = typeof error[1] === 'object' ? Object.values(error[1]) : error[1];
+    });*/
+    const result = [];
+    Object.entries(data.errors).map(error => {
+        result.push(typeof error[1] === 'object' ? Object.values(error[1]) : error[1]);
+    });
+    return result;
 };
 
 export const globalSearch = (data, searched) => {
@@ -361,7 +361,7 @@ export const canArray = (permissions, some = true) => {
         // If the array is empty then the user have permissions since there is no restrictions to that
         if (permissions.length === 0) return true;
 
-        return permissions.reduce((a,b) => some
+        return permissions.reduce((a, b) => some
             ? a || b
             : a && b
         );
@@ -379,14 +379,14 @@ export const canArray = (permissions, some = true) => {
  * @returns {string}
  */
 const getUniqueId = () => {
-    const d0 = Math.random()*0xffffffff|0;
-    const d1 = Math.random()*0xffffffff|0;
-    const d2 = Math.random()*0xffffffff|0;
-    const d3 = Math.random()*0xffffffff|0;
-    return TABLE_OF_256_HEXADECIMAL[d0&0xff]+TABLE_OF_256_HEXADECIMAL[d0>>8&0xff]+TABLE_OF_256_HEXADECIMAL[d0>>16&0xff]+TABLE_OF_256_HEXADECIMAL[d0>>24&0xff]+'-'+
-        TABLE_OF_256_HEXADECIMAL[d1&0xff]+TABLE_OF_256_HEXADECIMAL[d1>>8&0xff]+'-'+TABLE_OF_256_HEXADECIMAL[d1>>16&0x0f|0x40]+TABLE_OF_256_HEXADECIMAL[d1>>24&0xff]+'-'+
-        TABLE_OF_256_HEXADECIMAL[d2&0x3f|0x80]+TABLE_OF_256_HEXADECIMAL[d2>>8&0xff]+'-'+TABLE_OF_256_HEXADECIMAL[d2>>16&0xff]+TABLE_OF_256_HEXADECIMAL[d2>>24&0xff]+
-        TABLE_OF_256_HEXADECIMAL[d3&0xff]+TABLE_OF_256_HEXADECIMAL[d3>>8&0xff]+TABLE_OF_256_HEXADECIMAL[d3>>16&0xff]+TABLE_OF_256_HEXADECIMAL[d3>>24&0xff];
+    const d0 = Math.random() * 0xffffffff | 0;
+    const d1 = Math.random() * 0xffffffff | 0;
+    const d2 = Math.random() * 0xffffffff | 0;
+    const d3 = Math.random() * 0xffffffff | 0;
+    return TABLE_OF_256_HEXADECIMAL[d0 & 0xff] + TABLE_OF_256_HEXADECIMAL[d0 >> 8 & 0xff] + TABLE_OF_256_HEXADECIMAL[d0 >> 16 & 0xff] + TABLE_OF_256_HEXADECIMAL[d0 >> 24 & 0xff] + '-' +
+        TABLE_OF_256_HEXADECIMAL[d1 & 0xff] + TABLE_OF_256_HEXADECIMAL[d1 >> 8 & 0xff] + '-' + TABLE_OF_256_HEXADECIMAL[d1 >> 16 & 0x0f | 0x40] + TABLE_OF_256_HEXADECIMAL[d1 >> 24 & 0xff] + '-' +
+        TABLE_OF_256_HEXADECIMAL[d2 & 0x3f | 0x80] + TABLE_OF_256_HEXADECIMAL[d2 >> 8 & 0xff] + '-' + TABLE_OF_256_HEXADECIMAL[d2 >> 16 & 0xff] + TABLE_OF_256_HEXADECIMAL[d2 >> 24 & 0xff] +
+        TABLE_OF_256_HEXADECIMAL[d3 & 0xff] + TABLE_OF_256_HEXADECIMAL[d3 >> 8 & 0xff] + TABLE_OF_256_HEXADECIMAL[d3 >> 16 & 0xff] + TABLE_OF_256_HEXADECIMAL[d3 >> 24 & 0xff];
 };
 
 /**
@@ -405,8 +405,8 @@ export const getSessonId = () => {
 };
 
 export function getFilePath(file) {
-    if(file)
-        if(file.startsWith('http') && file.includes(':')) {
+    if (file)
+        if (file.startsWith('http') && file.includes(':')) {
             return file;
         } else {
             return `${AppConfig.api.baseUrl}${file}`
@@ -497,7 +497,7 @@ export const makeRequest = (verb, url, data = null, config = {}) => {
  * @param config
  * @returns {Promise<any | never>}
  */
-export const makeActionRequest = (verb, url, typeBase, dispatch, data = null, config = {} ) => {
+export const makeActionRequest = (verb, url, typeBase, dispatch, data = null, config = {}) => {
     dispatch({ type: typeBase });
     return makeRequest(verb, url, data, config)
         .then((response) => {
@@ -569,29 +569,50 @@ export const formatDate = (date) => {
         day = '' + d.getDate(),
         year = d.getFullYear();
 
-    if (month.length < 2) 
+    if (month.length < 2)
         month = '0' + month;
-    if (day.length < 2) 
+    if (day.length < 2)
         day = '0' + day;
 
     return [year, month, day].join('-');
 }
 
 export const computeValueFromPercent = (value, amount) => {
-    return (value*amount)/100;
+    return (value * amount) / 100;
 }
 
 export const computePercentFromValue = (value, amount) => {
-    return (value/amount)*100;
+    return (value / amount) * 100;
 }
 
 export const parseDate = (str) => {
     var mdy = str.split('-');
-    return new Date(mdy[0], mdy[1]-1, mdy[2]);
+    return new Date(mdy[0], mdy[1] - 1, mdy[2]);
 }
 
 export const datediff = (first, second, time = 1) => {
     let start = parseDate(first);
     let end = parseDate(second);
-    return Math.round((end-start)/(1000*60*60*24*time));
+    let result = 0;
+    do {
+        switch (time) {
+            case 1:
+                start.setDate(start.getDate() + 1);
+                break;
+            case 7:
+                start.setDate(start.getDate() + 7);
+                break;
+            case 30:
+                start.setMonth(start.getMonth() + 1);
+                break;
+            case 90:
+                start.setMonth(start.getMonth() + 3);
+                break;
+            default:
+                start.setDate(start.getDate() + 1);
+                break;
+        }
+        result++;
+    } while (end >= start);
+    return result;
 }

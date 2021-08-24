@@ -7,17 +7,35 @@ import Button from "@material-ui/core/Button";
 import CustomList from "Components/CustomList";
 import AmountCurrency from "Components/AmountCurrency";
 import { PREVISIONS, joinUrlWithParams } from "Url/frontendUrl";
-import { setRequestGlobalAction, getPrevisionPeriodes } from "Actions";
+import { setRequestGlobalAction, getPrevisionPeriodes, getOnePrevision } from "Actions";
 
 class List extends Component {
 
     state = {
-        periodes: []
+        periodes: [],
+        sections: [],
+        prevision: {},
     };
 
     componentDidMount() {
         this.id = this.props.match.params.id
         this.getPeriodes();
+        this.getPrevision();
+    }
+
+    getPrevision() {
+        this.props.setRequestGlobalAction(true);
+        getOnePrevision(this.id).then(prevision => {
+            this.setState({ prevision });
+        }).catch(err => {
+            this.props.history.push(joinUrlWithParams(PREVISIONS.PERIODES.LIST, [{ param: 'id', value: this.id }]));
+        }).finally(() => {
+            this.props.setRequestGlobalAction(false);
+        })
+    }
+
+    onClickPeriode(id) {
+        this.props.history.push(joinUrlWithParams(PREVISIONS.PERIODES.DETAILS, [{ param: 'id', value: this.id }, { param: 'id2', value: id }]));
     }
 
     getPeriodes = () => {
@@ -34,13 +52,13 @@ class List extends Component {
     getRythme = (rythme) => {
         switch (rythme) {
             case 'DAY':
-                return 'Jour'; 
+                return 'Jour';
             case 'WEEK':
-                return 'Semaine'; 
+                return 'Semaine';
             case 'MONTH':
-                return 'Mois'; 
+                return 'Mois';
             case 'TRIMESTER':
-                return 'Trimestre';        
+                return 'Trimestre';
             default:
                 return 'Jour';
         }
@@ -49,13 +67,13 @@ class List extends Component {
     getRythmeValue = (rythme) => {
         switch (rythme) {
             case 'DAY':
-                return 1; 
+                return 1;
             case 'WEEK':
-                return 7; 
+                return 7;
             case 'MONTH':
-                return 30; 
+                return 30;
             case 'TRIMESTER':
-                return 90;        
+                return 90;
             default:
                 return 1;
         }
@@ -63,16 +81,16 @@ class List extends Component {
 
     render() {
         const { history } = this.props;
-        const { periodes, show } = this.state;
+        const { periodes, show, prevision } = this.state;
 
         return (
             <>
                 <CustomList
                     list={periodes}
                     loading={false}
-                    titleList={"Liste des périodes"}
+                    titleList={"Périodes de la pévision " + prevision.label}
                     itemsFoundText={n => n + " périodes(s) trouvée(s)"}
-                    onAddClick={() => history.push(joinUrlWithParams(PREVISIONS.PERIODES.CREATE, [{param: 'id', value: this.id}]))}
+                    onAddClick={() => history.push(joinUrlWithParams(PREVISIONS.PERIODES.CREATE, [{ param: 'id', value: this.id }]))}
                     renderItem={list => (
                         <>
                             {list && list.length === 0 ? (
@@ -132,7 +150,7 @@ class List extends Component {
                                                         <td>
                                                             <div className="media">
                                                                 <div className="media-body pt-10">
-                                                                    <h4 style={{ textAlign: 'start' }} className="m-0 fw-bold text-dark">{ datediff(item.startDate, item.endDate, this.getRythmeValue(item.frequence)) }</h4>
+                                                                    <h4 style={{ textAlign: 'start' }} className="m-0 fw-bold text-dark">{datediff(item.startDate, item.endDate, this.getRythmeValue(item.frequence))}</h4>
                                                                 </div>
                                                             </div>
                                                         </td>
@@ -144,6 +162,15 @@ class List extends Component {
                                                             </div>
                                                         </td>
                                                         <td className="table-action">
+                                                            <Button
+                                                                size="small"
+                                                                variant="contained"
+                                                                className={"text-white mr-5"}
+                                                                style={{ backgroundColor: '#FFB70F', borderColor: '#FFB70F' }}
+                                                                onClick={() => this.onClickPeriode(item.id)}
+                                                            >
+                                                                Détails
+                                                            </Button>
                                                             <Button
                                                                 size="small"
                                                                 variant="contained"

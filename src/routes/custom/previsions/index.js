@@ -5,6 +5,7 @@ import {injectIntl} from "react-intl";
 import React, { Component } from 'react';
 import {PREVISIONS} from "Url/frontendUrl";
 import PeriodesList from './periodes/List';
+import PeriodeDetails from './periodes/Show';
 import PeriodesCreate from './periodes/Create';
 import {withRouter, Switch, Redirect, Route} from "react-router-dom";
 
@@ -20,6 +21,7 @@ class Products extends Component {
                         <Route path={PREVISIONS.CREATE} component={Create} />
                         <Route path={PREVISIONS.PERIODES.LIST} component={PeriodesList} />
                         <Route path={PREVISIONS.PERIODES.CREATE} component={PeriodesCreate} />
+                        <Route path={PREVISIONS.PERIODES.DETAILS} component={PeriodeDetails} />
                     </Switch>
                 </>
             </div>

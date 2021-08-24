@@ -30,7 +30,8 @@ export const PREVISIONS = {
     CREATE: '/previsions/create',
     PERIODES: {
         LIST: '/previsions/:id/periodes/list',
-        CREATE: '/previsions/:id/periodes/create'
+        DETAILS: '/previsions/:id/periodes/:id2',
+        CREATE: '/previsions/:id/periodes/create',
     }
 };
 

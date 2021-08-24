@@ -4,13 +4,16 @@ import React, { Component } from 'react';
 import { withRouter } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import CustomList from "Components/CustomList";
+import ConfirmBox from "Components/dialog/ConfirmBox";
 import { PREVISIONS, joinUrlWithParams } from "Url/frontendUrl";
-import { setRequestGlobalAction, getUserPrevisions } from "Actions";
+import { setRequestGlobalAction, getUserPrevisions, activePrevision } from "Actions";
 
 class List extends Component {
 
     state = {
-        previsions: []
+        previsions: [],
+        showBox: false,
+        selectedPrevision: null
     };
 
     componentDidMount() {
@@ -26,8 +29,18 @@ class List extends Component {
         })
     };
 
+    updatePrevision = (id) => {
+        this.props.setRequestGlobalAction(true);
+        activePrevision(id).then(__ => {
+            this.getPrevisions();
+        }).finally(() => {
+            this.props.setRequestGlobalAction(false);
+            this.setState({ showBox: false, selectedPrevision: null })
+        })
+    };
+
     onEnterClick = (id) => {
-        let url = joinUrlWithParams(PREVISIONS.PERIODES.LIST, [{param: 'id', value: id}]);
+        let url = joinUrlWithParams(PREVISIONS.PERIODES.LIST, [{ param: 'id', value: id }]);
         this.props.history.push(url);
     };
 
@@ -71,8 +84,9 @@ class List extends Component {
                                                     >
                                                         <td>
                                                             <div className="media">
-                                                                <div className="media-body pt-10">
-                                                                    <h4 style={{ textAlign: 'start' }} className="m-0 fw-bold text-dark">{item.label}</h4>
+                                                                <div className="media-body pt-10 d-flex align-content-center align-items-center">
+                                                                    <div className={`user-status-pending-circle rct-notify`} style={{ background: item.status ? 'green' : 'red' }} />
+                                                                    <h4 style={{ textAlign: 'start' }} className="m-0 fw-bold text-dark ml-15">{item.label}</h4>
                                                                 </div>
                                                             </div>
                                                         </td>
@@ -106,6 +120,26 @@ class List extends Component {
                                                             >
                                                                 Périodes
                                                             </Button>
+                                                            {item.status ?
+                                                                <Button
+                                                                    size="small"
+                                                                    variant="contained"
+                                                                    className={"text-white ml-5"}
+                                                                    style={{ backgroundColor: '#ed431d', borderColor: '#ed431d' }}
+                                                                    onClick={() => this.setState({ selectedPrevision: item, showBox: true })}
+                                                                >
+                                                                    Désactiver
+                                                            </Button> :
+                                                                <Button
+                                                                    size="small"
+                                                                    variant="contained"
+                                                                    className={"text-white ml-5"}
+                                                                    style={{ backgroundColor: '#FFB70F', borderColor: '#FFB70F' }}
+                                                                    onClick={() => this.setState({ selectedPrevision: item, showBox: true })}
+                                                                >
+                                                                    Activer
+                                                        </Button>
+                                                            }
                                                         </td>
                                                     </tr>
                                                 ))}
@@ -115,6 +149,13 @@ class List extends Component {
                                 )}
                         </>
                     )}
+                />
+
+                <ConfirmBox
+                    show={this.state.showBox}
+                    rightButtonOnClick={() => this.updatePrevision(this.state.selectedPrevision.id)}
+                    leftButtonOnClick={() => this.setState({ showBox: false, selectedPrevision: null })}
+                    message={`Vous voulez-vous ${this.state.selectedPrevision ? this.state.selectedPrevision.status ? 'désactiver' : 'activer' : 'activer' } cette prévision ?`}
                 />
             </>
         );

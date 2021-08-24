@@ -73,7 +73,7 @@ class Create extends Component {
         if (this.state.start) {
             let start = new Date(this.state.start);
             let end = start;
-            end.setDate(end.getDate() + 30 * 36);
+            end.setMonth(end.getMonth() + 36);
             // let end = new Date(start.setMonth(start.getMonth()+36));
             return formatDate(end);
         } else {
