@@ -38,6 +38,7 @@ import Previsions from "Routes/custom/previsions";
 import Ressource from "Routes/custom/ressources";
 import UnitList from "Routes/custom/settings/units";
 import AllUsers from 'Routes/custom/users/all-users/List';
+import Project from 'Routes/custom/microcap';
 import UserProfile from 'Routes/custom/users/user-profile';
 import AgentList from "Routes/custom/settings/agents/List";
 import PrevisionsAdmin from "Routes/custom/previsions_admin";
@@ -79,6 +80,7 @@ import {
     TERMS,
     PACKAGES,
     RESSOURCE,
+    MICROCAP360,
     AGENTS,
     COMMERCIAL_MANAGEMENT, PRODUCT, STORE, ROOT, ACCESS, SETTINGS, NOTIFICATIONS, PROJECTS
 } from "Url/frontendUrl";
@@ -164,6 +166,12 @@ const Dashboard = ({ onInitCart }) => {
                     <CanRoute
                         path={RESSOURCE.SELF}
                         component={Ressource}
+                        permissions={[]}
+                    />
+
+                    <CanRoute
+                        path={MICROCAP360.MY.PROJECT}
+                        component={Project}
                         permissions={[]}
                     />
 

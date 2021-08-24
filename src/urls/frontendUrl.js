@@ -16,6 +16,7 @@ export const MONEY_MANAGEMENT = '/money-management';
 export const GALERY_PROJECT = '/projects-gallery';
 export const TERMS = '/conditions-generales-d-utilisation';
 export const LEGAL_MENTION = '/mentions-legales';
+
 export const AUTH = {
     LOGIN: '/login',
     REGISTER: '/register',
@@ -463,6 +464,10 @@ export const MICROCAP360 = {
     },
     RESEAU: {
         SELF: '/community',
+    },
+    MY: {
+        PROJECT: '/microcap360/my-project',
+        PASS: '/microcap360/my-pass',
     }
 };
 
