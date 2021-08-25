@@ -466,8 +466,9 @@ export const MICROCAP360 = {
         SELF: '/community',
     },
     MY: {
-        PROJECT: '/microcap360/my-project',
-        PASS: '/microcap360/my-pass',
+        SELF: '/microcap360/personnal',
+        PASS: '/microcap360/personnal/pass',
+        PROJECT: '/microcap360/personnal/project',
     }
 };
 

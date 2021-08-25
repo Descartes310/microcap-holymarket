@@ -807,9 +807,9 @@ export default {
                "permissions": [],
             },
             {
-               "menu_title": "Plan prévisionnel",
+               "menu_title": "Mon Microcap",
                "new_item": false,
-               "path": PREVISIONS.SELF,
+               "path": MICROCAP360.MY.PROJECT,
                "permissions": [],
             },
          ],
@@ -913,9 +913,9 @@ export default {
                "permissions": [],
             },
             {
-               "menu_title": "Plan prévisionnel",
+               "menu_title": "Mon Microcap",
                "new_item": false,
-               "path": PREVISIONS.SELF,
+               "path": MICROCAP360.MY.PROJECT,
                "permissions": [],
             },
          ],

@@ -1,14 +1,14 @@
-import React, { Component } from 'react';
-import AppBar from '@material-ui/core/AppBar';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import { RctCard } from 'Components/RctCard';
 import {connect} from "react-redux";
-import {setRequestGlobalAction} from "Actions/RequestGlobalAction";
-import {withRouter} from "react-router-dom";
 import TabContent from "./TabContent";
-import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
+import Tab from '@material-ui/core/Tab';
+import React, { Component } from 'react';
+import Tabs from '@material-ui/core/Tabs';
+import {withRouter} from "react-router-dom";
+import { RctCard } from 'Components/RctCard';
+import AppBar from '@material-ui/core/AppBar';
 import { MICROCAP360 } from '../../../urls/frontendUrl';
+import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
+import {setRequestGlobalAction} from "Actions/RequestGlobalAction";
 
 class Microcap extends Component {
     constructor(props) {
@@ -29,6 +29,7 @@ class Microcap extends Component {
         const oldActivateTab = this.state.activeTab;
         this.setState({ activeTab: value });
         if (oldActivateTab !== value) {
+            console.log("La tab active est => ", value)
             switch (value) {
                 case 0: return this.props.history.push(MICROCAP360.MY.PROJECT);
                 case 1: return this.props.history.push(MICROCAP360.MY.PASS);

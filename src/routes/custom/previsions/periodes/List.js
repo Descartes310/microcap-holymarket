@@ -15,6 +15,7 @@ class List extends Component {
         periodes: [],
         sections: [],
         prevision: {},
+        total: 0
     };
 
     componentDidMount() {
@@ -41,13 +42,21 @@ class List extends Component {
     getPeriodes = () => {
         this.props.setRequestGlobalAction(true);
         getPrevisionPeriodes(this.id).then(periodes => {
-            this.setState({ periodes })
+            this.setState({ periodes });
+            this.getTotal();
         }).catch(err => {
-            this.props.history.push(PREVISIONS.PREVISIONS.LIST);
+            console.log(err)
+            this.props.history.push(PREVISIONS.LIST);
         }).finally(() => {
             this.props.setRequestGlobalAction(false);
         })
     };
+
+    getTotal = () => {
+        this.state.periodes.forEach(p => {
+            this.setState({ total: this.state.total + p.amount * datediff(p.startDate, p.endDate, this.getRythmeValue(p.frequence)) })
+        })
+    }
 
     getRythme = (rythme) => {
         switch (rythme) {
@@ -81,7 +90,7 @@ class List extends Component {
 
     render() {
         const { history } = this.props;
-        const { periodes, show, prevision } = this.state;
+        const { periodes, show, prevision, total } = this.state;
 
         return (
             <>
@@ -169,7 +178,7 @@ class List extends Component {
                                                                 style={{ backgroundColor: '#FFB70F', borderColor: '#FFB70F' }}
                                                                 onClick={() => this.onClickPeriode(item.id)}
                                                             >
-                                                                Détails
+                                                                Abondements
                                                             </Button>
                                                             <Button
                                                                 size="small"
@@ -182,6 +191,28 @@ class List extends Component {
                                                     </tr>
                                                 ))}
                                             </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <td colSpan={5}>
+                                                        <div className="media">
+                                                            <div className="media-body pt-10">
+                                                                <h4 style={{ textAlign: 'start' }} className="m-0 fw-bold text-dark">Total</h4>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div className="media">
+                                                            <div className="media-body pt-10">
+                                                                <h4 style={{ textAlign: 'start' }} className="m-0 fw-bold text-dark"><AmountCurrency amount={this.state.total} /></h4>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div className="media">
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tfoot>
                                         </table>
                                     </div>
                                 )}
