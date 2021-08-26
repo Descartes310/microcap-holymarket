@@ -12,7 +12,7 @@ import Button from '@material-ui/core/Button';
 // intl messages
 import IntlMessages from 'Util/IntlMessages';
 import UserAvatar from "Components/UserAvatar";
-import { textTruncate, getFilePath } from "Helpers/helpers";
+import {textTruncate, getFilePath, normalizeCartItems} from "Helpers/helpers";
 import Cart from "Models/Cart";
 import AmountCurrency from "Components/AmountCurrency";
 
@@ -45,13 +45,17 @@ class CheckoutItem extends Component {
    }
 
    render() {
-      const cart = new Cart(this.order.orderItems.map(item => ({
-         ...item.typeProduct,
-         name: item.typeProduct.product ? item.typeProduct.product.label : item.typeProduct.package1.label,
-         price: item.typeProduct.price,
-         currency: item.typeProduct.product ? item.typeProduct.product.priceCurrency : item.typeProduct.package1.currency,
-         quantity: item.quantity
-      })));
+      const { authUser } = this.props;
+      const cart = new Cart(normalizeCartItems(
+         this.order.orderItems.map(item => ({
+            ...item.typeProduct,
+            price: item.typeProduct.price,
+            currency: item.typeProduct.product ? item.typeProduct.product.priceCurrency : item.typeProduct.package1.currency,
+            quantity: item.quantity
+         })),
+         authUser.id,
+         true
+      ));
       const { success } = this.state;
       return (
          <div className="checkout-item-wrap p-4">
@@ -117,8 +121,8 @@ class CheckoutItem extends Component {
    }
 }
 
-const mapStateToProps = ({ cart }) => {
-   return { cart };
+const mapStateToProps = ({ authUser, cart }) => {
+   return { cart, authUser: authUser.data };
 };
 
 export default connect(mapStateToProps)(CheckoutItem);

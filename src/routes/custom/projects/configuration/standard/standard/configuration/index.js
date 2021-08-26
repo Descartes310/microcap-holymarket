@@ -57,9 +57,7 @@ class List extends Component {
             .then(result => {
                 this.setState({ projectStandard: result });
             })
-            .catch(() => {
-                NotificationManager.error(ERROR_500);
-            })
+            .catch(() => null)
             .finally(() => this.setState({ loadingProjectStandard: false }));
     };
 
@@ -73,9 +71,7 @@ class List extends Component {
             .then(result => {
                 this.setState({ models: result });
             })
-            .catch(() => {
-                NotificationManager.error(ERROR_500);
-            })
+            .catch(() => null)
             .finally(() => this.setState({ loading: false }));
     };
 
@@ -86,9 +82,7 @@ class List extends Component {
                 NotificationManager.success("Model retiré avec succès");
                 this.loadData();
             })
-            .catch(() => {
-                NotificationManager.error(ERROR_500);
-            })
+            .catch(() => null)
             .finally(() => this.props.setRequestGlobalAction(false));
     };
 

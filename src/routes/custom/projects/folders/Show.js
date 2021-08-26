@@ -92,11 +92,16 @@ const Show = ({ match, history }) => {
     }
 
     const isRequired = (id) => {
-        let data = projectFolder.data.initializationOption.works.filter(w => w.book.id == id)[0];
-        if (data) {
-            return data.required;
-        } else {
-            return false
+        try {
+            let data = projectFolder.data.initializationOption.works.filter(w => w.book.id == id)[0];
+            if (data) {
+                return data.required;
+            } else {
+                return false
+            }
+        } catch (err) {
+            console.log(err);
+            return false;
         }
     }
 
@@ -154,7 +159,7 @@ const Show = ({ match, history }) => {
             </div>
 
             <CustomList
-                list={reactions.filter(r => r.type != 'ILLUSTRATION')}
+                list={reactions ? reactions.filter(r => r.type != 'ILLUSTRATION') : []}
                 loading={false}
                 titleList={"Activités sur le projet"}
                 itemsFoundText={() => 'Activités trouvé.e.s'}
@@ -232,7 +237,7 @@ const Show = ({ match, history }) => {
                             color="primary"
                             aria-label="close"
                             className="text-danger"
-                            onClick={() => setShowBox(false) }>
+                            onClick={() => setShowBox(false)}>
                             <CancelIcon />
                         </IconButton>
                     </div>

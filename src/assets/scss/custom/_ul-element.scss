@@ -146,15 +146,15 @@
 }
 /*========== Badge Scss ==========*/
 .badge-xs {
-  width: 0;
-  height: 0;
-  padding: 9px;
-  border-radius: 100%;
-  display: flex;
-  justify-content: center;
-  line-height: 0;
-  font-size: 55%;
-  position: absolute;
+  width: 0 !important;
+  height: 0 !important;
+  padding: 9px !important;
+  border-radius: 100% !important;
+  display: flex !important;
+  justify-content: center !important;
+  line-height: 0 !important;
+  font-size: 55% !important;
+  position: absolute !important;
 }
 .badge-sm {
   width: 10px;

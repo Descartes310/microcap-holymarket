@@ -1,24 +1,21 @@
 import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { injectIntl } from "react-intl";
-import React, { Component } from 'react';
-import { SETTINGS } from "Url/frontendUrl";
-import { ERROR_500 } from "Constants/errors";
-import { withRouter } from "react-router-dom";
+import {connect} from "react-redux";
+import {injectIntl} from "react-intl";
+import React, {Component} from 'react';
+import {SETTINGS} from "Url/frontendUrl";
+import {withRouter} from "react-router-dom";
 import IntlMessages from "Util/IntlMessages";
-import CustomList from "Components/CustomList";
-import { NotificationManager } from "react-notifications";
-import InputLabel from "@material-ui/core/InputLabel/InputLabel";
-import DeleteConfirmBox from "Components/dialog/DeleteConfirmBox";
-import { getProjectStandardPresentation } from "Actions/GeneralActions";
-import { Button, Form, FormGroup, Input as InputStrap } from 'reactstrap';
-import { setRequestGlobalAction, createGroupPost } from "Actions";
-import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
-import CustomAsyncComponent from "Components/CustomAsyncComponent";
-import Select from "@material-ui/core/Select/Select";
+import CommunityType from "Enums/CommunityType";
 import Input from "@material-ui/core/Input/Input";
-import MenuItem from "@material-ui/core/MenuItem/MenuItem";
+import Select from "@material-ui/core/Select/Select";
 import FormControl from "@material-ui/core/FormControl";
+import {NotificationManager} from "react-notifications";
+import MenuItem from "@material-ui/core/MenuItem/MenuItem";
+import {createGroupPost, setRequestGlobalAction} from "Actions";
+import InputLabel from "@material-ui/core/InputLabel/InputLabel";
+import CustomAsyncComponent from "Components/CustomAsyncComponent";
+import {Button, Form, FormGroup, Input as InputStrap} from 'reactstrap';
+import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
 
 class Create extends Component {
     constructor(props) {
@@ -70,10 +67,7 @@ class Create extends Component {
                     NotificationManager.success("Categorie créé avec succès");
                     this.props.history.push(SETTINGS.POST.LIST);
                 })
-                .catch((err) => {
-                    console.log(err)
-                    NotificationManager.error(ERROR_500);
-                })
+                .catch((err) => null)
                 .finally(() => this.props.setRequestGlobalAction(false));
         }
     };
@@ -108,16 +102,11 @@ class Create extends Component {
                                     </FormGroup>
 
                                     <CustomAsyncComponent
-                                        data={[{
-                                            label: 'Communauté conventionnée',
-                                            key: 'COMMUNAUTE_CONVENTIONNEE',
-                                        }, {
-                                            label: 'Communauté d\'affinitée',
-                                            key: 'COMMUNAUTE_AFFINITE',
-                                        }, {
-                                            label: 'Communauté projet',
-                                            key: 'COMMUNAUTE_PROJET',
-                                        }]}
+                                        data={[
+                                            {label: 'Communauté conventionnée', key: CommunityType.COMMUNAUTE_CONVENTIONNEE,},
+                                            {label: 'Communauté d\'affinitée', key: CommunityType.COMMUNAUTE_AFFINITE,},
+                                            {label: 'Communauté projet', key: CommunityType.COMMUNAUTE_PROJET,}
+                                        ]}
                                         component={data => (
                                             <div className="col-md-12 col-sm-12 form-group  has-wrapper">
                                                 <FormControl fullWidth>

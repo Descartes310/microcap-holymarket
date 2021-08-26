@@ -36,9 +36,7 @@ class InvitationItem extends Component {
                 NotificationManager.success("Vous faite maintenant partir du groupe " + this.props.invitation.group.label);
                 this.props.getInvitationsPending(this.props.authUser.user.id);
             })
-            .catch(() => {
-                NotificationManager.error(ERROR_500);
-            })
+            .catch(() => null)
             .finally(() => this.props.setRequestGlobalAction(false));
     };
 
@@ -59,9 +57,7 @@ class InvitationItem extends Component {
                 );
                 this.props.getInvitationsPending(this.props.authUser.user.id);
             })
-            .catch(() => {
-                NotificationManager.error(ERROR_500);
-            })
+            .catch(() => null)
             .finally(() => this.props.setRequestGlobalAction(false));
     };
 

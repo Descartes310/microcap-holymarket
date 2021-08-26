@@ -29,6 +29,7 @@ import MobileSearchForm from './MobileSearchForm';
 import IntlMessages from 'Util/IntlMessages';
 import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
 import Switch from "@material-ui/core/Switch/Switch";
+import {DISCOVER} from "Url/frontendUrl";
 
 class Header extends Component {
 
@@ -128,6 +129,9 @@ class Header extends Component {
 								}
 							</ul>
 						}
+						<Link to={DISCOVER}  className="color-gray-muted text-decoration-underline-hover fw-500 px-3">
+							Découvir Microcap
+						</Link>
 					</div>
 					<ul className="navbar-right list-inline mb-0">
 						<Notifications />

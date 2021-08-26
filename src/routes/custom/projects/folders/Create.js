@@ -122,11 +122,11 @@ const Create = props => {
         }
     };
 
-    const onSetWorks = (id, value) => {
+    const onSetWorks = (id, value, index) => {
         // console.log('VALUE => ', value, id)
-        let data = worksData.filter(w => w.id != id);
-        data.push({ id, value });
-        // console.log(data)
+        let data = worksData.filter(w => (w.id !== id) || (w.id === id && w.index !== index));
+        data.push({ id, value, index });
+        console.log(data)
         setWorksData(data);
         // console.log(worksData);
     };
@@ -165,9 +165,7 @@ const Create = props => {
                 NotificationManager.success("Projet crée avec succès");
                 history.push(PROJECTS.FOLDERS.LIST);
             })
-            .catch(() => {
-                NotificationManager.error(ERROR_500);
-            })
+            .catch(() => null   )
             .finally(() => setRequestGlobalAction(false));
     };
 
@@ -320,20 +318,22 @@ const Create = props => {
                                     const key = initializationId + index;
                                     const label = `${work.book.id}-content`;
                                     return (
-                                        <div key={key} className="col-sm-12">
-                                            <FormGroup className="has-wrapper">
-                                                <InputLabel className="text-left" style={{ color: 'black', fontSize: '1.3em' }} htmlFor={label}>
-                                                    {work.content}
-                                                </InputLabel>
-                                                <InputLabel className="text-left" htmlFor={label}>
-                                                    {work.description}
-                                                </InputLabel>
-                                                {
-                                                    work.editable ?
-                                                        <ReactQuill modules={modules} name={`${work.book.id}`} onChange={(e) => onSetWorks(`${work.book.id}`, e)} formats={formats} placeholder="Entrez votre contenu..." />
-                                                        : null}
-                                            </FormGroup>
-                                        </div>
+                                        Array.apply(null, { length: work.max }).map((__, i) => (
+                                            <div key={key} className="col-sm-12">
+                                                <FormGroup className="has-wrapper">
+                                                    <InputLabel className="text-left" style={{ color: 'black', fontSize: '1.3em' }} htmlFor={label}>
+                                                        {work.content}
+                                                    </InputLabel>
+                                                    <InputLabel className="text-left" htmlFor={label}>
+                                                        {work.description}
+                                                    </InputLabel>
+                                                    {
+                                                        work.editable ?
+                                                            <ReactQuill modules={modules} name={`${work.book.id}`} onChange={(e) => onSetWorks(`${work.book.id}`, e, i)} formats={formats} placeholder="Entrez votre contenu..." />
+                                                            : null}
+                                                </FormGroup>
+                                            </div>
+                                        ))
                                     )
                                 })}
                             </div>

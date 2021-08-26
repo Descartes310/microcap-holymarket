@@ -1,30 +1,23 @@
-/**
- * Email Listing
- */
-import React, { Component } from 'react';
+import UserType from "Enums/UserType";
 import { connect } from 'react-redux';
-import { withRouter, NavLink } from 'react-router-dom';
-
-//Intl Message
-import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
-import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
-import { withStyles } from "@material-ui/core";
-import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
-import Accordion from '@material-ui/core/Accordion';
-import AccordionDetails from '@material-ui/core/AccordionDetails';
-import AccordionSummary from '@material-ui/core/AccordionSummary';
-import Typography from '@material-ui/core/Typography';
-import { setCommunitySpaceAdmins, statusCommunitySpaceStatus, setCommunitySpaceData } from "Actions/CommunityAction";
+import { USERS } from 'Url/frontendUrl';
+import React, { Component } from 'react';
 import { getUserCommunities } from "Actions";
 import IntlMessages from 'Util/IntlMessages';
 import Button from "@material-ui/core/Button";
-import { COMMUNITY } from 'Url/frontendUrl';
-import { getCommunityAdmins, getPartnersOperatorByMe } from "Actions/independentActions";
-import UserType from "Enums/UserType";
-import { USERS } from 'Url/frontendUrl';
+import { withStyles } from "@material-ui/core";
+import Accordion from '@material-ui/core/Accordion';
+import Typography from '@material-ui/core/Typography';
+import { withRouter, NavLink } from 'react-router-dom';
+import {COMMUNITY, joinUrlWithParamsId} from 'Url/frontendUrl';
+import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
+import AccordionDetails from '@material-ui/core/AccordionDetails';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import { getPartnersOperatorByMe } from "Actions/independentActions";
+import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
+import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
 
 class PersonalSpace extends Component {
-
     constructor(props) {
         super(props);
         this.state = {
@@ -40,26 +33,23 @@ class PersonalSpace extends Component {
         }
     }
 
-    onJoinClick = (group) => {
-        getCommunityAdmins(group.id).then(data => {
-            this.props.statusCommunitySpaceStatus(true);
-            this.props.setCommunitySpaceAdmins(data);
-            this.props.setCommunitySpaceData(group.id);
-            this.props.history.push(COMMUNITY.MEMBERS.LIST);
-        })
-    }
+    onJoinClick = (groupId) => {
+        window.location = joinUrlWithParamsId(COMMUNITY.MEMBERS.LIST, groupId);
+    };
 
     getOperators = () => {
-        getPartnersOperatorByMe(this.props.authUser.user.id).then(data => {
-            this.setState({ operators: data })
-        })
-    }
+        getPartnersOperatorByMe(this.props.authUser.user.id)
+            .then(data => {
+                this.setState({ operators: data });
+            })
+            .catch(() => null);
+    };
 
     render() {
         const { loading, history, userCommunities } = this.props;
         const { operators } = this.state;
         return (
-            <div className="page-list">
+            <div className="page-list full-height">
                 <PageTitleBar title={"Espace personnel"} enableBreadCrumb={true} match={this.props.match} history={history} />
                 {loading
                     ? (<RctSectionLoader />)
@@ -186,7 +176,7 @@ class PersonalSpace extends Component {
                                                                         disabled={loading}
                                                                         variant="contained"
                                                                         className={"text-white font-weight-bold mr-3"}
-                                                                        onClick={() => this.onJoinClick(group.group)}
+                                                                        onClick={() => this.onJoinClick(group.group.id)}
                                                                     >
                                                                         Rejoindre la communauté
                                                                     </Button>
@@ -277,4 +267,4 @@ const mapStateToProps = ({ requestGlobalLoader, authUser, userCommunities }) => 
     };
 };
 
-export default withRouter(connect(mapStateToProps, { getUserCommunities, setCommunitySpaceAdmins, statusCommunitySpaceStatus, setCommunitySpaceData })(withStyles(useStyles, { withTheme: true })(PersonalSpace)));
+export default withRouter(connect(mapStateToProps, {getUserCommunities})(withStyles(useStyles, { withTheme: true })(PersonalSpace)));

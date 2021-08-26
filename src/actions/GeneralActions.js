@@ -1,4 +1,5 @@
 import { NotificationManager } from 'react-notifications';
+import { makeActionRequest } from '../helpers/helpers';
 import {
     CATALOG,
     CATALOG_SUCCESS,
@@ -25,6 +26,7 @@ import {
     USER_COMMUNITIES_ADMIN,
     USER_COMMUNITIES_NOT_IN,
     COM_INVITATIONS_PENDING,
+    COM_SOLLICITATION_PENDING,
     SET_CURRENT_COMMUNITY,
     SET_CURRENT_COMMUNITY_SUCCESS,
     SET_CURRENT_COMMUNITY_FAILURE,
@@ -67,8 +69,9 @@ import {
     NOTIFICATIONS as NOTIFICATIONS_API,
     PROJECTS as PROJECTS_API,
     SETTING as SETTING_API,
+    BRANCH,
     joinBaseUrlWithParams,
-    BRANCH, joinBaseUrlWithParamsId,
+    joinBaseUrlWithParamsId,
 } from 'Url/backendUrl';
 
 export const getCatalogs = () => (dispatch) => {
@@ -140,19 +143,6 @@ export const getBranchProductsOnly = (branchId) => (dispatch) => {
         });
 };
 
-export const makeActionRequest = (verb, url, typeBase, dispatch, data = null, config = {}) => {
-    dispatch({ type: typeBase });
-    return api[verb](url, data)
-        .then((response) => {
-            dispatch({ type: `${typeBase}_SUCCESS`, payload: response.data });
-            return Promise.resolve(response.data);
-        })
-        .catch((error) => {
-            dispatch({ type: `${typeBase}_FAILURE` });
-            NotificationManager.error(error.message);
-            return Promise.reject(error);
-        });
-};
 
 export const getCatalogProducts = (catalogId) => (dispatch) => {
     const url = joinBaseUrlWithParams(CATALOGS_API.TYPE_PRODUCTS.GET, [{
@@ -172,11 +162,11 @@ export const getProductTypes = (branchId) => (dispatch) => {
     return makeActionRequest('get', url, PRODUCT_TYPE, dispatch);
 };
 
-export const getCurrencies = () => (dispatch) => {
-    const url = `${SETTING_API.CURRENCIES}`;    
+export const getCurrencies = (shouldSkipError = false) => (dispatch) => {
+    const url = `${SETTING_API.CURRENCIES}`;
     dispatch({ type: SET_CURRENCIES });
     return api
-        .get(url)
+        .get(url, {skipError: shouldSkipError})
         .then((response) => {
             dispatch({ type: SET_CURRENCIES_SUCCESS, payload: response.data });
             return Promise.resolve();
@@ -231,6 +221,15 @@ export const getInvitationsPending = (userId) => (dispatch) => {
     const url = joinBaseUrlWithParamsId(COMMUNITY_API.INVITATIONS.GET_ALL, userId);
     return makeActionRequest('get', url, COM_INVITATIONS_PENDING, dispatch);
 };
+
+export const getAllOperators = (id, groupId) => (dispatch) => {
+     const data = {
+        group_id: groupId
+     };
+     const url = joinBaseUrlWithParams(BRANCH.GET_ALL_OPERATORS, [{param: 'id', value: id,}]);
+     return makeActionRequest('get', url, COM_SOLLICITATION_PENDING, dispatch, data);
+ };
+
 
 export const setCurrentCommunity = (community, favourite, members) => (dispatch) => {
     dispatch({ type: SET_CURRENT_COMMUNITY_SUCCESS, payload: {community, favourite, members} });

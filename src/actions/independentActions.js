@@ -1,4 +1,5 @@
 import api from 'Api';
+import { makeRequest } from '../helpers/helpers';
 import {
     AUTH,
     SYSTEM_OBJECT,
@@ -9,8 +10,10 @@ import {
     CATEGORY_PRODUCTS,
     ACCOUNT,
     SETTING,
+    PREVISIONS,
     PRODUCTS,
     PRODUCT_TYPE,
+    PDF_GENERATOR,
     USER_PROFILE, NETWORK_PROFILE_TYPE, USERS,
     COMMUNITY_MEMBER, COMMUNITY, PACKAGES, COMMERCIAL_MANAGEMENT, joinBaseUrlWithParamsId,
     ORDER, SALES, GENERIC_OBJECT,
@@ -75,26 +78,22 @@ export const getOrganisationPosts = () => {
     });
 };
 
-export const sendResetPasswordLink = (email) => {
-    return new Promise((resolve, reject) => {
-        /*const url = joinBaseUrlWithParams(AUTH.RESET_PASSWORD.LINK, [{
-            param: 'email',
-            value: email,
-        }]);*/
-        const url = AUTH.RESET_PASSWORD.LINK + `?email=${email}`;
+export const sendResetPasswordLink = async (email) => {
+    const _data = {
+        email,
+        branchUrl: window.location.origin
+    };
 
-        api.get(url)
-            .then(result => resolve(result.data))
-            .catch(error => reject(error));
-    });
+    return await makeRequest('get', AUTH.RESET_PASSWORD.LINK, _data);
 };
 
-export const resetPassword = (data) => {
-    return new Promise((resolve, reject) => {
-        api.post(AUTH.RESET_PASSWORD.MAIN, data)
-            .then(result => resolve(result.data))
-            .catch(error => reject(error));
-    });
+export const resetPassword = async (data) => {
+    const _data = {
+        ...data,
+        branchUrl: window.location.origin
+    };
+
+    return await makeRequest('post', AUTH.RESET_PASSWORD.MAIN, _data);
 };
 
 export const createBranch = (data, config) => {
@@ -162,14 +161,6 @@ export const getNetworkProfile = () => {
 export const createNetworkProfile = (data) => {
     return new Promise((resolve, reject) => {
         api.post(NETWORK_PROFILE.CREATE, data)
-            .then(result => resolve(result.data))
-            .catch(error => reject(error));
-    });
-};
-
-const makeRequest = (verb, url, data = null, config = {}) => {
-    return new Promise((resolve, reject) => {
-        api[verb](url, data)
             .then(result => resolve(result.data))
             .catch(error => reject(error));
     });
@@ -330,6 +321,11 @@ export const createProductType = (data, branchId, config) => {
     });
 };
 
+export const printingAccountLogs = (accountId) => {
+    const url = joinBaseUrlWithParamsId(`${PDF_GENERATOR.GET_MOVEMENTS}`, accountId);
+    return makeRequest('get', url);
+};
+
 export const createUserProfile = (data, branchId) => {
     const url = `${USER_PROFILE.CREATE}?branch_id=${branchId}`;
     return makeRequest('post', url, data);
@@ -408,10 +404,7 @@ export const addOperator = (id, userId) => {
 };
 
 export const invitationSent = (groupId) => {
-    let url = joinBaseUrlWithParams(COMMUNITY_MEMBER.INVITATIONS.SEND.INVITATIONS, [{
-        param: 'id',
-        value: groupId,
-    }]);
+    let url = joinBaseUrlWithParamsId(`${COMMUNITY_MEMBER.INVITATIONS.SEND.INVITATIONS}`, groupId);
     return makeRequest('get', url);
 };
 
@@ -446,6 +439,15 @@ export const acceptInvitation = (invitationId) => {
     return makeRequest('put', url);
 };
 
+export const acceptOperatorInvitation = (id, status) => {
+    const url = `${COMMUNITY_MEMBER.GROUP.VALIDATE_COMMUNITY}`;
+    const data = {
+        group_operator_id: id,
+        value: status
+    };
+    return makeRequest('post', url, data);
+};
+
 export const cancelInvitation = (invitationId) => {
     const url = joinBaseUrlWithParams(COMMUNITY_MEMBER.INVITATIONS.CANCEL, [{
         param: 'invitation_id',
@@ -464,14 +466,13 @@ export const deleteInvitation = (invitationId) => {
 
 /********************************  ***************************************** */
 export const sendInvitationCommunityMember = (data) => {
-    console.log(data)
     const url = joinBaseUrlWithParams(COMMUNITY_MEMBER.INVITATIONS.SEND.ONE, [
         {
             param: 'group_id',
             value: data.group_id,
         }
     ]);
-    return makeRequest('post', url, data, { shouldSkipDataParsing: true });
+    return makeRequest('post', url, data);
 };
 /********************************************************************** */
 /*****************************  ***************************************** */
@@ -531,9 +532,9 @@ export const deleteUserClient = (id) => {
     return makeRequest('get', url);
 };
 
-export const getCommunityAdmins = (id) => {
+export const getCommunityAdmins = (id, config = {}) => {
     const url = joinBaseUrlWithParamsId(COMMUNITY_MEMBER.USER.GROUPS.GET_ADMINS, id);
-    return makeRequest('get', url);
+    return makeRequest('get', url, null, config);
 };
 
 export const getAccountDetails = (id) => {
@@ -1061,6 +1062,15 @@ export const createBranchCGU = (data, config) => {
     });
 };
 
+export const updateBranchCGU = (data, config) => {
+    const url = joinBaseUrlWithParamsId(SETTING.UPDATE_CGU, data.id);
+    return new Promise((resolve, reject) => {
+        api.post(url, data, config)
+            .then(result => resolve(result.data))
+            .catch(error => reject(error));
+    });
+};
+
 export const updateUserPieceValue = (data, config) => {
     const url = `${USERS.PIECE.UPDATE_FOR_USER}`;
     return new Promise((resolve, reject) => {
@@ -1124,6 +1134,62 @@ export const getAllSections = (id) => {
     return makeRequest('get', url);
 };
 
+// export const getAllOperators = (id, groupId) => {
+//     const data = {
+//         group_id: groupId
+//     };
+//
+//     const url = joinBaseUrlWithParams(BRANCH.GET_ALL_OPERATORS, [
+//         {
+//             param: 'id',
+//             value: id,
+//         }
+//         ]);
+//     return makeRequest('get', url, data);
+// };
+
+export const getOperatorPendingCommunities = () => {
+    const url = `${COMMUNITY_MEMBER.GROUP.GET_PENDING_COMMUNITIES}`;
+    return makeRequest('get', url);
+};
+
+export const getOperatorCurrentCommunities = () => {
+    const url = `${COMMUNITY_MEMBER.GROUP.GET_CURRENT_COMMUNITIES}`;
+    return makeRequest('get', url);
+};
+
+export const choosedOperator = (id, groupId) => {
+    const url = joinBaseUrlWithParams(`${BRANCH.SELECTED_OPERATOR}`, [
+        {
+            param: 'group_id',
+            value: groupId,
+        },
+        {
+            param: 'organisation_id',
+            value: id,
+        },
+
+    ]);
+    return makeRequest('post', url);
+};
+
+export const removeChosenOperator = (groupId) => {
+    const data = {
+        group_id: groupId
+    };
+    const url = `${BRANCH.REMOVE_OPERATOR}`;
+    return makeRequest('put', url, data);
+};
+
+export const cancelChosenOperator = (operatorId, groupId) => {
+    const data = {
+        operator_id: operatorId,
+        group_id: groupId
+    };
+    const url = `${BRANCH.CANCEL_OPERATOR}`;
+    return makeRequest('put', url, data);
+};
+
 export const getGroupPosts = (id) => {
     const url = joinBaseUrlWithParamsId(COMMUNITY_MEMBER.GROUP.GET_POSTS, id);
     return makeRequest('get', url);
@@ -1140,7 +1206,7 @@ export const getMotivations = (post_id) => {
             param: 'post_id',
             value: post_id,
         }
-    ])
+    ]);
     return makeRequest('get', url);
 };
 
@@ -1182,7 +1248,77 @@ export const getOrderPieces = (id) => {
     return makeRequest('get', url);
 };
 
-export const approveOrder = (id) => {
+export const approveOrder = (id, action) => {
+    const  data = {
+        action : action,
+    };
     const url = joinBaseUrlWithParamsId(`${ORDER.APPROVE_ORDER}`, id);
+    return makeRequest('put', url, data);
+};
+
+export const suspendAccount = (reference) => {
+    const url = joinBaseUrlWithParamsId(`${USERS.SUSPEND}`, reference);
     return makeRequest('put', url, null);
+};
+
+export const deleteAccount = (reference) => {
+    const url = joinBaseUrlWithParamsId(`${USERS.DELETE}`, reference);
+    return makeRequest('put', url, null);
+};
+
+export const getPrevisionGoals = () => {
+    return makeRequest('get', PREVISIONS.GOALS.GET_ALL);
+};
+
+export const createGoal = (data) => {
+    return makeRequest('post', PREVISIONS.GOALS.CREATE, data);
+};
+
+export const createPrevision = (data) => {
+    return makeRequest('post', PREVISIONS.PREVISIONS.CREATE, data);
+};
+
+export const getUserPrevisions = () => {
+    return makeRequest('get', PREVISIONS.PREVISIONS.GET_ALL);
+};
+
+export const getPrevisionPeriodes = (id) => {
+    const url = joinBaseUrlWithParamsId(`${PREVISIONS.PERIODES.GET_ALL}`, id);
+    return makeRequest('get', url);
+};
+
+export const getOnePrevision = (id) => {
+    const url = joinBaseUrlWithParamsId(`${PREVISIONS.PREVISIONS.GET_ONE}`, id);
+    return makeRequest('get', url);
+};
+
+export const createPeriode = (id, data) => {
+    const url = joinBaseUrlWithParamsId(`${PREVISIONS.PERIODES.CREATE}`, id);
+    return makeRequest('post', url, data);
+};
+
+export const activePrevision = (id) => {
+    const url = joinBaseUrlWithParamsId(`${PREVISIONS.PREVISIONS.ACTIVE}`, id);
+    return makeRequest('put', url, {});
+};
+
+export const getOnePeriode = (id) => {
+    const url = joinBaseUrlWithParamsId(`${PREVISIONS.PERIODES.DETAILS}`, id);
+    return makeRequest('get', url);
+};
+
+export const generateCode = () => {
+    return makeRequest('get', PREVISIONS.PREVISIONS.GET_CODE);
+};
+
+export const activePass = (start, end) => {
+    return makeRequest('post', PREVISIONS.PREVISIONS.ACTIVE_PASS, {start, end});
+};
+
+export const getActivePass = () => {
+    return makeRequest('get', PREVISIONS.PREVISIONS.ACTIVE_PASS);
+};
+
+export const getPrevisionDetails = () => {
+    return makeRequest('get', PREVISIONS.PREVISIONS.DETAILS);
 };

@@ -112,7 +112,7 @@ const CategoryProductsCreate = props => {
 
         const _data = { ...data };
 
-        if (_data.price_currency == null || _data.price_currency+"".length <= 1) {
+        if (_data.price_currency == null || _data.price_currency + "".length <= 1) {
             NotificationManager.error("Selectionner une devise");
             return;
         }
@@ -148,7 +148,7 @@ const CategoryProductsCreate = props => {
             _data.is_negative_balance = false;
             _data.is_aggregation = false;
         }
-        
+
 
         _data.organisationId = authUser.id;
 
@@ -158,6 +158,9 @@ const CategoryProductsCreate = props => {
 
         if (isAggregationWatch)
             _data.aggragated_products = JSON.stringify(accountsAdd.map(p => p.id));
+
+        if (!isAvailableWatch)
+            delete _data.productAvailability;
 
         createProductType(_data, authUser.user.branch.id, { fileData: ['image'], multipart: true })
             .then(() => {
@@ -202,7 +205,6 @@ const CategoryProductsCreate = props => {
                 })
             })
             .catch(() => {
-                NotificationManager.error(ERROR_500);
                 setRootProductType({
                     loading: false,
                     data: null
@@ -286,7 +288,7 @@ const CategoryProductsCreate = props => {
                                             defaultValue={data[0] ? data[0].id : undefined}
                                             as={<Select input={<Input name="nature" id="nature-helper" />}>
                                                 {data.map((item, index) => (
-                                                    <MenuItem key={index} value={item.id} className="center-hor-ver">
+                                                    <MenuItem key={index} value={item.id} className="">
                                                         {item.label}
                                                     </MenuItem>
                                                 ))}
@@ -422,7 +424,7 @@ const CategoryProductsCreate = props => {
                                                 defaultValue={data[0]}
                                                 as={<Select input={<Input name="price_currency" id="currency-helper" />}>
                                                     {data.map((item, index) => (
-                                                        <MenuItem key={index} value={item.code} className="center-hor-ver">
+                                                        <MenuItem key={index} value={item.code} className="">
                                                             {item.name}
                                                         </MenuItem>
                                                     ))}
@@ -471,7 +473,7 @@ const CategoryProductsCreate = props => {
                                             </InputLabel>
                                             <Select onChange={e => setType(e.target.value)} disabled={!isAccountWatch}>
                                                 {[{ name: 'Devise', id: 0 }, ...types].map(item => (
-                                                    <MenuItem key={item.id} value={item} className="center-hor-ver">
+                                                    <MenuItem key={item.id} value={item} className="">
                                                         {item.name}
                                                     </MenuItem>
                                                 ))}
@@ -503,7 +505,7 @@ const CategoryProductsCreate = props => {
                                                 defaultValue={data[0]}
                                                 as={<Select input={<Input name="unit_id" id="currency-helper" />}>
                                                     {data.map((item, index) => (
-                                                        <MenuItem key={index} value={item.id} onClick={() => fetAccountsByUnit(item.value != null && item.decimal != null ? null : item.id)} className="center-hor-ver">
+                                                        <MenuItem key={index} value={item.id} onClick={() => fetAccountsByUnit(item.value != null && item.decimal != null ? null : item.id)} className="">
                                                             {item.name}
                                                         </MenuItem>
                                                     ))}
@@ -777,7 +779,7 @@ const CategoryProductsCreate = props => {
                                         defaultValue={data[0]}
                                         as={<Select input={<Input name="nature" id="nature-helper" />}>
                                             {data.map((item, index) => (
-                                                <MenuItem key={index} value={item} className="center-hor-ver">
+                                                <MenuItem key={index} value={item} className="">
                                                     {item}
                                                 </MenuItem>
                                             ))}
@@ -860,71 +862,74 @@ const CategoryProductsCreate = props => {
                             </FormControl>
                         </div>
                     </div>
-
-                    <CustomAsyncComponent
-                        loading={categoryProducts.loading}
-                        data={categoryProducts.data}
-                        onRetryClick={fetchCategoryProducts}
-                        component={data => (
-                            <div className="form-group text-left">
-                                <FormControl fullWidth>
-                                    <InputLabel className="text-left" htmlFor="categoryProductId-helper">
-                                        Categorie produit
+                    
+                    <div className="row mt-10">
+                        <div className="col-md-6 col-sm-12">
+                            <CustomAsyncComponent
+                                loading={categoryProducts.loading}
+                                data={categoryProducts.data}
+                                onRetryClick={fetchCategoryProducts}
+                                component={data => (
+                                    <div className="form-group text-left">
+                                        <FormControl fullWidth>
+                                            <InputLabel className="text-left" htmlFor="categoryProductId-helper">
+                                                Categorie produit
                                             </InputLabel>
-                                    <InputComponent
-                                        isRequired
-                                        className="mt-0"
-                                        errors={errors}
-                                        control={control}
-                                        register={register}
-                                        componentType="select"
-                                        name={'categoryProductId'}
-                                        defaultValue={data[0] ? data[0].id : undefined}
-                                        as={<Select input={<Input name="categoryProductId" id="categoryProductId-helper" />}>
-                                            {data.map((item, index) => (
-                                                <MenuItem key={index} value={item.id} className="center-hor-ver">
-                                                    {item.label}
-                                                </MenuItem>
-                                            ))}
-                                        </Select>}
-                                    />
-                                </FormControl>
-                            </div>
-                        )}
-                    />
-
-                    <CustomAsyncComponent
-                        loading={catalogTypes.loading}
-                        data={catalogTypes.data}
-                        onRetryClick={fetchCatalogTypes}
-                        component={data => (
-                            <div className="form-group text-left">
-                                <FormControl fullWidth>
-                                    <InputLabel className="text-left" htmlFor="catalogId-helper">
-                                        Catalog produit
+                                            <InputComponent
+                                                isRequired
+                                                className="mt-0"
+                                                errors={errors}
+                                                control={control}
+                                                register={register}
+                                                componentType="select"
+                                                name={'categoryProductId'}
+                                                defaultValue={data[0] ? data[0].id : undefined}
+                                                as={<Select input={<Input name="categoryProductId" id="categoryProductId-helper" />}>
+                                                    {data.map((item, index) => (
+                                                        <MenuItem key={index} value={item.id} className="">
+                                                            {item.label}
+                                                        </MenuItem>
+                                                    ))}
+                                                </Select>}
+                                            />
+                                        </FormControl>
+                                    </div>
+                                )}
+                            /></div>
+                        <div className="col-md-6 col-sm-12">
+                            <CustomAsyncComponent
+                                loading={catalogTypes.loading}
+                                data={catalogTypes.data}
+                                onRetryClick={fetchCatalogTypes}
+                                component={data => (
+                                    <div className="form-group text-left">
+                                        <FormControl fullWidth>
+                                            <InputLabel className="text-left" htmlFor="catalogId-helper">
+                                                Catalogue produit
                                             </InputLabel>
-                                    <InputComponent
-                                        isRequired
-                                        className="mt-0"
-                                        errors={errors}
-                                        control={control}
-                                        register={register}
-                                        componentType="select"
-                                        name={'catalogId'}
-                                        defaultValue={data[0] ? data[0].id : undefined}
-                                        as={<Select input={<Input name="catalogId" id="catalogId-helper" />}>
-                                            {data.map((item, index) => (
-                                                <MenuItem key={index} value={item.id} className="center-hor-ver">
-                                                    {item.label}
-                                                </MenuItem>
-                                            ))}
-                                        </Select>}
-                                    />
-                                </FormControl>
-                            </div>
-                        )}
-                    />
-
+                                            <InputComponent
+                                                isRequired
+                                                className="mt-0"
+                                                errors={errors}
+                                                control={control}
+                                                register={register}
+                                                componentType="select"
+                                                name={'catalogId'}
+                                                defaultValue={data[0] ? data[0].id : undefined}
+                                                as={<Select input={<Input name="catalogId" id="catalogId-helper" />}>
+                                                    {data.map((item, index) => (
+                                                        <MenuItem key={index} value={item.id} className="">
+                                                            {item.label}
+                                                        </MenuItem>
+                                                    ))}
+                                                </Select>}
+                                            />
+                                        </FormControl>
+                                    </div>
+                                )}
+                            />
+                        </div>
+                    </div>
                     <FormGroup className="mb-15">
                         <Button
                             // type="submit"
@@ -1059,7 +1064,7 @@ const AddProduct = ({ show, products, onSave, onClose }) => {
                                                 defaultValue={data.id ? data.id : undefined}
                                                 as={<Select input={<Input name="representativePosition" id="representativePosition" />}>
                                                     {data.map((item, index) => (
-                                                        <MenuItem key={item.id} value={item.id} className="center-hor-ver">
+                                                        <MenuItem key={item.id} value={item.id} className="">
                                                             {item.label}
                                                         </MenuItem>
                                                     ))}

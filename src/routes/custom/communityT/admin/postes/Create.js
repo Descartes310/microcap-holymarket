@@ -1,35 +1,26 @@
 import PropTypes from "prop-types";
-import AddWork from "./CreateItem";
 import {connect} from "react-redux";
 import {injectIntl} from "react-intl";
 import React, {Component} from 'react';
-import {COMMUNITY_ADMIN} from "Url/frontendUrl";
-import {ERROR_500} from "Constants/errors";
 import {withRouter} from "react-router-dom";
 import IntlMessages from "Util/IntlMessages";
-import CustomList from "Components/CustomList";
 import {NotificationManager} from "react-notifications";
-import InputLabel from "@material-ui/core/InputLabel/InputLabel";
-import DeleteConfirmBox from "Components/dialog/DeleteConfirmBox";
-import {getProjectStandardPresentation} from "Actions/GeneralActions";
-import {Button, Form, FormGroup, Input as InputStrap} from 'reactstrap';
+import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import {setRequestGlobalAction, createGroupPost} from "Actions";
+import InputLabel from "@material-ui/core/InputLabel/InputLabel";
+import {COMMUNITY_ADMIN, joinUrlWithParamsId} from "Url/frontendUrl";
+import {Button, Form, FormGroup, Input as InputStrap} from 'reactstrap';
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
-import CustomAsyncComponent from "Components/CustomAsyncComponent";
-import Select from "@material-ui/core/Select/Select";
-import Input from "@material-ui/core/Input/Input";
-import MenuItem from "@material-ui/core/MenuItem/MenuItem";
 
 class Create extends Component {
     constructor(props) {
         super(props);
+        this.communitySpaceId = this.props.match.params.id;
+
         this.state = {
             label: '',
             description: '',
         }
-    }
-
-    componentDidMount() {
     }
 
     handleOnFormChange = (field, value) => {
@@ -41,11 +32,6 @@ class Create extends Component {
             NotificationManager.error("Vous devez inserer un titre");
             return false;
         }
-
-        /* if (this.state.description.length === 0) {
-            NotificationManager.error("Veuillez selectionner une description");
-            return false;
-        } */
 
         return true;
     };
@@ -62,11 +48,9 @@ class Create extends Component {
             createGroupPost(data)
                 .then(() => {
                     NotificationManager.success("Categorie créé avec succès");
-                    this.props.history.push(COMMUNITY_ADMIN.POST.LIST);
+                    this.props.history.push(joinUrlWithParamsId(COMMUNITY_ADMIN.POST.LIST, this.communitySpaceId));
                 })
-                .catch(() => {
-                    NotificationManager.error(ERROR_500);
-                })
+                .catch(() => null)
                 .finally(() => this.props.setRequestGlobalAction(false));
         }
     };
@@ -80,11 +64,9 @@ class Create extends Component {
 
         return (
             <div className="my-3">
-                <div className="my-3 pl-3 page-title m-0">
-                    <h3 className="font-lg d-inline-flex">
-                        Création d'une catégorie de membre
-                    </h3>
-                </div>
+                <PageTitleBar
+                    title="Création d'une catégorie de membre"
+                />
                 <div className="row">
                     <div className="col-md-12 col-sm-12 pr-md-40">
                         <RctCollapsibleCard>

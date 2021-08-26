@@ -24,19 +24,21 @@ export default class MoneyManagement extends Component {
         <div className="terms-conditions-rules">
           <RctCollapsibleCard customClasses="p-30">
             <p>
-                Le réseau MicroCap est constitué de personnes membres d’une organisation signataire d’une convention de délégation de mission ou de représentation avec MicroCap ou un partenaire de MicroCap. Cela peut être spécifiquement désignées comme telles parmi :
-                <ul style={{ paddingTop: 40, paddingBottom: 10 }}>
-                <li>les membres ou les usagers d’une association, </li>
-                <li>les employés, les clients, les fournisseurs d’une entreprise, …</li>
-              </ul>
+              Le réseau MicroCap est constitué de personnes membres d’une organisation signataire d’une convention
+              de délégation de mission ou de représentation avec MicroCap ou un partenaire de MicroCap. Cela peut être
+              spécifiquement désigné ainsi parmi les membres ou sympathisants d’une association, les parties prenantes
+              d’une entreprise (employés, fournisseurs, clients, etc.) <br />
 
               <p>
-                A jour, MicroCap compte deux types de conventionnement :
+                A jour, MicroCap compte deux types de convention :
               </p>
 
               <ul style={{ paddingTop: 10, paddingBottom: 10 }}>
-                <li>Les opérateurs MicroCap : ce sont des établissements assurant sur un territoire précis, une supervision administrative ou règlementaire d’un ou plusieurs services MicroCap. L’indisponibilités de certains services dans un pays peut être justifiée par l’absence de ce type de conventionnement.</li>
-                <li>Les communautés conventionnées ou communautés MicroCap sont des organisations autorisées à accueillir du public au nom de MicroCap</li>
+                <li>Les opérateurs MicroCap : ce sont des établissements assurant sur un territoire précis, une supervision 
+                  administrative ou règlementaire d’un ou plusieurs services MicroCap. L’indisponibilités de certains services 
+                  dans un pays peut être justifiée par l’absence de ce type de conventionnement.</li>
+                <li>Les communautés conventionnées ou communautés MicroCap sont des organisations autorisées à accueillir du 
+                  public au nom de MicroCap</li>
               </ul>
 
               <Link to={AUTH.REGISTER}>

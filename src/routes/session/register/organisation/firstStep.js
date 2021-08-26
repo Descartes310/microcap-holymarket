@@ -1,25 +1,24 @@
-import React, {useEffect, useState} from 'react';
-import PropTypes from 'prop-types';
-import {Form, FormGroup} from "reactstrap";
-import InputComponent from "Components/InputComponent";
-import Button from "@material-ui/core/Button";
-import {useForm} from "react-hook-form";
-import IntlMessages from "Util/IntlMessages";
-import Select from "@material-ui/core/Select/Select";
-import MenuItem from "@material-ui/core/MenuItem";
-import {injectIntl} from 'react-intl';
 import _ from 'lodash';
-import FormControl from "@material-ui/core/FormControl";
-import CustomAsyncComponent from "Components/CustomAsyncComponent";
-import {getOrganisationTypes} from "Actions/independentActions";
-import {NotificationManager} from "react-notifications";
-import InputLabel from "@material-ui/core/InputLabel/InputLabel";
+import {injectIntl} from 'react-intl';
+import {useForm} from "react-hook-form";
+import {Form, FormGroup} from "reactstrap";
+import IntlMessages from "Util/IntlMessages";
+import Button from "@material-ui/core/Button";
+import React, {useEffect, useState} from 'react';
 import Input from "@material-ui/core/Input/Input";
+import MenuItem from "@material-ui/core/MenuItem";
+import Select from "@material-ui/core/Select/Select";
+import InputComponent from "Components/InputComponent";
+import {NotificationManager} from "react-notifications";
+import FormControl from "@material-ui/core/FormControl";
+import {getOrganisationTypes} from "Actions/independentActions";
+import InputLabel from "@material-ui/core/InputLabel/InputLabel";
+import CustomAsyncComponent from "Components/CustomAsyncComponent";
 
 const FirstStep = props => {
-    const { loading, nextStep, setData, intl, defaultState } = props;
+    const { loading, nextStep, setData, defaultState } = props;
 
-    const { register, errors, handleSubmit, watch, control} = useForm({
+    const { register, errors, handleSubmit, control} = useForm({
         defaultValues: !_.isEqual(defaultState, {}) ? defaultState : {}
     });
 
@@ -70,7 +69,6 @@ const FirstStep = props => {
                     register={register}
                     name={'socialReason'}
                     className="has-input input-lg"
-                    // placeholder={intl.formatMessage({id: "common.socialReason"})}
                 />
                 <span className="has-icon"><i className="ti-pencil"></i></span>
             </FormGroup>
@@ -84,7 +82,6 @@ const FirstStep = props => {
                     register={register}
                     name={'commercialName'}
                     className="has-input input-lg"
-                    // placeholder={intl.formatMessage({id: "common.commercialName"})}
                 />
                 <span className="has-icon"><i className="ti-user"></i></span>
             </FormGroup>
@@ -123,7 +120,6 @@ const FirstStep = props => {
 
             <FormGroup className="mb-15">
                 <Button
-                    // type="submit"
                     color="primary"
                     disabled={loading}
                     variant="contained"

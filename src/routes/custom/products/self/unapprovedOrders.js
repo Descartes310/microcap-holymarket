@@ -38,16 +38,14 @@ class Order extends Component {
     }
 
     loadData = () => {
-        setRequestGlobalAction(true);
+        this.setState({ loading: true });
         getUnapprovedOrders()
             .then(products => {
                 this.setState({ products: products });
             })
-            .catch((error) => {
-                NotificationManager.error(ERROR_500);
-            })
+            .catch(() => null)
             .finally(() => {
-                setRequestGlobalAction(false)
+                this.setState({ loading: false });
             });
     };
     render() {
@@ -56,7 +54,7 @@ class Order extends Component {
         return (
             <>
                 <CustomList
-                    loading={false}
+                    loading={loading}
                     list={products}
                     titleList={"Commandes en attentes"}
                     itemsFoundText={n => `${n} commandes trouvées`}

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+    import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { AUTH } from "../urls/frontendUrl";
 import { withRouter } from "react-router-dom";

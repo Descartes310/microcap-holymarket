@@ -43,10 +43,11 @@ class Unread extends Component {
 
     componentDidMount() {
         this.props.getAllNotifications(this.props.authUser.user.id, 'UNREAD');
-        getAllSettingsByName(this.props.authUser.user.branch.id, 'CGU').then(data => {
-            console.log(data)
-            this.setState({ data })
-        })
+        getAllSettingsByName(this.props.authUser.user.branch.id, 'CGU')
+            .then(data => {
+                this.setState({ data: data.map(d => ({...d, value: getFilePath(d.value)}))})
+            })
+            .catch(() => null);
     }
 
     onActivationClick = (notification) => {

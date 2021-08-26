@@ -1,7 +1,7 @@
 /**
  * Dasboard Routes
  */
-import React from 'react';
+import React, {useEffect} from 'react';
 import RctAppLayout from 'Components/RctAppLayout';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
@@ -28,27 +28,29 @@ import {
     AsyncDiscover,
     AsyncSolidarity,
     AsyncMoneyManagement,
-    AsyncGallery
+    AsyncGallery,
+    AsyncCommunitySpace
 } from 'Components/AsyncComponent/AsyncComponent';
 import Community from "Routes/custom/community";
-
-import CommunityMembersActivities from "Routes/custom/communityT/activities";
-import CommunityMembers from "Routes/custom/communityT/members";
-import CommunityAdmins from "Routes/custom/communityT/admin";
-// import CommunityProject from "Routes/custom/communityT/projects";
-import CommunityMembersPostsProjects from "Routes/custom/communityT/postsProjects";
-import ClientPieceList from "Routes/custom/settings/client_folder/List";
-import AgentList from "Routes/custom/settings/agents/List";
-import PionierList from "Routes/custom/settings/pioniers/List";
-import ConfigurationsList from "Routes/custom/settings/configurations/List";
-import UnitList from "Routes/custom/settings/units";
-import Posts from "Routes/custom/settings/posts";
-import Ressource from "Routes/custom/ressources";
-import PersonalSpace from "Routes/custom/users/users/personnal-space";
-import SingleProfile from 'Routes/custom/users/user-profile/Profile';
-import UserProfile from 'Routes/custom/users/user-profile';
 import Stock from 'Routes/custom/stocks';
+import Posts from "Routes/custom/settings/posts";
+import Previsions from "Routes/custom/previsions";
+import Ressource from "Routes/custom/ressources";
+import UnitList from "Routes/custom/settings/units";
 import AllUsers from 'Routes/custom/users/all-users/List';
+import MyMicrocap from 'Routes/custom/microcap';
+import UserProfile from 'Routes/custom/users/user-profile';
+import AgentList from "Routes/custom/settings/agents/List";
+import PrevisionsAdmin from "Routes/custom/previsions_admin";
+import CommunityAdmins from "Routes/custom/communityT/admin";
+import PionierList from "Routes/custom/settings/pioniers/List";
+import CommunityMembers from "Routes/custom/communityT/members";
+import SingleProfile from 'Routes/custom/users/user-profile/Profile';
+import PersonalSpace from "Routes/custom/users/users/personnal-space";
+import ClientPieceList from "Routes/custom/settings/client_folder/List";
+import ConfigurationsList from "Routes/custom/settings/configurations/List";
+import CommunityMembersActivities from "Routes/custom/communityT/activities";
+import CommunityMembersPostsProjects from "Routes/custom/communityT/postsProjects";
 import UpdateInitializationOption from 'Routes/custom/projects/configuration/intialisation-options/Update';
 
 import { useAbility } from "@casl/react";
@@ -60,8 +62,10 @@ import {
     MISSION, VALUES,
     MONEY_MANAGEMENT,
     PIONIERS,
+    PREVISIONS_ADMIN,
     GALERY_PROJECT,
     HOME,
+    CGU,
     SERVICES,
     NETWORK,
     CATEGORY,
@@ -70,11 +74,13 @@ import {
     COMMUNITY,
     COMMUNITY_ADMIN,
     COMMUNITY_MEMBER,
+    PREVISIONS,
     GETIN,
     STOCK,
     TERMS,
     PACKAGES,
     RESSOURCE,
+    MICROCAP360,
     AGENTS,
     COMMERCIAL_MANAGEMENT, PRODUCT, STORE, ROOT, ACCESS, SETTINGS, NOTIFICATIONS, PROJECTS
 } from "Url/frontendUrl";
@@ -86,14 +92,19 @@ import Permission from "Enums/Permissions";
 import HomePage from "Routes/custom/HomePage";
 import CanRoute from "Components/CanRoute";
 import Terms from "./Terms";
-import Mission from "./Mission";
+import Mission from "./discover/pages/Mission";
 import Values from "./Values";
-import OfferDetails from './OfferDetails';
-import Agents from './Agents';
-import Services from './Service';
+import OfferDetails from './discover/pages/OfferDetails';
+import Agents from './discover/pages/Agents';
+import Services from './discover/pages/Service';
+import {onInitCart} from "Actions/CartActions";
 
-const Dashboard = ({ match, authUser }) => {
+const Dashboard = ({ onInitCart }) => {
     const ability = useAbility(AbilityContext);
+
+    useEffect(()=>{
+        onInitCart();
+    }, []);
 
     return (
         <RctAppLayout>
@@ -159,6 +170,12 @@ const Dashboard = ({ match, authUser }) => {
                     />
 
                     <CanRoute
+                        path={MICROCAP360.MY.SELF}
+                        component={MyMicrocap}
+                        permissions={[]}
+                    />
+
+                    <CanRoute
                         path={SETTINGS.USERPIECE.SELF}
                         component={ClientPieceList}
                         permissions={[]}
@@ -167,6 +184,18 @@ const Dashboard = ({ match, authUser }) => {
                     <CanRoute
                         path={SETTINGS.AGENTS.SELF}
                         component={AgentList}
+                        permissions={[]}
+                    />
+
+                    <CanRoute
+                        path={PREVISIONS_ADMIN.SELF}
+                        component={PrevisionsAdmin}
+                        permissions={[]}
+                    />
+
+                    <CanRoute
+                        path={PREVISIONS.SELF}
+                        component={Previsions}
                         permissions={[]}
                     />
 
@@ -312,29 +341,10 @@ const Dashboard = ({ match, authUser }) => {
                     />
 
                     <CanRoute
-                        path={COMMUNITY.POST_PROJECT.SELF}
-                        component={CommunityMembersPostsProjects}
+                        path={COMMUNITY.SELF}
+                        component={AsyncCommunitySpace}
                         permissions={[]}
                     />
-
-                    <CanRoute
-                        path={COMMUNITY.PROJECTS.SELF}
-                        component={AsyncCommunityProject}
-                        permissions={[]}
-                    />
-
-                    <CanRoute
-                        path={COMMUNITY.MEMBERS.SELF}
-                        component={CommunityMembers}
-                        permissions={[]}
-                    />
-
-                    <CanRoute
-                        path={COMMUNITY_ADMIN.SELF}
-                        component={CommunityAdmins}
-                        permissions={[]}
-                    />
-
 
                     <CanRoute
                         path={USERS.USERS.PERSONNAL_SPACE}
@@ -343,15 +353,8 @@ const Dashboard = ({ match, authUser }) => {
                     />
 
                     <CanRoute
-                        path={COMMUNITY.ACTIVITY.SELF}
-                        component={CommunityMembersActivities}
-                        permissions={[]}
-                    />
-
-                    <CanRoute
                         path={ACCESS.SELF}
                         component={AsyncAccess}
-                        // component={AsyncCommunity}
                         permissions={[]}
                     />
 
@@ -378,4 +381,4 @@ const mapStateToProps = ({ authUser, tokens, appLoading }) => {
     return { tokens, authUser: authUser.data, appLoading };
 };
 
-export default connect(mapStateToProps, { disableAppLoading, loginIntoStore })(Dashboard);
+export default connect(mapStateToProps, { disableAppLoading, onInitCart, loginIntoStore })(Dashboard);

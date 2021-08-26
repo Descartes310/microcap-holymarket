@@ -1,13 +1,8 @@
-/**
- * Email List Item
- */
 import React from 'react';
 import {Button} from "reactstrap";
-
-// helpers functions
+import { getFilePath } from "Helpers/helpers";
 import { textTruncate } from 'Helpers/helpers';
 import UserAvatar from "Components/UserAvatar";
-import { getFilePath } from "Helpers/helpers";
 
 const ListItem = ({ user, onReadEmail, getUserDetails }) => {
     return (
@@ -28,7 +23,7 @@ const ListItem = ({ user, onReadEmail, getUserDetails }) => {
                     </div>
                 </div>
             </div>
-            <div className="font-xs text-muted w-10" style={{ marginRight: '50px' }}>
+            <div className="font-xs text-muted" style={{ marginRight: '50px' }}>
                 <Button
                     color="primary"
                     className="text-white mr-2"

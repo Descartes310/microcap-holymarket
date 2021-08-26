@@ -1,56 +1,38 @@
-import React, {useEffect, useState} from 'react';
-import PropTypes from 'prop-types';
-import {Alert, Form, FormGroup} from "reactstrap";
-import FormControl from '@material-ui/core/FormControl';
-import InputComponent from "Components/InputComponent";
-import {emailValidatorObject, minMaxValidatorObject, passwordValidatorObject} from "Helpers/validator";
-import ErrorInputComponent from "Components/ErrorInputComponent";
-import AppConfig from "Constants/AppConfig";
-import Button from "@material-ui/core/Button";
-import {useForm} from "react-hook-form";
-import IntlMessages from "Util/IntlMessages";
-import Select from "@material-ui/core/Select/Select";
-import MenuItem from "@material-ui/core/MenuItem";
-import {injectIntl} from 'react-intl';
-import CountryManager from 'Helpers/CountryManager';
-import FlagCountry from "Components/FlagCountry";
-import {getResidenceCountries, getOperators} from "Actions";
-import InputLabel from "@material-ui/core/InputLabel/InputLabel";
-import Input from "@material-ui/core/Input/Input";
-import CustomAsyncComponent from "Components/CustomAsyncComponent";
-import { NotificationManager } from 'react-notifications';
-import FormHelperText from "@material-ui/core/FormHelperText";
-import * as moment from "moment";
 import _ from 'lodash';
+import * as moment from "moment";
+import Select from "react-select";
+import {injectIntl} from 'react-intl';
+import {useForm} from "react-hook-form";
+import {Form, FormGroup} from "reactstrap";
+import AppConfig from "Constants/AppConfig";
+import IntlMessages from "Util/IntlMessages";
+import Button from "@material-ui/core/Button";
+import React, {useEffect, useState} from 'react';
+import FlagCountry from "Components/FlagCountry";
+import Input from "@material-ui/core/Input/Input";
+import MenuItem from "@material-ui/core/MenuItem";
+import CountryManager from 'Helpers/CountryManager';
+import InputComponent from "Components/InputComponent";
+import FormControl from '@material-ui/core/FormControl';
+import { NotificationManager } from 'react-notifications';
+import {Select as MaterialSelect} from "@material-ui/core";
+import ErrorInputComponent from "Components/ErrorInputComponent";
+import InputLabel from "@material-ui/core/InputLabel/InputLabel";
 import {getIdentificationType} from "Actions/independentActions";
-import CircularProgress from "@material-ui/core/CircularProgress";
-
-const countryWithNameAndFlag = CountryManager.countryWithNameAndFlag();
-const countryWithNumberAndFlag = CountryManager.countryWithNumberAndFlag();
+import CustomAsyncComponent from "Components/CustomAsyncComponent";
 
 const SecondStep = props => {
     const { loading, nextStep, previousStep, setData, defaultState, intl } = props;
-    const { register, errors, handleSubmit, watch, control, getValues} = useForm({
+    const { register, errors, handleSubmit, watch, control, getValues } = useForm({
         defaultValues: !_.isEqual(defaultState, {}) ? defaultState : {}
     });
 
-    const formStateWatch = watch();
+    // const formStateWatch = watch();
 
-    const [oldFormState, setOldFormState] = useState({});
     const [errorMessages, setErrorMessages] = useState({
         startingDate: '',
         endingDate: '',
         birthDate: '',
-    });
-
-    const [residenceCountries, setResidenceCountries] = useState({
-        loading: true,
-        data: null
-    });
-
-    const [operator, setOperator] = useState({
-        loading: true,
-        data: null
     });
 
     const [identificationType, setIdentificationType] = useState({
@@ -59,37 +41,8 @@ const SecondStep = props => {
     });
 
     useEffect(() => {
-        _getResidenceCountry().then(() => _getIdentificationType());
-        // _getIdentificationType();
+        _getIdentificationType();
     }, []);
-
-    const _getResidenceCountry = () => {
-        return new Promise((resolve, reject) => {
-            setResidenceCountries({loading: true, data: null});
-            getResidenceCountries()
-                .then(result => {
-                    setResidenceCountries({loading: false, data: result});
-                    resolve();
-                })
-                .catch(error => {
-                    setResidenceCountries({loading: false, data: null});
-                    NotificationManager.error("An error occur " + error);
-                    reject();
-                });
-        });
-    };
-
-    const _getOperator = (residenceCountry) => {
-        setOperator({loading: true, data: null});
-        getOperators(residenceCountry)
-            .then(result => {
-                setOperator({loading: false, data: result});
-            })
-            .catch(error => {
-                setOperator({loading: false, data: null});
-                NotificationManager.error("An error occur " + error);
-            });
-    };
 
     const _getIdentificationType = () => {
         return new Promise((resolve, reject) => {
@@ -111,10 +64,7 @@ const SecondStep = props => {
      * On submit
      */
     const onSubmit = (data) => {
-        // Send data
         setData(data, true);
-        // Redirect to the next step
-        // nextStep();
     };
 
     const onPreviousClicked = (event) => {
@@ -129,7 +79,6 @@ const SecondStep = props => {
         const now = moment();
 
         if (!startingDate.isValid()) {
-            // setErrorMessages({...errorMessages, startingDate: "Start date should be a valid one"});
             setErrorMessages({
                 ...errorMessages,
                 startingDate: {
@@ -143,7 +92,6 @@ const SecondStep = props => {
         }
 
         if (now.diff(startingDate) < 0) {
-            // setErrorMessages({...errorMessages, startingDate: "Start date must not be upper than today date"});
             setErrorMessages({
                 ...errorMessages,
                 startingDate: {
@@ -169,7 +117,6 @@ const SecondStep = props => {
         }
 
         if (_endingDate.diff(_startingDate) < 0) {
-            // setErrorMessages({...errorMessages, endingDate: "Start date must not be upper than ending date"});
             setErrorMessages({
                 ...errorMessages,
                 endingDate: {
@@ -191,7 +138,6 @@ const SecondStep = props => {
         const now = moment();
 
         if (!birthDate.isValid()) {
-            // setErrorMessages({...errorMessages, birthDate: "Birth date should be a valid one"});
             setErrorMessages({
                 ...errorMessages,
                 birthDate: {
@@ -205,7 +151,6 @@ const SecondStep = props => {
         }
 
         if (now.diff(birthDate, 'years') <= AppConfig.minYearOld) {
-            // setErrorMessages({...errorMessages, birthDate: `You must be more than ${AppConfig.minYearOld} old to register`});
             setErrorMessages({
                 ...errorMessages,
                 birthDate: {
@@ -219,7 +164,6 @@ const SecondStep = props => {
         }
 
         if (now.diff(birthDate) < 0) {
-            // setErrorMessages({...errorMessages, birthDate: "Birth date must not be upper than today date"});
             setErrorMessages({
                 ...errorMessages,
                 birthDate: {
@@ -236,126 +180,105 @@ const SecondStep = props => {
         return true;
     };
 
-    if (!_.isEqual(formStateWatch, oldFormState)) {
-        // console.log("formStateWatch => ", formStateWatch);
-        // console.log("oldFormState => ", oldFormState);
-        // console.log("formStateWatch.residentCountry !== oldFormState.residentCountry => ", formStateWatch.residenceCountry !== oldFormState.residenceCountry);
-        if (formStateWatch.residenceCountry !== oldFormState.residenceCountry) {
-            _getOperator(formStateWatch.residenceCountry);
-        }
-        setOldFormState(formStateWatch);
-    }
-
     return (
         <Form onSubmit={handleSubmit(onSubmit)} className={"center-holder"}>
             <div className="form-group text-left">
                 <FormControl fullWidth>
-                    <InputLabel className="text-left pl-2" htmlFor="nationality-helper"><IntlMessages id="common.nationality"/></InputLabel>
+                    <InputLabel className="text-left pl-2" htmlFor="nationality">
+                        <IntlMessages id="common.nationality"/>
+                    </InputLabel>
                     <InputComponent
-                        isRequired
-                        className="mt-0"
                         errors={errors}
+                        id="nationality"
                         control={control}
+                        isRequired={false}
                         register={register}
-                        componentType="select"
                         name={'nationality'}
-                        defaultValue={countryWithNameAndFlag[0].id}
-                        as={<Select input={<Input name="nationality" id="nationality-helper" />}>
-                            {countryWithNameAndFlag.map(item => (
-                                <MenuItem key={item.id} value={item.id} className="center-hor-ver">
-                                    <FlagCountry flag={item.flag} label={item.name} />
-                                </MenuItem>
-                            ))}
-                        </Select>}
+                        componentType="select"
+                        as={(
+                            <Select
+                                options={CountryManager.optionsNameAndFlag}
+                                filterOption={CountryManager.filterOptionsNameAndFlag}
+                                getOptionLabel={option => <FlagCountry label={option.name} flag={option.flag}/>}
+                            />
+                        )}
                     />
                 </FormControl>
             </div>
 
             <div className="form-group text-left">
                 <FormControl fullWidth>
-                    <InputLabel className="text-left pl-2" htmlFor="residenceCountries-helper"><IntlMessages id="common.residenceCountry"/></InputLabel>
+                    <InputLabel className="text-left pl-2" htmlFor="residenceCountries"><IntlMessages id="common.residenceCountry"/></InputLabel>
                     <InputComponent
-                        isRequired
-                        className="mt-0"
                         errors={errors}
                         control={control}
+                        isRequired={false}
                         register={register}
+                        id="residenceCountry"
                         componentType="select"
                         name={'residenceCountry'}
-                        defaultValue={countryWithNameAndFlag[0].id}
-                        as={<Select input={<Input name="residenceCountry" id="residenceCountries-helper" />}>
-                            {countryWithNameAndFlag.map(item => (
-                                <MenuItem key={item.id} value={item.id} className="center-hor-ver">
-                                    <FlagCountry flag={item.flag} label={item.name} />
-                                </MenuItem>
-                            ))}
-                        </Select>}
+                        as={(
+                            <Select
+                                options={CountryManager.optionsNameAndFlag}
+                                filterOption={CountryManager.filterOptionsNameAndFlag}
+                                getOptionLabel={option => <FlagCountry label={option.name} flag={option.flag}/>}
+                            />
+                        )}
                     />
                 </FormControl>
             </div>
 
-            {/* <CustomAsyncComponent
-                loading={residenceCountries.loading}
-                data={residenceCountries.data}
-                onRetryClick={_getResidenceCountry}
-                component={data => (
-                    <div className="form-group text-left">
-                        <FormControl fullWidth>
-                            <InputLabel className="text-left" htmlFor="residenceCountries-helper"><IntlMessages id="common.residenceCountry"/></InputLabel>
-                            <InputComponent
-                                isRequired
-                                className="mt-0"
-                                errors={errors}
-                                control={control}
-                                register={register}
-                                componentType="select"
-                                name={'residenceCountry'}
-                                defaultValue={data[0]}
-                                as={<Select input={<Input name="residenceCountries" id="residenceCountries-helper" />}>
-                                    {data.map((item, index) => {
-                                        const countrySpec = CountryManager.getCountryWithNameAndFlagFromId(item);
-                                        return (
-                                            <MenuItem key={index} value={item} className="center-hor-ver">
-                                                <FlagCountry flag={countrySpec.flag} label={countrySpec.name} />
-                                            </MenuItem>
-                                        )
-                                    })}
-                                </Select>}
-                            />
-                        </FormControl>
-                    </div>
-                )}
-            /> */}
-
             <div className="row align-items-flex-end">
                 <CustomAsyncComponent
-                    loading={identificationType.loading}
                     data={identificationType.data}
+                    loading={identificationType.loading}
                     onRetryClick={_getIdentificationType}
-                    component={data => (
-                        <div className="col-6 form-group text-left">
-                            <FormControl fullWidth>
-                                <InputLabel className="text-left" htmlFor="identificationType-helper"><IntlMessages id="common.identificationType"/></InputLabel>
-                                <InputComponent
-                                    isRequired
-                                    className="mt-0"
-                                    errors={errors}
-                                    control={control}
-                                    register={register}
-                                    componentType="select"
-                                    name={'identificationType'}
-                                    defaultValue={data[0]}
-                                    as={<Select input={<Input name="identificationType" id="identificationType-helper" />}>
-                                        {data.map((item, index) => (
-                                            <MenuItem key={index} value={item} className="center-hor-ver">
-                                                {item}
-                                            </MenuItem>
-                                        ))}
-                                    </Select>}
-                                />
-                            </FormControl>
-                        </div>
-                    )}
+                    component={data => {
+                        const options = data.map(item => ({label: item, value: item}));
+                        return (
+                            <div className="col-6 form-group text-left">
+                                <FormControl fullWidth>
+                                    <InputLabel className="text-left" htmlFor="identificationType">
+                                        <IntlMessages id="common.identificationType"/>
+                                    </InputLabel>
+                                    <InputComponent
+                                        isRequired
+                                        className="mt-0"
+                                        errors={errors}
+                                        control={control}
+                                        register={register}
+                                        componentType="select"
+                                        name={'identificationType'}
+                                        defaultValue={data[0]}
+                                        as={(
+                                            <MaterialSelect input={<Input name="identificationType" id="identificationType-helper" />}>
+                                                {data.map((item, index) => (
+                                                    <MenuItem key={index} value={item} className="center-hor-ver">
+                                                        {item}
+                                                    </MenuItem>
+                                                ))}
+                                            </MaterialSelect>
+                                        )}
+                                    />
+                                    {/*<InputComponent
+                                        errors={errors}
+                                        control={control}
+                                        isRequired={false}
+                                        register={register}
+                                        componentType="select"
+                                        id="identificationType"
+                                        name={'identificationType'}
+                                        as={(
+                                            <Select
+                                                options={options}
+                                                defaultValue={options[0]}
+                                            />
+                                        )}
+                                    />*/}
+                                </FormControl>
+                            </div>
+                        )
+                    }}
                 />
                 <FormGroup className="col-6 has-wrapper">
                     <InputComponent

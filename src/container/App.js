@@ -1,23 +1,36 @@
 /**
  * App.js Layout Start Here
  */
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import {BrowserRouter as Router, Redirect, Route, Switch} from 'react-router-dom';
-import { NotificationContainer } from 'react-notifications';
-
-// rct theme provider
+import {
+    CGU,
+    AUTH,
+    STORE,
+    TERMS,
+    GETIN,
+    VALUES,
+    AGENTS,
+    MISSION,
+    DISCOVER,
+    PIONIERS,
+    SERVICES,
+    SOLIDARITY,
+    PASS_DETAILS,
+    LEGAL_MENTION,
+    GALERY_PROJECT,
+    MONEY_MANAGEMENT,
+} from "../urls/frontendUrl";
+import {connect} from 'react-redux';
+import React, {Component} from 'react';
 import RctThemeProvider from './RctThemeProvider';
-
-// app signin
 import AppSignIn from './../routes/session/login';
 import AppSignUp from './../routes/session/register';
+import {getCurrencies} from 'Actions/GeneralActions';
 import BranchActivation from './../routes/session/token';
+import {NotificationContainer} from 'react-notifications';
 import ResetPassword from './../routes/session/forgot-password/ResetPassword';
 import SendResetPasswordLink from './../routes/session/forgot-password/SendResetPasswordLink';
-import {AUTH, DISCOVER,MISSION, VALUES, PIONIERS, AGENTS, STORE, TERMS, LEGAL_MENTION, SERVICES, GALERY_PROJECT, GETIN, SOLIDARITY, MONEY_MANAGEMENT, PASS_DETAILS} from "../urls/frontendUrl";
-import {setAuthUser, loginIntoStore, disableAppLoading} from 'Actions';
-import {getCurrencies} from 'Actions/GeneralActions';
+import {BrowserRouter as Router, Redirect, Route, Switch} from 'react-router-dom';
+import {disableAppLoading, loginIntoStore, setAuthUser} from 'Actions';
 import RctPageLoader from "Components/RctPageLoader/RctPageLoader";
 import {getAuthToken} from "Helpers/tokens";
 import {isUserIntoStoreValid} from "Helpers/helpers";
@@ -25,23 +38,33 @@ import RequestGlobalLoader from "Components/RequestGlobalLoader";
 import {AbilityContext} from "Permissions/Can";
 import Dashboard from 'Routes/custom/dashboard';
 import PermissionAlertBox from "Components/PermissionAlertBox";
-import {AsyncDiscover, AsyncStoreWrapper, AsyncGallery, AsyncGetIn, AsyncPionier, AsyncSolidarity, AsyncMoneyManagement} from "Components/AsyncComponent/AsyncComponent";
 import CanRoute from "Components/CanRoute";
 import Terms from "./../routes/custom/dashboard/Terms.js";
-import Mission from "./../routes/custom/dashboard/Mission";
+import Mission from "Routes/custom/dashboard/discover/pages/Mission";
+import Cgu from "Routes/custom/dashboard/discover/pages/CGU";
 import Values from "./../routes/custom/dashboard/Values";
 import LegalMention from "./../routes/custom/dashboard/LegalMention.js";
-import OfferDetails from '../routes/custom/dashboard/OfferDetails';
-import Agents from '../routes/custom/dashboard/Agents';
-import Services from '../routes/custom/dashboard/Service';
-
+import OfferDetails from 'Routes/custom/dashboard/discover/pages/OfferDetails';
+import Agents from 'Routes/custom/dashboard/discover/pages/Agents';
+import Services from 'Routes/custom/dashboard/discover/pages/Service';
+import {
+    AsyncDiscover,
+    AsyncGallery,
+    AsyncGetIn,
+    AsyncMoneyManagement,
+    AsyncPionier,
+    AsyncSolidarity,
+    AsyncStoreWrapper
+} from "Components/AsyncComponent/AsyncComponent";
 
 class App extends Component {
     static contextType = AbilityContext;
 
     componentDidMount() {
         this.isNewUser();
-        this.props.getCurrencies();
+        // Pass true to skip error manager
+        // Because this is a silent request
+        this.props.getCurrencies(true);
     }
 
     /**
@@ -85,6 +108,20 @@ class App extends Component {
                         <Router>
                                 {_isUserIntoStoreValid ? (
                                     <Switch>
+                                        <Route exact path={DISCOVER} component={AsyncDiscover} />
+                                        <Route exact path={PIONIERS} component={AsyncPionier} />
+                                        <Route exact path={AGENTS} component={Agents} />
+                                        <Route exact path={SERVICES} component={Services} />
+                                        <Route exact path={GALERY_PROJECT} component={AsyncGallery} />
+                                        <Route exact path={GETIN} component={AsyncGetIn} />
+                                        <Route exact path={SOLIDARITY} component={AsyncSolidarity} />
+                                        <Route exact path={MONEY_MANAGEMENT} component={AsyncMoneyManagement} />
+                                        <Route exact path={TERMS} component={Terms} />
+                                        <Route exact path={MISSION} component={Mission} />
+                                        <Route exact path={CGU} component={Cgu} />
+                                        <Route exact path={VALUES} component={Values} />
+                                        <Route exact path={PASS_DETAILS} component={OfferDetails} />
+                                        <Route exact path={LEGAL_MENTION} component={LegalMention} />
                                         <Route path={'/'} component={Dashboard} />
                                     </Switch>
                                 ) : (
@@ -98,6 +135,7 @@ class App extends Component {
                                         <Route exact path={SOLIDARITY} component={AsyncSolidarity} />
                                         <Route exact path={MONEY_MANAGEMENT} component={AsyncMoneyManagement} />
                                         <Route exact path={TERMS} component={Terms} />
+                                        <Route exact path={CGU} component={Cgu} />
                                         <Route exact path={MISSION} component={Mission} />
                                         <Route exact path={VALUES} component={Values} />
                                         <Route exact path={PASS_DETAILS} component={OfferDetails} />

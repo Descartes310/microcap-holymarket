@@ -1,25 +1,21 @@
-import React, {Component, useState} from 'react';
-import { Form, FormGroup, Input } from 'reactstrap';
+import React from 'react';
+import {connect} from "react-redux";
+import QueueAnim from 'rc-queue-anim';
+import {injectIntl} from "react-intl";
+import {useForm} from "react-hook-form";
+import AppConfig from 'Constants/AppConfig';
+import { Form, FormGroup } from 'reactstrap';
+import IntlMessages from "Util/IntlMessages";
 import Button from '@material-ui/core/Button';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
 import { Link, useLocation } from 'react-router-dom';
-import QueueAnim from 'rc-queue-anim';
-
-// app config
-import AppConfig from 'Constants/AppConfig';
-import LanguageProvider from "Components/Header/LanguageProvider";
-import {connect} from "react-redux";
-import {resetPassword, setRequestGlobalAction} from "Actions";
-import {injectIntl} from "react-intl";
-import IntlMessages from "Util/IntlMessages";
 import {HOME, AUTH} from "../../../urls/frontendUrl";
 import InputComponent from "Components/InputComponent";
 import {minMaxValidatorObject} from "Helpers/validator";
-import ErrorInputComponent from "Components/ErrorInputComponent";
-import {useForm} from "react-hook-form";
 import {NotificationManager} from "react-notifications";
+import {resetPassword, setRequestGlobalAction} from "Actions";
+import ErrorInputComponent from "Components/ErrorInputComponent";
 import {requestErrorProcessing, useQuery} from "Helpers/helpers";
 
 const ResetPassword = ({intl, loading, setRequestGlobalAction, history}) => {
@@ -41,16 +37,7 @@ const ResetPassword = ({intl, loading, setRequestGlobalAction, history}) => {
                 NotificationManager.success(intl.formatMessage({id: "auth.resetPassword.successText"}));
                 history.push(AUTH.LOGIN);
             })
-            .catch(error => {
-                if (error && error.response && error.response.data) {
-                    const errorTab = requestErrorProcessing(error.response.data);
-                    errorTab.forEach(item => {
-                        NotificationManager.error(item);
-                    });
-                } else {
-                    NotificationManager.error(intl.formatMessage({id: "auth.resetPassword.errorToken"}));
-                }
-            })
+            .catch(error => null)
             .finally(() =>  setRequestGlobalAction(false));
     };
 
@@ -66,7 +53,6 @@ const ResetPassword = ({intl, loading, setRequestGlobalAction, history}) => {
                                         <img src={AppConfig.appLogo} alt="session-logo" className="img-fluid" width="110" height="35" />
                                     </Link>
                                 </div>
-                                <LanguageProvider />
                             </div>
                         </div>
                     </Toolbar>

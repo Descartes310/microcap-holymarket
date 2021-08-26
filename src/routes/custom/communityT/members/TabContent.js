@@ -7,7 +7,7 @@ import Invitations from "./invitation";
 
 const TabContent = ({ match }) => {
     return (
-        <div className="vh-100">
+        <div className="full-height pt-10 px-20">
             <Switch>
                 {/* <Redirect exact from={`${match.url}/`} to={COMMUNITY_MEMBER.GROUPS.ME} /> */}
                 <Route path={COMMUNITY.MEMBERS.LIST} component={ListMembers} />

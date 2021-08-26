@@ -1,7 +1,5 @@
-/**
- * Auth User Reducers
- */
 import {
+    COMMUNITY_SPACE_SET_LOADING,
     COMMUNITY_SPACE_GET_STATUS,
     COMMUNITY_SPACE_SET_STATUS,
     COMMUNITY_SPACE_SET_VALUE,
@@ -18,11 +16,13 @@ const INIT_STATE = {
     admins: [],
     error: null,
     status: false,
+    loading: true,
 };
 
 export default (state = INIT_STATE, action) => {
     switch (action.type) {
-
+        case COMMUNITY_SPACE_SET_LOADING:
+            return { ...state, loading: action.payload };
         case COMMUNITY_SPACE_GET_STATUS:
             return { ...state, status: action.payload.status, data: action.payload.data };
         case COMMUNITY_SPACE_SET_TYPE:

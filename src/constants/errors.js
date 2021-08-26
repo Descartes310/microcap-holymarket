@@ -1,5 +1,5 @@
 export const FIELD_ERROR = 'FIELD_ERROR';
-export const ERROR_500 = 'Une erreur est survenur. Veuillez ressayer';
+export const ERROR_500 = 'Une erreur est survenur. Veuillez ressayer plus tard';
 export const FIELD_UNIQUE = {
     name: 'FIELD_UNIQUE',
     message: field => "This email is already used"

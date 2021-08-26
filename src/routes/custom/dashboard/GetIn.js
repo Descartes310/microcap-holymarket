@@ -25,29 +25,21 @@ export default class MoneyManagement extends Component {
           <RctCollapsibleCard customClasses="p-30">
             <p>
               <p>Le love money permet de collecter de l'argent auprès des proches pour vous financer. </p>
-              <p>En famille, entre amis, collègues ou compatriotes, … c’est un bon début. Avez MicroCap, vous pouvez désormais étendre votre réseau au-delà du cercle proche et financer plus facilement vos projets. </p>
+              <p>En famille, entre amis, collègues ou compatriotes, etc… c’est un bon début. Avez MicroCap, 
+                vous pouvez désormais étendre votre réseau au-delà du cercle proche et financer plus 
+                facilement vos projets. </p>
               <p>Adopter la solidarité comme principe </p>
-              <p>MicroCap est un réseau international de solidarité financière auprès duquel chaque membre peut solliciter des cautionnements pour obtenir un financement</p>
+              <p>MicroCap est le réseau d’entrepreneur accompagnés ou souhaitant se faire accompagner 
+                par A+ Conseils. A+ encourage les membres du réseau MicroCap à la mutualisation des 
+                risques et des moyens, ce qui fait de MicroCap un réseau international de solidarité financière.  
+                Chaque membre peut solliciter le  cautionnements pour obtenir un 
+                financement d’un partenaire MicroCap</p>
 
               <ul style={{ paddingTop: 40, paddingBottom: 10 }}>
                 <li>Credit banquaire</li>
-                <li>Paiement a crédit des achats sur la place de marché MicroCap</li>
+                <li>Paiement à crédit des achats sur la marketplace (terme plus populaire) microcapshop.com</li>
                 <li>Paiement différé des opérations auprès des prestataires: transfert d'argent, loyer, caution pour accéder au bail. </li>
               </ul>
-
-              {/* <p>
-                  Les utilisateurs de la plateforme MicroCap ont accès a un programme de sensibilisation, monitoring et coaching a la finance vertueuse. Pour en profiter :
-                </p>
-                <p>
-                  Un Webinaire d’une durée de 1H tous les jeudis à 13h.
-                </p>
-                <p>
-                  Atelier pratique pour adopter et profiter de la finance vertueuse tous les derniers samedis du mois. Prochaines dates :
-                </p>
-                <ul style={{ paddingTop: 40, paddingBottom: 10 }}>
-                    <li>Exceptionnellement le samedi 3 avril 2021 à 15H00</li>
-                    <li>Cycle normal le samedi 24 avril 2021 à 15H00</li>
-                </ul> */}
 
               <p>
                 Pour adhérer:

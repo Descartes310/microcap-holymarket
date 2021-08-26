@@ -4,6 +4,7 @@
 // const webpack = require('webpack');
 const path = require('path');
 const fs = require('fs');
+const Dotenv = require('dotenv-webpack');
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
@@ -144,6 +145,7 @@ module.exports = {
 		hints: process.env.NODE_ENV === 'production' ? "warning" : false
 	},
 	plugins: [
+		new Dotenv(),
 		new FriendlyErrorsWebpackPlugin(),
 		// new webpack.optimize.UglifyJsPlugin(),
 		new CleanWebpackPlugin({

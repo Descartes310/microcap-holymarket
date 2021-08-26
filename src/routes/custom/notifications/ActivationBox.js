@@ -82,7 +82,6 @@ class ActivationBox extends Component {
     };
 
     render() {
-        console.log('PDF File => ', this.props.pdfUrl)
         return (
             <DialogComponent
                 title="Acivation du compte"

@@ -1,0 +1,235 @@
+import { connect } from "react-redux";
+import { injectIntl } from "react-intl";
+import React, { Component } from 'react';
+import { datediff } from 'Helpers/helpers';
+import { withRouter } from "react-router-dom";
+import Button from "@material-ui/core/Button";
+import CustomList from "Components/CustomList";
+import AmountCurrency from "Components/AmountCurrency";
+import { PREVISIONS, joinUrlWithParams } from "Url/frontendUrl";
+import { setRequestGlobalAction, getPrevisionPeriodes, getOnePrevision } from "Actions";
+
+class List extends Component {
+
+    state = {
+        periodes: [],
+        sections: [],
+        prevision: {},
+        total: 0
+    };
+
+    componentDidMount() {
+        this.id = this.props.match.params.id
+        this.getPeriodes();
+        this.getPrevision();
+    }
+
+    getPrevision() {
+        this.props.setRequestGlobalAction(true);
+        getOnePrevision(this.id).then(prevision => {
+            this.setState({ prevision });
+        }).catch(err => {
+            this.props.history.push(joinUrlWithParams(PREVISIONS.PERIODES.LIST, [{ param: 'id', value: this.id }]));
+        }).finally(() => {
+            this.props.setRequestGlobalAction(false);
+        })
+    }
+
+    onClickPeriode(id) {
+        this.props.history.push(joinUrlWithParams(PREVISIONS.PERIODES.DETAILS, [{ param: 'id', value: this.id }, { param: 'id2', value: id }]));
+    }
+
+    getPeriodes = () => {
+        this.props.setRequestGlobalAction(true);
+        getPrevisionPeriodes(this.id).then(periodes => {
+            this.setState({ periodes });
+            this.getTotal();
+        }).catch(err => {
+            console.log(err)
+            this.props.history.push(PREVISIONS.LIST);
+        }).finally(() => {
+            this.props.setRequestGlobalAction(false);
+        })
+    };
+
+    getTotal = () => {
+        this.state.periodes.forEach(p => {
+            this.setState({ total: this.state.total + p.amount * datediff(p.startDate, p.endDate, this.getRythmeValue(p.frequence)) })
+        })
+    }
+
+    getRythme = (rythme) => {
+        switch (rythme) {
+            case 'DAY':
+                return 'Jour';
+            case 'WEEK':
+                return 'Semaine';
+            case 'MONTH':
+                return 'Mois';
+            case 'TRIMESTER':
+                return 'Trimestre';
+            default:
+                return 'Jour';
+        }
+    }
+
+    getRythmeValue = (rythme) => {
+        switch (rythme) {
+            case 'DAY':
+                return 1;
+            case 'WEEK':
+                return 7;
+            case 'MONTH':
+                return 30;
+            case 'TRIMESTER':
+                return 90;
+            default:
+                return 1;
+        }
+    }
+
+    render() {
+        const { history } = this.props;
+        const { periodes, show, prevision, total } = this.state;
+
+        return (
+            <>
+                <CustomList
+                    list={periodes}
+                    loading={false}
+                    titleList={"Périodes de la pévision " + prevision.label}
+                    itemsFoundText={n => n + " périodes(s) trouvée(s)"}
+                    onAddClick={() => history.push(joinUrlWithParams(PREVISIONS.PERIODES.CREATE, [{ param: 'id', value: this.id }]))}
+                    renderItem={list => (
+                        <>
+                            {list && list.length === 0 ? (
+                                <div className="d-flex justify-content-center align-items-center py-50">
+                                    <h4>
+                                        Aucun période trouvée
+                                    </h4>
+                                </div>
+                            ) : (
+                                    <div className="table-responsive">
+                                        <table className="table table-hover table-middle mb-0">
+                                            <thead>
+                                                <tr>
+                                                    <th>Date de début</th>
+                                                    <th>Date de fin</th>
+                                                    <th>Montant</th>
+                                                    <th>Rythme</th>
+                                                    <th>Abondements</th>
+                                                    <th>Montant Total</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {list && list.map((item, key) => (
+                                                    <tr
+                                                        key={key}
+                                                        className="cursor-pointer"
+                                                    >
+                                                        <td>
+                                                            <div className="media">
+                                                                <div className="media-body pt-10">
+                                                                    <h4 style={{ textAlign: 'start' }} className="m-0 fw-bold text-dark">{item.startDate}</h4>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div className="media">
+                                                                <div className="media-body pt-10">
+                                                                    <h4 style={{ textAlign: 'start' }} className="m-0 fw-bold text-dark">{item.endDate}</h4>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div className="media">
+                                                                <div className="media-body pt-10">
+                                                                    <h4 style={{ textAlign: 'start' }} className="m-0 fw-bold text-dark"><AmountCurrency amount={item.amount} /></h4>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div className="media">
+                                                                <div className="media-body pt-10">
+                                                                    <h4 style={{ textAlign: 'start' }} className="m-0 fw-bold text-dark">{this.getRythme(item.frequence)}</h4>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div className="media">
+                                                                <div className="media-body pt-10">
+                                                                    <h4 style={{ textAlign: 'start' }} className="m-0 fw-bold text-dark">{datediff(item.startDate, item.endDate, this.getRythmeValue(item.frequence))}</h4>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div className="media">
+                                                                <div className="media-body pt-10">
+                                                                    <h4 style={{ textAlign: 'start' }} className="m-0 fw-bold text-dark"><AmountCurrency amount={item.amount * datediff(item.startDate, item.endDate, this.getRythmeValue(item.frequence))} /></h4>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td className="table-action">
+                                                            <Button
+                                                                size="small"
+                                                                variant="contained"
+                                                                className={"text-white mr-5"}
+                                                                style={{ backgroundColor: '#FFB70F', borderColor: '#FFB70F' }}
+                                                                onClick={() => this.onClickPeriode(item.id)}
+                                                            >
+                                                                Abondements
+                                                            </Button>
+                                                            <Button
+                                                                size="small"
+                                                                variant="contained"
+                                                                className={"text-white bg-blue"}
+                                                            >
+                                                                Versements
+                                                            </Button>
+                                                        </td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <td colSpan={5}>
+                                                        <div className="media">
+                                                            <div className="media-body pt-10">
+                                                                <h4 style={{ textAlign: 'start' }} className="m-0 fw-bold text-dark">Total</h4>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div className="media">
+                                                            <div className="media-body pt-10">
+                                                                <h4 style={{ textAlign: 'start' }} className="m-0 fw-bold text-dark"><AmountCurrency amount={this.state.total} /></h4>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div className="media">
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                )}
+                        </>
+                    )}
+                />
+            </>
+        );
+    }
+}
+
+// map state to props
+const mapStateToProps = ({ requestGlobalLoader, authUser }) => {
+    return {
+        requestGlobalLoader,
+        authUser: authUser.data,
+    }
+};
+
+export default connect(mapStateToProps, { setRequestGlobalAction })(withRouter(injectIntl(List)));

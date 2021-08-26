@@ -1,18 +1,19 @@
 import {connect} from "react-redux";
 import {injectIntl} from "react-intl";
 import { projects } from "Data/index";
-import { COMMUNITY } from "Url/frontendUrl";
 import { withRouter } from "react-router-dom";
 import Button from "@material-ui/core/Button";
+import { getFilePath } from "Helpers/helpers";
 import CustomList from "Components/CustomList";
 import React, { useEffect, useState } from 'react';
+import {COMMUNITY, joinUrlWithParamsId} from "Url/frontendUrl";
 import { getAllProjectReaction } from "Actions/independentActions";
 import FetchFailedComponent from "Components/FetchFailedComponent";
 import { getOneProjectFolderByGroup } from "Actions/independentActions";
 import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
-import { getFilePath } from "Helpers/helpers";
 
-const Gallery = ({ history, communitySpace }) => {
+const Gallery = ({ match, history, communitySpace }) => {
+    const communitySpaceId = match.params.id;
     const baseUrl = COMMUNITY.PROJECTS;
 
     const [projectFolder, setProjectFolder] = useState({
@@ -47,7 +48,7 @@ const Gallery = ({ history, communitySpace }) => {
                     data: null,
                     loading: false
                 });
-            })
+            });
     };
 
     const loadFiles = (id) => {
@@ -115,7 +116,6 @@ const Gallery = ({ history, communitySpace }) => {
                                                     <th>Titre</th>
                                                     <th>Description</th>
                                                     <th>Action</th>
-
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -166,7 +166,7 @@ const Gallery = ({ history, communitySpace }) => {
                     color="primary"
                     variant="contained"
                     className="text-white font-weight-bold mr-3"
-                    onClick={() => history.push(baseUrl.SHOW)}
+                    onClick={() => history.push(joinUrlWithParamsId(baseUrl.SHOW, communitySpaceId))}
                 >
                     Voir la fiche
                 </Button>

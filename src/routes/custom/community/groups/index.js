@@ -1,27 +1,20 @@
-/**
- * Chat
- */
-import { connect } from "react-redux";
-import React, { Component } from 'react';
+import {connect} from "react-redux";
+import React, {Component} from 'react';
+import {getFilePath} from 'Helpers/helpers';
 import Drawer from '@material-ui/core/Drawer';
 import Hidden from '@material-ui/core/Hidden';
-import { withStyles } from '@material-ui/core/styles';
-import { Helmet } from "react-helmet";
-import { statusCommunitySpaceStatus, setCommunitySpaceData, setCommunitySpaceAdmins, setCommunitySpaceType} from 'Actions/CommunityAction';
-import GroupsSidebar from "Routes/custom/community/groups/GroupsSidebar";
-import CommunityItem from "Routes/custom/community/groups/CommunityItem";
-import Toolbar from "@material-ui/core/Toolbar";
-import IconButton from "@material-ui/core/IconButton";
-import EmailSearch from "Routes/mail/components/EmailSearch";
-import AppBar from "@material-ui/core/AppBar/AppBar";
 import AppsIcon from '@material-ui/icons/Apps';
+import Toolbar from "@material-ui/core/Toolbar";
+import CommunityType from "Enums/CommunityType";
 import MatButton from '@material-ui/core/Button';
-import { getCommunityAdmins, addGroupToFavourites, setRequestGlobalAction, getUserCommunities, setCurrentCommunity } from 'Actions'
+import {withStyles} from '@material-ui/core/styles';
+import AppBar from "@material-ui/core/AppBar/AppBar";
+import IconButton from "@material-ui/core/IconButton";
+import {NotificationManager} from "react-notifications";
+import {COMMUNITY, joinUrlWithParamsId} from 'Url/frontendUrl';
+import GroupsSidebar from "Routes/custom/community/groups/GroupsSidebar";
 import InvitationCreateDialog from '../../communityT/members/invitation/InvitationCreateDialog';
-import { COMMUNITY, COMMUNITY_MEMBER } from 'Url/frontendUrl';
-import { NotificationManager } from "react-notifications";
-import CardMedia from '@material-ui/core/CardMedia';
-import { getFilePath } from 'Helpers/helpers';
+import {addGroupToFavourites, getUserCommunities, setCurrentCommunity, setRequestGlobalAction,} from 'Actions';
 
 const drawerWidth = 310;
 
@@ -77,31 +70,24 @@ class Groups extends Component {
     };
 
     enterInCommunitySpace = () => {
-        getCommunityAdmins(this.props.currentCommunity.data.community.id).then(data => {
-            this.props.statusCommunitySpaceStatus(true);
-            this.props.setCommunitySpaceAdmins(data);
-            this.props.setCommunitySpaceData(this.props.currentCommunity.data.community.id);
-            this.props.setCommunitySpaceType(this.props.currentCommunity.data.community.typeGroup.label);
-            this.props.history.push(COMMUNITY.MEMBERS.LIST);
-        })
-    }
-
-    join = () => {
-        this.props.history.push(COMMUNITY.MEMBERS.LIST);
-    }
+        // this.props.history.push(joinUrlWithParamsId(COMMUNITY.MEMBERS.LIST, this.props.currentCommunity.data.community.id));
+        window.location = joinUrlWithParamsId(COMMUNITY.MEMBERS.LIST, this.props.currentCommunity.data.community.id);
+    };
 
     handleFavourite = () => {
         this.props.setRequestGlobalAction(true);
-        addGroupToFavourites(this.props.currentCommunity.data.community.id).then(data => {
-            if (this.props.currentCommunity.data.favourite)
-                NotificationManager.success("Retiré des favoris");
-            else
-                NotificationManager.success("Ajouté aux favoris");
-            this.props.getUserCommunities(this.props.authUser.user.id);
-            this.props.setCurrentCommunity(this.props.currentCommunity.data.community, !this.props.currentCommunity.data.favourite);
-        }).finally(() => {
-            this.props.setRequestGlobalAction(false);
-        })
+        addGroupToFavourites(this.props.currentCommunity.data.community.id)
+            .then(data => {
+                if (this.props.currentCommunity.data.favourite)
+                    NotificationManager.success("Retiré des favoris");
+                else
+                    NotificationManager.success("Ajouté aux favoris");
+                this.props.getUserCommunities(this.props.authUser.user.id);
+                this.props.setCurrentCommunity(this.props.currentCommunity.data.community, !this.props.currentCommunity.data.favourite);
+            })
+            .finally(() => {
+                this.props.setRequestGlobalAction(false);
+            })
     }
 
     handleClickOpenInvation = () => {
@@ -178,21 +164,21 @@ class Groups extends Component {
                                     <div style={{ marginBottom: 20 }}>
                                         <h2>Type de communauté</h2>
                                         {
-                                            currentCommunity.data.community.typeGroup.name == 'COMMUNAUTE_PROJET' ?
+                                            currentCommunity.data.community.typeGroup.name === CommunityType.COMMUNAUTE_PROJET ?
                                                 <span style={{ backgroundColor: 'rgba(46, 178, 229, 0.8)', padding: 10, marginTop: 20, marginBottom: 20, width: 76, borderRadius: 5, color: 'white', fontSize: '0.8em' }}>
                                                     Communuaté projet
                                                 </span>
                                                 : null
                                         }
                                         {
-                                            currentCommunity.data.community.typeGroup.name == 'COMMUNAUTE_CONVENTIONNEE' ?
+                                            currentCommunity.data.community.typeGroup.name === CommunityType.COMMUNAUTE_CONVENTIONNEE ?
                                                 <span style={{ backgroundColor: 'rgba(200, 0, 0, 0.5)', padding: 10, marginTop: 20, marginBottom: 20, width: 76, borderRadius: 5, color: 'white', fontSize: '0.8em' }}>
                                                     Communauté conventionnée
                                                 </span>
                                                 : null
                                         }
                                         {
-                                            currentCommunity.data.community.typeGroup.name == 'COMMUNAUTE_AFFINITE' ?
+                                            currentCommunity.data.community.typeGroup.name === CommunityType.COMMUNAUTE_AFFINITE ?
                                                 <span style={{ backgroundColor: 'rgba(200, 0, 0, 0.5)', padding: 10, marginTop: 20, marginBottom: 20, width: 76, borderRadius: 5, color: 'white', fontSize: '0.8em' }}>
                                                     Communauté d'affinité
                                                 </span>
@@ -248,5 +234,7 @@ const mapStateToProps = ({ communitySpace, currentCommunity, authUser }) => {
 };
 
 
-export default connect(mapStateToProps, { setRequestGlobalAction, setCurrentCommunity, statusCommunitySpaceStatus, getUserCommunities, setCommunitySpaceData, setCommunitySpaceAdmins, setCommunitySpaceType })
-    (withStyles(styles, { withTheme: true })(Groups));
+export default connect(
+    mapStateToProps,
+    {setRequestGlobalAction, setCurrentCommunity, getUserCommunities}
+)(withStyles(styles, {withTheme: true})(Groups));

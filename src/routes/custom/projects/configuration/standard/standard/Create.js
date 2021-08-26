@@ -60,9 +60,7 @@ class Create extends Component {
                     NotificationManager.success("Standard de configuraiton effectué avec succès");
                     this.props.history.push(PROJECTS.CONFIGURATION.STANDARD.LIST);
                 })
-                .catch(() => {
-                    NotificationManager.error(ERROR_500);
-                })
+                .catch(() => null)
                 .finally(() => this.props.setRequestGlobalAction(false));
         }
     };

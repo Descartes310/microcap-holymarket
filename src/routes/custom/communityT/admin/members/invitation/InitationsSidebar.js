@@ -17,20 +17,21 @@ import UserProfileCreate from "Routes/custom/users/user-profile/Create";
 import CommunityCreate from "Routes/custom/community/groups/CommunityCreate";
 import classnames from "classnames";
 import ListItem from "@material-ui/core/ListItem";
-import {COMMUNITY_ADMIN} from "Url/frontendUrl";
+import {COMMUNITY_ADMIN, joinUrlWithParamsId} from "Url/frontendUrl";
 import InvitationType from "Enums/InvitationType";
 import InvitationCreateDialog from './InvitationCreateDialog'
 
 class InvitationsSidebar extends Component {
+    communitySpaceId = this.props.match.params.id;
 
     state = {
         open: false,
      };
-  
+
      handleClickOpenInvation = () => {
         this.setState({ open: true });
      };
-  
+
      handleCloseInvation = () => {
         this.setState({ open: false });
      };
@@ -62,20 +63,20 @@ class InvitationsSidebar extends Component {
                                     <List className="p-0 mb-0 filters list-unstyled">
                                         <ListItem
                                             button
-                                            onClick={() => this.props.history.push(COMMUNITY_ADMIN.INVITATIONS.LIST.RECEIVED)}
+                                            onClick={() => this.props.history.push(joinUrlWithParamsId(COMMUNITY_ADMIN.INVITATIONS.LIST.RECEIVED, this.communitySpaceId))}
                                             // className={classnames({ 'item-active': selectedFolder === folder.id })}
                                         >
                                             <i className={`mr-20 zmdi zmdi-inbox`} />
                                             <span className="filter-title">
                                                 Demande d'adhésions
                                                 {comInvitationsPending  && nbInvReceived > 0 && (<Badge className="ml-2" color="primary" pill>
-                                                    {comInvitationsPending.filter(i => i.type === InvitationType.INVITATION).length}
+                                                    {comInvitationsPending.filter(i => i.type === InvitationType.REQUEST).length}
                                                 </Badge>)}
                                             </span>
                                         </ListItem>
                                         <ListItem
                                             button
-                                            onClick={() => this.props.history.push(COMMUNITY_ADMIN.INVITATIONS.LIST.SEND)}
+                                            onClick={() => this.props.history.push(joinUrlWithParamsId(COMMUNITY_ADMIN.INVITATIONS.LIST.SEND, this.communitySpaceId))}
                                             // className={classnames({ 'item-active': selectedFolder === folder.id })}
                                         >
                                             <i className={`mr-20 zmdi zmdi-mail-send`} />

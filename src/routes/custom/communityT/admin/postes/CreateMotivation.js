@@ -1,17 +1,15 @@
 import PropTypes from "prop-types";
-import AddWork from "./CreateItem";
 import {connect} from "react-redux";
 import {injectIntl} from "react-intl";
 import React, {Component} from 'react';
-import {COMMUNITY_ADMIN, joinUrlWithParamsId} from "Url/frontendUrl";
-import {ERROR_500} from "Constants/errors";
 import {withRouter} from "react-router-dom";
 import IntlMessages from "Util/IntlMessages";
-import CustomList from "Components/CustomList";
 import {NotificationManager} from "react-notifications";
+import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import InputLabel from "@material-ui/core/InputLabel/InputLabel";
+import {COMMUNITY_ADMIN, joinUrlWithParams} from "Url/frontendUrl";
+import {createPostMotivation, setRequestGlobalAction} from "Actions";
 import {Button, Form, FormGroup, Input as InputStrap} from 'reactstrap';
-import {setRequestGlobalAction, createPostMotivation} from "Actions";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
 
 class Create extends Component {
@@ -21,9 +19,6 @@ class Create extends Component {
             label: '',
             description: '',
         }
-    }
-
-    componentDidMount() {
     }
 
     handleOnFormChange = (field, value) => {
@@ -51,29 +46,28 @@ class Create extends Component {
             createPostMotivation(data, this.props.match.params.id)
                 .then(() => {
                     NotificationManager.success("Motivation créés avec succès");
-                    this.props.history.push(joinUrlWithParamsId(COMMUNITY_ADMIN.POST.MOTIVATION.LIST, this.props.match.params.id));
+                    this.onBack();
                 })
-                .catch(() => {
-                    NotificationManager.error(ERROR_500);
-                })
+                .catch(() => null)
                 .finally(() => this.props.setRequestGlobalAction(false));
         }
     };
 
-
-    onBackClick = () => {
-        this.props.history.push(PROJECTS.POST_PROJETS.LIST);
+    onBack = () => {
+        this.props.history.push(joinUrlWithParams(COMMUNITY_ADMIN.POST.MOTIVATION.LIST, [
+            {param: 'id', value: this.props.match.params.id},
+            {param: 'postId', value: this.props.match.params.postId},
+        ]));
     };
 
     render() {
 
         return (
             <div className="my-3">
-                <div className="my-3 pl-3 page-title m-0">
-                    <h3 className="font-lg d-inline-flex">
-                        Création d'une motivation de poste
-                    </h3>
-                </div>
+                <PageTitleBar
+                    onBackClick={this.onBack}
+                    title="Création d'une motivation de poste"
+                />
                 <div className="row">
                     <div className="col-md-12 col-sm-12 pr-md-40">
                         <RctCollapsibleCard>

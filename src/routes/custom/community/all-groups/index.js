@@ -1,32 +1,28 @@
-import React, { Component } from 'react';
-import { connect } from "react-redux";
-import IntlMessages from 'Util/IntlMessages';
-import { sendRequestInvitation, getGroupPosts, setRequestGlobalAction, getMotivations } from "Actions";
-import { injectIntl } from "react-intl";
-import { withStyles } from "@material-ui/core";
-import { withRouter } from "react-router-dom";
-import { AbilityContext } from "Permissions/Can";
-import Permission from "Enums/Permissions";
-import CustomList from "Components/CustomList";
+import {connect} from "react-redux";
+import {FormGroup} from 'reactstrap';
+import {injectIntl} from "react-intl";
+import React, {Component} from 'react';
+import {withRouter} from "react-router-dom";
+import {withStyles} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
-import { statusCommunitySpaceStatus, setCommunitySpaceData, setCommunitySpaceAdmins } from 'Actions/CommunityAction';
-import { NotificationManager } from "react-notifications";
-import { ERROR_500 } from "Constants/errors";
-import { getInvitationsPending } from "Actions/GeneralActions";
-import { FormGroup, Input as InputStrap } from 'reactstrap';
-import { getCommunitiesByBranch, getCommunityAdmins } from "Actions/independentActions";
-import { COMMUNITY } from 'Url/frontendUrl';
 import GroupItem2 from '../groups/GroupItem2';
+import Select from "@material-ui/core/Select";
+import CustomList from "Components/CustomList";
+import {AbilityContext} from "Permissions/Can";
+import MenuItem from "@material-ui/core/MenuItem";
+import CancelIcon from '@material-ui/icons/Cancel';
+import Dialog from "@material-ui/core/Dialog/Dialog";
+import IconButton from "@material-ui/core/IconButton";
+import FormControl from "@material-ui/core/FormControl";
+import {NotificationManager} from "react-notifications";
+import {getInvitationsPending} from "Actions/GeneralActions";
+import {COMMUNITY, joinUrlWithParamsId} from 'Url/frontendUrl';
+import InputLabel from "@material-ui/core/InputLabel/InputLabel";
+import {getCommunitiesByBranch} from "Actions/independentActions";
+import CustomAsyncComponent from "Components/CustomAsyncComponent";
 import DialogTitle from "@material-ui/core/DialogTitle/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent/DialogContent";
-import Dialog from "@material-ui/core/Dialog/Dialog";
-import CancelIcon from '@material-ui/icons/Cancel';
-import IconButton from "@material-ui/core/IconButton";
-import CustomAsyncComponent from "Components/CustomAsyncComponent";
-import FormControl from "@material-ui/core/FormControl";
-import MenuItem from "@material-ui/core/MenuItem";
-import Select from "@material-ui/core/Select";
-import InputLabel from "@material-ui/core/InputLabel/InputLabel";
+import {getGroupPosts, getMotivations, sendRequestInvitation, setRequestGlobalAction} from "Actions";
 
 class AllGroups extends Component {
     static contextType = AbilityContext;
@@ -47,10 +43,17 @@ class AllGroups extends Component {
     }
 
     componentDidMount() {
-        getCommunitiesByBranch(this.props.authUser.user.branch.id, this.props.authUser.user.id).then(data => {
-            this.setState({ communities: data });
-        }).finally(() => this.setState({ loading: false }))
+        this.loadData();
     }
+
+    loadData = () => {
+        this.setState({ loading: false });
+        getCommunitiesByBranch(this.props.authUser.user.branch.id, this.props.authUser.user.id)
+            .then(data => {
+                this.setState({ communities: data });
+            })
+            .finally(() => this.setState({ loading: false }));
+    };
 
     onEnterClick = (group) => {
         this.setState({ showAskingBox: true, group }, () => {
@@ -59,38 +62,36 @@ class AllGroups extends Component {
     };
 
     getPosts = (id) => {
-        this.props.setRequestGlobalAction(true)
-        getGroupPosts(id).then(data => {
-            this.setState({ posts: data })
-        }).finally(() => {
-            this.props.setRequestGlobalAction(false)
-        })
-    }
+        this.props.setRequestGlobalAction(true);
+        getGroupPosts(id)
+            .then(data => {
+                this.setState({ posts: data });
+            }).finally(() => {
+                this.props.setRequestGlobalAction(false);
+            });
+    };
 
     getPostMotivations = (post) => {
-        this.setState({ post: post })
-        this.props.setRequestGlobalAction(true)
-        getMotivations(post.id).then(data => {
-            this.setState({ motivations: data })
-        }).finally(() => {
-            this.props.setRequestGlobalAction(false)
-        })
-    }
+        this.setState({ post: post });
+        this.props.setRequestGlobalAction(true);
+        getMotivations(post.id)
+            .then(data => {
+                this.setState({ motivations: data });
+            }).finally(() => {
+                this.props.setRequestGlobalAction(false);
+            });
+    };
 
     onAskingClick = (group) => {
         this.props.setRequestGlobalAction(true);
-        let data = { motivation_id: this.state.motivation }
+        let data = { motivation_id: this.state.motivation };
         sendRequestInvitation(group.id, this.props.authUser.user.id, data)
             .then(() => {
                 NotificationManager.success("Votre demande pour le groupe " + group.label + " a été envoyé");
-                getCommunitiesByBranch(this.props.authUser.user.branch.id, this.props.authUser.user.id).then(data => {
-                    this.setState({ communities: data });
-                }).finally(() => this.setState({ loading: false }))
+                this.loadData();
                 this.props.getInvitationsPending(this.props.authUser.user.id);
             })
-            .catch(() => {
-                NotificationManager.error(ERROR_500);
-            })
+            .catch(() => null)
             .finally(() => {
                 this.props.setRequestGlobalAction(false);
                 this.setState({ showAskingBox: false, group: null, posts: [], post: null, motivations: [], motivation: null });
@@ -98,17 +99,10 @@ class AllGroups extends Component {
     };
 
     onJoinClick = (id) => {
-        getCommunityAdmins(id).then(data => {
-            this.props.statusCommunitySpaceStatus(true);
-            this.props.setCommunitySpaceAdmins(data);
-            this.props.setCommunitySpaceData(id);
-            this.props.history.push(COMMUNITY.MEMBERS.LIST);
-        })
-    }
-
+        this.props.history.push(joinUrlWithParamsId(COMMUNITY.MEMBERS.LIST, id));
+    };
 
     render() {
-
         const { communities, loading, showAskingBox } = this.state;
 
         if (!loading && communities && communities.length === 0) {
@@ -169,18 +163,22 @@ class AllGroups extends Component {
                                     data={this.state.posts}
                                     component={data => (
                                         <div className="form-group text-left">
-                                            <FormControl fullWidth>
-                                                <InputLabel className="text-left" htmlFor="currency-helper">
-                                                    Catégorie d'utilisateur
-                                                </InputLabel>
-                                                <Select onChange={e => this.getPostMotivations(e.target.value)}>
-                                                    {data.map(item => (
-                                                        <MenuItem key={item.id} value={item} className="center-hor-ver">
-                                                            {item.title}
-                                                        </MenuItem>
-                                                    ))}
-                                                </Select>
-                                            </FormControl>
+                                            {data.length === 0 ? (
+                                                <></>
+                                            ) : (
+                                                <FormControl fullWidth>
+                                                    <InputLabel className="text-left" htmlFor="currency-helper">
+                                                        Catégorie d'utilisateur
+                                                    </InputLabel>
+                                                    <Select onChange={e => this.getPostMotivations(e.target.value)}>
+                                                        {data.map(item => (
+                                                            <MenuItem key={item.id} value={item} className="center-hor-ver">
+                                                                {item.title}
+                                                            </MenuItem>
+                                                        ))}
+                                                    </Select>
+                                                </FormControl>
+                                            )}
                                         </div>
                                     )}
                                 />
@@ -271,5 +269,5 @@ const useStyles = theme => ({
     }
 });
 
-export default connect(mapStateToProps, { getInvitationsPending, setRequestGlobalAction, setCommunitySpaceAdmins, statusCommunitySpaceStatus, setCommunitySpaceData })
-    (withStyles(useStyles, { withTheme: true })(withRouter(injectIntl(AllGroups))));
+export default connect(mapStateToProps, {getInvitationsPending, setRequestGlobalAction})
+(withStyles(useStyles, {withTheme: true})(withRouter(injectIntl(AllGroups))));

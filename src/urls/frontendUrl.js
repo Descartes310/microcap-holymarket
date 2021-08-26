@@ -9,18 +9,40 @@ export const GETIN = '/get-in';
 export const PIONIERS = '/pioniers';
 export const AGENTS = '/agents';
 export const SERVICES = '/services';
+export const CGU = '/cgu';
 export const PASS_DETAILS = '/pass-details';
 export const SOLIDARITY = '/solidarity';
 export const MONEY_MANAGEMENT = '/money-management';
 export const GALERY_PROJECT = '/projects-gallery';
 export const TERMS = '/conditions-generales-d-utilisation';
 export const LEGAL_MENTION = '/mentions-legales';
+
 export const AUTH = {
     LOGIN: '/login',
     REGISTER: '/register',
     TOKEN: '/branch/activation',
     FORGOT_PASSWORD: '/forgot-password',
     RESET_PASSWORD: '/reset-password',
+};
+
+export const PREVISIONS = {
+    SELF: '/previsions',
+    LIST: '/previsions/list',
+    CREATE: '/previsions/create',
+    PERIODES: {
+        LIST: '/previsions/:id/periodes/list',
+        DETAILS: '/previsions/:id/periodes/:id2',
+        CREATE: '/previsions/:id/periodes/create',
+    }
+};
+
+export const PREVISIONS_ADMIN = {
+    SELF: '/admin/previsions',
+    LIST: '/admin/previsions/list',
+    GOALS: {
+        SELF: '/admin/previsions/goals',
+        LIST: '/admin/previsions/goals/list',
+    }
 };
 
 export const NETWORK = {
@@ -113,7 +135,7 @@ export const USERS = {
         CREATE: '/users-profile/create',
         PROFILE: '/users-profile/profile',
         DISPLAY_PROFILE: '/users-profile/display-profile',
-        SHOW_PROFILE: '/users-profile/display-profile/{id}',
+        SHOW_PROFILE: '/users-profile/display-profile/:id',
         USERS_PERMISSION: {
             SELF: '/users-profile/users-permission',
             LIST: '/users-profile/users-permission/list',
@@ -160,7 +182,8 @@ export const PRODUCT = {
     SHOW: '/products/:id/show/:type',
     DETAILS: '/products/:id/details/:type',
     SHOW_ACCOUNT: '/products/accounts',
-    ACCOUNT_DETAILS: '/products/accounts/:id'
+    ACCOUNT_DETAILS: '/products/accounts/:id',
+    ACCOUNT_LOGS: '/products/accounts/:id/logs',
 };
 
 export const STORE = {
@@ -332,55 +355,63 @@ export const PROJECTS = {
 };
 
 export const COMMUNITY_ADMIN = {
-    SELF: '/admin/community-t',
+    SELF: '/community-t/:id/admin',
     VOUCHER: {
-        PAYMENT: '/admin/community-t/members/vouchers/payment',
-        CHARCHING: '/admin/community-t/members/vouchers/charging'
+        PAYMENT: '/community-t/:id/admin/members/vouchers/payment',
+        CHARCHING: '/community-t/:id/admin/members/vouchers/charging'
     },
     MEMBERS: {
-        SELF: '/admin/community-t/members',
-        LIST: '/admin/community-t/members/list',
-        INVITATION: '/admin/community-t/members/invitation'
+        SELF: '/community-t/:id/admin/members',
+        LIST: '/community-t/:id/admin/members/list',
+        INVITATION: '/community-t/:id/admin/members/invitation'
     },
     POST: {
-        SELF: '/admin/community-t/user-category',
-        LIST: '/admin/community-t/user-category/list',
-        CREATE: '/admin/community-t/user-category/create',
+        SELF: '/community-t/:id/admin/user-category',
+        LIST: '/community-t/:id/admin/user-category/list',
+        CREATE: '/community-t/:id/admin/user-category/create',
         MOTIVATION: {
-            LIST: '/admin/community-t/user-category/post/:id/list',
-            CREATE: '/admin/community-t/user-category/post/:id/create',
+            LIST: '/community-t/:id/admin/user-category/post/:postId/list',
+            CREATE: '/community-t/:id/admin/user-category/post/:postId/create',
         }
     },
     RUBRIQUE: {
-        SELF: '/admin/community-t/rubrique',
-        LIST: '/admin/community-t/rubrique/list',
-        CREATE: '/admin/community-t/rubrique/create',
+        SELF: '/community-t/:id/admin/rubrique',
+        LIST: '/community-t/:id/admin/rubrique/list',
+        CREATE: '/community-t/:id/admin/rubrique/create',
+    },
+    OPERATOR: {
+        SELF: '/community-t/:id/admin/operateur',
+        LIST: '/community-t/:id/admin/operateur/list',
+        SUPERVISION: {
+            SELF: '/community-t/:id/admin/operateur/supervision',
+            COMMUNITIES: '/community-t/:id/admin/operateur/supervision/communities',
+        }
     },
     PROJECT: {
-        SELF: '/admin/community-t/project',
-        CREATE: '/admin/community-t/project/create',
+        SELF: '/community-t/:id/admin/project',
+        CREATE: '/community-t/:id/admin/project/create',
     },
     INVITATIONS: {
-        SELF: '/admin/community-t/members/invitation',
+        SELF: '/community-t/:id/admin/members/invitation',
         LIST: {
-            SEND: '/admin/community-t/members/invitation/send',
-            RECEIVED: '/admin/community-t/members/invitation/integration-request',
+            SEND: '/community-t/:id/admin/members/invitation/send',
+            RECEIVED: '/community-t/:id/admin/members/invitation/integration-request',
         },
-        CREATE: '/admin/community-t/members/invitation/create'
+        CREATE: '/community-t/:id/admin/members/invitation/create'
     },
-}
+};
 
 export const COMMUNITY = {
-    SELF: '/community-t',
+    SELF: '/community-t/:id',
     POST_PROJECT: {
-        SELF: '/community-t/projects',
+        SELF: '/community-t/:id/projects',
         LIST: '',
         CREATE: ''
     },
     MEMBERS: {
-        SELF: '/community-t/members',
-        LIST: '/community-t/members/list',
-        INVITATION: '/community-t/members/invitation'
+        SELF: '/community-t/:id/members',
+        LIST: '/community-t/:id/members/list',
+        INVITATION: '/community-t/:id/members/invitation'
     },
     ACTIVITY: {
         SELF: '/community-t/activities',
@@ -388,18 +419,18 @@ export const COMMUNITY = {
         CREATE: ''
     },
     PROJECTS: {
-        SELF: '/admin/community-t/projects',
-        SHOW: '/admin/community-t/projects/show',
-        GALLERY: '/admin/community-t/projects/gallery',
-        UPDATE: '/admin/community-t/projects/update',
+        SELF: '/community-t/:id/admin/projects',
+        SHOW: '/community-t/:id/admin/projects/show',
+        GALLERY: '/community-t/:id/admin/projects/gallery',
+        UPDATE: '/community-t/:id/admin/projects/update',
     },
     INVITATIONS: {
-        SELF: '/community-t/members/invitation',
+        SELF: '/community-t/:id/members/invitation',
         LIST: {
-            SEND: '/community-t/members/invitation/send',
-            RECEIVED: '/community-t/members/invitation/integration-request',
+            SEND: '/community-t/:id/members/invitation/send',
+            RECEIVED: '/community-t/:id/members/invitation/integration-request',
         },
-        CREATE: '/community-t/members/invitation/create'
+        CREATE: '/community-t/:id/members/invitation/create'
     },
 };
 
@@ -433,6 +464,11 @@ export const MICROCAP360 = {
     },
     RESEAU: {
         SELF: '/community',
+    },
+    MY: {
+        SELF: '/microcap360/personnal',
+        PASS: '/microcap360/personnal/pass',
+        PROJECT: '/microcap360/personnal/project',
     }
 };
 
@@ -446,7 +482,6 @@ export const STOCK = {
         PROJECT_SHOW: '/stocks/financials/project/:id',
     }
 };
-
 
 export const joinUrlWithParams = (to, params) => {
     let url = to;

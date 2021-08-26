@@ -62,5 +62,6 @@ const intlProvider = new IntlProvider({
 const { intl } = intlProvider.getChildContext();
 
 export const formatMessage = (id, value = {}) => intl.formatMessage({ id, value, });
+// export const formatMessage = (id, value = {}) => id;
 
 export default AppLocale;

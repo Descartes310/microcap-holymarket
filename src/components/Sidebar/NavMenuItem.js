@@ -73,10 +73,10 @@ class NavMenuItem extends Component {
       // Check if the route has nested routes and if the user has at least one permission for one nested routes
       if ((menu.key != 'commnity_admin' && this.props.authUser.user.status != Status.PENDING) || (menu.key == 'commnity_admin' && this.props.communitySpace.admins.includes(authUser.user.id) && this.props.authUser.user.status != Status.PENDING))
          if (menu.child_routes !== null && authUser.hasPermissions(_.flattenDeep(menu.child_routes.map(p => p.permissions.map(i => i.name))))) {
-
             return (
                <Fragment>
-                  {((!this.props.communitySpace.status) || (this.props.communitySpace.status && menu.menu_title === 'Projet' && (this.props.communitySpace.type === 'Communaute projet' || this.props.communitySpace.type === 'Communaute conventionnée')) || (this.props.communitySpace.status && menu.menu_title !== 'Projet')) ?
+                  {/* {((!this.props.communitySpace.status) || (this.props.communitySpace.status && menu.menu_title === 'Projet' && (this.props.communitySpace.type === 'Communaute projet' || this.props.communitySpace.type === 'Communaute conventionnée')) || (this.props.communitySpace.status && menu.menu_title !== 'Projet')) ? */}
+                  {((!this.props.communitySpace.status) || (this.props.communitySpace.status && menu.menu_title === 'Projet') || (this.props.communitySpace.status && menu.menu_title !== 'Projet')) ?
                      <ListItem button component="li" onClick={onToggleMenu} className={`list-item ${classNames({ 'item-active': menu.open })}`}>
 
                         <ListItemIcon className="menu-icon">
@@ -140,7 +140,8 @@ class NavMenuItem extends Component {
                                                 </span>
                                              </ListItem>
                                           ) : (
-                                             (!this.props.communitySpace.status) || (this.props.communitySpace.status && subMenu.menu_title === 'Projet' && this.props.communitySpace.type === 'Communaute conventionnée') || (this.props.communitySpace.status && subMenu.menu_title !== 'Projet') ?
+                                             // (!this.props.communitySpace.status) || (this.props.communitySpace.status && subMenu.menu_title === 'Projet' && this.props.communitySpace.type === 'Communaute conventionnée') || (this.props.communitySpace.status && subMenu.menu_title !== 'Projet') ?
+                                             (!this.props.communitySpace.status) || (this.props.communitySpace.status && subMenu.menu_title === 'Projet') || (this.props.communitySpace.status && subMenu.menu_title !== 'Projet') ?
                                                 <ListItem button component="li" key={index}>
                                                    <NavLink to={subMenu.path} activeClassName="item-active" >
                                                       <span className="menu">

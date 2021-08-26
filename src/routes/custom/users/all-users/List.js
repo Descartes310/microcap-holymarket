@@ -1,17 +1,17 @@
-import ListItem from './ListItem';
 import { connect } from "react-redux";
 import { injectIntl } from "react-intl";
 import React, { Component } from 'react';
-import { withRouter } from "react-router-dom";
 import Button from "@material-ui/core/Button";
+import { withRouter } from "react-router-dom";
+import { getFilePath } from "Helpers/helpers";
 import CustomList from "Components/CustomList";
 import UserAvatar from "Components/UserAvatar";
 import { withStyles } from "@material-ui/core";
 import { AbilityContext } from "Permissions/Can";
+import SweetAlert from 'react-bootstrap-sweetalert';
 import TimeFromMoment from "Components/TimeFromMoment";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
-import { getBranchUsers, setRequestGlobalAction, getUser } from "Actions";
-import { getFilePath } from "Helpers/helpers";
+import { getBranchUsers, setRequestGlobalAction, suspendAccount, deleteAccount } from "Actions";
 
 class UsersAccountsList extends Component {
     static contextType = AbilityContext;
@@ -20,6 +20,9 @@ class UsersAccountsList extends Component {
         this.state = {
             profileId: null,
             showAddBox: false,
+            showSuspendBox: false,
+            showDeleteBox: false,
+            user: null,
             selectedBranch: this.props.authUser.isManager() ? null : this.props.authUser.branchId,
             branches: {
                 data: null,
@@ -28,9 +31,21 @@ class UsersAccountsList extends Component {
         }
     }
 
-    getUserDetails = (id) => {
-        getUser(id).then(data => {
-            this.setState({ user: data, showBox: true });
+    suspendAccount() {
+        this.props.setRequestGlobalAction(true);
+        suspendAccount(this.state.user.reference).finally(() => {
+            this.setState({ showSuspendBox: false, user: null });
+            this.props.setRequestGlobalAction(false);
+            this.props.getBranchUsers(this.props.authUser.branchId);
+        })
+    }
+
+    deleteAccount() {
+        this.props.setRequestGlobalAction(true);
+        deleteAccount(this.state.user.reference).finally(() => {
+            this.setState({ showDeleteBox: false, user: null });
+            this.props.setRequestGlobalAction(false);
+            this.props.getBranchUsers(this.props.authUser.branchId);
         })
     }
 
@@ -39,15 +54,16 @@ class UsersAccountsList extends Component {
     }
 
     render() {
-        const { branchUsers } = this.props;
-        console.log(branchUsers)
+        const { branchUsers, loading } = this.props;
+        const { showSuspendBox, showDeleteBox, user } = this.state;
+
         return (
             <>
                 <PageTitleBar
                     title={"Liste des utilisateurs"}
                 />
                 <CustomList
-                    loading={false}
+                    loading={loading}
                     list={branchUsers}
                     itemsFoundText={n => `${n} utilisateurs trouvés`}
                     renderItem={list => (
@@ -60,7 +76,7 @@ class UsersAccountsList extends Component {
                                 </div>
                             ) : (
                                     <div className="table-responsive">
-                                        <table className="table table-hover table-middle mb-0 text-center">
+                                        <table className="table table-hover table-middle mb-0">
                                             <thead>
                                                 <tr>
                                                     <th>Avatar</th>
@@ -68,7 +84,7 @@ class UsersAccountsList extends Component {
                                                     <th>Adresse email</th>
                                                     <th>Type d'utilisateur</th>
                                                     <th>Date d'inscription</th>
-                                                    {/* <th>Actions</th> */}
+                                                    <th>Actions</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -118,16 +134,31 @@ class UsersAccountsList extends Component {
                                                                 </div>
                                                             </div>
                                                         </td>
-                                                        {/* <td>
-                                                            <Button
-                                                                color="primary"
-                                                                // variant={"outlined"}
-                                                                className={`text-white font-weight-bold btn-primary btn-xs mr-2`}
-                                                            // onClick={() => this.setState({ showAddBox: true, profileId: item.id })}
-                                                            >
-                                                                Voir les details
-                                                            </Button>
-                                                        </td> */}
+                                                        <td>
+                                                            {user.status == 'SUSPENDED' ?
+                                                                <Button
+                                                                    size="small"
+                                                                    style={{ backgroundColor: '#ff3739' }}
+                                                                    // disabled={loading}
+                                                                    variant="contained"
+                                                                    className={"text-white font-weight-bold mr-3"}
+                                                                    onClick={() => this.setState({ showDeleteBox: true, user })}
+                                                                >
+                                                                    Supprimer
+                                                                </Button>
+                                                                :
+                                                                <Button
+                                                                    size="small"
+                                                                    color="primary"
+                                                                    // disabled={loading}
+                                                                    variant="contained"
+                                                                    className={"text-white font-weight-bold mr-3"}
+                                                                    onClick={() => this.setState({ showSuspendBox: true, user })}
+                                                                >
+                                                                    Suspendre
+                                                                </Button>
+                                                            }
+                                                        </td>
                                                     </tr>
                                                 ))}
                                             </tbody>
@@ -138,6 +169,40 @@ class UsersAccountsList extends Component {
                         </>
                     )}
                 />
+                {showSuspendBox && user && (
+                    <SweetAlert
+                        warning
+                        show={showSuspendBox}
+                        title={"Suspension d'un utilisateur"}
+                        onConfirm={() => this.suspendAccount()}
+                        confirmBtnText="Suspendre"
+                        confirmBtnClass="btn-lg btn-primary btn-sm text-white"
+                    >
+                        <div className="row">
+                            <div className="col-12">
+                                <p>Voulez-vous vraiment suspendre l'utilisateur <b>{user.name}</b> ?</p>
+                            </div>
+                        </div>
+                    </SweetAlert>
+                )
+                }
+                {showDeleteBox && user && (
+                    <SweetAlert
+                        warning
+                        show={showDeleteBox}
+                        title={"Suppression d'un utilisateur"}
+                        onConfirm={() => this.deleteAccount()}
+                        confirmBtnText="Supprimer"
+                        confirmBtnClass="btn-lg btn-primary btn-sm text-white"
+                    >
+                        <div className="row">
+                            <div className="col-12">
+                                <p>Voulez-vous vraiment supprimer l'utilisateur <b>{user.name}</b> ?</p>
+                            </div>
+                        </div>
+                    </SweetAlert>
+                )
+                }
             </>
         );
     }
@@ -167,7 +232,8 @@ const mapStateToProps = ({ requestGlobalLoader, branchUsers, authUser }) => {
     return {
         requestGlobalLoader,
         authUser: authUser.data,
-        branchUsers: branchUsers.data
+        branchUsers: branchUsers.data,
+        loading: branchUsers.loading,
     }
 };
 

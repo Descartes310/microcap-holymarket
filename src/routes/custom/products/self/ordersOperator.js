@@ -1,84 +1,91 @@
 import { connect } from "react-redux";
 import { injectIntl } from "react-intl";
 import React, { Component } from 'react';
-import Permission from "Enums/Permissions";
-import { withRouter, Link } from "react-router-dom";
-import IntlMessages from 'Util/IntlMessages';
+import Button from "@material-ui/core/Button";
+import { getFilePath } from "Helpers/helpers";
 import { withStyles } from "@material-ui/core";
-import { AbilityContext } from "Permissions/Can";
 import CustomList from "Components/CustomList";
 import { setRequestGlobalAction } from "Actions";
-import { ERROR_500 } from "Constants/errors";
-import Button from "@material-ui/core/Button";
+import { AbilityContext } from "Permissions/Can";
+import CancelIcon from '@material-ui/icons/Cancel';
+import { withRouter, Link } from "react-router-dom";
+import Dialog from "@material-ui/core/Dialog/Dialog";
+import IconButton from "@material-ui/core/IconButton";
 import TimeFromMoment from "Components/TimeFromMoment";
 import AmountCurrency from "Components/AmountCurrency";
-import Dialog from "@material-ui/core/Dialog/Dialog";
-import CancelIcon from '@material-ui/icons/Cancel';
-import IconButton from "@material-ui/core/IconButton";
-import { NotificationManager } from "react-notifications";
 import { PRODUCT, joinUrlWithParamsId } from 'Url/frontendUrl'
 import DialogTitle from "@material-ui/core/DialogTitle/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent/DialogContent";
 import { getOrderPieces, getOperatorsOrders, approveOrder } from "Actions/independentActions";
-import { getFilePath } from "Helpers/helpers";
+import EmptyResult from "Components/EmptyResult";
 
 class Order extends Component {
     static contextType = AbilityContext;
 
     constructor(props) {
         super(props);
-
         this.state = {
             loading: true,
             pieces: [],
             showBox: false,
-            products: []
+            products: [],
         }
     }
-
-    onEnterClick = (product) => {
-        const url = joinUrlWithParamsId(PRODUCT.ORDERS_SHOW, product.id);
-        this.props.history.push(url);
-    };
 
     componentDidMount() {
         this.loadData();
     }
 
     loadData = () => {
-        setRequestGlobalAction(true);
+        this.setState({loading: true});
         getOperatorsOrders()
             .then(products => {
                 this.setState({ products: products });
             })
-            .catch((error) => {
-                NotificationManager.error(ERROR_500);
-            })
+            .catch(() => this.setState({ products: null }))
             .finally(() => {
-                setRequestGlobalAction(false)
+                this.setState({loading: false});
             });
     };
 
     loadPieces = (id) => {
-        setRequestGlobalAction(true);
+        this.props.setRequestGlobalAction(true);
         getOrderPieces(id)
             .then(pieces => {
                 this.setState({ pieces, showBox: true });
             })
             .finally(() => {
-                setRequestGlobalAction(false)
+                this.props.setRequestGlobalAction(false);
             });
     };
 
     approvingOrder = (id) => {
-        setRequestGlobalAction(true);
-        approveOrder(id)
+        const action = true;
+        this.props.setRequestGlobalAction(true);
+        approveOrder(id, action)
             .then(piece => {
                 this.loadData();
             })
             .finally(() => {
-                setRequestGlobalAction(false)
+                this.props.setRequestGlobalAction(false)
             });
+    };
+
+    disapprovingOrder = (id) => {
+        const action = false;
+        this.props.setRequestGlobalAction(true);
+        approveOrder(id, action)
+            .then(piece => {
+                this.loadData();
+            })
+            .finally(() => {
+                this.props.setRequestGlobalAction(false)
+            });
+    };
+
+    onEnterClick = (product) => {
+        const url = joinUrlWithParamsId(PRODUCT.ORDERS_SHOW, product.id);
+        this.props.history.push(url);
     };
 
     render() {
@@ -87,8 +94,8 @@ class Order extends Component {
         return (
             <>
                 <CustomList
-                    loading={false}
                     list={products}
+                    loading={loading}
                     titleList={"Commandes en attentes"}
                     itemsFoundText={n => `${n} commandes trouvées`}
                     renderItem={list => (
@@ -161,26 +168,41 @@ class Order extends Component {
                                                                 }
                                                             </div>
                                                         </td>
-                                                        <td className="table-action">
-                                                            <Button
-                                                                size="small"
-                                                                color="primary"
-                                                                variant="contained"
-                                                                className={"text-white font-weight-bold mr-3 bg-blue"}
-                                                                onClick={() => this.loadPieces(item.id)}
-                                                            >
-                                                                Voir les détails
-                                                            </Button>
-                                                            <Button
-                                                                size="small"
-                                                                color="primary"
-                                                                variant="contained"
-                                                                className={"text-white font-weight-bold mr-3"}
-                                                                onClick={() => this.approvingOrder(item.id)}
-                                                            >
-                                                                Approuver la commande
-                                                            </Button>
-                                                        </td>
+                                                        {item.orderStatus !== 'PAID' && (
+                                                            <td className="table-action">
+                                                                <a
+                                                                    href="#"
+                                                                    onClick={e => {
+                                                                        e.preventDefault();
+                                                                        this.loadPieces(item.id)
+                                                                    }}
+                                                                    className="text-decoration-underline text-blue">
+                                                                    Voir les détails
+                                                                </a>
+                                                                {!item.approved && (
+                                                                    <>
+                                                                        <Button
+                                                                            size="small"
+                                                                            color="primary"
+                                                                            variant="contained"
+                                                                            className={"text-white font-weight-bold mx-2"}
+                                                                            onClick={() => this.approvingOrder(item.id)}
+                                                                        >
+                                                                            Approuver
+                                                                        </Button>
+                                                                        <Button
+                                                                            size="small"
+                                                                            color="primary"
+                                                                            variant="contained"
+                                                                            className={"text-white font-weight-bold bg-danger"}
+                                                                            onClick={() => this.disapprovingOrder(item.id)}
+                                                                        >
+                                                                            Désapprouver
+                                                                        </Button>
+                                                                    </>
+                                                                )}
+                                                            </td>
+                                                        )}
                                                     </tr>
                                                 ))}
                                             </tbody>
@@ -214,15 +236,18 @@ class Order extends Component {
                             <div className="col-md-12">
                                 <div className="col-12 my-3">
                                     <div className="table-responsive">
-                                        <table className="table table-hover table-middle mb-0 text-center">
-                                            <thead>
-                                                <tr>
-                                                    <th>Nom de la pièce</th>
-                                                    <th>Actions</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {pieces && pieces.map((item, key) => (
+                                        {pieces.length === 0 ? (
+                                            <EmptyResult message="Aucun pieces n'a encore été téléversés" />
+                                        ) : (
+                                            <table className="table table-hover table-middle mb-0 text-center">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Nom de la pièce</th>
+                                                        <th>Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                {pieces.map((item, key) => (
                                                     <tr key={key} className="cursor-pointer">
                                                         <td>
                                                             <div className="media">
@@ -246,8 +271,9 @@ class Order extends Component {
                                                         </td>
                                                     </tr>
                                                 ))}
-                                            </tbody>
-                                        </table>
+                                                </tbody>
+                                            </table>
+                                        )}
                                     </div>
                                 </div>
                             </div>

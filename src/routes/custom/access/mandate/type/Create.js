@@ -46,9 +46,7 @@ const Create = props => {
                 getMandateType(authUser.user.branch.id);
                 onClose();
             })
-            .catch((error) => {
-                NotificationManager.error(ERROR_500);
-            })
+            .catch(() => null)
             .finally(() => setRequestGlobalAction(false));
     };
 

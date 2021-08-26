@@ -76,7 +76,6 @@ class Create extends Component {
                 });
             })
             .catch(() => {
-                NotificationManager.error(ERROR_500);
                 this.setState(prevState => ({
                     notificationsType: {
                         ...prevState.notificationsType,
@@ -123,7 +122,6 @@ class Create extends Component {
                 }
             })
             .catch((e) => {
-                NotificationManager.error(ERROR_500);
                 this.setState(prevState => ({
                     notificationsModel: {
                         ...prevState.notificationsModel,
@@ -183,9 +181,7 @@ class Create extends Component {
                 NotificationManager.success("Model de notifications créé avec succès");
                 this.props.history.push(SETTINGS.NOTIFICATION.LIST);
             })
-            .catch(() => {
-                NotificationManager.error(ERROR_500);
-            })
+            .catch(() => null)
             .finally(() => this.props.setRequestGlobalAction(false));
     };
 

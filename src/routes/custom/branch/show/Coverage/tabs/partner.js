@@ -50,7 +50,6 @@ class ClassicSale extends Component {
         getOrganisationByReference(this.state.adhesion).then(data => {
             this.setState({ organisation: data })
         }).catch(err => {
-            NotificationManager.error("Organisation non trouvée")
             this.setState({ organisation: null })
         })
     };
@@ -58,7 +57,6 @@ class ClassicSale extends Component {
     getPartners = (id) => {
         this.setState({ loading: true });
         getPartnersByBranch(id).then(data => {
-            console.log(data)
             this.setState({ partners: data })
         }).catch(err => {
             this.setState({ partners: [] })

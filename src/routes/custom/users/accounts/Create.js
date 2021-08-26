@@ -41,10 +41,7 @@ const UsersAccountsCreate = props => {
                 // getUsersAccounts(authUser.user.branch.id);
                 // onClose();
             })
-            .catch((error) => {
-                NotificationManager.error(ERROR_500);
-                console.log("error => ", error);
-            })
+            .catch(() => null)
             .finally(() => setRequestGlobalAction(false));
     };
 

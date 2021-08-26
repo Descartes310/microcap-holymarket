@@ -33,6 +33,7 @@ export const SETTING = {
     GET_ALL: 'api/settings/branchs/{id}',
     GET_ALL_BY_NAME: 'api/settings/branchs/{id}/by-name',
     CGU: 'api/settings/update/cgu',
+    UPDATE_CGU: 'api/settings/update/cgu/{id}',
     CURRENCIES: 'api/settings/currencies',
     UNIT_TYPE: 'api/settings/unit-types',
     GET_UNIT: 'api/settings/units/unit-types/{id}',
@@ -73,6 +74,10 @@ export const BRANCH = {
     CREATE: 'public/branchs',
     GET_ALL: 'public/branchs',
     GET_ALL_POSTS: 'public/branchs/{id}/posts',
+    GET_ALL_OPERATORS: 'public/branchs/{id}/operators',
+    SELECTED_OPERATOR: 'api/groups/communities/send/request/community/{group_id}/organisation/{organisation_id}',
+    REMOVE_OPERATOR: 'api/groups/operators/remove',
+    CANCEL_OPERATOR: 'api/groups/operators/invitation/cancel',
     CONFIGURATION: {
         START: 'public/branchs/start/configurations/{id}',
         STOP: 'public/branchs/close/configurations/{id}',
@@ -157,6 +162,10 @@ export const PRODUCT_TYPE = {
     AVAILABLE: 'api/type-products/{id}/variations',
 };
 
+export const PDF_GENERATOR = {
+    GET_MOVEMENTS: 'api/pdf/accounts/{id}/mouvements',
+};
+
 export const PACKAGES = {
     LIST: 'api/packages',
     CREATE: 'api/packages',
@@ -174,10 +183,33 @@ export const USER_PROFILE = {
     },
 };
 
+export const PREVISIONS = {
+    GOALS: {
+        GET_ALL: 'users/previsions/goals',
+        CREATE: 'users/previsions/goals',
+    },
+    PREVISIONS: {
+        CREATE: 'users/previsions',
+        GET_ALL: 'users/previsions',
+        ACTIVE: 'users/previsions/{id}',
+        GET_ONE: 'users/previsions/{id}',
+        DETAILS: 'users/previsions/details',
+        GET_CODE: 'users/previsions/generate-code',
+        ACTIVE_PASS: 'users/previsions/active-pass'
+    },
+    PERIODES: {
+        GET_ALL: 'users/previsions/{id}/periods',
+        CREATE: 'users/previsions/{id}/periods',
+        DETAILS: 'users/previsions/periods/{id}',
+    }
+};
+
 export const USERS = {
     BRANCH_USERS: 'api/users',
     SEARCH: 'api/users/search',
     GET_ONE: '/api/users/one',
+    SUSPEND: 'api/users/{id}/suspend',
+    DELETE: 'api/users/{id}/delete',
     GET_ALL: 'api/users/persons',
     UPDATE_CURRENCY: 'api/users/currency/{id}',
     GET_ALL_BY_ORGANISATION: 'api/users/persons/by-organisation',
@@ -245,6 +277,9 @@ export const COMMUNITY_MEMBER = {
         GET_POSTS: 'api/groups/{id}/posts',
         GET_MOTIVATION_POSTS: 'api/groups/posts/{post_id}/motivations',
         GET_CHILD_SECTIONS: 'api/groups/sections/{id}/sections',
+        GET_PENDING_COMMUNITIES: 'api/groups/communities/operators/invitations',
+        GET_CURRENT_COMMUNITIES: 'api/groups/operators/communities',
+        VALIDATE_COMMUNITY: 'api/groups/communities/operators/invitations/validation',
     },
     INVITATIONS: {
         GET_ALL: 'api/groups/communities/pending/invitation/{id}',
@@ -308,7 +343,7 @@ export const ORDER = {
     GET_ALL_OPERATORS: 'api/order/operator',
     GET_ALL_UNAPPROVED: 'api/order/users/unapproved',
     GET_ONE: 'api/order/{id}',
-    APPROVE_ORDER: 'api/order/{id}/approve',
+    APPROVE_ORDER: 'api/order/{id}/status',
     GET_ONE_SALE: 'api/order/{id}/sales',
     GET_ALL_PAYMENT: 'api/order/{id}/sales/all',
     CREATE: 'api/order',
