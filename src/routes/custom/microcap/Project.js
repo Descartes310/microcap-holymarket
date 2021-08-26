@@ -1,10 +1,17 @@
 import './style.css';
 import { connect } from "react-redux";
 import { injectIntl } from "react-intl";
+import styled from 'styled-components';
 import React, { Component } from 'react';
 import { PREVISIONS } from "Url/frontendUrl";
 import { withRouter } from "react-router-dom";
 import { setRequestGlobalAction } from "Actions";
+
+const P = styled.p`
+font-size: 20px !important;
+font-weight: bold;
+margin-top: 10px !important;
+`;
 
 class Project extends Component {
 
@@ -17,27 +24,27 @@ class Project extends Component {
             <div className="row">
                 <div className="col-sm-4 block">
                     <img src={require('Assets/img/goal.png')} className="img-fluid img" alt="Objectifs du plan" />
-                    <p>Objectifs du plan</p>
+                    <P>Objectifs du plan</P>
                 </div>
                 <div className="col-sm-4 block" onClick={() => this.props.history.push(PREVISIONS.LIST)}>
                     <img src={require('Assets/img/plan.png')} className="img-fluid img" alt="Plan prévisionnel de participation" />
-                    <p>Plan prévisionnel de participation</p>
+                    <P>Plan prévisionnel de participation</P>
                 </div>
                 <div className="col-sm-4 block">
                     <img src={require('Assets/img/finance.png')} className="img-fluid img" alt="Ma capacité financière" />
-                    <p>Ma capacité financière</p>
+                    <P>Ma capacité financière</P>
                 </div>
                 <div className="col-sm-4 block">
                     <img src={require('Assets/img/network.png')} className="img-fluid img" alt="Ma position réseau" />
-                    <p>Ma position réseau</p>
+                    <P>Ma position réseau</P>
                 </div>
                 <div className="col-sm-4 block">
                     <img src={require('Assets/img/infos.png')} className="img-fluid img" alt="Fiche d'information membre" />
-                    <p>Fiche d'information membre</p>
+                    <P>Fiche d'information membre</P>
                 </div>
                 <div className="col-sm-4 block">
                     <img src={require('Assets/img/service.png')} className="img-fluid img" alt="Infos de service" />
-                    <p>Infos de service</p>
+                    <P>Infos de service</P>
                 </div>
             </div>
         );

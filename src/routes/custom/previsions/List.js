@@ -13,6 +13,7 @@ class List extends Component {
     state = {
         previsions: [],
         showBox: false,
+        isActive: false,
         selectedPrevision: null
     };
 
@@ -23,7 +24,7 @@ class List extends Component {
     getPrevisions = () => {
         this.props.setRequestGlobalAction(true);
         getUserPrevisions().then(previsions => {
-            this.setState({ previsions })
+            this.setState({ previsions, isActive: previsions.filter(p => p.status).length > 0 });
         }).finally(() => {
             this.props.setRequestGlobalAction(false);
         })
@@ -33,6 +34,7 @@ class List extends Component {
         this.props.setRequestGlobalAction(true);
         activePrevision(id).then(__ => {
             this.getPrevisions();
+            window.location.reload();
         }).finally(() => {
             this.props.setRequestGlobalAction(false);
             this.setState({ showBox: false, selectedPrevision: null })
@@ -134,7 +136,8 @@ class List extends Component {
                                                                     size="small"
                                                                     variant="contained"
                                                                     className={"text-white ml-5"}
-                                                                    style={{ backgroundColor: '#FFB70F', borderColor: '#FFB70F' }}
+                                                                    disabled={this.state.isActive}
+                                                                    style={{ backgroundColor: !this.state.isActive ? '#FFB70F' : 'gray', borderColor: !this.state.isActive ? '#FFB70F' : 'gray' }}
                                                                     onClick={() => this.setState({ selectedPrevision: item, showBox: true })}
                                                                 >
                                                                     Activer

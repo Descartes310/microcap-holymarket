@@ -1306,3 +1306,19 @@ export const getOnePeriode = (id) => {
     const url = joinBaseUrlWithParamsId(`${PREVISIONS.PERIODES.DETAILS}`, id);
     return makeRequest('get', url);
 };
+
+export const generateCode = () => {
+    return makeRequest('get', PREVISIONS.PREVISIONS.GET_CODE);
+};
+
+export const activePass = (start, end) => {
+    return makeRequest('post', PREVISIONS.PREVISIONS.ACTIVE_PASS, {start, end});
+};
+
+export const getActivePass = () => {
+    return makeRequest('get', PREVISIONS.PREVISIONS.ACTIVE_PASS);
+};
+
+export const getPrevisionDetails = () => {
+    return makeRequest('get', PREVISIONS.PREVISIONS.DETAILS);
+};

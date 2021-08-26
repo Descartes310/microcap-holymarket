@@ -191,8 +191,11 @@ export const PREVISIONS = {
     PREVISIONS: {
         CREATE: 'users/previsions',
         GET_ALL: 'users/previsions',
-        GET_ONE: 'users/previsions/{id}',
         ACTIVE: 'users/previsions/{id}',
+        GET_ONE: 'users/previsions/{id}',
+        DETAILS: 'users/previsions/details',
+        GET_CODE: 'users/previsions/generate-code',
+        ACTIVE_PASS: 'users/previsions/active-pass'
     },
     PERIODES: {
         GET_ALL: 'users/previsions/{id}/periods',

@@ -7,7 +7,7 @@ import { withRouter, Switch, Redirect, Route } from "react-router-dom";
 
 const Microcap = ({ match }) => {
     return (
-        <div className="vh-100">
+        <div className="full-height">
             <Switch>
                 <Redirect exact from={`${match.url}/`} to={MICROCAP360.MY.PROJECT} />
                 <Route path={MICROCAP360.MY.PROJECT} component={Project} />

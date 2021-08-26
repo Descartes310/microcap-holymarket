@@ -29,7 +29,6 @@ class Microcap extends Component {
         const oldActivateTab = this.state.activeTab;
         this.setState({ activeTab: value });
         if (oldActivateTab !== value) {
-            console.log("La tab active est => ", value)
             switch (value) {
                 case 0: return this.props.history.push(MICROCAP360.MY.PROJECT);
                 case 1: return this.props.history.push(MICROCAP360.MY.PASS);

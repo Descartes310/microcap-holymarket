@@ -43,6 +43,10 @@ class Create extends Component {
     getPrevision() {
         this.props.setRequestGlobalAction(true);
         getOnePrevision(this.id).then(prevision => {
+            if(prevision.status) {
+                NotificationManager.error('La prévision active ne peut être modifiée');
+                this.props.history.push(PREVISIONS.LIST);
+            }
             this.setState({ prevision, start: prevision.periode ? prevision.periode.endDate : prevision.startDate });
         }).catch(err => {
             this.props.history.push(joinUrlWithParams(PREVISIONS.PERIODES.LIST, [{ param: 'id', value: this.id }]));
@@ -63,8 +67,6 @@ class Create extends Component {
         }
 
         if (this.sum('percent') != 100 || this.sum('value') != this.state.amount) {
-            console.log(this.sum('percent'))
-            console.log(this.sum('value'))
             NotificationManager.error('Les affectations sont mals renseignées');
             return
         }
