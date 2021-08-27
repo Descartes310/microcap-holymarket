@@ -1266,6 +1266,11 @@ export const deleteAccount = (reference) => {
     return makeRequest('put', url, null);
 };
 
+export const verifiedAccount = (reference) => {
+    const url = joinBaseUrlWithParamsId(`${USERS.VERIFIED}`, reference);
+    return makeRequest('put', url, null);
+};
+
 export const getPrevisionGoals = () => {
     return makeRequest('get', PREVISIONS.GOALS.GET_ALL);
 };

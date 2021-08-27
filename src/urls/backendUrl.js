@@ -210,6 +210,7 @@ export const USERS = {
     GET_ONE: '/api/users/one',
     SUSPEND: 'api/users/{id}/suspend',
     DELETE: 'api/users/{id}/delete',
+    VERIFIED: 'api/users/{id}/verified',
     GET_ALL: 'api/users/persons',
     UPDATE_CURRENCY: 'api/users/currency/{id}',
     GET_ALL_BY_ORGANISATION: 'api/users/persons/by-organisation',

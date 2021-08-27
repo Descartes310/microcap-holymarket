@@ -5,6 +5,7 @@ import { injectIntl } from "react-intl";
 import React, { Component } from 'react';
 import { withRouter } from "react-router-dom";
 import Button from "@material-ui/core/Button";
+import { formatDate } from '../../../helpers/helpers';
 import AmountCurrency from "Components/AmountCurrency";
 import { NotificationManager } from 'react-notifications';
 import InputLabel from "@material-ui/core/InputLabel/InputLabel";
@@ -115,7 +116,12 @@ class Pass extends Component {
                                                     value={start}
                                                     name={'start'}
                                                     className="has-input input-lg input-border"
-                                                    onChange={(e) => this.handleOnFormChange('start', e.target.value)}
+                                                    onChange={(e) => { 
+                                                        this.handleOnFormChange('start', e.target.value);
+                                                        let end = new Date(e.target.value);
+                                                        end.setMonth(end.getMonth() + 36);
+                                                        this.setState({ end: formatDate(end) });
+                                                    }}
                                                 />
                                             </FormGroup>
 
@@ -125,6 +131,7 @@ class Pass extends Component {
                                             </InputLabel>
                                                 <InputStrap
                                                     required
+                                                    disabled
                                                     id="end"
                                                     type="date"
                                                     value={end}
@@ -132,7 +139,7 @@ class Pass extends Component {
                                                     disabled={!start}
                                                     min={start ? start : null}
                                                     className="has-input input-lg input-border"
-                                                    onChange={(e) => this.handleOnFormChange('end', e.target.value)}
+                                                    //onChange={(e) => this.handleOnFormChange('end', e.target.value)}
                                                 />
                                             </FormGroup>
 

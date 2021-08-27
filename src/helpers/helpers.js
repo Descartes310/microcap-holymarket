@@ -593,26 +593,27 @@ export const parseDate = (str) => {
 export const datediff = (first, second, time = 1) => {
     let start = parseDate(first);
     let end = parseDate(second);
-    let result = 0;
-    do {
-        switch (time) {
-            case 1:
-                start.setDate(start.getDate() + 1);
-                break;
-            case 7:
-                start.setDate(start.getDate() + 7);
-                break;
-            case 30:
-                start.setMonth(start.getMonth() + 1);
-                break;
-            case 90:
-                start.setMonth(start.getMonth() + 3);
-                break;
-            default:
-                start.setDate(start.getDate() + 1);
-                break;
-        }
-        result++;
-    } while (end >= start);
-    return result;
+    switch (time) {
+        case 1:
+            end.setDate(end.getDate()+1);
+            let days = Math.ceil(Math.abs(start - end) / (1000 * 60 * 60 * 24));
+            return days;
+        case 7:
+            let weeks = Math.ceil(Math.abs(start - end) / (1000 * 60 * 60 * 24 * 7));
+            return weeks;
+        case 30:
+            let months = (end.getFullYear() - start.getFullYear()) * 12;
+            months -= start.getMonth();
+            months += end.getMonth()
+            return months;
+        case 90:
+            let trimester = (end.getFullYear() - start.getFullYear()) * 12;
+            trimester -= start.getMonth();
+            trimester += end.getMonth()
+            return Math.ceil(trimester/3);
+        default:
+            end.setDate(end.getDate()+1);
+            let last = Math.ceil(Math.abs(start - end) / (1000 * 60 * 60 * 24));
+            return last;
+    }
 }

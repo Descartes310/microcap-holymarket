@@ -75,7 +75,7 @@ class ListMembers extends Component {
                     loading={loading}
                     showBackBtn={false}
                     wrapClassName="mt-15 mx-4"
-                    titleList="Membres de la communautés"
+                    titleList="Membres de la communauté"
                     itemsFoundText={n => `${n} utilisateur(s) trouvé(s)`}
                     renderItem={list => (
                         <div className="rct-tabs">
@@ -115,7 +115,7 @@ class ListMembers extends Component {
                         </div>
                     </DialogTitle>
                     <DialogContent>
-                        <SimpleProfile user={user} />
+                        <SimpleProfile user={user} community={this.props.communitySpace} onClose={() => this.setState({ showBox: false })} />
                     </DialogContent>
                 </Dialog>
                 <Dialog

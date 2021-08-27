@@ -85,7 +85,7 @@ function TabContainer(props) {
                   </AppBar>
                   {activeTab === 0 &&
                      <TabContainer>
-                        <SimpleProfileDisplay user={user}/>
+                        <SimpleProfileDisplay user={user} community={this.props.community} onClose={this.props.onClose}/>
                      </TabContainer>}
                   {activeTab === 1 &&
                      <TabContainer>
