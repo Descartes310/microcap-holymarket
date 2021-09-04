@@ -538,7 +538,7 @@ export default {
                ],
                "child_routes": [
                   {
-                     "menu_title": "Ouvrages",
+                     "menu_title": "Modèles d'ouvrages",
                      "new_item": false,
                      "permissions": [],
                      "path": PROJECTS.CONFIGURATION.WORKS.SELF,

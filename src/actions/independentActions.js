@@ -1266,9 +1266,9 @@ export const deleteAccount = (reference) => {
     return makeRequest('put', url, null);
 };
 
-export const verifiedAccount = (reference) => {
+export const verifiedAccount = (reference, community_id) => {
     const url = joinBaseUrlWithParamsId(`${USERS.VERIFIED}`, reference);
-    return makeRequest('put', url, null);
+    return makeRequest('put', url, {community_id});
 };
 
 export const getPrevisionGoals = () => {
@@ -1326,4 +1326,9 @@ export const getActivePass = () => {
 
 export const getPrevisionDetails = () => {
     return makeRequest('get', PREVISIONS.PREVISIONS.DETAILS);
+};
+
+export const getCommunity = (id) => {
+    const url = joinBaseUrlWithParamsId(`${COMMUNITY_MEMBER.USER.GROUPS.GET_ONE}`, id);
+    return makeRequest('get', url);
 };

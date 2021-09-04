@@ -7,10 +7,10 @@ import { withRouter } from 'react-router-dom';
 
 const SimpleProfileDisplay = props => {
 
-    const { user, community } = props;
+    const { user, community, communitySpace } = props;
     
     const verifiedUser = (id) => {
-        verifiedAccount(id).finally(() => {
+        verifiedAccount(id, community.id).finally(() => {
             props.onClose()
         })
     }
@@ -109,7 +109,7 @@ const SimpleProfileDisplay = props => {
                             </div>) : null
                     )}
 
-                {props.community.admins.includes(props.authUser.user.id) && (
+                {props.communitySpace.admins.includes(props.authUser.user.id) && props.community.typeGroup.name == 'COMMUNAUTE_CONVENTIONNEE' && (
                     <Button
                         color="primary"
                         className="text-white mr-2 mt-30"

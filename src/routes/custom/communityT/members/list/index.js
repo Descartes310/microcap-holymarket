@@ -7,12 +7,12 @@ import {withStyles} from "@material-ui/core";
 import {AbilityContext} from "Permissions/Can";
 import CustomList from "Components/CustomList";
 import EmptyResult from "Components/EmptyResult";
-import {onSelectEmail, readEmail} from 'Actions';
 import CancelIcon from '@material-ui/icons/Cancel';
 import Dialog from "@material-ui/core/Dialog/Dialog";
 import IconButton from "@material-ui/core/IconButton";
 import TimeFromMoment from "Components/TimeFromMoment";
 import AmountCurrency from "Components/AmountCurrency";
+import {onSelectEmail, readEmail, getCommunity} from 'Actions';
 import FetchFailedComponent from "Components/FetchFailedComponent";
 import DialogTitle from "@material-ui/core/DialogTitle/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent/DialogContent";
@@ -29,11 +29,13 @@ class ListMembers extends Component {
         showVoucherBox: false,
         showBox: false,
         user: null,
+        community: null,
         loadingCodes: false,
     };
 
     componentDidMount() {
         this.getMembers();
+        this.getCommunityDetails();
     }
 
     handleChange = event => {
@@ -44,6 +46,14 @@ class ListMembers extends Component {
         getMembersOfCommunity(this.props.communitySpace.data)
             .then(data => {
                 this.setState({ users: data });
+            })
+            .finally(() => this.setState({ loading: false }));
+    };
+
+    getCommunityDetails = () => {
+        getCommunity(this.props.communitySpace.data)
+            .then(data => {
+                this.setState({ community: data });
             })
             .finally(() => this.setState({ loading: false }));
     };
@@ -66,8 +76,9 @@ class ListMembers extends Component {
     };
 
     render() {
-        const { loading, users, user, showBox, codes, showVoucherBox, loadingCodes } = this.state;
-        const { classes } = this.props;
+        
+        const { loading, users, user, showBox, codes, showVoucherBox, loadingCodes, community } = this.state;
+
         return (
             <div className="page-list mt-2">
                 <CustomList
@@ -115,7 +126,7 @@ class ListMembers extends Component {
                         </div>
                     </DialogTitle>
                     <DialogContent>
-                        <SimpleProfile user={user} community={this.props.communitySpace} onClose={() => this.setState({ showBox: false })} />
+                        <SimpleProfile user={user} communitySpace={this.props.communitySpace} community={community} onClose={() => this.setState({ showBox: false })} />
                     </DialogContent>
                 </Dialog>
                 <Dialog

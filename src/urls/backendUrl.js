@@ -252,6 +252,7 @@ export const COMMUNITY_MEMBER = {
     USER: {
         GROUPS: {
             GET_ALL: 'api/groups/communities/user/me',
+            GET_ONE: 'api/groups/communities/{id}',
             GET_BY_BRANCH: 'api/groups/communities/branch/{id}/user/{user_id}',
             NOT_IN: 'api/groups/communities/user/{id}/not-in',
             ADMIN: 'api/groups/communities/user/admin/me',

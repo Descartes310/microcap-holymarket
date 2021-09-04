@@ -327,8 +327,16 @@ export const PROJECTS = {
         },
         WORKS: {
             SELF: '/projects/configuration/works',
-            LIST: '/projects/configuration/works/list',
-            CREATE: '/projects/configuration/works/create',
+            SIMPLE: {
+                SELF: '/projects/configuration/works/simple',
+                LIST: '/projects/configuration/works/simple/list',
+                CREATE: '/projects/configuration/works/simple/create',
+            },
+            COMPLEX: {
+                SELF: '/projects/configuration/works/complex',
+                LIST: '/projects/configuration/works/complex/list',
+                CREATE: '/projects/configuration/works/complex/create',
+            }
         },
         INITIALISATION: {
             SELF: '/projects/configuration/initialisation-options',

@@ -70,6 +70,7 @@ class Groups extends Component {
     };
 
     enterInCommunitySpace = () => {
+        //console.log(this.props.currentCommunity.data.community)
         // this.props.history.push(joinUrlWithParamsId(COMMUNITY.MEMBERS.LIST, this.props.currentCommunity.data.community.id));
         window.location = joinUrlWithParamsId(COMMUNITY.MEMBERS.LIST, this.props.currentCommunity.data.community.id);
     };

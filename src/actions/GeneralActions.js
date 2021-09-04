@@ -343,9 +343,9 @@ export const getSampleBranches = (branchId) => (dispatch) => {
     return makeActionRequest('get', url, SAMPLE_BRANCHES, dispatch);
 };
 
-export const getProjectWorks = (branchId) => (dispatch) => {
+export const getProjectWorks = (branchId, nature = 'SIMPLE') => (dispatch) => {
     const url = joinBaseUrlWithParamsId(PROJECTS_API.CONFIGURATION.WORKS.GET_ALL, branchId);
-    return makeActionRequest('get', url, PROJECT_WORKS, dispatch);
+    return makeActionRequest('get', `${url}?nature=${nature}`, PROJECT_WORKS, dispatch);
 };
 
 export const getProjectStandard = (branchId) => (dispatch) => {

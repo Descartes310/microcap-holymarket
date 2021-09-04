@@ -14,7 +14,7 @@ class List extends Component {
     baseUrl = PROJECTS.CONFIGURATION.WORKS;
 
     componentDidMount() {
-        this.props.getItems(this.props.authUser.branchId);
+        this.props.getItems(this.props.authUser.branchId, 'SIMPLE');
     }
 
     render() {
@@ -26,7 +26,6 @@ class List extends Component {
                     list={list}
                     error={error}
                     loading={loading}
-                    titleList={"Ouvrages de projets"}
                     itemsFoundText={n => intl.formatMessage({id: "projects.configuration.works.found"}, {count: n})}
                     onAddClick={() => history.push(this.baseUrl.CREATE)}
                     /*addPermissions={{
@@ -42,7 +41,7 @@ class List extends Component {
                                 </div>
                             ) : (
                                 <div className="table-responsive">
-                                    <table className="table table-hover table-middle mb-0 text-center">
+                                    <table className="table table-hover table-middle mb-0">
                                         <thead>
                                             <tr>
                                                 <th>Titre</th>
