@@ -18,10 +18,7 @@ import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard
 const AddWork = ({ show, works, onSave, onClose }) => {
     const { control, register, errors, handleSubmit, watch } = useForm();
 
-    const [required, setRequired] = useState(false);
     const [book, setBook] = useState(null);
-
-    const requiredWatch = watch('required');
 
     const onSubmit = (data) => {
         if (book === null || book === undefined) {
@@ -51,13 +48,11 @@ const AddWork = ({ show, works, onSave, onClose }) => {
         //     return;
         // }
 
-        const work = works.find(i => i.id === id);
-
-        onSave({ ...work, content: data.content, max: 1, description: data.description, required: false, code: data.code, label: data.label, amount: data.amount });
+        onSave({ id: book.id, content: data.content, max: 1, description: data.description, required: false, code: data.code, label: data.label, amount: data.amount });
     };
 
     return (
-        <DialogComponent show={show} title={"Ajouter une section"} onClose={onClose}>
+        <DialogComponent show={show} title={"Editer une section"} onClose={onClose}>
             <RctCollapsibleCard>
                 <Form onSubmit={onSubmit}>
                     <div className="row">
@@ -65,18 +60,15 @@ const AddWork = ({ show, works, onSave, onClose }) => {
 
                             <FormGroup className="col-sm-12 has-wrapper">
                                 <InputLabel className="text-left" htmlFor="type">
-                                    Type d'ouvrage
+                                    Ouvrage à éditer
                                 </InputLabel>
                                 <Select
                                     value={book}
-                                    onChange={event => { setBook(event.target.value) }}
+                                    onChange={event => { setBook(null); setBook(event.target.value) }}
                                     input={<Input name="type" id="type" />}>
                                     {works.map((item, index) => (
-                                        <MenuItem key={index} value={item} onClick={(e) => {
-                                            setBook(e.target.value);
-                                            console.log(e.target.value);
-                                        }}>
-                                            {item.title}
+                                        <MenuItem key={index} value={item}>
+                                            {item.book.title}
                                         </MenuItem>
                                     ))}
                                 </Select>
@@ -84,7 +76,7 @@ const AddWork = ({ show, works, onSave, onClose }) => {
                         </div>
 
                         {book && (
-                            book.nature !== 'COMPLEX' ?
+                            book.book.nature !== 'COMPLEX' ?
                                 <div className="col-sm-12">
                                     <FormGroup className="col-sm-12 has-wrapper">
                                         <InputLabel className="text-left" htmlFor="description">
@@ -97,6 +89,7 @@ const AddWork = ({ show, works, onSave, onClose }) => {
                                             name={'content'}
                                             register={register}
                                             className="input-lg"
+                                            defaultValue={book.content}
                                         />
                                     </FormGroup>
 
@@ -112,6 +105,7 @@ const AddWork = ({ show, works, onSave, onClose }) => {
                                             name={'description'}
                                             register={register}
                                             className="input-lg"
+                                            defaultValue={book.description}
                                         />
                                     </FormGroup>
                                 </div>
@@ -128,6 +122,7 @@ const AddWork = ({ show, works, onSave, onClose }) => {
                                             name={'code'}
                                             register={register}
                                             className="input-lg"
+                                            defaultValue={book.code}
                                         />
                                     </FormGroup>
 
@@ -143,6 +138,7 @@ const AddWork = ({ show, works, onSave, onClose }) => {
                                             name={'label'}
                                             register={register}
                                             className="input-lg"
+                                            defaultValue={book.libelle}
                                         />
                                     </FormGroup>
 
@@ -158,6 +154,7 @@ const AddWork = ({ show, works, onSave, onClose }) => {
                                             name={'amount'}
                                             register={register}
                                             className="input-lg"
+                                            defaultValue={book.amount}
                                         />
                                     </FormGroup>
                                 </div>

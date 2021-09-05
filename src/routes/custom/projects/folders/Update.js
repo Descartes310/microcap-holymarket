@@ -1,7 +1,8 @@
 import AddWork from "./CreateItem";
+import UpdateWork from "./UpdateItem";
 import { connect } from "react-redux";
-import { injectIntl } from "react-intl";
 import { projects } from "Data/index";
+import { injectIntl } from "react-intl";
 import { withRouter } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import Checkbox from '@material-ui/core/Checkbox';
@@ -14,7 +15,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FetchFailedComponent from "Components/FetchFailedComponent";
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
-import { getOneProjectFolder, getUsersBooks, updateFolder, updateBook, setRequestGlobalAction, sortBook } from "Actions";
+import { getOneProjectFolder, getUsersBooks, updateFolder, updateBook, setRequestGlobalAction, sortBook, updateBookFolder } from "Actions";
 
 // a little function to help us with reordering the result
 const reorder = (list, startIndex, endIndex) => {
@@ -51,6 +52,7 @@ const Update = ({ match, setRequestGlobalAction }) => {
     const [allData, setAllData] = useState([]);
     const [data, setData] = useState([]);
     const [showModal, setShowModal] = useState(false);
+    const [showUpdateModal, setShowUpdateModal] = useState(false);
     const [works, setWorks] = useState([]);
 
     useEffect(() => {
@@ -126,14 +128,30 @@ const Update = ({ match, setRequestGlobalAction }) => {
     };
 
     const onAddWork = (work) => {
-        updateFolder(folderId, { works: JSON.stringify([work].map(i => ({ id: Number(i.id), content: i.content, required: i.required, description: i.description, max: i.max }))) }, {}).then(
+        setRequestGlobalAction(true);
+        updateFolder(folderId, { works: JSON.stringify([work].map(i => ({ id: Number(i.id), content: i.content, required: i.required, description: i.description, max: i.max, label: i.label, code: i.code, amount: i.amount }))) }, {}).then(
             data => {
                 loadData()
             }
         ).catch(err => {
 
         }).finally(() => {
-            setShowModal(false)
+            setRequestGlobalAction(false);
+            setShowModal(false);
+        })
+    }
+
+    const onEditWork = (work) => {
+        setRequestGlobalAction(true);
+        updateBookFolder({work: JSON.stringify(work)}).then(
+            data => {
+                loadData()
+            }
+        ).catch(err => {
+
+        }).finally(() => {
+            setRequestGlobalAction(false);
+            setShowUpdateModal(false)
         })
     }
 
@@ -193,9 +211,10 @@ const Update = ({ match, setRequestGlobalAction }) => {
                                                     <strong>{work.book.title}</strong>
                                                 </Tooltip>
                                             )}>
+                                                { work.libelle ? <span>{work.libelle} </span> :
                                                 <span dangerouslySetInnerHTML={{
                                                     __html: work.content
-                                                }}></span>
+                                                }}></span> }
                                             </FieldsetComponent>
                                         </div>
                                     </div>
@@ -241,9 +260,18 @@ const Update = ({ match, setRequestGlobalAction }) => {
                         color="primary"
                         variant="contained"
                         className="text-white font-weight-bold mr-3 col-sm-12"
-                        onClick={() => setShowModal(true)}
+                        onClick={() => { setShowModal(true); setShowUpdateModal(false) }}
                     >
                         Ajouter une section
+                    </Button>
+                    <Button
+                        // type="submit"
+                        color="primary"
+                        variant="contained"
+                        className="text-white font-weight-bold mr-3 mt-10 col-sm-12"
+                        onClick={() => { setShowModal(false); setShowUpdateModal(true) }}
+                    >
+                        Editer une section
                     </Button>
                 </div>
                 <AddWork
@@ -251,6 +279,12 @@ const Update = ({ match, setRequestGlobalAction }) => {
                     works={works}
                     show={showModal}
                     onClose={() => setShowModal(false)}
+                />
+                <UpdateWork
+                    onSave={onEditWork}
+                    works={projectFolder.data ? projectFolder.data.works : []}
+                    show={showUpdateModal}
+                    onClose={() => setShowUpdateModal(false)}
                 />
             </div>
         </div>

@@ -962,6 +962,14 @@ export const updateFolder = (id, data, config) => {
     });
 };
 
+export const updateBookFolder = (data) => {
+    return new Promise((resolve, reject) => {
+        api.post(PROJECTS.FOLDERS.UPDATE_FOLDER_WORK, data)
+            .then(result => resolve(result.data))
+            .catch(error => reject(error));
+    });
+};
+
 export const updateBook = (id) => {
     const url = joinBaseUrlWithParamsId(`${PROJECTS.FOLDERS.UPDATE_WORK}`, id);
     return makeRequest('get', url);

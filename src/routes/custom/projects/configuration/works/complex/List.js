@@ -6,8 +6,8 @@ import {withRouter} from "react-router-dom";
 import IntlMessages from 'Util/IntlMessages';
 import {AbilityContext} from "Permissions/Can";
 import CustomList from "Components/CustomList";
-import {setRequestGlobalAction, getProjectWorks} from "Actions";
 import TimeFromMoment from "Components/TimeFromMoment";
+import {setRequestGlobalAction, getProjectWorks} from "Actions";
 
 class List extends Component {
     static contextType = AbilityContext;

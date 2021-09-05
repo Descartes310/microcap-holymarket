@@ -126,7 +126,6 @@ const Create = props => {
         // console.log('VALUE => ', value, id)
         let data = worksData.filter(w => (w.id !== id) || (w.id === id && w.index !== index));
         data.push({ id, value, index });
-        console.log(data)
         setWorksData(data);
         // console.log(worksData);
     };

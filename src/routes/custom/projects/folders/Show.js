@@ -148,9 +148,10 @@ const Show = ({ match, history }) => {
                                             <strong>{work.book.title}</strong>
                                         </Tooltip>
                                     )}>
-                                        <span dangerouslySetInnerHTML={{
-                                            __html: work.content
-                                        }}></span>
+                                        { work.libelle ? <span>{work.libelle} </span> :
+                                                <span dangerouslySetInnerHTML={{
+                                                    __html: work.content
+                                                }}></span> }
                                     </FieldsetComponent>
                                 </div>
                             </div> : null}
