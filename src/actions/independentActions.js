@@ -1237,6 +1237,11 @@ export const getUsersBooks = (type = null) => {
     return makeRequest('get', url);
 };
 
+export const getComplexBooks = () => {
+    const url = PROJECTS.CONFIGURATION.WORKS.GET_COMPLEX;
+    return makeRequest('get', url);
+};
+
 export const addGroupToFavourites = (id) => {
     const url = joinBaseUrlWithParamsId(`${COMMUNITY_MEMBER.USER.GROUPS.ADD_FAVOURITES}`, id);
     return makeRequest('post', url, null);

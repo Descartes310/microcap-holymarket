@@ -451,6 +451,7 @@ export const PROJECTS = {
             GET_ALL: 'public/branchs/{id}/books',
             CREATE: 'api/books',
             GET_ALL_USER: 'api/books',
+            GET_COMPLEX: 'api/books/complex',
         },
         STANDARD: {
             GET_ALL: 'api/projects/presentation-standard',
