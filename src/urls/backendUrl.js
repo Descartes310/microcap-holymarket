@@ -70,30 +70,30 @@ export const SYSTEM_OBJECT = {
 };
 
 export const BRANCH = {
-    ACTIVATION: 'public/branchs/activation',
-    CREATE: 'public/branchs',
-    GET_ALL: 'public/branchs',
-    GET_ALL_POSTS: 'public/branchs/{id}/posts',
-    GET_ALL_OPERATORS: 'public/branchs/{id}/operators',
+    ACTIVATION: 'api/branchs/activation',
+    CREATE: 'api/branchs',
+    GET_ALL: 'api/branchs',
+    GET_ALL_POSTS: 'api/branchs/{id}/posts',
+    GET_ALL_OPERATORS: 'api/branchs/{id}/operators',
     SELECTED_OPERATOR: 'api/groups/communities/send/request/community/{group_id}/organisation/{organisation_id}',
     REMOVE_OPERATOR: 'api/groups/operators/remove',
     CANCEL_OPERATOR: 'api/groups/operators/invitation/cancel',
     CONFIGURATION: {
-        START: 'public/branchs/start/configurations/{id}',
-        STOP: 'public/branchs/close/configurations/{id}',
+        START: 'api/branchs/start/configurations/{id}',
+        STOP: 'api/branchs/close/configurations/{id}',
     },
     PRODUCTS: {
         GET_ALL: '/api/type-products/get-all',
         GET_ALL_PRODUCTS: '/api/type-products/get-all/products',
     },
     SAMPLE: {
-        GET_ALL: "public/branchs/staging",
-        GET_ONE: "public/branchs/{id}",
+        GET_ALL: "api/branchs/staging",
+        GET_ONE: "api/branchs/{id}",
         STEP: {
-            "1": "public/branchs/step1",
-            "2": "public/branchs/step2",
-            "3": "public/branchs/step3",
-            "4": "public/branchs/step4",
+            "1": "api/branchs/step1",
+            "2": "api/branchs/step2",
+            "3": "api/branchs/step3",
+            "4": "api/branchs/step4",
         }
     }
 };
@@ -444,14 +444,16 @@ export const PROJECTS = {
     },
     POST_PROJETS: {
         CREATE: 'api/projects/posts',
-        GET_ALL: 'public/branchs/{id}/project/posts',
+        GET_ALL: 'api/branchs/{id}/project/posts',
     },
     CONFIGURATION: {
         WORKS: {
-            GET_ALL: 'public/branchs/{id}/books',
+            GET_ALL: 'api/branchs/{id}/books',
             CREATE: 'api/books',
+            CHANGE_STATUS: 'api/books/{id}/status',
             GET_ALL_USER: 'api/books',
             GET_COMPLEX: 'api/books/complex',
+            GET_COMPLEX_DETAILS: 'api/books/complex/{id}/details',
         },
         STANDARD: {
             GET_ALL: 'api/projects/presentation-standard',

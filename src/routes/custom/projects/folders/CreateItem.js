@@ -15,7 +15,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import CustomAsyncComponent from "Components/CustomAsyncComponent";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
 
-const AddWork = ({ show, works, onSave, onClose }) => {
+const AddWork = ({ show, works, onSave, onClose, child }) => {
     const { control, register, errors, handleSubmit, watch } = useForm();
 
     const [required, setRequired] = useState(false);
@@ -71,7 +71,7 @@ const AddWork = ({ show, works, onSave, onClose }) => {
                                     value={book}
                                     onChange={event => { setBook(event.target.value) }}
                                     input={<Input name="type" id="type" />}>
-                                    {works.map((item, index) => (
+                                    {works.filter(w => !child.map(c => c.book.id).includes(w.id)).map((item, index) => (
                                         <MenuItem key={index} value={item} onClick={(e) => {
                                             setBook(e.target.value);
                                             console.log(e.target.value);

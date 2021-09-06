@@ -1242,6 +1242,16 @@ export const getComplexBooks = () => {
     return makeRequest('get', url);
 };
 
+export const changeBookStatus = (id) => {
+    const url = joinBaseUrlWithParamsId(PROJECTS.CONFIGURATION.WORKS.CHANGE_STATUS, id);
+    return makeRequest('put', url, null);
+};
+
+export const getComplexBookDetails = (id) => {
+    const url = joinBaseUrlWithParamsId(PROJECTS.CONFIGURATION.WORKS.GET_COMPLEX_DETAILS, id);
+    return makeRequest('get', url);
+};
+
 export const addGroupToFavourites = (id) => {
     const url = joinBaseUrlWithParamsId(`${COMMUNITY_MEMBER.USER.GROUPS.ADD_FAVOURITES}`, id);
     return makeRequest('post', url, null);

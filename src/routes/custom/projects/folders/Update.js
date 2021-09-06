@@ -105,10 +105,6 @@ const Update = ({ match, setRequestGlobalAction }) => {
             result.destination.index
         );
 
-        console.log(items.map((item, index) => {
-            return { id: item.id, index: index + 1 }
-        }));
-
         sortBook(folderId, {
             works: JSON.stringify(items.map((item, index) => {
                 return { id: item.id, index: index + 1 }
@@ -277,6 +273,7 @@ const Update = ({ match, setRequestGlobalAction }) => {
                 <AddWork
                     onSave={onAddWork}
                     works={works}
+                    child={projectFolder.data ? projectFolder.data.works : []}
                     show={showModal}
                     onClose={() => setShowModal(false)}
                 />

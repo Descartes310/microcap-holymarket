@@ -11,7 +11,7 @@ import TimeFromMoment from "Components/TimeFromMoment";
 
 class List extends Component {
     static contextType = AbilityContext;
-    baseUrl = PROJECTS.CONFIGURATION.WORKS;
+    baseUrl = PROJECTS.CONFIGURATION.WORKS.SIMPLE;
 
     componentDidMount() {
         this.props.getItems(this.props.authUser.branchId, 'SIMPLE');
@@ -27,7 +27,7 @@ class List extends Component {
                     error={error}
                     loading={loading}
                     itemsFoundText={n => intl.formatMessage({id: "projects.configuration.works.found"}, {count: n})}
-                    onAddClick={() => history.push(this.baseUrl.CREATE)}
+                    onAddClick={() => { console.log(this.baseUrl.CREATE); history.push(this.baseUrl.CREATE) }}
                     /*addPermissions={{
                         permissions: [Permission.roles.createOne.name],
                     }}*/

@@ -31,7 +31,7 @@ class Create extends Component {
     }
 
     loadData = () => {
-        this.props.getProjectWorks(this.props.authUser.branchId);
+        this.props.getProjectWorks(this.props.authUser.branchId, 'ALL');
     };
 
     handleOnFormChange = (field, value) => {
@@ -68,7 +68,7 @@ class Create extends Component {
             createProjectWork(data)
                 .then(() => {
                     NotificationManager.success("Ouvrage de projets créé avec succès");
-                    this.props.history.push(PROJECTS.CONFIGURATION.WORKS.LIST);
+                    this.props.history.push(PROJECTS.CONFIGURATION.WORKS.SIMPLE.LIST);
                 })
                 .catch(() => null)
                 .finally(() => this.props.setRequestGlobalAction(false));
@@ -132,11 +132,11 @@ class Create extends Component {
                                                     value={this.state.parentId}
                                                     onChange={event => this.setState({ parentId: event.target.value })}
                                                     input={<Input name="institution" id="institution-helper" />}>
-                                                    <MenuItem value="-1" className="center-hor-ver">
+                                                    <MenuItem value="-1">
                                                         Aucun
                                                     </MenuItem>
                                                     {data.map((item, index) => (
-                                                        <MenuItem key={index} value={item.id} className="center-hor-ver">
+                                                        <MenuItem key={index} value={item.id}>
                                                             {item.title}
                                                         </MenuItem>
                                                     ))}
