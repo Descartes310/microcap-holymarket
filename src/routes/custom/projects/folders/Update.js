@@ -7,6 +7,7 @@ import { withRouter } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import Checkbox from '@material-ui/core/Checkbox';
 import React, { useEffect, useState } from 'react';
+import ComplexTable from "Components/ComplexTable";
 import FormGroup from '@material-ui/core/FormGroup';
 import Tooltip from "@material-ui/core/Tooltip/Tooltip";
 import SingleTitleText from "Components/SingleTitleText";
@@ -15,7 +16,8 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FetchFailedComponent from "Components/FetchFailedComponent";
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
-import { getOneProjectFolder, getUsersBooks, updateFolder, updateBook, setRequestGlobalAction, sortBook, updateBookFolder } from "Actions";
+import { getOneProjectFolder, getUsersBooks, updateFolder, updateBook, setRequestGlobalAction, 
+    sortBook, updateBookFolder, updateFolderWithComplexBook } from "Actions";
 
 // a little function to help us with reordering the result
 const reorder = (list, startIndex, endIndex) => {
@@ -179,6 +181,39 @@ const Update = ({ match, setRequestGlobalAction }) => {
         }
     }
 
+    const onSubmitComplexBook = (book_id, data) => {
+        setRequestGlobalAction(true);
+        let finalData = [];
+        data.forEach(d => {
+            finalData.push({ ...d, type: getTypeString(d.type) })
+        })
+        updateFolderWithComplexBook(folderId, book_id, JSON.stringify(finalData), {}).then(response => {
+            console.log(response)
+        })
+        .catch(err => console.log(err))
+        .finally(() => {
+            setRequestGlobalAction(false);
+            setShowModal(false);
+        })
+    }
+
+    const hasComplexWork = () => {
+        return projectFolder.data ? projectFolder.data.works.filter(w => w.content !== 'Complex').length > 0 : false;
+    }
+
+    const getTypeString = (id) => {
+        switch (id) {
+            case 1:
+                return "LIBELLE"
+            case 2:
+                return "CODE"
+            case 3:
+                return "AMOUNT"
+            default:
+                return "LIBELLE"
+        }
+    }
+
     return (
         <div className="event-show">
             {/*<PageTitleBar
@@ -196,7 +231,7 @@ const Update = ({ match, setRequestGlobalAction }) => {
             </div>
             <div className="row">
                 <div className="col-sm-12 col-md-9 col-xl-9 d-block">
-                    {projectFolder.data ? projectFolder.data.works.sort((a, b) => a.index < b.index ? -1 : 1).map((work, index) => {
+                    {projectFolder.data ? projectFolder.data.works.filter(w => w.content !== 'Complex').sort((a, b) => a.index < b.index ? -1 : 1).map((work, index) => {
                         return (
                             <>
                                 {work.required || isRequired(work.book.id) ?
@@ -218,6 +253,9 @@ const Update = ({ match, setRequestGlobalAction }) => {
                             </>
                         )
                     }) : null}
+                    { hasComplexWork() && (
+                        <ComplexTable values={projectFolder.data ? projectFolder.data.works.find(w => w.content === 'Complex') ? projectFolder.data.works.find(w => w.content === 'Complex').details : [] : []}/>
+                    )}
                 </div>
                 <div className="col-sm-12 col-md-3 col-xl-3 d-block">
                     <h2>Type d'ouvrage</h2>
@@ -272,6 +310,7 @@ const Update = ({ match, setRequestGlobalAction }) => {
                 </div>
                 <AddWork
                     onSave={onAddWork}
+                    onSubmitComplexBook={onSubmitComplexBook}
                     works={works}
                     child={projectFolder.data ? projectFolder.data.works : []}
                     show={showModal}

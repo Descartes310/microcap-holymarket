@@ -5,6 +5,7 @@ import Button from "@material-ui/core/Button";
 import Checkbox from "@material-ui/core/Checkbox";
 import MenuItem from "@material-ui/core/MenuItem";
 import Input from "@material-ui/core/Input/Input";
+import ComplexTable from "Components/ComplexTable";
 import Select from "@material-ui/core/Select/Select";
 import InputComponent from "Components/InputComponent";
 import FormControl from "@material-ui/core/FormControl";
@@ -111,7 +112,8 @@ const AddWork = ({ show, works, onSave, onClose }) => {
                                 </div>
                                 :
                                 <div className="col-sm-12">
-                                    <FormGroup className="col-sm-12 has-wrapper">
+                                    <ComplexTable />
+                                    {/* <FormGroup className="col-sm-12 has-wrapper">
                                         <InputLabel className="text-left" htmlFor="description">
                                             Code
                                         </InputLabel>
@@ -156,7 +158,7 @@ const AddWork = ({ show, works, onSave, onClose }) => {
                                             className="input-lg"
                                             defaultValue={book.amount}
                                         />
-                                    </FormGroup>
+                                    </FormGroup> */}
                                 </div>
                         )}
 

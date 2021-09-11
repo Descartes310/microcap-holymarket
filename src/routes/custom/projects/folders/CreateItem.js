@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Form, FormGroup } from "reactstrap";
 import Button from "@material-ui/core/Button";
-import Checkbox from "@material-ui/core/Checkbox";
-import MenuItem from "@material-ui/core/MenuItem";
 import Input from "@material-ui/core/Input/Input";
+import MenuItem from "@material-ui/core/MenuItem";
+import Checkbox from "@material-ui/core/Checkbox";
+import ComplexTable from "Components/ComplexTable";
 import Select from "@material-ui/core/Select/Select";
 import InputComponent from "Components/InputComponent";
 import FormControl from "@material-ui/core/FormControl";
@@ -15,7 +16,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import CustomAsyncComponent from "Components/CustomAsyncComponent";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
 
-const AddWork = ({ show, works, onSave, onClose, child }) => {
+const AddWork = ({ show, works, onSave, onClose, child, onSubmitComplexBook }) => {
     const { control, register, errors, handleSubmit, watch } = useForm();
 
     const [required, setRequired] = useState(false);
@@ -33,23 +34,6 @@ const AddWork = ({ show, works, onSave, onClose, child }) => {
             NotificationManager.error("Vous devez choisir un ouvrage ou en créé un d'abord");
             return;
         }
-
-        // if (data.max < 1) {
-        //     NotificationManager.error("Vous devez définir un nombre maximal d'occurence correcte");
-        //     return;
-        // }
-        // if (data.label.length < 1) {
-        //     NotificationManager.error("Vous devez définir un libellé correct");
-        //     return;
-        // }
-        // if (data.code.length < 1) {
-        //     NotificationManager.error("Vous devez définir un code correct");
-        //     return;
-        // }
-        // if (data.amount < 0) {
-        //     NotificationManager.error("Vous devez définir un montant correct");
-        //     return;
-        // }
 
         const work = works.find(i => i.id === id);
 
@@ -85,98 +69,58 @@ const AddWork = ({ show, works, onSave, onClose, child }) => {
 
                         {book && (
                             book.nature !== 'COMPLEX' ?
-                                <div className="col-sm-12">
-                                    <FormGroup className="col-sm-12 has-wrapper">
-                                        <InputLabel className="text-left" htmlFor="description">
-                                            Etiquette
-                                        </InputLabel>
-                                        <InputComponent
-                                            id="name"
-                                            isRequired
-                                            errors={errors}
-                                            name={'content'}
-                                            register={register}
-                                            className="input-lg"
-                                        />
-                                    </FormGroup>
+                                <div>
+                                    <div className="col-sm-12">
+                                        <FormGroup className="col-sm-12 has-wrapper">
+                                            <InputLabel className="text-left" htmlFor="description">
+                                                Etiquette
+                                            </InputLabel>
+                                            <InputComponent
+                                                id="name"
+                                                isRequired
+                                                errors={errors}
+                                                name={'content'}
+                                                register={register}
+                                                className="input-lg"
+                                            />
+                                        </FormGroup>
 
-                                    <FormGroup className="col-sm-12 has-wrapper">
-                                        <InputLabel className="text-left" htmlFor="max">
-                                            Description
-                                        </InputLabel>
-                                        <InputComponent
-                                            id="description"
-                                            isRequired
-                                            errors={errors}
-                                            type='text'
-                                            name={'description'}
-                                            register={register}
-                                            className="input-lg"
-                                        />
+                                        <FormGroup className="col-sm-12 has-wrapper">
+                                            <InputLabel className="text-left" htmlFor="max">
+                                                Description
+                                            </InputLabel>
+                                            <InputComponent
+                                                id="description"
+                                                isRequired
+                                                errors={errors}
+                                                type='text'
+                                                name={'description'}
+                                                register={register}
+                                                className="input-lg"
+                                            />
+                                        </FormGroup>
+                                    </div>
+                                    <FormGroup className="mb-15">
+                                        <Button
+                                            // type="submit"
+                                            color="primary"
+                                            // disabled={loading}
+                                            variant="contained"
+                                            className="text-white font-weight-bold mr-3"
+                                            onClick={handleSubmit(onSubmit)}
+                                        >
+                                            Ajouter
+                                        </Button>
                                     </FormGroup>
                                 </div>
                                 :
                                 <div className="col-sm-12">
-                                    <FormGroup className="col-sm-12 has-wrapper">
-                                        <InputLabel className="text-left" htmlFor="description">
-                                            Code
-                                        </InputLabel>
-                                        <InputComponent
-                                            id="code"
-                                            isRequired
-                                            errors={errors}
-                                            name={'code'}
-                                            register={register}
-                                            className="input-lg"
-                                        />
-                                    </FormGroup>
 
-                                    <FormGroup className="col-sm-12 has-wrapper">
-                                        <InputLabel className="text-left" htmlFor="max">
-                                            Libellé
-                                        </InputLabel>
-                                        <InputComponent
-                                            id="label"
-                                            isRequired
-                                            errors={errors}
-                                            type='text'
-                                            name={'label'}
-                                            register={register}
-                                            className="input-lg"
-                                        />
-                                    </FormGroup>
-
-                                    <FormGroup className="col-sm-12 has-wrapper">
-                                        <InputLabel className="text-left" htmlFor="max">
-                                            Montant
-                                        </InputLabel>
-                                        <InputComponent
-                                            id="amount"
-                                            isRequired
-                                            errors={errors}
-                                            type='number'
-                                            name={'amount'}
-                                            register={register}
-                                            className="input-lg"
-                                        />
-                                    </FormGroup>
+                                    <ComplexTable edit={true} onSubmit={(data) => onSubmitComplexBook(book.id, data)}/>
                                 </div>
                         )}
 
                     </div>
-
-                    <FormGroup className="mb-15">
-                        <Button
-                            // type="submit"
-                            color="primary"
-                            // disabled={loading}
-                            variant="contained"
-                            className="text-white font-weight-bold mr-3"
-                            onClick={handleSubmit(onSubmit)}
-                        >
-                            Ajouter
-                        </Button>
-                    </FormGroup>
                 </Form>
             </RctCollapsibleCard>
         </DialogComponent>

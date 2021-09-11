@@ -962,6 +962,15 @@ export const updateFolder = (id, data, config) => {
     });
 };
 
+export const updateFolderWithComplexBook = (project_id, book_id, data, config) => {
+    const url = joinBaseUrlWithParamsId(`${PROJECTS.FOLDERS.ADD_COMPLEX_WORK}`, project_id);
+    return new Promise((resolve, reject) => {
+        api.post(url, { book_id, works: data}, config)
+            .then(result => resolve(result.data))
+            .catch(error => reject(error));
+    });
+};
+
 export const updateBookFolder = (data) => {
     return new Promise((resolve, reject) => {
         api.post(PROJECTS.FOLDERS.UPDATE_FOLDER_WORK, data)

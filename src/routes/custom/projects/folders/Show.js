@@ -105,6 +105,10 @@ const Show = ({ match, history }) => {
         }
     }
 
+    const hasComplexWork = () => {
+        return projectFolder.data.works.filter(w => w.content !== 'Complex').length > 0;
+    }
+
     const details = projectFolder.data;
 
     return (
@@ -138,7 +142,7 @@ const Show = ({ match, history }) => {
                         </FieldsetComponent>
                     </div>
                 </div>
-                {details.works.sort((a, b) => a.index < b.index ? -1 : 1).map((work, index) => (
+                {details.works.filter(w => w.content !== 'Complex').sort((a, b) => a.index < b.index ? -1 : 1).map((work, index) => (
                     <>
                         {work.required || isRequired(work.book.id) ?
                             <div key={index} className="row mb-20">
