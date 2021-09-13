@@ -287,9 +287,10 @@ export const PROJECTS = {
             CONSULTATION: '/projects/folder/reactions/consultation'
         },
         WORKS: {
+            SELF: '/projects/folder/works',
             LIST: '/projects/folder/works/list',
             CREATE: '/projects/folder/works/create',
-            SELF: '/projects/folder/works'
+            UPDATE: '/projects/folder/works/:id/update',
         },
         PROJECTS: {
             SELF: '/projects/folder/projects',

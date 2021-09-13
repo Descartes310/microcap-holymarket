@@ -78,7 +78,7 @@ class Update extends Component {
             updateProjectWork(this.bookId, data)
                 .then(() => {
                     NotificationManager.success("Ouvrage de projets mis à jour avec succès");
-                    this.props.history.push(PROJECTS.CONFIGURATION.WORKS.SIMPLE.LIST);
+                    this.props.history.push(PROJECTS.FOLDERS.WORKS.LIST);
                 })
                 .catch(() => null)
                 .finally(() => this.props.setRequestGlobalAction(false));

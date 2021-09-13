@@ -1,13 +1,14 @@
 import {connect} from "react-redux";
 import {injectIntl} from "react-intl";
 import React, { Component } from 'react';
-import {PROJECTS} from "Url/frontendUrl";
 import {withRouter} from "react-router-dom";
 import IntlMessages from 'Util/IntlMessages';
+import Button from "@material-ui/core/Button";
 import {AbilityContext} from "Permissions/Can";
 import CustomList from "Components/CustomList";
-import {setRequestGlobalAction, getUsersBooks} from "Actions";
 import TimeFromMoment from "Components/TimeFromMoment";
+import {setRequestGlobalAction, getUsersBooks} from "Actions";
+import {PROJECTS, joinUrlWithParamsId} from "Url/frontendUrl";
 
 class List extends Component {
     static contextType = AbilityContext;
@@ -21,6 +22,10 @@ class List extends Component {
         getUsersBooks().then(data => {
             this.setState({ books: data })
         }).finally(() => this.props.setRequestGlobalAction(false))
+    }
+
+    onUpdate(id) {
+        this.props.history.push(joinUrlWithParamsId(PROJECTS.FOLDERS.WORKS.UPDATE, id))
     }
 
     render() {
@@ -55,6 +60,7 @@ class List extends Component {
                                                 {/*<th>Contenu</th>*/}
                                                 <th>Type d'Ouvrage Parent</th>
                                                 <th>Date de création</th>
+                                                <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -87,6 +93,17 @@ class List extends Component {
                                                         </div>
                                                     </div>
                                                 </td>
+                                                    <td>
+                                                        <Button
+                                                            size="small"
+                                                            color="primary"
+                                                            variant="contained"
+                                                            className={"text-white font-weight-bold mr-3 bg-blue"}
+                                                            onClick={() => this.onUpdate(item.id)}
+                                                        >
+                                                            Editer
+                                                        </Button>
+                                                    </td>
                                             </tr>
                                         ))}
                                         </tbody>
