@@ -331,6 +331,7 @@ export const PROJECTS = {
                 SELF: '/projects/configuration/works/simple',
                 LIST: '/projects/configuration/works/simple/list',
                 CREATE: '/projects/configuration/works/simple/create',
+                UPDATE: '/projects/configuration/works/simple/:id/update',
             },
             COMPLEX: {
                 SELF: '/projects/configuration/works/complex',

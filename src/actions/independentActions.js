@@ -852,6 +852,17 @@ export const createProjectWork = (data, branchId) => {
     return makeRequest('post', url, data);
 };
 
+export const updateProjectWork = (id, data) => {
+    const url = joinBaseUrlWithParamsId(PROJECTS.CONFIGURATION.WORKS.UPDATE, id);
+    return makeRequest('put', url, data);
+};
+
+
+export const getOneProjectWork = (id) => {
+    const url = joinBaseUrlWithParamsId(PROJECTS.CONFIGURATION.WORKS.GET_ONE, id);
+    return makeRequest('get', url);
+};
+
 export const createProjectStandard = (data, branchId) => {
     const url = `${PROJECTS.CONFIGURATION.STANDARD.CREATE}?branch_id=${branchId}`;
     return makeRequest('post', url, data);
@@ -962,10 +973,10 @@ export const updateFolder = (id, data, config) => {
     });
 };
 
-export const updateFolderWithComplexBook = (project_id, book_id, data, config) => {
+export const updateFolderWithComplexBook = (project_id, book_id, data, config, edit = false) => {
     const url = joinBaseUrlWithParamsId(`${PROJECTS.FOLDERS.ADD_COMPLEX_WORK}`, project_id);
     return new Promise((resolve, reject) => {
-        api.post(url, { book_id, works: data}, config)
+        api.post(url, { book_id, works: data, edit}, config)
             .then(result => resolve(result.data))
             .catch(error => reject(error));
     });

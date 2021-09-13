@@ -451,6 +451,8 @@ export const PROJECTS = {
         WORKS: {
             GET_ALL: 'api/branchs/{id}/books',
             CREATE: 'api/books',
+            UPDATE: 'api/books/{id}',
+            GET_ONE: 'api/books/{id}',
             CHANGE_STATUS: 'api/books/{id}/status',
             GET_ALL_USER: 'api/books',
             GET_COMPLEX: 'api/books/complex',

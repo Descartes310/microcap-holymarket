@@ -28,13 +28,21 @@ class ComplexTable extends Component {
 
     getBooks = () => {
         getComplexBooks().then(datas => {
-            this.setState({ datas })
+            this.setState({ datas });
+            Array.from(Array(this.getMaxIndex()).keys()).map((d, index) => {
+                Array.from(Array(datas.length * 4).keys()).map((d2, __) => {
+                    if ((d2 % 4) != 0 || d != index) {
+                        this.editRow(datas[Math.floor(d2 / 4)].books[index].parent.id, datas[Math.floor(d2 / 4)].books[index].id, d2 % 4, this.getValueFromCordinates(d2, index))
+                    }
+                });
+            });
         })
     }
 
-    getMaxIndex = (index = 0) => {
-        let max = this.state.datas[0] ? this.state.datas[0].books.length > 0 ? this.state.datas[0].books.length : 0 : 0;
-        this.state.datas.forEach(d => {
+    getMaxIndex = (index = 0, dataSource = null) => {
+        let datas = dataSource ? dataSource : this.state.datas
+        let max = datas[0] ? datas[0].books.length > 0 ? datas[0].books.length : 0 : 0;
+        datas.forEach(d => {
             let tmpLength = d.books.length > 0 ? d.books.length : 0;
             if (tmpLength >= max) {
                 max = tmpLength;
@@ -70,6 +78,15 @@ class ComplexTable extends Component {
         }
     }
 
+    getValueFromCordinates = (d2, index) => {
+        return this.props.values ? this.props.values.length > 0 ?
+            this.props.values.find(v => v.x == this.state.datas[Math.floor(d2 / 4)].books[index].parent.id && v.y == this.state.datas[Math.floor(d2 / 4)].books[index].id && v.type == this.getTypeString(d2 % 4)) ?
+                this.props.values.find(v => v.x == this.state.datas[Math.floor(d2 / 4)].books[index].parent.id && v.y == this.state.datas[Math.floor(d2 / 4)].books[index].id && v.type == this.getTypeString(d2 % 4)).value
+                : null
+            : null
+            : null
+    }
+
     getTypeString = (id) => {
         switch (id) {
             case 1:
@@ -86,7 +103,6 @@ class ComplexTable extends Component {
     render() {
         const { datas } = this.state;
         const { values } = this.props;
-        console.log(values);
         return (
             <RctCollapsibleCard>
                 <div className="d-flex justify-content-center align-items-center" style={{ flexDirection: 'column' }}>
@@ -154,7 +170,12 @@ class ComplexTable extends Component {
                                                         <td>
                                                             <div className="media">
                                                                 <div className="media-body pt-10">
-                                                                    <input type="text" className="form-control" onChange={(e) => this.editRow(datas[Math.floor(d2 / 4)].books[index].parent.id, datas[Math.floor(d2 / 4)].books[index].id, d2 % 4, e.target.value)} />
+                                                                    <input
+                                                                        type="text"
+                                                                        className="form-control"
+                                                                        defaultValue={this.getValueFromCordinates(d2, index)}
+                                                                        onChange={(e) => this.editRow(datas[Math.floor(d2 / 4)].books[index].parent.id, datas[Math.floor(d2 / 4)].books[index].id, d2 % 4, e.target.value)}
+                                                                    />
                                                                 </div>
                                                             </div>
                                                         </td>
@@ -170,7 +191,7 @@ class ComplexTable extends Component {
                                         // disabled={loading}
                                         variant="contained"
                                         className="text-white font-weight-bold mr-3"
-                                        onClick={() => this.props.onSubmit(this.state.bookDetails)}
+                                        onClick={() => { this.props.onSubmit(this.state.bookDetails) }}
                                     >
                                         Enregistrer
                                     </Button>
@@ -239,13 +260,7 @@ class ComplexTable extends Component {
                                                         <div className="media">
                                                             <div className="media-body pt-10">
                                                                 <h4 style={{ textAlign: 'start' }} className="m-0 fw-bold text-dark">
-                                                                    {
-                                                                        values.length > 0 ?
-                                                                        values.find( v => v.x == datas[Math.floor(d2 / 4)].books[index].parent.id &&  v.y == datas[Math.floor(d2 / 4)].books[index].id && v.type == this.getTypeString(d2 % 4)) ?
-                                                                        values.find( v => v.x == datas[Math.floor(d2 / 4)].books[index].parent.id &&  v.y == datas[Math.floor(d2 / 4)].books[index].id && v.type == this.getTypeString(d2 % 4)).value
-                                                                         : null
-                                                                        : null
-                                                                    }
+                                                                    {this.getValueFromCordinates(d2, index)}
                                                                 </h4>
                                                             </div>
                                                         </div>

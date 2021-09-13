@@ -16,8 +16,11 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FetchFailedComponent from "Components/FetchFailedComponent";
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
-import { getOneProjectFolder, getUsersBooks, updateFolder, updateBook, setRequestGlobalAction, 
-    sortBook, updateBookFolder, updateFolderWithComplexBook } from "Actions";
+import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
+import {
+    getOneProjectFolder, getUsersBooks, updateFolder, updateBook, setRequestGlobalAction,
+    sortBook, updateBookFolder, updateFolderWithComplexBook, updateComplexBook
+} from "Actions";
 
 // a little function to help us with reordering the result
 const reorder = (list, startIndex, endIndex) => {
@@ -141,7 +144,7 @@ const Update = ({ match, setRequestGlobalAction }) => {
 
     const onEditWork = (work) => {
         setRequestGlobalAction(true);
-        updateBookFolder({work: JSON.stringify(work)}).then(
+        updateBookFolder({ work: JSON.stringify(work) }).then(
             data => {
                 loadData()
             }
@@ -181,20 +184,22 @@ const Update = ({ match, setRequestGlobalAction }) => {
         }
     }
 
-    const onSubmitComplexBook = (book_id, data) => {
+    const onSubmitComplexBook = (book_id, data, edit = false) => {
         setRequestGlobalAction(true);
         let finalData = [];
         data.forEach(d => {
             finalData.push({ ...d, type: getTypeString(d.type) })
         })
-        updateFolderWithComplexBook(folderId, book_id, JSON.stringify(finalData), {}).then(response => {
+        updateFolderWithComplexBook(folderId, book_id, JSON.stringify(finalData), {}, edit).then(response => {
             console.log(response)
         })
-        .catch(err => console.log(err))
-        .finally(() => {
-            setRequestGlobalAction(false);
-            setShowModal(false);
-        })
+            .catch(err => console.log(err))
+            .finally(() => {
+                setRequestGlobalAction(false);
+                setShowModal(false);
+                setShowUpdateModal(false);
+                loadData();
+            })
     }
 
     const hasComplexWork = () => {
@@ -229,100 +234,103 @@ const Update = ({ match, setRequestGlobalAction }) => {
                     <span>{getTypeLabel(projectFolder.data ? projectFolder.data.type : '')}</span>
                 </h5>
             </div>
-            <div className="row">
-                <div className="col-sm-12 col-md-9 col-xl-9 d-block">
-                    {projectFolder.data ? projectFolder.data.works.filter(w => w.content !== 'Complex').sort((a, b) => a.index < b.index ? -1 : 1).map((work, index) => {
-                        return (
-                            <>
-                                {work.required || isRequired(work.book.id) ?
-                                    <div key={index} className="row mb-20">
-                                        <div className="col-sm-12">
-                                            <FieldsetComponent title={(
-                                                <Tooltip id={"tooltip-icon" + index} title={work.book.content}>
-                                                    <strong>{work.book.title}</strong>
-                                                </Tooltip>
-                                            )}>
-                                                { work.libelle ? <span>{work.libelle} </span> :
-                                                <span dangerouslySetInnerHTML={{
-                                                    __html: work.content
-                                                }}></span> }
-                                            </FieldsetComponent>
+            <RctCollapsibleCard>
+                <div className="row">
+                    <div className="col-sm-12 col-md-9 col-xl-9 d-block">
+                        {projectFolder.data ? projectFolder.data.works.filter(w => w.content !== 'Complex').sort((a, b) => a.index < b.index ? -1 : 1).map((work, index) => {
+                            return (
+                                <>
+                                    {work.required || isRequired(work.book.id) ?
+                                        <div key={index} className="row mb-20">
+                                            <div className="col-sm-12">
+                                                <FieldsetComponent title={(
+                                                    <Tooltip id={"tooltip-icon" + index} title={work.book.content}>
+                                                        <strong>{work.book.title}</strong>
+                                                    </Tooltip>
+                                                )}>
+                                                    {work.libelle ? <span>{work.libelle} </span> :
+                                                        <span dangerouslySetInnerHTML={{
+                                                            __html: work.content
+                                                        }}></span>}
+                                                </FieldsetComponent>
+                                            </div>
                                         </div>
-                                    </div>
-                                    : null}
-                            </>
-                        )
-                    }) : null}
-                    { hasComplexWork() && (
-                        <ComplexTable values={projectFolder.data ? projectFolder.data.works.find(w => w.content === 'Complex') ? projectFolder.data.works.find(w => w.content === 'Complex').details : [] : []}/>
-                    )}
-                </div>
-                <div className="col-sm-12 col-md-3 col-xl-3 d-block">
-                    <h2>Type d'ouvrage</h2>
-                    <p>Faites glisser les types d'ouvrages pour les réorganiser</p>
-                    <DragDropContext onDragEnd={onDragEnd}>
-                        <Droppable droppableId="droppable">
-                            {(provided, snapshot) => (
-                                <div className=" drag-list-wrapper" ref={provided.innerRef} style={getListStyle(snapshot.isDraggingOver)}>
-                                    {projectFolder.data ? projectFolder.data.works.sort((a, b) => a.index < b.index ? -1 : 1).map((work, index) => (
-                                        <Draggable key={index} draggableId={work.book.id + "id"} index={index}>
-                                            {(provided, snapshot) => (
-                                                <div className="row mb-20">
-                                                    <div className="col-sm-12">
-                                                        <FormGroup
-                                                            ref={provided.innerRef}
-                                                            {...provided.draggableProps}
-                                                            {...provided.dragHandleProps}
-                                                            className="drag-list">
-                                                            <FormControlLabel
-                                                                control={
-                                                                    <Checkbox disabled={isRequired(work.book.id)} color="primary" defaultChecked={isRequired(work.book.id) ? true : work.required} value="checkedJ" onChange={(e) => changeProject(work, e.target.checked, index)} />
-                                                                } label={work.book.title}
-                                                            />
-                                                        </FormGroup>
+                                        : null}
+                                </>
+                            )
+                        }) : null}
+                        {hasComplexWork() && (
+                            <ComplexTable values={projectFolder.data ? projectFolder.data.works.find(w => w.content === 'Complex') ? projectFolder.data.works.find(w => w.content === 'Complex').details : [] : []} />
+                        )}
+                    </div>
+                    <div className="col-sm-12 col-md-3 col-xl-3 d-block">
+                        <h2>Type d'ouvrage</h2>
+                        <p>Faites glisser les types d'ouvrages pour les réorganiser</p>
+                        <DragDropContext onDragEnd={onDragEnd}>
+                            <Droppable droppableId="droppable">
+                                {(provided, snapshot) => (
+                                    <div className=" drag-list-wrapper" ref={provided.innerRef} style={getListStyle(snapshot.isDraggingOver)}>
+                                        {projectFolder.data ? projectFolder.data.works.sort((a, b) => a.index < b.index ? -1 : 1).map((work, index) => (
+                                            <Draggable key={index} draggableId={work.book.id + "id"} index={index}>
+                                                {(provided, snapshot) => (
+                                                    <div className="row mb-20">
+                                                        <div className="col-sm-12">
+                                                            <FormGroup
+                                                                ref={provided.innerRef}
+                                                                {...provided.draggableProps}
+                                                                {...provided.dragHandleProps}
+                                                                className="drag-list">
+                                                                <FormControlLabel
+                                                                    control={
+                                                                        <Checkbox disabled={isRequired(work.book.id)} color="primary" defaultChecked={isRequired(work.book.id) ? true : work.required} value="checkedJ" onChange={(e) => changeProject(work, e.target.checked, index)} />
+                                                                    } label={work.book.title}
+                                                                />
+                                                            </FormGroup>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            )}
-                                        </Draggable>
-                                    )) : null}
-                                </div>
-                            )}
-                        </Droppable>
-                    </DragDropContext>
-                    <Button
-                        // type="submit"
-                        color="primary"
-                        variant="contained"
-                        className="text-white font-weight-bold mr-3 col-sm-12"
-                        onClick={() => { setShowModal(true); setShowUpdateModal(false) }}
-                    >
-                        Ajouter une section
-                    </Button>
-                    <Button
-                        // type="submit"
-                        color="primary"
-                        variant="contained"
-                        className="text-white font-weight-bold mr-3 mt-10 col-sm-12"
-                        onClick={() => { setShowModal(false); setShowUpdateModal(true) }}
-                    >
-                        Editer une section
-                    </Button>
+                                                )}
+                                            </Draggable>
+                                        )) : null}
+                                    </div>
+                                )}
+                            </Droppable>
+                        </DragDropContext>
+                        <Button
+                            // type="submit"
+                            color="primary"
+                            variant="contained"
+                            className="text-white font-weight-bold mr-3 col-sm-12"
+                            onClick={() => { setShowModal(true); setShowUpdateModal(false) }}
+                        >
+                            Ajouter une section
+                        </Button>
+                        <Button
+                            // type="submit"
+                            color="primary"
+                            variant="contained"
+                            className="text-white font-weight-bold mr-3 mt-10 col-sm-12"
+                            onClick={() => { setShowModal(false); setShowUpdateModal(true) }}
+                        >
+                            Editer une section
+                        </Button>
+                    </div>
+                    <AddWork
+                        onSave={onAddWork}
+                        onSubmitComplexBook={onSubmitComplexBook}
+                        works={works}
+                        child={projectFolder.data ? projectFolder.data.works : []}
+                        show={showModal}
+                        onClose={() => setShowModal(false)}
+                    />
+                    <UpdateWork
+                        onSave={onEditWork}
+                        show={showUpdateModal}
+                        onSubmitComplexBook={onSubmitComplexBook}
+                        onClose={() => setShowUpdateModal(false)}
+                        works={projectFolder.data ? projectFolder.data.works : []}
+                    />
                 </div>
-                <AddWork
-                    onSave={onAddWork}
-                    onSubmitComplexBook={onSubmitComplexBook}
-                    works={works}
-                    child={projectFolder.data ? projectFolder.data.works : []}
-                    show={showModal}
-                    onClose={() => setShowModal(false)}
-                />
-                <UpdateWork
-                    onSave={onEditWork}
-                    works={projectFolder.data ? projectFolder.data.works : []}
-                    show={showUpdateModal}
-                    onClose={() => setShowUpdateModal(false)}
-                />
-            </div>
+            </RctCollapsibleCard>
         </div>
     );
 };

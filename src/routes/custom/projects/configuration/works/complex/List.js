@@ -165,64 +165,6 @@ class List extends Component {
                         <ComplexTable />
                     </DialogContent>
                 </Dialog>
-                {/* <Dialog
-                    open={showEditModal}
-                    onClose={() => this.setState({ showEditModal: false })}
-                    aria-labelledby="responsive-dialog-title"
-                    disableBackdropClick
-                    disableEscapeKeyDown
-                    maxWidth={'lg'}
-                    fullWidth
-                >
-                    <DialogTitle id="form-dialog-title">
-                        <div className="row justify-content-between align-items-center">
-                            <h2>Edition de l'ouvrage {bookToEdit && bookToEdit.title}</h2>
-                            <IconButton
-                                color="primary"
-                                aria-label="close"
-                                className="text-danger"
-                                onClick={() => this.setState({ showEditModal: false })}>
-                                <CancelIcon />
-                            </IconButton>
-                        </div>
-                    </DialogTitle>
-                    <DialogContent>
-                        <h3 className="mt-15">1er niveau</h3>
-                        <CustomAsyncComponent
-                            loading={false}
-                            data={details.in.filter(b => b.parent ? b.parent.id === bookToEdit.id : false)}
-                            component={data => (
-                                <FormGroup className="col-sm-12 has-wrapper mt-30 mb-30">
-                                    <Select
-                                        input={<Input name="institution" id="institution-helper" />}>
-                                        {data.map((item, index) => (
-                                            <MenuItem key={index} value={item.id}>
-                                                {item.title}
-                                            </MenuItem>
-                                        ))}
-                                    </Select>
-                                </FormGroup>
-                            )}
-                        />
-                        <h3>2ème niveau</h3>
-                        <CustomAsyncComponent
-                            loading={false}
-                            data={details.out}
-                            component={data => (
-                                <FormGroup className="col-sm-12 has-wrapper mt-30 mb-30">
-                                    <Select
-                                        input={<Input name="institution" id="institution-helper" />}>
-                                        {data.map((item, index) => (
-                                            <MenuItem key={index} value={item.id}>
-                                                {item.title}
-                                            </MenuItem>
-                                        ))}
-                                    </Select>
-                                </FormGroup>
-                            )}
-                        />
-                    </DialogContent>
-                </Dialog> */}
             </>
         );
     }

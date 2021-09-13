@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import ReactQuill from 'react-quill';
 import { useForm } from "react-hook-form";
 import { Form, FormGroup } from "reactstrap";
 import Button from "@material-ui/core/Button";
 import Checkbox from "@material-ui/core/Checkbox";
 import MenuItem from "@material-ui/core/MenuItem";
 import Input from "@material-ui/core/Input/Input";
+import React, { useState, useEffect } from "react";
 import ComplexTable from "Components/ComplexTable";
 import Select from "@material-ui/core/Select/Select";
 import InputComponent from "Components/InputComponent";
@@ -16,10 +17,33 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import CustomAsyncComponent from "Components/CustomAsyncComponent";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
 
-const AddWork = ({ show, works, onSave, onClose }) => {
+const modules = {
+    toolbar: [
+        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+        [{ 'font': [] }],
+        ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+        [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
+        // ['link', 'image'],
+        ['clean'],
+        [{ 'align': [] }],
+        ['code-block']
+    ],
+};
+
+const formats = [
+    'header',
+    'font',
+    'bold', 'italic', 'underline', 'strike', 'blockquote',
+    'list', 'bullet', 'indent',
+    'align',
+    'code-block'
+];
+
+const AddWork = ({ show, works, onSave, onClose, onSubmitComplexBook }) => {
     const { control, register, errors, handleSubmit, watch } = useForm();
 
     const [book, setBook] = useState(null);
+    const [content, setContent] = useState('');
 
     const onSubmit = (data) => {
         if (book === null || book === undefined) {
@@ -32,25 +56,13 @@ const AddWork = ({ show, works, onSave, onClose }) => {
             return;
         }
 
-        // if (data.max < 1) {
-        //     NotificationManager.error("Vous devez définir un nombre maximal d'occurence correcte");
-        //     return;
-        // }
-        // if (data.label.length < 1) {
-        //     NotificationManager.error("Vous devez définir un libellé correct");
-        //     return;
-        // }
-        // if (data.code.length < 1) {
-        //     NotificationManager.error("Vous devez définir un code correct");
-        //     return;
-        // }
-        // if (data.amount < 0) {
-        //     NotificationManager.error("Vous devez définir un montant correct");
-        //     return;
-        // }
-
-        onSave({ id: book.id, content: data.content, max: 1, description: data.description, required: false, code: data.code, label: data.label, amount: data.amount });
+        onSave({ id: book.id, content: content, max: 1, description: data.description, required: false, code: data.code, label: data.label, amount: data.amount });
     };
+
+    useEffect(() => {
+        if (book)
+            setContent(book.content);
+    }, [book])
 
     return (
         <DialogComponent show={show} title={"Editer une section"} onClose={onClose}>
@@ -79,103 +91,62 @@ const AddWork = ({ show, works, onSave, onClose }) => {
                         {book && (
                             book.book.nature !== 'COMPLEX' ?
                                 <div className="col-sm-12">
-                                    <FormGroup className="col-sm-12 has-wrapper">
-                                        <InputLabel className="text-left" htmlFor="description">
-                                            Etiquette
-                                        </InputLabel>
-                                        <InputComponent
-                                            id="name"
-                                            isRequired
-                                            errors={errors}
-                                            name={'content'}
-                                            register={register}
-                                            className="input-lg"
-                                            defaultValue={book.content}
-                                        />
+                                    <div className="col-sm-12">
+                                        <FormGroup className="col-sm-12 has-wrapper">
+                                            <InputLabel className="text-left" htmlFor="description">
+                                                Contenu
+                                            </InputLabel>
+                                            {/* <InputComponent
+                                                id="name"
+                                                isRequired
+                                                errors={errors}
+                                                name={'content'}
+                                                register={register}
+                                                className="input-lg"
+                                                defaultValue={book.content}
+                                            /> */}
+                                            <ReactQuill defaultValue={book.content} onChange={(e) => setContent(e)} modules={modules} formats={formats} placeholder="Entrez votre description..." />
+                                        </FormGroup>
+
+                                        <FormGroup className="col-sm-12 has-wrapper">
+                                            <InputLabel className="text-left" htmlFor="max">
+                                                Description
+                                            </InputLabel>
+                                            <InputComponent
+                                                id="description"
+                                                isRequired
+                                                errors={errors}
+                                                type='text'
+                                                name={'description'}
+                                                register={register}
+                                                className="input-lg"
+                                                defaultValue={book.description}
+                                            />
+                                        </FormGroup>
+                                    </div>
+
+
+                                    <FormGroup className="mb-15">
+                                        <Button
+                                            // type="submit"
+                                            color="primary"
+                                            // disabled={loading}
+                                            variant="contained"
+                                            className="text-white font-weight-bold mr-3"
+                                            onClick={handleSubmit(onSubmit)}
+                                        >
+                                            Ajouter
+                                        </Button>
                                     </FormGroup>
 
-                                    <FormGroup className="col-sm-12 has-wrapper">
-                                        <InputLabel className="text-left" htmlFor="max">
-                                            Description
-                                        </InputLabel>
-                                        <InputComponent
-                                            id="description"
-                                            isRequired
-                                            errors={errors}
-                                            type='text'
-                                            name={'description'}
-                                            register={register}
-                                            className="input-lg"
-                                            defaultValue={book.description}
-                                        />
-                                    </FormGroup>
                                 </div>
                                 :
                                 <div className="col-sm-12">
-                                    <ComplexTable />
-                                    {/* <FormGroup className="col-sm-12 has-wrapper">
-                                        <InputLabel className="text-left" htmlFor="description">
-                                            Code
-                                        </InputLabel>
-                                        <InputComponent
-                                            id="code"
-                                            isRequired
-                                            errors={errors}
-                                            name={'code'}
-                                            register={register}
-                                            className="input-lg"
-                                            defaultValue={book.code}
-                                        />
-                                    </FormGroup>
-
-                                    <FormGroup className="col-sm-12 has-wrapper">
-                                        <InputLabel className="text-left" htmlFor="max">
-                                            Libellé
-                                        </InputLabel>
-                                        <InputComponent
-                                            id="label"
-                                            isRequired
-                                            errors={errors}
-                                            type='text'
-                                            name={'label'}
-                                            register={register}
-                                            className="input-lg"
-                                            defaultValue={book.libelle}
-                                        />
-                                    </FormGroup>
-
-                                    <FormGroup className="col-sm-12 has-wrapper">
-                                        <InputLabel className="text-left" htmlFor="max">
-                                            Montant
-                                        </InputLabel>
-                                        <InputComponent
-                                            id="amount"
-                                            isRequired
-                                            errors={errors}
-                                            type='number'
-                                            name={'amount'}
-                                            register={register}
-                                            className="input-lg"
-                                            defaultValue={book.amount}
-                                        />
-                                    </FormGroup> */}
+                                    <ComplexTable edit values={book.details} onSubmit={(data) => onSubmitComplexBook(book.id, data, true)} />
                                 </div>
                         )}
 
                     </div>
-
-                    <FormGroup className="mb-15">
-                        <Button
-                            // type="submit"
-                            color="primary"
-                            // disabled={loading}
-                            variant="contained"
-                            className="text-white font-weight-bold mr-3"
-                            onClick={handleSubmit(onSubmit)}
-                        >
-                            Ajouter
-                        </Button>
-                    </FormGroup>
                 </Form>
             </RctCollapsibleCard>
         </DialogComponent>

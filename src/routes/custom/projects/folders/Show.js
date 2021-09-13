@@ -3,8 +3,7 @@ import { withRouter } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import CustomList from "Components/CustomList";
 import React, { useEffect, useState } from 'react';
-import DialogTitle from "@material-ui/core/DialogTitle/DialogTitle";
-import DialogContent from "@material-ui/core/DialogContent/DialogContent";
+import ComplexTable from "Components/ComplexTable";
 import Dialog from "@material-ui/core/Dialog/Dialog";
 import CancelIcon from '@material-ui/icons/Cancel';
 import IconButton from "@material-ui/core/IconButton";
@@ -14,7 +13,10 @@ import SingleTitleText from "Components/SingleTitleText";
 import FieldsetComponent from "Components/FieldsetComponent";
 import { joinUrlWithParamsId, PROJECTS } from "Url/frontendUrl";
 import FetchFailedComponent from "Components/FetchFailedComponent";
+import DialogTitle from "@material-ui/core/DialogTitle/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent/DialogContent";
 import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
+import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
 import { getOneProjectFolder, getAllProjectReaction } from "Actions/independentActions";
 
 const Show = ({ match, history }) => {
@@ -81,6 +83,10 @@ const Show = ({ match, history }) => {
         return item ? item.name : 'Idée personnelle';
     };
 
+    const hasComplexWork = () => {
+        return projectFolder.data ? projectFolder.data.works.filter(w => w.content !== 'Complex').length > 0 : false;
+    }
+
     if (projectFolder.loading) {
         return (<RctSectionLoader />)
     }
@@ -105,25 +111,21 @@ const Show = ({ match, history }) => {
         }
     }
 
-    const hasComplexWork = () => {
-        return projectFolder.data.works.filter(w => w.content !== 'Complex').length > 0;
-    }
-
     const details = projectFolder.data;
 
     return (
-        <div className="event-show">
+        <RctCollapsibleCard className="event-show">
             {/*<PageTitleBar
                 title={"Fiche techinque du project " + details.title}
             />*/}
             <div className="banner" />
             <div className="event-show-header mb-70">
                 <div className="d-flex flex-row justify-content-space-between">
-                    <h3 className="text-white event-title">
+                    <h3 className="event-title">
                         Fiche technique du projet <strong>{details.title}</strong>
                     </h3>
                 </div>
-                <h5 className="text-white">
+                <h5>
                     <i className="ti-package mr-2" />
                     <span>{getTypeLabel(details.type)}</span>
                 </h5>
@@ -152,10 +154,10 @@ const Show = ({ match, history }) => {
                                             <strong>{work.book.title}</strong>
                                         </Tooltip>
                                     )}>
-                                        { work.libelle ? <span>{work.libelle} </span> :
-                                                <span dangerouslySetInnerHTML={{
-                                                    __html: work.content
-                                                }}></span> }
+                                        {work.libelle ? <span>{work.libelle} </span> :
+                                            <span dangerouslySetInnerHTML={{
+                                                __html: work.content
+                                            }}></span>}
                                     </FieldsetComponent>
                                 </div>
                             </div> : null}
@@ -163,10 +165,13 @@ const Show = ({ match, history }) => {
                 ))}
             </div>
 
+            {hasComplexWork() && (
+                <ComplexTable values={projectFolder.data ? projectFolder.data.works.find(w => w.content === 'Complex') ? projectFolder.data.works.find(w => w.content === 'Complex').details : [] : []} />
+            )}
+
             <CustomList
                 list={reactions ? reactions.filter(r => r.type != 'ILLUSTRATION') : []}
                 loading={false}
-                titleList={"Activités sur le projet"}
                 itemsFoundText={() => 'Activités trouvé.e.s'}
                 renderItem={reactions => (
                     <>
@@ -177,54 +182,54 @@ const Show = ({ match, history }) => {
                                 </h4>
                             </div>
                         ) : (
-                                <div className="table-responsive">
-                                    <table className="table table-hover table-middle mb-0 text-center">
-                                        <thead>
-                                            <tr>
-                                                <th>Titre</th>
-                                                <th>Type</th>
-                                                <th>Action</th>
+                            <div className="table-responsive">
+                                <table className="table table-hover table-middle mb-0 text-center">
+                                    <thead>
+                                        <tr>
+                                            <th>Titre</th>
+                                            <th>Type</th>
+                                            <th>Action</th>
 
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {reactions && reactions.map((item, key) => (
+                                            <tr
+                                                key={key}
+                                                className="cursor-pointer"
+                                                onClick={() => this.onItemClick(item.id)}
+                                            >
+                                                <td>
+                                                    <div className="media">
+                                                        <div className="media-body pt-10">
+                                                            <h4 className="m-0 fw-bold text-dark">{item.title}</h4>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="media">
+                                                        <div className="media-body pt-10">
+                                                            <h4 className="m-0 fw-bold text-dark">{item.type}</h4>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <Button
+                                                        color="primary"
+                                                        variant="contained"
+                                                        className="text-white font-weight-bold bg-blue"
+                                                        style={{ marginRight: 10 }}
+                                                        onClick={() => { setShowBox(true), setSelectedItem(item) }}
+                                                    >
+                                                        Consulter
+                                                    </Button>
+                                                </td>
                                             </tr>
-                                        </thead>
-                                        <tbody>
-                                            {reactions && reactions.map((item, key) => (
-                                                <tr
-                                                    key={key}
-                                                    className="cursor-pointer"
-                                                    onClick={() => this.onItemClick(item.id)}
-                                                >
-                                                    <td>
-                                                        <div className="media">
-                                                            <div className="media-body pt-10">
-                                                                <h4 className="m-0 fw-bold text-dark">{item.title}</h4>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div className="media">
-                                                            <div className="media-body pt-10">
-                                                                <h4 className="m-0 fw-bold text-dark">{item.type}</h4>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <Button
-                                                            color="primary"
-                                                            variant="contained"
-                                                            className="text-white font-weight-bold bg-blue"
-                                                            style={{ marginRight: 10 }}
-                                                            onClick={() => { setShowBox(true), setSelectedItem(item) }}
-                                                        >
-                                                            Consulter
-                                                        </Button>
-                                                    </td>
-                                                </tr>
-                                            ))}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            )}
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                        )}
                     </>
                 )}
             />
@@ -275,9 +280,9 @@ const Show = ({ match, history }) => {
                     onClick={() => history.push(joinUrlWithParamsId(baseUrl.GALLERY, folderId))}
                 >
                     Voir la gallerie
-                        </Button>
+                </Button>
             </div>
-        </div>
+        </RctCollapsibleCard>
     );
 };
 

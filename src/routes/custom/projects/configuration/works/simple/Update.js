@@ -16,7 +16,7 @@ import {Button, Form, FormGroup, Input as InputStrap} from 'reactstrap';
 import {createProjectWork, setRequestGlobalAction, getProjectWorks} from "Actions";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
 
-class Create extends Component {
+class Update extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -161,10 +161,6 @@ class Create extends Component {
     }
 }
 
-Create.propTypes = {
-
-};
-
 const mapStateToProps = ({ requestGlobalLoader, authUser, projectWorks }) => {
     return {
         projectWorks,
@@ -173,4 +169,4 @@ const mapStateToProps = ({ requestGlobalLoader, authUser, projectWorks }) => {
     }
 };
 
-export default connect(mapStateToProps, {setRequestGlobalAction, getProjectWorks})(withRouter((injectIntl(Create))));
+export default connect(mapStateToProps, {setRequestGlobalAction, getProjectWorks})(withRouter((injectIntl(Update))));
