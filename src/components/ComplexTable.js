@@ -263,7 +263,7 @@ class ComplexTable extends Component {
                                                                 <td rowSpan={numberOfColumnsArray[index]} key={index2}>
                                                                     <div className="media">
                                                                         <div className="media-body pt-10">
-                                                                            <h4 style={{ textAlign: 'start' }} className="m-0 fw-bold text-dark">{datas[Math.floor(d2 / (COLUMNS - 1))] ? datas[Math.floor(d2 / (COLUMNS - 1))].books[this.getSubtitleFromIndex(index)[0]] ? datas[Math.floor(d2 / (COLUMNS - 1))].books[this.getSubtitleFromIndex(index)[0]].title : index + '-' + index % numberOfColumns : 'ff'}</h4>
+                                                                            <h4 style={{ textAlign: 'start' }} className="m-0 fw-bold text-dark">{datas[Math.floor(d2 / (COLUMNS - 1))] ? datas[Math.floor(d2 / (COLUMNS - 1))].books[this.getSubtitleFromIndex(index)[0]] ? datas[Math.floor(d2 / (COLUMNS - 1))].books[this.getSubtitleFromIndex(index)[0]].title : '' : ''}</h4>
                                                                         </div>
                                                                     </div>
                                                                 </td>
@@ -389,7 +389,7 @@ class ComplexTable extends Component {
                                                             <td rowSpan={numberOfColumnsArray[index]} key={index2}>
                                                                 <div className="media">
                                                                     <div className="media-body pt-10">
-                                                                    <h4 style={{ textAlign: 'start' }} className="m-0 fw-bold text-dark">{datas[Math.floor(d2 / (COLUMNS - 1))] ? datas[Math.floor(d2 / (COLUMNS - 1))].books[this.getSubtitleFromIndex(index)[0]] ? datas[Math.floor(d2 / (COLUMNS - 1))].books[this.getSubtitleFromIndex(index)[0]].title : index + '-' + index % numberOfColumns : 'ff'}</h4>
+                                                                    <h4 style={{ textAlign: 'start' }} className="m-0 fw-bold text-dark">{datas[Math.floor(d2 / (COLUMNS - 1))] ? datas[Math.floor(d2 / (COLUMNS - 1))].books[this.getSubtitleFromIndex(index)[0]] ? datas[Math.floor(d2 / (COLUMNS - 1))].books[this.getSubtitleFromIndex(index)[0]].title : '' : ''}</h4>
                                                                     </div>
                                                                 </div>
                                                             </td>
