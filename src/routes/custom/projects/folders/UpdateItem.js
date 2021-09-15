@@ -39,7 +39,7 @@ const formats = [
     'code-block'
 ];
 
-const AddWork = ({ show, works, onSave, onClose, onSubmitComplexBook }) => {
+const AddWork = ({ show, works, onSave, onClose, onSubmitComplexBook, onDeleteComplexBook }) => {
     const { control, register, errors, handleSubmit, watch } = useForm();
 
     const [book, setBook] = useState(null);
@@ -142,7 +142,7 @@ const AddWork = ({ show, works, onSave, onClose, onSubmitComplexBook }) => {
                                 </div>
                                 :
                                 <div className="col-sm-12">
-                                    <ComplexTable edit values={book.details} onSubmit={(data) => onSubmitComplexBook(book.id, data, true)} />
+                                    <ComplexTable edit values={book.details} onSubmit={(data) => onSubmitComplexBook(book.id, data, true)} onDeleteComplexBook={(data) => onDeleteComplexBook(book.id, data)} />
                                 </div>
                         )}
 

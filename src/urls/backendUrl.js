@@ -431,6 +431,7 @@ export const PROJECTS = {
         UPDATE: 'api/projects/folders/{id}',
         ADD_WORK: 'api/projects/folders/{id}/adding',
         ADD_COMPLEX_WORK: 'api/projects/folders/{id}/adding/complex',
+        DELETE_COMPLEX_WORK: 'api/projects/folders/{id}/deleting/complex',
         UPDATE_FOLDER_WORK: 'api/projects/folders/book/editing',
         UPDATE_WORK: 'api/projects/folders/books/{id}',
         SORT_WORK: 'api/projects/folders/{id}/sort',

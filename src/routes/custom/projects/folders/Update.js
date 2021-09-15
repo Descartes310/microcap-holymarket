@@ -19,7 +19,7 @@ import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
 import {
     getOneProjectFolder, getUsersBooks, updateFolder, updateBook, setRequestGlobalAction,
-    sortBook, updateBookFolder, updateFolderWithComplexBook, updateComplexBook
+    sortBook, updateBookFolder, updateFolderWithComplexBook, deleteFolderWithComplexBook
 } from "Actions";
 
 // a little function to help us with reordering the result
@@ -202,6 +202,24 @@ const Update = ({ match, setRequestGlobalAction }) => {
             })
     }
 
+    const onDeleteComplexBook = (book_id, data) => {
+        setRequestGlobalAction(true);
+        let finalData = [];
+        data.forEach(d => {
+            finalData.push({ ...d, type: getTypeString(d.type) })
+        })
+        deleteFolderWithComplexBook(folderId, book_id, JSON.stringify(finalData), {}).then(response => {
+            console.log(response)
+        })
+            .catch(err => console.log(err))
+            .finally(() => {
+                setRequestGlobalAction(false);
+                setShowModal(false);
+                setShowUpdateModal(false);
+                loadData();
+            })
+    }
+
     const hasComplexWork = () => {
         return projectFolder.data ? projectFolder.data.works.filter(w => w.content !== 'Complex').length > 0 : false;
     }
@@ -325,6 +343,7 @@ const Update = ({ match, setRequestGlobalAction }) => {
                     <UpdateWork
                         onSave={onEditWork}
                         show={showUpdateModal}
+                        onDeleteComplexBook={onDeleteComplexBook}
                         onSubmitComplexBook={onSubmitComplexBook}
                         onClose={() => setShowUpdateModal(false)}
                         works={projectFolder.data ? projectFolder.data.works : []}
