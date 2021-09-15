@@ -162,7 +162,7 @@ class List extends Component {
                         </div>
                     </DialogTitle>
                     <DialogContent>
-                        <ComplexTable />
+                        <ComplexTable values={[]} />
                     </DialogContent>
                 </Dialog>
             </>

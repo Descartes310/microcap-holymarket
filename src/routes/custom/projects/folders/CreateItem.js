@@ -116,7 +116,7 @@ const AddWork = ({ show, works, onSave, onClose, child, onSubmitComplexBook }) =
                                 :
                                 <div className="col-sm-12">
 
-                                    <ComplexTable edit={true} onSubmit={(data) => onSubmitComplexBook(book.id, data)}/>
+                                    <ComplexTable edit={true} values={[]} onSubmit={(data) => onSubmitComplexBook(book.id, data)}/>
                                 </div>
                         )}
 

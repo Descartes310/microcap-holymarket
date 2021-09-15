@@ -10,12 +10,14 @@ import { AbilityContext } from "Permissions/Can";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
 
 const COLUMNS = 5;
+const LABELS = ["LIBELLE", "CODE", "AMOUNT"];;
 class ComplexTable extends Component {
     static contextType = AbilityContext;
 
     state = {
         datas: [],
-        numberOfColumns: 0,
+        values: [],
+        numberOfColumns: 1,
         numberOfColumnsArray: [],
         bookDetails: [] // {value: x, x: x, y: y, type: x}
     };
@@ -26,6 +28,7 @@ class ComplexTable extends Component {
 
     componentDidMount() {
         this.getBooks();
+        this.setState({ values: this.props.values });
     }
 
     getBooks = () => {
@@ -37,19 +40,14 @@ class ComplexTable extends Component {
     };
 
     getTotalColumns = (datas) => {
-        let totalColumns = 0;
-        Array.from(Array(this.getMaxIndex()).keys()).map((d, index) => {
-            let maxColumn = 0;
-            Array.from(Array(datas.length * (COLUMNS - 1)).keys()).map((d2, __) => {
-                let columns = this.getNumberOfBookFromCordinates(d2, index);
-                if (maxColumn <= columns) {
-                    maxColumn = columns;
-                }
-            });
+        this.setState({ numberOfColumnsArray: [], numberOfColumns: 1 });
+        let result = this.getMaxIndex(datas);
+        console.log(result);
+        Array(this.getMaxFromArray(result[1])).fill(0).map((__, level) => {
+            let maxColumn = this.getMaxFromLevel(datas, level);
             this.setState({ numberOfColumnsArray: [...this.state.numberOfColumnsArray, ...Array(maxColumn).fill(maxColumn)] });
-            totalColumns = totalColumns + maxColumn;
         });
-        this.setState({ numberOfColumns: totalColumns });
+        this.setState({ numberOfColumns: result[0] });
     }
 
     fillDefaultValues = (data) => {
@@ -57,45 +55,89 @@ class ComplexTable extends Component {
         return data;
     }
 
-    getMaxIndex = (index = 0, dataSource = null) => {
-        let datas = dataSource ? dataSource : this.state.datas
-        let max = datas[0] ? datas[0].books.length > 0 ? datas[0].books.length : 0 : 0;
-        datas.forEach(d => {
-            let tmpLength = d.books.length > 0 ? d.books.length : 0;
-            if (tmpLength >= max) {
-                max = tmpLength;
+    getMaxFromArray = (array) => {
+        return Math.min.apply(null, array);
+    }
+
+    getMaxIndex = (datas) => {
+        let rows = 1;
+        let arrays = Array.from(datas.length).fill(0);
+        datas.map((d, index) => {
+            let localRows = 0;
+            d.books.forEach(b => {
+                localRows = localRows + this.getRowsNumber(b.parent.id, b.id);
+            });
+            arrays[index] = localRows;
+            if (localRows >= rows) {
+                rows = localRows;
+            }
+        });
+        return [rows, arrays];
+    }
+
+    getMaxFromLevel = (datas, level) => {
+        let max = 1;
+        datas.map((d, __) => {
+            let localRows = 0;
+            if (d.books[level]) {
+                localRows = this.getRowsNumber(d.books[level].parent.id, d.books[level].id);
+            }
+            if (localRows >= max) {
+                max = localRows;
             }
         });
         return max;
     }
 
-    editRow = (x, y, type, value, position) => {
-        if (value) {
-            let currentData = this.state.bookDetails.find(bd => bd.x === x && bd.y === y && bd.type === type);
-            let otherDatas = this.state.bookDetails;
-            //.filter(bd => bd.x !== x || bd.y !== y || bd.type !== type);
-
-            currentData = {
-                value: value,
-                x: x,
-                y: y,
-                type: type,
-                position
+    getRowsNumber = (x, y) => {
+        let max = 1;
+        let values = this.state.values.filter(v => v.x == x && v.y == y);
+        LABELS.forEach(type => {
+            if (max <= values.filter(b => b.type == type).length) {
+                max = values.filter(b => b.type == type).length;
             }
-            otherDatas.push(currentData);
-            this.setState({ bookDetails: [...otherDatas] });
+        });
+        return max;
+    }
+
+    addRow = (x, y, type, value, position) => {
+        let currentData = this.state.bookDetails.find(bd => bd.x === x && bd.y === y && bd.type === type);
+        let otherDatas = this.state.bookDetails;
+        currentData = {
+            value: ' ',
+            x: x,
+            y: y,
+            type: 1,
+            position
         }
+        otherDatas.push(currentData);
+        this.setState({ bookDetails: [...this.state.bookDetails, currentData] });
+        this.props.onSubmit(this.state.bookDetails);
+    }
+
+    editRow = (x, y, type, value, position) => {
+        let currentData = this.state.bookDetails.find(bd => bd.x === x && bd.y === y && bd.type === type);
+        let otherDatas = this.state.bookDetails;
+        currentData = {
+            value: value,
+            x: x,
+            y: y,
+            type: type,
+            position
+        }
+        this.setState({ bookDetails: [...this.state.bookDetails, currentData] });
     }
 
     getValueFromCordinates = (d2, index, position = 0) => {
         // console.log("X => ", d2, " Y => ", index, " Position => ", position);
         try {
-            return this.props.values ? this.props.values.length > 0 ?
-                this.props.values.filter(v => v.x == this.state.datas[Math.floor(d2 / COLUMNS)].books[index].parent.id && v.y == this.state.datas[Math.floor(d2 / COLUMNS)].books[index].id && v.type == this.getTypeString(d2 % COLUMNS))[position] ?
-                    this.props.values.filter(v => v.x == this.state.datas[Math.floor(d2 / COLUMNS)].books[index].parent.id && v.y == this.state.datas[Math.floor(d2 / COLUMNS)].books[index].id && v.type == this.getTypeString(d2 % COLUMNS))[position].value
+            let value = this.state.values ? this.state.values.length > 0 ?
+                this.state.values.filter(v => v.x == this.state.datas[Math.floor(d2 / COLUMNS)].books[index].parent.id && v.y == this.state.datas[Math.floor(d2 / COLUMNS)].books[index].id && v.type == this.getTypeString(d2 % COLUMNS))[position] ?
+                    this.state.values.filter(v => v.x == this.state.datas[Math.floor(d2 / COLUMNS)].books[index].parent.id && v.y == this.state.datas[Math.floor(d2 / COLUMNS)].books[index].id && v.type == this.getTypeString(d2 % COLUMNS))[position].value
                     : null
                 : null
-                : null
+                : null;
+            return value;
         } catch (exception) {
             return null;
         }
@@ -109,25 +151,25 @@ class ComplexTable extends Component {
         let lastItem = this.state.numberOfColumnsArray[i];
         while (index < i) {
             let item = this.state.numberOfColumnsArray[index];
-            if (lastItem == item && i - lastIndex < item)
+            if (i - index < item)
                 break;
             lastItem = item;
             lastIndex = index;
             index = index + item;
             result = result + 1;
         }
-        console.log([i, result, index]);
+        console.log([i, result, index])
         return [result, index];
     }
 
     getNumberOfBookFromCordinates = (d2, index) => {
         try {
-            let books = this.props.values ? this.props.values.length > 0 ?
-                this.props.values.filter(v => v.x == this.state.datas[Math.floor(d2 / COLUMNS)].books[index].parent.id && v.y == this.state.datas[Math.floor(d2 / COLUMNS)].books[index].id)
+            let books = this.state.values ? this.state.values.length > 0 ?
+                this.state.values.filter(v => v.x == this.state.datas[Math.floor(d2 / COLUMNS)].books[index].parent.id && v.y == this.state.datas[Math.floor(d2 / COLUMNS)].books[index].id)
                 : []
                 : [];
             let max = 1;
-            ["LIBELLE", "CODE", "AMOUNT"].forEach(type => {
+            LABELS.forEach(type => {
                 if (max <= books.filter(b => b.type == type).length) {
                     max = books.filter(b => b.type == type).length;
                 }
@@ -137,6 +179,7 @@ class ComplexTable extends Component {
             return 1;
         }
     }
+
     getTypeString = (id) => {
         switch (id) {
             case 1:
@@ -151,8 +194,8 @@ class ComplexTable extends Component {
     }
 
     render() {
-        const { values } = this.props;
-        const { datas, numberOfColumns, numberOfColumnsArray } = this.state;
+        const { datas, numberOfColumns, numberOfColumnsArray, values } = this.state;
+        console.log("Le gars ci ", numberOfColumnsArray)
         return (
             <RctCollapsibleCard>
                 <div className="d-flex justify-content-center align-items-center" style={{ flexDirection: 'column' }}>
@@ -198,15 +241,13 @@ class ComplexTable extends Component {
                                                             </div>
                                                         </div>
                                                     </td>
-                                                    {values && (
-                                                        <td>
-                                                            <div className="media">
-                                                                <div className="media-body pt-10">
-                                                                    <h4 style={{ textAlign: 'start' }} className="m-0 fw-bold text-dark">Action</h4>
-                                                                </div>
+                                                    <td>
+                                                        <div className="media">
+                                                            <div className="media-body pt-10">
+                                                                <h4 style={{ textAlign: 'start' }} className="m-0 fw-bold text-dark">Action</h4>
                                                             </div>
-                                                        </td>
-                                                    )}
+                                                        </div>
+                                                    </td>
                                                 </>
                                             ))}
                                         </tr>
@@ -218,7 +259,7 @@ class ComplexTable extends Component {
                                                 {Array.from(Array(datas.length * COLUMNS).keys()).map((d2, index2) => {
                                                     return (
                                                         <>
-                                                            {(d2 % (COLUMNS)) == 0 && index % numberOfColumnsArray[index] == 0 && (
+                                                            {(d2 % (COLUMNS)) == 0 && index - this.getSubtitleFromIndex(index)[1] == 0 && (
                                                                 <td rowSpan={numberOfColumnsArray[index]} key={index2}>
                                                                     <div className="media">
                                                                         <div className="media-body pt-10">
@@ -238,6 +279,16 @@ class ComplexTable extends Component {
                                                                                 value: null,
                                                                                 position: index - this.getSubtitleFromIndex(index)[1]
                                                                             }])} style={{ fontSize: '1.7em', color: 'red' }}></i>
+                                                                        {numberOfColumnsArray[index] == (index - this.getSubtitleFromIndex(index)[1]) + 1 && (
+                                                                            <i
+                                                                                onClick={() => this.addRow(
+                                                                                    datas[Math.floor(d2 / COLUMNS)].books[this.getSubtitleFromIndex(index)[0]].parent.id,
+                                                                                    datas[Math.floor(d2 / COLUMNS)].books[this.getSubtitleFromIndex(index)[0]].id,
+                                                                                    1,
+                                                                                    null,
+                                                                                    index + 1 - this.getSubtitleFromIndex(index)[1])}
+                                                                                className="zmdi zmdi-plus" style={{ fontSize: '2em', color: 'blue', marginLeft: 10 }}></i>
+                                                                        )}
                                                                     </div>
                                                                 </td>
                                                             )}
@@ -281,7 +332,7 @@ class ComplexTable extends Component {
                                 <thead>
                                     <tr>
                                         {datas.map(data => (
-                                            <th colSpan={(COLUMNS - 1)}>{data.name}</th>
+                                            <th colSpan={(COLUMNS)}>{data.name}</th>
                                         ))}
                                     </tr>
                                 </thead>
@@ -316,6 +367,13 @@ class ComplexTable extends Component {
                                                         </div>
                                                     </div>
                                                 </td>
+                                                <td>
+                                                    <div className="media">
+                                                        <div className="media-body pt-10">
+                                                            <h4 style={{ textAlign: 'start' }} className="m-0 fw-bold text-dark"></h4>
+                                                        </div>
+                                                    </div>
+                                                </td>
                                             </>
                                         ))}
                                     </tr>
@@ -324,19 +382,25 @@ class ComplexTable extends Component {
                                             key={index}
                                             className="cursor-pointer"
                                         >
-                                            {Array.from(Array(datas.length * (COLUMNS - 1)).keys()).map((d2, index2) => {
+                                            {Array.from(Array(datas.length * (COLUMNS)).keys()).map((d2, index2) => {
                                                 return (
                                                     <>
-                                                        {(d2 % (COLUMNS - 1)) == 0 && index % numberOfColumnsArray[index] == 0 && (
+                                                        {(d2 % (COLUMNS)) == 0 && index - this.getSubtitleFromIndex(index)[1] == 0 && (
                                                             <td rowSpan={numberOfColumnsArray[index]} key={index2}>
                                                                 <div className="media">
                                                                     <div className="media-body pt-10">
-                                                                        <h4 style={{ textAlign: 'start' }} className="m-0 fw-bold text-dark">{datas[Math.floor(d2 / (COLUMNS - 1))] ? datas[Math.floor(d2 / (COLUMNS - 1))].books[this.getSubtitleFromIndex(index)[0]] ? datas[Math.floor(d2 / (COLUMNS - 1))].books[this.getSubtitleFromIndex(index)[0]].title : index + '-' + index % numberOfColumns : 'ff'}</h4>
+                                                                    <h4 style={{ textAlign: 'start' }} className="m-0 fw-bold text-dark">{datas[Math.floor(d2 / (COLUMNS - 1))] ? datas[Math.floor(d2 / (COLUMNS - 1))].books[this.getSubtitleFromIndex(index)[0]] ? datas[Math.floor(d2 / (COLUMNS - 1))].books[this.getSubtitleFromIndex(index)[0]].title : index + '-' + index % numberOfColumns : 'ff'}</h4>
                                                                     </div>
                                                                 </div>
                                                             </td>
                                                         )}
-                                                        {(d2 % (COLUMNS - 1)) != 0 && (
+                                                        {(d2 % (COLUMNS)) == (COLUMNS-1) && (
+                                                            <td rowSpan={1} key={index2}>
+                                                                <div className="media d-flex justify-content-center align-items-center">
+                                                                </div>
+                                                            </td>
+                                                        )}
+                                                        {(d2 % (COLUMNS)) != 0 && (d2 % (COLUMNS)) != (COLUMNS - 1) && (
                                                             <td>
                                                                 <div className="media">
                                                                     <div className="media-body pt-10">
@@ -358,6 +422,12 @@ class ComplexTable extends Component {
                                     <tr>
                                         {Array.from(Array(datas.length).keys()).map((d2, index2) => (
                                             <>
+                                                <td>
+                                                    <div className="media">
+                                                        <div className="media-body pt-10">
+                                                        </div>
+                                                    </div>
+                                                </td>
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
