@@ -146,21 +146,40 @@ const Show = ({ match, history }) => {
                 </div>
                 {details.works.filter(w => w.content !== 'Complex').sort((a, b) => a.index < b.index ? -1 : 1).map((work, index) => (
                     <>
-                        {work.required || isRequired(work.book.id) ?
-                            <div key={index} className="row mb-20">
-                                <div className="col-sm-12">
-                                    <FieldsetComponent title={(
-                                        <Tooltip id={"tooltip-icon" + index} title={work.book.title}>
-                                            <strong>{work.book.title}</strong>
-                                        </Tooltip>
-                                    )}>
-                                        {work.libelle ? <span>{work.libelle} </span> :
-                                            <span dangerouslySetInnerHTML={{
-                                                __html: work.content
-                                            }}></span>}
-                                    </FieldsetComponent>
+                        {/* {work.required || isRequired(work.book.id) ? */}
+                        {!work.book.parent && (
+                            <>
+                                <div key={index} className="row mb-20">
+                                    <div className="col-sm-12">
+                                        <FieldsetComponent title={(
+                                            <Tooltip id={"tooltip-icon" + index} title={work.book.title}>
+                                                <strong>{work.book.title}</strong>
+                                            </Tooltip>
+                                        )}>
+                                            {work.libelle ? <span>{work.libelle} </span> :
+                                                <span dangerouslySetInnerHTML={{
+                                                    __html: work.content
+                                                }}></span>}
+                                        </FieldsetComponent>
+                                    </div>
                                 </div>
-                            </div> : null}
+                                {details.works.filter(w => w.book.parent !== null).filter(w => w.book.parent.id === work.book.id).sort((a, b) => a.index < b.index ? -1 : 1).map((w, i) => (
+                                    <div key={i} className="row mb-20 ml-50">
+                                        <div className="col-sm-12">
+                                            <FieldsetComponent title={(
+                                                <Tooltip id={"tooltip-icon-children" + i} title={w.book.title}>
+                                                    <strong>{w.book.title}</strong>
+                                                </Tooltip>
+                                            )}>
+                                                {w.libelle ? <span>{w.libelle} </span> :
+                                                    <span dangerouslySetInnerHTML={{
+                                                        __html: w.content
+                                                    }}></span>}
+                                            </FieldsetComponent>
+                                        </div>
+                                    </div>
+                                ))}
+                            </>)}
                     </>
                 ))}
             </div>

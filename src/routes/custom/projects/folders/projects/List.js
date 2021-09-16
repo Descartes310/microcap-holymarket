@@ -5,10 +5,11 @@ import React, { Component } from 'react';
 import IntlMessages from 'Util/IntlMessages';
 import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
+import Switch from "@material-ui/core/Switch";
 import CustomList from "Components/CustomList";
 import { AbilityContext } from "Permissions/Can";
-import { setRequestGlobalAction, getFolders } from "Actions";
 import { joinUrlWithParamsId, PROJECTS } from "Url/frontendUrl";
+import { setRequestGlobalAction, getFolders, changeProjectStatus } from "Actions";
 
 class List extends Component {
     static contextType = AbilityContext;
@@ -29,6 +30,18 @@ class List extends Component {
 
     goToWork = (projectId) => {
         this.props.history.push(joinUrlWithParamsId(this.baseUrl.WORK, projectId));
+    };
+
+    onToggleStatus = (id) => {
+        this.props.setRequestGlobalAction(true);
+        changeProjectStatus(id)
+            .then(() => {
+                window.location.reload();
+            })
+            .catch((err) => {
+                NotificationManager.error("Erreur lors de la mise à jour");
+            })
+            .finally(() => this.props.setRequestGlobalAction(false));
     };
 
     render() {
@@ -59,6 +72,7 @@ class List extends Component {
                                                     <th>Titre</th>
                                                     <th>Type</th>
                                                     <th>Option d'initialisation</th>
+                                                    <th>Status</th>
                                                     <th>Actions</th>
                                                 </tr>
                                             </thead>
@@ -88,6 +102,13 @@ class List extends Component {
                                                                     <h4 style={{ textAlign: 'start' }} className="m-0 fw-bold text-dark">{item.initializationOption ? item.initializationOption.name : item.idea.title}</h4>
                                                                 </div>
                                                             </div>
+                                                        </td>
+                                                        <td>
+                                                            <Switch
+                                                                checked={item.status}
+                                                                onChange={(event) => { this.onToggleStatus(item.id) }}
+                                                                aria-label="Principal"
+                                                            />
                                                         </td>
                                                         <td>
                                                             <div className="media">

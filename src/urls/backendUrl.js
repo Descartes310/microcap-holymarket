@@ -429,6 +429,7 @@ export const PROJECTS = {
         GET_ALL_BY_BRANCH: 'api/projects/folders/branch',
         CREATE: 'api/projects/folders',
         UPDATE: 'api/projects/folders/{id}',
+        UPDATE_STATUS: 'api/projects/folders/{id}/status',
         ADD_WORK: 'api/projects/folders/{id}/adding',
         ADD_COMPLEX_WORK: 'api/projects/folders/{id}/adding/complex',
         DELETE_COMPLEX_WORK: 'api/projects/folders/{id}/deleting/complex',
