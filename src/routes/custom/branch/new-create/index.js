@@ -127,7 +127,7 @@ class CreateBranch extends Component {
 
     loadData = () => {
         this.setState({ loading: true });
-        if (this.sampleBranchId !== undefined) {
+        if (this.sampleBranchId) {
             const id = this.sampleBranchId;
             getOneSampleBranch(id)
                 .then(result => {
@@ -285,8 +285,6 @@ class CreateBranch extends Component {
     render() {
         const { requestGlobalLoader, history, match, authUser, userInfos} = this.props;
         const { data, activeStep, loading } = this.state;
-        console.log('userInfos', userInfos);
-        console.log('userInfosProps', this.props);
 
         if (loading) {
             return (<RctSectionLoader/>);

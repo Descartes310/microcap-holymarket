@@ -149,7 +149,7 @@ const FirstStep = props => {
                         name={'phoneNumberPrefix'}
                         defaultValue={countryWithNumberAndFlag[0].phonePrefixes[0]}
                         as={<Select>
-                            {countryWithNumberAndFlag.map(item => (
+                            {countryWithNumberAndFlag.sort((a, b) => a.phonePrefixes[0] > b.phonePrefixes[0]).map(item => (
                                 <MenuItem key={item.id} value={item.phonePrefixes[0]} className="center-hor-ver">
                                     <FlagCountry flag={item.flag} label={item.phonePrefixes[0]} />
                                 </MenuItem>

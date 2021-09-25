@@ -2,6 +2,7 @@ import _ from 'lodash';
 import * as moment from "moment";
 import { injectIntl } from 'react-intl';
 import { useForm } from "react-hook-form";
+import AppConfig from 'Constants/AppConfig';
 import IntlMessages from "Util/IntlMessages";
 import { Form, FormGroup } from "reactstrap";
 import Button from "@material-ui/core/Button";
@@ -287,7 +288,7 @@ const ThirdStep = props => {
                         />
                     } label={
                         <>
-                            J'accepte les <a href={cgu ? cgu.value : '/home'} target='_blank' >conditions générales d'utilisation</a>
+                            J'accepte les <a href={cgu ? AppConfig.api.baseUrl+cgu.value : '/home'} target='_blank' >conditions générales d'utilisation</a>
                         </>
                     }
                     />}
