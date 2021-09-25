@@ -1068,7 +1068,7 @@ export default {
                      "menu_title": "Paiement",
                      "new_item": false,
                      'key': 'commnity_admin',
-                     "path": joinUrlWithParamsId(COMMUNITY_ADMIN.SELF, communitySpaceId),
+                     "path": joinUrlWithParamsId(COMMUNITY_ADMIN.VOUCHER.PAYMENT, communitySpaceId),
                      "permissions": [],
                   },{
                      "menu_title": "Recharge",

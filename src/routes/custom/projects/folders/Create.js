@@ -52,6 +52,7 @@ const Create = props => {
     const [initializationId, setInitializationId] = useState('');
     const [worksData, setWorksData] = useState([]);
     const [currencies, setCurrencies] = useState([]);
+    const [child, setChild] = useState([]);
 
     const [initialisationData, setInitialisationData] = useState({
         data: null,
@@ -67,6 +68,12 @@ const Create = props => {
         fetchCurrencies();
         loadData(oldFolderType);
     }, []);
+
+    const addChild = (workId) => {
+        let workChild = child.filter(c => c.work === workId);
+        let item = { work: workId, index: workChild.length + 1 }
+        setChild([...child, item]);
+    }
 
     const loadData = (type) => {
         setInitialisationData({
@@ -164,7 +171,7 @@ const Create = props => {
                 NotificationManager.success("Projet crée avec succès");
                 history.push(PROJECTS.FOLDERS.LIST);
             })
-            .catch(() => null   )
+            .catch(() => null)
             .finally(() => setRequestGlobalAction(false));
     };
 
@@ -317,22 +324,51 @@ const Create = props => {
                                     const key = initializationId + index;
                                     const label = `${work.book.id}-content`;
                                     return (
-                                        Array.apply(null, { length: work.max }).map((__, i) => (
+                                        <>
                                             <div key={key} className="col-sm-12">
                                                 <FormGroup className="has-wrapper">
-                                                    <InputLabel className="text-left" style={{ color: 'black', fontSize: '1.3em' }} htmlFor={label}>
-                                                        {work.content}
-                                                    </InputLabel>
-                                                    <InputLabel className="text-left" htmlFor={label}>
-                                                        {work.description}
-                                                    </InputLabel>
+                                                    <div className="d-flex justify-content-between mb-30">
+                                                        <div>
+                                                            <InputLabel className="text-left" style={{ color: 'black', fontSize: '1.3em' }} htmlFor={label}>
+                                                                {work.content}
+                                                            </InputLabel>
+                                                            <InputLabel className="text-left" htmlFor={label}>
+                                                                {work.description}
+                                                            </InputLabel>
+                                                        </div>
+                                                        <Button
+                                                            disabled={work.max - 1 <= child.filter(c => c.work === work.book.id).length}
+                                                            color="primary"
+                                                            variant="contained"
+                                                            className="text-white font-weight-bold mr-3"
+                                                            onClick={() => addChild(work.book.id)}
+                                                        >
+                                                            Ajouter
+                                                        </Button>
+                                                    </div>
                                                     {
                                                         work.editable ?
-                                                            <ReactQuill modules={modules} name={`${work.book.id}`} onChange={(e) => onSetWorks(`${work.book.id}`, e, i)} formats={formats} placeholder="Entrez votre contenu..." />
+                                                            <ReactQuill modules={modules} name={`${work.book.id}`} onChange={(e) => onSetWorks(`${work.book.id}`, e, 1)} formats={formats} placeholder="Entrez votre contenu..." />
                                                             : null}
                                                 </FormGroup>
                                             </div>
-                                        ))
+                                            {Array.apply(null, { length: child.filter(c => c.work === work.book.id).length }).map((__, i) => (
+                                                <div key={key} className="col-sm-12">
+                                                    <FormGroup className="has-wrapper">
+                                                        <InputLabel className="text-left" style={{ color: 'black', fontSize: '1.3em' }} htmlFor={label}>
+                                                            {work.content}
+                                                        </InputLabel>
+                                                        <InputLabel className="text-left" htmlFor={label}>
+                                                            {work.description}
+                                                        </InputLabel>
+                                                        {
+                                                            work.editable ?
+                                                                <ReactQuill modules={modules} name={`${work.book.id}`} onChange={(e) => onSetWorks(`${work.book.id}`, e, i+2)} formats={formats} placeholder="Entrez votre contenu..." />
+                                                                : null}
+                                                    </FormGroup>
+                                                </div>
+                                            ))}
+                                        </>
                                     )
                                 })}
                             </div>
