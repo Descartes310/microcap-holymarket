@@ -82,7 +82,7 @@ class List extends Component {
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{item.type}</h4>
+                                                            <h4 className="m-0 fw-bold text-dark">{item.commercialOpTypeMap.label}</h4>
                                                         </div>
                                                     </div>
                                                 </td>

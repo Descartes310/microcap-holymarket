@@ -123,20 +123,20 @@ export const PRODUCTS = {
 };
 
 export const CATALOGS = {
-    GET_ALL: 'public/catalogs',
-    CREATE: 'public/catalogs',
-    GET_ONE: 'public/catalogs/{id}',
-    EDIT: 'public/catalogs/{id}',
+    GET_ALL: 'api/catalogs',
+    CREATE: 'api/catalogs',
+    GET_ONE: 'api/catalogs/{id}',
+    EDIT: 'api/catalogs/{id}',
     TYPE_PRODUCTS: {
-        ADD: 'public/catalogs/{id}/add-type-products',
-        REMOVE: 'public/catalogs/{id}/remove-type-products',
-        GET: 'public/catalogs/{id}/type-products',
+        ADD: 'api/catalogs/{id}/add-type-products',
+        REMOVE: 'api/catalogs/{id}/remove-type-products',
+        GET: 'api/catalogs/{id}/type-products',
     },
-    ACTIVATE: 'public/catalogs/active/{id}'
+    ACTIVATE: 'api/catalogs/active/{id}'
 };
 
 export const CATALOGS_TYPE = {
-    GET_ALL: 'public/type-catalogs/catalogs',
+    GET_ALL: 'api/type-catalogs/catalogs',
 };
 
 export const CATEGORY_PRODUCTS = {
@@ -144,7 +144,7 @@ export const CATEGORY_PRODUCTS = {
     GET_ALL: 'public/category-products',
     CREATE: 'public/category-products',
     GET_ONE: 'public/category-products/{id}',
-    TYPE_PRODUCTS: 'public/type-catalogs/type-products',
+    TYPE_PRODUCTS: 'api/type-catalogs/type-products',
     SUB_CATEGORY: 'public/category-products/{id}/category-products',
 };
 

@@ -17,6 +17,7 @@ import { Button, Input, InputGroup, InputGroupAddon } from "reactstrap";
 import FormControl from "@material-ui/core/FormControl";
 import IconButton from "@material-ui/core/IconButton";
 import SweetAlert from "react-bootstrap-sweetalert";
+import AppConfig from 'Constants/AppConfig';
 import TimeFromMoment from "Components/TimeFromMoment";
 import AmountCurrency from "Components/AmountCurrency";
 import StripeCheckout from 'react-stripe-checkout';
@@ -313,7 +314,7 @@ class AccountShow extends Component {
                                             onChange={(e) => this.setState({ amount: e.target.value })}
                                         />
                                         <StripeCheckout
-                                            stripeKey="pk_live_dQAsIO66Cia9lIbect33UWEa"
+                                            stripeKey={AppConfig.payments.stripe}
                                             token={this.handleApprovisioningCard}
                                             amount={(Number(computeAmountFromCurrency(this.props.currencies, this.state.amount, null, this.props.authUser.user.currency, account_currency, currency))) * this.props.currencies.filter(c => c.code == currency)[0].decimal}
                                             name="Recharger le compte"

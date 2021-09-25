@@ -252,7 +252,7 @@ class Order extends Component {
                                                         <td>
                                                             <div className="media">
                                                                 <div className="media-body pt-10">
-                                                                    <h4 className="m-0 fw-bold text-dark">{item.name}</h4>
+                                                                    <h4 className="m-0 fw-bold text-dark">{item.productPiece.userPiece.name}</h4>
                                                                 </div>
                                                             </div>
                                                         </td>

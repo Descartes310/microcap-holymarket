@@ -17,6 +17,21 @@ const backendBaseUrl = (function (mode) {
    }
 })(process.env.BACKEND_MODE);
 
+const stripePublishableKey = (function (mode) {
+   switch (mode) {
+      case 'DEV1':
+         return process.env.STRIPE_KEY_TEST;
+      case 'DEV2':
+         return process.env.STRIPE_KEY_TEST;
+      case 'PRE_PROD':
+         return process.env.STRIPE_KEY_TEST;
+      case 'PROD':
+         return process.env.STRIPE_KEY_LIVE;
+      default:
+         return process.env.STRIPE_KEY_TEST;
+   }
+})(process.env.BACKEND_MODE);
+
 const AppConfig = {
    appLogo: require('Assets/identity/logomicrocap.png'),          // App Logo
    brandName: 'Microcap',                                    // Brand Name
@@ -137,6 +152,10 @@ const AppConfig = {
       clientId: 'microcap-app',
       clientSecret: 'geloka-secret',
       grantType: 'password',
+   },
+   payments: {
+      stripe: stripePublishableKey,
+      version: '1.0'
    },
 
    api: {

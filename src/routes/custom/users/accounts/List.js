@@ -36,15 +36,16 @@ class UsersAccountsList extends Component {
             showAddBox: false,
             selectedBranch: this.props.authUser.isManager() ? null : this.props.authUser.branchId,
             branches: {
-                data: null,
+                data: [],
                 loading: true
             }
         }
     }
 
     getBranches = () => {
+        console.log('Getting branch...')
         return  new Promise((resolve, reject) => {
-            this.setState(prevState => ({ branches: {data: null, loading: true} }));
+            this.setState(prevState => ({ branches: {data: [], loading: true} }));
             api.get(BRANCH.GET_ALL)
                 .then(response => {
                     this.setState(prevState => ({
@@ -55,8 +56,7 @@ class UsersAccountsList extends Component {
                     });
                 })
                 .catch(error => {
-
-                    this.setState(prevState => ({ branches: {data: null, loading: false}, selectedBranch: null }), () => {
+                    this.setState(prevState => ({ branches: {data: [], loading: false}, selectedBranch: null }), () => {
                         reject();
                     });
                 });
@@ -98,9 +98,9 @@ class UsersAccountsList extends Component {
                         <div className="col-sm-12">
                             <FormControl fullWidth>
                                 <InputLabel className="text-left" htmlFor="institution-helper">
-                                    Branche
+                                    Branches
                                 </InputLabel>
-                                { branches.loading === false ? (
+                                { branches.loading === false && branches.data.length === 0 ? (
                                     <FetchFailedComponent _onRetryClick={this.getBranches} />
                                 ) : (
                                     <Select

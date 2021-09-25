@@ -133,7 +133,7 @@ class BillingForm extends Component {
                </Form>
                <div className="d-flex justify-content-end">
                   {/* <StripeCheckout
-                     stripeKey="pk_test_51ILMcRF8O7K51xUUQ3rGe0lMNsDJWjM4DCxMH7zJwnxl2uFiVeC8hzrOYmAGHKiU4XAM5OIgHTZhjDrac7vP97yo00VO7op4Qx"
+                     stripeKey={AppConfig.payments.stripe}
                      token={this.onToken}
                      amount={(Number(computeAmountFromCurrency(this.props.currencies, null, cart.items.map((e) => {
                         return { amount: e.price, currency: e.currency, quantity: e.quantity }

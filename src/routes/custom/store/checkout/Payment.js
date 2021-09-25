@@ -12,6 +12,7 @@ import { withRouter } from "react-router-dom";
 import DialogTitle from "@material-ui/core/DialogTitle/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent/DialogContent";
 import Dialog from "@material-ui/core/Dialog/Dialog";
+import AppConfig from 'Constants/AppConfig';
 import CancelIcon from '@material-ui/icons/Cancel';
 import IconButton from "@material-ui/core/IconButton";
 import { getAccountByAmount, createSale, getOrderPayments } from 'Actions/independentActions';
@@ -233,8 +234,7 @@ class PaymentInfo extends Component {
                      Utilisez votre carte de crédit pour effectuer le payement
                      </p>
                   <StripeCheckout
-                     stripeKey="pk_test_51ILMcRF8O7K51xUUQ3rGe0lMNsDJWjM4DCxMH7zJwnxl2uFiVeC8hzrOYmAGHKiU4XAM5OIgHTZhjDrac7vP97yo00VO7op4Qx"
-                     //stripeKey="pk_live_dQAsIO66Cia9lIbect33UWEa"
+                     stripeKey={AppConfig.payments.stripe}
                      token={this.onToken}
                      amount={freePayment && this.state.amount > 0 ? this.state.amount * this.props.authUser.user.currency.decimal : (Number(computeAmountFromCurrency(this.props.currencies, null, cart.items.map((e) => {
                         return { amount: e.price, currency: e.currency, quantity: e.quantity }
