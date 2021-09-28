@@ -66,8 +66,9 @@ class Pass extends Component {
         this.props.setRequestGlobalAction(true);
         generateCode().then(data => {
             NotificationManager.success('Code généré avec succès');
-            window.location.reload();
+            // window.location.reload();
         }).catch(err => {
+            console.log(err)
             NotificationManager.error('Votre plan sur la plateforme Microcap n\'est pas complètement renseigné: pas de prévision active');
         }).finally(() => this.props.setRequestGlobalAction(false))
     }

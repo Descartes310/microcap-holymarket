@@ -29,6 +29,8 @@ export const PREVISIONS = {
     SELF: '/previsions',
     LIST: '/previsions/list',
     CREATE: '/previsions/create',
+    INFOS: '/previsions/client/infos',
+    GOALS: '/previsions/client/goals',
     PERIODES: {
         LIST: '/previsions/:id/periodes/list',
         DETAILS: '/previsions/:id/periodes/:id2',

@@ -22,7 +22,7 @@ class Project extends Component {
 
         return (
             <div className="row">
-                <div className="col-sm-4 block">
+                <div className="col-sm-4 block" onClick={() => this.props.history.push(PREVISIONS.GOALS)}>
                     <img src={require('Assets/img/goal.png')} className="img-fluid img" alt="Objectifs du plan" />
                     <P>Objectifs du plan</P>
                 </div>
@@ -38,7 +38,7 @@ class Project extends Component {
                     <img src={require('Assets/img/network.png')} className="img-fluid img" alt="Ma position réseau" />
                     <P>Ma position réseau</P>
                 </div>
-                <div className="col-sm-4 block">
+                <div className="col-sm-4 block" onClick={() => this.props.history.push(PREVISIONS.INFOS)}>
                     <img src={require('Assets/img/infos.png')} className="img-fluid img" alt="Fiche d'information membre" />
                     <P>Fiche d'information membre</P>
                 </div>
