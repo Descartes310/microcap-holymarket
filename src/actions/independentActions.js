@@ -1385,6 +1385,10 @@ export const getPrevisionDetails = () => {
     return makeRequest('get', PREVISIONS.PREVISIONS.DETAILS);
 };
 
+export const updateGoals = (data) => {
+    return makeRequest('put', PREVISIONS.PREVISIONS.UPDATE_GOALS, data);
+};
+
 export const getCommunity = (id) => {
     const url = joinBaseUrlWithParamsId(`${COMMUNITY_MEMBER.USER.GROUPS.GET_ONE}`, id);
     return makeRequest('get', url);

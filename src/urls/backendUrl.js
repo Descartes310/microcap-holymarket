@@ -194,6 +194,7 @@ export const PREVISIONS = {
         ACTIVE: 'users/previsions/{id}',
         GET_ONE: 'users/previsions/{id}',
         DETAILS: 'users/previsions/details',
+        UPDATE_GOALS: 'users/previsions/update/goals',
         GET_CODE: 'users/previsions/generate-code',
         ACTIVE_PASS: 'users/previsions/active-pass'
     },

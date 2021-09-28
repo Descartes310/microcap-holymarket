@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { injectIntl } from "react-intl";
 import React, { Component } from 'react';
 import { withRouter } from "react-router-dom";
+import { MICROCAP360 } from "Url/frontendUrl";
 import Button from "@material-ui/core/Button";
 import { formatDate } from '../../../helpers/helpers';
 import AmountCurrency from "Components/AmountCurrency";
@@ -63,6 +64,9 @@ class ClientInfos extends Component {
     getDetails = () => {
         getPrevisionDetails().then(prevision => {
             this.setState({ prevision })
+        }).catch(err => {
+            NotificationManager.error("Aucune prévision active")
+            this.props.history.push(MICROCAP360.MY.PROJECT);
         })
     }
 

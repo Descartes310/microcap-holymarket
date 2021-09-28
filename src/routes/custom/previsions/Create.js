@@ -49,7 +49,7 @@ class Create extends Component {
 
     onSubmit = () => {
         if (!this.state.start || this.state.selectedGoals.length <= 0 || this.state.label.length <= 1) {
-
+            return;
         }
 
         this.props.setRequestGlobalAction(true)
@@ -59,7 +59,6 @@ class Create extends Component {
             label: this.state.label,
             goals: JSON.stringify(this.state.selectedGoals.map(sg => { return { id: sg.goal.id, date: sg.date } }))
         }
-        console.log(data);
         createPrevision(data).then(data => {
             this.props.history.push(PREVISIONS.LIST);
         }).finally(() => this.props.setRequestGlobalAction(false))
