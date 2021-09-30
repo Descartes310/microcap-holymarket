@@ -6,7 +6,7 @@ import AppConfig from "Constants/AppConfig";
 import IntlMessages from "Util/IntlMessages";
 import Button from "@material-ui/core/Button";
 import {HashLink} from "react-router-hash-link";
-import {AGENTS, AUTH, GALERY_PROJECT, HOME, PASS_DETAILS, DISCOVER} from "Url/frontendUrl";
+import {AGENTS, AUTH, GALERY_PROJECT, HOME, PASS_DETAILS, DISCOVER, MICROCAP360} from "Url/frontendUrl";
 import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem, Dropdown} from 'reactstrap';
 import {connect} from "react-redux";
 
@@ -154,9 +154,9 @@ class DiscoverMenu extends Component {
                                 <li className="center-hor-ver">
                                     {authUser.data ? (
                                         <Link
-                                            to={HOME}
+                                            to={MICROCAP360.MY.PROJECT}
                                             className="mr-2 btn-inflated font-size-inherit outlined">
-                                            Tableau de bord
+                                            Espace personnel
                                         </Link>
                                     ): (
                                         <Link
@@ -258,7 +258,7 @@ class DiscoverMenu extends Component {
                                             <Link
                                                 to={HOME}
                                                 className="mr-2 btn-inflated font-size-inherit outlined">
-                                                Tableau de bord
+                                                Espace personnel
                                             </Link>
                                         ): (
                                             <Link

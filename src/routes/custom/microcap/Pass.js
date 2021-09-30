@@ -94,7 +94,7 @@ class Pass extends Component {
 
         return (
             <>
-                {!user.user.passCode || !pass ?
+                {/* {!user.user.passCode || !pass ? */}
                     <div className="container">
                         <div className="my-3 page-title m-0">
                             <h2 className="font-lg d-inline-flex">
@@ -187,7 +187,7 @@ class Pass extends Component {
                             </div>
                         </div>
                     </div>
-                    :
+                    {/* :
                     <div className="container custom-container" ref={this.bodyRef}>
                         <div className="my-3 page-title m-0 d-flex">
                             <h2 className="font-lg d-inline-flex font-weight-bold">
@@ -255,7 +255,7 @@ class Pass extends Component {
                             )}
                         </div>
                     </div>
-                }
+                } */}
             </>
         );
     }
