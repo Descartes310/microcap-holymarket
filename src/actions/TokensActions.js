@@ -18,6 +18,7 @@ import {
 import api from './../api';
 import AppConfig from 'Constants/AppConfig';
 import {AUTH} from '../urls/backendUrl';
+import {HOME} from '../urls/frontendUrl';
 import {removeAuthToken, saveAuthToken} from "Helpers/tokens";
 import {setAuthUser} from "Actions/AuthActions";
 import {getCurrencies} from "Actions/GeneralActions";
@@ -76,7 +77,7 @@ export const loginUserWithEmailAndPassword = (data) => (dispatch) => {
             dispatch({ type: LOGIN_USER_SUCCESS, payload: data });
 
             dispatch({ type: SET_CURRENT_COMMUNITY_SUCCESS, payload: null });
-            // history.push('/');
+            // history.push(HOME);
             // NotificationManager.success('User Login Successfully!');
             return Promise.resolve();
         })

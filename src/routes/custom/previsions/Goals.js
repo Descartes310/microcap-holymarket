@@ -9,6 +9,7 @@ import { withRouter } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import { Button as ButtonStrap } from 'reactstrap';
 import { NotificationManager } from "react-notifications";
+import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
 import { setRequestGlobalAction, getActivePass, getPrevisionDetails, getPrevisionGoals, updateGoals } from "Actions";
 
@@ -94,14 +95,17 @@ class Goals extends Component {
     render() {
 
         const { goals, selectedGoals } = this.state;
+        const { history, match } = this.props;
 
         return (
             <div className="my-3">
-                <div className="my-3 pl-3 page-title m-0">
-                    <h2 className="font-lg d-inline-flex">
-                        Mes objectifs
-                    </h2>
-                </div>
+                <PageTitleBar
+                    match={match}
+                    title={"Mes objectifs"}
+                    history={history}
+                    enableBreadCrumb={false}
+                    showBackBtn={true}
+                />
                 <div className="row">
                     <div className="col-md-12 col-sm-12 pr-md-40">
                         <RctCollapsibleCard>
