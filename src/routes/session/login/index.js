@@ -10,29 +10,40 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import LinearProgress from '@material-ui/core/LinearProgress';
 
+import {
+    Card,
+    CardImg,
+    CardText,
+    CardBody,
+    CardFooter
+} from 'reactstrap';
+
 // components
 import { SessionSlider } from 'Components/Widgets';
 import InputComponent from "Components/InputComponent";
 import ErrorInputComponent from "Components/ErrorInputComponent";
 
 // validator
-import {emailValidatorObject, minMaxValidatorObject} from "Helpers/validator";
+import { emailValidatorObject, minMaxValidatorObject } from "Helpers/validator";
 
 // route
-import {AUTH, HOME, DISCOVER, TERMS} from "../../../urls/frontendUrl";
+import { AUTH, HOME, DISCOVER, TERMS, joinUrlWithParamsId, SONDAGE_SECOND } from "../../../urls/frontendUrl";
 
 // app config
 import AppConfig from 'Constants/AppConfig';
 
 // redux action
-import {loginUserWithEmailAndPassword} from 'Actions';
+import { loginUserWithEmailAndPassword, createSondage, setRequestGlobalAction } from 'Actions';
 import LanguageProvider from "Components/Header/LanguageProvider";
 import IntlMessages from "Util/IntlMessages";
-import {injectIntl} from "react-intl";
+import { injectIntl } from "react-intl";
 import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
 import Checkbox from "@material-ui/core/Checkbox/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
+import DialogTitle from "@material-ui/core/DialogTitle/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent/DialogContent";
+import Dialog from "@material-ui/core/Dialog/Dialog";
 
 const Signin = (props) => {
     const { loading, intl } = props;
@@ -48,6 +59,15 @@ const Signin = (props) => {
             window.location = HOME;
         }).catch();
     };
+
+    const onSubmitSondage = (response, index) => {
+        props.setRequestGlobalAction(true);
+        createSondage({ response }).then(data => {
+            props.history.push(joinUrlWithParamsId(SONDAGE_SECOND, index));
+        }).finally(() => {
+            props.setRequestGlobalAction(false)
+        })
+    }
 
     /**
      * On User Sign Up
@@ -101,7 +121,7 @@ const Signin = (props) => {
                                     <div className="">
                                         <div className="session-head mb-10">
                                             <h2 className="font-weight-bold">
-                                                <IntlMessages id="auth.login.title" values={{name: AppConfig.brandName}}/>
+                                                <IntlMessages id="auth.login.title" values={{ name: AppConfig.brandName }} />
                                             </h2>
                                             <p className="mb-0">
                                                 <IntlMessages id="auth.login.subTitle" />
@@ -122,16 +142,16 @@ const Signin = (props) => {
                                                     register={register}
                                                     className="has-input input-lg"
                                                 />
-                                                <span className="has-icon"><i className="ti-pencil"/></span>
+                                                <span className="has-icon"><i className="ti-pencil" /></span>
                                             </FormGroup>
                                             <FormGroup className="has-wrapper">
                                                 <div className="d-flex justify-content-between">
-                                                    <InputLabel className="text-left" htmlFor="password"><IntlMessages id="auth.password"/></InputLabel>
+                                                    <InputLabel className="text-left" htmlFor="password"><IntlMessages id="auth.password" /></InputLabel>
                                                     <Link to={AUTH.FORGOT_PASSWORD}>
                                                         <InputLabel
                                                             className="text-right text-primary text-decoration-underline-hover font-weight-bold"
                                                             htmlFor="password">
-                                                            <IntlMessages id="sidebar.forgotPassword"/> ?
+                                                            <IntlMessages id="sidebar.forgotPassword" /> ?
                                                         </InputLabel>
                                                     </Link>
                                                 </div>
@@ -144,10 +164,10 @@ const Signin = (props) => {
                                                     register={register}
                                                     placeholder="......."
                                                     className="has-input input-lg"
-                                                    otherValidator={{minLength: AppConfig.minPasswordLength}}
+                                                    otherValidator={{ minLength: AppConfig.minPasswordLength }}
                                                 >
                                                     {errors.password?.type === 'minLength' && (
-                                                        <ErrorInputComponent text={intl.formatMessage({id: minMaxValidatorObject.minMessage}, {min: AppConfig.minPasswordLength})} />
+                                                        <ErrorInputComponent text={intl.formatMessage({ id: minMaxValidatorObject.minMessage }, { min: AppConfig.minPasswordLength })} />
                                                     )}
                                                 </InputComponent>
                                                 <span className="has-icon"><i className="ti-lock"></i></span>
@@ -187,8 +207,8 @@ const Signin = (props) => {
                                                         register={register}
                                                         name={'serviceNumber'}
                                                         className="has-input input-lg"
-                                                        />
-                                                    <span className="has-icon"><i className="ti-pencil"/></span>
+                                                    />
+                                                    <span className="has-icon"><i className="ti-pencil" /></span>
                                                 </FormGroup>
                                             )}
 
@@ -200,14 +220,14 @@ const Signin = (props) => {
                                                     variant="contained"
                                                     className="btn-block text-white w-100"
                                                     disabled={loading}
-                                                    // onClick={() => this.onUserLogin()}
+                                                // onClick={() => this.onUserLogin()}
                                                 >
                                                     <IntlMessages id="auth.signin" />
                                                 </Button>
                                             </FormGroup>
                                         </Form>
                                         <p className="text-muted">
-                                            <IntlMessages id="auth.termOfService" values={{name: AppConfig.brandName}}/>
+                                            <IntlMessages id="auth.termOfService" values={{ name: AppConfig.brandName }} />
                                         </p>
                                         <p>
                                             <a target="_blank" href={TERMS} className="text-muted">
@@ -225,6 +245,70 @@ const Signin = (props) => {
                     </div>
                 </div>
             </div>
+
+            <Dialog
+                open={new URLSearchParams(props.location.search).get("social_network")}
+                fullScreen={false}
+                aria-labelledby="responsive-dialog-title"
+                maxWidth={'lg'}
+                fullWidth
+            >
+                <DialogContent>
+                    <div className="showcase-card-block" style={{ backgroundImage: `url(${require('Assets/img/bg-shape-gray.png')})`, padding: '10vh 10vw' }}>
+                        <div className="row center-hor-ver mb-70 flex-column intro">
+                            <h2 className="font-weight-bold text-black text-center" data-aos="fade-right">
+                                Du 1<sup>er</sup> octobre 2021 au 15 novembre 2021
+                            </h2>
+                            <p data-aos="fade-left" className="text-center">Participer à notre appel à projet pour une dotation financière pouvant atteindre jusqu'à 50 000€ </p>
+                        </div>
+                        <div className="row">
+                            <div className="col-xs-12 col-sm-12 col-md-4 mb-30" data-aos="fade-down" data-aos-duration="300">
+                                <Card>
+                                    <CardBody style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
+                                        <CardText style={{ fontSize: '1.1em', textAlign: 'center' }}>
+                                            <p>L'entrepreneuriat ce n'est pas pour moi, mais j'ai un projet personnel </p>
+                                        </CardText>
+                                    </CardBody>
+                                    <CardFooter className="border-0 center-hor-ver">
+                                        <Button variant="contained" className="btn-primary mr-2" onClick={() => onSubmitSondage('NOT_FOR_ME', 1)}>
+                                            Sélectionner
+                                        </Button>
+                                    </CardFooter>
+                                </Card>
+                            </div>
+                            <div className="col-xs-12 col-sm-12 col-md-4 mb-30" data-aos="fade-down" data-aos-duration="500">
+                                <Card>
+                                    <CardBody style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
+                                        <CardText style={{ fontSize: '1.1em', textAlign: 'center' }}>
+                                            <p>Je suis solitaire, 6 à 24 mois pour une levée des fond malgré le résultat incertain, ça me conviennent </p>
+                                        </CardText>
+                                    </CardBody>
+                                    <CardFooter className="border-0 center-hor-ver">
+                                        <Button variant="contained" className="btn-primary mr-2" onClick={() => onSubmitSondage('ONE_AND_ONLY', 2)}>
+                                            Sélectionner
+                                        </Button>
+                                    </CardFooter>
+                                </Card>
+                            </div>
+                            <div className="col-xs-12 col-sm-12 col-md-4 mb-30" data-aos="fade-down" data-aos-duration="700">
+                                <Card>
+                                    <CardBody style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
+                                        <CardText style={{ fontSize: '1.1em', textAlign: 'center' }}>
+                                            <p>L'accompagnement au sein du réseau solidaire MicroCap pour constituer les fonds dont j'ai besoin peut me
+                                                prendre entre 3 et 36 Mois. Mais pour un résultat 100% assuré, je préfère ce choix</p>
+                                        </CardText>
+                                    </CardBody>
+                                    <CardFooter className="border-0 center-hor-ver">
+                                        <Button variant="contained" className="btn-primary mr-2" onClick={() => onSubmitSondage('WORK_WITH_OTHERS', 3)}>
+                                            Sélectionner
+                                        </Button>
+                                    </CardFooter>
+                                </Card>
+                            </div>
+                        </div>
+                    </div>
+                </DialogContent>
+            </Dialog>
         </QueueAnim>
     );
 };
@@ -234,4 +318,4 @@ const mapStateToProps = ({ requestGlobalLoader }) => {
     return { loading: requestGlobalLoader }
 };
 
-export default connect(mapStateToProps, {loginUserWithEmailAndPassword})(injectIntl(Signin));
+export default connect(mapStateToProps, { loginUserWithEmailAndPassword, setRequestGlobalAction })(injectIntl(Signin));
