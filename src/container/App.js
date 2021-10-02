@@ -16,6 +16,8 @@ import {
     SOLIDARITY,
     PASS_DETAILS,
     LEGAL_MENTION,
+    SONDAGE_FIRST,
+    SONDAGE_SECOND,
     GALERY_PROJECT,
     MONEY_MANAGEMENT,
 } from "../urls/frontendUrl";
@@ -46,6 +48,9 @@ import Values from "./../routes/custom/dashboard/Values";
 import LegalMention from "./../routes/custom/dashboard/LegalMention.js";
 import OfferDetails from 'Routes/custom/dashboard/discover/pages/OfferDetails';
 import Agents from 'Routes/custom/dashboard/discover/pages/Agents';
+import SondageFirst from 'Routes/custom/dashboard/discover/sondage.js';
+import SondageSecond from 'Routes/custom/dashboard/discover/sondageResponse.js';
+// import SondageSecond from 'Routes/custom/dashboard/discover/pages/Agents';
 import Services from 'Routes/custom/dashboard/discover/pages/Service';
 import {
     AsyncDiscover,
@@ -117,6 +122,8 @@ class App extends Component {
                                         <Route exact path={SOLIDARITY} component={AsyncSolidarity} />
                                         <Route exact path={MONEY_MANAGEMENT} component={AsyncMoneyManagement} />
                                         <Route exact path={TERMS} component={Terms} />
+                                        <Route exact path={SONDAGE_FIRST} component={SondageFirst} />
+                                        <Route exact path={SONDAGE_SECOND} component={SondageSecond} />
                                         <Route exact path={MISSION} component={Mission} />
                                         <Route exact path={CGU} component={Cgu} />
                                         <Route exact path={VALUES} component={Values} />
@@ -136,6 +143,8 @@ class App extends Component {
                                         <Route exact path={MONEY_MANAGEMENT} component={AsyncMoneyManagement} />
                                         <Route exact path={TERMS} component={Terms} />
                                         <Route exact path={CGU} component={Cgu} />
+                                        <Route exact path={SONDAGE_FIRST} component={SondageFirst} />
+                                        <Route exact path={SONDAGE_SECOND} component={SondageSecond} />
                                         <Route exact path={MISSION} component={Mission} />
                                         <Route exact path={VALUES} component={Values} />
                                         <Route exact path={PASS_DETAILS} component={OfferDetails} />

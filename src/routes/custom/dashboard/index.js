@@ -77,6 +77,8 @@ import {
     PREVISIONS,
     GETIN,
     STOCK,
+    SONDAGE_FIRST,
+    SONDAGE_SEDOND,
     TERMS,
     PACKAGES,
     RESSOURCE,
@@ -96,6 +98,8 @@ import Mission from "./discover/pages/Mission";
 import Values from "./Values";
 import OfferDetails from './discover/pages/OfferDetails';
 import Agents from './discover/pages/Agents';
+import SondageFirst from './discover/sondage.js';
+import SondageSecond from './discover/sondageResponse.js';
 import Services from './discover/pages/Service';
 import {onInitCart} from "Actions/CartActions";
 
@@ -121,6 +125,8 @@ const Dashboard = ({ onInitCart }) => {
                     <Route exact path={VALUES} component={Values} />
                     <Route exact path={SERVICES} component={Services} />
                     <Route exact path={TERMS} component={Terms} />
+                    <Route exact path={SONDAGE_FIRST} component={SondageFirst} />
+                    <Route exact path={SONDAGE_SECOND} component={SondageSecond} />
                     <Route exact path={PASS_DETAILS} component={OfferDetails} />
                     <Route exact path={SOLIDARITY} component={AsyncSolidarity} />
                     <Route exact path={MONEY_MANAGEMENT} component={AsyncMoneyManagement} />

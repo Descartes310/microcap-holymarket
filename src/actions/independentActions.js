@@ -1393,3 +1393,7 @@ export const getCommunity = (id) => {
     const url = joinBaseUrlWithParamsId(`${COMMUNITY_MEMBER.USER.GROUPS.GET_ONE}`, id);
     return makeRequest('get', url);
 };
+
+export const createSondage = (data) => {
+    return makeRequest('post', AUTH.SONDAGE, data);
+};
