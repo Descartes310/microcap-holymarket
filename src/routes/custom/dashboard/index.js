@@ -66,6 +66,7 @@ import {
     GALERY_PROJECT,
     HOME,
     CGU,
+    SONDAGE_SECOND,
     SERVICES,
     NETWORK,
     CATEGORY,
