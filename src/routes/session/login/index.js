@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import QueueAnim from 'rc-queue-anim';
 import { Link } from 'react-router-dom';
@@ -48,7 +48,7 @@ import Dialog from "@material-ui/core/Dialog/Dialog";
 const Signin = (props) => {
     const { loading, intl } = props;
     const { control, register, errors, handleSubmit, watch, setValue } = useForm();
-
+    const [response, setResponse] = useState(null);
     const gotServiceNumberWatch = watch('gotServiceNumber');
 
     /**
@@ -63,7 +63,8 @@ const Signin = (props) => {
     const onSubmitSondage = (response, index) => {
         props.setRequestGlobalAction(true);
         createSondage({ response }).then(data => {
-            props.history.push(joinUrlWithParamsId(SONDAGE_SECOND, index));
+            // props.history.push(joinUrlWithParamsId(SONDAGE_SECOND, index));
+            setResponse(index);
         }).finally(() => {
             props.setRequestGlobalAction(false)
         })
@@ -247,7 +248,7 @@ const Signin = (props) => {
             </div>
 
             <Dialog
-                open={new URLSearchParams(props.location.search).get("social_network")}
+                open={new URLSearchParams(props.location.search).get("social_network") && response == null}
                 fullScreen={false}
                 aria-labelledby="responsive-dialog-title"
                 maxWidth={'lg'}
@@ -306,6 +307,75 @@ const Signin = (props) => {
                                 </Card>
                             </div>
                         </div>
+                    </div>
+                </DialogContent>
+            </Dialog>
+
+            <Dialog
+                open={response ? response >= 1 : false}
+                fullScreen={false}
+                aria-labelledby="responsive-dialog-title"
+                maxWidth={'lg'}
+                fullWidth
+            >
+                <DialogContent>
+                    <div className="showcase-card-block" style={{ backgroundImage: `url(${require('Assets/img/bg-shape-gray.png')})`, padding: '5vh 10vw' }}>
+                        {response == 1 ?
+                            <div className="col-xs-12 col-sm-12 col-md-12 mb-30" data-aos="fade-down" data-aos-duration="300">
+                                <Card>
+                                    <CardBody style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
+                                        <CardText style={{ fontSize: '1.1em', textAlign: 'center' }}>
+                                            <p>
+                                                Nous vous proposons nos services d'accompagnement individuel à la création d'entreprise
+                                            </p>
+                                        </CardText>
+                                    </CardBody>
+                                    <CardFooter className="border-0 center-hor-ver">
+                                        <Button variant="contained" className="btn-primary mr-2" onClick={() => props.history.push(AUTH.LOGIN)}>
+                                            Continuer
+                                        </Button>
+                                    </CardFooter>
+                                </Card>
+                            </div>
+                            :
+                            response == 2 ?
+                                <div className="col-xs-12 col-sm-12 col-md-12 mb-30" data-aos="fade-down" data-aos-duration="300">
+                                    <Card>
+                                        <CardBody style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
+                                            <CardText style={{ fontSize: '1.1em', textAlign: 'center' }}>
+                                                <p>
+                                                    Vous préferez la sérénité d'un salaire chaque mois et vous avez un projet personnel à réaliser ?
+                                                    Soutenez ceux qui crée les emplois en fructifiant votre épargne sur Microcap. Surtout choisissez à qui et à quoi
+                                                    sert votre argent, une transparence inégalée.
+                                                </p>
+                                            </CardText>
+                                        </CardBody>
+                                        <CardFooter className="border-0 center-hor-ver">
+                                            <Button variant="contained" className="btn-primary mr-2" onClick={() => props.history.push(AUTH.REGISTER)}>
+                                                Je m'inscris
+                                            </Button>
+                                        </CardFooter>
+                                    </Card>
+                                </div>
+                                :
+                                <div className="col-xs-12 col-sm-12 col-md-12 mb-30" data-aos="fade-down" data-aos-duration="300">
+                                    <Card>
+                                        <CardBody style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
+                                            <CardText style={{ fontSize: '1.1em', textAlign: 'center' }}>
+                                                <p>
+                                                    Bravo! vous pouvez rejoindre MicroCap, le réseau international d'entrepreneurs solidaires. le programme
+                                                    d'incubation proposée va vous préparer à présenter et à financer votre projet à votre rythme sur une durée comprise entre 3 et 36 mois.
+                                                </p>
+                                            </CardText>
+                                        </CardBody>
+                                        <CardFooter className="border-0 center-hor-ver">
+                                            <Button variant="contained" className="btn-primary mr-2" onClick={() => props.history.push(DISCOVER)}>
+                                                Découvrir Microcap
+                                            </Button>
+                                        </CardFooter>
+                                    </Card>
+                                </div>
+                        }
                     </div>
                 </DialogContent>
             </Dialog>
