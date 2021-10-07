@@ -20,7 +20,7 @@ const GroupItem = ({ community, selectedCommunity, onClickListItem, favourite, a
             <div className="media align-items-center w-90">
                 <div className="media-left position-relative mr-10">
                     <UserAvatar
-                        avatar={community.image ? getFilePath(community.image) : require('Assets/img/groups.png')}
+                        avatar={community.image ? getFilePath(community.image) : 'https://martialartsplusinc.com/wp-content/uploads/2017/04/default-image-620x600.jpg'}
                         name={community.label}
                     />
                     {/*<img src={community.photo_url} className="img-fluid rounded-circle" alt="community profile" width="40" height="40" />*/}

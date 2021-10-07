@@ -21,7 +21,7 @@ const GroupItem2 = ({ classes, group, isMember, enterInCommunitySpace, adhesion 
     <Card className="rounded mb-30">
         <CardMedia
             className={classes.media}
-            image={group.image ? getFilePath(group.image) : require('Assets/img/groups.png')}
+            image={group.image ? getFilePath(group.image) : 'https://martialartsplusinc.com/wp-content/uploads/2017/04/default-image-620x600.jpg'}
             title={`${group.label} profile image`}
         />
         <CardContent className="py-30">
