@@ -49,6 +49,7 @@ const Signin = (props) => {
     const { loading, intl } = props;
     const { control, register, errors, handleSubmit, watch, setValue } = useForm();
     const [response, setResponse] = useState(null);
+    const [show, setShow] = useState(false);
     const gotServiceNumberWatch = watch('gotServiceNumber');
 
     /**
@@ -109,6 +110,7 @@ const Signin = (props) => {
                                     <Button variant="contained" className="btn-primary mr-2 p-10" onClick={onDiscoverClick}>
                                         Découvrir Microcap
                                     </Button>
+                                    <a className="text-white" onClick={() => setShow(true)}>Dites nous qui vous êtes</a>
                                 </div>
                             </div>
                         </div>
@@ -248,7 +250,7 @@ const Signin = (props) => {
             </div>
 
             <Dialog
-                open={new URLSearchParams(props.location.search).get("social_network") && response == null}
+                open={(new URLSearchParams(props.location.search).get("social_network") && response == null) || show}
                 fullScreen={false}
                 aria-labelledby="responsive-dialog-title"
                 maxWidth={'lg'}

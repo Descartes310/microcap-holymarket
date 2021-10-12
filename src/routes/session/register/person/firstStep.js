@@ -147,17 +147,18 @@ const FirstStep = props => {
                         register={register}
                         componentType="select"
                         name={'phoneNumberPrefix'}
-                        defaultValue={countryWithNumberAndFlag[0].phonePrefixes[0]}
+                        // defaultValue={countryWithNumberAndFlag[0].phonePrefixes[0]}
                         as={<Select>
-                            {countryWithNumberAndFlag.sort((a, b) => a.phonePrefixes[0] > b.phonePrefixes[0]).map(item => (
-                                <MenuItem key={item.id} value={item.phonePrefixes[0]} className="center-hor-ver">
-                                    <FlagCountry flag={item.flag} label={item.phonePrefixes[0]} />
+                            {countryWithNumberAndFlag.sort((a, b) => new Number(a.phonePrefixes[0]) - new Number(b.phonePrefixes[0])).map(item => (
+                                <MenuItem key={item.id} value={item.phonePrefixes[0]}>
+                                    <FlagCountry flag={item.flag} label={'+ ' + item.phonePrefixes[0]} />
                                 </MenuItem>
                             ))}
                         </Select>}
 
                     />
                 </FormGroup>
+                
                 <FormGroup className="col-10 has-wrapper">
                     <InputComponent
                         type="text"

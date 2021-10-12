@@ -190,7 +190,7 @@ const ThirdStep = props => {
                         defaultValue={countryWithNameAndFlag[0].id}
                         as={<Select input={<Input name="registrationCountry" id="registrationCountry-helper" />}>
                             {countryWithNameAndFlag.map(item => (
-                                <MenuItem key={item.id} value={item.id} className="center-hor-ver">
+                                <MenuItem key={item.id} value={item.id}>
                                     <FlagCountry flag={item.flag} label={item.name} />
                                 </MenuItem>
                             ))}
@@ -218,7 +218,7 @@ const ThirdStep = props => {
                                 defaultValue={data[0]}
                                 as={<Select input={<Input name="registrationType" id="registrationType-helper" />}>
                                     {data.map((item, index) => (
-                                        <MenuItem key={index} value={item} className="center-hor-ver">
+                                        <MenuItem key={index} value={item}>
                                             {item}
                                         </MenuItem>
                                     ))}

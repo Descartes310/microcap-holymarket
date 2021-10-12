@@ -7,7 +7,7 @@ class CountryManager {
     }
 
     countryWithNumberAndFlag = () => {
-        return  this.countries.map(c => ({phonePrefixes: c.callingCodes, flag: c.flag, id: c.alpha3Code}));
+        return  this.countries.map(c => ({phonePrefixes: c.callingCodes, flag: c.flag, id: c.alpha3Code})).filter(c => c.phonePrefixes[0]);
     };
 
     get optionsNameAndFlag() {

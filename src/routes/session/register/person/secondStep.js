@@ -253,7 +253,7 @@ const SecondStep = props => {
                                         as={(
                                             <MaterialSelect input={<Input name="identificationType" id="identificationType-helper" />}>
                                                 {data.map((item, index) => (
-                                                    <MenuItem key={index} value={item} className="center-hor-ver">
+                                                    <MenuItem key={index} value={item}>
                                                         {item}
                                                     </MenuItem>
                                                 ))}

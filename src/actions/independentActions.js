@@ -649,6 +649,10 @@ export const updateUserCurrency = (currencyId) => {
     return makeRequest('put', url);
 };
 
+export const updateUserProfile = (profileId) => {
+    return makeRequest('put', USERS.UPDATE_PROFILE, {id: profileId});
+};
+
 export const setOfferActivationStatus = (partnerId, comId, shouldActivate) => {
     const url = `${COMMERCIAL_MANAGEMENT.OFFER[shouldActivate ? 'ACTIVATE' : 'DEACTIVATE']}?partner_id=${partnerId}&commercial_offer_id=${comId}`;
     return makeRequest('put', url);

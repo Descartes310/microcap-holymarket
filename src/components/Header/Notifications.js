@@ -96,9 +96,9 @@ class HeaderNotifications extends Component {
                                             <span className="text-muted fs-12">{notification.createdAt.fromNow()}</span>
                                          </div>
                                          <span className="text-muted fs-12 d-block">{textTruncate(notification.message, 100)}</span>
-                                         <Button className="btn-xs pl-0">
+                                         {/* <Button className="btn-xs pl-0">
                                              <i className="zmdi zmdi-eye mr-2" /> Marqué comme lu
-                                          </Button>
+                                          </Button> */}
                                           {/*<Button className="btn-xs">
                                              <i className="zmdi zmdi-thumb-up mr-2"/> <IntlMessages id="button.like" />
                                           </Button>*/}

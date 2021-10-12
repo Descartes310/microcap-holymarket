@@ -102,11 +102,10 @@ const FirstStep = props => {
                                 register={register}
                                 componentType="select"
                                 name={'organisationType'}
-                                defaultValue={data[0]}
                                 as={<Select input={<Input name="organisationTypes" id="organisationTypes-helper" />}>
                                     {data.map((item, index) => {
                                         return (
-                                            <MenuItem key={index} value={item} className="center-hor-ver">
+                                            <MenuItem key={index} value={item}>
                                                 {item}
                                             </MenuItem>
                                         )

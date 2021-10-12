@@ -215,6 +215,7 @@ export const USERS = {
     VERIFIED: 'api/users/{id}/verified',
     GET_ALL: 'api/users/persons',
     UPDATE_CURRENCY: 'api/users/currency/{id}',
+    UPDATE_PROFILE: 'api/users/update/profile',
     GET_ALL_BY_ORGANISATION: 'api/users/persons/by-organisation',
     GET_ALL_PARTNER: 'public/users/organisations/branch/{id}/partner',
     GET_ALL_PARTNER_OPERATOR: 'public/users/organisations/branch/{id}/partner/operator',
