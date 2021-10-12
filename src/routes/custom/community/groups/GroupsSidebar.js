@@ -47,7 +47,7 @@ class GroupsSidebar extends Component {
                 <div className="chat-sidebar">
                     <div>
                         <div className="justify-content-between align-items-center mt-2 mb-30 px-15 row">
-                            <div className="col-md-3 col-sm-4">
+                            {/* <div className="col-md-3 col-sm-4">
                                 <Button
                                     color="primary"
                                     variant="contained"
@@ -57,8 +57,8 @@ class GroupsSidebar extends Component {
                                     <i className="zmdi zmdi zmdi-plus mr-2" />
                                     Créer
                                 </Button>
-                            </div>
-                            <div className="col-md-9 col-sm-8">
+                            </div> */}
+                            <div className="col-md-12 col-sm-12">
                                 <FormControl>
                                     <InputGroup>
                                         <InputGroupAddon addonType="prepend">
