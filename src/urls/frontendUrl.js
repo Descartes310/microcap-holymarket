@@ -467,7 +467,6 @@ export const COMMUNITY_MEMBER = {
     },
 };
 
-
 export const MICROCAP360 = {
     MICROCAP360: '/microcap360',
     COMPTES: {
@@ -483,6 +482,10 @@ export const MICROCAP360 = {
         SELF: '/microcap360/personnal',
         PASS: '/microcap360/personnal/pass',
         PROJECT: '/microcap360/personnal/project',
+    },
+    SUPERVISION: {
+        SELF: '/supervision',
+        COMMUNITIES: '/supervision/communities'
     }
 };
 

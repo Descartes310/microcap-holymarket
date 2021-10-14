@@ -652,44 +652,25 @@ export default {
          "permissions": [],
          "child_routes": [
             {
-               "path": COMMUNITY_ADMIN.OPERATOR.SUPERVISION.COMMUNITIES,
+               "path": MICROCAP360.SUPERVISION.COMMUNITIES,
                "new_item": false,
                "menu_title": "Communautés",
                "permissions": [],
             },
-            {
-               "path": ROOT,
-               "new_item": false,
-               "menu_title": "Membres",
-               "permissions": [],
-            },
-            {
-               "path": ROOT,
-               "new_item": false,
-               "menu_title": "Ventes",
-               "permissions": [],
-            },
+            // {
+            //    "path": ROOT,
+            //    "new_item": false,
+            //    "menu_title": "Ventes",
+            //    "permissions": [],
+            // },
          ]
       },
       {
          "menu_title": "Produits & Services",
          "menu_icon": "zmdi zmdi-shopping-cart",
          "new_item": false,
-         // "permissions": [Permission.navLinks.COMMUNITY_MEMBER.viewMenu],
          "permissions": [],
          "child_routes": [
-            // {
-            //    "menu_title": "Microcap Shop",
-            //    "new_item": false,
-            //    "path": PRODUCT.LIST,
-            //    "permissions": [],
-            // },
-            // {
-            //    "menu_title": "Mes commandes",
-            //    "new_item": false,
-            //    "path": PRODUCT.ORDERS,
-            //    "permissions": [],
-            // },
             {
                "path": CATALOG.SALE.SELF,
                "new_item": false,
@@ -720,38 +701,6 @@ export default {
                "menu_title": "Demandes d'achats reçus",
                "new_item": false,
                "path": PRODUCT.OPERATOR_ORDERS,
-               "permissions": [],
-            },
-         ]
-      },
-      {
-         "menu_title": "Adminitration",
-         "menu_icon": "zmdi zmdi-settings",
-         "new_item": false,
-         "permissions": [],
-         "child_routes": [
-            {
-               "path": ROOT,
-               "new_item": false,
-               "menu_title": "Utilisateurs",
-               "permissions": [],
-            },
-            {
-               "path": ROOT,
-               "new_item": false,
-               "menu_title": "Roles",
-               "permissions": [],
-            },
-            {
-               "path": ROOT,
-               "new_item": false,
-               "menu_title": "Notifications",
-               "permissions": [],
-            },
-            {
-               "path": ROOT,
-               "new_item": false,
-               "menu_title": "Dossier utilisateur",
                "permissions": [],
             },
          ]

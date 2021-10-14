@@ -1,7 +1,7 @@
 /**
  * Dasboard Routes
  */
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import RctAppLayout from 'Components/RctAppLayout';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
@@ -33,24 +33,21 @@ import {
 } from 'Components/AsyncComponent/AsyncComponent';
 import Community from "Routes/custom/community";
 import Stock from 'Routes/custom/stocks';
+import MyMicrocap from 'Routes/custom/microcap';
 import Posts from "Routes/custom/settings/posts";
-import Previsions from "Routes/custom/previsions";
 import Ressource from "Routes/custom/ressources";
+import Previsions from "Routes/custom/previsions";
 import UnitList from "Routes/custom/settings/units";
 import AllUsers from 'Routes/custom/users/all-users/List';
-import MyMicrocap from 'Routes/custom/microcap';
 import UserProfile from 'Routes/custom/users/user-profile';
 import AgentList from "Routes/custom/settings/agents/List";
 import PrevisionsAdmin from "Routes/custom/previsions_admin";
-import CommunityAdmins from "Routes/custom/communityT/admin";
 import PionierList from "Routes/custom/settings/pioniers/List";
-import CommunityMembers from "Routes/custom/communityT/members";
+import Supervision from "Routes/custom/microcap360/supervision";
 import SingleProfile from 'Routes/custom/users/user-profile/Profile';
 import PersonalSpace from "Routes/custom/users/users/personnal-space";
 import ClientPieceList from "Routes/custom/settings/client_folder/List";
 import ConfigurationsList from "Routes/custom/settings/configurations/List";
-import CommunityMembersActivities from "Routes/custom/communityT/activities";
-import CommunityMembersPostsProjects from "Routes/custom/communityT/postsProjects";
 import UpdateInitializationOption from 'Routes/custom/projects/configuration/intialisation-options/Update';
 
 import { useAbility } from "@casl/react";
@@ -102,12 +99,12 @@ import Agents from './discover/pages/Agents';
 import SondageFirst from './discover/sondage.js';
 import SondageSecond from './discover/sondageResponse.js';
 import Services from './discover/pages/Service';
-import {onInitCart} from "Actions/CartActions";
+import { onInitCart } from "Actions/CartActions";
 
 const Dashboard = ({ onInitCart }) => {
     const ability = useAbility(AbilityContext);
 
-    useEffect(()=>{
+    useEffect(() => {
         onInitCart();
     }, []);
 
@@ -131,6 +128,14 @@ const Dashboard = ({ onInitCart }) => {
                     <Route exact path={PASS_DETAILS} component={OfferDetails} />
                     <Route exact path={SOLIDARITY} component={AsyncSolidarity} />
                     <Route exact path={MONEY_MANAGEMENT} component={AsyncMoneyManagement} />
+
+
+
+                    <CanRoute
+                        path={MICROCAP360.SUPERVISION.COMMUNITIES}
+                        component={Supervision}
+                        permissions={[]}
+                    />
 
                     <CanRoute
                         path={NETWORK.ACTIVATION}
@@ -163,22 +168,22 @@ const Dashboard = ({ onInitCart }) => {
                         permissions={[Permission.users.accounts.viewList.name]}
                     />
 
-
                     <CanRoute
                         path={SETTINGS.NOTIFICATION.SELF}
                         component={AsyncSettingNotifications}
                         permissions={[]}
                     />
 
-                    <CanRoute
-                        path={RESSOURCE.SELF}
-                        component={Ressource}
-                        permissions={[]}
-                    />
 
                     <CanRoute
                         path={MICROCAP360.MY.SELF}
                         component={MyMicrocap}
+                        permissions={[]}
+                    />
+
+                    <CanRoute
+                        path={RESSOURCE.SELF}
+                        component={Ressource}
                         permissions={[]}
                     />
 
