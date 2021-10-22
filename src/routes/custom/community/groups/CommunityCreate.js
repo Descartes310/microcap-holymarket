@@ -56,6 +56,10 @@ const CommunityCreate = props => {
         data.is_active = true;
         data.is_visible = true;
         data.is_private = false;
+
+        if(!data.conventionated)
+            data.conventionated = false;
+            
         createCommunityNonConventionated(data, authUser.branchId, authUser.user.id, {fileData: ['image'], multipart: true})
             .then(() => {
                 NotificationManager.success("Communauté créée avec succès");

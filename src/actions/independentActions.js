@@ -138,7 +138,6 @@ export const getMembersOfCommunity = (group) => {
     return makeRequest('get', url);
 };
 
-
 export const getCommunitiesByBranch = (branch, user) => {
     const url = joinBaseUrlWithParams(COMMUNITY_MEMBER.USER.GROUPS.GET_BY_BRANCH, [{
         param: 'id',
@@ -148,6 +147,15 @@ export const getCommunitiesByBranch = (branch, user) => {
         value: user
     }]);
     return makeRequest('get', url);
+};
+
+export const getDisableCommunitiesByBranch = () => {
+    return makeRequest('get', COMMUNITY_MEMBER.USER.GROUPS.GET_BY_BRANCH_DISABLE);
+};
+
+export const activeCommunity = (id, code) => {
+    const url = joinBaseUrlWithParamsId(COMMUNITY_MEMBER.USER.GROUPS.ACTIVATE, id);
+    return makeRequest('post', url, {code});
 };
 
 export const getNetworkProfile = () => {

@@ -5,6 +5,7 @@ import {connect} from "react-redux";
 import Groups from "./groups";
 import Chat from "./chats";
 import AllGroups from "./all-groups";
+import Pending from "./pending-groups";
 import Favourites from "./favourites";
 import Invitations from "./groups/invitation"
 
@@ -16,6 +17,7 @@ const TabContent = ({ match }) => {
                 <Route path={COMMUNITY_MEMBER.GROUPS.ME} component={Groups} />
                 <Route path={COMMUNITY_MEMBER.GROUPS.LIST} component={AllGroups} />
                 <Route path={COMMUNITY_MEMBER.GROUPS.CHAT} component={Chat} />
+                <Route path={COMMUNITY_MEMBER.GROUPS.PENDING} component={Pending} />
                 <Route path={COMMUNITY_MEMBER.GROUPS.FAVOURITES} component={Favourites} />
                 <Route path={COMMUNITY_MEMBER.INVITATIONS.SELF} component={Invitations} />
             </Switch>

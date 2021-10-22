@@ -257,6 +257,8 @@ export const COMMUNITY_MEMBER = {
             GET_ALL: 'api/groups/communities/user/me',
             GET_ONE: 'api/groups/communities/{id}',
             GET_BY_BRANCH: 'api/groups/communities/branch/{id}/user/{user_id}',
+            GET_BY_BRANCH_DISABLE: 'api/groups/communities/disable',
+            ACTIVATE: 'api/groups/communities/{id}/activate',
             NOT_IN: 'api/groups/communities/user/{id}/not-in',
             ADMIN: 'api/groups/communities/user/admin/me',
             GET_MEMBERS: 'api/groups/communities/{id}/members',

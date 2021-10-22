@@ -17,7 +17,7 @@ const styles = {
     },
 };
 
-const GroupItem2 = ({ classes, group, isMember, enterInCommunitySpace, adhesion }) => (
+const GroupItem2 = ({ classes, group, isMember, enterInCommunitySpace, adhesion, pending, activeCommunity }) => (
     <Card className="rounded mb-30">
         <CardMedia
             className={classes.media}
@@ -26,63 +26,55 @@ const GroupItem2 = ({ classes, group, isMember, enterInCommunitySpace, adhesion 
         />
         <CardContent className="py-30">
             <h3 className="font-weight-bold" style={{ textOverflow: "ellipsis", whiteSpace: "nowrap", width: "100%", overflow: "hidden", marginBottom: 20 }}>{group.label}</h3>
-            {/* {
-                group.typeGroup.name == 'COMMUNAUTE_PROJET' ?
-                    <span style={{ backgroundColor: 'rgba(46, 178, 229, 0.8)', padding: 10, marginTop: 10, marginBottom: 10, width: 76, borderRadius: 5, color: 'white', fontSize: '0.8em' }}>
-                        Communuaté projet
-                </span>
-                    : null
-            }
-            {
-                group.typeGroup.name == 'COMMUNAUTE_CONVENTIONNEE' ?
-                    <span style={{ backgroundColor: 'rgba(200, 0, 0, 0.5)', padding: 10, marginTop: 10, marginBottom: 10, width: 76, borderRadius: 5, color: 'white', fontSize: '0.8em' }}>
-                        Communauté conventionnée
-                </span>
-                    : null
-            }
-            {
-                group.typeGroup.name == 'COMMUNAUTE_AFFINITE' ?
-                    <span style={{ backgroundColor: 'rgba(200, 0, 0, 0.5)', padding: 10, marginTop: 10, marginBottom: 10, width: 76, borderRadius: 5, color: 'white', fontSize: '0.8em' }}>
-                        Communauté d'affinité
-                </span>
-                    : null
-            } */}
             <p className="mb-0" style={{ textOverflow: "ellipsis", whiteSpace: "nowrap", width: "100%", overflow: "hidden", marginTop: 20 }}>
                 {group.description}
             </p>
         </CardContent>
         <CardActions className="d-flex justify-content-between border-top py-0">
-            <div style={{ padding: 20, display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
-                {
-                    isMember ?
+            { !pending ?
+                <div style={{ padding: 20, display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
+                    {
+                        isMember ?
+                            <Button
+                                color="primary"
+                                variant="contained"
+                                className="text-white font-weight-bold bg-blue"
+                                style={{ marginRight: 10 }}
+                                onClick={() => enterInCommunitySpace(group.id)}
+                            >
+                                Rejoindre
+                            </Button>
+                            :
+                            <Button
+                                color="primary"
+                                variant="contained"
+                                className="text-white font-weight-bold bg-danger"
+                                style={{ marginRight: 10 }}
+                                onClick={() => adhesion(group)}
+                            >
+                                Adhérer
+                            </Button>
+                    }
                     <Button
                         color="primary"
                         variant="contained"
-                        className="text-white font-weight-bold bg-blue"
-                        style={{ marginRight: 10 }}
-                        onClick={() => enterInCommunitySpace(group.id)}
+                        className="text-white font-weight-bold"
                     >
-                        Rejoindre
+                        Consulter
                     </Button>
-                    :
+                </div>
+                :
+                <div style={{ padding: 20, display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
                     <Button
                         color="primary"
                         variant="contained"
-                        className="text-white font-weight-bold bg-danger"
-                        style={{ marginRight: 10 }}
-                        onClick={() => adhesion(group)}
+                        className="text-white font-weight-bold"
+                        onClick={() => activeCommunity()}
                     >
-                        Adhérer
+                        Activer
                     </Button>
-                }
-                <Button
-                    color="primary"
-                    variant="contained"
-                    className="text-white font-weight-bold"
-                >
-                    Consulter
-                </Button>
-            </div>
+                </div>
+            }
         </CardActions>
     </Card>
 );

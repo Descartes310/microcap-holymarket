@@ -47,7 +47,7 @@ class GroupsSidebar extends Component {
                 <div className="chat-sidebar">
                     <div>
                         <div className="justify-content-between align-items-center mt-2 mb-30 px-15 row">
-                            {/* <div className="col-md-3 col-sm-4">
+                            <div className="col-md-3 col-sm-4">
                                 <Button
                                     color="primary"
                                     variant="contained"
@@ -57,8 +57,8 @@ class GroupsSidebar extends Component {
                                     <i className="zmdi zmdi zmdi-plus mr-2" />
                                     Créer
                                 </Button>
-                            </div> */}
-                            <div className="col-md-12 col-sm-12">
+                            </div>
+                            <div className="col-md-9 col-sm-8">
                                 <FormControl>
                                     <InputGroup>
                                         <InputGroupAddon addonType="prepend">
@@ -89,48 +89,48 @@ class GroupsSidebar extends Component {
                                             <h4> Aucune communauté trouvé</h4>
                                         </div>
                                     ) : (
-                                            <>
-                                                <div className="mb-20 d-flex align-items-center" style={{ marginLeft: 30 }}>
-                                                    <span style={{ marginRight: 20 }}>Filtrer les favoris</span>
-                                                    <FormControlLabel
-                                                        control={
-                                                            <Switch
-                                                                checked={this.state.filterFavourite}
-                                                                onClick={() => this.setState({ filterFavourite: !this.state.filterFavourite })}
-                                                                color="primary"
-                                                                className="switch-btn"
+                                        <>
+                                            <div className="mb-20 d-flex align-items-center" style={{ marginLeft: 30 }}>
+                                                <span style={{ marginRight: 20 }}>Filtrer les favoris</span>
+                                                <FormControlLabel
+                                                    control={
+                                                        <Switch
+                                                            checked={this.state.filterFavourite}
+                                                            onClick={() => this.setState({ filterFavourite: !this.state.filterFavourite })}
+                                                            color="primary"
+                                                            className="switch-btn"
+                                                        />
+                                                    }
+                                                />
+                                            </div>
+                                            {
+                                                this.state.filterFavourite ?
+                                                    < List className="p-0 mb-0">
+                                                        {userCommunities.filter(data => data.favourite == true).map((community, key) => (
+                                                            <GroupItem
+                                                                key={key}
+                                                                community={community.group}
+                                                                favourite={community.favourite}
+                                                                admin={community.isAdmin}
+                                                                onClickListItem={() => this.onCommunityClick(community.group, community.favourite)}
                                                             />
-                                                        }
-                                                    />
-                                                </div>
-                                                {
-                                                    this.state.filterFavourite ?
-                                                        < List className="p-0 mb-0">
-                                                            {userCommunities.filter(data => data.favourite == true).map((community, key) => (
-                                                                <GroupItem
-                                                                    key={key}
-                                                                    community={community.group}
-                                                                    favourite={community.favourite}
-                                                                    admin={community.isAdmin}
-                                                                    onClickListItem={() => this.onCommunityClick(community.group, community.favourite)}
-                                                                />
-                                                            ))}
-                                                        </List>
-                                                        :
-                                                        <List className="p-0 mb-0">
-                                                            {userCommunities.map((community, key) => (
-                                                                <GroupItem
-                                                                    key={key}
-                                                                    community={community.group}
-                                                                    favourite={community.favourite}
-                                                                    admin={community.isAdmin}
-                                                                    onClickListItem={() => this.onCommunityClick(community.group, community.favourite, community.members)}
-                                                                />
-                                                            ))}
-                                                        </List>
-                                                }
-                                            </>
-                                        )}
+                                                        ))}
+                                                    </List>
+                                                    :
+                                                    <List className="p-0 mb-0">
+                                                        {userCommunities.map((community, key) => (
+                                                            <GroupItem
+                                                                key={key}
+                                                                community={community.group}
+                                                                favourite={community.favourite}
+                                                                admin={community.isAdmin}
+                                                                onClickListItem={() => this.onCommunityClick(community.group, community.favourite, community.members)}
+                                                            />
+                                                        ))}
+                                                    </List>
+                                            }
+                                        </>
+                                    )}
                                 </>
                             </Scrollbars>
                         </div>

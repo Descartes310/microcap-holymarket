@@ -8,8 +8,8 @@ import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
 import CustomList from "Components/CustomList";
-import { NOTIFICATIONS } from "Url/frontendUrl";
 import SweetAlert from "react-bootstrap-sweetalert";
+import { COMMUNITY, joinUrlWithParamsId } from "Url/frontendUrl";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import {
     setRequestGlobalAction, acceptOperatorInvitation, getOperatorCurrentCommunities,
@@ -93,6 +93,10 @@ class Supervision extends Component {
         this.setState({ showWarningBox: true });
     };
 
+    enterInCommunitySpace = (id) => {
+        window.location = joinUrlWithParamsId(COMMUNITY.MEMBERS.LIST, id);
+    };
+
     render() {
         const { history } = this.props;
         const { communities, activeTab, invitations } = this.state;
@@ -126,118 +130,73 @@ class Supervision extends Component {
                         </AppBar>
                     </div>
                     <>
-                        {invitations ?
+                        {!invitations ?
                             <div className="page-list">
                                 <CustomList
                                     list={communities}
                                     loading={false}
                                     itemsFoundText={n => `${n} communauté(s) trouvée(s)`}
                                     renderItem={list => (
-                                        <>
-                                            {list && list.filter(p => p.status === Status.PENDING).length === 0 ? (
-                                                <div>
-                                                    <table className="table table-hover table-middle mb-0 text-center">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>Nom de la communauté</th>
-                                                                <th>Actions</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
 
-                                                        </tbody>
-                                                    </table>
-                                                    <div className="d-flex justify-content-center align-items-center py-50">
-                                                        <h4>
-                                                            Aucunes Communautés Impétrantes trouvées
-                                                        </h4>
-                                                    </div>
-                                                </div>
-                                            ) : (
-                                                <div className="table-responsive">
-                                                    <table className="table table-hover table-middle mb-0 text-center">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>Nom de la communauté</th>
-                                                                <th>Actions</th>
+                                        <div className="table-responsive">
+                                            <table className="table table-hover table-middle mb-0 text-center">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Nom de la communauté</th>
+                                                        <th>Type de la communauté</th>
+                                                        <th>Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                {list && list.filter(p => p.status === Status.ACCEPTED).length === 0 ?
+                                                    <tbody>
+                                                        <tr>
+                                                            <td colSpan={3}>
+                                                                <div className="d-flex justify-content-center align-items-center py-50">
+                                                                    <h4>
+                                                                        Aucunes Communautés trouvées
+                                                                    </h4>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                    :
+                                                    <tbody>
+                                                        {list && list.filter(p => p.status === Status.ACCEPTED).map((item, key) => (
+                                                            <tr
+                                                                key={key}
+                                                                className="cursor-pointer">
+                                                                <td>
+                                                                    <div className="media">
+                                                                        <div className="media-body pt-10">
+                                                                            <h4 className="m-0 fw-bold text-dark">{item.group.name}</h4>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    <div className="media">
+                                                                        <div className="media-body pt-10">
+                                                                            <h4 className="m-0 fw-bold text-dark">{item.group.typeGroup.label}</h4>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    <Button
+                                                                        color="primary"
+                                                                        disabled={item.native}
+                                                                        variant="contained"
+                                                                        className="text-white font-weight-bold"
+                                                                        style={{ marginRight: 10 }}
+                                                                        onClick={() => this.enterInCommunitySpace(item.group.id)}
+                                                                    >
+                                                                        Rejoindre
+                                                                    </Button>
+                                                                </td>
                                                             </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            {list && list.filter(p => p.status === Status.PENDING).map((item, key) => (
-                                                                <tr
-                                                                    key={key}
-                                                                    className="cursor-pointer">
-                                                                    <td>
-                                                                        <div className="media">
-                                                                            <div className="media-body pt-10">
-                                                                                <h4 className="m-0 fw-bold text-dark">{item.group.name}</h4>
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
-                                                                    <td>
-                                                                        <div className="media">
-                                                                            <div className="media-body pt-10">
-                                                                                <Button
-                                                                                    color="primary"
-                                                                                    disabled={item.native}
-                                                                                    variant="contained"
-                                                                                    className="text-white font-weight-bold bg-blue"
-                                                                                    style={{ marginRight: 10 }}
-                                                                                    onClick={() => this.onAccept(item.id)}
-                                                                                >
-                                                                                    Accepter
-                                                                                </Button>
-                                                                                <Button
-                                                                                    color="danger"
-                                                                                    disabled={item.native}
-                                                                                    variant="contained"
-                                                                                    className="text-white font-weight-bold bg-blue"
-                                                                                    style={{ marginRight: 10 }}
-                                                                                    onClick={() => this.onCancel()}
-                                                                                >
-                                                                                    Refuser
-                                                                                </Button>
-                                                                            </div>
-                                                                        </div>
-                                                                        <SweetAlert
-                                                                            type="danger"
-                                                                            showCancel
-                                                                            showConfirm
-                                                                            show={this.state.showWarningBox}
-                                                                            title={"Confirmation"}
-                                                                            customButtons={(
-                                                                                <>
-                                                                                    <Button
-                                                                                        color="blue"
-                                                                                        disabled={this.props.requestGlobalLoader}
-                                                                                        variant="outlined"
-                                                                                        onClick={() => this.setState({ showWarningBox: false })}
-                                                                                        className="text-white bg-blue font-weight-bold mr-3"
-                                                                                    >
-                                                                                        Non je ne veux pas
-                                                                                    </Button>
-                                                                                    <Button
-                                                                                        color="primary"
-                                                                                        disabled={this.props.requestGlobalLoader}
-                                                                                        variant="contained"
-                                                                                        className="text-white font-weight-bold"
-                                                                                        onClick={() => this.handleActiveConfirmed(item.id)}
-                                                                                    >
-                                                                                        Oui je veux
-                                                                                    </Button>
-                                                                                </>
-                                                                            )}
-                                                                        >
-                                                                            "Voulez vous vraiment refusé cette sollicitation ?"
-                                                                        </SweetAlert>
-                                                                    </td>
-                                                                </tr>
-                                                            ))}
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            )}
-                                        </>
+                                                        ))}
+                                                    </tbody>
+                                                }
+                                            </table>
+                                        </div>
                                     )}
                                 />
                             </div>
@@ -248,69 +207,111 @@ class Supervision extends Component {
                                     loading={false}
                                     itemsFoundText={n => `${n} communauté(s) trouvée(s)`}
                                     renderItem={list => (
-                                        <>
-                                            {list && list.filter(p => p.status === Status.ACCEPTED).length === 0 ? (
-                                                <div>
-                                                    <table className="table table-hover table-middle mb-0 text-center">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>Nom de la communauté</th>
-                                                                <th>Actions</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
+                                        <div className="table-responsive">
+                                            <table className="table table-hover table-middle mb-0 text-center">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Nom de la communauté</th>
+                                                        <th>Type de la communauté</th>
+                                                        <th>Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                {list && list.filter(p => p.status === Status.PENDING).length === 0 ?
+                                                    <tbody>
+                                                        <tr>
+                                                            <td colSpan={3}>
+                                                                <div className="d-flex justify-content-center align-items-center py-50">
+                                                                    <h4>
+                                                                        Aucunes Communautés trouvées
+                                                                    </h4>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                    :
 
-                                                        </tbody>
-                                                    </table>
-                                                    <div className="d-flex justify-content-center align-items-center py-50">
-                                                        <h4>
-                                                            Aucunes Communautés Impétrantes trouvées
-                                                        </h4>
-                                                    </div>
-                                                </div>
-                                            ) : (
-                                                <div className="table-responsive">
-                                                    <table className="table table-hover table-middle mb-0 text-center">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>Nom de la communauté</th>
-                                                                <th>Type</th>
-                                                                <th>Description</th>
+                                                    <tbody>
+                                                        {list && list.filter(p => p.status === Status.PENDING).map((item, key) => (
+                                                            <tr
+                                                                key={key}
+                                                                className="cursor-pointer">
+                                                                <td>
+                                                                    <div className="media">
+                                                                        <div className="media-body pt-10">
+                                                                            <h4 className="m-0 fw-bold text-dark">{item.group.name}</h4>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    <div className="media">
+                                                                        <div className="media-body pt-10">
+                                                                            <h4 className="m-0 fw-bold text-dark">{item.group.typeGroup.label}</h4>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    <div className="media">
+                                                                        <div className="media-body pt-10">
+                                                                            <Button
+                                                                                color="primary"
+                                                                                disabled={item.native}
+                                                                                variant="contained"
+                                                                                className="text-white font-weight-bold bg-blue"
+                                                                                style={{ marginRight: 10 }}
+                                                                                onClick={() => this.onAccept(item.id)}
+                                                                            >
+                                                                                Accepter
+                                                                            </Button>
+                                                                            <Button
+                                                                                color="danger"
+                                                                                disabled={item.native}
+                                                                                variant="contained"
+                                                                                className="text-white font-weight-bold bg-blue"
+                                                                                style={{ marginRight: 10 }}
+                                                                                onClick={() => this.onCancel()}
+                                                                            >
+                                                                                Refuser
+                                                                            </Button>
+                                                                        </div>
+                                                                    </div>
+                                                                    <SweetAlert
+                                                                        type="danger"
+                                                                        showCancel
+                                                                        showConfirm
+                                                                        show={this.state.showWarningBox}
+                                                                        title={"Confirmation"}
+                                                                        customButtons={(
+                                                                            <>
+                                                                                <Button
+                                                                                    color="blue"
+                                                                                    disabled={this.props.requestGlobalLoader}
+                                                                                    variant="outlined"
+                                                                                    onClick={() => this.setState({ showWarningBox: false })}
+                                                                                    className="text-white bg-blue font-weight-bold mr-3"
+                                                                                >
+                                                                                    Non je ne veux pas
+                                                                                </Button>
+                                                                                <Button
+                                                                                    color="primary"
+                                                                                    disabled={this.props.requestGlobalLoader}
+                                                                                    variant="contained"
+                                                                                    className="text-white font-weight-bold"
+                                                                                    onClick={() => this.handleActiveConfirmed(item.id)}
+                                                                                >
+                                                                                    Oui je veux
+                                                                                </Button>
+                                                                            </>
+                                                                        )}
+                                                                    >
+                                                                        "Voulez vous vraiment refusé cette sollicitation ?"
+                                                                    </SweetAlert>
+                                                                </td>
                                                             </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            {list && list.filter(p => p.status === Status.ACCEPTED).map((item, key) => (
-                                                                <tr
-                                                                    key={key}
-                                                                    className="cursor-pointer">
-                                                                    <td>
-                                                                        <div className="media">
-                                                                            <div className="media-body pt-10">
-                                                                                <h4 className="m-0 fw-bold text-dark">{item.group.name}</h4>
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
-                                                                    <td>
-                                                                        <div className="media">
-                                                                            <div className="media-body pt-10">
-                                                                                <h4 className="m-0 fw-bold text-dark">{item.group.typeGroup.label}</h4>
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
-                                                                    <td>
-                                                                        <div className="media">
-                                                                            <div className="media-body pt-10">
-                                                                                <h4 className="m-0 fw-bold text-dark">{item.group.description}</h4>
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
-                                                                </tr>
-                                                            ))}
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            )}
-                                        </>
+                                                        ))}
+                                                    </tbody>
+                                                }
+                                            </table>
+                                        </div>
                                     )}
                                 />
                             </div>
@@ -323,8 +324,8 @@ class Supervision extends Component {
 }
 
 // map state to props
-const mapStateToProps = ({ requestGlobalLoader, userForms, authUser }) => {
-    return { requestGlobalLoader, authUser: authUser.data, }
+const mapStateToProps = ({ requestGlobalLoader, currentCommunity, authUser }) => {
+    return { requestGlobalLoader, authUser: authUser.data, currentCommunity: currentCommunity }
 };
 
 export default connect(mapStateToProps, { setRequestGlobalAction })(withRouter(Supervision));
