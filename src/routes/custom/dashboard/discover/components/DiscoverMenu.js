@@ -1,14 +1,15 @@
-import {Link, withRouter} from "react-router-dom";
-import React, {Component} from 'react';
-import {SlideDown} from 'react-slidedown';
+import { Link, withRouter } from "react-router-dom";
+import React, { Component } from 'react';
+import { SlideDown } from 'react-slidedown';
 import 'react-slidedown/lib/slidedown.css';
 import AppConfig from "Constants/AppConfig";
 import IntlMessages from "Util/IntlMessages";
 import Button from "@material-ui/core/Button";
-import {HashLink} from "react-router-hash-link";
-import {AGENTS, AUTH, GALERY_PROJECT, HOME, PASS_DETAILS, DISCOVER, MICROCAP360} from "Url/frontendUrl";
-import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem, Dropdown} from 'reactstrap';
-import {connect} from "react-redux";
+import { HashLink } from "react-router-hash-link";
+import { AGENTS, AUTH, GALERY_PROJECT, HOME, PASS_DETAILS, DISCOVER, MICROCAP360 } from "Url/frontendUrl";
+import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem, Dropdown } from 'reactstrap';
+import { connect } from "react-redux";
+import TellUs from "../../../../session/login/TellUs";
 
 const MAX_MOBILE_SCREEN_WIDTH = 996;
 
@@ -28,10 +29,11 @@ class DiscoverMenu extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            show: false,
             width: getWidth(),
             showMobile: false,
             showMobileDorpdown: false,
-            showDesktopDorpdown: false
+            showDesktopDorpdown: false,
         }
     }
 
@@ -44,29 +46,28 @@ class DiscoverMenu extends Component {
     }
 
     resize = () => {
-        this.setState({width: getWidth()})
+        this.setState({ width: getWidth() })
     };
 
     onTClick = (event) => {
         event.preventDefault();
-        this.setState(state => ({showMobile: !state.showMobile}))
+        this.setState(state => ({ showMobile: !state.showMobile }))
     };
 
     onTClickDropdown = (event) => {
         event.preventDefault();
-        this.setState(state => ({showMobileDorpdown: !state.showMobileDorpdown}))
+        this.setState(state => ({ showMobileDorpdown: !state.showMobileDorpdown }))
     };
 
     onTClickDesktopDropdown = (event) => {
         event.preventDefault();
-        this.setState(state => ({showDesktopDorpdown: !state.showDesktopDorpdown}))
+        this.setState(state => ({ showDesktopDorpdown: !state.showDesktopDorpdown }))
     };
 
 
     render() {
         const { authUser, history } = this.props;
-        console.log("this.props => ", this.props);
-        const { width, showMobile, showMobileDorpdown, showDesktopDorpdown} = this.state;
+        const { width, showMobile, showMobileDorpdown, showDesktopDorpdown, show } = this.state;
 
         const isMainNav = width > MAX_MOBILE_SCREEN_WIDTH;
 
@@ -84,57 +85,57 @@ class DiscoverMenu extends Component {
                         <div id="navbarContent">
                             <ul className="navbar-nav ml-auto">
                                 <li className="nav-item">
-                                <Dropdown isOpen={showDesktopDorpdown} toggle={(event)=> this.onTClickDesktopDropdown(event)} className="nav-item-border">
-                                    <DropdownToggle style={{background: "none", border:"none", boxShadow: "none", color: "#464D69", padding: "0.70rem 1rem", fontSize: "inherit", fontWeight: "bold"}}>
-                                        Découvrir
-                                        <img class={showDesktopDorpdown ? "inline-nav-arrow-final" : "inline-nav-arrow-initial"} src="https://sqy7rm.media.zestyio.com/Downward-Carat.svg" alt="Downward arrow"></img>
-                                    </DropdownToggle>
-                                    <DropdownMenu className="desktop-dropdown">
-                                        <DropdownItem>
-                                            <HashLink to={`${DISCOVER}/#produits`}>
-                                                <a className="nav-link-mobile-sub">
-                                                    Produits pour se financer
-                                                </a>
-                                            </HashLink>
-                                        </DropdownItem>
-                                        <DropdownItem>
-                                            <HashLink to={`${DISCOVER}/#investir`}>
-                                                <a className="nav-link-mobile-sub ">
-                                                    Produits pour investir
-                                                </a>
-                                            </HashLink>
-                                        </DropdownItem>
-                                        <DropdownItem>
-                                            <HashLink to={`${DISCOVER}/#services`}>
-                                                <a className="nav-link-mobile-sub ">
-                                                    Produits des Partenaires
-                                                </a>
-                                            </HashLink>
-                                        </DropdownItem>
+                                    <Dropdown isOpen={showDesktopDorpdown} toggle={(event) => this.onTClickDesktopDropdown(event)} className="nav-item-border">
+                                        <DropdownToggle style={{ background: "none", border: "none", boxShadow: "none", color: "#464D69", padding: "0.70rem 1rem", fontSize: "inherit", fontWeight: "bold" }}>
+                                            Découvrir
+                                            <img class={showDesktopDorpdown ? "inline-nav-arrow-final" : "inline-nav-arrow-initial"} src="https://sqy7rm.media.zestyio.com/Downward-Carat.svg" alt="Downward arrow"></img>
+                                        </DropdownToggle>
+                                        <DropdownMenu className="desktop-dropdown">
+                                            <DropdownItem>
+                                                <HashLink to={`${DISCOVER}/#produits`}>
+                                                    <a className="nav-link-mobile-sub">
+                                                        Produits pour se financer
+                                                    </a>
+                                                </HashLink>
+                                            </DropdownItem>
+                                            <DropdownItem>
+                                                <HashLink to={`${DISCOVER}/#investir`}>
+                                                    <a className="nav-link-mobile-sub ">
+                                                        Produits pour investir
+                                                    </a>
+                                                </HashLink>
+                                            </DropdownItem>
+                                            <DropdownItem>
+                                                <HashLink to={`${DISCOVER}/#services`}>
+                                                    <a className="nav-link-mobile-sub ">
+                                                        Produits des Partenaires
+                                                    </a>
+                                                </HashLink>
+                                            </DropdownItem>
 
-                                        <DropdownItem>
-                                            <HashLink to={`${DISCOVER}/#pass-section`}>
-                                                <a className="nav-link-mobile-sub">
-                                                    Pass Microcap
-                                                </a>
-                                            </HashLink>
-                                        </DropdownItem>
-                                        <DropdownItem>
-                                            <HashLink to={`${DISCOVER}/#team-section`}>
-                                                <a className="nav-link-mobile-sub">
-                                                    L'équipe
-                                                </a>
-                                            </HashLink>
-                                        </DropdownItem>
-                                        <DropdownItem>
-                                            <HashLink to={`${DISCOVER}/#team-section`}>
-                                                <a className="nav-link-mobile-sub">
-                                                    Point d'accueil
-                                                </a>
-                                            </HashLink>
-                                        </DropdownItem>
-                                    </DropdownMenu>
-                                </Dropdown>
+                                            <DropdownItem>
+                                                <HashLink to={`${DISCOVER}/#pass-section`}>
+                                                    <a className="nav-link-mobile-sub">
+                                                        Pass Microcap
+                                                    </a>
+                                                </HashLink>
+                                            </DropdownItem>
+                                            <DropdownItem>
+                                                <HashLink to={`${DISCOVER}/#team-section`}>
+                                                    <a className="nav-link-mobile-sub">
+                                                        L'équipe
+                                                    </a>
+                                                </HashLink>
+                                            </DropdownItem>
+                                            <DropdownItem>
+                                                <HashLink to={`${DISCOVER}/#team-section`}>
+                                                    <a className="nav-link-mobile-sub">
+                                                        Point d'accueil
+                                                    </a>
+                                                </HashLink>
+                                            </DropdownItem>
+                                        </DropdownMenu>
+                                    </Dropdown>
                                 </li>
                                 <li className="nav-item nav-item-border" >
                                     <HashLink to={`${PASS_DETAILS}`} className="nav-link-mobile">
@@ -148,7 +149,7 @@ class DiscoverMenu extends Component {
                                 </li>
                                 <li className="nav-item nav-item-border">
                                     <HashLink to={`${AGENTS}`} className="nav-link-mobile">
-                                        Réseau d'agent
+                                        Réseau d'agents
                                     </HashLink>
                                 </li>
                                 <li className="center-hor-ver">
@@ -158,12 +159,21 @@ class DiscoverMenu extends Component {
                                             className="mr-2 btn-inflated font-size-inherit outlined">
                                             Espace personnel
                                         </Link>
-                                    ): (
-                                        <Link
-                                            to={AUTH.LOGIN}
-                                            className="mr-2 btn-inflated font-size-inherit">
-                                            Se connecter
-                                        </Link>
+                                    ) : (
+                                        <>
+                                            <Link
+                                                to={AUTH.LOGIN}
+                                                className="mr-2 btn-inflated font-size-inherit">
+                                                Se connecter
+                                            </Link>
+                                            <Button
+                                                style={{ color: 'white' }}
+                                                onClick={() => this.setState({ show: true })}
+                                                className="mr-2 btn-inflated font-size-inherit"
+                                            >
+                                                Microcap en 2 cliques
+                                            </Button>
+                                        </>
                                     )}
                                 </li>
                             </ul>{/*<a className="btn btn-primary btn-rounded my-0"
@@ -192,65 +202,65 @@ class DiscoverMenu extends Component {
                         {showMobile ? (
                             <div id="mobile-center">
                                 <ul className="">
-                                    <li className="nav-item" style={{marginRight:"30px"}}>
+                                    <li className="nav-item" style={{ marginRight: "30px" }}>
                                         <HashLink to={`${PASS_DETAILS}`}>
                                             <a
                                                 href="#"
                                                 className="nav-link-mobile"
-                                                onClick={(event)=>this.onTClickDropdown(event)}
+                                                onClick={(event) => this.onTClickDropdown(event)}
                                             >
                                                 Découvrir
                                                 <i className={`drop-arrow ti-angle-${showMobileDorpdown ? 'up' : 'down'}`} />
                                             </a>
                                             <SlideDown className={'second-dropdown-mobile'}>
                                                 {showMobileDorpdown ? (
-                                                <div id="dropdown-mobile-center">
-                                                    <ul>
-                                                        <li className="nav-item nav-item-border">
-                                                            <a className="nav-link-mobile ml-30" href="#">
-                                                                Produits pour se financer
-                                                            </a>
-                                                        </li>
-                                                        <li className="nav-item nav-item-border">
-                                                            <a className="nav-link-mobile ml-30" href="#">
-                                                                Produits pour investir
-                                                            </a>
-                                                        </li>
-                                                        <li className="nav-item nav-item-border">
-                                                            <a className="nav-link-mobile ml-30" href="#">
-                                                                Produits des Partenaires
-                                                            </a>
-                                                        </li>
-                                                        <li className="nav-item nav-item-border">
-                                                            <a className="nav-link-mobile ml-30" href="#">
-                                                                Pass Microcap
-                                                            </a>
-                                                        </li>
-                                                        <li className="nav-item nav-item-border">
-                                                            <a className="nav-link-mobile ml-30" href="#team-section">
-                                                                L'équipe
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </div>) : null}
+                                                    <div id="dropdown-mobile-center">
+                                                        <ul>
+                                                            <li className="nav-item nav-item-border">
+                                                                <a className="nav-link-mobile ml-30" href="#">
+                                                                    Produits pour se financer
+                                                                </a>
+                                                            </li>
+                                                            <li className="nav-item nav-item-border">
+                                                                <a className="nav-link-mobile ml-30" href="#">
+                                                                    Produits pour investir
+                                                                </a>
+                                                            </li>
+                                                            <li className="nav-item nav-item-border">
+                                                                <a className="nav-link-mobile ml-30" href="#">
+                                                                    Produits des Partenaires
+                                                                </a>
+                                                            </li>
+                                                            <li className="nav-item nav-item-border">
+                                                                <a className="nav-link-mobile ml-30" href="#">
+                                                                    Pass Microcap
+                                                                </a>
+                                                            </li>
+                                                            <li className="nav-item nav-item-border">
+                                                                <a className="nav-link-mobile ml-30" href="#team-section">
+                                                                    L'équipe
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>) : null}
                                             </SlideDown>
                                         </HashLink>
                                     </li>
-                                    <li className="nav-item nav-item-border" style={{marginRight:"30px"}}>
+                                    <li className="nav-item nav-item-border" style={{ marginRight: "30px" }}>
                                         <HashLink to={`${PASS_DETAILS}`}>
                                             <a className="nav-link-mobile" href="#">
                                                 Pass microcap
                                             </a>
                                         </HashLink>
                                     </li>
-                                    <li className="nav-item nav-item-border" style={{marginRight:"30px"}}>
+                                    <li className="nav-item nav-item-border" style={{ marginRight: "30px" }}>
                                         <Link to={GALERY_PROJECT}>
                                             <a className="nav-link-mobile" href="#">Gallerie projets</a>
                                         </Link>
                                     </li>
-                                    <li className="nav-item nav-item-border" style={{marginRight:"30px"}}>
+                                    <li className="nav-item nav-item-border" style={{ marginRight: "30px" }}>
                                         <HashLink to={`${AGENTS}`}>
-                                            <a className="nav-link-mobile" href="#">Réseau d'agent</a>
+                                            <a className="nav-link-mobile" href="#">Réseau d'agents</a>
                                         </HashLink>
                                     </li>
                                     <li>
@@ -260,12 +270,21 @@ class DiscoverMenu extends Component {
                                                 className="mr-2 btn-inflated font-size-inherit outlined">
                                                 Espace personnel
                                             </Link>
-                                        ): (
-                                            <Link
-                                                to={AUTH.LOGIN}
-                                                className="mr-2 btn-inflated font-size-inherit">
-                                                Se connecter
-                                            </Link>
+                                        ) : (
+                                            <>
+                                                <Link
+                                                    to={AUTH.LOGIN}
+                                                    className="mr-2 btn-inflated font-size-inherit">
+                                                    Se connecter
+                                                </Link>
+                                                <Button
+                                                    style={{ color: 'white' }}
+                                                    onClick={() => this.setState({ show: true })}
+                                                    className="mr-2 btn-inflated font-size-inherit"
+                                                >
+                                                    Microcap en 2 cliques
+                                                </Button>
+                                            </>
                                         )}
                                     </li>
                                 </ul>
@@ -273,12 +292,17 @@ class DiscoverMenu extends Component {
                         ) : null}
                     </SlideDown>
                 </nav>
+                <TellUs
+                    show={show}
+                    history={this.props.history}
+                    onClose={() => this.setState({ show: false })}
+                />
             </section>
         );
     }
 }
 
 // map state to props
-const mapStateToProps = ({ authUser }) => ({authUser});
+const mapStateToProps = ({ authUser }) => ({ authUser });
 
 export default connect(mapStateToProps, {})(withRouter(DiscoverMenu));

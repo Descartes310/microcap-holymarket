@@ -8,6 +8,8 @@ import { Form, FormGroup } from 'reactstrap';
 import Button from '@material-ui/core/Button';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
+import CancelIcon from '@material-ui/icons/Cancel';
+import IconButton from "@material-ui/core/IconButton";
 import LinearProgress from '@material-ui/core/LinearProgress';
 
 import {
@@ -44,6 +46,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabe
 import DialogTitle from "@material-ui/core/DialogTitle/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent/DialogContent";
 import Dialog from "@material-ui/core/Dialog/Dialog";
+import TellUs from './TellUs';
 
 const Signin = (props) => {
     const { loading, intl } = props;
@@ -110,7 +113,7 @@ const Signin = (props) => {
                                     <Button variant="contained" className="btn-primary mr-2 p-10" onClick={onDiscoverClick}>
                                         Découvrir Microcap
                                     </Button>
-                                    <a className="text-white" onClick={() => setShow(true)}>Dites nous qui vous êtes</a>
+                                    {/* <a className="text-white" onClick={() => setShow(true)}>Dites nous qui vous êtes</a> */}
                                 </div>
                             </div>
                         </div>
@@ -227,6 +230,16 @@ const Signin = (props) => {
                                                 >
                                                     <IntlMessages id="auth.signin" />
                                                 </Button>
+                                                <Button
+                                                    size="large"
+                                                    type="button"
+                                                    variant="contained"
+                                                    onClick={() => setShow(true)}
+                                                    className="btn-block text-white w-100"
+                                                    style={{ backgroundColor: '#2f2e40a6' }}
+                                                >
+                                                    MicroCap en 2 cliques
+                                                </Button>
                                             </FormGroup>
                                         </Form>
                                         <p className="text-muted">
@@ -249,138 +262,12 @@ const Signin = (props) => {
                 </div>
             </div>
 
-            <Dialog
-                open={(new URLSearchParams(props.location.search).get("social_network") && response == null) || show}
-                fullScreen={false}
-                aria-labelledby="responsive-dialog-title"
-                maxWidth={'lg'}
-                fullWidth
-            >
-                <DialogContent>
-                    <div className="showcase-card-block" style={{ backgroundImage: `url(${require('Assets/img/bg-shape-gray.png')})`, padding: '10vh 10vw' }}>
-                        <div className="row center-hor-ver mb-70 flex-column intro">
-                            <h2 className="font-weight-bold text-black text-center" data-aos="fade-right">
-                                Du 1<sup>er</sup> octobre 2021 au 15 novembre 2021
-                            </h2>
-                            <p data-aos="fade-left" className="text-center">Participer à notre appel à projet pour une dotation financière pouvant atteindre jusqu'à 50 000€ </p>
-                        </div>
-                        <div className="row">
-                            <div className="col-xs-12 col-sm-12 col-md-4 mb-30" data-aos="fade-down" data-aos-duration="300">
-                                <Card>
-                                    <CardBody style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
-                                        <CardText style={{ fontSize: '1.1em', textAlign: 'center' }}>
-                                            <p>L'entrepreneuriat ce n'est pas pour moi, mais j'ai un projet personnel </p>
-                                        </CardText>
-                                    </CardBody>
-                                    <CardFooter className="border-0 center-hor-ver">
-                                        <Button variant="contained" className="btn-primary mr-2" onClick={() => onSubmitSondage('NOT_FOR_ME', 1)}>
-                                            Sélectionner
-                                        </Button>
-                                    </CardFooter>
-                                </Card>
-                            </div>
-                            <div className="col-xs-12 col-sm-12 col-md-4 mb-30" data-aos="fade-down" data-aos-duration="500">
-                                <Card>
-                                    <CardBody style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
-                                        <CardText style={{ fontSize: '1.1em', textAlign: 'center' }}>
-                                            <p>Je suis solitaire, 6 à 24 mois pour une levée des fond malgré le résultat incertain, ça me conviennent </p>
-                                        </CardText>
-                                    </CardBody>
-                                    <CardFooter className="border-0 center-hor-ver">
-                                        <Button variant="contained" className="btn-primary mr-2" onClick={() => onSubmitSondage('ONE_AND_ONLY', 2)}>
-                                            Sélectionner
-                                        </Button>
-                                    </CardFooter>
-                                </Card>
-                            </div>
-                            <div className="col-xs-12 col-sm-12 col-md-4 mb-30" data-aos="fade-down" data-aos-duration="700">
-                                <Card>
-                                    <CardBody style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
-                                        <CardText style={{ fontSize: '1.1em', textAlign: 'center' }}>
-                                            <p>L'accompagnement au sein du réseau solidaire MicroCap pour constituer les fonds dont j'ai besoin peut me
-                                                prendre entre 3 et 36 Mois. Mais pour un résultat 100% assuré, je préfère ce choix</p>
-                                        </CardText>
-                                    </CardBody>
-                                    <CardFooter className="border-0 center-hor-ver">
-                                        <Button variant="contained" className="btn-primary mr-2" onClick={() => onSubmitSondage('WORK_WITH_OTHERS', 3)}>
-                                            Sélectionner
-                                        </Button>
-                                    </CardFooter>
-                                </Card>
-                            </div>
-                        </div>
-                    </div>
-                </DialogContent>
-            </Dialog>
-
-            <Dialog
-                open={response ? response >= 1 : false}
-                fullScreen={false}
-                aria-labelledby="responsive-dialog-title"
-                maxWidth={'lg'}
-                fullWidth
-            >
-                <DialogContent>
-                    <div className="showcase-card-block" style={{ backgroundImage: `url(${require('Assets/img/bg-shape-gray.png')})`, padding: '5vh 10vw' }}>
-                        {response == 1 ?
-                            <div className="col-xs-12 col-sm-12 col-md-12 mb-30" data-aos="fade-down" data-aos-duration="300">
-                                <Card>
-                                    <CardBody style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
-                                        <CardText style={{ fontSize: '1.1em', textAlign: 'center' }}>
-                                            <p>
-                                                Nous vous proposons nos services d'accompagnement individuel à la création d'entreprise
-                                            </p>
-                                        </CardText>
-                                    </CardBody>
-                                    <CardFooter className="border-0 center-hor-ver">
-                                        <Button variant="contained" className="btn-primary mr-2" onClick={() => props.history.push(AUTH.LOGIN)}>
-                                            Continuer
-                                        </Button>
-                                    </CardFooter>
-                                </Card>
-                            </div>
-                            :
-                            response == 2 ?
-                                <div className="col-xs-12 col-sm-12 col-md-12 mb-30" data-aos="fade-down" data-aos-duration="300">
-                                    <Card>
-                                        <CardBody style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
-                                            <CardText style={{ fontSize: '1.1em', textAlign: 'center' }}>
-                                                <p>
-                                                    Vous préferez la sérénité d'un salaire chaque mois et vous avez un projet personnel à réaliser ?
-                                                    Soutenez ceux qui crée les emplois en fructifiant votre épargne sur Microcap. Surtout choisissez à qui et à quoi
-                                                    sert votre argent, une transparence inégalée.
-                                                </p>
-                                            </CardText>
-                                        </CardBody>
-                                        <CardFooter className="border-0 center-hor-ver">
-                                            <Button variant="contained" className="btn-primary mr-2" onClick={() => props.history.push(AUTH.REGISTER)}>
-                                                Je m'inscris
-                                            </Button>
-                                        </CardFooter>
-                                    </Card>
-                                </div>
-                                :
-                                <div className="col-xs-12 col-sm-12 col-md-12 mb-30" data-aos="fade-down" data-aos-duration="300">
-                                    <Card>
-                                        <CardBody style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
-                                            <CardText style={{ fontSize: '1.1em', textAlign: 'center' }}>
-                                                <p>
-                                                    Bravo! vous pouvez rejoindre MicroCap, le réseau international d'entrepreneurs solidaires. le programme
-                                                    d'incubation proposée va vous préparer à présenter et à financer votre projet à votre rythme sur une durée comprise entre 3 et 36 mois.
-                                                </p>
-                                            </CardText>
-                                        </CardBody>
-                                        <CardFooter className="border-0 center-hor-ver">
-                                            <Button variant="contained" className="btn-primary mr-2" onClick={() => props.history.push(DISCOVER)}>
-                                                Découvrir Microcap
-                                            </Button>
-                                        </CardFooter>
-                                    </Card>
-                                </div>
-                        }
-                    </div>
-                </DialogContent>
-            </Dialog>
+            <TellUs
+                show={show} 
+                history={props.history}
+                onClose={() => setShow(false)}
+                search={new URLSearchParams(props.location.search).get("social_network")}
+            />
         </QueueAnim>
     );
 };
