@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { injectIntl } from "react-intl";
 import { Link } from "react-router-dom";
 import Button from "@material-ui/core/Button";
-import headerImg from 'Assets/img/image_revolution.jpg';
+import headerImg from 'Assets/img/revolution.jpg';
 import { RctCard, RctCardContent } from 'Components/RctCard';
 import { Parallax, ParallaxBanner } from 'react-scroll-parallax';
 import { getMainAgents, getMainPioniers } from "Actions/independentActions";
@@ -27,15 +27,15 @@ const Discover = (props) => {
         <DiscoverLayout>
             <div className="session-inner-wrapper video-player-wrapper">
                 {/*<Parallax className="custom-class" y={[-50, 50]}>*/}
-                <div className="intro-banner" style={{ backgroundImage: `url(${headerImg})` }}>
+                <div className="intro-banner" style={{ backgroundImage: `url(${headerImg})`, marginTop: '6vh' }}>
                     <div className="revolution">
                         {/*TODO: ADD IMAGE HERE*/}
-                        <img src={require('Assets/img/large/revolution.png')} alt="" className="img-fluid"/>
+                        {/* <img src={require('Assets/img/large/revolution.png')} alt="" className="img-fluid"/> */}
                         {/*<h4>La révolution des petits capitaux</h4>*/}
                     </div>
-                    <p>
+                    {/* <p>
                         Rejoignez le  <b>réseau de solidarité MicroCap</b>, vos versements sont libres à partir de 3€ sur votre <Link to={SERVICES} style={{ color: 'black', fontSize: '1.1em', fontWeight: 'bold' }}>compte ESH</Link> auprès d’un établissement financier partenaire
-                    </p>
+                    </p> */}
                 </div>
                 {/*</Parallax>*/}
 
@@ -69,7 +69,7 @@ const Discover = (props) => {
                                 <CardFooter className="border-0 center-hor-ver">
                                     <Link to={GETIN}>
                                         <Button variant="contained" className="btn-primary mr-2">
-                                            Rejoindre Microcap
+                                            Réseau Microcap
                                         </Button>
                                     </Link>
                                 </CardFooter>

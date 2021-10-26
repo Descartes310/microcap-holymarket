@@ -126,7 +126,7 @@ const TellUs = (props) => {
                                         </CardText>
                                     </CardBody>
                                     <CardFooter className="border-0 center-hor-ver">
-                                        <Button variant="contained" className="btn-primary mr-2" onClick={() => props.history.push(AUTH.LOGIN)}>
+                                        <Button variant="contained" className="btn-primary mr-2" onClick={() => props.history.push(AUTH.REGISTER)}>
                                             Continuer
                                         </Button>
                                     </CardFooter>
@@ -146,7 +146,7 @@ const TellUs = (props) => {
                                             </CardText>
                                         </CardBody>
                                         <CardFooter className="border-0 center-hor-ver">
-                                            <Button variant="contained" className="btn-primary mr-2" onClick={() => props.history.push(AUTH.REGISTER)}>
+                                            <Button variant="contained" className="btn-primary mr-2" onClick={() => props.history.push(AUTH.LOGIN)}>
                                                 Je m'inscris
                                             </Button>
                                         </CardFooter>
