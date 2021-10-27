@@ -1,53 +1,53 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import Slider from "react-slick";
 import { connect } from "react-redux";
 import { injectIntl } from "react-intl";
 import { Link } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import headerImg from 'Assets/img/revolution.jpg';
+import headerImg2 from 'Assets/img/image_revolution.jpg';
 import { RctCard, RctCardContent } from 'Components/RctCard';
-import { Parallax, ParallaxBanner } from 'react-scroll-parallax';
-import { getMainAgents, getMainPioniers } from "Actions/independentActions";
+import sessionSlider from '../../../../services/sessionSlider';
 import DiscoverLayout from "Routes/custom/dashboard/discover/DiscoverLayout";
 import DiscoverVideo from "Routes/custom/dashboard/discover/components/DiscoverVideo";
-import {
-    Card,
-    CardImg,
-    CardText,
-    CardBody,
-    CardFooter
-} from 'reactstrap';
-import {
-    AUTH, DISCOVER, HOME, PIONIERS, TERMS, LEGAL_MENTION,
-    GALERY_PROJECT, SOLIDARITY, MONEY_MANAGEMENT, GETIN, MISSION,
-    VALUES, PASS_DETAILS, AGENTS, SERVICES
-} from "Url/frontendUrl";
+import { Card, CardImg, CardText, CardBody, CardFooter } from 'reactstrap';
+import { PIONIERS, SOLIDARITY, MONEY_MANAGEMENT, GETIN, PASS_DETAILS, AGENTS } from "Url/frontendUrl";
+
+const settings = {
+    dots: false,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    arrows: false,
+    autoplay: true,
+    swipe: true,
+    touchMove: true,
+    swipeToSlide: true,
+    draggable: true
+};
 
 const Discover = (props) => {
     return (
         <DiscoverLayout>
             <div className="session-inner-wrapper video-player-wrapper">
-                {/*<Parallax className="custom-class" y={[-50, 50]}>*/}
-                <div className="intro-banner" style={{ backgroundImage: `url(${headerImg})`, marginTop: '6vh' }}>
-                    <div className="revolution">
-                        {/*TODO: ADD IMAGE HERE*/}
-                        {/* <img src={require('Assets/img/large/revolution.png')} alt="" className="img-fluid"/> */}
-                        {/*<h4>La révolution des petits capitaux</h4>*/}
-                    </div>
-                    {/* <p>
-                        Rejoignez le  <b>réseau de solidarité MicroCap</b>, vos versements sont libres à partir de 3€ sur votre <Link to={SERVICES} style={{ color: 'black', fontSize: '1.1em', fontWeight: 'bold' }}>compte ESH</Link> auprès d’un établissement financier partenaire
-                    </p> */}
+                <div className="intro-banner" style={{marginTop: '6vh' }}>
+                    <Slider {...settings}>
+                        {[headerImg, headerImg2].map((image) => (
+                            <div>
+                                <img
+                                    src={image}
+                                    alt="session-slider"
+                                    className="img-fluid"
+                                />
+                                <div className="rct-img-overlay">
+                                </div>
+                            </div>
+                        ))}
+                    </Slider>
                 </div>
-                {/*</Parallax>*/}
 
-
-                {/* <div className="page-title d-flex align-items-center" style={{ padding: 40 }}>
-                    <IconButton to="/login" className="mr-15" aria-label="zmdi-arrow-left" component={Link}>
-                        <i className="zmdi zmdi-arrow-left"></i>
-                    </IconButton>
-                    <h3>Retour sur Connexion</h3>
-                </div> */}
-
-                <div className="showcase-card-block" style={{backgroundImage: `url(${require('Assets/img/bg-shape-gray.png')})`}}>
+                <div className="showcase-card-block" style={{ backgroundImage: `url(${require('Assets/img/bg-shape-gray.png')})` }}>
                     <div className="row center-hor-ver mb-70 flex-column intro">
                         <h2 className="font-weight-bold text-black text-center" data-aos="fade-right">
                             Concilier traditions et innovations
@@ -378,15 +378,15 @@ const Discover = (props) => {
                         <div className="row">
                             <div className="visibRight col-xl-4 offset-xl-1 col-lg-4 order-2 wow fadeInRight">
                                 <div className="title-block lite" data-aos="fade-down">
-                                    <h4>booster votre abonnement grâce à nos </h4> <h3>Options en <br/> Séries <br/> Limitées</h3>
+                                    <h4>booster votre abonnement grâce à nos </h4> <h3>Options en <br /> Séries <br /> Limitées</h3>
                                     <Link to={PASS_DETAILS}>
                                         <button className="MuiButtonBase-root btn-discovery mr-2 mt-4"
-                                                tabIndex="0" type="button">
+                                            tabIndex="0" type="button">
                                             <span className="MuiButton-label fw-bold">
                                                 Tout nos PASS
-                                                <i className="ti-arrow-right ml-10"/>
+                                                <i className="ti-arrow-right ml-10" />
                                             </span>
-                                            <span className="MuiTouchRipple-root"/>
+                                            <span className="MuiTouchRipple-root" />
                                         </button>
                                     </Link>
                                 </div>
@@ -399,7 +399,7 @@ const Discover = (props) => {
                                     </div>
                                     <div className="single-services">
                                         <div className="services-content-box"><p>Chaque PASS MicroCap donne accès à une combinaison de services selon les objectifs de chacun : entreprendre, investir, épargner, soutenir un porteur de projet, … <br />
-                                            Les produits financiers de nos partenaires dans chaque PASS se différencient sur les plafonds autorisés, les délais. <br/></p>
+                                            Les produits financiers de nos partenaires dans chaque PASS se différencient sur les plafonds autorisés, les délais. <br /></p>
                                         </div>
                                     </div>
                                     <div className="single-services">
@@ -433,17 +433,17 @@ const Discover = (props) => {
                                     Pour vous servir et assurer la qualité du service, vous avez en responsabilité :
                                 </p>
                             </div>
-                            <div className="d-flex align-items-center justify-content-center mb-50" style={{ position: "relative"}}>
+                            <div className="d-flex align-items-center justify-content-center mb-50" style={{ position: "relative" }}>
                                 <Link to={PIONIERS}>
                                     <button
                                         className="MuiButtonBase-root mr-2 mt-30 btn-discovery"
                                         tabIndex="0"
                                         type="button">
-                                            <span className="MuiButton-label">
-                                                Voir les pioniers
-                                                <i className="ti-arrow-right ml-10"/>
-                                            </span>
-                                        <span className="MuiTouchRipple-root"/>
+                                        <span className="MuiButton-label">
+                                            Voir les pioniers
+                                            <i className="ti-arrow-right ml-10" />
+                                        </span>
+                                        <span className="MuiTouchRipple-root" />
                                     </button>
                                 </Link>
                             </div>
@@ -466,15 +466,15 @@ const Discover = (props) => {
                                 </p>
                             </div>
 
-                            <div className="d-flex align-items-center justify-content-center mb-50" style={{ position: "relative"}}>
+                            <div className="d-flex align-items-center justify-content-center mb-50" style={{ position: "relative" }}>
                                 <Link to={AGENTS}>
                                     <button className="MuiButtonBase-root btn-discovery mr-2"
-                                            tabIndex="0" type="button">
-                                            <span className="MuiButton-label">
-                                                Voir les agents
-                                                <i className="ti-arrow-right ml-10"/>
-                                            </span>
-                                        <span className="MuiTouchRipple-root"/>
+                                        tabIndex="0" type="button">
+                                        <span className="MuiButton-label">
+                                            Voir les agents
+                                            <i className="ti-arrow-right ml-10" />
+                                        </span>
+                                        <span className="MuiTouchRipple-root" />
                                     </button>
                                 </Link>
                             </div>
