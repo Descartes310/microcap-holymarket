@@ -4,10 +4,13 @@ import { connect } from "react-redux";
 import { injectIntl } from "react-intl";
 import { Link } from "react-router-dom";
 import Button from "@material-ui/core/Button";
-import headerImg from 'Assets/img/revolution.jpg';
+import headerImg from 'Assets/img/revolution1.jpg';
 import headerImg2 from 'Assets/img/image_revolution.jpg';
+import slide1 from 'Assets/img/slide_large_1.jpg';
+import slide2 from 'Assets/img/slide_large_2.jpg';
+import slide3 from 'Assets/img/slide_large_3.jpg';
+import slide4 from 'Assets/img/slide_large_4.jpg';
 import { RctCard, RctCardContent } from 'Components/RctCard';
-import sessionSlider from '../../../../services/sessionSlider';
 import DiscoverLayout from "Routes/custom/dashboard/discover/DiscoverLayout";
 import DiscoverVideo from "Routes/custom/dashboard/discover/components/DiscoverVideo";
 import { Card, CardImg, CardText, CardBody, CardFooter } from 'reactstrap';
@@ -33,7 +36,7 @@ const Discover = (props) => {
             <div className="session-inner-wrapper video-player-wrapper">
                 <div className="intro-banner" style={{marginTop: '6vh' }}>
                     <Slider {...settings}>
-                        {[headerImg, headerImg2].map((image) => (
+                        {[slide1, slide2, slide3, slide4].map((image) => (
                             <div>
                                 <img
                                     src={image}
