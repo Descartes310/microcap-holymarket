@@ -10,6 +10,7 @@ import slide1 from 'Assets/img/slide_large_1.jpg';
 import slide2 from 'Assets/img/slide_large_2.jpg';
 import slide3 from 'Assets/img/slide_large_3.jpg';
 import slide4 from 'Assets/img/slide_large_4.jpg';
+import { HashLink } from 'react-router-hash-link';
 import { RctCard, RctCardContent } from 'Components/RctCard';
 import DiscoverLayout from "Routes/custom/dashboard/discover/DiscoverLayout";
 import DiscoverVideo from "Routes/custom/dashboard/discover/components/DiscoverVideo";
@@ -34,7 +35,7 @@ const Discover = (props) => {
     return (
         <DiscoverLayout>
             <div className="session-inner-wrapper video-player-wrapper">
-                <div className="intro-banner" style={{marginTop: '6vh' }}>
+                <div className="intro-banner" style={{marginTop: '9vh' }}>
                     <Slider {...settings}>
                         {[slide1, slide2, slide3, slide4].map((image) => (
                             <div>
@@ -55,8 +56,9 @@ const Discover = (props) => {
                         <h2 className="font-weight-bold text-black text-center" data-aos="fade-right">
                             Concilier traditions et innovations
                         </h2>
-                        <p data-aos="fade-left" className="text-center">Etendre votre réseau de love money au -delà du cercle familial et amical, </p>
+                        <p data-aos="fade-left" className="text-center">Etendre votre réseau de love money au -delà du cercle familial et amical,</p>
                         <p data-aos="fade-left" className="text-center">réinventer une solidarité utile et promouvoir une finance inclusive</p>
+                        <p data-aos="fade-left" className="text-center"><HashLink to={`${GETIN}`}>Adhérer au réseau Microcap</HashLink></p>
                     </div>
                     <div className="row">
                         <div className="col-xs-12 col-sm-12 col-md-4 mb-30" data-aos="fade-down" data-aos-duration="300">
