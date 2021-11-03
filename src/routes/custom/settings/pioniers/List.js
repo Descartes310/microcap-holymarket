@@ -1,6 +1,5 @@
 import { connect } from "react-redux";
 import { injectIntl } from "react-intl";
-import { SETTINGS } from "Url/frontendUrl";
 import React, { Component } from 'react';
 import { withRouter } from "react-router-dom";
 import IntlMessages from 'Util/IntlMessages';
@@ -28,6 +27,13 @@ import { NotificationManager } from "react-notifications";
 
 const countryWithNameAndFlag = CountryManager.countryWithNameAndFlag();
 
+const TYPES = [
+    { name: 'Dirigeant Microcap', value: 'MANAGER' },
+    { name: 'Pionnier Up', value: 'PASS_UP' },
+    { name: 'Pionnier Leader', value: 'PASS_LEADER' },
+    { name: 'Pionnier Privilège', value: 'PASS_PREMIUM' },
+];
+
 class List extends Component {
     static contextType = AbilityContext;
 
@@ -38,6 +44,7 @@ class List extends Component {
         email: '',
         post: '',
         phone: '',
+        type: null,
         address: '',
         id: null,
         about: '',
@@ -64,6 +71,7 @@ class List extends Component {
             address: this.state.address,
             phone: this.state.phone,
             about: this.state.about,
+            type: this.state.type,
             post: this.state.post,
             country: this.state.country,
             avatar: this.state.avatar
@@ -78,6 +86,7 @@ class List extends Component {
                     post: '',
                     phone: '',
                     address: '',
+                    type: null,
                     id: null,
                     about: '',
                     avatar: null,
@@ -113,6 +122,7 @@ class List extends Component {
                     phone: pionier.phone,
                     address: pionier.address,
                     post: pionier.post,
+                    type: pionier.type,
                     about: pionier.about,
                     coutry: pionier.country,
                     id: pionier.id,
@@ -140,8 +150,7 @@ class List extends Component {
     };
 
     render() {
-        const { modelNotifications, loading, error, history } = this.props;
-        const { show, selectedNotification, data } = this.state;
+        const { show, data } = this.state;
         return (
             <>
                 <CustomList
@@ -161,85 +170,85 @@ class List extends Component {
                                     </h4>
                                 </div>
                             ) : (
-                                    <div className="table-responsive">
-                                        <table className="table table-hover table-middle mb-0 text-center">
-                                            <thead>
-                                                <tr>
-                                                    <th><IntlMessages id="components.name" /></th>
-                                                    <th>Email</th>
-                                                    <th>Téléphone</th>
-                                                    <th>Adresse</th>
-                                                    <th>Principal</th>
-                                                    <th>Actif</th>
-                                                    <th>Editer</th>
-                                                    {/*<th>Nombres de permissions</th>*/}
+                                <div className="table-responsive">
+                                    <table className="table table-hover table-middle mb-0 text-center">
+                                        <thead>
+                                            <tr>
+                                                <th><IntlMessages id="components.name" /></th>
+                                                <th>Email</th>
+                                                <th>Téléphone</th>
+                                                <th>Adresse</th>
+                                                <th>Principal</th>
+                                                <th>Actif</th>
+                                                <th>Editer</th>
+                                                {/*<th>Nombres de permissions</th>*/}
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {list && list.map((item, key) => (
+                                                <tr
+                                                    key={key}
+                                                    className="cursor-pointer"
+                                                >
+                                                    <td>
+                                                        <div className="media">
+                                                            <div className="media-body pt-10">
+                                                                <h4 className="m-0 fw-bold text-dark">{item.name}</h4>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div className="media">
+                                                            <div className="media-body pt-10">
+                                                                <h4 className="m-0 fw-bold text-dark">{item.email}</h4>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div className="media">
+                                                            <div className="media-body pt-10">
+                                                                <h4 className="m-0 fw-bold text-dark">{item.phone}</h4>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div className="media">
+                                                            <div className="media-body pt-10">
+                                                                <h4 className="m-0 fw-bold text-dark">{item.address}</h4>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <Switch
+                                                            checked={item.main}
+                                                            onChange={(event) => { this.onToggleMainStatus(item.id, event.target.checked) }}
+                                                            aria-label="Principal"
+                                                        />
+                                                    </td>
+                                                    <td>
+                                                        <Switch
+                                                            checked={item.active}
+                                                            onChange={(event) => { this.onToggleActivationStatus(item.id, event.target.checked) }}
+                                                            aria-label="Activé"
+                                                        />
+                                                    </td>
+                                                    <td>
+                                                        <Button
+                                                            size="small"
+                                                            color="primary"
+                                                            variant="contained"
+                                                            className={"text-white font-weight-bold mr-3"}
+                                                            onClick={() => this.getOne(item.id)}
+                                                        >
+                                                            Editer
+                                                        </Button>
+                                                    </td>
                                                 </tr>
-                                            </thead>
-                                            <tbody>
-                                                {list && list.map((item, key) => (
-                                                    <tr
-                                                        key={key}
-                                                        className="cursor-pointer"
-                                                    >
-                                                        <td>
-                                                            <div className="media">
-                                                                <div className="media-body pt-10">
-                                                                    <h4 className="m-0 fw-bold text-dark">{item.name}</h4>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div className="media">
-                                                                <div className="media-body pt-10">
-                                                                    <h4 className="m-0 fw-bold text-dark">{item.email}</h4>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div className="media">
-                                                                <div className="media-body pt-10">
-                                                                    <h4 className="m-0 fw-bold text-dark">{item.phone}</h4>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div className="media">
-                                                                <div className="media-body pt-10">
-                                                                    <h4 className="m-0 fw-bold text-dark">{item.address}</h4>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <Switch
-                                                                checked={item.main}
-                                                                onChange={(event) => { this.onToggleMainStatus(item.id, event.target.checked) }}
-                                                                aria-label="Principal"
-                                                            />
-                                                        </td>
-                                                        <td>
-                                                            <Switch
-                                                                checked={item.active}
-                                                                onChange={(event) => { this.onToggleActivationStatus(item.id, event.target.checked) }}
-                                                                aria-label="Activé"
-                                                            />
-                                                        </td>
-                                                        <td>
-                                                            <Button
-                                                                size="small"
-                                                                color="primary"
-                                                                variant="contained"
-                                                                className={"text-white font-weight-bold mr-3"}
-                                                                onClick={() => this.getOne(item.id)}
-                                                            >
-                                                                Editer
-                                                            </Button>
-                                                        </td>
-                                                    </tr>
-                                                ))}
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                )}
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            )}
                         </>
                     )}
                 />
@@ -316,6 +325,26 @@ class List extends Component {
                                 </div>
 
                                 <div className="col-12 my-3">
+                                    <FormGroup>
+                                        <InputLabel className="text-left pl-2" htmlFor="type-helper">
+                                            Type du Pionnier
+                                        </InputLabel>
+                                        <Select
+                                            style={{ width: '100%' }}
+                                            value={this.state.type}
+                                            onChange={(e) => this.setState({ type: e.target.value })}
+                                            input={<Input name="type" id="type-helper" style={{ width: '100%' }} />}
+                                        >
+                                            {TYPES.map(item => (
+                                                <MenuItem key={item.value} value={item.value} style={{ width: '100%' }}>
+                                                    {item.name}
+                                                </MenuItem>
+                                            ))}
+                                        </Select>
+                                    </FormGroup>
+                                </div>
+
+                                <div className="col-12 my-3">
                                     <FormGroup className="has-wrapper">
                                         <InputLabel className="text-left" htmlFor="email">
                                             Adresse Email
@@ -364,10 +393,16 @@ class List extends Component {
                                 </div>
                                 <div className="col-12 my-3">
                                     <FormGroup>
-                                        <InputLabel className="text-left pl-2" htmlFor="nationality-helper"><IntlMessages id="common.nationality" /></InputLabel>
-                                        <Select onChange={(e) => this.setState({country: e.target.value}) } style={{ width: '100%' }} input={<Input name="nationality" id="nationality-helper"  style={{ width: '100%' }} />}>
+                                        <InputLabel className="text-left pl-2" htmlFor="nationality-helper">
+                                            <IntlMessages id="common.nationality" />
+                                        </InputLabel>
+                                        <Select
+                                            value={this.state.country}
+                                            onChange={(e) => this.setState({ country: e.target.value })} style={{ width: '100%' }}
+                                            input={<Input name="nationality" id="nationality-helper" style={{ width: '100%' }} />}
+                                        >
                                             {countryWithNameAndFlag.map(item => (
-                                                <MenuItem key={item.id} value={item.id} className="center-hor-ver" style={{ width: '100%' }}>
+                                                <MenuItem key={item.id} value={item.id} style={{ width: '100%' }}>
                                                     <FlagCountry flag={item.flag} label={item.name} />
                                                 </MenuItem>
                                             ))}
