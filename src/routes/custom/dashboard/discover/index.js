@@ -35,7 +35,7 @@ const Discover = (props) => {
     return (
         <DiscoverLayout>
             <div className="session-inner-wrapper video-player-wrapper">
-                <div className="intro-banner" style={{marginTop: '9vh' }}>
+                <div className="intro-banner" style={{marginTop: '11vh' }}>
                     <Slider {...settings}>
                         {[slide1, slide2, slide3, slide4].map((image) => (
                             <div>

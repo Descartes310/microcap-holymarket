@@ -37,11 +37,6 @@ const DiscoverPioner = () => {
                             <strong>Pionniers contributeurs financiers (membres ayant souscrite à une option sur leur Pass)</strong>
                         </li>
                     </ul>
-                    <p className="font-lg mb-50">
-                        (N.B : les cases à cochées permettent de filtrer les pionniers, si possible les différencier avec un cryptogramme. On a 4 Type de
-                        pionniers : les dirigeant de Microcap, les porteurs d’une option sur leur Pass dont : les pionniers Up, les pionniers Leader et les
-                        pionniers Privilège  )
-                    </p>
                     <div className="row person-block">
                         {data.filter(a => a.active === true).map(agent => (
                             <div className="single-item col-lg-4 col-md-5">
