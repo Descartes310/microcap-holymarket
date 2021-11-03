@@ -35,7 +35,7 @@ const TellUs = (props) => {
                 maxWidth={'lg'}
                 fullScreen={false}
                 aria-labelledby="responsive-dialog-title"
-                onClick={() => { props.onClose(); { setResponse([]); }}}
+                onClick={() => { props.onClose(); { setResponse([]); } }}
             >
                 <DialogTitle>
                     <div className="row justify-content-end align-items-center">
@@ -115,24 +115,7 @@ const TellUs = (props) => {
             >
                 <DialogContent>
                     <div className="showcase-card-block" style={{ backgroundImage: `url(${require('Assets/img/bg-shape-gray.png')})`, padding: '5vh 10vw' }}>
-                        {response == 2 ?
-                            <div className="col-xs-12 col-sm-12 col-md-12 mb-30" data-aos="fade-down" data-aos-duration="300">
-                                <Card>
-                                    <CardBody style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
-                                        <CardText style={{ fontSize: '1.1em', textAlign: 'center' }}>
-                                            <p>
-                                                Nous vous proposons nos services d'accompagnement individuel à la création d'entreprise
-                                            </p>
-                                        </CardText>
-                                    </CardBody>
-                                    <CardFooter className="border-0 center-hor-ver">
-                                        <Button variant="contained" className="btn-primary mr-2" onClick={() => props.history.push(AUTH.REGISTER)}>
-                                            Continuer
-                                        </Button>
-                                    </CardFooter>
-                                </Card>
-                            </div>
-                            :
+                        {
                             response == 1 ?
                                 <div className="col-xs-12 col-sm-12 col-md-12 mb-30" data-aos="fade-down" data-aos-duration="300">
                                     <Card>
@@ -146,30 +129,49 @@ const TellUs = (props) => {
                                             </CardText>
                                         </CardBody>
                                         <CardFooter className="border-0 center-hor-ver">
-                                            <Button variant="contained" className="btn-primary mr-2" onClick={() => props.history.push(AUTH.LOGIN)}>
+                                            <Button variant="contained" className="btn-primary mr-2" onClick={() => props.history.push(AUTH.REGISTER)}>
                                                 Je m'inscris
                                             </Button>
                                         </CardFooter>
                                     </Card>
                                 </div>
                                 :
-                                <div className="col-xs-12 col-sm-12 col-md-12 mb-30" data-aos="fade-down" data-aos-duration="300">
-                                    <Card>
-                                        <CardBody style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
-                                            <CardText style={{ fontSize: '1.1em', textAlign: 'center' }}>
-                                                <p>
-                                                    Bravo! vous pouvez rejoindre MicroCap, le réseau international d'entrepreneurs solidaires. le programme
-                                                    d'incubation proposée va vous préparer à présenter et à financer votre projet à votre rythme sur une durée comprise entre 3 et 36 mois.
-                                                </p>
-                                            </CardText>
-                                        </CardBody>
-                                        <CardFooter className="border-0 center-hor-ver">
-                                            <Button variant="contained" className="btn-primary mr-2" onClick={() => props.history.push(DISCOVER)}>
-                                                Découvrir Microcap
-                                            </Button>
-                                        </CardFooter>
-                                    </Card>
-                                </div>
+                                response == 2 ?
+                                    <div className="col-xs-12 col-sm-12 col-md-12 mb-30" data-aos="fade-down" data-aos-duration="300">
+                                        <Card>
+                                            <CardBody style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
+                                                <CardText style={{ fontSize: '1.1em', textAlign: 'center' }}>
+                                                    <p>
+                                                        Nous vous proposons notre offre SAICE, le Services d'Accompagnement Individuel à la Création d'Entreprise.
+                                                        pour être recontacter par un conseiller à la création d’entreprise, écrire à : saice.support@aplus-conseils.fr
+                                                    </p>
+                                                </CardText>
+                                            </CardBody>
+                                            <CardFooter className="border-0 center-hor-ver">
+                                                <Button variant="contained" className="btn-primary mr-2" onClick={() => setResponse(null)}>
+                                                    Fermer
+                                                </Button>
+                                            </CardFooter>
+                                        </Card>
+                                    </div>
+                                    :
+                                    <div className="col-xs-12 col-sm-12 col-md-12 mb-30" data-aos="fade-down" data-aos-duration="300">
+                                        <Card>
+                                            <CardBody style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
+                                                <CardText style={{ fontSize: '1.1em', textAlign: 'center' }}>
+                                                    <p>
+                                                        Bravo! vous pouvez rejoindre MicroCap, le réseau international d'entrepreneurs solidaires. le programme
+                                                        d'incubation proposée va vous préparer à présenter et à financer votre projet à votre rythme sur une durée comprise entre 3 et 36 mois.
+                                                    </p>
+                                                </CardText>
+                                            </CardBody>
+                                            <CardFooter className="border-0 center-hor-ver">
+                                                <Button variant="contained" className="btn-primary mr-2" onClick={() => { props.history.push(DISCOVER); setResponse(null) }}>
+                                                    Découvrir Microcap
+                                                </Button>
+                                            </CardFooter>
+                                        </Card>
+                                    </div>
                         }
                     </div>
                 </DialogContent>
@@ -178,4 +180,4 @@ const TellUs = (props) => {
     );
 };
 
-export default connect(() => {}, { setRequestGlobalAction })(injectIntl(TellUs));
+export default connect(() => { }, { setRequestGlobalAction })(injectIntl(TellUs));
