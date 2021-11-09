@@ -4,12 +4,9 @@ import { connect } from "react-redux";
 import { injectIntl } from "react-intl";
 import { Link } from "react-router-dom";
 import Button from "@material-ui/core/Button";
-import headerImg from 'Assets/img/revolution1.jpg';
-import headerImg2 from 'Assets/img/image_revolution.jpg';
-import slide1 from 'Assets/img/slide_large_1.jpg';
-import slide2 from 'Assets/img/slide_large_2.jpg';
-import slide3 from 'Assets/img/slide_large_3.jpg';
-import slide4 from 'Assets/img/slide_large_4.jpg';
+import slide21 from 'Assets/img/slide21.jpg';
+import slide22 from 'Assets/img/slide22.jpg';
+import slide23 from 'Assets/img/slide23.jpg';
 import { HashLink } from 'react-router-hash-link';
 import { RctCard, RctCardContent } from 'Components/RctCard';
 import DiscoverLayout from "Routes/custom/dashboard/discover/DiscoverLayout";
@@ -20,7 +17,7 @@ import { PIONIERS, SOLIDARITY, MONEY_MANAGEMENT, GETIN, PASS_DETAILS, AGENTS } f
 const settings = {
     dots: false,
     infinite: true,
-    speed: 500,
+    speed: 700,
     slidesToShow: 1,
     slidesToScroll: 1,
     arrows: false,
@@ -31,20 +28,46 @@ const settings = {
     draggable: true
 };
 
+const slides = [
+    {
+        image: slide22,
+        leftImage: true,
+        title: 'La solidarité! une valeur essentielle chez MicroCap',
+        description: 'MicroCap unit des personnes dans un sentiment d\'entraide financier, d\'assistance ou de collaboration gracieuse'
+    },
+    {
+        image: slide21,
+        leftImage: false,
+        title: 'La révolution des petits capitaux',
+        description: 'Rejoignez le réseau de solidarité MicroCap, vos versements sont libres à partir de 3€ sur votre compte ESH auprès d’un établissement financier partenaire'
+    },
+    {
+        image: slide23,
+        leftImage: true,
+        title: 'Microcap vous accompagne dans la réalisation de votre projet',
+        description: 'Création ou développement d’entreprise, actionnariat, formation à l’entrepreneuriat. Inscrivez-vous et choississez l\'abonnement qui vous correspond parminos PASS'
+    }
+]
+
 const Discover = (props) => {
     return (
         <DiscoverLayout>
             <div className="session-inner-wrapper video-player-wrapper">
-                <div className="intro-banner" style={{marginTop: '11vh' }}>
+                <div style={{ marginTop: '8.5vh' }}>
                     <Slider {...settings}>
-                        {[slide1, slide2, slide3, slide4].map((image) => (
+                        {slides.map((slide) => (
                             <div>
-                                <img
-                                    src={image}
-                                    alt="session-slider"
-                                    className="img-fluid"
-                                />
-                                <div className="rct-img-overlay">
+                                <div style={{
+                                    backgroundImage: `url(${slide.image})`,
+                                    backgroundSize: 'cover', height: '52vh',
+                                    display: 'flex',
+                                    justifyContent: slide.leftImage ? 'flex-end' : 'flex-start'
+                                }}
+                                >
+                                    <div className={`slide-content-left ${slide.leftImage && ", slide-content-right"}`}>
+                                        <h1><span>{slide.title}</span></h1>
+                                        <p>{slide.description}</p>
+                                    </div>
                                 </div>
                             </div>
                         ))}
