@@ -1168,6 +1168,11 @@ export const createGroupPost = (data) => {
     return makeRequest('post', url, data);
 };
 
+export const pinGroup = (id) => {
+    const url = joinBaseUrlWithParamsId(COMMUNITY_MEMBER.GROUP.PIN, id);
+    return makeRequest('put', url);
+};
+
 export const createGroupSection = (data, id) => {
     const url = joinBaseUrlWithParamsId(`${COMMUNITY_MEMBER.GROUP.CREATE_SECTION}`, id);
     return makeRequest('post', url, data);

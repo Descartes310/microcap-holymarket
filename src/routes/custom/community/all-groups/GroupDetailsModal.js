@@ -3,14 +3,14 @@ import { injectIntl } from "react-intl";
 import React, { Component } from 'react';
 import { getFilePath } from 'Helpers/helpers';
 import { withRouter } from "react-router-dom";
-import JoinGroupModal from "./JoinGroupModal";
 import CommunityType from "Enums/CommunityType";
-import { setRequestGlobalAction } from "Actions";
 import MatButton from '@material-ui/core/Button';
 import { AbilityContext } from "Permissions/Can";
 import CancelIcon from '@material-ui/icons/Cancel';
 import Dialog from "@material-ui/core/Dialog/Dialog";
 import IconButton from "@material-ui/core/IconButton";
+import { NotificationManager } from "react-notifications";
+import { setRequestGlobalAction, pinGroup } from "Actions";
 import { COMMUNITY, joinUrlWithParamsId } from 'Url/frontendUrl';
 import DialogTitle from "@material-ui/core/DialogTitle/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent/DialogContent";
@@ -34,19 +34,15 @@ class GroupDetailsModal extends Component {
         window.location = joinUrlWithParamsId(COMMUNITY.MEMBERS.LIST, id);
     };
 
-    handleFavourite = () => {
+    onPin = () => {
         this.props.setRequestGlobalAction(true);
-        addGroupToFavourites(this.props.currentCommunity.data.community.id)
+        pinGroup(this.props.community.id)
             .then(data => {
-                if (this.props.currentCommunity.data.favourite)
-                    NotificationManager.success("Retiré des favoris");
-                else
-                    NotificationManager.success("Ajouté aux favoris");
-                this.props.getUserCommunities(this.props.authUser.user.id);
-                this.props.setCurrentCommunity(this.props.currentCommunity.data.community, !this.props.currentCommunity.data.favourite);
+                NotificationManager.success("La communauté a bien été épinglée/désépinglée");
             })
             .finally(() => {
                 this.props.setRequestGlobalAction(false);
+                this.props.onClose();
             })
     }
 
@@ -145,7 +141,9 @@ class GroupDetailsModal extends Component {
                                     {community.status && (<MatButton variant="contained" color="primary" className="ml-10 mr-10 mb-10 text-white btn-icon" onClick={() => onInvite()}>Envoyer une invitation</MatButton>)}
 
                                     {community.status && (<MatButton variant="contained" className="btn-info ml-10 mb-10 text-white btn-icon" onClick={() => this.enterInCommunitySpace(community.id)}>Rejoindre</MatButton>)}
-
+                                    <MatButton variant="contained" className={`${community.pin ? 'btn-danger' : 'btn-success'} ml-10 mb-10 text-white btn-icon`} onClick={() => this.onPin()}>
+                                        { community.pin ? <span>Désépingler</span> : <span>Epingler</span> }
+                                    </MatButton>
                                 </div>
                                 :
                                 null

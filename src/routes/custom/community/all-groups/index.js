@@ -1,16 +1,18 @@
 import { connect } from "react-redux";
 import { injectIntl } from "react-intl";
 import React, { Component } from 'react';
+import GroupItem2 from '../groups/GroupItem2';
+import Switch from '@material-ui/core/Switch';
+import JoinGroupModal from "./JoinGroupModal";
 import { withRouter } from "react-router-dom";
 import { withStyles } from "@material-ui/core";
-import GroupItem2 from '../groups/GroupItem2';
-import JoinGroupModal from "./JoinGroupModal";
 import CustomList from "Components/CustomList";
 import { AbilityContext } from "Permissions/Can";
 import GroupDetailsModal from "./GroupDetailsModal";
 import { NotificationManager } from "react-notifications";
 import { getInvitationsPending } from "Actions/GeneralActions";
 import { COMMUNITY, joinUrlWithParamsId } from 'Url/frontendUrl';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { getCommunitiesByBranch } from "Actions/independentActions";
 import InvitationCreateDialog from "../../communityT/members/invitation/InvitationCreateDialog";
 import { getGroupPosts, getMotivations, sendRequestInvitation, setRequestGlobalAction } from "Actions";
@@ -26,6 +28,7 @@ class AllGroups extends Component {
         communities: [],
         motivations: [],
         motivation: null,
+        filterPin: false,
         showAskingBox: false,
         showDetailsBox: false,
         showInvitationBox: false
@@ -98,7 +101,7 @@ class AllGroups extends Component {
     };
 
     render() {
-        const { communities, loading, showAskingBox, group, showDetailsBox, showInvitationBox } = this.state;
+        const { communities, loading, showAskingBox, group, showDetailsBox, showInvitationBox, filterPin } = this.state;
 
         if (!loading && communities && communities.length === 0) {
             return (
@@ -119,19 +122,34 @@ class AllGroups extends Component {
                                     <h4> Aucune communauté trouvée</h4>
                                 </div>
                             ) : (
-                                <div className="row" style={{ paddingBottom: 50 }}>
-                                    {list.map((community, key) => (
-                                        <div className="col-sm-6 col-md-4 col-lg-3" key={key}>
-                                            <GroupItem2
-                                                group={community}
-                                                isMember={community.status}
-                                                adhesion={this.onEnterClick}
-                                                enterInCommunitySpace={this.onJoinClick}
-                                                onViewCommunityDetails={this.onDetailsView}
-                                            />
-                                        </div>
-                                    ))}
-                                </div>
+                                <>
+                                    <div className="mb-20 d-flex align-items-center">
+                                        <span style={{ marginRight: 20 }}>Afficher les communautés épinglées</span>
+                                        <FormControlLabel
+                                            control={
+                                                <Switch
+                                                    color="primary"
+                                                    className="switch-btn"
+                                                    checked={this.state.filterPin}
+                                                    onClick={() => this.setState({ filterPin: !this.state.filterPin })}
+                                                />
+                                            }
+                                        />
+                                    </div>
+                                    <div className="row" style={{ paddingBottom: 50 }}>
+                                        {list.filter(c => !(filterPin && !c.pin)).map((community, key) => (
+                                            <div className="col-sm-6 col-md-4 col-lg-3" key={key}>
+                                                <GroupItem2
+                                                    group={community}
+                                                    isMember={community.status}
+                                                    adhesion={this.onEnterClick}
+                                                    enterInCommunitySpace={this.onJoinClick}
+                                                    onViewCommunityDetails={this.onDetailsView}
+                                                />
+                                            </div>
+                                        ))}
+                                    </div>
+                                </>
                             )}
                         </>
                     )}
@@ -149,7 +167,7 @@ class AllGroups extends Component {
                     <GroupDetailsModal
                         community={group}
                         show={showDetailsBox && group}
-                        onClose={() => this.setState({ showDetailsBox: false, group: null })}
+                        onClose={() => { this.setState({ showDetailsBox: false, group: null }); this.loadData() }}
                         onJoin={() => { this.setState({ showDetailsBox: false, showAskingBox: true, group: group }) }}
                         onInvite={() => this.setState({ showDetailsBox: false, showInvitationBox: true, group: group })}
                     />
