@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { injectIntl } from "react-intl";
-import { withStyles } from "@material-ui/core";
 import { withRouter } from "react-router-dom";
 import { AbilityContext } from "Permissions/Can";
-import { RctCard } from 'Components/RctCard';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
+import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
 
 class OpportunityStock extends Component {
 
@@ -26,11 +25,20 @@ class OpportunityStock extends Component {
         return (
             <div className="userProfile-wrapper overflow-hidden">
                 <PageTitleBar title={"Bourses des opportunités"} match={this.props.match} enableBreadCrumb={false} />
-                <RctCard>
-                    <h1>
-                        A partir du 30 avril
-                    </h1>
-                </RctCard>
+                <RctCollapsibleCard>
+                    <div className="">
+                        <h1 style={{
+                            margin: '2%'
+                        }}>
+                            A partir du 15 decembre
+                        </h1>
+                        <p style={{
+                            marginLeft: '2%'
+                        }}>
+                            Vous pourrez négocier ici vos offres et demandes de financement avec ou sans contre partie
+                        </p>
+                    </div>
+                </RctCollapsibleCard>
             </div>
         );
     }

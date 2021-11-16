@@ -21,18 +21,18 @@ class FinancialStock extends Component {
         super(props);
     }
 
-    componentDidMount() {
-        this.getProjects();
-    }
+    // componentDidMount() {
+    //     this.getProjects();
+    // }
 
-    getProjects = () => {
-        this.props.setRequestGlobalAction(true);
-        getBranchProjectFolder().then(data => {
-            this.setState({ projects: data });
-        }).finally(() => {
-            this.props.setRequestGlobalAction(false);
-        })
-    }
+    // getProjects = () => {
+    //     this.props.setRequestGlobalAction(true);
+    //     getBranchProjectFolder().then(data => {
+    //         this.setState({ projects: data });
+    //     }).finally(() => {
+    //         this.props.setRequestGlobalAction(false);
+    //     })
+    // }
 
     render() {
 
@@ -44,7 +44,7 @@ class FinancialStock extends Component {
                         <h1 style={{
                             margin: '2%'
                         }}>
-                            A partir du 30 Avril
+                            A partir du 15 decembre
                         </h1>
                         <p style={{
                             marginLeft: '2%'
@@ -52,7 +52,7 @@ class FinancialStock extends Component {
                             Vous pourrez négocier ici vos offres et demandes de financement avec ou sans contre partie
                         </p>
                     </div>
-                    <CustomList
+                    {/* <CustomList
                         loading={false}
                         list={this.state.projects}
                         itemsFoundText={n => `${n} projet(s) trouvé(s)`}
@@ -73,7 +73,7 @@ class FinancialStock extends Component {
                                     )}
                             </>
                         )}
-                    />
+                    /> */}
                 </RctCollapsibleCard>
             </div>
         );
