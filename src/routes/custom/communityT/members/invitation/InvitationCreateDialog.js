@@ -116,13 +116,10 @@ class InvitationCreateDialog extends React.Component {
                 group_id: this.props.currentCommunity.id,
                 email: this.state.email,
                 number: this.state.tel,
-                user_id: this.state.userIdentifier,
                 id: this.props.authUser.user.id
             };
         }
-
-
-
+        
         this.props.setRequestGlobalAction(true);
 
         sendInvitationCommunityMember(data)
@@ -154,14 +151,6 @@ class InvitationCreateDialog extends React.Component {
 
                         <form onSubmit={this.handleSubmit}>
                             <FormGroup>
-                                {/* <FormControlLabel control={
-                                <Checkbox color="primary" checked={this.state.checkedUser} onChange={this.handleChange('checkedUser')} value="user" />
-                            } label="Un utilisateur"
-                            />
-                            <FormControlLabel control={
-                                <Checkbox color="primary" checked={this.state.checkedproject} onChange={this.handleChange('checkedproject')} value="project" />
-                            } label="L'accès à un project"
-                            /> */}
 
                                 <FormControl component="fieldset" required>
                                     <RadioGroup row aria-label="userOrProject" name="userOrProject" value={this.state.userOrProject} onChange={(e) => this.handleChangeRadio(e, 'userOrProject')} >
@@ -216,7 +205,7 @@ class InvitationCreateDialog extends React.Component {
                     </DialogActions>
                 </Dialog>
 
-                <ChangeRoleProjectDialog open={this.state.showNextDialog} handleCloseChangeRole={this.handleCloseChangeRole} />
+                {/* <ChangeRoleProjectDialog open={this.state.showNextDialog} handleCloseChangeRole={this.handleCloseChangeRole} /> */}
             </Fragment>
         )
     }

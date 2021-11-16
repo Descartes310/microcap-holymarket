@@ -8,6 +8,7 @@ import NotificationType from "Enums/NotificationType";
 class Item extends Component {
     render() {
         const { notification, onActivationClick, authUser, onAskingPieceClick, markAsRead, state } = this.props;
+        console.log('Etat de la notification => ', notification.notificationType === NotificationType.ACTIVATE_ACCOUNT);
         return (
             <ListItem className="row px-20 py-3 align-items-center" button>
                 <div className="col-md-9">
@@ -40,26 +41,26 @@ class Item extends Component {
                                 </span>
                             )}
                         </div>
-                    ) : notification.notificationType === NotificationType.PIECE_REQUEST && state != 'TREATED' ? (
+                    ) : (notification.notificationType === NotificationType.PIECE_REQUEST && state !== 'TREATED') ? (
                         <>
-                          <span className="font-xs text-muted font-weight-light d-block comment-date">{notification.createdAt.fromNow()}</span>
-                          <div className="notification-hover d-flex align-items-center justify-content-end">
-                              <Fab variant="round" size="small" className="bg-blue text-white btn-sm mx-1" onClick={onAskingPieceClick}>
+                          <span className="font-xs text-muted font-weight-light d-block comment-date">{notification.createdAt.fromNow()}1</span>
+                          <div className="d-flex align-items-center justify-content-end">
+                              <Fab variant="round" size="small" className="bg-blue text-white" onClick={onAskingPieceClick}>
                                   <i className="zmdi zmdi-menu"/>
                               </Fab>
                           </div>
                         </>
-                    ) : state == 'UNREAD' ? (
+                    ) : state === 'UNREAD' ? (
                         <>
                           <span className="font-xs text-muted font-weight-light d-block comment-date">{notification.createdAt.fromNow()}</span>
-                          <div className="notification-hover d-flex align-items-center justify-content-end">
-                              <Fab variant="round" size="small" color="primary" className="btn-sm mx-1 bg-primary text-white"
+                          <div className="d-flex align-items-center justify-content-end">
+                              <Fab variant="round" size="small" color="primary" className="bg-primary text-white"
                                     onClick={() => markAsRead()}>
                                   <i className="zmdi zmdi-check"/>
                               </Fab>
-                              <Fab variant="round" size="small" className="bg-blue text-white btn-sm mx-1">
+                              {/* <Fab variant="round" size="small" className="bg-blue text-white btn-sm mx-1">
                                   <i className="zmdi zmdi-menu"/>
-                              </Fab>
+                              </Fab> */}
                           </div>
                         </>
                     ) : null}

@@ -59,13 +59,13 @@ const Agents = () => {
                             </div>
                         ))}
                     </div>
-                    {/* <h1 className="font-weight-bold text-black text-center font-3x">
+                    <h1 className="font-weight-bold text-black text-center font-3x">
                         Assistance
                     </h1>
                     <p className="font-lg">
                         Le service MicroCap est proposé par la société A+ Conseils, Spécialiste de la création et du développement de la PME. <br />
                         Toute réclamation doit être portée directement à notre attention en utilisant un des <HashLink to={`${DISCOVER}/#fh5co-footer`}>contacts Microcap</HashLink>. Vous pouvez également enregistrer une réclamation auprès d’un agent de notre réseau. Nous vous garantissons une prise en charge et un retour en moins de 48H
-                    </p> */}
+                    </p>
                 </div>
             </div>
         </DiscoverLayout>
