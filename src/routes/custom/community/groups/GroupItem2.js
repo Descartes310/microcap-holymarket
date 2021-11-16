@@ -17,7 +17,7 @@ const styles = {
     },
 };
 
-const GroupItem2 = ({ classes, group, isMember, enterInCommunitySpace, adhesion, pending, activeCommunity }) => (
+const GroupItem2 = ({ classes, group, isMember, enterInCommunitySpace, adhesion, pending, activeCommunity, onViewCommunityDetails }) => (
     <Card className="rounded mb-30">
         <CardMedia
             className={classes.media}
@@ -59,6 +59,7 @@ const GroupItem2 = ({ classes, group, isMember, enterInCommunitySpace, adhesion,
                         color="primary"
                         variant="contained"
                         className="text-white font-weight-bold"
+                        onClick={() => onViewCommunityDetails(group)}
                     >
                         Consulter
                     </Button>

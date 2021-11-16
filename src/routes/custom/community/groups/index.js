@@ -70,8 +70,6 @@ class Groups extends Component {
     };
 
     enterInCommunitySpace = () => {
-        //console.log(this.props.currentCommunity.data.community)
-        // this.props.history.push(joinUrlWithParamsId(COMMUNITY.MEMBERS.LIST, this.props.currentCommunity.data.community.id));
         window.location = joinUrlWithParamsId(COMMUNITY.MEMBERS.LIST, this.props.currentCommunity.data.community.id);
     };
 
@@ -149,7 +147,7 @@ class Groups extends Component {
                     </Hidden>
                     <div className={`chat-content ${classes.content}`}>
                         {currentCommunity.data ?
-                            <div className='d-flex flex-row align-items-center justify-content-center mt-40'>
+                            <div className='d-flex flex-row align-items-center justify-content-center'>
                                 <div style={{ flex: 1, paddingLeft: '5%' }}>
                                     <img src={currentCommunity.data.community.image ? getFilePath(currentCommunity.data.community.image) : require('Assets/img/groups.png')} alt="Community image" width="80%" />
                                 </div>

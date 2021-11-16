@@ -1,41 +1,34 @@
-import {connect} from "react-redux";
-import {FormGroup} from 'reactstrap';
-import {injectIntl} from "react-intl";
-import React, {Component} from 'react';
-import {withRouter} from "react-router-dom";
-import {withStyles} from "@material-ui/core";
-import Button from "@material-ui/core/Button";
+import { connect } from "react-redux";
+import { injectIntl } from "react-intl";
+import React, { Component } from 'react';
+import { withRouter } from "react-router-dom";
+import { withStyles } from "@material-ui/core";
 import GroupItem2 from '../groups/GroupItem2';
-import Select from "@material-ui/core/Select";
+import JoinGroupModal from "./JoinGroupModal";
 import CustomList from "Components/CustomList";
-import {AbilityContext} from "Permissions/Can";
-import MenuItem from "@material-ui/core/MenuItem";
-import CancelIcon from '@material-ui/icons/Cancel';
-import Dialog from "@material-ui/core/Dialog/Dialog";
-import IconButton from "@material-ui/core/IconButton";
-import FormControl from "@material-ui/core/FormControl";
-import {NotificationManager} from "react-notifications";
-import {getInvitationsPending} from "Actions/GeneralActions";
-import {COMMUNITY, joinUrlWithParamsId} from 'Url/frontendUrl';
-import InputLabel from "@material-ui/core/InputLabel/InputLabel";
-import {getCommunitiesByBranch} from "Actions/independentActions";
-import CustomAsyncComponent from "Components/CustomAsyncComponent";
-import DialogTitle from "@material-ui/core/DialogTitle/DialogTitle";
-import DialogContent from "@material-ui/core/DialogContent/DialogContent";
-import {getGroupPosts, getMotivations, sendRequestInvitation, setRequestGlobalAction} from "Actions";
+import { AbilityContext } from "Permissions/Can";
+import GroupDetailsModal from "./GroupDetailsModal";
+import { NotificationManager } from "react-notifications";
+import { getInvitationsPending } from "Actions/GeneralActions";
+import { COMMUNITY, joinUrlWithParamsId } from 'Url/frontendUrl';
+import { getCommunitiesByBranch } from "Actions/independentActions";
+import InvitationCreateDialog from "../../communityT/members/invitation/InvitationCreateDialog";
+import { getGroupPosts, getMotivations, sendRequestInvitation, setRequestGlobalAction } from "Actions";
 
 class AllGroups extends Component {
     static contextType = AbilityContext;
 
     state = {
-        loading: true,
-        communities: [],
-        group: null,
-        showAskingBox: false,
         posts: [],
         post: null,
+        group: null,
+        loading: true,
+        communities: [],
         motivations: [],
-        motivation: null
+        motivation: null,
+        showAskingBox: false,
+        showDetailsBox: false,
+        showInvitationBox: false
     };
 
     constructor(props) {
@@ -56,9 +49,7 @@ class AllGroups extends Component {
     };
 
     onEnterClick = (group) => {
-        this.setState({ showAskingBox: true, group }, () => {
-            this.getPosts(group.id)
-        })
+        this.setState({ showAskingBox: true, group })
     };
 
     getPosts = (id) => {
@@ -102,8 +93,12 @@ class AllGroups extends Component {
         this.props.history.push(joinUrlWithParamsId(COMMUNITY.MEMBERS.LIST, id));
     };
 
+    onDetailsView = (group) => {
+        this.setState({ showDetailsBox: true, group })
+    };
+
     render() {
-        const { communities, loading, showAskingBox } = this.state;
+        const { communities, loading, showAskingBox, group, showDetailsBox, showInvitationBox } = this.state;
 
         if (!loading && communities && communities.length === 0) {
             return (
@@ -124,122 +119,45 @@ class AllGroups extends Component {
                                     <h4> Aucune communauté trouvée</h4>
                                 </div>
                             ) : (
-                                    <div className="row" style={{ paddingBottom: 50 }}>
-                                        {list.map((community, key) => (
-                                            <div className="col-sm-6 col-md-4 col-lg-3" key={key}>
-                                                <GroupItem2 group={community} isMember={community.status} adhesion={this.onEnterClick} enterInCommunitySpace={this.onJoinClick} />
-                                            </div>
-                                        ))}
-                                    </div>
-                                )}
+                                <div className="row" style={{ paddingBottom: 50 }}>
+                                    {list.map((community, key) => (
+                                        <div className="col-sm-6 col-md-4 col-lg-3" key={key}>
+                                            <GroupItem2
+                                                group={community}
+                                                isMember={community.status}
+                                                adhesion={this.onEnterClick}
+                                                enterInCommunitySpace={this.onJoinClick}
+                                                onViewCommunityDetails={this.onDetailsView}
+                                            />
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
                         </>
                     )}
                 />
 
-                <Dialog
-                    open={showAskingBox}
-                    onClose={() => { this.setState({ showAskingBox: false, group: null, posts: [], post: null, motivations: [], motivation: null }) }}
-                    aria-labelledby="responsive-dialog-title"
-                    maxWidth={'sm'}
-                    fullWidth
-                >
-                    <DialogTitle id="form-dialog-title">
-                        <div className="row justify-content-between align-items-center">
-                            Demander l'adhésion à {this.state.group ? this.state.group.label : ''}
-                            <IconButton
-                                color="primary"
-                                aria-label="close"
-                                className="text-danger"
-                                onClick={() => { this.setState({ showAskingBox: false, group: null, posts: [], post: null, motivations: [], motivation: null }) }}>
-                                <CancelIcon />
-                            </IconButton>
-                        </div>
-                    </DialogTitle>
-                    <DialogContent>
-                        <div className="row align-items-center" style={{ marginTop: '5%' }}>
-                            <FormGroup className="col-sm-12 has-wrapper">
-                                <CustomAsyncComponent
-                                    loading={false}
-                                    data={this.state.posts}
-                                    component={data => (
-                                        <div className="form-group text-left">
-                                            {data.length === 0 ? (
-                                                <></>
-                                            ) : (
-                                                <FormControl fullWidth>
-                                                    <InputLabel className="text-left" htmlFor="currency-helper">
-                                                        Catégorie d'utilisateur
-                                                    </InputLabel>
-                                                    <Select onChange={e => this.getPostMotivations(e.target.value)}>
-                                                        {data.map(item => (
-                                                            <MenuItem key={item.id} value={item} className="center-hor-ver">
-                                                                {item.title}
-                                                            </MenuItem>
-                                                        ))}
-                                                    </Select>
-                                                </FormControl>
-                                            )}
-                                        </div>
-                                    )}
-                                />
-                            </FormGroup>
+                {group && (
+                    <JoinGroupModal
+                        show={showAskingBox && group}
+                        community={group}
+                        onClose={() => this.setState({ showAskingBox: false, group: null })}
+                    />
+                )}
 
-                            {this.state.post ?
-                                <div style={{ display: "flex", flexDirection: 'column', width: '100%' }}>
-                                    <p style={{ fontWeight: 'bold' }}>
-                                        Description de la catégorie:
-                                    </p>
-                                    <p className="mt-10 mb-20">
-                                        {this.state.post.description}
-                                    </p>
-                                    <FormGroup className="col-sm-12 has-wrapper">
-                                        <CustomAsyncComponent
-                                            loading={false}
-                                            data={this.state.motivations}
-                                            component={data => (
-                                                <div className="form-group text-left">
-                                                    <FormControl fullWidth>
-                                                        <InputLabel className="text-left" htmlFor="currency-helper">
-                                                            Selectionner votre motivation
-                                                        </InputLabel>
-                                                        <Select onChange={e => this.setState({ motivation: e.target.value })}>
-                                                            {data.map(item => (
-                                                                <MenuItem key={item.id} value={item.id} className="center-hor-ver">
-                                                                    {item.title}
-                                                                </MenuItem>
-                                                            ))}
-                                                        </Select>
-                                                    </FormControl>
-                                                </div>
-                                            )}
-                                        />
-                                    </FormGroup>
-                                </div>
-                                : null}
-                            <div style={{ padding: 20, display: 'flex', flexDirection: 'row', justifyContent: 'center', width: '100%' }}>
+                {group && (
+                    <GroupDetailsModal
+                        community={group}
+                        show={showDetailsBox && group}
+                        onClose={() => this.setState({ showDetailsBox: false, group: null })}
+                        onJoin={() => { this.setState({ showDetailsBox: false, showAskingBox: true, group: group }) }}
+                        onInvite={() => this.setState({ showDetailsBox: false, showInvitationBox: true, group: group })}
+                    />
+                )}
 
-                                <Button
-                                    color="primary"
-                                    variant="contained"
-                                    className="text-white font-weight-bold bg-danger"
-                                    style={{ marginRight: 10 }}
-                                    onClick={() => this.setState({ showAskingBox: false, group: null, posts: [], post: null, motivations: [], motivation: null })}
-                                >
-                                    Annuler
-                                </Button>
-                                <Button
-                                    color="primary"
-                                    variant="contained"
-                                    className="text-white font-weight-bold"
-                                    onClick={() => this.onAskingClick(this.state.group)}
-                                >
-                                    Demander l'adhésion
-                                </Button>
-                            </div>
-                        </div>
-                    </DialogContent>
-                </Dialog>
-
+                {(group && showInvitationBox) && (
+                    <InvitationCreateDialog open={showInvitationBox} handleClose={() => this.setState({ showInvitationBox: false })} community={group} />
+                )}
             </>
         );
     }
@@ -269,5 +187,5 @@ const useStyles = theme => ({
     }
 });
 
-export default connect(mapStateToProps, {getInvitationsPending, setRequestGlobalAction})
-(withStyles(useStyles, {withTheme: true})(withRouter(injectIntl(AllGroups))));
+export default connect(mapStateToProps, { getInvitationsPending, setRequestGlobalAction })
+    (withStyles(useStyles, { withTheme: true })(withRouter(injectIntl(AllGroups))));

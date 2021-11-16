@@ -7,7 +7,7 @@ import IntlMessages from "Util/IntlMessages";
 import {NotificationManager} from "react-notifications";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import InputLabel from "@material-ui/core/InputLabel/InputLabel";
-import {COMMUNITY_ADMIN, joinUrlWithParams} from "Url/frontendUrl";
+import {COMMUNITY_ADMIN, joinUrlWithParamsId} from "Url/frontendUrl";
 import {createPostMotivation, setRequestGlobalAction} from "Actions";
 import {Button, Form, FormGroup, Input as InputStrap} from 'reactstrap';
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
@@ -43,21 +43,20 @@ class Create extends Component {
                 group_id: this.props.communitySpace
             };
 
-            createPostMotivation(data, this.props.match.params.id)
+            createPostMotivation(data, this.props.match.params.postId)
                 .then(() => {
                     NotificationManager.success("Motivation créés avec succès");
                     this.onBack();
                 })
-                .catch(() => null)
+                .catch((err) => {
+                    console.log(err)
+                })
                 .finally(() => this.props.setRequestGlobalAction(false));
         }
     };
 
     onBack = () => {
-        this.props.history.push(joinUrlWithParams(COMMUNITY_ADMIN.POST.MOTIVATION.LIST, [
-            {param: 'id', value: this.props.match.params.id},
-            {param: 'postId', value: this.props.match.params.postId},
-        ]));
+        this.props.history.push(joinUrlWithParamsId(COMMUNITY_ADMIN.POST.LIST, this.props.communitySpaceId));
     };
 
     render() {

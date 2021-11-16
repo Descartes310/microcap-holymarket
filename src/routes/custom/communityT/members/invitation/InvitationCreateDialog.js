@@ -105,7 +105,7 @@ class InvitationCreateDialog extends React.Component {
 
         if (this.state.activeIndex == 0) {
             data = {
-                group_id: this.props.currentCommunity.id,
+                group_id: this.props.community ? this.props.community.id : this.props.currentCommunity.community.id,
                 user_id: this.state.userIdentifier,
                 id: this.props.authUser.user.id
             };
@@ -113,7 +113,7 @@ class InvitationCreateDialog extends React.Component {
 
         if (this.state.activeIndex == 1) {
             data = {
-                group_id: this.props.currentCommunity.id,
+                group_id: this.props.community ? this.props.community.id : this.props.currentCommunity.community.id,
                 email: this.state.email,
                 number: this.state.tel,
                 id: this.props.authUser.user.id
@@ -138,8 +138,7 @@ class InvitationCreateDialog extends React.Component {
     }
 
     render() {
-        const { open, handleClose } = this.props
-
+        const { open, handleClose } = this.props;
         return (
             <Fragment>
                 <Dialog open={open && !this.state.currentDialogNotOpened} onClose={handleClose} aria-labelledby="form-dialog-title">
@@ -205,7 +204,6 @@ class InvitationCreateDialog extends React.Component {
                     </DialogActions>
                 </Dialog>
 
-                {/* <ChangeRoleProjectDialog open={this.state.showNextDialog} handleCloseChangeRole={this.handleCloseChangeRole} /> */}
             </Fragment>
         )
     }
@@ -218,7 +216,7 @@ const mapStateToProps = ({ requestGlobalAction, currentCommunity, communitySpace
     return {
         loading: requestGlobalAction,
         userCommunitiesAdmin,
-        currentCommunity: currentCommunity.data.community,
+        currentCommunity: currentCommunity.data,
         authUser: authUser.data,
         communitySpace: communitySpace
     };
