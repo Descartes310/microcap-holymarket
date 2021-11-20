@@ -9,11 +9,12 @@ import { AbilityContext } from "Permissions/Can";
 import CancelIcon from '@material-ui/icons/Cancel';
 import Dialog from "@material-ui/core/Dialog/Dialog";
 import IconButton from "@material-ui/core/IconButton";
+import AmountCurrency from "Components/AmountCurrency";
 import { NotificationManager } from "react-notifications";
 import { setRequestGlobalAction, pinGroup } from "Actions";
-import { COMMUNITY, joinUrlWithParamsId } from 'Url/frontendUrl';
 import DialogTitle from "@material-ui/core/DialogTitle/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent/DialogContent";
+import { COMMUNITY, joinUrlWithParamsId, PROJECTS } from 'Url/frontendUrl';
 
 class GroupDetailsModal extends Component {
     static contextType = AbilityContext;
@@ -115,6 +116,19 @@ class GroupDetailsModal extends Component {
                                         <h2>Nombre de membre</h2>
                                         <span>{community.members}</span>
                                     </div>
+                                    {
+                                        community.projectId && (
+                                            <>
+                                                <div style={{ marginBottom: 20 }}>
+                                                    <h2>Besoin estimé</h2>
+                                                    <span><AmountCurrency amount={community.amount ? community.amount : 0} from={community.currency ? community.currency : 'EUR'} /></span>
+                                                </div>
+                                                <div style={{ marginBottom: 20 }}>
+                                                    <h2>Fiche projet</h2>
+                                                    <span><a href={joinUrlWithParamsId(PROJECTS.FOLDERS.SHOW, community.projectId)}>Consulter la fiche projet</a></span>
+                                                </div>
+                                            </>
+                                        )}
                                 </div>
                             </div> : null}
                         {
@@ -142,7 +156,7 @@ class GroupDetailsModal extends Component {
 
                                     {community.status && (<MatButton variant="contained" className="btn-info ml-10 mb-10 text-white btn-icon" onClick={() => this.enterInCommunitySpace(community.id)}>Rejoindre</MatButton>)}
                                     <MatButton variant="contained" className={`${community.pin ? 'btn-danger' : 'btn-success'} ml-10 mb-10 text-white btn-icon`} onClick={() => this.onPin()}>
-                                        { community.pin ? <span>Désépingler</span> : <span>Epingler</span> }
+                                        {community.pin ? <span>Désépingler</span> : <span>Epingler</span>}
                                     </MatButton>
                                 </div>
                                 :

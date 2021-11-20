@@ -158,7 +158,6 @@ class ComplexTable extends Component {
             index = index + item;
             result = result + 1;
         }
-        console.log([i, result, index])
         return [result, index];
     }
 

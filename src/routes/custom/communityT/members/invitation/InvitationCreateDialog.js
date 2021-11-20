@@ -115,7 +115,7 @@ class InvitationCreateDialog extends React.Component {
             data = {
                 group_id: this.props.community ? this.props.community.id : this.props.currentCommunity.community.id,
                 email: this.state.email,
-                number: this.state.tel,
+                // number: this.state.tel,
                 id: this.props.authUser.user.id
             };
         }
@@ -184,12 +184,12 @@ class InvitationCreateDialog extends React.Component {
                                     <Input type="email" name="email" id="Email-3" placeholder="adresse mail" onChange={this.handleChangeInput}
                                         value={this.state.email} />
                                 </FormGroup>
-
+{/* 
                                 <FormGroup>
                                     <Label for="Tel-3">Tel</Label>
                                     <Input type="number" name="tel" id="Tel-3" placeholder="Telephone" onChange={this.handleChangeInput}
                                         value={this.state.tel} />
-                                </FormGroup>
+                                </FormGroup> */}
                             </TabContainer>}
 
                         </form>
