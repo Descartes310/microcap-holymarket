@@ -1,7 +1,6 @@
 import api from 'Api';
-import { BROKER } from "Url/backendUrl";
 import { makeRequest } from '../helpers/helpers';
-import { joinBaseUrlWithParams } from './independentActions';
+import { BROKER, joinBaseUrlWithParamsId } from "Url/backendUrl";
 
 export const getBrokerAgencies = () => {
     return makeRequest('get', BROKER.AGENCIES.LIST);
@@ -11,6 +10,20 @@ export const getBrokerAccounts = () => {
     return makeRequest('get', BROKER.SELF.ACCOUNTS);
 };
 
-export const createbrokerAgency = (data) => {
+export const createBrokerAgency = (data) => {
     return makeRequest('post', BROKER.AGENCIES.CREATE, data);
+};
+
+export const getAgencyCounters = (id) => {
+    const url = joinBaseUrlWithParamsId(BROKER.AGENCIES.COUNTERS, id);
+    return makeRequest('get', url);
+};
+
+export const createAgencyCounter = (data) => {
+    return makeRequest('post', BROKER.COUNTERS.CREATE, data);
+};
+
+export const getCounterCashdesks = (id) => {
+    const url = joinBaseUrlWithParamsId(BROKER.COUNTERS.CASHDESKS, id);
+    return makeRequest('get', url);
 };

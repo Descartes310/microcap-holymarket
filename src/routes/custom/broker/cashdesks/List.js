@@ -7,23 +7,25 @@ import CustomList from "Components/CustomList";
 import { AbilityContext } from "Permissions/Can";
 import { BROKER, joinUrlWithParamsId } from "Url/frontendUrl";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
-import { getBrokerAgencies, setRequestGlobalAction } from "Actions";
+import { getAgencyCounters, setRequestGlobalAction } from "Actions";
 
 class List extends Component {
     static contextType = AbilityContext;
 
     state = {
-        agencies: [],
+        agency: { label: '...' },
+        counters: [],
     };
 
     componentDidMount() {
+        this.agencyId = this.props.match.params.id;
         this.loadData()
     }
 
     loadData() {
         this.props.setRequestGlobalAction(true)
-        getBrokerAgencies().then(agencies =>
-            this.setState({ agencies })
+        getAgencyCounters(this.agencyId).then(response =>
+            this.setState({ counters: response.counters, agency: response.agency })
         ).catch(err => this.setState({ agencies: [] }))
             .finally(() => {
                 this.props.setRequestGlobalAction(false)
@@ -31,25 +33,25 @@ class List extends Component {
     }
 
     onItemClick = (id) => {
-        this.props.history.push(joinUrlWithParamsId(BROKER.COUNTERS.LIST, id));
+        this.props.history.push(joinUrlWithParamsId(BROKER.CASHDESKS.LIST, id));
     };
 
     render() {
-        const { agencies } = this.state;
+        const { agency, counters } = this.state;
         return (
             <>
-                <PageTitleBar title={"Mes agences"} match={this.props.match} enableBreadCrumb={false} />
+                <PageTitleBar title={"Guichets de "+agency.label} match={this.props.match} enableBreadCrumb={false} />
                 <CustomList
-                    list={agencies}
+                    list={counters}
                     loading={false}
-                    onAddClick={() => this.props.history.push(BROKER.AGENCIES.CREATE)}
-                    itemsFoundText={n => `${n} agences trouvées`}
+                    onAddClick={() => this.props.history.push(joinUrlWithParamsId(BROKER.COUNTERS.CREATE, this.agencyId))}
+                    itemsFoundText={n => `${n} guichets trouvés`}
                     renderItem={list => (
                         <>
                             {list && list.length === 0 ? (
                                 <div className="d-flex justify-content-center align-items-center py-50">
                                     <h4>
-                                        Aucune agence trouvée
+                                        Aucun guichet trouvée
                                     </h4>
                                 </div>
                             ) : (
@@ -57,7 +59,7 @@ class List extends Component {
                                     <table className="table table-hover table-middle mb-0">
                                         <thead>
                                             <tr>
-                                                <th>Nom de l'agence</th>
+                                                <th>Nom du guichet</th>
                                                 <th>Solde</th>
                                                 <th>Actions</th>
                                             </tr>
@@ -71,7 +73,7 @@ class List extends Component {
                                                     <td>
                                                         <div className="media">
                                                             <div className="media-body pt-10">
-                                                                <h4 className="m-0 fw-bold text-dark">{item.agency.label}</h4>
+                                                                <h4 className="m-0 fw-bold text-dark">{item.counter.label}</h4>
                                                             </div>
                                                         </div>
                                                     </td>
@@ -90,9 +92,9 @@ class List extends Component {
                                                                         variant="contained"
                                                                         style={{ marginRight: 10 }}
                                                                         className="text-white font-weight-bold"
-                                                                        onClick={() => this.onItemClick(item.agency.id)}
+                                                                        onClick={() => this.onItemClick(item.id)}
                                                                     >
-                                                                        Voir les guichets
+                                                                        Voir les caisses
                                                                     </Button>
                                                                 </div>
                                                             </div>

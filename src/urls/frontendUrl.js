@@ -507,6 +507,16 @@ export const BROKER = {
         SELF: '/broker/agencies',
         LIST: '/broker/agencies/list',
         CREATE: '/broker/agencies/create',
+    },
+    COUNTERS: {
+        SELF: '/broker/counters',
+        LIST: '/broker/counters/agency/:id',
+        CREATE: '/broker/counters/agency/:id/create',
+    },
+    CASHDESKS: {
+        SELF: '/broker/cashdesks',
+        LIST: '/broker/cashdesks/counter/:id',
+        CREATE: '/broker/cashdesks/counter:id/create',
     }
 };
 
