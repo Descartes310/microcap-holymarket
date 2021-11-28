@@ -22,9 +22,29 @@ import AccordionDetails from '@material-ui/core/AccordionDetails';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import Typography from '@material-ui/core/Typography';
 
-
 class ClassicSale extends Component {
     static contextType = AbilityContext;
+
+    partnerTypes = [
+        {
+            label: "Opérateur Microcap",
+            code: "OPERATOR",
+            hasAction: false,
+        },
+        {
+            label: "Borker",
+            code: "BROKER",
+            hasAction: false,
+        },
+        {
+            label: "Communauté Microcap",
+            code: "COMMUNITY",
+            hasAction: true,
+            actionLabel: "Operateur de supervision",
+            action: () => this.getPartnersOperator()
+        },
+    ]
+
     constructor(props) {
         super(props);
         this.state = {
@@ -97,166 +117,105 @@ class ClassicSale extends Component {
 
         return (
             <>
-                <Accordion>
-                    <AccordionSummary expandIcon={<i className="zmdi zmdi-chevron-down"></i>}>
-                        <Typography>Opérateur Microcap</Typography>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                        <CustomList
-                            loading={loading}
-                            list={partners.filter(p => p.networkProfile.type == 'OPERATOR')}
-                            style={{ width: '-webkit-fill-available' }}
-                            onAddClick={() => this.getUsersAccountsBranchs('OPERATOR')}
-                            // titleList={"Produits"}
-                            itemsFoundText={n => `${n} partenaires trouvés`}
-                            renderItem={list => (
-                                <>
-                                    {list && list.length === 0 ? (
-                                        <div className="d-flex justify-content-center align-items-center py-50">
-                                            <h4>
-                                                Aucun partenaire trouvés
-                                    </h4>
-                                        </div>
-                                    ) : (
-                                            <div className="table-responsive">
-                                                <table className="table table-hover table-middle mb-0 text-center">
-                                                    <thead>
-                                                        <tr>
-                                                            <th><IntlMessages id="components.name" /></th>
-                                                            <th>Email</th>
-                                                            <th>Numéro de contrat</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        {list && list.map((item, key) => (
-                                                            <tr key={key} className="cursor-pointer">
-                                                                <td>
-                                                                    <div className="media">
-                                                                        <div className="media-left media-middle mr-15">
-                                                                            {/*<img src={item.label} alt="user profile" className="media-object rounded-circle" width="35" height="35" />*/}
-                                                                        </div>
-                                                                        <div className="media-body pt-10">
-                                                                        <h4 className="m-0 fw-bold text-dark">{item.organisation ? item.organisation.commercialName : item.person.firstName + ' ' + item.person.lastName}</h4>
-                                                                        </div>
-                                                                    </div>
-                                                                </td>
-                                                                <td>
-                                                                    <div className="media">
-                                                                        <div className="media-left media-middle mr-15">
-                                                                            {/*<img src={item.label} alt="user profile" className="media-object rounded-circle" width="35" height="35" />*/}
-                                                                        </div>
-                                                                        <div className="media-body pt-10">
-                                                                        <h4 className="m-0 fw-bold text-dark">{item.organisation ? item.organisation.user.email : item.person.user.email}</h4>
-                                                                        </div>
-                                                                    </div>
-                                                                </td>
-                                                                <td>
-                                                                    <div className="media">
-                                                                        <div className="media-left media-middle mr-15">
-                                                                            {/*<img src={item.label} alt="user profile" className="media-object rounded-circle" width="35" height="35" />*/}
-                                                                        </div>
-                                                                        <div className="media-body pt-10">
-                                                                            <h4 className="m-0 fw-bold text-dark">{item.contractNumber}</h4>
-                                                                        </div>
-                                                                    </div>
-                                                                </td>
+
+                {
+                    this.partnerTypes.map((partnerType, index) => (
+                        <Accordion>
+                            <AccordionSummary expandIcon={<i className="zmdi zmdi-chevron-down"></i>}>
+                                <Typography>{partnerType.label}</Typography>
+                            </AccordionSummary>
+                            <AccordionDetails>
+                                <CustomList
+                                    loading={loading}
+                                    list={partners.filter(p => p.networkProfile.type === partnerType.code)}
+                                    style={{ width: '-webkit-fill-available' }}
+                                    onAddClick={() => this.getUsersAccountsBranchs(partnerType.code)}
+                                    // titleList={"Produits"}
+                                    itemsFoundText={n => `${n} partenaires trouvés`}
+                                    renderItem={list => (
+                                        <>
+                                            {list && list.length === 0 ? (
+                                                <div className="d-flex justify-content-center align-items-center py-50">
+                                                    <h4>
+                                                        Aucun partenaire trouvés
+                                                    </h4>
+                                                </div>
+                                            ) : (
+                                                <div className="table-responsive">
+                                                    <table className="table table-hover table-middle mb-0 text-center">
+                                                        <thead>
+                                                            <tr>
+                                                                <th><IntlMessages id="components.name" /></th>
+                                                                <th>Email</th>
+                                                                <th>Numéro de contrat</th>
+                                                                {
+                                                                    partnerType.hasAction && (
+                                                                        <th>Action</th>
+                                                                    )
+                                                                }
                                                             </tr>
-                                                        ))}
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        )}
-                                </>
-                            )}
-                        />
-                    </AccordionDetails>
-                </Accordion>
-                <Accordion>
-                    <AccordionSummary expandIcon={<i className="zmdi zmdi-chevron-down"></i>}>
-                        <Typography>Communauté Microcap</Typography>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                        <CustomList
-                            loading={loading}
-                            list={partners.filter(p => p.networkProfile.type == 'COMMUNITY')}
-                            style={{ width: '-webkit-fill-available' }}
-                            onAddClick={() => this.getUsersAccountsBranchs('COMMUNITY')}
-                            // titleList={"Produits"}
-                            itemsFoundText={n => `${n} partenaires trouvés`}
-                            renderItem={list => (
-                                <>
-                                    {list && list.length === 0 ? (
-                                        <div className="d-flex justify-content-center align-items-center py-50">
-                                            <h4>
-                                                Aucun partenaire trouvés
-                                    </h4>
-                                        </div>
-                                    ) : (
-                                            <div className="table-responsive">
-                                                <table className="table table-hover table-middle mb-0 text-center">
-                                                    <thead>
-                                                        <tr>
-                                                            <th><IntlMessages id="components.name" /></th>
-                                                            <th>Email</th>
-                                                            <th>Numéro de contrat</th>
-                                                            <th>Action</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        {list && list.map((item, key) => (
-                                                            <tr key={key} className="cursor-pointer">
-                                                                <td>
-                                                                    <div className="media">
-                                                                        <div className="media-left media-middle mr-15">
-                                                                            {/*<img src={item.label} alt="user profile" className="media-object rounded-circle" width="35" height="35" />*/}
+                                                        </thead>
+                                                        <tbody>
+                                                            {list && list.map((item, key) => (
+                                                                <tr key={key} className="cursor-pointer">
+                                                                    <td>
+                                                                        <div className="media">
+                                                                            <div className="media-left media-middle mr-15">
+                                                                                {/*<img src={item.label} alt="user profile" className="media-object rounded-circle" width="35" height="35" />*/}
+                                                                            </div>
+                                                                            <div className="media-body pt-10">
+                                                                                <h4 className="m-0 fw-bold text-dark">{item.organisation.commercialName}</h4>
+                                                                            </div>
                                                                         </div>
-                                                                        <div className="media-body pt-10">
-                                                                            <h4 className="m-0 fw-bold text-dark">{item.organisation ? item.organisation.commercialName : item.person.firstName + ' ' + item.person.lastName}</h4>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div className="media">
+                                                                            <div className="media-left media-middle mr-15">
+                                                                                {/*<img src={item.label} alt="user profile" className="media-object rounded-circle" width="35" height="35" />*/}
+                                                                            </div>
+                                                                            <div className="media-body pt-10">
+                                                                                <h4 className="m-0 fw-bold text-dark">{item.organisation.user.email}</h4>
+                                                                            </div>
                                                                         </div>
-                                                                    </div>
-                                                                </td>
-                                                                <td>
-                                                                    <div className="media">
-                                                                        <div className="media-left media-middle mr-15">
-                                                                            {/*<img src={item.label} alt="user profile" className="media-object rounded-circle" width="35" height="35" />*/}
+                                                                    </td>
+                                                                    <td>
+                                                                        <div className="media">
+                                                                            <div className="media-left media-middle mr-15">
+                                                                                {/*<img src={item.label} alt="user profile" className="media-object rounded-circle" width="35" height="35" />*/}
+                                                                            </div>
+                                                                            <div className="media-body pt-10">
+                                                                                <h4 className="m-0 fw-bold text-dark">{item.contractNumber}</h4>
+                                                                            </div>
                                                                         </div>
-                                                                        <div className="media-body pt-10">
-                                                                            <h4 className="m-0 fw-bold text-dark">{item.organisation ? item.organisation.user.email : item.person.user.email}</h4>
-                                                                        </div>
-                                                                    </div>
-                                                                </td>
-                                                                <td>
-                                                                    <div className="media">
-                                                                        <div className="media-left media-middle mr-15">
-                                                                            {/*<img src={item.label} alt="user profile" className="media-object rounded-circle" width="35" height="35" />*/}
-                                                                        </div>
-                                                                        <div className="media-body pt-10">
-                                                                            <h4 className="m-0 fw-bold text-dark">{item.contractNumber}</h4>
-                                                                        </div>
-                                                                    </div>
-                                                                </td>
-                                                                <td>
-                                                                    <Button
-                                                                        size="large"
-                                                                        color="primary"
-                                                                        variant="contained"
-                                                                        className={"text-white font-weight-bold mr-3"}
-                                                                        onClick={() => this.getPartnersOperator()}
-                                                                    >
-                                                                        Operateur de supervision
-                                                                    </Button>
-                                                                </td>
-                                                            </tr>
-                                                        ))}
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        )}
-                                </>
-                            )}
-                        />
-                    </AccordionDetails>
-                </Accordion>
+                                                                    </td>
+                                                                    {
+                                                                        partnerType.hasAction && (
+                                                                            <td>
+                                                                                <Button
+                                                                                    size="large"
+                                                                                    color="primary"
+                                                                                    variant="contained"
+                                                                                    className={"text-white font-weight-bold mr-3"}
+                                                                                    onClick={partnerType.action}
+                                                                                >
+                                                                                    {partnerType.actionLabel}
+                                                                                </Button>
+                                                                            </td>
+                                                                        )
+                                                                    }
+                                                                </tr>
+                                                            ))}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            )}
+                                        </>
+                                    )}
+                                />
+                            </AccordionDetails>
+                        </Accordion>
+                    ))
+                }
                 <Dialog
                     open={this.state.showOperator}
                     onClose={() => this.setState({ showOperator: false })}
@@ -473,7 +432,7 @@ class ClassicSale extends Component {
                                             className="text-white font-weight-bold"
                                         >
                                             Créer le partenaire
-                                            </Button>
+                                        </Button>
                                     </FormGroup>
                                 </Form>
                             </div>

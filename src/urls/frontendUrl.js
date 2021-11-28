@@ -501,6 +501,15 @@ export const STOCK = {
     }
 };
 
+export const BROKER = {
+    SELF: '/broker',
+    AGENCIES: {
+        SELF: '/broker/agencies',
+        LIST: '/broker/agencies/list',
+        CREATE: '/broker/agencies/create',
+    }
+};
+
 export const joinUrlWithParams = (to, params) => {
     let url = to;
     params.forEach(param => {

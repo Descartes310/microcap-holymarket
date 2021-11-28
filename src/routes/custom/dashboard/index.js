@@ -22,7 +22,7 @@ import {
     AsyncCommunityProject,
     AsyncCatalogSales,
     AsyncComOperationType,
-    AsyncComOperation, AsyncComOffer, AsyncGroupAdmin, AsyncProducts, AsyncStore,
+    AsyncComOperation, AsyncComOffer, AsyncBroker, AsyncProducts, AsyncStore,
     AsyncAccess, AsyncSettingNotifications, AsyncNotifications, AsyncUsersAccounts,
     AsyncActivateBranch, AsyncSampleBranchList,
     AsyncDiscover,
@@ -62,7 +62,7 @@ import {
     PREVISIONS_ADMIN,
     GALERY_PROJECT,
     HOME,
-    CGU,
+    BROKER,
     SONDAGE_SECOND,
     SERVICES,
     NETWORK,
@@ -340,6 +340,12 @@ const Dashboard = ({ onInitCart }) => {
                     />
 
                     <CanRoute
+                        path={BROKER.SELF}
+                        component={AsyncBroker}
+                        permissions={[]}
+                    />
+
+                    <CanRoute
                         path={USERS.USERS.SELF}
                         component={AsyncUsers}
                         permissions={[Permission.users.viewList.name]}
@@ -379,6 +385,12 @@ const Dashboard = ({ onInitCart }) => {
                     <CanRoute
                         path={USERS.USERS_PROFILE.PROFILE}
                         component={SingleProfile}
+                        permissions={[]}
+                    />
+
+                    <CanRoute
+                        path={BROKER.SELF}
+                        component={AsyncBroker}
                         permissions={[]}
                     />
 

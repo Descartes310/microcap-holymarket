@@ -110,8 +110,8 @@ const UsersAccountsCreate = props => {
                                     </InputLabel>
                                     <select
                                         className="form-control"
-                                        style={{ width: '100%', display: 'inline-block' }} 
-                                        onChange={(e) => {setType(e.target.value)}}
+                                        style={{ width: '100%', display: 'inline-block' }}
+                                        onChange={(e) => { setType(e.target.value) }}
                                     >
                                         <option key='OPERATOR' value='OPERATOR'>
                                             OPERATEUR MICROCAP
@@ -119,9 +119,9 @@ const UsersAccountsCreate = props => {
                                         <option key='COMMUNITY' value='COMMUNITY'>
                                             COMMUNAUTE
                                         </option>
-                                        {/* <option key='PARTENAIRE' value='PARTNER'>
-                                            PARTENAIRE
-                                        </option> */}
+                                        <option key='BROKER' value='BROKER'>
+                                            BROKER
+                                        </option>
                                     </select>
                                 </FormGroup>
 

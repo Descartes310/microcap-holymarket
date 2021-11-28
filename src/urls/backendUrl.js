@@ -369,6 +369,16 @@ export const ACCOUNT = {
     CONSOLIDATION_BALANCE: 'api/accounts/consolidated/{id}/balance'
 };
 
+export const BROKER = {
+    SELF: {
+        ACCOUNTS: 'api/brokers/accounts'
+    },
+    AGENCIES: {
+        LIST: 'api/agencies',
+        CREATE: 'api/agencies',
+    }
+};
+
 export const SALES = {
     GET_ALL: 'api/sales',
     GET_ONE: 'api/sales/{id}',

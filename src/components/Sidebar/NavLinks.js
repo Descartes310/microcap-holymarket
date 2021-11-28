@@ -4,13 +4,13 @@ import {
    STOCK,
    USERS,
    ACCESS,
+   BROKER,
    NETWORK,
    PRODUCT,
    CATALOG,
    PROJECTS,
    SETTINGS,
    COMMUNITY,
-   PREVISIONS,
    MICROCAP360,
    COMMUNITY_ADMIN,
    COMMUNITY_MEMBER,
@@ -20,7 +20,7 @@ import {
 } from 'Url/frontendUrl';
 import Branch from 'Models/Branch';
 import Permission from "Enums/Permissions";
-import {RESSOURCE} from '../../urls/frontendUrl';
+import { RESSOURCE } from '../../urls/frontendUrl';
 
 // Get pathname of the current url i.e everything after app domain name
 const pathname = window.location.pathname;
@@ -137,7 +137,7 @@ export default {
                "path": PROJECTS.POST_PROJETS.LIST,
                "new_item": false,
                "menu_title": "Poste projets",
-              "permissions": [Permission.projects.projectPost.viewOne],
+               "permissions": [Permission.projects.projectPost.viewOne],
             },
             {
                "path": PROJECTS.PROJECTS.EDITION.SELF,
@@ -347,11 +347,11 @@ export default {
                "path": NETWORK.ONGOING_CREATE,
                "permissions": [Permission.navLinks.network.viewMenu],
                "child_routes": null
-                  // {
-                  //    "path": NETWORK.ONGOING_CREATE,
-                  //    "menu_title": "Editer",
-                  //    "permissions": [Permission.navLinks.network.viewMenu],
-                  // },
+               // {
+               //    "path": NETWORK.ONGOING_CREATE,
+               //    "menu_title": "Editer",
+               //    "permissions": [Permission.navLinks.network.viewMenu],
+               // },
                //    {
                //       "path": NETWORK.CREATE,
                //       "menu_title": "Nouveau",
@@ -437,7 +437,7 @@ export default {
                "permissions": [],
             },
          ]
-      },{
+      }, {
          "menu_title": "Microcap360",
          "menu_icon": "icon-people",
          "new_item": false,
@@ -465,7 +465,7 @@ export default {
                "permissions": [],
             },
          ],
-      },{
+      }, {
          "menu_title": "Produits & services",
          "menu_icon": "zmdi zmdi-widgets",
          "new_item": false,
@@ -555,7 +555,7 @@ export default {
                "path": PROJECTS.POST_PROJETS.LIST,
                "new_item": false,
                "menu_title": "Poste projets",
-              "permissions": [],
+               "permissions": [],
             },
             {
                "path": PROJECTS.FOLDERS.SELF,
@@ -637,7 +637,7 @@ export default {
                "new_item": false,
                "path": MICROCAP360.RESEAU.SELF,
                "permissions": [],
-            },{
+            }, {
                "menu_title": "Comptes opérations",
                "new_item": false,
                "path": ROOT,
@@ -715,7 +715,7 @@ export default {
          "child_routes": null,
          "permissions": [Branch.permissionsRelated.READ],
          'subject': Branch
-      },{
+      }, {
          "menu_title": "Microcap360",
          "menu_icon": "icon-people",
          "new_item": false,
@@ -762,14 +762,14 @@ export default {
                "permissions": [],
             },
          ],
-      },{
+      }, {
          "menu_title": "Bourse de Financement",
          "menu_icon": "zmdi zmdi-accounts",
          "path": STOCK.FINANCIAL.SELF,
          "new_item": false,
          "child_routes": null,
          "permissions": [],
-      },{
+      }, {
          "menu_title": "Bourse des opportunités",
          "menu_icon": "zmdi zmdi-accounts",
          "path": STOCK.OPPORTUITY.SELF,
@@ -803,7 +803,7 @@ export default {
                "permissions": [],
             }
          ],
-      },{
+      }, {
          "menu_title": "Ressources",
          "menu_icon": "zmdi zmdi-accounts",
          "path": RESSOURCE.VOUCHERS,
@@ -822,7 +822,7 @@ export default {
          "child_routes": null,
          "permissions": [Branch.permissionsRelated.READ],
          'subject': Branch
-      },{
+      }, {
          "menu_title": "Microcap360",
          "menu_icon": "icon-people",
          "new_item": false,
@@ -868,14 +868,14 @@ export default {
                "permissions": [],
             },
          ],
-      },{
+      }, {
          "menu_title": "Bourse de Financement",
          "menu_icon": "zmdi zmdi-accounts",
          "path": STOCK.FINANCIAL.SELF,
          "new_item": false,
          "child_routes": null,
          "permissions": [],
-      },{
+      }, {
          "menu_title": "Bourse des opportunités",
          "menu_icon": "zmdi zmdi-accounts",
          "path": STOCK.OPPORTUITY.SELF,
@@ -909,7 +909,7 @@ export default {
                "permissions": [],
             }
          ],
-      },{
+      }, {
          "menu_title": "Ressources",
          "menu_icon": "zmdi zmdi-accounts",
          "path": RESSOURCE.VOUCHERS,
@@ -928,7 +928,7 @@ export default {
          "child_routes": null,
          "permissions": [],
          'key': 'personnal_space'
-      },{
+      }, {
          "menu_title": "Communauté",
          "menu_icon": "icon-people",
          "new_item": false,
@@ -948,7 +948,7 @@ export default {
                "permissions": [],
             }
          ],
-      },{
+      }, {
          "menu_title": "Projet",
          "menu_icon": "icon-people",
          "new_item": false,
@@ -982,25 +982,25 @@ export default {
                'key': 'commnity_admin',
                "path": joinUrlWithParamsId(COMMUNITY_ADMIN.MEMBERS.LIST, communitySpaceId),
                "permissions": [],
-            },{
+            }, {
                "menu_title": "Postes",
                "new_item": false,
                'key': 'commnity_admin',
                "path": joinUrlWithParamsId(COMMUNITY_ADMIN.POST.LIST, communitySpaceId),
                "permissions": [],
-            },{
+            }, {
                "menu_title": "Opérateurs",
                "new_item": false,
                'key': 'commnity_admin',
                "path": joinUrlWithParamsId(COMMUNITY_ADMIN.OPERATOR.LIST, communitySpaceId),
                "permissions": [],
-            },{
+            }, {
                "menu_title": "Projet",
                "new_item": false,
                'key': 'commnity_admin',
                "path": joinUrlWithParamsId(COMMUNITY_ADMIN.PROJECT.CREATE, communitySpaceId),
                "permissions": [],
-            },{
+            }, {
                "menu_title": "Rubriques",
                "new_item": false,
                'key': 'commnity_admin',
@@ -1019,7 +1019,7 @@ export default {
                      'key': 'commnity_admin',
                      "path": joinUrlWithParamsId(COMMUNITY_ADMIN.VOUCHER.PAYMENT, communitySpaceId),
                      "permissions": [],
-                  },{
+                  }, {
                      "menu_title": "Recharge",
                      "new_item": false,
                      'key': 'commnity_admin',
@@ -1036,6 +1036,33 @@ export default {
                ],
             }
          ]
+      }
+   ],
+   broker: [
+      {
+         "menu_title": "Profile",
+         "menu_icon": "zmdi zmdi-accounts",
+         "path": USERS.USERS.PERSONNAL_SPACE,
+         "new_item": false,
+         "child_routes": null,
+         "permissions": [],
+         'subject': Branch
+      }, {
+         "menu_title": "Mes agences",
+         "menu_icon": "zmdi zmdi-accounts",
+         "path": BROKER.AGENCIES.LIST,
+         "new_item": false,
+         "child_routes": null,
+         "permissions": [],
+         'subject': Branch
+      }, {
+         "menu_title": "Profile",
+         "menu_icon": "zmdi zmdi-accounts",
+         "path": USERS.USERS.PERSONNAL_SPACE,
+         "new_item": false,
+         "child_routes": null,
+         "permissions": [],
+         'subject': Branch
       }
    ]
 }

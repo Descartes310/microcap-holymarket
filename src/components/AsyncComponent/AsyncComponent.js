@@ -48,6 +48,11 @@ export const AsyncBranchList = Loadable({
 	loading: () => <RctPageLoader />,
 });
 
+export const AsyncBroker = Loadable({
+	loader: () => import("Routes/custom/broker"),
+	loading: () => <RctPageLoader />,
+});
+
 export const AsyncBranchCreate = Loadable({
 	loader: () => import("Routes/custom/branch/new-create"),
 	loading: () => <RctPageLoader />,

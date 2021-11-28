@@ -16,7 +16,7 @@ const UserCurrency = props => {
             props.setAuthUser()
         }).catch(err => {
             console.log(err)
-        }).finall(() => {
+        }).finally(() => {
             setRequestGlobalAction(false);
         })
     }
