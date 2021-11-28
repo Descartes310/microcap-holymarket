@@ -7,7 +7,7 @@ import { NotificationManager } from "react-notifications";
 import { BROKER, joinUrlWithParamsId } from "Url/frontendUrl";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import InputLabel from "@material-ui/core/InputLabel/InputLabel";
-import { createAgencyCounter, setRequestGlobalAction } from "Actions";
+import { createCounterCashdesk, setRequestGlobalAction } from "Actions";
 import { Button, Form, FormGroup, Input as InputStrap } from 'reactstrap';
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
 
@@ -20,7 +20,7 @@ class Create extends Component {
     }
 
     componentDidMount() {
-        this.agencyId = this.props.match.params.id;
+        this.counterId = this.props.match.params.id;
     }
 
     handleOnFormChange = (field, value) => {
@@ -41,13 +41,13 @@ class Create extends Component {
             this.props.setRequestGlobalAction(true);
             let data = {
                 label: this.state.label,
-                agency_id: this.agencyId
+                counter_id: this.counterId
             };
 
-            createAgencyCounter(data)
+            createCounterCashdesk(data)
                 .then((response) => {
-                    NotificationManager.success("Nouveau guichet créé avec succès");
-                    this.props.history.push(joinUrlWithParamsId(BROKER.COUNTERS.LIST, this.agencyId));
+                    NotificationManager.success("Nouvelle caisse créée avec succès");
+                    this.props.history.push(joinUrlWithParamsId(BROKER.CASHDESKS.LIST, this.counterId));
                 })
                 .catch(() => null)
                 .finally(() => this.props.setRequestGlobalAction(false));
@@ -62,7 +62,7 @@ class Create extends Component {
                 <PageTitleBar
                     match={match}
                     history={history}
-                    title={"Création d'un nouveau guichet"}
+                    title={"Création d'une nouvelle caisse"}
                 />
                 <div className="full-height row">
                     <div className="col-md-12 col-sm-12 pr-md-40">
@@ -72,7 +72,7 @@ class Create extends Component {
                                 <div className="row">
                                     <FormGroup className="col-sm-12 has-wrapper">
                                         <InputLabel className="text-left" htmlFor="label">
-                                            Nom du guichet
+                                            Nom de la caisse
                                         </InputLabel>
                                         <InputStrap
                                             required

@@ -385,7 +385,8 @@ export const BROKER = {
     },
     CASHDESKS: {
         LIST: 'api/cashdesks',
-        CREATE: 'api/cashdesks'
+        CREATE: 'api/cashdesks',
+        CREDIT: 'api/cashdesks/{id}/credit',
     }
 };
 

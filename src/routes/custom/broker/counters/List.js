@@ -40,7 +40,7 @@ class List extends Component {
         const { agency, counters } = this.state;
         return (
             <>
-                <PageTitleBar title={"Guichets de "+agency.label} match={this.props.match} enableBreadCrumb={false} />
+                <PageTitleBar title={"Guichets de " + agency.label} match={this.props.match} enableBreadCrumb={false} />
                 <CustomList
                     list={counters}
                     loading={false}
@@ -84,21 +84,21 @@ class List extends Component {
                                                             </div>
                                                         </div>
                                                     </td>
-                                                        <td>
-                                                            <div className="media">
-                                                                <div className="media-body pt-10">
-                                                                    <Button
-                                                                        color="primary"
-                                                                        variant="contained"
-                                                                        style={{ marginRight: 10 }}
-                                                                        className="text-white font-weight-bold"
-                                                                        onClick={() => this.onItemClick(item.id)}
-                                                                    >
-                                                                        Voir les caisses
-                                                                    </Button>
-                                                                </div>
+                                                    <td>
+                                                        <div className="media">
+                                                            <div className="media-body pt-10">
+                                                                <Button
+                                                                    color="primary"
+                                                                    variant="contained"
+                                                                    style={{ marginRight: 10 }}
+                                                                    className="text-white font-weight-bold"
+                                                                    onClick={() => this.onItemClick(item.counter.id)}
+                                                                >
+                                                                    Voir les caisses
+                                                                </Button>
                                                             </div>
-                                                        </td>
+                                                        </div>
+                                                    </td>
                                                 </tr>
                                             ))}
                                         </tbody>

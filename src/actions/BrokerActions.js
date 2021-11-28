@@ -27,3 +27,12 @@ export const getCounterCashdesks = (id) => {
     const url = joinBaseUrlWithParamsId(BROKER.COUNTERS.CASHDESKS, id);
     return makeRequest('get', url);
 };
+
+export const createCounterCashdesk = (data) => {
+    return makeRequest('post', BROKER.CASHDESKS.CREATE, data);
+};
+
+export const creditCounterCashdesk = (id, data) => {
+    const url = joinBaseUrlWithParamsId(BROKER.CASHDESKS.CREDIT, id);
+    return makeRequest('post', url, data);
+};

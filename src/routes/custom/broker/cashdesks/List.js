@@ -5,53 +5,56 @@ import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
 import CustomList from "Components/CustomList";
 import { AbilityContext } from "Permissions/Can";
+import CreditCashdeskModal from "./CreditCashdeskModal";
 import { BROKER, joinUrlWithParamsId } from "Url/frontendUrl";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
-import { getAgencyCounters, setRequestGlobalAction } from "Actions";
+import { getCounterCashdesks, setRequestGlobalAction } from "Actions";
 
 class List extends Component {
     static contextType = AbilityContext;
 
     state = {
-        agency: { label: '...' },
-        counters: [],
+        show: false,
+        cashdesks: [],
+        cashdesk: null,
+        counter: { label: '...' },
     };
 
     componentDidMount() {
-        this.agencyId = this.props.match.params.id;
+        this.counterId = this.props.match.params.id;
         this.loadData()
     }
 
     loadData() {
         this.props.setRequestGlobalAction(true)
-        getAgencyCounters(this.agencyId).then(response =>
-            this.setState({ counters: response.counters, agency: response.agency })
-        ).catch(err => this.setState({ agencies: [] }))
+        getCounterCashdesks(this.counterId).then(response =>
+            this.setState({ cashdesks: response.cashdesks, counter: response.counter })
+        ).catch(err => this.setState({ cashdesks: [] }))
             .finally(() => {
                 this.props.setRequestGlobalAction(false)
             })
     }
 
-    onItemClick = (id) => {
-        this.props.history.push(joinUrlWithParamsId(BROKER.CASHDESKS.LIST, id));
+    onCreditCashdesk = (item) => {
+        this.setState({ cashdesk: item, show: true })
     };
 
     render() {
-        const { agency, counters } = this.state;
+        const { counter, cashdesks, cashdesk, show } = this.state;
         return (
             <>
-                <PageTitleBar title={"Guichets de "+agency.label} match={this.props.match} enableBreadCrumb={false} />
+                <PageTitleBar title={"Caisses de " + counter.label} match={this.props.match} enableBreadCrumb={false} />
                 <CustomList
-                    list={counters}
+                    list={cashdesks}
                     loading={false}
-                    onAddClick={() => this.props.history.push(joinUrlWithParamsId(BROKER.COUNTERS.CREATE, this.agencyId))}
-                    itemsFoundText={n => `${n} guichets trouvés`}
+                    onAddClick={() => this.props.history.push(joinUrlWithParamsId(BROKER.CASHDESKS.CREATE, this.counterId))}
+                    itemsFoundText={n => `${n} caisses trouvées`}
                     renderItem={list => (
                         <>
                             {list && list.length === 0 ? (
                                 <div className="d-flex justify-content-center align-items-center py-50">
                                     <h4>
-                                        Aucun guichet trouvée
+                                        Aucune caisse trouvée
                                     </h4>
                                 </div>
                             ) : (
@@ -73,7 +76,7 @@ class List extends Component {
                                                     <td>
                                                         <div className="media">
                                                             <div className="media-body pt-10">
-                                                                <h4 className="m-0 fw-bold text-dark">{item.counter.label}</h4>
+                                                                <h4 className="m-0 fw-bold text-dark">{item.cashdesk.label}</h4>
                                                             </div>
                                                         </div>
                                                     </td>
@@ -84,21 +87,21 @@ class List extends Component {
                                                             </div>
                                                         </div>
                                                     </td>
-                                                        <td>
-                                                            <div className="media">
-                                                                <div className="media-body pt-10">
-                                                                    <Button
-                                                                        color="primary"
-                                                                        variant="contained"
-                                                                        style={{ marginRight: 10 }}
-                                                                        className="text-white font-weight-bold"
-                                                                        onClick={() => this.onItemClick(item.id)}
-                                                                    >
-                                                                        Voir les caisses
-                                                                    </Button>
-                                                                </div>
+                                                    <td>
+                                                        <div className="media">
+                                                            <div className="media-body pt-10">
+                                                                <Button
+                                                                    color="primary"
+                                                                    variant="contained"
+                                                                    style={{ marginRight: 10 }}
+                                                                    className="text-white font-weight-bold"
+                                                                    onClick={() => this.onCreditCashdesk(item.cashdesk)}
+                                                                >
+                                                                    Créditer la caisse
+                                                                </Button>
                                                             </div>
-                                                        </td>
+                                                        </div>
+                                                    </td>
                                                 </tr>
                                             ))}
                                         </tbody>
@@ -108,6 +111,13 @@ class List extends Component {
                         </>
                     )}
                 />
+                {cashdesk && (
+                    <CreditCashdeskModal
+                        cashdesk={cashdesk}
+                        show={show && cashdesk}
+                        onClose={() => { this.setState({ show: false, cashdesk: null }); this.loadData() }}
+                    />
+                )}
             </>
         );
     }

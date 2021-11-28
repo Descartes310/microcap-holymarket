@@ -8,9 +8,9 @@ const BrokerAgency = ({ match }) => {
     return (
         <div className="mx-sm-4 full-height">
             <Switch>
-                <Redirect exact from={`${match.url}/`} to={BROKER.COUNTERS.LIST} />
-                <Route path={BROKER.COUNTERS.CREATE} component={Create} />
-                <Route path={BROKER.COUNTERS.LIST} component={List} />
+                <Redirect exact from={`${match.url}/`} to={BROKER.CASHDESKS.LIST} />
+                <Route path={BROKER.CASHDESKS.CREATE} component={Create} />
+                <Route path={BROKER.CASHDESKS.LIST} component={List} />
             </Switch>
         </div>
     );
