@@ -66,7 +66,7 @@ class Create extends Component {
                     NotificationManager.success("Nouvelle agence créée avec succès");
                     this.props.history.push(BROKER.AGENCIES.LIST);
                 })
-                .catch(() => null)
+                .catch(() => this.props.history.push(BROKER.AGENCIES.LIST))
                 .finally(() => this.props.setRequestGlobalAction(false));
         }
     };

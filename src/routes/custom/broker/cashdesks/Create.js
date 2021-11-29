@@ -49,7 +49,7 @@ class Create extends Component {
                     NotificationManager.success("Nouvelle caisse créée avec succès");
                     this.props.history.push(joinUrlWithParamsId(BROKER.CASHDESKS.LIST, this.counterId));
                 })
-                .catch(() => null)
+                .catch(() => this.props.history.push(joinUrlWithParamsId(BROKER.CASHDESKS.LIST, this.counterId)))
                 .finally(() => this.props.setRequestGlobalAction(false));
         }
     };

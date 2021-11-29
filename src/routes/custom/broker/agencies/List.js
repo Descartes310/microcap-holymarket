@@ -24,7 +24,7 @@ class List extends Component {
         this.props.setRequestGlobalAction(true)
         getBrokerAgencies().then(agencies =>
             this.setState({ agencies })
-        ).catch(err => this.setState({ agencies: [] }))
+        ).catch(err => this.props.history.push(BROKER.AGENCIES.LIST))
             .finally(() => {
                 this.props.setRequestGlobalAction(false)
             })

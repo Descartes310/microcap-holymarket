@@ -1,10 +1,9 @@
 import { connect } from "react-redux";
 import { injectIntl } from "react-intl";
 import React, { Component } from 'react';
-import Button from '@material-ui/core/Button';
-import { useParams, withRouter } from "react-router-dom";
+import { BROKER } from "Url/frontendUrl";
+import { withRouter } from "react-router-dom";
 import { AbilityContext } from "Permissions/Can";
-import { BROKER, joinUrlWithParamsId } from "Url/frontendUrl";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import { getBrokerAgency, setRequestGlobalAction } from "Actions";
 import AccountMouvements from "Components/AsyncComponent/AccountMouvements";
@@ -25,7 +24,7 @@ class List extends Component {
         this.props.setRequestGlobalAction(true)
         getBrokerAgency(this.agencyId).then(agency =>
             this.setState({ agency })
-        ).catch(err => this.setState({ agency: {} }))
+        ).catch(err => this.props.history.push(BROKER.AGENCIES.LIST))
             .finally(() => {
                 this.props.setRequestGlobalAction(false)
             })

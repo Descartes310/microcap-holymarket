@@ -49,7 +49,7 @@ class Create extends Component {
                     NotificationManager.success("Nouveau guichet créé avec succès");
                     this.props.history.push(joinUrlWithParamsId(BROKER.COUNTERS.LIST, this.agencyId));
                 })
-                .catch(() => null)
+                .catch(() => this.props.history.push(joinUrlWithParamsId(BROKER.COUNTERS.LIST, this.agencyId)))
                 .finally(() => this.props.setRequestGlobalAction(false));
         }
     };
