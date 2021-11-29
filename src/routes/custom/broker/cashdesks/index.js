@@ -1,6 +1,7 @@
 import React from 'react';
 import List from './List';
 import Create from './Create';
+import Mouvements from './Mouvements';
 import { BROKER } from 'Url/frontendUrl';
 import {withRouter, Switch, Redirect, Route} from "react-router-dom";
 
@@ -10,6 +11,7 @@ const BrokerAgency = ({ match }) => {
             <Switch>
                 <Redirect exact from={`${match.url}/`} to={BROKER.CASHDESKS.LIST} />
                 <Route path={BROKER.CASHDESKS.CREATE} component={Create} />
+                <Route path={BROKER.CASHDESKS.MOUVEMENTS} component={Mouvements} />
                 <Route path={BROKER.CASHDESKS.LIST} component={List} />
             </Switch>
         </div>

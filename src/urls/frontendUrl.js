@@ -507,16 +507,19 @@ export const BROKER = {
         SELF: '/broker/agencies',
         LIST: '/broker/agencies/list',
         CREATE: '/broker/agencies/create',
+        MOUVEMENTS: '/broker/agencies/:id/mouvements',
     },
     COUNTERS: {
         SELF: '/broker/counters',
         LIST: '/broker/counters/agency/:id',
         CREATE: '/broker/counters/agency/:id/create',
+        MOUVEMENTS: '/broker/counters/:id/mouvements',
     },
     CASHDESKS: {
         SELF: '/broker/cashdesks',
         LIST: '/broker/cashdesks/counter/:id',
-        CREATE: '/broker/cashdesks/counter:id/create',
+        MOUVEMENTS: '/broker/cashdesks/:id/mouvements',
+        CREATE: '/broker/cashdesks/counter/:id/create',
     }
 };
 

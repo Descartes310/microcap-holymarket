@@ -39,6 +39,10 @@ class List extends Component {
         this.setState({ cashdesk: item, show: true })
     };
 
+    viewCounterMouvements = (id) => {
+        this.props.history.push(joinUrlWithParamsId(BROKER.CASHDESKS.MOUVEMENTS, id));
+    };
+
     render() {
         const { counter, cashdesks, cashdesk, show } = this.state;
         return (
@@ -64,7 +68,8 @@ class List extends Component {
                                             <tr>
                                                 <th>Nom du guichet</th>
                                                 <th>Solde</th>
-                                                <th>Actions</th>
+                                                <th>Crédit</th>
+                                                <th>Relevé</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -98,6 +103,21 @@ class List extends Component {
                                                                     onClick={() => this.onCreditCashdesk(item.cashdesk)}
                                                                 >
                                                                     Créditer la caisse
+                                                                </Button>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div className="media">
+                                                            <div className="media-body pt-10">
+                                                                <Button
+                                                                    color="primary"
+                                                                    variant="contained"
+                                                                    style={{ marginRight: 10 }}
+                                                                    className="text-white font-weight-bold"
+                                                                    onClick={() => this.viewCounterMouvements(item.cashdesk.id)}
+                                                                >
+                                                                    Voir le relevé
                                                                 </Button>
                                                             </div>
                                                         </div>

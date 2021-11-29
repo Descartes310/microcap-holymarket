@@ -376,16 +376,19 @@ export const BROKER = {
     AGENCIES: {
         LIST: 'api/agencies',
         CREATE: 'api/agencies',
+        FIND: 'api/agencies/{id}',
         COUNTERS: 'api/agencies/{id}/counters'
     },
     COUNTERS: {
         LIST: 'api/counters',
         CREATE: 'api/counters',
+        FIND: 'api/counters/{id}',
         CASHDESKS: 'api/counters/{id}/cashdesks'
     },
     CASHDESKS: {
         LIST: 'api/cashdesks',
         CREATE: 'api/cashdesks',
+        FIND: 'api/cashdesks/{id}',
         CREDIT: 'api/cashdesks/{id}/credit',
     }
 };

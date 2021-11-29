@@ -30,8 +30,12 @@ class List extends Component {
             })
     }
 
-    onItemClick = (id) => {
+    viewAgencyCounters = (id) => {
         this.props.history.push(joinUrlWithParamsId(BROKER.COUNTERS.LIST, id));
+    };
+
+    viewAgencyMouvements = (id) => {
+        this.props.history.push(joinUrlWithParamsId(BROKER.AGENCIES.MOUVEMENTS, id));
     };
 
     render() {
@@ -59,7 +63,8 @@ class List extends Component {
                                             <tr>
                                                 <th>Nom de l'agence</th>
                                                 <th>Solde</th>
-                                                <th>Actions</th>
+                                                <th>Guichets</th>
+                                                <th>Relévé</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -82,21 +87,36 @@ class List extends Component {
                                                             </div>
                                                         </div>
                                                     </td>
-                                                        <td>
-                                                            <div className="media">
-                                                                <div className="media-body pt-10">
-                                                                    <Button
-                                                                        color="primary"
-                                                                        variant="contained"
-                                                                        style={{ marginRight: 10 }}
-                                                                        className="text-white font-weight-bold"
-                                                                        onClick={() => this.onItemClick(item.agency.id)}
-                                                                    >
-                                                                        Voir les guichets
-                                                                    </Button>
-                                                                </div>
+                                                    <td>
+                                                        <div className="media">
+                                                            <div className="media-body pt-10">
+                                                                <Button
+                                                                    color="primary"
+                                                                    variant="contained"
+                                                                    style={{ marginRight: 10 }}
+                                                                    className="text-white font-weight-bold"
+                                                                    onClick={() => this.viewAgencyCounters(item.agency.id)}
+                                                                >
+                                                                    Voir les guichets
+                                                                </Button>
                                                             </div>
-                                                        </td>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div className="media">
+                                                            <div className="media-body pt-10">
+                                                                <Button
+                                                                    color="primary"
+                                                                    variant="contained"
+                                                                    style={{ marginRight: 10 }}
+                                                                    className="text-white font-weight-bold"
+                                                                    onClick={() => this.viewAgencyMouvements(item.agency.id)}
+                                                                >
+                                                                    Consulter le relevé
+                                                                </Button>
+                                                            </div>
+                                                        </div>
+                                                    </td>
                                                 </tr>
                                             ))}
                                         </tbody>

@@ -32,8 +32,12 @@ class List extends Component {
             })
     }
 
-    onItemClick = (id) => {
+    viewCounterCashdesks = (id) => {
         this.props.history.push(joinUrlWithParamsId(BROKER.CASHDESKS.LIST, id));
+    };
+
+    viewCounterMouvements = (id) => {
+        this.props.history.push(joinUrlWithParamsId(BROKER.COUNTERS.MOUVEMENTS, id));
     };
 
     render() {
@@ -61,7 +65,8 @@ class List extends Component {
                                             <tr>
                                                 <th>Nom du guichet</th>
                                                 <th>Solde</th>
-                                                <th>Actions</th>
+                                                <th>Caisses</th>
+                                                <th>Relévé</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -92,9 +97,24 @@ class List extends Component {
                                                                     variant="contained"
                                                                     style={{ marginRight: 10 }}
                                                                     className="text-white font-weight-bold"
-                                                                    onClick={() => this.onItemClick(item.counter.id)}
+                                                                    onClick={() => this.viewCounterCashdesks(item.counter.id)}
                                                                 >
                                                                     Voir les caisses
+                                                                </Button>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div className="media">
+                                                            <div className="media-body pt-10">
+                                                                <Button
+                                                                    color="primary"
+                                                                    variant="contained"
+                                                                    style={{ marginRight: 10 }}
+                                                                    className="text-white font-weight-bold"
+                                                                    onClick={() => this.viewCounterMouvements(item.counter.id)}
+                                                                >
+                                                                    Voir le relevé
                                                                 </Button>
                                                             </div>
                                                         </div>
