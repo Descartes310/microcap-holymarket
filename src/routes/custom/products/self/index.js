@@ -4,20 +4,21 @@
 import React, { Component } from 'react';
 // intl messages
 import {connect} from "react-redux";
+import List from './List';
+import Order from './orders';
+import Account from './accounts';
+import OrderShow from './orderShow';
 import {injectIntl} from "react-intl";
 import {PRODUCT} from "Url/frontendUrl";
-
-import {withRouter, Switch, Redirect, Route} from "react-router-dom";
-import List from './List';
-import ProductItemAvailable from './ProductItemAvailable';
-import Account from './accounts';
 import AccountShow from './accountShow';
 import AccountLogs from './accountLogs';
-import Order from './orders';
-import UnapprovedOrders from './unapprovedOrders';
 import OperatorOrders from './ordersOperator';
-import OrderShow from './orderShow';
 import ProductDetails from './productDetails';
+import UnapprovedOrders from './unapprovedOrders';
+import UpdateAccount from './accounts/UpdateAccount';
+import ProductItemAvailable from './ProductItemAvailable';
+import UncompleteAccounts from './accounts/UncompleteAccounts';
+import {withRouter, Switch, Redirect, Route} from "react-router-dom";
 
 class Products extends Component {
     render() {
@@ -27,6 +28,8 @@ class Products extends Component {
                 <>
                     <Switch>
                         <Redirect exact from={`${match.url}/`} to={PRODUCT.LIST} />
+                        <Route path={PRODUCT.UPDATE_UNCOMPLETE_ACCOUNTS} component={UpdateAccount} />
+                        <Route path={PRODUCT.UNCOMPLETE_ACCOUNTS} component={UncompleteAccounts} />
                         <Route path={PRODUCT.ORDERS_SHOW} component={OrderShow} />
                         <Route path={PRODUCT.ACCOUNT_LOGS} component={AccountLogs} />
                         <Route path={PRODUCT.ACCOUNT_DETAILS} component={AccountShow} />

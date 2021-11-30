@@ -657,12 +657,6 @@ export default {
                "menu_title": "Communautés",
                "permissions": [],
             },
-            // {
-            //    "path": ROOT,
-            //    "new_item": false,
-            //    "menu_title": "Ventes",
-            //    "permissions": [],
-            // },
          ]
       },
       {
@@ -681,6 +675,12 @@ export default {
                "menu_title": "Mes Demandes de souscriptions",
                "new_item": false,
                "path": PRODUCT.UNAPPROVED_ORDERS,
+               "permissions": [],
+            },
+            {
+               "menu_title": "Comptes en attentes",
+               "new_item": false,
+               "path": PRODUCT.UNCOMPLETE_ACCOUNTS,
                "permissions": [],
             }
          ],

@@ -360,13 +360,15 @@ export const ORDER = {
 
 export const ACCOUNT = {
     GET_ONE: 'api/accounts/{id}',
+    GET_ALL_BY_UNIT: 'api/accounts',
+    UNCOMPLETE: 'api/accounts/uncomplete',
+    UPDATE_ACCOUNT: 'api/accounts/{id}/update',
+    CHANGE_CURRENCY: 'api/accounts/{id}/currency',
     GET_TRANSACTIONS: 'api/accounts/{id}/mouvements',
+    APPROVISIONING_CARD: 'api/accounts/{id}/approvisioning/card',
+    CONSOLIDATION_BALANCE: 'api/accounts/consolidated/{id}/balance',
     GET_ACCOUNT_BY_AMOUNT: 'api/accounts/users/{id}/account-by-amount',
     APPROVISIONING_VOUCHER: 'api/accounts/{id}/approvisioning/voucher',
-    APPROVISIONING_CARD: 'api/accounts/{id}/approvisioning/card',
-    GET_ALL_BY_UNIT: 'api/accounts',
-    CHANGE_CURRENCY: 'api/accounts/{id}/currency',
-    CONSOLIDATION_BALANCE: 'api/accounts/consolidated/{id}/balance'
 };
 
 export const BROKER = {

@@ -364,6 +364,15 @@ export const getConsolidationBalance = (id) => {
     return makeRequest('get', url);
 };
 
+export const updateAccountInfos = (id, data) => {
+    const url = joinBaseUrlWithParamsId(`${ACCOUNT.UPDATE_ACCOUNT}`, id);
+    return makeRequest('put', url, data);
+};
+
+export const getUncompleteAccounts = () => {
+    return makeRequest('get', ACCOUNT.UNCOMPLETE);
+};
+
 export const createUsers = (data, branchId) => {
     const url = `${USERS.CREATE.PERSON}?branch_id=${branchId}`;
     return makeRequest('post', url, data);

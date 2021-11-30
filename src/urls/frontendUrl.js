@@ -175,19 +175,21 @@ export const COMMERCIAL_MANAGEMENT = {
 
 export const PRODUCT = {
     LIST: '/products',
-    CLASSIC_SALES: '/products/classic-sales',
-    PRIVATE_SALES: '/products/private-sales',
-    FINANCIAL_SALES: '/products/financial-sales',
-    MICROCAP_PRODUCT: '/products/microcap-sales',
     ORDERS: '/products/orders',
-    UNAPPROVED_ORDERS: '/products/orders/unapproved',
-    OPERATOR_ORDERS: '/products/orders/operators',
-    ORDERS_SHOW: '/products/orders/:id/show',
     SHOW: '/products/:id/show/:type',
-    DETAILS: '/products/:id/details/:type',
     SHOW_ACCOUNT: '/products/accounts',
+    DETAILS: '/products/:id/details/:type',
+    CLASSIC_SALES: '/products/classic-sales',
+    ORDERS_SHOW: '/products/orders/:id/show',
+    PRIVATE_SALES: '/products/private-sales',
     ACCOUNT_DETAILS: '/products/accounts/:id',
     ACCOUNT_LOGS: '/products/accounts/:id/logs',
+    FINANCIAL_SALES: '/products/financial-sales',
+    MICROCAP_PRODUCT: '/products/microcap-sales',
+    OPERATOR_ORDERS: '/products/orders/operators',
+    UNAPPROVED_ORDERS: '/products/orders/unapproved',
+    UNCOMPLETE_ACCOUNTS: '/products/accounts/uncomplete',
+    UPDATE_UNCOMPLETE_ACCOUNTS: '/products/accounts/uncomplete/:id',
 };
 
 export const STORE = {
