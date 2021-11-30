@@ -8,17 +8,7 @@ import { Form, FormGroup } from 'reactstrap';
 import Button from '@material-ui/core/Button';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import CancelIcon from '@material-ui/icons/Cancel';
-import IconButton from "@material-ui/core/IconButton";
-import LinearProgress from '@material-ui/core/LinearProgress';
-
-import {
-    Card,
-    CardImg,
-    CardText,
-    CardBody,
-    CardFooter
-} from 'reactstrap';
+import { NotificationManager } from "react-notifications";
 
 // components
 import { SessionSlider } from 'Components/Widgets';
@@ -36,16 +26,9 @@ import AppConfig from 'Constants/AppConfig';
 
 // redux action
 import { loginUserWithEmailAndPassword, createSondage, setRequestGlobalAction } from 'Actions';
-import LanguageProvider from "Components/Header/LanguageProvider";
 import IntlMessages from "Util/IntlMessages";
 import { injectIntl } from "react-intl";
 import InputLabel from "@material-ui/core/InputLabel";
-import FormControl from "@material-ui/core/FormControl";
-import Checkbox from "@material-ui/core/Checkbox/Checkbox";
-import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
-import DialogTitle from "@material-ui/core/DialogTitle/DialogTitle";
-import DialogContent from "@material-ui/core/DialogContent/DialogContent";
-import Dialog from "@material-ui/core/Dialog/Dialog";
 import TellUs from './TellUs';
 
 const Signin = (props) => {
@@ -61,10 +44,14 @@ const Signin = (props) => {
     const onSubmit = (data) => {
         props.loginUserWithEmailAndPassword(data).then((data) => {
             window.location = HOME;
-        }).catch();
+        }).catch((err) => {
+            NotificationManager.error("Les paramètres fournis sont incorrects");
+            console.log(err);
+        });
     };
 
     const onSubmitSondage = (response, index) => {
+        props.setRequestGlobalAction(true);
         props.setRequestGlobalAction(true);
         createSondage({ response }).then(data => {
             // props.history.push(joinUrlWithParamsId(SONDAGE_SECOND, index));

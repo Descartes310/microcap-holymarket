@@ -21,13 +21,12 @@ class List extends Component {
     };
 
     componentDidMount() {
-        this.counterId = this.props.match.params.id;
         this.loadData()
     }
 
     loadData() {
         this.props.setRequestGlobalAction(true)
-        getCounterCashdesks(this.counterId).then(response =>
+        getCounterCashdesks().then(response =>
             this.setState({ cashdesks: response.cashdesks, counter: response.counter })
         ).catch(err => this.setState({ cashdesks: [] }))
             .finally(() => {
@@ -51,7 +50,7 @@ class List extends Component {
                 <CustomList
                     list={cashdesks}
                     loading={false}
-                    onAddClick={() => this.props.history.push(joinUrlWithParamsId(BROKER.CASHDESKS.CREATE, this.counterId))}
+                    onAddClick={() => this.props.history.push(BROKER.CASHDESKS.CREATE)}
                     itemsFoundText={n => `${n} caisses trouvées`}
                     renderItem={list => (
                         <>

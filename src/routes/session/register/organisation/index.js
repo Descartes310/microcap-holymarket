@@ -8,6 +8,7 @@ import IntlMessages from "Util/IntlMessages";
 import { withRouter } from "react-router-dom";
 import Step from "@material-ui/core/Step/Step";
 import Stepper from "@material-ui/core/Stepper/Stepper";
+import { NotificationManager } from "react-notifications";
 import StepLabel from "@material-ui/core/StepLabel/StepLabel";
 import { loginUserWithEmailAndPassword, registerOrganisation } from 'Actions';
 
@@ -59,6 +60,9 @@ class OrganisationRegister extends Component {
                 this.props
                     .loginUserWithEmailAndPassword({ login: _data.login, password: _data.password })
                     .then(() => this.props.history.push(HOME));
+            }).catch(err => {
+                console.log(err);
+                NotificationManager.error("Cette adresse email est déjà utilisée.");
             });
     };
 

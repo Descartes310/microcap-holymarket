@@ -18,9 +18,8 @@ export const createBrokerAgency = (data) => {
     return makeRequest('post', BROKER.AGENCIES.CREATE, data);
 };
 
-export const getAgencyCounters = (id) => {
-    const url = joinBaseUrlWithParamsId(BROKER.AGENCIES.COUNTERS, id);
-    return makeRequest('get', url);
+export const getAgencyCounters = () => {
+    return makeRequest('get', BROKER.COUNTERS.LIST);
 };
 
 export const getAgencyCounter = (id) => {
@@ -32,9 +31,8 @@ export const createAgencyCounter = (data) => {
     return makeRequest('post', BROKER.COUNTERS.CREATE, data);
 };
 
-export const getCounterCashdesks = (id) => {
-    const url = joinBaseUrlWithParamsId(BROKER.COUNTERS.CASHDESKS, id);
-    return makeRequest('get', url);
+export const getCounterCashdesks = () => {
+    return makeRequest('get', BROKER.CASHDESKS.LIST);
 };
 
 export const createCounterCashdesk = (data) => {

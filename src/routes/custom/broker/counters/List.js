@@ -18,23 +18,18 @@ class List extends Component {
     };
 
     componentDidMount() {
-        this.agencyId = this.props.match.params.id;
         this.loadData()
     }
 
     loadData() {
         this.props.setRequestGlobalAction(true)
-        getAgencyCounters(this.agencyId).then(response =>
+        getAgencyCounters().then(response =>
             this.setState({ counters: response.counters, agency: response.agency })
         ).catch(err => this.setState({ agencies: [] }))
             .finally(() => {
                 this.props.setRequestGlobalAction(false)
             })
     }
-
-    viewCounterCashdesks = (id) => {
-        this.props.history.push(joinUrlWithParamsId(BROKER.CASHDESKS.LIST, id));
-    };
 
     viewCounterMouvements = (id) => {
         this.props.history.push(joinUrlWithParamsId(BROKER.COUNTERS.MOUVEMENTS, id));
@@ -48,7 +43,7 @@ class List extends Component {
                 <CustomList
                     list={counters}
                     loading={false}
-                    onAddClick={() => this.props.history.push(joinUrlWithParamsId(BROKER.COUNTERS.CREATE, this.agencyId))}
+                    onAddClick={() => this.props.history.push(BROKER.COUNTERS.CREATE)}
                     itemsFoundText={n => `${n} guichets trouvés`}
                     renderItem={list => (
                         <>

@@ -511,15 +511,15 @@ export const BROKER = {
     },
     COUNTERS: {
         SELF: '/broker/counters',
-        LIST: '/broker/counters/agency/:id',
-        CREATE: '/broker/counters/agency/:id/create',
+        LIST: '/broker/counters/list',
+        CREATE: '/broker/counters/create',
         MOUVEMENTS: '/broker/counters/:id/mouvements',
     },
     CASHDESKS: {
         SELF: '/broker/cashdesks',
-        LIST: '/broker/cashdesks/counter/:id',
+        LIST: '/broker/cashdesks/list',
+        CREATE: '/broker/cashdesks/create',
         MOUVEMENTS: '/broker/cashdesks/:id/mouvements',
-        CREATE: '/broker/cashdesks/counter/:id/create',
     }
 };
 

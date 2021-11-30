@@ -15,12 +15,14 @@ class Create extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            label: ''
+            label: '',
+            email: '',
+            password: '',
+            telephone: '',
         }
     }
 
     componentDidMount() {
-        this.counterId = this.props.match.params.id;
     }
 
     handleOnFormChange = (field, value) => {
@@ -32,6 +34,10 @@ class Create extends Component {
             NotificationManager.error(this.props.intl.formatMessage({ id: 'form.error.verify.name' }));
             return false;
         }
+        if (this.state.email.trim().length <= 0 || this.state.telephone.trim().length <= 0 || this.state.password.trim().length <= 0) {
+            NotificationManager.error("Les informations du responsable sont obligatoires");
+            return false;
+        }
 
         return true;
     };
@@ -41,15 +47,16 @@ class Create extends Component {
             this.props.setRequestGlobalAction(true);
             let data = {
                 label: this.state.label,
-                counter_id: this.counterId
+                email: this.state.email,
+                password: this.state.password,
+                telephone: this.state.telephone,
             };
 
             createCounterCashdesk(data)
                 .then((response) => {
                     NotificationManager.success("Nouvelle caisse créée avec succès");
-                    this.props.history.push(joinUrlWithParamsId(BROKER.CASHDESKS.LIST, this.counterId));
+                    this.props.history.push(BROKER.CASHDESKS.LIST);
                 })
-                .catch(() => this.props.history.push(joinUrlWithParamsId(BROKER.CASHDESKS.LIST, this.counterId)))
                 .finally(() => this.props.setRequestGlobalAction(false));
         }
     };
@@ -81,6 +88,56 @@ class Create extends Component {
                                             value={this.state.label}
                                             className="has-input input-lg input-border"
                                             onChange={event => this.handleOnFormChange('label', event.target.value)}
+                                        />
+                                    </FormGroup>
+                                </div>
+
+                                <h2 className="font-weight-bold mb-30">Informations sur le responsable</h2>
+
+                                <div className="row">
+                                    <FormGroup className="col-sm-12 has-wrapper">
+                                        <InputLabel className="text-left" htmlFor="email">
+                                            Adresse email
+                                        </InputLabel>
+                                        <InputStrap
+                                            required
+                                            id="email"
+                                            name={'email'}
+                                            value={this.state.email}
+                                            className="has-input input-lg input-border"
+                                            onChange={event => this.handleOnFormChange('email', event.target.value)}
+                                        />
+                                    </FormGroup>
+                                </div>
+
+                                <div className="row">
+                                    <FormGroup className="col-sm-12 has-wrapper">
+                                        <InputLabel className="text-left" htmlFor="telephone">
+                                            Numéro de téléphone
+                                        </InputLabel>
+                                        <InputStrap
+                                            required
+                                            id="telephone"
+                                            name={'telephone'}
+                                            value={this.state.telephone}
+                                            className="has-input input-lg input-border"
+                                            onChange={event => this.handleOnFormChange('telephone', event.target.value)}
+                                        />
+                                    </FormGroup>
+                                </div>
+
+                                <div className="row">
+                                    <FormGroup className="col-sm-12 has-wrapper">
+                                        <InputLabel className="text-left" htmlFor="password">
+                                            Mot de passe
+                                        </InputLabel>
+                                        <InputStrap
+                                            required
+                                            id="password"
+                                            name={'password'}
+                                            value={this.state.password}
+                                            className="has-input input-lg input-border"
+                                            onChange={event => this.handleOnFormChange('password', event.target.value)}
                                         />
                                     </FormGroup>
                                 </div>

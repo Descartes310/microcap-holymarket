@@ -1055,10 +1055,40 @@ export default {
          "child_routes": null,
          "permissions": [],
          'subject': Branch
-      }, {
+      }
+   ],
+   broker_agency: [
+      {
          "menu_title": "Profile",
          "menu_icon": "zmdi zmdi-accounts",
          "path": USERS.USERS.PERSONNAL_SPACE,
+         "new_item": false,
+         "child_routes": null,
+         "permissions": [],
+         'subject': Branch
+      }, {
+         "menu_title": "Mes guichets",
+         "menu_icon": "zmdi zmdi-accounts",
+         "path": BROKER.COUNTERS.LIST,
+         "new_item": false,
+         "child_routes": null,
+         "permissions": [],
+         'subject': Branch
+      }
+   ],
+   broker_counter: [
+      {
+         "menu_title": "Profile",
+         "menu_icon": "zmdi zmdi-accounts",
+         "path": USERS.USERS.PERSONNAL_SPACE,
+         "new_item": false,
+         "child_routes": null,
+         "permissions": [],
+         'subject': Branch
+      }, {
+         "menu_title": "Mes Caisses",
+         "menu_icon": "zmdi zmdi-accounts",
+         "path": BROKER.CASHDESKS.LIST,
          "new_item": false,
          "child_routes": null,
          "permissions": [],
