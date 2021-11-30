@@ -154,10 +154,10 @@ const CategoryProductsCreate = props => {
 
         _data.image = file;
 
-        _data.type_products = JSON.stringify(chosenProducts.map(p => p.id));
+        _data.type_products = chosenProducts.map(p => p.id);
 
         if (isAggregationWatch)
-            _data.aggragated_products = JSON.stringify(accountsAdd.map(p => p.id));
+            _data.aggragated_products = accountsAdd.map(p => p.id);
 
         if (!isAvailableWatch)
             delete _data.productAvailability;

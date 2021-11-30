@@ -91,7 +91,7 @@ const Create = props => {
 
         createComOperation(_data, authUser.user.branch.id)
             .then(() => {
-                NotificationManager.success("Opérateur commerciale créée avec succès");
+                NotificationManager.success("Opération commerciale créée avec succès");
                 getComOperation(authUser.user.branch.id, authUser.userType);
                 onClose();
             })

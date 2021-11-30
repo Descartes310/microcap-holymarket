@@ -120,7 +120,7 @@ class ProductItemAvailable extends Component {
                                 </div>
                             ) : (
                                     <div className="table-responsive">
-                                        <table className="table table-hover table-middle mb-0 text-center">
+                                        <table className="table table-hover table-middle mb-0">
                                             <thead>
                                                 <tr>
                                                     <th><IntlMessages id="components.name" /></th>

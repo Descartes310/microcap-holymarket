@@ -351,7 +351,7 @@ class Create extends Component {
                                     <div className="col-md-6 col-sm-12 form-group text-left">
                                         <FormControl fullWidth>
                                             <InputLabel className="text-left" htmlFor="commercialOperatorId-helper">
-                                                Opérateur commercial
+                                                Opération commerciale
                                     </InputLabel>
                                             <Select
                                                 value={this.state.commercialOperatorId}

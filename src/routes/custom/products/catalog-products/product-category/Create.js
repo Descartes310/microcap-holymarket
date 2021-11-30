@@ -48,7 +48,7 @@ const CategoryProductsCreate = props => {
 
         const _data = {...data};
 
-        if (_data.parentId === 'none') {
+        if (!_data.parentId) {
             delete _data.parentId;
         }
 

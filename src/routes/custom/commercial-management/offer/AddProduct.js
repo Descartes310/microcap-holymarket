@@ -162,7 +162,6 @@ class AddProduct extends Component {
             let data = {
                 price: this.state.price,
                 quantity: this.state.quantity,
-                partner_id: this.props.authUser.id,
                 catalog_id: this.state.catalog,
                 accept_many_payment: this.state.accept_many_payment,
                 number_max_of_days_payment: this.state.number_max_of_days_payment,
@@ -174,7 +173,7 @@ class AddProduct extends Component {
             };
 
             if (this.state.indirectSell) {
-                data.product_piece_id = JSON.stringify(this.state.docsChosen);
+                data.product_piece_id = this.state.docsChosen;
             }
 
             if (this.state.range) {

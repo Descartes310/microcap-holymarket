@@ -62,7 +62,7 @@ const Create = props => {
             >
                 <DialogTitle id="form-dialog-title">
                     <div className="row justify-content-between align-items-center">
-                        Creation d'une catégorie de produit
+                        Creation d'une offre commerciale
                         <IconButton
                             color="primary"
                             aria-label="close"

@@ -63,7 +63,7 @@ class List extends Component {
                                             <tr>
                                                 <th>Nom de l'agence</th>
                                                 <th>Solde</th>
-                                                <th>Guichets</th>
+                                                {/* <th>Guichets</th> */}
                                                 <th>Relévé</th>
                                             </tr>
                                         </thead>
@@ -87,7 +87,7 @@ class List extends Component {
                                                             </div>
                                                         </div>
                                                     </td>
-                                                    <td>
+                                                    {/* <td>
                                                         <div className="media">
                                                             <div className="media-body pt-10">
                                                                 <Button
@@ -101,7 +101,7 @@ class List extends Component {
                                                                 </Button>
                                                             </div>
                                                         </div>
-                                                    </td>
+                                                    </td> */}
                                                     <td>
                                                         <div className="media">
                                                             <div className="media-body pt-10">

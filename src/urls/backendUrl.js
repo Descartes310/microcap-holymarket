@@ -141,12 +141,12 @@ export const CATALOGS_TYPE = {
 };
 
 export const CATEGORY_PRODUCTS = {
-    ROOT: 'public/category-products/root',
-    GET_ALL: 'public/category-products',
-    CREATE: 'public/category-products',
-    GET_ONE: 'public/category-products/{id}',
+    ROOT: 'api/category-products/root',
+    GET_ALL: 'api/category-products',
+    CREATE: 'api/category-products',
+    GET_ONE: 'api/category-products/{id}',
     TYPE_PRODUCTS: 'api/type-catalogs/type-products',
-    SUB_CATEGORY: 'public/category-products/{id}/category-products',
+    SUB_CATEGORY: 'api/category-products/{id}/category-products',
 };
 
 export const PRODUCT_TYPE = {
@@ -323,14 +323,14 @@ export const COMMUNITY_MEMBER = {
  */
 export const COMMERCIAL_MANAGEMENT = {
     OPERATION_TYPE: {
-        GET_ALL: 'public/commercial-operation-type',
-        CREATE: 'public/commercial-operation-type',
-        UPDATE: 'public/commercial-operation-type',
+        GET_ALL: 'api/commercial-operation-type',
+        CREATE: 'api/commercial-operation-type',
+        UPDATE: 'api/commercial-operation-type',
     },
     OPERATION: {
-        GET_ALL: 'public/commercial-operation',
-        CREATE: 'public/commercial-operation',
-        UPDATE: 'public/commercial-operation',
+        GET_ALL: 'api/commercial-operation',
+        CREATE: 'api/commercial-operation',
+        UPDATE: 'api/commercial-operation',
     },
     OFFER: {
         GET_ALL: {

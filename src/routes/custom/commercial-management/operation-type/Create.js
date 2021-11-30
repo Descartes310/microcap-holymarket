@@ -40,7 +40,7 @@ const Create = props => {
 
         createComOperationType(_data, authUser.user.branch.id)
             .then(() => {
-                NotificationManager.success("Type d'opérateur commerciale créée avec succès");
+                NotificationManager.success("Type d'opération commerciale créée avec succès");
                 getComOperationType(authUser.user.branch.id, authUser.userType);
                 onClose();
             })
@@ -62,7 +62,7 @@ const Create = props => {
             >
                 <DialogTitle id="form-dialog-title">
                     <div className="row justify-content-between align-items-center">
-                        Creation d'une catégorie de produit
+                        Creation d'une type d'opération commerciale
                         <IconButton
                             color="primary"
                             aria-label="close"

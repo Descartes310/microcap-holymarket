@@ -161,8 +161,8 @@ class CatalogList extends Component {
                                                 </thead>
                                                 <tbody>
                                                     {orderedItems && orderedItems.map((catalog, key) => (
-                                                        <tr key={key} onClick={() => this.handleOnRowClick(catalog.id)} className="cursor-pointer">
-                                                            <td>
+                                                        <tr key={key} className="cursor-pointer">
+                                                            <td onClick={() => this.handleOnRowClick(catalog.id)}>
                                                                 <div className="media">
                                                                     <div className="media-left media-middle mr-15">
                                                                         {/*<img src={catalog.label} alt="user profile" className="media-object rounded-circle" width="35" height="35" />*/}
@@ -172,7 +172,7 @@ class CatalogList extends Component {
                                                                     </div>
                                                                 </div>
                                                             </td>
-                                                            <td>
+                                                            <td onClick={() => this.handleOnRowClick(catalog.id)}>
                                                                 <div className="media">
                                                                     <div className="media-body pt-10">
                                                                         <h4 className="m-0 fw-bold text-dark">{catalog.description}</h4>

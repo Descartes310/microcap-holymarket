@@ -134,14 +134,12 @@ class ProductTypeList extends Component {
                             /> */}
                             {orderedItems.length === 0
                                 ? (
-                                    <RctCollapsibleCard>
-                                        <IntlMessages id="list.noThingToDisplay" values={{ thing: this.props.intl.formatMessage({ id: 'catalog' }) }} />
-                                    </RctCollapsibleCard>
+                                    <IntlMessages id="list.noThingToDisplay" values={{ thing: this.props.intl.formatMessage({ id: 'catalog' }) }} />
                                 )
                                 : (
                                     <>
                                         <div className="table-responsive">
-                                            <table className="table table-hover table-middle mb-0 text-center">
+                                            <table className="table table-hover table-middle mb-0">
                                                 <thead>
                                                     <tr>
                                                         <th><IntlMessages id="components.name" /></th>
@@ -179,7 +177,7 @@ class ProductTypeList extends Component {
                                                                     onClick={() => this.onEnterClick(catalog, 'PRODUCT')}
                                                                 >
                                                                     Voir les détails
-                                                                            <i className="zmdi zmdi-arrow-right mr-2" />
+                                                                    <i className="zmdi zmdi-arrow-right mr-2" />
                                                                 </Button>
                                                                 {/*<Switch
                                                                 checked={catalog.active}
