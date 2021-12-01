@@ -58,13 +58,7 @@ class PaymentInfo extends Component {
                return;
             }
 
-            _data.amount_to_pay = this.state.amount;
          }
-
-         if (this.state.amount)
-            _data.amount_to_pay = this.state.amount;
-         else
-            _data.amount_to_pay = this.getAmountToPay();
 
          this.props.setRequestGlobalAction(true);
          _data.address1 = this.props.data.addressLine1;
