@@ -505,6 +505,10 @@ export const STOCK = {
 
 export const BROKER = {
     SELF: '/broker',
+    USERS: {
+        SELF: '/broker/users',
+        LIST: '/broker/users/list',
+    },
     AGENCIES: {
         SELF: '/broker/agencies',
         LIST: '/broker/agencies/list',

@@ -32,7 +32,7 @@ class ClassicSale extends Component {
             hasAction: false,
         },
         {
-            label: "Borker",
+            label: "Broker",
             code: "BROKER",
             hasAction: false,
         },

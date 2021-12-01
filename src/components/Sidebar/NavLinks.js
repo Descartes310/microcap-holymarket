@@ -1038,37 +1038,27 @@ export default {
          ]
       }
    ],
-   broker: [
-      {
-         "menu_title": "Profile",
-         "menu_icon": "zmdi zmdi-accounts",
-         "path": USERS.USERS.PERSONNAL_SPACE,
+   broker: [{
+         "menu_title": "Mes agences",
+         "menu_icon": "zmdi zmdi-balance",
+         "path": BROKER.AGENCIES.LIST,
          "new_item": false,
          "child_routes": null,
          "permissions": [],
          'subject': Branch
       }, {
-         "menu_title": "Mes agences",
+         "menu_title": "Mes utilisateurs",
          "menu_icon": "zmdi zmdi-accounts",
-         "path": BROKER.AGENCIES.LIST,
+         "path": BROKER.USERS.LIST,
          "new_item": false,
          "child_routes": null,
          "permissions": [],
          'subject': Branch
       }
    ],
-   broker_agency: [
-      {
-         "menu_title": "Profile",
-         "menu_icon": "zmdi zmdi-accounts",
-         "path": USERS.USERS.PERSONNAL_SPACE,
-         "new_item": false,
-         "child_routes": null,
-         "permissions": [],
-         'subject': Branch
-      }, {
+   broker_agency: [{
          "menu_title": "Mes guichets",
-         "menu_icon": "zmdi zmdi-accounts",
+         "menu_icon": "zmdi zmdi-balance",
          "path": BROKER.COUNTERS.LIST,
          "new_item": false,
          "child_routes": null,
@@ -1076,18 +1066,9 @@ export default {
          'subject': Branch
       }
    ],
-   broker_counter: [
-      {
-         "menu_title": "Profile",
-         "menu_icon": "zmdi zmdi-accounts",
-         "path": USERS.USERS.PERSONNAL_SPACE,
-         "new_item": false,
-         "child_routes": null,
-         "permissions": [],
-         'subject': Branch
-      }, {
+   broker_counter: [{
          "menu_title": "Mes Caisses",
-         "menu_icon": "zmdi zmdi-accounts",
+         "menu_icon": "zmdi zmdi-balance",
          "path": BROKER.CASHDESKS.LIST,
          "new_item": false,
          "child_routes": null,
