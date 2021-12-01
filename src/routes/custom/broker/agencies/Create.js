@@ -13,25 +13,34 @@ import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import InputLabel from "@material-ui/core/InputLabel/InputLabel";
 import { Button, Form, FormGroup, Input as InputStrap } from 'reactstrap';
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
-import { createBrokerAgency, setRequestGlobalAction, getBrokerAccounts } from "Actions";
+import { createBrokerAgency, setRequestGlobalAction, getBrokerAccounts, getOrganisationMembers } from "Actions";
 
 class Create extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            email: '',
             label: '',
+            members: [],
             accounts: [],
-            password: '',
             account: null,
-            telephone: '',
+            managerId: null,
             hostCountry: null
         }
     }
 
     componentDidMount() {
         this.loadAccounts();
+        this.getMembers();
     }
+
+    getMembers = () => {
+        this.props.setRequestGlobalAction(true);
+        getOrganisationMembers('BROKER_AGENCY').then(members => {
+            this.setState({ members })
+        }).catch(err => {
+            this.setState({ members: [] })
+        }).finally(() => this.props.setRequestGlobalAction(false))
+    };
 
     loadAccounts = () => {
         this.props.setRequestGlobalAction(true);
@@ -58,8 +67,8 @@ class Create extends Component {
             NotificationManager.error("Le pays de l'agence doit être sélectionné");
             return false;
         }
-        if (this.state.email.trim().length <= 0 || this.state.telephone.trim().length <= 0 || this.state.password.trim().length <= 0) {
-            NotificationManager.error("Les informations du responsables sont obligatoires");
+        if (!this.state.managerId) {
+            NotificationManager.error("Le responsable est obligatoire");
             return false;
         }
 
@@ -71,10 +80,8 @@ class Create extends Component {
             this.props.setRequestGlobalAction(true);
             let data = {
                 label: this.state.label,
-                email: this.state.email,
-                password: this.state.password,
                 product_id: this.state.account,
-                telephone: this.state.telephone,
+                manager_id: this.state.managerId,
                 hostCountry: this.state.hostCountry,
             };
 
@@ -83,17 +90,13 @@ class Create extends Component {
                     NotificationManager.success("Nouvelle agence créée avec succès");
                     this.props.history.push(BROKER.AGENCIES.LIST);
                 })
-                .catch((err) => {
-                    NotificationManager.error("L'adresse email est déjà utilisée");
-                    this.props.history.push(BROKER.AGENCIES.LIST)
-                })
                 .finally(() => this.props.setRequestGlobalAction(false));
         }
     };
 
     render() {
         const { match, history } = this.props;
-        const { accounts } = this.state;
+        const { accounts, members } = this.state;
 
         return (
             <>
@@ -165,49 +168,25 @@ class Create extends Component {
 
                                 <div className="row">
                                     <FormGroup className="col-sm-12 has-wrapper">
-                                        <InputLabel className="text-left" htmlFor="email">
-                                            Adresse email
+                                        <InputLabel className="text-left" htmlFor="manager">
+                                            Responsable
                                         </InputLabel>
-                                        <InputStrap
-                                            required
-                                            id="email"
-                                            name={'email'}
-                                            value={this.state.email}
-                                            className="has-input input-lg input-border"
-                                            onChange={event => this.handleOnFormChange('email', event.target.value)}
-                                        />
-                                    </FormGroup>
-                                </div>
-
-                                <div className="row">
-                                    <FormGroup className="col-sm-12 has-wrapper">
-                                        <InputLabel className="text-left" htmlFor="telephone">
-                                            Numéro de téléphone
-                                        </InputLabel>
-                                        <InputStrap
-                                            required
-                                            id="telephone"
-                                            name={'telephone'}
-                                            value={this.state.telephone}
-                                            className="has-input input-lg input-border"
-                                            onChange={event => this.handleOnFormChange('telephone', event.target.value)}
-                                        />
-                                    </FormGroup>
-                                </div>
-
-                                <div className="row">
-                                    <FormGroup className="col-sm-12 has-wrapper">
-                                        <InputLabel className="text-left" htmlFor="password">
-                                            Mot de passe
-                                        </InputLabel>
-                                        <InputStrap
-                                            required
-                                            id="password"
-                                            name={'password'}
-                                            value={this.state.password}
-                                            className="has-input input-lg input-border"
-                                            onChange={event => this.handleOnFormChange('password', event.target.value)}
-                                        />
+                                        <select
+                                            className="form-control"
+                                            style={{ width: '100%', display: 'inline-block' }}
+                                            onChange={(e) => this.setState({ managerId: e.target.value })}
+                                        >
+                                            <option value={null}>
+                                                Choisissez un responsable
+                                            </option>
+                                            {
+                                                members.map((item, index) => (
+                                                    <option key={index} value={item.user.id}>
+                                                        {item.name}
+                                                    </option>
+                                                ))
+                                            }
+                                        </select>
                                     </FormGroup>
                                 </div>
 

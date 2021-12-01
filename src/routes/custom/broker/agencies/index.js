@@ -1,5 +1,6 @@
 import React from 'react';
 import List from './List';
+import Users from './Users';
 import Create from './Create';
 import Mouvements from './Mouvements';
 import { BROKER } from 'Url/frontendUrl';
@@ -13,6 +14,7 @@ const BrokerAgency = ({ match }) => {
                 <Route path={BROKER.AGENCIES.LIST} component={List} />
                 <Route path={BROKER.AGENCIES.CREATE} component={Create} />
                 <Route path={BROKER.AGENCIES.MOUVEMENTS} component={Mouvements} />
+                <Route path={BROKER.AGENCIES.USER} component={Users} />
             </Switch>
         </div>
     );

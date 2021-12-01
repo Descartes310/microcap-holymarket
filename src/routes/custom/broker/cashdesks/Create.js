@@ -7,23 +7,32 @@ import { NotificationManager } from "react-notifications";
 import { BROKER, joinUrlWithParamsId } from "Url/frontendUrl";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import InputLabel from "@material-ui/core/InputLabel/InputLabel";
-import { createCounterCashdesk, setRequestGlobalAction } from "Actions";
 import { Button, Form, FormGroup, Input as InputStrap } from 'reactstrap';
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
+import { createCounterCashdesk, setRequestGlobalAction, getOrganisationMembers } from "Actions";
 
 class Create extends Component {
     constructor(props) {
         super(props);
         this.state = {
             label: '',
-            email: '',
-            password: '',
-            telephone: '',
+            members: [],
+            managerId: null,
         }
     }
 
     componentDidMount() {
+        this.getMembers();
     }
+
+    getMembers = () => {
+        this.props.setRequestGlobalAction(true);
+        getOrganisationMembers('BROKER_CASHDESK').then(members => {
+            this.setState({ members })
+        }).catch(err => {
+            this.setState({ members: [] })
+        }).finally(() => this.props.setRequestGlobalAction(false))
+    };
 
     handleOnFormChange = (field, value) => {
         this.setState({ [field]: value });
@@ -34,8 +43,9 @@ class Create extends Component {
             NotificationManager.error(this.props.intl.formatMessage({ id: 'form.error.verify.name' }));
             return false;
         }
-        if (this.state.email.trim().length <= 0 || this.state.telephone.trim().length <= 0 || this.state.password.trim().length <= 0) {
-            NotificationManager.error("Les informations du responsable sont obligatoires");
+
+        if (!this.state.managerId) {
+            NotificationManager.error("Le responsable est obligatoire");
             return false;
         }
 
@@ -47,9 +57,7 @@ class Create extends Component {
             this.props.setRequestGlobalAction(true);
             let data = {
                 label: this.state.label,
-                email: this.state.email,
-                password: this.state.password,
-                telephone: this.state.telephone,
+                manager_id: this.state.managerId,
             };
 
             createCounterCashdesk(data)
@@ -63,6 +71,7 @@ class Create extends Component {
 
     render() {
         const { match, history } = this.props;
+        const { members } = this.state;
 
         return (
             <>
@@ -96,49 +105,25 @@ class Create extends Component {
 
                                 <div className="row">
                                     <FormGroup className="col-sm-12 has-wrapper">
-                                        <InputLabel className="text-left" htmlFor="email">
-                                            Adresse email
+                                        <InputLabel className="text-left" htmlFor="manager">
+                                            Responsable
                                         </InputLabel>
-                                        <InputStrap
-                                            required
-                                            id="email"
-                                            name={'email'}
-                                            value={this.state.email}
-                                            className="has-input input-lg input-border"
-                                            onChange={event => this.handleOnFormChange('email', event.target.value)}
-                                        />
-                                    </FormGroup>
-                                </div>
-
-                                <div className="row">
-                                    <FormGroup className="col-sm-12 has-wrapper">
-                                        <InputLabel className="text-left" htmlFor="telephone">
-                                            Numéro de téléphone
-                                        </InputLabel>
-                                        <InputStrap
-                                            required
-                                            id="telephone"
-                                            name={'telephone'}
-                                            value={this.state.telephone}
-                                            className="has-input input-lg input-border"
-                                            onChange={event => this.handleOnFormChange('telephone', event.target.value)}
-                                        />
-                                    </FormGroup>
-                                </div>
-
-                                <div className="row">
-                                    <FormGroup className="col-sm-12 has-wrapper">
-                                        <InputLabel className="text-left" htmlFor="password">
-                                            Mot de passe
-                                        </InputLabel>
-                                        <InputStrap
-                                            required
-                                            id="password"
-                                            name={'password'}
-                                            value={this.state.password}
-                                            className="has-input input-lg input-border"
-                                            onChange={event => this.handleOnFormChange('password', event.target.value)}
-                                        />
+                                        <select
+                                            className="form-control"
+                                            style={{ width: '100%', display: 'inline-block' }}
+                                            onChange={(e) => this.setState({ managerId: e.target.value })}
+                                        >
+                                            <option value={null}>
+                                                Choisissez un responsable
+                                            </option>
+                                            {
+                                                members.map((item, index) => (
+                                                    <option key={index} value={item.user.id}>
+                                                        {item.name}
+                                                    </option>
+                                                ))
+                                            }
+                                        </select>
                                     </FormGroup>
                                 </div>
 

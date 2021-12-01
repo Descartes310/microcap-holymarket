@@ -373,6 +373,19 @@ export const getUncompleteAccounts = () => {
     return makeRequest('get', ACCOUNT.UNCOMPLETE);
 };
 
+export const getOrganisationMembers = (role = null) => {
+    return makeRequest('get', `${USERS.GET_MEMBER_OF_ORGANISATIONS}${role ? '?role='+role : ''}`);
+};
+
+export const findUserByMembership = (membership) => {
+    return makeRequest('get', `${USERS.FIND_BY_MEMBERSHIP}?membership=${membership}`);
+};
+
+export const addMemberToOrganisation = (id, data) => {
+    const url = joinBaseUrlWithParamsId(`${USERS.ADD_MEMBER_TO_ORGANISATIONS}`, id);
+    return makeRequest('post', url, data);
+};
+
 export const createUsers = (data, branchId) => {
     const url = `${USERS.CREATE.PERSON}?branch_id=${branchId}`;
     return makeRequest('post', url, data);

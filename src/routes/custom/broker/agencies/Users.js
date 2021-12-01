@@ -6,22 +6,51 @@ import { getFilePath } from "Helpers/helpers";
 import CustomList from "Components/CustomList";
 import UserAvatar from "Components/UserAvatar";
 import { withStyles } from "@material-ui/core";
-import { setRequestGlobalAction } from "Actions";
 import TimeFromMoment from "Components/TimeFromMoment";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
+import AddMemberByAdhesion from "Components/AddMemberByAdhesion";
+import { setRequestGlobalAction, getOrganisationMembers } from "Actions";
 
+const ROLES = [
+    {
+        value: 'BROKER_AGENCY',
+        label: "Chef d'agence"
+    }
+    // {
+    //     value: 'BROKER_COUNTER',
+    //     label: 'Chef de guichet'
+    // },
+    // {
+    //     value: 'BROKER_CASHDESK',
+    //     label: 'Cassier'
+    // }
+]
 class UserList extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
+            show: false,
+            members: []
         }
     }
 
     componentDidMount() {
+        this.getMembers();
     }
 
+    getMembers = () => {
+        this.props.setRequestGlobalAction(true);
+        getOrganisationMembers().then(members => {
+            this.setState({ members })
+        }).catch(err => {
+            this.setState({ members: [] })
+        }).finally(() => this.props.setRequestGlobalAction(false))
+    };
+
     render() {
+
+        const { members } = this.state;
 
         return (
             <>
@@ -30,7 +59,8 @@ class UserList extends Component {
                 />
                 <CustomList
                     loading={false}
-                    list={[]}
+                    list={members}
+                    onAddClick={() => this.setState({ show: true })}
                     itemsFoundText={n => `${n} utilisateurs trouvés`}
                     renderItem={list => (
                         <>
@@ -48,17 +78,16 @@ class UserList extends Component {
                                                 <th>Avatar</th>
                                                 <th>Nom</th>
                                                 <th>Adresse email</th>
-                                                <th>Date d'inscription</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {list && list.map((user, key) => (
+                                            {list && list.map((item, key) => (
                                                 <tr key={key} className="cursor-pointer">
                                                     <td>
                                                         <div className="avatar-wrap w-10 align-self-center d-sm-r-none">
                                                             <UserAvatar
-                                                                avatar={getFilePath(user.avatar)}
-                                                                name={user.name}
+                                                                avatar={getFilePath(item.avatar)}
+                                                                name={item.name}
                                                             />
                                                         </div>
                                                     </td>
@@ -67,26 +96,14 @@ class UserList extends Component {
                                                             <div className="media-left media-middle mr-15">
                                                             </div>
                                                             <div className="media-body pt-10">
-                                                                <h4 className="m-0 fw-bold text-dark">{user.name}</h4>
+                                                                <h4 className="m-0 fw-bold text-dark">{item.name}</h4>
                                                             </div>
                                                         </div>
                                                     </td>
                                                     <td>
                                                         <div className="media">
                                                             <div className="media-body pt-10">
-                                                                <h4 className="m-0 fw-bold text-dark">{user.email}</h4>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div className="media">
-                                                            <div className="media-body pt-10">
-                                                                <h4 className="m-0 fw-bold text-dark">
-                                                                    <TimeFromMoment
-                                                                        time={user.createdAt}
-                                                                        showFullDate
-                                                                    />
-                                                                </h4>
+                                                                <h4 className="m-0 fw-bold text-dark">{item.user.email}</h4>
                                                             </div>
                                                         </div>
                                                     </td>
@@ -99,6 +116,14 @@ class UserList extends Component {
                             }
                         </>
                     )}
+                />
+                <AddMemberByAdhesion
+                    roles={ROLES}
+                    show={this.state.show}
+                    onClose={() => {
+                        this.setState({ show: false });
+                        this.getMembers();
+                    }}
                 />
             </>
         );

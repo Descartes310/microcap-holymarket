@@ -4,7 +4,6 @@ import React, { Component } from 'react';
 import Button from "@material-ui/core/Button";
 import { withRouter } from "react-router-dom";
 import { withStyles } from "@material-ui/core";
-import { AbilityContext } from "Permissions/Can";
 import { setRequestGlobalAction } from "Actions";
 import CancelIcon from '@material-ui/icons/Cancel';
 import Dialog from "@material-ui/core/Dialog/Dialog";
@@ -12,9 +11,8 @@ import IconButton from "@material-ui/core/IconButton";
 import InputLabel from "@material-ui/core/InputLabel/InputLabel";
 import { Form, FormGroup, Input as InputStrap } from "reactstrap";
 import DialogTitle from "@material-ui/core/DialogTitle/DialogTitle";
-import { getOrganisationByReference } from 'Actions/independentActions';
 import DialogContent from "@material-ui/core/DialogContent/DialogContent";
-;
+import { findUserByMembership, addMemberToOrganisation } from 'Actions/independentActions';
 
 class AddMemberByAdhesion extends Component {
 
@@ -23,7 +21,7 @@ class AddMemberByAdhesion extends Component {
         this.state = {
             role: null,
             adhesion: '',
-            organisation: null,
+            user: null,
         }
     }
 
@@ -31,19 +29,27 @@ class AddMemberByAdhesion extends Component {
     }
 
     onResearch = () => {
-        getOrganisationByReference(this.state.adhesion).then(data => {
-            this.setState({ organisation: data })
+        findUserByMembership(this.state.adhesion).then(data => {
+            this.setState({ user: data })
         }).catch(err => {
-            this.setState({ organisation: null })
+            this.setState({ user: null })
         })
     };
 
     onSubmit = () => {
+        addMemberToOrganisation(this.state.user.id, {role: this.state.role}).catch(err => {
+            NotificationManager.error("Echec de la création du partenaire");
+            onClose();
+        }).finally(() => {
+            this.setState({ user: null });
+            this.props.onClose();
+        })
     };
 
     render() {
 
-        const { show, onClose } = this.props;
+        const { user } = this.state;
+        const { show, onClose, roles } = this.props;
 
         return (
             <Dialog
@@ -98,21 +104,21 @@ class AddMemberByAdhesion extends Component {
                                     </FormGroup>
                                 </div>
                                 <FormGroup className="has-wrapper">
-                                    <InputLabel className="text-left" htmlFor="corporateName">
-                                        Raison social
+                                    <InputLabel className="text-left" htmlFor="name">
+                                        Noms / Raison sociale
                                     </InputLabel>
                                     <InputStrap
                                         disabled
                                         type="text"
-                                        className="input-lg"
+                                        value={user?.name}
                                         id="corporateName"
                                         name="corporateName"
-                                        value={this.state.organisation?.corporateName}
+                                        className="input-lg"
                                     />
                                 </FormGroup>
                                 <FormGroup className="has-wrapper">
                                     <InputLabel className="text-left" htmlFor="commercialName">
-                                        Nom commercial
+                                        Adresse email
                                     </InputLabel>
                                     <InputStrap
                                         disabled
@@ -120,12 +126,12 @@ class AddMemberByAdhesion extends Component {
                                         className="input-lg"
                                         id="commercialName"
                                         name="commercialName"
-                                        value={this.state.organisation?.commercialName}
+                                        value={user?.email}
                                     />
                                 </FormGroup>
                                 <FormGroup className="has-wrapper">
                                     <InputLabel className="text-left" htmlFor="immatriculationValue">
-                                        Immatriculation
+                                        Identification
                                     </InputLabel>
                                     <InputStrap
                                         disabled
@@ -133,34 +139,36 @@ class AddMemberByAdhesion extends Component {
                                         className="input-lg"
                                         id="immatriculationValue"
                                         name="immatriculationValue"
-                                        value={this.state.organisation?.immatriculationValue}
+                                        value={user?.identification}
                                     />
                                 </FormGroup>
-                                <FormGroup className="has-wrapper">
-                                    <InputLabel className="text-left" htmlFor="type">
-                                        Role de l'utilisateur
-                                    </InputLabel>
-                                    <select
-                                        className="form-control"
-                                        style={{ width: '100%', display: 'inline-block' }}
-                                        onChange={(e) => this.setState({ role: e.target.value })}
-                                    >
-                                        <option value={null}>
-                                            Choisissez un role
-                                        </option>
-                                        {
-                                            [].map(ua => (
-                                                <option key={ua.id} value={ua.id}>
-                                                    {ua.label}
-                                                </option>
-                                            ))
-                                        }
-                                    </select>
-                                </FormGroup>
+                                {user && (
+                                    <FormGroup className="has-wrapper">
+                                        <InputLabel className="text-left" htmlFor="type">
+                                            Role de l'utilisateur
+                                        </InputLabel>
+                                        <select
+                                            className="form-control"
+                                            style={{ width: '100%', display: 'inline-block' }}
+                                            onChange={(e) => this.setState({ role: e.target.value })}
+                                        >
+                                            <option value={null}>
+                                                Choisissez un role
+                                            </option>
+                                            {
+                                                roles.map(role => (
+                                                    <option key={role.value} value={role.value}>
+                                                        {role.label}
+                                                    </option>
+                                                ))
+                                            }
+                                        </select>
+                                    </FormGroup>
+                                )}
                                 <FormGroup>
                                     <Button
                                         color="primary"
-                                        disabled={!this.state.organisation || !this.state.type}
+                                        disabled={!this.state.user || !this.state.role}
                                         variant="contained"
                                         onClick={() => this.onSubmit()}
                                         className="text-white font-weight-bold"

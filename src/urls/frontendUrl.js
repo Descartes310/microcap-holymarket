@@ -505,26 +505,25 @@ export const STOCK = {
 
 export const BROKER = {
     SELF: '/broker',
-    USERS: {
-        SELF: '/broker/users',
-        LIST: '/broker/users/list',
-    },
     AGENCIES: {
         SELF: '/broker/agencies',
         LIST: '/broker/agencies/list',
         CREATE: '/broker/agencies/create',
+        USERS: '/broker/agencies/users/list',
         MOUVEMENTS: '/broker/agencies/:id/mouvements',
     },
     COUNTERS: {
         SELF: '/broker/counters',
         LIST: '/broker/counters/list',
         CREATE: '/broker/counters/create',
+        USERS: '/broker/counters/users/list',
         MOUVEMENTS: '/broker/counters/:id/mouvements',
     },
     CASHDESKS: {
         SELF: '/broker/cashdesks',
         LIST: '/broker/cashdesks/list',
         CREATE: '/broker/cashdesks/create',
+        USERS: '/broker/cashdesks/users/list',
         MOUVEMENTS: '/broker/cashdesks/:id/mouvements',
     }
 };

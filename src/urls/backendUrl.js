@@ -2,10 +2,6 @@ import AppConfig from 'Constants/AppConfig';
 
 export const BASE = `${AppConfig.api.baseUrl}`;
 
-const shouldHavePublic = true;
-
-const publicPrefix = shouldHavePublic ? 'public/' : '';
-
 export const AUTH = {
     LOGIN: 'oauth/token',
     LOGIN_WITH_SERVICE_NUMBER: 'auth/login',
@@ -16,8 +12,8 @@ export const AUTH = {
         OPERATORS: 'auth/countries/{country}/microcap-operators'
     },
     REGISTER: {
-        PERSON: publicPrefix + 'users/persons',
-        ORGANISATION: publicPrefix + 'users/organisations'
+        PERSON: 'api/users/persons/create',
+        ORGANISATION: 'api/users/organisations/create'
     },
     RESET_PASSWORD: {
         MAIN: 'auth/reset-password',
@@ -214,18 +210,21 @@ export const USERS = {
     DELETE: 'api/users/{id}/delete',
     VERIFIED: 'api/users/{id}/verified',
     GET_ALL: 'api/users/persons',
+    FIND_BY_MEMBERSHIP: 'api/users/membership',
     UPDATE_CURRENCY: 'api/users/currency/{id}',
     UPDATE_PROFILE: 'api/users/update/profile',
     GET_ALL_BY_ORGANISATION: 'api/users/persons/by-organisation',
-    GET_ALL_PARTNER: 'public/users/organisations/branch/{id}/partner',
-    GET_ALL_PARTNER_OPERATOR: 'public/users/organisations/branch/{id}/partner/operator',
-    GET_ALL_PARTNER_OPERATOR_ME: 'public/users/organisations/partner/operator/me/{id}',
-    GET_ALL_ORGANISATIONS: 'public/users/organisations',
-    GET_ORGANISATION_REFERENCE: 'public/users/organisations/adhesion/{id}',
+    GET_ALL_PARTNER: 'api/users/organisations/branch/{id}/partner',
+    GET_ALL_PARTNER_OPERATOR: 'api/users/organisations/branch/{id}/partner/operator',
+    GET_ALL_PARTNER_OPERATOR_ME: 'api/users/organisations/partner/operator/me/{id}',
+    GET_ALL_ORGANISATIONS: 'api/users/organisations',
+    ADD_MEMBER_TO_ORGANISATIONS: 'api/users/organisations/members/{id}',
+    GET_MEMBER_OF_ORGANISATIONS: 'api/users/organisations/members',
+    GET_ORGANISATION_REFERENCE: 'api/users/organisations/adhesion/{id}',
     CREATE: {
         PERSON: 'api/users/persons/with-profile',
-        ORGANISATION: 'public/users/organisations/with-profile',
-        PARTNER: 'public/users/organisations/{id}/partner',
+        ORGANISATION: 'api/users/organisations/with-profile',
+        PARTNER: 'api/users/organisations/{id}/partner',
     },
     UPDATE: {
         PERSON: '/api/users',

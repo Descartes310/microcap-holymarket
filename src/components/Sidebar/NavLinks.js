@@ -1049,7 +1049,7 @@ export default {
       }, {
          "menu_title": "Mes utilisateurs",
          "menu_icon": "zmdi zmdi-accounts",
-         "path": BROKER.USERS.LIST,
+         "path": BROKER.AGENCIES.USERS,
          "new_item": false,
          "child_routes": null,
          "permissions": [],
@@ -1064,12 +1064,28 @@ export default {
          "child_routes": null,
          "permissions": [],
          'subject': Branch
+      }, {
+         "menu_title": "Mes utilisateurs",
+         "menu_icon": "zmdi zmdi-accounts",
+         "path": BROKER.COUNTERS.USERS,
+         "new_item": false,
+         "child_routes": null,
+         "permissions": [],
+         'subject': Branch
       }
    ],
    broker_counter: [{
          "menu_title": "Mes Caisses",
          "menu_icon": "zmdi zmdi-balance",
          "path": BROKER.CASHDESKS.LIST,
+         "new_item": false,
+         "child_routes": null,
+         "permissions": [],
+         'subject': Branch
+      }, {
+         "menu_title": "Mes utilisateurs",
+         "menu_icon": "zmdi zmdi-accounts",
+         "path": BROKER.CASHDESKS.USERS,
          "new_item": false,
          "child_routes": null,
          "permissions": [],

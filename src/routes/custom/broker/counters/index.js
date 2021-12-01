@@ -1,5 +1,6 @@
 import React from 'react';
 import List from './List';
+import Users from './Users';
 import Create from './Create';
 import Mouvements from './Mouvements';
 import { BROKER } from 'Url/frontendUrl';
@@ -12,6 +13,7 @@ const BrokerAgency = ({ match }) => {
                 <Redirect exact from={`${match.url}/`} to={BROKER.COUNTERS.LIST} />
                 <Route path={BROKER.COUNTERS.CREATE} component={Create} />
                 <Route path={BROKER.COUNTERS.MOUVEMENTS} component={Mouvements} />
+                <Route path={BROKER.COUNTERS.USERS} component={Users} />
                 <Route path={BROKER.COUNTERS.LIST} component={List} />
             </Switch>
         </div>
