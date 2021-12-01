@@ -14,7 +14,12 @@ class UpdateAccount extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            iban: ''
+            countryCode: '',
+            controlKey: '',
+            bankCode: '',
+            counterCode: '',
+            accountNumber: '',
+            accountControlKey: '',
         }
     }
 
@@ -27,8 +32,28 @@ class UpdateAccount extends Component {
     };
 
     validate = () => {
-        if (this.state.iban.trim().length <= 0) {
-            NotificationManager.error(this.props.intl.formatMessage({ id: 'form.error.verify.name' }));
+        if (this.state.countryCode.trim().length <= 0) {
+            NotificationManager.error('Le code pays est obligatoire');
+            return false;
+        }
+        if (this.state.controlKey.trim().length <= 0) {
+            NotificationManager.error('La clé de controle est obligatoire');
+            return false;
+        }
+        if (this.state.bankCode.trim().length <= 0) {
+            NotificationManager.error('Le code banque est obligatoire');
+            return false;
+        }
+        if (this.state.counterCode.trim().length <= 0) {
+            NotificationManager.error('Le code guichet est obligatoire');
+            return false;
+        }
+        if (this.state.accountNumber.trim().length <= 0) {
+            NotificationManager.error('Le numéro de compte est obligatoire');
+            return false;
+        }
+        if (this.state.accountControlKey.trim().length <= 0) {
+            NotificationManager.error('Lea clé du numéro de compte est obligatoire');
             return false;
         }
 
@@ -37,9 +62,13 @@ class UpdateAccount extends Component {
 
     onSubmit = () => {
         if (this.validate()) {
+
+            const { countryCode, controlKey, bankCode, counterCode, accountNumber, accountControlKey } = this.state;
+            
             this.props.setRequestGlobalAction(true);
+            
             let data = {
-                iban: this.state.iban,
+                iban: countryCode+'-'+controlKey+'-'+bankCode+'-'+counterCode+'-'+accountNumber+'-'+accountControlKey
             };
 
             updateAccountInfos(this.accountId, data)
@@ -65,18 +94,100 @@ class UpdateAccount extends Component {
                         <RctCollapsibleCard>
                             <Form onSubmit={this.onSubmit}>
 
+                                <h2 className="font-weight-bold mb-30">IBAN du compte</h2>
+
                                 <div className="row">
                                     <FormGroup className="col-sm-12 has-wrapper">
-                                        <InputLabel className="text-left" htmlFor="iban">
-                                            IBAN
+                                        <InputLabel className="text-left" htmlFor="countryCode">
+                                            Code pays
                                         </InputLabel>
                                         <InputStrap
                                             required
-                                            id="iban"
-                                            name={'iban'}
-                                            value={this.state.iban}
+                                            id="countryCode"
+                                            name={'countryCode'}
+                                            value={this.state.countryCode}
                                             className="has-input input-lg input-border"
-                                            onChange={event => this.handleOnFormChange('iban', event.target.value)}
+                                            onChange={event => this.handleOnFormChange('countryCode', event.target.value)}
+                                        />
+                                    </FormGroup>
+                                </div>
+
+                                <div className="row">
+                                    <FormGroup className="col-sm-12 has-wrapper">
+                                        <InputLabel className="text-left" htmlFor="controlKey">
+                                            Clé de controle
+                                        </InputLabel>
+                                        <InputStrap
+                                            required
+                                            id="controlKey"
+                                            name={'controlKey'}
+                                            value={this.state.controlKey}
+                                            className="has-input input-lg input-border"
+                                            onChange={event => this.handleOnFormChange('controlKey', event.target.value)}
+                                        />
+                                    </FormGroup>
+                                </div>
+
+                                <div className="row">
+                                    <FormGroup className="col-sm-12 has-wrapper">
+                                        <InputLabel className="text-left" htmlFor="bankCode">
+                                            Code banque
+                                        </InputLabel>
+                                        <InputStrap
+                                            required
+                                            id="bankCode"
+                                            name={'bankCode'}
+                                            value={this.state.bankCode}
+                                            className="has-input input-lg input-border"
+                                            onChange={event => this.handleOnFormChange('bankCode', event.target.value)}
+                                        />
+                                    </FormGroup>
+                                </div>
+
+                                <div className="row">
+                                    <FormGroup className="col-sm-12 has-wrapper">
+                                        <InputLabel className="text-left" htmlFor="counterCode">
+                                            Code guichet
+                                        </InputLabel>
+                                        <InputStrap
+                                            required
+                                            id="counterCode"
+                                            name={'counterCode'}
+                                            value={this.state.counterCode}
+                                            className="has-input input-lg input-border"
+                                            onChange={event => this.handleOnFormChange('counterCode', event.target.value)}
+                                        />
+                                    </FormGroup>
+                                </div>
+
+                                <div className="row">
+                                    <FormGroup className="col-sm-12 has-wrapper">
+                                        <InputLabel className="text-left" htmlFor="accountNumber">
+                                            Numéro de compte
+                                        </InputLabel>
+                                        <InputStrap
+                                            required
+                                            id="accountNumber"
+                                            name={'accountNumber'}
+                                            value={this.state.accountNumber}
+                                            className="has-input input-lg input-border"
+                                            onChange={event => this.handleOnFormChange('accountNumber', event.target.value)}
+                                        />
+                                    </FormGroup>
+                                </div>
+
+                                <div className="row">
+                                    <FormGroup className="col-sm-12 has-wrapper">
+                                        <InputLabel className="text-left" htmlFor="accountControlKey">
+                                            Clé de controle du numéro de compte
+                                        </InputLabel>
+                                        <InputStrap
+                                            required
+                                            id="accountControlKey"
+                                            name={'accountControlKey'}
+                                            value={this.state.accountControlKey}
+                                            className="has-input input-lg input-border"
+                                            onChange={event => this.handleOnFormChange('accountControlKey', event.target.value)}
                                         />
                                     </FormGroup>
                                 </div>
