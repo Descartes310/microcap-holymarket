@@ -4,7 +4,7 @@ import Button from '@material-ui/core/Button';
 import MaskedInput from 'react-text-mask'
 import { NotificationManager } from 'react-notifications';
 import StripeCheckout from 'react-stripe-checkout';
-import {computeAmountFromCurrency, normalizeCartItems} from 'Helpers/helpers'
+import { computeAmountFromCurrency, normalizeCartItems } from 'Helpers/helpers'
 import Cart from "Models/Cart";
 import { connect } from "react-redux";
 import { setRequestGlobalAction } from "Actions/RequestGlobalAction";
@@ -34,7 +34,7 @@ class PaymentInfo extends Component {
       entringCode: false,
       accounts: [],
       code: '',
-      payments: {amount: 0, currency: 'EUR'},
+      payments: { amount: 0, currency: 'EUR' },
       selectingAccount: false,
       freePayment: this.props.order.orderStatus == 'NOT_PAID' ? false : true,
       amount: 0,
@@ -60,6 +60,12 @@ class PaymentInfo extends Component {
 
             _data.amount_to_pay = this.state.amount;
          }
+
+         if (this.state.amount)
+            _data.amount_to_pay = this.state.amount;
+         else
+            _data.amount_to_pay = this.getAmountToPay();
+
          this.props.setRequestGlobalAction(true);
          _data.address1 = this.props.data.addressLine1;
          _data.address2 = this.props.data.addressLine2;
@@ -116,6 +122,12 @@ class PaymentInfo extends Component {
       this.props.history.push(PRODUCT.ORDERS);
    };
 
+   getAmountToPay = () => {
+      return freePayment && this.state.amount > 0 ? this.state.amount * this.props.authUser.user.currency.decimal : (Number(computeAmountFromCurrency(this.props.currencies, null, cart.items.map((e) => {
+         return { amount: e.price, currency: e.currency, quantity: e.quantity }
+      }), this.props.authUser.user.currency, null, null))) * this.props.authUser.user.currency.decimal;
+   }
+
 
    render() {
       const { showPaymentBox, entringCode, code, selectingAccount, showConfirmBox, freePayment } = this.state;
@@ -150,7 +162,7 @@ class PaymentInfo extends Component {
                               onClick={() => this.setState({ freePayment: false })}
                            >
                               Annuler
-                     </Button> : null}
+                           </Button> : null}
                      <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', marginTop: 50 }}>
                         <ul className="list-unstyled dropdown-body" style={{ flex: 1 }}>
                            <li className="d-flex justify-content-between p-3">
@@ -204,7 +216,7 @@ class PaymentInfo extends Component {
                               type="number"
                               name="amount"
                               id="amount"
-                              style={{ border: '1px solid #FFC107 '}}
+                              style={{ border: '1px solid #FFC107 ' }}
                               placeholder="Entrer le montant à payer"
                               onChange={(e) => this.setState({
                                  amount: e.target.value,
@@ -232,7 +244,7 @@ class PaymentInfo extends Component {
                   </div>
                   <p>
                      Utilisez votre carte de crédit pour effectuer le payement
-                     </p>
+                  </p>
                   <StripeCheckout
                      stripeKey={AppConfig.payments.stripe}
                      token={this.onToken}
@@ -265,7 +277,7 @@ class PaymentInfo extends Component {
                   </p>
                   <Button onClick={() => this.setState({ showPaymentBox: true, entringCode: true, selectingAccount: false })} color="secondary" className="text-white" variant="contained">
                      Payer
-               </Button>
+                  </Button>
                </div>
                {
                   this.state.accounts.length > 0
@@ -283,10 +295,10 @@ class PaymentInfo extends Component {
                         </div>
                         <p>
                            Utilisez un de vos compte crédité pour procéder au règlement
-                  </p>
+                        </p>
                         <Button onClick={() => this.setState({ showPaymentBox: true, selectingAccount: true, entringCode: false })} color="secondary" className="text-white" variant="contained">
                            Payer
-                  </Button>
+                        </Button>
                      </div> : null}
                {/* <div className='col-md-4 col-lg-4 col-sm-12' style={{ textAlign: 'center', paddingTop: 20 }}>
                   <h1>Offre prépayéé</h1>
@@ -316,10 +328,10 @@ class PaymentInfo extends Component {
                         </div>
                         <p>
                            Vous pouvez effectuer un paiement en plusieurs tranches pour l'achat
-                     </p>
+                        </p>
                         <Button color="secondary" className="text-white" variant="contained" onClick={() => this.setState({ freePayment: !freePayment })}>
                            Payer
-                     </Button>
+                        </Button>
                      </div>
                      : null}
             </div>
@@ -333,7 +345,7 @@ class PaymentInfo extends Component {
                <DialogTitle id="form-dialog-title">
                   <div className="row justify-content-between align-items-center">
                      Effectuer le paiement
-                            <IconButton
+                     <IconButton
                         color="primary"
                         aria-label="close"
                         className="text-danger"
@@ -381,7 +393,7 @@ class PaymentInfo extends Component {
                            <Col sm={2}>
                               <Button onClick={() => this.onFormComplete(null, account.id)} size="large" variant="contained" style={{ color: 'white', backgroundColor: '#1976d2' }}>
                                  Payer
-                           </Button>
+                              </Button>
                            </Col>
                         </FormGroup>
                      ))}
