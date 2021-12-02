@@ -138,7 +138,7 @@ class Create extends Component {
                                             onChange={event => { this.setState({ hostCountry: event.target.value }) }}
                                             input={<Input name="hostCountry" id="hostCountry" />}>
                                             {CountryManager.optionsNameAndFlag.map((country, __) => (
-                                                <MenuItem value={country.name}>
+                                                <MenuItem value={country.id}>
                                                     {country.name}
                                                 </MenuItem>
                                             ))}

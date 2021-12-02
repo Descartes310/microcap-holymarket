@@ -1091,5 +1091,7 @@ export default {
          "permissions": [],
          'subject': Branch
       }
+   ],
+   broker_cashdesk: [
    ]
 }

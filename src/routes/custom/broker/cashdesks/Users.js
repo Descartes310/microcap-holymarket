@@ -20,10 +20,10 @@ const ROLES = [
     //     value: 'BROKER_COUNTER',
     //     label: 'Chef de guichet'
     // },
-    // {
-    //     value: 'BROKER_CASHDESK',
-    //     label: 'Cassier'
-    // }
+    {
+        value: 'BROKER_CASHDESK',
+        label: 'Cassier'
+    }
 ]
 class UserList extends Component {
 
