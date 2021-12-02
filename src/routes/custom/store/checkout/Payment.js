@@ -104,7 +104,6 @@ class PaymentInfo extends Component {
          })
          .catch((err) => {
             console.log("Error => ", err)
-
          })
    };
 
