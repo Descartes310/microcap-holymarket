@@ -17,7 +17,7 @@ import {getOrder} from "Actions/independentActions";
 import {connect} from "react-redux";
 import {injectIntl} from "react-intl";
 import {withRouter} from "react-router-dom";
-import {withStyles} from "@material-ui/core";
+import {PRODUCT} from "Url/frontendUrl";
 import { setRequestGlobalAction} from "Actions";
 import {deleteItemFromCart, onAddItemToCart } from "Actions/CartActions";
 import {NotificationManager} from "react-notifications";
@@ -41,10 +41,14 @@ class Checkout extends Component {
     loadData = () => {
         getOrder(this.orderId)
             .then(order => {
-                this.setState({order: order});
+                if(order.orderStatus === 'PAID') {
+                    this.props.history.push(PRODUCT.ORDERS);
+                } else {
+                    this.setState({order: order});
+                }
             })
             .catch(() => {
-                this.setState({order: null});
+                this.props.history.push(PRODUCT.ORDERS);
             })
             .finally(() => this.props.setRequestGlobalAction(false));
     };

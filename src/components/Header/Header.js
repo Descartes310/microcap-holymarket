@@ -21,15 +21,7 @@ import { getAppLayout } from "Helpers/helpers";
 import Notifications from './Notifications';
 import DashboardOverlay from '../DashboardOverlay/DashboardOverlay';
 import Cart from './Cart';
-import SearchForm from './SearchForm';
-import QuickLinks from './QuickLinks';
-import MobileSearchForm from './MobileSearchForm';
-
-// intl messages
-import IntlMessages from 'Util/IntlMessages';
-import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
-import Switch from "@material-ui/core/Switch/Switch";
-import {DISCOVER} from "Url/frontendUrl";
+import { DISCOVER } from "Url/frontendUrl";
 
 class Header extends Component {
 
@@ -92,14 +84,12 @@ class Header extends Component {
 	}
 
 	render() {
-
-		const { isMobileSearchFormVisible } = this.state;
-		const { horizontalMenu, agencyMenu, location, darkMode } = this.props;
+		const { settings, authUser } = this.props;
 		return (
 			<AppBar position="static" className="rct-header">
 				<Toolbar className="d-flex justify-content-between w-100 pl-0">
 					<div className="d-inline-flex align-items-center">
-						{(horizontalMenu || agencyMenu) &&
+						{(settings.horizontalMenu || settings.agencyMenu) &&
 							<div className="site-logo">
 								<Link to="/" className="logo-mini">
 									<img src={require('Assets/identity/logomicrocap.png')} className="mr-15" alt="site logo" width="35" height="35" />
@@ -109,9 +99,9 @@ class Header extends Component {
 								</Link>*/}
 							</div>
 						}
-						{!agencyMenu &&
+						{!settings.agencyMenu &&
 							<ul className="list-inline mb-0 navbar-left">
-								{!horizontalMenu ?
+								{!settings.horizontalMenu ?
 									<li className="list-inline-item" onClick={(e) => this.onToggleNavCollapsed(e)}>
 										<Tooltip title="Sidebar Toggle" placement="bottom">
 											<IconButton color="inherit" mini="true" aria-label="Menu" className="humburger p-0">
@@ -129,28 +119,17 @@ class Header extends Component {
 								}
 							</ul>
 						}
-						<Link to={DISCOVER}  className="color-gray-muted text-decoration-underline-hover fw-500 px-3">
+						<Link to={DISCOVER} className="color-gray-muted text-decoration-underline-hover fw-500 px-3">
 							Découvir Microcap
 						</Link>
 					</div>
 					<ul className="navbar-right list-inline mb-0">
-						<Notifications />
-						<Cart />
-						{/* {!horizontalMenu &&
-						<li className="list-inline-item text-white">
-							<FormControlLabel
-								control={
-									<Switch
-										checked={darkMode}
-										onChange={(e) => this.darkModeHandler(e.target.checked)}
-										className="switch-btn"
-									/>
-								}
-								label={<IntlMessages id="themeOptions.darkMode"/>}
-								className="m-0"
-							/>
-						</li>
-						} */}
+						{authUser && (
+							<>
+								<Notifications />
+								<Cart />
+							</>
+						)}
 					</ul>
 				</Toolbar>
 				<DashboardOverlay
@@ -162,8 +141,8 @@ class Header extends Component {
 }
 
 // map state to props
-const mapStateToProps = ({ settings }) => {
-	return settings;
+const mapStateToProps = ({ settings, authUser }) => {
+	return { settings, authUser: authUser.data };
 };
 
 export default withRouter(connect(mapStateToProps, {

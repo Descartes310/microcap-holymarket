@@ -1,20 +1,16 @@
 import { connect } from "react-redux";
 import { injectIntl } from "react-intl";
 import React, { Component } from 'react';
-import Permission from "Enums/Permissions";
-import { withRouter, Link } from "react-router-dom";
-import IntlMessages from 'Util/IntlMessages';
-import { withStyles } from "@material-ui/core";
-import { AbilityContext } from "Permissions/Can";
-import CustomList from "Components/CustomList";
-import { PRODUCT, joinUrlWithParamsId } from 'Url/frontendUrl'
-import { setRequestGlobalAction } from "Actions";
-import { getUserSales, getOrders } from "Actions/independentActions";
-import { NotificationManager } from "react-notifications";
-import { ERROR_500 } from "Constants/errors";
+import { withRouter } from "react-router-dom";
 import Button from "@material-ui/core/Button";
+import { withStyles } from "@material-ui/core";
+import CustomList from "Components/CustomList";
+import { AbilityContext } from "Permissions/Can";
+import { setRequestGlobalAction } from "Actions";
+import { getOrders } from "Actions/independentActions";
 import TimeFromMoment from "Components/TimeFromMoment";
 import AmountCurrency from "Components/AmountCurrency";
+import { PRODUCT, joinUrlWithParamsId } from 'Url/frontendUrl';
 
 class Order extends Component {
     static contextType = AbilityContext;

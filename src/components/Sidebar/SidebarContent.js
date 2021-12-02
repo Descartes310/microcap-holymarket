@@ -27,7 +27,7 @@ class SidebarContent extends Component {
 	render() {
 		const { sidebarMenus,  } = this.props.sidebar;
 		const { authUser } = this.props;
-		const menuType = authUser.user.profile.name.toString().toLowerCase();
+		const menuType = authUser?.user.profile.name.toString().toLowerCase();
 		return (
 			<div className="rct-sidebar-nav">
 					<nav className="navigation">

@@ -11,9 +11,10 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Tooltip from '@material-ui/core/Tooltip';
 import { withRouter } from "react-router-dom";
+import Cart from "Models/Cart";
 
 //Helper
-import { textTruncate, getAppLayout } from "Helpers/helpers";
+import { textTruncate } from "Helpers/helpers";
 
 //Actions
 import { deleteItemFromCart } from "Actions/CartActions";
@@ -21,7 +22,6 @@ import { deleteItemFromCart } from "Actions/CartActions";
 //intl Messages
 import IntlMessages from 'Util/IntlMessages';
 import UserAvatar from "Components/UserAvatar";
-import SweetAlert from "react-bootstrap-sweetalert";
 import NatureType from "Enums/NatureType";
 import { STORE } from "Url/frontendUrl";
 import AmountCurrency from "Components/AmountCurrency";
@@ -54,18 +54,22 @@ class Carts extends Component {
 		const { cart, deleteItemFromCart, location } = this.props;
 		const { showWarningBox } = this.state;
 
+		console.log('Le panier est => ', cart);
+
 		return (
 			<UncontrolledDropdown nav className="list-inline-item cart-dropdown">
 				<DropdownToggle nav className="p-0">
 					<Tooltip title="Shopping Cart" placement="bottom">
 						<IconButton aria-label="bag">
 							<i className="zmdi zmdi-shopping-cart"></i>
-							<Badge
-								color="success"
-								className="badge-xs badge-top-right"
-							>
-								{cart.count()}
-							</Badge>
+							{typeof (cart) === Cart && (
+								<Badge
+									color="success"
+									className="badge-xs badge-top-right"
+								>
+									{cart.count()}
+								</Badge>
+							)}
 						</IconButton>
 					</Tooltip>
 				</DropdownToggle>
@@ -83,59 +87,59 @@ class Carts extends Component {
 								<h3><IntlMessages id="components.CartEmptyText" /></h3>
 							</div>
 						) : (
-								<Fragment>
-									<Scrollbars className="rct-scroll" autoHeight autoHeightMin={100} autoHeightMax={280} autoHide>
-										<ul className="list-unstyled dropdown-list">
-											{cart.items.map((cartItem, key) => (
-												<li className="d-flex justify-content-between" key={key}>
-													<div className="media overflow-hidden w-75">
-														<div className="mr-15">
-															<UserAvatar
-																avatar={getFilePath(cartItem.image)}
-																name={cartItem.name}
-																className="media-object"
-																width="63"
-																height="63"
-															/>
-														</div>
-														<div className="media-body">
-															<span className="fs-14 d-block">{textTruncate(cartItem.name, 25)}</span>
-															{/* <span className="fs-12 d-block text-muted">{textTruncate(cartItem.description, 50)}</span> */}
-															<span className="fs-12 d-block" style={{ fontWeight: 'bold' }}><AmountCurrency amount={cartItem.price} from={cartItem.currency} /> &times; {cartItem.quantity}</span>
-														</div>
+							<Fragment>
+								<Scrollbars className="rct-scroll" autoHeight autoHeightMin={100} autoHeightMax={280} autoHide>
+									<ul className="list-unstyled dropdown-list">
+										{cart.items.map((cartItem, key) => (
+											<li className="d-flex justify-content-between" key={key}>
+												<div className="media overflow-hidden w-75">
+													<div className="mr-15">
+														<UserAvatar
+															avatar={getFilePath(cartItem.image)}
+															name={cartItem.name}
+															className="media-object"
+															width="63"
+															height="63"
+														/>
 													</div>
-													<div className="text-center">
-														<button
-															type="button"
-															className="hover-close rct-link-btn"
-															onClick={() => this.onRemoveItemFromCart(cartItem)}>
-															<i className="ti-close" />
-														</button>
+													<div className="media-body">
+														<span className="fs-14 d-block">{textTruncate(cartItem.name, 25)}</span>
+														{/* <span className="fs-12 d-block text-muted">{textTruncate(cartItem.description, 50)}</span> */}
+														<span className="fs-12 d-block" style={{ fontWeight: 'bold' }}><AmountCurrency amount={cartItem.price} from={cartItem.currency} /> &times; {cartItem.quantity}</span>
 													</div>
-												</li>
-											))}
-										</ul>
-									</Scrollbars>
-									<div className="dropdown-foot d-flex justify-content-between align-items-center p-2 bg-white rounded-bottom">
-										<div>
-											<Button
-												variant="contained"
-												component={Link}
-												to={STORE.CART}
-												color="primary"
-												className="mr-10 btn-xs bg-blue text-white"
-											>
-												Voir le panier
-											</Button>
-										</div>
-										<span className="fw-normal text-dark font-weight-bold font-xs">
-											Total: <AmountCurrency amounts={cart.items.map((e) => {
+												</div>
+												<div className="text-center">
+													<button
+														type="button"
+														className="hover-close rct-link-btn"
+														onClick={() => this.onRemoveItemFromCart(cartItem)}>
+														<i className="ti-close" />
+													</button>
+												</div>
+											</li>
+										))}
+									</ul>
+								</Scrollbars>
+								<div className="dropdown-foot d-flex justify-content-between align-items-center p-2 bg-white rounded-bottom">
+									<div>
+										<Button
+											variant="contained"
+											component={Link}
+											to={STORE.CART}
+											color="primary"
+											className="mr-10 btn-xs bg-blue text-white"
+										>
+											Voir le panier
+										</Button>
+									</div>
+									<span className="fw-normal text-dark font-weight-bold font-xs">
+										Total: <AmountCurrency amounts={cart.items.map((e) => {
 											return { amount: e.price, currency: e.currency, quantity: e.quantity }
 										})} styles={{ fontWeight: 'bold' }} />
-										</span>
-									</div>
-								</Fragment>
-							)
+									</span>
+								</div>
+							</Fragment>
+						)
 						}
 					</div>
 				</DropdownMenu>

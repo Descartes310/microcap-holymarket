@@ -36,7 +36,6 @@ class PaymentInfo extends Component {
       code: '',
       payments: { amount: 0, currency: 'EUR' },
       selectingAccount: false,
-      freePayment: this.props.order.orderStatus == 'NOT_PAID' ? false : true,
       amount: 0,
       percent: 0,
       showConfirmBox: false
@@ -48,7 +47,7 @@ class PaymentInfo extends Component {
 
       if (voucher != null || account != null || token != null) {
 
-         if (this.state.freePayment) {
+         if (this.props.order.acceptManyPayment) {
             if (this.state.amount <= 0) {
                NotificationManager.error("Le montant n'est pas bien rempli");
                return;
@@ -57,7 +56,6 @@ class PaymentInfo extends Component {
                NotificationManager.error("Le montant n'est pas bien rempli est inférieur au minimum attendu");
                return;
             }
-
          }
 
          this.props.setRequestGlobalAction(true);
@@ -76,6 +74,9 @@ class PaymentInfo extends Component {
             _data.accountId = account;
          if (token != null)
             _data.stripeToken = token;
+
+         if (this.props.order.acceptManyPayment && this.state.amount >= 0)
+            _data.amountToPay = this.state.amount;
 
          createSale(_data)
             .then((resp) => {
@@ -117,46 +118,32 @@ class PaymentInfo extends Component {
    };
 
    getAmountToPay = () => {
-      return freePayment && this.state.amount > 0 ? this.state.amount * this.props.authUser.user.currency.decimal : (Number(computeAmountFromCurrency(this.props.currencies, null, cart.items.map((e) => {
-         return { amount: e.price, currency: e.currency, quantity: e.quantity }
-      }), this.props.authUser.user.currency, null, null))) * this.props.authUser.user.currency.decimal;
+      return this.props.order.acceptManyPayment && this.state.amount > 0 ? this.state.amount * this.props.authUser.user.currency.decimal : this.getCartPrice() * this.props.authUser.user.currency.decimal;
+   }
+
+   getCartPrice = () => {
+      let price = Number(computeAmountFromCurrency(this.props.currencies, null, this.props.order.orderItems.map((e) => {
+         return { amount: e.typeProduct.price, currency: e.typeProduct.currency, quantity: e.quantity }
+      }), this.props.authUser.user.currency, null, null));
+
+      console.log(price);
+
+      return price;
    }
 
 
    render() {
-      const { showPaymentBox, entringCode, code, selectingAccount, showConfirmBox, freePayment } = this.state;
-      const { authUser } = this.props;
-
-      const cart = new Cart(normalizeCartItems(
-         this.props.order.orderItems.map(item => ({
-            ...item.typeProduct,
-            price: item.typeProduct.price,
-            currency: item.typeProduct.product ? item.typeProduct.product.priceCurrency : item.typeProduct.package1.currency,
-            quantity: item.quantity
-         })),
-         authUser.id,
-         true
-      ));
+      const { showPaymentBox, entringCode, code, selectingAccount, showConfirmBox } = this.state;
+      const { order } = this.props;
 
       return (
          <div className="payment-wrap">
             {
-               freePayment ?
+               order.acceptManyPayment && this.props.order.orderStatus !== 'PAID' && (
                   <div style={{
                      marginBottom: 40
                   }}>
-                     <h1>Effectuer un paiement différé</h1>
-                     {
-                        this.props.order.orderStatus == 'NOT_PAID' ?
-                           <Button
-                              size="small"
-                              color="primary"
-                              variant="contained"
-                              className={"text-white font-weight-bold mr-3 bg-danger"}
-                              onClick={() => this.setState({ freePayment: false })}
-                           >
-                              Annuler
-                           </Button> : null}
+                     <h1>Paiement différé</h1>
                      <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', marginTop: 50 }}>
                         <ul className="list-unstyled dropdown-body" style={{ flex: 1 }}>
                            <li className="d-flex justify-content-between p-3">
@@ -205,7 +192,7 @@ class PaymentInfo extends Component {
                      </div>
                      <FormGroup row>
                         <Col sm={12}>
-                           <Label style={{ fontSize: '1.3em', fontWeight: 'bold', color: 'black' }} for="amount">Montant a payer ({this.state.percent}%)</Label>
+                           <Label style={{ fontSize: '1.3em', fontWeight: 'bold', color: 'black' }} for="amount">Montant a payer ({this.state.percent.toFixed(2)}%)</Label>
                            <Input
                               type="number"
                               name="amount"
@@ -214,121 +201,84 @@ class PaymentInfo extends Component {
                               placeholder="Entrer le montant à payer"
                               onChange={(e) => this.setState({
                                  amount: e.target.value,
-                                 percent: (e.target.value * 100) / (Number(computeAmountFromCurrency(this.props.currencies, null, cart.items.map((e) => {
-                                    return { amount: e.price, currency: e.currency, quantity: e.quantity }
-                                 }), this.props.authUser.user.currency, null, null)))
+                                 percent: (e.target.value * 100) / this.getCartPrice()
                               })}
                            />
                         </Col>
                      </FormGroup>
                   </div >
-                  : null
-            }
-            <div className='row'>
-               <div className='col-md-4 col-lg-4 col-sm-12' style={{
-                  textAlign: 'center',
-                  paddingTop: 20,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center'
-               }}>
-                  <h1>Paiement par carte</h1>
-                  <div style={{ width: 250, height: 250, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                     <img src={require('Assets/img/card.png')} className="img-fluid" alt="cad" />
+               )}
+            {(!order.acceptManyPayment || this.state.amount > 0) && (
+               <div className='row'>
+                  <div className='col-md-4 col-lg-4 col-sm-12' style={{
+                     textAlign: 'center',
+                     paddingTop: 20,
+                     display: 'flex',
+                     flexDirection: 'column',
+                     alignItems: 'center'
+                  }}>
+                     <h1>Paiement par carte</h1>
+                     <div style={{ width: 250, height: 250, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <img src={require('Assets/img/card.png')} className="img-fluid" alt="cad" />
+                     </div>
+                     <p>
+                        Utilisez votre carte de crédit pour effectuer le payement
+                     </p>
+                     <StripeCheckout
+                        stripeKey={AppConfig.payments.stripe}
+                        token={this.onToken}
+                        amount={order.acceptManyPayment && this.state.amount > 0 ? this.state.amount * this.props.authUser.user.currency.decimal : this.getCartPrice() * this.props.authUser.user.currency.decimal}
+                        name="Payer les produits"
+                        opened={() => this.setState({ showPaymentBox: false })}
+                        currency={this.props.authUser.user.currency ? this.props.authUser.user.currency.code : 'EUR'}
+                        label="Payement par carte"
+                     >
+                        <Button color="secondary" className="text-white" variant="contained" style={{ width: '100%' }}>
+                           Payer
+                        </Button>
+                     </StripeCheckout>
                   </div>
-                  <p>
-                     Utilisez votre carte de crédit pour effectuer le payement
-                  </p>
-                  <StripeCheckout
-                     stripeKey={AppConfig.payments.stripe}
-                     token={this.onToken}
-                     amount={freePayment && this.state.amount > 0 ? this.state.amount * this.props.authUser.user.currency.decimal : (Number(computeAmountFromCurrency(this.props.currencies, null, cart.items.map((e) => {
-                        return { amount: e.price, currency: e.currency, quantity: e.quantity }
-                     }), this.props.authUser.user.currency, null, null))) * this.props.authUser.user.currency.decimal}
-                     name="Payer les produits"
-                     opened={() => this.setState({ showPaymentBox: false })}
-                     currency={this.props.authUser.user.currency ? this.props.authUser.user.currency.code : 'EUR'}
-                     label="Payement par carte"
-                  >
-                     <Button color="secondary" className="text-white" variant="contained" style={{ width: '100%' }}>
+                  <div className='col-md-4 col-lg-4 col-sm-12' style={{
+                     textAlign: 'center',
+                     paddingTop: 20,
+                     display: 'flex',
+                     flexDirection: 'column',
+                     alignItems: 'center'
+                  }}>
+                     <h1>Paiement par coupon</h1>
+                     <div style={{ width: 250, height: 250, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <img src={require('Assets/img/voucher.png')} className="img-fluid" alt="cad" />
+                     </div>
+                     <p>
+                        Utilisez le code d'un coupon de paiement pour effectuer l'achat
+                     </p>
+                     <Button onClick={() => this.setState({ showPaymentBox: true, entringCode: true, selectingAccount: false })} color="secondary" className="text-white" variant="contained">
                         Payer
                      </Button>
-                  </StripeCheckout>
-               </div>
-               <div className='col-md-4 col-lg-4 col-sm-12' style={{
-                  textAlign: 'center',
-                  paddingTop: 20,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center'
-               }}>
-                  <h1>Paiement par coupon</h1>
-                  <div style={{ width: 250, height: 250, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                     <img src={require('Assets/img/voucher.png')} className="img-fluid" alt="cad" />
                   </div>
-                  <p>
-                     Utilisez le code d'un coupon de paiement pour effectuer l'achat
-                  </p>
-                  <Button onClick={() => this.setState({ showPaymentBox: true, entringCode: true, selectingAccount: false })} color="secondary" className="text-white" variant="contained">
-                     Payer
-                  </Button>
+                  {
+                     this.state.accounts.length > 0
+                        ?
+                        <div className='col-md-4 col-lg-4 col-sm-12' style={{
+                           textAlign: 'center',
+                           paddingTop: 20,
+                           display: 'flex',
+                           flexDirection: 'column',
+                           alignItems: 'center'
+                        }}>
+                           <h1>Paiement par compte</h1>
+                           <div style={{ width: 250, height: 250, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                              <img src={require('Assets/img/wallet.png')} className="img-fluid" alt="cad" />
+                           </div>
+                           <p>
+                              Utilisez un de vos compte crédité pour procéder au règlement
+                           </p>
+                           <Button onClick={() => this.setState({ showPaymentBox: true, selectingAccount: true, entringCode: false })} color="secondary" className="text-white" variant="contained">
+                              Payer
+                           </Button>
+                        </div> : null}
                </div>
-               {
-                  this.state.accounts.length > 0
-                     ?
-                     <div className='col-md-4 col-lg-4 col-sm-12' style={{
-                        textAlign: 'center',
-                        paddingTop: 20,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center'
-                     }}>
-                        <h1>Paiement par compte</h1>
-                        <div style={{ width: 250, height: 250, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                           <img src={require('Assets/img/wallet.png')} className="img-fluid" alt="cad" />
-                        </div>
-                        <p>
-                           Utilisez un de vos compte crédité pour procéder au règlement
-                        </p>
-                        <Button onClick={() => this.setState({ showPaymentBox: true, selectingAccount: true, entringCode: false })} color="secondary" className="text-white" variant="contained">
-                           Payer
-                        </Button>
-                     </div> : null}
-               {/* <div className='col-md-4 col-lg-4 col-sm-12' style={{ textAlign: 'center', paddingTop: 20 }}>
-                  <h1>Offre prépayéé</h1>
-                  <div style={{ width: 250, height: 250, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                     <img src={require('Assets/img/before.png')} className="img-fluid" alt="cad" />
-                  </div>
-                  <p>
-                     Utilisez une offre déjà existante pour régler l'achat en cours
-                     </p>
-                  <Button color="secondary" className="text-white" variant="contained">
-                     Payer
-                     </Button>
-               </div> */}
-               {
-                  this.props.order.acceptManyPayment && !freePayment && this.props.order.orderStatus == 'NOT_PAID' ?
-
-                     <div className='col-md-4 col-lg-4 col-sm-12' style={{
-                        textAlign: 'center',
-                        paddingTop: 20,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center'
-                     }}>
-                        <h1>Paiement différé</h1>
-                        <div style={{ width: 250, height: 250, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                           <img src={require('Assets/img/differed.png')} className="img-fluid" alt="cad" />
-                        </div>
-                        <p>
-                           Vous pouvez effectuer un paiement en plusieurs tranches pour l'achat
-                        </p>
-                        <Button color="secondary" className="text-white" variant="contained" onClick={() => this.setState({ freePayment: !freePayment })}>
-                           Payer
-                        </Button>
-                     </div>
-                     : null}
-            </div>
+            )}
             <Dialog
                open={showPaymentBox}
                onClose={() => { this.setState({ showPaymentBox: false }) }}

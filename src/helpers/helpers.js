@@ -555,8 +555,12 @@ export const normalizeCartItems = (data, authId, shouldSkipSaving = false) => {
     };
     const oldItems = JSON.parse(localStorage.getItem('cartItems'));
 
-    if (oldCartItemChecked(oldItems)) {
-        obj.data = oldItems;
+    if (data) {
+        obj.data = data
+    } else {
+        if (oldCartItemChecked(oldItems)) {
+            obj.data = oldItems;
+        }
     }
 
     obj.data[authId] = data;

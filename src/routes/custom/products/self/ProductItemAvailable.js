@@ -207,6 +207,7 @@ class ProductItemAvailable extends Component {
                                             cancelBtnBsStyle="danger"
                                             title="Quantité"
                                             placeHolder="10"
+                                            defaultValue={1}
                                             inputType="number"
                                             onConfirm={(value) => this.onAddItemToCart(value)}
                                             onCancel={() => this.setState({ showQuantityBox: false })}
