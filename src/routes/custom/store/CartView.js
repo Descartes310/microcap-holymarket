@@ -24,11 +24,9 @@ import IntlMessages from 'Util/IntlMessages';
 import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
 import {NotificationManager} from "react-notifications";
 import UserAvatar from "Components/UserAvatar";
-import {joinUrlWithParamsId, STORE} from "Url/frontendUrl";
+import {PRODUCT, STORE} from "Url/frontendUrl";
 import {withRouter} from "react-router-dom";
 import {placeOrder, onClearCart, setRequestGlobalAction} from "Actions";
-import {ERROR_500} from "Constants/errors";
-import InvitationType from "Enums/InvitationType";
 import SweetAlert from "react-bootstrap-sweetalert";
 import AmountCurrency from "Components/AmountCurrency";
 
@@ -64,9 +62,7 @@ class CartView extends Component {
                 this.props.onClearCart();
                 this.setState({showConfirmBox: true, orderRef: result.reference, orderId: result.id});
             })
-            .catch(() => {
-
-            })
+            .catch(() => {})
             .finally(() => this.props.setRequestGlobalAction(false));
     };
 
@@ -74,15 +70,8 @@ class CartView extends Component {
         this.props.deleteItemFromCart(cartItem);
     };
 
-    onContinueClick = () => {
-        this.setState({showConfirmBox: false});
-        const url = joinUrlWithParamsId(STORE.CHECKOUT, this.state.orderId);
-        this.props.history.push(url);
-    };
-
     render() {
-        const { cart, match, history } = this.props;
-        const { showConfirmBox } = this.state;
+        const { cart, match } = this.props;
 
         return (
             <div className="cart-wrapper">
@@ -166,38 +155,6 @@ class CartView extends Component {
                         </Table>
                     </RctCardContent>
                 </RctCard>
-
-                <SweetAlert
-                    success
-                    show={showConfirmBox}
-                    title={"Infos commande"}
-                    onConfirm={() => this.onContinueClick()}
-                    confirmBtnText="Continuer"
-                    confirmBtnClass="btn-lg btn-primary btn-sm text-white"
-                >
-                    <div className="row">
-                        <div className="col-12">
-                            <p>Commande enregistré avec success</p>
-                        </div>
-                        <div className="col-12">
-                            <p className="fw-bold my-3">
-                                N° {this.state.orderRef}
-                            </p>
-                        </div>
-                        <div className="col-12">
-                            <p>A conserver. Il vous sera utile pour toutes demande d'informations</p>
-                        </div>
-                        <div className="col-12">
-                            <a
-                                href="#"
-                                onClick={() => copyToClipboard(this.state.orderRef)}
-                                className="fw-bold text-success"
-                            >
-                                Copier
-                            </a>
-                        </div>
-                    </div>
-                </SweetAlert>
             </div>
         )
     }

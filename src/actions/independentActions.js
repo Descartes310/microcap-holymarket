@@ -1436,3 +1436,7 @@ export const getCommunity = (id) => {
 export const createSondage = (data) => {
     return makeRequest('post', AUTH.SONDAGE, data);
 };
+
+export const getUserByEmail = (email) => {
+    return makeRequest('get', `${AUTH.GET_USER_BY_EMAIL}?email=${email}`);
+};

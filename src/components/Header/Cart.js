@@ -1,31 +1,21 @@
-/**
- * Cart Component
- */
+import { Badge } from 'reactstrap';
+import { connect } from 'react-redux';
+import { STORE } from "Url/frontendUrl";
+import { Link } from 'react-router-dom';
+import NatureType from "Enums/NatureType";
+import IntlMessages from 'Util/IntlMessages';
+import { getFilePath } from "Helpers/helpers";
+import { withRouter } from "react-router-dom";
+import Button from '@material-ui/core/Button';
+import { textTruncate } from "Helpers/helpers";
+import UserAvatar from "Components/UserAvatar";
+import Tooltip from '@material-ui/core/Tooltip';
 import React, { Component, Fragment } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
-import { UncontrolledDropdown, DropdownToggle, DropdownMenu } from 'reactstrap';
-import Button from '@material-ui/core/Button';
-import { Badge } from 'reactstrap';
 import IconButton from '@material-ui/core/IconButton';
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import Tooltip from '@material-ui/core/Tooltip';
-import { withRouter } from "react-router-dom";
-import Cart from "Models/Cart";
-
-//Helper
-import { textTruncate } from "Helpers/helpers";
-
-//Actions
-import { deleteItemFromCart } from "Actions/CartActions";
-
-//intl Messages
-import IntlMessages from 'Util/IntlMessages';
-import UserAvatar from "Components/UserAvatar";
-import NatureType from "Enums/NatureType";
-import { STORE } from "Url/frontendUrl";
 import AmountCurrency from "Components/AmountCurrency";
-import { getFilePath } from "Helpers/helpers";
+import { deleteItemFromCart } from "Actions/CartActions";
+import { UncontrolledDropdown, DropdownToggle, DropdownMenu } from 'reactstrap';
 
 class Carts extends Component {
 	state = {
@@ -38,7 +28,6 @@ class Carts extends Component {
 	};
 
 	onRemoveItemFromCart = (item) => {
-		// this.props.deleteItemFromCart(this.state.itemToRemove.id);
 		this.props.deleteItemFromCart(item);
 	};
 
@@ -51,10 +40,7 @@ class Carts extends Component {
 	};
 
 	render() {
-		const { cart, deleteItemFromCart, location } = this.props;
-		const { showWarningBox } = this.state;
-
-		console.log('Le panier est => ', cart);
+		const { cart } = this.props;
 
 		return (
 			<UncontrolledDropdown nav className="list-inline-item cart-dropdown">
@@ -62,14 +48,12 @@ class Carts extends Component {
 					<Tooltip title="Shopping Cart" placement="bottom">
 						<IconButton aria-label="bag">
 							<i className="zmdi zmdi-shopping-cart"></i>
-							{typeof (cart) === Cart && (
-								<Badge
-									color="success"
-									className="badge-xs badge-top-right"
-								>
-									{cart.count()}
-								</Badge>
-							)}
+							<Badge
+								color="success"
+								className="badge-xs badge-top-right"
+							>
+								{cart.count()}
+							</Badge>
 						</IconButton>
 					</Tooltip>
 				</DropdownToggle>
@@ -79,7 +63,6 @@ class Carts extends Component {
 							<span className="text-white font-weight-bold">
 								Panier
 							</span>
-							{/*<Badge color="warning">4 NEW</Badge>*/}
 						</div>
 						{cart.isCartEmpty() ? (
 							<div className="text-center p-4">
@@ -104,7 +87,6 @@ class Carts extends Component {
 													</div>
 													<div className="media-body">
 														<span className="fs-14 d-block">{textTruncate(cartItem.name, 25)}</span>
-														{/* <span className="fs-12 d-block text-muted">{textTruncate(cartItem.description, 50)}</span> */}
 														<span className="fs-12 d-block" style={{ fontWeight: 'bold' }}><AmountCurrency amount={cartItem.price} from={cartItem.currency} /> &times; {cartItem.quantity}</span>
 													</div>
 												</div>
@@ -148,7 +130,6 @@ class Carts extends Component {
 	}
 }
 
-// map state to props
 const mapStateToProps = ({ cart }) => {
 	return { cart };
 }

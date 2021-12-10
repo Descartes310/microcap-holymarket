@@ -710,7 +710,7 @@ export default {
       {
          "menu_title": "Profile",
          "menu_icon": "zmdi zmdi-accounts",
-         "path": USERS.USERS.PERSONNAL_SPACE,
+         "path": USERS.USERS_PROFILE.DISPLAY_PROFILE,
          "new_item": false,
          "child_routes": null,
          "permissions": [Branch.permissionsRelated.READ],
@@ -817,7 +817,7 @@ export default {
       {
          "menu_title": "Profile",
          "menu_icon": "zmdi zmdi-accounts",
-         "path": USERS.USERS.PERSONNAL_SPACE,
+         "path": USERS.USERS_PROFILE.DISPLAY_PROFILE,
          "new_item": false,
          "child_routes": null,
          "permissions": [Branch.permissionsRelated.READ],
@@ -923,7 +923,7 @@ export default {
       {
          "menu_title": "Espace personnel",
          "menu_icon": "zmdi zmdi-accounts",
-         "path": USERS.USERS.PERSONNAL_SPACE,
+         "path": USERS.USERS_PROFILE.DISPLAY_PROFILE,
          "new_item": false,
          "child_routes": null,
          "permissions": [],

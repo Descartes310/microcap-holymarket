@@ -41,7 +41,7 @@ class Checkout extends Component {
     loadData = () => {
         getOrder(this.orderId)
             .then(order => {
-                if(order.orderStatus === 'PAID') {
+                if(order.orderStatus === 'PAID' || !order.approved) {
                     this.props.history.push(PRODUCT.ORDERS);
                 } else {
                     this.setState({order: order});

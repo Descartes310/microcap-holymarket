@@ -2,7 +2,7 @@ import ThirdStep from "./thirdStep";
 import FirstStep from "./firstStep";
 import SecondStep from "./secondStep";
 import { connect } from 'react-redux';
-import { HOME } from "Url/frontendUrl";
+import { AUTH } from "Url/frontendUrl";
 import React, { Component } from 'react';
 import IntlMessages from "Util/IntlMessages";
 import { withRouter } from "react-router-dom";
@@ -40,7 +40,6 @@ class OrganisationRegister extends Component {
         _data.immatriculationValue = _data.registrationNumber;
         _data.legalForm = _data.organisationType;
         _data.corporateName = _data.socialReason;
-        _data.login = _data.acceptLogin ? _data.login : _data.email;
         if (this.token)
             _data.token = this.token
 
@@ -57,9 +56,10 @@ class OrganisationRegister extends Component {
         this.props
             .registerOrganisation(_data)
             .then(() => {
-                this.props
-                    .loginUserWithEmailAndPassword({ login: _data.login, password: _data.password })
-                    .then(() => this.props.history.push(HOME));
+                this.props.history.push(AUTH.LOGIN);
+                // this.props
+                //     .loginUserWithEmailAndPassword({ login: _data.login, password: _data.password })
+                //     .then(() => this.props.history.push(HOME));
             }).catch(err => {
                 console.log(err);
                 NotificationManager.error("Cette adresse email est déjà utilisée.");

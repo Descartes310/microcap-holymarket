@@ -23,7 +23,7 @@ class Users extends Component {
                     <Switch>
                         <Redirect exact from={`${match.url}/`} to={USERS.USERS.LIST} />
                         {/*<Route path={USERS.USERS_PROFILE.} component={Show} />*/}
-                        <Route path={USERS.USERS.PPERSONNAL_SPACE} component={PersonalSpace} />
+                        <Route path={USERS.USERS.PERSONNAL_SPACE} component={PersonalSpace} />
                         <Route path={USERS.USERS.LIST} component={List} />
                         <CanRoute
                             path={USERS.USERS.CREATE}

@@ -134,8 +134,6 @@ class OrderShow extends Component {
         const { payments, product, showBox, loading, docs } = this.state;
         const { match, history } = this.props;
 
-        console.log("docs => ", docs);
-
         if (loading) {
             return (<RctSectionLoader />)
         }

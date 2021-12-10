@@ -12,7 +12,7 @@ import {copyToClipboard, getSessonId, textTruncate} from "Helpers/helpers";
 import SweetAlert from "react-bootstrap-sweetalert";
 import {placeOrder, onClearCart, setRequestGlobalAction} from "Actions";
 import {NotificationManager} from "react-notifications";
-import {joinUrlWithParamsId, STORE} from "Url/frontendUrl";
+import {PRODUCT} from "Url/frontendUrl";
 
 // intl messages
 import IntlMessages from 'Util/IntlMessages';
@@ -61,8 +61,7 @@ class BillingForm extends Component {
 
    onContinueClick = () => {
       this.setState({showConfirmBox: false});
-      const url = joinUrlWithParamsId(STORE.CHECKOUT, this.state.orderId);
-      this.props.history.push(url);
+      this.props.history.push(PRODUCT.ORDERS);
   };
 
    onInitPayment = () => {

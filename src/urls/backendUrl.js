@@ -7,6 +7,7 @@ export const AUTH = {
     LOGIN_WITH_SERVICE_NUMBER: 'auth/login',
     GET_ALL_BY_NAME_AND_URL: 'auth/cgu/by-url',
     SONDAGE: 'auth/sondages',
+    GET_USER_BY_EMAIL: 'auth/email',
     COUNTRY: {
         LIST: 'auth/countries',
         OPERATORS: 'auth/countries/{country}/microcap-operators'
