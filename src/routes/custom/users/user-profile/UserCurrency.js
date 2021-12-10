@@ -23,7 +23,7 @@ const UserCurrency = props => {
     
     return (
         <>
-            <table className="table table-hover table-middle mb-0 text-center">
+            <table className="table table-hover table-middle mb-0">
                 <thead>
                     <tr>
                         <th>Nom</th>

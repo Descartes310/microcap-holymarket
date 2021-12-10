@@ -2,30 +2,25 @@
  * User Profile Page
  */
 import { connect } from "react-redux";
+import { Helmet } from "react-helmet";
+import Tab from '@material-ui/core/Tab';
 import { injectIntl } from "react-intl";
 import React, { Component } from 'react';
-import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import Typography from '@material-ui/core/Typography';
-import { Helmet } from "react-helmet";
 import UserCurrency from './UserCurrency';
 import UserProfiles from './UserProfiles';
+import { RctCard } from 'Components/RctCard';
+import IntlMessages from 'Util/IntlMessages';
 import { withRouter } from "react-router-dom";
+import { getFilePath } from "Helpers/helpers";
+import AppBar from '@material-ui/core/AppBar';
+import UserOrganisations from "./UserOrganisations";
+import Typography from '@material-ui/core/Typography';
 import UpdateAdressDisplay from './UpdateAdressDisplay';
 import UpdateProfileDisplay from './UpdateProfileDisplay';
+import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
 import { getUserProfiles, setRequestGlobalAction } from "Actions";
 import UserBlock from '../../../users/user-profile-1/component/UserBlock';
-
-// rct card box
-import { RctCard } from 'Components/RctCard';
-
-// page title bar
-import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
-
-// intl messages
-import IntlMessages from 'Util/IntlMessages';
-import { getFilePath } from "Helpers/helpers";
 
 // For Tab Content
 function TabContainer(props) {
@@ -90,6 +85,10 @@ class DisplayProfile extends Component {
                            icon={<i className="ti-user"></i>}
                            label={'Mes profiles'}
                         />
+                        <Tab
+                           icon={<i className="ti-bag"></i>}
+                           label={'Mes Organisations'}
+                        />
 
                      </Tabs>
                   </AppBar>
@@ -108,6 +107,10 @@ class DisplayProfile extends Component {
                   {activeTab === 3 &&
                      <TabContainer>
                         <UserProfiles />
+                     </TabContainer>}
+                  {activeTab === 4 &&
+                     <TabContainer>
+                        <UserOrganisations />
                      </TabContainer>}
                </div>
             </RctCard>

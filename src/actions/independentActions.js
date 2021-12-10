@@ -65,11 +65,6 @@ export const getOrganisationTypes = () => {
     });
 };
 
-export const getOrganisations = (id) => {
-    const url = `${USERS.GET_ALL_ORGANISATIONS}?branch_id=${id}&type=USER`;
-    return makeRequest('get', url);
-};
-
 export const getOrganisationPosts = () => {
     return new Promise((resolve, reject) => {
         api.get(SYSTEM_OBJECT.ORGANISATION_POST)
@@ -1439,4 +1434,13 @@ export const createSondage = (data) => {
 
 export const getUserByEmail = (email) => {
     return makeRequest('get', `${AUTH.GET_USER_BY_EMAIL}?email=${email}`);
+};
+
+export const getUserOrganisations = () => {
+    return makeRequest('get', USERS.GET_ORGANISATIONS);
+};
+
+export const changeUserToOrganisation = (id, comeIn) => {
+    const url = joinBaseUrlWithParamsId(`${USERS.CHANGE_PROFILE_TO_ORGANISATION}`, id);
+    return makeRequest('put', url, {comeIn});
 };

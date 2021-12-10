@@ -8,7 +8,7 @@ import { withRouter } from 'react-router-dom';
 import { updateUserProfile } from "Actions/independentActions";
 import { setRequestGlobalAction } from "Actions/RequestGlobalAction";
 
-const UserCurrency = props => {
+const UserProfiles = props => {
 
     const changeProfile = (id) => {
         setRequestGlobalAction(true);
@@ -73,4 +73,4 @@ const mapStateToProps = ({ requestGlobalLoader, authUser, settings }) => {
     return { loading: requestGlobalLoader, authUser: authUser.data, currencies: settings.currencies }
 };
 
-export default withRouter(connect(mapStateToProps, { setRequestGlobalAction, setAuthUser })(injectIntl(UserCurrency)));
+export default withRouter(connect(mapStateToProps, { setRequestGlobalAction, setAuthUser })(injectIntl(UserProfiles)));
