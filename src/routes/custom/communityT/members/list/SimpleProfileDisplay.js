@@ -7,74 +7,86 @@ import { withRouter } from 'react-router-dom';
 
 const SimpleProfileDisplay = props => {
 
-    const { user, community, communitySpace } = props;
-    
-    const verifiedUser = (id) => {
-        verifiedAccount(id, community.id).finally(() => {
+    const { user } = props;
+
+    const verifiedUser = (reference) => {
+        verifiedAccount(reference).finally(() => {
             props.onClose()
         })
     }
 
+    const isCommunityAdmin = () => {
+        let adminOccurence = props.communitySpace.admins.filter(a => a.referralId === props.authUser.id && a.referralType === props.authUser.user.userType);
+        return adminOccurence ? adminOccurence.length >= 1 : false;
+     }
+
     return (
         <>
             <div className={"center-holder"}>
-                {user.user.userType === "ORGANISATION" ?
-                    (user.commercialName ? (
+                {user.userType === "ORGANISATION" ?
+                    (user.principalName && (
                         <div className="row align-items-flex-end">
                             <div className="col-md-4 user-profile-item">
                                 <h3> Nom commercial : </h3>
                             </div>
                             <div className="col-md-8 user-profile-item-value">
-                                <span>{user.commercialName}</span>
+                                <span>{user.principalName}</span>
                             </div>
 
                             <div className="col-md-4 user-profile-item">
                                 <h3> Nom de l'organisattion : </h3>
                             </div>
                             <div className="col-md-8 user-profile-item-value">
-                                <span>{user.corporateName}</span>
+                                <span>{user.secondaryName}</span>
                             </div>
-                        </div>) : null
+                        </div>)
                     ) : (
-                        user.firstName ? (
+                        user.principalName && (
                             <div className="row align-items-flex-end">
                                 <div className="col-md-4 user-profile-item">
                                     <h3>Nom : </h3>
                                 </div>
                                 <div className="col-md-8 user-profile-item-value">
-                                    <span>{user.firstName}</span>
+                                    <span>{user.principalName}</span>
                                 </div>
 
                                 <div className="col-md-4 user-profile-item">
                                     <h3> Prénom :  </h3>
                                 </div>
                                 <div className="col-md-8 user-profile-item-value">
-                                    <span>{user.lastName}</span>
+                                    <span>{user.secondaryName}</span>
                                 </div>
-                            </div>) : null
+                            </div>)
                     )}
 
-                {user.user.email ?
-                    (<div className="row align-items-flex-end">
-                        <div className="col-md-4 user-profile-item">
-                            <h3>Email :</h3>
+                {
+                    user.email && (
+                        <div className="row align-items-flex-end">
+                            <div className="col-md-4 user-profile-item">
+                                <h3>Email :</h3>
+                            </div>
+                            <div className="col-md-8 user-profile-item-value">
+                                <span>{user.email}</span>
+                            </div>
                         </div>
-                        <div className="col-md-8 user-profile-item-value">
-                            <span>{user.user.email}</span>
-                        </div>
-                    </div>) : null}
-
-                {user.reference ? (<div className="row align-items-flex-end">
-                    <div className="col-md-4 user-profile-item">
-                        <h3>Numéro de l'utilisateur :</h3>
-                    </div>
-                    <div className="col-md-8 user-profile-item-value">
-                        <span>{user.reference}</span>
-                    </div>
-                </div>) : null}
+                    )
+                }
 
                 {
-                    user.membershipNumber ?
+                    user.reference && (
+                        <div className="row align-items-flex-end">
+                            <div className="col-md-4 user-profile-item">
+                                <h3>Numéro de l'utilisateur :</h3>
+                            </div>
+                            <div className="col-md-8 user-profile-item-value">
+                                <span>{user.reference}</span>
+                            </div>
+                        </div>
+                    )
+                }
+
+                {
+                    user.membershipNumber && (
                         <div className="row align-items-flex-end">
                             <div className="col-md-4 user-profile-item">
                                 <h3>Numéro d'adhésion :</h3>
@@ -82,40 +94,42 @@ const SimpleProfileDisplay = props => {
                             <div className="col-md-8 user-profile-item-value">
                                 <span>{user.membershipNumber}</span>
                             </div>
-                        </div> : null}
+                        </div>
+                    )
+                }
 
 
-                {user.user.userType === "ORGANISATION" ?
+                {user.userType === "ORGANISATION" ?
                     (
-                        user.legalForm ? (<div className="row align-items-flex-end">
-                            <div className="col-md-4 user-profile-item">
-                                <h3>Type d'organisation : </h3>
+                        user.legalForm && (
+                            <div className="row align-items-flex-end">
+                                <div className="col-md-4 user-profile-item">
+                                    <h3>Type d'organisation : </h3>
+                                </div>
+                                <div className="col-md-8 user-profile-item-value">
+                                    <span>{user.legalForm}</span>
+                                </div>
                             </div>
-                            <div className="col-md-8 user-profile-item-value">
-                                <span>{user.legalForm}</span>
-                            </div>
-                        </div>) : null
-
+                        )
                     ) : (
-
-                        user.user.phone ? (
+                        user.phone && (
                             <div className="row align-items-flex-end">
                                 <div className="col-md-4 user-profile-item">
                                     <h3>Numéro de téléphone :</h3>
                                 </div>
                                 <div className="col-md-8 user-profile-item-value">
-                                    <span>{user.user.phone}</span>
+                                    <span>{user.telephone}</span>
                                 </div>
-                            </div>) : null
+                            </div>)
                     )}
 
-                {props.communitySpace.admins.includes(props.authUser.user.id) && props.community.typeGroup.name == 'COMMUNAUTE_CONVENTIONNEE' && (
+                {isCommunityAdmin() && props.community.typeGroup.name == 'COMMUNAUTE_CONVENTIONNEE' && (
                     <Button
                         color="primary"
                         className="text-white mr-2 mt-30"
-                        onClick={() => verifiedUser(user.user.reference)}
+                        onClick={() => verifiedUser(user.reference)}
                     >
-                        { !user.user.verified ? 'Maquer comme vérifié' : 'Marquer comme non vérifié' }
+                        {!user.verified ? 'Maquer comme vérifié' : 'Marquer comme non vérifié'}
                     </Button>
                 )}
             </div>
@@ -125,9 +139,10 @@ const SimpleProfileDisplay = props => {
 }
 
 // map state to props
-const mapStateToProps = ({ authUser }) => {
+const mapStateToProps = ({ authUser, communitySpace }) => {
     return {
         authUser: authUser.data,
+        communitySpace
     }
 };
 

@@ -1,10 +1,10 @@
 import ListItem from './ListItem';
-import {connect} from 'react-redux';
-import React, {Component} from 'react';
-import {withRouter} from 'react-router-dom';
+import { connect } from 'react-redux';
+import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 import SimpleProfile from './SimpleProfile';
-import {withStyles} from "@material-ui/core";
-import {AbilityContext} from "Permissions/Can";
+import { withStyles } from "@material-ui/core";
+import { AbilityContext } from "Permissions/Can";
 import CustomList from "Components/CustomList";
 import EmptyResult from "Components/EmptyResult";
 import CancelIcon from '@material-ui/icons/Cancel';
@@ -12,12 +12,12 @@ import Dialog from "@material-ui/core/Dialog/Dialog";
 import IconButton from "@material-ui/core/IconButton";
 import TimeFromMoment from "Components/TimeFromMoment";
 import AmountCurrency from "Components/AmountCurrency";
-import {onSelectEmail, readEmail, getCommunity} from 'Actions';
+import { onSelectEmail, readEmail, getCommunity } from 'Actions';
 import FetchFailedComponent from "Components/FetchFailedComponent";
 import DialogTitle from "@material-ui/core/DialogTitle/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent/DialogContent";
 import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
-import {getMembersOfCommunity, getUser, getVouchers} from 'Actions/independentActions';
+import { getMembersOfCommunity, getUser, getVouchers } from 'Actions/independentActions';
 
 class ListMembers extends Component {
     static contextType = AbilityContext;
@@ -69,15 +69,16 @@ class ListMembers extends Component {
             .finally(() => this.setState({ loadingCodes: false }));
     };
 
-    getUserDetails = (id) => {
-        getUser(id).then(data => {
+    getUserDetails = (id, type) => {
+        getUser(id, type).then(data => {
             this.setState({ user: data, showBox: true });
         })
     };
 
     render() {
-        
+
         const { loading, users, user, showBox, codes, showVoucherBox, loadingCodes, community } = this.state;
+        const { authUser } = this.props;
 
         return (
             <div className="page-list mt-2">
@@ -98,8 +99,8 @@ class ListMembers extends Component {
                                         key={key}
                                         user={user}
                                         onViewVoucher={() => this.onViewVoucher(user)}
-                                        isMe={this.props.authUser.user.id === user.id}
-                                        getUserDetails={() => this.getUserDetails(user.id)}
+                                        isMe={authUser.id === user.id && authUser.userType === user.type}
+                                        getUserDetails={() => this.getUserDetails(user.id, user.type)}
                                     />
                                 ))}
                             </ul>
@@ -116,7 +117,7 @@ class ListMembers extends Component {
                     <DialogTitle id="form-dialog-title">
                         <div className="row justify-content-between align-items-center">
                             Profile de l'utlisateur
-                                                    <IconButton
+                            <IconButton
                                 color="primary"
                                 aria-label="close"
                                 className="text-danger"
@@ -150,7 +151,7 @@ class ListMembers extends Component {
                     </DialogTitle>
                     <DialogContent>
                         {loadingCodes ? (
-                            <RctSectionLoader/>
+                            <RctSectionLoader />
                         ) : !codes ? (
                             <FetchFailedComponent />
                         ) : codes.length === 0 ? (
@@ -158,54 +159,54 @@ class ListMembers extends Component {
                         ) : (
                             <table className="table table-hover table-middle mb-0 text-center">
                                 <thead>
-                                <tr>
-                                    <th>Code de paiement</th>
-                                    <th>Type</th>
-                                    <th>Valeur</th>
-                                    <th>Unité</th>
-                                    <th>Date de création</th>
-                                </tr>
+                                    <tr>
+                                        <th>Code de paiement</th>
+                                        <th>Type</th>
+                                        <th>Valeur</th>
+                                        <th>Unité</th>
+                                        <th>Date de création</th>
+                                    </tr>
                                 </thead>
                                 <tbody>
-                                {codes.map((item, key) => (
-                                    <tr key={key} className="cursor-pointer">
-                                        <td>
-                                            <div className="media">
-                                                <div className="media-body pt-10">
-                                                    <h4 className="m-0 fw-bold text-dark">{item.code}</h4>
+                                    {codes.map((item, key) => (
+                                        <tr key={key} className="cursor-pointer">
+                                            <td>
+                                                <div className="media">
+                                                    <div className="media-body pt-10">
+                                                        <h4 className="m-0 fw-bold text-dark">{item.code}</h4>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div className="media">
-                                                <div className="media-body pt-10">
-                                                    <h4 className="m-0 fw-bold text-dark">{item.type}</h4>
+                                            </td>
+                                            <td>
+                                                <div className="media">
+                                                    <div className="media-body pt-10">
+                                                        <h4 className="m-0 fw-bold text-dark">{item.type}</h4>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div className="media">
-                                                <div className="media-body pt-10">
-                                                    <h4 className="m-0 fw-bold text-dark"><AmountCurrency amount={item.price} from={item.currency ? item.currency : 'EUR'} unit={item.unit} /></h4>
+                                            </td>
+                                            <td>
+                                                <div className="media">
+                                                    <div className="media-body pt-10">
+                                                        <h4 className="m-0 fw-bold text-dark"><AmountCurrency amount={item.price} from={item.currency ? item.currency : 'EUR'} unit={item.unit} /></h4>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div className="media">
-                                                <div className="media-body pt-10">
-                                                    <h4 className="m-0 fw-bold text-dark">{item.unit ? item.unit.name : this.props.currencies.filter(c => c.code == item.currency)[0].name}</h4>
+                                            </td>
+                                            <td>
+                                                <div className="media">
+                                                    <div className="media-body pt-10">
+                                                        <h4 className="m-0 fw-bold text-dark">{item.unit ? item.unit.name : this.props.currencies.filter(c => c.code == item.currency)[0].name}</h4>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div className="media">
-                                                <div className="media-body pt-10">
-                                                    <h4 className="m-0 fw-bold text-dark"><TimeFromMoment time={item.updatedAt} /></h4>
+                                            </td>
+                                            <td>
+                                                <div className="media">
+                                                    <div className="media-body pt-10">
+                                                        <h4 className="m-0 fw-bold text-dark"><TimeFromMoment time={item.updatedAt} /></h4>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                ))}
+                                            </td>
+                                        </tr>
+                                    ))}
                                 </tbody>
                             </table>
                         )}

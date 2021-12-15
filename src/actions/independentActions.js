@@ -339,10 +339,10 @@ export const createNetworkProfileType = (data, branchId) => {
     return makeRequest('post', url, data);
 };
 
-export const getUser = (id = null) => {
+export const getUser = (id = null, type = null) => {
     let url = '';
     if (id)
-        url = `${USERS.GET_ONE}?id=${id}`;
+        url = `${USERS.GET_ONE}?id=${id}&type=${type}`;
     else
         url = `${USERS.GET_ONE}`;
 
@@ -1357,9 +1357,9 @@ export const deleteAccount = (reference) => {
     return makeRequest('put', url, null);
 };
 
-export const verifiedAccount = (reference, community_id) => {
+export const verifiedAccount = (reference) => {
     const url = joinBaseUrlWithParamsId(`${USERS.VERIFIED}`, reference);
-    return makeRequest('put', url, {community_id});
+    return makeRequest('put', url, null);
 };
 
 export const getPrevisionGoals = () => {

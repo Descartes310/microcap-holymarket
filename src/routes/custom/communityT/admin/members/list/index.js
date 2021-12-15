@@ -10,10 +10,10 @@ import {onSelectEmail, readEmail} from 'Actions';
 import CancelIcon from '@material-ui/icons/Cancel';
 import Dialog from "@material-ui/core/Dialog/Dialog";
 import IconButton from "@material-ui/core/IconButton";
-import SimpleProfile from './../../../members/list/SimpleProfile';
+import SimpleProfile from '../../../members/list/SimpleProfile';
 import DialogTitle from "@material-ui/core/DialogTitle/DialogTitle";
-import {getMembersOfCommunity, getUser} from 'Actions/independentActions';
 import DialogContent from "@material-ui/core/DialogContent/DialogContent";
+import {getMembersOfCommunity, getUser, getCommunity} from 'Actions/independentActions';
 
 class ListMembers extends Component {
     static contextType = AbilityContext;
@@ -21,16 +21,26 @@ class ListMembers extends Component {
     state = {
         loading: true,
         showBox: false,
+        community: null,
         userPieces: [],
         users: []
     };
 
     componentDidMount() {
         this.getMembers();
+        this.getCommunityDetails();
     };
 
     handleChange = event => {
         this.setState({ [event.target.name]: event.target.value });
+    };
+
+    getCommunityDetails = () => {
+        getCommunity(this.props.communitySpace.data)
+            .then(data => {
+                this.setState({ community: data });
+            })
+            .finally(() => this.setState({ loading: false }));
     };
 
     getMembers = () => {
@@ -45,16 +55,16 @@ class ListMembers extends Component {
             .finally(() => this.setState({ loading: false }));
     };
 
-    getUserDetails = (id) => {
-        getUser(id)
+    getUserDetails = (id, type) => {
+        getUser(id, type)
             .then(data => {
                 this.setState({ user: data, showBox: true });
             });
     };
 
     render() {
-        const { loading, users, showBox, user } = this.state;
-        const { classes } = this.props;
+        const { loading, users, showBox, user, community } = this.state;
+
         return (
             <div className="page-list">
                 <CustomList
@@ -74,7 +84,7 @@ class ListMembers extends Component {
                                         key={key}
                                         user={user}
                                         onReadEmail={() => this.readEmail(user)}
-                                        getUserDetails={() => this.getUserDetails(user.id)}
+                                        getUserDetails={() => this.getUserDetails(user.id, user.type)}
                                         onSelectEmail={(e) => this.onSelectEmail(e, user)}
                                     />
                                 ))}
@@ -102,7 +112,7 @@ class ListMembers extends Component {
                         </div>
                     </DialogTitle>
                     <DialogContent>
-                        <SimpleProfile user={user} />
+                        <SimpleProfile user={user} communitySpace={this.props.communitySpace} community={community} />
                     </DialogContent>
                 </Dialog>
             </div>

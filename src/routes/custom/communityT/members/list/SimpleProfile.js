@@ -1,20 +1,20 @@
 /**
  * User Profile Page
  */
-import {connect} from "react-redux";
-import {injectIntl} from "react-intl";
+import { connect } from "react-redux";
+import { injectIntl } from "react-intl";
 import React, { Component } from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import { Helmet } from "react-helmet";
-import {withRouter} from "react-router-dom";
+import { withRouter } from "react-router-dom";
 // Components
 import SimpleProfileDisplay from './SimpleProfileDisplay';
 import SimpleAdressDisplay from './SimpleAdressDisplay';
 import UserBlock from './UserBlock';
-import {getUserProfiles, setRequestGlobalAction, setAuthUser} from "Actions";
+import { getUserProfiles, setRequestGlobalAction, setAuthUser } from "Actions";
 
 // rct card box
 import { RctCard } from 'Components/RctCard';
@@ -35,20 +35,20 @@ function TabContainer(props) {
    );
 }
 
- class SimpleProfile extends Component {
+class SimpleProfile extends Component {
 
    state = {
       activeTab: this.props.location.state ? this.props.location.state.activeTab : 0
    }
 
-  
+
    handleChange = (event, value) => {
       this.setState({ activeTab: value });
    }
 
 
    render() {
-      
+
       const { user } = this.props;
       const { activeTab } = this.state;
 
@@ -58,10 +58,10 @@ function TabContainer(props) {
          <div className="userProfile-wrapper">
 
             <RctCard>
-               <UserBlock 
-                  userName={user.user.userType == 'ORGANISATION' ? user.commercialName : `${user.firstName} ${user.lastName}`}  
-                  userEmail={user.user.email}
-                  userAvatar= {getFilePath(user.user.avatar)}
+               <UserBlock
+                  userName={user.userType == 'ORGANISATION' ? user.principalName : `${user.principalName} ${user.secondaryName}`}
+                  userEmail={user.email}
+                  userAvatar={getFilePath(user.avatar)}
                />
                <div className="rct-tabs">
                   <AppBar position="static">
@@ -76,22 +76,22 @@ function TabContainer(props) {
                            icon={<i className="ti-user"></i>}
                            label={<IntlMessages id="components.myProfile" />}
                         />
-                         <Tab
+                        {/* <Tab
                            icon={<i className="ti-home"></i>}
                            label={<IntlMessages id="components.address" />}
                         />
                          
-                       
+                        */}
                      </Tabs>
                   </AppBar>
                   {activeTab === 0 &&
                      <TabContainer>
-                        <SimpleProfileDisplay user={user} community={this.props.community} communitySpace={this.props.communitySpace} onClose={this.props.onClose}/>
+                        <SimpleProfileDisplay user={user} community={this.props.community} communitySpace={this.props.communitySpace} onClose={this.props.onClose} />
                      </TabContainer>}
-                  {activeTab === 1 &&
+                  {/* {activeTab === 1 &&
                      <TabContainer>
                         <SimpleAdressDisplay user={user}/>
-                     </TabContainer>}
+                     </TabContainer>} */}
                </div>
             </RctCard>
          </div>
@@ -99,16 +99,16 @@ function TabContainer(props) {
    }
 }
 
-const mapStateToProps = ({ requestGlobalLoader, userProfile, authUser  }) => {
+const mapStateToProps = ({ requestGlobalLoader, userProfile, authUser }) => {
    return {
-       requestGlobalLoader,
-       authUser: authUser.data,
-       loading: userProfile.loading,
-       catalogTypes: userProfile.data,
-       error: userProfile.error
+      requestGlobalLoader,
+      authUser: authUser.data,
+      loading: userProfile.loading,
+      catalogTypes: userProfile.data,
+      error: userProfile.error
    }
 };
 
 export default connect(mapStateToProps, {
-	getUserProfiles, setRequestGlobalAction
+   getUserProfiles, setRequestGlobalAction
 })(withRouter(injectIntl(SimpleProfile)))
