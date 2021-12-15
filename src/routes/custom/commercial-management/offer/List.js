@@ -1,17 +1,19 @@
-import React, { Component } from 'react';
 import { connect } from "react-redux";
-import IntlMessages from 'Util/IntlMessages';
-import { getComOffer, setRequestGlobalAction } from "Actions";
 import { injectIntl } from "react-intl";
-import { withStyles } from "@material-ui/core";
-import { withRouter } from "react-router-dom";
-import { AbilityContext } from "Permissions/Can";
-import CustomList from "Components/CustomList";
-import { COMMERCIAL_MANAGEMENT, joinUrlWithParamsId } from "Url/frontendUrl";
-import Switch from "@material-ui/core/Switch";
-import { NotificationManager } from "react-notifications";
+import React, { Component } from 'react';
+import IntlMessages from 'Util/IntlMessages';
 import Button from "@material-ui/core/Button";
+import { withRouter } from "react-router-dom";
+import Switch from "@material-ui/core/Switch";
+import CustomList from "Components/CustomList";
+import { withStyles } from "@material-ui/core";
+import { AbilityContext } from "Permissions/Can";
+import IconButton from "@material-ui/core/IconButton";
+import { NotificationManager } from "react-notifications";
+import VisibilityIcon from '@material-ui/icons/Visibility';
+import { getComOffer, setRequestGlobalAction } from "Actions";
 import { setOfferActivationStatus } from "Actions/independentActions";
+import { COMMERCIAL_MANAGEMENT, joinUrlWithParamsId } from "Url/frontendUrl";
 
 const saleWays = [{
     label: 'Ventes classiques',
@@ -63,9 +65,7 @@ class List extends Component {
     };
 
     render() {
-        const { comOffer, loading, error, history } = this.props;
-        const { showCreateBox } = this.state;
-
+        const { comOffer, loading, error, history, classes } = this.props;
         return (
             <>
                 <CustomList
@@ -88,73 +88,93 @@ class List extends Component {
                                     </h4>
                                 </div>
                             ) : (
-                                    <div className="table-responsive">
-                                        <table className="table table-hover table-middle mb-0 text-center">
-                                            <thead>
-                                                <tr>
-                                                    <th><IntlMessages id="components.name" /></th>
-                                                    <th>Canal de vente</th>
-                                                    <th><IntlMessages id="widgets.description" /></th>
-                                                    {this.props.authUser.isExploitant() ?
-                                                        <th>Status d'activation</th>
-                                                        : null
+                                <div className="table-responsive">
+                                    <table className="table table-hover table-middle mb-0 text-center">
+                                        <thead>
+                                            <tr>
+                                                <th><IntlMessages id="components.name" /></th>
+                                                <th>Canal de vente</th>
+                                                <th><IntlMessages id="widgets.description" /></th>
+                                                {this.props.authUser.isExploitant() && (
+                                                    <th>Status d'activation</th>
+                                                )}
+                                                {!this.props.authUser.isExploitant() && (
+                                                    <>
+                                                        <th>Détails</th>
+                                                        <th>Actions</th>
+                                                    </>
+                                                )}
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {list && list.map((item, key) => (
+                                                <tr key={key} className="cursor-pointer">
+                                                    <td>
+                                                        <div className="media">
+                                                            <div className="media-body pt-10">
+                                                                <h4 className="m-0 fw-bold text-dark">{item.label}</h4>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div className="media">
+                                                            <div className="media-body pt-10">
+                                                                <h4 className="m-0 fw-bold text-dark">{this.getSaleWay(item.saleWay)}</h4>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div className="media">
+                                                            <div className="media-body pt-10">
+                                                                <h4 className="m-0 fw-bold text-dark">{item.description}</h4>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    {
+                                                        this.props.authUser.isExploitant() && (
+                                                            <td className="table-action">
+                                                                <Switch
+                                                                    checked={item.isActive}
+                                                                    onChange={(event) => { this.onToggleActivationStatus(item.id, event.target.checked) }}
+                                                                    aria-label="Activé"
+                                                                />
+                                                            </td>
+                                                        )
                                                     }
-                                                    <th>Actions</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {list && list.map((item, key) => (
-                                                    <tr key={key} className="cursor-pointer">
-                                                        <td>
-                                                            <div className="media">
-                                                                <div className="media-body pt-10">
-                                                                    <h4 className="m-0 fw-bold text-dark">{item.label}</h4>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div className="media">
-                                                                <div className="media-body pt-10">
-                                                                    <h4 className="m-0 fw-bold text-dark">{this.getSaleWay(item.saleWay)}</h4>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div className="media">
-                                                                <div className="media-body pt-10">
-                                                                    <h4 className="m-0 fw-bold text-dark">{item.description}</h4>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                        {
-                                                            this.props.authUser.isExploitant() ?
+                                                    {
+                                                        !this.props.authUser.isExploitant() && (
+                                                            <>
                                                                 <td className="table-action">
-                                                                    <Switch
-                                                                        checked={item.isActive}
-                                                                        onChange={(event) => { this.onToggleActivationStatus(item.id, event.target.checked) }}
-                                                                        aria-label="Activé"
-                                                                    />
+                                                                    <IconButton
+                                                                        edge="start"
+                                                                        // onClick={() => this.handleProductsClick(catalog.id)}
+                                                                        className={classes.menuButton + `text-black`}
+                                                                        color="inherit"
+                                                                        aria-label="menu"
+                                                                    >
+                                                                        <VisibilityIcon />
+                                                                    </IconButton>
                                                                 </td>
-                                                                : null
-                                                        }
-                                                        <td className="table-action">
-                                                            <Button
-                                                                size="small"
-                                                                color="primary"
-                                                                // disabled={loading}
-                                                                variant="contained"
-                                                                className={"text-white font-weight-bold mr-3"}
-                                                                onClick={() => history.push(joinUrlWithParamsId(COMMERCIAL_MANAGEMENT.COMMERCIAL_OFFER.ADD_PRODUCT, item.id))}
-                                                            >
-                                                                Nouveau produit
-                                                            </Button>
-                                                        </td>
-                                                    </tr>
-                                                ))}
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                )}
+                                                                <td className="table-action">
+                                                                    <Button
+                                                                        size="small"
+                                                                        color="primary"
+                                                                        // disabled={loading}
+                                                                        variant="contained"
+                                                                        className={"text-white font-weight-bold mr-3"}
+                                                                        onClick={() => history.push(joinUrlWithParamsId(COMMERCIAL_MANAGEMENT.COMMERCIAL_OFFER.ADD_PRODUCT, item.id))}
+                                                                    >
+                                                                        Nouveau produit
+                                                                    </Button>
+                                                                </td>
+                                                            </>
+                                                        )}
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            )}
                         </>
                     )}
                 />

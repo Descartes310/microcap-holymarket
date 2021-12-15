@@ -796,7 +796,7 @@ module.exports = {
    "components.mobileNumber": "Numéro de portable",
    "components.address2Optional": "Adresse de facturation 2 (facultatif)",
    "components.country": "Pays",
-   "components.zip": "Zip *: français",
+   "components.zip": "Zip:",
    "components.saveContinue": "Enregistrer continuer",
    "components.placeOrder": "Passer la commande",
    "components.payment": "Paiement",

@@ -34,7 +34,7 @@ class Account extends Component {
     }
 
     loadData = () => {
-        getUserAccounts(this.props.authUser.user.id)
+        getUserAccounts()
             .then(products => {
                 this.setState({ products: this.groups(products), total: products.length });
             })

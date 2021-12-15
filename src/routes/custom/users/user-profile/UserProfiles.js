@@ -1,21 +1,38 @@
 import _ from 'lodash';
-import React from 'react';
 import {setAuthUser} from 'Actions';
 import { Button } from "reactstrap";
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import { withRouter } from 'react-router-dom';
-import { updateUserProfile } from "Actions/independentActions";
+import React, { useState, useEffect } from 'react';
 import { setRequestGlobalAction } from "Actions/RequestGlobalAction";
+import { updateUserProfile, getUserProfiles } from "Actions/independentActions";
 
 const UserProfiles = props => {
 
+    const [profiles, setProfiles] = useState([]);
+
+    useEffect(() => {
+        getProfiles();
+    }, [])
+
     const changeProfile = (id) => {
         setRequestGlobalAction(true);
-        updateUserProfile(id).then(data => {
-            props.setAuthUser()
+        updateUserProfile(id).then(() => {
+            props.setAuthUser();
         }).catch(err => {
             console.log(err)
+        }).finally(() => {
+            setRequestGlobalAction(false);
+        })
+    }    
+    
+    const getProfiles = () => {
+        setRequestGlobalAction(true);
+        getUserProfiles().then(profiles => {
+            setProfiles(profiles)
+        }).catch(err => {
+            console.log(err);
         }).finally(() => {
             setRequestGlobalAction(false);
         })
@@ -33,7 +50,7 @@ const UserProfiles = props => {
                 </thead>
                 <tbody>
                     {
-                        props.authUser.user.profiles.map(p => (
+                        profiles.map(p => (
                             <tr>
                                 <td>{p.label}</td>
                                 <td style={{
@@ -69,8 +86,8 @@ const UserProfiles = props => {
 }
 
 // map state to props
-const mapStateToProps = ({ requestGlobalLoader, authUser, settings }) => {
-    return { loading: requestGlobalLoader, authUser: authUser.data, currencies: settings.currencies }
+const mapStateToProps = ({ requestGlobalLoader, authUser }) => {
+    return { loading: requestGlobalLoader, authUser: authUser.data }
 };
 
 export default withRouter(connect(mapStateToProps, { setRequestGlobalAction, setAuthUser })(injectIntl(UserProfiles)));

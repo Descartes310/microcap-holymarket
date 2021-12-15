@@ -34,7 +34,7 @@ class Account extends Component {
     }
 
     loadData = () => {
-        getUserAccounts(this.props.authUser.user.id)
+        getUserAccounts()
             .then(products => {
                 this.setState({ products: this.groups(products), total: products.length });
             })
@@ -43,14 +43,18 @@ class Account extends Component {
     };
 
     groups = (array) => {
+        console.log("0N => ", array);
         let result = array.reduce((groups, account) => {
-            const type = account.type;
+            const type = account.typeProduct;
+            console.log('type => ', type);
             if (!groups[type]) {
                 groups[type] = [];
             }
             groups[type].push(...account.accounts.reverse());
             return groups;
         }, {});
+        console.log("1N => ", array);
+        console.log("1O => ",result);
         return result;
     }
 
@@ -66,6 +70,8 @@ class Account extends Component {
     render() {
         const { total, products } = this.state;
         const { history, authUser } = this.props;
+
+        console.log(products);
 
         return (
             <>

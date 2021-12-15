@@ -117,7 +117,7 @@ export const NETWORK_PROFILE_TYPE = {
 };
 
 export const PRODUCTS = {
-    GET_FOR_USER: 'api/products/accounts/user/{id}',
+    GET_FOR_USER: 'api/products/accounts/user',
 };
 
 export const CATALOGS = {
@@ -215,6 +215,7 @@ export const USERS = {
     GET_ORGANISATIONS: 'api/users/organisations',
     UPDATE_CURRENCY: 'api/users/currency/{id}',
     UPDATE_PROFILE: 'api/users/update/profile',
+    GET_PROFILES: 'api/users/profiles',
     CHANGE_PROFILE_TO_ORGANISATION: 'api/users/organisations/{id}',
     GET_ALL_BY_ORGANISATION: 'api/users/persons/by-organisation',
     GET_ALL_PARTNER: 'api/users/organisations/branch/{id}/partner',

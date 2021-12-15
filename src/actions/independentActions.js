@@ -523,9 +523,8 @@ export const getUserVouchers = () => {
     return makeRequest('get', url);
 };
 
-export const getUserAccounts = (id) => {
-    const url = joinBaseUrlWithParamsId(PRODUCTS.GET_FOR_USER, id);
-    return makeRequest('get', url);
+export const getUserAccounts = () => {
+    return makeRequest('get', PRODUCTS.GET_FOR_USER);
 };
 
 export const getUserClientExp = (id) => {
@@ -667,6 +666,10 @@ export const updateUserCurrency = (currencyId) => {
 
 export const updateUserProfile = (profileId) => {
     return makeRequest('put', USERS.UPDATE_PROFILE, {id: profileId});
+};
+
+export const getUserProfiles = () => {
+    return makeRequest('get', USERS.GET_PROFILES);
 };
 
 export const setOfferActivationStatus = (partnerId, comId, shouldActivate) => {
