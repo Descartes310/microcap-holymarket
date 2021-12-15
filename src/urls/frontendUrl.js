@@ -93,6 +93,7 @@ export const CATALOG = {
         SELF: '/catalog/products',
         LIST: '/catalog/products/list',
         CREATE: '/catalog/products/create',
+        PRODUCTS: '/catalog/products/:id/product',
         SHOW: '/catalog/products/show/:id',
     },
     SALE: {

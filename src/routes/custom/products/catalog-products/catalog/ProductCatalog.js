@@ -1,89 +1,77 @@
-import { Button } from 'reactstrap';
 import { connect } from "react-redux";
 import { injectIntl } from "react-intl";
 import React, { Component } from 'react';
-import IntlMessages from 'Util/IntlMessages';
-import { withRouter } from "react-router-dom";
-import { globalSearch } from "Helpers/helpers";
+import { CATALOG } from "Url/frontendUrl";
+import AppBar from '@material-ui/core/AppBar';
 import { withStyles } from "@material-ui/core";
 import CustomList from "Components/CustomList";
-import { NotificationManager } from "react-notifications";
-import { PRODUCT, PRODUCT_TYPE, joinUrlWithParams } from "Url/frontendUrl";
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import IconButton from "@material-ui/core/IconButton";
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import RctSectionLoader from 'Components/RctSectionLoader/RctSectionLoader';
-import { getProductTypes, setRequestGlobalAction, setActiveCatalog } from "Actions";
+import { getOneCatalog, getCatalogProducts, setRequestGlobalAction } from "Actions";
 
-class ProductTypeList extends Component {
+class ProductCatalog extends Component {
+
     constructor(props) {
         super(props);
+
+        this.catalogId = this.props.match.params.id;
+
         this.state = {
-            order: 'withParent',
-            searched: '',
-            showWarningBox: false,
-            catalogId: null,
-            showCreateBox: false,
+            leftValuesSelected: [],
+            rightValuesSelected: [],
+            catalog: null,
         }
     }
 
     componentDidMount() {
-        this.props.getProductTypes(this.props.authUser.user.branch.id);
+        this.props.getCatalogProducts(this.catalogId);
+        getOneCatalog(this.catalogId)
+            .then(result => this.setState({ catalog: result }))
+            .catch()
     }
 
-    handleSearch = (value, data) => {
-        if (value !== '') {
-            // Apply order feature
-            // return data;
-            return globalSearch(data, this.state.searched);
-        }
-
-        return data;
-    };
-
-    handleActiveChange = (catalogId) => {
-        this.setState({ catalogId, showWarningBox: true });
-    };
-
-    handleOnRowClick = (catalogId) => {
-        // this.props.history.push(joinUrlWithParams(CATALOG.PRODUCT.SHOW, [{param: 'id', value: catalogId}]));
-    };
-
-    handleActiveConfirmed = () => {
-        this.props.setRequestGlobalAction(true);
-        setActiveCatalog(this.state.catalogId)
-            .then(result => {
-                NotificationManager.success(this.props.intl.formatMessage({ id: 'activeCatalog.alert.successText' }));
-                this.props.getCategoryProducts(this.props.authUser.user.branch.id);
-                this.setState({ showWarningBox: false });
-            })
-            .catch(() => {
-                NotificationManager.error(this.props.intl.formatMessage({ id: 'error.500' }));
-            })
-            .finally(() => this.props.setRequestGlobalAction(false));
-    };
-
-    onEnterClick = (product, type) => {
-        let url = joinUrlWithParams(PRODUCT.DETAILS, [{ param: 'id', value: product.id }, { param: 'type', value: type }]);
-        this.props.history.push(url);
+    handleOnGoBack = () => {
+        this.props.history.push(CATALOG.PRODUCT.LIST);
     };
 
     render() {
-        const { productTypes, loading } = this.props;
+        const { catalogProducts, requestGlobalLoader, classes } = this.props;
+
         return (
             <div>
-                {loading
+                {requestGlobalLoader
                     ? (<RctSectionLoader />)
                     : (
                         <>
+                            <AppBar position="static" className="bg-white px-0 mx-0">
+                                <Toolbar>
+                                    <IconButton
+                                        edge="start"
+                                        className={classes.menuButton + ' text-black'}
+                                        color="inherit"
+                                        onClick={() => this.handleOnGoBack()}
+                                        aria-label="menu">
+                                        <ArrowBackIcon />
+                                    </IconButton>
+                                    <Typography type="title" color="inherit" className={classes.flex + ' text-black'}>
+                                        {this.state.catalog && this.state.catalog.name}
+                                    </Typography>
+                                </Toolbar>
+                            </AppBar>
+
                             <CustomList
-                                loading={loading}
-                                list={productTypes}
-                                onAddClick={() => this.props.history.push(PRODUCT_TYPE.CREATE)}
-                                itemsFoundText={n => `${n} type de produit.s trouvé.s`}
+                                loading={false}
+                                list={catalogProducts.data}
+                                itemsFoundText={n => `${n} produits trouvé.s`}
                                 renderItem={list => (
                                     <>
                                         {list && list.length === 0 ? (
                                             <div className="d-flex justify-content-center align-items-center py-50">
                                                 <h4>
-                                                    Aucun type de produits trouvés
+                                                    Aucun produits trouvés
                                                 </h4>
                                             </div>
                                         ) : (
@@ -91,9 +79,8 @@ class ProductTypeList extends Component {
                                                 <table className="table table-hover table-middle mb-0">
                                                     <thead>
                                                         <tr>
-                                                            <th><IntlMessages id="components.name" /></th>
-                                                            <th><IntlMessages id="widgets.description" /></th>
-                                                            <th><IntlMessages id="widgets.action" /></th>
+                                                            <th>Nom du produit</th>
+                                                            <th>Description</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -116,18 +103,6 @@ class ProductTypeList extends Component {
                                                                         </div>
                                                                     </div>
                                                                 </td>
-                                                                <td className="table-action">
-                                                                    <Button
-                                                                        size="small"
-                                                                        color="primary"
-                                                                        variant="contained"
-                                                                        className={"text-white font-weight-bold mr-3 bg-blue"}
-                                                                        onClick={() => this.onEnterClick(product, 'PRODUCT')}
-                                                                    >
-                                                                        Voir les détails
-                                                                        <i className="zmdi zmdi-arrow-right mr-2" />
-                                                                    </Button>
-                                                                </td>
                                                             </tr>
                                                         ))}
                                                     </tbody>
@@ -146,14 +121,8 @@ class ProductTypeList extends Component {
 }
 
 // map state to props
-const mapStateToProps = ({ requestGlobalLoader, productTypes, authUser }) => {
-    return {
-        requestGlobalLoader,
-        loading: productTypes.loading,
-        productTypes: productTypes.data,
-        error: productTypes.error,
-        authUser: authUser.data,
-    }
+const mapStateToProps = ({ requestGlobalLoader, catalogProducts, authUser }) => {
+    return { requestGlobalLoader, catalogProducts, authUser: authUser.data }
 };
 
 const useStyles = theme => ({
@@ -163,6 +132,9 @@ const useStyles = theme => ({
     flex: {
         flex: 1,
     },
+    /*menuButton: {
+        marginRight: theme.spacing(2),
+    },*/
     menuButton: {
         marginLeft: -12,
         marginRight: 20,
@@ -175,5 +147,5 @@ const useStyles = theme => ({
     }
 });
 
-export default connect(mapStateToProps, { getProductTypes, setRequestGlobalAction })
-    (withStyles(useStyles, { withTheme: true })(withRouter(injectIntl(ProductTypeList))));
+export default connect(mapStateToProps, { getCatalogProducts, setRequestGlobalAction })
+    (withStyles(useStyles, { withTheme: true })(injectIntl(ProductCatalog)));

@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { Button} from 'reactstrap';
+import { Button } from 'reactstrap';
 import Product from "Enums/Product";
 import { connect } from "react-redux";
 import React, { Component } from 'react';
@@ -11,8 +11,11 @@ import { globalSearch } from "Helpers/helpers";
 import { withStyles } from "@material-ui/core";
 import SweetAlert from "react-bootstrap-sweetalert";
 import Switch from "@material-ui/core/Switch/Switch";
+import IconButton from "@material-ui/core/IconButton";
 import { NotificationManager } from "react-notifications";
 import CatalogCreate from "Routes/custom/products/Create";
+import VisibilityIcon from '@material-ui/icons/Visibility';
+import EditIcon from '@material-ui/icons/Edit';
 import { CATALOG, joinUrlWithParams } from "Url/frontendUrl";
 import RctSectionLoader from 'Components/RctSectionLoader/RctSectionLoader';
 import { getCatalogsOfOneType, setRequestGlobalAction, setActiveCatalog } from "Actions";
@@ -57,10 +60,12 @@ class CatalogList extends Component {
         this.setState({ catalogId, showWarningBox: true });
     };
 
-    handleOnRowClick = (catalogId) => {
-        // console.log("handleOnRowClick => ", catalogId);
+    handleShowClick = (catalogId) => {
         this.props.history.push(joinUrlWithParams(CATALOG.PRODUCT.SHOW, [{ param: 'id', value: catalogId }]));
-        // this.setState({catalogId, showWarningBox: true});
+    };
+
+    handleProductsClick = (catalogId) => {
+        this.props.history.push(joinUrlWithParams(CATALOG.PRODUCT.PRODUCTS, [{ param: 'id', value: catalogId }]));
     };
 
     handleActiveConfirmed = () => {
@@ -78,7 +83,7 @@ class CatalogList extends Component {
     };
 
     render() {
-        const { catalogTypes, loading } = this.props;
+        const { catalogTypes, loading, classes } = this.props;
         const { showWarningBox, catalogId, showCreateBox } = this.state;
 
         let orderedItems = this.handleSearch(this.state.searched, catalogTypes);
@@ -109,13 +114,14 @@ class CatalogList extends Component {
                                                         <tr>
                                                             <th><IntlMessages id="components.name" /></th>
                                                             <th><IntlMessages id="widgets.description" /></th>
-                                                            <th><IntlMessages id="widgets.action" /></th>
+                                                            <th>Status</th>
+                                                            <th>Actions</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         {list && list.map((catalog, key) => (
                                                             <tr key={key} className="cursor-pointer">
-                                                                <td onClick={() => this.handleOnRowClick(catalog.id)}>
+                                                                <td>
                                                                     <div className="media">
                                                                         <div className="media-left media-middle mr-15">
                                                                             {/*<img src={catalog.label} alt="user profile" className="media-object rounded-circle" width="35" height="35" />*/}
@@ -125,7 +131,7 @@ class CatalogList extends Component {
                                                                         </div>
                                                                     </div>
                                                                 </td>
-                                                                <td onClick={() => this.handleOnRowClick(catalog.id)}>
+                                                                <td>
                                                                     <div className="media">
                                                                         <div className="media-body pt-10">
                                                                             <h4 className="m-0 fw-bold text-dark">{catalog.description}</h4>
@@ -138,6 +144,24 @@ class CatalogList extends Component {
                                                                         onChange={() => this.handleActiveChange(catalog.id)}
                                                                         aria-label="checkedA"
                                                                     />
+                                                                </td>
+                                                                <td className="table-action">
+                                                                    <IconButton
+                                                                        edge="start"
+                                                                        onClick={() => this.handleProductsClick(catalog.id)}
+                                                                        className={classes.menuButton + `text-black`}
+                                                                        color="inherit"
+                                                                        aria-label="menu">
+                                                                        <VisibilityIcon />
+                                                                    </IconButton>
+                                                                    <IconButton
+                                                                        edge="start"
+                                                                        onClick={() => this.handleShowClick(catalog.id)}
+                                                                        className={classes.menuButton + `text-black`}
+                                                                        color="inherit"
+                                                                        aria-label="menu">
+                                                                        <EditIcon />
+                                                                    </IconButton>
                                                                 </td>
                                                             </tr>
                                                         ))}

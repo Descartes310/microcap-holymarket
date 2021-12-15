@@ -1,15 +1,11 @@
-/**
- * Employ Payroll
- */
-import React, { Component } from 'react';
-// intl messages
+import Show from './Show';
+import List from './List';
 import {connect} from "react-redux";
 import {injectIntl} from "react-intl";
 import {CATALOG} from "Url/frontendUrl";
-
+import React, { Component } from 'react';
+import ProductCatalog from './ProductCatalog';
 import {withRouter, Switch, Redirect, Route} from "react-router-dom";
-import List from './List';
-import Show from './Show';
 
 
 class CatalogIndex extends Component {
@@ -21,6 +17,7 @@ class CatalogIndex extends Component {
                 <>
                     <Switch>
                         <Redirect exact from={`${match.url}/`} to={CATALOG.PRODUCT.LIST} />
+                        <Route path={CATALOG.PRODUCT.PRODUCTS} component={ProductCatalog} />
                         <Route path={CATALOG.PRODUCT.SHOW} component={Show} />
                         <Route path={CATALOG.PRODUCT.LIST} component={List} />
                     </Switch>
