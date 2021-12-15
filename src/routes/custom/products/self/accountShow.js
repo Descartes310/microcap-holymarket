@@ -161,7 +161,6 @@ class AccountShow extends Component {
     render() {
         const { account_currency, account, balance, consolidation, currency, showQuantityBox, transactions, paying, printing, showCurrencyBox } = this.state;
         const { match, history, classes } = this.props;
-        console.log('TEST => ', this.props.currencies, this.state.amount, null, this.props.authUser.user.currency, account_currency, currency, this.props.currencies.filter(c => c.code == currency)[0].decimal)
 
         return (
             <>
