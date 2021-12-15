@@ -471,7 +471,7 @@ const CategoryProductsCreate = props => {
                                             <InputLabel className="text-left" htmlFor="currency-helper">
                                                 Type d'unité
                                             </InputLabel>
-                                            <Select onChange={e => setType(e.target.value)} disabled={!isAccountWatch}>
+                                            <Select value={type} onChange={e => setType(e.target.value)} disabled={!isAccountWatch}>
                                                 {[{ name: 'Devise', id: 0 }, ...types].map(item => (
                                                     <MenuItem key={item.id} value={item} className="">
                                                         {item.name}

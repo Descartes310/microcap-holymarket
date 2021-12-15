@@ -65,7 +65,7 @@ const AddWork = ({ show, works, onSave, onClose }) => {
                                                 defaultValue={data[0] ? data[0].id : undefined}
                                                 as={<Select input={<Input name="representativePosition" id="representativePosition" />}>
                                                     {data.map((item, index) => (
-                                                        <MenuItem key={item.id} value={item.id} className="center-hor-ver">
+                                                        <MenuItem key={item.id} value={item.id}>
                                                             {item.title}
                                                         </MenuItem>
                                                     ))}

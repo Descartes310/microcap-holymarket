@@ -5,6 +5,7 @@ import { createFolder } from "Actions";
 import { injectIntl } from 'react-intl';
 import { useForm } from "react-hook-form";
 import { PROJECTS } from "Url/frontendUrl";
+import {withRouter} from "react-router-dom";
 import { ERROR_500 } from "Constants/errors";
 import IntlMessages from "Util/IntlMessages";
 import Button from "@material-ui/core/Button";
@@ -169,9 +170,9 @@ const Create = props => {
         createFolder(_data, { fileData: ['file'], multipart: true })
             .then(() => {
                 NotificationManager.success("Projet crée avec succès");
-                history.push(PROJECTS.FOLDERS.LIST);
+                props.history.push(PROJECTS.FOLDERS.PROJECTS.SELF);
             })
-            .catch(() => null)
+            .catch((err) => console.log(err))
             .finally(() => setRequestGlobalAction(false));
     };
 
@@ -416,4 +417,4 @@ const mapStateToProps = ({ requestGlobalLoader, authUser }) => {
     };
 };
 
-export default connect(mapStateToProps, { getInitialisationOptions, setRequestGlobalAction })(injectIntl(Create));
+export default connect(mapStateToProps, { getInitialisationOptions, setRequestGlobalAction })(withRouter(injectIntl(Create)));

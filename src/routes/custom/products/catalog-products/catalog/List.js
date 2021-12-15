@@ -1,35 +1,21 @@
-import React, { Component, Fragment } from 'react';
-import { Badge, Button, FormGroup, Input, InputGroup, InputGroupAddon } from 'reactstrap';
-
-// rct section loader
-import RctSectionLoader from 'Components/RctSectionLoader/RctSectionLoader';
-
-// intl messages
-import { connect } from "react-redux";
-import IntlMessages from 'Util/IntlMessages';
-import { getCatalogsOfOneType, setRequestGlobalAction, setActiveCatalog } from "Actions";
-import { injectIntl } from "react-intl";
-import FormControl from "@material-ui/core/FormControl";
-import NetworkBranchIntlMessages from "Components/NetworkBranchIntlMessages";
-import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
 import _ from 'lodash';
+import { Button} from 'reactstrap';
 import Product from "Enums/Product";
-import { CATALOG, joinUrlWithParams, NETWORK } from "Url/frontendUrl";
-import Switch from "@material-ui/core/Switch/Switch";
-import SweetAlert from "react-bootstrap-sweetalert";
-import { NotificationManager } from "react-notifications";
+import { connect } from "react-redux";
+import React, { Component } from 'react';
+import { injectIntl } from "react-intl";
+import IntlMessages from 'Util/IntlMessages';
+import { withRouter } from "react-router-dom";
+import CustomList from "Components/CustomList";
 import { globalSearch } from "Helpers/helpers";
 import { withStyles } from "@material-ui/core";
-
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
-import InputBase from '@material-ui/core/InputBase';
-import MenuIcon from '@material-ui/icons/Menu';
-import SearchIcon from '@material-ui/icons/Search';
+import SweetAlert from "react-bootstrap-sweetalert";
+import Switch from "@material-ui/core/Switch/Switch";
+import { NotificationManager } from "react-notifications";
 import CatalogCreate from "Routes/custom/products/Create";
-import { withRouter } from "react-router-dom";
+import { CATALOG, joinUrlWithParams } from "Url/frontendUrl";
+import RctSectionLoader from 'Components/RctSectionLoader/RctSectionLoader';
+import { getCatalogsOfOneType, setRequestGlobalAction, setActiveCatalog } from "Actions";
 
 class CatalogList extends Component {
     constructor(props) {
@@ -92,49 +78,76 @@ class CatalogList extends Component {
     };
 
     render() {
-        const { catalogTypes, loading, error, classes } = this.props;
-        const { showWarningBox, catalogId, searched, showCreateBox } = this.state;
+        const { catalogTypes, loading } = this.props;
+        const { showWarningBox, catalogId, showCreateBox } = this.state;
 
         let orderedItems = this.handleSearch(this.state.searched, catalogTypes);
-        // console.log("orderedItems => ", orderedItems);
+
         return (
-            <div className="mx-4">
+            <div>
                 {loading || orderedItems === null
                     ? (<RctSectionLoader />)
                     : (
                         <>
-                            <AppBar position="static" className="bg-white px-0 mx-0">
-                                <Toolbar>
-                                    <Button
-                                        color="primary"
-                                        className="mb-10 text-white mr-2"
-                                        onClick={() => this.setState({ showCreateBox: true })}
-                                    >
-                                        <IntlMessages id="button.add" />
-                                        <i className="zmdi zmdi zmdi-plus ml-2" />
-                                    </Button>
-                                    <div className={classes.flex}>
-                                        <FormControl>
-                                            <InputGroup>
-                                                <InputGroupAddon addonType="prepend">
-                                                    <IconButton aria-label="facebook">
-                                                        <i className="zmdi zmdi-search"></i>
-                                                    </IconButton>
-                                                </InputGroupAddon>
-                                                <Input
-                                                    name="search"
-                                                    placeholder={this.props.intl.formatMessage({ id: 'widgets.search' }) + '...'}
-                                                    type="text"
-                                                    onChange={event => this.setState({ searched: event.target.value })}
-                                                />
-                                            </InputGroup>
-                                        </FormControl>
-                                    </div>
-                                    <p className={classes.title}>
-                                        <NetworkBranchIntlMessages id="catalog.found" values={{ count: orderedItems.length }} />
-                                    </p>
-                                </Toolbar>
-                            </AppBar>
+                            <CustomList
+                                loading={loading}
+                                list={orderedItems}
+                                onAddClick={() => this.setState({ showCreateBox: true })}
+                                itemsFoundText={n => `${n} catalogues trouvés`}
+                                renderItem={list => (
+                                    <>
+                                        {list && list.length === 0 ? (
+                                            <div className="d-flex justify-content-center align-items-center py-50">
+                                                <h4>
+                                                    Aucun catalogue trouvés
+                                                </h4>
+                                            </div>
+                                        ) : (
+                                            <div className="table-responsive">
+                                                <table className="table table-hover table-middle mb-0">
+                                                    <thead>
+                                                        <tr>
+                                                            <th><IntlMessages id="components.name" /></th>
+                                                            <th><IntlMessages id="widgets.description" /></th>
+                                                            <th><IntlMessages id="widgets.action" /></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {list && list.map((catalog, key) => (
+                                                            <tr key={key} className="cursor-pointer">
+                                                                <td onClick={() => this.handleOnRowClick(catalog.id)}>
+                                                                    <div className="media">
+                                                                        <div className="media-left media-middle mr-15">
+                                                                            {/*<img src={catalog.label} alt="user profile" className="media-object rounded-circle" width="35" height="35" />*/}
+                                                                        </div>
+                                                                        <div className="media-body pt-10">
+                                                                            <h4 className="m-0 fw-bold text-dark">{catalog.label}</h4>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                                <td onClick={() => this.handleOnRowClick(catalog.id)}>
+                                                                    <div className="media">
+                                                                        <div className="media-body pt-10">
+                                                                            <h4 className="m-0 fw-bold text-dark">{catalog.description}</h4>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                                <td className="table-action">
+                                                                    <Switch
+                                                                        checked={catalog.active}
+                                                                        onChange={() => this.handleActiveChange(catalog.id)}
+                                                                        aria-label="checkedA"
+                                                                    />
+                                                                </td>
+                                                            </tr>
+                                                        ))}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        )}
+                                    </>
+                                )}
+                            />
                             <CatalogCreate
                                 show={showCreateBox}
                                 onClose={() => {
@@ -142,86 +155,36 @@ class CatalogList extends Component {
                                 }}
                                 catalog={{ value: Product.PRODUCT, displayName: this.props.intl.formatMessage({ id: "sidebar.product" }) }}
                             />
-                            {orderedItems.length === 0
-                                ? (
-                                    <RctCollapsibleCard>
-                                        <IntlMessages id="list.noThingToDisplay" values={{ thing: this.props.intl.formatMessage({ id: 'catalog' }) }} />
-                                    </RctCollapsibleCard>
-                                )
-                                : (
+                            <SweetAlert
+                                type="warning"
+                                showCancel
+                                showConfirm
+                                show={showWarningBox}
+                                title={this.props.intl.formatMessage({ id: "activeCatalog.alert.title" })}
+                                customButtons={(
                                     <>
-                                        <div className="table-responsive">
-                                            <table className="table table-hover table-middle mb-0 text-center">
-                                                <thead>
-                                                    <tr>
-                                                        <th><IntlMessages id="components.name" /></th>
-                                                        <th><IntlMessages id="widgets.description" /></th>
-                                                        <th><IntlMessages id="widgets.action" /></th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    {orderedItems && orderedItems.map((catalog, key) => (
-                                                        <tr key={key} className="cursor-pointer">
-                                                            <td onClick={() => this.handleOnRowClick(catalog.id)}>
-                                                                <div className="media">
-                                                                    <div className="media-left media-middle mr-15">
-                                                                        {/*<img src={catalog.label} alt="user profile" className="media-object rounded-circle" width="35" height="35" />*/}
-                                                                    </div>
-                                                                    <div className="media-body pt-10">
-                                                                        <h4 className="m-0 fw-bold text-dark">{catalog.label}</h4>
-                                                                    </div>
-                                                                </div>
-                                                            </td>
-                                                            <td onClick={() => this.handleOnRowClick(catalog.id)}>
-                                                                <div className="media">
-                                                                    <div className="media-body pt-10">
-                                                                        <h4 className="m-0 fw-bold text-dark">{catalog.description}</h4>
-                                                                    </div>
-                                                                </div>
-                                                            </td>
-                                                            <td className="table-action">
-                                                                <Switch
-                                                                    checked={catalog.active}
-                                                                    onChange={() => this.handleActiveChange(catalog.id)}
-                                                                    aria-label="checkedA"
-                                                                />
-                                                            </td>
-                                                        </tr>
-                                                    ))}
-                                                </tbody>
-                                            </table>
-                                            <SweetAlert
-                                                type="danger"
-                                                showCancel
-                                                showConfirm
-                                                show={showWarningBox}
-                                                title={this.props.intl.formatMessage({ id: "activeCatalog.alert.title" })}
-                                                customButtons={(
-                                                    <>
-                                                        <Button
-                                                            color="blue"
-                                                            variant="outlined"
-                                                            onClick={() => this.setState({ showWarningBox: false })}
-                                                            className="text-white bg-blue font-weight-bold mr-3"
-                                                        >
-                                                            <IntlMessages id="button.cancel" />
-                                                        </Button>
-                                                        <Button
-                                                            color="primary"
-                                                            variant="contained"
-                                                            className="text-white font-weight-bold"
-                                                            onClick={() => this.handleActiveConfirmed(catalogId)}
-                                                        >
-                                                            <IntlMessages id="button.activate" />
-                                                        </Button>
-                                                    </>
-                                                )}
-                                                onConfirm={() => this.handleActiveConfirmed(catalogId)}
-                                            >
-                                                <IntlMessages id="activeCatalog.alert.text" />
-                                            </SweetAlert>
-                                        </div>
-                                    </>)}
+                                        <Button
+                                            color="blue"
+                                            variant="outlined"
+                                            onClick={() => this.setState({ showWarningBox: false })}
+                                            className="text-white bg-blue font-weight-bold mr-3"
+                                        >
+                                            <IntlMessages id="button.cancel" />
+                                        </Button>
+                                        <Button
+                                            color="primary"
+                                            variant="contained"
+                                            className="text-white font-weight-bold"
+                                            onClick={() => this.handleActiveConfirmed(catalogId)}
+                                        >
+                                            <IntlMessages id="button.activate" />
+                                        </Button>
+                                    </>
+                                )}
+                                onConfirm={() => this.handleActiveConfirmed(catalogId)}
+                            >
+                                <IntlMessages id="activeCatalog.alert.text" />
+                            </SweetAlert>
                         </>
                     )
                 }
