@@ -10,7 +10,6 @@ import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import { Helmet } from "react-helmet";
 import {withRouter} from "react-router-dom";
-import { getUser} from "Actions";
 // Components
 import SimpleProfileDisplay from './SimpleProfileDisplay';
 import SimpleAdressDisplay from './SimpleAdressDisplay';
@@ -52,6 +51,8 @@ function TabContainer(props) {
       
       const { user } = this.props;
       const { activeTab } = this.state;
+
+      console.log(user);
 
       return (
          <div className="userProfile-wrapper">

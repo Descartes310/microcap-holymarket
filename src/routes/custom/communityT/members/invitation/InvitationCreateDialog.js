@@ -106,7 +106,7 @@ class InvitationCreateDialog extends React.Component {
         if (this.state.activeIndex == 0) {
             data = {
                 group_id: this.props.community ? this.props.community.id : this.props.currentCommunity.community.id,
-                user_id: this.state.userIdentifier,
+                reference: this.state.userIdentifier,
                 id: this.props.authUser.user.id
             };
         }

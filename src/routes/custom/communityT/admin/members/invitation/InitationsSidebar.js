@@ -19,7 +19,6 @@ import classnames from "classnames";
 import ListItem from "@material-ui/core/ListItem";
 import {COMMUNITY_ADMIN, joinUrlWithParamsId} from "Url/frontendUrl";
 import InvitationType from "Enums/InvitationType";
-import InvitationCreateDialog from './InvitationCreateDialog'
 
 class InvitationsSidebar extends Component {
     communitySpaceId = this.props.match.params.id;

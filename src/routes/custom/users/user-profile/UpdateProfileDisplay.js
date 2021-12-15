@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import IntlMessages from "Util/IntlMessages";
 import Step from "@material-ui/core/Step/Step";
-import { updateUsers, getUsers, getUser, getOrganisationTypes } from "Actions";
+import { updateUsers, getUsers, getOrganisationTypes } from "Actions";
 import { NotificationManager } from "react-notifications";
 import { injectIntl } from 'react-intl';
 import { setRequestGlobalAction } from "Actions/RequestGlobalAction";
@@ -152,23 +152,23 @@ const UpdateProfileDisplay = props => {
                     </div>
                 </div>) : null}
 
-                {authUser.user.reference ? (<div className="row align-items-flex-end">
+                {authUser.reference ? (<div className="row align-items-flex-end">
                     <div className="col-md-4 user-profile-item">
                         <h3>Numéro de l'utilisateur :</h3>
                     </div>
                     <div className="col-md-8 user-profile-item-value">
-                        <span>{authUser.user.reference}</span>
+                        <span>{authUser.reference}</span>
                     </div>
                 </div>) : null }
 
                 {
-                    authUser.user.membershipNumber ?
+                    authUser.membershipNumber ?
                     <div className="row align-items-flex-end">
                         <div className="col-md-4 user-profile-item">
                             <h3>Numéro d'adhésion :</h3>
                         </div>
                         <div className="col-md-8 user-profile-item-value">
-                            <span>{authUser.user.membershipNumber}</span>
+                            <span>{authUser.membershipNumber}</span>
                         </div>
                     </div> : null}
 

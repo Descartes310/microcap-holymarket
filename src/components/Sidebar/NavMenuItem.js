@@ -49,29 +49,16 @@ class NavMenuItem extends Component {
       this.props.statusCommunitySpaceStatus(false);
    }
 
-
-   /*onActiveMenu(index) {
-      if (this.state.activeMenu === '') {
-         this.setState({
-            activeMenu: index
-         })
-      }
-      else if (this.state.activeMenu !== index) {
-         this.setState({
-            activeMenu: index
-         })
-      }
-      else {
-         this.setState({ activeMenu: '' });
-      }
-
-   }*/
+   isCommunityAdmin = () => {
+      let adminOccurence = this.props.communitySpace.admins.filter(a => a.referralId === this.props.authUser.id && a.referralType === this.props.authUser.user.userType);
+      return adminOccurence ? adminOccurence.length >= 1 : false;
+   }
 
    render() {
       const { menu, onToggleMenu, authUser } = this.props;
       const { subMenuOpen } = this.state;
       // Check if the route has nested routes and if the user has at least one permission for one nested routes
-      if ((menu.key != 'commnity_admin' && this.props.authUser.user.status != Status.PENDING) || (menu.key == 'commnity_admin' && this.props.communitySpace.admins.includes(authUser.user.id) && this.props.authUser.user.status != Status.PENDING))
+      if ((menu.key != 'commnity_admin' && this.props.authUser.user.status != Status.PENDING) || (menu.key == 'commnity_admin' && this.isCommunityAdmin() && this.props.authUser.user.status != Status.PENDING))
          if (menu.child_routes !== null && authUser.hasPermissions(_.flattenDeep(menu.child_routes.map(p => p.permissions.map(i => i.name))))) {
             return (
                <Fragment>

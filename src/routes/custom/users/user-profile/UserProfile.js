@@ -104,7 +104,7 @@ const UserShowProfile = props => {
                         <h3>Numéro d'utilisateur :</h3>
                     </div>
                     <div className="col-md-9 user-profile-item-value">
-                        <span>{user.user.reference}</span>
+                        <span>{user.reference}</span>
                     </div>
                 </div>
 

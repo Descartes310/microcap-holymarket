@@ -263,7 +263,7 @@ export const COMMUNITY_MEMBER = {
             NOT_IN: 'api/groups/communities/user/{id}/not-in',
             ADMIN: 'api/groups/communities/user/admin/me',
             GET_MEMBERS: 'api/groups/communities/{id}/members',
-            GET_COMMUNITIES: 'api/groups/communities/users/{id}',
+            GET_COMMUNITIES: 'api/groups/communities/users',
             CREATE_VOUCHER: 'api/groups/{id}/vouchers',
             GET_VOUCHERS_FOR_USER: 'api/groups/users/vouchers',
             GET_VOUCHERS: 'api/groups/{id}/vouchers/users/{user_id}/type/{type}',
@@ -291,7 +291,7 @@ export const COMMUNITY_MEMBER = {
         VALIDATE_COMMUNITY: 'api/groups/communities/operators/invitations/validation',
     },
     INVITATIONS: {
-        GET_ALL: 'api/groups/communities/pending/invitation/{id}',
+        GET_ALL: 'api/groups/communities/pending/invitation',
         SEND: {
             ONE: 'api/groups/communities/send/invitation/community/{group_id}',
             MANY: 'api/groups/communities/send/invitation/community/{group_id}',
@@ -307,21 +307,6 @@ export const COMMUNITY_MEMBER = {
     },
 };
 
-/* export const COMMUNITY = {
-
-    INVITATIONS: {
-        GET_ALL: 'api/groups/communities/pending/invitation/me',
-        SEND: {
-            ONE: 'api/groups/communities/send/invitation/community/{group_id}/user/{user_id}',
-            MANY: 'api/groups/communities/send/invitation/community/{group_id}',
-            REQUEST: 'api/groups/communities/send/request/community/{group_id}',
-        },
-        ACCEPT: 'api/groups/communities/accept/invitation/{invitation_id}',
-        CANCEL: 'api/groups/communities/cancel/invitation/{invitation_id}',
-        DELETE: 'api/groups/communities/delete/invitation/{invitation_id}',
-    },
-};
- */
 export const COMMERCIAL_MANAGEMENT = {
     OPERATION_TYPE: {
         GET_ALL: 'api/commercial-operation-type',

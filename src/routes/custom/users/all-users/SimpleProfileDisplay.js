@@ -56,23 +56,23 @@ const SimpleProfileDisplay = props => {
                     </div>
                 </div>) : null}
 
-                {user.user.reference ? (<div className="row align-items-flex-end">
+                {user.reference ? (<div className="row align-items-flex-end">
                     <div className="col-md-4 user-profile-item">
                         <h3>Numéro de l'utilisateur :</h3>
                     </div>
                     <div className="col-md-8 user-profile-item-value">
-                        <span>{user.user.reference}</span>
+                        <span>{user.reference}</span>
                     </div>
                 </div>) : null }
 
                 {
-                    user.user.membershipNumber ?
+                    user.membershipNumber ?
                     <div className="row align-items-flex-end">
                         <div className="col-md-4 user-profile-item">
                             <h3>Numéro d'adhésion :</h3>
                         </div>
                         <div className="col-md-8 user-profile-item-value">
-                            <span>{user.user.membershipNumber}</span>
+                            <span>{user.membershipNumber}</span>
                         </div>
                     </div> : null}
 
