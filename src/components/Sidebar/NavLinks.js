@@ -85,12 +85,12 @@ export default {
                "menu_title": "Catalogue ventes",
                "permissions": [Permission.navLinks.products.childLinks.catalogProducts.viewMenu],
             },
-            {
-               "path": NETWORK.COVERAGE,
-               "new_item": false,
-               "menu_title": "Catalogue distributions",
-               "permissions": [Permission.navLinks.products.childLinks.catalogDistribution.viewMenu],
-            },
+            // {
+            //    "path": NETWORK.COVERAGE,
+            //    "new_item": false,
+            //    "menu_title": "Catalogue distributions",
+            //    "permissions": [Permission.navLinks.products.childLinks.catalogDistribution.viewMenu],
+            // },
          ]
       },
       {
@@ -483,12 +483,12 @@ export default {
                "menu_title": "Catalogue ventes",
                "permissions": [Permission.navLinks.products.childLinks.catalogProducts.viewMenu],
             },
-            {
-               "path": NETWORK.COVERAGE,
-               "new_item": false,
-               "menu_title": "Catalogue distributions",
-               "permissions": [Permission.navLinks.products.childLinks.catalogDistribution.viewMenu],
-            },
+            // {
+            //    "path": NETWORK.COVERAGE,
+            //    "new_item": false,
+            //    "menu_title": "Catalogue distributions",
+            //    "permissions": [Permission.navLinks.products.childLinks.catalogDistribution.viewMenu],
+            // },
          ]
       },
       {
@@ -515,12 +515,12 @@ export default {
                "menu_title": "Offre commerciale",
                "permissions": [],
             },
-            {
-               "menu_title": "Demandes d'achats reçus",
-               "new_item": false,
-               "path": PRODUCT.OPERATOR_ORDERS,
-               "permissions": [],
-            }
+            // {
+            //    "menu_title": "Demandes d'achats reçus",
+            //    "new_item": false,
+            //    "path": PRODUCT.OPERATOR_ORDERS,
+            //    "permissions": [],
+            // }
          ]
       },
       {

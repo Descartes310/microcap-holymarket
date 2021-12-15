@@ -24,6 +24,8 @@ class ProductCatalog extends Component {
             rightValuesSelected: [],
             catalog: null,
         }
+
+        this.baseUrl = this.props.baseUrl;
     }
 
     componentDidMount() {
@@ -34,7 +36,7 @@ class ProductCatalog extends Component {
     }
 
     handleOnGoBack = () => {
-        this.props.history.push(CATALOG.PRODUCT.LIST);
+        this.props.history.push(this.baseUrl.LIST);
     };
 
     render() {

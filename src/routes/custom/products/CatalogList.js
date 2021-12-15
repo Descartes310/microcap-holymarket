@@ -9,18 +9,19 @@ import { withRouter } from "react-router-dom";
 import CustomList from "Components/CustomList";
 import { globalSearch } from "Helpers/helpers";
 import { withStyles } from "@material-ui/core";
+import EditIcon from '@material-ui/icons/Edit';
+import { joinUrlWithParams } from "Url/frontendUrl";
 import SweetAlert from "react-bootstrap-sweetalert";
 import Switch from "@material-ui/core/Switch/Switch";
 import IconButton from "@material-ui/core/IconButton";
 import { NotificationManager } from "react-notifications";
 import CatalogCreate from "Routes/custom/products/Create";
 import VisibilityIcon from '@material-ui/icons/Visibility';
-import EditIcon from '@material-ui/icons/Edit';
-import { CATALOG, joinUrlWithParams } from "Url/frontendUrl";
 import RctSectionLoader from 'Components/RctSectionLoader/RctSectionLoader';
 import { getCatalogsOfOneType, setRequestGlobalAction, setActiveCatalog } from "Actions";
 
 class CatalogList extends Component {
+
     constructor(props) {
         super(props);
         this.state = {
@@ -30,16 +31,18 @@ class CatalogList extends Component {
             catalogId: null,
             showCreateBox: false,
         }
+
+        this.baseUrl = this.props.baseUrl;
+        this.catalogType = this.props.catalogType;
+        this.catalogLabel = this.props.catalogLabel;
     }
 
     componentDidMount() {
-        this.props.getCatalogsOfOneType(Product.PRODUCT, this.props.authUser.user.branch.id);
+        this.props.getCatalogsOfOneType(this.catalogType, this.props.authUser.user.branch.id);
     }
 
     handleOrder = (value, data) => {
         if (value !== 'none') {
-            // Apply order feature
-            // return data;
             return _.sortBy(data, 'profileParent');
         }
 
@@ -48,8 +51,6 @@ class CatalogList extends Component {
 
     handleSearch = (value, data) => {
         if (value !== '') {
-            // Apply order feature
-            // return data;
             return globalSearch(data, this.state.searched);
         }
 
@@ -61,11 +62,11 @@ class CatalogList extends Component {
     };
 
     handleShowClick = (catalogId) => {
-        this.props.history.push(joinUrlWithParams(CATALOG.PRODUCT.SHOW, [{ param: 'id', value: catalogId }]));
+        this.props.history.push(joinUrlWithParams(this.baseUrl.SHOW, [{ param: 'id', value: catalogId }]));
     };
 
     handleProductsClick = (catalogId) => {
-        this.props.history.push(joinUrlWithParams(CATALOG.PRODUCT.PRODUCTS, [{ param: 'id', value: catalogId }]));
+        this.props.history.push(joinUrlWithParams(this.baseUrl.PRODUCTS, [{ param: 'id', value: catalogId }]));
     };
 
     handleActiveConfirmed = () => {
@@ -73,7 +74,7 @@ class CatalogList extends Component {
         setActiveCatalog(this.state.catalogId)
             .then(result => {
                 NotificationManager.success(this.props.intl.formatMessage({ id: 'activeCatalog.alert.successText' }));
-                this.props.getCatalogsOfOneType(Product.PRODUCT, this.props.authUser.user.branch.id);
+                this.props.getCatalogsOfOneType(this.catalogType, this.props.authUser.user.branch.id);
                 this.setState({ showWarningBox: false });
             })
             .catch(() => {
@@ -177,7 +178,7 @@ class CatalogList extends Component {
                                 onClose={() => {
                                     this.setState({ showCreateBox: false });
                                 }}
-                                catalog={{ value: Product.PRODUCT, displayName: this.props.intl.formatMessage({ id: "sidebar.product" }) }}
+                                catalog={{ value: this.catalogType, displayName: this.catalogLabel }}
                             />
                             <SweetAlert
                                 type="warning"

@@ -3,13 +3,17 @@
  */
 import React, { Component } from 'react';
 // intl messages
-import {connect} from "react-redux";
-import {injectIntl} from "react-intl";
-import {CATALOG} from "Url/frontendUrl";
+import { connect } from "react-redux";
+import { injectIntl } from "react-intl";
+import { CATALOG } from "Url/frontendUrl";
 
-import {withRouter, Switch, Redirect, Route} from "react-router-dom";
+import Product from "Enums/Product";
+import { withRouter, Switch, Redirect, Route } from "react-router-dom";
 import List from './List';
 import Show from './Show';
+import CatalogList from '../../CatalogList';
+import CatalogShow from '../../CatalogShow';
+import ProductCatalog from '../../ProductCatalog';
 
 class CatalogIndex extends Component {
     render() {
@@ -19,8 +23,15 @@ class CatalogIndex extends Component {
                 <>
                     <Switch>
                         <Redirect exact from={`${match.url}/`} to={CATALOG.SALE.LIST} />
-                        <Route path={CATALOG.SALE.SHOW} component={Show} />
-                        <Route path={CATALOG.SALE.LIST} component={List} />
+                        <Route path={CATALOG.SALE.PRODUCTS} render={(props) => <ProductCatalog baseUrl={CATALOG.SALE} {...props} />} />
+                        <Route path={CATALOG.SALE.SHOW} render={(props) => <CatalogShow baseUrl={CATALOG.SALE} {...props} />} />
+                        <Route path={CATALOG.SALE.LIST} render={(props) =>
+                            <CatalogList
+                                baseUrl={CATALOG.SALE}
+                                catalogType={Product.SALE}
+                                catalogLabel={'Catalogue de vente'}
+                                {...props} />}
+                        />
                     </Switch>
                 </>
             </div>
