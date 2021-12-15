@@ -97,7 +97,7 @@ class InvitationsListType extends Component {
     };
 
     onHandleRequest = (invitation) => {
-        getUserClient(invitation.user.id).then(data => {
+        getUserClient(invitation.userId, invitation.userType).then(data => {
             this.setState({ userPieces: data, showBox: true, isAdding: false, invitation });
         })
     }
@@ -110,7 +110,7 @@ class InvitationsListType extends Component {
             user_id: this.state.invitation.user.id
         }).then(data => {
             NotificationManager.success("Demande de pièce terminée");
-            getUserClient(this.state.invitation.user.id).then(data => {
+            getUserClient(this.state.invitation.userId, this.state.invitation.userType).then(data => {
                 this.setState({ userPieces: data, isAdding: false });
             })
         }).finally(() => {this.setState({ isAdding: false }); this.props.setRequestGlobalAction(false)})
@@ -120,7 +120,7 @@ class InvitationsListType extends Component {
         this.props.setRequestGlobalAction(true);
         deleteUserClient(piece.id).then(data => {
             NotificationManager.success("Demande de pièce supprimée");
-            getUserClient(this.state.invitation.user.id).then(data => {
+            getUserClient(this.state.invitation.userId, this.state.invitation.userType).then(data => {
                 this.setState({ userPieces: data, isAdding: false });
             })
         }).finally(() => {this.setState({ isAdding: false }); this.props.setRequestGlobalAction(false)})

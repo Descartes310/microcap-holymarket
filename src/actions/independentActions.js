@@ -511,19 +511,10 @@ export const createVoucher = (id, data) => {
     return makeRequest('post', url, data);
 };
 
-export const getVouchers = (id, user, type) => {
-    const url = joinBaseUrlWithParams(COMMUNITY_MEMBER.USER.GROUPS.GET_VOUCHERS, [
-        {
-            param: 'id',
-            value: id,
-        }, {
-            param: 'user_id',
-            value: user,
-        }, {
-            param: 'type',
-            value: type,
-        }
-    ]);
+export const getVouchers = (id, voucherType, userId, userType) => {
+    let url = joinBaseUrlWithParamsId(COMMUNITY_MEMBER.USER.GROUPS.GET_VOUCHERS, id);
+    url = `${url}?user_id=${userId}&user_type=${userType}&voucher_type=${voucherType}`
+
     return makeRequest('get', url);
 };
 
@@ -542,9 +533,9 @@ export const getUserClientExp = (id) => {
     return makeRequest('get', url);
 };
 
-export const getUserClient = (id) => {
+export const getUserClient = (id, userType) => {
     const url = joinBaseUrlWithParamsId(USERS.PIECE.GET_USER, id);
-    return makeRequest('get', url);
+    return makeRequest('get', `${url}?user_type=${userType}`);
 };
 
 export const getUserPieces = () => {

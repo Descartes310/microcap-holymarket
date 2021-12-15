@@ -266,7 +266,7 @@ export const COMMUNITY_MEMBER = {
             GET_COMMUNITIES: 'api/groups/communities/users',
             CREATE_VOUCHER: 'api/groups/{id}/vouchers',
             GET_VOUCHERS_FOR_USER: 'api/groups/users/vouchers',
-            GET_VOUCHERS: 'api/groups/{id}/vouchers/users/{user_id}/type/{type}',
+            GET_VOUCHERS: 'api/groups/{id}/vouchers/',
             GET_ADMINS: 'api/groups/communities/{id}/admins',
             ADD_OPERATOR: 'api/groups/communities/{id}/operator',
             GET_FAVOURITES: 'api/groups/communities/favourites',
