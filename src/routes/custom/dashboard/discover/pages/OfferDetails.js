@@ -68,7 +68,7 @@ const OfferDetails = () => {
                                     <div className="row row-eq-height">
                                         <PricingBlockV3
                                             planType="free"
-                                            type="Option Leaders"
+                                            type="Option Accès"
                                             color="primary"
                                             description="Le moins chère"
                                             buttonText="Souscrire"
@@ -87,12 +87,11 @@ const OfferDetails = () => {
                                             description="Le plus intéressant"
                                             buttonText="Souscrire"
                                             price="300€"
-                                            reduction
                                             oldPrice="3000€"
                                             features={[
                                                 'Remise sur abonnement: 30%',
                                                 'Paiements différés: 2000€ sur 180 jours',
-                                                'Bonification hebdomadaire des cautionnements 200€ max sur 3',
+                                                'Bonification hebdomadaire des cautionnements 200€ max sur 3 mois',
                                                 'Doublement des avantages'
                                             ]}
                                         />
@@ -103,12 +102,11 @@ const OfferDetails = () => {
                                             description="A saisir"
                                             buttonText="Souscrire"
                                             price="150€"
-                                            reduction
                                             oldPrice="1500€"
                                             features={[
                                                 'Remise sur abonnement: 30%',
                                                 'Paiements différés: 1000€ sur 90 jours',
-                                                'Bonification hebdomadaire des cautionnements 100€ max sur 3',
+                                                'Bonification hebdomadaire des cautionnements 100€ max sur 3 mois',
                                                 'Doublement des avantages'
                                             ]}
                                         />
