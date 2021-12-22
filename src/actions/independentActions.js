@@ -376,9 +376,8 @@ export const findUserByMembership = (membership) => {
     return makeRequest('get', `${USERS.FIND_BY_MEMBERSHIP}?membership=${membership}`);
 };
 
-export const addMemberToOrganisation = (id, data) => {
-    const url = joinBaseUrlWithParamsId(`${USERS.ADD_MEMBER_TO_ORGANISATIONS}`, id);
-    return makeRequest('post', url, data);
+export const addMemberToOrganisation = (data) => {
+    return makeRequest('post', USERS.ADD_MEMBER_TO_ORGANISATIONS, data);
 };
 
 export const createUsers = (data, branchId) => {

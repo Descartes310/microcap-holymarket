@@ -221,7 +221,7 @@ export const USERS = {
     GET_ALL_PARTNER: 'api/users/organisations/branch/{id}/partner',
     GET_ALL_PARTNER_OPERATOR: 'api/users/organisations/branch/{id}/partner/operator',
     GET_ALL_PARTNER_OPERATOR_ME: 'api/users/organisations/partner/operator/me/{id}',
-    ADD_MEMBER_TO_ORGANISATIONS: 'api/users/organisations/members/{id}',
+    ADD_MEMBER_TO_ORGANISATIONS: 'api/users/organisations/members',
     GET_MEMBER_OF_ORGANISATIONS: 'api/users/organisations/members',
     GET_ORGANISATION_REFERENCE: 'api/users/organisations/adhesion/{id}',
     CREATE: {

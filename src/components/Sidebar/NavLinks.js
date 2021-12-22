@@ -12,6 +12,7 @@ import {
    SETTINGS,
    COMMUNITY,
    MICROCAP360,
+   ORGANISATIONS,
    COMMUNITY_ADMIN,
    COMMUNITY_MEMBER,
    PREVISIONS_ADMIN,
@@ -393,27 +394,29 @@ export default {
             {
                "menu_title": "Utilisateurs",
                "new_item": false,
-               "path": USERS.ACCOUNTS.ALL,
-               "permissions": [Permission.navLinks.users.childLinks.users.viewMenu],
+               "path": ORGANISATIONS.SELF,
+               // "path": USERS.ACCOUNTS.ALL,
+               // "permissions": [Permission.navLinks.users.childLinks.users.viewMenu],
+               "permissions": [],
             },
-            {
-               "menu_title": "Roles",
-               "new_item": false,
-               "path": USERS.USERS_PROFILE.SELF,
-               "permissions": [Permission.navLinks.users.childLinks.userProfile.viewMenu],
-            },
-            {
-               "menu_title": "Permissions",
-               "new_item": false,
-               "path": USERS.USERS_PROFILE.USERS_PERMISSION.LIST,
-               "permissions": [Permission.navLinks.users.childLinks.userProfile.viewMenu],
-            },
-            {
-               "menu_title": "Compte utilisateurs",
-               "new_item": false,
-               "path": USERS.ACCOUNTS.SELF,
-               "permissions": [Permission.navLinks.users.childLinks.accounts.viewMenu],
-            },
+            // {
+            //    "menu_title": "Roles",
+            //    "new_item": false,
+            //    "path": USERS.USERS_PROFILE.SELF,
+            //    "permissions": [Permission.navLinks.users.childLinks.userProfile.viewMenu],
+            // },
+            // {
+            //    "menu_title": "Permissions",
+            //    "new_item": false,
+            //    "path": USERS.USERS_PROFILE.USERS_PERMISSION.LIST,
+            //    "permissions": [Permission.navLinks.users.childLinks.userProfile.viewMenu],
+            // },
+            // {
+            //    "menu_title": "Compte utilisateurs",
+            //    "new_item": false,
+            //    "path": USERS.ACCOUNTS.SELF,
+            //    "permissions": [Permission.navLinks.users.childLinks.accounts.viewMenu],
+            // },
          ],
       },
       {
@@ -820,14 +823,26 @@ export default {
          "path": USERS.USERS_PROFILE.DISPLAY_PROFILE,
          "new_item": false,
          "child_routes": null,
-         "permissions": [Branch.permissionsRelated.READ],
+         "permissions": [],
          'subject': Branch
+      }, {
+         "menu_title": "Utilisateurs",
+         "menu_icon": "zmdi zmdi-accounts",
+         "new_item": false,
+         "permissions": [],
+         "child_routes": [
+            {
+               "menu_title": "Utilisateurs",
+               "new_item": false,
+               "path": ORGANISATIONS.SELF,
+               "permissions": [],
+            }
+         ],
       }, {
          "menu_title": "Microcap360",
          "menu_icon": "icon-people",
          "new_item": false,
          "type_multi": true,
-         // "permissions": [Permission.navLinks.COMMUNITY.viewMenu],
          "permissions": [],
          "child_routes": [
             {
@@ -887,7 +902,6 @@ export default {
          "menu_title": "Produits & Services",
          "menu_icon": "zmdi zmdi-shopping-cart",
          "new_item": false,
-         // "permissions": [Permission.navLinks.COMMUNITY_MEMBER.viewMenu],
          "permissions": [],
          "child_routes": [
             {

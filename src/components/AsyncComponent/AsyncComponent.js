@@ -23,6 +23,11 @@ export const AsyncGallery = Loadable({
 	loading: () => <RctPageLoader />,
 });
 
+export const AsyncOrganisations = Loadable({
+	loader: () => import("Routes/custom/organisation-members"),
+	loading: () => <RctPageLoader />,
+});
+
 export const AsyncPionier = Loadable({
 	loader: () => import("Routes/custom/dashboard/discover/pages/Pionier"),
 	loading: () => <RctPageLoader />,

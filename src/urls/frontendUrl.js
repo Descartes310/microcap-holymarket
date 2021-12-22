@@ -128,6 +128,14 @@ export const PACKAGES = {
     SHOW: '/packages/show/:id',
 };
 
+export const ORGANISATIONS = {
+    SELF: '/organisations',
+    USERS: {
+        SELF: '/organisations/users',
+        LIST: '/organisations/users/list',
+    }
+};
+
 export const USERS = {
     USERS: {
         SELF: '/users',

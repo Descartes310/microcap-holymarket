@@ -37,7 +37,15 @@ class AddMemberByAdhesion extends Component {
     };
 
     onSubmit = () => {
-        addMemberToOrganisation(this.state.user.id, {role: this.state.role}).catch(err => {
+
+        let data = {};
+
+        data.reference = this.state.user.reference;
+
+        if(this.props.roles)
+            data.role = this.state.role;
+
+        addMemberToOrganisation(data).catch(err => {
             NotificationManager.error("Echec de la création du partenaire");
             onClose();
         }).finally(() => {
@@ -142,7 +150,7 @@ class AddMemberByAdhesion extends Component {
                                         value={user?.identification}
                                     />
                                 </FormGroup>
-                                {user && (
+                                {user && roles && (
                                     <FormGroup className="has-wrapper">
                                         <InputLabel className="text-left" htmlFor="type">
                                             Role de l'utilisateur
@@ -168,7 +176,7 @@ class AddMemberByAdhesion extends Component {
                                 <FormGroup>
                                     <Button
                                         color="primary"
-                                        disabled={!this.state.user || !this.state.role}
+                                        disabled={!this.state.user || (!this.state.role && roles)}
                                         variant="contained"
                                         onClick={() => this.onSubmit()}
                                         className="text-white font-weight-bold"

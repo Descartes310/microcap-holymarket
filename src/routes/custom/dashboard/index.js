@@ -12,14 +12,10 @@ import {
     AsyncBranchNetworkCoverage,
     AsyncBranchNetworkConfiguration,
     AsyncCatalogProducts,
-    AsyncUserProfile,
     AsyncPionier,
     AsyncUsers,
-    AsyncAllUsersAccounts,
     AsyncGetIn,
-    AsyncCommunity,
     AsyncProjects,
-    AsyncCommunityProject,
     AsyncCatalogSales,
     AsyncComOperationType,
     AsyncComOperation, AsyncComOffer, AsyncBroker, AsyncProducts, AsyncStore,
@@ -29,6 +25,7 @@ import {
     AsyncSolidarity,
     AsyncMoneyManagement,
     AsyncGallery,
+    AsyncOrganisations,
     AsyncCommunitySpace
 } from 'Components/AsyncComponent/AsyncComponent';
 import Community from "Routes/custom/community";
@@ -70,18 +67,17 @@ import {
     PRODUCT_TYPE,
     USERS,
     COMMUNITY,
-    COMMUNITY_ADMIN,
     COMMUNITY_MEMBER,
     PREVISIONS,
     GETIN,
     STOCK,
     SONDAGE_FIRST,
-    SONDAGE_SEDOND,
     TERMS,
     PACKAGES,
     RESSOURCE,
     MICROCAP360,
     AGENTS,
+    ORGANISATIONS,
     COMMERCIAL_MANAGEMENT, PRODUCT, STORE, ROOT, ACCESS, SETTINGS, NOTIFICATIONS, PROJECTS
 } from "Url/frontendUrl";
 import { AbilityContext } from "Permissions/Can";
@@ -129,8 +125,6 @@ const Dashboard = ({ onInitCart }) => {
                     <Route exact path={SOLIDARITY} component={AsyncSolidarity} />
                     <Route exact path={MONEY_MANAGEMENT} component={AsyncMoneyManagement} />
 
-
-
                     <CanRoute
                         path={MICROCAP360.SUPERVISION.COMMUNITIES}
                         component={Supervision}
@@ -147,7 +141,7 @@ const Dashboard = ({ onInitCart }) => {
                     <CanRoute
                         path={USERS.ACCOUNTS.ALL}
                         component={AllUsers}
-                        permissions={[Permission.users.accounts.viewList.name]}
+                        permissions={[]}
                     />
 
                     <CanRoute
@@ -165,7 +159,7 @@ const Dashboard = ({ onInitCart }) => {
                     <CanRoute
                         path={USERS.ACCOUNTS.SELF}
                         component={AsyncUsersAccounts}
-                        permissions={[Permission.users.accounts.viewList.name]}
+                        permissions={[]}
                     />
 
                     <CanRoute
@@ -256,7 +250,7 @@ const Dashboard = ({ onInitCart }) => {
                     <CanRoute
                         exact
                         path={NETWORK.CREATE}
-                        permissions={[Permission.branch.createOne.name]}
+                        permissions={[]}
                         component={AsyncBranchCreate}
                     />
 
@@ -264,7 +258,6 @@ const Dashboard = ({ onInitCart }) => {
                         path={NETWORK.LIST}
                         permissions={[Permission.branch.viewList.name]}
                         component={AsyncBranchList}
-                    // can={ability.can(Branch.permissionsRelated.READ, Branch)}
                     />
 
                     <CanRoute
@@ -348,13 +341,12 @@ const Dashboard = ({ onInitCart }) => {
                     <CanRoute
                         path={USERS.USERS.SELF}
                         component={AsyncUsers}
-                        permissions={[Permission.users.viewList.name]}
+                        permissions={[]}
                     />
 
                     <CanRoute
                         path={COMMUNITY_MEMBER.SELF}
                         component={Community}
-                        // component={AsyncCommunity}
                         permissions={[]}
                     />
 
@@ -373,6 +365,12 @@ const Dashboard = ({ onInitCart }) => {
                     <CanRoute
                         path={ACCESS.SELF}
                         component={AsyncAccess}
+                        permissions={[]}
+                    />
+
+                    <CanRoute
+                        path={ORGANISATIONS.SELF}
+                        component={AsyncOrganisations}
                         permissions={[]}
                     />
 
