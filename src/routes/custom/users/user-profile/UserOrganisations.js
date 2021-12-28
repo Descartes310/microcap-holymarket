@@ -62,9 +62,9 @@ const UserOrganisations = props => {
                                         color="primary"
                                         variant="contained"
                                         className={"text-white font-weight-bold mr-3 bg-blue"}
-                                        onClick={() => changeProfile(organisation.id, organisation.id !== props.authUser.id)}
+                                        onClick={() => changeProfile(organisation.id, organisation.id !== props.authUser.id || props.authUser.user.userType !== 'ORGANISATION')}
                                     >
-                                        { organisation.id === props.authUser.id ? 'Quitter' : 'Rejoindre' }
+                                        { organisation.id === props.authUser.id && props.authUser.user.userType === 'ORGANISATION' ? 'Quitter' : 'Rejoindre' }
                                     </Button>
                                 </td>
                             </tr>
