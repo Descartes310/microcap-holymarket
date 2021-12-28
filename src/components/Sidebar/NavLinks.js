@@ -299,31 +299,31 @@ export default {
          "menu_title": "Utilisateurs",
          "menu_icon": "zmdi zmdi-accounts",
          "new_item": false,
-         "permissions": [Permission.navLinks.users.viewMenu],
+         "permissions": [],
          "child_routes": [
             {
                "menu_title": "Utilisateurs",
                "new_item": false,
                "path": USERS.USERS.SELF,
-               "permissions": [Permission.navLinks.users.childLinks.users.viewMenu],
+               "permissions": [],
             },
             {
                "menu_title": "Roles",
                "new_item": false,
                "path": USERS.USERS_PROFILE.SELF,
-               "permissions": [Permission.navLinks.users.childLinks.userProfile.viewMenu],
+               "permissions": [],
             },
             {
                "menu_title": "Permissions",
                "new_item": false,
                "path": USERS.USERS_PROFILE.USERS_PERMISSION.LIST,
-               "permissions": [Permission.navLinks.users.childLinks.userProfile.viewMenu],
+               "permissions": [],
             },
             {
                "menu_title": "Compte utilisateurs",
                "new_item": false,
                "path": USERS.ACCOUNTS.SELF,
-               "permissions": [Permission.navLinks.users.childLinks.accounts.viewMenu],
+               "permissions": [],
             },
          ],
       },
@@ -333,20 +333,20 @@ export default {
          "new_item": false,
          "path": NETWORK.LIST,
          "type_multi": true,
-         "permissions": [Permission.navLinks.network.viewMenu],
+         "permissions": [],
          "child_routes": [
             {
                "menu_title": "Consulter",
                "new_item": false,
                "path": NETWORK.LIST,
                // "permissions": [Permission.branch.viewList],
-               "permissions": [Permission.navLinks.network.viewMenu],
+               "permissions": [],
             },
             {
                "menu_title": "Editer",
                "new_item": false,
                "path": NETWORK.ONGOING_CREATE,
-               "permissions": [Permission.navLinks.network.viewMenu],
+               "permissions": [],
                "child_routes": null
                // {
                //    "path": NETWORK.ONGOING_CREATE,
@@ -389,7 +389,7 @@ export default {
          "menu_title": "Utilisateurs",
          "menu_icon": "zmdi zmdi-accounts",
          "new_item": false,
-         "permissions": [Permission.navLinks.users.viewMenu],
+         "permissions": [],
          "child_routes": [
             {
                "menu_title": "Utilisateurs",
@@ -425,7 +425,7 @@ export default {
          "new_item": false,
          "path": NETWORK.LIST,
          "type_multi": true,
-         "permissions": [Permission.navLinks.network.viewMenu],
+         "permissions": [],
          "child_routes": [
             {
                "menu_title": "Configuration",
@@ -472,19 +472,19 @@ export default {
          "menu_title": "Produits & services",
          "menu_icon": "zmdi zmdi-widgets",
          "new_item": false,
-         "permissions": [Permission.navLinks.products.viewMenu],
+         "permissions": [],
          "child_routes": [
             {
                "menu_title": "Catalogue produits",
                "new_item": false,
                "path": CATALOG.PRODUCT.SELF,
-               "permissions": [Permission.navLinks.products.childLinks.catalogProducts.viewMenu],
+               "permissions": [],
             },
             {
                "path": CATALOG.SALE.SELF,
                "new_item": false,
                "menu_title": "Catalogue ventes",
-               "permissions": [Permission.navLinks.products.childLinks.catalogProducts.viewMenu],
+               "permissions": [],
             },
             // {
             //    "path": NETWORK.COVERAGE,
