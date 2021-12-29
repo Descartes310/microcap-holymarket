@@ -65,7 +65,8 @@ module.exports = {
 			Models: path.resolve(__dirname, 'src/models/'),
 			Permissions: path.resolve(__dirname, 'src/permissions/'),
 			Enums: path.resolve(__dirname, 'src/enums/'),
-		}
+		},
+		extensions: ['.js', '.tsx', '.ts', '.jsx']
 	},
 	module: {
 		rules: [
@@ -75,6 +76,13 @@ module.exports = {
 				use: {
 					loader: "babel-loader"
 				}
+			},
+			{
+				test: /\.(ts|tsx)?$/,
+				exclude: /node_modules/,
+				use: {
+				  loader: 'ts-loader'
+				},
 			},
 			{
 				test: /\.html$/,

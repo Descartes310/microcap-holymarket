@@ -25,7 +25,7 @@ export const AUTH = {
     TOKEN: '/branch/activation',
     FORGOT_PASSWORD: '/forgot-password',
     RESET_PASSWORD: '/reset-password',
-};
+} as const;
 
 export const PREVISIONS = {
     SELF: '/previsions',
@@ -38,7 +38,7 @@ export const PREVISIONS = {
         DETAILS: '/previsions/:id/periodes/:id2',
         CREATE: '/previsions/:id/periodes/create',
     }
-};
+} as const;
 
 export const PREVISIONS_ADMIN = {
     SELF: '/admin/previsions',
@@ -47,7 +47,7 @@ export const PREVISIONS_ADMIN = {
         SELF: '/admin/previsions/goals',
         LIST: '/admin/previsions/goals/list',
     }
-};
+} as const;
 
 export const NETWORK = {
     LIST: '/branch',
@@ -86,7 +86,7 @@ export const NETWORK = {
     CREATE: '/branch/create',
     ONGOING_CREATE: '/branch/ongoing/create',
     EDIT: '/branch/edit',
-};
+} as const;
 
 export const CATALOG = {
     PRODUCT: {
@@ -103,7 +103,7 @@ export const CATALOG = {
         PRODUCTS: '/catalog/sale/:id/product',
         SHOW: '/catalog/sale/show/:id',
     },
-};
+} as const;
 
 export const CATEGORY = {
     PRODUCT: {
@@ -112,29 +112,32 @@ export const CATEGORY = {
         CREATE: '/category/products/create',
         SHOW: '/category/products/show/:id',
     },
-};
+} as const;
 
 export const PRODUCT_TYPE = {
     SELF: '/product-type',
     LIST: '/product-type/list',
     CREATE: '/product-type/create',
     SHOW: '/product-type/show/:id',
-};
+} as const;
 
 export const PACKAGES = {
     SELF: '/packages',
     LIST: '/packages/list',
     CREATE: '/packages/create',
     SHOW: '/packages/show/:id',
-};
+} as const;
 
 export const ORGANISATIONS = {
     SELF: '/organisations',
     USERS: {
         SELF: '/organisations/users',
         LIST: '/organisations/users/list',
+    },
+    PROFILES: {
+        SELF: '/organisations/profiles'
     }
-};
+} as const;
 
 export const USERS = {
     USERS: {
@@ -162,7 +165,7 @@ export const USERS = {
         ALL: '/all-users',
         CREATE: '/users-accounts/create',
     },
-};
+} as const;
 
 export const COMMERCIAL_MANAGEMENT = {
     COMMERCIAL_OFFER: {
@@ -181,7 +184,7 @@ export const COMMERCIAL_MANAGEMENT = {
         LIST: '/commercial/operation-type/list',
         CREATE: '/commercial/operation-type/create',
     },
-};
+} as const;
 
 export const PRODUCT = {
     LIST: '/products',
@@ -200,20 +203,20 @@ export const PRODUCT = {
     UNAPPROVED_ORDERS: '/products/orders/unapproved',
     UNCOMPLETE_ACCOUNTS: '/products/accounts/uncomplete',
     UPDATE_UNCOMPLETE_ACCOUNTS: '/products/accounts/uncomplete/:id',
-};
+} as const;
 
 export const STORE = {
     SELF: '/store',
     CART: '/store/cart',
     ORDER: '/store/order',
     CHECKOUT: '/store/checkout/:id',
-};
+} as const;
 
 export const RESSOURCE = {
     SELF: '/ressources',
     VOUCHERS: '/ressources/vouchers',
     PIECES: '/ressources/pieces',
-};
+} as const;
 
 export const ACCESS = {
     SELF: '/access',
@@ -236,7 +239,7 @@ export const ACCESS = {
             CREATE: '/access/mandate/type/create',
         },
     }
-};
+} as const;
 
 export const NOTIFICATIONS = {
     SELF: '/notifications',
@@ -244,7 +247,7 @@ export const NOTIFICATIONS = {
     READ: '/notifications/read',
     TREATED: '/notifications/treated',
     // CREATE: '/notifications/create',
-};
+} as const;
 
 export const SETTINGS = {
     NOTIFICATION: {
@@ -286,7 +289,7 @@ export const SETTINGS = {
     PIONIERS: {
         SELF: '/settings/pioniers',
     }
-};
+} as const;
 
 export const PROJECTS = {
     SELF: '/projects',
@@ -378,7 +381,7 @@ export const PROJECTS = {
             CREATE: '/projects/configuration/works/create',
         }
     },
-};
+} as const;
 
 export const COMMUNITY_ADMIN = {
     SELF: '/community-t/:id/admin',
@@ -425,7 +428,7 @@ export const COMMUNITY_ADMIN = {
         },
         CREATE: '/community-t/:id/admin/members/invitation/create'
     },
-};
+} as const;
 
 export const COMMUNITY = {
     SELF: '/community-t/:id',
@@ -458,7 +461,7 @@ export const COMMUNITY = {
         },
         CREATE: '/community-t/:id/members/invitation/create'
     },
-};
+} as const;
 
 export const COMMUNITY_MEMBER = {
     SELF: '/community',
@@ -478,7 +481,7 @@ export const COMMUNITY_MEMBER = {
             REQUEST: '/community/invitation/integration-request',
         },
     },
-};
+} as const;
 
 export const MICROCAP360 = {
     MICROCAP360: '/microcap360',
@@ -500,7 +503,7 @@ export const MICROCAP360 = {
         SELF: '/supervision',
         COMMUNITIES: '/supervision/communities'
     }
-};
+} as const;
 
 export const STOCK = {
     SELF: '/stocks',
@@ -511,7 +514,7 @@ export const STOCK = {
         SELF: '/stocks/financials',
         PROJECT_SHOW: '/stocks/financials/project/:id',
     }
-};
+} as const;
 
 export const BROKER = {
     SELF: '/broker',
@@ -536,7 +539,7 @@ export const BROKER = {
         USERS: '/broker/cashdesks/users/list',
         MOUVEMENTS: '/broker/cashdesks/:id/mouvements',
     }
-};
+} as const;
 
 export const joinUrlWithParams = (to, params) => {
     let url = to;

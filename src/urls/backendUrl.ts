@@ -20,12 +20,12 @@ export const AUTH = {
         MAIN: 'auth/reset-password',
         LINK: 'auth/send-reset-password-link',
     },
-};
+} as const;
 
 export const PROFILE = {
     INFORMATION: 'auth/me',
     INFORMATION_WITH_SERVICE_NUMBER: 'auth/me/mandate',
-};
+} as const;
 
 export const SETTING = {
     GET_ALL: 'api/settings/branchs/{id}',
@@ -54,7 +54,7 @@ export const SETTING = {
         CREATE: 'api/settings/pioniers',
         UPDATE: 'api/settings/pioniers/{id}'
     }
-};
+} as const;
 
 export const SYSTEM_OBJECT = {
     IDENTIFICATION: 'public/system/objects/identification-type',
@@ -65,7 +65,7 @@ export const SYSTEM_OBJECT = {
     USER_TYPE: 'public/system/objects/user-type',
     PRODUCT_NATURE: 'public/system/objects/product-nature',
     TIME_UNIT: 'public/system/objects/time-unit',
-};
+} as const;
 
 export const BRANCH = {
     ACTIVATION: 'api/branchs/activation',
@@ -94,7 +94,7 @@ export const BRANCH = {
             "4": "api/branchs/step4",
         }
     }
-};
+} as const;
 export const NETWORK_PROFILE = {
     CREATE: 'public/network-profile',
     GET_ALL: 'public/network-profile',
@@ -109,16 +109,16 @@ export const NETWORK_PROFILE = {
             LIST: 'public/network-profile/partner/assistant',
         },
     },
-};
+} as const;
 
 export const NETWORK_PROFILE_TYPE = {
     CREATE: 'public/type-network-profiles',
     GET_ALL: 'public/type-network-profiles',
-};
+} as const;
 
 export const PRODUCTS = {
     GET_FOR_USER: 'api/products/accounts/user',
-};
+} as const;
 
 export const CATALOGS = {
     GET_ALL: 'api/catalogs',
@@ -131,11 +131,11 @@ export const CATALOGS = {
         GET: 'api/catalogs/{id}/type-products',
     },
     ACTIVATE: 'api/catalogs/active/{id}'
-};
+} as const;
 
 export const CATALOGS_TYPE = {
     GET_ALL: 'api/type-catalogs/catalogs',
-};
+} as const;
 
 export const CATEGORY_PRODUCTS = {
     ROOT: 'api/category-products/root',
@@ -144,7 +144,7 @@ export const CATEGORY_PRODUCTS = {
     GET_ONE: 'api/category-products/{id}',
     TYPE_PRODUCTS: 'api/type-catalogs/type-products',
     SUB_CATEGORY: 'api/category-products/{id}/category-products',
-};
+} as const;
 
 export const PRODUCT_TYPE = {
     ROOT: 'api/type-products/root',
@@ -158,18 +158,18 @@ export const PRODUCT_TYPE = {
     SUB_CATEGORY: 'api/type-products/{id}/type-products',
     GET_ALL_BY_SALE: 'api/type-products/by-catalogue-vente',
     AVAILABLE: 'api/type-products/{id}/variations',
-};
+} as const;
 
 export const PDF_GENERATOR = {
     GET_MOVEMENTS: 'api/pdf/accounts/{id}/mouvements',
-};
+} as const;
 
 export const PACKAGES = {
     LIST: 'api/packages',
     CREATE: 'api/packages',
     ACTIVATE: 'api/packages/activate',
     DEACTIVATE: 'api/packages/desactivate',
-};
+} as const;
 
 export const USER_PROFILE = {
     GET_ALL: 'public/profiles',
@@ -179,7 +179,7 @@ export const USER_PROFILE = {
     PERMISSIONS: {
         GET_ALL: 'public/profiles/permissions',
     },
-};
+} as const;
 
 export const PREVISIONS = {
     GOALS: {
@@ -201,7 +201,7 @@ export const PREVISIONS = {
         CREATE: 'users/previsions/{id}/periods',
         DETAILS: 'users/previsions/periods/{id}',
     }
-};
+} as const;
 
 export const USERS = {
     BRANCH_USERS: 'api/users',
@@ -251,7 +251,13 @@ export const USERS = {
         UPDATE_FOR_USER: 'api/users/pieces/value/update',
         DELETE_FOR_USER: 'api/users/pieces/value/{id}/delete'
     }
-};
+} as const;
+
+export const PROFILES = {
+    SELF: 'api/profiles',
+    find: (id) => `api/profiles/${id}`,
+    PERMISSIONS: 'api/profiles/permissions'
+} as const;
 
 export const COMMUNITY_MEMBER = {
     USER: {
@@ -306,7 +312,7 @@ export const COMMUNITY_MEMBER = {
         CANCEL: 'api/groups/communities/cancel/invitation/{invitation_id}',
         DELETE: 'api/groups/communities/delete/invitation/{invitation_id}',
     },
-};
+} as const;
 
 export const COMMERCIAL_MANAGEMENT = {
     OPERATION_TYPE: {
@@ -331,7 +337,7 @@ export const COMMERCIAL_MANAGEMENT = {
         ACTIVATE: 'api/commercial-offer/active',
         DEACTIVATE: 'api/commercial-offer/desactive'
     },
-};
+} as const;
 
 export const ORDER = {
     GET_ALL: 'api/order/users',
@@ -343,7 +349,7 @@ export const ORDER = {
     GET_ALL_PAYMENT: 'api/order/{id}/sales/all',
     CREATE: 'api/order',
     PIECES: 'api/order/{id}/pieces',
-};
+} as const;
 
 export const ACCOUNT = {
     GET_ONE: 'api/accounts/{id}',
@@ -356,7 +362,7 @@ export const ACCOUNT = {
     CONSOLIDATION_BALANCE: 'api/accounts/consolidated/{id}/balance',
     GET_ACCOUNT_BY_AMOUNT: 'api/accounts/users/{id}/account-by-amount',
     APPROVISIONING_VOUCHER: 'api/accounts/{id}/approvisioning/voucher',
-};
+} as const;
 
 export const BROKER = {
     SELF: {
@@ -378,20 +384,20 @@ export const BROKER = {
         FIND: 'api/cashdesks/{id}',
         CREDIT: 'api/cashdesks/{id}/credit',
     }
-};
+} as const;
 
 export const SALES = {
     GET_ALL: 'api/sales',
     GET_ONE: 'api/sales/{id}',
     GET_BY_USER: 'api/sales/users/{id}',
     CREATE: 'api/sales',
-};
+} as const;
 
 export const GENERIC_OBJECT = {
     GET_ALL: 'public/generic-objects',
     GET_ONE: 'public/generic-objects/{id}',
     CREATE: 'public/generic-objects',
-};
+} as const;
 
 export const ACCESS = {
     GET_ALL: 'public/access/access',
@@ -414,7 +420,7 @@ export const ACCESS = {
             CREATE: 'public/access/mandate-types',
         }
     }
-};
+} as const;
 
 export const NOTIFICATIONS = {
     GET_ALL: 'public/notifications',
@@ -434,7 +440,7 @@ export const NOTIFICATIONS = {
         CREATE: 'public/notifications/notification_type',
     },
     CREATE: 'public/generic-objects',
-};
+} as const;
 
 export const PROJECTS = {
     SELF: {
@@ -499,7 +505,7 @@ export const PROJECTS = {
             UPDATE: 'api/projects/options/{id}',
         }
     }
-};
+} as const;
 
 export const joinBaseUrl = to => BASE + to;
 

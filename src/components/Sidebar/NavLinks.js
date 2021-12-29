@@ -836,6 +836,12 @@ export default {
                "new_item": false,
                "path": ORGANISATIONS.SELF,
                "permissions": [],
+            },
+            {
+               "menu_title": "Profiles",
+               "new_item": false,
+               "path": ORGANISATIONS.PROFILES.SELF,
+               "permissions": [],
             }
          ],
       }, {
