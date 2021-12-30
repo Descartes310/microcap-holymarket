@@ -3,26 +3,23 @@ import { withRouter } from "react-router-dom";
 import CustomList from "Components/CustomList";
 import IconButton from "@material-ui/core/IconButton";
 import EditIcon from '@material-ui/icons/Edit';
-import DeleteForever from '@material-ui/icons/DeleteForever';
 import { withStyles } from "@material-ui/core";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import { PROFILES } from 'Url/backendUrl'; 
 import useSWR from 'swr';
-import AddProfileBox from './AddProfileBox';
+import AddEditProfileBox from './AddEditProfileBox';
 
 
 const Profiles = () => {
 
     const [showCreateBox, setShowCreateBox] = useState(false);
+    const [profileToEdit, setProfileToEdit] = useState(null);
 
-    const { data, error, mutate } = useSWR(PROFILES.SELF);
+    const { data, error, mutate } = useSWR(PROFILES.index);
 
     const handleEdit = (item) => {
-        
-    }
-
-    const handleDelete = (item) => {
-
+        setProfileToEdit(item);
+        setShowCreateBox(true);
     }
 
     return (
@@ -48,8 +45,9 @@ const Profiles = () => {
                                 <table className="table table-hover table-middle mb-0">
                                     <thead>
                                         <tr>
-                                            <th>Label</th>
-                                            <th>Description</th>
+                                            <th className="fw-bold">Label</th>
+                                            <th className="fw-bold">Description</th>
+                                            <th className="fw-bold">Permissions</th>
                                             <th className='text-right'>Actions</th>
                                         </tr>
                                     </thead>
@@ -66,7 +64,18 @@ const Profiles = () => {
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{item.name}</h4>
+                                                            <p className="m-0 text-dark">{item.description}</p>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="media">
+                                                        <div className="media-body pt-10">
+                                                            <ul>
+                                                                {item.permissions.map(p => (
+                                                                    <li>{p.label}</li>
+                                                                ))}
+                                                            </ul>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -79,14 +88,6 @@ const Profiles = () => {
                                                         aria-label="menu">
                                                         <EditIcon />
                                                     </IconButton>
-                                                    <IconButton
-                                                        edge="start"
-                                                        onClick={() => handleDelete(item)}
-                                                        className="text-black"
-                                                        color="inherit"
-                                                        aria-label="menu">
-                                                        <DeleteForever />
-                                                    </IconButton>
                                                 </td>
                                             </tr>
                                         ))}
@@ -98,10 +99,12 @@ const Profiles = () => {
                 )}
             />
 
-            <AddProfileBox
+            <AddEditProfileBox
+                profile={profileToEdit}
                 show={showCreateBox}
                 onClose={() => {
                     setShowCreateBox(false);
+                    setProfileToEdit(null);
                     mutate();
                 }}
             />

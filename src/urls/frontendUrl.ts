@@ -135,7 +135,7 @@ export const ORGANISATIONS = {
         LIST: '/organisations/users/list',
     },
     PROFILES: {
-        SELF: '/organisations/profiles'
+        index: '/organisations/profiles'
     }
 } as const;
 

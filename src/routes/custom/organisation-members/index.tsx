@@ -14,7 +14,7 @@ const OrganisationMembers = (props) => {
                 <Switch>
                     <Redirect exact from={`${match.url}/`} to={ORGANISATIONS.USERS.LIST} />
                     <Route path={ORGANISATIONS.USERS.LIST} component={List} />
-                    <Route path={ORGANISATIONS.PROFILES.SELF} component={Profiles} />
+                    <Route path={ORGANISATIONS.PROFILES.index} component={Profiles} />
                 </Switch>
             </>
         </div>

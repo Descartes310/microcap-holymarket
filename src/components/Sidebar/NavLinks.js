@@ -840,7 +840,7 @@ export default {
             {
                "menu_title": "Profiles",
                "new_item": false,
-               "path": ORGANISATIONS.PROFILES.SELF,
+               "path": ORGANISATIONS.PROFILES.index,
                "permissions": [],
             }
          ],

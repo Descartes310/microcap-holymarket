@@ -254,9 +254,9 @@ export const USERS = {
 } as const;
 
 export const PROFILES = {
-    SELF: 'api/profiles',
+    index: 'api/profiles',
     find: (id) => `api/profiles/${id}`,
-    PERMISSIONS: 'api/profiles/permissions'
+    permissions: 'api/profiles/permissions'
 } as const;
 
 export const COMMUNITY_MEMBER = {
