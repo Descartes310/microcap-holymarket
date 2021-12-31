@@ -1,4 +1,8 @@
 
+import UserModel from './User';
+
+export type User = UserModel;
+
 export interface Permission {
     id: number;
     access: string;

@@ -5,9 +5,11 @@ import { getFilePath } from "Helpers/helpers";
 
 export default class User {
     // userType;
-    commercialName;
-    lastName;
-    firstName;
+    id: number;
+    commercialName: string;
+    lastName: string;
+    firstName: string;
+    user: any
 
     constructor(user) {
         Object.assign(this, user);

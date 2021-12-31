@@ -1115,3 +1115,159 @@ export default {
    broker_cashdesk: [
    ]
 }
+
+export type MenuItem = {
+   menu_title: string;
+   menu_icon?: string;
+   path?: string;
+   type_multi?: boolean;
+   new_item: boolean;
+   permissions: string[] | null; // null for no permissions need to access
+   profiles: string[] | null; // null means no need profile to access
+   permissions_and?: boolean   // if true, then the user must have all the listed permissions
+   subject?: string
+   child_routes?: MenuItem[];
+}
+
+export const allMenus: MenuItem[] = [
+   {
+      "menu_title": "Profile",
+      "menu_icon": "zmdi zmdi-accounts",
+      "path": USERS.USERS_PROFILE.DISPLAY_PROFILE,
+      "new_item": false,
+      "child_routes": null,
+      permissions: null,
+      profiles: null,
+      'subject': Branch
+   }, 
+   {
+      "menu_title": "Utilisateurs",
+      "menu_icon": "zmdi zmdi-accounts",
+      "new_item": false,
+      permissions: null,
+      profiles: null,
+      "child_routes": [
+         {
+            "menu_title": "Utilisateurs",
+            "new_item": false,
+            "path": ORGANISATIONS.SELF,
+            permissions: null,
+            profiles: null,
+         },
+         {
+            "menu_title": "Profiles",
+            "new_item": false,
+            "path": ORGANISATIONS.PROFILES.index,
+            permissions: null,
+            profiles: null,
+         }
+      ],
+   }, {
+      "menu_title": "Microcap360",
+      "menu_icon": "icon-people",
+      "new_item": false,
+      "type_multi": true,
+      permissions: null,
+      profiles: null,
+      "child_routes": [
+         {
+            "menu_title": "Comptes",
+            "new_item": false,
+            "path": PRODUCT.SHOW_ACCOUNT,
+            permissions: null,
+            profiles: null,
+         },
+         {
+            "menu_title": "Projets",
+            "new_item": false,
+            permissions: null,
+            profiles: null,
+            "child_routes": [
+               {
+                  "menu_title": "Mes Projets",
+                  "new_item": false,
+                  permissions: null,
+                  profiles: null,
+                  "path": PROJECTS.FOLDERS.SELF,
+               },
+               {
+                  "menu_title": "Structures projets",
+                  "new_item": false,
+                  permissions: null,
+                  profiles: null,
+                  "path": PROJECTS.FOLDERS.WORKS.SELF
+               },
+            ]
+         },
+         {
+            "menu_title": "Réseau",
+            "new_item": false,
+            "path": MICROCAP360.RESEAU.SELF,
+            permissions: null,
+            profiles: null,
+         },
+         {
+            "menu_title": "Mon Microcap",
+            "new_item": false,
+            "path": MICROCAP360.MY.PROJECT,
+            permissions: null,
+            profiles: null,
+         },
+      ],
+   }, {
+      "menu_title": "Bourse de Financement",
+      "menu_icon": "zmdi zmdi-accounts",
+      "path": STOCK.FINANCIAL.SELF,
+      "new_item": false,
+      "child_routes": null,
+      permissions: null,
+      profiles: null,
+   }, {
+      "menu_title": "Bourse des opportunités",
+      "menu_icon": "zmdi zmdi-accounts",
+      "path": STOCK.OPPORTUITY.SELF,
+      "new_item": false,
+      "child_routes": null,
+      permissions: null,
+      profiles: null,
+   },
+   {
+      "menu_title": "Produits & Services",
+      "menu_icon": "zmdi zmdi-shopping-cart",
+      "new_item": false,
+      permissions: null,
+      profiles: null,
+      "child_routes": [
+         {
+            "menu_title": "Microcap Shop",
+            "new_item": false,
+            "path": PRODUCT.LIST,
+            permissions: null,
+            profiles: null,
+         },
+         {
+            "menu_title": "Mes commandes",
+            "new_item": false,
+            "path": PRODUCT.ORDERS,
+            permissions: null,
+            profiles: null,
+         },
+         {
+            "menu_title": "Demandes d'achats",
+            "new_item": false,
+            "path": PRODUCT.UNAPPROVED_ORDERS,
+            permissions: null,
+            profiles: null,
+         }
+      ],
+   }, {
+      "menu_title": "Ressources",
+      "menu_icon": "zmdi zmdi-accounts",
+      "path": RESSOURCE.VOUCHERS,
+      "new_item": false,
+      "child_routes": null,
+      permissions: null,
+      profiles: null,
+   },
+
+];

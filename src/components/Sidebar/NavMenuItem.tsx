@@ -12,15 +12,24 @@ import Chip from '@material-ui/core/Chip';
 import { connect } from "react-redux";
 import { withStyles } from '@material-ui/core/styles';
 import { statusCommunitySpaceStatus } from 'Actions/CommunityAction';
-
-// intl messages
-import IntlMessages from 'Util/IntlMessages';
-import NetworkBranchIntlMessages from "Components/NetworkBranchIntlMessages";
 import Status from "Enums/Status";
+import { User } from 'Models';
 
 const styles = theme => ({})
 
-class NavMenuItem extends Component {
+type Props = {
+   communitySpace: any
+   menu, 
+   onToggleMenu: (_) => void, 
+   statusCommunitySpaceStatus: (_: boolean) => void, 
+   authUser: User
+}
+
+type State = {
+   subMenuOpen: any
+}
+
+class NavMenuItem extends Component<Props, State> {
 
    state = {
       subMenuOpen: '',
@@ -59,7 +68,7 @@ class NavMenuItem extends Component {
       const { subMenuOpen } = this.state;
       // Check if the route has nested routes and if the user has at least one permission for one nested routes
       if ((menu.key != 'commnity_admin' && this.props.authUser.user.status != Status.PENDING) || (menu.key == 'commnity_admin' && this.isCommunityAdmin() && this.props.authUser.user.status != Status.PENDING))
-         if (menu.child_routes !== null && authUser.hasPermissions(_.flattenDeep(menu.child_routes.map(p => p.permissions.map(i => i.name))))) {
+         if (menu.child_routes !== null /* && authUser.hasPermissions(_.flattenDeep(menu.child_routes.map(p => p.permissions.map(i => i.name))))*/) {
             return (
                <Fragment>
                   {/* {((!this.props.communitySpace.status) || (this.props.communitySpace.status && menu.menu_title === 'Projet' && (this.props.communitySpace.type === 'Communaute projet' || this.props.communitySpace.type === 'Communaute conventionnée')) || (this.props.communitySpace.status && menu.menu_title !== 'Projet')) ? */}
@@ -84,7 +93,7 @@ class NavMenuItem extends Component {
                            {menu.type_multi == null ?
                               <List className="list-unstyled py-0">
                                  {authUser && menu.child_routes.map((subMenu, index) => {
-                                    if (authUser.hasPermissions(subMenu.permissions.map(p => p.name))) {
+                                    if (true /*authUser.hasPermissions(subMenu.permissions.map(p => p.name))*/) {
                                        return (
                                           <ListItem button component="li" key={index}>
                                              <NavLink to={subMenu.path} activeClassName="item-active" >
@@ -147,7 +156,7 @@ class NavMenuItem extends Component {
                                           <Collapse in={subMenuOpen === index} timeout="auto">
                                              <List className="list-unstyled py-0">
                                                 {authUser && subMenu.child_routes && subMenu.child_routes.map((nestedMenu, nestedKey) => {
-                                                   if (authUser.hasPermissions(nestedMenu.permissions.map(p => p.name))) {
+                                                   if (true /*authUser.hasPermissions(nestedMenu.permissions.map(p => p.name))*/) {
                                                       return (
                                                          <ListItem button component="li" key={nestedKey} onClick={() => this.onToggleCollapseMenu(index)}>
                                                             <NavLink activeClassName="item-active" to={nestedMenu.path}>

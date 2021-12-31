@@ -1,12 +1,12 @@
 /**
  * Redux App Settings Actions
  */
+import { MenuItem } from 'Components/Sidebar/NavLinks';
 import {
     COLLAPSED_SIDEBAR,
     DARK_MODE,
     BOXED_LAYOUT,
     RTL_LAYOUT,
-    TOGGLE_MENU,
     MINI_SIDEBAR,
     SEARCH_FORM_ENABLE,
     CHANGE_THEME_COLOR,
@@ -16,7 +16,6 @@ import {
     START_USER_TOUR,
     STOP_USER_TOUR,
     TOGGLE_DARK_SIDENAV,
-    AGENCY_TOGGLE_MENU,
 	 CHANGE_AGENCY_LAYOUT_BG,
 } from './types';
 
@@ -27,21 +26,21 @@ import {
 export const collapsedSidebarAction = (isCollapsed) => ({
     type: COLLAPSED_SIDEBAR,
     isCollapsed
-});
+}) as const;
 
 /**
  * Redux Action To Start User Tour
  */
 export const startUserTour = () => ({
     type: START_USER_TOUR
-});
+}) as const;
 
 /**
  * Redux Action To Stop User Tour
  */
 export const stopUserTour = () => ({
     type: STOP_USER_TOUR
-});
+}) as const;
 
 /**
  * Redux Action To Emit Dark Mode
@@ -50,7 +49,7 @@ export const stopUserTour = () => ({
 export const darkModeAction = (isDarkMode) => ({
     type: DARK_MODE,
     payload: isDarkMode
-});
+}) as const;
 
 /**
  * Redux Action To Emit Boxed Layout
@@ -59,7 +58,7 @@ export const darkModeAction = (isDarkMode) => ({
 export const boxLayoutAction = (isBoxLayout) => ({
     type: BOXED_LAYOUT,
     payload: isBoxLayout
-});
+}) as const;
 
 /**
  * Redux Action To Emit Rtl Layout
@@ -68,23 +67,23 @@ export const boxLayoutAction = (isBoxLayout) => ({
 export const rtlLayoutAction = (isRtlLayout) => ({
     type: RTL_LAYOUT,
     payload: isRtlLayout
-});
+}) as const;
 
 /**
  * Redux Action To Toggle Sidebar Menus
  */
 export const onToggleMenu = (selectedMenu) => ({
-    type: TOGGLE_MENU,
+    type: 'TOGGLE_MENU',
     payload: selectedMenu
-});
+}) as const;
 
 /**
  * Redux Action To Toggle Agency Sidebar Menus
  */
 export const onToggleAgencyMenu = (selectedAgencyMenu) => ({
-    type: AGENCY_TOGGLE_MENU,
+    type: 'AGENCY_TOGGLE_MENU',
     payload: selectedAgencyMenu
-});
+}) as const;
 
 /**
  * Redux Action To Emit Mini Sidebar
@@ -92,14 +91,14 @@ export const onToggleAgencyMenu = (selectedAgencyMenu) => ({
 export const miniSidebarAction = (isMiniSidebar) => ({
     type: MINI_SIDEBAR,
     payload: isMiniSidebar
-});
+}) as const;
 
 /**
  * Redux Action To Enable/Disable The Search Form
  */
 export const toggleSearchForm = () => ({
     type: SEARCH_FORM_ENABLE
-});
+}) as const;
 
 /**
  * Reduc Action To Change Theme Colors
@@ -107,14 +106,14 @@ export const toggleSearchForm = () => ({
 export const changeThemeColor = (theme) => ({
     type: CHANGE_THEME_COLOR,
     payload: theme
-});
+}) as const;
 
 /**
  * Redux Action To Enable/Disable Sidebar Background Image
  */
 export const toggleSidebarImage = () => ({
     type: TOGGLE_SIDEBAR_IMAGE
-});
+}) as const;
 
 /**
  * Redux Action To Set Sidebar Background Image
@@ -122,7 +121,7 @@ export const toggleSidebarImage = () => ({
 export const setSidebarBgImageAction = (sidebarImage) => ({
     type: SET_SIDEBAR_IMAGE,
     payload: sidebarImage
-});
+}) as const;
 
 /**
  * Redux Action To Set Language
@@ -130,14 +129,14 @@ export const setSidebarBgImageAction = (sidebarImage) => ({
 export const setLanguage = (language) => ({
     type: SET_LANGUAGE,
     payload: language
-});
+}) as const;
 
 /**
  * Redux Action To Toggle Dark Sidenav
  */
 export const toggleDarkSidebar = () => ({
     type: TOGGLE_DARK_SIDENAV
-})
+}) as const;
 
 /**
  * Redux Action For Agency Layout Bg Handler
@@ -145,4 +144,8 @@ export const toggleDarkSidebar = () => ({
 export const agencyLayoutBgHandler = (color) => ({
     type: CHANGE_AGENCY_LAYOUT_BG,
     payload: color
-})
+}) as const;
+
+
+
+export type SidebarActions = ReturnType<typeof onToggleMenu | typeof onToggleAgencyMenu>;
