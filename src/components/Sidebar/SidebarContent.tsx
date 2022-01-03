@@ -55,7 +55,7 @@ const SidebarContent = (_) => {
 			 * profile is ok if either menu item's profiles is null 
 			 * or user profile is menu item's profiles
 			 */
-			if (m.profiles && (m.profiles.findIndex(mpName => mpName === profile.name) === -1)) {
+			if (m.profiles && (m.profiles.findIndex(mpName => mpName.toLowerCase() === authUser.user.userType.toLowerCase()) === -1)) {
 				return false;
 			}
 

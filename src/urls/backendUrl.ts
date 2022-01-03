@@ -172,12 +172,12 @@ export const PACKAGES = {
 } as const;
 
 export const USER_PROFILE = {
-    GET_ALL: 'public/profiles',
-    CREATE: 'public/profiles',
-    PERMISSION: 'public/profiles/permission',
-    ADD_USER: 'public/profiles/{id}/users',
+    GET_ALL: 'api/profiles',
+    CREATE: 'api/profiles',
+    PERMISSION: 'api/profiles/permission',
+    ADD_USER: 'api/profiles/{id}/users',
     PERMISSIONS: {
-        GET_ALL: 'public/profiles/permissions',
+        GET_ALL: 'api/profiles/permissions',
     },
 } as const;
 
