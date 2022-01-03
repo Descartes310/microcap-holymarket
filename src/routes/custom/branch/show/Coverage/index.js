@@ -15,8 +15,8 @@ class Coverage extends Component {
         super(props);
         const defaultState = (function (url) {
             if (url.includes(NETWORK.COVERAGE_TABS.PARTNER)) return 0;
-            else if (url.includes(NETWORK.COVERAGE_TABS.AREA)) return 1;
-            else if (url.includes(NETWORK.COVERAGE_TABS.AREA_TYPE)) return 2;
+            // else if (url.includes(NETWORK.COVERAGE_TABS.AREA)) return 1;
+            // else if (url.includes(NETWORK.COVERAGE_TABS.AREA_TYPE)) return 2;
             else return 0;
         })(window.location.pathname);
 
@@ -32,8 +32,8 @@ class Coverage extends Component {
         if (oldActivateTab !== value) {
             switch (value) {
                 case 0: return this.props.history.push(NETWORK.COVERAGE_TABS.PARTNER);
-                case 1: return this.props.history.push(NETWORK.COVERAGE_TABS.AREA);
-                case 2: return this.props.history.push(NETWORK.COVERAGE_TABS.AREA_TYPE);
+                // case 1: return this.props.history.push(NETWORK.COVERAGE_TABS.AREA);
+                // case 2: return this.props.history.push(NETWORK.COVERAGE_TABS.AREA_TYPE);
                 default: return this.props.history.push(NETWORK.COVERAGE_TABS.PARTNER);
             }
         }
@@ -62,14 +62,14 @@ class Coverage extends Component {
                                             icon={<i className="zmdi zmdi-group-work" />}
                                             label={"Partenaires"}
                                         />
-                                        <Tab
+                                        {/* <Tab
                                             icon={<i className="ti-world"></i>}
                                             label={"Térritoires"}
                                         />
                                         <Tab
                                             icon={<i className="icon-shield"></i>}
                                             label={"Type de térritoires"}
-                                        />
+                                        /> */}
                                     </Tabs>
                                 </div>
                             </div>

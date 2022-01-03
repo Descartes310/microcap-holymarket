@@ -1132,7 +1132,7 @@ export type MenuItem = {
 export const allMenus: MenuItem[] = [
    {
       "menu_title": "Profile",
-      "menu_icon": "zmdi zmdi-accounts",
+      "menu_icon": "zmdi zmdi-flag",
       "path": USERS.USERS_PROFILE.DISPLAY_PROFILE,
       "new_item": false,
       "child_routes": null,
@@ -1152,145 +1152,131 @@ export const allMenus: MenuItem[] = [
             "new_item": false,
             "path": ORGANISATIONS.SELF,
             "permissions": null,
-            "profiles": null,
+            "profiles": ['organisation'],
          },
          {
-            "menu_title": "Roles",
+            "menu_title": "Mes roles",
             "new_item": false,
-            "path": USERS.USERS_PROFILE.SELF,
+            "path": ORGANISATIONS.PROFILES.index,
             "permissions": null,
-            "profiles": null,
+            "profiles": ['organisation'],
          },
          {
             "menu_title": "Compte utilisateurs",
             "new_item": false,
             "path": USERS.ACCOUNTS.SELF,
-            "permissions": null,
-            "profiles": null,
+            "permissions": [],
+            "profiles": ['organisation'],
          },
       ],
    },
    {
-      "menu_title": "Produits",
-      "menu_icon": "zmdi zmdi-widgets",
+      "menu_title": "Couverture",
+      "menu_icon": "zmdi zmdi-aspect-ratio-alt",
       "new_item": false,
-      "permissions": null,
-      "profiles": null,
-      "child_routes": [
-         {
-            "menu_title": "Catalogue produits",
-            "new_item": false,
-            "path": CATALOG.PRODUCT.SELF,
-            "permissions": ['PRODUCT_PRODUCT_CATALOG_MANAGEMENT_PRIVILEGE'],
-            "profiles": ['member'],
-         },
-         {
-            "path": CATALOG.SALE.SELF,
-            "new_item": false,
-            "menu_title": "Catalogue ventes",
-            "permissions": ['PRODUCT_SALE_CATALOG_MANAGEMENT_PRIVILEGE'],
-            "profiles": ['member'],
-         },
-         // {
-         //    "path": NETWORK.COVERAGE,
-         //    "new_item": false,
-         //    "menu_title": "Catalogue distributions",
-         //    "permissions": [Permission.navLinks.products.childLinks.catalogDistribution.viewMenu],
-         // },
-      ]
+      "path": NETWORK.COVERAGE,
+      "type_multi": false,
+      "permissions": ['PARTNER_MANAGEMENT_PRIVILEGE'],
+      "profiles": ['organisation'],
+      "child_routes": null
    },
    {
-      "menu_title": "Projets",
-      "menu_icon": "zmdi zmdi-widgets",
+      "menu_title": "Microcap360",
+      "menu_icon": "zmdi zmdi-globe-alt",
       "new_item": false,
       "permissions": null,
       "profiles": null,
-      "type_multi": true,
       "child_routes": [
          {
-            "menu_title": "Configuration",
-            "menu_icon": "zmdi zmdi-case",
+            "menu_title": "Comptes",
             "new_item": false,
-            "permissions": ['SETTING_CONFIGURATION_PRIVILEGE'],
-            "profiles": ['member'],
+            "path": PRODUCT.SHOW_ACCOUNT,
+            "profiles": ['organisation', 'person'],
+            "permissions": ['PRODUCT_SHOP_PRIVILEGE']
+         },
+         {
+            "menu_title": "Projets",
+            "new_item": false,
+            "permissions": ['PROJECT_PERSONAL_MANAGEMENT_PRIVILEGE', 'PROJECT_PERSONAL_WORK_MANAGEMENT_PRIVILEGE'],
+            "profiles": ['person', 'organisation'],
             "child_routes": [
                {
-                  "menu_title": "Ouvrages",
                   "new_item": false,
-                  "permissions": ['PROJECT_WORK_MODEL_MANAGEMENT_PRIVILEGE'],
-                  "profiles": ['member'],
-                  "path": PROJECTS.CONFIGURATION.WORKS.SELF,
+                  "menu_title": "Mes Projets",
+                  "path": PROJECTS.FOLDERS.SELF,
+                  "profiles": ['organisation', 'person'],
+                  "permissions": ['PROJECT_PERSONAL_MANAGEMENT_PRIVILEGE']
                },
                {
-                  "menu_title": "Options d'initialisation",
                   "new_item": false,
-                  "permissions": ['PROJECT_INIT_OPTION_MANAGEMENT_PRIVILEGE'],
-                  "profiles": ['member'],
-                  "path": PROJECTS.CONFIGURATION.INITIALISATION.SELF,
+                  "menu_title": "Structures projets",
+                  "path": PROJECTS.FOLDERS.WORKS.SELF,
+                  "profiles": ['organisation', 'person'],
+                  "permissions": ['PROJECT_PERSONAL_WORK_MANAGEMENT_PRIVILEGE']
                },
-               {
-                  "menu_title": "Standard de présentation",
-                  "new_item": false,
-                  "permissions": ['SETTING_CONFIGURATION_PRIVILEGE'],
-                  "profiles": ['member'],
-                  "path": PROJECTS.CONFIGURATION.STANDARD.SELF,
-               },
-            ],
+            ]
          },
          {
-            "path": PROJECTS.PROJECTS.LIST,
             "new_item": false,
-            "menu_title": "Projets",
-            "permissions": ['PROJECT_PERSONAL_MANAGEMENT_PRIVILEGE'],
-            "profiles": ['member'],
+            "menu_title": "Communautés",
+            "path": MICROCAP360.RESEAU.SELF,
+            "profiles": ['organisation', 'person'],
+            "permissions": ['COMMUNITY_BELONGS_PRIVILEGE']
          },
          {
-            "path": PROJECTS.POST_PROJETS.LIST,
             "new_item": false,
-            "menu_title": "Poste projets",
-            "permissions": ['PROJECT_PERSONAL_MANAGEMENT_PRIVILEGE'],
-            "profiles": ['member'],
+            "menu_title": "Mon Microcap",
+            "path": MICROCAP360.MY.PROJECT,
+            "profiles": ['organisation', 'person'],
+            "permissions": ['PROJECT_PERSONAL_MANAGEMENT_PRIVILEGE']
+         },
+      ],
+   },
+   {
+      "menu_title": "Prévisions",
+      "menu_icon": "zmdi zmdi-calendar",
+      "new_item": false,
+      "permissions": null,
+      "profiles": null,
+      "child_routes": [
+         {
+            "menu_title": "Objectifs",
+            "new_item": false,
+            "path": PREVISIONS_ADMIN.GOALS.SELF,
+            "permissions": ['PREVISION_GOAL_MANAGEMENT_PRIVILEGE'],
+            "profiles": ['organisation'],
+         },
+      ],
+   },
+   {
+      "menu_title": "Produits & services",
+      "menu_icon": "zmdi zmdi-store",
+      "new_item": false,
+      "permissions": null,
+      "profiles": null,
+      "child_routes": [
+         {
+            "new_item": false,
+            "path": CATALOG.PRODUCT.SELF,
+            "profiles": ['organisation'],
+            "menu_title": "Catalogue produits",
+            "permissions": ['PRODUCT_PRODUCT_CATALOG_MANAGEMENT_PRIVILEGE']
          },
          {
-            "path": PROJECTS.PROJECTS.EDITION.SELF,
             "new_item": false,
-            "menu_title": "Edition",
-            "permissions": ['PROJECT_PERSONAL_MANAGEMENT_PRIVILEGE'],
-            "profiles": ['member'],
-         },
-         {
-            "path": PROJECTS.PROJECTS.CONSULTATION,
-            "new_item": false,
-            "menu_title": "Consultation",
-            "permissions": ['PROJECT_PERSONAL_MANAGEMENT_PRIVILEGE'],
-            "profiles": ['member'],
-         },
-         {
-            "path": PROJECTS.FOLDERS.SELF,
-            "new_item": false,
-            "menu_title": "Gestion des projets",
-            "permissions": ['PROJECT_PERSONAL_MANAGEMENT_PRIVILEGE'],
-            "profiles": ['member'],
-         },
-         /*{
-            "path": COMMERCIAL_MANAGEMENT.COMMERCIAL_OPERATION.SELF,
-            "new_item": false,
-            "menu_title": "Opération commerciale",
-            "permissions": [],
-         },
-         {
-            "path": COMMERCIAL_MANAGEMENT.COMMERCIAL_OFFER.SELF,
-            "new_item": false,
-            "menu_title": "Offre commerciale",
-            "permissions": [],
-         },*/
+            "path": CATALOG.SALE.SELF,
+            "profiles": ['organisation'],
+            "menu_title": "Catalogue ventes",
+            "permissions": ['PRODUCT_SALE_CATALOG_MANAGEMENT_PRIVILEGE']
+         }
       ]
    },
+
    {
       "menu_title": "Gestion commercial",
       "menu_icon": "zmdi zmdi-case",
       "new_item": false,
-      "permissions": [],
+      "permissions": null,
       "profiles": null,
       "child_routes": [
          {
@@ -1298,112 +1284,63 @@ export const allMenus: MenuItem[] = [
             "new_item": false,
             "path": COMMERCIAL_MANAGEMENT.COMMERCIAL_OPERATION_TYPE.SELF,
             "permissions": ['PRODUCT_COMMERCIAL_OP_TYPE_MANAGEMENT_PRIVILEGE'],
-            "profiles": null
+            "profiles": ['organisation'],
          },
          {
             "path": COMMERCIAL_MANAGEMENT.COMMERCIAL_OPERATION.SELF,
             "new_item": false,
             "menu_title": "Opération commerciale",
             "permissions": ['PRODUCT_COMMERCIAL_OP_MANAGEMENT_PRIVILEGE'],
-            "profiles": null
+            "profiles": ['organisation'],
          },
          {
             "path": COMMERCIAL_MANAGEMENT.COMMERCIAL_OFFER.SELF,
             "new_item": false,
             "menu_title": "Offre commerciale",
-            "permissions": ['PRODUCT_COMMERCIAL_OP_MANAGEMENT_PRIVILEGE'],
-            "profiles": null
-         },
+            "permissions": ['PRODUCT_COMMERCIAL_OFFER_MANAGEMENT_PRIVILEGE'],
+            "profiles": ['organisation'],
+         }
       ]
    },
    {
-      "menu_title": "Produits & Services",
-      "menu_icon": "zmdi zmdi-shopping-cart",
-      "new_item": false,
-      "path": PRODUCT.LIST,
-      // "permissions": [Permission.navLinks.COMMUNITY_MEMBER.viewMenu],
-      "permissions": ['PRODUCT_PACKAGE_MANAGEMENT_PRIVILEGE'],
-      "profiles": null,
-      "child_routes": null
-   },
-   {
-      "menu_title": "Communauté membre",
-      "menu_icon": "zmdi zmdi-comments",
-      "new_item": false,
-      "path": COMMUNITY_MEMBER.SELF,
-      // "permissions": [Permission.navLinks.COMMUNITY_MEMBER.viewMenu],
-      "permissions": ['COMMUNITY_BELONGS_PRIVILEGE'],
-      "profiles": ['member']
-   },
-   {
-      "menu_title": "Communauté",
-      "menu_icon": "zmdi zmdi-comments",
+      "menu_title": "Projets",
+      "menu_icon": "zmdi zmdi-truck",
       "new_item": false,
       "permissions": [],
+      "type_multi": true,
       "profiles": null,
       "child_routes": [
          {
-            "menu_title": "Poste projet",
+            "menu_title": "Configuration",
+            "menu_icon": "zmdi zmdi-case",
             "new_item": false,
-            "path": COMMUNITY.POST_PROJECT.SELF,
-            "permissions": ['SETTING_COMMUNITY_POST_PRIVILEGE'],
-            "profiles": ['member']
+            "permissions": null,
+            "profiles": null,
+            "child_routes": [
+               {
+                  "menu_title": "Modèles d'ouvrages",
+                  "new_item": false,
+                  "permissions": ['PROJECT_WORK_MODEL_MANAGEMENT_PRIVILEGE'],
+                  "profiles": ['organisation'],
+                  "path": PROJECTS.CONFIGURATION.WORKS.SELF,
+               },
+               {
+                  "menu_title": "Options d'initialisation",
+                  "new_item": false,
+                  "permissions": ['PROJECT_INIT_OPTION_MANAGEMENT_PRIVILEGE'],
+                  "profiles": ['organisation'],
+                  "path": PROJECTS.CONFIGURATION.INITIALISATION.SELF,
+               }
+            ]
          },
          {
-            "menu_title": "Membres",
+            "path": PROJECTS.POST_PROJETS.LIST,
             "new_item": false,
-            "path": COMMUNITY.MEMBERS.SELF,
-            "permissions": ['COMMUNITY_BELONGS_PRIVILEGE'],
-            "profiles": ['member']
-         },
-         {
-            "menu_title": "Activités",
-            "new_item": false,
-            "path": COMMUNITY.ACTIVITY.SELF,
-            "permissions": ['COMMUNITY_BELONGS_PRIVILEGE'],
-            "profiles": ['member']
-         },
-      ],
-   },
-   {
-      "menu_title": "Microcap360",
-      "menu_icon": "icon-people",
-      "new_item": false,
-      "permissions": ['COMMUNITY_ADMIN_MEMBERS_PRIVILEGE'],
-      "profiles": null,
-      "child_routes": [
-         {
-            "menu_title": "Comptes",
-            "new_item": false,
-            "path": MICROCAP360.COMPTES.SELF,
-            "permissions": ['COMMUNITY_ADMIN_MEMBERS_PRIVILEGE'],
-            "profiles": null
-         },
-         {
-            "menu_title": "Projets",
-            "new_item": false,
-            "path": PROJECTS.FOLDERS.SELF,
-            "permissions": ['PROJECT_PERSONAL_MANAGEMENT_PRIVILEGE'],
-            "profiles": null
-         },
-         {
-            "menu_title": "Reseau",
-            "new_item": false,
-            "path": MICROCAP360.RESEAU.SELF,
-            "permissions": ['COMMUNITY_BELONGS_PRIVILEGE'],
-            "profiles": null
-         },
-      ],
-   },
-   {
-      "menu_title": "Accès",
-      "menu_icon": "zmdi zmdi-key",
-      "new_item": false,
-      "path": ACCESS.SELF,
-      // "permissions": [Permission.navLinks.COMMUNITY_MEMBER.viewMenu],
-      "permissions": ['COMMUNITY_ADMIN_MEMBERS_PRIVILEGE'],
-      "profiles": ['member'],
-      "child_routes": null
+            "menu_title": "Poste projets",
+            "permissions": ['PROJECT_INIT_OPTION_MANAGEMENT_PRIVILEGE'],
+            "profiles": ['organisation'],
+         }
+      ]
    },
    {
       "menu_title": "Paramètres",
@@ -1416,116 +1353,51 @@ export const allMenus: MenuItem[] = [
             "menu_title": "Notification",
             "new_item": false,
             "path": SETTINGS.NOTIFICATION.SELF,
-            "permissions": null,
-            "profiles": null
+            "permissions": ['SETTING_NOTIFICATION_PRIVILEGE'],
+            "profiles": ["organisation"],
+         },
+         {
+            "menu_title": "Dossier utilisateur",
+            "new_item": false,
+            "path": SETTINGS.USERPIECE.SELF,
+            "permissions": ['SETTING_USER_FILE_PRIVILEGE'],
+            "profiles": ["organisation"],
+         },
+         {
+            "menu_title": "Configuration",
+            "new_item": false,
+            "path": SETTINGS.CONFIGS.SELF,
+            "permissions": ['SETTING_CONFIGURATION_PRIVILEGE'],
+            "profiles": ["organisation"],
+         },
+         {
+            "menu_title": "Unité de decompte",
+            "new_item": false,
+            "path": SETTINGS.UNITS.SELF,
+            "permissions": ['SETTING_UNIT_PRIVILEGE'],
+            "profiles": ["organisation"],
+         },
+         {
+            "menu_title": "Poste communautés",
+            "new_item": false,
+            "path": SETTINGS.POST.LIST,
+            "permissions": ['SETTING_COMMUNITY_POST_PRIVILEGE'],
+            "profiles": ["organisation"],
+         },
+         {
+            "menu_title": "Nos Agents",
+            "new_item": false,
+            "path": SETTINGS.AGENTS.SELF,
+            "permissions": ['SETTING_AGENT_PRIVILEGE'],
+            "profiles": ["organisation"],
+         },
+         {
+            "menu_title": "Nos Pioniers",
+            "new_item": false,
+            "path": SETTINGS.PIONIERS.SELF,
+            "permissions": ['SETTING_PIONIER_PRIVILEGE'],
+            "profiles": ["organisation"],
          },
       ]
-   },
-   {
-      "menu_title": "Microcap360",
-      "menu_icon": "icon-people",
-      "new_item": false,
-      "type_multi": true,
-      "permissions": null,
-      "profiles": ['member'],
-      "child_routes": [
-         {
-            "menu_title": "Comptes",
-            "new_item": false,
-            "path": PRODUCT.SHOW_ACCOUNT,
-            "permissions": null,
-            "profiles": ['member'],
-         },
-         {
-            "menu_title": "Projets",
-            "new_item": false,
-            "permissions": null,
-            "profiles": ['member'],
-            "child_routes": [
-               {
-                  "menu_title": "Mes Projets",
-                  "new_item": false,
-                  "permissions": null,
-                  "profiles": ['member'],
-                  "path": PROJECTS.FOLDERS.SELF,
-               },
-               {
-                  "menu_title": "Structures projets",
-                  "new_item": false,
-                  "permissions": null,
-                  "profiles": ['member'],
-                  "path": PROJECTS.FOLDERS.WORKS.SELF
-               },
-            ]
-         },
-         {
-            "menu_title": "Réseau",
-            "new_item": false,
-            "path": MICROCAP360.RESEAU.SELF,
-            "permissions": null,
-            "profiles": ['member'],
-         },
-         {
-            "menu_title": "Mon Microcap",
-            "new_item": false,
-            "path": MICROCAP360.MY.PROJECT,
-            "permissions": null,
-            "profiles": ['member'],
-         },
-      ],
-   }, {
-      "menu_title": "Bourse de Financement",
-      "menu_icon": "zmdi zmdi-accounts",
-      "path": STOCK.FINANCIAL.SELF,
-      "new_item": false,
-      "child_routes": null,
-      "permissions": null,
-      "profiles": null,
-   }, {
-      "menu_title": "Bourse des opportunités",
-      "menu_icon": "zmdi zmdi-accounts",
-      "path": STOCK.OPPORTUITY.SELF,
-      "new_item": false,
-      "child_routes": null,
-      "permissions": null,
-      "profiles": null,
-   },
-   {
-      "menu_title": "Produits & Services",
-      "menu_icon": "zmdi zmdi-shopping-cart",
-      "new_item": false,
-      "permissions": null,
-      "profiles": null,
-      "child_routes": [
-         {
-            "menu_title": "Microcap Shop",
-            "new_item": false,
-            "path": PRODUCT.LIST,
-            "permissions": null,
-            "profiles": null,
-         },
-         {
-            "menu_title": "Mes commandes",
-            "new_item": false,
-            "path": PRODUCT.ORDERS,
-            "permissions": null,
-            "profiles": null,
-         },
-         {
-            "menu_title": "Demandes d'achats",
-            "new_item": false,
-            "path": PRODUCT.UNAPPROVED_ORDERS,
-            "permissions": null,
-            "profiles": null,
-         }
-      ],
-   }, {
-      "menu_title": "Ressources",
-      "menu_icon": "zmdi zmdi-accounts",
-      "path": RESSOURCE.VOUCHERS,
-      "new_item": false,
-      "child_routes": null,
-      "permissions": ['organisation/users/management'],
-      "profiles": null,
    },
 ];

@@ -66,6 +66,7 @@ class NavMenuItem extends Component<Props, State> {
    render() {
       const { menu, onToggleMenu, authUser } = this.props;
       const { subMenuOpen } = this.state;
+      // console.log(menu)
       // Check if the route has nested routes and if the user has at least one permission for one nested routes
       if ((menu.key != 'commnity_admin' && this.props.authUser.user.status != Status.PENDING) || (menu.key == 'commnity_admin' && this.isCommunityAdmin() && this.props.authUser.user.status != Status.PENDING))
          if (menu.child_routes !== null /* && authUser.hasPermissions(_.flattenDeep(menu.child_routes.map(p => p.permissions.map(i => i.name))))*/) {
