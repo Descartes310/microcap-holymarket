@@ -26,13 +26,7 @@ import { RESSOURCE } from '../../urls/frontendUrl';
 // Get pathname of the current url i.e everything after app domain name
 const pathname = window.location.pathname;
 
-// Get the id present into the url in case if it's a community space url
-const communitySpaceId = (function () {
-   // Construct regex to recognize community space url
-   const communitySpaceRegex = new RegExp(COMMUNITY.SELF.replace(':id', '[0-9]+'));
-   // Return the id or null in case if it's not the community space url
-   return communitySpaceRegex.test(pathname) ? pathname.match(/\d+/gi)[0] : null
-})();
+
 
 export default {
    menus: [
@@ -958,13 +952,13 @@ export default {
             {
                "menu_title": "Membres",
                "new_item": false,
-               "path": joinUrlWithParamsId(COMMUNITY.MEMBERS.LIST, communitySpaceId),
+               "path": COMMUNITY.MEMBERS.LIST,
                "permissions": [],
             },
             {
                "menu_title": "Activités",
                "new_item": false,
-               "path": joinUrlWithParamsId(PROJECTS.FOLDERS.REACTIONS.LIST, communitySpaceId),
+               "path": PROJECTS.FOLDERS.REACTIONS.LIST,
                "permissions": [],
             }
          ],
@@ -978,13 +972,13 @@ export default {
             {
                "menu_title": "Edition",
                "new_item": false,
-               "path": joinUrlWithParamsId(COMMUNITY.PROJECTS.UPDATE, communitySpaceId),
+               "path": COMMUNITY.PROJECTS.UPDATE,
                "permissions": [],
             },
             {
                "menu_title": "Consultation",
                "new_item": false,
-               "path": joinUrlWithParamsId(COMMUNITY.PROJECTS.SHOW, communitySpaceId),
+               "path": COMMUNITY.PROJECTS.SHOW,
                "permissions": [],
             }
          ],
@@ -1000,31 +994,31 @@ export default {
                "menu_title": "Membres",
                "new_item": false,
                'key': 'commnity_admin',
-               "path": joinUrlWithParamsId(COMMUNITY_ADMIN.MEMBERS.LIST, communitySpaceId),
+               "path": COMMUNITY_ADMIN.MEMBERS.LIST,
                "permissions": [],
             }, {
                "menu_title": "Postes",
                "new_item": false,
                'key': 'commnity_admin',
-               "path": joinUrlWithParamsId(COMMUNITY_ADMIN.POST.LIST, communitySpaceId),
+               "path": COMMUNITY_ADMIN.POST.LIST,
                "permissions": [],
             }, {
                "menu_title": "Opérateurs",
                "new_item": false,
                'key': 'commnity_admin',
-               "path": joinUrlWithParamsId(COMMUNITY_ADMIN.OPERATOR.LIST, communitySpaceId),
+               "path": COMMUNITY_ADMIN.OPERATOR.LIST,
                "permissions": [],
             }, {
                "menu_title": "Projet",
                "new_item": false,
                'key': 'commnity_admin',
-               "path": joinUrlWithParamsId(COMMUNITY_ADMIN.PROJECT.CREATE, communitySpaceId),
+               "path": COMMUNITY_ADMIN.PROJECT.CREATE,
                "permissions": [],
             }, {
                "menu_title": "Rubriques",
                "new_item": false,
                'key': 'commnity_admin',
-               "path": joinUrlWithParamsId(COMMUNITY_ADMIN.RUBRIQUE.LIST, communitySpaceId),
+               "path": COMMUNITY_ADMIN.RUBRIQUE.LIST,
                "permissions": [],
             },
             {
@@ -1037,20 +1031,20 @@ export default {
                      "menu_title": "Paiement",
                      "new_item": false,
                      'key': 'commnity_admin',
-                     "path": joinUrlWithParamsId(COMMUNITY_ADMIN.VOUCHER.PAYMENT, communitySpaceId),
+                     "path": COMMUNITY_ADMIN.VOUCHER.PAYMENT,
                      "permissions": [],
                   }, {
                      "menu_title": "Recharge",
                      "new_item": false,
                      'key': 'commnity_admin',
-                     "path": joinUrlWithParamsId(COMMUNITY_ADMIN.VOUCHER.CHARCHING, communitySpaceId),
+                     "path": COMMUNITY_ADMIN.VOUCHER.CHARCHING,
                      "permissions": [],
                   },
                   {
                      "menu_title": "Confirmation",
                      "new_item": false,
                      'key': 'commnity_admin',
-                     "path": joinUrlWithParamsId(COMMUNITY.MEMBERS.LIST, communitySpaceId),
+                     "path": COMMUNITY.MEMBERS.LIST,
                      "permissions": [],
                   }
                ],
@@ -1059,58 +1053,58 @@ export default {
       }
    ],
    broker: [{
-         "menu_title": "Mes agences",
-         "menu_icon": "zmdi zmdi-balance",
-         "path": BROKER.AGENCIES.LIST,
-         "new_item": false,
-         "child_routes": null,
-         "permissions": [],
-         'subject': Branch
-      }, {
-         "menu_title": "Mes utilisateurs",
-         "menu_icon": "zmdi zmdi-accounts",
-         "path": BROKER.AGENCIES.USERS,
-         "new_item": false,
-         "child_routes": null,
-         "permissions": [],
-         'subject': Branch
-      }
+      "menu_title": "Mes agences",
+      "menu_icon": "zmdi zmdi-balance",
+      "path": BROKER.AGENCIES.LIST,
+      "new_item": false,
+      "child_routes": null,
+      "permissions": [],
+      'subject': Branch
+   }, {
+      "menu_title": "Mes utilisateurs",
+      "menu_icon": "zmdi zmdi-accounts",
+      "path": BROKER.AGENCIES.USERS,
+      "new_item": false,
+      "child_routes": null,
+      "permissions": [],
+      'subject': Branch
+   }
    ],
    broker_agency: [{
-         "menu_title": "Mes guichets",
-         "menu_icon": "zmdi zmdi-balance",
-         "path": BROKER.COUNTERS.LIST,
-         "new_item": false,
-         "child_routes": null,
-         "permissions": [],
-         'subject': Branch
-      }, {
-         "menu_title": "Mes utilisateurs",
-         "menu_icon": "zmdi zmdi-accounts",
-         "path": BROKER.COUNTERS.USERS,
-         "new_item": false,
-         "child_routes": null,
-         "permissions": [],
-         'subject': Branch
-      }
+      "menu_title": "Mes guichets",
+      "menu_icon": "zmdi zmdi-balance",
+      "path": BROKER.COUNTERS.LIST,
+      "new_item": false,
+      "child_routes": null,
+      "permissions": [],
+      'subject': Branch
+   }, {
+      "menu_title": "Mes utilisateurs",
+      "menu_icon": "zmdi zmdi-accounts",
+      "path": BROKER.COUNTERS.USERS,
+      "new_item": false,
+      "child_routes": null,
+      "permissions": [],
+      'subject': Branch
+   }
    ],
    broker_counter: [{
-         "menu_title": "Mes Caisses",
-         "menu_icon": "zmdi zmdi-balance",
-         "path": BROKER.CASHDESKS.LIST,
-         "new_item": false,
-         "child_routes": null,
-         "permissions": [],
-         'subject': Branch
-      }, {
-         "menu_title": "Mes utilisateurs",
-         "menu_icon": "zmdi zmdi-accounts",
-         "path": BROKER.CASHDESKS.USERS,
-         "new_item": false,
-         "child_routes": null,
-         "permissions": [],
-         'subject': Branch
-      }
+      "menu_title": "Mes Caisses",
+      "menu_icon": "zmdi zmdi-balance",
+      "path": BROKER.CASHDESKS.LIST,
+      "new_item": false,
+      "child_routes": null,
+      "permissions": [],
+      'subject': Branch
+   }, {
+      "menu_title": "Mes utilisateurs",
+      "menu_icon": "zmdi zmdi-accounts",
+      "path": BROKER.CASHDESKS.USERS,
+      "new_item": false,
+      "child_routes": null,
+      "permissions": [],
+      'subject': Branch
+   }
    ],
    broker_cashdesk: [
    ]
@@ -1125,7 +1119,8 @@ export type MenuItem = {
    permissions: string[] | null; // null for no permissions need to access
    profiles: string[] | null; // null means no need profile to access
    permissions_and?: boolean   // if true, then the user must have all the listed permissions
-   subject?: string
+   subject?: string;
+   key?: string;
    child_routes?: MenuItem[];
 }
 
@@ -1137,9 +1132,9 @@ export const allMenus: MenuItem[] = [
       "new_item": false,
       "child_routes": null,
       "permissions": null,
-      "profiles": null,
+      "profiles": ['person', 'organisation'],
       'subject': Branch
-   }, 
+   },
    {
       "menu_title": "Utilisateurs",
       "menu_icon": "zmdi zmdi-accounts",
@@ -1165,10 +1160,33 @@ export const allMenus: MenuItem[] = [
             "menu_title": "Compte utilisateurs",
             "new_item": false,
             "path": USERS.ACCOUNTS.SELF,
-            "permissions": [],
-            "profiles": ['organisation'],
+            "permissions": ['PARTNER_TYPE_PRIVILEGE'],
+            "profiles": ['organisation', 'manager'],
          },
       ],
+   },
+   {
+      "menu_title": "Réseau",
+      "menu_icon": "zmdi zmdi-globe-alt",
+      "new_item": false,
+      "permissions": null,
+      "profiles": null,
+      "child_routes": [
+         {
+            "menu_title": "Consulter",
+            "new_item": false,
+            "path": NETWORK.LIST,
+            "permissions": ['NETWORK_MANAGEMENT_PRIVILEGE'],
+            "profiles": ['organisation', 'manager']
+         },
+         {
+            "menu_title": "Editer",
+            "new_item": false,
+            "path": NETWORK.ONGOING_CREATE,
+            "permissions": ['NETWORK_MANAGEMENT_PRIVILEGE'],
+            "profiles": ['organisation', 'manager']
+         },
+      ]
    },
    {
       "menu_title": "Couverture",
@@ -1186,6 +1204,7 @@ export const allMenus: MenuItem[] = [
       "new_item": false,
       "permissions": null,
       "profiles": null,
+      "type_multi": true,
       "child_routes": [
          {
             "menu_title": "Comptes",
@@ -1198,7 +1217,7 @@ export const allMenus: MenuItem[] = [
             "menu_title": "Projets",
             "new_item": false,
             "permissions": ['PROJECT_PERSONAL_MANAGEMENT_PRIVILEGE', 'PROJECT_PERSONAL_WORK_MANAGEMENT_PRIVILEGE'],
-            "profiles": ['person', 'organisation'],
+            "profiles": ['organisation', 'person'],
             "child_routes": [
                {
                   "new_item": false,
@@ -1231,6 +1250,22 @@ export const allMenus: MenuItem[] = [
             "permissions": ['PROJECT_PERSONAL_MANAGEMENT_PRIVILEGE']
          },
       ],
+   }, {
+      "menu_title": "Bourse de Financement",
+      "menu_icon": "zmdi zmdi-accounts",
+      "path": STOCK.FINANCIAL.SELF,
+      "new_item": false,
+      "child_routes": null,
+      "permissions": ['PROJECT_FINANCIAL_BOURSE'],
+      "profiles": ['organisation', 'person']
+   }, {
+      "menu_title": "Bourse des opportunités",
+      "menu_icon": "zmdi zmdi-accounts",
+      "path": STOCK.OPPORTUITY.SELF,
+      "new_item": false,
+      "child_routes": null,
+      "permissions": ['PROJECT_OPPORTUNITY_BOURSE'],
+      "profiles": ['organisation', 'person']
    },
    {
       "menu_title": "Prévisions",
@@ -1268,6 +1303,27 @@ export const allMenus: MenuItem[] = [
             "profiles": ['organisation'],
             "menu_title": "Catalogue ventes",
             "permissions": ['PRODUCT_SALE_CATALOG_MANAGEMENT_PRIVILEGE']
+         },
+         {
+            "menu_title": "Microcap Shop",
+            "new_item": false,
+            "path": PRODUCT.LIST,
+            "permissions": ['PRODUCT_SHOP_PRIVILEGE'],
+            "profiles": ['organisation', 'person']
+         },
+         {
+            "menu_title": "Mes commandes",
+            "new_item": false,
+            "path": PRODUCT.ORDERS,
+            "permissions": ['PRODUCT_SHOP_PRIVILEGE'],
+            "profiles": ['organisation', 'person']
+         },
+         {
+            "menu_title": "Demandes d'achats",
+            "new_item": false,
+            "path": PRODUCT.UNAPPROVED_ORDERS,
+            "permissions": ['PRODUCT_SHOP_PRIVILEGE'],
+            "profiles": ['organisation', 'person']
          }
       ]
    },
@@ -1400,4 +1456,143 @@ export const allMenus: MenuItem[] = [
          },
       ]
    },
+   {
+      "menu_title": "Espace personnel",
+      "menu_icon": "zmdi zmdi-accounts",
+      "path": `${USERS.USERS_PROFILE.DISPLAY_PROFILE}?logoutFromCommunity=true`,
+      "new_item": false,
+      "child_routes": null,
+      "permissions": null,
+      "profiles": ['community'],
+      //'key': 'personnal_space'
+   }, {
+      "menu_title": "Communauté",
+      "menu_icon": "icon-people",
+      "new_item": false,
+      "permissions": null,
+      "profiles": null,
+      "child_routes": [
+         {
+            "menu_title": "Membres",
+            "new_item": false,
+            "path": COMMUNITY.MEMBERS.LIST,
+            "permissions": ['COMMUNITY_INFOS_PRIVILEGE'],
+            "profiles": ['community']
+         },
+         {
+            "menu_title": "Activités",
+            "new_item": false,
+            "path": PROJECTS.FOLDERS.REACTIONS.LIST,
+            "permissions": ['COMMUNITY_INFOS_PRIVILEGE'],
+            "profiles": ['community']
+         }
+      ],
+   }, {
+      "menu_title": "Projet",
+      "menu_icon": "icon-people",
+      "new_item": false,
+      "permissions": null,
+      "profiles": null,
+      "child_routes": [
+         {
+            "menu_title": "Edition",
+            "new_item": false,
+            "path": COMMUNITY.PROJECTS.UPDATE,
+            "permissions": ['COMMUNITY_PROJECT_PRIVILEGE'],
+            "profiles": ['community']
+         },
+         {
+            "menu_title": "Consultation",
+            "new_item": false,
+            "path": COMMUNITY.PROJECTS.SHOW,
+            "permissions": ['COMMUNITY_PROJECT_PRIVILEGE'],
+            "profiles": ['community']
+         }
+      ],
+   }, {
+      "menu_title": "Administration",
+      "menu_icon": "zmdi zmdi-widgets",
+      "new_item": false,
+      //'key': 'commnity_admin',
+      "type_multi": true,
+      "permissions": [
+         'COMMUNITY_ADMIN_MEMBER_PRIVILEGE',
+         'COMMUNITY_ADMIN_POST_PRIVILEGE',
+         'COMMUNITY_ADMIN_OPERATOR_PRIVILEGE',
+         'COMMUNITY_ADMIN_PROJECT_PRIVILEGE',
+         'COMMUNITY_ADMIN_RUBRIQUE_PRIVILEGE',
+         'COMMUNITY_ADMIN_CODE_PRIVILEGE'
+      ],
+      "profiles": ['community'],
+      "child_routes": [
+         {
+            "menu_title": "Membres",
+            "new_item": false,
+            'key': 'commnity_admin',
+            "path": COMMUNITY_ADMIN.MEMBERS.LIST,
+            "permissions": ['COMMUNITY_ADMIN_MEMBER_PRIVILEGE'],
+            "profiles": ['community']
+         }, {
+            "menu_title": "Postes",
+            "new_item": false,
+            'key': 'commnity_admin',
+            "path": COMMUNITY_ADMIN.POST.LIST,
+            "permissions": ['COMMUNITY_ADMIN_POST_PRIVILEGE'],
+            "profiles": ['community']
+         }, {
+            "menu_title": "Opérateurs",
+            "new_item": false,
+            'key': 'commnity_admin',
+            "path": COMMUNITY_ADMIN.OPERATOR.LIST,
+            "permissions": ['COMMUNITY_ADMIN_OPERATOR_PRIVILEGE'],
+            "profiles": ['community']
+         }, {
+            "menu_title": "Projet",
+            "new_item": false,
+            'key': 'commnity_admin',
+            "path": COMMUNITY_ADMIN.PROJECT.CREATE,
+            "permissions": ['COMMUNITY_ADMIN_PROJECT_PRIVILEGE'],
+            "profiles": ['community']
+         }, {
+            "menu_title": "Rubriques",
+            "new_item": false,
+            'key': 'commnity_admin',
+            "path": COMMUNITY_ADMIN.RUBRIQUE.LIST,
+            "permissions": ['COMMUNITY_ADMIN_RUBRIQUE_PRIVILEGE'],
+            "profiles": ['community']
+         },
+         {
+            "menu_title": "Codes",
+            "new_item": false,
+            'key': 'commnity_admin',
+            "permissions": null,
+            "profiles": null,
+            "child_routes": [
+               {
+                  "menu_title": "Paiement",
+                  "new_item": false,
+                  'key': 'commnity_admin',
+                  "path": COMMUNITY_ADMIN.VOUCHER.PAYMENT,
+                  "permissions": ['COMMUNITY_ADMIN_CODE_PRIVILEGE'],
+                  "profiles": ['community']
+               }, {
+                  "menu_title": "Recharge",
+                  "new_item": false,
+                  'key': 'commnity_admin',
+                  "path": COMMUNITY_ADMIN.VOUCHER.CHARCHING,
+                  "permissions": ['COMMUNITY_ADMIN_CODE_PRIVILEGE'],
+                  "profiles": ['community']
+               },
+               {
+                  "menu_title": "Confirmation",
+                  "new_item": false,
+                  'key': 'commnity_admin',
+                  "path": COMMUNITY.MEMBERS.LIST,
+                  "permissions": ['COMMUNITY_ADMIN_CODE_PRIVILEGE'],
+                  "profiles": ['community']
+               }
+            ],
+         }
+      ]
+   }
 ];

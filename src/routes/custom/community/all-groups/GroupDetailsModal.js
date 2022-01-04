@@ -135,7 +135,7 @@ class GroupDetailsModal extends Component {
                             community ?
                                 <div style={{ marginLeft: '10%', marginTop: '5%', marginBottom: '5%' }}>
                                     <div style={{ marginBottom: 20 }}>
-                                        <h2>Description de la communuaté</h2>
+                                        <h2>Description de la communauté</h2>
                                     </div>
 
                                     <span>{community.description}</span>

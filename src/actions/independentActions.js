@@ -1437,3 +1437,8 @@ export const changeUserToOrganisation = (id, comeIn) => {
     const url = joinBaseUrlWithParamsId(`${USERS.CHANGE_PROFILE_TO_ORGANISATION}`, id);
     return makeRequest('put', url, {comeIn});
 };
+
+export const joinUserGroup = (id, comeIn) => {
+    const url = joinBaseUrlWithParamsId(`${USERS.JOIN_GROUP}`, id);
+    return makeRequest('put', url, {comeIn});
+};

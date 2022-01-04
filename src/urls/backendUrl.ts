@@ -211,6 +211,7 @@ export const USERS = {
     DELETE: 'api/users/{id}/delete',
     VERIFIED: 'api/users/{id}/verified',
     GET_ALL: 'api/users/persons',
+    JOIN_GROUP: 'api/users/group/{id}',
     FIND_BY_MEMBERSHIP: 'api/users/membership',
     GET_ORGANISATIONS: 'api/users/organisations',
     UPDATE_CURRENCY: 'api/users/currency/{id}',

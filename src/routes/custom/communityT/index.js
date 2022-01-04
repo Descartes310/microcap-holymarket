@@ -20,6 +20,7 @@ import CommunityMembersPostsProjects from "Routes/custom/communityT/postsProject
 const CommunityTIndex = (props) => {
     const {
         match,
+        authUser,
         communitySpace,
         setCommunitySpaceData,
         setCommunitySpaceAdmins,
@@ -35,11 +36,11 @@ const CommunityTIndex = (props) => {
 
     const loadData = () => {
         setCommunitySpaceLoader(true);
-        getCommunityAdmins(match.params.id, {skipError: true})
+        getCommunityAdmins(authUser.user.group.id, {skipError: true})
             .then(data => {
                 statusCommunitySpaceStatus(true);
                 setCommunitySpaceAdmins(data);
-                setCommunitySpaceData(match.params.id);
+                setCommunitySpaceData(authUser.user.group.id);
             })
             .finally(() => setCommunitySpaceLoader(false));
     };
@@ -70,7 +71,7 @@ const CommunityTIndex = (props) => {
     )
 };
 
-export default connect(({communitySpace}) => ({communitySpace}), {
+export default connect(({communitySpace, authUser}) => ({communitySpace, authUser: authUser.data}), {
     setCommunitySpaceData,
     setCommunitySpaceLoader,
     setCommunitySpaceAdmins,

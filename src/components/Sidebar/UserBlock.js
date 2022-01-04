@@ -123,20 +123,6 @@ class UserBlock extends Component {
 											{this.props.authUser.user.login}
 										</span>
 									</li>
-									{/* <li className="mt-3">
-										<FieldsetComponent title={"Réference"} titleClass={"text-dark"}>
-											<p className="text-dark fw-bold mb-0">{this.props.authUser.user.reference}</p>
-										</FieldsetComponent>
-									</li>
-									{
-										this.props.authUser.user.membershipNumber ?
-
-											<li className="mt-3">
-												<FieldsetComponent title={"Adhesion"} titleClass={"text-dark"}>
-													<p className="text-dark fw-bold mb-0">{this.props.authUser.user.membershipNumber}</p>
-												</FieldsetComponent>
-											</li> : null
-									} */}
 									<li className="border-top">
 										<NavLink to={USERS.USERS_PROFILE.DISPLAY_PROFILE} className="nav-link" activeClassName="active">
 											<i className="zmdi zmdi-account text-primary mr-3"></i>
@@ -150,7 +136,7 @@ class UserBlock extends Component {
 										<a href="#" onClick={(e) => this.logoutUser(e)}>
 											<i className="zmdi zmdi-power text-danger mr-3"></i>
 											<span>
-												Deconnexion
+												Déconnexion
 										</span>
 										</a>
 									</li>

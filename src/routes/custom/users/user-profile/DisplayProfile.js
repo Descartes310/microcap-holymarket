@@ -6,6 +6,7 @@ import { Helmet } from "react-helmet";
 import Tab from '@material-ui/core/Tab';
 import { injectIntl } from "react-intl";
 import React, { Component } from 'react';
+import { USERS } from 'Url/frontendUrl';
 import Tabs from '@material-ui/core/Tabs';
 import UserCurrency from './UserCurrency';
 import UserProfiles from './UserProfiles';
@@ -19,8 +20,8 @@ import Typography from '@material-ui/core/Typography';
 import UpdateAdressDisplay from './UpdateAdressDisplay';
 import UpdateProfileDisplay from './UpdateProfileDisplay';
 import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
-import { getUserProfiles, setRequestGlobalAction } from "Actions";
 import UserBlock from '../../../users/user-profile-1/component/UserBlock';
+import { getUserProfiles, setRequestGlobalAction, joinUserGroup } from "Actions";
 
 // For Tab Content
 function TabContainer(props) {
@@ -37,6 +38,18 @@ class DisplayProfile extends Component {
       activeTab: this.props.location.state ? this.props.location.state.activeTab : 0
    }
 
+   componentDidMount() {
+      const { authUser } = this.props;
+      const params = new URLSearchParams(window.location.search);
+      let logoutFromCommunity = params.get('logoutFromCommunity');
+      if(logoutFromCommunity) {
+         joinUserGroup(authUser.user.group ? authUser.user.group.id : 1, false).then(data => {
+            window.location.replace(USERS.USERS_PROFILE.DISPLAY_PROFILE);
+        }).catch(err => {
+            console.log(err);
+        });
+      }
+   }
 
    handleChange = (event, value) => {
       this.setState({ activeTab: value });

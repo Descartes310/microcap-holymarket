@@ -248,16 +248,16 @@ const Dashboard = ({ onInitCart }) => {
                     />
 
                     <CanRoute
+                        path={NETWORK.LIST}
+                        permissions={[Permission.branch.viewList.name]}
+                        component={AsyncBranchList}
+                    />
+
+                    <CanRoute
                         exact
                         path={NETWORK.CREATE}
                         permissions={[]}
                         component={AsyncBranchCreate}
-                    />
-
-                    <CanRoute
-                        path={NETWORK.LIST}
-                        permissions={[Permission.branch.viewList.name]}
-                        component={AsyncBranchList}
                     />
 
                     <CanRoute

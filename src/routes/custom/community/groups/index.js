@@ -14,7 +14,7 @@ import {NotificationManager} from "react-notifications";
 import {COMMUNITY, joinUrlWithParamsId} from 'Url/frontendUrl';
 import GroupsSidebar from "Routes/custom/community/groups/GroupsSidebar";
 import InvitationCreateDialog from '../../communityT/members/invitation/InvitationCreateDialog';
-import {addGroupToFavourites, getUserCommunities, setCurrentCommunity, setRequestGlobalAction,} from 'Actions';
+import {addGroupToFavourites, getUserCommunities, setCurrentCommunity, setRequestGlobalAction, joinUserGroup} from 'Actions';
 
 const drawerWidth = 310;
 
@@ -70,6 +70,13 @@ class Groups extends Component {
     };
 
     enterInCommunitySpace = () => {
+
+        joinUserGroup(this.props.currentCommunity.data.community.id, true).then(data => {
+            console.log(data);
+        }).catch(err => {
+            console.log(err);
+        });
+
         window.location = joinUrlWithParamsId(COMMUNITY.MEMBERS.LIST, this.props.currentCommunity.data.community.id);
     };
 
@@ -194,7 +201,7 @@ class Groups extends Component {
                             currentCommunity.data ?
                                 <div style={{ marginLeft: '10%', marginTop: '5%', marginBottom: '5%' }}>
                                     <div style={{ marginBottom: 20 }}>
-                                        <h2>Description de la communuaté</h2>
+                                        <h2>Description de la communauté</h2>
                                     </div>
 
                                     <span>{currentCommunity.data.community.description}</span>

@@ -16,8 +16,7 @@ export default class User {
     }
 
     get userName() {
-        return this.user.userType === UserType.ORGANISATION || this.user.userType === null
-            ? this.commercialName : `${this.lastName} ${this.firstName}`;
+        return this.commercialName ? this.commercialName : `${this.lastName} ${this.firstName}`;
     }
 
     get userType() {
