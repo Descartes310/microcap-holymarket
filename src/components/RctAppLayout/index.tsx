@@ -13,7 +13,6 @@ import Header from 'Components/Header/Header';
 import SidebarContent from 'Components/Sidebar';
 import Footer from 'Components/Footer/Footer';
 import Tour from 'Components/Tour';
-import ThemeOptions from 'Components/ThemeOptions/ThemeOptions';
 
 // preload Components
 import PreloadHeader from 'Components/PreloadLayout/PreloadHeader';
@@ -26,10 +25,22 @@ import AppConfig from 'Constants/AppConfig';
 // actions
 import { collapsedSidebarAction, startUserTour } from 'Actions';
 import {COMMUNITY, NETWORK} from "Url/frontendUrl";
+import { MenuItem } from 'Components/Sidebar/NavLinks';
+import { isMenuAllowed } from 'Helpers/helpers';
+import { User } from 'Models';
 
-class MainApp extends Component {
+type Props = {
+	startUserTour: Function
+	collapsedSidebarAction: Function
+	location: any
+	settings: any
+	sidebarMenus: MenuItem[]
+	user: User
+}
 
-	state = {
+class MainApp extends Component<Props> {
+
+	state: any = {
 		loadingHeader: true,
 		loadingSidebar: true
 	}
@@ -72,6 +83,50 @@ class MainApp extends Component {
 		if (this.props.location.pathname !== prevProps.location.pathname) {
 			window.scrollTo(0, 0);
 		}
+	}
+
+	findCurrentMenu(menus: MenuItem[]): MenuItem | null {
+		const { pathname } = this.props.location;
+		const segments: string[] = pathname.split('/');
+
+		for (let i = 0; i < menus.length; i++) {
+			const m = menus[i];
+			if (m.child_routes && m.child_routes.length) {
+				const menu = this.findCurrentMenu(m.child_routes);
+				if (menu) {
+					return menu;
+				}
+			}
+
+			const paths = m.path ? m.path.split('/') : [];
+			if (segments.length === paths.length) {
+				let found = true;
+				for (let j = 0; j < segments.length; j++) {
+					if (segments[j] !== paths[j] && !segments[j].startsWith(':')) {
+						found = false;
+					}
+				}
+
+				if (found) {
+					return m;
+				}
+			}
+		}
+
+		return null;
+	}
+
+	isUserAllowed = (): boolean => {
+		const menu = this.findCurrentMenu(this.props.sidebarMenus);
+		return menu ? isMenuAllowed(this.props.user, menu) : true;
+	}
+
+	render403Page = () => {
+		return (
+			<div className="rct-page-content p-20 m-20">
+				<h1 className="text-center mt-20">Vous n'êtes pas autorisé à voir cette page</h1>
+			</div>
+		);
 	}
 
 	renderPage() {
@@ -150,7 +205,7 @@ class MainApp extends Component {
 									{this.renderHeader()}
 								</div>
 								<div className="rct-page">
-									{this.renderPage()}
+									{this.isUserAllowed() ? this.renderPage() : this.render403Page()}
 								</div>
 							</div>
 						</div>
@@ -162,8 +217,12 @@ class MainApp extends Component {
 }
 
 // map state to props
-const mapStateToProps = ({ settings }) => {
-	return { settings }
+const mapStateToProps = ({ settings, sidebar, authUser }) => {
+	return { 
+		settings, 
+		sidebarMenus: sidebar.sidebarMenus, 
+		user: authUser.data 
+	};
 }
 
 export default withRouter(connect(mapStateToProps, {

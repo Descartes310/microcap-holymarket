@@ -6,8 +6,9 @@ import moment from 'moment';
 import api from "Api/index";
 import AppConfig from 'Constants/AppConfig';
 import ERRORS, { ERROR_500 } from 'Data/errors';
-import NavLinks from "Components/Sidebar/NavLinks";
+import NavLinks, { MenuItem } from "Components/Sidebar/NavLinks";
 import { NotificationManager } from 'react-notifications';
+import { Profile, User } from 'Models';
 
 const TABLE_OF_256_HEXADECIMAL = (function () {
     const arr = [];
@@ -165,7 +166,7 @@ export function getAppLayout(url) {
 }
 
 export const getLocaleFromBrowser = () => {
-    const browserLanguage = window.navigator.userLanguage || window.navigator.language;
+    const browserLanguage = (window.navigator as any).userLanguage || window.navigator.language;
     return browserLanguage.split('-')[0];
 };
 
@@ -327,7 +328,7 @@ export const getPermissionOfPath = (path) => {
     let permissions = [];
     for (let item of currentMenus) {
         if (item.path === path) {
-            permissions = p.permissions;
+            permissions = item.permissions;
             break;
         } else if (item.child_routes) {
             for (let subItem of item.child_routes) {
@@ -341,6 +342,7 @@ export const getPermissionOfPath = (path) => {
 
     return permissions;
 };
+
 
 export const getAvailableItems = (totalItems, occupiedItems) => {
     if (totalItems && occupiedItems) {
@@ -428,7 +430,7 @@ export const copyToClipboard = (text) => {
             }
 
             NotificationManager.success("Lien copié");
-            resolve();
+            resolve(text);
         } catch (e) {
             NotificationManager.error("Impossible de copier le lien");
             reject();
@@ -474,7 +476,7 @@ export const makeRequest = (verb, url, data = null, config = {}) => {
     return new Promise((resolve, reject) => {
         let _url = url;
         if ((verb === 'get' || verb === 'delete') && data) {
-            Object.entries(data).map(item => {
+            Object.entries(data).map((item: any) => {
                 const encoded = encodeURIComponent(item[1]);
                 const character = _url.includes('?') ? '&' : '?';
                 _url = `${_url}${character}${toStringSnakeCase(item[0])}=${encoded}`;
@@ -658,4 +660,37 @@ export const datediff = (first, second, time = 1) => {
         result++;
     } while (end >= start);
     return result;
+}
+
+
+export const isMenuAllowed = (authUser: User, menu: MenuItem): boolean => {
+    const profile = authUser.user?.profile;
+    if (profile) {
+        /**
+         * permissions are ok if either menu item's permissions is null 
+         * or all permissions in menu item are also in profile permissions
+         */
+        if (menu.permissions) {
+            const matched = menu.permissions.filter(mpName => 
+                profile.permissions.findIndex(pp => mpName === pp.name) >= 0
+            ).length;
+
+            return menu.permissions_and 
+                ? matched === menu.permissions.length
+                : matched > 0;
+        }
+
+        /**
+         * profile is ok if either menu item's profiles is null 
+         * or user profile is menu item's profiles
+         */
+        if (menu.profiles && (menu.profiles.findIndex(mpName => mpName.toLowerCase() === authUser.user.userType.toLowerCase()) === -1)) {
+            return false;
+        }
+
+        // permissions and menus are ok
+        return true;
+    } else {
+        return !menu.profiles && !menu.permissions;
+    }
 }
