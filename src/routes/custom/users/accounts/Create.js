@@ -24,7 +24,7 @@ const UsersAccountsCreate = props => {
 
     const [type, setType] = useState('OPERATOR');
 
-    const { authUser, onClose, show, loading, setRequestGlobalAction, getUsersAccounts, branchId } = props;
+    const { authUser, onClose, show, loading, setRequestGlobalAction, loadUsersAccount, branchId } = props;
 
     const { register, errors, handleSubmit } = useForm();
 
@@ -38,10 +38,10 @@ const UsersAccountsCreate = props => {
         createUsersAccounts(data)
             .then(() => {
                 NotificationManager.success("Compte utilisateur créée avec succès");
-                // getUsersAccounts(authUser.user.branch.id);
-                // onClose();
+                loadUsersAccount();
+                onClose();
             })
-            .catch(() => null)
+            .catch((err) => console.log(err))
             .finally(() => setRequestGlobalAction(false));
     };
 

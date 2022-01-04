@@ -210,6 +210,7 @@ class UsersAccountsList extends Component {
                     show={showCreateBox}
                     profileId={profileId}
                     branchId={this.state.selectedBranch}
+                    loadUsersAccount={() => this.loadUsersAccount()}
                     setRequestGlobalAction={setRequestGlobalAction}
                     onClose={() => this.setState({showCreateBox: false, profileId: null})}
                     type={"profile"}

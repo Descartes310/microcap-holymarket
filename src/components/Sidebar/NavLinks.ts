@@ -1324,6 +1324,20 @@ export const allMenus: MenuItem[] = [
             "path": PRODUCT.UNAPPROVED_ORDERS,
             "permissions": ['PRODUCT_SHOP_PRIVILEGE'],
             "profiles": ['organisation', 'person']
+         },
+         {
+            "menu_title": "Mes Demandes de souscriptions",
+            "new_item": false,
+            "path": PRODUCT.UNAPPROVED_ORDERS,
+            "permissions": ['PRODUCT_PENDING_ORDER_PRIVILEGE'],
+            "profiles": ['organisation']
+         },
+         {
+            "menu_title": "Comptes en attentes",
+            "new_item": false,
+            "path": PRODUCT.UNCOMPLETE_ACCOUNTS,
+            "permissions": ['PRODUCT_PENDING_ACCOUNT_PRIVILEGE'],
+            "profiles": ['organisation']
          }
       ]
    },
@@ -1355,7 +1369,14 @@ export const allMenus: MenuItem[] = [
             "menu_title": "Offre commerciale",
             "permissions": ['PRODUCT_COMMERCIAL_OFFER_MANAGEMENT_PRIVILEGE'],
             "profiles": ['organisation'],
-         }
+         },
+         {
+            "menu_title": "Demandes d'achats reçus",
+            "new_item": false,
+            "path": PRODUCT.OPERATOR_ORDERS,
+            "permissions": ['PRODUCT_ORDER_HISTORY_PRIVILEGE'],
+            "profiles": ['organisation']
+         },
       ]
    },
    {
@@ -1593,6 +1614,22 @@ export const allMenus: MenuItem[] = [
                }
             ],
          }
+      ]
+   },
+   {
+      "menu_title": "Supervision",
+      "menu_icon": "zmdi zmdi-case",
+      "new_item": false,
+      "permissions": null,
+      "profiles": null,
+      "child_routes": [
+         {
+            "path": MICROCAP360.SUPERVISION.COMMUNITIES,
+            "new_item": false,
+            "menu_title": "Communautés",
+            "permissions": ['COMMUNITY_SUPERVISOR_PRIVILEGE'],
+            "profiles": ['organisation']
+         },
       ]
    }
 ];
