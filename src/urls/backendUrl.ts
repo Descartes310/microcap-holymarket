@@ -12,10 +12,6 @@ export const AUTH = {
         LIST: 'auth/countries',
         OPERATORS: 'auth/countries/{country}/microcap-operators'
     },
-    REGISTER: {
-        PERSON: 'api/users/persons/create',
-        ORGANISATION: 'api/users/organisations/create'
-    },
     RESET_PASSWORD: {
         MAIN: 'auth/reset-password',
         LINK: 'auth/send-reset-password-link',

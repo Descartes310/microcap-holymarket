@@ -94,44 +94,6 @@ export const loginIntoStore = (data) => (dispatch) => {
     dispatch({ type: LOGIN_USER_SUCCESS, payload: data });
 };
 
-/**
- * Redux Action To Sigin User with email and password
- */
-export const registerPersonUser = (data) => (dispatch) => {
-    const branchUrl = window.location.host;
-    dispatch({ type: SIGNUP_USER });
-    return api.post(AUTH.REGISTER.PERSON, {...data, branchUrl})
-        .then((response) => {
-            dispatch({ type: SIGNUP_USER_SUCCESS, payload: response.data });
-            return Promise.resolve();
-        })
-        .catch((error) => {
-            dispatch({ type: SIGNUP_USER_FAILURE, payload: error });
-            // errorDisplay(error);
-            // NotificationManager.error(error.message);
-            return Promise.reject();
-        });
-};
-
-/**
- * Redux Action To Sigin User with email and password
- */
-export const registerOrganisation = (data) => (dispatch) => {
-    const branchUrl = window.location.host;
-    dispatch({ type: SIGNUP_USER });
-    return api.post(AUTH.REGISTER.ORGANISATION, {...data, branchUrl})
-        .then((response) => {
-            dispatch({ type: SIGNUP_USER_SUCCESS, payload: response.data });
-            return Promise.resolve();
-        })
-        .catch((error) => {
-            dispatch({ type: SIGNUP_USER_FAILURE, payload: error });
-            // errorDisplay(error);
-            // NotificationManager.error(error.message);
-            return Promise.reject();
-        });
-};
-
 
 /**
  * Redux Action To Signout User From  Firebase

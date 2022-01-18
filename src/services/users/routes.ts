@@ -1,0 +1,1 @@
+export const REGISTER = "api/socialnetworks/users/self/register";
