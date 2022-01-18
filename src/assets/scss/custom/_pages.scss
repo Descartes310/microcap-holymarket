@@ -284,7 +284,7 @@ figure.img-wrapper {
       font-weight: 600;
    }
    h4 {
-      text-transform: uppercase;
+      // text-transform: uppercase;
    }
    &:after {
       background-color: $white;
@@ -336,7 +336,7 @@ figure.img-wrapper {
 
 .pricing-wrapper {
    button {
-      text-transform: capitalize;
+      // text-transform: capitalize;
    }
    .switch {
       vertical-align: middle;
@@ -357,7 +357,7 @@ figure.img-wrapper {
 .pricing-title {
    font-size: 1.875rem; //30px;
    margin-bottom: 1.25rem; //20px
-   text-transform: capitalize;
+   // text-transform: capitalize;
 }
 
 .amount-title {

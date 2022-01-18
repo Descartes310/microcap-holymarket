@@ -80,11 +80,11 @@
   display: block;
   color: $gray-600;
   margin-bottom: 1.875rem; //30px;
-  text-transform: capitalize;
+  // text-transform: capitalize;
 }
 .btn *, a[role=button], button[type=button] {
   outline: none;
-  text-transform: capitalize;
+  // text-transform: capitalize;
   font-weight: $font-weight-normal;
 }
 .btn-lg, .btn-group-lg > .btn {

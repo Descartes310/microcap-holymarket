@@ -41,7 +41,7 @@
     background-color: $block-bg;
     -webkit-appearance: none;
     -moz-appearance: none;
-    text-transform: capitalize;
+    // text-transform: capitalize;
     height: $input-lg-height !important;
     &:focus {
       outline: none;

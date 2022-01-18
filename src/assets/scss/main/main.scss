@@ -585,7 +585,7 @@ ol.custom-list > li + li {
     font-weight: bold;
     font-size: 15px;
     letter-spacing: 2px;
-    text-transform: uppercase;
+    // text-transform: uppercase;
     color: rgba(255, 255, 255, 0.8);
     min-height: 40px;
   }
@@ -1364,7 +1364,7 @@ ol.custom-list > li + li {
       }
 
       h4 {
-        text-transform: uppercase;
+        // text-transform: uppercase;
         font-weight: 500;
         font-size: 20px;
         position: relative;
@@ -1429,7 +1429,7 @@ ol.custom-list > li + li {
           font-weight: 500;
           line-height: 1;
           margin: 0 0 15px;
-          text-transform: capitalize;
+          // text-transform: capitalize;
         }
 
         p {
@@ -1676,7 +1676,7 @@ ol.custom-list > li + li {
     span {
       color: $primary;
       font-weight: 600;
-      text-transform: capitalize;
+      // text-transform: capitalize;
     }
   }
 }

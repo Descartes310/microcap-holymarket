@@ -35,7 +35,7 @@
             color: $hoz-nav-link-color;
             padding: $hoz-nav-link-spacing;
             font-size: $hoz-nav-font-size;
-            text-transform: capitalize;
+            // text-transform: capitalize;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -71,7 +71,7 @@
             box-shadow: $hoz-sub-menu-box-shadow;
             >li {
                >a {
-                  text-transform: capitalize;
+                  // text-transform: capitalize;
                   &::after {
                      content: "\F2FB";
                      font-family: 'Material-Design-Iconic-Font';
@@ -109,7 +109,7 @@
                   box-shadow: $hoz-sub-menu-box-shadow;
                   >li {
                      >a {
-                        text-transform: capitalize;
+                        // text-transform: capitalize;
                         &::after {
                            content: "\F2FB";
                            font-family: 'Material-Design-Iconic-Font';

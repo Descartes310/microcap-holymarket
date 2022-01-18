@@ -21,15 +21,11 @@ import { SessionSlider } from 'Components/Widgets';
 import SwipeableViews from "react-swipeable-views";
 import {AUTH, HOME} from "../../../urls/frontendUrl";
 import {loginUserWithEmailAndPassword} from 'Actions';
-import OrganisationRegister from "Routes/session/register/organisation";
 
 const Signup = (props) => {
 
    const query = useQuery(useLocation);
    const defaultToken = query.get('token');
-   // alert(defaultToken)
-
-   const [token, setToken] = useState(defaultToken ? defaultToken : '' );
 
    const { loading } = props;
    const [activeIndex, setActiveIndex] = useState(0);
@@ -97,17 +93,15 @@ const Signup = (props) => {
                                    indicatorColor="primary">
                                   <Tab
                                       className="font-size-medium"
-                                      label={<IntlMessages id="auth.person" />}
+                                      label="Créer mon compte en 2 étapes"
                                       icon={<i className="zmdi-hc-lg zmdi zmdi-account"></i>}
                                   />
-                                  <Tab className="font-size-medium" icon={<i className="zmdi-hc-lg zmdi zmdi-balance"></i>} label={<IntlMessages id="auth.organisation" />} />
                                </Tabs>
                                <SwipeableViews
                                    axis={'x'}
                                    index={activeIndex}
                                    onChangeIndex={(index) => setActiveIndex(index)}>
                                   <PersonRegister history={props.history} />
-                                  <OrganisationRegister history={props.history} />
                                </SwipeableViews>
                             </div>
                          </div>
