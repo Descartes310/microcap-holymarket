@@ -2,7 +2,7 @@ import Countries from '../data/countriesSpec.json';
 
 class CountryManager {
     constructor() {
-        this.countries = Countries.data;
+        this.countries = Countries;
         // Countries.data.filter(c => c.callingCodes.length === 0);
     }
 
@@ -21,6 +21,13 @@ class CountryManager {
     filterOptionsNameAndFlag = (candidate, input) => {
         if (input) {
             return candidate.data.name.toLowerCase().includes(input.toLowerCase());
+        }
+        return true;
+    };
+
+    filterOptionsCodeAndFlag = (candidate, input) => {
+        if (input) {
+            return candidate.data.phonePrefixes[0].toLowerCase().startsWith(input.toLowerCase());
         }
         return true;
     };

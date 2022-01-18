@@ -22,7 +22,7 @@ import IconButton from "@material-ui/core/IconButton";
 import {getComOperation, createComOperation} from "Actions";
 import {ERROR_500} from "Constants/errors";
 import ErrorInputComponent from "Components/ErrorInputComponent";
-import * as moment from "Routes/session/register/person/secondStep";
+import * as moment from "Routes/session/register/steps/secondStepForPerson";
 import _ from "lodash";
 import FormControl from "@material-ui/core/FormControl";
 import MenuItem from "@material-ui/core/MenuItem";

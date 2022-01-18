@@ -57,7 +57,7 @@ export const SETTING = {
 } as const;
 
 export const SYSTEM_OBJECT = {
-    IDENTIFICATION: 'public/system/objects/identification-type',
+    IDENTIFICATION: 'api/socialnetworks/users/self/identification-types',
     REGISTRATION_TYPE: 'public/system/objects/immatriculation-type',
     ORGANISATION: 'public/system/objects/organisation-legal-form',
     ORGANISATION_POST: 'public/system/objects/organisation-post',
