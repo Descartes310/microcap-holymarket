@@ -1,9 +1,13 @@
 import Countries from '../data/countriesSpec.json';
 
 class CountryManager {
+
+    componentDidMount() {
+
+    }
+
     constructor() {
         this.countries = Countries;
-        // Countries.data.filter(c => c.callingCodes.length === 0);
     }
 
     countryWithNumberAndFlag = () => {

@@ -1,27 +1,25 @@
 import _ from 'lodash';
-import * as moment from "moment";
 import Select from "react-select";
 import { injectIntl } from 'react-intl';
 import { useForm } from "react-hook-form";
 import { Form, FormGroup } from "reactstrap";
-import AppConfig from "Constants/AppConfig";
 import IntlMessages from "Util/IntlMessages";
 import Button from "@material-ui/core/Button";
-import React, { useEffect, useState } from 'react';
+import TerritoryType from "Enums/Territories";
 import FlagCountry from "Components/FlagCountry";
 import Input from "@material-ui/core/Input/Input";
 import MenuItem from "@material-ui/core/MenuItem";
+import React, { useEffect, useState } from 'react';
 import CountryManager from 'Helpers/CountryManager';
+import TerritoryService from "Services/territories";
 import InputComponent from "Components/InputComponent";
 import FormControl from '@material-ui/core/FormControl';
 import { NotificationManager } from 'react-notifications';
+import { filterCountryNameAndFlag } from 'Helpers/helpers';
 import { Select as MaterialSelect } from "@material-ui/core";
 import ErrorInputComponent from "Components/ErrorInputComponent";
 import InputLabel from "@material-ui/core/InputLabel/InputLabel";
-import { getIdentificationType } from "Actions/independentActions";
 import CustomAsyncComponent from "Components/CustomAsyncComponent";
-
-const countryWithNumberAndFlag = CountryManager.countryWithNumberAndFlag();
 
 const SecondStepForPerson = props => {
     const { loading, previousStep, setData, defaultState, intl } = props;
@@ -37,26 +35,40 @@ const SecondStepForPerson = props => {
 
     const [identificationType, setIdentificationType] = useState({
         loading: true,
-        data: null
+        data: []
     });
+
+    const [countries, setCountries] = useState([]);
 
     useEffect(() => {
         _getIdentificationType();
+        _getCountries();
     }, []);
 
     const _getIdentificationType = () => {
         return new Promise((resolve, reject) => {
-            setIdentificationType({ loading: true, data: null });
-            getIdentificationType()
+            setIdentificationType({ loading: true, data: [] });
+            TerritoryService.getTerritoryTypes(TerritoryType.ADMINISTRATION)
                 .then(result => {
                     setIdentificationType({ loading: false, data: result });
                     resolve();
                 })
                 .catch(error => {
-                    setIdentificationType({ loading: false, data: null });
+                    setIdentificationType({ loading: false, data: [] });
                     NotificationManager.error("An error occur " + error);
                     reject();
                 });
+        });
+    };
+
+    const _getCountries = () => {
+        TerritoryService.getTerritories(TerritoryType.COUNTRY)
+        .then(countries => {
+            setCountries(countries);
+        })
+        .catch(error => {
+            setCountries([]);
+            NotificationManager.error("An error occur " + error);
         });
     };
 
@@ -95,11 +107,10 @@ const SecondStepForPerson = props => {
                             componentType="select"
                             name={'phoneNumberPrefix'}
                             as={(
-
                                 <Select
-                                    options={countryWithNumberAndFlag}
-                                    filterOption={CountryManager.filterOptionsCodeAndFlag}
-                                    getOptionLabel={item => <FlagCountry label={item.phonePrefixes[0]} flag={item.flag} />}
+                                    options={countries}
+                                    filterOption={filterCountryNameAndFlag}
+                                    getOptionLabel={option => <FlagCountry label={option.details.find(d => d.code === 'PHONE_INDICATOR')?.value} flag={option.details.find(d => d.code === 'FLAG')?.value} />}
                                 />
                             )}
 
@@ -139,9 +150,9 @@ const SecondStepForPerson = props => {
                         componentType="select"
                         as={(
                             <Select
-                                options={CountryManager.optionsNameAndFlag}
-                                filterOption={CountryManager.filterOptionsNameAndFlag}
-                                getOptionLabel={option => <FlagCountry label={option.name} flag={option.flag} />}
+                                options={countries}
+                                filterOption={filterCountryNameAndFlag}
+                                getOptionLabel={option => <FlagCountry label={option.label} flag={option.details.find(d => d.code === 'FLAG')?.value} />}
                             />
                         )}
                     />
@@ -161,9 +172,9 @@ const SecondStepForPerson = props => {
                         name={'residenceCountry'}
                         as={(
                             <Select
-                                options={CountryManager.optionsNameAndFlag}
-                                filterOption={CountryManager.filterOptionsNameAndFlag}
-                                getOptionLabel={option => <FlagCountry label={option.name} flag={option.flag} />}
+                                options={countries}
+                                filterOption={filterCountryNameAndFlag}
+                                getOptionLabel={option => <FlagCountry label={option.label} flag={option.details.find(d => d.code === 'FLAG')?.value} />}
                             />
                         )}
                     />
@@ -196,8 +207,8 @@ const SecondStepForPerson = props => {
                                                     id="identificationType-helper" />
                                                 }>
                                                 {data.map((item, index) => (
-                                                    <MenuItem key={index} value={item}>
-                                                        {item}
+                                                    <MenuItem key={index} value={item.id}>
+                                                        {item.label}
                                                     </MenuItem>
                                                 ))
                                                 }

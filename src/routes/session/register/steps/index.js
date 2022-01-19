@@ -37,9 +37,8 @@ class PersonRegister extends Component {
 
     onSubmit = (data) => {
         const _data = { ...data };
-        _data.phoneNumber = '+' + _data.phoneNumberPrefix.phonePrefixes[0] + ' ' + _data.phoneNumber;
         if (_data.residenceCountry)
-            _data.hostCountry = _data.residenceCountry.id;
+            _data.residenceCountry = _data.residenceCountry.id;
         if (_data.nationality)
             _data.nationality = _data.nationality.id;
         _data.identificationValue = _data.identificationNumber;
@@ -49,18 +48,18 @@ class PersonRegister extends Component {
         if (_data.endingValidityDate)
             _data.identificationEndDate = _data.endingValidityDate;
         _data.isOrganisation = _data.isOrganisation ? _data.isOrganisation : false;
+        if(!_data.isOrganisation) {
+            _data.telephone = '+' + _data.phoneNumberPrefix.details.find(d => d.code === 'PHONE_INDICATOR')?.value + ' ' + _data.phoneNumber;
+        }
 
         if (this.token)
             _data.token = this.token;
         delete _data.operator;
         delete _data.phoneNumberPrefix;
-        delete _data.residenceCountry;
         delete _data.identificationNumber;
         delete _data.startingValidityDate;
         delete _data.endingValidityDate;
         delete _data.passwordConfirmation;
-
-        console.log(_data);
 
         UserService.registerUser(_data)
             .then(() => {

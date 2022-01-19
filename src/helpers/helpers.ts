@@ -694,3 +694,10 @@ export const isMenuAllowed = (authUser: User, menu: MenuItem): boolean => {
         return !menu.profiles && !menu.permissions;
     }
 }
+
+export const filterCountryNameAndFlag = (candidate, input) => {
+    if (input) {
+        return candidate.data.label.toLowerCase().includes(input.toLowerCase());
+    }
+    return true;
+};
