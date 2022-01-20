@@ -24,11 +24,9 @@ export default class SessionSlider extends Component {
    getSessionUsersData() {
       api.get('testimonials.js')
          .then((response) => {
-            //console.log(response)
             this.setState({ sessionUsersData: response.data });
          })
          .catch(error => {
-            // error handling
          })
    }
 

@@ -191,7 +191,6 @@ const Update = ({ match, setRequestGlobalAction }) => {
             finalData.push({ ...d, type: getTypeString(d.type) })
         })
         updateFolderWithComplexBook(folderId, book_id, JSON.stringify(finalData), {}, edit).then(response => {
-            console.log(response)
         })
             .catch(err => console.log(err))
             .finally(() => {
@@ -209,7 +208,6 @@ const Update = ({ match, setRequestGlobalAction }) => {
             finalData.push({ ...d, type: getTypeString(d.type) })
         })
         deleteFolderWithComplexBook(folderId, book_id, JSON.stringify(finalData), {}).then(response => {
-            console.log(response)
         })
             .catch(err => console.log(err))
             .finally(() => {

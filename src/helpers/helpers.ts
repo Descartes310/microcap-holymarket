@@ -323,10 +323,13 @@ export const globalSearch = (data, searched) => {
  * @returns {Array}
  */
 export const getPermissionOfPath = (path) => {
-    const currentMenus = NavLinks.menus;
 
+    const currentMenus = NavLinks;
+
+    
     let permissions = [];
     for (let item of currentMenus) {
+        console.log('Permission of path => '+item);
         if (item.path === path) {
             permissions = item.permissions;
             break;

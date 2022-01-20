@@ -26,7 +26,6 @@ export const setAuthUser = () => (dispatch) => {
     return api
         .get(url, {skipError: true})
         .then((response) => {
-            console.log(response);
             dispatch({ type: SET_AUTH_USER_SUCCESS, payload: response.data });
             return Promise.resolve();
         })

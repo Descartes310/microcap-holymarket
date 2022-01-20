@@ -1,28 +1,17 @@
-/**
- * Nav Menu Item
- */
-import React, { Fragment, Component } from 'react';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import Collapse from '@material-ui/core/Collapse';
-import { NavLink } from 'react-router-dom';
-import classNames from 'classnames';
-import Chip from '@material-ui/core/Chip';
-import { connect } from "react-redux";
-import { withStyles } from '@material-ui/core/styles';
-import { statusCommunitySpaceStatus } from 'Actions/CommunityAction';
 import Status from "Enums/Status";
-import { User } from 'Models';
-
-const styles = theme => ({})
+import classNames from 'classnames';
+import List from '@material-ui/core/List';
+import Chip from '@material-ui/core/Chip';
+import { NavLink } from 'react-router-dom';
+import ListItem from '@material-ui/core/ListItem';
+import Collapse from '@material-ui/core/Collapse';
+import React, { Fragment, Component } from 'react';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
 
 type Props = {
-   communitySpace: any
    menu, 
    onToggleMenu: (_) => void, 
-   statusCommunitySpaceStatus: (_: boolean) => void, 
-   authUser: User
+   authUser: any
 }
 
 type State = {
@@ -53,27 +42,14 @@ class NavMenuItem extends Component<Props, State> {
          this.setState({ subMenuOpen: '' });
       }
    }
-
-   enterInCommunitySpace = () => {
-      this.props.statusCommunitySpaceStatus(false);
-   }
-
-   isCommunityAdmin = () => {
-      let adminOccurence = this.props.communitySpace.admins.filter(a => a.referralId === this.props.authUser.id && a.referralType === this.props.authUser.user.userType);
-      return adminOccurence ? adminOccurence.length >= 1 : false;
-   }
-
    render() {
       const { menu, onToggleMenu, authUser } = this.props;
       const { subMenuOpen } = this.state;
-      // console.log(menu)
       //Check if the route has nested routes and if the user has at least one permission for one nested routes
-      if ((menu.key != 'commnity_admin' && this.props.authUser.user.status != Status.PENDING) || (menu.key == 'commnity_admin' && this.isCommunityAdmin() && this.props.authUser.user.status != Status.PENDING))
+      if (this.props.authUser.status != Status.PENDING)
          if (menu.child_routes !== null /* && authUser.hasPermissions(_.flattenDeep(menu.child_routes.map(p => p.permissions.map(i => i.name))))*/) {
             return (
                <Fragment>
-                  {/* {((!this.props.communitySpace.status) || (this.props.communitySpace.status && menu.menu_title === 'Projet' && (this.props.communitySpace.type === 'Communaute projet' || this.props.communitySpace.type === 'Communaute conventionnée')) || (this.props.communitySpace.status && menu.menu_title !== 'Projet')) ? */}
-                  {((!this.props.communitySpace.status) || (this.props.communitySpace.status && menu.menu_title === 'Projet') || (this.props.communitySpace.status && menu.menu_title !== 'Projet')) ?
                      <ListItem button component="li" onClick={onToggleMenu} className={`list-item ${classNames({ 'item-active': menu.open })}`}>
 
                         <ListItemIcon className="menu-icon">
@@ -88,7 +64,7 @@ class NavMenuItem extends Component<Props, State> {
                            :
                            ''
                         }
-                     </ListItem> : null }
+                     </ListItem>
                      <Collapse in={menu.open} timeout="auto" className="sub-menu">
                         <Fragment>
                            {menu.type_multi == null ?
@@ -137,8 +113,6 @@ class NavMenuItem extends Component<Props, State> {
                                                 </span>
                                              </ListItem>
                                           ) : (
-                                             // (!this.props.communitySpace.status) || (this.props.communitySpace.status && subMenu.menu_title === 'Projet' && this.props.communitySpace.type === 'Communaute conventionnée') || (this.props.communitySpace.status && subMenu.menu_title !== 'Projet') ?
-                                             (!this.props.communitySpace.status) || (this.props.communitySpace.status && subMenu.menu_title === 'Projet') || (this.props.communitySpace.status && subMenu.menu_title !== 'Projet') ?
                                                 <ListItem button component="li" key={index}>
                                                    <NavLink to={subMenu.path} activeClassName="item-active" >
                                                       <span className="menu">
@@ -152,7 +126,6 @@ class NavMenuItem extends Component<Props, State> {
                                                       }
                                                    </NavLink>
                                                 </ListItem>
-                                                : null 
                                              )}
                                           <Collapse in={subMenuOpen === index} timeout="auto">
                                              <List className="list-unstyled py-0">
@@ -191,34 +164,16 @@ class NavMenuItem extends Component<Props, State> {
          } else if (menu.child_routes === null || menu.path) {
             return (
                <>
-                  {
-                     menu.key == "personnal_space" ?
-
-                        <ListItem button component="li">
-                           <NavLink activeClassName="item-active" onClick={this.enterInCommunitySpace} to=''>
-                              <ListItemIcon className="menu-icon">
-                                 <i className={menu.menu_icon}></i>
-                              </ListItemIcon>
-                              <span className="menu">
-                                 {/*<IntlMessages id={menu.menu_title} />*/}
-                                 {menu.menu_title}
-                              </span>
-                           </NavLink>
-                        </ListItem> :  
-                        (!this.props.communitySpace.status) || (this.props.communitySpace.status && menu.menu_title === 'Projet' && (this.props.communitySpace.type === 'Communaute projet' || this.props.communitySpace.type === 'Communaute conventionnée')) || (this.props.communitySpace.status && menu.menu_title !== 'Projet') ?
-                        <ListItem button component="li">
-                           <NavLink activeClassName="item-active" to={menu.path}>
-                              <ListItemIcon className="menu-icon">
-                                 <i className={menu.menu_icon}></i>
-                              </ListItemIcon>
-                              <span className="menu">
-                                 {/*<IntlMessages id={menu.menu_title} />*/}
-                                 {menu.menu_title}
-                              </span>
-                           </NavLink>
-                        </ListItem>
-                        : null
-                     }
+                  <ListItem button component="li">
+                     <NavLink activeClassName="item-active"to=''>
+                        <ListItemIcon className="menu-icon">
+                           <i className={menu.menu_icon}></i>
+                        </ListItemIcon>
+                        <span className="menu">
+                           {menu.menu_title}
+                        </span>
+                     </NavLink>
+                  </ListItem>
                </>
             );
          }
@@ -226,12 +181,4 @@ class NavMenuItem extends Component<Props, State> {
    }
 }
 
-const mapStateToProps = ({ communitySpace }) => {
-   return {
-      communitySpace: communitySpace
-   }
-};
-
-
-export default connect(mapStateToProps, { statusCommunitySpaceStatus })
-   (withStyles(styles, { withTheme: true })(NavMenuItem));
+export default NavMenuItem;

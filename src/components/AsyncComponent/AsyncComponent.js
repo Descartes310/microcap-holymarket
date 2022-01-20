@@ -8,6 +8,11 @@ import Loadable from 'react-loadable';
 // rct page loader
 import RctPageLoader from 'Components/RctPageLoader/RctPageLoader';
 
+export const AsyncUserAccountTypes = Loadable({
+	loader: () => import("Routes/custom/account-types"),
+	loading: () => <RctPageLoader />,
+});
+
 export const AsyncCommunitySpace = Loadable({
 	loader: () => import("Routes/custom/communityT"),
 	loading: () => <RctPageLoader />,

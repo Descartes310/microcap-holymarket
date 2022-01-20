@@ -114,7 +114,6 @@ export const getBranchProducts = (branchId) => (dispatch) => {
     return api
         .get(url)
         .then((response) => {
-            console.log(response)
             dispatch({ type: BRANCH_PRODUCT_SUCCESS, payload: response.data });
             return Promise.resolve();
         })
@@ -132,7 +131,6 @@ export const getBranchProductsOnly = (branchId) => (dispatch) => {
     return api
         .get(url)
         .then((response) => {
-            console.log(response)
             dispatch({ type: BRANCH_PRODUCT_SUCCESS, payload: response.data });
             return Promise.resolve();
         })

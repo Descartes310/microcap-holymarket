@@ -4,7 +4,7 @@
 import update from 'react-addons-update';
 
 // nav links
-import { allMenus } from 'Components/Sidebar/NavLinks';
+import allMenus from 'Components/Sidebar/NavLinks';
 import agencyNavLinks from 'Components/AgencyMenu/NavLinks';
 import { SidebarActions } from 'Actions/AppSettingsActions';
 
