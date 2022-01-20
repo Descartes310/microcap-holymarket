@@ -829,16 +829,6 @@ export const createUsersAccounts = (data) => {
     return makeRequest('post', url, null);
 };
 
-export const askValidationCode = (userId) => {
-    const url = joinBaseUrlWithParamsId(USERS.VALIDATION.SEND_OTP, userId);
-    return makeRequest('post', url);
-};
-
-export const verifyCode = (userId, otp, notification_id) => {
-    const url = joinBaseUrlWithParamsId(USERS.VALIDATION.VERIFY, userId);
-    return makeRequest('put', url, { otp, notification_id });
-};
-
 export const activateBranch = (data) => {
     return makeRequest('post', `${BRANCH.ACTIVATION}?branch_url=${window.location.host}`, data);
 };

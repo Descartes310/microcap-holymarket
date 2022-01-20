@@ -77,7 +77,7 @@ class Unread extends Component {
                     <ActivationBox
                         show={showActivationBox}
                         notification={notification}
-                        pdfUrl={'http://www.africau.edu/images/default/sample.pdf'}
+                        pdfURL={'http://www.africau.edu/images/default/sample.pdf'}
                         onClose={() => this.setState({ showActivationBox: false })}
                     />
                 )}
