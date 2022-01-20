@@ -37,7 +37,7 @@ export default [
          {
             "menu_title": "Types de comptes",
             "new_item": false,
-            "path": USER_ACCOUNT_TYPE.CATEGORY.LIST,
+            "path": USER_ACCOUNT_TYPE.TYPE.LIST,
             "permissions": null,
             "profiles": null,
          },

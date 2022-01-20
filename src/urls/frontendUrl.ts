@@ -558,6 +558,11 @@ export const joinUrlWithParamsId = (to, id) => {
 
 export const USER_ACCOUNT_TYPE = {
     SELF: '/user-account-types',
+    TYPE: {
+        SELF: '/user-account-types/types',
+        LIST: '/user-account-types/types/list',
+        CREATE: '/user-account-types/types/create',
+    },
     CATEGORY: {
         SELF: '/user-account-types/categories',
         LIST: '/user-account-types/categories/list',
