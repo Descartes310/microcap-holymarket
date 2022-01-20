@@ -4,7 +4,6 @@ export const BASE = `${AppConfig.api.baseUrl}`;
 
 export const AUTH = {
     LOGIN: 'oauth/token',
-    LOGIN_WITH_SERVICE_NUMBER: 'auth/login',
     GET_ALL_BY_NAME_AND_URL: 'auth/cgu/by-url',
     SONDAGE: 'auth/sondages',
     GET_USER_BY_EMAIL: 'auth/email',

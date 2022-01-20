@@ -1,27 +1,17 @@
-/**
- * Auth Actions
- * Auth Action With Google, Facebook, Twitter and Github
- */
-import { NotificationManager } from 'react-notifications';
 import {
     LOGIN_USER,
+    LOGOUT_USER,
+    CLEAR_AUTH_USER,
     LOGIN_USER_SUCCESS,
     LOGIN_USER_FAILURE,
-    LOGOUT_USER,
-    SIGNUP_USER,
-    SIGNUP_USER_SUCCESS,
-    SIGNUP_USER_FAILURE,
-    CLEAR_AUTH_USER,
-    SET_CURRENT_COMMUNITY_SUCCESS
 } from 'Actions/types';
-
 import api from './../api';
-import AppConfig from 'Constants/AppConfig';
 import {AUTH} from '../urls/backendUrl';
-import {HOME} from '../urls/frontendUrl';
-import {removeAuthToken, saveAuthToken} from "Helpers/tokens";
+import AppConfig from 'Constants/AppConfig';
 import {setAuthUser} from "Actions/AuthActions";
 import {getCurrencies} from "Actions/GeneralActions";
+import { NotificationManager } from 'react-notifications';
+import {removeAuthToken, saveAuthToken} from "Helpers/tokens";
 import {getFullAuthorisationRequestConfig} from "Helpers/helpers";
 
 const errorDisplay = (error) => {
@@ -29,35 +19,30 @@ const errorDisplay = (error) => {
       NotificationManager.error("Bad email and/or password");
       return;
    }
-
    NotificationManager.error(error.message);
 };
 
 /**
- * Redux Action To Sigin User with email and password
+ * Redux Action To Sigin User with login and password
  */
-export const loginUserWithEmailAndPassword = (data) => (dispatch) => {
+export const loginUserWithLoginAndPassword = (data) => (dispatch) => {
     dispatch({ type: LOGIN_USER });
 
     const config = getFullAuthorisationRequestConfig();
 
     const _data = {...data};
     _data.username = data.login;
-    _data.grantType = AppConfig.oauth.grantType;
     _data.clientId = AppConfig.oauth.clientId;
+    _data.grantType = AppConfig.oauth.grantType;
 
     delete _data.login;
 
-    const url = _data.gotServiceNumber ? AUTH.LOGIN_WITH_SERVICE_NUMBER : AUTH.LOGIN;
+    const url = AUTH.LOGIN;
 
     return api
         .post(url, _data, config)
         .then((response) => {
-            const token = _data.gotServiceNumber ? response.data.token : response.data;
-            const access = _data.gotServiceNumber ? response.data.access : {};
-
-            localStorage.setItem("access", JSON.stringify(access));
-
+            const token = response.data;
             const data = {
                 accessToken: token.accessToken,
                 tokenType: token.tokenType,
@@ -69,16 +54,13 @@ export const loginUserWithEmailAndPassword = (data) => (dispatch) => {
             saveAuthToken(data.accessToken, data.tokenType, data.expiresIn, data.refreshToken);
 
             // Fetch user data
-            dispatch(setAuthUser(_data.gotServiceNumber ? _data.serviceNumber : null ));
+            dispatch(setAuthUser());
 
             dispatch(getCurrencies());
 
             // Persist data into store
             dispatch({ type: LOGIN_USER_SUCCESS, payload: data });
-
-            dispatch({ type: SET_CURRENT_COMMUNITY_SUCCESS, payload: null });
-            // history.push(HOME);
-            // NotificationManager.success('User Login Successfully!');
+            
             return Promise.resolve();
         })
         .catch((error) => {

@@ -119,7 +119,7 @@ const SecondStepForGroup = props => {
                             <Select
                                 options={countries}
                                 filterOption={filterCountryNameAndFlag}
-                                getOptionLabel={option => <FlagCountry label={option.label} flag={option.details.find(d => d.code === 'FLAG')?.value} />}
+                                getOptionLabel={option => <FlagCountry label={option.label} flag={option.details.find(d => d.code === TerritoryType.FLAG)?.value} />}
                             />
                         )}
                     />

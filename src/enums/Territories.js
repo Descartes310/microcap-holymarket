@@ -14,4 +14,7 @@ export default class Territories extends BaseEnum {
     static COUNTRY_REGION = "COUNTRY_REGION";
     static CITY = "CITY";
     static STREET = "STREET";
+
+    static PHONE_INDICATOR = "PHONE_INDICATOR";
+    static FLAG = "FLAG";
 }

@@ -10,7 +10,6 @@ import FlagCountry from "Components/FlagCountry";
 import Input from "@material-ui/core/Input/Input";
 import MenuItem from "@material-ui/core/MenuItem";
 import React, { useEffect, useState } from 'react';
-import CountryManager from 'Helpers/CountryManager';
 import TerritoryService from "Services/territories";
 import InputComponent from "Components/InputComponent";
 import FormControl from '@material-ui/core/FormControl';
@@ -110,7 +109,7 @@ const SecondStepForPerson = props => {
                                 <Select
                                     options={countries}
                                     filterOption={filterCountryNameAndFlag}
-                                    getOptionLabel={option => <FlagCountry label={option.details.find(d => d.code === 'PHONE_INDICATOR')?.value} flag={option.details.find(d => d.code === 'FLAG')?.value} />}
+                                    getOptionLabel={option => <FlagCountry label={option.details.find(d => d.code === TerritoryType.PHONE_INDICATOR)?.value} flag={option.details.find(d => d.code === TerritoryType.FLAG)?.value} />}
                                 />
                             )}
 

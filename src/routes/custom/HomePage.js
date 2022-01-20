@@ -2,18 +2,11 @@ import { connect } from "react-redux";
 import { injectIntl } from "react-intl";
 import React, { Component } from 'react';
 import { withRouter } from "react-router-dom";
-import { MICROCAP360 } from "Url/frontendUrl";
 
 class HomePage extends Component {
 
 	constructor(props) {
         super(props);
-	}
-
-	componentDidMount() {
-		if (this.props.authUser.user.profile.name.toString().toLowerCase() == 'pfm' || this.props.authUser.user.profile.name.toString().toLowerCase() == 'member') {
-			this.props.history.push(MICROCAP360.MY.PROJECT);
-		}
 	}
 
 	render() {

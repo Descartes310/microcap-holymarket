@@ -1,11 +1,10 @@
 
 import { connect } from 'react-redux';
-import React, { Component } from 'react';
-
-// redux action
 import { AUTH } from "Url/frontendUrl";
+import React, { Component } from 'react';
 import UserService from 'Services/users';
 import IntlMessages from "Util/IntlMessages";
+import TerritoryType from "Enums/Territories";
 import { withRouter } from "react-router-dom";
 import Step from "@material-ui/core/Step/Step";
 import Stepper from "@material-ui/core/Stepper/Stepper";
@@ -49,7 +48,7 @@ class PersonRegister extends Component {
             _data.identificationEndDate = _data.endingValidityDate;
         _data.isOrganisation = _data.isOrganisation ? _data.isOrganisation : false;
         if(!_data.isOrganisation) {
-            _data.telephone = '+' + _data.phoneNumberPrefix.details.find(d => d.code === 'PHONE_INDICATOR')?.value + ' ' + _data.phoneNumber;
+            _data.telephone = '+' + _data.phoneNumberPrefix.details.find(d => d.code === TerritoryType.PHONE_INDICATOR)?.value + ' ' + _data.phoneNumber;
         }
 
         if (this.token)

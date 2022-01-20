@@ -31,10 +31,10 @@ class HeaderNotifications extends Component {
    }
 
    componentDidMount() {
-      getCountUnreadNotifications(this.props.authUser.user.id)
+      getCountUnreadNotifications(this.props.authUser.id)
           .then(unreadCount => this.setState({unreadCount}))
           .catch(() => null);
-      this.props.getAllNotifications(this.props.authUser.user.id, 'UNREAD');
+      this.props.getAllNotifications(this.props.authUser.id, 'UNREAD');
    }
 
    viewAll = () => {
@@ -77,7 +77,7 @@ class HeaderNotifications extends Component {
                      {loading ? (
                          <RctSectionLoader />
                      ) : !data ? (
-                         <FetchFailedComponent _onRetryClick={() => this.props.getAllNotifications(this.props.authUser.user.id)} />
+                         <FetchFailedComponent _onRetryClick={() => this.props.getAllNotifications(this.props.authUser.id)} />
                      ) : data.length === 0 ? (
                          <SingleTitleText
                              text="Pas de nouvelle notifications pour le moment"

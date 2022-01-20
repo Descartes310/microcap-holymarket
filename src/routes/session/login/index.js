@@ -1,48 +1,35 @@
 
-import React, { useState } from 'react';
+import TellUs from './TellUs';
 import { connect } from 'react-redux';
 import QueueAnim from 'rc-queue-anim';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { injectIntl } from "react-intl";
 import { useForm } from 'react-hook-form';
+import AppConfig from 'Constants/AppConfig';
 import { Form, FormGroup } from 'reactstrap';
+import IntlMessages from "Util/IntlMessages";
 import Button from '@material-ui/core/Button';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import { NotificationManager } from "react-notifications";
-
-// components
 import { SessionSlider } from 'Components/Widgets';
-import InputComponent from "Components/InputComponent";
-import ErrorInputComponent from "Components/ErrorInputComponent";
-
-// validator
-import { emailValidatorObject, minMaxValidatorObject } from "Helpers/validator";
-
-// route
-import { AUTH, HOME, DISCOVER, TERMS, joinUrlWithParamsId, SONDAGE_SECOND } from "../../../urls/frontendUrl";
-
-// app config
-import AppConfig from 'Constants/AppConfig';
-
-// redux action
-import { loginUserWithEmailAndPassword, createSondage, setRequestGlobalAction } from 'Actions';
-import IntlMessages from "Util/IntlMessages";
-import { injectIntl } from "react-intl";
 import InputLabel from "@material-ui/core/InputLabel";
-import TellUs from './TellUs';
+import InputComponent from "Components/InputComponent";
+import { NotificationManager } from "react-notifications";
+import { minMaxValidatorObject } from "Helpers/validator";
+import { AUTH, HOME, DISCOVER, TERMS} from "Url/frontendUrl";
+import ErrorInputComponent from "Components/ErrorInputComponent";
+import { loginUserWithLoginAndPassword, setRequestGlobalAction } from 'Actions';
 
 const Signin = (props) => {
-    const { loading, intl } = props;
-    const { control, register, errors, handleSubmit, watch, setValue } = useForm();
-    const [response, setResponse] = useState(null);
-    const [show, setShow] = useState(false);
-    const gotServiceNumberWatch = watch('gotServiceNumber');
 
-    /**
-     * On User Login
-     */
+    const { loading, intl } = props;
+    const [show, setShow] = useState(false);
+    const { register, errors, handleSubmit } = useForm();
+    const [passwordType, setPasswordType] = useState('password');
+
     const onSubmit = (data) => {
-        props.loginUserWithEmailAndPassword(data).then((data) => {
+        props.loginUserWithLoginAndPassword(data).then(() => {
             window.location = HOME;
         }).catch((err) => {
             NotificationManager.error("Les paramètres fournis sont incorrects");
@@ -50,27 +37,10 @@ const Signin = (props) => {
         });
     };
 
-    const onSubmitSondage = (response, index) => {
-        props.setRequestGlobalAction(true);
-        props.setRequestGlobalAction(true);
-        createSondage({ response }).then(data => {
-            // props.history.push(joinUrlWithParamsId(SONDAGE_SECOND, index));
-            setResponse(index);
-        }).finally(() => {
-            props.setRequestGlobalAction(false)
-        })
-    }
-
-    /**
-     * On User Sign Up
-     */
     const onUserSignUp = () => {
         props.history.push(AUTH.REGISTER);
     };
 
-    /**
-     * On navigate to Discover Microcap
-     */
     const onDiscoverClick = () => {
         props.history.push(DISCOVER);
     };
@@ -78,9 +48,6 @@ const Signin = (props) => {
     return (
         <QueueAnim type="bottom" duration={2000}>
             <div className="rct-session-wrapper">
-                {/*<div className={'global-loader'}>
-                    {loading && <LinearProgress />}
-                </div>*/}
                 <AppBar position="static" className="session-header">
                     <Toolbar>
                         <div className="container">
@@ -91,16 +58,12 @@ const Signin = (props) => {
                                     </Link>
                                 </div>
                                 <div className="center-hor-ver" style={{ marginRight: '10%' }}>
-                                    {/* <a className="mr-15 text-white" onClick={onUserSignUp}>
-                                        <IntlMessages id="auth.createAccount" />
-                                    </a> */}
                                     <Button variant="contained" className="btn-light mr-2 p-10" onClick={onUserSignUp}>
                                         <IntlMessages id="auth.signup" />
                                     </Button>
                                     <Button variant="contained" className="btn-primary mr-2 p-10" onClick={onDiscoverClick}>
                                         Découvrir Microcap
                                     </Button>
-                                    {/* <a className="text-white" onClick={() => setShow(true)}>Dites nous qui vous êtes</a> */}
                                 </div>
                             </div>
                         </div>
@@ -124,18 +87,17 @@ const Signin = (props) => {
                                         </div>
                                         <Form onSubmit={handleSubmit(onSubmit)}>
                                             <FormGroup className="has-wrapper">
-                                                <InputLabel className="text-left" htmlFor="email">
-                                                    Login ou email
+                                                <InputLabel className="text-left" htmlFor="login">
+                                                    Login
                                                 </InputLabel>
                                                 <InputComponent
-                                                    id="email"
+                                                    id="login"
                                                     isRequired
                                                     name={'login'}
                                                     errors={errors}
                                                     register={register}
                                                     className="has-input input-lg"
                                                 />
-                                                <span className="has-icon"><i className="ti-pencil" /></span>
                                             </FormGroup>
                                             <FormGroup className="has-wrapper">
                                                 <div className="d-flex justify-content-between">
@@ -155,7 +117,7 @@ const Signin = (props) => {
                                                     errors={errors}
                                                     name={'password'}
                                                     register={register}
-                                                    placeholder="......."
+                                                    type={passwordType}
                                                     className="has-input input-lg"
                                                     otherValidator={{ minLength: AppConfig.minPasswordLength }}
                                                 >
@@ -163,57 +125,19 @@ const Signin = (props) => {
                                                         <ErrorInputComponent text={intl.formatMessage({ id: minMaxValidatorObject.minMessage }, { min: AppConfig.minPasswordLength })} />
                                                     )}
                                                 </InputComponent>
-                                                <span className="has-icon"><i className="ti-lock"></i></span>
+                                                <span onClick={() => setPasswordType(passwordType === 'password' ? 'text' : 'password')} className="has-icon">
+                                                    <i className={`zmdi zmdi-${passwordType === 'password' ? 'eye' : 'eye-off'}`}></i>
+                                                </span>
                                             </FormGroup>
-
-                                            {/* <FormControl fullWidth>
-                                                <InputComponent
-                                                    isRequired
-                                                    className="mt-0"
-                                                    errors={errors}
-                                                    control={control}
-                                                    register={register}
-                                                    componentType="select"
-                                                    id="gotServiceNumber"
-                                                    name={'gotServiceNumber'}
-                                                    // defaultValue={data[0]}
-                                                    as={<FormControlLabel control={
-                                                        <Checkbox
-                                                            color="primary"
-                                                            checked={gotServiceNumberWatch}
-                                                            onChange={() => setValue('gotServiceNumber', !gotServiceNumberWatch)}
-                                                        />
-                                                    } label={"Accès nomade ?"}
-                                                    />}
-                                                />
-                                            </FormControl> */}
-
-                                            {gotServiceNumberWatch && (
-                                                <FormGroup className="has-wrapper">
-                                                    <InputLabel className="text-left" htmlFor="serviceNumber">
-                                                        Numéro de service
-                                                    </InputLabel>
-                                                    <InputComponent
-                                                        isRequired
-                                                        errors={errors}
-                                                        id="serviceNumber"
-                                                        register={register}
-                                                        name={'serviceNumber'}
-                                                        className="has-input input-lg"
-                                                    />
-                                                    <span className="has-icon"><i className="ti-pencil" /></span>
-                                                </FormGroup>
-                                            )}
 
                                             <FormGroup className="mb-15">
                                                 <Button
-                                                    type="submit"
                                                     size="large"
+                                                    type="submit"
                                                     color="primary"
+                                                    disabled={loading}
                                                     variant="contained"
                                                     className="btn-block text-white w-100"
-                                                    disabled={loading}
-                                                // onClick={() => this.onUserLogin()}
                                                 >
                                                     <IntlMessages id="auth.signin" />
                                                 </Button>
@@ -264,4 +188,4 @@ const mapStateToProps = ({ requestGlobalLoader }) => {
     return { loading: requestGlobalLoader }
 };
 
-export default connect(mapStateToProps, { loginUserWithEmailAndPassword, setRequestGlobalAction })(injectIntl(Signin));
+export default connect(mapStateToProps, { loginUserWithLoginAndPassword, setRequestGlobalAction })(injectIntl(Signin));
