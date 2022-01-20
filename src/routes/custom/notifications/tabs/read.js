@@ -2,7 +2,7 @@ import { connect } from "react-redux";
 import React, { Component } from 'react';
 import { getAllNotifications, setRequestGlobalAction } from "Actions";
 import { Scrollbars } from "react-custom-scrollbars";
-import Item from "Routes/custom/notifications/Item";
+import Item from "Routes/custom/notifications/components/Item";
 import { List as ListMaterial } from '@material-ui/core';
 import SingleTitleText from "Components/SingleTitleText";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
@@ -42,10 +42,7 @@ class Read extends Component {
     }
 
     componentDidMount() {
-        this.props.getAllNotifications(this.props.authUser.user.id, 'READ');
-        getAllSettingsByName(this.props.authUser.user.branch.id, 'CGU').then(data => {
-            this.setState({ data })
-        })
+        this.props.getAllNotifications(this.props.authUser.id, 'READ');
     }
 
     onActivationClick = (notification) => {
@@ -55,7 +52,7 @@ class Read extends Component {
     createPiece = () => {
         this.props.setRequestGlobalAction(true);
         updateUserPieceValue({
-            user_id: this.props.authUser.user.id,
+            user_id: this.props.authUser.id,
             file: this.state.file,
             notification_id: this.state.notif.id,
             piece_id: this.state.notif.userPiece.id

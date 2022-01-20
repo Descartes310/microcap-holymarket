@@ -42,10 +42,7 @@ class List extends Component {
     }
 
     componentDidMount() {
-        this.props.getAllNotifications(this.props.authUser.user.id);
-        getAllSettingsByName(this.props.authUser.user.branch.id, 'CGU').then(data => {
-            this.setState({ data })
-        })
+        this.props.getAllNotifications(this.props.authUser.id);
     }
 
     onActivationClick = (notificationId) => {
@@ -55,7 +52,7 @@ class List extends Component {
     createPiece = () => {
         this.props.setRequestGlobalAction(true);
         updateUserPieceValue({
-            user_id: this.props.authUser.user.id,
+            user_id: this.props.authUser.id,
             file: this.state.file,
             piece_id: this.state.notif.userPiece.id
         }, { fileData: ['file'], multipart: true }).then(data => {

@@ -434,7 +434,6 @@ export const NOTIFICATIONS = {
         GET_ALL: 'public/notifications/notification_type',
         CREATE: 'public/notifications/notification_type',
     },
-    CREATE: 'public/generic-objects',
 } as const;
 
 export const PROJECTS = {
