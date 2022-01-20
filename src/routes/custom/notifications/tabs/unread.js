@@ -45,33 +45,33 @@ class Unread extends Component {
         }
 
         return (
-            <>
+            <div>
                 <div>
-                    <div className="table-responsive">
-                        <div className="d-flex justify-content-between py-20 px-10 border-bottom">
-                            <div>
-                                <a href="#" onClick={(e) => this.onReload(e)} className="btn-outline-default mr-10"><i className="ti-reload"></i></a>
-                            </div>
+                    <div className="d-flex justify-content-between py-20 px-10 border-bottom">
+                        <div>
+                            <a href="#" onClick={() => this.getNotifications()} className="btn-outline-default mr-10"><i className="ti-reload"></i></a>
                         </div>
-                        <>
-                            {notifications.length === 0 ? (
-                                <SingleTitleText
-                                    text="Pas de nouvelle notifications"
-                                />
-                            ) : (
-                                    <ListMaterial className="list-group aqua-ripple p-0">
-                                        {notifications && notifications.map((notification, index) => (
-                                            <Item
-                                                key={index}
-                                                notification={notification}
-                                                authUser={this.props.authUser}
-                                                onActivationClick={() => this.onActivationClick(notification)}
-                                            />
-                                        ))}
-                                    </ListMaterial>
-                                )}
-                        </>
                     </div>
+                    <>
+                        {notifications.length === 0 ? (
+                            <SingleTitleText
+                                text="Pas de nouvelle notifications"
+                            />
+                        ) : (
+                                <ListMaterial className="list-group aqua-ripple p-0">
+                                    {notifications && notifications.map((notification, index) => (
+                                        <Item
+                                            key={index}
+                                            notification={notification}
+                                            authUser={this.props.authUser}
+                                            reloadNotifications={this.getNotifications}
+                                            setRequestGlobalAction={this.props.setRequestGlobalAction}
+                                            onActivationClick={() => this.onActivationClick(notification)}
+                                        />
+                                    ))}
+                                </ListMaterial>
+                            )}
+                    </>
                 </div>
                 {this.props.authUser.status === Status.PENDING && (
                     <ActivationBox
@@ -81,7 +81,7 @@ class Unread extends Component {
                         onClose={() => this.setState({ showActivationBox: false })}
                     />
                 )}
-            </>
+            </div>
         );
     }
 }

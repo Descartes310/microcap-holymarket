@@ -89,7 +89,7 @@ class HeaderNotifications extends Component {
                                       <div className="media-body pt-5">
                                          <div className="d-flex justify-content-between">
                                             <h5 className="mb-5 text-primary">{textTruncate(notification.title, 40)}</h5>
-                                             <span className="text-muted fs-12">
+                                             <span className="text-muted fs-5">
                                                 <TimeFromMoment time={notification.createdAt} />
                                              </span>
                                          </div>

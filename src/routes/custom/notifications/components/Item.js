@@ -1,23 +1,19 @@
-import {Button} from "reactstrap";
+
 import Status from "Enums/Status";
-import {Fab} from "@material-ui/core";
 import React, {Component} from 'react';
+import Tooltip from '@material-ui/core/Tooltip';
 import ListItem from "@material-ui/core/ListItem";
 import NotificationType from "Enums/NotificationType";
-import TimeFromMoment from "Components/TimeFromMoment";
-import { NotificationManager } from "react-notifications";
+import NotificationService from "Services/notifications";
+import { UncontrolledDropdown, DropdownToggle, DropdownMenu } from 'reactstrap';
 
 class Item extends Component {
 
-    markAsRead = (notificationId) => {
+    markAsRead = () => {
         this.props.setRequestGlobalAction(true);
-        changeNotificationStatus(notificationId).then(data => {
-            this.props.getAllNotifications(this.props.authUser.id, 'UNREAD');
-            NotificationManager.success("Notification marquée comme lue");
-        }).catch(err => {
-            NotificationManager.error("Une erreur est survenue");
-        }).finally(() => {
+        NotificationService.markNotificationAsRead(this.props.notification.id).finally(() => {
             this.props.setRequestGlobalAction(false);
+            this.props.reloadNotifications();
         });
     };
 
@@ -31,41 +27,41 @@ class Item extends Component {
                             <span className={`badge badge-xs badge-success mr-10 mt-10 position-relative`}>&nbsp;</span>
                         </div>
                         <div className="comment-wrap">
-                            <h5 className="mb-2">{notification.title}</h5>
-                            <p className="mb-0 font-xs">{notification.message}</p>
+                            <h4 className="mb-2 font-weight-bold">{notification.title}</h4>
+                            <p className="mb-0">{notification.message}</p>
                         </div>
                     </div>
                 </div>
-
                 <div className="col-md-3 comment-action w-20 text-right">
-                    {notification.type === NotificationType.REGISTRATION && (
-                        <div className="d-flex align-items-center justify-content-end">
-                            {authUser.status === Status.PENDING ? (
-                                <Button
-                                    color="primary"
-                                    className="text-white mr-2"
-                                    onClick={() => onActivationClick()}
-                                >
-                                    Activer Mon compte
-                                </Button>
-                            ) : (
-                                <span className="text-success fw-bold d-block comment-date">
-                                    <i className="zmdi zmdi-check mr-2"/>
-                                    Compte déja validé
-                                </span>
-                            )}
-                        </div>
-                    )}
-                        <div>
-                            <span className="font-xs text-muted font-weight-light d-block comment-date">
-                                <TimeFromMoment time={notification.createdAt} />
-                            </span>
-                            <div className="d-flex align-items-center justify-content-end">
-                                <Fab variant="round" size="small" color="primary" className="bg-primary text-white" onClick={() => this.markAsRead()}>
-                                        <i className="zmdi zmdi-check"/>
-                                </Fab>
+                    <UncontrolledDropdown nav className="list-inline-item quciklink-dropdown tour-step-1">
+                        <DropdownToggle nav className="header-icon p-0">
+                            <Tooltip title="Actions" placement="bottom">
+                                <i className="zmdi zmdi-view-list-alt"></i>
+                            </Tooltip>
+                        </DropdownToggle>
+                        <DropdownMenu>
+                            <div className="dropdown-content">
+                                <ul className="list-unstyled mb-0 dropdown-list d-flex" style={{ flexDirection: 'column' }}>
+                                    { notification.type === NotificationType.REGISTRATION && authUser.status === Status.PENDING && (
+                                        <li
+                                            className="w-100 p-5"
+                                            onClick={() => onActivationClick()}
+                                        >
+                                            <p className="m-5">Activer mon compte</p>
+                                        </li>
+                                    )}
+                                    { notification.status === NotificationType.UNREAD && (
+                                        <li
+                                            className="w-100 p-5"
+                                            onClick={() => this.markAsRead()}
+                                        >
+                                            <p className="m-5">Marquer comme lue</p>
+                                        </li>
+                                    )}
+                                </ul>
                             </div>
-                        </div>
+                        </DropdownMenu>
+                    </UncontrolledDropdown>
                 </div>
             </ListItem>
         );

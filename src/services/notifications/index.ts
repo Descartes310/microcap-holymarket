@@ -11,4 +11,8 @@ export default class NotificationService {
     static getNotifications(status: any, treated: boolean, size: any = null): Promise<any> {
         return makeRequest('get', `${Routes.GET_NOTIFICATIONS}?status=${status}&treated=${treated}${size ? '&size='+size : ''}`);
     }
+
+    static markNotificationAsRead(id: number): Promise<any> {
+        return makeRequest('put', Routes.MARK_AS_READ(id));
+    }
 }
