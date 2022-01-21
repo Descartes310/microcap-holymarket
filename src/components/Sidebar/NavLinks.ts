@@ -104,14 +104,14 @@ export default [
          {
             "menu_title": "Utilisateurs",
             "new_item": false,
-            "path": GROUP.TYPE.LIST,
+            "path": GROUP.ADMINISTRATION.MEMBER.LIST,
             "permissions": null,
             "profiles": null,
          },
          {
             "menu_title": "Roles membres",
             "new_item": false,
-            "path": GROUP.ROLE.LIST,
+            "path": GROUP.ADMINISTRATION.ROLE.LIST,
             "permissions": null,
             "profiles": null,
          }

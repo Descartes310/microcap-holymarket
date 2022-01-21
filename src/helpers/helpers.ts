@@ -740,7 +740,6 @@ export const getNodeFromPermissions = (permissions: any) => {
             };
             buildSubFolders(datas, p.folders, childNode);
         });
-        console.log(datas);
         return datas;
     }
     return [];

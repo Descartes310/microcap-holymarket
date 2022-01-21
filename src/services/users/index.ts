@@ -16,4 +16,8 @@ export default class UserService {
         return makeRequest('get', Routes.CONFIRM_OTP(otp));
     }
 
+    static findUserByReference(reference): Promise<any> {
+        return makeRequest('get', Routes.GET_USER_BY_REFERENCE(reference));
+    }
+
 }

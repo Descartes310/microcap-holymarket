@@ -5,6 +5,7 @@ import {connect} from "react-redux";
 import Categories from './categories';
 import {injectIntl} from "react-intl";
 import { GROUP } from 'Url/frontendUrl';
+import Administration from './administration';
 import {withRouter, Switch, Redirect, Route} from "react-router-dom";
 
 const Groups = (props) => {
@@ -16,6 +17,8 @@ const Groups = (props) => {
                     <Redirect exact from={`${match.url}/`} to={GROUP.TYPE.SELF} />
                     <Route path={GROUP.TYPE.SELF} component={Types} />
                     <Route path={GROUP.ROLE.SELF} component={Roles} />
+                    <Route path={GROUP.ROLE.SELF} component={Roles} />
+                    <Route path={GROUP.ADMINISTRATION.SELF} component={Administration} />
                     <Route path={GROUP.CATEGORY.SELF} component={Categories} />
                 </Switch>
             </>

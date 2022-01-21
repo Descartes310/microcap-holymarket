@@ -597,5 +597,18 @@ export const GROUP = {
         SELF: '/groups/categories',
         LIST: '/groups/categories/list',
         CREATE: '/groups/categories/create'
+    },
+    ADMINISTRATION: {
+        SELF: '/groups/administration',
+        MEMBER: {
+            SELF: '/groups/administration/members',
+            LIST: '/groups/administration/members/list',
+            CREATE: '/groups/administration/members/create'
+        },
+        ROLE: {
+            SELF: '/groups/administration/roles',
+            LIST: '/groups/administration/roles/list',
+            CREATE: '/groups/administration/roles/create'
+        },
     }
 }
