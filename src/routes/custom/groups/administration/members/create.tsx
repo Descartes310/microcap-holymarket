@@ -2,13 +2,15 @@ import { connect } from 'react-redux';
 import { GROUP } from 'Url/frontendUrl';
 import UserService from 'Services/users';
 import RoleService from 'Services/roles';
+import GroupService from 'Services/groups';
 import { withRouter } from "react-router-dom";
 import Button from '@material-ui/core/Button';
 import { setRequestGlobalAction } from 'Actions';
 import React, { useState, useEffect } from 'react';
 import TextField from '@material-ui/core/TextField';
-import { NotificationManager } from 'react-notifications';
+import { getReferralTypeLabel } from 'Helpers/helpers';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import { NotificationManager } from 'react-notifications';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import { Form, FormGroup, Input as InputStrap } from 'reactstrap';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
@@ -39,6 +41,7 @@ const Create = (props) => {
             UserService.findUserByReference(reference)
                 .then(response => setMember(response))
                 .catch(err => {
+                    setMember(null);
                     console.log(err);
                     NotificationManager.error("Reference incorrecte");
                 })
@@ -46,27 +49,25 @@ const Create = (props) => {
     }
 
     const onSubmit = () => {
-        // if(!label || selectedPermissions.length <= 0)
-        //     return
+        if(!reference)
+            return
 
-        // props.setRequestGlobalAction(true);
+        props.setRequestGlobalAction(true);
 
-        // let data: any = {
-        //     label: label,
-        //     type: 'GROUP_TYPE',
-        //     description: description,
-        //     permissionIds: selectedPermissions.map(p => Number(p))
-        // }
+        let data: any = {
+            userReference: reference,
+            roleIds: selectedRoles.map(r => r.id)
+        }
 
-        // RoleService.createRole(data).then(() => {
-        //     NotificationManager.success("Le role a été créé avec succès");
-        //     props.history.push(GROUP.ROLE.LIST);
-        // }).catch((err) => {
-        //     console.log(err);
-        //     NotificationManager.error("Une erreur est survenu lors de la création du role");
-        // }).finally(() => {
-        //     props.setRequestGlobalAction(false);
-        // })
+        GroupService.addMemberToRole(data).then(() => {
+            NotificationManager.success("Le membre a été créé avec succès");
+            props.history.push(GROUP.ADMINISTRATION.MEMBER.LIST);
+        }).catch((err) => {
+            console.log(err);
+            NotificationManager.error("Une erreur est survenu lors de la création du membre");
+        }).finally(() => {
+            props.setRequestGlobalAction(false);
+        })
     }
 
     return (
@@ -92,13 +93,22 @@ const Create = (props) => {
                     </FormGroup>
 
                     {member && (
-                        <FormGroup className="has-wrapper">
-                            <InputStrap
-                                disabled
-                                className="input-lg"
-                                value={member.userReference}
-                            />
-                        </FormGroup>
+                        <>
+                            <FormGroup className="has-wrapper">
+                                <InputStrap
+                                    disabled
+                                    className="input-lg"
+                                    value={member.userReference}
+                                />
+                            </FormGroup>
+                            <FormGroup className="has-wrapper">
+                                <InputStrap
+                                    disabled
+                                    className="input-lg"
+                                    value={getReferralTypeLabel(member.referralType)}
+                                />
+                            </FormGroup>
+                        </>
                     )}
 
                     <div className="col-md-12 col-sm-12 has-wrapper mb-30">
