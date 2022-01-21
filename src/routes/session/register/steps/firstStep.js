@@ -18,11 +18,14 @@ const FirstStep = props => {
 
     const [passwordType, setPasswordType] = useState('password');
 
-    const { register, errors, handleSubmit, watch, control, setValue, getValues } = useForm({
-        defaultValues: !_.isEqual(defaultState, {}) ? defaultState : {}
+    const { register, errors, handleSubmit, watch, control, setValue } = useForm({
+        defaultValues: !_.isEqual(defaultState, {}) ? defaultState : {
+            useEmailAsLogin: true
+        }
     });
 
     const isOrganisation = watch('isOrganisation');
+    const useEmailAsLogin = watch('useEmailAsLogin');
     /**
      * On submit
      */
@@ -52,15 +55,51 @@ const FirstStep = props => {
             <FormGroup className="has-wrapper">
                 <InputComponent
                     isRequired
-                    id="login"
-                    type="text"
-                    name={'login'}
+                    id="email"
+                    type="email"
+                    name={'email'}
                     errors={errors}
                     register={register}
                     className="has-input input-lg"
-                    placeholder={"Login"}
+                    placeholder={"Email"}
                 />
             </FormGroup>
+
+            <FormControl fullWidth>
+                <InputComponent
+                    isRequired
+                    className="mt-0"
+                    errors={errors}
+                    id="useEmailAsLogin"
+                    control={control}
+                    name={'useEmailAsLogin'}
+                    register={register}
+                    componentType="select"
+                    as={<FormControlLabel control={
+                        <Checkbox
+                            color="primary"
+                            checked={useEmailAsLogin}
+                            onChange={() => setValue('useEmailAsLogin', !useEmailAsLogin)}
+                        />
+                    } label={"Utiliser mon email comme login"}
+                    />}
+                />
+            </FormControl>
+            
+            { !useEmailAsLogin && (
+                <FormGroup className="has-wrapper">
+                    <InputComponent
+                        isRequired
+                        id="login"
+                        type="text"
+                        name={'login'}
+                        errors={errors}
+                        register={register}
+                        className="has-input input-lg"
+                        placeholder={"Login"}
+                    />
+                </FormGroup>
+            )}
 
             <FormGroup className="has-wrapper">
                 <InputComponent

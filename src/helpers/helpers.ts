@@ -729,3 +729,79 @@ export const getReferralTypeLabel = (value: any) => {
     else
         return "";
 }
+
+export const getNodeFromPermissions = (permissions: any) => {
+    if (permissions) {
+        let datas: any = [];
+        permissions.forEach(p => {
+            const childNode = {
+                value: p.id,
+                label: p.label
+            };
+            buildSubFolders(datas, p.folders, childNode);
+        });
+        return datas;
+    }
+    return [];
+}
+
+var buildSubFolders = function (datas: any, folders: string, childNode: any) {
+    let paths = folders.trim().split('/');
+    if(paths.length == 1) {
+        let node = getSubMenuItem(datas, paths[0]);
+        if (node) {
+            node.children.push(childNode);
+        } else {
+            node = {
+                value: paths[0],
+                label: translatePermissionFolder(paths[0]),
+                children: [childNode]
+            };
+        }
+        return node;
+    } else {
+        const path = paths[0];
+        let node = getSubMenuItem(datas, path);
+        paths.shift();
+        if(!node) {
+            node = {
+                value: path,
+                label: translatePermissionFolder(path),
+                children: []
+            }
+            node.children.push(buildSubFolders(node.children, paths.join('/'), childNode));
+            datas.push(node);
+        } else {
+            node.children.push(buildSubFolders(node.children, paths.join('/'), childNode));
+        }
+        return datas;
+    }
+};
+
+var getSubMenuItem = function (subMenuItems, value) {
+    if (subMenuItems) {
+        for (var i = 0; i < subMenuItems.length; i++) {
+            if (subMenuItems[i].value == value) {
+                return subMenuItems[i];
+            }
+        }
+    }
+    return null;
+};
+
+var translatePermissionFolder = (path) => {
+    switch (path) {
+        case 'USER_ACCOUNT':
+            return 'Comptes utilisateurs'
+        case 'CATEGORY':
+            return 'Catégories';
+        case 'TYPE':
+            return "Types"
+        case 'ACCOUNT':
+            return 'Comptes'; 
+        case 'ROLE':
+            return 'Rôles';    
+        default:
+            return path;
+    }
+}

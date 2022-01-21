@@ -563,6 +563,11 @@ export const USER_ACCOUNT_TYPE = {
         LIST: '/user-account-types/accounts/list',
         CREATE: '/user-account-types/accounts/create',
     },
+    ROLE: {
+        SELF: '/user-account-types/roles',
+        LIST: '/user-account-types/roles/list',
+        CREATE: '/user-account-types/roles/create',
+    },
     TYPE: {
         SELF: '/user-account-types/types',
         LIST: '/user-account-types/types/list',

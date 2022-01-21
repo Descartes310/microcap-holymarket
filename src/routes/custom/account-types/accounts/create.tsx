@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import RoleService from 'Services/roles';
 import { withRouter } from "react-router-dom";
 import Button from '@material-ui/core/Button';
 import {setRequestGlobalAction} from 'Actions';
@@ -18,13 +19,16 @@ const Create = (props) => {
 
     const [label, setLabel] = useState('');
     const [types, setTypes] = useState([]);
+    const [roles, setRoles] = useState([]);
     const [type, setType] = useState(null);
     const [description, setDescription] = useState('');
+    const [selectedRoles, setSelectedRoles] = useState([]);
     const [referralType, setReferralType] = useState(null);
 
 
     useEffect(() => {
         getTypes();
+        getRoles();
     }, []);
 
     const getTypes = () => {
@@ -34,18 +38,24 @@ const Create = (props) => {
         .finally(() => props.setRequestGlobalAction(false))
     }
 
+    const getRoles = () => {
+        props.setRequestGlobalAction(true),
+        RoleService.getRoles({type: 'USER_ACCOUNT'})
+        .then(response => setRoles(response))
+        .finally(() => props.setRequestGlobalAction(false))
+    }
+
     const onSubmit = () => {
 
-        if(!type || !label || !referralType)
+        if(!type || !label || !referralType || selectedRoles.length <= 0)
             return
-
-        props.setRequestGlobalAction(true);
 
         let data: any = {
             label: label,
             description: description,
             referralType: referralType.value,
-            typeAccountReference: type.reference
+            typeAccountReference: type.reference,
+            roleIds: selectedRoles.map(role => role.id)
         }
 
         UserAccountTypeService.createAccount(data).then(() => {
@@ -58,7 +68,6 @@ const Create = (props) => {
             props.setRequestGlobalAction(false);
         })
     }
-
 
     return (
         <>
@@ -120,6 +129,22 @@ const Create = (props) => {
                             options={types}
                             onChange={(__, item) => {
                                 setType(item);
+                            }}
+                            getOptionLabel={(option) => option.label}
+                            renderInput={(params) => <TextField {...params} variant="outlined" />}
+                        />
+                    </div>
+                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                        <InputLabel className="text-left">
+                            Roles du comptes
+                        </InputLabel>
+                        <Autocomplete
+                            multiple
+                            options={roles}
+                            id="combo-box-demo"
+                            value={selectedRoles}
+                            onChange={(__, items) => {
+                                setSelectedRoles(items);
                             }}
                             getOptionLabel={(option) => option.label}
                             renderInput={(params) => <TextField {...params} variant="outlined" />}

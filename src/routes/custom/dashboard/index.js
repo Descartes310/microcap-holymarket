@@ -12,6 +12,7 @@ import {
     AsyncGallery,
     AsyncDiscover,
     AsyncSolidarity,
+    AsyncNotifications,
     AsyncMoneyManagement,
     AsyncUserAccountTypes,
 } from 'Components/AsyncComponent/AsyncComponent';
@@ -31,6 +32,7 @@ import {
     SOLIDARITY,
     PASS_DETAILS,
     SONDAGE_FIRST,
+    NOTIFICATIONS,
     SONDAGE_SECOND,
     GALERY_PROJECT,
     MONEY_MANAGEMENT,
@@ -87,6 +89,11 @@ const Dashboard = ({ onInitCart }) => {
                         permissions={[]}
                         path={USER_ACCOUNT_TYPE.SELF}
                         component={AsyncUserAccountTypes}
+                    />
+                    <CanRoute
+                        permissions={[]}
+                        path={NOTIFICATIONS.SELF}
+                        component={AsyncNotifications}
                     />
 
                     <Redirect to={HOME} />

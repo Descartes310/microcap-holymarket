@@ -42,6 +42,13 @@ export default [
             "profiles": null,
          },
          {
+            "menu_title": "Roles comptes",
+            "new_item": false,
+            "path": USER_ACCOUNT_TYPE.ROLE.LIST,
+            "permissions": null,
+            "profiles": null,
+         },
+         {
             "menu_title": "Types de comptes",
             "new_item": false,
             "path": USER_ACCOUNT_TYPE.TYPE.LIST,

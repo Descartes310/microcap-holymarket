@@ -51,8 +51,17 @@ class PersonRegister extends Component {
             _data.telephone = '+' + _data.phoneNumberPrefix.details.find(d => d.code === TerritoryType.PHONE_INDICATOR)?.value + ' ' + _data.phoneNumber;
         }
 
+        if(_data.useEmailAsLogin)
+            _data.login = _data.email;
+        else
+            _data.login = _data.login; 
+
         if (this.token)
             _data.token = this.token;
+
+        if (!_data.login)
+            return;
+
         delete _data.operator;
         delete _data.phoneNumberPrefix;
         delete _data.identificationNumber;
