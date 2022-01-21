@@ -19,4 +19,16 @@ export default class UserAccountTypeService {
     static createAccountType(data: any): Promise<any> {
         return makeRequest('post', Routes.CREATE_ACCOUNT_TYPE, data);
     }
+
+    static getAccounts(): Promise<any> {
+        return makeRequest('get', Routes.GET_ACCOUNTS);
+    }
+
+    static createAccount(data: any): Promise<any> {
+        return makeRequest('post', Routes.CREATE_ACCOUNT, data);
+    }
+
+    static setAccountAsDefault(id: number, status: boolean): Promise<any> {
+        return makeRequest('put', Routes.SET_ACCOUNT_AS_DEFAULT(id), {status});
+    }
 }

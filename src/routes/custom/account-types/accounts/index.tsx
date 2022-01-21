@@ -6,15 +6,15 @@ import {injectIntl} from "react-intl";
 import { USER_ACCOUNT_TYPE } from 'Url/frontendUrl';
 import {withRouter, Switch, Redirect, Route} from "react-router-dom";
 
-const UserAccountTypes = (props) => {
+const UserAccounts = (props) => {
     const { match } = props;
     return (
         <div className="full-height">
             <>
                 <Switch>
-                    <Redirect exact from={`${match.url}/`} to={USER_ACCOUNT_TYPE.TYPE.LIST} />
-                    <Route path={USER_ACCOUNT_TYPE.TYPE.LIST} component={List} />
-                    <Route path={USER_ACCOUNT_TYPE.TYPE.CREATE} component={Create} />
+                    <Redirect exact from={`${match.url}/`} to={USER_ACCOUNT_TYPE.ACCOUNT.LIST} />
+                    <Route path={USER_ACCOUNT_TYPE.ACCOUNT.LIST} component={List} />
+                    <Route path={USER_ACCOUNT_TYPE.ACCOUNT.CREATE} component={Create} />
                 </Switch>
             </>
         </div>
@@ -25,4 +25,4 @@ const mapStateToProps = ({ requestGlobalLoader }) => {
     return { requestGlobalLoader }
 };
 
-export default connect(mapStateToProps, {})(withRouter(injectIntl(UserAccountTypes)));
+export default connect(mapStateToProps, {})(withRouter(injectIntl(UserAccounts)));

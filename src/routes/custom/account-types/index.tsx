@@ -1,5 +1,6 @@
 import React from 'react';
 import Types from './types';
+import Accounts from './accounts';
 import Categories from './categories';
 import {connect} from "react-redux";
 import {injectIntl} from "react-intl";
@@ -14,6 +15,7 @@ const UserAccountTypes = (props) => {
                 <Switch>
                     <Redirect exact from={`${match.url}/`} to={USER_ACCOUNT_TYPE.TYPE.SELF} />
                     <Route path={USER_ACCOUNT_TYPE.TYPE.SELF} component={Types} />
+                    <Route path={USER_ACCOUNT_TYPE.ACCOUNT.SELF} component={Accounts} />
                     <Route path={USER_ACCOUNT_TYPE.CATEGORY.SELF} component={Categories} />
                 </Switch>
             </>

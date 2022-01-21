@@ -704,3 +704,28 @@ export const filterCountryNameAndFlag = (candidate, input) => {
     }
     return true;
 };
+
+export const referraTypes = () => {
+    return [
+        {
+            label: 'Personne physique',
+            value: 'PERSON'
+        },
+        {
+            label: 'Personne morale',
+            value: 'GROUP'
+        },
+        {
+            label: 'Tous les utilisateurs',
+            value: 'USER'
+        }
+    ]
+}
+
+export const getReferralTypeLabel = (value: any) => {
+    let referralType = referraTypes().find(rt => rt.value === value);
+    if(referralType)
+        return referralType.label;
+    else
+        return "";
+}
