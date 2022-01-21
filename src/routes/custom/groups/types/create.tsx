@@ -1,39 +1,56 @@
 import { connect } from 'react-redux';
+import { GROUP } from 'Url/frontendUrl';
+import RoleService from 'Services/roles';
+import GroupService from 'Services/groups';
 import { withRouter } from "react-router-dom";
 import Button from '@material-ui/core/Button';
 import {setRequestGlobalAction} from 'Actions';
 import React, { useState, useEffect } from 'react';
 import TextField from '@material-ui/core/TextField';
-import { USER_ACCOUNT_TYPE } from 'Url/frontendUrl';
 import {NotificationManager} from 'react-notifications';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import UserAccountTypeService from 'Services/account-types';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import {Form, FormGroup, Input as InputStrap} from 'reactstrap';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
 
+const GROUP_NATURE = [
+    { label: 'Partenaires', value: 'PARTNER'},
+    { label: 'Client professionnel', value: 'PROFESSIONAL_CLIENT'},
+    { label: 'Client particulier', value: 'PARTICULAR_CLIENT'}
+]
+
 const Create = (props) => {
 
     const [label, setLabel] = useState('');
+    const [roles, setRoles] = useState([]);
     const [category, setCategory] = useState(null);
     const [categories, setCategories] = useState([]);
     const [description, setDescription] = useState('');
+    const [selectedRoles, setSelectedRoles] = useState([]);
 
     useEffect(() => {
-        getTypes();
+        getRoles();
+        getCategories();
     }, []);
 
-    const getTypes = () => {
+    const getCategories = () => {
         setRequestGlobalAction(true),
-        UserAccountTypeService.getAccountTypeCategories()
+        GroupService.getGroupCategories()
         .then(response => setCategories(response))
         .finally(() => setRequestGlobalAction(false))
     }
 
+    const getRoles = () => {
+        props.setRequestGlobalAction(true),
+        RoleService.getRoles({type: 'GROUP_TYPE'})
+        .then(response => setRoles(response))
+        .finally(() => props.setRequestGlobalAction(false))
+    }
+
     const onSubmit = () => {
 
-        if(!category || !label)
+        if(!category || !label || roles.length <= 0)
             return
 
         props.setRequestGlobalAction(true);
@@ -41,12 +58,13 @@ const Create = (props) => {
         let data: any = {
             label: label,
             description: description,
-            categoryId: category.id
+            groupCategoryId: category.id,
+            roleIds: roles.map(role => role.id)
         }
 
-        UserAccountTypeService.createAccountType(data).then(() => {
+        GroupService.createGroupType(data).then(() => {
             NotificationManager.success("Le type a été créée avec succès");
-            props.history.push(USER_ACCOUNT_TYPE.TYPE.LIST);
+            props.history.push(GROUP.TYPE.LIST);
         }).catch((err) => {
             console.log(err);
             NotificationManager.error("Une erreur est survenu lors de la création du type");
@@ -91,9 +109,9 @@ const Create = (props) => {
                             onChange={(e) => setDescription(e.target.value)}
                         />
                     </FormGroup>
-                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                    {/* <div className="col-md-12 col-sm-12 has-wrapper mb-30">
                         <InputLabel className="text-left">
-                            Catégorie de compte
+                            Nature du groupe
                         </InputLabel>
                         <Autocomplete
                             value={category}
@@ -101,6 +119,37 @@ const Create = (props) => {
                             options={categories}
                             onChange={(__, item) => {
                                 setCategory(item);
+                            }}
+                            getOptionLabel={(option) => option.label}
+                            renderInput={(params) => <TextField {...params} variant="outlined" />}
+                        />
+                    </div> */}
+                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                        <InputLabel className="text-left">
+                            Catégorie du groupe
+                        </InputLabel>
+                        <Autocomplete
+                            value={category}
+                            id="combo-box-demo"
+                            options={categories}
+                            onChange={(__, item) => {
+                                setCategory(item);
+                            }}
+                            getOptionLabel={(option) => option.label}
+                            renderInput={(params) => <TextField {...params} variant="outlined" />}
+                        />
+                    </div>
+                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                        <InputLabel className="text-left">
+                            Roles du type
+                        </InputLabel>
+                        <Autocomplete
+                            multiple
+                            options={roles}
+                            id="combo-box-demo"
+                            value={selectedRoles}
+                            onChange={(__, items) => {
+                                setSelectedRoles(items);
                             }}
                             getOptionLabel={(option) => option.label}
                             renderInput={(params) => <TextField {...params} variant="outlined" />}

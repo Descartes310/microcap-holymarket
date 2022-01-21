@@ -1,65 +1,75 @@
 import { connect } from 'react-redux';
+import { GROUP } from 'Url/frontendUrl';
+import RoleService from 'Services/roles';
 import { withRouter } from "react-router-dom";
 import Button from '@material-ui/core/Button';
+import CheckboxTree from 'react-checkbox-tree';
 import {setRequestGlobalAction} from 'Actions';
 import React, { useState, useEffect } from 'react';
-import TextField from '@material-ui/core/TextField';
-import { USER_ACCOUNT_TYPE } from 'Url/frontendUrl';
 import {NotificationManager} from 'react-notifications';
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import UserAccountTypeService from 'Services/account-types';
+import 'react-checkbox-tree/src/scss/react-checkbox-tree.scss';
+import { getNodeFromPermissions } from 'Helpers/helpers';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import {Form, FormGroup, Input as InputStrap} from 'reactstrap';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
 
+type TreeNode = {
+    value: any;
+    label: string;
+    children?: TreeNode[]
+}
+
 const Create = (props) => {
 
     const [label, setLabel] = useState('');
-    const [category, setCategory] = useState(null);
-    const [categories, setCategories] = useState([]);
+    const [expanded, setExpanded] = useState([]);
+    const [nodes, setNodes] = useState<TreeNode[]>([]);
     const [description, setDescription] = useState('');
+    const [selectedPermissions, setSelectedPermissions] = useState([]);
 
     useEffect(() => {
-        getTypes();
+        getPermissions();
     }, []);
 
-    const getTypes = () => {
-        setRequestGlobalAction(true),
-        UserAccountTypeService.getAccountTypeCategories()
-        .then(response => setCategories(response))
-        .finally(() => setRequestGlobalAction(false))
+    const getPermissions = () => {
+        props.setRequestGlobalAction(true),
+        RoleService.getPermissions()
+        .then(response => {
+            setNodes(getNodeFromPermissions(response));
+        })
+        .finally(() => props.setRequestGlobalAction(false))
     }
 
     const onSubmit = () => {
 
-        if(!category || !label)
+        if(!label || selectedPermissions.length <= 0)
             return
 
         props.setRequestGlobalAction(true);
 
         let data: any = {
             label: label,
+            type: 'GROUP_TYPE',
             description: description,
-            categoryId: category.id
+            permissionIds: selectedPermissions.map(p => Number(p))
         }
 
-        UserAccountTypeService.createAccountType(data).then(() => {
-            NotificationManager.success("Le type a été créée avec succès");
-            props.history.push(USER_ACCOUNT_TYPE.TYPE.LIST);
+        RoleService.createRole(data).then(() => {
+            NotificationManager.success("Le role a été créé avec succès");
+            props.history.push(GROUP.ROLE.LIST);
         }).catch((err) => {
             console.log(err);
-            NotificationManager.error("Une erreur est survenu lors de la création du type");
+            NotificationManager.error("Une erreur est survenu lors de la création du role");
         }).finally(() => {
             props.setRequestGlobalAction(false);
         })
     }
 
-
     return (
         <>
             <PageTitleBar
-                title={"Création du type de compte"}
+                title={"Création de role"}
             />
             <RctCollapsibleCard>
                 <Form onSubmit={onSubmit}>
@@ -91,22 +101,19 @@ const Create = (props) => {
                             onChange={(e) => setDescription(e.target.value)}
                         />
                     </FormGroup>
-                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
-                        <InputLabel className="text-left">
-                            Catégorie de compte
-                        </InputLabel>
-                        <Autocomplete
-                            value={category}
-                            id="combo-box-demo"
-                            options={categories}
-                            onChange={(__, item) => {
-                                setCategory(item);
-                            }}
-                            getOptionLabel={(option) => option.label}
-                            renderInput={(params) => <TextField {...params} variant="outlined" />}
-                        />
-                    </div>
 
+                    <FormGroup className="col-sm-12 has-wrapper">
+                        <InputLabel className="text-left mb-20" htmlFor="description">
+                            Choix des permissions
+                        </InputLabel>
+                        <CheckboxTree
+                            nodes={nodes}
+                            expanded={expanded}
+                            checked={selectedPermissions}
+                            onExpand={expanded => setExpanded(expanded)}
+                            onCheck={checked => setSelectedPermissions(checked)}
+                        />
+                    </FormGroup>
                     <FormGroup>
                         <Button
                             color="primary"

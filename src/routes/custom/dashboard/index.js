@@ -8,6 +8,7 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 // async components
 import {
     AsyncGetIn,
+    AsyncGroups,
     AsyncPionier,
     AsyncGallery,
     AsyncDiscover,
@@ -23,6 +24,7 @@ import {
     HOME,
     GETIN,
     TERMS,
+    GROUP,
     AGENTS,
     VALUES,
     MISSION, 
@@ -94,6 +96,11 @@ const Dashboard = ({ onInitCart }) => {
                         permissions={[]}
                         path={NOTIFICATIONS.SELF}
                         component={AsyncNotifications}
+                    />
+                    <CanRoute
+                        permissions={[]}
+                        path={GROUP.SELF}
+                        component={AsyncGroups}
                     />
 
                     <Redirect to={HOME} />

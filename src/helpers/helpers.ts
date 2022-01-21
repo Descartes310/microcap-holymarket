@@ -740,49 +740,52 @@ export const getNodeFromPermissions = (permissions: any) => {
             };
             buildSubFolders(datas, p.folders, childNode);
         });
+        console.log(datas);
         return datas;
     }
     return [];
 }
 
-var buildSubFolders = function (datas: any, folders: string, childNode: any) {
+var buildSubFolders = function (datas: any, folders: string, childNode: any, parentLabel = null) {
     let paths = folders.trim().split('/');
-    if(paths.length == 1) {
-        let node = getSubMenuItem(datas, paths[0]);
+    if(paths.length <= 1) {
+        let node = getSubMenuItem(datas, `${parentLabel ? parentLabel : ''}`+paths[0]);
         if (node) {
             node.children.push(childNode);
         } else {
             node = {
-                value: paths[0],
+                value: `${parentLabel ? parentLabel : ''}`+paths[0],
                 label: translatePermissionFolder(paths[0]),
                 children: [childNode]
             };
         }
+        datas.push(node);
         return node;
     } else {
         const path = paths[0];
-        let node = getSubMenuItem(datas, path);
+        let node = getSubMenuItem(datas, `${parentLabel ? parentLabel : ''}`+path);
         paths.shift();
         if(!node) {
             node = {
-                value: path,
+                value: `${parentLabel ? parentLabel : ''}`+path,
                 label: translatePermissionFolder(path),
                 children: []
             }
-            node.children.push(buildSubFolders(node.children, paths.join('/'), childNode));
+            buildSubFolders(node.children, paths.join('/'), childNode, path);
             datas.push(node);
         } else {
-            node.children.push(buildSubFolders(node.children, paths.join('/'), childNode));
+            buildSubFolders(node.children, paths.join('/'), childNode, path);
         }
-        return datas;
+        return node;
     }
 };
 
 var getSubMenuItem = function (subMenuItems, value) {
-    if (subMenuItems) {
-        for (var i = 0; i < subMenuItems.length; i++) {
-            if (subMenuItems[i].value == value) {
-                return subMenuItems[i];
+    let datas = subMenuItems.filter(item => !Array.isArray(item));
+    if (datas) {
+        for (var i = 0; i < datas.length; i++) {
+            if (datas[i].value == value) {
+                return datas[i];
             }
         }
     }
@@ -800,7 +803,13 @@ var translatePermissionFolder = (path) => {
         case 'ACCOUNT':
             return 'Comptes'; 
         case 'ROLE':
-            return 'Rôles';    
+            return 'Rôles'; 
+        case 'GROUP':
+            return 'Groupes';    
+        case 'ADMIN':
+            return 'Administration';  
+        case 'MEMBER':
+            return 'Membres';    
         default:
             return path;
     }

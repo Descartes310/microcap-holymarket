@@ -1,13 +1,13 @@
 import { connect } from 'react-redux';
+import { GROUP } from 'Url/frontendUrl';
+import GroupService from 'Services/groups';
 import { withRouter } from "react-router-dom";
 import Button from '@material-ui/core/Button';
 import {setRequestGlobalAction} from 'Actions';
 import React, { useState, useEffect } from 'react';
 import TextField from '@material-ui/core/TextField';
-import { USER_ACCOUNT_TYPE } from 'Url/frontendUrl';
 import {NotificationManager} from 'react-notifications';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import UserAccountTypeService from 'Services/account-types';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import {Form, FormGroup, Input as InputStrap} from 'reactstrap';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
@@ -16,40 +16,35 @@ import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard
 const Create = (props) => {
 
     const [label, setLabel] = useState('');
-    const [category, setCategory] = useState(null);
     const [categories, setCategories] = useState([]);
     const [description, setDescription] = useState('');
 
     useEffect(() => {
-        getTypes();
+        getCategories();
     }, []);
 
-    const getTypes = () => {
+    const getCategories = () => {
         setRequestGlobalAction(true),
-        UserAccountTypeService.getAccountTypeCategories()
+        GroupService.getGroupCategories()
         .then(response => setCategories(response))
         .finally(() => setRequestGlobalAction(false))
     }
 
     const onSubmit = () => {
 
-        if(!category || !label)
-            return
-
         props.setRequestGlobalAction(true);
 
         let data: any = {
             label: label,
             description: description,
-            categoryId: category.id
         }
 
-        UserAccountTypeService.createAccountType(data).then(() => {
-            NotificationManager.success("Le type a été créée avec succès");
-            props.history.push(USER_ACCOUNT_TYPE.TYPE.LIST);
+        GroupService.createGroupCategory(data).then(() => {
+            NotificationManager.success("La catégorie a été créée avec succès");
+            props.history.push(GROUP.CATEGORY.LIST);
         }).catch((err) => {
             console.log(err);
-            NotificationManager.error("Une erreur est survenu lors de la création du type");
+            NotificationManager.error("Une erreur est survenu lors de la création de la catégorie");
         }).finally(() => {
             props.setRequestGlobalAction(false);
         })
@@ -59,7 +54,7 @@ const Create = (props) => {
     return (
         <>
             <PageTitleBar
-                title={"Création du type de compte"}
+                title={"Création de catégorie"}
             />
             <RctCollapsibleCard>
                 <Form onSubmit={onSubmit}>
@@ -91,21 +86,6 @@ const Create = (props) => {
                             onChange={(e) => setDescription(e.target.value)}
                         />
                     </FormGroup>
-                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
-                        <InputLabel className="text-left">
-                            Catégorie de compte
-                        </InputLabel>
-                        <Autocomplete
-                            value={category}
-                            id="combo-box-demo"
-                            options={categories}
-                            onChange={(__, item) => {
-                                setCategory(item);
-                            }}
-                            getOptionLabel={(option) => option.label}
-                            renderInput={(params) => <TextField {...params} variant="outlined" />}
-                        />
-                    </div>
 
                     <FormGroup>
                         <Button

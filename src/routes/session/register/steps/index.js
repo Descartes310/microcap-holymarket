@@ -59,15 +59,15 @@ class PersonRegister extends Component {
         if (this.token)
             _data.token = this.token;
 
-        if (!_data.login)
-            return;
-
         delete _data.operator;
         delete _data.phoneNumberPrefix;
         delete _data.identificationNumber;
         delete _data.startingValidityDate;
         delete _data.endingValidityDate;
         delete _data.passwordConfirmation;
+
+        if (!_data.login || !_data.email)
+            return;
 
         UserService.registerUser(_data)
             .then(() => {

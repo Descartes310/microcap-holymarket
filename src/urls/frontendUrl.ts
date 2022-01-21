@@ -580,3 +580,22 @@ export const USER_ACCOUNT_TYPE = {
         UPDATE: (id) => `/user-account-types/categories/${id}/update`
     }
 }
+
+export const GROUP = {
+    SELF: '/groups',
+    ROLE: {
+        SELF: '/groups/roles',
+        LIST: '/groups/roles/list',
+        CREATE: '/groups/roles/create'
+    },
+    TYPE: {
+        SELF: '/groups/types',
+        LIST: '/groups/types/list',
+        CREATE: '/groups/types/create'
+    },
+    CATEGORY: {
+        SELF: '/groups/categories',
+        LIST: '/groups/categories/list',
+        CREATE: '/groups/categories/create'
+    }
+}

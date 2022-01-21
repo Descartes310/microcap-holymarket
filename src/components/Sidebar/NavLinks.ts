@@ -1,5 +1,6 @@
 // sidebar nav links
 import {
+   GROUP,
    USERS,
    USER_ACCOUNT_TYPE
 } from 'Url/frontendUrl';
@@ -29,7 +30,7 @@ export default [
    },
    {
       "menu_title": "Comptes utilisateurs",
-      "menu_icon": "zmdi zmdi-accounts",
+      "menu_icon": "zmdi zmdi-folder-outline",
       "new_item": false,
       "permissions": null,
       "profiles": null,
@@ -62,6 +63,58 @@ export default [
             "permissions": null,
             "profiles": null,
          },
+      ],
+   },
+   {
+      "menu_title": "Gestion groupes",
+      "menu_icon": "zmdi zmdi-accounts",
+      "new_item": false,
+      "permissions": null,
+      "profiles": null,
+      "child_routes": [
+         {
+            "menu_title": "Types de groupes",
+            "new_item": false,
+            "path": GROUP.TYPE.LIST,
+            "permissions": null,
+            "profiles": null,
+         },
+         {
+            "menu_title": "Roles groupes",
+            "new_item": false,
+            "path": GROUP.ROLE.LIST,
+            "permissions": null,
+            "profiles": null,
+         },
+         {
+            "menu_title": "Catégories de groupes",
+            "new_item": false,
+            "path": GROUP.CATEGORY.LIST,
+            "permissions": null,
+            "profiles": null,
+         },
+      ],
+   }, {
+      "menu_title": "Administration",
+      "menu_icon": "zmdi zmdi-settings",
+      "new_item": false,
+      "permissions": null,
+      "profiles": null,
+      "child_routes": [
+         {
+            "menu_title": "Utilisateurs",
+            "new_item": false,
+            "path": GROUP.TYPE.LIST,
+            "permissions": null,
+            "profiles": null,
+         },
+         {
+            "menu_title": "Roles membres",
+            "new_item": false,
+            "path": GROUP.ROLE.LIST,
+            "permissions": null,
+            "profiles": null,
+         }
       ],
    },
 ];
