@@ -23,4 +23,8 @@ export default class GroupService {
     static addMemberToRole(data: any): Promise<any> {
         return makeRequest('post', Routes.ADD_MEMBER_TO_GROUP, data);
     }
+
+    static getGroupMembers(): Promise<any> {
+        return makeRequest('get', Routes.GET_GROUP_MEMBERS);
+    }
 }

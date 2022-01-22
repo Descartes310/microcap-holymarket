@@ -1,9 +1,11 @@
 import { connect } from 'react-redux';
 import { GROUP } from 'Url/frontendUrl';
+import GroupService from 'Services/groups';
 import { withRouter } from "react-router-dom";
 import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
 import React, { useState, useEffect } from 'react';
+import TimeFromMoment from "Components/TimeFromMoment";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 
 const Members = (props) => {
@@ -15,10 +17,10 @@ const Members = (props) => {
     }, []);
 
     const getMembers = () => {
-        // props.setRequestGlobalAction(true),
-        // RoleService.getRoles({type: 'GROUP_TYPE'})
-        // .then(response => setRoles(response))
-        // .finally(() => props.setRequestGlobalAction(false))
+        props.setRequestGlobalAction(true),
+        GroupService.getGroupMembers()
+        .then(response => setMembers(response))
+        .finally(() => props.setRequestGlobalAction(false))
     }
 
     const goToCreate = () => {
@@ -50,8 +52,8 @@ const Members = (props) => {
                                         <tr>
                                             <th className="fw-bold">Nom du membre</th>
                                             <th className="fw-bold">Email</th>
-                                            <th className="fw-bold">Role</th>
                                             <th className="fw-bold">Status</th>
+                                            <th className="fw-bold">Date d'ajout</th>
                                             <th className="fw-bold">Action</th>
                                         </tr>
                                     </thead>
@@ -61,28 +63,37 @@ const Members = (props) => {
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{item.label}</h4>
+                                                            <h4 className="m-0 fw-bold text-dark">{item.userName}</h4>
                                                         </div>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{item.label}</h4>
+                                                            <h4 className="m-0 fw-bold text-dark">{item.email}</h4>
                                                         </div>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <h4 className="m-0 text-dark">{item.label}</h4>
+                                                            <h4 className="m-0 text-dark">{item.status}</h4>
                                                         </div>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <h4 className="m-0 text-dark">{item.label}</h4>
+                                                            <h4 className="m-0 text-dark">
+                                                                <TimeFromMoment time={item.date} showFullDate />
+                                                            </h4>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="media">
+                                                        <div className="media-body pt-10">
+                                                            <h4 className="m-0 text-dark">-</h4>
                                                         </div>
                                                     </div>
                                                 </td>

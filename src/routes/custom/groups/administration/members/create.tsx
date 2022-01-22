@@ -98,7 +98,14 @@ const Create = (props) => {
                                 <InputStrap
                                     disabled
                                     className="input-lg"
-                                    value={member.userReference}
+                                    value={member.userName}
+                                />
+                            </FormGroup>
+                            <FormGroup className="has-wrapper">
+                                <InputStrap
+                                    disabled
+                                    className="input-lg"
+                                    value={member.email}
                                 />
                             </FormGroup>
                             <FormGroup className="has-wrapper">
