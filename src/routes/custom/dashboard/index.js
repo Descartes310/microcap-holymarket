@@ -11,6 +11,7 @@ import {
     AsyncGroups,
     AsyncPionier,
     AsyncGallery,
+    AsyncProfile,
     AsyncDiscover,
     AsyncSolidarity,
     AsyncNotifications,
@@ -27,6 +28,7 @@ import {
     GROUP,
     AGENTS,
     VALUES,
+    PROFILE,
     MISSION, 
     PIONIERS,
     DISCOVER,
@@ -101,6 +103,11 @@ const Dashboard = ({ onInitCart }) => {
                         permissions={[]}
                         path={GROUP.SELF}
                         component={AsyncGroups}
+                    />
+                    <CanRoute
+                        permissions={[]}
+                        path={PROFILE.SELF}
+                        component={AsyncProfile}
                     />
 
                     <Redirect to={HOME} />

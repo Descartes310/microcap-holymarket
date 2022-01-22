@@ -564,6 +564,11 @@ export const AsyncGroups = Loadable({
 	loading: () => <RctPageLoader />,
 });
 
+export const AsyncProfile = Loadable({
+	loader: () => import("Routes/custom/profiles"),
+	loading: () => <RctPageLoader />,
+});
+
 
 
 

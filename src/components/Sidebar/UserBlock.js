@@ -7,7 +7,7 @@ import { Link, NavLink, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Badge } from 'reactstrap';
 import { NotificationManager } from 'react-notifications';
-import { USERS } from 'Url/frontendUrl';
+import { PROFILE } from 'Url/frontendUrl';
 
 // components
 import SupportPage from '../Support/Support';
@@ -116,7 +116,7 @@ class UserBlock extends Component {
 										</p>
 									</li>
 									<li className="border-top">
-										<NavLink to={USERS.USERS_PROFILE.DISPLAY_PROFILE} className="nav-link" activeClassName="active">
+										<NavLink to={PROFILE.USER.PERSONAL} className="nav-link" activeClassName="active">
 											<i className="zmdi zmdi-account text-primary mr-3"></i>
 											<span>
 												Profile

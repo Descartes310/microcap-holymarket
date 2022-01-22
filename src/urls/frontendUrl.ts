@@ -627,3 +627,12 @@ export const GROUP = {
         },
     }
 }
+
+export const PROFILE = {
+    SELF: "/profiles",
+    USER: {
+        SELF: "/profiles/users",
+        ACCESS: "/profiles/users/access",
+        PERSONAL: "/profiles/users/personal",
+    }
+}

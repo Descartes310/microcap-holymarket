@@ -1,7 +1,7 @@
 // sidebar nav links
 import {
    GROUP,
-   USERS,
+   PROFILE,
    USER_ACCOUNT_TYPE
 } from 'Url/frontendUrl';
 
@@ -24,9 +24,9 @@ export default [
       "new_item": false,
       "permissions": null,
       "child_routes": null,
-      "menu_title": "Profile",
+      "menu_title": "Mon profile",
       "menu_icon": "zmdi zmdi-flag",
-      "path": USERS.USERS_PROFILE.DISPLAY_PROFILE
+      "path": PROFILE.USER.SELF
    },
    {
       "menu_title": "Comptes utilisateurs",
