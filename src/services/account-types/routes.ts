@@ -6,4 +6,4 @@ export const CREATE_ACCOUNT_TYPE = 'api/socialnetworks/user-account-types/self';
 
 export const GET_ACCOUNTS = 'api/socialnetworks/users/accounts';
 export const CREATE_ACCOUNT = 'api/socialnetworks/users/accounts';
-export const SET_ACCOUNT_AS_DEFAULT = (id) => `api/socialnetworks/users/accounts/${id}/status`;
+export const SET_ACCOUNT_TYPE_AS_DEFAULT = (id) => `api/socialnetworks/user-account-types/self/${id}/status`;

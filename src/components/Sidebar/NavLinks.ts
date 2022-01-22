@@ -36,9 +36,9 @@ export default [
       "profiles": null,
       "child_routes": [
          {
-            "menu_title": "Comptes",
+            "menu_title": "Types comptes",
             "new_item": false,
-            "path": USER_ACCOUNT_TYPE.ACCOUNT.LIST,
+            "path": USER_ACCOUNT_TYPE.TYPE.LIST,
             "permissions": null,
             "profiles": null,
          },
@@ -46,13 +46,6 @@ export default [
             "menu_title": "Roles comptes",
             "new_item": false,
             "path": USER_ACCOUNT_TYPE.ROLE.LIST,
-            "permissions": null,
-            "profiles": null,
-         },
-         {
-            "menu_title": "Types de comptes",
-            "new_item": false,
-            "path": USER_ACCOUNT_TYPE.TYPE.LIST,
             "permissions": null,
             "profiles": null,
          },

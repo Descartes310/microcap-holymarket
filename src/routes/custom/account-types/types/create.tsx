@@ -1,7 +1,9 @@
 import { connect } from 'react-redux';
+import RoleService from 'Services/roles';
 import { withRouter } from "react-router-dom";
 import Button from '@material-ui/core/Button';
 import {setRequestGlobalAction} from 'Actions';
+import { referraTypes } from 'Helpers/helpers';
 import React, { useState, useEffect } from 'react';
 import TextField from '@material-ui/core/TextField';
 import { USER_ACCOUNT_TYPE } from 'Url/frontendUrl';
@@ -16,12 +18,16 @@ import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard
 const Create = (props) => {
 
     const [label, setLabel] = useState('');
+    const [roles, setRoles] = useState([]);
     const [category, setCategory] = useState(null);
     const [categories, setCategories] = useState([]);
     const [description, setDescription] = useState('');
+    const [selectedRoles, setSelectedRoles] = useState([]);
+    const [referralType, setReferralType] = useState(null);
 
     useEffect(() => {
         getTypes();
+        getRoles();
     }, []);
 
     const getTypes = () => {
@@ -31,17 +37,27 @@ const Create = (props) => {
         .finally(() => setRequestGlobalAction(false))
     }
 
+    const getRoles = () => {
+        props.setRequestGlobalAction(true),
+        RoleService.getRoles({type: 'USER_ACCOUNT'})
+        .then(response => setRoles(response))
+        .finally(() => props.setRequestGlobalAction(false))
+    }
+
+
     const onSubmit = () => {
 
-        if(!category || !label)
+        if(!category || !label || selectedRoles.length <= 0)
             return
 
         props.setRequestGlobalAction(true);
 
         let data: any = {
             label: label,
+            categoryId: category.id,
             description: description,
-            categoryId: category.id
+            referralType: referralType.value,
+            roleRefs: selectedRoles.map(role => role.reference)
         }
 
         UserAccountTypeService.createAccountType(data).then(() => {
@@ -93,6 +109,21 @@ const Create = (props) => {
                     </FormGroup>
                     <div className="col-md-12 col-sm-12 has-wrapper mb-30">
                         <InputLabel className="text-left">
+                            Cible
+                        </InputLabel>
+                        <Autocomplete
+                            value={referralType}
+                            id="combo-box-demo"
+                            options={referraTypes()}
+                            onChange={(__, item) => {
+                                setReferralType(item);
+                            }}
+                            getOptionLabel={(option) => option.label}
+                            renderInput={(params) => <TextField {...params} variant="outlined" />}
+                        />
+                    </div>
+                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                        <InputLabel className="text-left">
                             Catégorie de compte
                         </InputLabel>
                         <Autocomplete
@@ -101,6 +132,23 @@ const Create = (props) => {
                             options={categories}
                             onChange={(__, item) => {
                                 setCategory(item);
+                            }}
+                            getOptionLabel={(option) => option.label}
+                            renderInput={(params) => <TextField {...params} variant="outlined" />}
+                        />
+                    </div>
+
+                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                        <InputLabel className="text-left">
+                            Roles du comptes
+                        </InputLabel>
+                        <Autocomplete
+                            multiple
+                            options={roles}
+                            id="combo-box-demo"
+                            value={selectedRoles}
+                            onChange={(__, items) => {
+                                setSelectedRoles(items);
                             }}
                             getOptionLabel={(option) => option.label}
                             renderInput={(params) => <TextField {...params} variant="outlined" />}

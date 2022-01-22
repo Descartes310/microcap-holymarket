@@ -28,7 +28,7 @@ export default class UserAccountTypeService {
         return makeRequest('post', Routes.CREATE_ACCOUNT, data);
     }
 
-    static setAccountAsDefault(id: number, status: boolean): Promise<any> {
-        return makeRequest('put', Routes.SET_ACCOUNT_AS_DEFAULT(id), {status});
+    static setAccountTypeAsDefault(id: number, status: boolean): Promise<any> {
+        return makeRequest('put', Routes.SET_ACCOUNT_TYPE_AS_DEFAULT(id), {status});
     }
 }
