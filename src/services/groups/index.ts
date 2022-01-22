@@ -27,4 +27,12 @@ export default class GroupService {
     static getGroupMembers(): Promise<any> {
         return makeRequest('get', Routes.GET_GROUP_MEMBERS);
     }
+
+    static getGroupDetails(ref): Promise<any> {
+        return makeRequest('get', Routes.GET_GROUP_DETAILS(ref));
+    }
+
+    static updateGroupDetails(data, config): Promise<any> {
+        return makeRequest('put', Routes.UPDATE_GROUP_DETAILS, data, config);
+    }
 }

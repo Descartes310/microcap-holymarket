@@ -1,6 +1,7 @@
 import React from 'react';
 import Types from './types';
 import Roles from './roles';
+import Details from './details';
 import {connect} from "react-redux";
 import Categories from './categories';
 import {injectIntl} from "react-intl";
@@ -18,8 +19,9 @@ const Groups = (props) => {
                     <Route path={GROUP.TYPE.SELF} component={Types} />
                     <Route path={GROUP.ROLE.SELF} component={Roles} />
                     <Route path={GROUP.ROLE.SELF} component={Roles} />
-                    <Route path={GROUP.ADMINISTRATION.SELF} component={Administration} />
+                    <Route path={GROUP.DETAILS.SELF} component={Details} />
                     <Route path={GROUP.CATEGORY.SELF} component={Categories} />
+                    <Route path={GROUP.ADMINISTRATION.SELF} component={Administration} />
                 </Switch>
             </>
         </div>

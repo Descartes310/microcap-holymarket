@@ -593,6 +593,11 @@ export const GROUP = {
         LIST: '/groups/types/list',
         CREATE: '/groups/types/create'
     },
+    DETAILS: {
+        SELF: '/groups/details',
+        VIEW: '/groups/details/:id/view',
+        VIEW_SELF: '/groups/details/view',
+    },
     CATEGORY: {
         SELF: '/groups/categories',
         LIST: '/groups/categories/list',
@@ -609,6 +614,10 @@ export const GROUP = {
             SELF: '/groups/administration/roles',
             LIST: '/groups/administration/roles/list',
             CREATE: '/groups/administration/roles/create'
+        },
+        PARAMETER: {
+            SELF: '/groups/administration/settings',
+            CREATE: '/groups/administration/settings/update'
         },
     }
 }

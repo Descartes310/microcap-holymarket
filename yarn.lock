@@ -9295,6 +9295,14 @@ react-draft-wysiwyg@^1.14.5:
     linkify-it "^2.2.0"
     prop-types "^15.7.2"
 
+react-drag-drop-files@^2.2.5:
+  version "2.2.5"
+  resolved "https://registry.yarnpkg.com/react-drag-drop-files/-/react-drag-drop-files-2.2.5.tgz#4bd9157a5fb234dc6a3ec1afcccb3b6d27cfc31f"
+  integrity sha512-gVeFhFKwysPNlo6GTNFiWlaDZXOUTXyVl4u4bDJSMpaeoLt++O4etW42rJdsc8a/Kh1SfEfcquJrmbohh4adTg==
+  dependencies:
+    prop-types "^15.7.2"
+    styled-components "^5.3.0"
+
 react-dragula@1.1.17:
   version "1.1.17"
   resolved "https://registry.npmjs.org/react-dragula/-/react-dragula-1.1.17.tgz"
