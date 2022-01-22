@@ -74,6 +74,14 @@ export default [
       "permissions": null,
    },
    {
+      "path": GROUP.DETAILS.MEMBERS,
+      "menu_title": "Membres du groupe",
+      "menu_icon": "zmdi zmdi-accounts",
+      "new_item": false,
+      "child_routes": null,
+      "permissions": null,
+   },
+   {
       "menu_title": "Gestion groupes",
       "menu_icon": "zmdi zmdi-accounts",
       "new_item": false,
@@ -120,6 +128,13 @@ export default [
             "menu_title": "Roles membres",
             "new_item": false,
             "path": GROUP.ADMINISTRATION.ROLE.LIST,
+            "permissions": null,
+            "profiles": null,
+         },
+         {
+            "menu_title": "Invitations/Demandes",
+            "new_item": false,
+            "path": GROUP.ADMINISTRATION.REQUEST.SELF,
             "permissions": null,
             "profiles": null,
          },

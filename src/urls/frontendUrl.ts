@@ -597,6 +597,7 @@ export const GROUP = {
         SELF: '/groups/details',
         VIEW: '/groups/details/:id/view',
         VIEW_SELF: '/groups/details/view',
+        MEMBERS: '/groups/details/members',
     },
     CATEGORY: {
         SELF: '/groups/categories',
@@ -609,6 +610,11 @@ export const GROUP = {
             SELF: '/groups/administration/members',
             LIST: '/groups/administration/members/list',
             CREATE: '/groups/administration/members/create'
+        },
+        REQUEST: {
+            SELF: '/groups/administration/requests',
+            JOIN: '/groups/administration/requests/joins',
+            INVITATION: '/groups/administration/requests/invitations',
         },
         ROLE: {
             SELF: '/groups/administration/roles',

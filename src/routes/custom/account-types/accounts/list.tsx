@@ -88,7 +88,6 @@ const Accounts = (props) => {
                                                         </div>
                                                     </div>
                                                 </td>
-
                                                 <td>
                                                     <Switch
                                                         aria-label="Par défaut"

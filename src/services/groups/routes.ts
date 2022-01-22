@@ -9,3 +9,6 @@ export const ADD_MEMBER_TO_GROUP = 'api/socialnetworks/groups/members';
 
 export const UPDATE_GROUP_DETAILS = `api/socialnetworks/groups/self/details`
 export const GET_GROUP_DETAILS = (ref) => `api/socialnetworks/groups/self/${ref}/details`
+
+export const SEND_GROUP_REQUEST = "api/socialnetworks/groups/members/requests"
+export const RESPOND_REQUEST_FROM_GROUP = (id) => `api/socialnetworks/groups/members/requests/${id}`;

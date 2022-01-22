@@ -2,9 +2,11 @@ import { connect } from 'react-redux';
 import { GROUP } from 'Url/frontendUrl';
 import RoleService from 'Services/roles';
 import { withRouter } from "react-router-dom";
+import Switch from "@material-ui/core/Switch";
 import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
 import React, { useState, useEffect } from 'react';
+import { NotificationManager } from "react-notifications";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 
 const Roles = (props) => {
@@ -19,6 +21,20 @@ const Roles = (props) => {
         props.setRequestGlobalAction(true),
         RoleService.getRoles({type: 'GROUP_MEMBER'})
         .then(response => setRoles(response))
+        .finally(() => props.setRequestGlobalAction(false))
+    }
+
+    const changeRoleStatus = (role, status) => {
+        props.setRequestGlobalAction(true),
+        RoleService.changeRoleStatus(role.id, {status, type: 'GROUP_MEMBER'})
+        .then(() => {
+            getRoles();
+            NotificationManager.success("L'opération s'est déroulée avec succès");
+        })
+        .catch(err => {
+            console.log(err);
+            NotificationManager.error("Une erreur s'est produite, veuillez contacter l'assistance");
+        })
         .finally(() => props.setRequestGlobalAction(false))
     }
 
@@ -52,7 +68,7 @@ const Roles = (props) => {
                                             <th className="fw-bold">Label</th>
                                             <th className="fw-bold">Permissions</th>
                                             <th className="fw-bold">Description</th>
-                                            <th className="fw-bold">Action</th>
+                                            <th className="fw-bold">Rôle par défaut</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -79,9 +95,12 @@ const Roles = (props) => {
                                                         </div>
                                                     </div>
                                                 </td>
-
                                                 <td>
-                                                    -
+                                                    <Switch
+                                                        aria-label="Par défaut"
+                                                        checked={item.default}
+                                                        onChange={() => { changeRoleStatus(item, !item.default) }}
+                                                    />
                                                 </td>
                                             </tr>
                                         ))}

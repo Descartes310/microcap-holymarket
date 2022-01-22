@@ -15,4 +15,8 @@ export default class RoleService {
     static getPermissions(data: any = null): Promise<any> {
         return makeRequest('get', Routes.GET_PERMISSIONS, data);
     }
+
+    static changeRoleStatus(id: number, data: any = null): Promise<any> {
+        return makeRequest('put', Routes.CHANGE_ROLE_STATUS(id), data);
+    }
 }

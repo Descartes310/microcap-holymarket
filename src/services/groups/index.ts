@@ -24,8 +24,8 @@ export default class GroupService {
         return makeRequest('post', Routes.ADD_MEMBER_TO_GROUP, data);
     }
 
-    static getGroupMembers(): Promise<any> {
-        return makeRequest('get', Routes.GET_GROUP_MEMBERS);
+    static getGroupMembers(data: any = {}): Promise<any> {
+        return makeRequest('get', Routes.GET_GROUP_MEMBERS, data);
     }
 
     static getGroupDetails(ref): Promise<any> {
@@ -34,5 +34,13 @@ export default class GroupService {
 
     static updateGroupDetails(data, config): Promise<any> {
         return makeRequest('put', Routes.UPDATE_GROUP_DETAILS, data, config);
+    }
+
+    static makeGroupRequest(data): Promise<any> {
+        return makeRequest('put', Routes.SEND_GROUP_REQUEST, data);
+    }
+
+    static respondToGroupResquest(id, status): Promise<any> {
+        return makeRequest('put', Routes.RESPOND_REQUEST_FROM_GROUP(id), { status });
     }
 }
