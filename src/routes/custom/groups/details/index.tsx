@@ -1,5 +1,6 @@
 import React from 'react';
 import View from './view';
+import Members from './members';
 import {connect} from "react-redux";
 import {injectIntl} from "react-intl";
 import { GROUP } from 'Url/frontendUrl';
@@ -14,6 +15,7 @@ const GroupDetails = (props) => {
                     <Redirect exact from={`${match.url}/`} to={GROUP.DETAILS.VIEW} />
                     <Route path={GROUP.DETAILS.VIEW} component={View} />
                     <Route path={GROUP.DETAILS.VIEW_SELF} component={View} />
+                    <Route path={GROUP.DETAILS.MEMBERS} component={Members} />
                 </Switch>
             </>
         </div>

@@ -43,4 +43,12 @@ export default class GroupService {
     static respondToGroupResquest(id, status): Promise<any> {
         return makeRequest('put', Routes.RESPOND_REQUEST_FROM_GROUP(id), { status });
     }
+
+    static sendExternalGroupInvitation(data): Promise<any> {
+        if(!data.reference)
+            delete data.reference;
+        if(!data.email)
+            delete data.email;
+        return makeRequest('get', Routes.SEND_EXTERNAL_GROUP_INVITATION, data);
+    }
 }

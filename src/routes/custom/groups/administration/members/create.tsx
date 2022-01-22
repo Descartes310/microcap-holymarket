@@ -12,8 +12,8 @@ import { getReferralTypeLabel } from 'Helpers/helpers';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { NotificationManager } from 'react-notifications';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
-import { Form, FormGroup, Input as InputStrap } from 'reactstrap';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
+import { Form, FormGroup, Input as InputStrap } from 'reactstrap';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
 
 const Create = (props) => {
