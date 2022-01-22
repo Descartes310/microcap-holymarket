@@ -599,6 +599,12 @@ export const GROUP = {
         LIST: '/groups/categories/list',
         CREATE: '/groups/categories/create'
     },
+    COMMUNITY: {
+        SELF: '/groups/communities',
+        ALL: '/groups/communities/all',
+        MINE: '/groups/communities/mine',
+        REQUEST: '/groups/communities/requests'
+    },
     ADMINISTRATION: {
         SELF: '/groups/administration',
         MEMBER: {

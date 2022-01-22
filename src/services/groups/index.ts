@@ -37,7 +37,7 @@ export default class GroupService {
     }
 
     static makeGroupRequest(data): Promise<any> {
-        return makeRequest('put', Routes.SEND_GROUP_REQUEST, data);
+        return makeRequest('post', Routes.SEND_GROUP_REQUEST, data);
     }
 
     static respondToGroupResquest(id, status): Promise<any> {
@@ -50,5 +50,9 @@ export default class GroupService {
         if(!data.email)
             delete data.email;
         return makeRequest('get', Routes.SEND_EXTERNAL_GROUP_INVITATION, data);
+    }
+
+    static getCommunityDatas(data): Promise<any> {
+        return makeRequest('get', Routes.GET_COMMUNITY_DATAS, data);
     }
 }

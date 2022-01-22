@@ -140,4 +140,22 @@ export default [
          }
       ],
    },
+
+   {
+      "menu_title": "MicroCap 360",
+      "menu_icon": "zmdi zmdi-folder-outline",
+      "new_item": false,
+      "permissions": null,
+      "profiles": null,
+      "child_routes": [
+         {
+            "menu_title": "Communautés",
+            "new_item": false,
+            "path": GROUP.COMMUNITY.MINE,
+            "permissions": null,
+            "profiles": null,
+            "child_routes": null
+         }
+      ],
+   },
 ];
