@@ -11,7 +11,7 @@ import {withRouter, Switch, Redirect, Route} from "react-router-dom";
 import List from './List';
 import Create from './Create';
 import PersonalSpace from './personnal-space/index';
-import Permission from "Enums/Permissions";
+import Permission from "Enums/Permissions.tsx";
 import CanRoute from "Components/CanRoute";
 
 class Users extends Component {

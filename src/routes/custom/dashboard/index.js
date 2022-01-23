@@ -46,7 +46,7 @@ import {
 import Terms from "./Terms";
 import Values from "./Values";
 import { connect } from "react-redux";
-//import Permission from "Enums/Permissions";
+//import Permission from "Enums/Permissions.tsx";
 import CanRoute from "Components/CanRoute";
 import Agents from './discover/pages/Agents';
 import HomePage from "Routes/custom/HomePage";

@@ -1,5 +1,5 @@
 // sidebar nav links
-import Permission from 'Enums/Permissions';
+import Permission from "Enums/Permissions";
 import {
    GROUP,
    PROFILE,
@@ -34,31 +34,32 @@ export default [
       "menu_icon": "zmdi zmdi-folder-outline",
       "new_item": false,
       "permissions": [
-         Permission.accountType.category, 
-         Permission.accountType.role, 
-         Permission.accountType.type],
-      "profiles": null,
+         Permission.accountType.category.name, 
+         Permission.accountType.role.name, 
+         Permission.accountType.type.name
+      ],
+      "profiles": ['GROUP'],
       "child_routes": [
          {
             "menu_title": "Types comptes",
             "new_item": false,
             "path": USER_ACCOUNT_TYPE.TYPE.LIST,
-            "permissions": [Permission.accountType.type],
-            "profiles": null,
+            "permissions": [Permission.accountType.type.name],
+            "profiles": ['GROUP'],
          },
          {
             "menu_title": "Roles comptes",
             "new_item": false,
             "path": USER_ACCOUNT_TYPE.ROLE.LIST,
-            "permissions": [Permission.accountType.role],
-            "profiles": null,
+            "permissions": [Permission.accountType.role.name],
+            "profiles": ['GROUP'],
          },
          {
             "menu_title": "Catégories de comptes",
             "new_item": false,
             "path": USER_ACCOUNT_TYPE.CATEGORY.LIST,
-            "permissions": [Permission.accountType.category],
-            "profiles": null,
+            "permissions": [Permission.accountType.category.name],
+            "profiles": ['GROUP'],
          },
       ],
    },
@@ -68,7 +69,8 @@ export default [
       "menu_icon": "zmdi zmdi-info-outline",
       "new_item": false,
       "child_routes": null,
-      "permissions": [Permission.group.details],
+      "profiles": ['GROUP'],
+      "permissions": [Permission.group.details.name],
    },
    {
       "path": GROUP.DETAILS.MEMBERS,
@@ -76,39 +78,40 @@ export default [
       "menu_icon": "zmdi zmdi-accounts",
       "new_item": false,
       "child_routes": null,
-      "permissions": [Permission.group.member],
+      "profiles": ['GROUP'],
+      "permissions": [Permission.group.member.name],
    },
    {
       "menu_title": "Gestion groupes",
-      "menu_icon": "zmdi zmdi-accounts",
+      "menu_icon": "zmdi zmdi-view-dashboard",
       "new_item": false,
       "permissions": [
-         Permission.group.category,
-         Permission.group.type,
-         Permission.group.role,
+         Permission.group.category.name,
+         Permission.group.type.name,
+         Permission.group.role.name,
       ],
-      "profiles": null,
+      "profiles": ['GROUP'],
       "child_routes": [
          {
             "menu_title": "Types de groupes",
             "new_item": false,
             "path": GROUP.TYPE.LIST,
-            "permissions": [Permission.group.type],
-            "profiles": null,
+            "permissions": [Permission.group.type.name],
+            "profiles": ['GROUP'],
          },
          {
             "menu_title": "Roles groupes",
             "new_item": false,
             "path": GROUP.ROLE.LIST,
-            "permissions": [Permission.group.role],
-            "profiles": null,
+            "permissions": [Permission.group.role.name],
+            "profiles": ['GROUP'],
          },
          {
             "menu_title": "Catégories de groupes",
             "new_item": false,
             "path": GROUP.CATEGORY.LIST,
-            "permissions": [Permission.group.category],
-            "profiles": null,
+            "permissions": [Permission.group.category.name],
+            "profiles": ['GROUP'],
          },
       ],
    }, {
@@ -116,50 +119,50 @@ export default [
       "menu_icon": "zmdi zmdi-settings",
       "new_item": false,
       "permissions": [
-         Permission.group.admin.member,
-         Permission.group.admin.request,
-         Permission.group.admin.role,
-         Permission.group.admin.setting,
+         Permission.group.admin.member.name,
+         Permission.group.admin.request.name,
+         Permission.group.admin.role.name,
+         Permission.group.admin.setting.name,
       ],
-      "profiles": null,
+      "profiles": ['GROUP'],
       "child_routes": [
          {
             "menu_title": "Utilisateurs",
             "new_item": false,
             "path": GROUP.ADMINISTRATION.MEMBER.LIST,
-            "permissions": [Permission.group.admin.member],
-            "profiles": null,
+            "permissions": [Permission.group.admin.member.name],
+            "profiles": ['GROUP'],
          },
          {
             "menu_title": "Roles membres",
             "new_item": false,
             "path": GROUP.ADMINISTRATION.ROLE.LIST,
-            "permissions": [Permission.group.admin.role],
-            "profiles": null,
+            "permissions": [Permission.group.admin.role.name],
+            "profiles": ['GROUP'],
          },
          {
             "menu_title": "Invitations/Demandes",
             "new_item": false,
             "path": GROUP.ADMINISTRATION.REQUEST.SELF,
-            "permissions": [Permission.group.admin.request],
-            "profiles": null,
+            "permissions": [Permission.group.admin.request.name],
+            "profiles": ['GROUP'],
          },
          {
             "menu_title": "Paramètres",
             "new_item": false,
             "path": GROUP.ADMINISTRATION.PARAMETER.CREATE,
-            "permissions": [Permission.group.admin.setting],
-            "profiles": null,
+            "permissions": [Permission.group.admin.setting.name],
+            "profiles": ['GROUP'],
          }
       ],
    },
 
    {
       "menu_title": "MicroCap 360",
-      "menu_icon": "zmdi zmdi-folder-outline",
+      "menu_icon": "zmdi zmdi-home",
       "new_item": false,
       "permissions": [
-         [Permission.group.space]
+         [Permission.group.space.name]
       ],
       "profiles": null,
       "child_routes": [
@@ -167,7 +170,7 @@ export default [
             "menu_title": "Communautés",
             "new_item": false,
             "path": GROUP.COMMUNITY.SPACE.MINE,
-            "permissions": [Permission.group.space],
+            "permissions": [Permission.group.space.name],
             "profiles": null,
             "child_routes": null
          }

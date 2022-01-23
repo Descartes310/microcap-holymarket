@@ -27,7 +27,7 @@ import {globalSearch} from "Helpers/helpers";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
 import {permissionMiddleware} from "Actions/PermissionAlertBoxAction";
 import {AbilityContext} from "Permissions/Can";
-import Permission from "Enums/Permissions";
+import Permission from "Enums/Permissions.tsx";
 
 class UserList extends Component {
     static contextType = AbilityContext;

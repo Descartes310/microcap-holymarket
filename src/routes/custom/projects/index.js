@@ -7,7 +7,7 @@ import FoldersManagement from './folders';
 import {withRouter, Switch, Redirect, Route} from "react-router-dom";
 import CanRoute from "Components/CanRoute";
 import ProjectEdition from './edition';
-import Permissions from "Enums/Permissions";
+import Permissions from "Enums/Permissions.tsx";
 
 import PostProjectsList from './postes-projets'
 import PostProjectsCreate from './postes-projets/Create'

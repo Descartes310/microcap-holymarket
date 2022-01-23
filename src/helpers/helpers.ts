@@ -666,33 +666,30 @@ export const datediff = (first, second, time = 1) => {
 }
 
 
-export const isMenuAllowed = (authUser: User, menu: MenuItem): boolean => {
-    const profile = authUser.user?.profile;
+export const isMenuAllowed = (authUser: any, menu: MenuItem): boolean => {
+    const profile = authUser?.userAccount;
     if (profile) {
         /**
          * permissions are ok if either menu item's permissions is null 
          * or all permissions in menu item are also in profile permissions
          */
+
+        if(!menu.permissions && !menu.profiles)
+            return true;
+
         if (menu.permissions) {
             const matched = menu.permissions.filter(mpName =>
                 profile.permissions.findIndex(pp => mpName === pp.name) >= 0
             ).length;
 
-            return menu.permissions_and
+            let can = menu.permissions_and
                 ? matched === menu.permissions.length
                 : matched > 0;
+
+            return can && (!menu.profiles || (menu.profiles && (menu.profiles.findIndex(mpName => mpName.toLowerCase() === authUser.referralType.toLowerCase()) >= 0)));
         }
 
-        /**
-         * profile is ok if either menu item's profiles is null 
-         * or user profile is menu item's profiles
-         */
-        if (menu.profiles && (menu.profiles.findIndex(mpName => mpName.toLowerCase() === authUser.user.userType.toLowerCase()) === -1)) {
-            return false;
-        }
-
-        // permissions and menus are ok
-        return true;
+        return menu.profiles.findIndex(mpName => mpName.toLowerCase() === authUser.referralType.toLowerCase()) > 0;
     } else {
         return !menu.profiles && !menu.permissions;
     }

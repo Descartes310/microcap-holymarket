@@ -37,7 +37,7 @@ class Header extends Component {
 
 	// function to change the state of collapsed sidebar
 	onToggleNavCollapsed = (event) => {
-		const val = !this.props.navCollapsed;
+		const val = !this.props.settings.navCollapsed;
 		this.props.collapsedSidebarAction(val);
 	}
 

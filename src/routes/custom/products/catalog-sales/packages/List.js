@@ -7,7 +7,7 @@ import { injectIntl } from "react-intl";
 import { withStyles } from "@material-ui/core";
 import { withRouter } from "react-router-dom";
 import { AbilityContext } from "Permissions/Can";
-import Permission from "Enums/Permissions";
+import Permission from "Enums/Permissions.tsx";
 import CustomList from "Components/CustomList";
 import { PACKAGES } from "Url/frontendUrl";
 import Switch from "@material-ui/core/Switch/Switch";

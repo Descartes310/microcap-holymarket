@@ -12,7 +12,7 @@ import { canArray, globalSearch } from "Helpers/helpers";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
 import { permissionMiddleware } from "Actions/PermissionAlertBoxAction";
 import { AbilityContext } from "Permissions/Can";
-import Permission from "Enums/Permissions";
+import Permission from "Enums/Permissions.tsx";
 import FetchFailedComponent from "Components/FetchFailedComponent";
 
 class CustomList extends Component {

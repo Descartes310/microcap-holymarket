@@ -2,7 +2,7 @@ import Create from "./Create";
 import {connect} from "react-redux";
 import {injectIntl} from "react-intl";
 import React, { Component } from 'react';
-import Permission from "Enums/Permissions";
+import Permission from "Enums/Permissions.tsx";
 import {withRouter} from "react-router-dom";
 import IntlMessages from 'Util/IntlMessages';
 import {withStyles} from "@material-ui/core";

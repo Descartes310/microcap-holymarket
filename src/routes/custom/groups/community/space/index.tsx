@@ -57,15 +57,15 @@ class Requests extends Component<any, any> {
                                         centered
                                     >
                                         <Tab
-                                            icon={<i className="zmdi zmdi-upload" />}
+                                            icon={<i className="zmdi zmdi-home" />}
                                             label={"Mes communautés"}
                                         />
                                         <Tab
-                                            icon={<i className="zmdi zmdi-download"></i>}
+                                            icon={<i className="zmdi zmdi-cloud-outline-alt"></i>}
                                             label={"Toutes les communautés"}
                                         />
                                         <Tab
-                                            icon={<i className="zmdi zmdi-download"></i>}
+                                            icon={<i className="zmdi zmdi-time-restore"></i>}
                                             label={"Mes requêtes"}
                                         />
                                     </Tabs>
