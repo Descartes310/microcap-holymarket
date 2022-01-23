@@ -61,7 +61,7 @@ const Create = (props) => {
 
         GroupService.addMemberToRole(data).then(() => {
             NotificationManager.success("Le membre a été créé avec succès");
-            //props.history.push(GROUP.ADMINISTRATION.MEMBER.LIST);
+            props.history.push(GROUP.ADMINISTRATION.MEMBER.LIST);
         }).catch((err) => {
             console.log(err);
             NotificationManager.error("Une erreur est survenu lors de la création du membre");

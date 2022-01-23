@@ -35,8 +35,8 @@ const Members = (props) => {
                 title={"Liste des membres"}
             />
             <CustomList
-                loading={false}
                 list={members}
+                loading={false}
                 addText="Envoyer une invitation"
                 itemsFoundText={n => `${n} membre.s trouvé.s`}
                 onAddClick={() => setShowInvitationtionBox(true)}

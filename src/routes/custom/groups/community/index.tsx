@@ -1,88 +1,20 @@
+import React from 'react';
+import Space from './space'
+import Management from './management';
 import { connect } from "react-redux";
-import TabContent from "./tabContent";
 import { GROUP } from "Url/frontendUrl";
-import React, { Component } from 'react';
-import Tab from '@material-ui/core/Tab';
-import Tabs from '@material-ui/core/Tabs';
-import { RctCard } from 'Components/RctCard';
-import AppBar from '@material-ui/core/AppBar';
-import { withRouter } from "react-router-dom";
-import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
-import { setRequestGlobalAction } from "Actions/RequestGlobalAction";
+import { Redirect, Route, Switch, withRouter } from 'react-router-dom';
 
-class Requests extends Component<any, any> {
-    constructor(props: any) {
-        super(props);
-        const defaultState = (function (url) {
-            if (url.includes(GROUP.COMMUNITY.MINE)) return 0;
-            else if (url.includes(GROUP.COMMUNITY.ALL)) return 1;
-            else if (url.includes(GROUP.COMMUNITY.REQUEST)) return 2;
-            else return 0;
-        })(window.location.pathname);
-
-        this.state = {
-            activeTab: defaultState,
-        }
-    }
-
-    handleChange = (__, value) => {
-        const oldActivateTab: any = this.state.activeTab;
-        this.setState({ activeTab: value });
-        if (oldActivateTab !== value) {
-            switch (value) {
-                case 0: return this.props.history.push(GROUP.COMMUNITY.MINE);
-                case 1: return this.props.history.push(GROUP.COMMUNITY.ALL);
-                case 2: return this.props.history.push(GROUP.COMMUNITY.REQUEST);
-                default: return this.props.history.push(GROUP.COMMUNITY.MINE);
-            }
-        }
-    };
-
-    render() {
-        const { activeTab } = this.state;
-
-        return (
-            <div>
-                <PageTitleBar title={"Communautés"} match={this.props.match} />
-                <RctCard>
-                    <div className="rct-tabs">
-                        <AppBar position="static">
-                            <div className="d-flex align-items-center">
-                                <div className="w-100">
-                                    <Tabs
-                                        value={activeTab}
-                                        onChange={this.handleChange}
-                                        scrollButtons="off"
-                                        indicatorColor="primary"
-                                        centered
-                                    >
-                                        <Tab
-                                            icon={<i className="zmdi zmdi-upload" />}
-                                            label={"Mes communautés"}
-                                        />
-                                        <Tab
-                                            icon={<i className="zmdi zmdi-download"></i>}
-                                            label={"Toutes les communautés"}
-                                        />
-                                        <Tab
-                                            icon={<i className="zmdi zmdi-download"></i>}
-                                            label={"Mes requêtes"}
-                                        />
-                                    </Tabs>
-                                </div>
-                            </div>
-                        </AppBar>
-                    </div>
-                    <TabContent />
-                </RctCard>
-            </div>
-        );
-    }
-}
-
-// map state to props
-const mapStateToProps = ({ authUser }) => {
-    return { authUser: authUser.data, }
+const Community = ({ match }) => {
+    return (
+        <div>
+            <Switch>
+                <Redirect exact from={`${match.url}/`} to={GROUP.COMMUNITY.SPACE.SELF} />
+                <Route path={GROUP.COMMUNITY.SPACE.SELF} component={Space} />
+                <Route path={GROUP.COMMUNITY.MANAGEMENT.SELF} component={Management} />
+            </Switch>
+        </div>
+    )
 };
 
-export default connect(mapStateToProps, { setRequestGlobalAction })(withRouter(Requests));
+export default connect(() => ({}), {})(withRouter(Community));

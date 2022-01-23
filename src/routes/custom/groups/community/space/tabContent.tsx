@@ -10,10 +10,10 @@ const TabContent = ({ match }) => {
     return (
         <div>
             <Switch>
-                <Redirect exact from={`${match.url}/`} to={GROUP.COMMUNITY.MINE} />
-                <Route path={GROUP.COMMUNITY.MINE} component={Mines} />
-                <Route path={GROUP.COMMUNITY.ALL} component={All} />
-                <Route path={GROUP.COMMUNITY.REQUEST} component={Request} />
+                <Redirect exact from={`${match.url}/`} to={GROUP.COMMUNITY.SPACE.MINE} />
+                <Route path={GROUP.COMMUNITY.SPACE.ALL} component={All} />
+                <Route path={GROUP.COMMUNITY.SPACE.MINE} component={Mines} />
+                <Route path={GROUP.COMMUNITY.SPACE.REQUEST} component={Request} />
             </Switch>
         </div>
     )

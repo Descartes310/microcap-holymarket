@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 import { GROUP } from 'Url/frontendUrl';
 import RoleService from 'Services/roles';
 import GroupService from 'Services/groups';
+import { groupTypes } from 'Helpers/helpers';
 import { withRouter } from "react-router-dom";
 import Button from '@material-ui/core/Button';
 import {setRequestGlobalAction} from 'Actions';
@@ -14,14 +15,9 @@ import {Form, FormGroup, Input as InputStrap} from 'reactstrap';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
 
-const GROUP_NATURE = [
-    { label: 'Partenaires', value: 'PARTNER'},
-    { label: 'Client professionnel', value: 'PROFESSIONAL_CLIENT'},
-    { label: 'Client particulier', value: 'PARTICULAR_CLIENT'}
-]
-
 const Create = (props) => {
 
+    const [type, setType] = useState(null);
     const [label, setLabel] = useState('');
     const [roles, setRoles] = useState([]);
     const [category, setCategory] = useState(null);
@@ -50,13 +46,14 @@ const Create = (props) => {
 
     const onSubmit = () => {
 
-        if(!category || !label || roles.length <= 0)
+        if(!category || !label || !type || roles.length <= 0)
             return
 
         props.setRequestGlobalAction(true);
 
         let data: any = {
             label: label,
+            type: type.value,
             description: description,
             groupCategoryId: category.id,
             roleIds: roles.map(role => role.id)
@@ -73,11 +70,10 @@ const Create = (props) => {
         })
     }
 
-
     return (
         <>
             <PageTitleBar
-                title={"Création du type de compte"}
+                title={"Création du type de groupe"}
             />
             <RctCollapsibleCard>
                 <Form onSubmit={onSubmit}>
@@ -109,21 +105,21 @@ const Create = (props) => {
                             onChange={(e) => setDescription(e.target.value)}
                         />
                     </FormGroup>
-                    {/* <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
                         <InputLabel className="text-left">
                             Nature du groupe
                         </InputLabel>
                         <Autocomplete
-                            value={category}
+                            value={type}
                             id="combo-box-demo"
-                            options={categories}
+                            options={groupTypes()}
                             onChange={(__, item) => {
-                                setCategory(item);
+                                setType(item);
                             }}
                             getOptionLabel={(option) => option.label}
                             renderInput={(params) => <TextField {...params} variant="outlined" />}
                         />
-                    </div> */}
+                    </div>
                     <div className="col-md-12 col-sm-12 has-wrapper mb-30">
                         <InputLabel className="text-left">
                             Catégorie du groupe

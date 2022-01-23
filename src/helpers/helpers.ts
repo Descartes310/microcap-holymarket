@@ -722,10 +722,35 @@ export const referraTypes = () => {
     ]
 }
 
+export const groupTypes = () => {
+    return [
+        {
+            label: 'Organisation',
+            value: 'ORGANISATION'
+        },
+        {
+            label: 'Communauté conventionnée',
+            value: 'CONVENTIONATED_COMMUNITY'
+        },
+        {
+            label: 'Communauté non conventionnée',
+            value: 'UNCONVENTIONATED_COMMUNITY'
+        }
+    ]
+}
+
 export const getReferralTypeLabel = (value: any) => {
     let referralType = referraTypes().find(rt => rt.value === value);
     if(referralType)
         return referralType.label;
+    else
+        return "";
+}
+
+export const getGroupTypeLabel = (value: any) => {
+    let groupType = groupTypes().find(rt => rt.value === value);
+    if(groupType)
+        return groupType.label;
     else
         return "";
 }

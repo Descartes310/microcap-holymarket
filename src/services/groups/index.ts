@@ -55,4 +55,12 @@ export default class GroupService {
     static getCommunityDatas(data): Promise<any> {
         return makeRequest('get', Routes.GET_COMMUNITY_DATAS, data);
     }
+
+    static setGroupTypeAsDefault(id: number, status: boolean): Promise<any> {
+        return makeRequest('put', Routes.SET_GROUP_TYPE_AS_DEFAULT(id), {status});
+    }
+
+    static createUnconventionnatedGroup(data: any): Promise<any> {
+        return makeRequest('post', Routes.CREATE_UNCONVENTIONATED_GROUP, data);
+    }
 }

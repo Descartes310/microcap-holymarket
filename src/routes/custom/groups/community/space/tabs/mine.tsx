@@ -3,11 +3,13 @@ import GroupService from 'Services/groups';
 import Button from "@material-ui/core/Button";
 import { withRouter } from "react-router-dom";
 import CustomList from "Components/CustomList";
-import { setRequestGlobalAction } from 'Actions';
+import {setRequestGlobalAction} from 'Actions';
 import React, { useState, useEffect } from 'react';
+import { getGroupTypeLabel } from 'Helpers/helpers';
+import TimeFromMoment from "Components/TimeFromMoment";
 import { GROUP, joinUrlWithParamsId } from 'Url/frontendUrl';
 
-const All = (props) => {
+const Mine = (props) => {
 
     const [groups, setGroups] = useState([]);
 
@@ -17,24 +19,19 @@ const All = (props) => {
 
     const getGroups = () => {
         props.setRequestGlobalAction(true),
-            GroupService.getCommunityDatas({ belongs: false })
-                .then(response => setGroups(response))
-                .finally(() => props.setRequestGlobalAction(false))
-    }
-
-    const sendRequest = (item) => {
-        props.setRequestGlobalAction(true),
-            GroupService.makeGroupRequest({ userReference: props.authUser.referralId, groupReference: item.groupReference, type: 'REQUEST' })
-                .then(response => getGroups())
-                .finally(() => props.setRequestGlobalAction(false))
+        GroupService.getCommunityDatas({ belongs: true})
+        .then(response => setGroups(response))
+        .finally(() => props.setRequestGlobalAction(false))
     }
 
     return (
         <>
             <CustomList
-                loading={false}
                 list={groups}
+                loading={false}
+                addText="Créer une communauté"
                 itemsFoundText={n => `${n} communauté.s trouvée.s`}
+                onAddClick={() => props.history.push(GROUP.COMMUNITY.MANAGEMENT.CREATE)}
                 renderItem={list => (
                     <>
                         {list && list.length === 0 ? (
@@ -49,7 +46,9 @@ const All = (props) => {
                                     <thead>
                                         <tr>
                                             <th className="fw-bold">Nom</th>
+                                            <th className="fw-bold">Type</th>
                                             <th className="fw-bold">Status</th>
+                                            <th className="fw-bold">Membre depuis</th>
                                             <th className="fw-bold">Détails</th>
                                             <th className="fw-bold">Action</th>
                                         </tr>
@@ -67,7 +66,23 @@ const All = (props) => {
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
+                                                            <h4 className="m-0 fw-bold text-dark">{getGroupTypeLabel(item.groupType)}</h4>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="media">
+                                                        <div className="media-body pt-10">
                                                             <h4 className="m-0 fw-bold text-dark">{item.status ? item.status : 'NON MEMBRE'}</h4>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="media">
+                                                        <div className="media-body pt-10">
+                                                            <h4 className="m-0 text-dark">
+                                                                <TimeFromMoment time={item.date} showFullDate />
+                                                            </h4>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -90,18 +105,13 @@ const All = (props) => {
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            {!item.status ?
-                                                                <Button
-                                                                    size="small"
-                                                                    color='primary'
-                                                                    variant="contained"
-                                                                    onClick={() => sendRequest(item)}
-                                                                    className="mr-5 mb-10 text-white"
-                                                                >
-                                                                    Demander une adhésion
-                                                                </Button>
-                                                                : <h4 className="m-0 fw-bold text-dark">En cours...</h4>
-                                                            }
+                                                        <Button
+                                                            size="small"
+                                                            variant="contained"
+                                                            className="mr-5 mb-10 text-white"
+                                                        >
+                                                            { item.status ? 'Rejoindre' : 'Demander une adhésion' }
+                                                        </Button>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -118,9 +128,4 @@ const All = (props) => {
     );
 }
 
-// map state to props
-const mapStateToProps = ({ authUser }) => {
-    return { authUser: authUser.data, }
-};
-
-export default connect(mapStateToProps, { setRequestGlobalAction })(withRouter(All));
+export default connect(() => {}, { setRequestGlobalAction })(withRouter(Mine));

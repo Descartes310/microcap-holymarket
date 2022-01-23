@@ -5,6 +5,7 @@ import Button from "@material-ui/core/Button";
 import CustomList from "Components/CustomList";
 import { setRequestGlobalAction } from 'Actions';
 import React, { useState, useEffect } from 'react';
+import { getGroupTypeLabel } from 'Helpers/helpers';
 import ConfirmBox from "Components/dialog/ConfirmBox";
 import TimeFromMoment from "Components/TimeFromMoment";
 import { NotificationManager } from "react-notifications";
@@ -67,6 +68,7 @@ const Request = (props) => {
                                     <thead>
                                         <tr>
                                             <th className="fw-bold">Nom</th>
+                                            <th className="fw-bold">Type</th>
                                             <th className="fw-bold">Status</th>
                                             <th className="fw-bold">Date requête</th>
                                             <th className="fw-bold">Détails</th>
@@ -80,6 +82,13 @@ const Request = (props) => {
                                                     <div className="media">
                                                         <div className="media-body pt-10">
                                                             <h4 className="m-0 fw-bold text-dark">{item.userName}</h4>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="media">
+                                                        <div className="media-body pt-10">
+                                                            <h4 className="m-0 fw-bold text-dark">{getGroupTypeLabel(item.groupType)}</h4>
                                                         </div>
                                                     </div>
                                                 </td>

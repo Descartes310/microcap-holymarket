@@ -1,10 +1,12 @@
 import { connect } from 'react-redux';
 import { GROUP } from 'Url/frontendUrl';
 import GroupService from 'Services/groups';
+import Switch from "@material-ui/core/Switch";
 import { withRouter } from "react-router-dom";
 import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
 import React, { useState, useEffect } from 'react';
+import { getGroupTypeLabel } from 'Helpers/helpers';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 
 const Types = (props) => {
@@ -19,6 +21,13 @@ const Types = (props) => {
         props.setRequestGlobalAction(true),
         GroupService.getGroupTypes({})
         .then(response => setTypes(response))
+        .finally(() => props.setRequestGlobalAction(false))
+    }
+
+    const changeGroupTypeStatus = (group) => {
+        props.setRequestGlobalAction(true),
+        GroupService.setGroupTypeAsDefault(group.id, !group.default)
+        .then(() => getTypes())
         .finally(() => props.setRequestGlobalAction(false))
     }
 
@@ -51,7 +60,9 @@ const Types = (props) => {
                                         <tr>
                                             <th className="fw-bold">Label</th>
                                             <th className="fw-bold">Description</th>
+                                            <th className="fw-bold">Nature</th>
                                             <th className="fw-bold">Catégorie</th>
+                                            <th className="fw-bold">Par défaut</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -74,9 +85,23 @@ const Types = (props) => {
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
+                                                            <h4 className="m-0 text-dark">{getGroupTypeLabel(item.type)}</h4>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="media">
+                                                        <div className="media-body pt-10">
                                                             <h4 className="m-0 text-dark">{item.groupCategory.label}</h4>
                                                         </div>
                                                     </div>
+                                                </td>
+                                                <td>
+                                                    <Switch
+                                                        aria-label="Par défaut"
+                                                        checked={item.default}
+                                                        onChange={() => { changeGroupTypeStatus(item) }}
+                                                    />
                                                 </td>
                                             </tr>
                                         ))}

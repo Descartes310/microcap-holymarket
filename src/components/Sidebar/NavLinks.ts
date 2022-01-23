@@ -151,7 +151,7 @@ export default [
          {
             "menu_title": "Communautés",
             "new_item": false,
-            "path": GROUP.COMMUNITY.MINE,
+            "path": GROUP.COMMUNITY.SPACE.MINE,
             "permissions": null,
             "profiles": null,
             "child_routes": null

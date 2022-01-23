@@ -601,9 +601,16 @@ export const GROUP = {
     },
     COMMUNITY: {
         SELF: '/groups/communities',
-        ALL: '/groups/communities/all',
-        MINE: '/groups/communities/mine',
-        REQUEST: '/groups/communities/requests'
+        SPACE: {
+            SELF: '/groups/communities/space',
+            ALL: '/groups/communities/space/all',
+            MINE: '/groups/communities/space/mine',
+            REQUEST: '/groups/communities/space/requests'
+        },
+        MANAGEMENT: {
+            SELF: '/groups/communities/management',
+            CREATE: '/groups/communities/management/create',
+        }
     },
     ADMINISTRATION: {
         SELF: '/groups/administration',
