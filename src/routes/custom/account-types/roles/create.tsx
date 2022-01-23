@@ -3,14 +3,14 @@ import RoleService from 'Services/roles';
 import { withRouter } from "react-router-dom";
 import Button from '@material-ui/core/Button';
 import CheckboxTree from 'react-checkbox-tree';
-import {setRequestGlobalAction} from 'Actions';
+import { setRequestGlobalAction } from 'Actions';
 import React, { useState, useEffect } from 'react';
 import { USER_ACCOUNT_TYPE } from 'Url/frontendUrl';
-import {NotificationManager} from 'react-notifications';
-import 'react-checkbox-tree/src/scss/react-checkbox-tree.scss';
 import { getNodeFromPermissions } from 'Helpers/helpers';
+import { NotificationManager } from 'react-notifications';
+import 'react-checkbox-tree/src/scss/react-checkbox-tree.scss';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
-import {Form, FormGroup, Input as InputStrap} from 'reactstrap';
+import { Form, FormGroup, Input as InputStrap } from 'reactstrap';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
 
@@ -35,16 +35,17 @@ const Create = (props) => {
 
     const getPermissions = () => {
         props.setRequestGlobalAction(true),
-        RoleService.getPermissions()
-        .then(response => {
-            setNodes(getNodeFromPermissions(response));
-        })
-        .finally(() => props.setRequestGlobalAction(false))
+            RoleService.getPermissions()
+                .then(response => {
+                    let datas = getNodeFromPermissions(response);
+                    setNodes(datas);
+                })
+                .finally(() => props.setRequestGlobalAction(false))
     }
 
     const onSubmit = () => {
 
-        if(!label || selectedPermissions.length <= 0)
+        if (!label || selectedPermissions.length <= 0)
             return
 
         props.setRequestGlobalAction(true);
@@ -131,4 +132,4 @@ const Create = (props) => {
     );
 };
 
-export default connect(() => {}, { setRequestGlobalAction })(withRouter(Create));
+export default connect(() => { }, { setRequestGlobalAction })(withRouter(Create));

@@ -26,7 +26,6 @@ export default (state: SidebarState = INIT_STATE, action: SidebarActions): Sideb
 				e.menu_icon === action.payload.menu.menu_icon &&
 				e.path === action.payload.menu.path
 			));
-			console.log('index', index);
 			var obj = state.sidebarMenus;
 			for (let i = 0; i < obj.length; i++) {
 				const element = obj[i];

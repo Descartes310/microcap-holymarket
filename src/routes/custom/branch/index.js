@@ -37,7 +37,7 @@ import GridListTileBar from "@material-ui/core/GridListTileBar/GridListTileBar";
 import IconButton from "@material-ui/core/IconButton";
 import GridList from "@material-ui/core/GridList";
 import BranchImage from "Components/BranchImage";
-import Permission from "Enums/Permissions";
+import Permission from "Enums/Permissions.tsx";
 
 initMoment();
 

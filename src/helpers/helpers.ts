@@ -326,10 +326,10 @@ export const getPermissionOfPath = (path) => {
 
     const currentMenus = NavLinks;
 
-    
+
     let permissions = [];
     for (let item of currentMenus) {
-        console.log('Permission of path => '+item);
+        console.log('Permission of path => ' + item);
         if (item.path === path) {
             permissions = item.permissions;
             break;
@@ -674,11 +674,11 @@ export const isMenuAllowed = (authUser: User, menu: MenuItem): boolean => {
          * or all permissions in menu item are also in profile permissions
          */
         if (menu.permissions) {
-            const matched = menu.permissions.filter(mpName => 
+            const matched = menu.permissions.filter(mpName =>
                 profile.permissions.findIndex(pp => mpName === pp.name) >= 0
             ).length;
 
-            return menu.permissions_and 
+            return menu.permissions_and
                 ? matched === menu.permissions.length
                 : matched > 0;
         }
@@ -741,7 +741,7 @@ export const groupTypes = () => {
 
 export const getReferralTypeLabel = (value: any) => {
     let referralType = referraTypes().find(rt => rt.value === value);
-    if(referralType)
+    if (referralType)
         return referralType.label;
     else
         return "";
@@ -749,7 +749,7 @@ export const getReferralTypeLabel = (value: any) => {
 
 export const getGroupTypeLabel = (value: any) => {
     let groupType = groupTypes().find(rt => rt.value === value);
-    if(groupType)
+    if (groupType)
         return groupType.label;
     else
         return "";
@@ -757,66 +757,26 @@ export const getGroupTypeLabel = (value: any) => {
 
 export const getNodeFromPermissions = (permissions: any) => {
     if (permissions) {
-        let datas: any = [];
-        permissions.forEach(p => {
-            const childNode = {
-                value: p.id,
-                label: p.label
-            };
-            buildSubFolders(datas, p.folders, childNode);
-        });
-        return datas;
+        let result = [];
+        let level = { result };
+        permissions.forEach(permission => {
+            permission.folders.split('/').reduce((r, name, i, a) => {
+                if (!r[name]) {
+                    r[name] = { result: [] };
+                    r.result.push({ value: permission.id + '' + name, children: r[name].result, label: translatePermissionFolder(name) })
+                }
+                if (i === (a.length - 1))
+                    r[name].result.push({ value: permission.id, label: permission.label, });
+                return r[name];
+            }, level)
+        })
+
+        return result;
     }
     return [];
 }
 
-var buildSubFolders = function (datas: any, folders: string, childNode: any, parentLabel = null) {
-    let paths = folders.trim().split('/');
-    if(paths.length <= 1) {
-        let node = getSubMenuItem(datas, `${parentLabel ? parentLabel : ''}`+paths[0]);
-        if (node) {
-            node.children.push(childNode);
-        } else {
-            node = {
-                value: `${parentLabel ? parentLabel : ''}`+paths[0],
-                label: translatePermissionFolder(paths[0]),
-                children: [childNode]
-            };
-        }
-        datas.push(node);
-        return node;
-    } else {
-        const path = paths[0];
-        let node = getSubMenuItem(datas, `${parentLabel ? parentLabel : ''}`+path);
-        paths.shift();
-        if(!node) {
-            node = {
-                value: `${parentLabel ? parentLabel : ''}`+path,
-                label: translatePermissionFolder(path),
-                children: []
-            }
-            buildSubFolders(node.children, paths.join('/'), childNode, path);
-            datas.push(node);
-        } else {
-            buildSubFolders(node.children, paths.join('/'), childNode, path);
-        }
-        return node;
-    }
-};
-
-var getSubMenuItem = function (subMenuItems, value) {
-    let datas = subMenuItems.filter(item => !Array.isArray(item));
-    if (datas) {
-        for (var i = 0; i < datas.length; i++) {
-            if (datas[i].value == value) {
-                return datas[i];
-            }
-        }
-    }
-    return null;
-};
-
-var translatePermissionFolder = (path) => {
+export const translatePermissionFolder = (path) => {
     switch (path) {
         case 'USER_ACCOUNT':
             return 'Comptes utilisateurs'
@@ -825,15 +785,19 @@ var translatePermissionFolder = (path) => {
         case 'TYPE':
             return "Types"
         case 'ACCOUNT':
-            return 'Comptes'; 
+            return 'Comptes';
         case 'ROLE':
-            return 'Rôles'; 
+            return 'Rôles';
         case 'GROUP':
-            return 'Groupes';    
+            return 'Groupes';
         case 'ADMIN':
-            return 'Administration';  
+            return 'Administration';
         case 'MEMBER':
-            return 'Membres';    
+            return 'Membres';
+        case 'MANAGEMENT':
+            return 'Configuration';
+        case 'DETAILS':
+            return 'Détails';
         default:
             return path;
     }
