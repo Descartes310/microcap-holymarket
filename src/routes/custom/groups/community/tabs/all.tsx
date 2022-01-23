@@ -3,10 +3,9 @@ import GroupService from 'Services/groups';
 import Button from "@material-ui/core/Button";
 import { withRouter } from "react-router-dom";
 import CustomList from "Components/CustomList";
-import {setRequestGlobalAction} from 'Actions';
+import { setRequestGlobalAction } from 'Actions';
 import React, { useState, useEffect } from 'react';
-import TimeFromMoment from "Components/TimeFromMoment";
-import { NotificationManager } from "react-notifications";
+import { GROUP, joinUrlWithParamsId } from 'Url/frontendUrl';
 
 const All = (props) => {
 
@@ -18,16 +17,16 @@ const All = (props) => {
 
     const getGroups = () => {
         props.setRequestGlobalAction(true),
-        GroupService.getCommunityDatas({ belongs: false})
-        .then(response => setGroups(response))
-        .finally(() => props.setRequestGlobalAction(false))
+            GroupService.getCommunityDatas({ belongs: false })
+                .then(response => setGroups(response))
+                .finally(() => props.setRequestGlobalAction(false))
     }
 
     const sendRequest = (item) => {
         props.setRequestGlobalAction(true),
-        GroupService.makeGroupRequest({ userReference: props.authUser.referralId, groupReference: item.groupReference, type: 'REQUEST'})
-        .then(response => getGroups())
-        .finally(() => props.setRequestGlobalAction(false))
+            GroupService.makeGroupRequest({ userReference: props.authUser.referralId, groupReference: item.groupReference, type: 'REQUEST' })
+                .then(response => getGroups())
+                .finally(() => props.setRequestGlobalAction(false))
     }
 
     return (
@@ -51,6 +50,7 @@ const All = (props) => {
                                         <tr>
                                             <th className="fw-bold">Nom</th>
                                             <th className="fw-bold">Status</th>
+                                            <th className="fw-bold">Détails</th>
                                             <th className="fw-bold">Action</th>
                                         </tr>
                                     </thead>
@@ -74,7 +74,23 @@ const All = (props) => {
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            { !item.status && (
+                                                            <Button
+                                                                size="small"
+                                                                variant="contained"
+                                                                onClick={() => {
+                                                                    props.history.push(joinUrlWithParamsId(GROUP.DETAILS.VIEW, item.groupReference.split('_')[1]))
+                                                                }}
+                                                                className="btn-primary mb-10 text-white"
+                                                            >
+                                                                Consulter les détails
+                                                            </Button>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="media">
+                                                        <div className="media-body pt-10">
+                                                            {!item.status ?
                                                                 <Button
                                                                     size="small"
                                                                     color='primary'
@@ -84,7 +100,8 @@ const All = (props) => {
                                                                 >
                                                                     Demander une adhésion
                                                                 </Button>
-                                                            )}
+                                                                : <h4 className="m-0 fw-bold text-dark">En cours...</h4>
+                                                            }
                                                         </div>
                                                     </div>
                                                 </td>

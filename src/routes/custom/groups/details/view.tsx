@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
+import { HOME } from 'Url/frontendUrl';
 import GroupService from 'Services/groups';
-import { GROUP, HOME } from 'Url/frontendUrl';
 import { withRouter } from "react-router-dom";
 import { getFilePath } from 'Helpers/helpers';
 import {setRequestGlobalAction} from 'Actions';
@@ -8,14 +8,8 @@ import React, { useState, useEffect } from 'react';
 import {
 	Card,
 	CardImg,
-	CardText,
 	CardBody,
-	CardTitle,
-	CardSubtitle,
-	Button,
-	CardLink,
-	CardGroup,
-	CardImgOverlay
+	CardTitle
 } from 'reactstrap';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
@@ -47,7 +41,7 @@ const View = (props) => {
             })
             .catch(err => {
                 console.log(err);
-                //props.history.push(HOME);
+                props.history.push(HOME);
             })
             .finally(() => props.setRequestGlobalAction(false))
     }
@@ -61,10 +55,10 @@ const View = (props) => {
                 <div className="row">
                     <div className="col-xs-12 col-sm-12 col-md-12 mb-30">
                         <Card>
-                            <CardImg top width="100%" className="img-fluid ripple-effect" style={{ maxHeight: 250 }} src={!image ? getFilePath(image) : DEFAULT_BANNER} alt={`${title} banner`} />
+                            <CardImg top width="100%" className="img-fluid ripple-effect" style={{ maxHeight: 250 }} src={image ? getFilePath(image) : DEFAULT_BANNER} alt={`Bannière du groupe`} />
                             <CardBody>
                                 <CardTitle>
-                                    <h1 className='fw-bold mt-10' style={{ fontSize: '2.5rem' }}> { title ? title : 'Group Title' } </h1>
+                                    <h1 className='fw-bold mt-10' style={{ fontSize: '2.5rem' }}> { title ? title : group ? group.label : 'Group Title' } </h1>
                                 </CardTitle>
                                 <CardBody>
                                     <span dangerouslySetInnerHTML={{

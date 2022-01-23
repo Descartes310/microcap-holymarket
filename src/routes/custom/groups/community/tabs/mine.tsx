@@ -6,7 +6,7 @@ import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
 import React, { useState, useEffect } from 'react';
 import TimeFromMoment from "Components/TimeFromMoment";
-import { NotificationManager } from "react-notifications";
+import { GROUP, joinUrlWithParamsId } from 'Url/frontendUrl';
 
 const Mine = (props) => {
 
@@ -44,6 +44,8 @@ const Mine = (props) => {
                                         <tr>
                                             <th className="fw-bold">Nom</th>
                                             <th className="fw-bold">Status</th>
+                                            <th className="fw-bold">Membre depuis</th>
+                                            <th className="fw-bold">Détails</th>
                                             <th className="fw-bold">Action</th>
                                         </tr>
                                     </thead>
@@ -61,6 +63,31 @@ const Mine = (props) => {
                                                     <div className="media">
                                                         <div className="media-body pt-10">
                                                             <h4 className="m-0 fw-bold text-dark">{item.status ? item.status : 'NON MEMBRE'}</h4>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="media">
+                                                        <div className="media-body pt-10">
+                                                            <h4 className="m-0 text-dark">
+                                                                <TimeFromMoment time={item.date} showFullDate />
+                                                            </h4>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="media">
+                                                        <div className="media-body pt-10">
+                                                            <Button
+                                                                size="small"
+                                                                variant="contained"
+                                                                onClick={() => {
+                                                                    props.history.push(joinUrlWithParamsId(GROUP.DETAILS.VIEW, item.groupReference.split('_')[1]))
+                                                                }}
+                                                                className="btn-primary mb-10 text-white"
+                                                            >
+                                                                Consulter les détails
+                                                            </Button>
                                                         </div>
                                                     </div>
                                                 </td>
