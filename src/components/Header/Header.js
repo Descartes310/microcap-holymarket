@@ -15,11 +15,9 @@ import { withRouter } from 'react-router-dom';
 import { collapsedSidebarAction, darkModeAction } from 'Actions';
 
 // helpers
-import { getAppLayout } from "Helpers/helpers";
 
 // components
 import Notifications from './Notifications';
-import DashboardOverlay from '../DashboardOverlay/DashboardOverlay';
 import Cart from './Cart';
 import { DISCOVER } from "Url/frontendUrl";
 
@@ -39,28 +37,6 @@ class Header extends Component {
 	onToggleNavCollapsed = (event) => {
 		const val = !this.props.settings.navCollapsed;
 		this.props.collapsedSidebarAction(val);
-	}
-
-	// open dashboard overlay
-	openDashboardOverlay(e) {
-		var el = document.getElementsByClassName('dashboard-overlay')[0];
-		el.classList.toggle("d-none");
-		el.classList.toggle("show");
-		if (el.classList.contains('show')) {
-			document.body.style.overflow = "hidden";
-		}
-		else {
-			document.body.style.overflow = "";
-		}
-		e.preventDefault();
-	}
-
-	// close dashboard overlay
-	closeDashboardOverlay() {
-		var e = document.getElementsByClassName('dashboard-overlay')[0];
-		e.classList.remove('show');
-		e.classList.add('d-none');
-		document.body.style.overflow = "";
 	}
 
 	// mobile search form
@@ -132,9 +108,6 @@ class Header extends Component {
 						)}
 					</ul>
 				</Toolbar>
-				<DashboardOverlay
-					onClose={() => this.closeDashboardOverlay()}
-				/>
 			</AppBar>
 		);
 	}

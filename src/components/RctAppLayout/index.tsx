@@ -12,7 +12,6 @@ import classnames from 'classnames';
 import Header from 'Components/Header/Header';
 import SidebarContent from 'Components/Sidebar';
 import Footer from 'Components/Footer/Footer';
-import Tour from 'Components/Tour';
 
 // preload Components
 import PreloadHeader from 'Components/PreloadLayout/PreloadHeader';
@@ -189,7 +188,6 @@ class MainApp extends Component<Props> {
 		return (
 			<div className="app">
 				<div className="app-main-container">
-					<Tour />
 					<Sidebar
 						sidebar={this.renderSidebar()}
 						open={windowWidth <= 1199 ? navCollapsed : false}

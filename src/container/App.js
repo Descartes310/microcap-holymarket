@@ -26,7 +26,6 @@ import React, {Component} from 'react';
 import RctThemeProvider from './RctThemeProvider';
 import AppSignIn from './../routes/session/login';
 import AppSignUp from './../routes/session/register';
-import {getCurrencies} from 'Actions/GeneralActions';
 import BranchActivation from './../routes/session/token';
 import {NotificationContainer} from 'react-notifications';
 import ResetPassword from './../routes/session/forgot-password/ResetPassword';
@@ -50,7 +49,6 @@ import OfferDetails from 'Routes/custom/dashboard/discover/pages/OfferDetails';
 import Agents from 'Routes/custom/dashboard/discover/pages/Agents';
 import SondageFirst from 'Routes/custom/dashboard/discover/sondage.js';
 import SondageSecond from 'Routes/custom/dashboard/discover/sondageResponse.js';
-// import SondageSecond from 'Routes/custom/dashboard/discover/pages/Agents';
 import Services from 'Routes/custom/dashboard/discover/pages/Service';
 import {
     AsyncDiscover,
@@ -59,7 +57,6 @@ import {
     AsyncMoneyManagement,
     AsyncPionier,
     AsyncSolidarity,
-    AsyncStoreWrapper
 } from "Components/AsyncComponent/AsyncComponent";
 
 class App extends Component {
@@ -69,7 +66,6 @@ class App extends Component {
         this.isNewUser();
         // Pass true to skip error manager
         // Because this is a silent request
-        this.props.getCurrencies(true);
     }
 
     /**
@@ -155,12 +151,6 @@ class App extends Component {
                                         <Route path={AUTH.RESET_PASSWORD} component={ResetPassword} />
                                         <Route path={AUTH.FORGOT_PASSWORD} component={SendResetPasswordLink} />
 
-                                        <CanRoute
-                                            path={STORE.SELF}
-                                            component={AsyncStoreWrapper}
-                                            permissions={[]}
-                                        />
-
                                         <Redirect to={AUTH.LOGIN} />
                                     </Switch>
                                 )}
@@ -177,4 +167,4 @@ const mapStateToProps = ({ authUser, tokens, appLoading }) => {
     return { tokens, authUser, appLoading };
 };
 
-export default connect(mapStateToProps, {setAuthUser, disableAppLoading, loginIntoStore, getCurrencies})(App);
+export default connect(mapStateToProps, {setAuthUser, disableAppLoading, loginIntoStore})(App);

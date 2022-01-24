@@ -19,19 +19,16 @@ type StoreData = {
 const SidebarContent = (_) => {
 
 	const dispatch = useDispatch();
-	const { authUser, profile, communitySpace, sidebarMenus}: StoreData = useSelector((state:any) => ({ 
-		sidebarMenus: state.sidebar.sidebarMenus, 
-		authUser: state.authUser.data, 
-		communitySpace: state.communitySpace,
+	const { authUser, sidebarMenus }: StoreData = useSelector((state: any) => ({
+		sidebarMenus: state.sidebar.sidebarMenus,
+		authUser: state.authUser.data,
 		profile: state.authUser.data?.user?.profile
 	}));
 
-	const stateCategory = communitySpace.status ? 'community' : profile?.name.toString().toLowerCase();
-	
+
 	const toggleMenu = (menu) => {
 		dispatch(onToggleMenu({
-			menu,
-			stateCategory	
+			menu
 		}));
 	}
 
@@ -40,7 +37,7 @@ const SidebarContent = (_) => {
 		list.forEach(m => {
 			if (m.child_routes && m.child_routes.length) {
 				const menu: MenuItem = {
-					...m, 
+					...m,
 					child_routes: getValidMenus(m.child_routes)
 				};
 				if (menu.child_routes.length) {
@@ -48,7 +45,7 @@ const SidebarContent = (_) => {
 				}
 			} else if (isMenuAllowed(authUser, m)) {
 				valid.push(m);
-			} 
+			}
 		});
 		return valid;
 	}
@@ -60,23 +57,20 @@ const SidebarContent = (_) => {
 			<nav className="navigation">
 				<List className="rct-mainMenu p-0 m-0 list-unstyled">
 					{authUser && menus.map((menu, key) => {
-						// if (authUser.hasPermissions(menu.permissions.map(i => i.name))) {
-							return (
-								<NavMenuItem
-									key={key}
-									menu={menu}
-									authUser={authUser}
-									onToggleMenu={() => toggleMenu(menu)}
-								/>
-							);
-						// }
-						return null;
+						return (
+							<NavMenuItem
+								key={key}
+								menu={menu}
+								authUser={authUser}
+								onToggleMenu={() => toggleMenu(menu)}
+							/>
+						);
 					})}
 				</List>
 			</nav>
 		</div>
 	);
-	
+
 }
- 
+
 export default SidebarContent;

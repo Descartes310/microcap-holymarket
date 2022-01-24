@@ -5,13 +5,8 @@ import React, { Component } from 'react';
 import { Dropdown, DropdownToggle, DropdownMenu } from 'reactstrap';
 import { Link, NavLink, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { Badge } from 'reactstrap';
 import { NotificationManager } from 'react-notifications';
 import { PROFILE } from 'Url/frontendUrl';
-
-// components
-import SupportPage from '../Support/Support';
-
 import { logout } from 'Actions';
 import Status from "Enums/Status";
 import { getFilePath } from "Helpers/helpers";
@@ -136,11 +131,6 @@ class UserBlock extends Component {
 							</DropdownMenu>
 						</Dropdown>
 					</div> : null}
-				<SupportPage
-					isOpen={this.state.isSupportModal}
-					onCloseSupportPage={() => this.onCloseSupportPage()}
-					onSubmit={() => this.onSubmitSupport()}
-				/>
 			</div>
 		);
 	}
