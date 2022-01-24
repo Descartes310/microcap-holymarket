@@ -2,41 +2,21 @@ import { connect } from "react-redux";
 import { injectIntl } from "react-intl";
 import { Link } from "react-router-dom";
 import Button from "@material-ui/core/Button";
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import headerImg from 'Assets/img/image_revolution.jpg';
-import { RctCard, RctCardContent } from 'Components/RctCard';
-import { Parallax, ParallaxBanner } from 'react-scroll-parallax';
 import { createSondage, setRequestGlobalAction } from 'Actions';
-import { getMainAgents, getMainPioniers } from "Actions/independentActions";
 import DiscoverLayout from "Routes/custom/dashboard/discover/DiscoverLayout";
-import DiscoverVideo from "Routes/custom/dashboard/discover/components/DiscoverVideo";
 import {
     Card,
-    CardImg,
     CardText,
     CardBody,
     CardFooter
 } from 'reactstrap';
 import {
-    AUTH, DISCOVER, HOME, PIONIERS, TERMS, LEGAL_MENTION,
-    GALERY_PROJECT, SOLIDARITY, MONEY_MANAGEMENT, GETIN, MISSION,
-    VALUES, PASS_DETAILS, AGENTS, SERVICES
+    AUTH, DISCOVER, SERVICES
 } from "Url/frontendUrl";
 
 const SondageResponse = (props) => {
-
-    const index = props.match.params.id;
-
-    console.log("index => ", props.match.params.id);
-
-    const onSubmit = (response) => {
-        props.setRequestGlobalAction(true);
-        createSondage({ response }).then(data => {
-            console.log(data);
-        }).finally(() => {
-            props.setRequestGlobalAction(false)
-        })
-    }
     return (
         <DiscoverLayout>
             <div className="session-inner-wrapper video-player-wrapper">

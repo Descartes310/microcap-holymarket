@@ -3,7 +3,6 @@ import { getFilePath } from "Helpers/helpers";
 import EmptyResult from "Components/EmptyResult";
 import React, { useState, useEffect } from 'react';
 import HourGlassLoader from "Components/Loaders/HourGlass";
-import { getAllProjectReactionByBranch } from "Actions/independentActions";
 import DiscoverLayout from "Routes/custom/dashboard/discover/DiscoverLayout";
 import TitleHeader from "Routes/custom/dashboard/discover/components/TitleHeader";
 
@@ -24,13 +23,6 @@ const DiscoverGallery = (props) => {
     const [data, setData] = useState(undefined);
 
     useEffect(() => {
-        getAllProjectReactionByBranch()
-            .then(data => {
-                setData(data ? data : null);
-            })
-            .catch(err => {
-                setData(null);
-            })
     }, []);
 
     return (

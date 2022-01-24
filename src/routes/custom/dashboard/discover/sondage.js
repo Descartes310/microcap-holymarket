@@ -2,17 +2,12 @@ import { connect } from "react-redux";
 import { injectIntl } from "react-intl";
 import { Link } from "react-router-dom";
 import Button from "@material-ui/core/Button";
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import headerImg from 'Assets/img/image_revolution.jpg';
-import { RctCard, RctCardContent } from 'Components/RctCard';
-import { Parallax, ParallaxBanner } from 'react-scroll-parallax';
 import { createSondage, setRequestGlobalAction } from 'Actions';
-import { getMainAgents, getMainPioniers } from "Actions/independentActions";
 import DiscoverLayout from "Routes/custom/dashboard/discover/DiscoverLayout";
-import DiscoverVideo from "Routes/custom/dashboard/discover/components/DiscoverVideo";
 import {
     Card,
-    CardImg,
     CardText,
     CardBody,
     CardFooter

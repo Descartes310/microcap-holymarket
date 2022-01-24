@@ -1,41 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from "react-redux";
 import { injectIntl } from "react-intl";
-import QueueAnim from "rc-queue-anim";
-import { Link } from "react-router-dom";
-import AppConfig from "Constants/AppConfig";
-import IntlMessages from "Util/IntlMessages";
-import Button from "@material-ui/core/Button";
-import Toolbar from "@material-ui/core/Toolbar";
-import { AUTH, DISCOVER, HOME, GALERY_PROJECT, PASS_DETAILS, AGENTS } from "Url/frontendUrl";
-import AppBar from "@material-ui/core/AppBar/AppBar";
-import headerImg from 'Assets/img/image_revolution.jpg';
-import api from 'Api';
+import { DISCOVER } from "Url/frontendUrl";
 import { RctCard, RctCardContent } from 'Components/RctCard';
-import { getAgents } from "Actions/independentActions";
 import { HashLink } from 'react-router-hash-link';
 import { Tooltip } from '@material-ui/core';
-import IconButton from '@material-ui/core/IconButton';
 import { getFilePath } from "Helpers/helpers";
-import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import DiscoverMenu from "Routes/custom/dashboard/DiscoverMenu";
 
 const Agents = (props) => {
     const { loading, intl } = props;
     const [data, setData] = useState([])
-    /**
-     * On navigate to Discover Microcap
-     */
-    const onUserLogin = () => {
-        props.history.push(AUTH.LOGIN);
-    };
+
 
     document.body.style.overflow = "auto";
 
     useEffect(() => {
-        getAgents().then(data => {
-            setData(data)
-        })
     }, []);
 
     return (

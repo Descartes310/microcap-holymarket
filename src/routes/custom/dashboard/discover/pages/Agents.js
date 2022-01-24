@@ -2,7 +2,6 @@ import { DISCOVER } from "Url/frontendUrl";
 import { getFilePath } from "Helpers/helpers";
 import { HashLink } from 'react-router-hash-link';
 import React, { useState, useEffect } from 'react';
-import { getAgents } from "Actions/independentActions";
 import DiscoverLayout from "Routes/custom/dashboard/discover/DiscoverLayout";
 import TitleHeader from "Routes/custom/dashboard/discover/components/TitleHeader";
 
@@ -12,9 +11,6 @@ const Agents = () => {
     document.body.style.overflow = "auto";
 
     useEffect(() => {
-        getAgents().then(data => {
-            setData(data)
-        });
     }, []);
 
     return (

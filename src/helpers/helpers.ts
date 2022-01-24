@@ -5,10 +5,8 @@ import _ from 'lodash';
 import moment from 'moment';
 import api from "Api/index";
 import AppConfig from 'Constants/AppConfig';
-import ERRORS, { ERROR_500 } from 'Data/errors';
-import NavLinks, { MenuItem } from "Components/Sidebar/NavLinks";
 import { NotificationManager } from 'react-notifications';
-import { Profile, User } from 'Models';
+import NavLinks, { MenuItem } from "Components/Sidebar/NavLinks";
 
 const TABLE_OF_256_HEXADECIMAL = (function () {
     const arr = [];
@@ -282,19 +280,8 @@ export const getFullAuthorisationRequestConfig = () => {
     };
     return { headers, shouldSkipToken: true, withCredentials: true, skipError: true };
 };
-/*"KEY_1": {
-    "ERROR_1": ERROR_1_MESSAGE,
-    "ERROR_2": ERROR_1_MESSAGE,
-},
-"KEY_2": {
-    "ERROR_1": ERROR_1_MESSAGE
-}*/
+
 export const requestErrorProcessing = (data) => {
-    /*const result = {};
-    Object.entries(data.errors).map(error => {
-        // error[0] = KEY_1
-        result[error[0]] = typeof error[1] === 'object' ? Object.values(error[1]) : error[1];
-    });*/
     const result = [];
     Object.entries(data.errors).map(error => {
         result.push(typeof error[1] === 'object' ? Object.values(error[1]) : error[1]);
@@ -513,37 +500,6 @@ export const makeActionRequest = (verb, url, typeBase, dispatch, data = null, co
             dispatch({ type: `${typeBase}_FAILURE` });
             return Promise.reject(error);
         });
-};
-
-/**
- * Get all error into an array
- * @type {Array}
- */
-const errorItems = _.flattenDeep(Object.values(ERRORS).map(i => Object.values(i)));
-
-
-/**
- * Map errors and display them
- * @param errors
- * @param customOptions
- */
-export const errorManager = (errors, customOptions = null) => {
-    let found = false;
-
-    if (errors) {
-        errors.forEach(error => {
-            const errorItem = errorItems.find(e => e.NAME === error.code);
-            if (errorItem) {
-                NotificationManager.error(errorItem.MESSAGE);
-                found = true;
-            }
-        });
-    }
-
-    // Display Error 500 in case of no match
-    if (!found) {
-        NotificationManager.error(ERROR_500);
-    }
 };
 
 export const oldCartItemChecked = (oldItems) => {

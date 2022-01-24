@@ -1,7 +1,6 @@
 import { getFilePath } from "Helpers/helpers";
 import React, { useState, useEffect } from 'react';
 import Checkbox from '@material-ui/core/Checkbox';
-import { getPioniers } from "Actions/independentActions";
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import DiscoverLayout from "Routes/custom/dashboard/discover/DiscoverLayout";
 import TitleHeader from "Routes/custom/dashboard/discover/components/TitleHeader";
@@ -13,9 +12,6 @@ const DiscoverPioner = () => {
     const [types, setTypes] = useState(['MANAGER', 'PASS_UP', 'PASS_LEADER', 'PASS_PREMIUM']);
 
     useEffect(() => {
-        getPioniers().then(data => {
-            setData(data)
-        })
     }, []);
 
     useEffect(() => {

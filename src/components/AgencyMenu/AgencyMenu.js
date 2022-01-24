@@ -15,7 +15,6 @@ import NavMenuItem from './NavMenuItem';
 import Sidebar from 'Components/Sidebar';
 
 //Component
-import SearchForm from 'Components/Header/SearchForm';
 import MobileSearchForm from 'Components/Header/MobileSearchForm';
 
 class AgencyMenu extends Component {
@@ -125,7 +124,6 @@ class AgencyMenu extends Component {
 					<MenuIcon />
 				</IconButton>
 				<div className="search-icon">
-					<SearchForm />
 					<IconButton mini="true" className="search-icon-btn" onClick={() => this.openMobileSearchForm()}>
 						<i className="zmdi zmdi-search"></i>
 					</IconButton>

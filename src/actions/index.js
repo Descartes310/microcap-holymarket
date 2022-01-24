@@ -5,7 +5,6 @@ export * from './AppLoadingAction';
 export * from './AppSettingsActions';
 export * from './TokensActions';
 export * from './AuthActions';
-export * from './independentActions';
 export * from './RequestGlobalAction';
 export * from './GeneralActions';
 export * from './PermissionAlertBoxAction';
