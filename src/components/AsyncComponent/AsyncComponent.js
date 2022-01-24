@@ -81,13 +81,6 @@ const AsyncSessionForgotPasswordComponent = Loadable({
 	loader: () => import("Routes/session/forgot-password/SendResetPasswordLink"),
 	loading: () => <RctPageLoader />,
 });
-
-// Session Page 404
-const AsyncSessionPage404Component = Loadable({
-	loader: () => import("Routes/session/404"),
-	loading: () => <RctPageLoader />,
-});
-
 /*------------------ UI Components ---------------*/
 
 // components Alerts
@@ -207,7 +200,6 @@ export {
 	AsyncSessionLoginComponent,
 	AsyncSessionRegisterComponent,
 	AsyncSessionForgotPasswordComponent,
-	AsyncSessionPage404Component,
 	AsyncUIAlertsComponent,
 	AsyncUIAppbarComponent,
 	AsyncUIBottomNavigationComponent,

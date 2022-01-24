@@ -137,22 +137,22 @@ module.exports = {
 		]
 	},
 	optimization: {
-		minimizer: [
-			new UglifyJsPlugin({
-				// Enable file caching
-				cache: true,
-				// Use multi-process parallel running to improve the build speed
-				// Default number of concurrent runs: os.cpus().length - 1
-				parallel: true,
+		// minimizer: [
+		// 	new UglifyJsPlugin({
+		// 		// Enable file caching
+		// 		cache: true,
+		// 		// Use multi-process parallel running to improve the build speed
+		// 		// Default number of concurrent runs: os.cpus().length - 1
+		// 		parallel: true,
 				
-				uglifyOptions: {
-					compress: false,
-					ecma: 8,
-					mangle: true
-				},
-				sourceMap: true
-			})
-		]
+		// 		uglifyOptions: {
+		// 			compress: false,
+		// 			ecma: 8,
+		// 			mangle: true
+		// 		},
+		// 		sourceMap: true
+		// 	})
+		// ]
 	},
 	performance: {
 		hints: process.env.NODE_ENV === 'production' ? "warning" : false
