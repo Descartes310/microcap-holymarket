@@ -14,7 +14,8 @@ class HomePage extends Component {
 		return (
 			<div className="full-height col-sm-12 col-md-9 col-lg-7 mx-auto text-center">
 				<h1 className="mb-20">
-					Welcome to microcap</h1>
+					Welcome to microcap
+				</h1>
 			</div>
 		)
 	}

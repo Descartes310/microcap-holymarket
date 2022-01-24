@@ -399,9 +399,6 @@ const Discover = (props) => {
                 </div>
 
                 <div id="pass-section" className="merox-services-area">
-                    {/*<div className="area-img">
-                        <img src={require('Assets/identity/services-bg.57d4413a.jpg')} alt="img"/>
-                    </div>*/}
                     <div className="container">
                         <div className="row">
                             <div className="visibRight col-xl-4 offset-xl-1 col-lg-4 order-2 wow fadeInRight">
