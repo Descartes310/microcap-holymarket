@@ -1,10 +1,10 @@
 /**
  * Redux Actions
  */
+export * from './AuthActions';
+export * from './CartActions';
+export * from './TokensActions';
 export * from './AppLoadingAction';
 export * from './AppSettingsActions';
-export * from './TokensActions';
-export * from './AuthActions';
 export * from './RequestGlobalAction';
 export * from './PermissionAlertBoxAction';
-export * from './CartActions';

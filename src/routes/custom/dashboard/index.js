@@ -60,7 +60,6 @@ const Dashboard = ({ onInitCart }) => {
     const ability = useAbility(AbilityContext);
 
     useEffect(() => {
-        console.log('Je suis dans le index ici !')
         onInitCart();
     }, []);
 

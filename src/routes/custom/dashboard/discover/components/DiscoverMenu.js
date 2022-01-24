@@ -1,15 +1,14 @@
-import { Link, withRouter } from "react-router-dom";
+import { connect } from "react-redux";
 import React, { Component } from 'react';
 import { SlideDown } from 'react-slidedown';
 import 'react-slidedown/lib/slidedown.css';
 import AppConfig from "Constants/AppConfig";
-import IntlMessages from "Util/IntlMessages";
 import Button from "@material-ui/core/Button";
 import { HashLink } from "react-router-hash-link";
-import { AGENTS, AUTH, GALERY_PROJECT, HOME, PASS_DETAILS, DISCOVER, MICROCAP360 } from "Url/frontendUrl";
-import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem, Dropdown } from 'reactstrap';
-import { connect } from "react-redux";
+import { Link, withRouter } from "react-router-dom";
 import TellUs from "../../../../session/login/TellUs";
+import { DropdownToggle, DropdownMenu, DropdownItem, Dropdown } from 'reactstrap';
+import { AGENTS, AUTH, GALERY_PROJECT, PASS_DETAILS, DISCOVER, HOME } from "Url/frontendUrl";
 
 const MAX_MOBILE_SCREEN_WIDTH = 996;
 
@@ -17,12 +16,6 @@ const getWidth = () => {
     return window.innerWidth
         || document.documentElement.clientWidth
         || document.body.clientWidth;
-};
-
-const getHeight = () => {
-    return window.innerHeight
-        || document.documentElement.clientHeight
-        || document.body.clientHeight;
 };
 
 class DiscoverMenu extends Component {
@@ -155,7 +148,7 @@ class DiscoverMenu extends Component {
                                 <li className="center-hor-ver">
                                     {authUser.data ? (
                                         <Link
-                                            to={MICROCAP360.MY.PROJECT}
+                                            to={HOME}
                                             className="mr-2 btn-inflated font-size-inherit outlined">
                                             Espace personnel
                                         </Link>

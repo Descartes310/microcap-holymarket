@@ -45,7 +45,7 @@ const Agents = () => {
                             <div className="single-item col-lg-4 col-md-5">
                                 <div className="item">
                                     <div className="thumb">
-                                        <div className="img-wrapper" style={{ backgroundImage: `url(${getFilePath(agent.avatar) || require('Assets/img/agent.png')})` }} />
+                                        <div className="img-wrapper" style={{ backgroundImage: `url(${getFilePath(agent.avatar) || require('Assets/img/profile.jpg')})` }} />
                                     </div>
                                     <div className="info">
                                         <h4>{agent.name}, <span>{agent.post}</span></h4>

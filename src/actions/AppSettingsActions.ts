@@ -1,7 +1,6 @@
 /**
  * Redux App Settings Actions
  */
-import { MenuItem } from 'Components/Sidebar/NavLinks';
 import {
     COLLAPSED_SIDEBAR,
     DARK_MODE,

@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import {SocialFeedsWidget} from "Components/Widgets";
 import ScrollToTopBtn from "Routes/custom/dashboard/discover/components/ScrollToTop";
-import {AGENTS, LEGAL_MENTION, MISSION, PIONIERS, SERVICES, TERMS, VALUES, CGU} from "Url/frontendUrl";
+import {AGENTS, MISSION, PIONIERS, SERVICES, VALUES, CGU} from "Url/frontendUrl";
 
 const DiscoverFooter = ({props}) => {
     return (
