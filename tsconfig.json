@@ -14,8 +14,8 @@
 			"Components": ["src/components"],
 			"Components/*": ["src/components/*"],
 
-			"Assets": ["src/assets"],
-			"Assets/*": ["src/assets/*"],
+			"Assets": ["public/assets"],
+			"Assets/*": ["public/assets/*"],
 			
 			"Util": ["src/util"],
 			"Util/*": ["src/util/*"],

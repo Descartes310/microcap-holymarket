@@ -52,7 +52,7 @@ module.exports = {
 		alias: {
 			Actions: path.resolve(__dirname, 'src/actions/'),
 			Components: path.resolve(__dirname, 'src/components/'),
-			Assets: path.resolve(__dirname, 'src/assets/'),
+			Assets: path.resolve(__dirname, 'public/assets/'),
 			Util: path.resolve(__dirname, 'src/util/'),
 			Routes: path.resolve(__dirname, 'src/routes/'),
 			Constants: path.resolve(__dirname, 'src/constants/'),
@@ -135,24 +135,6 @@ module.exports = {
 				}]
 			}
 		]
-	},
-	optimization: {
-		// minimizer: [
-		// 	new UglifyJsPlugin({
-		// 		// Enable file caching
-		// 		cache: true,
-		// 		// Use multi-process parallel running to improve the build speed
-		// 		// Default number of concurrent runs: os.cpus().length - 1
-		// 		parallel: true,
-				
-		// 		uglifyOptions: {
-		// 			compress: false,
-		// 			ecma: 8,
-		// 			mangle: true
-		// 		},
-		// 		sourceMap: true
-		// 	})
-		// ]
 	},
 	performance: {
 		hints: process.env.NODE_ENV === 'production' ? "warning" : false
