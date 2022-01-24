@@ -10,7 +10,7 @@ import {
 
 import api from './../api';
 
-import {PROFILE} from 'Url/backendUrl';
+import { AUTH } from 'Url/backendUrl';
 
 /**
  * Redux Action get auth information
@@ -21,7 +21,7 @@ export const setAuthUser = () => (dispatch) => {
     // Define branch url
     const branchUrl = window.location.host;
 
-    const url = `${PROFILE.INFORMATION}?branch_url=${branchUrl}`;
+    const url = `${AUTH.KYC}?branch_url=${branchUrl}`;
 
     return api
         .get(url, {skipError: true})

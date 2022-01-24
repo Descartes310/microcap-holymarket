@@ -60,7 +60,6 @@ const AsyncMaterialIconsComponent = Loadable({
 	loader: () => import("Routes/icons/material-icons"),
 	loading: () => <RctPageLoader />,
 });
-/*--------------- Charts ----------------*/
 
 /*---------------- Session ------------------*/
 
@@ -83,96 +82,11 @@ const AsyncSessionForgotPasswordComponent = Loadable({
 });
 /*------------------ UI Components ---------------*/
 
-// components Alerts
-const AsyncUIAlertsComponent = Loadable({
-	loader: () => import("Routes/components/alert"),
-	loading: () => <RctPageLoader />,
-});
-
 // components Appbar
 const AsyncUIAppbarComponent = Loadable({
 	loader: () => import("Routes/components/app-bar"),
 	loading: () => <RctPageLoader />,
 });
-
-// components BottomNavigation
-const AsyncUIBottomNavigationComponent = Loadable({
-	loader: () => import("Routes/components/bottom-navigation"),
-	loading: () => <RctPageLoader />,
-});
-
-// components BottomNavigation
-const AsyncUIAvatarsComponent = Loadable({
-	loader: () => import("Routes/components/avatar"),
-	loading: () => <RctPageLoader />,
-});
-
-// components Buttons
-const AsyncUIButtonsComponent = Loadable({
-	loader: () => import("Routes/components/buttons"),
-	loading: () => <RctPageLoader />,
-});
-
-// components Badges
-const AsyncUIBadgesComponent = Loadable({
-	loader: () => import("Routes/components/badges"),
-	loading: () => <RctPageLoader />,
-});
-
-// components Cards
-const AsyncUICardsComponent = Loadable({
-	loader: () => import("Routes/components/cards"),
-	loading: () => <RctPageLoader />,
-});
-
-// components Dialog
-const AsyncUIDialogComponent = Loadable({
-	loader: () => import("Routes/components/dialog"),
-	loading: () => <RctPageLoader />,
-});
-
-// components Dividers
-const AsyncUIDividersComponent = Loadable({
-	loader: () => import("Routes/components/dividers"),
-	loading: () => <RctPageLoader />,
-});
-
-// components ExpansionPanel
-const AsyncUIExpansionPanelComponent = Loadable({
-	loader: () => import("Routes/components/expansion-panel"),
-	loading: () => <RctPageLoader />,
-});
-
-// components Grid List
-const AsyncUIGridListComponent = Loadable({
-	loader: () => import("Routes/components/grid-list"),
-	loading: () => <RctPageLoader />,
-});
-
-// components List
-const AsyncUIListComponent = Loadable({
-	loader: () => import("Routes/components/list"),
-	loading: () => <RctPageLoader />,
-});
-
-// components Menu
-const AsyncUIMenuComponent = Loadable({
-	loader: () => import("Routes/components/menu"),
-	loading: () => <RctPageLoader />,
-});
-
-// components Popover
-const AsyncUIPopoverComponent = Loadable({
-	loader: () => import("Routes/components/popover"),
-	loading: () => <RctPageLoader />,
-});
-
-// components SelectionControls
-const AsyncUISelectionControlsComponent = Loadable({
-	loader: () => import("Routes/components/selection-controls"),
-	loading: () => <RctPageLoader />,
-});
-
 
 
 export const AsyncUserAccountTypes = Loadable({
@@ -190,9 +104,6 @@ export const AsyncProfile = Loadable({
 	loading: () => <RctPageLoader />,
 });
 
-
-
-
 export {
 	AsyncThemifyIconsComponent,
 	AsyncSimpleLineIconsComponent,
@@ -200,19 +111,5 @@ export {
 	AsyncSessionLoginComponent,
 	AsyncSessionRegisterComponent,
 	AsyncSessionForgotPasswordComponent,
-	AsyncUIAlertsComponent,
-	AsyncUIAppbarComponent,
-	AsyncUIBottomNavigationComponent,
-	AsyncUIAvatarsComponent,
-	AsyncUIButtonsComponent,
-	AsyncUIBadgesComponent,
-	AsyncUICardsComponent,
-	AsyncUIDialogComponent,
-	AsyncUIDividersComponent,
-	AsyncUIExpansionPanelComponent,
-	AsyncUIGridListComponent,
-	AsyncUIListComponent,
-	AsyncUIMenuComponent,
-	AsyncUIPopoverComponent,
-	AsyncUISelectionControlsComponent,
+	AsyncUIAppbarComponent
 };

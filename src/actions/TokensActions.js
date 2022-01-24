@@ -6,13 +6,12 @@ import {
     LOGIN_USER_FAILURE,
 } from 'Actions/types';
 import api from './../api';
-import {AUTH} from '../urls/backendUrl';
+import { AUTH } from '../urls/backendUrl';
 import AppConfig from 'Constants/AppConfig';
-import {setAuthUser} from "Actions/AuthActions";
-import {getCurrencies} from "Actions/GeneralActions";
+import { setAuthUser } from "Actions/AuthActions";
 import { NotificationManager } from 'react-notifications';
-import {removeAuthToken, saveAuthToken} from "Helpers/tokens";
-import {getFullAuthorisationRequestConfig} from "Helpers/helpers";
+import { removeAuthToken, saveAuthToken } from "Helpers/tokens";
+import { getFullAuthorisationRequestConfig } from "Helpers/helpers";
 
 const errorDisplay = (error) => {
    if (error && (error.message.includes('code 400') || error.message.includes('code 401'))) {
