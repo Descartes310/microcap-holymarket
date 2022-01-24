@@ -5,7 +5,6 @@ import UserService from "Services/users";
 import Tabs from '@material-ui/core/Tabs';
 import AppBar from '@material-ui/core/AppBar';
 import { setRequestGlobalAction } from "Actions";
-import { Document, Page, pdfjs } from 'react-pdf';
 import SwipeableViews from "react-swipeable-views";
 import TabContainer from "Components/TabContainer";
 import { FormGroup, Input, Button } from "reactstrap";
@@ -13,8 +12,6 @@ import DialogComponent from "Components/DialogComponent";
 import { NotificationManager } from "react-notifications";
 import Checkbox from "@material-ui/core/Checkbox/Checkbox";
 import InputLabel from "@material-ui/core/InputLabel/InputLabel";
-
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 class ActivationBox extends Component {
 
@@ -95,13 +92,7 @@ class ActivationBox extends Component {
                         index={this.state.activeTab}>
                         <div className="card mb-0 transaction-box">
                             <TabContainer>
-                                <div className="p-sm-20 pt-sm-30 p-10 pt-15 border-top">  
-                                    <Document
-                                        file={this.props.pdfURL}
-                                        onLoadSuccess={this.onDocumentLoadSuccess}
-                                    >
-                                        <Page pageNumber={this.state.pageNumber} />
-                                    </Document>
+                                <div className="p-sm-20 pt-sm-30 p-10 pt-15 border-top">
                                     <div>
                                         <label>J'ai lu et j'accepte les CGU</label>
                                         <Checkbox

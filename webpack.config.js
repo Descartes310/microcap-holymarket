@@ -21,8 +21,7 @@ const resolveApp = relativePath => path.resolve(appDirectory, relativePath);
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-// const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-const TerserPlugin = require("terser-webpack-plugin");
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
 	entry: ["babel-polyfill", "react-hot-loader/patch", "./src/index.js"],
@@ -138,16 +137,22 @@ module.exports = {
 		]
 	},
 	optimization: {
-		/*minimizer: [new TerserPlugin({
-			extractComments: true,
-			parallel: 8,
-			terserOptions: {
-				compress: {
-					warnings: false
-				}
-			}
-		})],
-		minimize: true,*/
+		minimizer: [
+			new UglifyJsPlugin({
+				// Enable file caching
+				cache: true,
+				// Use multi-process parallel running to improve the build speed
+				// Default number of concurrent runs: os.cpus().length - 1
+				parallel: true,
+				
+				uglifyOptions: {
+					compress: false,
+					ecma: 8,
+					mangle: true
+				},
+				sourceMap: true
+			})
+		]
 	},
 	performance: {
 		hints: process.env.NODE_ENV === 'production' ? "warning" : false
@@ -155,7 +160,6 @@ module.exports = {
 	plugins: [
 		new Dotenv(),
 		new FriendlyErrorsWebpackPlugin(),
-		// new webpack.optimize.UglifyJsPlugin(),
 		new CleanWebpackPlugin({
 			dry: false,
 			verbose: false,

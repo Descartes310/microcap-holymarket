@@ -13,7 +13,6 @@ import "aos/dist/aos.css";
 import AOS from 'aos';
 // css
 import './lib/reactifyCss';
-import 'react-image-lightbox/style.css';
 
 // firebase
 import './firebase';
@@ -25,7 +24,6 @@ import store from './store';
 
 import ability from './permissions/ability';
 import {getSessonId} from "Helpers/helpers";
-import { ParallaxProvider } from 'react-scroll-parallax';
 import { SWRConfig } from 'swr';
 import { makeRequest } from 'Helpers/helpers';
 // Set session id if it doest not exits
@@ -54,11 +52,9 @@ const MainApp = () => {
 		<Provider store={store}>
 			<AbilityContext.Provider value={ability}>
 				<MuiPickersUtilsProvider utils={MomentUtils}>
-                    <ParallaxProvider>
-						<SWRConfig value={SWR_CONFIG}>
-					    	<App />
-						</SWRConfig>
-                    </ParallaxProvider>
+					<SWRConfig value={SWR_CONFIG}>
+						<App />
+					</SWRConfig>
 				</MuiPickersUtilsProvider>
 			</AbilityContext.Provider>
 		</Provider>

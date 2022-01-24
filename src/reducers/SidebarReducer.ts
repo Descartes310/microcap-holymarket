@@ -5,7 +5,6 @@ import update from 'react-addons-update';
 
 // nav links
 import allMenus from 'Components/Sidebar/NavLinks';
-import agencyNavLinks from 'Components/AgencyMenu/NavLinks';
 import { SidebarActions } from 'Actions/AppSettingsActions';
 
 type SidebarState = {
@@ -15,7 +14,7 @@ type SidebarState = {
 
 const INIT_STATE = {
 	sidebarMenus: allMenus.map(e => ({...e, open: false})),
-	agencySidebarMenu: agencyNavLinks,
+	agencySidebarMenu: [],
 };
 
 export default (state: SidebarState = INIT_STATE, action: SidebarActions): SidebarState => {

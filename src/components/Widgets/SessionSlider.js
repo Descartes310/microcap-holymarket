@@ -57,9 +57,6 @@ export default class SessionSlider extends Component {
                         height="588"
                      />
                      <div className="rct-img-overlay">
-                        {/*<h5 className="client-name">{data.name}</h5>
-                        <span>{data.designation}</span>
-                        <p className="mb-0 fs-14">{data.body}</p>*/}
                      </div>
                   </div>
                 ))}
