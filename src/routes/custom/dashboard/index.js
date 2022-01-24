@@ -35,9 +35,7 @@ import {
     SERVICES,
     SOLIDARITY,
     PASS_DETAILS,
-    SONDAGE_FIRST,
     NOTIFICATIONS,
-    SONDAGE_SECOND,
     GALERY_PROJECT,
     MONEY_MANAGEMENT,
     USER_ACCOUNT_TYPE,
@@ -53,11 +51,9 @@ import HomePage from "Routes/custom/HomePage";
 import Mission from "./discover/pages/Mission";
 import Services from './discover/pages/Service';
 import { onInitCart } from "Actions/CartActions";
-import SondageFirst from './discover/sondage.js';
 import { AbilityContext } from "Permissions/Can";
 import { loginIntoStore } from "Actions/TokensActions";
 import OfferDetails from './discover/pages/OfferDetails';
-import SondageSecond from './discover/sondageResponse.js';
 import { disableAppLoading } from "Actions/AppLoadingAction";
 
 const Dashboard = ({ onInitCart }) => {
@@ -83,8 +79,6 @@ const Dashboard = ({ onInitCart }) => {
                     <Route exact path={VALUES} component={Values} />
                     <Route exact path={SERVICES} component={Services} />
                     <Route exact path={TERMS} component={Terms} />
-                    <Route exact path={SONDAGE_FIRST} component={SondageFirst} />
-                    <Route exact path={SONDAGE_SECOND} component={SondageSecond} />
                     <Route exact path={PASS_DETAILS} component={OfferDetails} />
                     <Route exact path={SOLIDARITY} component={AsyncSolidarity} />
                     <Route exact path={MONEY_MANAGEMENT} component={AsyncMoneyManagement} />

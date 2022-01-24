@@ -7,7 +7,6 @@ import Slider from "react-slick";
 // api
 import api from 'Api';
 import sessionSlider from '../../services/sessionSlider';
-import travail from 'Assets/img/travail1.jpg'
 
 export default class SessionSlider extends Component {
 

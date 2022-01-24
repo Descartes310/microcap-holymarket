@@ -7,6 +7,8 @@ import { getReferralTypeLabel } from 'Helpers/helpers';
 import { FormGroup, Input as InputStrap } from 'reactstrap';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 
+const PROFILE_BANNER = 'https://reactify.theironnetwork.org/static/media/profile-bg.5573c7e7.jpg';
+
 const Personal = (props) => {
 
     useEffect(() => {
@@ -16,7 +18,7 @@ const Personal = (props) => {
         <div className="userProfile-wrapper">
             <RctCard>
                 <div className="profile-top mb-20" style={{ maxHeight: 260 }}>
-                    <img src={require('Assets/img/profile-bg.jpg')} alt="profile banner" className="img-fluid" width="1920" height="200" />
+                    <img src={PROFILE_BANNER} alt="profile banner" className="img-fluid" width="1920" height="200" />
                     <div className="profile-content">
                         <div className="media">
                             <img src={require('Assets/avatars/profile.jpg')} alt="user profile" className="rounded-circle mr-30 bordered" width="140" height="140" />

@@ -5,7 +5,6 @@ import { injectIntl } from "react-intl";
 import { Link } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import slide21 from 'Assets/img/slide21.jpg';
-import slide22 from 'Assets/img/slide22.jpg';
 import slide23 from 'Assets/img/slide23.jpg';
 import { HashLink } from 'react-router-hash-link';
 import { RctCard, RctCardContent } from 'Components/RctCard';
@@ -29,12 +28,12 @@ const settings = {
 };
 
 const slides = [
-    {
-        image: slide22,
-        leftImage: true,
-        title: 'La solidarité! une valeur essentielle chez MicroCap',
-        description: 'MicroCap unit des personnes dans un sentiment d\'entraide financier, d\'assistance ou de collaboration gracieuse'
-    },
+    // {
+    //     image: slide22,
+    //     leftImage: true,
+    //     title: 'La solidarité! une valeur essentielle chez MicroCap',
+    //     description: 'MicroCap unit des personnes dans un sentiment d\'entraide financier, d\'assistance ou de collaboration gracieuse'
+    // },
     {
         image: slide21,
         leftImage: false,
@@ -165,7 +164,7 @@ const Discover = (props) => {
                                         <div className="discover-content">
                                             <div className="row align-items-center justify-content-lg-between">
                                                 <div className="col-md-5" data-aos="fade-right">
-                                                    <img className="img-fluid" src={require('Assets/img/large/compressed/money.png')} alt="" />
+                                                    <img className="img-fluid" src={require('Assets/img/large/compressed/img-default.png')} alt="" />
                                                 </div>
                                                 <div className="col-md-5 mmt-sm-4" data-aos="fade-left">
                                                     <h4>PIP MicroCap, un compte qui conte des comptes et qui atteste de votre capacité financière</h4>
@@ -198,14 +197,14 @@ const Discover = (props) => {
                                                     </p>
                                                 </div>
                                                 <div className="col-md-5 order-sm-first order-md-2 order-1" data-aos="fade-up-left">
-                                                    <img className="img-fluid" src={require('Assets/img/large/compressed/card.png')} alt="" />
+                                                    <img className="img-fluid" src={require('Assets/img/large/compressed/img-default.png')} alt="" />
                                                 </div>
                                             </div>
                                         </div>
                                         <div className="discover-content">
                                             <div className="row align-items-center justify-content-lg-between">
                                                 <div className="col-md-5" data-aos="fade-down-right">
-                                                    <img className="img-fluid" src={require('Assets/img/large/compressed/cash-out.png')} alt="" />
+                                                    <img className="img-fluid" src={require('Assets/img/large/compressed/img-default.png')} alt="" />
                                                 </div>
                                                 <div className="col-md-5" data-aos="fade-down-left">
                                                     <h4>La reserve Microcap</h4>
@@ -272,7 +271,7 @@ const Discover = (props) => {
                                                     </p>
                                                 </div>
                                                 <div className="col-md-5" data-aos="fade-up-left">
-                                                    <img className="img-fluid" src={require('Assets/img/large/compressed/invest.png')} alt="" />
+                                                    <img className="img-fluid" src={require('Assets/img/large/compressed/img-default.png')} alt="" />
                                                 </div>
                                             </div>
                                         </div>
@@ -292,7 +291,7 @@ const Discover = (props) => {
                                                     </p>
                                                 </div>
                                                 <div className="col-md-5 mmt-sm-4 order-2 order-md-1" data-aos="fade-down-left">
-                                                    <img className="img-fluid" src={require('Assets/img/large/compressed/cash-out.png')} alt="" />
+                                                    <img className="img-fluid" src={require('Assets/img/large/compressed/img-default.png')} alt="" />
                                                 </div>
                                             </div>
                                         </div>
