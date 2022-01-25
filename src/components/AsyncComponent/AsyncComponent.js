@@ -104,6 +104,11 @@ export const AsyncProfile = Loadable({
 	loading: () => <RctPageLoader />,
 });
 
+export const AsyncMarketplace = Loadable({
+	loader: () => import("Routes/custom/marketplace"),
+	loading: () => <RctPageLoader />,
+});
+
 export {
 	AsyncThemifyIconsComponent,
 	AsyncSimpleLineIconsComponent,

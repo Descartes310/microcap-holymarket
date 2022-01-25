@@ -3,6 +3,7 @@ import Permission from "Enums/Permissions";
 import {
    GROUP,
    PROFILE,
+   MARKETPLACE,
    USER_ACCOUNT_TYPE
 } from 'Url/frontendUrl';
 
@@ -170,6 +171,78 @@ export default [
             "menu_title": "Communautés",
             "new_item": false,
             "path": GROUP.COMMUNITY.SPACE.MINE,
+            "permissions": [Permission.group.space.name],
+            "profiles": null,
+            "child_routes": null
+         }
+      ],
+   },
+
+   {
+      "menu_title": "Produits & Services",
+      "menu_icon": "zmdi zmdi-labels",
+      "new_item": false,
+      "permissions": [
+         [Permission.group.space.name]
+      ],
+      "profiles": null,
+      "child_routes": [
+      {
+         "menu_title": "Catalogues",
+         "new_item": false,
+         "path": MARKETPLACE.CATAlOG.SALE.LIST,
+         "permissions": [Permission.group.space.name],
+         "profiles": null,
+         "child_routes": null
+      },
+         {
+            "menu_title": "Gestion commerciale",
+            "new_item": false,
+            "path": MARKETPLACE.COMMERCIAL.OFFER.LIST,
+            "permissions": [Permission.group.space.name],
+            "profiles": null,
+            "child_routes": null
+         },
+         {
+            "menu_title": "Modèles produits",
+            "new_item": false,
+            "path": MARKETPLACE.PRODUCT.LIST,
+            "permissions": [Permission.group.space.name],
+            "profiles": null,
+            "child_routes": null
+         }
+      ],
+   },
+
+   {
+      "menu_title": "Ma boutique",
+      "menu_icon": "zmdi zmdi-store",
+      "new_item": false,
+      "permissions": [
+         [Permission.group.space.name]
+      ],
+      "profiles": null,
+      "child_routes": [
+         {
+            "menu_title": "Produits",
+            "new_item": false,
+            "path": MARKETPLACE.STORE.PRODUCT.LIST,
+            "permissions": [Permission.group.space.name],
+            "profiles": null,
+            "child_routes": null
+         },
+         {
+            "menu_title": "Demandes d'achats ",
+            "new_item": false,
+            "path": MARKETPLACE.STORE.PURCHASE.LIST,
+            "permissions": [Permission.group.space.name],
+            "profiles": null,
+            "child_routes": null
+         },
+         {
+            "menu_title": "Commandes reçus",
+            "new_item": false,
+            "path": MARKETPLACE.STORE.ORDER.LIST,
             "permissions": [Permission.group.space.name],
             "profiles": null,
             "child_routes": null

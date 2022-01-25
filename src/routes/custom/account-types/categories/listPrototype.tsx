@@ -3,20 +3,9 @@ import React, { useState } from 'react';
 import { withRouter } from "react-router-dom";
 import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
-import EditIcon from '@material-ui/icons/Edit';
-import IconButton from "@material-ui/core/IconButton";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 
-const Categories = () => {
-
-    const [categories, setCategories] = useState([]);
-
-    const getCategories = () => {
-        // props.setRequestGlobalAction(true),
-        // xxx.getAccountTypeCategories()
-        // .then(response => setCategories(categories))
-        // .finally(() => props.setRequestGlobalAction(false))
-    }
+const List = () => {
 
     return (
         <>
@@ -43,7 +32,6 @@ const Categories = () => {
                                         <tr>
                                             <th className="fw-bold">Label</th>
                                             <th className="fw-bold">Description</th>
-                                            <th className='text-right'>Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -63,17 +51,6 @@ const Categories = () => {
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td className="text-right table-action">
-                                                    <IconButton
-                                                        edge="start"
-                                                        //onClick={() => handleEdit(item)}
-                                                        className="text-black"
-                                                        color="inherit"
-                                                        aria-label="menu"
-                                                    >
-                                                        <EditIcon />
-                                                    </IconButton>
-                                                </td>
                                             </tr>
                                         ))}
                                     </tbody>
@@ -87,23 +64,4 @@ const Categories = () => {
     );
 }
 
-const styles = theme => ({
-    root: {
-        width: '100%',
-    },
-    flex: {
-        flex: 1,
-    },
-    menuButton: {
-        marginLeft: -12,
-        marginRight: 20,
-    },
-    title: {
-        display: 'none',
-        [theme.breakpoints.up('sm')]: {
-            display: 'block',
-        },
-    }
-});
-
-export default connect(() => {}, { setRequestGlobalAction })(withRouter(Categories));
+export default connect(() => {}, { setRequestGlobalAction })(withRouter(List));

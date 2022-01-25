@@ -124,6 +124,64 @@ export const PROFILE = {
     }
 }
 
+export const MARKETPLACE = {
+    SELF: "/marketplace",
+    CATAlOG: {
+        SELF: "/marketplace/catalogs",
+        SALE: {
+            SELF: "/marketplace/catalogs/sales",
+            LIST: "/marketplace/catalogs/sales/list",
+            CREATE: "/marketplace/catalogs/sales/create"
+        },
+        DISTRIBUTION: {
+            SELF: "/marketplace/catalogs/distributions",
+            LIST: "/marketplace/catalogs/distributions/list",
+            CREATE: "/marketplace/catalogs/distributions/create"
+        }
+    },
+    COMMERCIAL: {
+        SELF: "/marketplace/commercials",
+        OPERATION_TYPE: {
+            SELF: "/marketplace/commercials/operations/types",
+            LIST: "/marketplace/commercials/operations/types/list",
+            CREATE: "/marketplace/commercials/operations/types/create"
+        },
+        OPERATION: {
+            SELF: "/marketplace/commercials/operations",
+            LIST: "/marketplace/commercials/operations/list",
+            CREATE: "/marketplace/commercials/operations/create"
+        },
+        OFFER: {
+            SELF: "/marketplace/commercials/operations/offers",
+            LIST: "/marketplace/commercials/operations/offers/list",
+            CREATE: "/marketplace/commercials/operations/offers/create"
+        }
+    },
+    PRODUCT: {
+        SELF: "/marketplace/products",
+        LIST: "/marketplace/products/list",
+        CREATE: "/marketplace/products/create",
+    },
+    STORE: {
+        SELF: "/marketplace/store",
+        PRODUCT: {
+            SELF: "/marketplace/store/products",
+            LIST: "/marketplace/store/products/list",
+            CREATE: "/marketplace/store/products/create"
+        },
+        ORDER: {
+            SELF: "/marketplace/store/orders",
+            LIST: "/marketplace/store/orders/list",
+            CREATE: "/marketplace/store/orders/create"
+        },
+        PURCHASE: {
+            SELF: "/marketplace/store/purchase",
+            LIST: "/marketplace/store/purchase/list",
+            CREATE: "/marketplace/store/purchase/create"
+        }
+    },
+}
+
 
 export const joinUrlWithParams = (to, params) => {
     let url = to;
