@@ -67,6 +67,9 @@ module.exports = {
 		},
 		extensions: ['.js', '.tsx', '.ts', '.jsx']
 	},
+	optimization: {
+		minimize: true
+	},
 	module: {
 		rules: [
 			{
@@ -154,7 +157,6 @@ module.exports = {
 		new MiniCssExtractPlugin({
 			filename: "[name].css",
 			chunkFilename: "static/css/[name].[hash:8].css"
-		})
-		// new BundleAnalyzerPlugin()
+		}),
 	]
 };

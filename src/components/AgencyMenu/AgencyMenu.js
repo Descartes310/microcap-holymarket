@@ -2,10 +2,10 @@
  * Agency Menu
  */
 import React, { Component } from 'react';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
+import {withRouter} from 'react-router-dom';
 import Drawer from '@material-ui/core/Drawer';
-import { withRouter } from 'react-router-dom';
+import MenuIcon from '@material-ui/icons/Menu';
+import IconButton from '@material-ui/core/IconButton';
 
 //Intl Meassages
 import IntlMessages from 'Util/IntlMessages';
