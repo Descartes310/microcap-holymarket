@@ -1,23 +1,43 @@
 import { connect } from 'react-redux';
-import React, { useState } from 'react';
+import { MARKETPLACE } from 'Url/frontendUrl';
 import { withRouter } from "react-router-dom";
 import CustomList from "Components/CustomList";
 import { setRequestGlobalAction } from 'Actions';
+import React, { useEffect, useState } from 'react';
+import CommercialService from 'Services/commercials';
 
-const List = () => {
+const List = (props) => {
+
+    const [commercialOperations, setCommercialOperations] = useState([]);
+
+    useEffect(() => {
+        getCommercialOperations();
+    }, []);
+
+    const getCommercialOperations = () => {
+        props.setRequestGlobalAction(true);
+        CommercialService.getCommercialOperations()
+        .then((response) => setCommercialOperations(response))
+        .catch((err) => {
+            console.log(err);
+        })
+        .finally(() => {
+            props.setRequestGlobalAction(false);
+        })
+    }
 
     return (
         <CustomList
-            list={[]}
+            list={commercialOperations}
             loading={false}
-            itemsFoundText={n => `${n} xxx trouvés`}
-            onAddClick={() => console.log('Ajout')}
+            itemsFoundText={n => `${n} opérations trouvées`}
+            onAddClick={() => props.history.push(MARKETPLACE.COMMERCIAL.OPERATION.CREATE)}
             renderItem={list => (
                 <>
                     {list && list.length === 0 ? (
                         <div className="d-flex justify-content-center align-items-center py-50">
                             <h4>
-                                Aucun xxx trouvés
+                                Aucune opérations trouvées
                             </h4>
                         </div>
                     ) : (
@@ -27,6 +47,7 @@ const List = () => {
                                     <tr>
                                         <th className="fw-bold">Label</th>
                                         <th className="fw-bold">Description</th>
+                                        <th className="fw-bold">Type d'opération</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -35,14 +56,21 @@ const List = () => {
                                             <td>
                                                 <div className="media">
                                                     <div className="media-body pt-10">
-                                                        <h4 className="m-0 fw-bold text-dark">{item.xxx}</h4>
+                                                        <h4 className="m-0 fw-bold text-dark">{item.label}</h4>
                                                     </div>
                                                 </div>
                                             </td>
                                             <td>
                                                 <div className="media">
                                                     <div className="media-body pt-10">
-                                                        <p className="m-0 text-dark">{item.xxx}</p>
+                                                        <p className="m-0 text-dark">{item.description}</p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div className="media">
+                                                    <div className="media-body pt-10">
+                                                        <p className="m-0 text-dark">{item.commercialOperationType.label}</p>
                                                     </div>
                                                 </div>
                                             </td>

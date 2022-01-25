@@ -14,9 +14,9 @@ class Commercial extends Component<any, any> {
     constructor(props: any) {
         super(props);
         const defaultState = (function (url) {
-            if (url.includes(MARKETPLACE.COMMERCIAL.OFFER.SELF)) return 0;
-            else if (url.includes(MARKETPLACE.COMMERCIAL.OPERATION.SELF)) return 1;
-            else if (url.includes(MARKETPLACE.COMMERCIAL.OPERATION_TYPE.SELF)) return 2;
+            if (url.includes(MARKETPLACE.COMMERCIAL.OFFER.LIST)) return 0;
+            else if (url.includes(MARKETPLACE.COMMERCIAL.OPERATION.LIST)) return 1;
+            else if (url.includes(MARKETPLACE.COMMERCIAL.OPERATION_TYPE.LIST)) return 2;
             else return 0;
         })(window.location.pathname);
 
@@ -30,10 +30,10 @@ class Commercial extends Component<any, any> {
         this.setState({ activeTab: value });
         if (oldActivateTab !== value) {
             switch (value) {
-                case 0: return this.props.history.push(MARKETPLACE.COMMERCIAL.OFFER.SELF);
-                case 1: return this.props.history.push(MARKETPLACE.COMMERCIAL.OPERATION.SELF);
-                case 2: return this.props.history.push(MARKETPLACE.COMMERCIAL.OPERATION_TYPE.SELF);
-                default: return this.props.history.push(MARKETPLACE.COMMERCIAL.OFFER.SELF);
+                case 0: return this.props.history.push(MARKETPLACE.COMMERCIAL.OFFER.LIST);
+                case 1: return this.props.history.push(MARKETPLACE.COMMERCIAL.OPERATION.LIST);
+                case 2: return this.props.history.push(MARKETPLACE.COMMERCIAL.OPERATION_TYPE.LIST);
+                default: return this.props.history.push(MARKETPLACE.COMMERCIAL.OFFER.LIST);
             }
         }
     };

@@ -3,24 +3,24 @@ import { makeRequest } from 'Helpers/helpers';
 
 export default class CommercialService {
 
-    static getCommercialOperationTypes(data): Promise<any> {
-        return makeRequest('get', Routes.GET_COMMERCIAL_OPERATION_TYPES, data);
+    static getCommercialOperationTypes(): Promise<any> {
+        return makeRequest('get', Routes.GET_COMMERCIAL_OPERATION_TYPES);
     }
 
     static createCommercialOperationType(data: any): Promise<any> {
         return makeRequest('post', Routes.CREATE_COMMERCIAL_OPERATION_TYPE, data);
     }
 
-    static getCommercialOperations(data): Promise<any> {
-        return makeRequest('get', Routes.GET_COMMERCIAL_OPERATIONS, data);
+    static getCommercialOperations(): Promise<any> {
+        return makeRequest('get', Routes.GET_COMMERCIAL_OPERATIONS);
     }
 
     static createCommercialOperation(data: any): Promise<any> {
         return makeRequest('post', Routes.CREATE_COMMERCIAL_OPERATION, data);
     }
 
-    static getCommercialOffers(data): Promise<any> {
-        return makeRequest('get', Routes.GET_COMMERCIAL_OFFERS, data);
+    static getCommercialOffers(): Promise<any> {
+        return makeRequest('get', Routes.GET_COMMERCIAL_OFFERS);
     }
 
     static createCommercialOffer(data: any): Promise<any> {

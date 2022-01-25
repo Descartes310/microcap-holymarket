@@ -9,7 +9,7 @@ import {withRouter, Switch, Redirect, Route} from "react-router-dom";
 const Operation = (props) => {
     const { match } = props;
     return (
-        <div className="full-height">
+        <div>
             <>
                 <Switch>
                     <Redirect exact from={`${match.url}/`} to={MARKETPLACE.COMMERCIAL.OPERATION.LIST} />
