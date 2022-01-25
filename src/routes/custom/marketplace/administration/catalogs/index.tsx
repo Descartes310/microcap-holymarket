@@ -14,8 +14,8 @@ class Catalogues extends Component<any, any> {
     constructor(props: any) {
         super(props);
         const defaultState = (function (url) {
-            if (url.includes(MARKETPLACE.CATAlOG.SALE.SELF)) return 0;
-            else if (url.includes(MARKETPLACE.CATAlOG.DISTRIBUTION.SELF)) return 1;
+            if (url.includes(MARKETPLACE.CATAlOG.SALE.LIST)) return 0;
+            else if (url.includes(MARKETPLACE.CATAlOG.DISTRIBUTION.LIST)) return 1;
             else return 0;
         })(window.location.pathname);
 
@@ -29,9 +29,9 @@ class Catalogues extends Component<any, any> {
         this.setState({ activeTab: value });
         if (oldActivateTab !== value) {
             switch (value) {
-                case 0: return this.props.history.push(MARKETPLACE.CATAlOG.SALE.SELF);
-                case 1: return this.props.history.push(MARKETPLACE.CATAlOG.DISTRIBUTION.SELF);
-                default: return this.props.history.push(MARKETPLACE.CATAlOG.SALE.SELF);
+                case 0: return this.props.history.push(MARKETPLACE.CATAlOG.SALE.LIST);
+                case 1: return this.props.history.push(MARKETPLACE.CATAlOG.DISTRIBUTION.LIST);
+                default: return this.props.history.push(MARKETPLACE.CATAlOG.SALE.LIST);
             }
         }
     };

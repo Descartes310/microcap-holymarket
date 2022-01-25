@@ -11,14 +11,14 @@ import {withRouter, Switch, Redirect, Route} from "react-router-dom";
 const Catalogs = (props) => {
     const { match } = props;
     return (
-        <div className="full-height">
+        <div>
             <>
                 <Switch>
                     <Redirect exact from={`${match.url}/`} to={MARKETPLACE.CATAlOG.SALE.LIST} />
-                    <Route path={MARKETPLACE.CATAlOG.SALE} component={ListSaleCatalogs} />
-                    <Route path={MARKETPLACE.CATAlOG.SALE} component={CreateSaleCatalog} />
-                    <Route path={MARKETPLACE.CATAlOG.DISTRIBUTION} component={ListDistributionCatalogs} />
-                    <Route path={MARKETPLACE.CATAlOG.DISTRIBUTION} component={CreateDistributionCatalog} />
+                    <Route path={MARKETPLACE.CATAlOG.SALE.LIST} component={ListSaleCatalogs} />
+                    <Route path={MARKETPLACE.CATAlOG.SALE.CREATE} component={CreateSaleCatalog} />
+                    <Route path={MARKETPLACE.CATAlOG.DISTRIBUTION.LIST} component={ListDistributionCatalogs} />
+                    <Route path={MARKETPLACE.CATAlOG.DISTRIBUTION.CREATE} component={CreateDistributionCatalog} />
                 </Switch>
             </>
         </div>
