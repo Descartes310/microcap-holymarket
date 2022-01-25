@@ -1,22 +1,22 @@
 import { connect } from "react-redux";
 import TabContent from "./tabContent";
-import { GROUP } from "Url/frontendUrl";
 import React, { Component } from 'react';
 import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
 import { RctCard } from 'Components/RctCard';
 import AppBar from '@material-ui/core/AppBar';
 import { withRouter } from "react-router-dom";
+import { MARKETPLACE } from "Url/frontendUrl";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import { setRequestGlobalAction } from "Actions/RequestGlobalAction";
 
-class Requests extends Component<any, any> {
+class Commercial extends Component<any, any> {
     constructor(props: any) {
         super(props);
         const defaultState = (function (url) {
-            if (url.includes(GROUP.COMMUNITY.SPACE.MINE)) return 0;
-            else if (url.includes(GROUP.COMMUNITY.SPACE.ALL)) return 1;
-            else if (url.includes(GROUP.COMMUNITY.SPACE.REQUEST)) return 2;
+            if (url.includes(MARKETPLACE.COMMERCIAL.OFFER.SELF)) return 0;
+            else if (url.includes(MARKETPLACE.COMMERCIAL.OPERATION.SELF)) return 1;
+            else if (url.includes(MARKETPLACE.COMMERCIAL.OPERATION_TYPE.SELF)) return 2;
             else return 0;
         })(window.location.pathname);
 
@@ -30,10 +30,10 @@ class Requests extends Component<any, any> {
         this.setState({ activeTab: value });
         if (oldActivateTab !== value) {
             switch (value) {
-                case 0: return this.props.history.push(GROUP.COMMUNITY.SPACE.MINE);
-                case 1: return this.props.history.push(GROUP.COMMUNITY.SPACE.ALL);
-                case 2: return this.props.history.push(GROUP.COMMUNITY.SPACE.REQUEST);
-                default: return this.props.history.push(GROUP.COMMUNITY.SPACE.MINE);
+                case 0: return this.props.history.push(MARKETPLACE.COMMERCIAL.OFFER.SELF);
+                case 1: return this.props.history.push(MARKETPLACE.COMMERCIAL.OPERATION.SELF);
+                case 2: return this.props.history.push(MARKETPLACE.COMMERCIAL.OPERATION_TYPE.SELF);
+                default: return this.props.history.push(MARKETPLACE.COMMERCIAL.OFFER.SELF);
             }
         }
     };
@@ -43,7 +43,7 @@ class Requests extends Component<any, any> {
 
         return (
             <div>
-                <PageTitleBar title={"Communautés"} match={this.props.match} />
+                <PageTitleBar title={"Opérations commerciales"} match={this.props.match} />
                 <RctCard>
                     <div className="rct-tabs">
                         <AppBar position="static">
@@ -58,15 +58,15 @@ class Requests extends Component<any, any> {
                                     >
                                         <Tab
                                             icon={<i className="zmdi zmdi-home" />}
-                                            label={"Mes communautés"}
+                                            label={"Offres commerciales"}
                                         />
                                         <Tab
                                             icon={<i className="zmdi zmdi-cloud-outline-alt"></i>}
-                                            label={"Toutes les communautés"}
+                                            label={"Opérations commerciales"}
                                         />
                                         <Tab
                                             icon={<i className="zmdi zmdi-time-restore"></i>}
-                                            label={"Mes requêtes"}
+                                            label={"Types d'opérations"}
                                         />
                                     </Tabs>
                                 </div>
@@ -85,4 +85,4 @@ const mapStateToProps = ({ authUser }) => {
     return { authUser: authUser.data, }
 };
 
-export default connect(mapStateToProps, { setRequestGlobalAction })(withRouter(Requests));
+export default connect(mapStateToProps, { setRequestGlobalAction })(withRouter(Commercial));
