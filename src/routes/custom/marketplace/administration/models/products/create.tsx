@@ -1,29 +1,74 @@
-import React, { useState } from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from "react-router-dom";
+import Button from '@material-ui/core/Button';
+import ProductService from 'Services/products';
+import { setRequestGlobalAction } from 'Actions';
+import React, { useState, useEffect } from 'react';
 import TextField from '@material-ui/core/TextField';
 import { FileUploader } from "react-drag-drop-files";
-import { withStyles } from '@material-ui/core/styles';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import { NotificationManager } from 'react-notifications';
 import Checkbox from "@material-ui/core/Checkbox/Checkbox";
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { Form, FormGroup, Input as InputStrap } from 'reactstrap';
+import { getProductNatures, getProductRanges } from 'Helpers/helpers';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
 import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
 
 const fileTypes = ["JPG", "PNG", "GIF", "JPEG"];
-const Create = () => {
+
+const Create = (props) => {
 
     const [code, setCode] = useState('');
     const [file, setFile] = useState(null);
     const [label, setLabel] = useState('');
+    const [price, setPrice] = useState(null);
+    const [range, setRange] = useState(null);
+    const [nature, setNature] = useState(null);
+    const [category, setCategory] = useState(null);
+    const [categories, setCategories] = useState([]);
     const [isAccount, setIsAccount] = useState(false);
-    const [isAggregation, setIsAggregation] = useState(false);
     const [description, setDescription] = useState('');
+    const [maximumByUser, setMaximumByUser] = useState(null);
+    const [priceCurrency, setPriceCurrency] = useState(null);
+    const [isAggregation, setIsAggregation] = useState(false);
+    const [accountCurrency, setAccountCurrency] = useState(null);
     const [minAccountbalance, setMinAccountBalance] = useState(null);
     const [maxAccountBalance, setMaxAccountBalance] = useState(null);
-    const [hasComplementaryProducts, setHasComplementaryProducts] = useState(null);
+    const [hasComplementaryProducts, setHasComplementaryProducts] = useState(null);   
+
+    useEffect(() => {
+        getCategories();
+    }, []);
+
+    const getCategories = () => {
+        props.setRequestGlobalAction(true);
+        ProductService.getCategories()
+        .then(response => setCategories(response))
+        .finally(() => props.setRequestGlobalAction(false))
+    }
 
     const onSubmit = () => {
-        console.log('Press');
+        if(
+            !label ||
+            !code ||
+            !file ||
+            !price ||
+            !range ||
+            !nature ||
+            !category ||
+            !priceCurrency ||
+            !description ||
+            !maximumByUser
+        ) return;
+
+        let data: any = {
+            label, code, price, description, maximumByUser,
+            currency: priceCurrency, categoryId: category.id,
+            image: file, nature: nature.value, range: range.value
+        }
+
+        console.log(data);
     }
 
     return (
@@ -46,61 +91,75 @@ const Create = () => {
                             />
                         </FormGroup>
                         <FormGroup className="col-md-6 col-sm-12 has-wrapper">
-                            <InputLabel className="text-left" htmlFor="label">
+                            <InputLabel className="text-left" htmlFor="code">
                                 Code produit
                             </InputLabel>
                             <InputStrap
                                 required
-                                id="label"
+                                id="code"
                                 type="text"
-                                name='label'
+                                name='code'
                                 className="input-lg"
-                                value={label}
-                                onChange={(e) => setLabel(e.target.value)}
+                                value={code}
+                                onChange={(e) => setCode(e.target.value)}
                             />
                         </FormGroup>
                     </div>
                     <FormGroup className="has-wrapper">
-                        <InputLabel className="text-left" htmlFor="label">
+                        <InputLabel className="text-left" htmlFor="description">
                             Description produit
                         </InputLabel>
                         <InputStrap
                             required
-                            id="label"
+                            id="description"
                             type="text"
-                            name='label'
+                            name='description'
                             className="input-lg"
-                            value={label}
-                            onChange={(e) => setLabel(e.target.value)}
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}
                         />
                     </FormGroup>
                     <div className="row">
-                        <FormGroup className="col-md-6 col-sm-12 has-wrapper">
-                            <InputLabel className="text-left" htmlFor="label">
+                        <FormGroup className="col-md-4 col-sm-12 has-wrapper">
+                            <InputLabel className="text-left" htmlFor="price">
                                 Prix par défaut
                             </InputLabel>
                             <InputStrap
                                 required
-                                id="label"
-                                type="text"
-                                name='label'
+                                id="price"
+                                type="number"
+                                name='price'
                                 className="input-lg"
-                                value={label}
-                                onChange={(e) => setLabel(e.target.value)}
+                                value={price}
+                                onChange={(e) => setPrice(e.target.value)}
                             />
                         </FormGroup>
-                        <FormGroup className="col-md-6 col-sm-12 has-wrapper">
-                            <InputLabel className="text-left" htmlFor="label">
+                        <FormGroup className="col-md-4 col-sm-12 has-wrapper">
+                            <InputLabel className="text-left" htmlFor="priceCurrency">
                                 Devise
                             </InputLabel>
                             <InputStrap
                                 required
-                                id="label"
                                 type="text"
-                                name='label'
+                                id="priceCurrency"
+                                name='priceCurrency'
                                 className="input-lg"
-                                value={label}
-                                onChange={(e) => setLabel(e.target.value)}
+                                value={priceCurrency}
+                                onChange={(e) => setPriceCurrency(e.target.value)}
+                            />
+                        </FormGroup>
+                        <FormGroup className="col-md-4 col-sm-12 has-wrapper">
+                            <InputLabel className="text-left" htmlFor="maxByUser">
+                                Nombre max. par membre
+                            </InputLabel>
+                            <InputStrap
+                                required
+                                type="number"
+                                id="maxByUser"
+                                name='maxByUser'
+                                className="input-lg"
+                                value={maximumByUser}
+                                onChange={(e) => setMaximumByUser(e.target.value)}
                             />
                         </FormGroup>
                     </div>
@@ -121,10 +180,11 @@ const Create = () => {
                                 Catégorie du produit
                             </InputLabel>
                             <Autocomplete
-                                options={[]}
+                                value={category}
+                                options={categories}
                                 id="combo-box-demo"
                                 onChange={(__, item) => {
-                                    //setCommercialOperation(item);
+                                    setCategory(item);
                                 }}
                                 getOptionLabel={(option) => option.label}
                                 renderInput={(params) => <TextField {...params} variant="outlined" />}
@@ -135,10 +195,11 @@ const Create = () => {
                                 Nature du produit
                             </InputLabel>
                             <Autocomplete
-                                options={[]}
+                                value={nature}
                                 id="combo-box-demo"
+                                options={getProductNatures()}
                                 onChange={(__, item) => {
-                                    //setCommercialOperation(item);
+                                    setNature(item)
                                 }}
                                 getOptionLabel={(option) => option.label}
                                 renderInput={(params) => <TextField {...params} variant="outlined" />}
@@ -149,10 +210,11 @@ const Create = () => {
                                 Portée du produit
                             </InputLabel>
                             <Autocomplete
-                                options={[]}
+                                value={range}
                                 id="combo-box-demo"
+                                options={getProductRanges()}
                                 onChange={(__, item) => {
-                                    //setCommercialOperation(item);
+                                    setRange(item);
                                 }}
                                 getOptionLabel={(option) => option.label}
                                 renderInput={(params) => <TextField {...params} variant="outlined" />}
@@ -192,12 +254,12 @@ const Create = () => {
                                     </InputLabel>
                                     <InputStrap
                                         required
-                                        id="label"
-                                        type="text"
-                                        name='label'
+                                        type="number"
                                         className="input-lg"
-                                        value={label}
-                                        onChange={(e) => setLabel(e.target.value)}
+                                        id="minAccountBalance"
+                                        name='minAccountBalance'
+                                        value={minAccountbalance}
+                                        onChange={(e) => setMinAccountBalance(e.target.value)}
                                     />
                                 </div>
                                 <div className="col-md-4 col-sm-12 has-wrapper mb-30">
@@ -206,12 +268,12 @@ const Create = () => {
                                     </InputLabel>
                                     <InputStrap
                                         required
-                                        id="label"
-                                        type="text"
-                                        name='label'
+                                        id="maxAccountBalance"
+                                        type="number"
+                                        name='maxAccountBalance'
                                         className="input-lg"
-                                        value={label}
-                                        onChange={(e) => setLabel(e.target.value)}
+                                        value={maxAccountBalance}
+                                        onChange={(e) => setMaxAccountBalance(e.target.value)}
                                     />
                                 </div>
                             </div>
@@ -227,20 +289,20 @@ const Create = () => {
                             </FormGroup>
                             {
                                 isAggregation && (
-                                <div className="col-md-12 col-sm-12 has-wrapper mb-30">
-                                    <InputLabel className="text-left">
-                                        Sélectionnez les comptes à aggreger
-                                    </InputLabel>
-                                    <Autocomplete
-                                        options={[]}
-                                        id="combo-box-demo"
-                                        onChange={(__, item) => {
-                                            //setCommercialOperation(item);
-                                        }}
-                                        getOptionLabel={(option) => option.label}
-                                        renderInput={(params) => <TextField {...params} variant="outlined" />}
-                                    />
-                                </div>
+                                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                                        <InputLabel className="text-left">
+                                            Sélectionnez les comptes à aggreger
+                                        </InputLabel>
+                                        <Autocomplete
+                                            options={[]}
+                                            id="combo-box-demo"
+                                            onChange={(__, item) => {
+                                                //setCommercialOperation(item);
+                                            }}
+                                            getOptionLabel={(option) => option.label}
+                                            renderInput={(params) => <TextField {...params} variant="outlined" />}
+                                        />
+                                    </div>
                                 )
                             }
                         </>
@@ -259,32 +321,36 @@ const Create = () => {
 
                     {
                         hasComplementaryProducts && (
-                        <div className="col-md-12 col-sm-12 has-wrapper mb-30">
-                            <InputLabel className="text-left">
-                                Sélectionnez les produits à associer
-                            </InputLabel>
-                            <Autocomplete
-                                options={[]}
-                                id="combo-box-demo"
-                                onChange={(__, item) => {
-                                    //setCommercialOperation(item);
-                                }}
-                                getOptionLabel={(option) => option.label}
-                                renderInput={(params) => <TextField {...params} variant="outlined" />}
-                            />
-                        </div>
+                            <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                                <InputLabel className="text-left">
+                                    Sélectionnez les produits à associer
+                                </InputLabel>
+                                <Autocomplete
+                                    options={[]}
+                                    id="combo-box-demo"
+                                    onChange={(__, item) => {
+                                        //setCommercialOperation(item);
+                                    }}
+                                    getOptionLabel={(option) => option.label}
+                                    renderInput={(params) => <TextField {...params} variant="outlined" />}
+                                />
+                            </div>
                         )
                     }
+                    <FormGroup>
+                        <Button
+                            color="primary"
+                            variant="contained"
+                            onClick={onSubmit}
+                            className="text-white font-weight-bold"
+                        >
+                            Ajouter
+                        </Button>
+                    </FormGroup>
                 </Form>
             </RctCollapsibleCard>
         </>
     );
 };
 
-const styles = {
-    jXFcHa: {
-        maxWidth: '100%',
-    }
-};
-
-export default withStyles(styles)(Create);
+export default connect(() => { }, { setRequestGlobalAction })(withRouter(Create));

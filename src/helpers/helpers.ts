@@ -755,3 +755,37 @@ export const translatePermissionFolder = (path) => {
             return path;
     }
 }
+
+export const getProductNatures = () => {
+    return [
+        {
+            label: 'Produit physique',
+            value: 'PHYSICAL'
+        },
+        {
+            label: 'Service',
+            value: 'SERVICE'
+        }
+    ]
+}
+
+export const getProductRanges = () => {
+    return [
+        {
+            label: 'Réseau',
+            value: 'NETWORK'
+        },
+        {
+            label: 'Opérateur',
+            value: 'OPERATOR'
+        },
+        {
+            label: 'Pays',
+            value: 'COUNTRY'
+        },
+        {
+            label: 'Communauté',
+            value: 'COMMUNITY'
+        }
+    ]
+}

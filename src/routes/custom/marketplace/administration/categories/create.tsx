@@ -106,20 +106,20 @@ const Create = (props) => {
                         />
                     </FormGroup>
                     <div className="col-md-12 col-sm-12 has-wrapper mb-30">
-                            <InputLabel className="text-left">
-                                Catégorie parent
-                            </InputLabel>
-                            <Autocomplete
-                                options={categories}
-                                id="combo-box-demo"
-                                value={category}
-                                onChange={(__, item) => {
-                                    setCategory(item);
-                                }}
-                                getOptionLabel={(option) => option.label}
-                                renderInput={(params) => <TextField {...params} variant="outlined" />}
-                            />
-                        </div>
+                        <InputLabel className="text-left">
+                            Catégorie parent
+                        </InputLabel>
+                        <Autocomplete
+                            options={categories}
+                            id="combo-box-demo"
+                            value={category}
+                            onChange={(__, item) => {
+                                setCategory(item);
+                            }}
+                            getOptionLabel={(option) => option.label}
+                            renderInput={(params) => <TextField {...params} variant="outlined" />}
+                        />
+                    </div>
                     <FormGroup>
                         <Button
                             color="primary"

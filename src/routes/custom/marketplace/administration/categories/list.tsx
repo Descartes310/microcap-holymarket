@@ -20,6 +20,7 @@ const List = (props) => {
         .then(response => setCategories(response))
         .finally(() => props.setRequestGlobalAction(false))
     }
+    
     return (
 
         <CustomList
