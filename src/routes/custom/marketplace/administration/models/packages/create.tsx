@@ -13,8 +13,8 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import { NotificationManager } from 'react-notifications';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { Form, FormGroup, Input as InputStrap } from 'reactstrap';
-import { getProductNatures, getProductRanges } from 'Helpers/helpers';
 import AddAssociationToProduct from '../components/AddAssociationToProduct'
+import { getProductNatures, getProductRanges, getSellWay } from 'Helpers/helpers';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
 
 const fileTypes = ["JPG", "PNG", "GIF", "JPEG"];
@@ -28,6 +28,7 @@ const Create = (props) => {
     const [price, setPrice] = useState(null);
     const [range, setRange] = useState(null);
     const [nature, setNature] = useState(null);
+    const [sellWay, setSellWay] = useState(null);
     const [products, setProducts] = useState([]);
     const [category, setCategory] = useState(null);
     const [typeUnits, setTypeUnits] = useState([]);
@@ -113,6 +114,7 @@ const Create = (props) => {
             !nature ||
             !category ||
             !description ||
+            !sellWay ||
             !maximumByUser ||
             !priceUnit
             || associatedProducts.length <= 0
@@ -122,7 +124,7 @@ const Create = (props) => {
         }
 
         let data: any = {
-            label, code, price, description, maximumByUser,
+            label, code, price, description, maximumByUser, sellWay: sellWay.value,
             priceUnitReference: priceUnit.reference, categoryId: category.id,
             image: file, nature: nature.value, range: range.value, type: 'PACKAGE'
         }
@@ -273,7 +275,7 @@ const Create = (props) => {
                             }} name="file" types={fileTypes} />
                     </FormGroup>
                     <div className="row">
-                        <div className="col-md-4 col-sm-12 has-wrapper mb-30">
+                        <div className="col-md-3 col-sm-12 has-wrapper mb-30">
                             <InputLabel className="text-left">
                                 Catégorie du package
                             </InputLabel>
@@ -288,7 +290,22 @@ const Create = (props) => {
                                 renderInput={(params) => <TextField {...params} variant="outlined" />}
                             />
                         </div>
-                        <div className="col-md-4 col-sm-12 has-wrapper mb-30">
+                        <div className="col-md-3 col-sm-12 has-wrapper mb-30">
+                            <InputLabel className="text-left">
+                                Canal de vente
+                            </InputLabel>
+                            <Autocomplete
+                                value={sellWay}
+                                options={getSellWay()}
+                                id="combo-box-demo"
+                                onChange={(__, item) => {
+                                    setSellWay(item);
+                                }}
+                                getOptionLabel={(option) => option.label}
+                                renderInput={(params) => <TextField {...params} variant="outlined" />}
+                            />
+                        </div>
+                        <div className="col-md-3 col-sm-12 has-wrapper mb-30">
                             <InputLabel className="text-left">
                                 Nature du package
                             </InputLabel>
@@ -303,7 +320,7 @@ const Create = (props) => {
                                 renderInput={(params) => <TextField {...params} variant="outlined" />}
                             />
                         </div>
-                        <div className="col-md-4 col-sm-12 has-wrapper mb-30">
+                        <div className="col-md-3 col-sm-12 has-wrapper mb-30">
                             <InputLabel className="text-left">
                                 Portée du package
                             </InputLabel>

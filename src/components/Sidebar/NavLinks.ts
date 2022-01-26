@@ -255,6 +255,15 @@ export default [
       ],
    },
    {
+      "path": MARKETPLACE.SHOP,
+      "menu_title": "MicroCap Shop",
+      "menu_icon": "zmdi zmdi-shopping-cart",
+      "new_item": false,
+      "child_routes": null,
+      "profiles": null,
+      "permissions": [Permission.group.member.name],
+   },
+   {
       "menu_title": "Paramètres",
       "menu_icon": "zmdi zmdi-store",
       "new_item": false,

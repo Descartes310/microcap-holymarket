@@ -798,6 +798,19 @@ export const getProductRanges = () => {
     ]
 }
 
+export const getSellWay = () => {
+    return [
+        {
+            label: 'Vente privée',
+            value: 'PRIVATE'
+        },
+        {
+            label: 'Produit financier',
+            value: 'FINANCIAL'
+        }
+    ]
+}
+
 export const getProductRangeLabel = (value) => {
     let range = getProductRanges().find(rt => rt.value === value);
     if (range)

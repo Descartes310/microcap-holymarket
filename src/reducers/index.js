@@ -1,29 +1,31 @@
 /**
  * App Reducers
  */
-import { combineReducers } from 'redux';
 import settings from './settings';
-import AppLoadingReducer from './AppLoadingReducer';
-import sidebarReducer from './SidebarReducer';
+import CartReducer from './CartReducer';
+import { combineReducers } from 'redux';
+import UsersReducer from './UsersReducer';
 import tokensReducer from './TokensReducer';
+import sidebarReducer from './SidebarReducer';
 import authUserReducer from './AuthUserReducer';
+import ecommerceReducer from './EcommerceReducer';
+import AppLoadingReducer from './AppLoadingReducer';
+import NotificationsReducer from './NotificationsReducer';
 import RequestGlobalReducer from './RequestGlobalReducer';
 import PermissionAlertBoxReducer from './PermissionAlertBoxReducer';
-import UsersReducer from './UsersReducer';
-import CartReducer from './CartReducer';
-import NotificationsReducer from './NotificationsReducer';
 
 const reducers = combineReducers({
    settings,
-   appLoading: AppLoadingReducer,
+   cart: CartReducer,
+   users: UsersReducer,
+   tokens: tokensReducer,
    sidebar: sidebarReducer,
    authUser: authUserReducer,
-   tokens: tokensReducer,
+   ecommerce: ecommerceReducer,
+   appLoading: AppLoadingReducer,
+   notifications: NotificationsReducer,
    requestGlobalLoader: RequestGlobalReducer,
    permissionAlertBox: PermissionAlertBoxReducer,
-   users: UsersReducer,
-   cart: CartReducer,
-   notifications: NotificationsReducer,
 });
 
 export default reducers;

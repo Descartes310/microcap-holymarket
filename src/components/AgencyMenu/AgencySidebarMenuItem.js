@@ -2,10 +2,10 @@
  * Nav Menu Item
  */
 import classNames from 'classnames';
+import {NavLink} from 'react-router-dom';
 import Chip from '@material-ui/core/Chip';
 import List from '@material-ui/core/List';
 import {withRouter} from 'react-router-dom';
-import NavLink from 'react-router-dom/NavLink';
 import Collapse from '@material-ui/core/Collapse';
 import ListItem from '@material-ui/core/ListItem';
 import React, { Fragment, Component } from 'react';

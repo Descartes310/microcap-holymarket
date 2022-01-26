@@ -31,6 +31,11 @@ export default class ProductService {
     static getProducts(): Promise<any> {
         return makeRequest('get', Routes.GET_PRODUCTS);
     }
+
+    static getShopProducts(data): Promise<any> {
+        return makeRequest('get', Routes.GET_SHOP_PRODUCTS, data);
+    }
+
     static changeProductStatus(id: number): Promise<any> {
         return makeRequest('put', Routes.CHANGE_PRODUCT_STATUS(id));
     }

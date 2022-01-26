@@ -13,9 +13,9 @@ import { NotificationManager } from 'react-notifications';
 import Checkbox from "@material-ui/core/Checkbox/Checkbox";
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { Form, FormGroup, Input as InputStrap } from 'reactstrap';
-import { getProductNatures, getProductRanges } from 'Helpers/helpers';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
 import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
+import { getProductNatures, getProductRanges, getSellWay } from 'Helpers/helpers';
 
 const fileTypes = ["JPG", "PNG", "GIF", "JPEG"];
 
@@ -28,6 +28,7 @@ const Create = (props) => {
     const [price, setPrice] = useState(null);
     const [range, setRange] = useState(null);
     const [nature, setNature] = useState(null);
+    const [sellWay, setSellWay] = useState(null);
     const [products, setProducts] = useState([]);
     const [category, setCategory] = useState(null);
     const [typeUnits, setTypeUnits] = useState([]);
@@ -100,6 +101,7 @@ const Create = (props) => {
             !range ||
             !nature ||
             !category ||
+            !sellWay ||
             !description ||
             !maximumByUser ||
             !priceUnit
@@ -109,7 +111,7 @@ const Create = (props) => {
         }
 
         let data: any = {
-            label, code, price, description, maximumByUser,
+            label, code, price, description, maximumByUser, sellWay: sellWay.value,
             priceUnitReference: priceUnit.reference, categoryId: category.id,
             image: file, nature: nature.value, range: range.value, type: 'PRODUCT'
         }
@@ -279,7 +281,7 @@ const Create = (props) => {
                             }} name="file" types={fileTypes} />
                     </FormGroup>
                     <div className="row">
-                        <div className="col-md-4 col-sm-12 has-wrapper mb-30">
+                        <div className="col-md-3 col-sm-12 has-wrapper mb-30">
                             <InputLabel className="text-left">
                                 Catégorie du produit
                             </InputLabel>
@@ -294,7 +296,22 @@ const Create = (props) => {
                                 renderInput={(params) => <TextField {...params} variant="outlined" />}
                             />
                         </div>
-                        <div className="col-md-4 col-sm-12 has-wrapper mb-30">
+                        <div className="col-md-3 col-sm-12 has-wrapper mb-30">
+                            <InputLabel className="text-left">
+                                Canal de vente
+                            </InputLabel>
+                            <Autocomplete
+                                value={sellWay}
+                                options={getSellWay()}
+                                id="combo-box-demo"
+                                onChange={(__, item) => {
+                                    setSellWay(item);
+                                }}
+                                getOptionLabel={(option) => option.label}
+                                renderInput={(params) => <TextField {...params} variant="outlined" />}
+                            />
+                        </div>
+                        <div className="col-md-3 col-sm-12 has-wrapper mb-30">
                             <InputLabel className="text-left">
                                 Nature du produit
                             </InputLabel>
@@ -309,7 +326,7 @@ const Create = (props) => {
                                 renderInput={(params) => <TextField {...params} variant="outlined" />}
                             />
                         </div>
-                        <div className="col-md-4 col-sm-12 has-wrapper mb-30">
+                        <div className="col-md-3 col-sm-12 has-wrapper mb-30">
                             <InputLabel className="text-left">
                                 Portée du produit
                             </InputLabel>

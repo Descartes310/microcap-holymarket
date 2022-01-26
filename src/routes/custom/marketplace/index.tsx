@@ -1,4 +1,5 @@
 import React from 'react';
+import Shop from './shop';
 import Store from './store';
 import {connect} from "react-redux";
 import {injectIntl} from "react-intl";
@@ -16,6 +17,7 @@ const Marketplace = (props) => {
             <>
                 <Switch>
                     <Redirect exact from={`${match.url}/`} to={MARKETPLACE.CATAlOG.SELF} />
+                    <Route path={MARKETPLACE.SHOP} component={Shop} />
                     <Route path={MARKETPLACE.STORE.SELF} component={Store} />
                     <Route path={MARKETPLACE.CATAlOG.SELF} component={Catalogs} />
                     <Route path={MARKETPLACE.MODEL.SELF} component={Products} />
