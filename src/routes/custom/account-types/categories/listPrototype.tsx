@@ -30,7 +30,7 @@ const List = () => {
                                 <table className="table table-hover table-middle mb-0">
                                     <thead>
                                         <tr>
-                                            <th className="fw-bold">Label</th>
+                                            <th className="fw-bold">Désignation</th>
                                             <th className="fw-bold">Description</th>
                                         </tr>
                                     </thead>

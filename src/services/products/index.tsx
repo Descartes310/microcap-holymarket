@@ -11,4 +11,12 @@ export default class ProductService {
     static createCategory(data: any): Promise<any> {
         return makeRequest('post', Routes.CREATE_CATEGORY, data);
     }
+
+    static createProductModel(data: any, config: any): Promise<any> {
+        return makeRequest('post', Routes.CREATE_PRODUCT_MODEL, data, config);
+    }
+
+    static getProductModels(data: any): Promise<any> {
+        return makeRequest('get', Routes.GET_PRODUCT_MODELS, data);
+    }
 }

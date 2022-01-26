@@ -1,6 +1,8 @@
 import { connect } from 'react-redux';
+import UnitService from 'Services/units';
 import { withRouter } from "react-router-dom";
 import Button from '@material-ui/core/Button';
+import { MARKETPLACE } from 'Url/frontendUrl';
 import ProductService from 'Services/products';
 import { setRequestGlobalAction } from 'Actions';
 import React, { useState, useEffect } from 'react';
@@ -21,35 +23,76 @@ const Create = (props) => {
 
     const [code, setCode] = useState('');
     const [file, setFile] = useState(null);
+    const [units, setUnits] = useState([]);
     const [label, setLabel] = useState('');
     const [price, setPrice] = useState(null);
     const [range, setRange] = useState(null);
     const [nature, setNature] = useState(null);
+    const [products, setProducts] = useState([]);
     const [category, setCategory] = useState(null);
+    const [typeUnits, setTypeUnits] = useState([]);
     const [categories, setCategories] = useState([]);
+    const [priceUnit, setPriceUnit] = useState(null);
     const [isAccount, setIsAccount] = useState(false);
     const [description, setDescription] = useState('');
+    const [accountUnit, setAccountUnit] = useState(null);
     const [maximumByUser, setMaximumByUser] = useState(null);
-    const [priceCurrency, setPriceCurrency] = useState(null);
+    const [priceTypeUnit, setPriceTypeUnit] = useState(null);
     const [isAggregation, setIsAggregation] = useState(false);
-    const [accountCurrency, setAccountCurrency] = useState(null);
+    const [accountTypeUnit, setAccountTypeUnit] = useState(null);
     const [minAccountbalance, setMinAccountBalance] = useState(null);
     const [maxAccountBalance, setMaxAccountBalance] = useState(null);
-    const [hasComplementaryProducts, setHasComplementaryProducts] = useState(null);   
+    const [associatedProducts, setAssociatedProducts] = useState([]);
+    const [aggregationProducts, setAggregationProducts] = useState([]);
+    const [hasComplementaryProducts, setHasComplementaryProducts] = useState(null);
 
     useEffect(() => {
+        getUnits();
+        getProducts();
+        getTypeUnits();
         getCategories();
     }, []);
 
     const getCategories = () => {
         props.setRequestGlobalAction(true);
         ProductService.getCategories()
-        .then(response => setCategories(response))
-        .finally(() => props.setRequestGlobalAction(false))
+            .then(response => setCategories(response))
+            .finally(() => props.setRequestGlobalAction(false))
+    }
+
+    const getProducts = () => {
+        props.setRequestGlobalAction(true);
+        ProductService.getProductModels({types: ['PRODUCT', 'PACKAGE']})
+            .then(response => setProducts(response))
+            .finally(() => props.setRequestGlobalAction(false))
+    }
+
+    const getUnits = () => {
+        props.setRequestGlobalAction(false);
+        UnitService.getUnits()
+            .then((response) => setUnits(response))
+            .catch((err) => {
+                console.log(err);
+            })
+            .finally(() => {
+                props.setRequestGlobalAction(false);
+            })
+    }
+
+    const getTypeUnits = () => {
+        props.setRequestGlobalAction(true);
+        UnitService.getTypeUnits()
+            .then((response) => setTypeUnits(response))
+            .catch((err) => {
+                console.log(err);
+            })
+            .finally(() => {
+                props.setRequestGlobalAction(false);
+            })
     }
 
     const onSubmit = () => {
-        if(
+        if (
             !label ||
             !code ||
             !file ||
@@ -57,18 +100,63 @@ const Create = (props) => {
             !range ||
             !nature ||
             !category ||
-            !priceCurrency ||
             !description ||
-            !maximumByUser
-        ) return;
+            !maximumByUser ||
+            !priceUnit
+        ) {
+            NotificationManager.error('Le formulaire est mal renseigné');
+            return;
+        }
 
         let data: any = {
             label, code, price, description, maximumByUser,
-            currency: priceCurrency, categoryId: category.id,
-            image: file, nature: nature.value, range: range.value
+            priceUnitReference: priceUnit.reference, categoryId: category.id,
+            image: file, nature: nature.value, range: range.value, type: 'PRODUCT'
         }
 
-        console.log(data);
+        console.log(isAccount, minAccountbalance, maxAccountBalance);
+
+        if (isAccount && (!minAccountbalance || !maxAccountBalance || !accountUnit)) {
+            NotificationManager.error('Les détails du compte sont invalides');
+            return;
+        }
+
+        if (isAccount) {
+            data.minBalance = minAccountbalance;
+            data.maxBalance = maxAccountBalance;
+            data.accountUnitReference = accountUnit.reference;
+        }
+
+        if(isAggregation) {
+            if(aggregationProducts.length <= 0) {
+                NotificationManager.error('Sélectionnez les comptes à aggreger');
+                return;
+            }
+            data.aggregationIds = aggregationProducts.map(ap => ap.id);
+        }
+
+        if(hasComplementaryProducts) {
+            if(associatedProducts.length <= 0) {
+                NotificationManager.error('Sélectionnez les produits à associer');
+                return;
+            }
+            data.associatedIds = associatedProducts.map(ap => ap.id);
+        }
+
+        //console.log(data);
+
+        props.setRequestGlobalAction(true);
+        ProductService.createProductModel(data, { fileData: ['image'], multipart: true })
+            .then(() => {
+                NotificationManager.success('Le modèle a été crée avec succès !');
+                props.history.push(MARKETPLACE.MODEL.PRODUCT.LIST);
+            })
+            .catch(err => {
+                console.log(err);
+                NotificationManager.error('Une erreur est survenu lors de la création du modèle !');
+            }).finally(() => {
+                props.setRequestGlobalAction(false);
+            });
     }
 
     return (
@@ -120,7 +208,7 @@ const Create = (props) => {
                         />
                     </FormGroup>
                     <div className="row">
-                        <FormGroup className="col-md-4 col-sm-12 has-wrapper">
+                        <FormGroup className="col-md-3 col-sm-12 has-wrapper">
                             <InputLabel className="text-left" htmlFor="price">
                                 Prix par défaut
                             </InputLabel>
@@ -134,21 +222,37 @@ const Create = (props) => {
                                 onChange={(e) => setPrice(e.target.value)}
                             />
                         </FormGroup>
-                        <FormGroup className="col-md-4 col-sm-12 has-wrapper">
-                            <InputLabel className="text-left" htmlFor="priceCurrency">
-                                Devise
+                        <FormGroup className="col-md-3 col-sm-12 has-wrapper">
+                            <InputLabel className="text-left">
+                                Type devise
                             </InputLabel>
-                            <InputStrap
-                                required
-                                type="text"
-                                id="priceCurrency"
-                                name='priceCurrency'
-                                className="input-lg"
-                                value={priceCurrency}
-                                onChange={(e) => setPriceCurrency(e.target.value)}
+                            <Autocomplete
+                                options={typeUnits}
+                                value={priceTypeUnit}
+                                id="combo-box-demo"
+                                onChange={(__, item) => {
+                                    setPriceTypeUnit(item);
+                                }}
+                                getOptionLabel={(option) => option.label}
+                                renderInput={(params) => <TextField {...params} variant="outlined" />}
                             />
                         </FormGroup>
-                        <FormGroup className="col-md-4 col-sm-12 has-wrapper">
+                        <FormGroup className="col-md-3 col-sm-12 has-wrapper">
+                            <InputLabel className="text-left">
+                                Devise
+                            </InputLabel>
+                            <Autocomplete
+                                value={priceUnit}
+                                id="combo-box-demo"
+                                onChange={(__, item) => {
+                                    setPriceUnit(item);
+                                }}
+                                getOptionLabel={(option) => option.label}
+                                options={units.filter(u => u.type.id === priceTypeUnit?.id)}
+                                renderInput={(params) => <TextField {...params} variant="outlined" />}
+                            />
+                        </FormGroup>
+                        <FormGroup className="col-md-3 col-sm-12 has-wrapper">
                             <InputLabel className="text-left" htmlFor="maxByUser">
                                 Nombre max. par membre
                             </InputLabel>
@@ -234,21 +338,36 @@ const Create = (props) => {
                     {isAccount && (
                         <>
                             <div className="row">
-                                <div className="col-md-4 col-sm-12 has-wrapper mb-30">
+                                <div className="col-md-3 col-sm-12 has-wrapper mb-30">
                                     <InputLabel className="text-left">
-                                        Devise du compte
+                                        Type d'unité
                                     </InputLabel>
                                     <Autocomplete
-                                        options={[]}
                                         id="combo-box-demo"
+                                        options={typeUnits}
+                                        value={accountTypeUnit}
                                         onChange={(__, item) => {
-                                            //setCommercialOperation(item);
+                                            setAccountTypeUnit(item);
                                         }}
                                         getOptionLabel={(option) => option.label}
                                         renderInput={(params) => <TextField {...params} variant="outlined" />}
                                     />
                                 </div>
-                                <div className="col-md-4 col-sm-12 has-wrapper mb-30">
+                                <div className="col-md-3 col-sm-12 has-wrapper mb-30">
+                                    <InputLabel className="text-left">
+                                        Unité du compte
+                                    </InputLabel>
+                                    <Autocomplete
+                                        id="combo-box-demo"
+                                        onChange={(__, item) => {
+                                            setAccountUnit(item);
+                                        }}
+                                        getOptionLabel={(option) => option.label}
+                                        options={units.filter(u => u.type.id === accountTypeUnit?.id)}
+                                        renderInput={(params) => <TextField {...params} variant="outlined" />}
+                                    />
+                                </div>
+                                <div className="col-md-3 col-sm-12 has-wrapper mb-30">
                                     <InputLabel className="text-left">
                                         Plancher du compte
                                     </InputLabel>
@@ -262,7 +381,7 @@ const Create = (props) => {
                                         onChange={(e) => setMinAccountBalance(e.target.value)}
                                     />
                                 </div>
-                                <div className="col-md-4 col-sm-12 has-wrapper mb-30">
+                                <div className="col-md-3 col-sm-12 has-wrapper mb-30">
                                     <InputLabel className="text-left">
                                         Plafond du compte
                                     </InputLabel>
@@ -294,10 +413,12 @@ const Create = (props) => {
                                             Sélectionnez les comptes à aggreger
                                         </InputLabel>
                                         <Autocomplete
-                                            options={[]}
+                                            multiple
                                             id="combo-box-demo"
-                                            onChange={(__, item) => {
-                                                //setCommercialOperation(item);
+                                            value={aggregationProducts}
+                                            options={products.filter(p => p.account)}
+                                            onChange={(__, items) => {
+                                                setAggregationProducts(items)
                                             }}
                                             getOptionLabel={(option) => option.label}
                                             renderInput={(params) => <TextField {...params} variant="outlined" />}
@@ -326,10 +447,12 @@ const Create = (props) => {
                                     Sélectionnez les produits à associer
                                 </InputLabel>
                                 <Autocomplete
-                                    options={[]}
+                                    multiple
+                                    options={products}
                                     id="combo-box-demo"
-                                    onChange={(__, item) => {
-                                        //setCommercialOperation(item);
+                                    value={associatedProducts}
+                                    onChange={(__, items) => {
+                                        setAssociatedProducts(items)
                                     }}
                                     getOptionLabel={(option) => option.label}
                                     renderInput={(params) => <TextField {...params} variant="outlined" />}

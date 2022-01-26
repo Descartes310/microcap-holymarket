@@ -59,7 +59,7 @@ const Types = (props) => {
                                 <table className="table table-hover table-middle mb-0">
                                     <thead>
                                         <tr>
-                                            <th className="fw-bold">Label</th>
+                                            <th className="fw-bold">Désignation</th>
                                             <th className="fw-bold">Cible</th>
                                             <th className="fw-bold">Description</th>
                                             <th className="fw-bold">Catégorie</th>

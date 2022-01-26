@@ -769,6 +769,14 @@ export const getProductNatures = () => {
     ]
 }
 
+export const getProductNatureLabel = (value) => {
+    let nature = getProductNatures().find(rt => rt.value === value);
+    if (nature)
+        return nature.label;
+    else
+        return "";
+}
+
 export const getProductRanges = () => {
     return [
         {
@@ -788,4 +796,12 @@ export const getProductRanges = () => {
             value: 'COMMUNITY'
         }
     ]
+}
+
+export const getProductRangeLabel = (value) => {
+    let range = getProductRanges().find(rt => rt.value === value);
+    if (range)
+        return range.label;
+    else
+        return "";
 }
