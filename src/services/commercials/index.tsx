@@ -19,8 +19,8 @@ export default class CommercialService {
         return makeRequest('post', Routes.CREATE_COMMERCIAL_OPERATION, data);
     }
 
-    static getCommercialOffers(): Promise<any> {
-        return makeRequest('get', Routes.GET_COMMERCIAL_OFFERS);
+    static getCommercialOffers(status = null): Promise<any> {
+        return makeRequest('get', Routes.GET_COMMERCIAL_OFFERS, status ? {status} : {});
     }
 
     static createCommercialOffer(data: any): Promise<any> {
