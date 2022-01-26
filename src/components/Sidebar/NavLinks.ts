@@ -3,6 +3,7 @@ import Permission from "Enums/Permissions";
 import {
    GROUP,
    PROFILE,
+   SETTING,
    MARKETPLACE,
    USER_ACCOUNT_TYPE
 } from 'Url/frontendUrl';
@@ -218,7 +219,6 @@ export default [
          }
       ],
    },
-
    {
       "menu_title": "Ma boutique",
       "menu_icon": "zmdi zmdi-store",
@@ -248,6 +248,25 @@ export default [
             "menu_title": "Commandes reçus",
             "new_item": false,
             "path": MARKETPLACE.STORE.ORDER.LIST,
+            "permissions": [Permission.group.space.name],
+            "profiles": null,
+            "child_routes": null
+         }
+      ],
+   },
+   {
+      "menu_title": "Paramètres",
+      "menu_icon": "zmdi zmdi-store",
+      "new_item": false,
+      "permissions": [
+         [Permission.group.space.name]
+      ],
+      "profiles": null,
+      "child_routes": [
+         {
+            "menu_title": "Unités",
+            "new_item": false,
+            "path": SETTING.UNIT.LIST,
             "permissions": [Permission.group.space.name],
             "profiles": null,
             "child_routes": null

@@ -195,6 +195,19 @@ export const MARKETPLACE = {
     },
 }
 
+export const SETTING = {
+    SELF: "/settings",
+    UNIT: {
+        SELF: "/settings/units",
+        LIST: "/settings/units/list",
+        CREATE: "/settings/units/create",
+        TYPE: {
+            SELF: "/settings/units",
+            LIST: "/settings/units/types/list",
+            CREATE: "/settings/units/types/create"
+        }
+    }
+}
 
 export const joinUrlWithParams = (to, params) => {
     let url = to;
