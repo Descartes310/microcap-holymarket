@@ -9,12 +9,12 @@ import {withRouter, Switch, Redirect, Route} from "react-router-dom";
 const Products = (props) => {
     const { match } = props;
     return (
-        <div className="full-height">
+        <div>
             <>
                 <Switch>
-                    <Redirect exact from={`${match.url}/`} to={MARKETPLACE.PRODUCT.LIST} />
-                    <Route path={MARKETPLACE.PRODUCT.LIST} component={List} />
-                    <Route path={MARKETPLACE.PRODUCT.CREATE} component={Create} />
+                    <Redirect exact from={`${match.url}/`} to={MARKETPLACE.MODEL.PRODUCT.LIST} />
+                    <Route path={MARKETPLACE.MODEL.PRODUCT.LIST} component={List} />
+                    <Route path={MARKETPLACE.MODEL.PRODUCT.CREATE} component={Create} />
                 </Switch>
             </>
         </div>

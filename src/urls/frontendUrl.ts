@@ -157,10 +157,23 @@ export const MARKETPLACE = {
             CREATE: "/marketplace/commercials/operations/offers/create"
         }
     },
-    PRODUCT: {
-        SELF: "/marketplace/products",
-        LIST: "/marketplace/products/list",
-        CREATE: "/marketplace/products/create",
+    CATEGORY: {
+        SELF: "/marketplace/categories",
+        LIST: "/marketplace/categories/list",
+        CREATE: "/marketplace/categories/create",
+    },
+    MODEL: {
+        SELF: "/marketplace/models",
+        PRODUCT: {
+            SELF: "/marketplace/models/products",
+            LIST: "/marketplace/models/products/list",
+            CREATE: "/marketplace/models/products/create",
+        },
+        PACKAGE: {
+            SELF: "/marketplace/models/packages",
+            LIST: "/marketplace/models/packages/list",
+            CREATE: "/marketplace/models/packages/create",
+        }
     },
     STORE: {
         SELF: "/marketplace/store",

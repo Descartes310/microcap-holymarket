@@ -35,8 +35,8 @@ export default [
       "menu_icon": "zmdi zmdi-folder-outline",
       "new_item": false,
       "permissions": [
-         Permission.accountType.category.name, 
-         Permission.accountType.role.name, 
+         Permission.accountType.category.name,
+         Permission.accountType.role.name,
          Permission.accountType.type.name
       ],
       "profiles": ['GROUP'],
@@ -187,26 +187,31 @@ export default [
       ],
       "profiles": null,
       "child_routes": [
-      {
-         "menu_title": "Catalogues",
-         "new_item": false,
-         "path": MARKETPLACE.CATAlOG.SALE.LIST,
-         "permissions": [Permission.group.space.name],
-         "profiles": null,
-         "child_routes": null
-      },
-         {
-            "menu_title": "Gestion commerciale",
-            "new_item": false,
-            "path": MARKETPLACE.COMMERCIAL.OFFER.LIST,
-            "permissions": [Permission.group.space.name],
-            "profiles": null,
-            "child_routes": null
-         },
          {
             "menu_title": "Modèles produits",
             "new_item": false,
-            "path": MARKETPLACE.PRODUCT.LIST,
+            "path": MARKETPLACE.MODEL.PRODUCT.LIST,
+            "permissions": [Permission.group.space.name],
+            "profiles": null,
+            "child_routes": null
+         }, {
+            "menu_title": "Catégories produits",
+            "new_item": false,
+            "path": MARKETPLACE.CATEGORY.LIST,
+            "permissions": [Permission.group.space.name],
+            "profiles": null,
+            "child_routes": null
+         }, {
+            "menu_title": "Catalogues",
+            "new_item": false,
+            "path": MARKETPLACE.CATAlOG.SALE.LIST,
+            "permissions": [Permission.group.space.name],
+            "profiles": null,
+            "child_routes": null
+         }, {
+            "menu_title": "Gestion commerciale",
+            "new_item": false,
+            "path": MARKETPLACE.COMMERCIAL.OFFER.LIST,
             "permissions": [Permission.group.space.name],
             "profiles": null,
             "child_routes": null

@@ -112,7 +112,7 @@ const Create = (props) => {
                             Image
                         </InputLabel>
                         <FileUploader
-                            class="mw-100"
+                            classes="mw-100"
                             label="Sélectionner l'image de votre groupe ici"
                             handleChange={(file) => {
                                 setFile(file);
