@@ -16,23 +16,22 @@ import ErrorInputComponent from "Components/ErrorInputComponent";
 import DialogTitle from "@material-ui/core/DialogTitle/DialogTitle";
 import useMediaQuery from "@material-ui/core/useMediaQuery/useMediaQuery";
 import DialogContent from "@material-ui/core/DialogContent/DialogContent";
-import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
 
-const AddAssociationToProduct = ({ show, products, onSave, onClose }) => {
+const AddProductToCatalog = ({ show, products, onSave, onClose }) => {
 
     const theme = useTheme();
-    const [product, setProduct] = useState(null);
+    const [selectedProducts, setSelectedProducts] = useState([]);
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
 
-    const { register, errors, handleSubmit } = useForm();
+    const { handleSubmit } = useForm();
 
     const onSubmit = (data: any) => {
-        if (product === null) {
+        if (selectedProducts.length <= 0) {
             NotificationManager.error("Vous devez choisir un produit ou en créé un d'abord");
             return;
         }
-        onSave(product, data.price, data.quantity);
-        setProduct(null);
+        onSave(selectedProducts);
+        setSelectedProducts([]);
     };
 
     return (
@@ -48,7 +47,7 @@ const AddAssociationToProduct = ({ show, products, onSave, onClose }) => {
         >
             <DialogTitle id="form-dialog-title">
                 <div className="row justify-content-between align-items-center">
-                    Ajouter un produit
+                    Ajouter des produits
                     <IconButton
                         color="primary"
                         aria-label="close"
@@ -64,59 +63,20 @@ const AddAssociationToProduct = ({ show, products, onSave, onClose }) => {
 
                         <div className="col-md-12 col-sm-12 has-wrapper mb-30">
                             <InputLabel className="text-left">
-                                Produit
+                                Produits
                             </InputLabel>
                             <Autocomplete
-                                value={product}
+                                multiple
                                 id="combo-box-demo"
                                 options={products}
-                                onChange={(__, item) => {
-                                    setProduct(item);
+                                value={selectedProducts}
+                                onChange={(__, items) => {
+                                    setSelectedProducts(items);
                                 }}
                                 getOptionLabel={(option) => option.label}
                                 renderInput={(params) => <TextField {...params} variant="outlined" />}
                             />
                         </div>
-
-                        <FormGroup className="has-wrapper">
-                            <InputLabel className="text-left" htmlFor="price">
-                                Prix unitaire
-                            </InputLabel>
-                            <InputComponent
-                                isRequired
-                                type="number"
-                                id="price"
-                                errors={errors}
-                                register={register}
-                                className="input-lg"
-                                name={'price'}
-                                otherValidator={{ minLength: 1 }}
-                            >
-                                {errors.price?.type === 'pattern' && (
-                                    <ErrorInputComponent text="Entrer un prix supérieur à 0" />
-                                )}
-                            </InputComponent>
-                        </FormGroup>
-
-                        <FormGroup className="has-wrapper">
-                            <InputLabel className="text-left" htmlFor="quantity">
-                                Quantité
-                            </InputLabel>
-                            <InputComponent
-                                isRequired
-                                type="number"
-                                id="quantity"
-                                errors={errors}
-                                register={register}
-                                className="input-lg"
-                                name={'quantity'}
-                                otherValidator={{ minLength: 1 }}
-                            >
-                                {errors.quantity?.type === 'pattern' && (
-                                    <ErrorInputComponent text="Entrer une quantité supérieur à 0" />
-                                )}
-                            </InputComponent>
-                        </FormGroup>
                     </div>
 
                     <FormGroup className="mb-15">
@@ -135,4 +95,4 @@ const AddAssociationToProduct = ({ show, products, onSave, onClose }) => {
     );
 };
 
-export default AddAssociationToProduct;
+export default AddProductToCatalog;

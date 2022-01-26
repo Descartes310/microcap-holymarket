@@ -19,4 +19,8 @@ export default class ProductService {
     static getProductModels(data: any): Promise<any> {
         return makeRequest('get', Routes.GET_PRODUCT_MODELS, data);
     }
+
+    static getProductModelAvailabless(): Promise<any> {
+        return makeRequest('get', Routes.GET_PRODUCT_MODEL_AVAILABLES);
+    }
 }

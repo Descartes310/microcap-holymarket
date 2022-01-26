@@ -1,11 +1,12 @@
 import { connect } from 'react-redux';
 import Switch from "@material-ui/core/Switch";
-import { MARKETPLACE } from 'Url/frontendUrl';
 import { withRouter } from "react-router-dom";
+import Button from "@material-ui/core/Button";
 import CatalogService from 'Services/catalogs';
 import CustomList from "Components/CustomList";
 import { setRequestGlobalAction } from 'Actions';
 import React, { useEffect, useState } from 'react';
+import { joinUrlWithParamsId, MARKETPLACE } from 'Url/frontendUrl';
 
 const List = (props) => {
 
@@ -18,20 +19,20 @@ const List = (props) => {
     const getCatalogs = () => {
         props.setRequestGlobalAction(true);
         CatalogService.getCatalogs({ type: 'SALE' })
-        .then((response) => setCatalogs(response))
-        .catch((err) => {
-            console.log(err);
-        })
-        .finally(() => {
-            props.setRequestGlobalAction(false);
-        })
+            .then((response) => setCatalogs(response))
+            .catch((err) => {
+                console.log(err);
+            })
+            .finally(() => {
+                props.setRequestGlobalAction(false);
+            })
     }
 
     const changeStatus = (catalog) => {
         props.setRequestGlobalAction(true),
-        CatalogService.changeCatalogStatus(catalog.id)
-        .then(() => getCatalogs())
-        .finally(() => props.setRequestGlobalAction(false))
+            CatalogService.changeCatalogStatus(catalog.id)
+                .then(() => getCatalogs())
+                .finally(() => props.setRequestGlobalAction(false))
     }
 
     return (
@@ -56,6 +57,7 @@ const List = (props) => {
                                         <th className="fw-bold">Désignation</th>
                                         <th className="fw-bold">Description</th>
                                         <th className="fw-bold">Status</th>
+                                        <th className="fw-bold">Produits</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -75,13 +77,23 @@ const List = (props) => {
                                                     </div>
                                                 </div>
                                             </td>
-                                                <td>
-                                                    <Switch
-                                                        aria-label="Par défaut"
-                                                        checked={item.status}
-                                                        onChange={() => { changeStatus(item) }}
-                                                    />
-                                                </td>
+                                            <td>
+                                                <Switch
+                                                    aria-label="Par défaut"
+                                                    checked={item.status}
+                                                    onChange={() => { changeStatus(item) }}
+                                                />
+                                            </td>
+                                            <td>
+                                                <Button
+                                                    color="primary"
+                                                    variant="contained"
+                                                    onClick={() => props.history.push(joinUrlWithParamsId(MARKETPLACE.CATAlOG.PRODUCTS, item.id))}
+                                                    className="text-white font-weight-bold mr-3"
+                                                >
+                                                    Produits
+                                                </Button>
+                                            </td>
                                         </tr>
                                     ))}
                                 </tbody>

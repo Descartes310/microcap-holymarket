@@ -128,10 +128,11 @@ export const MARKETPLACE = {
     SELF: "/marketplace",
     CATAlOG: {
         SELF: "/marketplace/catalogs",
+        PRODUCTS: `/marketplace/catalogs/:id/products`,
         SALE: {
             SELF: "/marketplace/catalogs/sales",
             LIST: "/marketplace/catalogs/sales/list",
-            CREATE: "/marketplace/catalogs/sales/create"
+            CREATE: "/marketplace/catalogs/sales/create",
         },
         DISTRIBUTION: {
             SELF: "/marketplace/catalogs/distributions",

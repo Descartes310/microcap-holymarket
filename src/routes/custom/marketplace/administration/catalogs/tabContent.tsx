@@ -4,6 +4,7 @@ import {injectIntl} from "react-intl";
 import ListSaleCatalogs from './sales/list';
 import { MARKETPLACE } from 'Url/frontendUrl';
 import CreateSaleCatalog from './sales/create';
+import CatalogProducts from './components/products';
 import ListDistributionCatalogs from './distributions/list';
 import CreateDistributionCatalog from './distributions/create';
 import {withRouter, Switch, Redirect, Route} from "react-router-dom";
@@ -15,6 +16,7 @@ const Catalogs = (props) => {
             <>
                 <Switch>
                     <Redirect exact from={`${match.url}/`} to={MARKETPLACE.CATAlOG.SALE.LIST} />
+                    <Route path={MARKETPLACE.CATAlOG.PRODUCTS} component={CatalogProducts} />
                     <Route path={MARKETPLACE.CATAlOG.SALE.LIST} component={ListSaleCatalogs} />
                     <Route path={MARKETPLACE.CATAlOG.SALE.CREATE} component={CreateSaleCatalog} />
                     <Route path={MARKETPLACE.CATAlOG.DISTRIBUTION.LIST} component={ListDistributionCatalogs} />
