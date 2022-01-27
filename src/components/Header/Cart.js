@@ -1,9 +1,9 @@
 import { Badge } from 'reactstrap';
 import { connect } from 'react-redux';
-import { STORE } from "Url/frontendUrl";
 import { Link } from 'react-router-dom';
 import NatureType from "Enums/NatureType";
 import IntlMessages from 'Util/IntlMessages';
+import { MARKETPLACE } from "Url/frontendUrl";
 import { deleteItemFromCart } from "Actions";
 import { getFilePath } from "Helpers/helpers";
 import { withRouter } from "react-router-dom";
@@ -41,7 +41,8 @@ class Carts extends Component {
 	getTotalPrice() {
 		const { cart } = this.props;
 		let totalPrice = 0;
-		totalPrice = cart.items.map(ci => ci.price).reduce((sum, current) => sum + current);
+		if(cart.count() === 0) return 0;
+		totalPrice = cart.items.map(ci => ci.price * ci.quantity).reduce((sum, current) => sum + current);
 		return totalPrice.toFixed(2);
 	}
 
@@ -107,9 +108,9 @@ class Carts extends Component {
 									<div>
 										<Button
 											variant="contained"
-											//component={Link}
-											//to={STORE.CART}
+											component={Link}
 											color="primary"
+											to={MARKETPLACE.CART}
 											className="mr-10 btn-xs bg-blue text-white"
 										>
 											Voir le panier

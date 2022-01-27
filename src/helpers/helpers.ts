@@ -33,7 +33,7 @@ export function hexToRgbA(hex, alpha) {
 /**
  * Text Truncate
  */
-export function textTruncate(str, length, ending) {
+export function textTruncate(str, length, ending = null) {
     if (!str) {
         return "";
     }

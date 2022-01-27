@@ -127,6 +127,8 @@ export const PROFILE = {
 export const MARKETPLACE = {
     SELF: "/marketplace",
     SHOP: "/marketplace/shop",
+    CART: "/marketplace/cart",
+    CHECKOUT: "/marketplace/checkout",
     CATAlOG: {
         SELF: "/marketplace/catalogs",
         PRODUCTS: `/marketplace/catalogs/:id/products`,

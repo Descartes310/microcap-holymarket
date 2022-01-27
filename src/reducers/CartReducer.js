@@ -38,8 +38,9 @@ export default (state = INIT_STATE, action) => {
 			return new Cart(obj);
 
 		case ON_QUANTITY_CHANGE:
-			items = state.items.map(item => item.id === action.payload.id ? {...item, price: action.payload.price} : item);
-			obj.data[action.authId] = items;
+			console.log(action.payload)
+			let newItems = state.items.map(item => item.id === action.payload.id ? {...item, quantity: action.payload.quantity} : item);
+			obj.data[action.authId] = newItems;
 			return new Cart(obj);
 
 		case CART_CLEAR:
