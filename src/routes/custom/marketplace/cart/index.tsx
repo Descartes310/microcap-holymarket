@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
  import { Table, Input } from 'reactstrap';
+ import { MARKETPLACE } from 'Url/frontendUrl';
  import Button from '@material-ui/core/Button';
  import IconButton from '@material-ui/core/IconButton';
  import { textTruncate, getFilePath } from "Helpers/helpers";
@@ -92,7 +93,7 @@ import { Link } from 'react-router-dom';
                             <td><span className="font-weight-bold">Total</span></td>
                             <td><span className="font-weight-bold">€{this.getTotalPrice()}</span></td>
                             <td>
-                               <Button variant="contained" size="large" color="primary" className="text-white" component={Link} to="/app/ecommerce/checkout">
+                               <Button variant="contained" size="large" color="primary" className="text-white" component={Link} to={MARKETPLACE.CHECKOUT}>
                                  Commander
                                </Button>
                             </td>
