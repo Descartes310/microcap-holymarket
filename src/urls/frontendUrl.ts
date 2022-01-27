@@ -128,6 +128,7 @@ export const MARKETPLACE = {
     SELF: "/marketplace",
     SHOP: "/marketplace/shop",
     CART: "/marketplace/cart",
+    ORDERS: "/marketplace/orders",
     CHECKOUT: "/marketplace/checkout",
     CATAlOG: {
         SELF: "/marketplace/catalogs",

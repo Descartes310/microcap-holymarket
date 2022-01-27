@@ -11,32 +11,32 @@ import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
 
 const List = (props) => {
 
-    const [purchases, setPurchases] = useState([]);
+    const [orders, setOrders] = useState([]);
 
     useEffect(() => {
-        getPurchases();
+      getOrders();
     }, []);
 
-    const getPurchases = () => {
+    const getOrders = () => {
         props.setRequestGlobalAction(true),
-            OrderService.getPurchases({ status: ['PENDING'] })
-                .then(response => setPurchases(response))
+            OrderService.getOrders()
+                .then(response => setOrders(response))
                 .finally(() => props.setRequestGlobalAction(false))
     }
 
     return (
         <>
-            <PageTitleBar title={'Mes demandes d\'achats'} />
+            <PageTitleBar title={'Mes commandes'} />
             <CustomList
-                list={purchases}
+                list={orders}
                 loading={false}
-                itemsFoundText={n => `${n} demandes trouvées`}
+                itemsFoundText={n => `${n} commandes`}
                 renderItem={list => (
                     <>
                         {list && list.length === 0 ? (
                             <div className="d-flex justify-content-center align-items-center py-50">
                                 <h4>
-                                    Aucun demandes trouvées
+                                    Aucun commandes
                                 </h4>
                             </div>
                         ) : (
@@ -45,7 +45,7 @@ const List = (props) => {
                                     <thead>
                                         <tr>
                                             <th className="fw-bold">#Reference</th>
-                                            <th className="fw-bold">Client</th>
+                                            <th className="fw-bold">Vendeur</th>
                                             <th className="fw-bold">Telephone</th>
                                             <th className="fw-bold">Date</th>
                                             <th className="fw-bold">Status</th>

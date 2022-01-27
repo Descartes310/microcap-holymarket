@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import OrderService from 'Services/orders';
 import { withRouter } from "react-router-dom";
+import { MARKETPLACE } from 'Url/frontendUrl';
 import BillingForm from './components/BillingForm';
 import SweetAlert from 'react-bootstrap-sweetalert';
 import CheckoutItem from './components/CheckoutItem';
@@ -10,7 +11,6 @@ import { RctCard, RctCardContent } from 'Components/RctCard';
 import { setRequestGlobalAction, onClearCart } from 'Actions';
 import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
-import { MARKETPLACE } from 'Url/frontendUrl';
 
 class Checkout extends Component<any, any> {
 

@@ -264,6 +264,15 @@ export default [
       "permissions": [Permission.group.member.name],
    },
    {
+      "path": MARKETPLACE.ORDERS,
+      "menu_title": "Mes commandes",
+      "menu_icon": "zmdi zmdi-documents",
+      "new_item": false,
+      "child_routes": null,
+      "profiles": null,
+      "permissions": [Permission.group.member.name],
+   },
+   {
       "menu_title": "Paramètres",
       "menu_icon": "zmdi zmdi-store",
       "new_item": false,

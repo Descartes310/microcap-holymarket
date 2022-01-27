@@ -818,3 +818,41 @@ export const getProductRangeLabel = (value) => {
     else
         return "";
 }
+
+export const getOrderStatus = () => {
+    return [
+        {
+            color: '#FF6464',
+            label: 'En attente',
+            value: 'PENDING'
+        },
+        {
+            color: '#1572A1',
+            label: 'Confirmée',
+            value: 'CONFIRMED'
+        },
+        {
+            color: '#FFC900',
+            label: 'Payement...',
+            value: 'PAYING'
+        },
+        {
+            color: '#4FBDBA',
+            label: 'Payée',
+            value: 'PAID'
+        },
+        {
+            color: '#9A0680',
+            label: 'Livrée',
+            value: 'DELIVERED'
+        }
+    ]
+};
+
+export const getOrderStatusItem = (value) => {
+    let status = getOrderStatus().find(rt => rt.value === value);
+    if (status)
+        return status;
+    else
+        return null;
+}

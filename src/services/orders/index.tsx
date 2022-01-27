@@ -4,11 +4,15 @@ import { makeRequest } from 'Helpers/helpers';
 
 export default class OrderService {
 
-    static getOrders(data: any): Promise<any> {
-        return makeRequest('get', Routes.GET_ORDERS, data);
+    static getOrders(data: any = null): Promise<any> {
+        return makeRequest('get', Routes.GET_ORDERS, data ? data : null);
     }
 
     static createOrder(data: any): Promise<any> {
         return makeRequest('post', Routes.CREATE_ORDER, data);
+    }
+
+    static getPurchases(data: any = null): Promise<any> {
+        return makeRequest('get', Routes.GET_PURCHASES, data ? data : null);
     }
 }
