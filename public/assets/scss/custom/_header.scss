@@ -56,7 +56,7 @@
       background-color: $base-light;
       width: 321px;
       &.show {
-         transform: translate3d(0px, 48px, 0px) !important;
+         transform: translate3d(-30px, 48px, 0px) !important;
       }
       .dropdown-top {
          padding: 1rem 1.25rem;

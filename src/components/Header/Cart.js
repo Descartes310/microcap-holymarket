@@ -4,31 +4,21 @@ import { STORE } from "Url/frontendUrl";
 import { Link } from 'react-router-dom';
 import NatureType from "Enums/NatureType";
 import IntlMessages from 'Util/IntlMessages';
+import { deleteItemFromCart } from "Actions";
 import { getFilePath } from "Helpers/helpers";
 import { withRouter } from "react-router-dom";
 import Button from '@material-ui/core/Button';
 import { textTruncate } from "Helpers/helpers";
-import UserAvatar from "Components/UserAvatar";
 import Tooltip from '@material-ui/core/Tooltip';
 import React, { Component, Fragment } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 import IconButton from '@material-ui/core/IconButton';
-import AmountCurrency from "Components/AmountCurrency";
-import { deleteItemFromCart } from "Actions/CartActions";
 import { UncontrolledDropdown, DropdownToggle, DropdownMenu } from 'reactstrap';
 
 class Carts extends Component {
 	state = {
 		showWarningBox: false,
 		itemToRemove: null,
-	};
-
-	onWantToRemoveItem = (item) => {
-		this.setState({ itemToRemove: item, showWarningBox: true });
-	};
-
-	onRemoveItemFromCart = (item) => {
-		this.props.deleteItemFromCart(item);
 	};
 
 	getSubName = (item) => {
@@ -39,8 +29,24 @@ class Carts extends Component {
 		}
 	};
 
-	render() {
+	//Is Cart Empty
+	isCartEmpty() {
 		const { cart } = this.props;
+		if (cart.count() === 0) {
+			return true;
+		}
+	}
+
+	//Get Total Price
+	getTotalPrice() {
+		const { cart } = this.props;
+		let totalPrice = 0;
+		totalPrice = cart.items.map(ci => ci.price).reduce((sum, current) => sum + current);
+		return totalPrice.toFixed(2);
+	}
+
+	render() {
+		const { cart, deleteItemFromCart } = this.props;
 
 		return (
 			<UncontrolledDropdown nav className="list-inline-item cart-dropdown">
@@ -64,7 +70,7 @@ class Carts extends Component {
 								Panier
 							</span>
 						</div>
-						{cart.isCartEmpty() ? (
+						{this.isCartEmpty() ? (
 							<div className="text-center p-4">
 								<span className="d-block font-3x mb-15 text-danger"><i className="zmdi zmdi-shopping-cart"></i></span>
 								<h3><IntlMessages id="components.CartEmptyText" /></h3>
@@ -73,29 +79,24 @@ class Carts extends Component {
 							<Fragment>
 								<Scrollbars className="rct-scroll" autoHeight autoHeightMin={100} autoHeightMax={280} autoHide>
 									<ul className="list-unstyled dropdown-list">
-										{cart.items.map((cartItem, key) => (
+										{cart.items.map((cart, key) => (
 											<li className="d-flex justify-content-between" key={key}>
 												<div className="media overflow-hidden w-75">
 													<div className="mr-15">
-														<UserAvatar
-															avatar={getFilePath(cartItem.image)}
-															name={cartItem.name}
-															className="media-object"
-															width="63"
-															height="63"
-														/>
+														<img src={getFilePath(cart.image)} alt="products" className="media-object" width="63" height="63" />
 													</div>
 													<div className="media-body">
-														<span className="fs-14 d-block">{textTruncate(cartItem.name, 25)}</span>
-														<span className="fs-12 d-block" style={{ fontWeight: 'bold' }}><AmountCurrency amount={cartItem.price} from={cartItem.currency} /> &times; {cartItem.quantity}</span>
+														<span className="fs-14 d-block">{textTruncate(cart.label, 25)}</span>
+														<span className="fs-12 d-block text-muted">{textTruncate(cart.description, 50)}</span>
 													</div>
 												</div>
 												<div className="text-center">
+													<span className="text-muted fs-12 d-block mb-10">€{cart.price} X {cart.quantity}</span>
 													<button
 														type="button"
 														className="hover-close rct-link-btn"
-														onClick={() => this.onRemoveItemFromCart(cartItem)}>
-														<i className="ti-close" />
+														onClick={() => deleteItemFromCart(cart)}>
+														<i className="ti-close"></i>
 													</button>
 												</div>
 											</li>
@@ -106,8 +107,8 @@ class Carts extends Component {
 									<div>
 										<Button
 											variant="contained"
-											component={Link}
-											to={STORE.CART}
+											//component={Link}
+											//to={STORE.CART}
 											color="primary"
 											className="mr-10 btn-xs bg-blue text-white"
 										>
@@ -115,9 +116,7 @@ class Carts extends Component {
 										</Button>
 									</div>
 									<span className="fw-normal text-dark font-weight-bold font-xs">
-										Total: <AmountCurrency amounts={cart.items.map((e) => {
-											return { amount: e.price, currency: e.currency, quantity: e.quantity }
-										})} styles={{ fontWeight: 'bold' }} />
+										<IntlMessages id="widgets.total" /> €{this.getTotalPrice()}
 									</span>
 								</div>
 							</Fragment>
@@ -130,6 +129,7 @@ class Carts extends Component {
 	}
 }
 
+// map state to props
 const mapStateToProps = ({ cart }) => {
 	return { cart };
 }

@@ -8,7 +8,6 @@ import UsersReducer from './UsersReducer';
 import tokensReducer from './TokensReducer';
 import sidebarReducer from './SidebarReducer';
 import authUserReducer from './AuthUserReducer';
-import ecommerceReducer from './EcommerceReducer';
 import AppLoadingReducer from './AppLoadingReducer';
 import NotificationsReducer from './NotificationsReducer';
 import RequestGlobalReducer from './RequestGlobalReducer';
@@ -21,7 +20,6 @@ const reducers = combineReducers({
    tokens: tokensReducer,
    sidebar: sidebarReducer,
    authUser: authUserReducer,
-   ecommerce: ecommerceReducer,
    appLoading: AppLoadingReducer,
    notifications: NotificationsReducer,
    requestGlobalLoader: RequestGlobalReducer,

@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import React, { Component } from 'react';
+import { onAddItemToCart } from 'Actions';
 import { RctCard } from 'Components/RctCard';
 import { textTruncate, getFilePath } from "Helpers/helpers";
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -12,18 +12,19 @@ class Hit extends Component {
 
 	//Add Item to cart
 	onPressAddToCart(cartItem, e) {
-		this.setState({ loading: true })
+		this.setState({ loading: true });
 		setTimeout(() => {
-			alert('Ajout au panier !');
+			this.props.onAddItemToCart(cartItem);
 		}, 1000)
 		e.preventDefault();
+		this.setState({ loading: false });
 	}
 
 	isItemExistInCart(id) {
 		const { cart } = this.props;
 		let existence = false
-		for (const item of cart) {
-			if (item.objectID === id) {
+		for (const item of cart.items) {
+			if (item.id === id) {
 				existence = true
 			}
 		}
@@ -50,7 +51,7 @@ class Hit extends Component {
 				</div>
 				<div className="product-info border-top p-3">
 					<div className="d-flex justify-content-between">
-						<h2 className="text-danger">$ {product.price}</h2>
+						<h2 className="text-danger">€{product.price}</h2>
 					</div>
 					<h4 className="text-dark">{textTruncate(product.label, 25)}</h4>
 					<p className="mb-5 text-muted font-xs">
@@ -62,9 +63,8 @@ class Hit extends Component {
 	}
 }
 
-const mapStateToProps = ({ ecommerce }) => {
-	const { cart } = ecommerce;
+const mapStateToProps = ({ cart }) => {
 	return { cart };
 }
 
-export default connect(mapStateToProps, {})(Hit);
+export default connect(mapStateToProps, { onAddItemToCart })(Hit);
