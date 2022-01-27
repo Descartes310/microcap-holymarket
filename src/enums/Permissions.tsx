@@ -55,4 +55,44 @@ export default class Permission extends BaseEnum {
         }
     };
 
+    static setting = {
+        unit: {
+            "name": "SETTING_UNIT_PRIVILEGE"
+        },
+    };
+
+    static marketplace = {
+        admin: {
+            model: {
+                "name": "MARKETPLACE_PRODUCT_MODELE_PRIVILEGE"
+            },
+            category: {
+                "name": "MARKETPLACE_PRODUCT_CATEGORY_PRIVILEGE"
+            },
+            catalog: {
+                "name": "MARKETPLACE_PRODUCT_CATALOG_PRIVILEGE"
+            },
+            offer: {
+                "name": "MARKETPLACE_COMMERCIAL_OFFER_PRIVILEGE"
+            },
+        },
+        store: {
+            product: {
+                "name": "MARKETPLACE_PRODUCT_PRIVILEGE"
+            },
+            order: {
+                "name": "MARKETPLACE_PRODUCT_ORDER_PRIVILEGE"
+            },
+            purchase: {
+                "name": "MARKETPLACE_PURCHASE_PRIVILEGE"
+            }
+        },
+        shop: {
+            "name": "MARKETPLACE_ACCESS_PRILEGE"
+        },
+        order: {
+            "name": "MARKETPLACE_MY_ORDER_PRIVILEGE"
+        }
+    };
+
 }

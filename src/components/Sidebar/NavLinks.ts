@@ -184,37 +184,42 @@ export default [
       "menu_icon": "zmdi zmdi-labels",
       "new_item": false,
       "permissions": [
-         [Permission.group.space.name]
+         [
+            Permission.marketplace.admin.model.name,
+            Permission.marketplace.admin.catalog.name,
+            Permission.marketplace.admin.category.name,
+            Permission.marketplace.admin.offer.name,
+         ]
       ],
-      "profiles": null,
+      "profiles": ['GROUP'],
       "child_routes": [
          {
             "menu_title": "Modèles produits",
             "new_item": false,
             "path": MARKETPLACE.MODEL.PRODUCT.LIST,
-            "permissions": [Permission.group.space.name],
-            "profiles": null,
+            "permissions": [Permission.marketplace.admin.model.name],
+            "profiles": ['GROUP'],
             "child_routes": null
          }, {
             "menu_title": "Catégories produits",
             "new_item": false,
             "path": MARKETPLACE.CATEGORY.LIST,
-            "permissions": [Permission.group.space.name],
-            "profiles": null,
+            "permissions": [Permission.marketplace.admin.category.name],
+            "profiles": ['GROUP'],
             "child_routes": null
          }, {
             "menu_title": "Catalogues",
             "new_item": false,
             "path": MARKETPLACE.CATAlOG.SALE.LIST,
-            "permissions": [Permission.group.space.name],
-            "profiles": null,
+            "permissions": [Permission.marketplace.admin.catalog.name],
+            "profiles": ['GROUP'],
             "child_routes": null
          }, {
             "menu_title": "Gestion commerciale",
             "new_item": false,
             "path": MARKETPLACE.COMMERCIAL.OFFER.LIST,
-            "permissions": [Permission.group.space.name],
-            "profiles": null,
+            "permissions": [Permission.marketplace.admin.offer.name],
+            "profiles": ['GROUP'],
             "child_routes": null
          }
       ],
@@ -224,32 +229,36 @@ export default [
       "menu_icon": "zmdi zmdi-store",
       "new_item": false,
       "permissions": [
-         [Permission.group.space.name]
+         [
+            Permission.marketplace.store.product.name,
+            Permission.marketplace.store.purchase.name,
+            Permission.marketplace.store.order.name,
+         ]
       ],
-      "profiles": null,
+      "profiles": ['GROUP'],
       "child_routes": [
          {
             "menu_title": "Produits",
             "new_item": false,
             "path": MARKETPLACE.STORE.PRODUCT.LIST,
-            "permissions": [Permission.group.space.name],
-            "profiles": null,
+            "permissions": [Permission.marketplace.store.product.name],
+            "profiles": ['GROUP'],
             "child_routes": null
          },
          {
             "menu_title": "Demandes d'achats ",
             "new_item": false,
             "path": MARKETPLACE.STORE.PURCHASE.LIST,
-            "permissions": [Permission.group.space.name],
-            "profiles": null,
+            "permissions": [Permission.marketplace.store.purchase.name],
+            "profiles": ['GROUP'],
             "child_routes": null
          },
          {
             "menu_title": "Commandes reçus",
             "new_item": false,
             "path": MARKETPLACE.STORE.ORDER.LIST,
-            "permissions": [Permission.group.space.name],
-            "profiles": null,
+            "permissions": [Permission.marketplace.store.order.name],
+            "profiles": ['GROUP'],
             "child_routes": null
          }
       ],
@@ -261,32 +270,34 @@ export default [
       "new_item": false,
       "child_routes": null,
       "profiles": null,
-      "permissions": [Permission.group.member.name],
+      "permissions": [Permission.marketplace.shop.name],
    },
    {
       "path": MARKETPLACE.ORDERS,
       "menu_title": "Mes commandes",
-      "menu_icon": "zmdi zmdi-documents",
+      "menu_icon": "zmdi zmdi-assignment-o",
       "new_item": false,
       "child_routes": null,
       "profiles": null,
-      "permissions": [Permission.group.member.name],
+      "permissions": [Permission.marketplace.order.name],
    },
    {
       "menu_title": "Paramètres",
-      "menu_icon": "zmdi zmdi-store",
+      "menu_icon": "zmdi zmdi-wrench",
       "new_item": false,
       "permissions": [
-         [Permission.group.space.name]
+         [
+            Permission.setting.unit.name
+         ]
       ],
-      "profiles": null,
+      "profiles": ['GROUP'],
       "child_routes": [
          {
             "menu_title": "Unités",
             "new_item": false,
             "path": SETTING.UNIT.LIST,
-            "permissions": [Permission.group.space.name],
-            "profiles": null,
+            "permissions": [Permission.setting.unit.name],
+            "profiles": ['GROUP'],
             "child_routes": null
          }
       ],

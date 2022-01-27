@@ -751,6 +751,14 @@ export const translatePermissionFolder = (path) => {
             return 'Configuration';
         case 'DETAILS':
             return 'Détails';
+        case 'MARKETPLACE':
+            return 'Market Place';
+        case 'SETTING':
+            return 'Paramètrage';
+        case 'STORE':
+            return 'Ma boutique';
+        case 'ACCESS':
+            return 'Accès';
         default:
             return path;
     }
