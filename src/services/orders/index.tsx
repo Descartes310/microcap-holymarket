@@ -15,4 +15,12 @@ export default class OrderService {
     static getPurchases(data: any = null): Promise<any> {
         return makeRequest('get', Routes.GET_PURCHASES, data ? data : null);
     }
+
+    static getSales(id: number): Promise<any> {
+        return makeRequest('get', Routes.GET_SALES(id));
+    }
+
+    static paySale(id, data: any): Promise<any> {
+        return makeRequest('post', Routes.PAY_ORDER(id), data);
+    }
 }

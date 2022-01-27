@@ -8,6 +8,7 @@ import React, { useState, useEffect } from 'react';
 import { getOrderStatusItem } from 'Helpers/helpers';
 import TimeFromMoment from 'Components/TimeFromMoment'
 import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
+import { joinUrlWithParamsId, MARKETPLACE } from 'Url/frontendUrl';
 
 const List = (props) => {
 
@@ -102,11 +103,11 @@ const List = (props) => {
                                                 <td>
                                                     <Button
                                                         color="primary"
-                                                        disabled={true}
                                                         variant="contained"
                                                         className="text-white font-weight-bold"
+                                                        onClick={() => props.history.push(joinUrlWithParamsId(MARKETPLACE.SALES, item.id))}
                                                     >
-                                                        Détails
+                                                        Payements
                                                     </Button>
                                                 </td>
                                             </tr>

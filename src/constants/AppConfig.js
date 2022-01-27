@@ -102,7 +102,7 @@ const AppConfig = {
       baseUrl: backendBaseUrl,
       version: '1.0',
       // forbiddenCode: 401,
-     },
-   };
+   },
+};
 
 export default AppConfig;
