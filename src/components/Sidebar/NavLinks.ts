@@ -259,7 +259,7 @@ export default [
          {
             "menu_title": "Ouvrages",
             "new_item": false,
-            "path": PROJECT.ITEM.LIST,
+            "path": PROJECT.ITEM.SIMPLE.LIST,
             "permissions": [Permission.marketplace.admin.model.name],
             "profiles": ['GROUP'],
             "child_routes": null

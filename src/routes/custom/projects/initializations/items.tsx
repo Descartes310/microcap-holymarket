@@ -1,25 +1,24 @@
 import { connect } from 'react-redux';
 import { withRouter } from "react-router-dom";
-import Button from '@material-ui/core/Button';
 import ProjectService from 'Services/projects';
 import CustomList from "Components/CustomList";
 import { setRequestGlobalAction } from 'Actions';
 import React, { useEffect, useState } from 'react';
+import { joinUrlWithParams, PROJECT } from 'Url/frontendUrl';
 import { getInitializationTypeLabel } from 'Helpers/helpers';
-import { joinUrlWithParams, joinUrlWithParamsId, PROJECT } from 'Url/frontendUrl';
 
-const List = (props) => {
+const Items = (props) => {
 
-    const [initializations, setInitializations] = useState([]);
+    const [initializationItems, setInitializationItems] = useState([]);
 
     useEffect(() => {
-        getInitializations();
-    }, [props.match.params.type]);
+        getInitializationItems();
+    }, []);
 
-    const getInitializations = () => {
+    const getInitializationItems = () => {
         props.setRequestGlobalAction(true);
-        ProjectService.getProjectInitializations({ type: getInitializationTypeLabel(props.match.params.type) })
-            .then((response) => setInitializations(response))
+        ProjectService.getProjectInitializationItems(props.match.params.id)
+            .then((response) => setInitializationItems(response))
             .catch((err) => {
                 console.log(err);
             })
@@ -31,15 +30,15 @@ const List = (props) => {
     return (
         <CustomList
             loading={false}
-            list={initializations}
-            itemsFoundText={n => `${n} initialisations trouvés`}
-            onAddClick={() => props.history.push(joinUrlWithParams(PROJECT.INITIALIZATION.CREATE, [{ param: 'type', value: props.match.params.type }]))}
+            list={initializationItems}
+            itemsFoundText={n => `${n} ouvrages trouvés`}
+            onAddClick={() => alert('Click !')}
             renderItem={list => (
                 <>
                     {list && list.length === 0 ? (
                         <div className="d-flex justify-content-center align-items-center py-50">
                             <h4>
-                                Aucun initialisations trouvés
+                                Aucun ouvrages trouvés
                             </h4>
                         </div>
                     ) : (
@@ -49,7 +48,6 @@ const List = (props) => {
                                     <tr>
                                         <th className="fw-bold">Désignation</th>
                                         <th className="fw-bold">Description</th>
-                                        <th className="fw-bold">Ouvrages</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -69,16 +67,6 @@ const List = (props) => {
                                                     </div>
                                                 </div>
                                             </td>
-                                                <td>
-                                                    <Button
-                                                        color="primary"
-                                                        variant="contained"
-                                                        className="text-white font-weight-bold"
-                                                        onClick={() => props.history.push(joinUrlWithParamsId(PROJECT.INITIALIZATION.ITEMS, item.id))}
-                                                    >
-                                                        Ouvrages
-                                                    </Button>
-                                                </td>
                                         </tr>
                                     ))}
                                 </tbody>
@@ -91,4 +79,4 @@ const List = (props) => {
     );
 }
 
-export default connect(() => { }, { setRequestGlobalAction })(withRouter(List));
+export default connect(() => { }, { setRequestGlobalAction })(withRouter(Items));

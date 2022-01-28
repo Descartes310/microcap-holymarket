@@ -133,13 +133,22 @@ export const PROJECT = {
     },
     INITIALIZATION: {
         SELF: "/projects/initializations",
-        LIST: "/projects/initializations/:type/list",
         ITEMS: "/projects/initializations/:id/items",
+        LIST: "/projects/initializations/:type/list",
+        CREATE: "/projects/initializations/:type/create",
     },
     ITEM: {
         SELF: "/projects/items",
-        LIST: "/projects/items/list",
-        CREATE: "/projects/items/create",
+        SIMPLE: {
+            SELF: "/projects/items/simples",
+            LIST: "/projects/items/simples/list",
+            CREATE: "/projects/items/simples/create"
+        },
+        COMPLEX: {
+            SELF: "/projects/items/complexes",
+            LIST: "/projects/items/complexes/list",
+            CREATE: "/projects/items/complexes/create"
+        }
     },
     MINE: {
         SELF: "/projects/mines",

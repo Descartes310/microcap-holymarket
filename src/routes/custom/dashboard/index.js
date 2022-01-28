@@ -14,6 +14,7 @@ import {
     AsyncProfile,
     AsyncDiscover,
     AsyncSettings,
+    AsyncProjects,
     AsyncSolidarity,
     AsyncMarketplace,
     AsyncNotifications,
@@ -32,10 +33,11 @@ import {
     VALUES,
     PROFILE,
     MISSION, 
-    PIONIERS,
-    DISCOVER,
     SETTING,
+    PROJECT,
+    PIONIERS,
     SERVICES,
+    DISCOVER,
     SOLIDARITY,
     MARKETPLACE,
     PASS_DETAILS,
@@ -115,6 +117,11 @@ const Dashboard = ({ onInitCart }) => {
                         permissions={[]}
                         path={SETTING.SELF}
                         component={AsyncSettings}
+                    />
+                    <CanRoute
+                        permissions={[]}
+                        path={PROJECT.SELF}
+                        component={AsyncProjects}
                     />
 
                     <Redirect to={HOME} />

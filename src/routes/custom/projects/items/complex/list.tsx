@@ -1,25 +1,23 @@
 import { connect } from 'react-redux';
+import { PROJECT } from 'Url/frontendUrl';
 import { withRouter } from "react-router-dom";
-import Button from '@material-ui/core/Button';
 import ProjectService from 'Services/projects';
 import CustomList from "Components/CustomList";
 import { setRequestGlobalAction } from 'Actions';
 import React, { useEffect, useState } from 'react';
-import { getInitializationTypeLabel } from 'Helpers/helpers';
-import { joinUrlWithParams, joinUrlWithParamsId, PROJECT } from 'Url/frontendUrl';
 
 const List = (props) => {
 
-    const [initializations, setInitializations] = useState([]);
+    const [projectItems, setProjectItems] = useState([]);
 
     useEffect(() => {
-        getInitializations();
-    }, [props.match.params.type]);
+        getProjectItems();
+    }, []);
 
-    const getInitializations = () => {
+    const getProjectItems = () => {
         props.setRequestGlobalAction(true);
-        ProjectService.getProjectInitializations({ type: getInitializationTypeLabel(props.match.params.type) })
-            .then((response) => setInitializations(response))
+        ProjectService.getProjectItems()
+            .then((response) => setProjectItems(response))
             .catch((err) => {
                 console.log(err);
             })
@@ -30,16 +28,16 @@ const List = (props) => {
 
     return (
         <CustomList
+            list={projectItems}
             loading={false}
-            list={initializations}
-            itemsFoundText={n => `${n} initialisations trouvés`}
-            onAddClick={() => props.history.push(joinUrlWithParams(PROJECT.INITIALIZATION.CREATE, [{ param: 'type', value: props.match.params.type }]))}
+            itemsFoundText={n => `${n} ouvrages trouvés`}
+            onAddClick={() => props.history.push(PROJECT.ITEM.SIMPLE.CREATE)}
             renderItem={list => (
                 <>
                     {list && list.length === 0 ? (
                         <div className="d-flex justify-content-center align-items-center py-50">
                             <h4>
-                                Aucun initialisations trouvés
+                                Aucun ouvrages trouvés
                             </h4>
                         </div>
                     ) : (
@@ -49,7 +47,6 @@ const List = (props) => {
                                     <tr>
                                         <th className="fw-bold">Désignation</th>
                                         <th className="fw-bold">Description</th>
-                                        <th className="fw-bold">Ouvrages</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -69,16 +66,6 @@ const List = (props) => {
                                                     </div>
                                                 </div>
                                             </td>
-                                                <td>
-                                                    <Button
-                                                        color="primary"
-                                                        variant="contained"
-                                                        className="text-white font-weight-bold"
-                                                        onClick={() => props.history.push(joinUrlWithParamsId(PROJECT.INITIALIZATION.ITEMS, item.id))}
-                                                    >
-                                                        Ouvrages
-                                                    </Button>
-                                                </td>
                                         </tr>
                                     ))}
                                 </tbody>

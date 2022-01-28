@@ -630,7 +630,7 @@ export const isMenuAllowed = (authUser: any, menu: MenuItem): boolean => {
          * or all permissions in menu item are also in profile permissions
          */
 
-        if(!menu.permissions && !menu.profiles)
+        if (!menu.permissions && !menu.profiles)
             return true;
 
         if (menu.permissions) {
@@ -863,4 +863,60 @@ export const getOrderStatusItem = (value) => {
         return status;
     else
         return null;
+}
+
+export const getInputTypes = () => {
+    return [
+        {
+            label: 'Texte simple',
+            value: 'TEXT'
+        }, {
+            label: 'Texte formaté',
+            value: 'TEXTAREA'
+        }, {
+            label: 'Nombre',
+            value: 'NUMBER'
+        }, {
+            label: 'Adresse email',
+            value: 'EMAIL'
+        }, {
+            label: 'Numéro de téléphone',
+            value: 'TEL'
+        }, {
+            label: 'Fichier',
+            value: 'File'
+        }
+    ]
+}
+
+export const getInputTypeLabel = (value) => {
+    let type = getInputTypes().find(rt => rt.value === value);
+    if (type)
+        return type.label;
+    else
+        return "";
+}
+
+export const getInitializationTypes = () => {
+    return [
+        {
+            label: 'ideas',
+            value: 'IDEA'
+        }, {
+            label: 'calls',
+            value: 'PROJECT_CALL'
+        }, {
+            label: 'programs',
+            value: 'PROGRAM'
+        }
+    ]
+}
+
+
+export const getInitializationTypeLabel = (label) => {
+    let type = getInitializationTypes().find(rt => rt.label === label);
+    if (type)
+        return type.value;
+    else
+        return "";
 }

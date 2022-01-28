@@ -114,6 +114,11 @@ export const AsyncSettings = Loadable({
 	loading: () => <RctPageLoader />,
 });
 
+export const AsyncProjects = Loadable({
+	loader: () => import("Routes/custom/projects"),
+	loading: () => <RctPageLoader />,
+});
+
 export {
 	AsyncThemifyIconsComponent,
 	AsyncSimpleLineIconsComponent,

@@ -2,13 +2,12 @@ import { connect } from 'react-redux';
 import React, { useState } from 'react';
 import { withRouter } from "react-router-dom";
 import Button from '@material-ui/core/Button';
-import ProjectService from 'Services/projects';
+import { MARKETPLACE } from 'Url/frontendUrl';
+import CatalogService from 'Services/catalogs';
 import { setRequestGlobalAction } from 'Actions';
 import { NotificationManager } from 'react-notifications';
-import { getInitializationTypeLabel } from 'Helpers/helpers';
-import { joinUrlWithParams, PROJECT } from 'Url/frontendUrl';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
-import { Form, FormGroup, Input as InputStrap } from 'reactstrap';
+import {Form, FormGroup, Input as InputStrap} from 'reactstrap';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
 
 const Create = (props) => {
@@ -17,28 +16,28 @@ const Create = (props) => {
     const [description, setDescription] = useState('');
 
     const onSubmit = () => {
-        if (!label)
+        if(!label)
             return;
-
-        var data: any = {
+            
+        var data = {
             label: label,
-            description: description,
-            type: getInitializationTypeLabel(props.match.params.type),
+            type: 'DISTRIBUTION',
+            description: description
         }
-        
+
         props.setRequestGlobalAction(true);
 
-        ProjectService.createProjectInitialization(data).then(() => {
-            NotificationManager.success('Initalisation créée avec succès');
-            props.history.push(joinUrlWithParams(PROJECT.INITIALIZATION.LIST, [{param: 'type', value: props.match.params.type}]));
+        CatalogService.createCatalog(data).then(() => {
+            NotificationManager.success('Le catalogue a été créé avec succès');
+            props.history.push(MARKETPLACE.CATAlOG.DISTRIBUTION.LIST);
         })
-            .catch((err) => {
-                console.log(err);
-                NotificationManager.success('Une erreur est survenues lors de la création de initalisation');
-            })
-            .finally(() => {
-                props.setRequestGlobalAction(false);
-            })
+        .catch((err) => {
+            console.log(err);
+            NotificationManager.success('Une erreur est survenues lors de la création du catalogue');
+        })
+        .finally(() => {
+            props.setRequestGlobalAction(false);
+        })
     }
 
     return (

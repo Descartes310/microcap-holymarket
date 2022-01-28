@@ -1,28 +1,88 @@
-import React from 'react';
-import List from './list';
-import Create from './create';
-import {connect} from "react-redux";
-import {injectIntl} from "react-intl";
-import { PROJECT } from 'Url/frontendUrl';
-import {withRouter, Switch, Redirect, Route} from "react-router-dom";
+import { connect } from "react-redux";
+import TabContent from "./tabContent";
+import React, { Component } from 'react';
+import Tab from '@material-ui/core/Tab';
+import Tabs from '@material-ui/core/Tabs';
+import { RctCard } from 'Components/RctCard';
+import AppBar from '@material-ui/core/AppBar';
+import { withRouter } from "react-router-dom";
+import { PROJECT, joinUrlWithParams } from "Url/frontendUrl";
+import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
+import { setRequestGlobalAction } from "Actions/RequestGlobalAction";
 
-const Posts = (props) => {
-    const { match } = props;
-    return (
-        <div className="full-height">
-            <>
-                <Switch>
-                    <Redirect exact from={`${match.url}/`} to={PROJECT.POST.LIST} />
-                    <Route path={PROJECT.POST.LIST} component={List} />
-                    <Route path={PROJECT.POST.CREATE} component={Create} />
-                </Switch>
-            </>
-        </div>
-    );
+class Catalogues extends Component<any, any> {
+    constructor(props: any) {
+        super(props);
+        const defaultState = (function (url) {
+            if (url.includes(joinUrlWithParams(PROJECT.INITIALIZATION.LIST, [{param: 'type', value: 'ideas'}]))) return 0;
+            else if (url.includes(joinUrlWithParams(PROJECT.INITIALIZATION.LIST, [{param: 'type', value: 'calls'}]))) return 1;
+            else if (url.includes(joinUrlWithParams(PROJECT.INITIALIZATION.LIST, [{param: 'type', value: 'programs'}]))) return 2;
+            else return 0;
+        })(window.location.pathname);
+
+        this.state = {
+            activeTab: defaultState,
+        }
+    }
+
+    handleChange = (__, value) => {
+        const oldActivateTab: any = this.state.activeTab;
+        this.setState({ activeTab: value });
+        if (oldActivateTab !== value) {
+            switch (value) {
+                case 0: return this.props.history.push(joinUrlWithParams(PROJECT.INITIALIZATION.LIST, [{param: 'type', value: 'ideas'}]));
+                case 1: return this.props.history.push(joinUrlWithParams(PROJECT.INITIALIZATION.LIST, [{param: 'type', value: 'calls'}]));
+                case 2: return this.props.history.push(joinUrlWithParams(PROJECT.INITIALIZATION.LIST, [{param: 'type', value: 'programs'}]));
+                default: return this.props.history.push(joinUrlWithParams(PROJECT.INITIALIZATION.LIST, [{param: 'type', value: 'ideas'}]));
+            }
+        }
+    };
+
+    render() {
+        const { activeTab } = this.state;
+
+        return (
+            <div>
+                <PageTitleBar title={"Options d'initialisations"} match={this.props.match} />
+                <RctCard>
+                    <div className="rct-tabs">
+                        <AppBar position="static">
+                            <div className="d-flex align-items-center">
+                                <div className="w-100">
+                                    <Tabs
+                                        value={activeTab}
+                                        onChange={this.handleChange}
+                                        scrollButtons="off"
+                                        indicatorColor="primary"
+                                        centered
+                                    >
+                                        <Tab
+                                            icon={<i className="zmdi zmdi-home" />}
+                                            label={"Idées"}
+                                        />
+                                        <Tab
+                                            icon={<i className="zmdi zmdi-cloud-outline-alt"></i>}
+                                            label={"Appel à projet"}
+                                        />
+                                        <Tab
+                                            icon={<i className="zmdi zmdi-cloud-outline-alt"></i>}
+                                            label={"Programmes"}
+                                        />
+                                    </Tabs>
+                                </div>
+                            </div>
+                        </AppBar>
+                    </div>
+                    <TabContent />
+                </RctCard>
+            </div>
+        );
+    }
 }
 
-const mapStateToProps = ({ requestGlobalLoader }) => {
-    return { requestGlobalLoader }
+// map state to props
+const mapStateToProps = ({ authUser }) => {
+    return { authUser: authUser.data, }
 };
 
-export default connect(mapStateToProps, {})(withRouter(injectIntl(Posts)));
+export default connect(mapStateToProps, { setRequestGlobalAction })(withRouter(Catalogues));
