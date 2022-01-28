@@ -124,6 +124,38 @@ export const PROFILE = {
     }
 }
 
+export const PROJECT = {
+    SELF: "/projects",
+    POST: {
+        SELF: "/projects/posts",
+        LIST: "/projects/posts/list",
+        CREATE: "/projects/posts/create",
+    },
+    INITIALIZATION: {
+        SELF: "/projects/initializations",
+        LIST: "/projects/initializations/:type/list",
+        ITEMS: "/projects/initializations/:id/items",
+    },
+    ITEM: {
+        SELF: "/projects/items",
+        LIST: "/projects/items/list",
+        CREATE: "/projects/items/create",
+    },
+    MINE: {
+        SELF: "/projects/mines",
+        FOLDER: {
+            SELF: "/projects/mines/folders",
+            LIST: "/projects/mines/folders/list",
+            CREATE: "/projects/mines/folders/create",
+        },
+        ITEM: {
+            SELF: "/projects/mines/items",
+            LIST: "/projects/mines/items/list",
+            CREATE: "/projects/mines/items/create",
+        }
+    }
+}
+
 export const MARKETPLACE = {
     SELF: "/marketplace",
     SHOP: "/marketplace/shop",

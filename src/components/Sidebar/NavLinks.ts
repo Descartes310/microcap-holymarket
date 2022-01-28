@@ -4,8 +4,10 @@ import {
    GROUP,
    PROFILE,
    SETTING,
+   PROJECT,
    MARKETPLACE,
-   USER_ACCOUNT_TYPE
+   USER_ACCOUNT_TYPE,
+   joinUrlWithParams
 } from 'Url/frontendUrl';
 
 export type MenuItem = {
@@ -175,7 +177,23 @@ export default [
             "permissions": [Permission.group.space.name],
             "profiles": null,
             "child_routes": null
-         }
+         },
+         {
+            "menu_title": "Mes projets",
+            "new_item": false,
+            "path": GROUP.COMMUNITY.SPACE.MINE,
+            "permissions": [Permission.group.space.name],
+            "profiles": null,
+            "child_routes": null
+         },
+         {
+            "menu_title": "Mes idées",
+            "new_item": false,
+            "path": GROUP.COMMUNITY.SPACE.MINE,
+            "permissions": [Permission.group.space.name],
+            "profiles": null,
+            "child_routes": null
+         },
       ],
    },
 
@@ -219,6 +237,44 @@ export default [
             "new_item": false,
             "path": MARKETPLACE.COMMERCIAL.OFFER.LIST,
             "permissions": [Permission.marketplace.admin.offer.name],
+            "profiles": ['GROUP'],
+            "child_routes": null
+         }
+      ],
+   },
+   {
+      "menu_title": "Projets",
+      "menu_icon": "zmdi zmdi-labels",
+      "new_item": false,
+      "permissions": [
+         [
+            Permission.marketplace.admin.model.name,
+            Permission.marketplace.admin.catalog.name,
+            Permission.marketplace.admin.category.name,
+            Permission.marketplace.admin.offer.name,
+         ]
+      ],
+      "profiles": ['GROUP'],
+      "child_routes": [
+         {
+            "menu_title": "Ouvrages",
+            "new_item": false,
+            "path": PROJECT.ITEM.LIST,
+            "permissions": [Permission.marketplace.admin.model.name],
+            "profiles": ['GROUP'],
+            "child_routes": null
+         }, {
+            "menu_title": "Option initialisations",
+            "new_item": false,
+            "path": joinUrlWithParams(PROJECT.INITIALIZATION.LIST, [{param: 'type', value: 'ideas'}]),
+            "permissions": [Permission.marketplace.admin.category.name],
+            "profiles": ['GROUP'],
+            "child_routes": null
+         }, {
+            "menu_title": "Postes projet",
+            "new_item": false,
+            "path": PROJECT.POST.LIST,
+            "permissions": [Permission.marketplace.admin.catalog.name],
             "profiles": ['GROUP'],
             "child_routes": null
          }
