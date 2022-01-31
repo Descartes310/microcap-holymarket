@@ -189,7 +189,7 @@ export default [
          {
             "menu_title": "Mes idées",
             "new_item": false,
-            "path": PROJECT.MINE.FOLDER.LIST,
+            "path": PROJECT.MINE.ITEM.LIST,
             "permissions": [Permission.group.space.name],
             "profiles": null,
             "child_routes": null

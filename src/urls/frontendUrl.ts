@@ -137,6 +137,17 @@ export const PROJECT = {
         LIST: "/projects/initializations/:type/list",
         CREATE: "/projects/initializations/:type/create",
     },
+    DETAILS: {
+        SELF: "/projects/details",
+        SHOW: "/projects/details/:id/show",
+        UPDATE: "/projects/details/:id/update",
+        GALLERY: "/projects/details/:id/gallery",
+        ACTIVITY: {
+            SELF: "/projects/details/:id/activities",
+            LIST: "/projects/details/:id/activities/list",
+            CREATE: "/projects/details/:id/activities/create",
+        }
+    },
     ITEM: {
         SELF: "/projects/items",
         SIMPLE: {

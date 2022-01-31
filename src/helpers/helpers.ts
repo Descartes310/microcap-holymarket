@@ -930,3 +930,20 @@ export const getInitializationType = (value) => {
     else
         return "";
 }
+
+
+
+export const getActivitypes = () => {
+    return [
+        {
+            label: 'Argument',
+            value: 'ARGUMENT',
+        }, {
+            label: 'Objection',
+            value: 'OBJECTION',
+        }, {
+            label: 'Illustration',
+            value: 'ILLUSTRATION',
+        }
+    ]
+}

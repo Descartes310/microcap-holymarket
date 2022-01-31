@@ -8,6 +8,10 @@ export default class ProjectService {
         return makeRequest('get', Routes.GET_PROJECTS);
     }
 
+    static getProjectById(id: number): Promise<any> {
+        return makeRequest('get', Routes.GET_PROJECT(id));
+    }
+
     static createProject(data: any, config: any): Promise<any> {
         return makeRequest('post', Routes.CREATE_POST, data, config);
     }
@@ -46,5 +50,13 @@ export default class ProjectService {
 
     static createProjectInitializationItem(id, data: any): Promise<any> {
         return makeRequest('post', Routes.CREATE_INITIALIZATION_ITEM(id), data);
+    }
+
+    static getProjectActivities(id, data): Promise<any> {
+        return makeRequest('get', Routes.GET_PROJECT_ACTIVITIES(id), data);
+    }
+
+    static createProjectActivity(id, data: any, config: any): Promise<any> {
+        return makeRequest('post', Routes.CREATE_PROJECT_ACTIVITY(id), data, config);
     }
 }

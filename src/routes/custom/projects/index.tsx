@@ -2,6 +2,7 @@ import React from 'react';
 import Posts from './posts';
 import Mines from './mines';
 import Items from './items';
+import Details from './details';
 import {connect} from "react-redux";
 import {injectIntl} from "react-intl";
 import { PROJECT } from 'Url/frontendUrl';
@@ -18,6 +19,7 @@ const Projects = (props) => {
                     <Route path={PROJECT.POST.SELF} component={Posts} />
                     <Route path={PROJECT.ITEM.SELF} component={Items} />
                     <Route path={PROJECT.MINE.SELF} component={Mines} />
+                    <Route path={PROJECT.DETAILS.SELF} component={Details} />
                     <Route path={PROJECT.INITIALIZATION.SELF} component={Initializations} />
                 </Switch>
             </>
