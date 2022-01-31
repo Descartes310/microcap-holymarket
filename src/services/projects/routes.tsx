@@ -1,3 +1,6 @@
+export const CREATE_POST = 'api/projects';
+export const GET_PROJECTS = 'api/projects';
+
 export const GET_PROJECT_POSTS = 'api/projects/posts';
 export const CREATE_PROJECT_POST = 'api/projects/posts';
 

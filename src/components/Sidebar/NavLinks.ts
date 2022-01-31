@@ -181,7 +181,7 @@ export default [
          {
             "menu_title": "Mes projets",
             "new_item": false,
-            "path": GROUP.COMMUNITY.SPACE.MINE,
+            "path": PROJECT.MINE.FOLDER.LIST,
             "permissions": [Permission.group.space.name],
             "profiles": null,
             "child_routes": null
@@ -189,7 +189,7 @@ export default [
          {
             "menu_title": "Mes idées",
             "new_item": false,
-            "path": GROUP.COMMUNITY.SPACE.MINE,
+            "path": PROJECT.MINE.FOLDER.LIST,
             "permissions": [Permission.group.space.name],
             "profiles": null,
             "child_routes": null

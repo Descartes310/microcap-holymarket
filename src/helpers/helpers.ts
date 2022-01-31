@@ -901,22 +901,32 @@ export const getInitializationTypes = () => {
     return [
         {
             label: 'ideas',
-            value: 'IDEA'
+            value: 'IDEA',
+            text: 'Idée'
         }, {
             label: 'calls',
-            value: 'PROJECT_CALL'
+            value: 'PROJECT_CALL',
+            text: 'Appel à projet'
         }, {
             label: 'programs',
-            value: 'PROGRAM'
+            value: 'PROGRAM',
+            text: 'Progamme'
         }
     ]
 }
-
 
 export const getInitializationTypeLabel = (label) => {
     let type = getInitializationTypes().find(rt => rt.label === label);
     if (type)
         return type.value;
+    else
+        return "";
+}
+
+export const getInitializationType = (value) => {
+    let type = getInitializationTypes().find(rt => rt.value === value);
+    if (type)
+        return type;
     else
         return "";
 }

@@ -1,28 +1,44 @@
 import { connect } from 'react-redux';
-import React, { useState } from 'react';
+import { PROJECT } from 'Url/frontendUrl';
 import { withRouter } from "react-router-dom";
 import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
+import ProjectService from 'Services/projects';
+import React, { useState, useEffect } from 'react';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 
-const List = () => {
+const List = (props) => {    
+    
+    const [projects, setProjects] = useState([]);
+
+    useEffect(() => {
+        getProjects();
+    }, []);
+
+    const getProjects = () => {
+        props.setRequestGlobalAction(true);
+        ProjectService.getProjects().then(response => {
+            setProjects(response);
+        })
+        .finally(() => props.setRequestGlobalAction(false))
+    }
 
     return (
         <>
             <PageTitleBar
-                title={"Liste des profiles"}
+                title={"Mes projets"}
             />
             <CustomList
-                list={[]}
+                list={projects}
                 loading={false}
-                itemsFoundText={n => `${n} xxx trouvés`}
-                onAddClick={() => console.log('Ajout')}
+                itemsFoundText={n => `${n} projets trouvés`}
+                onAddClick={() => props.history.push(PROJECT.MINE.FOLDER.CREATE)}
                 renderItem={list => (
                     <>
                         {list && list.length === 0 ? (
                             <div className="d-flex justify-content-center align-items-center py-50">
                                 <h4>
-                                    Aucun xxx trouvés
+                                    Aucun projets trouvés
                                 </h4>
                             </div>
                         ) : (
@@ -31,7 +47,8 @@ const List = () => {
                                     <thead>
                                         <tr>
                                             <th className="fw-bold">Désignation</th>
-                                            <th className="fw-bold">Description</th>
+                                            <th className="fw-bold">Besoin estimé</th>
+                                            <th className="fw-bold">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -40,14 +57,21 @@ const List = () => {
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{item.xxx}</h4>
+                                                            <h4 className="m-0 fw-bold text-dark">{item.label}</h4>
                                                         </div>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <p className="m-0 text-dark">{item.xxx}</p>
+                                                            <p className="m-0 text-dark">{item.budget}</p>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="media">
+                                                        <div className="media-body pt-10">
+                                                            <p className="m-0 text-dark">{item.budget}</p>
                                                         </div>
                                                     </div>
                                                 </td>

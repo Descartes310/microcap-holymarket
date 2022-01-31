@@ -163,7 +163,7 @@ const AddItemToInitialization = (props) => {
                                             checked={mandatory}
                                             onChange={() => setMandatory(!mandatory)}
                                         />
-                                    } label={'Ouvrage oubligatoire'}
+                                    } label={'Ouvrage obligatoire'}
                                     />
                                 </FormGroup>
 
