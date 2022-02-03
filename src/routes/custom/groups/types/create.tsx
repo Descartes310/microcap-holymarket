@@ -1,8 +1,6 @@
 import { connect } from 'react-redux';
 import { GROUP } from 'Url/frontendUrl';
-import RoleService from 'Services/roles';
 import GroupService from 'Services/groups';
-import { groupTypes } from 'Helpers/helpers';
 import { withRouter } from "react-router-dom";
 import Button from '@material-ui/core/Button';
 import {setRequestGlobalAction} from 'Actions';
@@ -17,16 +15,12 @@ import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard
 
 const Create = (props) => {
 
-    const [type, setType] = useState(null);
     const [label, setLabel] = useState('');
-    const [roles, setRoles] = useState([]);
     const [category, setCategory] = useState(null);
     const [categories, setCategories] = useState([]);
     const [description, setDescription] = useState('');
-    const [selectedRoles, setSelectedRoles] = useState([]);
 
     useEffect(() => {
-        getRoles();
         getCategories();
     }, []);
 
@@ -37,26 +31,26 @@ const Create = (props) => {
         .finally(() => setRequestGlobalAction(false))
     }
 
-    const getRoles = () => {
-        props.setRequestGlobalAction(true),
-        RoleService.getRoles({type: 'GROUP_TYPE'})
-        .then(response => setRoles(response))
-        .finally(() => props.setRequestGlobalAction(false))
-    }
+    // const getRoles = () => {
+    //     props.setRequestGlobalAction(true),
+    //     RoleService.getRoles({type: 'GROUP_TYPE'})
+    //     .then(response => setRoles(response))
+    //     .finally(() => props.setRequestGlobalAction(false))
+    // }
 
     const onSubmit = () => {
 
-        if(!category || !label || !type || roles.length <= 0)
+        if(!category || !label)
             return
 
         props.setRequestGlobalAction(true);
 
         let data: any = {
             label: label,
-            type: type.value,
+            // type: type.value,
             description: description,
             groupCategoryId: category.id,
-            roleIds: roles.map(role => role.id)
+            //roleIds: roles.map(role => role.id)
         }
 
         GroupService.createGroupType(data).then(() => {
@@ -105,7 +99,7 @@ const Create = (props) => {
                             onChange={(e) => setDescription(e.target.value)}
                         />
                     </FormGroup>
-                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                    {/* <div className="col-md-12 col-sm-12 has-wrapper mb-30">
                         <InputLabel className="text-left">
                             Nature du groupe
                         </InputLabel>
@@ -119,7 +113,7 @@ const Create = (props) => {
                             getOptionLabel={(option) => option.label}
                             renderInput={(params) => <TextField {...params} variant="outlined" />}
                         />
-                    </div>
+                    </div> */}
                     <div className="col-md-12 col-sm-12 has-wrapper mb-30">
                         <InputLabel className="text-left">
                             Catégorie du groupe
@@ -135,7 +129,7 @@ const Create = (props) => {
                             renderInput={(params) => <TextField {...params} variant="outlined" />}
                         />
                     </div>
-                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                    {/* <div className="col-md-12 col-sm-12 has-wrapper mb-30">
                         <InputLabel className="text-left">
                             Roles du type
                         </InputLabel>
@@ -150,7 +144,7 @@ const Create = (props) => {
                             getOptionLabel={(option) => option.label}
                             renderInput={(params) => <TextField {...params} variant="outlined" />}
                         />
-                    </div>
+                    </div> */}
 
                     <FormGroup>
                         <Button

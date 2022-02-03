@@ -95,4 +95,24 @@ export default class Permission extends BaseEnum {
         }
     };
 
+    static project = {
+        admin: {
+            item: {
+                "name": "PROJECT_ITEMS_PRIVILEGE"
+            },
+            initialization: {
+                "name": "PROJECT_INITIALIZATION_PRIVILEGE"
+            },
+            post: {
+                "name": "PROJECT_POST_PRIVILEGE"
+            }
+        },
+        project: {
+            "name": "PROJECT_MINE_PRIVILEGE"
+        },
+        item: {
+            "name": "PROJECT_PERSONNAL_ITEM_PRIVILEGE"
+        },
+    };
+
 }

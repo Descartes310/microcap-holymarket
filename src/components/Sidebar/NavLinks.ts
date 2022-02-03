@@ -69,7 +69,7 @@ export default [
    },
    {
       "path": GROUP.DETAILS.VIEW_SELF,
-      "menu_title": "Details du groupe",
+      "menu_title": "Vitrine membre",
       "menu_icon": "zmdi zmdi-info-outline",
       "new_item": false,
       "child_routes": null,
@@ -166,7 +166,11 @@ export default [
       "menu_icon": "zmdi zmdi-home",
       "new_item": false,
       "permissions": [
-         [Permission.group.space.name]
+         [
+            Permission.group.space.name,
+            Permission.project.project.name,
+            Permission.project.item.name
+         ]
       ],
       "profiles": null,
       "child_routes": [
@@ -182,7 +186,7 @@ export default [
             "menu_title": "Mes projets",
             "new_item": false,
             "path": PROJECT.MINE.FOLDER.LIST,
-            "permissions": [Permission.group.space.name],
+            "permissions": [Permission.project.project.name],
             "profiles": null,
             "child_routes": null
          },
@@ -190,7 +194,7 @@ export default [
             "menu_title": "Mes idées",
             "new_item": false,
             "path": PROJECT.MINE.ITEM.LIST,
-            "permissions": [Permission.group.space.name],
+            "permissions": [Permission.project.item.name],
             "profiles": null,
             "child_routes": null
          },
@@ -244,14 +248,13 @@ export default [
    },
    {
       "menu_title": "Projets",
-      "menu_icon": "zmdi zmdi-labels",
+      "menu_icon": "zmdi zmdi-laptop",
       "new_item": false,
       "permissions": [
          [
-            Permission.marketplace.admin.model.name,
-            Permission.marketplace.admin.catalog.name,
-            Permission.marketplace.admin.category.name,
-            Permission.marketplace.admin.offer.name,
+            Permission.project.admin.item.name,
+            Permission.project.admin.initialization.name,
+            Permission.project.admin.post.name,
          ]
       ],
       "profiles": ['GROUP'],
@@ -260,21 +263,21 @@ export default [
             "menu_title": "Ouvrages",
             "new_item": false,
             "path": PROJECT.ITEM.SIMPLE.LIST,
-            "permissions": [Permission.marketplace.admin.model.name],
+            "permissions": [Permission.project.admin.item.name],
             "profiles": ['GROUP'],
             "child_routes": null
          }, {
             "menu_title": "Option initialisations",
             "new_item": false,
             "path": joinUrlWithParams(PROJECT.INITIALIZATION.LIST, [{param: 'type', value: 'ideas'}]),
-            "permissions": [Permission.marketplace.admin.category.name],
+            "permissions": [Permission.project.admin.initialization.name],
             "profiles": ['GROUP'],
             "child_routes": null
          }, {
             "menu_title": "Postes projet",
             "new_item": false,
             "path": PROJECT.POST.LIST,
-            "permissions": [Permission.marketplace.admin.catalog.name],
+            "permissions": [Permission.project.admin.post.name],
             "profiles": ['GROUP'],
             "child_routes": null
          }

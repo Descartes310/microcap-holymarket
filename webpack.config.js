@@ -67,9 +67,9 @@ module.exports = {
 		},
 		extensions: ['.js', '.tsx', '.ts', '.jsx']
 	},
-	optimization: {
-		minimize: true
-	},
+	// optimization: {
+	// 	minimize: true
+	// },
 	module: {
 		rules: [
 			{

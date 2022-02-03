@@ -759,6 +759,8 @@ export const translatePermissionFolder = (path) => {
             return 'Ma boutique';
         case 'ACCESS':
             return 'Accès';
+        case 'PROJECT':
+            return 'Projet';
         default:
             return path;
     }
@@ -882,10 +884,11 @@ export const getInputTypes = () => {
         }, {
             label: 'Numéro de téléphone',
             value: 'TEL'
-        }, {
-            label: 'Fichier',
-            value: 'File'
         }
+        // , {
+        //     label: 'Fichier',
+        //     value: 'File'
+        // }
     ]
 }
 

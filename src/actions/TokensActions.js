@@ -55,8 +55,6 @@ export const loginUserWithLoginAndPassword = (data) => (dispatch) => {
             // Fetch user data
             dispatch(setAuthUser());
 
-            dispatch(getCurrencies());
-
             // Persist data into store
             dispatch({ type: LOGIN_USER_SUCCESS, payload: data });
             
