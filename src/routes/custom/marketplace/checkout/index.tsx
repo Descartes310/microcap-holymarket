@@ -46,7 +46,7 @@ class Checkout extends Component<any, any> {
 
     confirmSweetAlert = () => {
         this.setState({ showSweetAlert: false })
-        this.props.history.push(MARKETPLACE.SHOP);
+        this.props.history.push(MARKETPLACE.ORDERS);
     }
 
     render() {

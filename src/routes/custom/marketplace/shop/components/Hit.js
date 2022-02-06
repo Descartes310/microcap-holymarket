@@ -35,7 +35,7 @@ class Hit extends Component {
 		const { product } = this.props;
 		const { loading } = this.state;
 		return (
-			<RctCard customClasses="d-flex col-md-3 col-sm-6 mb-0 flex-column justify-content-between overflow-hidden">
+			<RctCard colClasses="d-flex col-md-3 col-sm-6 mb-0 flex-column justify-content-between overflow-hidden">
 				<div className="overlay-wrap overflow-hidden">
 					<div className="text-center p-4">
 						<img src={getFilePath(product.image)} className="img-fluid" alt="product" />

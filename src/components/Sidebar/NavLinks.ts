@@ -2,9 +2,10 @@
 import Permission from "Enums/Permissions";
 import {
    GROUP,
+   PROJECT,
    PROFILE,
    SETTING,
-   PROJECT,
+   FUNDING,
    MARKETPLACE,
    USER_ACCOUNT_TYPE,
    joinUrlWithParams
@@ -179,6 +180,14 @@ export default [
             "new_item": false,
             "path": GROUP.COMMUNITY.SPACE.MINE,
             "permissions": [Permission.group.space.name],
+            "profiles": null,
+            "child_routes": null
+         },
+         {
+            "menu_title": "Mes comptes",
+            "new_item": false,
+            "path": FUNDING.ACCOUNT.LIST,
+            "permissions": [Permission.project.project.name],
             "profiles": null,
             "child_routes": null
          },

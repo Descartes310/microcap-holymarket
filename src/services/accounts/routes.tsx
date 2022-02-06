@@ -1,0 +1,1 @@
+export const GET_ACCOUNTS = 'api/fundings/accounts';

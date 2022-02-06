@@ -34,6 +34,15 @@ export const NOTIFICATIONS = {
     TREATED: '/notifications/treated'
 } as const;
 
+export const FUNDING = {
+    SELF: '/funding',
+    ACCOUNT: {
+        SELF: '/funding/accounts',
+        LIST: '/funding/accounts/list',
+        DETAILS: '/funding/accounts/:id/details',
+    }
+} as const;
+
 
 export const USER_ACCOUNT_TYPE = {
     SELF: '/user-account-types',

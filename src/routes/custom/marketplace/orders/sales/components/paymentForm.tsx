@@ -107,6 +107,7 @@ class PaymentCard extends Component<any, any> {
                         >
                            <Button
                               color="primary"
+                              disabled={!paymentMethod || amount <= 0}
                               className="w-100 ml-0 mt-15 text-white"
                            >
                               Payer
@@ -115,7 +116,7 @@ class PaymentCard extends Component<any, any> {
                      ) : (
                         <Button
                            color="primary"
-                           disabled={!paymentMethod}
+                           disabled={!paymentMethod || amount <= 0}
                            className="w-100 ml-0 mt-15 text-white"
                            onClick={() => this.getPayPalPaymentLink()}
                         >

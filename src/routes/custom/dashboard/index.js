@@ -13,6 +13,7 @@ import {
     AsyncGallery,
     AsyncProfile,
     AsyncDiscover,
+    AsyncFundings,
     AsyncSettings,
     AsyncProjects,
     AsyncSolidarity,
@@ -34,6 +35,7 @@ import {
     PROFILE,
     MISSION, 
     SETTING,
+    FUNDING,
     PROJECT,
     PIONIERS,
     SERVICES,
@@ -122,6 +124,11 @@ const Dashboard = ({ onInitCart }) => {
                         permissions={[]}
                         path={PROJECT.SELF}
                         component={AsyncProjects}
+                    />
+                    <CanRoute
+                        permissions={[]}
+                        path={FUNDING.SELF}
+                        component={AsyncFundings}
                     />
 
                     <Redirect to={HOME} />
