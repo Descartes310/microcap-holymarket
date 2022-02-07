@@ -396,6 +396,16 @@ export const getSessonId = () => {
     }
 };
 
+export const getPriceWithCurrency = (price = 0, currency = 'EUR') => {
+
+    var formatter = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: currency
+    });
+
+    return `${formatter.format(price)}`;
+};
+
 export function getFilePath(file) {
     if (file)
         if (file.startsWith('http') && file.includes(':')) {

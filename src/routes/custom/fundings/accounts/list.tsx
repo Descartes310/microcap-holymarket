@@ -1,12 +1,13 @@
 import { connect } from 'react-redux';
-import AccountService from 'Services/accounts';
 import { withRouter } from "react-router-dom";
 import Button from '@material-ui/core/Button';
+import AccountService from 'Services/accounts';
 import CustomList from "Components/CustomList";
 import { setRequestGlobalAction } from 'Actions';
 import React, { useState, useEffect } from 'react';
 import TimeFromMoment from 'Components/TimeFromMoment'
 import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
+import { FUNDING, joinUrlWithParamsId } from 'Url/frontendUrl';
 
 const List = (props) => {
 
@@ -86,6 +87,7 @@ const List = (props) => {
                                                         color="primary"
                                                         variant="contained"
                                                         className="text-white font-weight-bold"
+                                                        onClick={() => props.history.push(joinUrlWithParamsId(FUNDING.ACCOUNT.DETAILS, item.id))}
                                                     >
                                                         Détails
                                                     </Button>
