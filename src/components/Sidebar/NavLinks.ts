@@ -144,13 +144,13 @@ export default [
             "permissions": [Permission.group.type.name],
             "profiles": ['GROUP'],
          },
-         {
-            "menu_title": "Roles groupes",
-            "new_item": false,
-            "path": GROUP.ROLE.LIST,
-            "permissions": [Permission.group.role.name],
-            "profiles": ['GROUP'],
-         },
+         // {
+         //    "menu_title": "Roles groupes",
+         //    "new_item": false,
+         //    "path": GROUP.ROLE.LIST,
+         //    "permissions": [Permission.group.role.name],
+         //    "profiles": ['GROUP'],
+         // },
          {
             "menu_title": "Catégories de groupes",
             "new_item": false,
@@ -182,6 +182,13 @@ export default [
             "menu_title": "Roles membres",
             "new_item": false,
             "path": GROUP.ADMINISTRATION.ROLE.LIST,
+            "permissions": [Permission.group.admin.role.name],
+            "profiles": ['GROUP'],
+         },
+         {
+            "menu_title": "Postes",
+            "new_item": false,
+            "path": GROUP.ADMINISTRATION.POST.LIST,
             "permissions": [Permission.group.admin.role.name],
             "profiles": ['GROUP'],
          },
@@ -390,7 +397,7 @@ export default [
       "permissions": [Permission.marketplace.order.name],
    },
    {
-      "menu_title": "Paramètres",
+      "menu_title": "Config. branche",
       "menu_icon": "zmdi zmdi-wrench",
       "new_item": false,
       "permissions": [

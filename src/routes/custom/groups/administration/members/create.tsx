@@ -19,19 +19,44 @@ import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard
 const Create = (props) => {
 
     const [roles, setRoles] = useState([]);
+    const [posts, setPosts] = useState([]);
+    const [post, setPost] = useState(null);
     const [member, setMember] = useState(null);
     const [reference, setReference] = useState('');
+    const [motivations, setMotivations] = useState([]);
+    const [motivation, setMotivation] = useState(null);
     const [selectedRoles, setSelectedRoles] = useState([]);
 
     useEffect(() => {
         getRoles();
+        getPosts();
     }, []);
+
+    useEffect(() => {
+        setMotivations([]);
+        if(post)
+            getPostMotivations(post.id);
+    }, [post]);
+
+    const getPosts = () => {
+        props.setRequestGlobalAction(true),
+        GroupService.getGroupPosts(props.authUser.referralId)
+        .then(response => setPosts(response))
+        .finally(() => props.setRequestGlobalAction(false))
+    }
 
     const getRoles = () => {
         props.setRequestGlobalAction(true),
             RoleService.getRoles({ type: 'GROUP_MEMBER' })
                 .then(response => setRoles(response))
                 .finally(() => props.setRequestGlobalAction(false))
+    }
+
+    const getPostMotivations = (id) => {
+        props.setRequestGlobalAction(true);
+        GroupService.getGroupPostMotivations(id)
+        .then(response => setMotivations(response))
+        .finally(() => props.setRequestGlobalAction(false))
     }
 
     const findUserByReference = () => {
@@ -56,6 +81,7 @@ const Create = (props) => {
 
         let data: any = {
             userReference: reference,
+            post_motivation_id: motivation.id,
             roleIds: selectedRoles.map(r => r.id)
         }
 
@@ -135,6 +161,38 @@ const Create = (props) => {
                         />
                     </div>
 
+                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                        <InputLabel className="text-left">
+                            Poste du membre
+                        </InputLabel>
+                        <Autocomplete
+                            options={posts}
+                            id="combo-box-demo"
+                            value={post}
+                            onChange={(__, item) => {
+                                setPost(item);
+                            }}
+                            getOptionLabel={(option) => option.label}
+                            renderInput={(params) => <TextField {...params} variant="outlined" />}
+                        />
+                    </div>
+
+                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                        <InputLabel className="text-left">
+                            Motivation du membre
+                        </InputLabel>
+                        <Autocomplete
+                            id="combo-box-demo"
+                            options={motivations}
+                            value={motivation}
+                            onChange={(__, item) => {
+                                setMotivation(item);
+                            }}
+                            getOptionLabel={(option) => option.label}
+                            renderInput={(params) => <TextField {...params} variant="outlined" />}
+                        />
+                    </div>
+
                     <FormGroup>
                         <Button
                             color="primary"
@@ -160,4 +218,8 @@ const Create = (props) => {
     );
 };
 
-export default connect(() => { }, { setRequestGlobalAction })(withRouter(Create));
+const mapStateToProps = ({ authUser }) => {
+    return { authUser: authUser.data }
+};
+
+export default connect(mapStateToProps, { setRequestGlobalAction })(withRouter(Create));

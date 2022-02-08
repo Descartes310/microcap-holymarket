@@ -63,4 +63,20 @@ export default class GroupService {
     static createUnconventionnatedGroup(data: any): Promise<any> {
         return makeRequest('post', Routes.CREATE_UNCONVENTIONATED_GROUP, data);
     }
+
+    static getGroupPosts(group_reference): Promise<any> {
+        return makeRequest('get', Routes.GET_GROUP_POSTS, {group_reference});
+    }
+
+    static getGroupPostMotivations(id): Promise<any> {
+        return makeRequest('get', Routes.GET_GROUP_POST_MOTIVATIONS, {group_post_id: id});
+    }
+
+    static createGroupPost(data): Promise<any> {
+        return makeRequest('post', Routes.CREATE_GROUP_POST, data);
+    }
+
+    static createGroupPostMotivation(data): Promise<any> {
+        return makeRequest('post', Routes.CREATE_GROUP_POST_MOTIVATION, data);
+    }
 }

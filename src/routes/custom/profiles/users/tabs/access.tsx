@@ -1,12 +1,12 @@
 import { Button } from "reactstrap";
 import { connect } from 'react-redux';
 import UserService from 'Services/users';
+import { setSession } from 'Helpers/tokens';
 import { withRouter } from "react-router-dom";
 import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
 import React, { useState, useEffect } from 'react';
 import { getReferralTypeLabel } from 'Helpers/helpers';
-import { TimeFromMoment } from 'Components/TimeFromMoment';
 
 const Access = (props) => {
 
@@ -20,6 +20,16 @@ const Access = (props) => {
         props.setRequestGlobalAction(true),
         UserService.getUserAccess()
         .then(response => setAccess(response))
+        .finally(() => props.setRequestGlobalAction(false))
+    }
+
+    const changeAccess = (id) => {
+        props.setRequestGlobalAction(true),
+        UserService.changeUserAccess(id)
+        .then(response => {
+            setSession(response);
+            window.location.reload();
+        })
         .finally(() => props.setRequestGlobalAction(false))
     }
 
@@ -98,6 +108,7 @@ const Access = (props) => {
                                                     size="small"
                                                     color="primary"
                                                     variant="contained"
+                                                    onClick={() => changeAccess(item.id)}
                                                     className={"text-white font-weight-bold mr-3"}
                                                     disabled={item.reference == props.authUser.access}
                                                 >

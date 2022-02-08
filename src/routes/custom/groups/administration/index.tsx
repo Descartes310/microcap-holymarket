@@ -1,4 +1,5 @@
 import React from 'react';
+import Posts from './posts';
 import Roles from './roles';
 import Members from './members';
 import Requests from './requests';
@@ -16,6 +17,7 @@ const GroupAdministration = (props) => {
                 <Switch>
                     <Redirect exact from={`${match.url}/`} to={GROUP.ADMINISTRATION.MEMBER.SELF} />
                     <Route path={GROUP.ADMINISTRATION.ROLE.SELF} component={Roles} />
+                    <Route path={GROUP.ADMINISTRATION.POST.SELF} component={Posts} />
                     <Route path={GROUP.ADMINISTRATION.MEMBER.SELF} component={Members} />
                     <Route path={GROUP.ADMINISTRATION.REQUEST.SELF} component={Requests} />
                     <Route path={GROUP.ADMINISTRATION.PARAMETER.SELF} component={Settings} />

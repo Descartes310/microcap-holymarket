@@ -16,3 +16,8 @@ export const CREATE_UNCONVENTIONATED_GROUP = `api/socialnetworks/groups/self/unc
 
 export const SEND_GROUP_REQUEST = "api/socialnetworks/groups/members/requests";
 export const RESPOND_REQUEST_FROM_GROUP = (id) => `api/socialnetworks/groups/members/requests/${id}`;
+
+export const GET_GROUP_POSTS = "api/socialnetworks/groups/posts";
+export const CREATE_GROUP_POST = "api/socialnetworks/groups/posts";
+export const GET_GROUP_POST_MOTIVATIONS = `api/socialnetworks/groups/posts/motivations`;
+export const CREATE_GROUP_POST_MOTIVATION = `api/socialnetworks/groups/posts/motivations`;

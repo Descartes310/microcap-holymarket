@@ -112,6 +112,15 @@ export const GROUP = {
             JOIN: '/groups/administration/requests/joins',
             INVITATION: '/groups/administration/requests/invitations',
         },
+        POST: {
+            SELF: '/groups/administration/posts',
+            LIST: '/groups/administration/posts/list',
+            CREATE: '/groups/administration/posts/create',
+            MOTIVATION: {
+                LIST: '/groups/administration/posts/:id/motivations/list',
+                CREATE: '/groups/administration/posts/:id/motivations/create',
+            }
+        },
         ROLE: {
             SELF: '/groups/administration/roles',
             LIST: '/groups/administration/roles/list',

@@ -21,8 +21,8 @@ const CATEGORY_TYPES = [
 
 const Create = (props) => {
 
-    const [label, setLabel] = useState('');
     const [type, setType] = useState(null);
+    const [label, setLabel] = useState(null);
     const [parent, setParent] = useState(null);
     const [categories, setCategories] = useState([]);
     const [description, setDescription] = useState('');
@@ -40,6 +40,10 @@ const Create = (props) => {
 
     const onSubmit = () => {
 
+        if(!label || !type) {
+            NotificationManager.error('Veuillez bien remplir le formulaire')
+            return;
+        }
         props.setRequestGlobalAction(true);
 
         let data: any = {
