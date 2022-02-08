@@ -776,24 +776,49 @@ export const translatePermissionFolder = (path) => {
     }
 }
 
+export const getTerritoryTypes = () => {
+    return [
+        {
+            label: 'Continent',
+            value: 'MAINLAND'
+        },
+        {
+            label: 'Région de continent',
+            value: 'MAINLAND_REGION'
+        },
+        {
+            label: 'Pays',
+            value: 'COUNTRY'
+        },
+        {
+            label: 'Région',
+            value: 'COUNTRY_REGION'
+        },
+        {
+            label: 'Ville',
+            value: 'CITY'
+        },
+        {
+            label: 'Rue',
+            value: 'STREET'
+        }
+    ];
+}
 
-export const translateTerritoryType = (type) => {
-    switch (type) {
-        case 'MAINLAND':
-            return 'Continent'
-        case 'MAINLAND_REGION':
-            return 'Région de continent';
-        case 'COUNTRY':
-            return "Pays"
-        case 'COUNTRY_REGION':
-            return 'Région de pays';
-        case 'CITY':
-            return 'Ville';
-        case 'STREET':
-            return 'Rue';
-        default:
-            return type;
-    }
+export const getTerritoryChildrenValue = (value) => {
+    let index = getTerritoryTypes().findIndex(t => t.value === value);
+    if (value === 'STREET')
+        return 'STREET';
+    else
+        return getTerritoryTypes()[index+1].value;
+}
+
+export const translateTerritoryType = (value) => {
+    let type = getTerritoryTypes().find(rt => rt.value === value);
+    if (type)
+        return type;
+    else
+        return null;
 }
 
 export const getProductNatures = () => {

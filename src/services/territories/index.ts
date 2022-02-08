@@ -15,4 +15,12 @@ export default class TerritoryService {
     static getTerritoryChild(data): Promise<any> {
         return makeRequest('get', Routes.GET_TERRITORY_CHILD, data);
     }
+
+    static getAllTerritories(): Promise<any> {
+        return makeRequest('get', Routes.GET_ALL_TERRITORIES);
+    }
+
+    static createTerritory(data): Promise<any> {
+        return makeRequest('post', Routes.CREATE_TERRITORY, data);
+    }
 }
