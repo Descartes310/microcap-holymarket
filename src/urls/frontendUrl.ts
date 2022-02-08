@@ -276,6 +276,19 @@ export const SETTING = {
     }
 }
 
+export const NETWORK = {
+    SELF: '/network',
+    COVERAGE: {
+        SELF: '/network/coverage',
+        TERRITORY: {
+           SELF: '/network/coverage/territories',
+           LIST: '/network/coverage/territories/list',
+           CREATE: '/network/coverage/territories/create',
+           CHILD: '/network/coverage/territories/:id/sub-territories',
+        }
+    }
+} as const;
+
 export const joinUrlWithParams = (to, params) => {
     let url = to;
     params.forEach(param => {

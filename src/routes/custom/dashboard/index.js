@@ -16,6 +16,7 @@ import {
     AsyncFundings,
     AsyncSettings,
     AsyncProjects,
+    AsyncNetworks,
     AsyncSolidarity,
     AsyncMarketplace,
     AsyncNotifications,
@@ -37,6 +38,7 @@ import {
     SETTING,
     FUNDING,
     PROJECT,
+    NETWORK,
     PIONIERS,
     SERVICES,
     DISCOVER,
@@ -129,6 +131,11 @@ const Dashboard = ({ onInitCart }) => {
                         permissions={[]}
                         path={FUNDING.SELF}
                         component={AsyncFundings}
+                    />
+                    <CanRoute
+                        permissions={[]}
+                        path={NETWORK.SELF}
+                        component={AsyncNetworks}
                     />
 
                     <Redirect to={HOME} />

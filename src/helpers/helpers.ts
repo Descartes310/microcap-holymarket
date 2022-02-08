@@ -776,6 +776,26 @@ export const translatePermissionFolder = (path) => {
     }
 }
 
+
+export const translateTerritoryType = (type) => {
+    switch (type) {
+        case 'MAINLAND':
+            return 'Continent'
+        case 'MAINLAND_REGION':
+            return 'Région de continent';
+        case 'COUNTRY':
+            return "Pays"
+        case 'COUNTRY_REGION':
+            return 'Région de pays';
+        case 'CITY':
+            return 'Ville';
+        case 'STREET':
+            return 'Rue';
+        default:
+            return type;
+    }
+}
+
 export const getProductNatures = () => {
     return [
         {

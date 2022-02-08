@@ -6,6 +6,7 @@ import {
    PROFILE,
    SETTING,
    FUNDING,
+   NETWORK,
    MARKETPLACE,
    USER_ACCOUNT_TYPE,
    joinUrlWithParams
@@ -33,6 +34,45 @@ export default [
       "menu_title": "Mon profile",
       "menu_icon": "zmdi zmdi-flag",
       "path": PROFILE.USER.SELF
+   },
+   {
+      "menu_title": "Réseau",
+      "menu_icon": "zmdi zmdi-globe-alt",
+      "new_item": false,
+      "permissions": null,
+      "profiles": null,
+      "type_multi": true,
+      "child_routes": [
+         {
+            "menu_title": "Couvertures",
+            "new_item": false,
+            "permissions": null,
+            "profiles": null,
+            "child_routes": [
+               {
+                  "menu_title": "Térritoires",
+                  "new_item": false,
+                  "path": NETWORK.COVERAGE.TERRITORY.LIST,
+                  "permissions": null,
+                  "profiles": null
+               },
+               {
+                  "menu_title": "Contrats",
+                  "new_item": false,
+                  "path": NETWORK.COVERAGE.TERRITORY.LIST,
+                  "permissions": null,
+                  "profiles": null
+               },
+               {
+                  "menu_title": "Partenaires",
+                  "new_item": false,
+                  "path": NETWORK.COVERAGE.TERRITORY.LIST,
+                  "permissions": null,
+                  "profiles": null
+               },
+            ]
+         }
+      ],
    },
    {
       "menu_title": "Comptes utilisateurs",
