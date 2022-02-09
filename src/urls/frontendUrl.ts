@@ -298,6 +298,11 @@ export const NETWORK = {
            LIST: '/network/coverage/territories/list',
            CREATE: '/network/coverage/territories/create',
            CHILD: '/network/coverage/territories/:id/sub-territories',
+        },
+        CONTRACT: {
+           SELF: '/network/coverage/contracts',
+           LIST: '/network/coverage/contracts/list',
+           CREATE: '/network/coverage/contracts/create',
         }
     }
 } as const;

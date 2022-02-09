@@ -69,7 +69,7 @@ export default [
                {
                   "menu_title": "Contrats",
                   "new_item": false,
-                  "path": NETWORK.COVERAGE.TERRITORY.LIST,
+                  "path": NETWORK.COVERAGE.CONTRACT.LIST,
                   "permissions": [
                      Permission.network.coverage.contract.name,
                   ],
