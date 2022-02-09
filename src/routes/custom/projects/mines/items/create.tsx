@@ -9,6 +9,7 @@ import React, { useState, useEffect } from 'react';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { NotificationManager } from 'react-notifications';
+import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { Form, FormGroup, Input as InputStrap } from 'reactstrap';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
@@ -69,6 +70,9 @@ const Create = (props) => {
 
     return (
         <>
+            <PageTitleBar
+                title={"Création d'une idée"}
+            />
             <RctCollapsibleCard>
                 <Form onSubmit={onSubmit}>
                     <FormGroup className="has-wrapper">

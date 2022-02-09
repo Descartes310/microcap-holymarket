@@ -6,11 +6,15 @@ import CustomList from "Components/CustomList";
 import { setRequestGlobalAction } from 'Actions';
 import React, { useState, useEffect } from 'react';
 import { getGroupTypeLabel } from 'Helpers/helpers';
+import {NotificationManager} from 'react-notifications';
 import { GROUP, joinUrlWithParamsId } from 'Url/frontendUrl';
+import SendJoinRequestModal from '../../../components/sendJoinRequestModal';
 
 const All = (props) => {
 
     const [groups, setGroups] = useState([]);
+    const [group, setGroup] = useState(null);
+    const [showRequestModal, setShowRequestModal] = useState(false);
 
     useEffect(() => {
         getGroups();
@@ -23,11 +27,20 @@ const All = (props) => {
                 .finally(() => props.setRequestGlobalAction(false))
     }
 
-    const sendRequest = (item) => {
+    const sendRequest = (motivation) => {
+        if(!motivation || !group) {
+            NotificationManager.error("Veuillez renseigner les informations");
+            return;
+        }
         props.setRequestGlobalAction(true),
-            GroupService.makeGroupRequest({ userReference: props.authUser.referralId, groupReference: item.groupReference, type: 'REQUEST' })
-                .then(response => getGroups())
-                .finally(() => props.setRequestGlobalAction(false))
+        GroupService.makeGroupRequest({ userReference: props.authUser.referralId, 
+            groupReference: group.groupReference, type: 'REQUEST', postMotivationId: motivation.id })
+            .then(() => getGroups())
+            .finally(() => {
+                setGroup(null);
+                setShowRequestModal(false);
+                props.setRequestGlobalAction(false);
+            })
     }
 
     return (
@@ -104,7 +117,10 @@ const All = (props) => {
                                                                     size="small"
                                                                     color='primary'
                                                                     variant="contained"
-                                                                    onClick={() => sendRequest(item)}
+                                                                    onClick={() => {
+                                                                        setGroup(item);
+                                                                        setShowRequestModal(true);
+                                                                    }}
                                                                     className="mr-5 mb-10 text-white"
                                                                 >
                                                                     Demander une adhésion
@@ -123,6 +139,18 @@ const All = (props) => {
                     </>
                 )}
             />
+            { group && (
+                <SendJoinRequestModal
+                    title={'Demander une adhésion'} 
+                    show={showRequestModal && group}
+                    groupReference={group.groupReference}
+                    onClose={() => {
+                        setGroup(null);
+                        setShowRequestModal(false);
+                    }}
+                    onSubmit={(motivation) => sendRequest(motivation)}
+                />
+            )}
         </>
     );
 }
