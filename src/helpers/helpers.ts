@@ -729,7 +729,7 @@ export const getNodeFromPermissions = (permissions: any) => {
                     r.result.push({ value: permission.id + '' + name, children: r[name].result, label: translatePermissionFolder(name) })
                 }
                 if (i === (a.length - 1))
-                    r[name].result.push({ value: permission.id, label: permission.label, });
+                    r[name].result.push({ value: permission.id, label: permission.label });
                 return r[name];
             }, level)
         })

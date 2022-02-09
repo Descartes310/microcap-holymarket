@@ -1,11 +1,12 @@
 import { connect } from 'react-redux';
 import RoleService from 'Services/roles';
 import { withRouter } from "react-router-dom";
+import Button from '@material-ui/core/Button';
 import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
 import React, { useState, useEffect } from 'react';
-import { USER_ACCOUNT_TYPE } from 'Url/frontendUrl';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
+import { joinUrlWithParamsId, USER_ACCOUNT_TYPE } from 'Url/frontendUrl';
 
 const Roles = (props) => {
 
@@ -79,9 +80,15 @@ const Roles = (props) => {
                                                         </div>
                                                     </div>
                                                 </td>
-
                                                 <td>
-                                                    -
+                                                    <Button
+                                                        color="primary"
+                                                        variant="contained"
+                                                        className="text-white font-weight-bold"
+                                                        onClick={() => props.history.push(joinUrlWithParamsId(USER_ACCOUNT_TYPE.ROLE.UPDATE, item.id))}
+                                                    >
+                                                        Editer
+                                                    </Button>
                                                 </td>
                                             </tr>
                                         ))}

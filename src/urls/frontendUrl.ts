@@ -50,6 +50,7 @@ export const USER_ACCOUNT_TYPE = {
         SELF: '/user-account-types/roles',
         LIST: '/user-account-types/roles/list',
         CREATE: '/user-account-types/roles/create',
+        UPDATE: '/user-account-types/roles/:id/update',
     },
     TYPE: {
         SELF: '/user-account-types/types',
@@ -126,7 +127,8 @@ export const GROUP = {
         ROLE: {
             SELF: '/groups/administration/roles',
             LIST: '/groups/administration/roles/list',
-            CREATE: '/groups/administration/roles/create'
+            CREATE: '/groups/administration/roles/create',
+            UPDATE: '/groups/administration/roles/:id/update'
         },
         PARAMETER: {
             SELF: '/groups/administration/settings',

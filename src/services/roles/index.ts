@@ -19,4 +19,12 @@ export default class RoleService {
     static changeRoleStatus(id: number, data: any = null): Promise<any> {
         return makeRequest('put', Routes.CHANGE_ROLE_STATUS(id), data);
     }
+
+    static findRole(id: number): Promise<any> {
+        return makeRequest('get', Routes.FIND_ROLE(id));
+    }
+
+    static updateRole(id: number, data: any): Promise<any> {
+        return makeRequest('put', Routes.UPDATE_ROLE(id), data);
+    }
 }

@@ -5,10 +5,10 @@ import Button from '@material-ui/core/Button';
 import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
 import React, { useState, useEffect } from 'react';
-import { joinUrlWithParamsId, USER_ACCOUNT_TYPE } from 'Url/frontendUrl';
 import { getReferralTypeLabel } from 'Helpers/helpers';
 import UserAccountTypeService from 'Services/account-types';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
+import { joinUrlWithParamsId, USER_ACCOUNT_TYPE } from 'Url/frontendUrl';
 
 const Types = (props) => {
 

@@ -1,12 +1,13 @@
 import { connect } from 'react-redux';
-import { GROUP } from 'Url/frontendUrl';
 import RoleService from 'Services/roles';
 import { withRouter } from "react-router-dom";
 import Switch from "@material-ui/core/Switch";
 import CustomList from "Components/CustomList";
+import Button from '@material-ui/core/Button';
 import {setRequestGlobalAction} from 'Actions';
 import React, { useState, useEffect } from 'react';
 import { NotificationManager } from "react-notifications";
+import { GROUP, joinUrlWithParamsId } from 'Url/frontendUrl';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 
 const Roles = (props) => {
@@ -69,6 +70,7 @@ const Roles = (props) => {
                                             <th className="fw-bold">Permissions</th>
                                             <th className="fw-bold">Description</th>
                                             <th className="fw-bold">Rôle par défaut</th>
+                                            <th className="fw-bold">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -101,6 +103,16 @@ const Roles = (props) => {
                                                         checked={item.default}
                                                         onChange={() => { changeRoleStatus(item, !item.default) }}
                                                     />
+                                                </td>
+                                                <td>
+                                                    <Button
+                                                        color="primary"
+                                                        variant="contained"
+                                                        className="text-white font-weight-bold"
+                                                        onClick={() => props.history.push(joinUrlWithParamsId(GROUP.ADMINISTRATION.ROLE.UPDATE, item.id))}
+                                                    >
+                                                        Editer
+                                                    </Button>
                                                 </td>
                                             </tr>
                                         ))}
