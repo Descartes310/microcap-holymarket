@@ -771,6 +771,16 @@ export const translatePermissionFolder = (path) => {
             return 'Accès';
         case 'PROJECT':
             return 'Projet';
+        case 'COVERAGE':
+            return 'Couverture';
+        case 'TERRITORY':
+            return 'Térritoire';
+        case 'CONTRACT':
+            return 'Contrat';
+        case 'PARTNER':
+            return 'Partenaire';
+        case 'FUNDING':
+            return 'Financement';
         default:
             return path;
     }

@@ -39,36 +39,50 @@ export default [
       "menu_title": "Réseau",
       "menu_icon": "zmdi zmdi-globe-alt",
       "new_item": false,
-      "permissions": null,
-      "profiles": null,
+      "permissions": [
+         Permission.network.coverage.territory.name,
+         Permission.network.coverage.contract.name,
+         Permission.network.coverage.partner.name,
+      ],
+      "profiles": ['GROUP'],
       "type_multi": true,
       "child_routes": [
          {
             "menu_title": "Couvertures",
             "new_item": false,
-            "permissions": null,
-            "profiles": null,
+            "permissions": [
+               Permission.network.coverage.territory.name,
+               Permission.network.coverage.contract.name,
+               Permission.network.coverage.partner.name,
+            ],
+            "profiles": ['GROUP'],
             "child_routes": [
                {
                   "menu_title": "Térritoires",
                   "new_item": false,
                   "path": NETWORK.COVERAGE.TERRITORY.LIST,
-                  "permissions": null,
-                  "profiles": null
+                  "permissions": [
+                     Permission.network.coverage.territory.name,
+                  ],
+                  "profiles": ['GROUP'],
                },
                {
                   "menu_title": "Contrats",
                   "new_item": false,
                   "path": NETWORK.COVERAGE.TERRITORY.LIST,
-                  "permissions": null,
-                  "profiles": null
+                  "permissions": [
+                     Permission.network.coverage.contract.name,
+                  ],
+                  "profiles": ['GROUP'],
                },
                {
                   "menu_title": "Partenaires",
                   "new_item": false,
                   "path": NETWORK.COVERAGE.TERRITORY.LIST,
-                  "permissions": null,
-                  "profiles": null
+                  "permissions": [
+                     Permission.network.coverage.partner.name,
+                  ],
+                  "profiles": ['GROUP'],
                },
             ]
          }
@@ -168,6 +182,7 @@ export default [
          Permission.group.admin.request.name,
          Permission.group.admin.role.name,
          Permission.group.admin.setting.name,
+         Permission.group.admin.post.name,
       ],
       "profiles": ['GROUP'],
       "child_routes": [
@@ -189,7 +204,7 @@ export default [
             "menu_title": "Postes",
             "new_item": false,
             "path": GROUP.ADMINISTRATION.POST.LIST,
-            "permissions": [Permission.group.admin.role.name],
+            "permissions": [Permission.group.admin.post.name,],
             "profiles": ['GROUP'],
          },
          {
@@ -217,7 +232,8 @@ export default [
          [
             Permission.group.space.name,
             Permission.project.project.name,
-            Permission.project.item.name
+            Permission.project.item.name,
+            Permission.funding.account.name
          ]
       ],
       "profiles": null,
@@ -234,7 +250,7 @@ export default [
             "menu_title": "Mes comptes",
             "new_item": false,
             "path": FUNDING.ACCOUNT.LIST,
-            "permissions": [Permission.project.project.name],
+            "permissions": [Permission.funding.account.name],
             "profiles": null,
             "child_routes": null
          },

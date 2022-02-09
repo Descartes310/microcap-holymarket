@@ -52,12 +52,18 @@ export default class Permission extends BaseEnum {
             setting: {
                 "name": "GROUP_ADMIN_SETTING_PRIVILEGE"
             },
+            post: {
+                "name": "GROUP_ADMIN_POST_PRIVELEGE"
+            },
         }
     };
 
     static setting = {
         unit: {
             "name": "SETTING_UNIT_PRIVILEGE"
+        },
+        userFileType: {
+            "name": "SETTING_USER_FILE_TYPE_PRIVILEGE"
         },
     };
 
@@ -113,6 +119,26 @@ export default class Permission extends BaseEnum {
         item: {
             "name": "PROJECT_PERSONNAL_ITEM_PRIVILEGE"
         },
+    };
+
+    static funding = {
+        account: {
+            "name": "FUNDING_ACCOUNT_PRIVILEGE"
+        },
+    };
+
+    static network = {
+        coverage: {
+            territory: {
+                "name": "COVERAGE_TERRITORY_PRIVILEGE"
+            },
+            contract: {
+                "name": "COVERAGE_CONTRACT_PRIVILEGE"
+            },
+            partner: {
+                "name": "COVERAGE_PARTNER_PRIVILEGE"
+            }
+        }
     };
 
 }

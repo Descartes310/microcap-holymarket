@@ -31,4 +31,12 @@ export default class UserAccountTypeService {
     static setAccountTypeAsDefault(id: number, status: boolean): Promise<any> {
         return makeRequest('put', Routes.SET_ACCOUNT_TYPE_AS_DEFAULT(id), {status});
     }
+
+    static getChains(id: number): Promise<any> {
+        return makeRequest('get', Routes.GET_CHAINS(id));
+    }
+
+    static createChain(id: number, data: any): Promise<any> {
+        return makeRequest('post', Routes.CREATE_CHAIN(id), data);
+    }
 }

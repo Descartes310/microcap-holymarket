@@ -55,6 +55,8 @@ export const USER_ACCOUNT_TYPE = {
         SELF: '/user-account-types/types',
         LIST: '/user-account-types/types/list',
         CREATE: '/user-account-types/types/create',
+        CHAIN: '/user-account-types/types/:id/chains',
+        CHAIN_CREATE: '/user-account-types/types/:id/chains/create',
     },
     CATEGORY: {
         SELF: '/user-account-types/categories',

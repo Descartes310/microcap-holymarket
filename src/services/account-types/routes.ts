@@ -7,3 +7,6 @@ export const CREATE_ACCOUNT_TYPE = 'api/socialnetworks/user-account-types/self';
 export const GET_ACCOUNTS = 'api/socialnetworks/users/accounts';
 export const CREATE_ACCOUNT = 'api/socialnetworks/users/accounts';
 export const SET_ACCOUNT_TYPE_AS_DEFAULT = (id) => `api/socialnetworks/user-account-types/self/${id}/status`;
+
+export const GET_CHAINS = (id) => `api/socialnetworks/user-account-types/self/${id}/chains`;
+export const CREATE_CHAIN = (id) => `api/socialnetworks/user-account-types/self/${id}/chains`;
