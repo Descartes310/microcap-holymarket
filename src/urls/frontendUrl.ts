@@ -303,6 +303,11 @@ export const NETWORK = {
            SELF: '/network/coverage/contracts',
            LIST: '/network/coverage/contracts/list',
            CREATE: '/network/coverage/contracts/create',
+        },
+        PARTNERSHIP: {
+           SELF: '/network/coverage/partnerships',
+           OPERATOR: '/network/coverage/partnerships/operator',
+           COMMUNITY: '/network/coverage/partnerships/community',
         }
     }
 } as const;

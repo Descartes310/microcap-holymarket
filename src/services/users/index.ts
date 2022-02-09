@@ -20,6 +20,10 @@ export default class UserService {
         return makeRequest('get', Routes.GET_USER_BY_REFERENCE(reference));
     }
 
+    static findUserByMembership(membership): Promise<any> {
+        return makeRequest('get', Routes.GET_USER_BY_MEMBERSHIP(membership));
+    }
+
     static getUserAccess(): Promise<any> {
         return makeRequest('get', Routes.GET_USER_ACCESS);
     }

@@ -78,7 +78,7 @@ export default [
                {
                   "menu_title": "Partenaires",
                   "new_item": false,
-                  "path": NETWORK.COVERAGE.TERRITORY.LIST,
+                  "path": NETWORK.COVERAGE.PARTNERSHIP.COMMUNITY,
                   "permissions": [
                      Permission.network.coverage.partner.name,
                   ],

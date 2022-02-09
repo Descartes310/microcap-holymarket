@@ -3,6 +3,7 @@ import Contract from './contracts';
 import {connect} from "react-redux";
 import Territory from './territoties';
 import {injectIntl} from "react-intl";
+import Partnership from './partnerships';
 import { NETWORK } from 'Url/frontendUrl';
 import {withRouter, Switch, Redirect, Route} from "react-router-dom";
 
@@ -15,6 +16,7 @@ const Coverage = (props) => {
                     <Redirect exact from={`${match.url}/`} to={NETWORK.COVERAGE.TERRITORY.SELF} />
                     <Route path={NETWORK.COVERAGE.TERRITORY.SELF} component={Territory} />
                     <Route path={NETWORK.COVERAGE.CONTRACT.SELF} component={Contract} />
+                    <Route path={NETWORK.COVERAGE.PARTNERSHIP.SELF} component={Partnership} />
                 </Switch>
             </>
         </div>
