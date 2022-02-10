@@ -43,6 +43,10 @@ const Create = (props) => {
         .finally(() => props.setRequestGlobalAction(false))
     }
 
+    const generateContractNumber = () => {
+        setNumber(String(Math.random()).substring(2,12));
+    }
+
     const onSubmit = () => {
         if(!label || !number) {
             NotificationManager.error('Veuillez renseigner les informations');
@@ -138,6 +142,14 @@ const Create = (props) => {
                     </div>
 
                     <FormGroup>
+                        <Button
+                            color="primary"
+                            variant="contained"
+                            onClick={generateContractNumber}
+                            className="text-white font-weight-bold bg-blue mr-10"
+                        >
+                            Générer un numéro
+                        </Button>
                         <Button
                             color="primary"
                             variant="contained"

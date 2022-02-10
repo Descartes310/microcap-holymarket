@@ -286,6 +286,11 @@ export const SETTING = {
             LIST: "/settings/units/types/list",
             CREATE: "/settings/units/types/create"
         }
+    },
+    USER_FILE: {
+        SELF: "/settings/user-files",
+        LIST: "/settings/user-files/list",
+        CREATE: "/settings/user-files/create",
     }
 }
 

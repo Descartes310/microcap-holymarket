@@ -10,6 +10,7 @@ import { RctCardContent } from 'Components/RctCard';
 import PartnershipService from 'Services/partnerships';
 import { getReferralTypeLabel } from 'Helpers/helpers';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import { NotificationManager } from 'react-notifications';
 import DialogComponent from "Components/dialog/DialogComponent";
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { FormGroup, Label, Button, Input as InputStrap  } from 'reactstrap';

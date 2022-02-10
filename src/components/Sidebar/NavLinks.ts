@@ -413,12 +413,13 @@ export default [
       "permissions": [Permission.marketplace.order.name],
    },
    {
-      "menu_title": "Config. branche",
+      "menu_title": "Configurations",
       "menu_icon": "zmdi zmdi-wrench",
       "new_item": false,
       "permissions": [
          [
-            Permission.setting.unit.name
+            Permission.setting.unit.name,
+            Permission.setting.unit.name,
          ]
       ],
       "profiles": ['GROUP'],
@@ -427,6 +428,14 @@ export default [
             "menu_title": "Unités",
             "new_item": false,
             "path": SETTING.UNIT.LIST,
+            "permissions": [Permission.setting.unit.name],
+            "profiles": ['GROUP'],
+            "child_routes": null
+         },
+         {
+            "menu_title": "Dossiers utilisateurs",
+            "new_item": false,
+            "path": SETTING.USER_FILE.LIST,
             "permissions": [Permission.setting.unit.name],
             "profiles": ['GROUP'],
             "child_routes": null
