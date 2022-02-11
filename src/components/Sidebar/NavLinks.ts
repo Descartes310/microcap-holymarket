@@ -2,6 +2,7 @@
 import Permission from "Enums/Permissions";
 import {
    GROUP,
+   BROKER,
    PROJECT,
    PROFILE,
    SETTING,
@@ -47,35 +48,76 @@ export default [
       "profiles": ['GROUP'],
       "type_multi": true,
       "child_routes": [
-            {
-               "menu_title": "Térritoires",
-               "new_item": false,
-               "path": NETWORK.COVERAGE.TERRITORY.LIST,
-               "permissions": [
-                  Permission.network.coverage.territory.name,
-               ],
-               "profiles": ['GROUP'],
-            },
-            {
-               "menu_title": "Contrats",
-               "new_item": false,
-               "path": NETWORK.COVERAGE.CONTRACT.LIST,
-               "permissions": [
-                  Permission.network.coverage.contract.name,
-               ],
-               "profiles": ['GROUP'],
-            },
-            {
-               "menu_title": "Partenaires",
-               "new_item": false,
-               "path": NETWORK.COVERAGE.PARTNERSHIP.COMMUNITY,
-               "permissions": [
-                  Permission.network.coverage.partner.name,
-               ],
-               "profiles": ['GROUP'],
-            },
-         ]
-      },
+         {
+            "menu_title": "Térritoires",
+            "new_item": false,
+            "path": NETWORK.COVERAGE.TERRITORY.LIST,
+            "permissions": [
+               Permission.network.coverage.territory.name,
+            ],
+            "profiles": ['GROUP'],
+         },
+         {
+            "menu_title": "Contrats",
+            "new_item": false,
+            "path": NETWORK.COVERAGE.CONTRACT.LIST,
+            "permissions": [
+               Permission.network.coverage.contract.name,
+            ],
+            "profiles": ['GROUP'],
+         },
+         {
+            "menu_title": "Partenaires",
+            "new_item": false,
+            "path": NETWORK.COVERAGE.PARTNERSHIP.COMMUNITY,
+            "permissions": [
+               Permission.network.coverage.partner.name,
+            ],
+            "profiles": ['GROUP'],
+         },
+      ]
+   },
+   {
+      "menu_title": "Broker",
+      "menu_icon": "zmdi zmdi-money",
+      "new_item": false,
+      "permissions": [
+         Permission.network.coverage.territory.name,
+         Permission.network.coverage.contract.name,
+         Permission.network.coverage.partner.name,
+      ],
+      "profiles": ['GROUP'],
+      "type_multi": true,
+      "child_routes": [
+         {
+            "menu_title": "Mes agences",
+            "new_item": false,
+            "path": BROKER.AGENCY.LIST,
+            "permissions": [
+               Permission.network.coverage.territory.name,
+            ],
+            "profiles": ['GROUP'],
+         },
+         {
+            "menu_title": "Mes guichets",
+            "new_item": false,
+            "path": BROKER.COUNTER.LIST,
+            "permissions": [
+               Permission.network.coverage.contract.name,
+            ],
+            "profiles": ['GROUP'],
+         },
+         {
+            "menu_title": "Mes caisses",
+            "new_item": false,
+            "path": BROKER.CASHDESK.LIST,
+            "permissions": [
+               Permission.network.coverage.partner.name,
+            ],
+            "profiles": ['GROUP'],
+         },
+      ]
+   },
    {
       "menu_title": "Comptes utilisateurs",
       "menu_icon": "zmdi zmdi-folder-outline",

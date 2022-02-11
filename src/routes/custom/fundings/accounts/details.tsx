@@ -60,7 +60,7 @@ const Details = (props) => {
         let data: any = {};
 
         data.amount = amount;
-        data.reference = token;
+        data.token = token;
         data.PaymentMethod = 'STRIPE';
        
         AccountService.creditAccount(props.match.params.id, data).then((response) => {

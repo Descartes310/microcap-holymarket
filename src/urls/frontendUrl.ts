@@ -318,6 +318,25 @@ export const NETWORK = {
     }
 } as const;
 
+export const BROKER = {
+    SELF: '/brokers',
+    AGENCY: {
+       SELF: '/brokers/agencies',
+       LIST: '/brokers/agencies/list',
+       CREATE: '/brokers/agencies/create',
+    },
+    COUNTER: {
+       SELF: '/brokers/counters',
+       LIST: '/brokers/counters/list',
+       CREATE: '/brokers/counters/create',
+    },
+    CASHDESK: {
+       SELF: '/brokers/cashdesks',
+       LIST: '/brokers/cashdesks/list',
+       CREATE: '/brokers/cashdesks/create',
+    }
+} as const;
+
 export const joinUrlWithParams = (to, params) => {
     let url = to;
     params.forEach(param => {
