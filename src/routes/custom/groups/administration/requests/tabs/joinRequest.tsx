@@ -8,6 +8,7 @@ import React, { useState, useEffect } from 'react';
 import ConfirmBox from "Components/dialog/ConfirmBox"
 import TimeFromMoment from "Components/TimeFromMoment";
 import { NotificationManager } from "react-notifications";
+import { GROUP, joinUrlWithParamsId } from 'Url/frontendUrl';
 
 const JoinRequest = (props) => {
 
@@ -72,6 +73,7 @@ const JoinRequest = (props) => {
                                             <th className="fw-bold">Status</th>
                                             <th className="fw-bold">Date d'ajout</th>
                                             <th className="fw-bold">Action</th>
+                                            <th className="fw-bold">Dossier</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -140,6 +142,22 @@ const JoinRequest = (props) => {
                                                             className="btn-primary mb-10 text-white"
                                                         >
                                                             Accepter
+                                                        </Button>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="media">
+                                                        <div className="media-body pt-10">
+                                                        <Button
+                                                            size="small"
+                                                            variant="contained"
+                                                            onClick={() => {
+                                                                props.history.push(joinUrlWithParamsId(GROUP.ADMINISTRATION.MEMBER.FOLDER, item.id));
+                                                            }}
+                                                            className="bg-blue mr-5 mb-10 text-white"
+                                                        >
+                                                            Dossiers
                                                         </Button>
                                                         </div>
                                                     </div>

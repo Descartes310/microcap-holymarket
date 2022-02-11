@@ -108,7 +108,8 @@ export const GROUP = {
         MEMBER: {
             SELF: '/groups/administration/members',
             LIST: '/groups/administration/members/list',
-            CREATE: '/groups/administration/members/create'
+            CREATE: '/groups/administration/members/create',
+            FOLDER: '/groups/administration/members/:id/folders'
         },
         REQUEST: {
             SELF: '/groups/administration/requests',

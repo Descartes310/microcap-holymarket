@@ -32,9 +32,16 @@ const All = (props) => {
             NotificationManager.error("Veuillez renseigner les informations");
             return;
         }
-        props.setRequestGlobalAction(true),
-        GroupService.makeGroupRequest({ userReference: props.authUser.referralId, 
-            groupReference: group.groupReference, type: 'REQUEST', postMotivationId: motivation.id })
+        props.setRequestGlobalAction(true);
+        
+        let data = { 
+            type: 'REQUEST', 
+            postMotivationId: motivation.id, 
+            groupReference: group.groupReference, 
+            userReference: props.authUser.referralId, 
+        };
+
+        GroupService.makeGroupRequest(data)
             .then(() => getGroups())
             .finally(() => {
                 setGroup(null);
@@ -141,9 +148,9 @@ const All = (props) => {
             />
             { group && (
                 <SendJoinRequestModal
+                    group={group}
                     title={'Demander une adhésion'} 
                     show={showRequestModal && group}
-                    groupReference={group.groupReference}
                     onClose={() => {
                         setGroup(null);
                         setShowRequestModal(false);

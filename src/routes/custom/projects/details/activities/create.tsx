@@ -147,8 +147,7 @@ const Create = (props) => {
                                     classes="mw-100"
                                     label="Sélectionner le document de votre projet ici"
                                     handleChange={(file) => {
-                                        setFile(file);
-                                    }} name="file" types={fileTypes} />
+                                        setFile(file);    }} name="file" types={fileTypes} />
                             </FormGroup>
                         ) 
                     }

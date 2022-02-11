@@ -79,4 +79,12 @@ export default class GroupService {
     static createGroupPostMotivation(data): Promise<any> {
         return makeRequest('post', Routes.CREATE_GROUP_POST_MOTIVATION, data);
     }
+
+    static addFileToGroupMember(id: number, data: any, config: any): Promise<any> {
+        return makeRequest('put', Routes.ADD_FILE_TO_MEMBER(id), data, config);
+    }
+
+    static findGroupMember(id: number): Promise<any> {
+        return makeRequest('get', Routes.FIND_GROUP_MEMBER(id));
+    }
 }

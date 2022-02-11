@@ -60,7 +60,7 @@ const Create = (props) => {
 
     useEffect(() => {
         if(userFiles && group) {
-            setSelectedUserFiles(userFiles.filter(piece => group.joinRequestPieces.includes(piece.reference.trim())));
+            setSelectedUserFiles(userFiles.filter(piece => group.joinRequestPieces?.includes(piece.reference.trim())));
         }
     }, [userFiles, group]);
 
@@ -165,7 +165,6 @@ const Create = (props) => {
                             label="Sélectionner l'image de votre groupe ici"
                             handleChange={(file) => {
                                 setFile(file);
-                                console.log(file)
                             }} name="file" types={fileTypes} />
                     </FormGroup>
 

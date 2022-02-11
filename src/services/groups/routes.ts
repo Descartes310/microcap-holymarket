@@ -7,6 +7,8 @@ export const SET_GROUP_TYPE_AS_DEFAULT = (id) => `api/socialnetworks/groups/type
 
 export const GET_GROUP_MEMBERS = 'api/socialnetworks/groups/members';
 export const ADD_MEMBER_TO_GROUP = 'api/socialnetworks/groups/members';
+export const FIND_GROUP_MEMBER = (id) => `api/socialnetworks/groups/members/${id}`;
+export const ADD_FILE_TO_MEMBER = (id) => `api/socialnetworks/groups/members/${id}/files`;
 
 export const GET_COMMUNITY_DATAS = `api/socialnetworks/groups/self`;
 export const UPDATE_GROUP_DETAILS = `api/socialnetworks/groups/self/details`;

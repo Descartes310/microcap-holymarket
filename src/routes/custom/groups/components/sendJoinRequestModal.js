@@ -3,11 +3,11 @@ import { injectIntl } from "react-intl";
 import React, { Component } from 'react';
 import GroupService from 'Services/groups';
 import { withRouter } from "react-router-dom";
+import { FormGroup, Button } from 'reactstrap';
 import { setRequestGlobalAction } from 'Actions';
 import TextField from '@material-ui/core/TextField';
 import { RctCardContent } from 'Components/RctCard';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import { FormGroup, Label, Input, Button } from 'reactstrap';
 import DialogComponent from "Components/dialog/DialogComponent";
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 
@@ -30,7 +30,7 @@ class SendJoinRequestModal extends Component {
 
      getPosts = () => {
         this.props.setRequestGlobalAction(true),
-        GroupService.getGroupPosts(this.props.groupReference)
+        GroupService.getGroupPosts(this.props.group.groupReference)
         .then(response => this.setState({ posts: response }))
         .finally(() => this.props.setRequestGlobalAction(false))
     }
@@ -51,7 +51,7 @@ class SendJoinRequestModal extends Component {
             <DialogComponent
                 show={show}
                 onClose={onClose}
-                size="sm"
+                size="md"
                 title={(
                     <h3 className="fw-bold">
                         {title}
@@ -92,6 +92,7 @@ class SendJoinRequestModal extends Component {
                             renderInput={(params) => <TextField {...params} variant="outlined" />}
                         />
                     </div>
+
                     <FormGroup>
                         <Button
                             color="primary"

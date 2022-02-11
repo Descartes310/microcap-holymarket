@@ -10,11 +10,14 @@ import ConfirmBox from "Components/dialog/ConfirmBox";
 import TimeFromMoment from "Components/TimeFromMoment";
 import { NotificationManager } from "react-notifications";
 import { GROUP, joinUrlWithParamsId } from 'Url/frontendUrl';
+import AddFileToGroupMemberModal from '../../../components/addFileToGroupMemberModal';
 
 const Request = (props) => {
 
     const [members, setMembers] = useState([]);
     const [status, setStatus] = useState(false);
+    const [groupMember, setGroupMember] = useState(null);
+    const [showAddFileBox, setShowAddFileBox] = useState(false);
     const [selectedMember, setSelectedMember] = useState(null);
     const [showConfirmBox, setShowConfirmBox] = useState(false);
 
@@ -156,18 +159,33 @@ const Request = (props) => {
                                                                 </>
                                                             )}
                                                             {item.status === 'REQUEST' && (
-                                                                <Button
-                                                                    size="small"
-                                                                    variant="contained"
-                                                                    onClick={() => {
-                                                                        setStatus(false);
-                                                                        setSelectedMember(item);
-                                                                        setShowConfirmBox(true);
-                                                                    }}
-                                                                    className="btn-danger mr-5 mb-10 text-white"
-                                                                >
-                                                                    Annuler
-                                                                </Button>
+                                                                <>
+                                                                    {  item.joinRequestPieces && (
+                                                                        <Button
+                                                                            size="small"
+                                                                            variant="contained"
+                                                                            onClick={() => {
+                                                                                setGroupMember(item);
+                                                                                setShowAddFileBox(true);
+                                                                            }}
+                                                                            className="mr-5 mb-10 text-white bg-blue"
+                                                                        >
+                                                                            Mes fichiers
+                                                                        </Button>
+                                                                    )}
+                                                                    <Button
+                                                                        size="small"
+                                                                        variant="contained"
+                                                                        onClick={() => {
+                                                                            setStatus(false);
+                                                                            setSelectedMember(item);
+                                                                            setShowConfirmBox(true);
+                                                                        }}
+                                                                        className="btn-danger mr-5 mb-10 text-white"
+                                                                    >
+                                                                        Annuler
+                                                                    </Button>
+                                                                </>
                                                             )}
                                                         </div>
                                                     </div>
@@ -191,6 +209,18 @@ const Request = (props) => {
                 }}
                 message={'Etes vous sure de vouloir approuver votre choix ?'}
             />
+            { groupMember && (
+                <AddFileToGroupMemberModal
+                    groupMember={groupMember}
+                    title={'Renseigner mon dossier utilisateur'} 
+                    show={showAddFileBox && groupMember}
+                    onClose={() => {
+                        setGroupMember(null);
+                        setShowAddFileBox(false);
+                        getMembers();
+                    }}
+                />
+            )}
         </>
     );
 }

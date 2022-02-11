@@ -85,7 +85,7 @@ const Create = (props) => {
                             label="Sélectionner l'exemple de votre dossier ici"
                             handleChange={(file) => {
                                 setSample(file);
-                                console.log(file)
+                                
                             }} name="file" />
                     </FormGroup>
 

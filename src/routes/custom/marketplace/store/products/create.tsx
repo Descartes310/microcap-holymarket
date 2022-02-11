@@ -271,8 +271,7 @@ const Create = (props) => {
                                     classes="mw-100"
                                     label="Sélectionner l'image de votre package ici"
                                     handleChange={(file) => {
-                                        setFile(file);
-                                    }} name="file" types={fileTypes} />
+                                        setFile(file);    }} name="file" types={fileTypes} />
                             </FormGroup>
                             <FormGroup className="col-sm-12 has-wrapper">
                                 <FormControlLabel control={
