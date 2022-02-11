@@ -47,47 +47,35 @@ export default [
       "profiles": ['GROUP'],
       "type_multi": true,
       "child_routes": [
-         {
-            "menu_title": "Couvertures",
-            "new_item": false,
-            "permissions": [
-               Permission.network.coverage.territory.name,
-               Permission.network.coverage.contract.name,
-               Permission.network.coverage.partner.name,
-            ],
-            "profiles": ['GROUP'],
-            "child_routes": [
-               {
-                  "menu_title": "Térritoires",
-                  "new_item": false,
-                  "path": NETWORK.COVERAGE.TERRITORY.LIST,
-                  "permissions": [
-                     Permission.network.coverage.territory.name,
-                  ],
-                  "profiles": ['GROUP'],
-               },
-               {
-                  "menu_title": "Contrats",
-                  "new_item": false,
-                  "path": NETWORK.COVERAGE.CONTRACT.LIST,
-                  "permissions": [
-                     Permission.network.coverage.contract.name,
-                  ],
-                  "profiles": ['GROUP'],
-               },
-               {
-                  "menu_title": "Partenaires",
-                  "new_item": false,
-                  "path": NETWORK.COVERAGE.PARTNERSHIP.COMMUNITY,
-                  "permissions": [
-                     Permission.network.coverage.partner.name,
-                  ],
-                  "profiles": ['GROUP'],
-               },
-            ]
-         }
-      ],
-   },
+            {
+               "menu_title": "Térritoires",
+               "new_item": false,
+               "path": NETWORK.COVERAGE.TERRITORY.LIST,
+               "permissions": [
+                  Permission.network.coverage.territory.name,
+               ],
+               "profiles": ['GROUP'],
+            },
+            {
+               "menu_title": "Contrats",
+               "new_item": false,
+               "path": NETWORK.COVERAGE.CONTRACT.LIST,
+               "permissions": [
+                  Permission.network.coverage.contract.name,
+               ],
+               "profiles": ['GROUP'],
+            },
+            {
+               "menu_title": "Partenaires",
+               "new_item": false,
+               "path": NETWORK.COVERAGE.PARTNERSHIP.COMMUNITY,
+               "permissions": [
+                  Permission.network.coverage.partner.name,
+               ],
+               "profiles": ['GROUP'],
+            },
+         ]
+      },
    {
       "menu_title": "Comptes utilisateurs",
       "menu_icon": "zmdi zmdi-folder-outline",
@@ -131,15 +119,15 @@ export default [
       "profiles": ['GROUP'],
       "permissions": [Permission.group.details.name],
    },
-   // {
-   //    "path": GROUP.DETAILS.MEMBERS,
-   //    "menu_title": "Membres du groupe",
-   //    "menu_icon": "zmdi zmdi-accounts",
-   //    "new_item": false,
-   //    "child_routes": null,
-   //    "profiles": ['GROUP'],
-   //    "permissions": [Permission.group.member.name],
-   // },
+   {
+      "path": GROUP.DETAILS.MEMBERS,
+      "menu_title": "Membres du groupe",
+      "menu_icon": "zmdi zmdi-accounts",
+      "new_item": false,
+      "child_routes": null,
+      "profiles": ['GROUP'],
+      "permissions": [Permission.group.member.name],
+   },
    {
       "menu_title": "Gestion groupes",
       "menu_icon": "zmdi zmdi-view-dashboard",
@@ -187,7 +175,7 @@ export default [
       "profiles": ['GROUP'],
       "child_routes": [
          {
-            "menu_title": "Utilisateurs",
+            "menu_title": "Membres",
             "new_item": false,
             "path": GROUP.ADMINISTRATION.MEMBER.LIST,
             "permissions": [Permission.group.admin.member.name],

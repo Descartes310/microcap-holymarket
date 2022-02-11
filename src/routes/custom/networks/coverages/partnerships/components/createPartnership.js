@@ -2,6 +2,7 @@ import { connect } from "react-redux";
 import { injectIntl } from "react-intl";
 import React, { Component } from 'react';
 import UserService from 'Services/users';
+import { NETWORK } from 'Url/frontendUrl';
 import { withRouter } from "react-router-dom";
 import ContractService from 'Services/contracts';
 import { setRequestGlobalAction } from 'Actions';

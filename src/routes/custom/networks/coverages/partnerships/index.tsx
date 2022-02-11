@@ -16,6 +16,7 @@ class Partnerships extends Component<any, any> {
         const defaultState = (function (url) {
             if (url.includes(NETWORK.COVERAGE.PARTNERSHIP.COMMUNITY)) return 0;
             else if (url.includes(NETWORK.COVERAGE.PARTNERSHIP.OPERATOR)) return 1;
+            else if (url.includes(NETWORK.COVERAGE.PARTNERSHIP.BROKER)) return 2;
             else return 0;
         })(window.location.pathname);
 
@@ -31,6 +32,7 @@ class Partnerships extends Component<any, any> {
             switch (value) {
                 case 0: return this.props.history.push(NETWORK.COVERAGE.PARTNERSHIP.COMMUNITY);
                 case 1: return this.props.history.push(NETWORK.COVERAGE.PARTNERSHIP.OPERATOR);
+                case 2: return this.props.history.push(NETWORK.COVERAGE.PARTNERSHIP.BROKER);
                 default: return this.props.history.push(NETWORK.COVERAGE.PARTNERSHIP.COMMUNITY);
             }
         }
@@ -59,6 +61,9 @@ class Partnerships extends Component<any, any> {
                                         />
                                         <Tab
                                             label={"Opérateurs"}
+                                        />
+                                        <Tab
+                                            label={"Brokers"}
                                         />
                                     </Tabs>
                                 </div>

@@ -73,7 +73,7 @@ const List = (props) => {
                                                     <Button
                                                         color="primary"
                                                         variant="contained"
-                                                        className="text-white font-weight-bold"
+                                                        className="text-white font-weight-bold mr-15"
                                                         onClick={() => props.history.push(joinUrlWithParamsId(PROJECT.DETAILS.SHOW, item.id))}
                                                     >
                                                         Fiche projet
@@ -81,7 +81,7 @@ const List = (props) => {
                                                     <Button
                                                         color="primary"
                                                         variant="contained"
-                                                        className="text-white font-weight-bold"
+                                                        className="text-white font-weight-bold mr-15"
                                                         onClick={() => props.history.push(joinUrlWithParamsId(PROJECT.DETAILS.ACTIVITY.LIST, item.id))}
                                                     >
                                                         Activités

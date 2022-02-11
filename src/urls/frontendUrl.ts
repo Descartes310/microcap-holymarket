@@ -311,6 +311,7 @@ export const NETWORK = {
         },
         PARTNERSHIP: {
            SELF: '/network/coverage/partnerships',
+           BROKER: '/network/coverage/partnerships/broker',
            OPERATOR: '/network/coverage/partnerships/operator',
            COMMUNITY: '/network/coverage/partnerships/community',
         }
