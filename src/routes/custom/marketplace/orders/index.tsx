@@ -6,13 +6,16 @@ import CustomList from "Components/CustomList";
 import { setRequestGlobalAction } from 'Actions';
 import React, { useState, useEffect } from 'react';
 import { getOrderStatusItem } from 'Helpers/helpers';
-import TimeFromMoment from 'Components/TimeFromMoment'
+import TimeFromMoment from 'Components/TimeFromMoment';
+import AddFileToOrderModal from './addFileToOrderModal';
 import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
 import { joinUrlWithParamsId, MARKETPLACE } from 'Url/frontendUrl';
 
 const List = (props) => {
 
     const [orders, setOrders] = useState([]);
+    const [order, setOrder] = useState(null);
+    const [showAddFileBox, setShowAddFileBox] = useState(false);
 
     useEffect(() => {
       getOrders();
@@ -51,6 +54,7 @@ const List = (props) => {
                                             <th className="fw-bold">Date</th>
                                             <th className="fw-bold">Status</th>
                                             <th className="fw-bold">Détails</th>
+                                            <th className="fw-bold">Dossiers</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -101,13 +105,31 @@ const List = (props) => {
                                                     </div>
                                                 </td>
                                                 <td>
+                                                    { 
+                                                        item.status !== 'PENDING' ?
+                                                        <Button
+                                                            color="primary"
+                                                            variant="contained"
+                                                            className="text-white font-weight-bold"
+                                                            onClick={() => props.history.push(joinUrlWithParamsId(MARKETPLACE.SALES, item.id))}
+                                                        >
+                                                            Payements
+                                                        </Button>
+                                                        : 
+                                                        <p>En attente...</p>
+                                                    }
+                                                </td>
+                                                <td>
                                                     <Button
                                                         color="primary"
                                                         variant="contained"
                                                         className="text-white font-weight-bold"
-                                                        onClick={() => props.history.push(joinUrlWithParamsId(MARKETPLACE.SALES, item.id))}
+                                                        onClick={() => {
+                                                            setOrder(item);
+                                                            setShowAddFileBox(true);
+                                                        }}
                                                     >
-                                                        Payements
+                                                        Dossiers
                                                     </Button>
                                                 </td>
                                             </tr>
@@ -119,6 +141,19 @@ const List = (props) => {
                     </>
                 )}
             />
+
+            { order && (
+                <AddFileToOrderModal
+                    order={order}
+                    title={'Renseigner le dossier commande'} 
+                    show={showAddFileBox && order}
+                    onClose={() => {
+                        setOrder(null);
+                        setShowAddFileBox(false);
+                        getOrders();
+                    }}
+                />
+            )}
         </>
     );
 }

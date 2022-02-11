@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { HOME } from 'Url/frontendUrl';
-import GroupService from 'Services/groups';
+import OrderService from 'Services/orders';
 import { withRouter } from "react-router-dom";
 import { getFilePath } from 'Helpers/helpers';
 import {setRequestGlobalAction} from 'Actions';
@@ -17,19 +17,19 @@ import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard
 
 const Folder = (props) => {
 
+    const [order, setOrder] = useState(null);
     const [userFiles, setUserFiles] = useState([]);
-    const [groupMember, setGroupMember] = useState(null);
 
     useEffect(() => {
+        findOrder();
         getUserFiles();
-        getGroupMember();
     }, []);
 
-    const getGroupMember = () => {
+    const findOrder = () => {
         props.setRequestGlobalAction(true),
-        GroupService.findGroupMember(props.match.params.id)
+        OrderService.findOrder(props.match.params.id)
             .then(response => {
-                setGroupMember(response);
+                setOrder(response);
             })
             .catch(err => {
                 console.log(err);
@@ -58,7 +58,7 @@ const Folder = (props) => {
     return (
         <>
             <PageTitleBar
-                title={"Dossier membre"}
+                title={"Dossier commande"}
             />
             <RctCollapsibleCard>
                 <div className="row">
@@ -66,7 +66,8 @@ const Folder = (props) => {
                         <Card style={{ border: 0 }}>                            
                             <CardBody>
                                 <CardTitle>
-                                    <h1 className='fw-bold mt-10' style={{ fontSize: '1.5rem' }}>{groupMember?.userName}</h1>
+                                    <h1 className='fw-bold mt-10' style={{ fontSize: '1.5rem' }}>{order?.userName}</h1>
+                                    <h3>#{order?.reference.split('_').pop().toUpperCase()}</h3>
                                 </CardTitle>
                                 <CardBody style={{ padding: 0, paddingTop: '3%' }}>
                                     <div className="table-responsive">
@@ -80,21 +81,21 @@ const Folder = (props) => {
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                {groupMember && groupMember.groupMemberDetails?.filter(d => d.type === "PIECE").map((item, key) => {
+                                                {order && order.details?.filter(d => d.type === "PIECE").map((item, key) => {
                                                     let piece = findFile(item);
                                                     return (
                                                         <tr key={key} className="cursor-pointer">
                                                             <td>
                                                                 <div className="media">
                                                                     <div className="media-body pt-10">
-                                                                        <h4 className="m-0 fw-bold text-dark">{piece.label}</h4>
+                                                                        <h4 className="m-0 fw-bold text-dark">{piece?.label}</h4>
                                                                     </div>
                                                                 </div>
                                                             </td>
                                                             <td>
                                                                 <div className="media">
                                                                     <div className="media-body pt-10">
-                                                                        <h4 className="m-0 fw-bold text-dark" onClick={() => window.open(getFilePath(piece.sample), 'blank')}>
+                                                                        <h4 className="m-0 fw-bold text-dark" onClick={() => window.open(getFilePath(piece?.sample), 'blank')}>
                                                                             Consulter l'échantillon
                                                                         </h4>
                                                                     </div>
@@ -103,7 +104,7 @@ const Folder = (props) => {
                                                             <td>
                                                                 <div className="media">
                                                                     <div className="media-body pt-10">
-                                                                        <h4 className="m-0 fw-bold text-dark" onClick={() => window.open(getFilePath(piece.file), 'blank')}>
+                                                                        <h4 className="m-0 fw-bold text-dark" onClick={() => window.open(getFilePath(piece?.file), 'blank')}>
                                                                             Consulter la pièce
                                                                         </h4>
                                                                     </div>
@@ -113,7 +114,7 @@ const Folder = (props) => {
                                                                 <div className="media">
                                                                     <div className="media-body pt-10">
                                                                         <h4 className="m-0 text-dark">
-                                                                            <TimeFromMoment time={piece.createdAt} showFullDate />
+                                                                            <TimeFromMoment time={piece?.createdAt} showFullDate />
                                                                         </h4>
                                                                     </div>
                                                                 </div>

@@ -58,7 +58,7 @@ const List = (props) => {
                                         <th className="fw-bold">Code</th>
                                         <th className="fw-bold">Prix</th>
                                         <th className="fw-bold">Portée</th>
-                                        <th className="fw-bold">Status</th>
+                                        <th className="fw-bold">Disponible</th>
                                     </tr>
                                 </thead>
                                 <tbody>

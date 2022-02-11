@@ -25,10 +25,10 @@ const Marketplace = (props) => {
                     <Route path={MARKETPLACE.CART} component={Cart} />
                     <Route path={MARKETPLACE.SALES} component={Sales} />
                     <Route path={MARKETPLACE.ORDERS} component={Orders} />
-                    <Route path={MARKETPLACE.CHECKOUT} component={Checkout} />
                     <Route path={MARKETPLACE.STORE.SELF} component={Store} />
-                    <Route path={MARKETPLACE.CATAlOG.SELF} component={Catalogs} />
+                    <Route path={MARKETPLACE.CHECKOUT} component={Checkout} />
                     <Route path={MARKETPLACE.MODEL.SELF} component={Products} />
+                    <Route path={MARKETPLACE.CATAlOG.SELF} component={Catalogs} />
                     <Route path={MARKETPLACE.CATEGORY.SELF} component={Categories} />
                     <Route path={MARKETPLACE.COMMERCIAL.SELF} component={Commercial} />
                 </Switch>

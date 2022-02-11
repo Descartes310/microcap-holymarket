@@ -8,6 +8,10 @@ export default class OrderService {
         return makeRequest('get', Routes.GET_ORDERS, data ? data : null);
     }
 
+    static findOrder(id: number): Promise<any> {
+        return makeRequest('get', Routes.FIND_ORDER(id));
+    }
+
     static createOrder(data: any): Promise<any> {
         return makeRequest('post', Routes.CREATE_ORDER, data);
     }
@@ -22,5 +26,9 @@ export default class OrderService {
 
     static paySale(id, data: any): Promise<any> {
         return makeRequest('post', Routes.PAY_ORDER(id), data);
+    }
+
+    static addFileToOrder(id: number, data: any, config: any): Promise<any> {
+        return makeRequest('put', Routes.ADD_FILE_TO_ORDER(id), data, config);
     }
 }

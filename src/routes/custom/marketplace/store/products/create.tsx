@@ -10,6 +10,7 @@ import { getProductRanges } from 'Helpers/helpers';
 import TextField from '@material-ui/core/TextField';
 import CommercialService from 'Services/commercials';
 import { FileUploader } from "react-drag-drop-files";
+import { getIndirectSaleProcess } from 'Helpers/datas';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { NotificationManager } from 'react-notifications';
 import Checkbox from "@material-ui/core/Checkbox/Checkbox";
@@ -18,6 +19,7 @@ import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { Form, FormGroup, Input as InputStrap } from 'reactstrap';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
 import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
+import SettingService from 'Services/settings';
 
 const fileTypes = ["JPG", "PNG", "GIF", "JPEG"];
 
@@ -32,10 +34,13 @@ const Create = (props) => {
     const [groups, setGroups] = useState([]);
     const [products, setProducts] = useState([]);
     const [product, setProduct] = useState(null);
+    const [userFiles, setUserFiles] = useState([]);
     const [description, setDescription] = useState('');
+    const [selectedPieces, setSelectedPieces] = useState([]);
     const [isIndirectSell, setIsIndirectSell] = useState(false);
     const [commercialOffer, setCommercialOffer] = useState(null);
     const [commercialOffers, setCommercialOffers] = useState([]);
+    const [selectedProcesses, setSelectedProcesses] = useState([]);
     const [maximumDaysToPay, setMaximumDaysToPay] = useState(null);
     const [acceptManyPayment, setAcceptManyPayment] = useState(false);
     const [minimalPercentageForFirstPayment, setMinimalPercentageForFirstPayment] = useState(null);
@@ -43,6 +48,7 @@ const Create = (props) => {
     useEffect(() => {
         getGroups();
         getProducts();
+        getUserFiles();
         getCommercialOffers();
     }, []);
 
@@ -61,6 +67,15 @@ const Create = (props) => {
         ProductService.getProductModelAvailables()
             .then(response => setProducts(response))
             .finally(() => props.setRequestGlobalAction(false))
+    }
+
+    const getUserFiles = () => {
+        props.setRequestGlobalAction(true),
+        SettingService.getUserFileTypes()
+        .then(response => {
+            setUserFiles(response);
+        })
+        .finally(() => props.setRequestGlobalAction(false))
     }
 
     const getGroups = () => {
@@ -114,6 +129,16 @@ const Create = (props) => {
             }
             data.numberMaxOfDaysForPayment = maximumDaysToPay;
             data.minimalPercentageForFirstPayment = minimalPercentageForFirstPayment;
+        }
+
+        if (isIndirectSell) {
+            if (selectedProcesses.length <= 0) {
+                NotificationManager.error('Remplissez les informations de vente indirecte');
+                return;
+            }
+            if(selectedPieces.length > 0) {
+                data.indirect_sale_pieces = selectedPieces.map(p => p.reference).join(',');
+            }
         }
 
         props.setRequestGlobalAction(true);
@@ -277,16 +302,6 @@ const Create = (props) => {
                                 <FormControlLabel control={
                                     <Checkbox
                                         color="primary"
-                                        checked={isIndirectSell}
-                                        onChange={() => setIsIndirectSell(!isIndirectSell)}
-                                    />
-                                } label={'Produit en vente indirecte'}
-                                />
-                            </FormGroup>
-                            <FormGroup className="col-sm-12 has-wrapper">
-                                <FormControlLabel control={
-                                    <Checkbox
-                                        color="primary"
                                         checked={acceptManyPayment}
                                         onChange={() => setAcceptManyPayment(!acceptManyPayment)}
                                     />
@@ -326,6 +341,66 @@ const Create = (props) => {
                                         </div>
                                     </div>
                                 </>
+                            )}
+
+                            <FormGroup className="col-sm-12 has-wrapper">
+                                <FormControlLabel control={
+                                    <Checkbox
+                                        color="primary"
+                                        checked={isIndirectSell}
+                                        onChange={() => {
+                                            if(isIndirectSell) {
+                                                setSelectedPieces([]);
+                                                setSelectedProcesses([]);
+                                            }
+                                            setIsIndirectSell(!isIndirectSell);
+                                        }}
+                                    />
+                                } label={'Produit en vente indirecte'}
+                                />
+                            </FormGroup>
+                            {isIndirectSell && (
+                                <div className="row">
+                                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                                        <InputLabel className="text-left">
+                                            Processus de vente
+                                        </InputLabel>
+                                        <Autocomplete
+                                            multiple
+                                            id="combo-box-demo"
+                                            onChange={(__, items) => {
+                                                setSelectedProcesses(items);
+                                                if(items.length <= 0)
+                                                    setSelectedPieces([]); 
+                                            }}
+                                            value={selectedProcesses}
+                                            options={getIndirectSaleProcess()}
+                                            getOptionLabel={(option) => option.label}
+                                            renderInput={(params) => <TextField {...params} variant="outlined" />}
+                                        />
+                                    </div>
+                                </div>
+                            )}
+
+                            {isIndirectSell && selectedProcesses.map(p => p.value).includes('PIECES') && (
+                                <div className="row">
+                                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                                        <InputLabel className="text-left">
+                                            Pièces à demander
+                                        </InputLabel>
+                                        <Autocomplete
+                                            multiple
+                                            id="combo-box-demo"
+                                            onChange={(__, items) => {
+                                                setSelectedPieces(items);
+                                            }}
+                                            options={userFiles}
+                                            value={selectedPieces}
+                                            getOptionLabel={(option) => option.label}
+                                            renderInput={(params) => <TextField {...params} variant="outlined" />}
+                                        />
+                                    </div>
+                                </div>
                             )}
                             <FormGroup>
                                 <Button

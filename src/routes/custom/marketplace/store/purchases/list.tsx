@@ -8,6 +8,7 @@ import React, { useState, useEffect } from 'react';
 import { getOrderStatusItem } from 'Helpers/helpers';
 import TimeFromMoment from 'Components/TimeFromMoment'
 import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
+import { MARKETPLACE, joinUrlWithParamsId } from 'Url/frontendUrl';
 
 const List = (props) => {
 
@@ -49,7 +50,7 @@ const List = (props) => {
                                             <th className="fw-bold">Telephone</th>
                                             <th className="fw-bold">Date</th>
                                             <th className="fw-bold">Status</th>
-                                            <th className="fw-bold">Détails</th>
+                                            <th className="fw-bold">Dossier</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -102,11 +103,11 @@ const List = (props) => {
                                                 <td>
                                                     <Button
                                                         color="primary"
-                                                        disabled={true}
                                                         variant="contained"
                                                         className="text-white font-weight-bold"
+                                                        onClick={() => props.history.push(joinUrlWithParamsId(MARKETPLACE.STORE.PURCHASE.FOLDER, item.id))}
                                                     >
-                                                        Détails
+                                                        Dossiers
                                                     </Button>
                                                 </td>
                                             </tr>

@@ -23,3 +23,12 @@ export const getChainEventTypeValue = (value): any => {
     else
         return {};
 }
+
+export const getIndirectSaleProcess = () => {
+    return [
+        {
+            label: 'Demande de pièces',
+            value: 'PIECES'
+        }
+    ];
+}
