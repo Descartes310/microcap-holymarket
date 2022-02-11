@@ -781,6 +781,8 @@ export const translatePermissionFolder = (path) => {
             return 'Partenaire';
         case 'FUNDING':
             return 'Financement';
+        case 'BROKER':
+            return 'Broker';
         default:
             return path;
     }

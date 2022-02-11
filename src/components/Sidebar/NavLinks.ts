@@ -82,9 +82,9 @@ export default [
       "menu_icon": "zmdi zmdi-money",
       "new_item": false,
       "permissions": [
-         Permission.network.coverage.territory.name,
-         Permission.network.coverage.contract.name,
-         Permission.network.coverage.partner.name,
+         Permission.broker.agency.name,
+         Permission.broker.counter.name,
+         Permission.broker.cashdesk.name,
       ],
       "profiles": ['GROUP'],
       "type_multi": true,
@@ -94,7 +94,7 @@ export default [
             "new_item": false,
             "path": BROKER.AGENCY.LIST,
             "permissions": [
-               Permission.network.coverage.territory.name,
+               Permission.broker.agency.name,
             ],
             "profiles": ['GROUP'],
          },
@@ -103,7 +103,7 @@ export default [
             "new_item": false,
             "path": BROKER.COUNTER.LIST,
             "permissions": [
-               Permission.network.coverage.contract.name,
+               Permission.broker.counter.name,
             ],
             "profiles": ['GROUP'],
          },
@@ -112,7 +112,7 @@ export default [
             "new_item": false,
             "path": BROKER.CASHDESK.LIST,
             "permissions": [
-               Permission.network.coverage.partner.name,
+               Permission.broker.cashdesk.name,
             ],
             "profiles": ['GROUP'],
          },

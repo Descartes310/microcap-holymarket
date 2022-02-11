@@ -141,4 +141,16 @@ export default class Permission extends BaseEnum {
         }
     };
 
+    static broker = {
+        agency: {
+            "name": "BROKER_AGENCY_PRIVILEGE"
+        },
+        counter: {
+            "name": "BROKER_COUNTER_PRIVILEGE"
+        },
+        cashdesk: {
+            "name": "BROKER_CASHDESK_PRIVILEGE"
+        }
+    };
+
 }
