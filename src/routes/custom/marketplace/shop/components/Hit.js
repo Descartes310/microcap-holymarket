@@ -38,7 +38,7 @@ class Hit extends Component {
 			<RctCard colClasses="d-flex col-md-3 col-sm-6 mb-0 flex-column justify-content-between overflow-hidden">
 				<div className="overlay-wrap overflow-hidden">
 					<div className="text-center p-4">
-						<img src={getFilePath(product.image)} className="img-fluid" alt="product" />
+						<img src={getFilePath(product.image)} className="img-fluid" alt="product" style={{ height: 185 }} />
 					</div>
 					<div className="overlay-content d-flex align-items-end">
 						{

@@ -897,29 +897,34 @@ export const getProductRangeLabel = (value) => {
 export const getOrderStatus = () => {
     return [
         {
-            color: '#FF6464',
+            color: '#eaa658',
             label: 'En attente',
             value: 'PENDING'
         },
         {
-            color: '#1572A1',
+            color: '#59eb76',
             label: 'Confirmée',
             value: 'CONFIRMED'
         },
         {
-            color: '#FFC900',
+            color: '#59c6eb',
             label: 'Payement...',
             value: 'PAYING'
         },
         {
-            color: '#4FBDBA',
+            color: '#6671d4',
             label: 'Payée',
             value: 'PAID'
         },
         {
-            color: '#9A0680',
+            color: '#cc66d4',
             label: 'Livrée',
             value: 'DELIVERED'
+        },
+        {
+            color: '#FF6464',
+            label: 'Rejetée',
+            value: 'REJECTED'
         }
     ]
 };

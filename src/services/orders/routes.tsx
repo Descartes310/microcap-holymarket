@@ -4,4 +4,5 @@ export const GET_PURCHASES = 'api/orders/purchases';
 export const FIND_ORDER = (id) => `api/orders/${id}`;
 export const GET_SALES = (id) => `api/orders/${id}/sales`;
 export const PAY_ORDER = (id) => `api/orders/${id}/pay/stripe`;
+export const APPROVED_ORDER = (id) => `api/orders/${id}/approved`;
 export const ADD_FILE_TO_ORDER = (id) => `api/orders/${id}/files`;

@@ -31,4 +31,8 @@ export default class OrderService {
     static addFileToOrder(id: number, data: any, config: any): Promise<any> {
         return makeRequest('put', Routes.ADD_FILE_TO_ORDER(id), data, config);
     }
+
+    static approvedOrder(id: number, data: any): Promise<any> {
+        return makeRequest('put', Routes.APPROVED_ORDER(id), data);
+    }
 }

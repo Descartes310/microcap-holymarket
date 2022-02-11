@@ -7,6 +7,7 @@ import { setRequestGlobalAction } from 'Actions';
 import React, { useState, useEffect } from 'react';
 import { getOrderStatusItem } from 'Helpers/helpers';
 import TimeFromMoment from 'Components/TimeFromMoment'
+import IconButton from '@material-ui/core/IconButton';
 import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
 import { MARKETPLACE, joinUrlWithParamsId } from 'Url/frontendUrl';
 
@@ -22,6 +23,13 @@ const List = (props) => {
         props.setRequestGlobalAction(true),
             OrderService.getPurchases({ status: ['PENDING'] })
                 .then(response => setPurchases(response))
+                .finally(() => props.setRequestGlobalAction(false))
+    }
+
+    const approvedOrder = (id, status) => {
+        props.setRequestGlobalAction(true),
+            OrderService.approvedOrder(id, { status })
+                .then(response => getPurchases())
                 .finally(() => props.setRequestGlobalAction(false))
     }
 
@@ -51,6 +59,7 @@ const List = (props) => {
                                             <th className="fw-bold">Date</th>
                                             <th className="fw-bold">Status</th>
                                             <th className="fw-bold">Dossier</th>
+                                            <th className="fw-bold">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -109,6 +118,14 @@ const List = (props) => {
                                                     >
                                                         Dossiers
                                                     </Button>
+                                                </td>
+                                                <td>
+                                                <IconButton className="text-success" aria-label="Accepter" onClick={() => approvedOrder(item.id, true)}>
+                                                    <i className="zmdi zmdi-check"></i>
+                                                </IconButton>
+                                                <IconButton className="text-danger" aria-label="Refuser" onClick={() => approvedOrder(item.id, false)}>
+                                                    <i className="zmdi zmdi-delete"></i>
+                                                </IconButton>
                                                 </td>
                                             </tr>
                                         ))}
