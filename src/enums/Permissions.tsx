@@ -150,6 +150,9 @@ export default class Permission extends BaseEnum {
         },
         cashdesk: {
             "name": "BROKER_CASHDESK_PRIVILEGE"
+        },
+        account: {
+            "name": "BROKER_ACCOUNT_PRIVILEGE"
         }
     };
 

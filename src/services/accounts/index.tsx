@@ -16,7 +16,8 @@ export default class AccountService {
     }
 
     static getAccount(id): Promise<any> {
-        if(Number(id)) {
+        var regExp = /[a-zA-Z]/g;
+        if(!regExp.test(id)) {
             return makeRequest('get', Routes.FIND_ACCOUNT(id));
         } else {
             return makeRequest('get', Routes.FIND_ACCOUNT_BY_REFERENCE('fdg_acc_'+id));

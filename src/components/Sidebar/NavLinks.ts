@@ -10,7 +10,8 @@ import {
    NETWORK,
    MARKETPLACE,
    USER_ACCOUNT_TYPE,
-   joinUrlWithParams
+   joinUrlWithParams,
+   joinUrlWithParamsId
 } from 'Url/frontendUrl';
 
 export type MenuItem = {
@@ -85,10 +86,20 @@ export default [
          Permission.broker.agency.name,
          Permission.broker.counter.name,
          Permission.broker.cashdesk.name,
+         Permission.broker.account.name,
       ],
       "profiles": ['BROKER'],
       "type_multi": true,
       "child_routes": [
+         {
+            "menu_title": "Compte opération",
+            "new_item": false,
+            "path": joinUrlWithParamsId(FUNDING.ACCOUNT.DETAILS, 'operation'),
+            "permissions": [
+               Permission.broker.counter.name,
+            ],
+            "profiles": ['BROKER'],
+         },
          {
             "menu_title": "Mes agences",
             "new_item": false,
