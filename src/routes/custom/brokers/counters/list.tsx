@@ -1,12 +1,13 @@
 import { connect } from 'react-redux';
-import { BROKER } from 'Url/frontendUrl';
 import BrokerService from 'Services/brokers';
+import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
 import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
 import React, { useState, useEffect } from 'react';
 import { getPriceWithCurrency } from 'Helpers/helpers';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
+import { BROKER, FUNDING, joinUrlWithParamsId } from 'Url/frontendUrl';
 
 const List = (props) => {
 
@@ -51,6 +52,7 @@ const List = (props) => {
                                             <th className="fw-bold">Responsable</th>
                                             <th className="fw-bold">Solde</th>
                                             <th className="fw-bold">Agence</th>
+                                            <th className="fw-bold">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -90,6 +92,16 @@ const List = (props) => {
                                                             <p className="m-0 text-dark">{item.agency.label}</p>
                                                         </div>
                                                     </div>
+                                                </td>
+                                                <td>
+                                                    <Button
+                                                        color="primary"
+                                                        variant="contained"
+                                                        className="text-white font-weight-bold"
+                                                        onClick={() => props.history.push(joinUrlWithParamsId(FUNDING.ACCOUNT.DETAILS, item.accountReference.split('_').pop()))}
+                                                    >
+                                                        Détails
+                                                    </Button>
                                                 </td>
                                             </tr>
                                         ))}

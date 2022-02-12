@@ -11,8 +11,16 @@ export default class AccountService {
         return makeRequest('post', Routes.CREDIT_ACCOUNT(id), data);
     }
 
+    static debitAccount(id, data: any): Promise<any> {
+        return makeRequest('post', Routes.DEBIT_ACCOUNT(id), data);
+    }
+
     static getAccount(id): Promise<any> {
-        return makeRequest('get', Routes.FIND_ACCOUNT(id));
+        if(Number(id)) {
+            return makeRequest('get', Routes.FIND_ACCOUNT(id));
+        } else {
+            return makeRequest('get', Routes.FIND_ACCOUNT_BY_REFERENCE('fdg_acc_'+id));
+        }
     }
 
     static getAccountMouvements(id): Promise<any> {

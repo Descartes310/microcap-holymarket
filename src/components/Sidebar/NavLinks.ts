@@ -86,7 +86,7 @@ export default [
          Permission.broker.counter.name,
          Permission.broker.cashdesk.name,
       ],
-      "profiles": ['GROUP'],
+      "profiles": ['BROKER'],
       "type_multi": true,
       "child_routes": [
          {
@@ -96,7 +96,7 @@ export default [
             "permissions": [
                Permission.broker.agency.name,
             ],
-            "profiles": ['GROUP'],
+            "profiles": ['BROKER'],
          },
          {
             "menu_title": "Mes guichets",
@@ -105,7 +105,7 @@ export default [
             "permissions": [
                Permission.broker.counter.name,
             ],
-            "profiles": ['GROUP'],
+            "profiles": ['BROKER'],
          },
          {
             "menu_title": "Mes caisses",
@@ -114,7 +114,7 @@ export default [
             "permissions": [
                Permission.broker.cashdesk.name,
             ],
-            "profiles": ['GROUP'],
+            "profiles": ['BROKER'],
          },
       ]
    },
@@ -269,7 +269,7 @@ export default [
       "profiles": null,
       "child_routes": [
          {
-            "menu_title": "Communautés",
+            "menu_title": "Réseau",
             "new_item": false,
             "path": GROUP.COMMUNITY.SPACE.MINE,
             "permissions": [Permission.group.space.name],
@@ -396,14 +396,14 @@ export default [
             Permission.marketplace.store.order.name,
          ]
       ],
-      "profiles": ['GROUP'],
+      "profiles": ['OPERATOR'],
       "child_routes": [
          {
             "menu_title": "Produits",
             "new_item": false,
             "path": MARKETPLACE.STORE.PRODUCT.LIST,
             "permissions": [Permission.marketplace.store.product.name],
-            "profiles": ['GROUP'],
+            "profiles": ['OPERATOR'],
             "child_routes": null
          },
          {
@@ -411,7 +411,7 @@ export default [
             "new_item": false,
             "path": MARKETPLACE.STORE.PURCHASE.LIST,
             "permissions": [Permission.marketplace.store.purchase.name],
-            "profiles": ['GROUP'],
+            "profiles": ['OPERATOR'],
             "child_routes": null
          },
          {
@@ -419,7 +419,7 @@ export default [
             "new_item": false,
             "path": MARKETPLACE.STORE.ORDER.LIST,
             "permissions": [Permission.marketplace.store.order.name],
-            "profiles": ['GROUP'],
+            "profiles": ['OPERATOR'],
             "child_routes": null
          }
       ],

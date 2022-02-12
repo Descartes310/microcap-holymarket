@@ -1,4 +1,6 @@
 export const GET_ACCOUNTS = 'api/fundings/accounts';
 export const FIND_ACCOUNT = (id) => `api/fundings/accounts/${id}`;
+export const DEBIT_ACCOUNT = (id) => `api/fundings/accounts/${id}/debit`;
 export const CREDIT_ACCOUNT = (id) => `api/fundings/accounts/${id}/credit`;
 export const GET_ACCOUNT_MOUVEMENTS = (id) => `api/fundings/accounts/${id}/mouvements`;
+export const FIND_ACCOUNT_BY_REFERENCE = (reference) => `api/fundings/accounts/reference/${reference}`;

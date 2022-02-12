@@ -4,6 +4,7 @@ import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
 import AccountService from 'Services/accounts';
 import { setRequestGlobalAction } from 'Actions';
+import DebitAccount from 'Components/DebitAccount';
 import React, { useState, useEffect } from 'react';
 import CreditAccount from 'Components/CreditAccount';
 import { getPriceWithCurrency } from 'Helpers/helpers';
@@ -19,12 +20,17 @@ const Details = (props) => {
     const [endDate, setEndDate] = useState(null);
     const [startDate, setStartDate] = useState(null);
     const [mouvements, setMouvements] = useState([]);
+    const [showDebitAccountBox, setShowDebitAccountBox] = useState(false);
     const [showCreditAccountBox, setShowCreditAccountBox] = useState(false);
 
     useEffect(() => {
         findAccount();
-        getMouvements();
-    }, []);
+    }, []);    
+    
+    useEffect(() => {
+        if(account)
+            getMouvements();
+    }, [account]);
 
     const findAccount = () => {
         props.setRequestGlobalAction(true);
@@ -40,7 +46,7 @@ const Details = (props) => {
 
     const getMouvements = () => {
         props.setRequestGlobalAction(true);
-        AccountService.getAccountMouvements(props.match.params.id).then(response => {
+        AccountService.getAccountMouvements(account.id).then(response => {
             setMouvements(response);
         }).catch((err) => {
             console.log(err);
@@ -63,7 +69,32 @@ const Details = (props) => {
         data.token = token;
         data.PaymentMethod = 'STRIPE';
        
-        AccountService.creditAccount(props.match.params.id, data).then((response) => {
+        AccountService.creditAccount(account.id, data).then(() => {
+            findAccount();
+            getMouvements();
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+        .finally(() => {
+            props.setRequestGlobalAction(false);
+            setShowCreditAccountBox(false);
+        })
+    }
+
+    const onDebit = (amount, reason) => {
+
+        if(amount <= 0)
+            return;
+
+        props.setRequestGlobalAction(true);
+
+        let data: any = {};
+
+        data.amount = amount;
+        data.reason = reason;
+       
+        AccountService.debitAccount(account.id, data).then(() => {
             findAccount();
             getMouvements();
         })
@@ -91,28 +122,38 @@ const Details = (props) => {
                                         <h1 className='fw-bold mt-10' style={{ fontSize: '2.5rem' }}>{account?.label}</h1>
                                         <h3>{account?.userName}</h3>
                                     </div>
-                                    <div className='d-flex flex-column'>
+                                    <div className='d-flex flex-column align-items-end'>
                                         <div>
                                             <h3>Solde</h3>
                                             <h1 className='fw-bold mt-10' style={{ fontSize: '2.5rem' }}>{getPriceWithCurrency(account?.balance, account?.currencyCode)}</h1>
                                         </div>
-                                        <div>
-                                            <Button
-                                                color="primary"
-                                                variant="contained"
-                                                className="text-white font-weight-bold"
-                                                onClick={() => setShowCreditAccountBox(true)}
-                                            >
-                                                Créditer
-                                            </Button>
-                                            <Button
-                                                color="primary"
-                                                variant="contained"
-                                                className="text-white font-weight-bold ml-10"
-                                            >
-                                                Imprimer
-                                            </Button>
-                                        </div>
+                                        { account?.accountType?.type === 'PRIMARY' && (
+                                            <div>
+                                                <Button
+                                                    color="primary"
+                                                    variant="contained"
+                                                    className="text-white font-weight-bold"
+                                                    onClick={() => setShowCreditAccountBox(true)}
+                                                >
+                                                    Encaisser
+                                                </Button>
+                                                <Button
+                                                    color="primary"
+                                                    variant="contained"
+                                                    className="text-white font-weight-bold ml-10"
+                                                    onClick={() => setShowDebitAccountBox(true)}
+                                                >
+                                                    Décaisser
+                                                </Button>
+                                                <Button
+                                                    color="primary"
+                                                    variant="contained"
+                                                    className="text-white font-weight-bold ml-10"
+                                                >
+                                                    Imprimer
+                                                </Button>
+                                            </div>
+                                        )}
                                     </div>
                                 </CardTitle>
                                 <CardBody>
@@ -195,10 +236,16 @@ const Details = (props) => {
                     </div>
                 </div>
                 <CreditAccount
-                    title='Créditer le compte'
+                    title='Encaisser le compte'
                     onSubmit={onStripeSubmit}
                     show={showCreditAccountBox}
                     onClose={() => setShowCreditAccountBox(false)}
+                />
+                <DebitAccount
+                    title='Décaisser le compte'
+                    onSubmit={onDebit}
+                    show={showDebitAccountBox}
+                    onClose={() => setShowDebitAccountBox(false)}
                 />
             </RctCollapsibleCard>
         </>

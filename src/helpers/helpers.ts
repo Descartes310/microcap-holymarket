@@ -652,10 +652,10 @@ export const isMenuAllowed = (authUser: any, menu: MenuItem): boolean => {
                 ? matched === menu.permissions.length
                 : matched > 0;
 
-            return can && (!menu.profiles || (menu.profiles && (menu.profiles.findIndex(mpName => mpName.toLowerCase() === authUser.referralType.toLowerCase()) >= 0)));
+            return can && (!menu.profiles || (menu.profiles && (menu.profiles.filter(mpName => authUser.referralTypes.includes(mpName)).length > 0)));
         }
 
-        return menu.profiles.findIndex(mpName => mpName.toLowerCase() === authUser.referralType.toLowerCase()) > 0;
+        return menu.profiles.filter(mpName => authUser.referralTypes.includes(mpName)).length > 0;
     } else {
         return !menu.profiles && !menu.permissions;
     }
@@ -707,7 +707,7 @@ export const getReferralTypeLabel = (value: any) => {
     if (referralType)
         return referralType.label;
     else
-        return "";
+        return value;
 }
 
 export const getGroupTypeLabel = (value: any) => {
@@ -715,7 +715,7 @@ export const getGroupTypeLabel = (value: any) => {
     if (groupType)
         return groupType.label;
     else
-        return "";
+        return value;
 }
 
 export const getNodeFromPermissions = (permissions: any) => {

@@ -58,11 +58,11 @@ class Requests extends Component<any, any> {
                                     >
                                         <Tab
                                             icon={<i className="zmdi zmdi-home" />}
-                                            label={"Mes communautés"}
+                                            label={"Mon réseau"}
                                         />
                                         <Tab
                                             icon={<i className="zmdi zmdi-cloud-outline-alt"></i>}
-                                            label={"Toutes les communautés"}
+                                            label={"Réseau MicroCap"}
                                         />
                                         <Tab
                                             icon={<i className="zmdi zmdi-time-restore"></i>}

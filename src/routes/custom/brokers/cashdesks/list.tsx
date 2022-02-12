@@ -1,20 +1,18 @@
 import { connect } from 'react-redux';
-import { BROKER } from 'Url/frontendUrl';
 import BrokerService from 'Services/brokers';
 import { withRouter } from "react-router-dom";
 import Button from '@material-ui/core/Button';
 import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
 import React, { useState, useEffect } from 'react';
-import CreditAccount from 'Components/CreditAccount';
 import { getPriceWithCurrency } from 'Helpers/helpers';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
+import { BROKER, FUNDING, joinUrlWithParamsId } from 'Url/frontendUrl';
 
 const List = (props) => {
 
     const [cashdesk, setCashdesk] = useState(null);
     const [cashdesks, setCashdesks] = useState([]);
-    const [showCreditAccountBox, setShowCreditAccountBox] = useState(false);
 
     useEffect(() => {
         getCashdesks();
@@ -25,32 +23,6 @@ const List = (props) => {
         BrokerService.getCashdesk()
         .then(response => setCashdesks(response))
         .finally(() => props.setRequestGlobalAction(false))
-    }
-
-    const onStripeSubmit = (token, amount) => {
-
-        if(amount <= 0)
-            return;
-
-        props.setRequestGlobalAction(true);
-
-        let data: any = {};
-
-        data.amount = amount;
-        data.token = token;
-        data.PaymentMethod = 'STRIPE';
-       
-        BrokerService.creditCashdesk(cashdesk.id, data).then((response) => {
-            getCashdesks();
-        })
-        .catch((err) => {
-            console.log(err);
-        })
-        .finally(() => {
-            props.setRequestGlobalAction(false);
-            setShowCreditAccountBox(false);
-            setCashdesk(null);
-        })
     }
 
     return (
@@ -127,12 +99,9 @@ const List = (props) => {
                                                         color="primary"
                                                         variant="contained"
                                                         className="text-white font-weight-bold"
-                                                        onClick={() => {
-                                                            setCashdesk(item);
-                                                            setShowCreditAccountBox(true);
-                                                        }}
+                                                        onClick={() => props.history.push(joinUrlWithParamsId(FUNDING.ACCOUNT.DETAILS, item.accountReference.split('_').pop()))}
                                                     >
-                                                        Créditer
+                                                        Détails
                                                     </Button>
                                                 </td>
                                             </tr>
@@ -143,14 +112,6 @@ const List = (props) => {
                         )}
                     </>
                 )}
-            />
-            <CreditAccount
-                title='Créditer la caisse'
-                onSubmit={onStripeSubmit}
-                show={showCreditAccountBox}
-                onClose={() => {
-                    setShowCreditAccountBox(false);
-                }}
             />
         </>
     );

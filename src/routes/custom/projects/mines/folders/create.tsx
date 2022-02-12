@@ -27,8 +27,6 @@ const Create = (props) => {
     const [label, setLabel] = useState('');
     const [unit, setUnit] = useState(null);
     const [budget, setBudget] = useState(null);
-    const [typeUnits, setTypeUnits] = useState([]);
-    const [typeUnit, setTypeUnit] = useState(null);
     const [projectItems, setProjectItems] = useState([]);
     const [projectType, setProjectType] = useState(null);
     const [initializations, setInitializations] = useState([]);
@@ -37,7 +35,6 @@ const Create = (props) => {
 
     useEffect(() => {
         getUnits();
-        getTypeUnits();
     }, []);
 
     useEffect(() => {
@@ -60,18 +57,6 @@ const Create = (props) => {
         props.setRequestGlobalAction(false);
         UnitService.getUnits()
             .then((response) => setUnits(response))
-            .catch((err) => {
-                console.log(err);
-            })
-            .finally(() => {
-                props.setRequestGlobalAction(false);
-            })
-    }
-
-    const getTypeUnits = () => {
-        props.setRequestGlobalAction(true);
-        UnitService.getTypeUnits()
-            .then((response) => setTypeUnits(response))
             .catch((err) => {
                 console.log(err);
             })
@@ -173,7 +158,6 @@ const Create = (props) => {
             initializationItems: projectItems.map(pi => pi.item.id),
             initializationValues: projectItems.map(pi => pi.value)
         }
-        console.log(data);
         ProjectService.createProject(data, { fileData: ['document'], multipart: true }).then(() => {
             NotificationManager.success("Le projet a été créé avec succès");
             props.history.push(PROJECT.MINE.FOLDER.LIST);
@@ -209,7 +193,7 @@ const Create = (props) => {
                     </FormGroup>
 
                     <div className="row">
-                        <FormGroup className="col-md-4 col-sm-12 has-wrapper">
+                        <FormGroup className="col-md-6 col-sm-12 has-wrapper">
                             <InputLabel className="text-left" htmlFor="price">
                                 Besoin estimé
                             </InputLabel>
@@ -223,22 +207,7 @@ const Create = (props) => {
                                 onChange={(e) => setBudget(e.target.value)}
                             />
                         </FormGroup>
-                        <FormGroup className="col-md-4 col-sm-12 has-wrapper">
-                            <InputLabel className="text-left">
-                                Type devise
-                            </InputLabel>
-                            <Autocomplete
-                                options={typeUnits}
-                                value={typeUnit}
-                                id="combo-box-demo"
-                                onChange={(__, item) => {
-                                    setTypeUnit(item);
-                                }}
-                                getOptionLabel={(option) => option.label}
-                                renderInput={(params) => <TextField {...params} variant="outlined" />}
-                            />
-                        </FormGroup>
-                        <FormGroup className="col-md-4 col-sm-12 has-wrapper">
+                        <FormGroup className="col-md-6 col-sm-12 has-wrapper">
                             <InputLabel className="text-left">
                                 Devise
                             </InputLabel>
@@ -249,7 +218,7 @@ const Create = (props) => {
                                     setUnit(item);
                                 }}
                                 getOptionLabel={(option) => option.label}
-                                options={units.filter(u => u.type.id === typeUnit?.id)}
+                                options={units.filter(u => ['dévise', 'devise', 'devises', 'dévises'].includes(u.type.label.toLowerCase()))}
                                 renderInput={(params) => <TextField {...params} variant="outlined" />}
                             />
                         </FormGroup>

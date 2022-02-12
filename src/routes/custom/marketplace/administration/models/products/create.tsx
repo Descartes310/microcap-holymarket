@@ -14,8 +14,8 @@ import Checkbox from "@material-ui/core/Checkbox/Checkbox";
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { Form, FormGroup, Input as InputStrap } from 'reactstrap';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
-import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
 import { getProductNatures, getProductRanges, getSellWay } from 'Helpers/helpers';
+import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
 
 const fileTypes = ["JPG", "PNG", "GIF", "JPEG"];
 
@@ -31,14 +31,15 @@ const Create = (props) => {
     const [sellWay, setSellWay] = useState(null);
     const [products, setProducts] = useState([]);
     const [category, setCategory] = useState(null);
+    const [saleUnit, setSaleUnit] = useState(null);
     const [typeUnits, setTypeUnits] = useState([]);
     const [categories, setCategories] = useState([]);
     const [priceUnit, setPriceUnit] = useState(null);
     const [isAccount, setIsAccount] = useState(false);
     const [description, setDescription] = useState('');
     const [accountUnit, setAccountUnit] = useState(null);
+    const [saleTypeUnit, setSaleTypeUnit] = useState(null);
     const [maximumByUser, setMaximumByUser] = useState(null);
-    const [priceTypeUnit, setPriceTypeUnit] = useState(null);
     const [isAggregation, setIsAggregation] = useState(false);
     const [accountTypeUnit, setAccountTypeUnit] = useState(null);
     const [minAccountbalance, setMinAccountBalance] = useState(null);
@@ -113,10 +114,8 @@ const Create = (props) => {
         let data: any = {
             label, code, price, description, maximumByUser, sellWay: sellWay.value,
             priceUnitReference: priceUnit.reference, categoryId: category.id,
-            image: file, nature: nature.value, range: range.value, type: 'PRODUCT'
+            image: file, nature: nature.value, range: range.value, type: 'PRODUCT',
         }
-
-        console.log(isAccount, minAccountbalance, maxAccountBalance);
 
         if (isAccount && (!minAccountbalance || !maxAccountBalance || !accountUnit)) {
             NotificationManager.error('Les détails du compte sont invalides');
@@ -143,6 +142,10 @@ const Create = (props) => {
                 return;
             }
             data.associatedIds = associatedProducts.map(ap => ap.id);
+        }
+
+        if(saleTypeUnit) {
+            data.sale_unit_reference = saleTypeUnit.reference;
         }
 
         //console.log(data);
@@ -210,9 +213,9 @@ const Create = (props) => {
                         />
                     </FormGroup>
                     <div className="row">
-                        <FormGroup className="col-md-3 col-sm-12 has-wrapper">
+                        <FormGroup className="col-md-4 col-sm-12 has-wrapper">
                             <InputLabel className="text-left" htmlFor="price">
-                                Prix par défaut
+                                Prix unitaire par défaut
                             </InputLabel>
                             <InputStrap
                                 required
@@ -224,22 +227,7 @@ const Create = (props) => {
                                 onChange={(e) => setPrice(e.target.value)}
                             />
                         </FormGroup>
-                        <FormGroup className="col-md-3 col-sm-12 has-wrapper">
-                            <InputLabel className="text-left">
-                                Type devise
-                            </InputLabel>
-                            <Autocomplete
-                                options={typeUnits}
-                                value={priceTypeUnit}
-                                id="combo-box-demo"
-                                onChange={(__, item) => {
-                                    setPriceTypeUnit(item);
-                                }}
-                                getOptionLabel={(option) => option.label}
-                                renderInput={(params) => <TextField {...params} variant="outlined" />}
-                            />
-                        </FormGroup>
-                        <FormGroup className="col-md-3 col-sm-12 has-wrapper">
+                        <FormGroup className="col-md-4 col-sm-12 has-wrapper">
                             <InputLabel className="text-left">
                                 Devise
                             </InputLabel>
@@ -250,11 +238,11 @@ const Create = (props) => {
                                     setPriceUnit(item);
                                 }}
                                 getOptionLabel={(option) => option.label}
-                                options={units.filter(u => u.type.id === priceTypeUnit?.id)}
+                                options={units.filter(u => ['dévise', 'devise', 'devises', 'dévises'].includes(u.type.label.toLowerCase()))}
                                 renderInput={(params) => <TextField {...params} variant="outlined" />}
                             />
                         </FormGroup>
-                        <FormGroup className="col-md-3 col-sm-12 has-wrapper">
+                        <FormGroup className="col-md-4 col-sm-12 has-wrapper">
                             <InputLabel className="text-left" htmlFor="maxByUser">
                                 Nombre max. par membre
                             </InputLabel>
@@ -266,6 +254,39 @@ const Create = (props) => {
                                 className="input-lg"
                                 value={maximumByUser}
                                 onChange={(e) => setMaximumByUser(e.target.value)}
+                            />
+                        </FormGroup>
+                    </div>
+
+                    <div className="row">
+                        <FormGroup className="col-md-6 col-sm-12 has-wrapper">
+                            <InputLabel className="text-left">
+                                Type d'unité
+                            </InputLabel>
+                            <Autocomplete
+                                options={typeUnits}
+                                value={saleTypeUnit}
+                                id="combo-box-demo"
+                                onChange={(__, item) => {
+                                    setSaleTypeUnit(item);
+                                }}
+                                getOptionLabel={(option) => option.label}
+                                renderInput={(params) => <TextField {...params} variant="outlined" />}
+                            />
+                        </FormGroup>
+                        <FormGroup className="col-md-6 col-sm-12 has-wrapper">
+                            <InputLabel className="text-left">
+                                Unité
+                            </InputLabel>
+                            <Autocomplete
+                                value={saleUnit}
+                                id="combo-box-demo"
+                                onChange={(__, item) => {
+                                    setSaleUnit(item);
+                                }}
+                                getOptionLabel={(option) => option.label}
+                                options={units.filter(u => u.type.id === saleTypeUnit?.id)}
+                                renderInput={(params) => <TextField {...params} variant="outlined" />}
                             />
                         </FormGroup>
                     </div>

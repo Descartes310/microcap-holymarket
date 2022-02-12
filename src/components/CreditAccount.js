@@ -91,7 +91,7 @@ class CreditAccount extends Component {
                             <Input
                                 required
                                 id="amount"
-                                type="text"
+                                type="number"
                                 name='amount'
                                 value={amount}
                                 className="input-lg"

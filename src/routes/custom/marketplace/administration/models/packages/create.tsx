@@ -30,13 +30,14 @@ const Create = (props) => {
     const [nature, setNature] = useState(null);
     const [sellWay, setSellWay] = useState(null);
     const [products, setProducts] = useState([]);
+    const [saleUnit, setSaleUnit] = useState(null);
     const [category, setCategory] = useState(null);
     const [typeUnits, setTypeUnits] = useState([]);
     const [categories, setCategories] = useState([]);
     const [priceUnit, setPriceUnit] = useState(null);
     const [description, setDescription] = useState('');
+    const [saleTypeUnit, setSaleTypeUnit] = useState(null);
     const [maximumByUser, setMaximumByUser] = useState(null);
-    const [priceTypeUnit, setPriceTypeUnit] = useState(null);
     const [showAddProductbox, setShowAddProductbox] = useState(false);
     const [associatedProducts, setAssociatedProducts] = useState([]);
 
@@ -129,10 +130,13 @@ const Create = (props) => {
             image: file, nature: nature.value, range: range.value, type: 'PACKAGE'
         }
 
-
         if (associatedProducts.length <= 0) {
             NotificationManager.error('Sélectionnez les produits à associer');
             return;
+        }
+
+        if(saleTypeUnit) {
+            data.sale_unit_reference = saleTypeUnit.reference;
         }
 
         data.associatedIds = associatedProducts.map(ap => ap.product.id);
@@ -204,9 +208,9 @@ const Create = (props) => {
                         />
                     </FormGroup>
                     <div className="row">
-                        <FormGroup className="col-md-3 col-sm-12 has-wrapper">
+                        <FormGroup className="col-md-4 col-sm-12 has-wrapper">
                             <InputLabel className="text-left" htmlFor="price">
-                                Prix par défaut
+                                Prix unitaire par défaut
                             </InputLabel>
                             <InputStrap
                                 required
@@ -218,22 +222,7 @@ const Create = (props) => {
                                 onChange={(e) => setPrice(e.target.value)}
                             />
                         </FormGroup>
-                        <FormGroup className="col-md-3 col-sm-12 has-wrapper">
-                            <InputLabel className="text-left">
-                                Type devise
-                            </InputLabel>
-                            <Autocomplete
-                                options={typeUnits}
-                                value={priceTypeUnit}
-                                id="combo-box-demo"
-                                onChange={(__, item) => {
-                                    setPriceTypeUnit(item);
-                                }}
-                                getOptionLabel={(option) => option.label}
-                                renderInput={(params) => <TextField {...params} variant="outlined" />}
-                            />
-                        </FormGroup>
-                        <FormGroup className="col-md-3 col-sm-12 has-wrapper">
+                        <FormGroup className="col-md-4 col-sm-12 has-wrapper">
                             <InputLabel className="text-left">
                                 Devise
                             </InputLabel>
@@ -244,11 +233,11 @@ const Create = (props) => {
                                     setPriceUnit(item);
                                 }}
                                 getOptionLabel={(option) => option.label}
-                                options={units.filter(u => u.type.id === priceTypeUnit?.id)}
+                                options={units.filter(u => ['dévise', 'devise', 'devises', 'dévises'].includes(u.type.label.toLowerCase()))}
                                 renderInput={(params) => <TextField {...params} variant="outlined" />}
                             />
                         </FormGroup>
-                        <FormGroup className="col-md-3 col-sm-12 has-wrapper">
+                        <FormGroup className="col-md-4 col-sm-12 has-wrapper">
                             <InputLabel className="text-left" htmlFor="maxByUser">
                                 Nombre max. par membre
                             </InputLabel>
@@ -260,6 +249,39 @@ const Create = (props) => {
                                 className="input-lg"
                                 value={maximumByUser}
                                 onChange={(e) => setMaximumByUser(e.target.value)}
+                            />
+                        </FormGroup>
+                    </div>
+
+                    <div className="row">
+                        <FormGroup className="col-md-6 col-sm-12 has-wrapper">
+                            <InputLabel className="text-left">
+                                Type d'unité
+                            </InputLabel>
+                            <Autocomplete
+                                options={typeUnits}
+                                value={saleTypeUnit}
+                                id="combo-box-demo"
+                                onChange={(__, item) => {
+                                    setSaleTypeUnit(item);
+                                }}
+                                getOptionLabel={(option) => option.label}
+                                renderInput={(params) => <TextField {...params} variant="outlined" />}
+                            />
+                        </FormGroup>
+                        <FormGroup className="col-md-6 col-sm-12 has-wrapper">
+                            <InputLabel className="text-left">
+                                Unité
+                            </InputLabel>
+                            <Autocomplete
+                                value={saleUnit}
+                                id="combo-box-demo"
+                                onChange={(__, item) => {
+                                    setSaleUnit(item);
+                                }}
+                                getOptionLabel={(option) => option.label}
+                                options={units.filter(u => u.type.id === saleTypeUnit?.id)}
+                                renderInput={(params) => <TextField {...params} variant="outlined" />}
                             />
                         </FormGroup>
                     </div>
