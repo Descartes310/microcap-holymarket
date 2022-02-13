@@ -48,12 +48,13 @@ class CreatePartnershipModal extends Component {
 
     findUserByMembership = () => {
         this.props.setRequestGlobalAction(true);
-        UserService.findUserByMembership(this.state.membership)
+        UserService.findUserByReference(this.state.membership)
         .then(response => {
             this.setState({ member: response });
         })
         .catch((err) => {
             console.log(err);
+            NotificationManager.error("Ce numéro utilisateur est inexistant");
         })
         .finally(() => {
             this.props.setRequestGlobalAction(false);
@@ -64,8 +65,10 @@ class CreatePartnershipModal extends Component {
 
         const { member, contract, commercialName, immatriculation } = this.state;
 
-        if(!contract || !member || !commercialName || !immatriculation)
+        if(!contract || !member || !commercialName || !immatriculation) {
+            NotificationManager.error("Les informations renseignées sont incompletes ou incorrectes");
             return;
+        }
 
         this.props.setRequestGlobalAction(true);
 
@@ -109,7 +112,7 @@ class CreatePartnershipModal extends Component {
                 <RctCardContent>
                     <FormGroup className="has-wrapper">
                         <InputLabel className="text-left" htmlFor="membership">
-                            Numéro d'adhésion
+                            Numéro utilisateur
                         </InputLabel>
                         <InputStrap
                             required
