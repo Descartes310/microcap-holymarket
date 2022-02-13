@@ -407,14 +407,14 @@ export default [
             Permission.marketplace.store.order.name,
          ]
       ],
-      "profiles": ['OPERATOR'],
+      "profiles": ['GROUP'],
       "child_routes": [
          {
             "menu_title": "Produits",
             "new_item": false,
             "path": MARKETPLACE.STORE.PRODUCT.LIST,
             "permissions": [Permission.marketplace.store.product.name],
-            "profiles": ['OPERATOR'],
+            "profiles": ['GROUP'],
             "child_routes": null
          },
          {
@@ -422,7 +422,7 @@ export default [
             "new_item": false,
             "path": MARKETPLACE.STORE.PURCHASE.LIST,
             "permissions": [Permission.marketplace.store.purchase.name],
-            "profiles": ['OPERATOR'],
+            "profiles": ['GROUP'],
             "child_routes": null
          },
          {
@@ -430,7 +430,7 @@ export default [
             "new_item": false,
             "path": MARKETPLACE.STORE.ORDER.LIST,
             "permissions": [Permission.marketplace.store.order.name],
-            "profiles": ['OPERATOR'],
+            "profiles": ['GROUP'],
             "child_routes": null
          }
       ],
