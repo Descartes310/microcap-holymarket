@@ -32,4 +32,16 @@ export default class UserService {
         return makeRequest('post', Routes.CHANGE_ACCESS(id), null);
     }
 
+    static changeAccessCredentials(id: number, data: any): Promise<any> {
+        return makeRequest('put', Routes.CHANGE_ACCESS_CREDENTIALS(id), data);
+    }
+
+    static sendPasswordLink(datas: any): Promise<any> {
+        return makeRequest('post', Routes.RESET_PASSWORD_LINK, datas);
+    }
+
+    static resetPassword(datas: any): Promise<any> {
+        return makeRequest('post', Routes.RESET_PASSWORD, datas);
+    }
+
 }
