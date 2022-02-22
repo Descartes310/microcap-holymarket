@@ -72,7 +72,7 @@ class Read extends Component {
                             )}
                     </>
                 </div>
-                {this.props.authUser.status === Status.PENDING && (
+                {!this.props.authUser.active && (
                     <ActivationBox
                         show={showActivationBox}
                         notification={notification}

@@ -1,4 +1,5 @@
 import { connect } from "react-redux";
+import { AUTH } from 'Url/frontendUrl';
 import { injectIntl } from "react-intl";
 import React, { Component } from 'react';
 import UserService from 'Services/users';
@@ -32,7 +33,14 @@ class ChangeAccessCredentials extends Component {
         };
 
         UserService.changeAccessCredentials(this.props.access.id, datas).then(() => {
-            window.location.reload();
+            if(this.props.access.reference === this.props.authUser.access) {
+                localStorage.removeItem('access_token');
+                localStorage.removeItem('id_token');
+                localStorage.removeItem('expires_at');
+                window.location.reload();
+            } else {
+                this.props.onClose();
+            }
         })
         .catch(err => {
             console.log(err);

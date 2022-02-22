@@ -1,4 +1,3 @@
-import Status from "Enums/Status";
 import { connect } from "react-redux";
 import React, { Component } from 'react';
 import { setRequestGlobalAction } from "Actions";
@@ -34,6 +33,7 @@ class Unread extends Component {
      }
 
     onActivationClick = (notification) => {
+        console.log(notification);
         this.setState({ showActivationBox: true, notification })
     };
 
@@ -73,7 +73,7 @@ class Unread extends Component {
                             )}
                     </>
                 </div>
-                {this.props.authUser.status === Status.PENDING && (
+                {!this.props.authUser.active && (
                     <ActivationBox
                         show={showActivationBox}
                         notification={notification}

@@ -4,11 +4,12 @@ import React, { Component } from 'react';
 import UserService from "Services/users";
 import Tabs from '@material-ui/core/Tabs';
 import AppBar from '@material-ui/core/AppBar';
-import { setRequestGlobalAction } from "Actions";
 import SwipeableViews from "react-swipeable-views";
 import TabContainer from "Components/TabContainer";
 import { FormGroup, Input, Button } from "reactstrap";
+import { getReferralTypeLabel } from 'Helpers/helpers';
 import DialogComponent from "Components/DialogComponent";
+import { setRequestGlobalAction, logout } from "Actions";
 import { NotificationManager } from "react-notifications";
 import Checkbox from "@material-ui/core/Checkbox/Checkbox";
 import InputLabel from "@material-ui/core/InputLabel/InputLabel";
@@ -25,12 +26,32 @@ class ActivationBox extends Component {
             acceptCGU: false,
             numPages: 1,
             pageNumber: 1,
+            membership: props.authUser.referralId,
+            member: props.authUser,
         }
     }
 
     handleChange = (__, value) => {
         this.setState({ activeTab: value });
     };
+
+    getNotificationAccessReference = () => {
+        let accessReference = null;
+        if(this.props.notification) {
+            let notificationAccessDetails = this.props.notification.details.find(d => d.type === 'ACCESS_REF');
+            if(notificationAccessDetails) {
+                accessReference = notificationAccessDetails.value;
+            }
+        }
+        return accessReference;
+    };
+
+    logoutUser = () => {
+        localStorage.removeItem('access_token');
+        localStorage.removeItem('id_token');
+        localStorage.removeItem('expires_at');
+        window.location.replace('/login');
+	}
 
     onAskCode = () => {
         this.props.setRequestGlobalAction(true);
@@ -53,13 +74,17 @@ class ActivationBox extends Component {
     onVerifyCode = () => {
         this.props.setRequestGlobalAction(true);
         this.setState({ loading: true });
-        UserService.confirmOTP(this.state.codeToVerify)
+        UserService.confirmOTP(this.state.codeToVerify, {userReference: this.state.membership, notificationId: this.props.notification.id})
             .then(() => {
-                NotificationManager.success("Votre compte a été activé avec success");
+                NotificationManager.success("Vos nouveaux paramètres on été envoyés à votre email");
                 this.props.onClose();
                 setTimeout(() => {
-                    window.location.reload();
-                }, 1000);
+                    this.logoutUser();
+                }, 2000);
+            })
+            .catch((err) => {
+                console.log(err);
+                NotificationManager.error("Le code OTP est incorrect");
             })
             .finally(() => {
                 this.setState({ loading: false });
@@ -67,10 +92,28 @@ class ActivationBox extends Component {
             });
     };
 
+    findUserByMembership = () => {
+        this.props.setRequestGlobalAction(true);
+        UserService.findUserByReference(this.state.membership)
+        .then(response => {
+            this.setState({ member: response });
+        })
+        .catch((err) => {
+            console.log(err);
+            NotificationManager.error("Ce numéro utilisateur est inexistant");
+        })
+        .finally(() => {
+            this.props.setRequestGlobalAction(false);
+        })
+    }
+
     render() {
+
+        const { member, membership, hasAskCode, acceptCGU } = this.state;
+
         return (
             <DialogComponent
-                title="Acivation du compte"
+                title="Acivation de l'accès"
                 onClose={this.props.onClose}
                 show={this.props.show}
             >
@@ -83,8 +126,9 @@ class ActivationBox extends Component {
                                 indicatorColor="primary"
                                 textColor="primary"
                             >
-                                <Tab label="Demander un code" />
-                                <Tab label="Vérifier le code" />
+                                <Tab label="Demander un code d'activation" />
+                                <Tab label="Paramètres de l'accès"  disabled={!hasAskCode} />
+                                <Tab label="Activer l'accès" disabled={!member || !hasAskCode} />
                             </Tabs>
                         </div>
                     </AppBar>
@@ -94,29 +138,74 @@ class ActivationBox extends Component {
                             <TabContainer>
                                 <div className="p-sm-20 pt-sm-30 p-10 pt-15 border-top">
                                     <div>
-                                        <label>J'ai lu et j'accepte les CGU</label>
-                                        <Checkbox
-                                            color="primary"
-                                            onChange={(e) => this.setState({ acceptCGU: e.target.checked })}
-                                        />
+                                        <p>Commencez la procédure en demandant un code OTP qui vous sera envoyé par email.</p>
+                                        <p>Cliquez sur le boutton ci-dessous.</p>
                                     </div>
                                     <Button
                                         color="primary"
-                                        disabled={this.state.loading || !this.state.acceptCGU}
+                                        disabled={this.state.loading}
                                         className="text-white mr-2"
                                         onClick={this.onAskCode}
                                     >
                                         Initier la demande
                                     </Button>
-                                    <Button
-                                        color="primary"
-                                        className="text-white bg-blue mr-2"
-                                        href={this.props.pdfURL}
-                                        target="_blank"
-                                        download
-                                    >
-                                        Télécharger les CGU ICI
-                                    </Button>
+                                </div>
+                            </TabContainer>
+                        </div>
+                        <div className="card mb-0 transaction-box">
+                            <TabContainer>
+                                <div className="p-sm-20 pt-sm-30 p-10 pt-15 border-top">
+                                    <FormGroup className="has-wrapper">
+                                        <InputLabel className="text-left" htmlFor="membership">
+                                            Numéro utilisateur
+                                        </InputLabel>
+                                        <Input
+                                            required
+                                            type="text"
+                                            id="membership"
+                                            name='membership'
+                                            value={membership}
+                                            className="input-lg"
+                                            onChange={(e) => this.setState({ membership: e.target.value })}
+                                        />
+                                    </FormGroup>
+                                    {member && (
+                                        <>
+                                            <FormGroup className="has-wrapper">
+                                                <Input
+                                                    disabled
+                                                    className="input-lg"
+                                                    value={member.userName}
+                                                />
+                                            </FormGroup>
+                                            <FormGroup className="has-wrapper">
+                                                <Input
+                                                    disabled
+                                                    className="input-lg"
+                                                    value={getReferralTypeLabel(member.referralType)}
+                                                />
+                                            </FormGroup>
+                                        </>
+                                    )}
+                                    <FormGroup>
+                                        <Button
+                                            color="primary"
+                                            variant="contained"
+                                            disabled={!membership}
+                                            onClick={() => this.findUserByMembership()}
+                                            className="text-white font-weight-bold mr-20 bg-blue"
+                                        >
+                                            Vérifier l'utilisateur
+                                        </Button>
+                                        <Button
+                                            color="primary"
+                                            disabled={this.state.loading}
+                                            className="text-white mr-2"
+                                            onClick={() => this.setState({ activeTab: 2 })}
+                                        >
+                                            Continuer
+                                        </Button>
+                                    </FormGroup>
                                 </div>
                             </TabContainer>
                         </div>
@@ -126,7 +215,7 @@ class ActivationBox extends Component {
                                     <div className="row">
                                         <div className="col-sm-12">
                                             <InputLabel className="text-left" htmlFor="label">
-                                                Enter le code reçu
+                                                Entrer le code d'activation reçu
                                             </InputLabel>
                                         </div>
                                         <FormGroup className="col-sm-12 has-wrapper">
@@ -139,13 +228,24 @@ class ActivationBox extends Component {
                                                 onChange={event => this.setState({ codeToVerify: event.target.value })}
                                             />
                                         </FormGroup>
+                                        <div>
+                                            <Checkbox
+                                                color="primary"
+                                                onChange={(e) => this.setState({ acceptCGU: e.target.checked })}
+                                            />
+                                            <label>J'ai pris connaissance et accepte les conditions d'utilisation du compte</label>
+                                        </div>
+                                        <div className="col-sm-12 mt-10">
+                                            <label>Conditions générale d'utilisation</label>
+                                            <label>Politique de confidentialités</label>
+                                        </div>
                                         <div className="col-sm-12">
                                             <div>
                                                 <Button
                                                     color="primary"
                                                     onClick={this.onVerifyCode}
                                                     className="text-white bg-blue mr-2"
-                                                    disabled={this.state.codeToVerify.length === 0 || this.state.loading}
+                                                    disabled={this.state.codeToVerify.length === 0 || this.state.loading || !acceptCGU}
                                                 >
                                                     Vérifier mon code
                                                 </Button>
@@ -162,4 +262,4 @@ class ActivationBox extends Component {
     }
 }
 
-export default connect(({ authUser }) => ({ authUser: authUser.data }), { setRequestGlobalAction })(ActivationBox);
+export default connect(({ authUser }) => ({ authUser: authUser.data }), { setRequestGlobalAction, logout })(ActivationBox);

@@ -1,6 +1,7 @@
 import BaseEnum from './BaseEnum';
 
 export default class NotificationType extends BaseEnum {
+    static ACTIVATION = 'ACTIVATION';
     static REGISTRATION = 'REGISTRATION';
     static PIECE_REQUEST = 'PIECE_REQUEST';
     static COMMUNITY_INVITATION = 'COMMUNITY_INVITATION';

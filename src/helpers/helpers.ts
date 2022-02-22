@@ -565,34 +565,6 @@ export const parseDate = (str) => {
     return new Date(mdy[0], mdy[1] - 1, mdy[2]);
 }
 
-// export const datediff = (first, second, time = 1) => {
-//     let start = parseDate(first);
-//     let end = parseDate(second);
-//     switch (time) {
-//         case 1:
-//             end.setDate(end.getDate()+1);
-//             let days = Math.ceil(Math.abs(start - end) / (1000 * 60 * 60 * 24));
-//             return days;
-//         case 7:
-//             let weeks = Math.ceil(Math.abs(start - end) / (1000 * 60 * 60 * 24 * 7));
-//             return weeks;
-//         case 30:
-//             let months = (end.getFullYear() - start.getFullYear()) * 12;
-//             months -= start.getMonth();
-//             months += end.getMonth()
-//             return months;
-//         case 90:
-//             let trimester = (end.getFullYear() - start.getFullYear()) * 12;
-//             trimester -= start.getMonth();
-//             trimester += end.getMonth()
-//             return Math.ceil(trimester/3);
-//         default:
-//             end.setDate(end.getDate()+1);
-//             let last = Math.ceil(Math.abs(start - end) / (1000 * 60 * 60 * 24));
-//             return last;
-//     }
-// }
-
 export const datediff = (first, second, time = 1) => {
     let start = parseDate(first);
     let end = parseDate(second);
@@ -634,6 +606,10 @@ export const datediff = (first, second, time = 1) => {
 
 export const isMenuAllowed = (authUser: any, menu: MenuItem): boolean => {
     const profile = authUser?.userAccount;
+    
+    if(!authUser.active)
+        return false;
+
     if (profile) {
         /**
          * permissions are ok if either menu item's permissions is null 
