@@ -1,5 +1,6 @@
 import { DISCOVER } from "Url/frontendUrl";
 import { getFilePath } from "Helpers/helpers";
+import SettingService from 'Services/settings';
 import { HashLink } from 'react-router-hash-link';
 import React, { useState, useEffect } from 'react';
 import DiscoverLayout from "Routes/custom/dashboard/discover/DiscoverLayout";
@@ -10,8 +11,16 @@ const Agents = () => {
 
     document.body.style.overflow = "auto";
 
+
     useEffect(() => {
-    }, []);
+        getAgent();
+    }, [window.location.pathname]);
+
+    const getAgent = () => {
+        SettingService.getAgents({url: window.location.origin, type: 'AGENT'}).then(response => {
+            setData(response);
+        })
+    }
 
     return (
         <DiscoverLayout title="Nos agents">
@@ -45,7 +54,7 @@ const Agents = () => {
                             <div className="single-item col-lg-4 col-md-5">
                                 <div className="item">
                                     <div className="thumb">
-                                        <div className="img-wrapper" style={{ backgroundImage: `url(${getFilePath(agent.avatar) || require('Assets/img/profile.jpg')})` }} />
+                                        <div className="img-wrapper" style={{ backgroundImage: `url(${getFilePath(agent.avatar) || require('Assets/img/profile.jpg')})`, backgroundSize: 'cover' }} />
                                     </div>
                                     <div className="info">
                                         <h4>{agent.name}, <span>{agent.post}</span></h4>

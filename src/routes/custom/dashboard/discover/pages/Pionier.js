@@ -1,6 +1,7 @@
 import { getFilePath } from "Helpers/helpers";
-import React, { useState, useEffect } from 'react';
+import SettingService from 'Services/settings';
 import Checkbox from '@material-ui/core/Checkbox';
+import React, { useState, useEffect } from 'react';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import DiscoverLayout from "Routes/custom/dashboard/discover/DiscoverLayout";
 import TitleHeader from "Routes/custom/dashboard/discover/components/TitleHeader";
@@ -12,7 +13,14 @@ const DiscoverPioner = () => {
     const [types, setTypes] = useState(['MANAGER', 'PASS_UP', 'PASS_LEADER', 'PASS_PREMIUM']);
 
     useEffect(() => {
-    }, []);
+        getAgent();
+    }, [window.location.pathname]);
+
+    const getAgent = () => {
+        SettingService.getAgents({url: window.location.origin, type: 'PIONIER'}).then(response => {
+            setData(response);
+        })
+    }
 
     useEffect(() => {
         if(manager) {
@@ -73,7 +81,7 @@ const DiscoverPioner = () => {
                         </li>
                     </ul>
                     <div className="row person-block">
-                        {data.filter(a => a.active === true && types.includes(a.type)).map(agent => (
+                        {data.filter(a => a.active === true && types.includes(a.nature)).map(agent => (
                             <div className="single-item col-lg-4 col-md-5">
                                 <div className="item">
                                     <div className="thumb">

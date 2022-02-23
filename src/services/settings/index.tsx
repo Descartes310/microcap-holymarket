@@ -16,12 +16,12 @@ export default class SettingService {
         return makeRequest('get', Routes.GET_AGENTS, datas);
     }
 
-    static createAgent(datas): Promise<any> {
-        return makeRequest('post', Routes.CREATE_AGENT, datas);
+    static createAgent(datas, config): Promise<any> {
+        return makeRequest('post', Routes.CREATE_AGENT, datas, config);
     }
 
-    static updateAgent(id, datas): Promise<any> {
-        return makeRequest('put', Routes.UPDATE_AGENT(id), datas);
+    static updateAgent(id, datas, config): Promise<any> {
+        return makeRequest('put', Routes.UPDATE_AGENT(id), datas, config);
     }
 
     static updateAgentActive(id): Promise<any> {
