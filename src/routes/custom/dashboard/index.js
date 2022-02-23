@@ -144,7 +144,6 @@ const Dashboard = ({ onInitCart }) => {
                         path={BROKER.SELF}
                         component={AsyncBroker}
                     />
-
                     <Redirect to={HOME} />
 
                 </Switch>

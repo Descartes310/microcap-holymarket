@@ -291,6 +291,16 @@ export const SETTING = {
         SELF: "/settings/user-files",
         LIST: "/settings/user-files/list",
         CREATE: "/settings/user-files/create",
+    },
+    AGENT: {
+        SELF: "/settings/agents",
+        LIST: "/settings/agents/list",
+        CREATE: "/settings/agents/create",
+    },
+    PIONIER: {
+        SELF: "/settings/pioniers",
+        LIST: "/settings/pioniers/list",
+        CREATE: "/settings/pioniers/create",
     }
 }
 

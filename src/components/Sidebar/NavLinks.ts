@@ -480,6 +480,22 @@ export default [
             "permissions": [Permission.setting.unit.name],
             "profiles": ['GROUP'],
             "child_routes": null
+         },
+         {
+            "menu_title": "Nos pionniers",
+            "new_item": false,
+            "path": SETTING.PIONIER.LIST,
+            "permissions": [Permission.setting.unit.name],
+            "profiles": ['GROUP'],
+            "child_routes": null
+         },
+         {
+            "menu_title": "Nos agents",
+            "new_item": false,
+            "path": SETTING.AGENT.LIST,
+            "permissions": [Permission.setting.unit.name],
+            "profiles": ['GROUP'],
+            "child_routes": null
          }
       ],
    },

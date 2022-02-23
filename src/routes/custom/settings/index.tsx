@@ -1,5 +1,6 @@
 import React from 'react';
 import Units from './units';
+import Agents from './agents';
 import UserFiles from './user-files';
 import {connect} from "react-redux";
 import {injectIntl} from "react-intl";
@@ -13,6 +14,8 @@ const Setting = (props) => {
             <Switch>
                 <Redirect exact from={`${match.url}/`} to={SETTING.UNIT.SELF} />
                 <Route path={SETTING.UNIT.SELF} component={Units} />
+                <Route path={SETTING.AGENT.SELF} component={Agents} />
+                <Route path={SETTING.PIONIER.SELF} component={Agents} />
                 <Route path={SETTING.USER_FILE.SELF} component={UserFiles} />
             </Switch>
         </div>
