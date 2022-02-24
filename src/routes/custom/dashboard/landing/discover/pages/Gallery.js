@@ -3,8 +3,8 @@ import { getFilePath } from "Helpers/helpers";
 import EmptyResult from "Components/EmptyResult";
 import React, { useState, useEffect } from 'react';
 import HourGlassLoader from "Components/Loaders/HourGlass";
-import DiscoverLayout from "Routes/custom/dashboard/discover/DiscoverLayout";
-import TitleHeader from "Routes/custom/dashboard/discover/components/TitleHeader";
+import DiscoverLayout from "Routes/custom/dashboard/landing/discover/DiscoverLayout";
+import TitleHeader from "Routes/custom/dashboard/landing/discover/components/TitleHeader";
 
 const settings = {
     dots: true,

@@ -3,8 +3,8 @@ import SettingService from 'Services/settings';
 import Checkbox from '@material-ui/core/Checkbox';
 import React, { useState, useEffect } from 'react';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import DiscoverLayout from "Routes/custom/dashboard/discover/DiscoverLayout";
-import TitleHeader from "Routes/custom/dashboard/discover/components/TitleHeader";
+import DiscoverLayout from "Routes/custom/dashboard/landing/discover/DiscoverLayout";
+import TitleHeader from "Routes/custom/dashboard/landing/discover/components/TitleHeader";
 
 const DiscoverPioner = () => {
     const [data, setData] = useState([]);

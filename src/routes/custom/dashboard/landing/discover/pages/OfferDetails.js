@@ -1,9 +1,9 @@
 import { Helmet } from "react-helmet";
 import React, { Component } from 'react';
 import PricingBlockV3 from 'Components/Pricing/PricingBlockV3';
-import DiscoverLayout from "Routes/custom/dashboard/discover/DiscoverLayout";
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
-import TitleHeader from "Routes/custom/dashboard/discover/components/TitleHeader";
+import DiscoverLayout from "Routes/custom/dashboard/landing/discover/DiscoverLayout";
+import TitleHeader from "Routes/custom/dashboard/landing/discover/components/TitleHeader";
 
 const OfferDetails = () => {
     return (

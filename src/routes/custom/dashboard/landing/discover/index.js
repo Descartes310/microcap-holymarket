@@ -8,9 +8,9 @@ import slide21 from 'Assets/img/slide21.jpg';
 import slide23 from 'Assets/img/slide23.jpg';
 import { HashLink } from 'react-router-hash-link';
 import { RctCard, RctCardContent } from 'Components/RctCard';
-import DiscoverLayout from "Routes/custom/dashboard/discover/DiscoverLayout";
-import DiscoverVideo from "Routes/custom/dashboard/discover/components/DiscoverVideo";
 import { Card, CardImg, CardText, CardBody, CardFooter } from 'reactstrap';
+import DiscoverLayout from "Routes/custom/dashboard/landing/discover/DiscoverLayout";
+import DiscoverVideo from "Routes/custom/dashboard/landing/discover/components/DiscoverVideo";
 import { PIONIERS, SOLIDARITY, MONEY_MANAGEMENT, GETIN, PASS_DETAILS, AGENTS } from "Url/frontendUrl";
 
 const settings = {

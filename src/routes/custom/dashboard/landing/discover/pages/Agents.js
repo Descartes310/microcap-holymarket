@@ -3,8 +3,8 @@ import { getFilePath } from "Helpers/helpers";
 import SettingService from 'Services/settings';
 import { HashLink } from 'react-router-hash-link';
 import React, { useState, useEffect } from 'react';
-import DiscoverLayout from "Routes/custom/dashboard/discover/DiscoverLayout";
-import TitleHeader from "Routes/custom/dashboard/discover/components/TitleHeader";
+import DiscoverLayout from "Routes/custom/dashboard/landing/discover/DiscoverLayout";
+import TitleHeader from "Routes/custom/dashboard/landing/discover/components/TitleHeader";
 
 const Agents = () => {
     const [data, setData] = useState([]);
