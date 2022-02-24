@@ -8,33 +8,8 @@ import Loadable from 'react-loadable';
 // rct page loader
 import RctPageLoader from 'Components/RctPageLoader/RctPageLoader';
 
-export const AsyncDiscover = Loadable({
-	loader: () => import("Routes/custom/dashboard/discover/index"),
-	loading: () => <RctPageLoader />,
-});
-
-export const AsyncGallery = Loadable({
-	loader: () => import("Routes/custom/dashboard/discover/pages/Gallery"),
-	loading: () => <RctPageLoader />,
-});
-
-export const AsyncPionier = Loadable({
-	loader: () => import("Routes/custom/dashboard/discover/pages/Pionier"),
-	loading: () => <RctPageLoader />,
-});
-
-export const AsyncSolidarity = Loadable({
-	loader: () => import("Routes/custom/dashboard/Solidarity"),
-	loading: () => <RctPageLoader />,
-});
-
-export const AsyncGetIn = Loadable({
-	loader: () => import("Routes/custom/dashboard/GetIn"),
-	loading: () => <RctPageLoader />,
-});
-
-export const AsyncMoneyManagement = Loadable({
-	loader: () => import("Routes/custom/dashboard/MoneyManagement"),
+export const AsyncLanding = Loadable({
+	loader: () => import("Routes/custom/dashboard/landing"),
 	loading: () => <RctPageLoader />,
 });
 

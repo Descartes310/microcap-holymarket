@@ -13,11 +13,11 @@ import Button from '@material-ui/core/Button';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import { SessionSlider } from 'Components/Widgets';
+import { AUTH, HOME, LANDING} from "Url/frontendUrl";
 import InputLabel from "@material-ui/core/InputLabel";
 import InputComponent from "Components/InputComponent";
 import { NotificationManager } from "react-notifications";
 import { minMaxValidatorObject } from "Helpers/validator";
-import { AUTH, HOME, DISCOVER, TERMS} from "Url/frontendUrl";
 import ErrorInputComponent from "Components/ErrorInputComponent";
 import { loginUserWithLoginAndPassword, setRequestGlobalAction } from 'Actions';
 
@@ -42,7 +42,7 @@ const Signin = (props) => {
     };
 
     const onDiscoverClick = () => {
-        props.history.push(DISCOVER);
+        props.history.push(LANDING.HOME);
     };
 
     return (
@@ -62,7 +62,7 @@ const Signin = (props) => {
                                         <IntlMessages id="auth.signup" />
                                     </Button>
                                     <Button variant="contained" className="btn-primary mr-2 p-10" onClick={onDiscoverClick}>
-                                        Découvrir Microcap
+                                        Tout Microcap
                                     </Button>
                                 </div>
                             </div>
@@ -157,7 +157,7 @@ const Signin = (props) => {
                                             <IntlMessages id="auth.termOfService" values={{ name: AppConfig.brandName }} />
                                         </p>
                                         <p>
-                                            <a target="_blank" href={TERMS} className="text-muted">
+                                            <a target="_blank" href={LANDING.TERMS} className="text-muted">
                                                 <IntlMessages id="common.termOfService" />
                                             </a>
                                         </p>

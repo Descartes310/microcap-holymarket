@@ -7,7 +7,7 @@ import Button from '@material-ui/core/Button';
 import CancelIcon from '@material-ui/icons/Cancel';
 import Dialog from "@material-ui/core/Dialog/Dialog";
 import IconButton from "@material-ui/core/IconButton";
-import { AUTH, DISCOVER } from "../../../urls/frontendUrl";
+import { AUTH, LANDING } from "../../../urls/frontendUrl";
 import { createSondage, setRequestGlobalAction } from 'Actions';
 import { Card, CardText, CardBody, CardFooter } from 'reactstrap';
 import DialogTitle from "@material-ui/core/DialogTitle/DialogTitle";
@@ -179,8 +179,8 @@ const TellUs = (props) => {
                                                 </CardText>
                                             </CardBody>
                                             <CardFooter className="border-0 center-hor-ver">
-                                                <Button variant="contained" className="btn-primary mr-2" onClick={() => { props.history.push(DISCOVER); setResponse(null) }}>
-                                                    Découvrir Microcap
+                                                <Button variant="contained" className="btn-primary mr-2" onClick={() => { props.history.push(LANDING.HOME); setResponse(null) }}>
+                                                    Tout Microcap
                                                 </Button>
                                             </CardFooter>
                                         </Card>

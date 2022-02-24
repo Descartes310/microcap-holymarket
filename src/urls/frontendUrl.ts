@@ -2,22 +2,27 @@ import { BASE } from "Url/backendUrl";
 
 export const ROOT = '/';
 export const HOME = '/home';
-export const DISCOVER = '/discover';
-export const MISSION = '/mission-microcap';
-export const VALUES = '/reseau-microcap';
-export const GETIN = '/get-in';
-export const PIONIERS = '/pioniers';
-export const AGENTS = '/agents';
-export const SERVICES = '/services';
-export const CGU = '/cgu';
-export const PASS_DETAILS = '/pass-details';
-export const SOLIDARITY = '/solidarity';
-export const MONEY_MANAGEMENT = '/money-management';
-export const GALERY_PROJECT = '/projects-gallery';
-export const TERMS = '/conditions-generales-d-utilisation';
-export const LEGAL_MENTION = '/mentions-legales';
-export const SONDAGE_FIRST = '/sondages';
-export const SONDAGE_SECOND = '/sondages/continue/:id';
+
+export const LANDING = {
+    SELF: '/landing',
+    CGU: '/landing/cgu',
+    HOME: '/landing/home',
+    GETIN: '/landing/get-in',
+    AGENTS: '/landing/agents',
+    DISCOVER: '/landing/dicover',
+    PIONIERS: '/landing/pioniers',
+    SERVICES: '/landing/services',
+    SOLIDARITY: '/landing/solidarity',
+    VALUES: '/landing/reseau-microcap',
+    SONDAGE_FIRST: '/landing/sondages',
+    MISSION: '/landing/mission-microcap',
+    PASS_DETAILS: '/landing/pass-details',
+    LEGAL_MENTION: '/landing/mentions-legales',
+    GALERY_PROJECT: '/landing/projects-gallery',
+    MONEY_MANAGEMENT: '/landing/money-management',
+    SONDAGE_SECOND: '/landing/sondages/continue/:id',
+    TERMS: '/landing/conditions-generales-d-utilisation',
+}
 
 export const AUTH = {
     LOGIN: '/login',

@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from "prop-types";
 import {Helmet} from "react-helmet";
-import "Routes/custom/dashboard/discover/discover.scss";
-import DiscoverMenu from "Routes/custom/dashboard/discover/components/DiscoverMenu";
-import DiscoverFooter from "Routes/custom/dashboard/discover/components/DiscoverFooter";
+import "Routes/custom/dashboard/landing/discover/discover.scss";
+import DiscoverMenu from "Routes/custom/dashboard/landing/discover/components/DiscoverMenu";
+import DiscoverFooter from "Routes/custom/dashboard/landing/discover/components/DiscoverFooter";
 
 const DiscoverLayout = (props) => {
     return (

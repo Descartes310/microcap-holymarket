@@ -7,21 +7,16 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 
 // async components
 import {
-    AsyncGetIn,
     AsyncBroker,
     AsyncGroups,
-    AsyncPionier,
-    AsyncGallery,
+    AsyncLanding,
     AsyncProfile,
-    AsyncDiscover,
     AsyncFundings,
     AsyncSettings,
     AsyncProjects,
     AsyncNetworks,
-    AsyncSolidarity,
     AsyncMarketplace,
     AsyncNotifications,
-    AsyncMoneyManagement,
     AsyncUserAccountTypes,
 } from 'Components/AsyncComponent/AsyncComponent';
 
@@ -29,43 +24,28 @@ import { useAbility } from "@casl/react";
 import {
     ROOT,
     HOME,
-    GETIN,
     TERMS,
     GROUP,
-    AGENTS,
     BROKER,
-    VALUES,
     PROFILE,
     MISSION, 
     SETTING,
     FUNDING,
+    LANDING,
     PROJECT,
     NETWORK,
-    PIONIERS,
     SERVICES,
-    DISCOVER,
-    SOLIDARITY,
     MARKETPLACE,
-    PASS_DETAILS,
     NOTIFICATIONS,
-    GALERY_PROJECT,
-    MONEY_MANAGEMENT,
     USER_ACCOUNT_TYPE,
 } from "Url/frontendUrl";
 
-import Terms from "./Terms";
-import Values from "./Values";
 import { connect } from "react-redux";
-//import Permission from "Enums/Permissions.tsx";
 import CanRoute from "Components/CanRoute";
-import Agents from './discover/pages/Agents';
 import HomePage from "Routes/custom/HomePage";
-import Mission from "./discover/pages/Mission";
-import Services from './discover/pages/Service';
 import { onInitCart } from "Actions/CartActions";
 import { AbilityContext } from "Permissions/Can";
 import { loginIntoStore } from "Actions/TokensActions";
-import OfferDetails from './discover/pages/OfferDetails';
 import { disableAppLoading } from "Actions/AppLoadingAction";
 
 const Dashboard = ({ onInitCart }) => {
@@ -79,21 +59,11 @@ const Dashboard = ({ onInitCart }) => {
         <RctAppLayout>
             <div className="dashboard-wrapper">
                 <Switch>
-                    <Route exact path={DISCOVER} component={AsyncDiscover} />
-                    <Route exact path={GETIN} component={AsyncGetIn} />
-                    <Route exact path={PIONIERS} component={AsyncPionier} />
-                    <Route exact path={AGENTS} component={Agents} />
-                    <Route exact path={GALERY_PROJECT} component={AsyncGallery} />
                     <Route exact path={ROOT} component={HomePage} />
                     <Route exact path={HOME} component={HomePage} />
-                    <Route exact path={MISSION} component={Mission} />
-                    <Route exact path={VALUES} component={Values} />
-                    <Route exact path={SERVICES} component={Services} />
-                    <Route exact path={TERMS} component={Terms} />
-                    <Route exact path={PASS_DETAILS} component={OfferDetails} />
-                    <Route exact path={SOLIDARITY} component={AsyncSolidarity} />
-                    <Route exact path={MONEY_MANAGEMENT} component={AsyncMoneyManagement} />
 
+                    <Route path={LANDING.SELF} component={AsyncLanding} />
+                    
                     <CanRoute
                         permissions={[]}
                         path={USER_ACCOUNT_TYPE.SELF}

@@ -6,9 +6,9 @@ import AppConfig from "Constants/AppConfig";
 import Button from "@material-ui/core/Button";
 import { HashLink } from "react-router-hash-link";
 import { Link, withRouter } from "react-router-dom";
-import TellUs from "../../../../session/login/TellUs";
+import { AUTH, LANDING, HOME } from "Url/frontendUrl";
+import TellUs from "../../../../../session/login/TellUs";
 import { DropdownToggle, DropdownMenu, DropdownItem, Dropdown } from 'reactstrap';
-import { AGENTS, AUTH, GALERY_PROJECT, PASS_DETAILS, DISCOVER, HOME } from "Url/frontendUrl";
 
 const MAX_MOBILE_SCREEN_WIDTH = 996;
 
@@ -68,8 +68,10 @@ class DiscoverMenu extends Component {
             <section id="nav">
                 <nav
                     id="main-nav"
-                    className={`navbar navbar-expand-lg navbar-light bg-light fixed-top scrolling-navbar px-0 ${!isMainNav ? 'show-mobile-nav' : ''}`}>
-                    <div className="container">
+                    className={`navbar navbar-expand-lg navbar-light bg-light 
+                    fixed-top scrolling-navbar px-0 ${!isMainNav ? 'show-mobile-nav' : ''} justify-content-between pl-20 pr-20`}
+                >
+                    {/* <div className="container"> */}
                         <div className="session-logo">
                             <Link to={HOME}>
                                 <img src={AppConfig.appLogo} alt="session-logo" className="img-fluid" width="110" height="35" />
@@ -77,6 +79,17 @@ class DiscoverMenu extends Component {
                         </div>
                         <div id="navbarContent">
                             <ul className="navbar-nav ml-auto">
+                                <li className="nav-item nav-item-border" >
+                                    <HashLink to={`${LANDING.HOME}`} className="nav-link-mobile">
+                                        Accueil
+                                    </HashLink>
+                                </li>
+
+                                <li className="nav-item nav-item-border" >
+                                    <HashLink to={`${LANDING.PASS_DETAILS}`} className="nav-link-mobile">
+                                        Blog
+                                    </HashLink>
+                                </li>
                                 <li className="nav-item">
                                     <Dropdown isOpen={showDesktopDorpdown} toggle={(event) => this.onTClickDesktopDropdown(event)} className="nav-item-border">
                                         <DropdownToggle style={{ background: "none", border: "none", boxShadow: "none", color: "#464D69", padding: "0.70rem 1rem", fontSize: "inherit", fontWeight: "bold" }}>
@@ -85,21 +98,28 @@ class DiscoverMenu extends Component {
                                         </DropdownToggle>
                                         <DropdownMenu className="desktop-dropdown">
                                             <DropdownItem>
-                                                <HashLink to={`${DISCOVER}/#produits`}>
+                                                <HashLink to={`${LANDING.DISCOVER}`}>
+                                                    <a className="nav-link-mobile-sub">
+                                                        Découvrir Microcap
+                                                    </a>
+                                                </HashLink>
+                                            </DropdownItem>
+                                            <DropdownItem>
+                                                <HashLink to={`${LANDING.DISCOVER}/#produits`}>
                                                     <a className="nav-link-mobile-sub">
                                                         Produits pour se financer
                                                     </a>
                                                 </HashLink>
                                             </DropdownItem>
                                             <DropdownItem>
-                                                <HashLink to={`${DISCOVER}/#investir`}>
+                                                <HashLink to={`${LANDING.DISCOVER}/#investir`}>
                                                     <a className="nav-link-mobile-sub ">
                                                         Produits pour investir
                                                     </a>
                                                 </HashLink>
                                             </DropdownItem>
                                             <DropdownItem>
-                                                <HashLink to={`${DISCOVER}/#services`}>
+                                                <HashLink to={`${LANDING.DISCOVER}/#services`}>
                                                     <a className="nav-link-mobile-sub ">
                                                         Produits des Partenaires
                                                     </a>
@@ -107,21 +127,21 @@ class DiscoverMenu extends Component {
                                             </DropdownItem>
 
                                             <DropdownItem>
-                                                <HashLink to={`${DISCOVER}/#pass-section`}>
+                                                <HashLink to={`${LANDING.DISCOVER}/#pass-section`}>
                                                     <a className="nav-link-mobile-sub">
                                                         Pass Microcap
                                                     </a>
                                                 </HashLink>
                                             </DropdownItem>
                                             <DropdownItem>
-                                                <HashLink to={`${DISCOVER}/#team-section`}>
+                                                <HashLink to={`${LANDING.DISCOVER}/#team-section`}>
                                                     <a className="nav-link-mobile-sub">
                                                         L'équipe
                                                     </a>
                                                 </HashLink>
                                             </DropdownItem>
                                             <DropdownItem>
-                                                <HashLink to={`${DISCOVER}/#team-section`}>
+                                                <HashLink to={`${LANDING.DISCOVER}/#team-section`}>
                                                     <a className="nav-link-mobile-sub">
                                                         Point d'accueil
                                                     </a>
@@ -131,17 +151,17 @@ class DiscoverMenu extends Component {
                                     </Dropdown>
                                 </li>
                                 <li className="nav-item nav-item-border" >
-                                    <HashLink to={`${PASS_DETAILS}`} className="nav-link-mobile">
+                                    <HashLink to={`${LANDING.PASS_DETAILS}`} className="nav-link-mobile">
                                         Pass microcap
                                     </HashLink>
                                 </li>
                                 <li className="nav-item nav-item-border">
-                                    <Link to={GALERY_PROJECT} className="nav-link-mobile">
+                                    <Link to={LANDING.GALERY_PROJECT} className="nav-link-mobile">
                                         Gallerie projets
                                     </Link>
                                 </li>
                                 <li className="nav-item nav-item-border">
-                                    <HashLink to={`${AGENTS}`} className="nav-link-mobile">
+                                    <HashLink to={`${LANDING.AGENTS}`} className="nav-link-mobile">
                                         Réseau d'agents
                                     </HashLink>
                                 </li>
@@ -159,20 +179,20 @@ class DiscoverMenu extends Component {
                                                 className="mr-2 btn-inflated font-size-inherit">
                                                 Se connecter
                                             </Link>
-                                            <Button
-                                                style={{ color: 'white' }}
+                                            <Link
+                                                to={'#'}
                                                 onClick={() => this.setState({ show: true })}
                                                 className="mr-2 btn-inflated font-size-inherit"
                                             >
                                                 Microcap en 2 cliques
-                                            </Button>
+                                            </Link>
                                         </>
                                     )}
                                 </li>
                             </ul>{/*<a className="btn btn-primary btn-rounded my-0"
                             href="https://templateflip.com/templates/material-landing" target="_blank">Download</a> */}
                         </div>
-                    </div>
+                    {/* </div> */}
                 </nav>
 
                 <nav
@@ -196,7 +216,7 @@ class DiscoverMenu extends Component {
                             <div id="mobile-center">
                                 <ul className="">
                                     <li className="nav-item" style={{ marginRight: "30px" }}>
-                                        <HashLink to={`${PASS_DETAILS}`}>
+                                        <HashLink to={`${LANDING.PASS_DETAILS}`}>
                                             <a
                                                 href="#"
                                                 className="nav-link-mobile"
@@ -240,19 +260,19 @@ class DiscoverMenu extends Component {
                                         </HashLink>
                                     </li>
                                     <li className="nav-item nav-item-border" style={{ marginRight: "30px" }}>
-                                        <HashLink to={`${PASS_DETAILS}`}>
+                                        <HashLink to={`${LANDING.PASS_DETAILS}`}>
                                             <a className="nav-link-mobile" href="#">
                                                 Pass microcap
                                             </a>
                                         </HashLink>
                                     </li>
                                     <li className="nav-item nav-item-border" style={{ marginRight: "30px" }}>
-                                        <Link to={GALERY_PROJECT}>
+                                        <Link to={LANDING.GALERY_PROJECT}>
                                             <a className="nav-link-mobile" href="#">Gallerie projets</a>
                                         </Link>
                                     </li>
                                     <li className="nav-item nav-item-border" style={{ marginRight: "30px" }}>
-                                        <HashLink to={`${AGENTS}`}>
+                                        <HashLink to={`${LANDING.AGENTS}`}>
                                             <a className="nav-link-mobile" href="#">Réseau d'agents</a>
                                         </HashLink>
                                     </li>

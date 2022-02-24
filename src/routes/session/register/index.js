@@ -7,8 +7,8 @@ import { connect } from 'react-redux';
 import QueueAnim from 'rc-queue-anim';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { LANDING } from "Url/frontendUrl";
 import { useQuery } from "Helpers/helpers";
-import { DISCOVER } from "Url/frontendUrl";
 import AppConfig from 'Constants/AppConfig';
 import IntlMessages from 'Util/IntlMessages';
 import AppBar from '@material-ui/core/AppBar';
@@ -43,7 +43,7 @@ const Signup = (props) => {
     * On navigate to Discover Microcap
     */
    const onDiscoverClick = () => {
-      props.history.push(DISCOVER);
+      props.history.push(LANDING.HOME);
    };
 
    return (
@@ -63,7 +63,7 @@ const Signup = (props) => {
                               <IntlMessages id="auth.signin" />
                            </Button>
                            <Button variant="contained" className="btn-primary mr-2 text-white p-10" onClick={onDiscoverClick}>
-                              Découvrir Microcap
+                              Tout Microcap
                            </Button>
                         </div>
                      </div>

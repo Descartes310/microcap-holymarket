@@ -1,8 +1,8 @@
 import React from 'react';
+import {LANDING} from "Url/frontendUrl";
 import { Link } from 'react-router-dom';
 import {SocialFeedsWidget} from "Components/Widgets";
-import ScrollToTopBtn from "Routes/custom/dashboard/discover/components/ScrollToTop";
-import {AGENTS, MISSION, PIONIERS, SERVICES, VALUES, CGU} from "Url/frontendUrl";
+import ScrollToTopBtn from "Routes/custom/dashboard/landing/discover/components/ScrollToTop";
 
 const DiscoverFooter = ({props}) => {
     return (
@@ -24,11 +24,11 @@ const DiscoverFooter = ({props}) => {
                             <div className="col-md-3 col-sm-4 col-xs-6">
                                 <ul className="fh5co-footer-links">
                                     <h3 className="mmb-sm-0 mmt-sm-4">Tout MicroCap</h3>
-                                    <li><Link to={MISSION}><a><span className="ti-angle-right"/> Mission et valeur</a></Link></li>
-                                    <li><Link to={VALUES}><a><span className="ti-angle-right"/> Réseau Microcap</a></Link></li>
-                                    <li><Link to={SERVICES}><a><span className="ti-angle-right"/> Le service Microcap</a></Link></li>
-                                    <li><Link to={PIONIERS}><a><span className="ti-angle-right"/> Les pionniers</a></Link></li>
-                                    <li><Link to={AGENTS}><a><span className="ti-angle-right"/> Assistances</a></Link></li>
+                                    <li><Link to={LANDING.MISSION}><a><span className="ti-angle-right"/> Mission et valeur</a></Link></li>
+                                    <li><Link to={LANDING.VALUES}><a><span className="ti-angle-right"/> Réseau Microcap</a></Link></li>
+                                    <li><Link to={LANDING.SERVICES}><a><span className="ti-angle-right"/> Le service Microcap</a></Link></li>
+                                    <li><Link to={LANDING.PIONIERS}><a><span className="ti-angle-right"/> Les pionniers</a></Link></li>
+                                    <li><Link to={LANDING.AGENTS}><a><span className="ti-angle-right"/> Assistances</a></Link></li>
                                     <li><Link to={'#'}><a><span className="ti-angle-right"/> Faqs</a></Link></li>
                                 </ul>
                             </div>
@@ -36,9 +36,9 @@ const DiscoverFooter = ({props}) => {
                             <div className="col-md-3 col-sm-4 col-xs-6">
                                 <ul className="fh5co-footer-links">
                                     <h3 className="mmb-sm-0 mmt-sm-4">Informations légales</h3>
-                                    <li><Link to={CGU}><a><span className="ti-angle-right"/> CGU</a></Link></li>
-                                    <li><Link to={CGU}><a><span className="ti-angle-right"/> CGV</a></Link></li>
-                                    <li><Link to={CGU}><a><span className="ti-angle-right"/> Mentions légales</a></Link></li>
+                                    <li><Link to={LANDING.CGU}><a><span className="ti-angle-right"/> CGU</a></Link></li>
+                                    <li><Link to={LANDING.CGU}><a><span className="ti-angle-right"/> CGV</a></Link></li>
+                                    <li><Link to={LANDING.CGU}><a><span className="ti-angle-right"/> Mentions légales</a></Link></li>
                                 </ul>
                             </div>
 
