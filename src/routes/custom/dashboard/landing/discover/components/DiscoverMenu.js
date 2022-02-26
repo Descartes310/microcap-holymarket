@@ -71,14 +71,40 @@ class DiscoverMenu extends Component {
                     className={`navbar navbar-expand-lg navbar-light bg-light 
                     fixed-top scrolling-navbar px-0 ${!isMainNav ? 'show-mobile-nav' : ''} justify-content-between pl-20 pr-20`}
                 >
-                    {/* <div className="container"> */}
-                        <div className="session-logo">
-                            <Link to={HOME}>
-                                <img src={AppConfig.appLogo} alt="session-logo" className="img-fluid" width="110" height="35" />
-                            </Link>
+                    <div className="container flex-column d-flex">
+                        <div className="row w-100 d-flex justify-content-between align-items-center">
+                            <div className="session-logo">
+                                <Link to={HOME}>
+                                    <img src={AppConfig.appLogo} alt="session-logo" className="img-fluid" width="110" height="35" />
+                                </Link>
+                            </div>
+                            <div>
+                                {authUser.data ? (
+                                        <Link
+                                            to={HOME}
+                                            className="mr-2 btn-inflated font-size-inherit outlined">
+                                            Espace personnel
+                                        </Link>
+                                    ) : (
+                                        <>
+                                            <Link
+                                                to={AUTH.LOGIN}
+                                                className="mr-2 btn-inflated font-size-inherit">
+                                                Se connecter
+                                            </Link>
+                                            <Link
+                                                to={'#'}
+                                                onClick={() => this.setState({ show: true })}
+                                                className="mr-2 btn-inflated font-size-inherit"
+                                            >
+                                                Microcap en 2 cliques
+                                            </Link>
+                                        </>
+                                    )}
+                            </div>
                         </div>
-                        <div id="navbarContent">
-                            <ul className="navbar-nav ml-auto">
+                        <div id="navbarContent" className="row w-100">
+                            <ul className="navbar-nav w-100 d-flex justify-content-between">
                                 <li className="nav-item nav-item-border" >
                                     <HashLink to={`${LANDING.HOME}`} className="nav-link-mobile">
                                         Accueil
@@ -161,37 +187,17 @@ class DiscoverMenu extends Component {
                                 </li>
                                 <li className="nav-item nav-item-border">
                                     <HashLink to={`${LANDING.AGENTS}`} className="nav-link-mobile">
+                                        Nos agents
+                                    </HashLink>
+                                </li>
+                                <li className="nav-item nav-item-border">
+                                    <HashLink to={`${LANDING.AGENTS}`} className="nav-link-mobile">
                                         Blog
                                     </HashLink>
                                 </li>
-                                <li className="center-hor-ver">
-                                    {authUser.data ? (
-                                        <Link
-                                            to={HOME}
-                                            className="mr-2 btn-inflated font-size-inherit outlined">
-                                            Espace personnel
-                                        </Link>
-                                    ) : (
-                                        <>
-                                            <Link
-                                                to={AUTH.LOGIN}
-                                                className="mr-2 btn-inflated font-size-inherit">
-                                                Se connecter
-                                            </Link>
-                                            <Link
-                                                to={'#'}
-                                                onClick={() => this.setState({ show: true })}
-                                                className="mr-2 btn-inflated font-size-inherit"
-                                            >
-                                                Microcap en 2 cliques
-                                            </Link>
-                                        </>
-                                    )}
-                                </li>
-                            </ul>{/*<a className="btn btn-primary btn-rounded my-0"
-                            href="https://templateflip.com/templates/material-landing" target="_blank">Download</a> */}
+                            </ul>
                         </div>
-                    {/* </div> */}
+                    </div>
                 </nav>
 
                 <nav

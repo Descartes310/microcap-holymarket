@@ -752,6 +752,30 @@ ol.custom-list > li + li {
   }
 }
 
+.underline:after {
+    content: ' ';
+    position: absolute;
+    left: 0;
+    bottom: -10px;
+    width: 80px;
+    height: 5px;
+    background: #FFB70F;
+    border-radius: 50px;
+}
+
+.underline-title:after {
+  content: ' ';
+  position: absolute;
+  background: #FFB70F;
+  left: calc(50% - (200px / 2));
+  bottom: -10px;
+  width: 200px;
+  height: 12px;
+  transform: rotate(
+-2deg);
+  border-radius: 0 100%;
+}
+
 .discover-products {
 
   margin-top: 150px;
@@ -837,6 +861,7 @@ ol.custom-list > li + li {
   color: #464D69;
   display: block;
   padding: 0.70rem 1rem;
+  padding-left: 0px;
   font-size: inherit;
   font-weight: bold;
 

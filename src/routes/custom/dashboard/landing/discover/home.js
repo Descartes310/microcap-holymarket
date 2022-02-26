@@ -73,7 +73,7 @@ const Home = (props) => {
                 <div className="showcase-card-block d-flex flex-column pb-0" style={{ padding: '15vh 10vw', backgroundImage: `url(${require('Assets/img/bg-shape-gray.png')})` }}>
                     <div className='container'>
                         <div className="row mb-30 flex-column intro">
-                            <h2 className="font-weight-bold text-black text-left" data-aos="fade-right">
+                            <h2 className="font-weight-bold text-black text-left underline" data-aos="fade-right">
                                 Ce que nous faisons
                             </h2>
                             <p data-aos="fade-left" className='mt-20 col-md-6'>
@@ -85,7 +85,7 @@ const Home = (props) => {
                         </div>
 
                         <div className="row mb-30 flex-column intro align-items-end">
-                            <h2 className="font-weight-bold text-black" data-aos="fade-right">
+                            <h2 className="font-weight-bold text-black underline" data-aos="fade-right">
                                 Qui nous sommes
                             </h2>
                             <p data-aos="fade-right" className='mt-20 col-md-6 text-right'>
@@ -97,7 +97,7 @@ const Home = (props) => {
                         </div>
 
                         <div className="row mb-70 flex-column intro">
-                            <h2 className="font-weight-bold text-black text-left" data-aos="fade-right">
+                            <h2 className="font-weight-bold text-black text-left underline" data-aos="fade-right">
                                 Notre mission
                             </h2>
                             <p data-aos="fade-left" className='mt-20 col-md-6'>
@@ -126,7 +126,7 @@ const Home = (props) => {
                 <div className="showcase-card-block d-flex flex-column pb-0" style={{ padding: '10vh 10vw' }}>
                     <div className='container'>
                         <div className="row center-hor-ver mb-70 flex-column intro">
-                            <h2 className="font-weight-bold text-black text-center" data-aos="fade-right">
+                            <h2 className="font-weight-bold text-black text-center underline-title mb-50" data-aos="fade-right">
                                 Assurer le financement de votre projet ou devenir acteur d'une économie de proximité
                             </h2>
                             <p data-aos="fade-left" className='text-center mt-20'>
