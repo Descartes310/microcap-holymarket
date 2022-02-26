@@ -84,16 +84,10 @@ class DiscoverMenu extends Component {
                                         Accueil
                                     </HashLink>
                                 </li>
-
-                                <li className="nav-item nav-item-border" >
-                                    <HashLink to={`${LANDING.PASS_DETAILS}`} className="nav-link-mobile">
-                                        Blog
-                                    </HashLink>
-                                </li>
                                 <li className="nav-item">
                                     <Dropdown isOpen={showDesktopDorpdown} toggle={(event) => this.onTClickDesktopDropdown(event)} className="nav-item-border">
                                         <DropdownToggle style={{ background: "none", border: "none", boxShadow: "none", color: "#464D69", padding: "0.70rem 1rem", fontSize: "inherit", fontWeight: "bold" }}>
-                                            Découvrir
+                                            Services MicroCap
                                             <img class={showDesktopDorpdown ? "inline-nav-arrow-final" : "inline-nav-arrow-initial"} src="https://sqy7rm.media.zestyio.com/Downward-Carat.svg" alt="Downward arrow"></img>
                                         </DropdownToggle>
                                         <DropdownMenu className="desktop-dropdown">
@@ -162,7 +156,12 @@ class DiscoverMenu extends Component {
                                 </li>
                                 <li className="nav-item nav-item-border">
                                     <HashLink to={`${LANDING.AGENTS}`} className="nav-link-mobile">
-                                        Réseau d'agents
+                                        Evènements
+                                    </HashLink>
+                                </li>
+                                <li className="nav-item nav-item-border">
+                                    <HashLink to={`${LANDING.AGENTS}`} className="nav-link-mobile">
+                                        Blog
                                     </HashLink>
                                 </li>
                                 <li className="center-hor-ver">
@@ -215,68 +214,92 @@ class DiscoverMenu extends Component {
                         {showMobile ? (
                             <div id="mobile-center">
                                 <ul className="">
-                                    <li className="nav-item" style={{ marginRight: "30px" }}>
-                                        <HashLink to={`${LANDING.PASS_DETAILS}`}>
-                                            <a
-                                                href="#"
-                                                className="nav-link-mobile"
-                                                onClick={(event) => this.onTClickDropdown(event)}
-                                            >
-                                                Découvrir
-                                                <i className={`drop-arrow ti-angle-${showMobileDorpdown ? 'up' : 'down'}`} />
-                                            </a>
-                                            <SlideDown className={'second-dropdown-mobile'}>
-                                                {showMobileDorpdown ? (
-                                                    <div id="dropdown-mobile-center">
-                                                        <ul>
-                                                            <li className="nav-item nav-item-border">
-                                                                <a className="nav-link-mobile ml-30" href="#">
-                                                                    Produits pour se financer
-                                                                </a>
-                                                            </li>
-                                                            <li className="nav-item nav-item-border">
-                                                                <a className="nav-link-mobile ml-30" href="#">
-                                                                    Produits pour investir
-                                                                </a>
-                                                            </li>
-                                                            <li className="nav-item nav-item-border">
-                                                                <a className="nav-link-mobile ml-30" href="#">
-                                                                    Produits des Partenaires
-                                                                </a>
-                                                            </li>
-                                                            <li className="nav-item nav-item-border">
-                                                                <a className="nav-link-mobile ml-30" href="#">
-                                                                    Pass Microcap
-                                                                </a>
-                                                            </li>
-                                                            <li className="nav-item nav-item-border">
-                                                                <a className="nav-link-mobile ml-30" href="#team-section">
-                                                                    L'équipe
-                                                                </a>
-                                                            </li>
-                                                        </ul>
-                                                    </div>) : null}
-                                            </SlideDown>
+                                    <li className="nav-item nav-item-border" >
+                                        <HashLink to={`${LANDING.HOME}`} className="nav-link-mobile">
+                                            Accueil
                                         </HashLink>
                                     </li>
-                                    <li className="nav-item nav-item-border" style={{ marginRight: "30px" }}>
-                                        <HashLink to={`${LANDING.PASS_DETAILS}`}>
-                                            <a className="nav-link-mobile" href="#">
-                                                Pass microcap
-                                            </a>
+                                    <li className="nav-item">
+                                        <Dropdown isOpen={showDesktopDorpdown} toggle={(event) => this.onTClickDesktopDropdown(event)} className="nav-item-border">
+                                            <DropdownToggle style={{ background: "none", border: "none", boxShadow: "none", color: "#464D69", padding: "0.70rem 1rem", fontSize: "inherit", fontWeight: "bold" }}>
+                                                Services MicroCap
+                                                <img class={showDesktopDorpdown ? "inline-nav-arrow-final" : "inline-nav-arrow-initial"} src="https://sqy7rm.media.zestyio.com/Downward-Carat.svg" alt="Downward arrow"></img>
+                                            </DropdownToggle>
+                                            <DropdownMenu className="desktop-dropdown">
+                                                <DropdownItem>
+                                                    <HashLink to={`${LANDING.DISCOVER}`}>
+                                                        <a className="nav-link-mobile-sub">
+                                                            Découvrir Microcap
+                                                        </a>
+                                                    </HashLink>
+                                                </DropdownItem>
+                                                <DropdownItem>
+                                                    <HashLink to={`${LANDING.DISCOVER}/#produits`}>
+                                                        <a className="nav-link-mobile-sub">
+                                                            Produits pour se financer
+                                                        </a>
+                                                    </HashLink>
+                                                </DropdownItem>
+                                                <DropdownItem>
+                                                    <HashLink to={`${LANDING.DISCOVER}/#investir`}>
+                                                        <a className="nav-link-mobile-sub ">
+                                                            Produits pour investir
+                                                        </a>
+                                                    </HashLink>
+                                                </DropdownItem>
+                                                <DropdownItem>
+                                                    <HashLink to={`${LANDING.DISCOVER}/#services`}>
+                                                        <a className="nav-link-mobile-sub ">
+                                                            Produits des Partenaires
+                                                        </a>
+                                                    </HashLink>
+                                                </DropdownItem>
+
+                                                <DropdownItem>
+                                                    <HashLink to={`${LANDING.DISCOVER}/#pass-section`}>
+                                                        <a className="nav-link-mobile-sub">
+                                                            Pass Microcap
+                                                        </a>
+                                                    </HashLink>
+                                                </DropdownItem>
+                                                <DropdownItem>
+                                                    <HashLink to={`${LANDING.DISCOVER}/#team-section`}>
+                                                        <a className="nav-link-mobile-sub">
+                                                            L'équipe
+                                                        </a>
+                                                    </HashLink>
+                                                </DropdownItem>
+                                                <DropdownItem>
+                                                    <HashLink to={`${LANDING.DISCOVER}/#team-section`}>
+                                                        <a className="nav-link-mobile-sub">
+                                                            Point d'accueil
+                                                        </a>
+                                                    </HashLink>
+                                                </DropdownItem>
+                                            </DropdownMenu>
+                                        </Dropdown>
+                                    </li>
+                                    <li className="nav-item nav-item-border" >
+                                        <HashLink to={`${LANDING.PASS_DETAILS}`} className="nav-link-mobile">
+                                            Pass microcap
                                         </HashLink>
                                     </li>
-                                    <li className="nav-item nav-item-border" style={{ marginRight: "30px" }}>
-                                        <Link to={LANDING.GALERY_PROJECT}>
-                                            <a className="nav-link-mobile" href="#">Gallerie projets</a>
+                                    <li className="nav-item nav-item-border">
+                                        <Link to={LANDING.GALERY_PROJECT} className="nav-link-mobile">
+                                            Gallerie projets
                                         </Link>
                                     </li>
-                                    <li className="nav-item nav-item-border" style={{ marginRight: "30px" }}>
-                                        <HashLink to={`${LANDING.AGENTS}`}>
-                                            <a className="nav-link-mobile" href="#">Réseau d'agents</a>
+                                    <li className="nav-item nav-item-border">
+                                        <HashLink to={`${LANDING.AGENTS}`} className="nav-link-mobile">
+                                            Evènements
                                         </HashLink>
                                     </li>
-                                    <li>
+                                    <li className="nav-item nav-item-border">
+                                        <HashLink to={`${LANDING.AGENTS}`} className="nav-link-mobile">
+                                            Blog
+                                        </HashLink>
+                                    </li>
+                                    <li className="center-hor-ver">
                                         {authUser.data ? (
                                             <Link
                                                 to={HOME}
@@ -290,13 +313,13 @@ class DiscoverMenu extends Component {
                                                     className="mr-2 btn-inflated font-size-inherit">
                                                     Se connecter
                                                 </Link>
-                                                <Button
-                                                    style={{ color: 'white' }}
+                                                <Link
+                                                    to={'#'}
                                                     onClick={() => this.setState({ show: true })}
                                                     className="mr-2 btn-inflated font-size-inherit"
                                                 >
                                                     Microcap en 2 cliques
-                                                </Button>
+                                                </Link>
                                             </>
                                         )}
                                     </li>

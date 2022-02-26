@@ -1,17 +1,17 @@
-import React from 'react';
 import Slider from "react-slick";
+import React, {useState} from 'react';
 import { connect } from "react-redux";
 import { injectIntl } from "react-intl";
-import { Link } from "react-router-dom";
-import Button from "@material-ui/core/Button";
+import Tab from '@material-ui/core/Tab';
+import Tabs from '@material-ui/core/Tabs';
 import slide21 from 'Assets/img/slide21.jpg';
 import slide23 from 'Assets/img/slide23.jpg';
-import { HashLink } from 'react-router-hash-link';
-import { RctCard, RctCardContent } from 'Components/RctCard';
-import { Card, CardImg, CardText, CardBody, CardFooter } from 'reactstrap';
+import SwipeableViews from 'react-swipeable-views';
+import BecomeMember from "./components/tabs/BecomeMember";
+import SaveBoosting from "./components/tabs/SaveBoosting";
+import FinanceProject from "./components/tabs/FinanceProject";
+import FarAwayWithMicrocap from "./components/tabs/FarAwayWithMicrocap";
 import DiscoverLayout from "Routes/custom/dashboard/landing/discover/DiscoverLayout";
-import DiscoverVideo from "Routes/custom/dashboard/landing/discover/components/DiscoverVideo";
-import { PIONIERS, SOLIDARITY, MONEY_MANAGEMENT, GETIN, PASS_DETAILS, AGENTS } from "Url/frontendUrl";
 
 const settings = {
     dots: false,
@@ -28,27 +28,24 @@ const settings = {
 };
 
 const slides = [
-    // {
-    //     image: slide22,
-    //     leftImage: true,
-    //     title: 'La solidarité! une valeur essentielle chez MicroCap',
-    //     description: 'MicroCap unit des personnes dans un sentiment d\'entraide financier, d\'assistance ou de collaboration gracieuse'
-    // },
     {
         image: slide21,
         leftImage: false,
         title: 'La révolution des petits capitaux',
-        description: 'Rejoignez le réseau de solidarité MicroCap, vos versements sont libres à partir de 3€ sur votre compte ESH auprès d’un établissement financier partenaire'
+        description: "Rejoignez le réseau de solidarité MicroCap, vos versements sont libres à partir de 3€ sur votre compte ESH auprès d'un établissement financier partenaire"
     },
     {
         image: slide23,
         leftImage: true,
         title: 'Microcap vous accompagne dans la réalisation de votre projet',
-        description: 'Création ou développement d’entreprise, actionnariat, formation à l’entrepreneuriat. Inscrivez-vous et choississez l\'abonnement qui vous correspond parminos PASS'
+        description: "Création ou développement d'entreprise, actionnariat, formation à l'entrepreneuriat. Inscrivez-vous et choississez l'abonnement qui vous correspond parminos PASS"
     }
 ]
 
 const Home = (props) => {
+
+    const [activeIndex, setActiveIndex] = useState(0);
+
     return (
         <DiscoverLayout>
             <div className="session-inner-wrapper video-player-wrapper">
@@ -73,44 +70,46 @@ const Home = (props) => {
                     </Slider>
                 </div>
 
-                <div className="showcase-card-block d-flex flex-column pb-0" style={{ backgroundImage: `url(${require('Assets/img/bg-shape-gray.png')})` }}>
-                    <div className="row mb-70 flex-column intro">
-                        <h2 className="font-weight-bold text-black text-left" data-aos="fade-right">
-                            Ce que nous faisons
-                        </h2>
-                        <p data-aos="fade-left" className='mt-20 col-md-6'>
-                            MicroCap Invente le financement participatif par cautionnement mutuel. 
-                            Un concept de mutualisation des risques au sein d’une communauté d’entrepreneurs 
-                            pour faciliter le financement de leurs projets d’entreprise : création, 
-                            développement redressement, retournement.
-                        </p>
-                    </div>
+                <div className="showcase-card-block d-flex flex-column pb-0" style={{ padding: '15vh 10vw', backgroundImage: `url(${require('Assets/img/bg-shape-gray.png')})` }}>
+                    <div className='container'>
+                        <div className="row mb-30 flex-column intro">
+                            <h2 className="font-weight-bold text-black text-left" data-aos="fade-right">
+                                Ce que nous faisons
+                            </h2>
+                            <p data-aos="fade-left" className='mt-20 col-md-6'>
+                                MicroCap Invente le financement participatif par cautionnement mutuel. 
+                                Un concept de mutualisation des risques au sein d'une communauté d'entrepreneurs 
+                                pour faciliter le financement de leurs projets d'entreprise: création, 
+                                développement redressement, retournement.
+                            </p>
+                        </div>
 
-                    <div className="row mb-70 flex-column intro align-items-end">
-                        <h2 className="font-weight-bold text-black" data-aos="fade-right">
-                            Qui nous sommes
-                        </h2>
-                        <p data-aos="fade-right" className='mt-20 col-md-6 text-right'>
-                            MicroCap est une société d’investissement à impact qui finance les entrepreneurs en 
-                            situation de fragilité : freelances, bénéficiaires des minima sociaux, étudiants, 
-                            migrants, entrepreneurs ruraux ou des quartiers défavorisés, projets se développant sur 
-                            un double territoire nord - sud …
-                        </p>
-                    </div>
+                        <div className="row mb-30 flex-column intro align-items-end">
+                            <h2 className="font-weight-bold text-black" data-aos="fade-right">
+                                Qui nous sommes
+                            </h2>
+                            <p data-aos="fade-right" className='mt-20 col-md-6 text-right'>
+                                MicroCap est une société d'investissement à impact qui finance les entrepreneurs en 
+                                situation de fragilité: freelances, bénéficiaires des minima sociaux, étudiants, 
+                                migrants, entrepreneurs ruraux ou des quartiers défavorisés, projets se développant sur 
+                                un double territoire nord - sud …
+                            </p>
+                        </div>
 
-                    <div className="row mb-70 flex-column intro">
-                        <h2 className="font-weight-bold text-black text-left" data-aos="fade-right">
-                            Notre mission
-                        </h2>
-                        <p data-aos="fade-left" className='mt-20 col-md-6'>
-                            Notre mission est de démocratiser l’entrepreneuriat et d’en faire une voie pertinente pour 
-                            l’insertion ou la réinsertion professionnelle. Dans la réalisation de cette mission, nous 
-                            avons acquis la conviction selon laquelle l’entrepreneuriat pour tous passe d’abord et 
-                            surtout, par le financement pour tous. La solution MicroCap est le financement participatif 
-                            par cautionnement mutuel, un concept innovant basé sur un modèle contributif qui donne sa 
-                            chance à toute personne capable de bonne volonté et de sérieux, contrairement au modèle sélectif, 
-                            moins inclusif et plus rependu. 
-                        </p>
+                        <div className="row mb-70 flex-column intro">
+                            <h2 className="font-weight-bold text-black text-left" data-aos="fade-right">
+                                Notre mission
+                            </h2>
+                            <p data-aos="fade-left" className='mt-20 col-md-6'>
+                                Notre mission est de démocratiser l'entrepreneuriat et d'en faire une voie pertinente pour 
+                                l'insertion ou la réinsertion professionnelle. Dans la réalisation de cette mission, nous 
+                                avons acquis la conviction selon laquelle l'entrepreneuriat pour tous passe d'abord et 
+                                surtout, par le financement pour tous. La solution MicroCap est le financement participatif 
+                                par cautionnement mutuel, un concept innovant basé sur un modèle contributif qui donne sa 
+                                chance à toute personne capable de bonne volonté et de sérieux, contrairement au modèle sélectif, 
+                                moins inclusif et plus rependu. 
+                            </p>
+                        </div>
                     </div>
                 </div>
 
@@ -120,58 +119,52 @@ const Home = (props) => {
                         style={{ fontSize: '3em' }}
                         className="font-weight-bold text-white text-center"
                     >
-                        Nous sommes là pour vous
+                        AGIR AVEC MICROCAP
                     </h2>
                 </div>
 
-                <div className="showcase-card-block d-flex flex-column pb-0" style={{ paddinTop: '2vh' }}>
-                    <div className="row mb-70 flex-column intro">
-                        <p data-aos="fade-left" className='text-justify'>
-                            Notre mission est de démocratiser l’entrepreneuriat et d’en faire une voie pertinente pour 
-                            l’insertion ou la réinsertion professionnelle. Dans la réalisation de cette mission, nous 
-                            avons acquis la conviction selon laquelle l’entrepreneuriat pour tous passe d’abord et 
-                            surtout, par le financement pour tous. La solution MicroCap est le financement participatif 
-                            par cautionnement mutuel, un concept innovant basé sur un modèle contributif qui donne sa 
-                            chance à toute personne capable de bonne volonté et de sérieux, contrairement au modèle sélectif, 
-                            moins inclusif et plus rependu. 
-                        </p>
+                <div className="showcase-card-block d-flex flex-column pb-0" style={{ padding: '10vh 10vw' }}>
+                    <div className='container'>
+                        <div className="row center-hor-ver mb-70 flex-column intro">
+                            <h2 className="font-weight-bold text-black text-center" data-aos="fade-right">
+                                Assurer le financement de votre projet ou devenir acteur d'une économie de proximité
+                            </h2>
+                            <p data-aos="fade-left" className='text-center mt-20'>
+                                La plateforme MicroCap permet à chaque utilisateur de développer et animer un réseau 
+                                international de solidarité financière, bien au-delà du cercle familial et amical habituel, 
+                                afin de faciliter ses campagnes de financement participatif lesquelles dans notre contexte 
+                                se définissent plus en campagne de mobilisation du love money.
+                            </p>
+                            <p data-aos="fade-left" className='text-center mt-10'>
+                                Grâce à son réseau international, MicroCap apporte plusieurs réponses à l'entrepreneur : 
+                                créer du lien social, favoriser la solidarité internationale, faciliter l'accès aux financements
+                            </p>
+                        </div>
                     </div>
 
                     <div className="discover-content mt-30">
-                        <ol className="custom-list row">
-                            <li className='col-sm-6'>
-                                <p style={{ fontSize: '1.2em', fontWeight: 'bold' }}>Devenir membre du réseau et agir avec MicroCap</p>
-                            </li>
-                            <li className='col-sm-6'>
-                                <p style={{ fontSize: '1.2em', fontWeight: 'bold' }}>Booster votre épargne</p>
-                            </li>
-                            <li className='col-sm-6'>
-                                <p style={{ fontSize: '1.2em', fontWeight: 'bold' }}>Financer votre projet</p>
-                            </li>
-                            <li className='col-sm-6'>
-                                <p style={{ fontSize: '1.2em', fontWeight: 'bold' }}>Aller plus loin avec MicroCap</p>
-                            </li>
-                        </ol>
-                    </div>
-                </div>
-
-                <div id="pass-section" className="merox-services-area">
-                    <div className="container">
-                        <div className="row">
-                            <div className="visibLeft col-xl-12 col-lg-12 wow fadeInLeft px-0">
-                                <div className="services-box">
-                                    <div className="single-services">
-                                        <div className="services-content-box">Les services </div>
-                                    </div>
-                                    <div className="single-services">
-                                        <div className="services-content-box">Les services </div>
-                                    </div>
-                                    <div className="single-services">
-                                        <div className="services-content-box">Les services </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <Tabs
+                            value={activeIndex}
+                            onChange={(e, value) => setActiveIndex(value)}
+                            textColor="primary"
+                            indicatorColor="primary"
+                            centered
+                        >
+                            <Tab label="Dévenir membre du réseau" />
+                            <Tab label="Booster votre épargne" />
+                            <Tab label="Financer votre projet" />
+                            <Tab label="Aller plus loin avec MicroCap" />
+                        </Tabs>
+                        <SwipeableViews
+                            axis={'x'}
+                            index={activeIndex}
+                            onChangeIndex={(index) => setActiveIntex(index)}
+                        >
+                            <BecomeMember />
+                            <SaveBoosting />
+                            <FinanceProject />
+                            <FarAwayWithMicrocap />
+                        </SwipeableViews>
                     </div>
                 </div>
 

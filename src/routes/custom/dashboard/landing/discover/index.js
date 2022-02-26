@@ -27,51 +27,10 @@ const settings = {
     draggable: true
 };
 
-const slides = [
-    // {
-    //     image: slide22,
-    //     leftImage: true,
-    //     title: 'La solidarité! une valeur essentielle chez MicroCap',
-    //     description: 'MicroCap unit des personnes dans un sentiment d\'entraide financier, d\'assistance ou de collaboration gracieuse'
-    // },
-    {
-        image: slide21,
-        leftImage: false,
-        title: 'La révolution des petits capitaux',
-        description: 'Rejoignez le réseau de solidarité MicroCap, vos versements sont libres à partir de 3€ sur votre compte ESH auprès d’un établissement financier partenaire'
-    },
-    {
-        image: slide23,
-        leftImage: true,
-        title: 'Microcap vous accompagne dans la réalisation de votre projet',
-        description: 'Création ou développement d’entreprise, actionnariat, formation à l’entrepreneuriat. Inscrivez-vous et choississez l\'abonnement qui vous correspond parminos PASS'
-    }
-]
-
 const Discover = (props) => {
     return (
         <DiscoverLayout>
             <div className="session-inner-wrapper video-player-wrapper">
-                <div style={{ marginTop: '8.5vh' }}>
-                    <Slider {...settings}>
-                        {slides.map((slide) => (
-                            <div>
-                                <div style={{
-                                    backgroundImage: `url(${slide.image})`,
-                                    backgroundSize: 'cover', height: '52vh',
-                                    display: 'flex',
-                                    justifyContent: slide.leftImage ? 'flex-end' : 'flex-start'
-                                }}
-                                >
-                                    <div className={`slide-content-left ${slide.leftImage && ", slide-content-right"}`}>
-                                        <h1><span>{slide.title}</span></h1>
-                                        <p>{slide.description}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-                    </Slider>
-                </div>
 
                 <div className="showcase-card-block" style={{ backgroundImage: `url(${require('Assets/img/bg-shape-gray.png')})` }}>
                     <div className="row center-hor-ver mb-70 flex-column intro">
@@ -162,14 +121,10 @@ const Discover = (props) => {
                                 <div className="row discover">
                                     <div className="col-sm-12 discover-block">
                                         <div className="discover-content">
-                                            <div className="row align-items-center justify-content-lg-between">
-                                                <div className="col-md-5" data-aos="fade-right">
-                                                    <img className="img-fluid" src={require('Assets/img/large/compressed/img-default.png')} alt="" />
-                                                </div>
-                                                <div className="col-md-5 mmt-sm-4" data-aos="fade-left">
+                                            <div className="text-left">
+                                                <div className="col-md-12 mmt-sm-4" data-aos="fade-left">
                                                     <h4>PIP MicroCap, un compte qui conte des comptes et qui atteste de votre capacité financière</h4>
                                                     <p className="p-block">
-                                                        {/* <h2>Un compte qui conte des comptes</h2> */}
                                                         <p>
                                                             Le Plan d’Investissement Programmé (PIP) MicroCap est un compte agrégateur qui indique votre épargne ESH disponible auprès de nos partenaires. . Il reproduit fidèlement l’évolution de l’ensemble de vos comptes ESH: versement, intérêts …
                                                         </p>
@@ -184,8 +139,8 @@ const Discover = (props) => {
                                             </div>
                                         </div>
                                         <div className="discover-content">
-                                            <div className="row align-items-center justify-content-lg-between">
-                                                <div className="col-md-5 mmt-sm-4 order-2 order-md-1" data-aos="fade-up-right">
+                                            <div className="text-right">
+                                                <div className="col-md-12 mmt-sm-4 order-2 order-md-1" data-aos="fade-up-right">
                                                     <h4>La carte ESH, pour protéger votre pouvoir d'achat </h4>
                                                     <p className="p-block">
                                                         <p>
@@ -196,17 +151,11 @@ const Discover = (props) => {
                                                         </p>
                                                     </p>
                                                 </div>
-                                                <div className="col-md-5 order-sm-first order-md-2 order-1" data-aos="fade-up-left">
-                                                    <img className="img-fluid" src={require('Assets/img/large/compressed/img-default.png')} alt="" />
-                                                </div>
                                             </div>
                                         </div>
                                         <div className="discover-content">
-                                            <div className="row align-items-center justify-content-lg-between">
-                                                <div className="col-md-5" data-aos="fade-down-right">
-                                                    <img className="img-fluid" src={require('Assets/img/large/compressed/img-default.png')} alt="" />
-                                                </div>
-                                                <div className="col-md-5" data-aos="fade-down-left">
+                                            <div className="row align-items-start justify-content-lg-start">
+                                                <div className="col-md-12" data-aos="fade-down-left">
                                                     <h4>La reserve Microcap</h4>
                                                     <p className="p-block">
                                                         <p>
@@ -249,8 +198,8 @@ const Discover = (props) => {
                                 <div className="row discover">
                                     <div className="col-sm-12 discover-block">
                                         <div className="discover-content">
-                                            <div className="row align-items-center justify-content-lg-between">
-                                                <div className="col-md-5" data-aos="fade-up-right">
+                                            <div className="row">
+                                                <div className="col-md-12" data-aos="fade-up-right">
                                                     <h4>La Liga, Investir en toute sérénité: Capital garantie</h4>
                                                     <p className="p-block">
                                                         <p>Tout placement est exposé au risque de perte partielle ou totale en capital. MicroCap propose aux investisseurs une convention de co-investissement sous la forme d’une Ligne d’Investissement Garantie, pour limiter la perte en capital. </p>
@@ -270,15 +219,12 @@ const Discover = (props) => {
                                                         </div>
                                                     </p>
                                                 </div>
-                                                <div className="col-md-5" data-aos="fade-up-left">
-                                                    <img className="img-fluid" src={require('Assets/img/large/compressed/img-default.png')} alt="" />
-                                                </div>
                                             </div>
                                         </div>
 
                                         <div className="discover-content">
-                                            <div className="row align-items-center justify-content-lg-between">
-                                                <div className="col-md-5 order-sm-first order-md-2 order-1" data-aos="fade-down-right">
+                                            <div className="row">
+                                                <div className="col-md-12 order-sm-first order-md-2 order-1" data-aos="fade-down-right">
                                                     <h4>Le compte USUS, Investir en toute sérénité: Gestion professionnelle assurée</h4>
                                                     <p className="p-block">
                                                         <p>
@@ -289,9 +235,6 @@ const Discover = (props) => {
                                                             Information financière, participation aux décisions stratégiques de l’entreprise, l’option et l’opportunité de sortie, la gestion administrative et fiscale, … MicroCap s’occupe de tout
                                                         </p>
                                                     </p>
-                                                </div>
-                                                <div className="col-md-5 mmt-sm-4 order-2 order-md-1" data-aos="fade-down-left">
-                                                    <img className="img-fluid" src={require('Assets/img/large/compressed/img-default.png')} alt="" />
                                                 </div>
                                             </div>
                                         </div>

@@ -29,7 +29,7 @@ const DiscoverFooter = ({props}) => {
                                     <li><Link to={LANDING.SERVICES}><a><span className="ti-angle-right"/> Le service Microcap</a></Link></li>
                                     <li><Link to={LANDING.PIONIERS}><a><span className="ti-angle-right"/> Les pionniers</a></Link></li>
                                     <li><Link to={LANDING.AGENTS}><a><span className="ti-angle-right"/> Assistances</a></Link></li>
-                                    <li><Link to={'#'}><a><span className="ti-angle-right"/> Faqs</a></Link></li>
+                                    <li><Link to={'#'}><a><span className="ti-angle-right"/> Blog</a></Link></li>
                                 </ul>
                             </div>
 
