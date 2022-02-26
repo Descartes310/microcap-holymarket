@@ -307,6 +307,11 @@ export const SETTING = {
         SELF: "/settings/pioniers",
         LIST: "/settings/pioniers/list",
         CREATE: "/settings/pioniers/create",
+    },
+    EVENT: {
+        SELF: "/settings/events",
+        LIST: "/settings/events/list",
+        CREATE: "/settings/events/create",
     }
 }
 

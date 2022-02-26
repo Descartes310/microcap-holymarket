@@ -482,6 +482,14 @@ export default [
             "child_routes": null
          },
          {
+            "menu_title": "Evènements",
+            "new_item": false,
+            "path": SETTING.EVENT.LIST,
+            "permissions": [Permission.setting.unit.name],
+            "profiles": ['GROUP'],
+            "child_routes": null
+         },
+         {
             "menu_title": "Nos pionniers",
             "new_item": false,
             "path": SETTING.PIONIER.LIST,

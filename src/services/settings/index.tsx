@@ -31,4 +31,13 @@ export default class SettingService {
     static updateAgentMain(id): Promise<any> {
         return makeRequest('put', Routes.CHANGE_AGENT_MAIN(id));
     }
+
+
+    static getEvents(): Promise<any> {
+        return makeRequest('get', Routes.GET_EVENTS);
+    }
+
+    static createEvent(data): Promise<any> {
+        return makeRequest('post', Routes.CREATE_EVENT, data);
+    }
 }
