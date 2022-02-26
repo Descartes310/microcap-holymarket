@@ -15,12 +15,15 @@ import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard
 
 const Create = (props) => {
 
+    const [type, setType] = useState(null);
     const [label, setLabel] = useState('');
+    const [types, setTypes] = useState([]);
     const [category, setCategory] = useState(null);
     const [categories, setCategories] = useState([]);
     const [description, setDescription] = useState('');
 
     useEffect(() => {
+        getTypes();
         getCategories();
     }, []);
 
@@ -31,12 +34,12 @@ const Create = (props) => {
         .finally(() => setRequestGlobalAction(false))
     }
 
-    // const getRoles = () => {
-    //     props.setRequestGlobalAction(true),
-    //     RoleService.getRoles({type: 'GROUP_TYPE'})
-    //     .then(response => setRoles(response))
-    //     .finally(() => props.setRequestGlobalAction(false))
-    // }
+    const getTypes = () => {
+        props.setRequestGlobalAction(true),
+        GroupService.getGroupTypes({})
+        .then(response => setTypes(response))
+        .finally(() => props.setRequestGlobalAction(false))
+    }
 
     const onSubmit = () => {
 
@@ -47,11 +50,12 @@ const Create = (props) => {
 
         let data: any = {
             label: label,
-            // type: type.value,
             description: description,
             groupCategoryId: category.id,
-            //roleIds: roles.map(role => role.id)
-        }
+        };
+
+        if(type)
+            data.groupTypeId = type.id;
 
         GroupService.createGroupType(data).then(() => {
             NotificationManager.success("Le type a été créée avec succès");
@@ -99,21 +103,6 @@ const Create = (props) => {
                             onChange={(e) => setDescription(e.target.value)}
                         />
                     </FormGroup>
-                    {/* <div className="col-md-12 col-sm-12 has-wrapper mb-30">
-                        <InputLabel className="text-left">
-                            Nature du groupe
-                        </InputLabel>
-                        <Autocomplete
-                            value={type}
-                            id="combo-box-demo"
-                            options={groupTypes()}
-                            onChange={(__, item) => {
-                                setType(item);
-                            }}
-                            getOptionLabel={(option) => option.label}
-                            renderInput={(params) => <TextField {...params} variant="outlined" />}
-                        />
-                    </div> */}
                     <div className="col-md-12 col-sm-12 has-wrapper mb-30">
                         <InputLabel className="text-left">
                             Catégorie du groupe
@@ -129,22 +118,21 @@ const Create = (props) => {
                             renderInput={(params) => <TextField {...params} variant="outlined" />}
                         />
                     </div>
-                    {/* <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
                         <InputLabel className="text-left">
-                            Roles du type
+                            Type parent
                         </InputLabel>
                         <Autocomplete
-                            multiple
-                            options={roles}
+                            value={type}
                             id="combo-box-demo"
-                            value={selectedRoles}
-                            onChange={(__, items) => {
-                                setSelectedRoles(items);
+                            options={types}
+                            onChange={(__, item) => {
+                                setType(item);
                             }}
                             getOptionLabel={(option) => option.label}
                             renderInput={(params) => <TextField {...params} variant="outlined" />}
                         />
-                    </div> */}
+                    </div>
 
                     <FormGroup>
                         <Button

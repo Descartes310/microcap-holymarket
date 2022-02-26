@@ -6,12 +6,12 @@ import Tabs from '@material-ui/core/Tabs';
 import AppBar from '@material-ui/core/AppBar';
 import SwipeableViews from "react-swipeable-views";
 import TabContainer from "Components/TabContainer";
-import { FormGroup, Input, Button } from "reactstrap";
 import { getReferralTypeLabel } from 'Helpers/helpers';
 import DialogComponent from "Components/DialogComponent";
 import { setRequestGlobalAction, logout } from "Actions";
 import { NotificationManager } from "react-notifications";
 import Checkbox from "@material-ui/core/Checkbox/Checkbox";
+import { FormGroup, Input, Button, Alert } from "reactstrap";
 import InputLabel from "@material-ui/core/InputLabel/InputLabel";
 
 class ActivationBox extends Component {
@@ -213,7 +213,19 @@ class ActivationBox extends Component {
                             <TabContainer>
                                 <div className="p-sm-20 pt-sm-30 p-10 pt-15 border-top">
                                     <div className="row">
-                                        <div className="col-sm-12">
+                                        <Alert color="success" className="w-100">
+                                            <h4 className="alert-heading">Note importante!</h4>
+                                            <p>
+                                                Après l'activation, de nouveaux paramètres de connexion vous serons envoyés par demail.
+                                                Veuillez les utiliser pour les prochaines connexions.
+                                            </p>
+                                            <hr />
+                                            <p className="mb-0">
+                                                Vous pouvez éditer vos paramètres à tout moment dans votre profile.
+                                            </p>
+                                        </Alert>
+
+                                        <div className="col-sm-12 mt-20">
                                             <InputLabel className="text-left" htmlFor="label">
                                                 Entrer le code d'activation reçu
                                             </InputLabel>

@@ -53,7 +53,7 @@ const Categories = (props) => {
                                         <tr>
                                             <th className="fw-bold">Désignation</th>
                                             <th className="fw-bold">Description</th>
-                                            <th className="fw-bold">Type</th>
+                                            {/* <th className="fw-bold">Type</th> */}
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -73,13 +73,13 @@ const Categories = (props) => {
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td>
+                                                {/* <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
                                                             <h4 className="m-0 text-dark">{item.type}</h4>
                                                         </div>
                                                     </div>
-                                                </td>
+                                                </td> */}
                                             </tr>
                                         ))}
                                     </tbody>

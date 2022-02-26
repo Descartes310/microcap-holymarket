@@ -40,7 +40,7 @@ const Create = (props) => {
 
     const onSubmit = () => {
 
-        if(!label || !type) {
+        if(!label) {
             NotificationManager.error('Veuillez bien remplir le formulaire')
             return;
         }
@@ -48,7 +48,6 @@ const Create = (props) => {
 
         let data: any = {
             label: label,
-            type: type.value,
             description: description,
         }
 
@@ -102,7 +101,7 @@ const Create = (props) => {
                             onChange={(e) => setDescription(e.target.value)}
                         />
                     </FormGroup>
-                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                    {/* <div className="col-md-12 col-sm-12 has-wrapper mb-30">
                         <InputLabel className="text-left">
                             Type de catégorie
                         </InputLabel>
@@ -116,7 +115,7 @@ const Create = (props) => {
                             getOptionLabel={(option) => option.label}
                             renderInput={(params) => <TextField {...params} variant="outlined" />}
                         />
-                    </div>
+                    </div> */}
                     <div className="col-md-12 col-sm-12 has-wrapper mb-30">
                         <InputLabel className="text-left">
                             Catégorie parent
