@@ -46,7 +46,7 @@ class NavMenuItem extends Component<Props, State> {
       const { menu, onToggleMenu, authUser } = this.props;
       const { subMenuOpen } = this.state;
       //Check if the route has nested routes and if the user has at least one permission for one nested routes
-      if (this.props.authUser.status != Status.PENDING)
+      if (this.props.authUser.active)
          if (menu.child_routes !== null) {
             return (
                <Fragment>

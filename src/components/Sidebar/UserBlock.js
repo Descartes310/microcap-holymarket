@@ -70,7 +70,7 @@ class UserBlock extends Component {
 								tag="div"
 								className="d-flex align-items-center"
 							>
-								{this.props.authUser.status === Status.PENDING ? (
+								{!this.props.authUser.active ? (
 									<Tooltip id="tooltip-status" title={"Votre compte n'est pas activé"}>
 										<div className="user-profile position-relative">
 											<img
