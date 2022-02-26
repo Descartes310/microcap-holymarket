@@ -7,7 +7,7 @@ import DiscoverFooter from "Routes/custom/dashboard/landing/discover/components/
 
 const DiscoverLayout = (props) => {
     return (
-        <div id="discover-page">
+        <div id="discover-page" style={props.style}>
             <Helmet>
                 <title>{props.title}</title>
                 <meta name="description" content={props.description} />

@@ -102,6 +102,7 @@
 		"rc-queue-anim": "^1.8.4",
 		"react-addons-update": "^15.6.3",
 		"react-beautiful-dnd": "^13.0.0",
+		"react-big-calendar": "^0.38.9",
 		"react-bootstrap-sweetalert": "^5.1.9",
 		"react-checkbox-tree": "^1.7.2",
 		"react-content-loader": "^5.0.4",

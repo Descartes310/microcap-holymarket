@@ -1,6 +1,7 @@
 import React from 'react';
 import GetIn from './GetIn';
 import Terms from './Terms';
+import Events from './Events';
 import Values from './Values';
 import Home from './discover/home';
 import {connect} from "react-redux";
@@ -32,6 +33,7 @@ const Landing = (props) => {
                     <Route exact path={LANDING.TERMS} component={Terms} />
                     <Route exact path={LANDING.AGENTS} component={Agents} />
                     <Route exact path={LANDING.VALUES} component={Values} />
+                    <Route exact path={LANDING.EVENTS} component={Events} />
                     <Route exact path={LANDING.MISSION} component={Mission} />
                     <Route exact path={LANDING.SERVICES} component={Service} />
                     <Route exact path={LANDING.DISCOVER} component={Discover} />

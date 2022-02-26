@@ -6,7 +6,7 @@ import { RctCard, RctCardContent } from 'Components/RctCard';
 import { HashLink } from 'react-router-hash-link';
 import { Tooltip } from '@material-ui/core';
 import { getFilePath } from "Helpers/helpers";
-import DiscoverMenu from "Routes/custom/dashboard/DiscoverMenu";
+import DiscoverMenu from "Routes/custom/dashboard/landing/discover/components/DiscoverMenu";
 
 const Agents = (props) => {
     const { loading, intl } = props;

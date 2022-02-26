@@ -181,7 +181,7 @@ class DiscoverMenu extends Component {
                                     </Link>
                                 </li>
                                 <li className="nav-item nav-item-border">
-                                    <HashLink to={`${LANDING.AGENTS}`} className="nav-link-mobile">
+                                    <HashLink to={`${LANDING.EVENTS}`} className="nav-link-mobile">
                                         Evènements
                                     </HashLink>
                                 </li>

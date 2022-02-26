@@ -8,6 +8,7 @@ export const LANDING = {
     CGU: '/landing/cgu',
     HOME: '/landing/home',
     GETIN: '/landing/get-in',
+    EVENTS: '/landing/events',
     AGENTS: '/landing/agents',
     DISCOVER: '/landing/dicover',
     PIONIERS: '/landing/pioniers',
