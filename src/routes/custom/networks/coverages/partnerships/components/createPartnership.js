@@ -148,34 +148,6 @@ class CreatePartnershipModal extends Component {
                                     value={getReferralTypeLabel(member.referralType)}
                                 />
                             </FormGroup>
-                            <FormGroup className="has-wrapper">
-                                <InputLabel className="text-left" htmlFor="commercialName">
-                                    Nom d'enseigne
-                                </InputLabel>
-                                <InputStrap
-                                    required
-                                    type="text"
-                                    id="commercialName"
-                                    className="input-lg"
-                                    name='commercialName'
-                                    value={commercialName}
-                                    onChange={(e) => this.setState({ commercialName: e.target.value })}
-                                />
-                            </FormGroup>
-                            <FormGroup className="has-wrapper">
-                                <InputLabel className="text-left" htmlFor="immatriculation">
-                                    Numéro d'immatriculation
-                                </InputLabel>
-                                <InputStrap
-                                    required
-                                    type="text"
-                                    className="input-lg"
-                                    id="immatriculation"
-                                    name='immatriculation'
-                                    value={immatriculation}
-                                    onChange={(e) => this.setState({ immatriculation: e.target.value })}
-                                />
-                            </FormGroup>
                         </>
                     )}
                     <div className="col-md-12 col-sm-12 has-wrapper mb-30">
@@ -193,6 +165,35 @@ class CreatePartnershipModal extends Component {
                             renderInput={(params) => <TextField {...params} variant="outlined" />}
                         />
                     </div>
+
+                    <FormGroup className="has-wrapper">
+                        <InputLabel className="text-left" htmlFor="commercialName">
+                            Nom d'enseigne
+                        </InputLabel>
+                        <InputStrap
+                            required
+                            type="text"
+                            id="commercialName"
+                            className="input-lg"
+                            name='commercialName'
+                            value={commercialName}
+                            onChange={(e) => this.setState({ commercialName: e.target.value })}
+                        />
+                    </FormGroup>
+                    <FormGroup className="has-wrapper">
+                        <InputLabel className="text-left" htmlFor="immatriculation">
+                            Numéro d'immatriculation
+                        </InputLabel>
+                        <InputStrap
+                            required
+                            type="text"
+                            className="input-lg"
+                            id="immatriculation"
+                            name='immatriculation'
+                            value={immatriculation}
+                            onChange={(e) => this.setState({ immatriculation: e.target.value })}
+                        />
+                    </FormGroup>
                     <FormGroup>
                         <Button
                             color="primary"

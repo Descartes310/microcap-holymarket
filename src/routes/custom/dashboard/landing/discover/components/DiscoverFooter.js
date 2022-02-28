@@ -94,15 +94,14 @@ const DiscoverFooter = ({props}) => {
                                             <span>Contact@microcap.fr</span>
                                         </a>
                                     </li>
-                                    <li className="no-link mt-2">
+                                    {/* <li className="no-link mt-2">
                                         <a
                                             href="tel:+330811030089"
                                             className="m-0 d-inline-block icon-text center-ver">
                                             <i className="material-icons icon mr-2 icon-rounded-bg">call</i>
-                                            {/*<i className="material-icons icon ti-android mr-2 icon-rounded-bg" />*/}
                                             <span>+33 0811 030 089</span>
                                         </a>
-                                    </li>
+                                    </li> */}
                                 </ul>
                             </div>
 
