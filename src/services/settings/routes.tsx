@@ -13,4 +13,5 @@ export const GET_EVENTS = 'api/settings/events/list';
 export const CREATE_ARTICLE = 'api/settings/articles';
 export const GET_ALL_ARTICLES = 'api/settings/articles';
 export const GET_ACTIVE_ARTICLES = 'api/settings/articles/list';
+export const GET_ARTICLE_DETAILS = (id) => `api/settings/articles/details/${id}`;
 export const UPDATE_ARTICLE_STATUS = (id) => `api/settings/articles/${id}/status`;

@@ -19,7 +19,7 @@ import { collapsedSidebarAction, darkModeAction } from 'Actions';
 // components
 import Notifications from './Notifications';
 import Cart from './Cart';
-import { DISCOVER } from "Url/frontendUrl";
+import { LANDING } from "Url/frontendUrl";
 
 class Header extends Component {
 
@@ -95,7 +95,7 @@ class Header extends Component {
 								}
 							</ul>
 						}
-						<Link to={DISCOVER} className="color-gray-muted text-decoration-underline-hover fw-500 px-3">
+						<Link to={LANDING.HOME} className="color-gray-muted text-decoration-underline-hover fw-500 px-3">
 							Découvir Microcap
 						</Link>
 					</div>

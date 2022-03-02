@@ -54,6 +54,10 @@ export default class SettingService {
         return makeRequest('get', Routes.GET_ACTIVE_ARTICLES);
     }
 
+    static getArticleDetails(id: number): Promise<any> {
+        return makeRequest('get', Routes.GET_ARTICLE_DETAILS(id));
+    }
+
     static updateArticleStatus(id: number): Promise<any> {
         return makeRequest('put', Routes.UPDATE_ARTICLE_STATUS(id));
     }

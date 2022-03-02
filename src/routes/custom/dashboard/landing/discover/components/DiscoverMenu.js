@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import { SlideDown } from 'react-slidedown';
 import 'react-slidedown/lib/slidedown.css';
 import AppConfig from "Constants/AppConfig";
-import Button from "@material-ui/core/Button";
 import { HashLink } from "react-router-hash-link";
 import { Link, withRouter } from "react-router-dom";
 import { AUTH, LANDING, HOME } from "Url/frontendUrl";
@@ -191,7 +190,7 @@ class DiscoverMenu extends Component {
                                     </HashLink>
                                 </li>
                                 <li className="nav-item nav-item-border">
-                                    <HashLink to={`${LANDING.AGENTS}`} className="nav-link-mobile">
+                                    <HashLink to={`${LANDING.BLOG}`} className="nav-link-mobile">
                                         Blog
                                     </HashLink>
                                 </li>

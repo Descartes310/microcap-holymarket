@@ -6,6 +6,7 @@ export const HOME = '/home';
 export const LANDING = {
     SELF: '/landing',
     CGU: '/landing/cgu',
+    BLOG: '/landing/blog',
     HOME: '/landing/home',
     GETIN: '/landing/get-in',
     EVENTS: '/landing/events',
@@ -18,6 +19,7 @@ export const LANDING = {
     SONDAGE_FIRST: '/landing/sondages',
     MISSION: '/landing/mission-microcap',
     PASS_DETAILS: '/landing/pass-details',
+    BLOG_DETAILS: '/landing/blog/:id/details',
     LEGAL_MENTION: '/landing/mentions-legales',
     GALERY_PROJECT: '/landing/projects-gallery',
     MONEY_MANAGEMENT: '/landing/money-management',
