@@ -3,9 +3,10 @@ import SettingService from 'Services/settings';
 import React, {useState, useEffect} from 'react';
 import { Calendar, Views, momentLocalizer } from 'react-big-calendar';
 import DiscoverLayout from "Routes/custom/dashboard/landing/discover/DiscoverLayout";
+import EventDetails from "Routes/custom/dashboard/landing/discover/components/eventDetails";
 
 
-const allViews = Object.keys(Views).map(k => Views[k]);
+const allViews = Object.keys(Views).map(k => Views[k]).filter(v => v !== 'agenda');
 
 const ColoredDateCellWrapper = ({ children }) =>
   React.cloneElement(React.Children.only(children), {
@@ -18,11 +19,11 @@ const Localizer = momentLocalizer(moment);
 
 const Events = () => {
 
+    const [event, setEvent] = useState(null);
     const [events, setEvents] = useState([]);
 
     useEffect(() => {
         getEvents();
-        console.log(moment('2022-03-12').toDate());
     }, []);
 
     const getEvents = () => {
@@ -31,6 +32,10 @@ const Events = () => {
         .catch((err) => {
             console.log(err);
         });
+    }
+
+    const handleSelectEvent = (event, _) =>  {
+      setEvent(event);
     }
 
     document.body.style.overflow = "auto";
@@ -50,16 +55,27 @@ const Events = () => {
           <Calendar
             localizer={Localizer}
             events={events.map(e => { 
-              return { title: e.label, start: moment(e.startDate).toDate(), end: e.endDate ? moment(e.endDate).toDate() : moment(e.startDate).toDate(), desc: e.description}
+              return { 
+                title: e.label, 
+                start: moment(e.startDate+' '+e.startTime).toDate(), 
+                end: e.endDate ? moment(e.endDate+' '+e.endTime).toDate() : moment(e.startDate+' 23:59:59').toDate(), 
+                description: e.description
+              }
             })}
             views={allViews}
             step={60}
             defaultDate={new Date()}
+            onSelectEvent={handleSelectEvent} 
             components={{
             timeSlotWrapper: ColoredDateCellWrapper,
             }}
           />
         </div>
+        <EventDetails 
+          show={event}
+          event={event}
+          onClose={() => setEvent(null)}
+        />
       </DiscoverLayout>
     );
 };
