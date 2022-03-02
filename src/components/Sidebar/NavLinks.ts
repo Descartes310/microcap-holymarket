@@ -482,6 +482,14 @@ export default [
             "child_routes": null
          },
          {
+            "menu_title": "Blog",
+            "new_item": false,
+            "path": SETTING.ARTICLE.LIST,
+            "permissions": [Permission.setting.unit.name],
+            "profiles": ['GROUP'],
+            "child_routes": null
+         },
+         {
             "menu_title": "Evènements",
             "new_item": false,
             "path": SETTING.EVENT.LIST,

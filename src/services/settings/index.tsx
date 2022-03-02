@@ -40,4 +40,21 @@ export default class SettingService {
     static createEvent(data): Promise<any> {
         return makeRequest('post', Routes.CREATE_EVENT, data);
     }
+
+
+    static getAllArticles(): Promise<any> {
+        return makeRequest('get', Routes.GET_ALL_ARTICLES);
+    }
+
+    static createArticle(data, config): Promise<any> {
+        return makeRequest('post', Routes.CREATE_ARTICLE, data, config);
+    }
+
+    static getActiveArticles(): Promise<any> {
+        return makeRequest('get', Routes.GET_ACTIVE_ARTICLES);
+    }
+
+    static updateArticleStatus(id: number): Promise<any> {
+        return makeRequest('put', Routes.UPDATE_ARTICLE_STATUS(id));
+    }
 }

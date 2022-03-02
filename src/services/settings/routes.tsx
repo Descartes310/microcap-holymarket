@@ -9,3 +9,8 @@ export const CHANGE_AGENT_ACTIVE = (id) => `api/settings/agents/${id}/active`;
 
 export const CREATE_EVENT = 'api/settings/events';
 export const GET_EVENTS = 'api/settings/events/list';
+
+export const CREATE_ARTICLE = 'api/settings/articles';
+export const GET_ALL_ARTICLES = 'api/settings/articles';
+export const GET_ACTIVE_ARTICLES = 'api/settings/articles/list';
+export const UPDATE_ARTICLE_STATUS = (id) => `api/settings/articles/${id}/status`;

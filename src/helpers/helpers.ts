@@ -149,7 +149,7 @@ export function getTheDate(timestamp, format) {
 /**
  * Convert Date To Timestamp
 */
-export function convertDateToTimeStamp(date, format) {
+export function convertDateToTimeStamp(date, format = 'YYYY-MM-DD') {
     let formatDate = format ? format : 'YYYY-MM-DD';
     return moment(date, formatDate).unix();
 }
