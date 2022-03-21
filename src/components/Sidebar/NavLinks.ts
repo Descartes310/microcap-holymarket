@@ -1,6 +1,7 @@
 // sidebar nav links
 import Permission from "Enums/Permissions";
 import {
+   BANK,
    GROUP,
    BROKER,
    PROJECT,
@@ -270,12 +271,10 @@ export default [
       "menu_icon": "zmdi zmdi-home",
       "new_item": false,
       "permissions": [
-         [
-            Permission.group.space.name,
-            Permission.project.project.name,
-            Permission.project.item.name,
-            Permission.funding.account.name
-         ]
+         Permission.group.space.name,
+         Permission.project.project.name,
+         Permission.project.item.name,
+         Permission.funding.account.name
       ],
       "profiles": null,
       "child_routes": [
@@ -319,12 +318,10 @@ export default [
       "menu_icon": "zmdi zmdi-labels",
       "new_item": false,
       "permissions": [
-         [
-            Permission.marketplace.admin.model.name,
-            Permission.marketplace.admin.catalog.name,
-            Permission.marketplace.admin.category.name,
-            Permission.marketplace.admin.offer.name,
-         ]
+         Permission.marketplace.admin.model.name,
+         Permission.marketplace.admin.catalog.name,
+         Permission.marketplace.admin.category.name,
+         Permission.marketplace.admin.offer.name,
       ],
       "profiles": ['GROUP'],
       "child_routes": [
@@ -364,11 +361,9 @@ export default [
       "menu_icon": "zmdi zmdi-laptop",
       "new_item": false,
       "permissions": [
-         [
-            Permission.project.admin.item.name,
-            Permission.project.admin.initialization.name,
-            Permission.project.admin.post.name,
-         ]
+         Permission.project.admin.item.name,
+         Permission.project.admin.initialization.name,
+         Permission.project.admin.post.name,
       ],
       "profiles": ['GROUP'],
       "child_routes": [
@@ -401,11 +396,9 @@ export default [
       "menu_icon": "zmdi zmdi-store",
       "new_item": false,
       "permissions": [
-         [
-            Permission.marketplace.store.product.name,
-            Permission.marketplace.store.purchase.name,
-            Permission.marketplace.store.order.name,
-         ]
+         Permission.marketplace.store.product.name,
+         Permission.marketplace.store.purchase.name,
+         Permission.marketplace.store.order.name,
       ],
       "profiles": ['GROUP'],
       "child_routes": [
@@ -454,14 +447,57 @@ export default [
       "permissions": [Permission.marketplace.order.name],
    },
    {
+      "menu_title": "Services banquairres",
+      "menu_icon": "zmdi zmdi-balance",
+      "new_item": false,
+      "permissions": [
+         Permission.marketplace.store.product.name,
+         Permission.marketplace.store.purchase.name,
+         Permission.marketplace.store.order.name,
+      ],
+      "profiles": ['GROUP'],
+      "child_routes": [
+         {
+            "menu_title": "Agents",
+            "new_item": false,
+            "path": MARKETPLACE.STORE.PRODUCT.LIST,
+            "permissions": [Permission.marketplace.store.product.name],
+            "profiles": ['GROUP'],
+            "child_routes": null
+         },
+         {
+            "menu_title": "Caisses",
+            "new_item": false,
+            "path": MARKETPLACE.STORE.PURCHASE.LIST,
+            "permissions": [Permission.marketplace.store.purchase.name],
+            "profiles": ['GROUP'],
+            "child_routes": null
+         },
+         {
+            "menu_title": "Intermediaire banquaire",
+            "new_item": false,
+            "path": BANK.PARTY.SELF,
+            "permissions": [Permission.marketplace.store.order.name],
+            "profiles": ['GROUP'],
+            "child_routes": null
+         },
+         {
+            "menu_title": "Administration banquaire",
+            "new_item": false,
+            "path": MARKETPLACE.STORE.ORDER.LIST,
+            "permissions": [Permission.marketplace.store.order.name],
+            "profiles": ['GROUP'],
+            "child_routes": null
+         }
+      ],
+   },
+   {
       "menu_title": "Configurations",
       "menu_icon": "zmdi zmdi-wrench",
       "new_item": false,
       "permissions": [
-         [
-            Permission.setting.unit.name,
-            Permission.setting.unit.name,
-         ]
+         Permission.setting.unit.name,
+         Permission.setting.unit.name,
       ],
       "profiles": ['GROUP'],
       "child_routes": [

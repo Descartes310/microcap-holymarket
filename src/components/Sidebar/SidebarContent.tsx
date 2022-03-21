@@ -53,7 +53,7 @@ const SidebarContent = (_) => {
 	const menus = getValidMenus(sidebarMenus);
 
 	return (
-		<div className="rct-sidebar-nav">
+		<div className="rct-sidebar-nav" style={{ paddingBottom: 80 }}>
 			<nav className="navigation">
 				<List className="rct-mainMenu p-0 m-0 list-unstyled">
 					{authUser && menus.map((menu, key) => {

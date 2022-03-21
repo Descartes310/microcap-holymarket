@@ -365,6 +365,23 @@ export const BROKER = {
     }
 } as const;
 
+export const BANK = {
+    SELF: '/bank',
+    PARTY: {
+        SELF: '/bank/party',
+        PRESTATION: {
+            SELF: '/bank/party/prestations',
+            LIST: '/bank/party/prestations/list',
+            CREATE: '/bank/party/prestations/create',
+        },
+        MANDATE: {
+            SELF: '/bank/party/mandate',
+            LIST: '/bank/party/mandate/list',
+            CREATE: '/bank/party/mandate/create',
+        }
+    }
+} as const;
+
 export const joinUrlWithParams = (to, params) => {
     let url = to;
     params.forEach(param => {
