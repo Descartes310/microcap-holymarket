@@ -1,28 +1,43 @@
 import { connect } from 'react-redux';
-import React, { useState } from 'react';
+import { BANK } from 'Url/frontendUrl';
+import BankService from 'Services/banks';
 import { withRouter } from "react-router-dom";
 import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
-import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
+import React, { useState, useEffect } from 'react';
 
-const List = () => {
+const List = (props) => {
+
+    const [parties, setParties] = useState([]);
+
+    useEffect(() => {
+        getParties();
+    }, []);
+
+    const getParties = () => {
+        props.setRequestGlobalAction(true),
+        BankService.getIntermediateParty()
+        .then(response => setParties(response))
+        .finally(() => props.setRequestGlobalAction(false))
+    }
+
+    const goToCreate = () => {
+        props.history.push(BANK.PARTY.MANDATE.CREATE);
+    }
 
     return (
         <>
-            <PageTitleBar
-                title={"Liste des profiles"}
-            />
             <CustomList
-                list={[]}
+                list={parties}
                 loading={false}
-                itemsFoundText={n => `${n} xxx trouvés`}
-                onAddClick={() => console.log('Ajout')}
+                onAddClick={() => goToCreate()}
+                itemsFoundText={n => `${n} intermédiaires trouvés`}
                 renderItem={list => (
                     <>
                         {list && list.length === 0 ? (
                             <div className="d-flex justify-content-center align-items-center py-50">
                                 <h4>
-                                    Aucun xxx trouvés
+                                    Aucun intermédiaires trouvés
                                 </h4>
                             </div>
                         ) : (
@@ -30,8 +45,7 @@ const List = () => {
                                 <table className="table table-hover table-middle mb-0">
                                     <thead>
                                         <tr>
-                                            <th className="fw-bold">Désignation</th>
-                                            <th className="fw-bold">Description</th>
+                                            <th className="fw-bold">Nom commercial</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -40,14 +54,7 @@ const List = () => {
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{item.xxx}</h4>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div className="media">
-                                                        <div className="media-body pt-10">
-                                                            <p className="m-0 text-dark">{item.xxx}</p>
+                                                            <h4 className="m-0 fw-bold text-dark">{item.commercialName}</h4>
                                                         </div>
                                                     </div>
                                                 </td>

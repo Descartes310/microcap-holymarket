@@ -2,10 +2,8 @@ import { connect } from 'react-redux';
 import { withRouter } from "react-router-dom";
 import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
-import EditIcon from '@material-ui/icons/Edit';
 import React, { useState, useEffect } from 'react';
 import { USER_ACCOUNT_TYPE } from 'Url/frontendUrl';
-import IconButton from "@material-ui/core/IconButton";
 import UserAccountTypeService from 'Services/account-types';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 

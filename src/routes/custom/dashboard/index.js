@@ -7,6 +7,7 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 
 // async components
 import {
+    AsyncBank,
     AsyncBroker,
     AsyncGroups,
     AsyncLanding,
@@ -23,6 +24,7 @@ import {
 import { useAbility } from "@casl/react";
 import {
     ROOT,
+    BANK,
     HOME,
     GROUP,
     BROKER,
@@ -110,6 +112,11 @@ const Dashboard = ({ onInitCart }) => {
                         permissions={[]}
                         path={BROKER.SELF}
                         component={AsyncBroker}
+                    />
+                    <CanRoute
+                        permissions={[]}
+                        path={BANK.SELF}
+                        component={AsyncBank}
                     />
                     <Redirect to={HOME} />
 

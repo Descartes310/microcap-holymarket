@@ -447,7 +447,7 @@ export default [
       "permissions": [Permission.marketplace.order.name],
    },
    {
-      "menu_title": "Services banquairres",
+      "menu_title": "Services banquaires",
       "menu_icon": "zmdi zmdi-balance",
       "new_item": false,
       "permissions": [

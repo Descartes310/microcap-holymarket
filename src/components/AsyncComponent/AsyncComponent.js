@@ -109,6 +109,11 @@ export const AsyncBroker = Loadable({
 	loading: () => <RctPageLoader />,
 });
 
+export const AsyncBank = Loadable({
+	loader: () => import("Routes/custom/bank-services"),
+	loading: () => <RctPageLoader />,
+});
+
 export {
 	AsyncThemifyIconsComponent,
 	AsyncSimpleLineIconsComponent,
