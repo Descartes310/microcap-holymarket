@@ -22,7 +22,7 @@ const List = (props) => {
     }
 
     const goToCreate = () => {
-        props.history.push(BANK.PARTY.PRESTATION.CREATE);
+        props.history.push(BANK.ADMIN.PRESTATION.CREATE);
     }
 
     return (

@@ -30,7 +30,7 @@ const Create = (props) => {
 
         BankService.createPrestation(data).then(() => {
             NotificationManager.success("La prestation a été créée avec succès");
-            props.history.push(BANK.PARTY.PRESTATION.LIST);
+            props.history.push(BANK.ADMIN.PRESTATION.LIST);
         }).catch((err) => {
             console.log(err);
             NotificationManager.error("Une erreur est survenu lors de la création de la prestation");

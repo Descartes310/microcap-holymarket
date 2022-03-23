@@ -367,17 +367,25 @@ export const BROKER = {
 
 export const BANK = {
     SELF: '/bank',
-    PARTY: {
-        SELF: '/bank/party',
+    ADMIN: {
+        SELF: '/bank/admin',
         PRESTATION: {
-            SELF: '/bank/party/prestations',
-            LIST: '/bank/party/prestations/list',
-            CREATE: '/bank/party/prestations/create',
+            SELF: '/bank/admin/prestations',
+            LIST: '/bank/admin/prestations/list',
+            CREATE: '/bank/admin/prestations/create',
         },
         MANDATE: {
-            SELF: '/bank/party/mandate',
-            LIST: '/bank/party/mandate/list',
-            CREATE: '/bank/party/mandate/create',
+            SELF: '/bank/admin/mandate',
+            LIST: '/bank/admin/mandate/list',
+            CREATE: '/bank/admin/mandate/create',
+        }
+    },
+    PARTY: {
+        SELF: '/bank/party',
+        AGENT: {
+            SELF: '/bank/party/agents',
+            LIST: '/bank/party/agents/list',
+            CREATE: '/bank/party/agents/create',
         }
     }
 } as const;

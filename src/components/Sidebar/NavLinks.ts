@@ -476,7 +476,7 @@ export default [
          {
             "menu_title": "Intermediaire banquaire",
             "new_item": false,
-            "path": BANK.PARTY.SELF,
+            "path": BANK.ADMIN.SELF,
             "permissions": [Permission.marketplace.store.order.name],
             "profiles": ['GROUP'],
             "child_routes": null
@@ -484,7 +484,7 @@ export default [
          {
             "menu_title": "Administration banquaire",
             "new_item": false,
-            "path": MARKETPLACE.STORE.ORDER.LIST,
+            "path": BANK.ADMIN.SELF,
             "permissions": [Permission.marketplace.store.order.name],
             "profiles": ['GROUP'],
             "child_routes": null

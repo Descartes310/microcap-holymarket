@@ -12,9 +12,9 @@ const BankPartyMandate = (props) => {
         <div className="full-height">
             <>
                 <Switch>
-                    <Redirect exact from={`${match.url}/`} to={BANK.PARTY.MANDATE.LIST} />
-                    <Route path={BANK.PARTY.MANDATE.LIST} component={List} />
-                    <Route path={BANK.PARTY.MANDATE.CREATE} component={Create} />
+                    <Redirect exact from={`${match.url}/`} to={BANK.ADMIN.MANDATE.LIST} />
+                    <Route path={BANK.ADMIN.MANDATE.LIST} component={List} />
+                    <Route path={BANK.ADMIN.MANDATE.CREATE} component={Create} />
                 </Switch>
             </>
         </div>

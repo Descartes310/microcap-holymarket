@@ -11,9 +11,9 @@ const BankParty = (props) => {
     return (
         <div>
             <Switch>
-                <Redirect exact from={`${match.url}/`} to={BANK.PARTY.MANDATE.SELF} />
-                <Route path={BANK.PARTY.MANDATE.SELF} component={Mandates} />
-                <Route path={BANK.PARTY.PRESTATION.SELF} component={Prestations} />
+                <Redirect exact from={`${match.url}/`} to={BANK.ADMIN.MANDATE.SELF} />
+                <Route path={BANK.ADMIN.MANDATE.SELF} component={Mandates} />
+                <Route path={BANK.ADMIN.PRESTATION.SELF} component={Prestations} />
             </Switch>
         </div>
     );

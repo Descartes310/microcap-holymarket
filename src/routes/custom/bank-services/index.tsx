@@ -10,8 +10,8 @@ const Bank = (props) => {
     return (
         <div className="full-height">
             <Switch>
-                <Redirect exact from={`${match.url}/`} to={BANK.PARTY.SELF} />
-                <Route path={BANK.PARTY.SELF} component={Parties} />
+                <Redirect exact from={`${match.url}/`} to={BANK.ADMIN.SELF} />
+                <Route path={BANK.ADMIN.SELF} component={Parties} />
             </Switch>
         </div>
     );

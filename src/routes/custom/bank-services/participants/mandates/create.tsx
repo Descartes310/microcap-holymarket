@@ -73,7 +73,7 @@ const Create = (props) => {
 
         BankService.createMandate(data).then(() => {
             NotificationManager.success("Le mandat a été créé avec succès");
-            props.history.push(BANK.PARTY.MANDATE.LIST);
+            props.history.push(BANK.ADMIN.MANDATE.LIST);
         }).catch((err) => {
             console.log(err);
             NotificationManager.error("Une erreur est survenu lors du partenariat");
