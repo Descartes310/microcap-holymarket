@@ -56,7 +56,7 @@ const Create = (props) => {
         let data: any = {
             label, 
             number,
-            account_type_reference: type.reference
+            accountTypeReference: type.reference
         };
 
         props.setRequestGlobalAction(true);

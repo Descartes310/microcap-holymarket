@@ -77,7 +77,7 @@ class CreatePartnershipModal extends Component {
             contractId: contract.id,
             commercialName: commercialName,
             referralCode: member.referralCode,
-            immatriculationNumber: immatriculation,
+            immatriculation: immatriculation,
         }
 
         PartnershipService.createPartnership(data).then(() => {

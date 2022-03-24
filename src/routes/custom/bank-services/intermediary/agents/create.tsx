@@ -31,6 +31,7 @@ const Create = (props) => {
         getTypes();
         getCategories();
         getPrestations();
+        getPotentialAgents();
     }, []);
 
     const getCategories = () => {
@@ -50,6 +51,13 @@ const Create = (props) => {
     const getPrestations = () => {
         props.setRequestGlobalAction(true),
         BankService.getPrestations()
+        .then(response => setPrestations(response))
+        .finally(() => props.setRequestGlobalAction(false))
+    }
+
+    const getPotentialAgents = () => {
+        props.setRequestGlobalAction(true),
+        BankService.getPotentialAgents()
         .then(response => setPrestations(response))
         .finally(() => props.setRequestGlobalAction(false))
     }

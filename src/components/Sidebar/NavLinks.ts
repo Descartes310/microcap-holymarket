@@ -450,34 +450,14 @@ export default [
       "menu_title": "Services banquaires",
       "menu_icon": "zmdi zmdi-balance",
       "new_item": false,
-      "permissions": [
-         Permission.marketplace.store.product.name,
-         Permission.marketplace.store.purchase.name,
-         Permission.marketplace.store.order.name,
-      ],
+      "permissions": null,
       "profiles": ['GROUP'],
       "child_routes": [
-         {
-            "menu_title": "Agents",
-            "new_item": false,
-            "path": MARKETPLACE.STORE.PRODUCT.LIST,
-            "permissions": [Permission.marketplace.store.product.name],
-            "profiles": ['GROUP'],
-            "child_routes": null
-         },
-         {
-            "menu_title": "Caisses",
-            "new_item": false,
-            "path": MARKETPLACE.STORE.PURCHASE.LIST,
-            "permissions": [Permission.marketplace.store.purchase.name],
-            "profiles": ['GROUP'],
-            "child_routes": null
-         },
          {
             "menu_title": "Intermediaire banquaire",
             "new_item": false,
             "path": BANK.PARTY.SELF,
-            "permissions": [Permission.marketplace.store.order.name],
+            "permissions": null,
             "profiles": ['GROUP'],
             "child_routes": null
          },
@@ -485,7 +465,7 @@ export default [
             "menu_title": "Administration banquaire",
             "new_item": false,
             "path": BANK.ADMIN.SELF,
-            "permissions": [Permission.marketplace.store.order.name],
+            "permissions": null,
             "profiles": ['GROUP'],
             "child_routes": null
          }
