@@ -14,8 +14,8 @@ class Catalogues extends Component<any, any> {
     constructor(props: any) {
         super(props);
         const defaultState = (function (url) {
-            if (url.includes(BANK.ADMIN.MANDATE.SELF)) return 0;
-            else if (url.includes(BANK.ADMIN.PRESTATION.SELF)) return 1;
+            if (url.includes(BANK.PARTY.AGENT.SELF)) return 0;
+            // else if (url.includes(BANK.ADMIN.PRESTATION.SELF)) return 1;
             else return 0;
         })(window.location.pathname);
 
@@ -29,9 +29,9 @@ class Catalogues extends Component<any, any> {
         this.setState({ activeTab: value });
         if (oldActivateTab !== value) {
             switch (value) {
-                case 0: return this.props.history.push(BANK.ADMIN.MANDATE.SELF);
-                case 1: return this.props.history.push(BANK.ADMIN.PRESTATION.SELF);
-                default: return this.props.history.push(BANK.ADMIN.MANDATE.SELF);
+                case 0: return this.props.history.push(BANK.PARTY.AGENT.SELF);
+                // case 1: return this.props.history.push(BANK.ADMIN.PRESTATION.SELF);
+                default: return this.props.history.push(BANK.PARTY.AGENT.SELF);
             }
         }
     };
@@ -41,7 +41,7 @@ class Catalogues extends Component<any, any> {
 
         return (
             <div>
-                <PageTitleBar title={"Administration banquaire"} match={this.props.match} />
+                <PageTitleBar title={"Intermédiaires banquaire"} match={this.props.match} />
                 <RctCard>
                     <div className="rct-tabs">
                         <AppBar position="static">
@@ -56,11 +56,7 @@ class Catalogues extends Component<any, any> {
                                     >
                                         <Tab
                                             icon={<i className="zmdi zmdi-home" />}
-                                            label={"Mandats"}
-                                        />
-                                        <Tab
-                                            icon={<i className="zmdi zmdi-home" />}
-                                            label={"Prestations"}
+                                            label={"Agents"}
                                         />
                                     </Tabs>
                                 </div>

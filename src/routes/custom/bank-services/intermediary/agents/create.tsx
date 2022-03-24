@@ -65,8 +65,8 @@ const Create = (props) => {
 
         let data = {
             commercialName: commercialName,
+            account_eference: type.reference,
             referralCode: member.referralCode,
-            account_type_reference: type.reference,
             prestations: selectedPrestations.map(p => p.id),
 
         }
