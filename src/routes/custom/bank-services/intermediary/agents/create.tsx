@@ -7,7 +7,6 @@ import { withRouter } from "react-router-dom";
 import { setRequestGlobalAction } from 'Actions';
 import React, { useState, useEffect } from 'react';
 import TextField from '@material-ui/core/TextField';
-import { getReferralTypeLabel } from 'Helpers/helpers';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { NotificationManager } from 'react-notifications';
 import UserAccountTypeService from 'Services/account-types';
@@ -17,20 +16,34 @@ import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard
 
 const Create = (props) => {
 
+    const PAYMENT_METHODS = [
+        {
+            label: 'Règlement par cession d\'effets',
+            value: 'EFFECT_SESSION'
+        },
+        {
+            label: 'Règlement par compensation',
+            value: 'COMPENSATION'
+        }
+    ]
+
     const [type, setType] = useState(null);
     const [types, setTypes] = useState([]);
-    const [member, setMember] = useState(null);
+    const [agents, setAgents] = useState([]);
+    const [accounts, setAccounts] = useState([]);
     const [category, setCategory] = useState(null);
     const [categories, setCategories] = useState([]);  
     const [prestations, setPrestations] = useState([]);
-    const [membership, setMembership] = useState(null);
-    const [commercialName, setCommercialName] = useState('');  
+    const [paymentMethod, setPaymentMethod] = useState(null);
+    const [selectedAgent, setSelectedAgent] = useState(null);  
+    const [selectedAccount, setSelectedAccount] = useState(null);  
     const [selectedPrestations, setSelectedPrestations] = useState([]);
 
     useEffect(() => {
         getTypes();
         getCategories();
         getPrestations();
+        getFundAccounts();
         getPotentialAgents();
     }, []);
 
@@ -58,13 +71,19 @@ const Create = (props) => {
     const getPotentialAgents = () => {
         props.setRequestGlobalAction(true),
         BankService.getPotentialAgents()
-        .then(response => setPrestations(response))
+        .then(response => setAgents(response))
+        .finally(() => props.setRequestGlobalAction(false))
+    }
+    const getFundAccounts = () => {
+        props.setRequestGlobalAction(true),
+        BankService.getFundAccounts()
+        .then(response => setAccounts(response))
         .finally(() => props.setRequestGlobalAction(false))
     }
 
     const onSubmit = () => {
 
-        if(!member || !commercialName || selectedPrestations.length <= 0) {
+        if(!selectedAccount || !selectedAgent || selectedPrestations.length <= 0 || !type || !paymentMethod) {
             NotificationManager.error("Les informations renseignées sont incompletes ou incorrectes");
             return;
         }
@@ -72,35 +91,20 @@ const Create = (props) => {
         props.setRequestGlobalAction(true);
 
         let data = {
-            commercialName: commercialName,
-            account_eference: type.reference,
-            referralCode: member.referralCode,
+            payment_mode: paymentMethod.value,
+            reference: selectedAgent.reference,
+            account_type_reference: type.reference,
             prestations: selectedPrestations.map(p => p.id),
-
+            account_fund_reference: selectedAccount.reference,
         }
 
-        BankService.createMandate(data).then(() => {
-            NotificationManager.success("Le mandat a été créé avec succès");
-            props.history.push(BANK.ADMIN.MANDATE.LIST);
+        BankService.createAgent(data).then(() => {
+            NotificationManager.success("L'agent a été créé avec succès");
+            props.history.push(BANK.PARTY.AGENT.LIST);
         }).catch((err) => {
             console.log(err);
-            NotificationManager.error("Une erreur est survenu lors du partenariat");
+            NotificationManager.error("Une erreur est survenu lors de l'agent");
         }).finally(() => {
-            props.setRequestGlobalAction(false);
-        })
-    }
-
-    const findUserByMembership = () => {
-        props.setRequestGlobalAction(true);
-        UserService.findUserByReference(membership)
-        .then(response => {
-            setMember(response);
-        })
-        .catch((err) => {
-            console.log(err);
-            NotificationManager.error("Ce numéro utilisateur est inexistant");
-        })
-        .finally(() => {
             props.setRequestGlobalAction(false);
         })
     }
@@ -109,62 +113,38 @@ const Create = (props) => {
         <>
             <RctCollapsibleCard>
                 <Form onSubmit={onSubmit}>
-
-                <FormGroup className="has-wrapper">
-                        <InputLabel className="text-left" htmlFor="membership">
-                            Numéro utilisateur
+                    
+                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                        <InputLabel className="text-left">
+                            Potentiel agents
                         </InputLabel>
-                        <InputStrap
-                            required
-                            type="text"
-                            id="membership"
-                            name='membership'
-                            value={membership}
-                            className="input-lg"
-                            onChange={(e) => setMembership(e.target.value)}
+                        <Autocomplete
+                            id="combo-box-demo"
+                            options={agents}
+                            value={selectedAgent}
+                            onChange={(__, item) => {
+                                setSelectedAgent(item);
+                            }}
+                            getOptionLabel={(option) => option.label}
+                            renderInput={(params) => <TextField {...params} variant="outlined" />}
                         />
-                    </FormGroup>
-
-                    {member && (
-                        <>
-                            <FormGroup className="has-wrapper">
-                                <InputStrap
-                                    disabled
-                                    className="input-lg"
-                                    value={member.userName}
-                                />
-                            </FormGroup>
-                            <FormGroup className="has-wrapper">
-                                <InputStrap
-                                    disabled
-                                    className="input-lg"
-                                    value={member.email}
-                                />
-                            </FormGroup>
-                            <FormGroup className="has-wrapper">
-                                <InputStrap
-                                    disabled
-                                    className="input-lg"
-                                    value={getReferralTypeLabel(member.referralType)}
-                                />
-                            </FormGroup>
-                        </>
-                    )}
-
-                    <FormGroup className="has-wrapper">
-                        <InputLabel className="text-left" htmlFor="label">
-                            Nom commercial
+                    </div>
+                    
+                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                        <InputLabel className="text-left">
+                            Compte de compensation
                         </InputLabel>
-                        <InputStrap
-                            required
-                            id="label"
-                            type="text"
-                            name='label'
-                            className="input-lg"
-                            value={commercialName}
-                            onChange={(e) => setCommercialName(e.target.value)}
+                        <Autocomplete
+                            id="combo-box-demo"
+                            options={accounts}
+                            value={selectedAccount}
+                            onChange={(__, item) => {
+                                setSelectedAccount(item);
+                            }}
+                            getOptionLabel={(option) => option.label}
+                            renderInput={(params) => <TextField {...params} variant="outlined" />}
                         />
-                    </FormGroup>
+                    </div>
 
                     <div className="col-md-12 col-sm-12 has-wrapper mb-30">
                         <InputLabel className="text-left">
@@ -177,6 +157,22 @@ const Create = (props) => {
                             value={selectedPrestations}
                             onChange={(__, items) => {
                                 setSelectedPrestations(items);
+                            }}
+                            getOptionLabel={(option) => option.label}
+                            renderInput={(params) => <TextField {...params} variant="outlined" />}
+                        />
+                    </div>
+
+                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                        <InputLabel className="text-left">
+                            Méthode de règlement
+                        </InputLabel>
+                        <Autocomplete
+                            id="combo-box-demo"
+                            options={PAYMENT_METHODS}
+                            value={paymentMethod}
+                            onChange={(__, item) => {
+                                setPaymentMethod(item);
                             }}
                             getOptionLabel={(option) => option.label}
                             renderInput={(params) => <TextField {...params} variant="outlined" />}
@@ -216,15 +212,6 @@ const Create = (props) => {
                     </div>
 
                     <FormGroup>
-                        <Button
-                            color="primary"
-                            variant="contained"
-                            disabled={!membership}
-                            onClick={() => findUserByMembership()}
-                            className="text-white font-weight-bold mr-20 bg-blue"
-                        >
-                            Vérifier l'utilisateur
-                        </Button>
                         <Button
                             color="primary"
                             variant="contained"

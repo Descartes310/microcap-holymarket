@@ -8,6 +8,10 @@ export default class BankService {
         return makeRequest('get', Routes.GET_PRESTATIONS);
     }
 
+    static getFundAccounts(): Promise<any> {
+        return makeRequest('get', Routes.GET_FUND_ACCOUNTS);
+    }
+
     static createPrestation(data: any): Promise<any> {
         return makeRequest('post', Routes.CREATE_PRESTATION, data);
     }
