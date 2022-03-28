@@ -31,4 +31,16 @@ export default class BankService {
     static createAgent(data: any): Promise<any> {
         return makeRequest('post', Routes.CREATE_AGENT, data);
     }
+
+    static getAgents(): Promise<any> {
+        return makeRequest('get', Routes.GET_PARTIES);
+    }
+
+    static createCounter(data: any): Promise<any> {
+        return makeRequest('post', Routes.CREATE_COUNTER, data);
+    }
+
+    static getCounters(): Promise<any> {
+        return makeRequest('get', Routes.GET_COUNTERS);
+    }
 }

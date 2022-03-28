@@ -386,6 +386,11 @@ export const BANK = {
             SELF: '/bank/party/agents',
             LIST: '/bank/party/agents/list',
             CREATE: '/bank/party/agents/create',
+        },
+        COUNTER: {
+            SELF: '/bank/party/counters',
+            LIST: '/bank/party/counters/list',
+            CREATE: '/bank/party/counters/create',
         }
     }
 } as const;

@@ -8,36 +8,36 @@ import React, { useState, useEffect } from 'react';
 
 const List = (props) => {
 
-    const [parties, setParties] = useState([]);
+    const [counters, setCounters] = useState([]);
 
     useEffect(() => {
-        getParties();
+        getCounters();
     }, []);
 
-    const getParties = () => {
+    const getCounters = () => {
         props.setRequestGlobalAction(true),
-        BankService.getAgents()
-        .then(response => setParties(response))
+        BankService.getCounters()
+        .then(response => setCounters(response))
         .finally(() => props.setRequestGlobalAction(false))
     }
 
     const goToCreate = () => {
-        props.history.push(BANK.PARTY.AGENT.CREATE);
+        props.history.push(BANK.PARTY.COUNTER.CREATE);
     }
 
     return (
         <>
             <CustomList
-                list={parties}
+                list={counters}
                 loading={false}
                 onAddClick={() => goToCreate()}
-                itemsFoundText={n => `${n} intermédiaires trouvés`}
+                itemsFoundText={n => `${n} guichets trouvés`}
                 renderItem={list => (
                     <>
                         {list && list.length === 0 ? (
                             <div className="d-flex justify-content-center align-items-center py-50">
                                 <h4>
-                                    Aucun intermédiaires trouvés
+                                    Aucun guichets trouvés
                                 </h4>
                             </div>
                         ) : (
@@ -45,7 +45,8 @@ const List = (props) => {
                                 <table className="table table-hover table-middle mb-0">
                                     <thead>
                                         <tr>
-                                            <th className="fw-bold">Nom commercial</th>
+                                            <th className="fw-bold">Désignation</th>
+                                            <th className="fw-bold">Description</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -54,7 +55,14 @@ const List = (props) => {
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{item.commercialName}</h4>
+                                                            <h4 className="m-0 fw-bold text-dark">{item.label}</h4>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="media">
+                                                        <div className="media-body pt-10">
+                                                            <h4 className="m-0 fw-bold text-dark">{item.description}</h4>
                                                         </div>
                                                     </div>
                                                 </td>

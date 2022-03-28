@@ -65,6 +65,15 @@ export default class Permission extends BaseEnum {
         userFileType: {
             "name": "SETTING_USER_FILE_TYPE_PRIVILEGE"
         },
+        blog: {
+            "name": "SETTING_BLOG_PRIVILEGE"
+        },
+        event: {
+            "name": "SETTING_EVENT_PRIVILEGE"
+        },
+        pionier: {
+            "name": "SETTING_PIONIER_PRIVILEGE"
+        },
     };
 
     static marketplace = {
@@ -153,6 +162,15 @@ export default class Permission extends BaseEnum {
         },
         account: {
             "name": "BROKER_ACCOUNT_PRIVILEGE"
+        }
+    };
+
+    static bank = {
+        administration: {
+            "name": "BANK_SERVICE_ADMINISTRATION_PRIVILEGE"
+        },
+        intermediary: {
+            "name": "BANK_SERVICE_INTERMEDIARY_PRIVILEGE"
         }
     };
 

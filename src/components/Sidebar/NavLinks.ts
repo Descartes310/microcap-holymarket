@@ -450,7 +450,10 @@ export default [
       "menu_title": "Services banquaires",
       "menu_icon": "zmdi zmdi-balance",
       "new_item": false,
-      "permissions": null,
+      "permissions": [
+         Permission.bank.administration.name,
+         Permission.bank.intermediary.name,
+      ],
       "profiles": ['GROUP'],
       "child_routes": [
          {
@@ -459,13 +462,13 @@ export default [
             "path": BANK.PARTY.SELF,
             "permissions": null,
             "profiles": ['GROUP'],
-            "child_routes": null
+            "child_routes": [Permission.bank.intermediary.name]
          },
          {
             "menu_title": "Administration banquaire",
             "new_item": false,
             "path": BANK.ADMIN.SELF,
-            "permissions": null,
+            "permissions": [Permission.bank.administration.name],
             "profiles": ['GROUP'],
             "child_routes": null
          }
@@ -501,7 +504,7 @@ export default [
             "menu_title": "Blog",
             "new_item": false,
             "path": SETTING.ARTICLE.LIST,
-            "permissions": [Permission.setting.unit.name],
+            "permissions": [Permission.setting.blog.name],
             "profiles": ['GROUP'],
             "child_routes": null
          },
@@ -509,7 +512,7 @@ export default [
             "menu_title": "Evènements",
             "new_item": false,
             "path": SETTING.EVENT.LIST,
-            "permissions": [Permission.setting.unit.name],
+            "permissions": [Permission.setting.event.name],
             "profiles": ['GROUP'],
             "child_routes": null
          },
@@ -517,7 +520,7 @@ export default [
             "menu_title": "Nos pionniers",
             "new_item": false,
             "path": SETTING.PIONIER.LIST,
-            "permissions": [Permission.setting.unit.name],
+            "permissions": [Permission.setting.pionier.name],
             "profiles": ['GROUP'],
             "child_routes": null
          },
@@ -525,7 +528,7 @@ export default [
             "menu_title": "Nos agents",
             "new_item": false,
             "path": SETTING.AGENT.LIST,
-            "permissions": [Permission.setting.unit.name],
+            "permissions": [Permission.setting.pionier.name],
             "profiles": ['GROUP'],
             "child_routes": null
          }

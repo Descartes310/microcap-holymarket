@@ -698,6 +698,7 @@ export const getNodeFromPermissions = (permissions: any) => {
     if (permissions) {
         let result = [];
         let level = { result };
+        console.log(permissions);
         permissions.forEach(permission => {
             permission.folders.split('/').reduce((r, name, i, a) => {
                 if (!r[name]) {
@@ -707,9 +708,9 @@ export const getNodeFromPermissions = (permissions: any) => {
                 if (i === (a.length - 1))
                     r[name].result.push({ value: permission.id, label: permission.label });
                 return r[name];
-            }, level)
+            }, level);
         })
-
+        console.log(result);
         return result;
     }
     return [];
@@ -759,6 +760,8 @@ export const translatePermissionFolder = (path) => {
             return 'Financement';
         case 'BROKER':
             return 'Broker';
+        case 'BANK_SERVICE':
+            return 'Service banquaire';
         default:
             return path;
     }
