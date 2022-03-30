@@ -42,6 +42,7 @@ const Create = (props) => {
     const [maximumByUser, setMaximumByUser] = useState(null);
     const [isAggregation, setIsAggregation] = useState(false);
     const [accountTypeUnit, setAccountTypeUnit] = useState(null);
+    const [isMirrorAccount, setIsMirrorAccount] = useState(false);
     const [minAccountbalance, setMinAccountBalance] = useState(null);
     const [maxAccountBalance, setMaxAccountBalance] = useState(null);
     const [associatedProducts, setAssociatedProducts] = useState([]);
@@ -125,6 +126,7 @@ const Create = (props) => {
         if (isAccount) {
             data.minBalance = minAccountbalance;
             data.maxBalance = maxAccountBalance;
+            data.mirrorAccount = isMirrorAccount;
             data.accountUnitReference = accountUnit.reference;
         }
 
@@ -434,6 +436,17 @@ const Create = (props) => {
                                     />
                                 </div>
                             </div>
+                            <FormGroup className="col-sm-12 has-wrapper">
+                                <FormControlLabel control={
+                                    <Checkbox
+                                        color="primary"
+                                        checked={isMirrorAccount}
+                                        onChange={() => setIsMirrorAccount(!isMirrorAccount)}
+                                    />
+                                } label={'Marquer comme compte mirroir'}
+                                />
+                            </FormGroup>
+
                             <FormGroup className="col-sm-12 has-wrapper">
                                 <FormControlLabel control={
                                     <Checkbox

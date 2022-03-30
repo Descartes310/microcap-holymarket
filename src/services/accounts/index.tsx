@@ -15,6 +15,10 @@ export default class AccountService {
         return makeRequest('post', Routes.DEBIT_ACCOUNT(id), data);
     }
 
+    static activeAccount(id, data: any): Promise<any> {
+        return makeRequest('put', Routes.ACTIVATE_ACCOUNT(id), data);
+    }
+
     static getAccount(id): Promise<any> {
         var regExp = /[a-zA-Z]/g;
         if(!regExp.test(id)) {

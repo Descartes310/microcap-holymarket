@@ -1,5 +1,6 @@
 import { connect } from "react-redux";
 import React, { Component } from 'react';
+import AccountService from "Services/accounts";
 import { setRequestGlobalAction } from "Actions";
 import NotificationType from "Enums/NotificationType";
 import { List as ListMaterial } from '@material-ui/core';
@@ -33,8 +34,19 @@ class Unread extends Component {
      }
 
     onActivationClick = (notification) => {
-        console.log(notification);
         this.setState({ showActivationBox: true, notification })
+    };
+
+    onFundingActivationClick = (notification) => {
+        let accountId = notification.details.find(nd => nd.type === "ACCOUNT_ID")?.value;
+        let orderId = notification.details.find(nd => nd.type === "ORDER_ID")?.value;
+        let notificationId = notification.id;
+        this.props.setRequestGlobalAction(true);
+        AccountService.activeAccount(accountId, { orderId, notificationId }).then(() => {
+            window.location.reload();
+        }).finally(() => {
+            this.props.setRequestGlobalAction(false);
+        })
     };
 
     render() {
@@ -67,6 +79,7 @@ class Unread extends Component {
                                             reloadNotifications={this.getNotifications}
                                             setRequestGlobalAction={this.props.setRequestGlobalAction}
                                             onActivationClick={() => this.onActivationClick(notification)}
+                                            onFundingActivationClick={() => this.onFundingActivationClick(notification)}
                                         />
                                     ))}
                                 </ListMaterial>

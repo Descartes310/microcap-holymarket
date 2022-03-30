@@ -8,29 +8,37 @@ import React, { useState, useEffect } from 'react';
 import { getOrderStatusItem } from 'Helpers/helpers';
 import TimeFromMoment from 'Components/TimeFromMoment'
 import IconButton from '@material-ui/core/IconButton';
+import AccountInformationModal from './accountInformations';
 import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
 import { MARKETPLACE, joinUrlWithParamsId } from 'Url/frontendUrl';
 
 const List = (props) => {
 
     const [purchases, setPurchases] = useState([]);
+    const [selectedOrder, setSelectedOrder] = useState(null);
+    const [showAccountInfoModal, setShowAccountInfoModal] = useState(false);
 
     useEffect(() => {
         getPurchases();
     }, []);
 
     const getPurchases = () => {
-        props.setRequestGlobalAction(true),
-            OrderService.getPurchases({ status: ['PENDING'] })
-                .then(response => setPurchases(response))
-                .finally(() => props.setRequestGlobalAction(false))
+        props.setRequestGlobalAction(true);
+        OrderService.getPurchases({ status: ['PENDING'] })
+        .then(response => setPurchases(response))
+        .finally(() => props.setRequestGlobalAction(false));
     }
 
-    const approvedOrder = (id, status) => {
-        props.setRequestGlobalAction(true),
-            OrderService.approvedOrder(id, { status })
-                .then(response => getPurchases())
-                .finally(() => props.setRequestGlobalAction(false))
+    const approvedOrder = (order, status) => {
+        setSelectedOrder(order);
+        if(order.mirrorAccount && status) {
+            setShowAccountInfoModal(true);
+        } else {
+            props.setRequestGlobalAction(true);
+            OrderService.approvedOrder(order.id, { status })
+            .then(() => getPurchases())
+            .finally(() => props.setRequestGlobalAction(false))
+        }
     }
 
     return (
@@ -120,10 +128,10 @@ const List = (props) => {
                                                     </Button>
                                                 </td>
                                                 <td>
-                                                <IconButton className="text-success" aria-label="Accepter" onClick={() => approvedOrder(item.id, true)}>
+                                                <IconButton className="text-success" aria-label="Accepter" onClick={() => approvedOrder(item, true)}>
                                                     <i className="zmdi zmdi-check"></i>
                                                 </IconButton>
-                                                <IconButton className="text-danger" aria-label="Refuser" onClick={() => approvedOrder(item.id, false)}>
+                                                <IconButton className="text-danger" aria-label="Refuser" onClick={() => approvedOrder(item, false)}>
                                                     <i className="zmdi zmdi-delete"></i>
                                                 </IconButton>
                                                 </td>
@@ -136,6 +144,16 @@ const List = (props) => {
                     </>
                 )}
             />
+            { showAccountInfoModal && (
+                <AccountInformationModal
+                    order={selectedOrder}
+                    show={showAccountInfoModal}
+                    onClose={() => {
+                        setShowAccountInfoModal(false);
+                    }}
+                    title={"Informations du compte"}
+                />
+            )}
         </>
     );
 }

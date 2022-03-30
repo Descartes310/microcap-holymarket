@@ -5,6 +5,7 @@ export default class NotificationType extends BaseEnum {
     static REGISTRATION = 'REGISTRATION';
     static PIECE_REQUEST = 'PIECE_REQUEST';
     static COMMUNITY_INVITATION = 'COMMUNITY_INVITATION';
+    static ACTIVATE_FUNDING_ACCOUNT = 'ACTIVATE_FUNDING_ACCOUNT';
 
     static READ = 'READ';
     static UNREAD = 'UNREAD';

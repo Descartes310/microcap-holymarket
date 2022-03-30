@@ -27,11 +27,9 @@ const Shop = (props) => {
 			<PageTitleBar title={'MicroCap Shop'} />
 			<div className="ais-InstantSearch">
 				<div className="row">
-					<div className="col-lg-12 col-md-12 col-sm-12 d-flex">
-							{ products.map(product => (
-								<Hit product={product} />
-							))}
-					</div>
+					{ products.map(product => (
+						<Hit product={product} />
+					))}
 				</div>
 			</div>
 		</div>

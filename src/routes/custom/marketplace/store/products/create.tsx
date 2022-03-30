@@ -108,7 +108,7 @@ const Create = (props) => {
 
         let data: any = {
             label, code, description, price, range: range.value,
-            indirectSell: isIndirectSell, acceptManyPayment: acceptManyPayment,
+            indirectSell: isIndirectSell || product?.mirrorAccount, acceptManyPayment: acceptManyPayment,
             productModelId: product.id, commercialOfferId: commercialOffer.id
         }
 
@@ -347,7 +347,8 @@ const Create = (props) => {
                                 <FormControlLabel control={
                                     <Checkbox
                                         color="primary"
-                                        checked={isIndirectSell}
+                                        checked={isIndirectSell || product?.mirrorAccount}
+                                        disabled={product?.mirrorAccount}
                                         onChange={() => {
                                             if(isIndirectSell) {
                                                 setSelectedPieces([]);
@@ -359,7 +360,7 @@ const Create = (props) => {
                                 } label={'Produit en vente indirecte'}
                                 />
                             </FormGroup>
-                            {isIndirectSell && (
+                            {(isIndirectSell || product?.mirrorAccount) && (
                                 <div className="row">
                                     <div className="col-md-12 col-sm-12 has-wrapper mb-30">
                                         <InputLabel className="text-left">
@@ -382,7 +383,7 @@ const Create = (props) => {
                                 </div>
                             )}
 
-                            {isIndirectSell && selectedProcesses.map(p => p.value).includes('PIECES') && (
+                            {(isIndirectSell || product?.mirrorAccount) && selectedProcesses.map(p => p.value).includes('PIECES') && (
                                 <div className="row">
                                     <div className="col-md-12 col-sm-12 has-wrapper mb-30">
                                         <InputLabel className="text-left">
