@@ -468,7 +468,7 @@ export default [
             "menu_title": "Administration banquaire",
             "new_item": false,
             "path": BANK.ADMIN.SELF,
-            "permissions": null,
+            "permissions": [Permission.bank.administration.name],
             "profiles": ['GROUP'],
             "child_routes": null
          }
