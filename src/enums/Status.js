@@ -1,9 +1,11 @@
 import BaseEnum from './BaseEnum';
 
 export default class Status extends BaseEnum {
-    static PENDING = 'PENDING';
-    static CANCELLED = 'CANCELLED';
-    static ACCEPTED = 'ACCEPTED';
     static EMPTY = 'EMPTY';
+    static PENDING = 'PENDING';
+    static ACCEPTED = 'ACCEPTED';
+    static REJECTED = 'REJECTED';
+    static CANCELLED = 'CANCELLED';
     static CONFIRMED = 'CONFIRMED';
+    static SUSPENDED = 'SUSPENDED';
 }

@@ -1,11 +1,11 @@
 /**
  * Nav Menu Item
  */
-import React, { Fragment, Component } from 'react';
-import { NavLink, withRouter } from 'react-router-dom';
 import classnames from 'classnames';
-import IntlMessages from 'Util/IntlMessages';
 import Chip from '@material-ui/core/Chip';
+import IntlMessages from 'Util/IntlMessages';
+import React, { Fragment, Component } from 'react';
+import {NavLink, withRouter} from 'react-router-dom';
 
 //Helper
 import { getAppLayout } from "Helpers/helpers";

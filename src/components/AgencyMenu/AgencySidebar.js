@@ -1,11 +1,11 @@
 /**
  * Sidebar Content
  */
+import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import List from '@material-ui/core/List';
+import {withRouter} from 'react-router-dom';
 import ListSubheader from '@material-ui/core/ListSubheader';
-import { withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
 
 import IntlMessages from 'Util/IntlMessages';
 

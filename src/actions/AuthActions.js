@@ -10,25 +10,18 @@ import {
 
 import api from './../api';
 
-import {PROFILE} from 'Url/backendUrl';
+import { AUTH } from 'Url/backendUrl';
 
 /**
  * Redux Action get auth information
  */
-export const setAuthUser = (serviceNumber = null) => (dispatch) => {
+export const setAuthUser = () => (dispatch) => {
     dispatch({ type: SET_AUTH_USER });
 
     // Define branch url
     const branchUrl = window.location.host;
-    const access = localStorage.getItem('access');
-    let accessId = "undefined";
-    if (access) {
-        accessId = JSON.parse(access).id;
-    }
 
-    const url = serviceNumber === null
-        ?  `${PROFILE.INFORMATION}?branch_url=${branchUrl}`
-        : `${PROFILE.INFORMATION_WITH_SERVICE_NUMBER}?access_id=${accessId}&service_number=${serviceNumber}&branch_url=${branchUrl}`;
+    const url = `${AUTH.KYC}?branch_url=${branchUrl}`;
 
     return api
         .get(url, {skipError: true})
@@ -37,8 +30,8 @@ export const setAuthUser = (serviceNumber = null) => (dispatch) => {
             return Promise.resolve();
         })
         .catch((error) => {
+            console.error(error);
             dispatch({ type: SET_AUTH_USER_FAILURE });
-            // NotificationManager.error(error.message);
             return Promise.reject();
         });
 };

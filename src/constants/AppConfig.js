@@ -17,6 +17,21 @@ const backendBaseUrl = (function (mode) {
    }
 })(process.env.BACKEND_MODE);
 
+const stripePublishableKey = (function (mode) {
+   switch (mode) {
+      case 'DEV1':
+         return process.env.STRIPE_KEY_TEST;
+      case 'DEV2':
+         return process.env.STRIPE_KEY_TEST;
+      case 'PRE_PROD':
+         return process.env.STRIPE_KEY_TEST;
+      case 'PROD':
+         return process.env.STRIPE_KEY_LIVE;
+      default:
+         return process.env.STRIPE_KEY_TEST;
+   }
+})(process.env.BACKEND_MODE);
+
 const AppConfig = {
    appLogo: require('Assets/identity/logomicrocap.png'),          // App Logo
    brandName: 'Microcap',                                    // Brand Name
@@ -43,74 +58,14 @@ const AppConfig = {
          icon: 'en',
       },
       {
-         languageId: 'chinese',
-         locale: 'zh',
-         name: 'Chinese',
-         icon: 'zh',
-      },
-      {
-         languageId: 'russian',
-         locale: 'ru',
-         name: 'Russian',
-         icon: 'ru',
-      },
-      {
-         languageId: 'hebrew',
-         locale: 'he',
-         name: 'Hebrew',
-         icon: 'he',
-      },
-      {
          languageId: 'french',
          locale: 'fr',
          name: 'French',
          icon: 'fr',
-      },
-      {
-         languageId: 'saudi-arabia',
-         locale: 'ar',
-         name: 'Arabic',
-         icon: 'ar',
-      },
-      {
-         languageId: 'german',
-         locale: 'de',
-         name: 'German',
-         icon: 'de',
-      },
-      {
-         languageId: 'spanish',
-         locale: 'es',
-         name: 'Spanish',
-         icon: 'es',
-      },
-      {
-         languageId: 'japanese',
-         locale: 'ja',
-         name: 'Japanese',
-         icon: 'ja',
-      },
-      {
-         languageId: 'korean',
-         locale: 'ko',
-         name: 'Korean',
-         icon: 'ko',
-      },
-      {
-         languageId: 'italian',
-         locale: 'it',
-         name: 'Italian',
-         icon: 'it',
-      },
-      {
-         languageId: 'hungarian',
-         locale: 'hu',
-         name: 'Hungarian',
-         icon: 'hu',
       }
    ],
-   enableUserTour: process.env.NODE_ENV === 'production' ? true : false,  // Enable / Disable User Tour
-   copyRightText: 'Microcap © 2021 All Rights Reserved.',      // Copy Right Text
+   enableUserTour: false,  // Enable / Disable User Tour
+   copyRightText: 'Microcap © 2022 All Rights Reserved.',      // Copy Right Text
    // light theme colors
    themeColors: {
       'primary': '#FFB70F',
@@ -138,12 +93,16 @@ const AppConfig = {
       clientSecret: 'geloka-secret',
       grantType: 'password',
    },
+   payments: {
+      stripe: stripePublishableKey,
+      version: '1.0'
+   },
 
    api: {
       baseUrl: backendBaseUrl,
       version: '1.0',
       // forbiddenCode: 401,
-     },
-   };
+   },
+};
 
 export default AppConfig;

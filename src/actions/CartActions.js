@@ -1,9 +1,10 @@
 import {
+    CART_CLEAR,
 	CART_ADD_ITEM,
+    CART_INIT_ITEM,
 	CART_UPDATE_ITEM,
 	CART_REMOVE_ITEM,
-    CART_CLEAR,
-    CART_INIT_ITEM
+	ON_QUANTITY_CHANGE,
 } from './types';
 import store from "../store";
 
@@ -23,6 +24,12 @@ export const onUpdateItemToCart = (item) => ({
 	type: CART_UPDATE_ITEM,
 	authId: store.getState().authUser.data.id,
 	payload: item
+});
+
+export const onChangeProductQuantity = (quantity, id) => ({
+	type: ON_QUANTITY_CHANGE,
+	authId: store.getState().authUser.data.id,
+	payload: { id, quantity }
 });
 
 export const onClearCart = () => ({

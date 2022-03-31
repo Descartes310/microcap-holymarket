@@ -33,16 +33,12 @@ const mapStateToProps = (
     {
         requestGlobalLoader,
         tokens,
-        authUser,
-        catalogProducts,
-        branchProducts,
+        authUser
     }
 ) => ( {
     requestGlobalLoader,
     loading: tokens.loading
         || authUser.loading
-        || catalogProducts.loading
-        || branchProducts.loading
 });
 
 export default connect(mapStateToProps, {setRequestGlobalAction})(RequestGlobalLoader);

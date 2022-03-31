@@ -3,6 +3,8 @@ import {connect} from "react-redux";
 import QueueAnim from 'rc-queue-anim';
 import {injectIntl} from "react-intl";
 import {useForm} from "react-hook-form";
+import {useQuery} from "Helpers/helpers";
+import UserService from 'Services/users';
 import AppConfig from 'Constants/AppConfig';
 import { Form, FormGroup } from 'reactstrap';
 import IntlMessages from "Util/IntlMessages";
@@ -16,7 +18,6 @@ import {minMaxValidatorObject} from "Helpers/validator";
 import {NotificationManager} from "react-notifications";
 import {resetPassword, setRequestGlobalAction} from "Actions";
 import ErrorInputComponent from "Components/ErrorInputComponent";
-import {requestErrorProcessing, useQuery} from "Helpers/helpers";
 
 const ResetPassword = ({intl, loading, setRequestGlobalAction, history}) => {
     const { register, errors, handleSubmit } = useForm();
@@ -26,20 +27,29 @@ const ResetPassword = ({intl, loading, setRequestGlobalAction, history}) => {
     const isTokenInvalid = (!token === false) || token === '';
 
     const onSubmit = ({password}) => {
+
         if (!isTokenInvalid) {
             NotificationManager.error(intl.formatMessage({id: "auth.resetPassword.errorToken"}));
             return;
         }
 
         setRequestGlobalAction(true);
-        resetPassword({password, token})
+  
+        let datas = {
+            token,
+            password
+        };
+  
+        UserService.resetPassword(datas)
             .then(() => {
                 NotificationManager.success(intl.formatMessage({id: "auth.resetPassword.successText"}));
                 history.push(AUTH.LOGIN);
             })
-            .catch(error => null)
+            .catch(() => {
+              NotificationManager.error("Une erreur est survenu, veuillez réessayer plus tard.");
+            })
             .finally(() =>  setRequestGlobalAction(false));
-    };
+     };
 
     return (
         <QueueAnim type="bottom" duration={2000}>

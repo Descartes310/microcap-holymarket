@@ -7,7 +7,6 @@ import Slider from "react-slick";
 // api
 import api from 'Api';
 import sessionSlider from '../../services/sessionSlider';
-import travail from 'Assets/img/travail1.jpg'
 
 export default class SessionSlider extends Component {
 
@@ -24,11 +23,9 @@ export default class SessionSlider extends Component {
    getSessionUsersData() {
       api.get('testimonials.js')
          .then((response) => {
-            //console.log(response)
             this.setState({ sessionUsersData: response.data });
          })
          .catch(error => {
-            // error handling
          })
    }
 
@@ -60,9 +57,6 @@ export default class SessionSlider extends Component {
                         height="588"
                      />
                      <div className="rct-img-overlay">
-                        {/*<h5 className="client-name">{data.name}</h5>
-                        <span>{data.designation}</span>
-                        <p className="mb-0 fs-14">{data.body}</p>*/}
                      </div>
                   </div>
                 ))}
