@@ -19,7 +19,6 @@ const Show = (props) => {
         props.setRequestGlobalAction(true)
         ProjectService.getProjectById(props.match.params.id)
         .then(response => {
-            console.log(response);
             setProject(response)
         })
         .catch((error) => {
@@ -44,6 +43,19 @@ const Show = (props) => {
                         </div>
                         {
                             project.items.map(item => (
+                                item.value === "COMPLEX_VALUE" && item.subValues?.length >= 0 ?
+                                <div className='mt-30'>
+                                    <h3 className="fw-500" style={{ fontSize: '1.3rem' }}>{item.projectItem.label}</h3>
+                                    { item.subValues.map(subValue => (
+                                        <>
+                                            <h4 className="fw-500" style={{ fontSize: '1.2rem', paddingLeft: 20 }}>{subValue.projectItem.label}</h4>
+                                            <p style={{ fontSize: '1.1rem', paddingLeft: 40 }}>
+                                                <span dangerouslySetInnerHTML={{__html: subValue.value}}></span>
+                                            </p>
+                                        </>
+                                    ))}
+                                </div>
+                                :
                                 <div className='mt-30'>
                                     <h3 className="fw-500" style={{ fontSize: '1.3rem' }}>{item.projectItem.label}</h3>
                                     <p style={{ fontSize: '1.2rem', paddingLeft: 20 }}>

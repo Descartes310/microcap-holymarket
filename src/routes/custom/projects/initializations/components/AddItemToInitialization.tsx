@@ -40,7 +40,7 @@ const AddItemToInitialization = (props) => {
     }, [item]);
 
     const getProjectItems = () => {
-        ProjectService.getProjectItems()
+        ProjectService.getProjectItems(['SIMPLE', 'COMPLEX'])
             .then((response) => setItems(response))
             .catch((err) => {
                 console.log(err);

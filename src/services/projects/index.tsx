@@ -24,8 +24,8 @@ export default class ProjectService {
         return makeRequest('post', Routes.CREATE_PROJECT_POST, data);
     }
 
-    static getProjectItems(): Promise<any> {
-        return makeRequest('get', Routes.GET_PROJECT_ITEMS);
+    static getProjectItems(types): Promise<any> {
+        return makeRequest('get', Routes.GET_PROJECT_ITEMS, {types});
     }
 
     static getProjectMyItems(): Promise<any> {
@@ -58,5 +58,13 @@ export default class ProjectService {
 
     static createProjectActivity(id, data: any, config: any): Promise<any> {
         return makeRequest('post', Routes.CREATE_PROJECT_ACTIVITY(id), data, config);
+    }
+
+    static createComplexProjectItem(data: any): Promise<any> {
+        return makeRequest('post', Routes.CREATE_PROJECT_ITEM_COMPLEX, data);
+    }
+
+    static updateComplexProjectItem(id: number, data: any): Promise<any> {
+        return makeRequest('put', Routes.UPDATE_PROJECT_ITEM_COMPLEX(id), data);
     }
 }

@@ -1,50 +1,72 @@
 import { connect } from 'react-redux';
-import React, { useState } from 'react';
+import { PROJECT } from 'Url/frontendUrl';
 import { withRouter } from "react-router-dom";
 import Button from '@material-ui/core/Button';
-import { MARKETPLACE } from 'Url/frontendUrl';
-import CatalogService from 'Services/catalogs';
+import ProjectService from 'Services/projects';
 import { setRequestGlobalAction } from 'Actions';
+import React, { useState, useEffect } from 'react';
+import TextField from '@material-ui/core/TextField';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import { NotificationManager } from 'react-notifications';
-import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import {Form, FormGroup, Input as InputStrap} from 'reactstrap';
+import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
 
 const Create = (props) => {
 
     const [label, setLabel] = useState('');
-    const [description, setDescription] = useState('');
+    const [description, setDescription] = useState('');    
+    const [projectItems, setProjectItems] = useState([]);
+    const [selectedProjectItems, setSelectedProjectItems] = useState([]);
 
-    const onSubmit = () => {
-        if(!label)
-            return;
-            
-        var data = {
-            label: label,
-            type: 'DISTRIBUTION',
-            description: description
-        }
+    useEffect(() => {
+        getProjectItems();
+    }, []);
 
+    const getProjectItems = () => {
         props.setRequestGlobalAction(true);
-
-        CatalogService.createCatalog(data).then(() => {
-            NotificationManager.success('Le catalogue a été créé avec succès');
-            props.history.push(MARKETPLACE.CATAlOG.DISTRIBUTION.LIST);
-        })
+        ProjectService.getProjectItems(['SIMPLE'])
+        .then((response) => setProjectItems(response))
         .catch((err) => {
             console.log(err);
-            NotificationManager.success('Une erreur est survenues lors de la création du catalogue');
         })
         .finally(() => {
             props.setRequestGlobalAction(false);
         })
     }
 
+    const onSubmit = () => {
+        if (!label || selectedProjectItems.length <= 0)
+            return;
+
+        var data: any = {
+            label: label,
+            type: 'COMPLE',
+            ownerType: 'GENERAL',
+            description: description,
+            projectItemsIds: selectedProjectItems.map(spi => spi.id)
+        }
+
+        props.setRequestGlobalAction(true);
+
+        ProjectService.createComplexProjectItem(data).then(() => {
+            NotificationManager.success('Ouvrage créé avec succès');
+            props.history.push(PROJECT.ITEM.COMPLEX.LIST);
+        })
+        .catch((err) => {
+            console.log(err);
+            NotificationManager.success('Une erreur est survenues lors de la création de ouvrage');
+        })
+        .finally(() => {
+            props.setRequestGlobalAction(false);
+        });
+    }
+
     return (
         <>
             <RctCollapsibleCard>
                 <Form onSubmit={onSubmit}>
-                    <FormGroup className="has-wrapper">
+                <FormGroup className="has-wrapper">
                         <InputLabel className="text-left" htmlFor="label">
                             Label
                         </InputLabel>
@@ -72,6 +94,22 @@ const Create = (props) => {
                             onChange={(e) => setDescription(e.target.value)}
                         />
                     </FormGroup>
+                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                        <InputLabel className="text-left">
+                            Ouvrages à inclure
+                        </InputLabel>
+                        <Autocomplete
+                            multiple
+                            id="combo-box-demo"
+                            options={projectItems}
+                            value={selectedProjectItems}
+                            onChange={(__, items) => {
+                                setSelectedProjectItems(items);
+                            }}
+                            getOptionLabel={(option) => option.label}
+                            renderInput={(params) => <TextField {...params} variant="outlined" />}
+                        />
+                    </div>
                     <FormGroup>
                         <Button
                             color="primary"

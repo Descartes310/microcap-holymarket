@@ -27,7 +27,7 @@ const Create = (props) => {
 
     const getProjectItems = () => {
         props.setRequestGlobalAction(true);
-        ProjectService.getProjectItems()
+        ProjectService.getProjectItems(['SIMPLE'])
             .then((response) => setProjectItems(response))
             .catch((err) => {
                 console.log(err);

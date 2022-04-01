@@ -15,7 +15,7 @@ class Catalogues extends Component<any, any> {
         super(props);
         const defaultState = (function (url) {
             if (url.includes(PROJECT.ITEM.SIMPLE.LIST)) return 0;
-            else if (url.includes(PROJECT.ITEM.SIMPLE.LIST)) return 1;
+            else if (url.includes(PROJECT.ITEM.COMPLEX.LIST)) return 1;
             else return 0;
         })(window.location.pathname);
 
@@ -30,7 +30,7 @@ class Catalogues extends Component<any, any> {
         if (oldActivateTab !== value) {
             switch (value) {
                 case 0: return this.props.history.push(PROJECT.ITEM.SIMPLE.LIST);
-                case 1: return this.props.history.push(PROJECT.ITEM.SIMPLE.LIST);
+                case 1: return this.props.history.push(PROJECT.ITEM.COMPLEX.LIST);
                 default: return this.props.history.push(PROJECT.ITEM.SIMPLE.LIST);
             }
         }

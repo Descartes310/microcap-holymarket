@@ -28,31 +28,43 @@ const formats = [
     'code-block'
 ];
 
-const PolymorphComponent = ({ componentType, value, label, isRequired, handleOnChange, displayAddButton, displayDeleteButton, addInitializationItem, deleteInitializationItem }) => {
+const PolymorphComponent = ({ projectItem, componentType, value, label, isRequired, handleOnChange, displayAddButton, displayDeleteButton, addInitializationItem, deleteInitializationItem }) => {
 
-    const renderComponent = () => {
-        if (componentType === 'file') {
+    const renderComponent = (inputComponentType, inputIsRequired, inputLabel, inputValue, subItemId) => {
+        if (inputComponentType === 'file') {
             return (
                 <FormGroup className="col-md-12 col-sm-12 has-wrapper">
                     <InputLabel className="text-left" htmlFor="title">
-                        { label } {!isRequired && ' (optionnel)'}
+                        { inputLabel } {!inputIsRequired && ' (optionnel)'}
                     </InputLabel>
                     <FileUploader
                         classes="mw-100"
                         label="Sélectionner votre fichier ici"
                         handleChange={(file) => {
-                            handleOnChange(file);
+                            handleOnChange(projectItem, file, subItemId);
                         }} name="file" types={fileTypes} />
                 </FormGroup>
             );
         }
-        else if (componentType === 'textarea') {
+        else if (inputComponentType === 'textarea') {
             return (
                 <FormGroup className="col-md-12 col-sm-12 has-wrapper">
                     <InputLabel className="text-left" htmlFor="description">
-                        { label } {!isRequired && ' (optionnel)'}
+                        { inputLabel } {!inputIsRequired && ' (optionnel)'}
                     </InputLabel>
-                    <ReactQuill value={value} modules={modules} onChange={(e) => handleOnChange(e)} formats={formats} />
+                    <ReactQuill value={inputValue} modules={modules} onChange={(e) => handleOnChange(projectItem, e, subItemId)} formats={formats} />
+                </FormGroup>
+            )
+        }
+        else if (inputComponentType === 'complex') {
+            return (
+                <FormGroup className="col-md-12 col-sm-12 has-wrapper">
+                    <InputLabel className="text-left font-weight-bold mb-30" htmlFor="description">
+                        { inputLabel } {!inputIsRequired && ' (optionnel)'}
+                    </InputLabel>
+                    { projectItem.item.items.map(item => (
+                        renderComponent(item.inputType.toLowerCase(), inputIsRequired, item.label, null, item.id)
+                    )) }
                 </FormGroup>
             )
         }
@@ -60,7 +72,7 @@ const PolymorphComponent = ({ componentType, value, label, isRequired, handleOnC
             <FormGroup className="col-md-12 col-sm-12 has-wrapper">
                 <InputLabel className="text-left d-flex justify-content-between">
                     <span>
-                        { label } {!isRequired && ' (optionnel)'} 
+                        { inputLabel } {!inputIsRequired && ' (optionnel)'} 
                     </span>
                     <div className="d-flex justify-content-between" style={{width: 150}}>
                         { displayAddButton && <span className="cursor-pointer" onClick={() => addInitializationItem()} style={{color: '#0d5fc2', fontWeight: 600}}>Ajouter</span> }
@@ -68,19 +80,19 @@ const PolymorphComponent = ({ componentType, value, label, isRequired, handleOnC
                     </div>
                 </InputLabel>
                 <Input
-                    name={label}
-                    label={label}
-                    value={value}
+                    name={inputLabel}
+                    label={inputLabel}
+                    value={inputValue}
                     className="input-lg"
-                    type={componentType}
-                    onChange={(e) => handleOnChange(e.target.value)}
+                    type={inputComponentType}
+                    onChange={(e) => handleOnChange(projectItem, e.target.value, subItemId)}
                 />
             </FormGroup>
         );
     };
 
     return (
-        renderComponent()
+        renderComponent(componentType, isRequired, label, value, null)
     );
 };
 

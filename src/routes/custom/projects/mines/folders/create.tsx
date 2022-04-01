@@ -82,7 +82,7 @@ const Create = (props) => {
         ProjectService.getProjectInitializationItems(initialization.id)
             .then((response) => {
                 setInitializationItems(response);
-                setProjectItems(response.map(ii => { return { item: ii, value: null, id: new Date().getTime() } }))
+                setProjectItems(response.map(ii => { return { item: ii, value: null, id: new Date().getTime()+'-'+ii.inputType+'-'+ii.id, projectItemId: null } }))
             })
             .catch((err) => {
                 console.log(err);
@@ -98,7 +98,7 @@ const Create = (props) => {
             NotificationManager.error('Vous avez atteint le nombre limite d\'occurences');
             return;
         }
-        setProjectItems([...projectItems, {item, value: '', id: new Date().getTime()}]);
+        setProjectItems([...projectItems, {item, value: '', id: new Date().getTime()+'-'+item.inputType+'-'+item.id, projectItemId: null}]);
     }
 
     const deleteInitializationItem = (item) => {
@@ -115,17 +115,37 @@ const Create = (props) => {
        return pi.value;
     }
 
-    const setProjectItemValue = (item, value) => {
-        let existingItem = projectItems.find(pi => pi === item);
+    const setProjectItemValue = (item, value, subItemId) => {
+        let test = projectItems;
+        //console.log("projectItems => ", test);
+        //console.log("Item => ", item);
+        //console.log("value => ", value);
+        //console.log("subItem => ", subItem);
+        //console.log("subItem ID => ", subItemId);
+        let existingItem = test.find(pi => pi.id === item.id && pi.projectItemId === subItemId);
+        if(!existingItem) {
+            existingItem = {};
+            existingItem.item = item.item;
+            existingItem.id = item.id;
+        }
+        let currentItems = test.filter(pi => pi.id !== item.id || pi.projectItemId !== subItemId );
+        //console.log("existingItem => ", existingItem);
+        //console.log("currentItems => ", currentItems);
         existingItem.value = value;
-        setProjectItems([...projectItems.filter(pi => pi !== item), existingItem]);
+        existingItem.projectItemId = subItemId;
+        //console.log("existingItem 2 => ", existingItem);
+        //console.log("Total => ", [...currentItems, existingItem]);
+        if(item.item.inputType === 'COMPLEX') {
+            setProjectItems([...currentItems.filter(pi => pi.id !== item.id || (pi.id === item.id && pi.projectItemId !== null)), existingItem]);
+        } else {
+            setProjectItems([...currentItems, existingItem]);
+        }
     }
 
     const checkProjectItemsValidity = () => {
         for (let index = 0; index < initializationItems.length; index++) {
             const initItem = initializationItems[index];
             const occurences = projectItems.filter(pi => pi.item === initItem && (pi.value !== '' || pi.value !== null));
-            console.log(occurences);
             if(occurences.length > initItem.maximumOccurence) {
                 NotificationManager.error('Les informations du projet ne sont pas correctement renseignées');
                 return false;
@@ -139,13 +159,13 @@ const Create = (props) => {
     }
 
     const getOccurence = (item) => {
-        const occurences = projectItems.filter(ii => ii.item === item);
+        const occurences = projectItems.filter(ii => ii.item === item && item.inputType !== 'COMPLEX');
         return occurences.length;
     }
     
     const onSubmit = () => {
-        if(!checkProjectItemsValidity())
-            return;
+        // if(!checkProjectItemsValidity())
+        //     return;
 
         if(!label || !budget || !unit || projectItems.length <= 0) {
             NotificationManager.error('Les informations du projet ne sont pas correctement renseignées');
@@ -155,9 +175,11 @@ const Create = (props) => {
         let data: any = {
             label, budget, unitReference: unit.reference, document: file,
             initializationId: initialization.id,
-            initializationItems: projectItems.map(pi => pi.item.id),
-            initializationValues: projectItems.map(pi => pi.value)
+            initializationParents: projectItems.map(pi => pi.id),
+            initializationValues: projectItems.map(pi => pi.value),
+            initializationItems: projectItems.map(pi => pi.projectItemId !== null ? pi.projectItemId : pi.item.id)
         }
+
         ProjectService.createProject(data, { fileData: ['document'], multipart: true }).then(() => {
             NotificationManager.success("Le projet a été créé avec succès");
             props.history.push(PROJECT.MINE.FOLDER.LIST);
@@ -271,16 +293,19 @@ const Create = (props) => {
 
                     <div className="row">
                         {
-                            projectItems.sort((a, b) => a.item.label.localeCompare(b.item.label) || a.id - b.id).map((projectItem) => (
+                            Array.from(new Set(projectItems.map(a => a.id))).map(id => {
+                              return projectItems.find(a => a.id === id)
+                            }).sort((a, b) => a.item.label.localeCompare(b.item.label) || a.id - b.id).map((projectItem) => (
                                 <PolymorphComponent
+                                    projectItem={projectItem}
                                     label={projectItem.item.label}
                                     isRequired={projectItem.item.mandatory}
                                     value={getProjectItemValue(projectItem)}
                                     displayDeleteButton={getOccurence(projectItem.item) > 1}
                                     componentType={projectItem.item.inputType.toLowerCase()}
-                                    handleOnChange={(data) => setProjectItemValue(projectItem, data)}
                                     addInitializationItem={() => addInitializationItem(projectItem.item)}
                                     deleteInitializationItem={() => deleteInitializationItem(projectItem)}
+                                    handleOnChange={(currentItem, data, subItem) => setProjectItemValue(currentItem, data, subItem)}
                                     displayAddButton={projectItem.item.maximumOccurence > 1 && getOccurence(projectItem.item) < projectItem.item.maximumOccurence}
                                 />
                             ))

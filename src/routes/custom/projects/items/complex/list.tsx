@@ -16,7 +16,7 @@ const List = (props) => {
 
     const getProjectItems = () => {
         props.setRequestGlobalAction(true);
-        ProjectService.getProjectItems()
+        ProjectService.getProjectItems(['COMPLEX'])
             .then((response) => setProjectItems(response))
             .catch((err) => {
                 console.log(err);
@@ -31,7 +31,7 @@ const List = (props) => {
             list={projectItems}
             loading={false}
             itemsFoundText={n => `${n} ouvrages trouvés`}
-            onAddClick={() => props.history.push(PROJECT.ITEM.SIMPLE.CREATE)}
+            onAddClick={() => props.history.push(PROJECT.ITEM.COMPLEX.CREATE)}
             renderItem={list => (
                 <>
                     {list && list.length === 0 ? (
