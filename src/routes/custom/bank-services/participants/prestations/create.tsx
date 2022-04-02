@@ -27,6 +27,7 @@ const Create = (props) => {
     const [direction, setDirection] = useState(null);
     const [description, setDescription] = useState('');
 
+
     const onSubmit = () => {
         if(!label || !direction) {
             NotificationManager.error('Veuillez bien remplir le formulaire')
@@ -38,7 +39,7 @@ const Create = (props) => {
         let data: any = {
             label: label,
             description: description,
-            direction: direction.value,
+            direction: direction.value
         };
 
         BankService.createPrestation(data).then(() => {

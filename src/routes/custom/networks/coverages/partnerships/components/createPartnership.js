@@ -19,9 +19,11 @@ import { FormGroup, Label, Button, Input as InputStrap  } from 'reactstrap';
 class CreatePartnershipModal extends Component {
   
     state = {
+        bic: null,
         member: null,
-        contract: null,
         contracts: [],
+        bankCode: null,
+        contract: null,
         membership: null,
         commercialName: null,
         immatriculation: null,
@@ -63,7 +65,7 @@ class CreatePartnershipModal extends Component {
 
     onSubmit = () => {
 
-        const { member, contract, commercialName, immatriculation } = this.state;
+        const { member, contract, commercialName, immatriculation, bic, bankCode } = this.state;
 
         if(!contract || !member || !commercialName || !immatriculation) {
             NotificationManager.error("Les informations renseignées sont incompletes ou incorrectes");
@@ -80,14 +82,20 @@ class CreatePartnershipModal extends Component {
             immatriculation: immatriculation,
         }
 
+        if(bic)
+            data.bic = bic;
+
+        if(bankCode)
+            data.bankCode = bankCode;
+
         PartnershipService.createPartnership(data).then(() => {
             NotificationManager.success("Le partenariat a été créé avec succès");
-            this.props.history.push(NETWORK.COVERAGE.PARTNERSHIP.COMMUNITY);
+            window.location.reload();
+            this.props.onClose();
         }).catch((err) => {
             console.log(err);
             NotificationManager.error("Une erreur est survenu lors du partenariat");
         }).finally(() => {
-            this.props.onClose();
             this.props.setRequestGlobalAction(false);
         })
     }
@@ -96,7 +104,7 @@ class CreatePartnershipModal extends Component {
 
         const { onClose, show, title } = this.props;
         const { contracts, membership, member, contract, 
-            commercialName, immatriculation } = this.state;
+            commercialName, immatriculation, bic, bankCode } = this.state;
 
         return (
             <DialogComponent
@@ -194,6 +202,39 @@ class CreatePartnershipModal extends Component {
                             onChange={(e) => this.setState({ immatriculation: e.target.value })}
                         />
                     </FormGroup>
+                    {
+                        this.props.type.toLowerCase() === 'operator' && (
+                            <>
+                                <FormGroup className="has-wrapper">
+                                    <InputLabel className="text-left" htmlFor="bic">
+                                        BIC
+                                    </InputLabel>
+                                    <InputStrap
+                                        required
+                                        type="text"
+                                        className="input-lg"
+                                        id="bic"
+                                        name='bic'
+                                        value={bic}
+                                        onChange={(e) => this.setState({ bic: e.target.value })}
+                                    />
+                                </FormGroup>
+                                <FormGroup className="has-wrapper">
+                                    <InputLabel className="text-left" htmlFor="bankCode">
+                                        Code Banque
+                                    </InputLabel>
+                                    <InputStrap
+                                        required
+                                        type="text"
+                                        className="input-lg"
+                                        id="bankCode"
+                                        name='bankCode'
+                                        value={bankCode}
+                                        onChange={(e) => this.setState({ bankCode: e.target.value })}
+                                    />
+                                </FormGroup>
+                            </>
+                    )}
                     <FormGroup>
                         <Button
                             color="primary"

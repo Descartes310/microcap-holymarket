@@ -1,14 +1,19 @@
 import { connect } from 'react-redux';
 import { BANK } from 'Url/frontendUrl';
 import BankService from 'Services/banks';
+import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
 import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
 import React, { useState, useEffect } from 'react';
+import CreatePrestationEffectModal from 'Components/createPrestationEffect';
+
 
 const List = (props) => {
 
+    const [prestation, setPrestation] = useState(null);
     const [prestations, setPrestations] = useState([]);
+    const [showCreateEffectBox, setShowCreateEffectBox] = useState(false);
 
     useEffect(() => {
         getPrestations();
@@ -47,6 +52,7 @@ const List = (props) => {
                                         <tr>
                                             <th className="fw-bold">Désignation</th>
                                             <th className="fw-bold">Description</th>
+                                            <th className="fw-bold">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -66,6 +72,19 @@ const List = (props) => {
                                                         </div>
                                                     </div>
                                                 </td>
+                                                <td>
+                                                    <Button
+                                                        color="primary"
+                                                        variant="contained"
+                                                        onClick={() => {
+                                                            setPrestation(item);
+                                                            setShowCreateEffectBox(true);
+                                                        }}
+                                                        className="text-white font-weight-bold"
+                                                    >
+                                                        Ajouter un effet
+                                                    </Button>
+                                                </td>
                                             </tr>
                                         ))}
                                     </tbody>
@@ -75,6 +94,18 @@ const List = (props) => {
                     </>
                 )}
             />
+
+            { showCreateEffectBox && prestation && (
+                <CreatePrestationEffectModal
+                    prestation={prestation}
+                    show={showCreateEffectBox}
+                    onClose={() => {
+                        setShowCreateEffectBox(false);
+                        setPrestation(null);
+                    }}
+                    title={"Ajouter un effet"}
+                />
+            )}
         </>
     );
 }

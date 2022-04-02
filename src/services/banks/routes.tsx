@@ -1,5 +1,7 @@
 export const GET_PRESTATIONS = 'api/cashmanagements/prestations';
 export const CREATE_PRESTATION = 'api/cashmanagements/prestations';
+export const GET_EFFECTS = (id) => `api/cashmanagements/prestations/${id}/effects`;
+export const CREATE_EFFECT = (id) => `api/cashmanagements/prestations/${id}/effects`;
 
 export const CREATE_MANDATE = 'api/cashmanagements/mandates';
 export const CREATE_AGENT = 'api/cashmanagements/mandates/agents';

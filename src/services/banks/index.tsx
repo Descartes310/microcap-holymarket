@@ -43,4 +43,12 @@ export default class BankService {
     static getCounters(): Promise<any> {
         return makeRequest('get', Routes.GET_COUNTERS);
     }
+
+    static createEffect(id: number, data: any): Promise<any> {
+        return makeRequest('post', Routes.CREATE_EFFECT(id), data);
+    }
+
+    static getEffects(id: number): Promise<any> {
+        return makeRequest('get', Routes.GET_EFFECTS(id));
+    }
 }

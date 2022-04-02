@@ -84,13 +84,13 @@ const Create = (props) => {
 
     const findUserByMembership = () => {
         props.setRequestGlobalAction(true);
-        UserService.findUserByReference(membership)
+        UserService.findUserByReference(membership, {type: 'BROKER'})
         .then(response => {
             setMember(response);
         })
         .catch((err) => {
             console.log(err);
-            NotificationManager.error("Ce numéro utilisateur est inexistant");
+            NotificationManager.error("L'utilisateur fourni n'est pas un broker");
         })
         .finally(() => {
             props.setRequestGlobalAction(false);
