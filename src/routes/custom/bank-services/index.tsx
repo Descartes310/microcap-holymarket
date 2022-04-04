@@ -4,6 +4,7 @@ import {connect} from "react-redux";
 import {injectIntl} from "react-intl";
 import { BANK } from 'Url/frontendUrl';
 import Intermediary from './intermediary';
+import Subscription from './subscriptions';
 import {withRouter, Switch, Redirect, Route} from "react-router-dom";
 
 const Bank = (props) => {
@@ -14,6 +15,7 @@ const Bank = (props) => {
                 <Redirect exact from={`${match.url}/`} to={BANK.ADMIN.SELF} />
                 <Route path={BANK.ADMIN.SELF} component={Parties} />
                 <Route path={BANK.PARTY.SELF} component={Intermediary} />
+                <Route path={BANK.SUBSCRIPTION.SELF} component={Subscription} />
             </Switch>
         </div>
     );

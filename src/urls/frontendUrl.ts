@@ -380,6 +380,11 @@ export const BANK = {
             CREATE: '/bank/admin/mandate/create',
         }
     },
+    SUBSCRIPTION: {
+        SELF: '/bank/subscriptions',
+        LIST: '/bank/subscriptions/list',
+        CREATE: '/bank/subscriptions/create',
+    },
     PARTY: {
         SELF: '/bank/party',
         AGENT: {
@@ -391,6 +396,16 @@ export const BANK = {
             SELF: '/bank/party/counters',
             LIST: '/bank/party/counters/list',
             CREATE: '/bank/party/counters/create',
+        },
+        PRESTATION: {
+            SELF: '/bank/party/prestations',
+            LIST: '/bank/party/prestations/list',
+            CREATE: '/bank/party/prestations/create',
+        },
+        COVERAGE: {
+            SELF: '/bank/party/coverages',
+            LIST: '/bank/party/coverages/list',
+            CREATE: '/bank/party/coverages/create',
         }
     }
 } as const;

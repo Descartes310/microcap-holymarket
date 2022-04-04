@@ -83,7 +83,7 @@ const Create = (props) => {
 
     const onSubmit = () => {
 
-        if(!selectedAccount || !selectedAgent || selectedPrestations.length <= 0 || !type || !paymentMethod) {
+        if(!selectedAccount || !selectedAgent || !type || !paymentMethod) {
             NotificationManager.error("Les informations renseignées sont incompletes ou incorrectes");
             return;
         }
@@ -94,7 +94,7 @@ const Create = (props) => {
             payment_mode: paymentMethod.value,
             reference: selectedAgent.reference,
             account_type_reference: type.reference,
-            prestations: selectedPrestations.map(p => p.id),
+            //prestations: selectedPrestations.map(p => p.id),
             account_fund_reference: selectedAccount.reference,
         }
 
@@ -146,7 +146,7 @@ const Create = (props) => {
                         />
                     </div>
 
-                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                    {/* <div className="col-md-12 col-sm-12 has-wrapper mb-30">
                         <InputLabel className="text-left">
                             Prestations
                         </InputLabel>
@@ -161,7 +161,7 @@ const Create = (props) => {
                             getOptionLabel={(option) => option.label}
                             renderInput={(params) => <TextField {...params} variant="outlined" />}
                         />
-                    </div>
+                    </div> */}
 
                     <div className="col-md-12 col-sm-12 has-wrapper mb-30">
                         <InputLabel className="text-left">

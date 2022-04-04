@@ -51,4 +51,8 @@ export default class BankService {
     static getEffects(id: number): Promise<any> {
         return makeRequest('get', Routes.GET_EFFECTS(id));
     }
+
+    static createSubscription(data: any): Promise<any> {
+        return makeRequest('post', Routes.CREATE_SUBSCRIPTION, data);
+    }
 }

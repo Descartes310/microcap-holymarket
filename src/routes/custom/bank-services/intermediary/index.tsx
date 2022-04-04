@@ -16,6 +16,8 @@ class Catalogues extends Component<any, any> {
         const defaultState = (function (url) {
             if (url.includes(BANK.PARTY.AGENT.SELF)) return 0;
             else if (url.includes(BANK.PARTY.COUNTER.SELF)) return 1;
+            else if (url.includes(BANK.PARTY.COVERAGE.SELF)) return 2;
+            else if (url.includes(BANK.PARTY.PRESTATION.SELF)) return 3;
             else return 0;
         })(window.location.pathname);
 
@@ -31,6 +33,8 @@ class Catalogues extends Component<any, any> {
             switch (value) {
                 case 0: return this.props.history.push(BANK.PARTY.AGENT.SELF);
                 case 1: return this.props.history.push(BANK.PARTY.COUNTER.SELF);
+                case 2: return this.props.history.push(BANK.PARTY.COVERAGE.SELF);
+                case 3: return this.props.history.push(BANK.PARTY.PRESTATION.SELF);
                 default: return this.props.history.push(BANK.PARTY.AGENT.SELF);
             }
         }
@@ -61,6 +65,14 @@ class Catalogues extends Component<any, any> {
                                         <Tab
                                             icon={<i className="zmdi zmdi-home" />}
                                             label={"Guichets"}
+                                        />
+                                        <Tab
+                                            icon={<i className="zmdi zmdi-home" />}
+                                            label={"Couvertures"}
+                                        />
+                                        <Tab
+                                            icon={<i className="zmdi zmdi-home" />}
+                                            label={"Prestations"}
                                         />
                                     </Tabs>
                                 </div>

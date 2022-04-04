@@ -471,6 +471,14 @@ export default [
             "permissions": [Permission.bank.administration.name],
             "profiles": ['GROUP'],
             "child_routes": null
+         },
+         {
+            "menu_title": "Souscription",
+            "new_item": false,
+            "path": BANK.SUBSCRIPTION.SELF,
+            "permissions": null,
+            "profiles": ['GROUP'],
+            "child_routes": null
          }
       ],
    },
