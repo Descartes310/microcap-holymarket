@@ -22,3 +22,5 @@ export const GET_INTERMEDIATE_PARTIES = 'api/cashmanagements/parties/intermediat
 
 export const GET_SUBSCRIPTIONS = 'api/cashmanagements/subscriptions';
 export const CREATE_SUBSCRIPTION = 'api/cashmanagements/subscriptions';
+export const GET_USER_DOMICILIATIONS = 'api/cashmanagements/subscriptions/accounts';
+export const GET_USER_PRESTATIONS = 'api/cashmanagements/subscriptions/prestations';
