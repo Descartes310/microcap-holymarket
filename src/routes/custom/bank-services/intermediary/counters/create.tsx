@@ -1,26 +1,84 @@
 import { connect } from 'react-redux';
 import { BANK } from 'Url/frontendUrl';
+import UserService from 'Services/users';
 import BankService from 'Services/banks';
 import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
 import { setRequestGlobalAction } from 'Actions';
 import React, { useState, useEffect } from 'react';
+import TextField from '@material-ui/core/TextField';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import { NotificationManager } from 'react-notifications';
+import UserAccountTypeService from 'Services/account-types';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { Form, FormGroup, Input as InputStrap } from 'reactstrap';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
+import { getReferralTypeLabel } from 'Helpers/helpers';
 
 const Create = (props) => {
 
-    const [label, setLabel] = useState('');
-    const [description, setDescription] = useState('');
+    const PAYMENT_METHODS = [
+        {
+            label: 'Règlement par cession d\'effets',
+            value: 'EFFECT_SESSION'
+        },
+        {
+            label: 'Règlement par compensation',
+            value: 'COMPENSATION'
+        }
+    ]
+
+    const [type, setType] = useState(null);
+    const [types, setTypes] = useState([]);
+    const [agents, setAgents] = useState([]);
+    const [member, setMember] = useState(null);
+    const [category, setCategory] = useState(null);
+    const [categories, setCategories] = useState([]);  
+    const [membership, setMembership] = useState(null);
+    const [paymentMethod, setPaymentMethod] = useState(null);
+    const [selectedAgent, setSelectedAgent] = useState(null);  
+    const [selectedAccount, setSelectedAccount] = useState(null);  
 
     useEffect(() => {
+        getTypes();
+        getCategories();
     }, []);
+
+    const findUserByMembership = () => {
+        props.setRequestGlobalAction(true);
+        UserService.findUserByReference(membership)
+        .then(response => {
+            if(response.referralType === 'PERSON')
+                setMember(response);
+            else 
+                NotificationManager.error("Uniquement les personnes physiques sont autorisées");
+        })
+        .catch((err) => {
+            console.log(err);
+            NotificationManager.error("Ce numéro utilisateur est inexistant");
+        })
+        .finally(() => {
+            props.setRequestGlobalAction(false);
+        })
+    }
+
+    const getCategories = () => {
+        props.setRequestGlobalAction(true),
+        UserAccountTypeService.getAccountTypeCategories()
+        .then(response => setCategories(response))
+        .finally(() => props.setRequestGlobalAction(false))
+    }    
+    
+    const getTypes = () => {
+        props.setRequestGlobalAction(true),
+        UserAccountTypeService.getAccountTypes()
+        .then(response => setTypes(response))
+        .finally(() => props.setRequestGlobalAction(false))
+    }
 
     const onSubmit = () => {
 
-        if(!label) {
+        if(!member || !type || !paymentMethod) {
             NotificationManager.error("Les informations renseignées sont incompletes ou incorrectes");
             return;
         }
@@ -28,8 +86,9 @@ const Create = (props) => {
         props.setRequestGlobalAction(true);
 
         let data = {
-            label,
-            description
+            reference: membership,
+            payment_mode: paymentMethod.value,
+            account_type_reference: type.reference,
         }
 
         BankService.createCounter(data).then(() => {
@@ -49,35 +108,104 @@ const Create = (props) => {
                 <Form onSubmit={onSubmit}>
                     
                     <FormGroup className="has-wrapper">
-                        <InputLabel className="text-left" htmlFor="label">
-                            Label
+                        <InputLabel className="text-left" htmlFor="membership">
+                            Numéro utilisateur
                         </InputLabel>
                         <InputStrap
                             required
-                            id="label"
                             type="text"
-                            name='label'
+                            id="membership"
+                            name='membership'
+                            value={membership}
                             className="input-lg"
-                            value={label}
-                            onChange={(e) => setLabel(e.target.value)}
-                        />
-                    </FormGroup>
-                    <FormGroup className="has-wrapper">
-                        <InputLabel className="text-left" htmlFor="description">
-                            Description
-                        </InputLabel>
-                        <InputStrap
-                            required
-                            id="description"
-                            type="text"
-                            name='description'
-                            className="input-lg"
-                            value={description}
-                            onChange={(e) => setDescription(e.target.value)}
+                            onChange={(e) => setMembership(e.target.value)}
                         />
                     </FormGroup>
 
+                    {member && (
+                        <div className="row">
+                            <FormGroup className="col-md-4 col-sm-12 has-wrapper">
+                                <InputStrap
+                                    disabled
+                                    className="input-lg"
+                                    value={member.userName}
+                                />
+                            </FormGroup>
+                            <FormGroup className="col-md-4 col-sm-12 has-wrapper">
+                                <InputStrap
+                                    disabled
+                                    className="input-lg"
+                                    value={member.email}
+                                />
+                            </FormGroup>
+                            <FormGroup className="col-md-4 col-sm-12 has-wrapper">
+                                <InputStrap
+                                    disabled
+                                    className="input-lg"
+                                    value={getReferralTypeLabel(member.referralType)}
+                                />
+                            </FormGroup>
+                        </div>
+                    )}
+
+                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                        <InputLabel className="text-left">
+                            Méthode de règlement
+                        </InputLabel>
+                        <Autocomplete
+                            id="combo-box-demo"
+                            options={PAYMENT_METHODS}
+                            value={paymentMethod}
+                            onChange={(__, item) => {
+                                setPaymentMethod(item);
+                            }}
+                            getOptionLabel={(option) => option.label}
+                            renderInput={(params) => <TextField {...params} variant="outlined" />}
+                        />
+                    </div>
+
+                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                        <InputLabel className="text-left">
+                            Catégorie d'accès
+                        </InputLabel>
+                        <Autocomplete
+                            id="combo-box-demo"
+                            options={categories}
+                            value={category}
+                            onChange={(__, item) => {
+                                setCategory(item);
+                            }}
+                            getOptionLabel={(option) => option.label}
+                            renderInput={(params) => <TextField {...params} variant="outlined" />}
+                        />
+                    </div>
+
+                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                        <InputLabel className="text-left">
+                            Type d'accès
+                        </InputLabel>
+                        <Autocomplete
+                            value={type}
+                            id="combo-box-demo"
+                            onChange={(__, item) => {
+                                setType(item);
+                            }}
+                            getOptionLabel={(option) => option.label}
+                            options={types.filter(t => t.userAccountTypeCategory.id === category?.id)}
+                            renderInput={(params) => <TextField {...params} variant="outlined" />}
+                        />
+                    </div>
+
                     <FormGroup>
+                        <Button
+                            color="primary"
+                            variant="contained"
+                            disabled={!membership}
+                            onClick={() => findUserByMembership()}
+                            className="text-white font-weight-bold mr-20 bg-blue"
+                        >
+                            Vérifier l'utilisateur
+                        </Button>
                         <Button
                             color="primary"
                             variant="contained"

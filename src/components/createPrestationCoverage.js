@@ -5,39 +5,57 @@ import BankService from 'Services/banks';
 import { withRouter } from "react-router-dom";
 import { setRequestGlobalAction } from 'Actions';
 import { RctCardContent } from 'Components/RctCard';
+import TextField from '@material-ui/core/TextField';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import { NotificationManager } from 'react-notifications';
+import Checkbox from "@material-ui/core/Checkbox/Checkbox";
 import DialogComponent from "Components/dialog/DialogComponent";
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { FormGroup, Button, Input as InputStrap  } from 'reactstrap';
+import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
 
 class CreatePrestationCoverageModal extends Component {
   
     state = {
         label: null,
+        coverage: null,
+        coverages: [],
+        mandatory: false,
         description: null
     }
 
     constructor(props) {
         super(props);
+    }    
+
+    componentDidMount() {
+        this.getCoverages();
+    }
+
+    getCoverages = () => {
+        this.props.setRequestGlobalAction(true),
+        BankService.getAvailableCoverages(this.props.prestation.id)
+        .then(response => this.setState({ coverages: response }))
+        .finally(() => this.props.setRequestGlobalAction(false))
     }
 
     onSubmit = () => {
 
-        const { label, description } = this.state;
+        const { label, description, mandatory, coverage } = this.state;
 
-        if(!label) {
-            NotificationManager.error("La désignation est obligatoire");
+        if(!coverage) {
+            NotificationManager.error("La couverture est obligatoire");
             return;
         }
 
         this.props.setRequestGlobalAction(true);
 
-        let data = {label, description};
+        let data = {description, mandatory, coverageId: coverage.id};
 
-        BankService.createEffect(this.props.prestation.id, data).then(() => {
-            NotificationManager.success("L'effet de commerce a été créé avec succès");
+        BankService.addCoverageToPrestation(this.props.prestation.id, data).then(() => {
+            NotificationManager.success("La couverture a été ajoutée avec succès");
         }).catch((err) => {
-            NotificationManager.error("Une erreur est survenu lors de l'effet de commerce");
+            NotificationManager.error("Une erreur est survenu lors de l'ajout de la couverture");
         }).finally(() => {
             this.props.onClose();
             this.props.setRequestGlobalAction(false);
@@ -47,7 +65,7 @@ class CreatePrestationCoverageModal extends Component {
     render() {
 
         const { onClose, show, title } = this.props;
-        const { label, description } = this.state;
+        const { coverages, description, mandatory, coverage } = this.state;
 
         return (
             <DialogComponent
@@ -61,20 +79,21 @@ class CreatePrestationCoverageModal extends Component {
                 )}
             >
                 <RctCardContent>
-                    <FormGroup className="has-wrapper">
-                        <InputLabel className="text-left" htmlFor="label">
-                            Label
+                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                        <InputLabel className="text-left">
+                            Couverture
                         </InputLabel>
-                        <InputStrap
-                            required
-                            type="text"
-                            id="label"
-                            name='label'
-                            value={label}
-                            className="input-lg"
-                            onChange={(e) => this.setState({ label: e.target.value })}
+                        <Autocomplete
+                            id="combo-box-demo"
+                            options={coverages}
+                            value={coverage}
+                            onChange={(__, item) => {
+                                this.setState({ coverage: item });
+                            }}
+                            getOptionLabel={(option) => option.label}
+                            renderInput={(params) => <TextField {...params} variant="outlined" />}
                         />
-                    </FormGroup>
+                    </div>
                     <FormGroup className="has-wrapper">
                         <InputLabel className="text-left" htmlFor="description">
                             Description
@@ -89,6 +108,16 @@ class CreatePrestationCoverageModal extends Component {
                             onChange={(e) => this.setState({ description: e.target.value })}
                         />
                     </FormGroup>
+                    <FormGroup className="col-sm-12 has-wrapper">
+                        <FormControlLabel control={
+                            <Checkbox
+                                color="primary"
+                                checked={mandatory}
+                                onChange={() => this.setState({ mandatory: !mandatory })}
+                            />
+                        } label={'Couverture obligatoire'}
+                        />
+                    </FormGroup>
                     <FormGroup>
                         <Button
                             color="primary"
@@ -96,7 +125,7 @@ class CreatePrestationCoverageModal extends Component {
                             onClick={() => this.onSubmit()}
                             className="text-white font-weight-bold"
                         >
-                            Créer la couverture
+                            Ajouter la couverture
                         </Button>
                     </FormGroup>
                 </RctCardContent>

@@ -13,12 +13,11 @@ import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard
 const Create = (props) => {
 
     const [label, setLabel] = useState('');
-    const [direction, setDirection] = useState(null);
     const [description, setDescription] = useState('');
 
 
     const onSubmit = () => {
-        if(!label || !direction) {
+        if(!label) {
             NotificationManager.error('Veuillez bien remplir le formulaire')
             return;
         }
@@ -30,12 +29,12 @@ const Create = (props) => {
             description: description
         };
 
-        BankService.createPrestation(data).then(() => {
-            NotificationManager.success("La prestation a été créée avec succès");
-            props.history.push(BANK.ADMIN.PRESTATION.LIST);
+        BankService.createCoverage(data).then(() => {
+            NotificationManager.success("La couverture a été créée avec succès");
+            props.history.push(BANK.PARTY.COVERAGE.LIST);
         }).catch((err) => {
             console.log(err);
-            NotificationManager.error("Une erreur est survenu lors de la création de la prestation");
+            NotificationManager.error("Une erreur est survenu lors de la création de la couverture");
         }).finally(() => {
             props.setRequestGlobalAction(false);
         })

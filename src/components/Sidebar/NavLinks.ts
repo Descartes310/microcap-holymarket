@@ -479,6 +479,14 @@ export default [
             "permissions": null,
             "profiles": ['GROUP'],
             "child_routes": null
+         },
+         {
+            "menu_title": "Guichet",
+            "new_item": false,
+            "path": BANK.OPERATION.SELF,
+            "permissions": null,
+            "profiles": ['GROUP'],
+            "child_routes": null
          }
       ],
    },

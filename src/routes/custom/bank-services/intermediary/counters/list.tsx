@@ -55,7 +55,7 @@ const List = (props) => {
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{item.label}</h4>
+                                                            <h4 className="m-0 fw-bold text-dark">{item.commercialName}</h4>
                                                         </div>
                                                     </div>
                                                 </td>

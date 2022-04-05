@@ -55,4 +55,28 @@ export default class BankService {
     static createSubscription(data: any): Promise<any> {
         return makeRequest('post', Routes.CREATE_SUBSCRIPTION, data);
     }
+
+    static getCoverages(): Promise<any> {
+        return makeRequest('get', Routes.GET_COVERAGES);
+    }
+
+    static getAvailableCoverages(prestationId: number): Promise<any> {
+        return makeRequest('get', Routes.GET_AVAILABLE_COVERAGES(prestationId));
+    }
+
+    static createCoverage(data: any): Promise<any> {
+        return makeRequest('post', Routes.CREATE_COVERAGE, data);
+    }
+
+    static addCoverageToPrestation(id, data: any): Promise<any> {
+        return makeRequest('post', Routes.ADD_COVERAGE_TO_PRESTATION(id), data);
+    }
+
+    static getPrestationDetails(prestationId: number): Promise<any> {
+        return makeRequest('get', Routes.GET_PRESTATION_DETAILS(prestationId));
+    }
+
+    static addDetailsToPrestation(id, data: any): Promise<any> {
+        return makeRequest('post', Routes.CREATE_PRESTATION_DETAILS(id), data);
+    }
 }

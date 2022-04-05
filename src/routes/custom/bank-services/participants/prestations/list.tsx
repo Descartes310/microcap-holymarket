@@ -7,6 +7,7 @@ import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
 import React, { useState, useEffect } from 'react';
 import CreatePrestationEffectModal from 'Components/createPrestationEffect';
+import CreatePrestationDetailsModal from 'Components/createPrestationDetails';
 
 
 const List = (props) => {
@@ -14,6 +15,7 @@ const List = (props) => {
     const [prestation, setPrestation] = useState(null);
     const [prestations, setPrestations] = useState([]);
     const [showCreateEffectBox, setShowCreateEffectBox] = useState(false);
+    const [showCreateDetailsBox, setShowCreateDetailsBox] = useState(false);
 
     useEffect(() => {
         getPrestations();
@@ -52,7 +54,8 @@ const List = (props) => {
                                         <tr>
                                             <th className="fw-bold">Désignation</th>
                                             <th className="fw-bold">Description</th>
-                                            <th className="fw-bold">Action</th>
+                                            <th className="fw-bold">Effet</th>
+                                            <th className="fw-bold">Détails</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -85,6 +88,19 @@ const List = (props) => {
                                                         Ajouter un effet
                                                     </Button>
                                                 </td>
+                                                <td>
+                                                    <Button
+                                                        color="primary"
+                                                        variant="contained"
+                                                        onClick={() => {
+                                                            setPrestation(item);
+                                                            setShowCreateDetailsBox(true);
+                                                        }}
+                                                        className="text-white font-weight-bold"
+                                                    >
+                                                        Ajouter un détails
+                                                    </Button>
+                                                </td>
                                             </tr>
                                         ))}
                                     </tbody>
@@ -104,6 +120,18 @@ const List = (props) => {
                         setPrestation(null);
                     }}
                     title={"Ajouter un effet"}
+                />
+            )}
+
+            { showCreateDetailsBox && prestation && (
+                <CreatePrestationDetailsModal
+                    prestation={prestation}
+                    show={showCreateDetailsBox}
+                    onClose={() => {
+                        setShowCreateDetailsBox(false);
+                        setPrestation(null);
+                    }}
+                    title={"Ajouter un détails"}
                 />
             )}
         </>

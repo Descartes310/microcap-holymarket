@@ -18,7 +18,7 @@ const List = (props) => {
 
     const getCoverages = () => {
         props.setRequestGlobalAction(true),
-        BankService.getPrestations()
+        BankService.getCoverages()
         .then(response => setCoverages(response))
         .finally(() => props.setRequestGlobalAction(false))
     }
