@@ -17,27 +17,22 @@ import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard
 const Create = (props) => {
 
     const [step, setStep] = useState(1);
-    const [key, setKey] = useState(null);
     const [member, setMember] = useState(null);
     const [amount, setAmount] = useState(null);
     const [details, setDetails] = useState([]);
-    const [bankCode, setBankCode] = useState(null);
+    const [accounts, setAccounts] = useState([]);
+    const [account, setAccount] = useState(null);
     const [prestation, setPrestation] = useState(null);
     const [prestations, setPrestations] = useState([]);
-    const [agencyCode, setAgencyCode] = useState(null);
     const [membership, setMembership] = useState(null);
-    const [countryCode, setCountryCode] = useState(null);
-    const [accountNumber, setAccountNumber] = useState(null);
-
-    useEffect(() => {
-        getPrestations();
-    }, []);
 
     const findUserByMembership = () => {
         props.setRequestGlobalAction(true);
         UserService.findUserByReference(membership)
         .then(response => {
             setMember(response);
+            getPrestations(membership);
+            getAccounts(membership);
         })
         .catch((err) => {
             console.log(err);
@@ -48,10 +43,17 @@ const Create = (props) => {
         })
     }
 
-    const getPrestations = () => {
+    const getPrestations = (reference: string) => {
         props.setRequestGlobalAction(true);
-        BankService.getPrestations()
+        BankService.getUserPrestations(reference)
         .then(response => setPrestations(response))
+        .finally(() => props.setRequestGlobalAction(false))
+    }
+
+    const getAccounts = (reference: string) => {
+        props.setRequestGlobalAction(true);
+        BankService.getUserAccounts(reference)
+        .then(response => setAccounts(response))
         .finally(() => props.setRequestGlobalAction(false))
     }
 
@@ -62,26 +64,31 @@ const Create = (props) => {
     }
 
     const onSubmit = () => {
-        if(!member || !countryCode || !bankCode || !agencyCode
-            || !accountNumber || !key || !prestation) {
+        if(!member || !account || !prestation) {
             NotificationManager.error("Le formulaire n'est pas correctement renseigné");
             return;
         }
 
-        console.log()
         let data: any = {
-            referral_code: membership, countryCode, bankCode,
-            agencyCode, accountNumber, key        
-        }
+            amount,
+            reference: membership,
+            accountId: account.id,
+            prestationId: prestation.id,
+            detailsValues: details.map(d => d.value),
+            detailsIds: details.map(d => d.id.spli('-')[1]),
+        };
 
-        // props.setRequestGlobalAction(true);
-        // BankService.createSubscription(data).then(response => {
-        //     console.log(response);
-        // }).catch(err => {
-        //     console.log(err);
-        // }).finally(() => {
-        //     props.setRequestGlobalAction(false);
-        // })
+        props.setRequestGlobalAction(true);
+        BankService.createOperation(data).then(() => {
+            NotificationManager.success("L'opération a été créée avec succès!");
+            setTimeout(() => {
+                window.location.reload();
+            }, 2000);
+        }).catch(err => {
+            console.log(err);
+        }).finally(() => {
+            props.setRequestGlobalAction(false);
+        })
     }
 
     return (
@@ -110,124 +117,77 @@ const Create = (props) => {
                             </FormGroup>
 
                             {member && (
-                                <div className="row">
-                                    <FormGroup className="col-md-4 col-sm-12 has-wrapper">
-                                        <InputStrap
-                                            disabled
-                                            className="input-lg"
-                                            value={member.userName}
+                                <>
+                                    <div className="row">
+                                        <FormGroup className="col-md-4 col-sm-12 has-wrapper">
+                                            <InputStrap
+                                                disabled
+                                                className="input-lg"
+                                                value={member.userName}
+                                            />
+                                        </FormGroup>
+                                        <FormGroup className="col-md-4 col-sm-12 has-wrapper">
+                                            <InputStrap
+                                                disabled
+                                                className="input-lg"
+                                                value={member.email}
+                                            />
+                                        </FormGroup>
+                                        <FormGroup className="col-md-4 col-sm-12 has-wrapper">
+                                            <InputStrap
+                                                disabled
+                                                className="input-lg"
+                                                value={getReferralTypeLabel(member.referralType)}
+                                            />
+                                        </FormGroup>
+                                    </div>
+                                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                                        <InputLabel className="text-left">
+                                            Compte
+                                        </InputLabel>
+                                        <Autocomplete
+                                            id="combo-box-demo"
+                                            value={account}
+                                            options={accounts}
+                                            onChange={(__, item) => {
+                                                setAccount(item);
+                                            }}
+                                            getOptionLabel={(option) => option.iban}
+                                            renderInput={(params) => <TextField {...params} variant="outlined" />}
                                         />
-                                    </FormGroup>
-                                    <FormGroup className="col-md-4 col-sm-12 has-wrapper">
-                                        <InputStrap
-                                            disabled
-                                            className="input-lg"
-                                            value={member.email}
+                                    </div> 
+                                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                                        <InputLabel className="text-left">
+                                            Prestation
+                                        </InputLabel>
+                                        <Autocomplete
+                                            id="combo-box-demo"
+                                            value={prestation}
+                                            options={prestations}
+                                            onChange={(__, item) => {
+                                                setPrestation(item);
+                                            }}
+                                            getOptionLabel={(option) => option.label}
+                                            renderInput={(params) => <TextField {...params} variant="outlined" />}
                                         />
-                                    </FormGroup>
-                                    <FormGroup className="col-md-4 col-sm-12 has-wrapper">
-                                        <InputStrap
-                                            disabled
-                                            className="input-lg"
-                                            value={getReferralTypeLabel(member.referralType)}
-                                        />
-                                    </FormGroup>
-                                </div>
+                                    </div> 
+                                </>
                             )}
-
-                            <FormGroup className="has-wrapper">
-                                <InputLabel className="text-left" htmlFor="countryCode">
-                                    Code pays
-                                </InputLabel>
-                                <InputStrap
-                                    required
-                                    type="text"
-                                    id="countryCode"
-                                    name='countryCode'
-                                    value={countryCode}
-                                    className="input-lg"
-                                    onChange={(e) => setCountryCode(e.target.value)}
-                                />
-                            </FormGroup>
-                            <div className="row">
-                                <FormGroup className="col-md-6 col-sm-12 has-wrapper">
-                                    <InputLabel className="text-left" htmlFor="bankCode">
-                                        Code banque
-                                    </InputLabel>
-                                    <InputStrap
-                                        required
-                                        type="text"
-                                        id="bankCode"
-                                        name='bankCode'
-                                        value={bankCode}
-                                        className="input-lg"
-                                        onChange={(e) => setBankCode(e.target.value)}
-                                    />
-                                </FormGroup>
-                                <FormGroup className="col-md-6 col-sm-12 has-wrapper">
-                                    <InputLabel className="text-left" htmlFor="agencyCode">
-                                        Code guichet
-                                    </InputLabel>
-                                    <InputStrap
-                                        required
-                                        type="text"
-                                        id="agencyCode"
-                                        name='agencyCode'
-                                        value={agencyCode}
-                                        className="input-lg"
-                                        onChange={(e) => setAgencyCode(e.target.value)}
-                                    />
-                                </FormGroup>
-                            </div>
-                            <div className="row">
-                                <FormGroup className="col-md-6 col-sm-12 has-wrapper">
-                                    <InputLabel className="text-left" htmlFor="accountNumber">
-                                        Numéro de compte
-                                    </InputLabel>
-                                    <InputStrap
-                                        required
-                                        type="text"
-                                        id="accountNumber"
-                                        name='accountNumber'
-                                        value={accountNumber}
-                                        className="input-lg"
-                                        onChange={(e) => setAccountNumber(e.target.value)}
-                                    />
-                                </FormGroup>
-                                <FormGroup className="col-md-6 col-sm-12 has-wrapper">
-                                    <InputLabel className="text-left" htmlFor="key">
-                                        Clé
-                                    </InputLabel>
-                                    <InputStrap
-                                        required
-                                        type="text"
-                                        id="key"
-                                        name='key'
-                                        value={key}
-                                        className="input-lg"
-                                        onChange={(e) => setKey(e.target.value)}
-                                    />
-                                </FormGroup>
-                            </div>
-
-                            <div className="col-md-12 col-sm-12 has-wrapper mb-30">
-                                <InputLabel className="text-left">
-                                    Prestation
-                                </InputLabel>
-                                <Autocomplete
-                                    id="combo-box-demo"
-                                    value={prestation}
-                                    options={prestations}
-                                    onChange={(__, item) => {
-                                        setPrestation(item);
-                                    }}
-                                    getOptionLabel={(option) => option.label}
-                                    renderInput={(params) => <TextField {...params} variant="outlined" />}
-                                />
-                            </div> 
                         </>
                     :
                         <>
+                            <FormGroup className="col-md-12 col-sm-12 has-wrapper">
+                                <InputLabel className="text-left" htmlFor="key">
+                                    Compte
+                                </InputLabel>
+                                <InputStrap
+                                    disabled
+                                    type="text"
+                                    value={account.iban}
+                                    className="input-lg"
+                                />
+                            </FormGroup>
+
                             <FormGroup className="col-md-12 col-sm-12 has-wrapper">
                                 <InputLabel className="text-left" htmlFor="key">
                                     Opération
@@ -290,8 +250,7 @@ const Create = (props) => {
                                     color="primary"
                                     variant="contained"
                                     onClick={() => setStep(2)}
-                                    disabled={!member || !countryCode || !bankCode || !agencyCode
-                                        || !accountNumber || !key || !prestation}
+                                    disabled={!member || !account || !prestation}
                                     className="text-white font-weight-bold"
                                 >
                                     Continuer

@@ -87,4 +87,8 @@ export default class BankService {
     static getUserAccounts(reference: string): Promise<any> {
         return makeRequest('get', Routes.GET_USER_DOMICILIATIONS, {reference});
     }
+
+    static createOperation(data: any): Promise<any> {
+        return makeRequest('post', Routes.CREATE_OPERATION, data);
+    }
 }
