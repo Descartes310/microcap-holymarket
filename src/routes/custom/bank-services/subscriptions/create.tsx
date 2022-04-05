@@ -66,7 +66,10 @@ const Create = (props) => {
         } 
         props.setRequestGlobalAction(true);
         BankService.createSubscription(data).then(response => {
-            console.log(response);
+            NotificationManager.success("La création a réussie");
+            setTimeout(() => {
+                window.location.reload();
+            }, 2000);
         }).catch(err => {
             console.log(err);
         }).finally(() => {

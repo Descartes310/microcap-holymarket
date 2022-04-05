@@ -75,7 +75,7 @@ const Create = (props) => {
             accountId: account.id,
             prestationId: prestation.id,
             detailsValues: details.map(d => d.value),
-            detailsIds: details.map(d => d.id.spli('-')[1]),
+            detailsIds: details.map(d => d.id.split('-')[1]),
         };
 
         props.setRequestGlobalAction(true);

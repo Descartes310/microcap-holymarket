@@ -91,4 +91,12 @@ export default class BankService {
     static createOperation(data: any): Promise<any> {
         return makeRequest('post', Routes.CREATE_OPERATION, data);
     }
+
+    static getOperations(): Promise<any> {
+        return makeRequest('get', Routes.GET_OPERATIONS);
+    }
+
+    static purgeOperations(data: any): Promise<any> {
+        return makeRequest('put', Routes.PURGE_OPERATIONS, data);
+    }
 }

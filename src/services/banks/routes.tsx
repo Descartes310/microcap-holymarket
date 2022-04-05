@@ -25,4 +25,6 @@ export const CREATE_SUBSCRIPTION = 'api/cashmanagements/subscriptions';
 export const GET_USER_DOMICILIATIONS = 'api/cashmanagements/subscriptions/accounts';
 export const GET_USER_PRESTATIONS = 'api/cashmanagements/subscriptions/prestations';
 
+export const GET_OPERATIONS = 'api/cashmanagements/operations';
 export const CREATE_OPERATION = 'api/cashmanagements/operations';
+export const PURGE_OPERATIONS = 'api/cashmanagements/operations/purge';

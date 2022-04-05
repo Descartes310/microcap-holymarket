@@ -460,16 +460,16 @@ export default [
             "menu_title": "Intermediaire banquaire",
             "new_item": false,
             "path": BANK.PARTY.SELF,
-            "permissions": null,
-            "profiles": ['GROUP'],
-            "child_routes": [Permission.bank.intermediary.name]
+            "permissions": [Permission.bank.intermediary.name],
+            "profiles": ['PROVIDER_INTERMEDIARY', 'PROVIDER_AGENT'],
+            "child_routes": null
          },
          {
             "menu_title": "Administration banquaire",
             "new_item": false,
             "path": BANK.ADMIN.SELF,
             "permissions": [Permission.bank.administration.name],
-            "profiles": ['GROUP'],
+            "profiles": ['OPERATOR'],
             "child_routes": null
          },
          {
@@ -477,15 +477,23 @@ export default [
             "new_item": false,
             "path": BANK.SUBSCRIPTION.SELF,
             "permissions": null,
-            "profiles": ['GROUP'],
+            "profiles": ['PROVIDER_COUNTER'],
             "child_routes": null
          },
          {
-            "menu_title": "Guichet",
+            "menu_title": "Opération",
             "new_item": false,
-            "path": BANK.OPERATION.SELF,
+            "path": BANK.OPERATION.CREATE,
             "permissions": null,
-            "profiles": ['GROUP'],
+            "profiles": ['PROVIDER_COUNTER'],
+            "child_routes": null
+         },
+         {
+            "menu_title": "Opérations",
+            "new_item": false,
+            "path": BANK.OPERATION.LIST,
+            "permissions": null,
+            "profiles": ['OPERATOR', 'PROVIDER_AGENT', 'PROVIDER_INTERMEDIARY'],
             "child_routes": null
          }
       ],

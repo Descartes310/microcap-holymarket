@@ -387,6 +387,7 @@ export const BANK = {
     },
     OPERATION: {
         SELF: '/bank/operations',
+        LIST: '/bank/operations/list',
         CREATE: '/bank/operations/create',
     },
     PARTY: {

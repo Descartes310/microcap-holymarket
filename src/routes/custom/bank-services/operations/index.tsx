@@ -1,3 +1,4 @@
+import List from './list';
 import React from 'react';
 import Create from './create';
 import {connect} from "react-redux";
@@ -13,6 +14,7 @@ const BankCounterOperation = (props) => {
                 <Switch>
                     <Redirect exact from={`${match.url}/`} to={BANK.OPERATION.CREATE} />
                     <Route path={BANK.OPERATION.CREATE} component={Create} />
+                    <Route path={BANK.OPERATION.LIST} component={List} />
                 </Switch>
             </>
         </div>

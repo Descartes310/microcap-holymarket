@@ -30,20 +30,16 @@ const Create = (props) => {
     const [type, setType] = useState(null);
     const [types, setTypes] = useState([]);
     const [agents, setAgents] = useState([]);
-    const [accounts, setAccounts] = useState([]);
     const [category, setCategory] = useState(null);
     const [categories, setCategories] = useState([]);  
     const [prestations, setPrestations] = useState([]);
     const [paymentMethod, setPaymentMethod] = useState(null);
     const [selectedAgent, setSelectedAgent] = useState(null);  
-    const [selectedAccount, setSelectedAccount] = useState(null);  
-    const [selectedPrestations, setSelectedPrestations] = useState([]);
 
     useEffect(() => {
         getTypes();
         getCategories();
         getPrestations();
-        getFundAccounts();
         getPotentialAgents();
     }, []);
 
@@ -74,16 +70,10 @@ const Create = (props) => {
         .then(response => setAgents(response))
         .finally(() => props.setRequestGlobalAction(false))
     }
-    const getFundAccounts = () => {
-        props.setRequestGlobalAction(true),
-        BankService.getFundAccounts()
-        .then(response => setAccounts(response))
-        .finally(() => props.setRequestGlobalAction(false))
-    }
 
     const onSubmit = () => {
 
-        if(!selectedAccount || !selectedAgent || !type || !paymentMethod) {
+        if(!selectedAgent || !type || !paymentMethod) {
             NotificationManager.error("Les informations renseignées sont incompletes ou incorrectes");
             return;
         }
@@ -93,9 +83,7 @@ const Create = (props) => {
         let data = {
             payment_mode: paymentMethod.value,
             reference: selectedAgent.reference,
-            account_type_reference: type.reference,
-            //prestations: selectedPrestations.map(p => p.id),
-            account_fund_reference: selectedAccount.reference,
+            account_type_reference: type.reference
         }
 
         BankService.createAgent(data).then(() => {
@@ -129,39 +117,6 @@ const Create = (props) => {
                             renderInput={(params) => <TextField {...params} variant="outlined" />}
                         />
                     </div>
-                    
-                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
-                        <InputLabel className="text-left">
-                            Compte de compensation
-                        </InputLabel>
-                        <Autocomplete
-                            id="combo-box-demo"
-                            options={accounts}
-                            value={selectedAccount}
-                            onChange={(__, item) => {
-                                setSelectedAccount(item);
-                            }}
-                            getOptionLabel={(option) => option.label}
-                            renderInput={(params) => <TextField {...params} variant="outlined" />}
-                        />
-                    </div>
-
-                    {/* <div className="col-md-12 col-sm-12 has-wrapper mb-30">
-                        <InputLabel className="text-left">
-                            Prestations
-                        </InputLabel>
-                        <Autocomplete
-                            multiple
-                            id="combo-box-demo"
-                            options={prestations}
-                            value={selectedPrestations}
-                            onChange={(__, items) => {
-                                setSelectedPrestations(items);
-                            }}
-                            getOptionLabel={(option) => option.label}
-                            renderInput={(params) => <TextField {...params} variant="outlined" />}
-                        />
-                    </div> */}
 
                     <div className="col-md-12 col-sm-12 has-wrapper mb-30">
                         <InputLabel className="text-left">
