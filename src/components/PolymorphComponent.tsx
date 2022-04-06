@@ -28,7 +28,7 @@ const formats = [
     'code-block'
 ];
 
-const PolymorphComponent = ({ projectItem, componentType, value, label, isRequired, handleOnChange, displayAddButton, displayDeleteButton, addInitializationItem, deleteInitializationItem }) => {
+const PolymorphComponent = ({ projectItem, componentType, value, label, isRequired, handleOnChange, displayAddButton, displayDeleteButton, addInitializationItem = () => {}, deleteInitializationItem = () => {} }) => {
 
     const renderComponent = (inputComponentType, inputIsRequired, inputLabel, inputValue, subItemId) => {
         if (inputComponentType === 'file') {

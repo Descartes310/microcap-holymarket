@@ -117,11 +117,6 @@ const Create = (props) => {
 
     const setProjectItemValue = (item, value, subItemId) => {
         let test = projectItems;
-        //console.log("projectItems => ", test);
-        //console.log("Item => ", item);
-        //console.log("value => ", value);
-        //console.log("subItem => ", subItem);
-        //console.log("subItem ID => ", subItemId);
         let existingItem = test.find(pi => pi.id === item.id && pi.projectItemId === subItemId);
         if(!existingItem) {
             existingItem = {};
@@ -129,12 +124,8 @@ const Create = (props) => {
             existingItem.id = item.id;
         }
         let currentItems = test.filter(pi => pi.id !== item.id || pi.projectItemId !== subItemId );
-        //console.log("existingItem => ", existingItem);
-        //console.log("currentItems => ", currentItems);
         existingItem.value = value;
         existingItem.projectItemId = subItemId;
-        //console.log("existingItem 2 => ", existingItem);
-        //console.log("Total => ", [...currentItems, existingItem]);
         if(item.item.inputType === 'COMPLEX') {
             setProjectItems([...currentItems.filter(pi => pi.id !== item.id || (pi.id === item.id && pi.projectItemId !== null)), existingItem]);
         } else {

@@ -1,6 +1,7 @@
 export const CREATE_POST = 'api/projects';
 export const GET_PROJECTS = 'api/projects';
 export const GET_PROJECT = (id) => `api/projects/${id}`;
+export const UPDATE_PROJECT = (id) => `api/projects/${id}`;
 
 export const GET_PROJECT_POSTS = 'api/projects/posts';
 export const CREATE_PROJECT_POST = 'api/projects/posts';

@@ -198,6 +198,7 @@ export const PROJECT = {
             SELF: "/projects/mines/folders",
             LIST: "/projects/mines/folders/list",
             CREATE: "/projects/mines/folders/create",
+            UPDATE: "/projects/mines/folders/:id/update",
         },
         ITEM: {
             SELF: "/projects/mines/items",

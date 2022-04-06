@@ -16,6 +16,10 @@ export default class ProjectService {
         return makeRequest('post', Routes.CREATE_POST, data, config);
     }
 
+    static updateProject(id: number, data: any, config: any): Promise<any> {
+        return makeRequest('put', Routes.UPDATE_PROJECT(id), data, config);
+    }
+
     static getProjectPosts(): Promise<any> {
         return makeRequest('get', Routes.GET_PROJECT_POSTS);
     }

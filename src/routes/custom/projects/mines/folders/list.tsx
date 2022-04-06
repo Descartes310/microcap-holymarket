@@ -49,7 +49,10 @@ const List = (props) => {
                                         <tr>
                                             <th className="fw-bold">Désignation</th>
                                             <th className="fw-bold">Besoin estimé</th>
-                                            <th className="fw-bold">Action</th>
+                                            <th className="fw-bold">Fiche</th>
+                                            <th className="fw-bold">Activités</th>
+                                            <th className="fw-bold">Galérie</th>
+                                            <th className="fw-bold">Edition</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -78,6 +81,8 @@ const List = (props) => {
                                                     >
                                                         Fiche projet
                                                     </Button>
+                                                </td>
+                                                <td>
                                                     <Button
                                                         color="primary"
                                                         variant="contained"
@@ -86,6 +91,8 @@ const List = (props) => {
                                                     >
                                                         Activités
                                                     </Button>
+                                                </td>
+                                                <td>
                                                     <Button
                                                         color="primary"
                                                         variant="contained"
@@ -93,6 +100,16 @@ const List = (props) => {
                                                         onClick={() => props.history.push(joinUrlWithParamsId(PROJECT.DETAILS.GALLERY, item.id))}
                                                     >
                                                         Galérie
+                                                    </Button>
+                                                </td>
+                                                <td>
+                                                    <Button
+                                                        color="primary"
+                                                        variant="contained"
+                                                        className="text-white font-weight-bold"
+                                                        onClick={() => props.history.push(joinUrlWithParamsId(PROJECT.MINE.FOLDER.UPDATE, item.id))}
+                                                    >
+                                                        Editer
                                                     </Button>
                                                 </td>
                                             </tr>
