@@ -7,18 +7,26 @@ import ProjectService from 'Services/projects';
 import { setRequestGlobalAction } from 'Actions';
 import React, { useState, useEffect } from 'react';
 import TextField from '@material-ui/core/TextField';
+import AddPersonalItemModal from './addPersonalItem';
 import { FileUploader } from "react-drag-drop-files";
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import { getInitializationTypes } from 'Helpers/helpers';
 import { NotificationManager } from 'react-notifications';
 import PolymorphComponent from 'Components/PolymorphComponent';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { Form, FormGroup, Input as InputStrap } from 'reactstrap';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
 
-
 const fileTypes = ["JPG", "PNG", "GIF", "JPEG"];
+
+// a little function to help us with reordering the result
+const reorder = (list, startIndex, endIndex) => {
+    const result = Array.from(list);
+    const [removed] = result.splice(startIndex, 1);
+    result.splice(endIndex, 0, removed);
+    return result;
+};
 
 const Update = (props) => {
 
@@ -29,14 +37,13 @@ const Update = (props) => {
     const [budget, setBudget] = useState(null);
     const [project, setProject] = useState(null);
     const [projectItems, setProjectItems] = useState([]);
-    const [projectType, setProjectType] = useState(null);
-    const [initializations, setInitializations] = useState([]);
-    const [initialization, setInitialization] = useState(null);
-    const [initializationItems, setInitializationItems] = useState([]);
+    const [personalProjectItems, setPersonalProjectItems] = useState([]);
+    const [addPersonalItemModal, setAddPersonalItemModal] = useState(false);
 
     useEffect(() => {
         getUnits();
         getProject();
+        getProjectItems();
     }, []);
 
     const getProject = () => {
@@ -53,6 +60,18 @@ const Update = (props) => {
             setProject(null);
         })
         .finally(() => props.setRequestGlobalAction(false))
+    }
+
+    const getProjectItems = () => {
+        props.setRequestGlobalAction(true);
+        ProjectService.getProjectMyItems()
+            .then((response) => setPersonalProjectItems(response))
+            .catch((err) => {
+                console.log(err);
+            })
+            .finally(() => {
+                props.setRequestGlobalAction(false);
+            })
     }
 
     const getUnits = () => {
@@ -85,10 +104,11 @@ const Update = (props) => {
         }
 
         let data: any = {
-            label, budget, unitReference: unit.reference,
             item_ids: projectItems.map(pi => pi.id),
+            label, budget, unitReference: unit.reference,
             item_values: projectItems.map(pi => pi.value),
-            item_positions: projectItems.map(pi => pi.position)
+            item_positions: projectItems.map(pi => pi.position),
+            item_parents: projectItems.map(pi => pi.projectItem.id)
         }
 
         ProjectService.updateProject(props.match.params.id, data, { fileData: ['document'], multipart: true }).then(() => {
@@ -101,6 +121,38 @@ const Update = (props) => {
             props.setRequestGlobalAction(false);
         })
 
+    }
+
+    const onDragEnd = (result) => {
+        // dropped outside the list
+        if (!result.destination) {
+            return;
+        }
+
+        const items = reorder(
+            projectItems.sort((a, b) => a.position < b.position ? 1 : 0),
+            result.source.index,
+            result.destination.index
+        );
+
+        let ordererdItems = [];
+
+        for (let index = 0; index < items.length; index++) {
+            const element: any = items[index];
+            element.position = index+1;
+            ordererdItems.push(element);
+        }
+            
+        setProjectItems(ordererdItems);
+        setProject({...project, items: ordererdItems});
+    }
+
+    const addPersonalItem = (itemData) => {
+        let ordererdItems = projectItems;
+        ordererdItems.push({projectItem: itemData.item, position: projectItems.length+1, 
+            value: '', subValues: null, id: -new Date().getTime() })
+        setProject({...project, items: ordererdItems});
+        setAddPersonalItemModal(false);
     }
 
     return (
@@ -169,36 +221,67 @@ const Update = (props) => {
                             }} name="file" types={fileTypes} />
                     </FormGroup>
 
-                    <div className="row mt-5">
-                        {
-                            project?.items.map((item) => (
-                                <PolymorphComponent
-                                    isRequired={true}
-                                    projectItem={item}
-                                    displayAddButton={false}
-                                    displayDeleteButton={false}
-                                    label={item.projectItem.label}
-                                    value={projectItems.find(pi => pi === item)?.value}
-                                    componentType={item.projectItem.inputType.toLowerCase()}
-                                    handleOnChange={(currentItem, data, subItem) => setProjectItemValue(currentItem, data, subItem)}
-                                />
-                            ))
-                        }
-                    </div>
-
+                    <DragDropContext onDragEnd={onDragEnd}>
+                        <Droppable droppableId="droppable">
+                            {(provided) => (
+                                <div provided={provided} ref={provided.innerRef} {...provided.droppableProps}>
+                                    { project?.items.sort((a, b) => a.position < b.position).map((item, index) => (
+                                        <Draggable key={item.id+"-id"} draggableId={item.id+"-id"} index={index}>
+                                            {(provided) => (
+                                                <div
+                                                    ref={provided.innerRef}
+                                                    provided={provided}
+                                                    {...provided.draggableProps}
+                                                    {...provided.dragHandleProps}
+                                                >
+                                                    <PolymorphComponent
+                                                        isRequired={true}
+                                                        projectItem={item}
+                                                        displayAddButton={false}
+                                                        displayDeleteButton={false}
+                                                        label={item.projectItem.label}
+                                                        value={projectItems.find(pi => pi === item)?.value}
+                                                        componentType={item.projectItem.inputType.toLowerCase()}
+                                                        handleOnChange={(currentItem, data, subItem) => setProjectItemValue(currentItem, data, subItem)}
+                                                    />
+                                                </div>
+                                            )}
+                                        </Draggable>
+                                    ))}
+                                </div>
+                            )}
+                        </Droppable>
+                    </DragDropContext>
 
                     <FormGroup>
+                        <Button
+                            color="primary"
+                            variant="contained"
+                            onClick={() => setAddPersonalItemModal(true)}
+                            className="text-white mr-20 font-weight-bold bg-blue"
+                        >
+                            Ajouter une idée personnelle
+                        </Button>
                         <Button
                             color="primary"
                             variant="contained"
                             onClick={onSubmit}
                             className="text-white font-weight-bold"
                         >
-                            Ajouter
+                            Editer le projet
                         </Button>
                     </FormGroup>
                 </Form>
             </RctCollapsibleCard>
+            <AddPersonalItemModal 
+                show={addPersonalItemModal}
+                title={'Ajouter un ouvrage personnalisé'}
+                items={personalProjectItems}
+                onAdd={(itemData) => addPersonalItem(itemData)}
+                onClose={() => {
+                    setAddPersonalItemModal(false);
+                }}
+            />
         </>
     );
 };
