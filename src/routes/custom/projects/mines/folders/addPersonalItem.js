@@ -1,15 +1,13 @@
 import { injectIntl } from "react-intl";
 import React, { Component } from 'react';
-import BankService from 'Services/banks';
 import { withRouter } from "react-router-dom";
+import { FormGroup, Button  } from 'reactstrap';
 import { RctCardContent } from 'Components/RctCard';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import { NotificationManager } from 'react-notifications';
 import Checkbox from "@material-ui/core/Checkbox/Checkbox";
 import DialogComponent from "Components/dialog/DialogComponent";
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
-import { FormGroup, Button, Input as InputStrap  } from 'reactstrap';
 import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
 
 class AddPersonalItemModal extends Component {

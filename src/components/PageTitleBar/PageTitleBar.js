@@ -4,9 +4,9 @@ import _ from "lodash";
 import PropTypes from 'prop-types';
 // intl messages
 
-const PageTitleBar = ({ title, match, history, titleClassName, style, showBackBtn, onBackClick }) => {
+const PageTitleBar = ({ title, history, titleClassName, style, showBackBtn, onBackClick, className }) => {
    return (
-      <div className="page-title d-flex justify-content-between align-items-center" style={style}>
+      <div className={`page-title d-flex justify-content-between align-items-center ${className}`} style={style}>
          {title &&
             <div className="page-title-wrap">
                {showBackBtn && (

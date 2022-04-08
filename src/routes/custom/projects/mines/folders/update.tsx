@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 import UnitService from 'Services/units';
 import { PROJECT } from 'Url/frontendUrl';
+import UpdateItemModal from './updateItem';
 import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
 import ProjectService from 'Services/projects';
@@ -8,17 +9,16 @@ import { setRequestGlobalAction } from 'Actions';
 import React, { useState, useEffect } from 'react';
 import TextField from '@material-ui/core/TextField';
 import AddPersonalItemModal from './addPersonalItem';
-import { FileUploader } from "react-drag-drop-files";
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { NotificationManager } from 'react-notifications';
-import PolymorphComponent from 'Components/PolymorphComponent';
+import Checkbox from "@material-ui/core/Checkbox/Checkbox";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { Form, FormGroup, Input as InputStrap } from 'reactstrap';
+import ProjectDetails from '../../details/components/ProjectDetails';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
-
-const fileTypes = ["JPG", "PNG", "GIF", "JPEG"];
+import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
 
 // a little function to help us with reordering the result
 const reorder = (list, startIndex, endIndex) => {
@@ -37,7 +37,9 @@ const Update = (props) => {
     const [budget, setBudget] = useState(null);
     const [project, setProject] = useState(null);
     const [projectItems, setProjectItems] = useState([]);
+    const [selectedProjectItem, setSelectedProjectItem] = useState(null);
     const [personalProjectItems, setPersonalProjectItems] = useState([]);
+    const [showUpdateItemModal, setShowUpdateItemModal] = useState(false);
     const [addPersonalItemModal, setAddPersonalItemModal] = useState(false);
 
     useEffect(() => {
@@ -89,10 +91,17 @@ const Update = (props) => {
             })
     }  
 
-    const setProjectItemValue = (item, value, subItemId) => {
+    const setProjectItemValue = (item, value) => {
         let test = projectItems;
         let remaining = test.filter(pi => pi !== item);
         item.value = value;
+        setProjectItems([...remaining, item]);
+    }
+
+    const setProjectItemShowable = (item, value) => {
+        let test = projectItems;
+        let remaining = test.filter(pi => pi !== item);
+        item.showable = value;
         setProjectItems([...remaining, item]);
     }
     
@@ -106,9 +115,10 @@ const Update = (props) => {
         let data: any = {
             item_ids: projectItems.map(pi => pi.id),
             label, budget, unitReference: unit.reference,
-            item_values: projectItems.map(pi => pi.value),
             item_positions: projectItems.map(pi => pi.position),
-            item_parents: projectItems.map(pi => pi.projectItem.id)
+            item_showables: projectItems.map(pi => pi.showable),
+            item_parents: projectItems.map(pi => pi.projectItem.id),
+            item_values: JSON.stringify(projectItems.map(pi => pi.value))
         }
 
         ProjectService.updateProject(props.match.params.id, data, { fileData: ['document'], multipart: true }).then(() => {
@@ -150,17 +160,21 @@ const Update = (props) => {
     const addPersonalItem = (itemData) => {
         let ordererdItems = projectItems;
         ordererdItems.push({projectItem: itemData.item, position: projectItems.length+1, 
-            value: '', subValues: null, id: -new Date().getTime() })
+            value: '', subValues: null, id: -new Date().getTime(), showable: true })
         setProject({...project, items: ordererdItems});
         setAddPersonalItemModal(false);
     }
 
     return (
-        <>
+        <div className='row w-100'>
             <PageTitleBar
                 title={"Edition de projet"}
+                className='col-12'
             />
-            <RctCollapsibleCard>
+            <RctCollapsibleCard colClasses="col-md-7">
+                <ProjectDetails project={project} />
+            </RctCollapsibleCard>
+            <RctCollapsibleCard colClasses="col-md-5">
                 <Form onSubmit={onSubmit}>
                     <FormGroup className="has-wrapper">
                         <InputLabel className="text-left" htmlFor="label">
@@ -173,7 +187,10 @@ const Update = (props) => {
                             name='label'
                             value={label}
                             className="input-lg"
-                            onChange={(e) => setLabel(e.target.value)}
+                            onChange={(e) => {
+                                setLabel(e.target.value);
+                                setProject({...project, label: e.target.value});
+                            }}
                         />
                     </FormGroup>
 
@@ -189,7 +206,10 @@ const Update = (props) => {
                                 name='price'
                                 className="input-lg"
                                 value={budget}
-                                onChange={(e) => setBudget(e.target.value)}
+                                onChange={(e) => {
+                                    setBudget(e.target.value);
+                                    setProject({...project, budget: e.target.value});
+                                }}
                             />
                         </FormGroup>
                         <FormGroup className="col-md-6 col-sm-12 has-wrapper">
@@ -208,18 +228,14 @@ const Update = (props) => {
                             />
                         </FormGroup>
                     </div>
-
-                    <FormGroup className="has-wrapper">
-                        <InputLabel className="text-left" htmlFor="title">
-                            Document projet
-                        </InputLabel>
-                        <FileUploader
-                            classes="mw-100"
-                            label="Sélectionner le document de votre projet ici"
-                            handleChange={(file) => {
-                                setFile(file);
-                            }} name="file" types={fileTypes} />
-                    </FormGroup>
+                    <div className='mb-40'>
+                        <h2 className='font-weight-bold'>
+                            Ouvrages du projet
+                        </h2>
+                        <span>
+                            Faites glisser les ouvrages pour changer leur position
+                        </span>
+                    </div>
 
                     <DragDropContext onDragEnd={onDragEnd}>
                         <Droppable droppableId="droppable">
@@ -234,16 +250,29 @@ const Update = (props) => {
                                                     {...provided.draggableProps}
                                                     {...provided.dragHandleProps}
                                                 >
-                                                    <PolymorphComponent
-                                                        isRequired={true}
-                                                        projectItem={item}
-                                                        displayAddButton={false}
-                                                        displayDeleteButton={false}
-                                                        label={item.projectItem.label}
-                                                        value={projectItems.find(pi => pi === item)?.value}
-                                                        componentType={item.projectItem.inputType.toLowerCase()}
-                                                        handleOnChange={(currentItem, data, subItem) => setProjectItemValue(currentItem, data, subItem)}
-                                                    />
+                                                    <div className='d-flex justify-content-between' style={{ paddingRight: '10%' }}>
+                                                        <FormGroup className="col-sm-12 has-wrapper">
+                                                            <FormControlLabel control={
+                                                                <Checkbox
+                                                                    color="primary"
+                                                                    checked={item.showable}
+                                                                    onChange={() => setProjectItemShowable(item, !item.showable)}
+                                                                />
+                                                            } label={`${item.projectItem.label}`}
+                                                            />
+                                                        </FormGroup>
+                                                        <p 
+                                                            className='cursor-pointer'
+                                                            onClick={() => {
+                                                                setShowUpdateItemModal(true);
+                                                                setSelectedProjectItem(item);
+                                                            }}
+                                                        >
+                                                            Editer
+                                                        </p>
+                                                    </div>
+                                                    
+
                                                 </div>
                                             )}
                                         </Draggable>
@@ -268,7 +297,7 @@ const Update = (props) => {
                             onClick={onSubmit}
                             className="text-white font-weight-bold"
                         >
-                            Editer le projet
+                            Sauvegarder les changements
                         </Button>
                     </FormGroup>
                 </Form>
@@ -282,7 +311,19 @@ const Update = (props) => {
                     setAddPersonalItemModal(false);
                 }}
             />
-        </>
+            { showUpdateItemModal && selectedProjectItem && (
+                <UpdateItemModal 
+                    item={selectedProjectItem}
+                    title={'Editer un ouvrage'}
+                    onClose={() => {
+                        setShowUpdateItemModal(false);
+                        setSelectedProjectItem(null);
+                    }}
+                    setProjectItemValue={setProjectItemValue}
+                    show={showUpdateItemModal && selectedProjectItem}
+                />
+            )}
+        </div>
     );
 };
 

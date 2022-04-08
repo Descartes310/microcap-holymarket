@@ -166,8 +166,8 @@ const Create = (props) => {
         let data: any = {
             label, budget, unitReference: unit.reference, document: file,
             initializationId: initialization.id,
-            initializationParents: projectItems.map(pi => pi.id),
-            initializationValues: projectItems.map(pi => pi.value),
+            initializationParents: JSON.stringify(projectItems.map(pi => pi.id)),
+            initializationValues: JSON.stringify(projectItems.map(pi => pi.value)),
             initializationItems: projectItems.map(pi => pi.projectItemId !== null ? pi.projectItemId : pi.item.id)
         }
 

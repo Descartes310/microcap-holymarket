@@ -41,7 +41,7 @@ const PolymorphComponent = ({ projectItem, componentType, value, label, isRequir
                         classes="mw-100"
                         label="Sélectionner votre fichier ici"
                         handleChange={(file) => {
-                            handleOnChange(projectItem, file, subItemId);
+                            handleOnChange(projectItem, file);
                         }} name="file" types={fileTypes} />
                 </FormGroup>
             );
@@ -53,7 +53,7 @@ const PolymorphComponent = ({ projectItem, componentType, value, label, isRequir
                     <InputLabel className="text-left" htmlFor="description">
                         { inputLabel } {!inputIsRequired && ' (optionnel)'}
                     </InputLabel>
-                    <ReactQuill value={projectItem?.value} modules={modules} onChange={(e) => handleOnChange(projectItem, e, subItemId)} formats={formats} />
+                    <ReactQuill value={projectItem?.value} modules={modules} onChange={(e) => handleOnChange(projectItem, e)} formats={formats} />
                 </FormGroup>
             )
         }
@@ -86,7 +86,7 @@ const PolymorphComponent = ({ projectItem, componentType, value, label, isRequir
                     value={projectItem?.value}
                     className="input-lg"
                     type={inputComponentType}
-                    onChange={(e) => handleOnChange(projectItem, e.target.value, subItemId)}
+                    onChange={(e) => handleOnChange(projectItem, e.target.value)}
                 />
             </FormGroup>
         );
