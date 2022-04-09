@@ -8,6 +8,8 @@ import AppConfig from 'Constants/AppConfig';
 import { NotificationManager } from 'react-notifications';
 import NavLinks, { MenuItem } from "Components/Sidebar/NavLinks";
 
+export const DEFAULT_IMAGE = 'https://skillz4kidzmartialarts.com/wp-content/uploads/2017/04/default-image-620x600.jpg';
+
 const TABLE_OF_256_HEXADECIMAL = (function () {
     const arr = [];
     for (let i = 0; i < 256; i++) { arr[i] = (i < 16 ? '0' : '') + (i).toString(16); }

@@ -5,9 +5,9 @@ import { withRouter } from "react-router-dom";
 import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
 import React, { useState, useEffect } from 'react';
-import { getGroupTypeLabel } from 'Helpers/helpers';
-import TimeFromMoment from "Components/TimeFromMoment";
 import { GROUP, joinUrlWithParamsId } from 'Url/frontendUrl';
+import CommunityItemList from './components/communityItemList';
+import GroupDetails from 'Routes/custom/groups/details/components/groupDetails';
 
 const Mine = (props) => {
 
@@ -25,107 +25,40 @@ const Mine = (props) => {
     }
 
     return (
-        <>
-            <CustomList
-                list={groups}
-                loading={false}
-                addText="Créer une communauté"
-                itemsFoundText={n => `${n} communauté.s trouvée.s`}
-                onAddClick={() => props.history.push(GROUP.COMMUNITY.MANAGEMENT.CREATE)}
-                renderItem={list => (
-                    <>
-                        {list && list.length === 0 ? (
+        <div className='w-100 row'>
+            <div className='col-md-4'>
+                <CustomList
+                    list={groups}
+                    loading={false}
+                    showSearch={false}
+                    addText="Créer une communauté"
+                    onAddClick={() => props.history.push(GROUP.COMMUNITY.MANAGEMENT.CREATE)}
+                    renderItem={list => (
+                        list && list.length === 0 ? (
                             <div className="d-flex justify-content-center align-items-center py-50">
                                 <h4>
                                     Aucun communauté.s trouvée.s
                                 </h4>
                             </div>
                         ) : (
-                            <div className="table-responsive">
-                                <table className="table table-hover table-middle mb-0">
-                                    <thead>
-                                        <tr>
-                                            <th className="fw-bold">Nom</th>
-                                            <th className="fw-bold">Type</th>
-                                            <th className="fw-bold">Status</th>
-                                            <th className="fw-bold">Membre depuis</th>
-                                            <th className="fw-bold">Détails</th>
-                                            <th className="fw-bold">Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {list && list.map((item, key) => (
-                                            <tr key={key} className="cursor-pointer">
-                                                <td>
-                                                    <div className="media">
-                                                        <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{item.userName}</h4>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div className="media">
-                                                        <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{getGroupTypeLabel(item.groupType)}</h4>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div className="media">
-                                                        <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{item.status ? item.status : 'NON MEMBRE'}</h4>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div className="media">
-                                                        <div className="media-body pt-10">
-                                                            <h4 className="m-0 text-dark">
-                                                                <TimeFromMoment time={item.date} showFullDate />
-                                                            </h4>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div className="media">
-                                                        <div className="media-body pt-10">
-                                                            <Button
-                                                                size="small"
-                                                                variant="contained"
-                                                                onClick={() => {
-                                                                    props.history.push(joinUrlWithParamsId(GROUP.DETAILS.VIEW, item.groupReference.split('_')[1]))
-                                                                }}
-                                                                className="btn-primary mb-10 text-white"
-                                                            >
-                                                                Consulter les détails
-                                                            </Button>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div className="media">
-                                                        <div className="media-body pt-10">
-                                                        <Button
-                                                            size="small"
-                                                            variant="contained"
-                                                            className="mr-5 mb-10 text-white"
-                                                        >
-                                                            { item.status ? 'Rejoindre' : 'Demander une adhésion' }
-                                                        </Button>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
-                            </div>
-                        )}
-                    </>
+                            list && list.map((item, index) => (
+                                <CommunityItemList key={index} community={item}/>
+                        )))
+                    )}
+                />
+            </div>
+            <div className='col-md-8'>
+                { props.selectedCommunity && (
+                    <GroupDetails id={props.selectedCommunity.groupReference} />
                 )}
-            />
-        </>
+            </div>
+            
+        </div>
     );
 }
 
-export default connect(() => {}, { setRequestGlobalAction })(withRouter(Mine));
+const mapStateToProps = ({ group }) => {
+    return { selectedCommunity: group.community}
+}
+
+export default connect(mapStateToProps, { setRequestGlobalAction })(withRouter(Mine));

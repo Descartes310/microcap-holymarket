@@ -303,7 +303,7 @@ export default [
             "child_routes": null
          },
          {
-            "menu_title": "Mes idées",
+            "menu_title": "Créations personnelles",
             "new_item": false,
             "path": PROJECT.MINE.ITEM.LIST,
             "permissions": [Permission.project.item.name],

@@ -289,7 +289,7 @@ const Update = (props) => {
                             onClick={() => setAddPersonalItemModal(true)}
                             className="text-white mr-20 font-weight-bold bg-blue"
                         >
-                            Ajouter une idée personnelle
+                            Ajouter une rubrique personnelle
                         </Button>
                         <Button
                             color="primary"

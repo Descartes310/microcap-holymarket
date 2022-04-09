@@ -4,6 +4,7 @@
 import settings from './settings';
 import CartReducer from './CartReducer';
 import { combineReducers } from 'redux';
+import groupReducer from './GroupReducer';
 import UsersReducer from './UsersReducer';
 import tokensReducer from './TokensReducer';
 import sidebarReducer from './SidebarReducer';
@@ -16,6 +17,7 @@ import PermissionAlertBoxReducer from './PermissionAlertBoxReducer';
 const reducers = combineReducers({
    settings,
    cart: CartReducer,
+   group: groupReducer,
    users: UsersReducer,
    tokens: tokensReducer,
    sidebar: sidebarReducer,

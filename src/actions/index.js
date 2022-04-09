@@ -3,6 +3,7 @@
  */
 export * from './AuthActions';
 export * from './CartActions';
+export * from './GroupActions';
 export * from './TokensActions';
 export * from './AppLoadingAction';
 export * from './AppSettingsActions';

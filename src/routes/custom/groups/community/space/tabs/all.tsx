@@ -8,6 +8,7 @@ import React, { useState, useEffect } from 'react';
 import { getGroupTypeLabel } from 'Helpers/helpers';
 import {NotificationManager} from 'react-notifications';
 import { GROUP, joinUrlWithParamsId } from 'Url/frontendUrl';
+import CommunityItemGrid from './components/communityItemGrid';
 import SendJoinRequestModal from '../../../components/sendJoinRequestModal';
 
 const All = (props) => {
@@ -65,82 +66,10 @@ const All = (props) => {
                                 </h4>
                             </div>
                         ) : (
-                            <div className="table-responsive">
-                                <table className="table table-hover table-middle mb-0">
-                                    <thead>
-                                        <tr>
-                                            <th className="fw-bold">Nom</th>
-                                            <th className="fw-bold">Type</th>
-                                            <th className="fw-bold">Status</th>
-                                            <th className="fw-bold">Détails</th>
-                                            <th className="fw-bold">Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {list && list.map((item, key) => (
-                                            <tr key={key} className="cursor-pointer">
-                                                <td>
-                                                    <div className="media">
-                                                        <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{item.userName}</h4>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div className="media">
-                                                        <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{getGroupTypeLabel(item.groupType)}</h4>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div className="media">
-                                                        <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{item.status ? item.status : 'NON MEMBRE'}</h4>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div className="media">
-                                                        <div className="media-body pt-10">
-                                                            <Button
-                                                                size="small"
-                                                                variant="contained"
-                                                                onClick={() => {
-                                                                    props.history.push(joinUrlWithParamsId(GROUP.DETAILS.VIEW, item.groupReference.split('_')[1]))
-                                                                }}
-                                                                className="btn-primary mb-10 text-white"
-                                                            >
-                                                                Consulter les détails
-                                                            </Button>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div className="media">
-                                                        <div className="media-body pt-10">
-                                                            {!item.status ?
-                                                                <Button
-                                                                    size="small"
-                                                                    color='primary'
-                                                                    variant="contained"
-                                                                    onClick={() => {
-                                                                        setGroup(item);
-                                                                        setShowRequestModal(true);
-                                                                    }}
-                                                                    className="mr-5 mb-10 text-white"
-                                                                >
-                                                                    Demander une adhésion
-                                                                </Button>
-                                                                : <h4 className="m-0 fw-bold text-dark">En cours...</h4>
-                                                            }
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
+                            <div className='row'>
+                                {list && list.map((item, index) => (
+                                    <CommunityItemGrid key={index} community={item}/>
+                                ))}
                             </div>
                         )}
                     </>
