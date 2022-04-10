@@ -82,7 +82,7 @@ const Create = (props) => {
         ProjectService.getProjectInitializationItems(initialization.id)
             .then((response) => {
                 setInitializationItems(response);
-                setProjectItems(response.map(ii => { return { item: ii, value: null, id: new Date().getTime()+'-'+ii.inputType+'-'+ii.id, projectItemId: null } }))
+                setProjectItems(response.filter(pi => pi.complexType !== 'TABLE').map(ii => { return { item: ii, value: null, id: new Date().getTime()+'-'+ii.inputType+'-'+ii.id, projectItemId: null } }))
             })
             .catch((err) => {
                 console.log(err);
@@ -134,9 +134,13 @@ const Create = (props) => {
     }
 
     const checkProjectItemsValidity = () => {
-        for (let index = 0; index < initializationItems.length; index++) {
-            const initItem = initializationItems[index];
-            const occurences = projectItems.filter(pi => pi.item === initItem && (pi.value !== '' || pi.value !== null));
+        let initItems = initializationItems.filter(ii => ii.complexType !== 'TABLE');
+        for (let index = 0; index < initItems.length; index++) {
+            const initItem = initItems[index];
+            const occurences = projectItems.filter(pi => pi.item === initItem && pi.value != null);
+            console.log("TEST 1 => ", projectItems)
+            console.log("TEST 2 => ", occurences)
+            console.log("TEST 3 => ", initItem)
             if(occurences.length > initItem.maximumOccurence) {
                 NotificationManager.error('Les informations du projet ne sont pas correctement renseignées');
                 return false;
@@ -155,10 +159,15 @@ const Create = (props) => {
     }
     
     const onSubmit = () => {
-        // if(!checkProjectItemsValidity())
-        //     return;
 
-        if(!label || !budget || !unit || projectItems.length <= 0) {
+        let items = projectItems.filter(pi => pi.value != null);
+        
+        if(!checkProjectItemsValidity())
+        return;
+        
+        console.log(label, budget, unit, items, items.length);
+
+        if(!label || !budget || !unit || items.length <= 0) {
             NotificationManager.error('Les informations du projet ne sont pas correctement renseignées');
             return;
         }
@@ -166,9 +175,9 @@ const Create = (props) => {
         let data: any = {
             label, budget, unitReference: unit.reference, document: file,
             initializationId: initialization.id,
-            initializationParents: JSON.stringify(projectItems.map(pi => pi.id)),
-            initializationValues: JSON.stringify(projectItems.map(pi => pi.value)),
-            initializationItems: projectItems.map(pi => pi.projectItemId !== null ? pi.projectItemId : pi.item.id)
+            initializationParents: JSON.stringify(items.filter(pi => pi.item.complexType !== 'TABLE').map(pi => pi.id)),
+            initializationValues: JSON.stringify(items.filter(pi => pi.item.complexType !== 'TABLE').map(pi => pi.value)),
+            initializationItems: items.map(pi => pi.projectItemId ? pi.projectItemId : pi.item.id)
         }
 
         ProjectService.createProject(data, { fileData: ['document'], multipart: true }).then(() => {
@@ -208,7 +217,7 @@ const Create = (props) => {
                     <div className="row">
                         <FormGroup className="col-md-6 col-sm-12 has-wrapper">
                             <InputLabel className="text-left" htmlFor="price">
-                                Besoin estimé
+                                Financement estimé
                             </InputLabel>
                             <InputStrap
                                 required

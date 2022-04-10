@@ -5,6 +5,7 @@ import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard
 
 
 class ComplexTable extends Component {
+
     static contextType = AbilityContext;
 
     state = {
@@ -26,26 +27,20 @@ class ComplexTable extends Component {
         }
     }
 
-    getRow = (index) => {
-        index
-    }
-
     componentDidUpdate(prevProps) {
-        console.log('ROWS => ', this.props.rows);
         if (this.props.rows !== prevProps.rows) {
             let tmpResponse = [];
             for (let index = 0; index < this.props.rows.length; index++) {
                 const row = this.props.rows[index];
                 let rowDatas = this.state.datas.filter(d => d.row === row && d.column === row.column && d.position === 1);
                 tmpResponse = [...tmpResponse, ...rowDatas.map(rd => rd.row), row];
-                console.log(tmpResponse);
             }
             this.setState({ flatRows: tmpResponse });
         }
     }
 
     render() {
-        const { columns, subColumns, rows } = this.props;
+        const { columns, subColumns } = this.props;
         return (
             <RctCollapsibleCard>
                 <div className="d-flex justify-content-center align-items-center" style={{ flexDirection: 'column' }}>
@@ -139,7 +134,7 @@ class ComplexTable extends Component {
                                     )
                                 })}
 
-                                <tr>
+                                {/* <tr>
                                     <td>Total</td>
                                     {columns.map(column => (
                                         <>
@@ -151,7 +146,7 @@ class ComplexTable extends Component {
                                             <td></td>
                                         </>
                                     ))}
-                                </tr>
+                                </tr> */}
                             </tbody>
                         </table>
                     </div>

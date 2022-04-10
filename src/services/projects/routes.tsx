@@ -19,3 +19,6 @@ export const CREATE_INITIALIZATION = 'api/projects/initializations';
 export const GET_PROJECT_INITIALIZATIONS = 'api/projects/initializations';
 export const CREATE_INITIALIZATION_ITEM = (id) => `api/projects/initializations/${id}/items`;
 export const GET_PROJECT_INITIALIZATION_ITEMS = (id) => `api/projects/initializations/${id}/items`;
+
+
+export const GET_TABLE_STRUCTURE = (id) => `api/projects/tables/structures/${id}`;

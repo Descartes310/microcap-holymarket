@@ -71,4 +71,8 @@ export default class ProjectService {
     static updateComplexProjectItem(id: number, data: any): Promise<any> {
         return makeRequest('put', Routes.UPDATE_PROJECT_ITEM_COMPLEX(id), data);
     }
+
+    static getTableStructure(id): Promise<any> {
+        return makeRequest('get', Routes.GET_TABLE_STRUCTURE(id));
+    }
 }

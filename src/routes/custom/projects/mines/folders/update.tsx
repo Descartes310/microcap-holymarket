@@ -1,21 +1,22 @@
 import { connect } from 'react-redux';
 import UnitService from 'Services/units';
 import { PROJECT } from 'Url/frontendUrl';
-import UpdateItemModal from './updateItem';
 import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
 import ProjectService from 'Services/projects';
 import { setRequestGlobalAction } from 'Actions';
 import React, { useState, useEffect } from 'react';
 import TextField from '@material-ui/core/TextField';
-import AddPersonalItemModal from './addPersonalItem';
+import UpdateItemModal from './components/updateItem';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { NotificationManager } from 'react-notifications';
 import Checkbox from "@material-ui/core/Checkbox/Checkbox";
+import AddPersonalItemModal from './components/addPersonalItem';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { Form, FormGroup, Input as InputStrap } from 'reactstrap';
 import ProjectDetails from '../../details/components/ProjectDetails';
+import UpdateComplexTableModal from './components/updateComplexTable'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
 import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
@@ -31,7 +32,6 @@ const reorder = (list, startIndex, endIndex) => {
 const Update = (props) => {
 
     const [units, setUnits] = useState([]);
-    const [file, setFile] = useState(null);
     const [label, setLabel] = useState('');
     const [unit, setUnit] = useState(null);
     const [budget, setBudget] = useState(null);
@@ -40,6 +40,7 @@ const Update = (props) => {
     const [selectedProjectItem, setSelectedProjectItem] = useState(null);
     const [personalProjectItems, setPersonalProjectItems] = useState([]);
     const [showUpdateItemModal, setShowUpdateItemModal] = useState(false);
+    const [showUpdateTableModal, setShowUpdateTableModal] = useState(false);
     const [addPersonalItemModal, setAddPersonalItemModal] = useState(false);
 
     useEffect(() => {
@@ -197,7 +198,7 @@ const Update = (props) => {
                     <div className="row">
                         <FormGroup className="col-md-6 col-sm-12 has-wrapper">
                             <InputLabel className="text-left" htmlFor="price">
-                                Besoin estimé
+                                Financement estimé
                             </InputLabel>
                             <InputStrap
                                 required
@@ -300,6 +301,18 @@ const Update = (props) => {
                             Sauvegarder les changements
                         </Button>
                     </FormGroup>
+                    { project?.tables?.length > 0 && (
+                        <FormGroup>
+                            <Button
+                                color="primary"
+                                variant="contained"
+                                onClick={() => setShowUpdateTableModal(true)}
+                                className="text-white font-weight-bold w-100"
+                            >
+                                Plan de financement
+                            </Button>
+                        </FormGroup>
+                    )}
                 </Form>
             </RctCollapsibleCard>
             <AddPersonalItemModal 
@@ -310,6 +323,14 @@ const Update = (props) => {
                 onClose={() => {
                     setAddPersonalItemModal(false);
                 }}
+            />
+            <UpdateComplexTableModal 
+                show={showUpdateTableModal}
+                title={'Edition ouvrage personnalisé'}
+                onClose={() => {
+                    setShowUpdateTableModal(false);
+                }}
+                tables={project?.tables ? project?.tables : []}
             />
             { showUpdateItemModal && selectedProjectItem && (
                 <UpdateItemModal 
