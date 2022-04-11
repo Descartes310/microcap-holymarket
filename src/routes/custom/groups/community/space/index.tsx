@@ -17,6 +17,8 @@ class Requests extends Component<any, any> {
             if (url.includes(GROUP.COMMUNITY.SPACE.MINE)) return 0;
             else if (url.includes(GROUP.COMMUNITY.SPACE.ALL)) return 1;
             else if (url.includes(GROUP.COMMUNITY.SPACE.REQUEST)) return 2;
+            else if (url.includes(GROUP.COMMUNITY.SPACE.MESSAGE)) return 3;
+            else if (url.includes(GROUP.COMMUNITY.SPACE.PENDING)) return 4;
             else return 0;
         })(window.location.pathname);
 
@@ -33,6 +35,8 @@ class Requests extends Component<any, any> {
                 case 0: return this.props.history.push(GROUP.COMMUNITY.SPACE.MINE);
                 case 1: return this.props.history.push(GROUP.COMMUNITY.SPACE.ALL);
                 case 2: return this.props.history.push(GROUP.COMMUNITY.SPACE.REQUEST);
+                case 3: return this.props.history.push(GROUP.COMMUNITY.SPACE.MESSAGE);
+                case 4: return this.props.history.push(GROUP.COMMUNITY.SPACE.PENDING);
                 default: return this.props.history.push(GROUP.COMMUNITY.SPACE.MINE);
             }
         }
@@ -68,6 +72,14 @@ class Requests extends Component<any, any> {
                                             icon={<i className="zmdi zmdi-time-restore"></i>}
                                             label={"Mes requêtes"}
                                         />
+                                        <Tab
+                                            icon={<i className="zmdi zmdi-comment-outline"></i>}
+                                            label={"Messagerie"}
+                                        />
+                                        {/* <Tab
+                                            icon={<i className="zmdi zmdi-time"></i>}
+                                            label={"En attentes"}
+                                        /> */}
                                     </Tabs>
                                 </div>
                             </div>

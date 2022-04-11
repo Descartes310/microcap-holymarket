@@ -104,7 +104,9 @@ export const GROUP = {
             SELF: '/groups/communities/space',
             ALL: '/groups/communities/space/all',
             MINE: '/groups/communities/space/mine',
-            REQUEST: '/groups/communities/space/requests'
+            REQUEST: '/groups/communities/space/requests',
+            PENDING: '/groups/communities/space/pending',
+            MESSAGE: '/groups/communities/space/messages'
         },
         MANAGEMENT: {
             SELF: '/groups/communities/management',

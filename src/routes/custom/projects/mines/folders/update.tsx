@@ -124,9 +124,6 @@ const Update = (props) => {
             return;
         }
 
-        console.log(projectItems);
-        console.log(projectItems.filter(pi => pi.subValues).flatMap(pi => pi.subValues));
-
         let data: any = {
             item_ids: projectItems.map(pi => pi.id),
             item_parents: projectItems.map(pi => pi.id),
@@ -136,8 +133,6 @@ const Update = (props) => {
             item_values: JSON.stringify(projectItems.map(pi => pi.value)),
             item_subvalues: JSON.stringify(projectItems.filter(pi => pi.subValues).flatMap(pi => pi.subValues).map(sv => { return { id: sv.id, value: sv.value } }))
         }
-
-        console.log(data);
 
         ProjectService.updateProject(props.match.params.id, data, { fileData: ['document'], multipart: true }).then(() => {
             NotificationManager.success("Le projet a été créé avec succès");
