@@ -1,4 +1,5 @@
 import React from 'react';
+import UpdateComplexTable from 'Components/UpdateComplexTable';
 
 const ProjectDetails = (props) => {
     const project = props.project;
@@ -15,7 +16,7 @@ const ProjectDetails = (props) => {
                         item.value === "COMPLEX_VALUE" && item.subValues?.length >= 0 ?
                         <div className='mt-30'>
                             <h3 className="fw-500" style={{ fontSize: '1.3rem' }}>{item.projectItem.label}</h3>
-                            { item.subValues.map(subValue => (
+                            { item.subValues.sort((a, b) => (a.id+"").localeCompare(b.id+"")).map(subValue => (
                                 <>
                                     <h4 className="fw-500" style={{ fontSize: '1.2rem', paddingLeft: 20 }}>{subValue.projectItem.label}</h4>
                                     <p style={{ fontSize: '1.1rem', paddingLeft: 40 }}>
@@ -31,6 +32,14 @@ const ProjectDetails = (props) => {
                                 <span dangerouslySetInnerHTML={{__html: item.value}}></span>
                             </p>
                         </div>
+                    ))
+                }
+                {
+                    project.tables.map((table, index) => (
+                        <>
+                            <h3 className="fw-500" style={{ fontSize: '1.3rem' }}>{table.label}</h3>
+                            <UpdateComplexTable key={index} id={table.id} editMode={false} />
+                        </>
                     ))
                 }
             </>

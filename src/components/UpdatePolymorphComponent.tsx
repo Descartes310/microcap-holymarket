@@ -28,7 +28,7 @@ const formats = [
     'code-block'
 ];
 
-const PolymorphComponent = ({ projectItem, componentType, value, label, isRequired, handleOnChange, displayAddButton, displayDeleteButton, addInitializationItem = () => {}, deleteInitializationItem = () => {} }) => {
+const UpdatePolymorphComponent = ({ projectItem, componentType, value, label, isRequired, handleOnChange, displayAddButton, displayDeleteButton, addInitializationItem = () => {}, deleteInitializationItem = () => {} }) => {
 
     const renderComponent = (inputComponentType, inputIsRequired, inputLabel, inputValue, subItemId) => {
         if (inputComponentType === 'file') {
@@ -52,7 +52,7 @@ const PolymorphComponent = ({ projectItem, componentType, value, label, isRequir
                     <InputLabel className="text-left" htmlFor="description">
                         { inputLabel } {!inputIsRequired && ' (optionnel)'}
                     </InputLabel>
-                    <ReactQuill value={projectItem?.value} modules={modules} onChange={(e) => handleOnChange(projectItem, e, subItemId)} formats={formats} />
+                    <ReactQuill value={inputValue} modules={modules} onChange={(e) => handleOnChange(projectItem, e, subItemId)} formats={formats} />
                 </FormGroup>
             )
         }
@@ -62,8 +62,8 @@ const PolymorphComponent = ({ projectItem, componentType, value, label, isRequir
                     <InputLabel className="text-left font-weight-bold mb-30" htmlFor="description">
                         { inputLabel } {!inputIsRequired && ' (optionnel)'}
                     </InputLabel>
-                    { projectItem.item.items.map(item => (
-                        renderComponent(item.inputType.toLowerCase(), inputIsRequired, item.label, null, item.id)
+                    { projectItem.subValues.sort((a, b) => (a.id+"").localeCompare(b.id+"")).map(item => (
+                        renderComponent(item.projectItem.inputType.toLowerCase(), inputIsRequired, item.projectItem.label, item?.value, item.id)
                     )) }
                 </FormGroup>
             )
@@ -82,7 +82,7 @@ const PolymorphComponent = ({ projectItem, componentType, value, label, isRequir
                 <Input
                     name={inputLabel}
                     label={inputLabel}
-                    value={projectItem?.value}
+                    value={inputValue}
                     className="input-lg"
                     type={inputComponentType}
                     onChange={(e) => handleOnChange(projectItem, e.target.value, subItemId)}
@@ -92,8 +92,8 @@ const PolymorphComponent = ({ projectItem, componentType, value, label, isRequir
     };
 
     return (
-        renderComponent(componentType, isRequired, label, value, null)
+        renderComponent(componentType, isRequired, label, projectItem?.value, null)
     );
 };
 
-export default PolymorphComponent;
+export default UpdatePolymorphComponent;

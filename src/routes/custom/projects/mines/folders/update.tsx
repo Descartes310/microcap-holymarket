@@ -16,7 +16,7 @@ import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { Form, FormGroup, Input as InputStrap } from 'reactstrap';
 import ProjectDetails from '../../details/components/ProjectDetails';
-import UpdateComplexTableModal from './components/updateComplexTable'
+import UpdateComplexTableModal from './components/updateComplexTable';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
 import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
@@ -56,7 +56,9 @@ const Update = (props) => {
             setProject(response);
             setLabel(response.label);
             setBudget(response.budget);
-            setProjectItems(response.items);
+            setProjectItems(response.items.map(i => {
+                return { ...i,  }
+            }));
         })
         .catch((error) => {
             console.log(error);
@@ -92,11 +94,20 @@ const Update = (props) => {
             })
     }  
 
-    const setProjectItemValue = (item, value) => {
+    const setProjectItemValue = (item, value, subItemId) => {
         let test = projectItems;
-        let remaining = test.filter(pi => pi !== item);
-        item.value = value;
-        setProjectItems([...remaining, item]);
+        let remaining = test.filter(pi => pi.id !== item.id);
+        if(subItemId) {
+            let projectItem = test.find(pi => pi.id === item.id);
+            let subValue = projectItem.subValues.find(sv => sv.id === subItemId);
+            let subValueRemaining = projectItem.subValues.filter(sv => sv.id !== subItemId);
+            subValue.value = value;
+            projectItem.subValues = [...subValueRemaining, subValue];
+            setProjectItems([...remaining, projectItem]);
+        } else {
+            item.value = value;
+            setProjectItems([...remaining, item]);
+        }
     }
 
     const setProjectItemShowable = (item, value) => {
@@ -113,14 +124,20 @@ const Update = (props) => {
             return;
         }
 
+        console.log(projectItems);
+        console.log(projectItems.filter(pi => pi.subValues).flatMap(pi => pi.subValues));
+
         let data: any = {
             item_ids: projectItems.map(pi => pi.id),
+            item_parents: projectItems.map(pi => pi.id),
             label, budget, unitReference: unit.reference,
             item_positions: projectItems.map(pi => pi.position),
             item_showables: projectItems.map(pi => pi.showable),
-            item_parents: projectItems.map(pi => pi.projectItem.id),
-            item_values: JSON.stringify(projectItems.map(pi => pi.value))
+            item_values: JSON.stringify(projectItems.map(pi => pi.value)),
+            item_subvalues: JSON.stringify(projectItems.filter(pi => pi.subValues).flatMap(pi => pi.subValues).map(sv => { return { id: sv.id, value: sv.value } }))
         }
+
+        console.log(data);
 
         ProjectService.updateProject(props.match.params.id, data, { fileData: ['document'], multipart: true }).then(() => {
             NotificationManager.success("Le projet a été créé avec succès");
@@ -330,6 +347,7 @@ const Update = (props) => {
                 onClose={() => {
                     setShowUpdateTableModal(false);
                 }}
+                projectId={project?.id}
                 tables={project?.tables ? project?.tables : []}
             />
             { showUpdateItemModal && selectedProjectItem && (

@@ -21,4 +21,6 @@ export const CREATE_INITIALIZATION_ITEM = (id) => `api/projects/initializations/
 export const GET_PROJECT_INITIALIZATION_ITEMS = (id) => `api/projects/initializations/${id}/items`;
 
 
+export const GET_TABLE_DATAS = 'api/projects/tables/values';
+export const CREATE_TABLE_DATAS = 'api/projects/tables/values';
 export const GET_TABLE_STRUCTURE = (id) => `api/projects/tables/structures/${id}`;

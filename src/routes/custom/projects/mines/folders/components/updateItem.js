@@ -3,8 +3,8 @@ import React, { Component } from 'react';
 import { withRouter } from "react-router-dom";
 import { FormGroup, Button  } from 'reactstrap';
 import { RctCardContent } from 'Components/RctCard';
-import PolymorphComponent from 'Components/PolymorphComponent';
 import DialogComponent from "Components/dialog/DialogComponent";
+import UpdatePolymorphComponent from 'Components/UpdatePolymorphComponent';
 
 class UpdateItemModal extends Component {
 
@@ -29,7 +29,7 @@ class UpdateItemModal extends Component {
             >
                 <RctCardContent>
                     <div className="col-md-12 col-sm-12 has-wrapper mb-30">
-                        <PolymorphComponent
+                        <UpdatePolymorphComponent
                             isRequired={true}
                             projectItem={item}
                             displayAddButton={false}

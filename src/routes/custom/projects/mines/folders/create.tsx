@@ -123,11 +123,13 @@ const Create = (props) => {
             existingItem.item = item.item;
             existingItem.id = item.id;
         }
-        let currentItems = test.filter(pi => pi.id !== item.id || pi.projectItemId !== subItemId );
+        if(item.id.includes('COMPLEX'))
+            existingItem.projectItemId = subItemId;
         existingItem.value = value;
-        existingItem.projectItemId = subItemId;
+        let currentItems = test.filter(pi => pi.id !== item.id || pi.projectItemId !== subItemId );
+        //.filter(pi => (pi.id !== item.id || pi.id !== item.id ) && pi.projectItemId !== null))
         if(item.item.inputType === 'COMPLEX') {
-            setProjectItems([...currentItems.filter(pi => pi.id !== item.id || (pi.id === item.id && pi.projectItemId !== null)), existingItem]);
+            setProjectItems([...currentItems, existingItem]);
         } else {
             setProjectItems([...currentItems, existingItem]);
         }
@@ -138,9 +140,6 @@ const Create = (props) => {
         for (let index = 0; index < initItems.length; index++) {
             const initItem = initItems[index];
             const occurences = projectItems.filter(pi => pi.item === initItem && pi.value != null);
-            console.log("TEST 1 => ", projectItems)
-            console.log("TEST 2 => ", occurences)
-            console.log("TEST 3 => ", initItem)
             if(occurences.length > initItem.maximumOccurence) {
                 NotificationManager.error('Les informations du projet ne sont pas correctement renseignées');
                 return false;
@@ -162,10 +161,8 @@ const Create = (props) => {
 
         let items = projectItems.filter(pi => pi.value != null);
         
-        if(!checkProjectItemsValidity())
-        return;
-        
-        console.log(label, budget, unit, items, items.length);
+        // if(!checkProjectItemsValidity())
+        //     return;
 
         if(!label || !budget || !unit || items.length <= 0) {
             NotificationManager.error('Les informations du projet ne sont pas correctement renseignées');
@@ -173,13 +170,14 @@ const Create = (props) => {
         }
 
         let data: any = {
-            label, budget, unitReference: unit.reference, document: file,
             initializationId: initialization.id,
+            label, budget, unitReference: unit.reference, document: file,
             initializationParents: JSON.stringify(items.filter(pi => pi.item.complexType !== 'TABLE').map(pi => pi.id)),
             initializationValues: JSON.stringify(items.filter(pi => pi.item.complexType !== 'TABLE').map(pi => pi.value)),
             initializationItems: items.map(pi => pi.projectItemId ? pi.projectItemId : pi.item.id)
         }
 
+        props.setRequestGlobalAction(true);
         ProjectService.createProject(data, { fileData: ['document'], multipart: true }).then(() => {
             NotificationManager.success("Le projet a été créé avec succès");
             props.history.push(PROJECT.MINE.FOLDER.LIST);

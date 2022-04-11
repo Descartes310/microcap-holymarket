@@ -75,4 +75,12 @@ export default class ProjectService {
     static getTableStructure(id): Promise<any> {
         return makeRequest('get', Routes.GET_TABLE_STRUCTURE(id));
     }
+
+    static getTableValues(datas): Promise<any> {
+        return makeRequest('get', Routes.GET_TABLE_DATAS, datas);
+    }
+
+    static createTableDatas(datas): Promise<any> {
+        return makeRequest('post', Routes.CREATE_TABLE_DATAS, datas);
+    }
 }
