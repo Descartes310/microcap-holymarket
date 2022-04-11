@@ -65,7 +65,7 @@ class UpdateComplexTable extends Component {
         let toAdd = [];
         for (let index = 0; index < this.state.subColumns.length; index++) {
             const subColumn = this.state.subColumns[index];
-            let data = { id: new Date().getTime(), value: null, row, column: subColumn, position: this.state.datas
+            let data = { id: new Date().getTime(), value: '', row, column: subColumn, position: this.state.datas
                 .filter(d => d.row.id === row.id && d.column.id === this.state.subColumns[0].id).length + 1 };
             toAdd.push(data);
         }
@@ -172,7 +172,7 @@ class UpdateComplexTable extends Component {
                                                                         <td key={index}>
                                                                             {this.props.editMode ?
                                                                             <InputStrap
-                                                                                type="number"
+                                                                                type="text"
                                                                                 className="input-lg"
                                                                                 onChange={(e) => this.updateRowValue(row, subcolumn, index+1, e.target.value)}
                                                                                 value={datas.find(d => d.row.id === row.id && d.column.id === subcolumn.id && d.position === (index+1))?.value }
@@ -227,14 +227,14 @@ class UpdateComplexTable extends Component {
                     </div>
                 </div>
                 { this.props.editMode && (
-                    <FormGroup style={{ marginTop: '5%' }}>
+                    <FormGroup style={{ marginTop: '3%' }}>
                         <Button
                             color="primary"
                             variant="contained"
                             onClick={() => this.onSubmit()}
                             className="text-white font-weight-bold"
                         >
-                            Ajouter
+                            Enregistrer
                         </Button>
                     </FormGroup>
                 )}

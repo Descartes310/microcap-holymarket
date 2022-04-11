@@ -300,31 +300,29 @@ const Update = (props) => {
                             color="primary"
                             variant="contained"
                             onClick={() => setAddPersonalItemModal(true)}
-                            className="text-white mr-20 font-weight-bold bg-blue"
+                            className="text-white mr-20 w-100 font-weight-bold bg-blue mb-2"
                         >
-                            Ajouter une rubrique personnelle
+                            Ajouter une rubrique
                         </Button>
-                        <Button
-                            color="primary"
-                            variant="contained"
-                            onClick={onSubmit}
-                            className="text-white font-weight-bold"
-                        >
-                            Sauvegarder les changements
-                        </Button>
-                    </FormGroup>
-                    { project?.tables?.length > 0 && (
-                        <FormGroup>
+                        { project?.tables?.length > 0 && (
                             <Button
                                 color="primary"
                                 variant="contained"
                                 onClick={() => setShowUpdateTableModal(true)}
-                                className="text-white font-weight-bold w-100"
+                                className="text-white w-100 font-weight-bold mb-2"
                             >
-                                Plan de financement
+                                Editer le plan de financement
                             </Button>
-                        </FormGroup>
-                    )}
+                        )}
+                        <Button
+                            color="primary"
+                            variant="contained"
+                            onClick={onSubmit}
+                            className="text-white mr-20 w-100 font-weight-bold"
+                        >
+                            Sauvegarder les changements
+                        </Button>
+                    </FormGroup>
                 </Form>
             </RctCollapsibleCard>
             <AddPersonalItemModal 

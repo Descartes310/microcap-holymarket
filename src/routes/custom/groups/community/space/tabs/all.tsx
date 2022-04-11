@@ -6,6 +6,7 @@ import CustomList from "Components/CustomList";
 import { setRequestGlobalAction } from 'Actions';
 import React, { useState, useEffect } from 'react';
 import { getGroupTypeLabel } from 'Helpers/helpers';
+import GroupDetails from './components/groupDetails';
 import {NotificationManager} from 'react-notifications';
 import { GROUP, joinUrlWithParamsId } from 'Url/frontendUrl';
 import CommunityItemGrid from './components/communityItemGrid';
@@ -16,6 +17,7 @@ const All = (props) => {
     const [groups, setGroups] = useState([]);
     const [group, setGroup] = useState(null);
     const [showRequestModal, setShowRequestModal] = useState(false);
+    const [showDetailsModal, setShowDetailsModal] = useState(false);
 
     useEffect(() => {
         getGroups();
@@ -68,7 +70,10 @@ const All = (props) => {
                         ) : (
                             <div className='row'>
                                 {list && list.map((item, index) => (
-                                    <CommunityItemGrid key={index} community={item}/>
+                                    <CommunityItemGrid key={index} community={item} openDetails={() => {
+                                        setGroup(item);
+                                        setShowDetailsModal(true);
+                                    }} />
                                 ))}
                             </div>
                         )}
@@ -85,6 +90,17 @@ const All = (props) => {
                         setShowRequestModal(false);
                     }}
                     onSubmit={(motivation) => sendRequest(motivation)}
+                />
+            )}
+            { group && showDetailsModal && (
+                <GroupDetails
+                    community={group}
+                    title={'Détails de la communauté'} 
+                    show={showDetailsModal && group}
+                    onClose={() => {
+                        setGroup(null);
+                        setShowDetailsModal(false);
+                    }}
                 />
             )}
         </>

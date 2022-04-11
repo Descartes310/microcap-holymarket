@@ -14,8 +14,8 @@ const styles = {
     },
 };
 
-const CommunityItemGrid = ({ classes = null, community }) => (
-    <Card className="rounded mb-30 col-md-3">
+const CommunityItemGrid = ({ classes = null, community, openDetails }) => (
+    <Card className="rounded mb-30 col-md-3" onClick={() => openDetails()}>
         <CardMedia
             className={classes?.media}
             image={community.image ? getFilePath(community.image) : DEFAULT_IMAGE}
