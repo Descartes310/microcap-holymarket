@@ -70,7 +70,7 @@ class Requests extends Component<any, any> {
                                         />
                                         <Tab
                                             icon={<i className="zmdi zmdi-time-restore"></i>}
-                                            label={"Mes requêtes"}
+                                            label={"Invitations"}
                                         />
                                         <Tab
                                             icon={<i className="zmdi zmdi-comment-outline"></i>}

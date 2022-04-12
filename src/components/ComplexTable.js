@@ -44,111 +44,80 @@ class ComplexTable extends Component {
         return (
             <RctCollapsibleCard>
                 <div className="d-flex justify-content-center align-items-center" style={{ flexDirection: 'column' }}>
-                    <div className="table-responsive">
-                        <table className="table table-hover table-bordered table-middle mb-0">
-                            <thead>
-                                <tr>
-                                    <th></th>
-                                    {columns.map((column, index) => (
+                    <div className="table-responsive d-flex">
+                        {columns.map((column, index) => (
+                            <table className="table table-hover table-bordered table-middle mb-0">
+                                <thead>
+                                    <tr>
+                                        <th></th>
                                         <th key={index} 
                                             colSpan={1+subColumns.filter(sc => sc.column.id === column.id).length}
                                         >
                                             {column.label}
                                         </th>
-                                    ))}
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td></td>
-                                    {columns.map(column => (
-                                        <>
-                                            {
-                                                subColumns.filter(sc => sc.column.id === column.id).map((subcolumn, index) => (
-                                                    <td key={index}>{ subcolumn.label }</td>
-                                                ))
-                                            }
-                                            <td>Actions</td>
-                                        </>
-                                    ))}
-                                </tr>
-                                { this.props.rows.map((row, i) => {
-                                    return (
-                                        
-                                        this.state.datas.filter(d => d.row === row).length > 0 ? (
-                                            <>
-                                                <tr>
-                                                    <td rowSpan={this.state.datas.filter(d => d.row === row).length}>{row.label}</td>
-                                                    {columns.map((column) => {
-                                                        return (
-                                                            <>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td></td>
+                                        {
+                                            subColumns.filter(sc => sc.column.id === column.id).map((subcolumn, index) => (
+                                                <td key={index}>{ subcolumn.label }</td>
+                                            ))
+                                        }
+                                        <td>Actions</td>
+                                    </tr>
+                                    { this.props.rows.filter(r => r.column.id === column.id).map((row, i) => {
+                                        return (
+                                            
+                                            this.state.datas.filter(d => d.row === row).length > 0 ? (
+                                                <>
+                                                    <tr>
+                                                        <td rowSpan={this.state.datas.filter(d => d.row === row).length}>{row.label}</td>
+                                                        {columns.map((column) => {
+                                                            return (
+                                                                <>
+                                                                    {
+                                                                        subColumns.filter(sc => sc.column.id === column.id).map((_, index) => (
+                                                                            <td key={index}></td>
+                                                                        ))
+                                                                    }
+                                                                    <td></td>
+                                                                </>
+                                                            )
+                                                        })}
+                                                    </tr>
+                                                    {
+                                                        this.state.datas.filter(d => d.row === row).map(d => (
+                                                            <tr>
                                                                 {
                                                                     subColumns.filter(sc => sc.column.id === column.id).map((_, index) => (
                                                                         <td key={index}></td>
                                                                     ))
                                                                 }
                                                                 <td></td>
-                                                            </>
+                                                            </tr>
                                                         )
-                                                    })}
+                                                    )}
+                                                </>
+                                            )
+                                        
+                                            : (
+                                                <tr>
+                                                    <td rowSpan={1}>{row.label}</td>
+                                                    {
+                                                        subColumns.filter(sc => sc.column.id === column.id).map((_, index) => (
+                                                            <td key={index}></td>
+                                                        ))
+                                                    }
+                                                    <td></td>
                                                 </tr>
-                                                {
-                                                    this.state.datas.filter(d => d.row === row).map(d => (
-                                                
-                                                        <tr>
-                                                            {columns.map((column) => {
-                                                                return (
-                                                                    <>
-                                                                        {
-                                                                            subColumns.filter(sc => sc.column.id === column.id).map((_, index) => (
-                                                                                <td key={index}></td>
-                                                                            ))
-                                                                        }
-                                                                        <td></td>
-                                                                    </>
-                                                                )
-                                                            })}
-                                                        </tr>
-                                                    )
-                                                )}
-                                            </>
+                                            )
                                         )
-                                    
-                                        : (
-                                            <tr>
-                                                <td rowSpan={1}>{row.label}</td>
-                                                {columns.map((column, i) => {
-                                                    return (
-                                                        <>
-                                                            {
-                                                                subColumns.filter(sc => sc.column.id === column.id).map((_, index) => (
-                                                                    <td key={index}></td>
-                                                                ))
-                                                            }
-                                                            <td></td>
-                                                        </>
-                                                    )
-                                                })}
-                                            </tr>
-                                        )
-                                    )
-                                })}
-
-                                {/* <tr>
-                                    <td>Total</td>
-                                    {columns.map(column => (
-                                        <>
-                                            {
-                                                subColumns.filter(sc => sc.column.id === column.id).map((subcolumn, index) => (
-                                                    <td key={index}></td>
-                                                ))
-                                            }
-                                            <td></td>
-                                        </>
-                                    ))}
-                                </tr> */}
-                            </tbody>
-                        </table>
+                                    })}
+                                </tbody>
+                            </table>
+                        ))}
                     </div>
                 </div>
             </RctCollapsibleCard >

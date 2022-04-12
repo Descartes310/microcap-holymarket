@@ -56,21 +56,21 @@ class HandleSubColumnModal extends Component<any, any> {
             >
                 <RctCardContent>
                     <div className="col-md-12 col-sm-12 has-wrapper mb-30">
-                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
-                        <InputLabel className="text-left">
-                            Colonne
-                        </InputLabel>
-                        <Autocomplete
-                            id="combo-box-demo"
-                            value={column}
-                            options={columns}
-                            onChange={(__, item) => {
-                                this.setState({ column: item });
-                            }}
-                            getOptionLabel={(option) => option.label}
-                            renderInput={(params) => <TextField {...params} variant="outlined" />}
-                        />
-                    </div>
+                        <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                            <InputLabel className="text-left">
+                                Colonne
+                            </InputLabel>
+                            <Autocomplete
+                                id="combo-box-demo"
+                                value={column}
+                                options={columns}
+                                onChange={(__, item) => {
+                                    this.setState({ column: item });
+                                }}
+                                getOptionLabel={(option) => option.label}
+                                renderInput={(params) => <TextField {...params} variant="outlined" />}
+                            />
+                        </div>
                         <FormGroup className="has-wrapper">
                             <InputLabel className="text-left" htmlFor="label">
                                 Label

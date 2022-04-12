@@ -12,7 +12,7 @@ class HandleRowModal extends Component<any, any> {
   
     state = {
         label: this.props.row?.label,
-        //column: this.props.row?.column
+        column: this.props.row?.column
     }
 
     constructor(props) {
@@ -23,24 +23,24 @@ class HandleRowModal extends Component<any, any> {
         if (this.props.row !== prevProps.row) {
           this.setState({ 
               label: this.props.row ? this.props.row.label : '',  
-              //column: this.props.row ? this.props.row.column : null,  
+              column: this.props.row ? this.props.row.column : null,  
             })
         }
     }
 
     onSubmit = () => {
-        // if(!this.state.column) {
-        //     alert('Sélectionnez une colonne');
-        //     return;
-        // }
-        this.props.handleRow(this.props.row ? this.props.row.id : null, this.state.label, false);
-        this.setState({ label: ''});
+        if(!this.state.column) {
+            alert('Sélectionnez une colonne');
+            return;
+        }
+        this.props.handleRow(this.props.row ? this.props.row.id : null, this.state.label, this.state.column, false);
+        this.setState({ label: '', column: null});
         this.props.onClose();
     }
 
     render() {
 
-        const { label } = this.state;
+        const { label, column } = this.state;
         const { onClose, show, title, columns }: any = this.props;
 
         return (
@@ -56,6 +56,21 @@ class HandleRowModal extends Component<any, any> {
             >
                 <RctCardContent>
                     <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                        <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                            <InputLabel className="text-left">
+                                Colonne
+                            </InputLabel>
+                            <Autocomplete
+                                id="combo-box-demo"
+                                value={column}
+                                options={columns}
+                                onChange={(__, item) => {
+                                    this.setState({ column: item });
+                                }}
+                                getOptionLabel={(option) => option.label}
+                                renderInput={(params) => <TextField {...params} variant="outlined" />}
+                            />
+                        </div>
                         <FormGroup className="has-wrapper">
                             <InputLabel className="text-left" htmlFor="label">
                                 Label

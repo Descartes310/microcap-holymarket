@@ -69,7 +69,7 @@ const Create = (props) => {
         }
     }
 
-    const handleRow = (id: number, value: string, deletion: boolean = false) => {
+    const handleRow = (id: number, value: string, column: any, deletion: boolean = false) => {
         if(id) {
             if(deletion) {
                 setRows([...rows.filter(r => r.id !== id)]);
@@ -80,7 +80,7 @@ const Create = (props) => {
                 setRows([...rowsClone]);
             }
         } else {
-            setRows([...rows, {label: value, id: new Date().getTime()}])
+            setRows([...rows, {label: value, id: new Date().getTime(), column}])
         }
     }
 
@@ -114,8 +114,8 @@ const Create = (props) => {
         if(!isTable) {
             data.projectItemsIds = selectedProjectItems.map(spi => spi.id);
         } else {
-            data.rows = JSON.stringify(rows);
             data.columns = JSON.stringify(columns);
+            data.rows = JSON.stringify(rows.map(sc => { return { label: sc.label, columnId: sc.column.id } }));
             data.subcolumns = JSON.stringify(subcolumns.map(sc => { return { label: sc.label, columnId: sc.column.id } }));
         }
 
@@ -290,7 +290,7 @@ const Create = (props) => {
                                                                     <p>Editer</p>
                                                                 </td>
                                                                 <td onClick={() => {
-                                                                    handleRow(item.id, null, true)
+                                                                    handleRow(item.id, null, null, true)
                                                                 }}>
                                                                     <p style={{ color: 'red' }}>Supprimer</p>
                                                                 </td>
@@ -396,6 +396,7 @@ const Create = (props) => {
             />
             <HandleRow
                 row={row}
+                columns={columns}
                 show={showRowModal}
                 handleRow={handleRow}
                 title={'Gestion des lignes'}
