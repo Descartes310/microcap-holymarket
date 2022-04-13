@@ -312,14 +312,6 @@ export default [
             "child_routes": null
          },
          {
-            "menu_title": "Objectfis",
-            "new_item": false,
-            "path": MIPRO.ADMINISTRATION.GOAL.SELF,
-            "permissions": null,
-            "profiles": null,
-            "child_routes": null
-         },
-         {
             "menu_title": "Créations personnelles",
             "new_item": false,
             "path": PROJECT.MINE.ITEM.LIST,
@@ -529,6 +521,14 @@ export default [
             "menu_title": "Unités",
             "new_item": false,
             "path": SETTING.UNIT.LIST,
+            "permissions": [Permission.setting.unit.name],
+            "profiles": ['GROUP'],
+            "child_routes": null
+         },
+         {
+            "menu_title": "Objectifs",
+            "new_item": false,
+            "path": MIPRO.ADMINISTRATION.GOAL.SELF,
             "permissions": [Permission.setting.unit.name],
             "profiles": ['GROUP'],
             "child_routes": null

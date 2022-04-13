@@ -5,6 +5,8 @@ import styled from 'styled-components';
 import React, { Component } from 'react';
 import { withRouter } from "react-router-dom";
 import { setRequestGlobalAction } from "Actions";
+import { MIPRO } from 'Url/frontendUrl';
+import { any } from 'prop-types';
 
 const P = styled.p`
 font-size: 20px !important;
@@ -12,17 +14,17 @@ font-weight: bold;
 margin-top: 10px !important;
 `;
 
-class Dashboard extends Component {
+class Dashboard extends Component<any, any> {
 
     render() {
 
         return (
             <div className="row">
-                <div className="col-sm-4 block">
+                <div className="col-sm-4 block" onClick={() => this.props.history.push(MIPRO.GOAL.LIST)}>
                     <img src={require('Assets/img/goal.png')} className="img-fluid img" alt="Objectifs du plan" />
                     <P>Objectifs du plan</P>
                 </div>
-                <div className="col-sm-4 block">
+                <div className="col-sm-4 block" onClick={() => this.props.history.push(MIPRO.PREVISION.LIST)}>
                     <img src={require('Assets/img/plan.png')} className="img-fluid img" alt="Plan prévisionnel de participation" />
                     <P>Plan prévisionnel de participation</P>
                 </div>
