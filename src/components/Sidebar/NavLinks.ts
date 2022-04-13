@@ -12,7 +12,8 @@ import {
    MARKETPLACE,
    USER_ACCOUNT_TYPE,
    joinUrlWithParams,
-   joinUrlWithParamsId
+   joinUrlWithParamsId,
+   MIPRO
 } from 'Url/frontendUrl';
 
 export type MenuItem = {
@@ -299,6 +300,22 @@ export default [
             "new_item": false,
             "path": PROJECT.MINE.FOLDER.LIST,
             "permissions": [Permission.project.project.name],
+            "profiles": null,
+            "child_routes": null
+         },
+         {
+            "menu_title": "Mon Microcap",
+            "new_item": false,
+            "path": MIPRO.HOME.SELF,
+            "permissions": null,
+            "profiles": null,
+            "child_routes": null
+         },
+         {
+            "menu_title": "Objectfis",
+            "new_item": false,
+            "path": MIPRO.ADMINISTRATION.GOAL.SELF,
+            "permissions": null,
             "profiles": null,
             "child_routes": null
          },

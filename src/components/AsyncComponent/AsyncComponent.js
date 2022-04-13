@@ -114,6 +114,11 @@ export const AsyncBank = Loadable({
 	loading: () => <RctPageLoader />,
 });
 
+export const AsyncPrevision = Loadable({
+	loader: () => import("Routes/custom/previsions"),
+	loading: () => <RctPageLoader />,
+});
+
 export {
 	AsyncThemifyIconsComponent,
 	AsyncSimpleLineIconsComponent,

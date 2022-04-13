@@ -127,7 +127,7 @@ const Create = (props) => {
         })
         .catch((err) => {
             console.log(err);
-            NotificationManager.success('Une erreur est survenues lors de la création de ouvrage');
+            NotificationManager.error('Une erreur est survenues lors de la création de ouvrage');
         })
         .finally(() => {
             props.setRequestGlobalAction(false);

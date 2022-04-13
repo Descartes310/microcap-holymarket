@@ -104,9 +104,7 @@ class UpdateComplexTable extends Component {
         }).catch((err) => {
             console.log(err);
             NotificationManager.error("Une erreur est survenu lors de la mise a jour du projet");
-        }).finally(() => {
-            props.setRequestGlobalAction(false);
-        });
+        })
     }
 
     render() {

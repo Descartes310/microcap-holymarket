@@ -1,0 +1,26 @@
+.img {
+    max-width: 60% !important;
+    height: 200% !important;
+}
+
+
+.block {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
+    margin-top: 30px;
+    cursor: pointer;
+}
+
+.custom-container {
+    margin-left: 2% !important;
+}
+/*
+    Use the DejaVu Sans font for displaying and embedding in the PDF file.
+    The standard PDF fonts do not support Unicode characters.
+*/
+div {
+    font-family: "Open Sans", "DejaVu Sans", "Arial", sans-serif;
+    font-size: 14px;
+}

@@ -368,6 +368,37 @@ export const BROKER = {
     }
 } as const;
 
+export const MIPRO = {
+    SELF: '/mipro',
+    HOME: {
+        SELF: '/mipro/home',
+        DASHBOARD: '/mipro/home/dashboard',
+    },
+    PREVISION: {
+       SELF: '/mipro/previsions',
+       LIST: '/mipro/previsions/list',
+       CREATE: '/mipro/previsions/create',
+    },
+    PERIOD: {
+       SELF: '/mipro/periods',
+       LIST: '/mipro/periods/pre/:id/list',
+       CREATE: '/mipro/periods/pre/:id/create',
+    },
+    GOAL: {
+       SELF: '/mipro/goals',
+       LIST: '/mipro/goals/list',
+       CREATE: '/mipro/goals/create',
+    },
+    ADMINISTRATION: {
+       SELF: '/mipro/administration',
+       GOAL: {
+           SELF: '/mipro/administration/goals',
+           LIST: '/mipro/administration/goals/list',
+           CREATE: '/mipro/administration/goals/create',
+       }
+    }
+} as const;
+
 export const BANK = {
     SELF: '/bank',
     ADMIN: {

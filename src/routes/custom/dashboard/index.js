@@ -14,8 +14,9 @@ import {
     AsyncProfile,
     AsyncFundings,
     AsyncSettings,
-    AsyncProjects,
     AsyncNetworks,
+    AsyncProjects,
+    AsyncPrevision,
     AsyncMarketplace,
     AsyncNotifications,
     AsyncUserAccountTypes,
@@ -27,6 +28,7 @@ import {
     BANK,
     HOME,
     GROUP,
+    MIPRO,
     BROKER,
     PROFILE,
     SETTING,
@@ -117,6 +119,11 @@ const Dashboard = ({ onInitCart }) => {
                         permissions={[]}
                         path={BANK.SELF}
                         component={AsyncBank}
+                    />
+                    <CanRoute
+                        permissions={[]}
+                        path={MIPRO.SELF}
+                        component={AsyncPrevision}
                     />
                     <Redirect to={HOME} />
 
