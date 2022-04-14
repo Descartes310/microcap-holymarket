@@ -32,3 +32,25 @@ export const getIndirectSaleProcess = () => {
         }
     ];
 }
+
+
+export const getTimeUnits = () => {
+    return [
+        {
+            label: 'Jour',
+            value: 'DAYS'
+        },
+        {
+            label: 'Semaine',
+            value: 'WEEK'
+        },
+        {
+            label: 'Mois',
+            value: 'MONTH'
+        },
+        {
+            label: 'Semestre',
+            value: 'SEMESTER'
+        }
+    ];
+}

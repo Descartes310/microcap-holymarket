@@ -16,6 +16,10 @@ export default class PrevisionService {
         return makeRequest('get', Routes.GET_PERIODS(id));
     }
 
+    static getPrevision(id: number): Promise<any> {
+        return makeRequest('get', Routes.GET_PREVISION(id));
+    }
+
     static createPeriod(id: number, data: any): Promise<any> {
         return makeRequest('post', Routes.CREATE_PERIOD(id), data);
     }

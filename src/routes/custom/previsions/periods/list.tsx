@@ -10,16 +10,16 @@ import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 
 const List = (props) => {
 
-    const [previsions, setPrevisions] = useState([]);
+    const [periods, setPeriods] = useState([]);
 
     useEffect(() => {
-        getPrevisions();
+        getPeriods();
     }, []);
 
-    const getPrevisions = () => {
+    const getPeriods = () => {
         props.setRequestGlobalAction(true);
-        PrevisionService.getPrevisions()
-        .then((response) => setPrevisions(response))
+        PrevisionService.getPeriods(props.match.params.id)
+        .then((response) => setPeriods(response))
         .catch((err) => {
             console.log(err);
         })
@@ -31,19 +31,19 @@ const List = (props) => {
     return (
         <>
             <PageTitleBar
-                title={"Liste des previsions"}
+                title={"Liste des périodes"}
             />
             <CustomList
-                list={previsions}
+                list={periods}
                 loading={false}
-                itemsFoundText={n => `${n} previsions trouvées`}
-                onAddClick={() => props.history.push(MIPRO.PREVISION.CREATE)}
+                itemsFoundText={n => `${n} périodes trouvées`}
+                onAddClick={() => props.history.push(joinUrlWithParamsId(MIPRO.PERIOD.CREATE, props.match.params.id))}
                 renderItem={list => (
                     <>
                         {list && list.length === 0 ? (
                             <div className="d-flex justify-content-center align-items-center py-50">
                                 <h4>
-                                    Aucun previsions trouvées
+                                    Aucun périodes trouvées
                                 </h4>
                             </div>
                         ) : (
@@ -51,23 +51,15 @@ const List = (props) => {
                                 <table className="table table-hover table-middle mb-0">
                                     <thead>
                                         <tr>
-                                            <th className="fw-bold">Désignation</th>
                                             <th className="fw-bold">Date de début</th>
                                             <th className="fw-bold">Date de fin</th>
-                                            <th className="fw-bold">Actions</th>
+                                            <th className="fw-bold">Montant</th>
+                                            {/* <th className="fw-bold">Actions</th> */}
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {list && list.map((item, key) => (
                                             <tr key={key} className="cursor-pointer">
-                                                <td>
-                                                    <div className="media">
-                                                         <div className="media-body pt-10 d-flex align-content-center align-items-center">
-                                                                <div className={`user-status-pending-circle rct-notify`} style={{ background: item.status ? 'green' : 'red' }} />
-                                                                <h4 style={{ textAlign: 'start' }} className="m-0 fw-bold text-dark ml-15">{item.label}</h4>
-                                                            </div>
-                                                    </div>
-                                                </td>
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
@@ -83,17 +75,24 @@ const List = (props) => {
                                                     </div>
                                                 </td>
                                                 <td>
+                                                    <div className="media">
+                                                        <div className="media-body pt-10">
+                                                            <h4 className="m-0 fw-bold text-dark">{item.amount}</h4>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                {/* <td>
                                                     <Button
                                                         color="primary"
                                                         variant="contained"
                                                         onClick={() => {
-                                                            props.history.push(joinUrlWithParamsId(MIPRO.PERIOD.LIST, item.id))
+                                                            //props.history.push(joinUrlWithParamsId(MIPRO.PERIOD.LIST, item.id))
                                                         }}
                                                         className="text-white font-weight-bold"
                                                     >
-                                                        Périodes
+                                                        Abondements
                                                     </Button>
-                                                </td>
+                                                </td> */}
                                             </tr>
                                         ))}
                                     </tbody>
