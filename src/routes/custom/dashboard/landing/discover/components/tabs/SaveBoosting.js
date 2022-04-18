@@ -7,46 +7,118 @@ const SaveBoosting = () => {
          <div className="showcase-card-block d-flex flex-column pb-0" style={{ padding: '5vh 10vw' }}>
             <div className='container'>
                <div className="row mb-70 flex-column intro">
-                  <h3 className="font-weight-bold text-black text-left" data-aos="fade-right">
-                        Booster votre épargne
-                  </h3>
                   <p data-aos="fade-left" className='text-left mt-20'>
-                     Nos partenaires courtiers ou établissements financiers proposent sur notre 
-                     site exclusivement les produits d'épargne compatible MicroCap, c'est-à-dire 
-                     une épargne destinée au financement des entrepreneurs de la plateforme MicroCap.
+                     Le réseau MicroCap est constituée de personnes désirant réaliser une 
+                     épargne pour un projet personnel ou un projet d'entreprise.
                   </p>
                   <p data-aos="fade-left" className='text-left mt-20'>
-                     Pour être membre du réseau MicroCap, il faut détenir au moins un produit d'épargne 
-                     MicroCap. La plateforme propose une bourse des financements : espace dédié où se 
-                     négocie entre membre du réseau, les offres et les demandes de financement.
+                     Pour faciliter les projets de ses membres, MicroCap sélectionne et négocie auprès 
+                     des partenaires financiers la distribution sur sa plateforme des produits d'épargne 
+                     les plus appropriés à son objet, à la condition que l'épargne collectée soit essentiellement 
+                     réservée au financement des projets de la plateforme MicroCap. Le placement de l'épargne 
+                     reste transparent, l'épargnant sait à qui et à quel projet sont épargne sert.
                   </p>
+
+                  
+                  <div className="table-responsive mt-25">
+                     <table className="table table-hover table-bordered mb-0">
+                        <thead>
+                              <tr style={{ backgroundColor: '#ffb93a' }}>
+                                 <th className='text-white'>
+                                    <p>Nos produits d'épargnes</p>
+                                 </th>
+                                 <th className='text-white'>
+                                    <p>Les placements alternatifs</p>
+                                 </th>
+                              </tr>
+                        </thead>
+                        <tbody>
+                              <tr>
+                                 <td>
+                                    <p>L'apargne bancaire</p>
+                                 </td>
+                                 <td>
+                                    <p>DAT MUPECI</p>
+                                 </td>
+                              </tr>
+                              <tr>
+                                 <td>
+                                    <p>ESH MUPECI</p>
+                                 </td>
+                                 <td>
+                                    <p>SERHAB</p>
+                                 </td>
+                              </tr>
+                              <tr>
+                                 <td>
+                                    <p></p>
+                                 </td>
+                                 <td>
+                                    <p>PLAN REFLEQ</p>
+                                 </td>
+                              </tr>
+                              <tr>
+                                 <td>
+                                    <p></p>
+                                 </td>
+                                 <td>
+                                    <p>OPTION MICROCAP</p>
+                                 </td>
+                              </tr>
+                        </tbody>
+                     </table>
+                  </div>
+
                   <div style={{ margin: '5%' }}>
                      <h3 className="font-weight-bold text-black text-left" data-aos="fade-right">
-                        Fructifier votre épargne
+                        Les produits d'épargne bancaire :
                      </h3>
                      <p data-aos="fade-left" className='text-left mt-20'>
-                        Les offres de financement se négocient de gré à gré dans la bourse des financements. 
-                        Un dispositif de contractualisation permet aux parties de sceller un accord de rémunération. 
-                        Vous pouvez ainsi boostez votre épargne qui est rémunérée au taux conventionnel en plus des 
-                        rémunérations supplémentaires proposer par le bénéficiaire du financement.
+                        Ces produits sont émis et commercialisés par des établissements financiers partenaires, 
+                        habilités à collecter l'épargne. Notre plateforme distribue ces produits en qualité de 
+                        courtier et les versements perçus par notre système sont transmis à l'établissement domiciliataire 
+                        qui peut également à tout moment fournir un relevé d'opérations
                      </p>
+
+
                      <h3 className="font-weight-bold text-black text-left mt-40" data-aos="fade-right">
-                        Développer votre réseau
+                        Les produits de placement alternatif
                      </h3>
                      <p data-aos="fade-left" className='text-left mt-20'>
-                        En proposant des offres de financement à partir de 3€, vous sortez de l'anonymat pour entrer en 
-                        contact avec des entrepreneurs ou associés aux projets qui font les demandes de financement. 
-                        Votre activisme auprès des porteurs de projet vous permettra de développer progressivement votre
-                        réseau. Les évènements réseautage organisés par MicroCap sont les occasions pour se rencontrer et
-                        renforcer les liens.
+                        Les produits de placement alternatif permettent de répondre à des besoins de financement dans 
+                        des contextes spécifiques. En qualité d’opérateur de placements alternatifs. MicroCap crée et 
+                        gère pour le compte des souscripteurs, des véhicules de placement appropriés. Ces produits sont non 
+                        règlementés et par conséquents présentent un risque plus élevé de perte en capital : ne convient donc 
+                        pas aux amateurs.
+                     </p>
+
+                     <h3 className="font-weight-bold text-black text-left mt-40" data-aos="fade-right">
+                        Rémunération conventionnelle de votre épargne :
+                     </h3>
+                     <p data-aos="fade-left" className='text-left mt-20'>
+                        L’épargne est rémunérée à un taux conventionnel proposé par l’émetteur du produit.
+                     </p>
+
+                     <h3 className="font-weight-bold text-black text-left mt-40" data-aos="fade-right">
+                        Rémunération supplémentaire, un excellent moyen de booster votre épargne :
+                     </h3>
+                     <p data-aos="fade-left" className='text-left mt-20'>
+                        Lorsque l’épargne est mobilisée pour un projet, le gestionnaire peut exiger une rémunération 
+                        supplémentaire dont la négociation est faite de gré à gré avec le bénéficiaire sur la bourse de 
+                        financement : espace dédié de la plateforme où se rencontrent les demandes et les offres de financement.
+                     </p>
+
+                     <h3 className="font-weight-bold text-black text-left mt-40" data-aos="fade-right">
+                        Gestion de votre épargne :
+                     </h3>
+                     <p data-aos="fade-left" className='text-left mt-20'>
+                        Elle peut être assurée par l’épargnant ou confié à un professionnel agrée sur la plateforme.
+                        Attention : l’établissement financier place votre épargne habituellement sous sa responsabilité et 
+                        à ses risques : votre épargne reste garantie au terme de la convention. Si vous choisissez d’assurer 
+                        personnellement ou de confier à un professionnel la gestion de votre épargne, vous en porter le risque: 
+                        les risque de perte en capital sont ainsi à considérer.
                      </p>
                   </div>
-                  <p data-aos="fade-left" className='text-left mt-20'>
-                     Attention : l'établissement financier place votre épargne habituellement sous sa 
-                     responsabilité et à ses risques : votre épargne reste garantie au terme de la convention. 
-                     Si vous faites personnellement une offre de financement, vous en porter le risque : 
-                     les risque de perte en capital son ainsi à considérer.
-                  </p>
                </div>
             </div>
          </div>

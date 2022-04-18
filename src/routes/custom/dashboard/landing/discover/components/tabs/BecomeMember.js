@@ -70,14 +70,14 @@ const BecomeMember = () => {
                             </div>
                         </div>
 
-                        <p data-aos="fade-left" className='text-center mt-20' style={{ fontSize: '1.2em' }}>
+                        {/* <p data-aos="fade-left" className='text-center mt-20' style={{ fontSize: '1.2em' }}>
                             MicroCap négocie avec des partenaires financiers la distribution sur la plateforme de 
                             leurs produits d'épargne, à la condition que l'épargne collectée soit essentiellement 
                             réservée au financement des projets de la plateforme MicroCap. Notre conventionnement 
                             apporte à l'épargnant une confiance et une transparence jusqu'à présent inégalées grâce 
                             à la possibilité que nous donnons à l'épargnant de décider sur quels entrepreneurs et 
                             sur quels projets placer son épargne
-                        </p>
+                        </p> */}
 
                         <div className="row center-hor-ver mt-70 flex-column intro">
                             <h3 className="font-weight-bold text-black text-center underline-title mb-50" data-aos="fade-right" style={{ fontSize: '1.5em' }}>
@@ -86,8 +86,7 @@ const BecomeMember = () => {
                         </div>
 
                         <p data-aos="fade-left" className='text-center mt-40 mb-70' style={{ fontSize: '1.2em' }}>
-                            Rejoignez le mouvement et devenez acteur d'une finance plus inclusive et plus vertueuse. Qui 
-                            que vous soyez, il y'a au moins une raison pour rejoindre le réseau MicroCap.
+                            Rejoignez le mouvement, qui que vous soyez, il y’a au moins une raison pour rejoindre notre réseau
                         </p>
                         <p style={{ fontSize: '1.2em' }}>
                             <Badge className="mb-10 mr-10" href="#" color="warning">1</Badge>
@@ -110,7 +109,7 @@ const BecomeMember = () => {
                             Soutenir l'engagement de MicroCap et accélérer notre impact social.
                         </p>
 
-                        <div className="row center-hor-ver mt-70 flex-column intro">
+                        {/* <div className="row center-hor-ver mt-70 flex-column intro">
                             <h3 className="font-weight-bold text-black text-center underline-title mb-50" data-aos="fade-right" style={{ fontSize: '1.5em' }}>
                                 Nos produits d'épargne
                             </h3>
@@ -123,7 +122,7 @@ const BecomeMember = () => {
                             <p className='w-50 text-center font-weight-bold'>SERHAB</p>
                             <p className='w-50 text-center font-weight-bold'>MCM INIT</p>
                             <p className='w-50 text-center font-weight-bold'>OPTION MICROCAP</p>
-                        </div>
+                        </div> */}
                     </div>
             </div>
        </Typography>

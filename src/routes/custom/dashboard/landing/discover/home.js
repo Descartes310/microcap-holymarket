@@ -72,43 +72,99 @@ const Home = (props) => {
 
                 <div className="showcase-card-block d-flex flex-column pb-0" style={{ padding: '15vh 10vw', backgroundImage: `url(${require('Assets/img/bg-shape-gray.png')})` }}>
                     <div className='container'>
+
                         <div className="row mb-30 flex-column intro">
                             <h2 className="font-weight-bold text-black text-left underline" data-aos="fade-right">
-                                Ce que nous faisons
-                            </h2>
-                            <p data-aos="fade-left" className='mt-20 col-md-6'>
-                                MicroCap Invente le financement participatif par cautionnement mutuel. 
-                                Un concept de mutualisation des risques au sein d'une communauté d'entrepreneurs 
-                                pour faciliter le financement de leurs projets d'entreprise: création, 
-                                développement redressement, retournement.
-                            </p>
-                        </div>
-
-                        <div className="row mb-30 flex-column intro align-items-end">
-                            <h2 className="font-weight-bold text-black underline" data-aos="fade-right">
                                 Qui nous sommes
                             </h2>
-                            <p data-aos="fade-right" className='mt-20 col-md-6 text-right'>
-                                MicroCap est une société d'investissement à impact qui finance les entrepreneurs en 
-                                situation de fragilité: freelances, bénéficiaires des minima sociaux, étudiants, 
-                                migrants, entrepreneurs ruraux ou des quartiers défavorisés, projets se développant sur 
-                                un double territoire nord - sud …
+                            <p data-aos="fade-right" className='mt-20 col-md-8'>
+                                Nous sommes une société d'investissement à impact qui finance les entrepreneurs en situation de fragilité:
+                                freelances, bénéficiaires des minima sociaux, étudiants, migrants, entrepreneurs ruraux ou des quartiers
+                                défavorisés, projets se développant sur un double territoire nord-sud...
                             </p>
                         </div>
 
-                        <div className="row mb-70 flex-column intro">
+                        <div className="row mb-70 flex-column intro align-items-end">
                             <h2 className="font-weight-bold text-black text-left underline" data-aos="fade-right">
                                 Notre mission
                             </h2>
-                            <p data-aos="fade-left" className='mt-20 col-md-6'>
-                                Notre mission est de démocratiser l'entrepreneuriat et d'en faire une voie pertinente pour 
-                                l'insertion ou la réinsertion professionnelle. Dans la réalisation de cette mission, nous 
-                                avons acquis la conviction selon laquelle l'entrepreneuriat pour tous passe d'abord et 
-                                surtout, par le financement pour tous. La solution MicroCap est le financement participatif 
-                                par cautionnement mutuel, un concept innovant basé sur un modèle contributif qui donne sa 
-                                chance à toute personne capable de bonne volonté et de sérieux, contrairement au modèle sélectif, 
-                                moins inclusif et plus rependu. 
+                            <p data-aos="fade-left" className='mt-20 col-md-8'>
+                                Démocratiser l'entrepreneuriat et en faire une voie pertinente pour l'insertion ou la réinsertion professionnelle. 
+                                Dans la réalisation de cette mission, nous avons acquis la conviction selon laquelle l'entrepreneuriat pour tous 
+                                passe d'abord et surtout, par le financement pour tous.
                             </p>
+                        </div>
+
+                        <div className="row mb-30 flex-column intro">
+                            <h2 className="font-weight-bold text-black text-left underline" data-aos="fade-right">
+                                Ce que nous proposons
+                            </h2>
+                            <p data-aos="fade-left" className='mt-20 col-md-12'>
+                                MicroCap invente le financement participatif par cautionnement mutuel. Un concept de mutualisation des risques 
+                                au sein d'une communauté d'entrepreneurs pour faciliter le financement de leurs projets d'entreprise surtout 
+                                pendant les phases difficiles et peu suivies par des investisseursclassiques : idéation, création, redressement, retournement.
+                                <br /><br />
+                                Notre solution est basée sur un modèle contributif qui donne sa chance à toute personne capable de bonne volonté 
+                                et de sérieux, contrairement au modèle ultra sélectif basé sur l'analyse technique, moins inclusif mais malheureusement 
+                                plus rependu. Ce concept s'inspire d'une pratique courante en Afrique mais aussi existante en Europe: les tontines.
+                                <br /><br />
+                                La plateforme MicroCap permet à chaque utilisateur de développer et animer un réseau international de solidarité financière, 
+                                bien au-delà du cercle familial et amical habituel, afin de faciliter les campagnes de financement participatif dans l'esprit du love money
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="showcase-card-block d-flex flex-column pb-0" style={{ padding: '10vh 10vw' }}>
+                    <div className='container'>
+                        <div className="row center-hor-ver mb-70 flex-column intro">
+                            <h2 className="font-weight-bold text-black text-center underline-title mb-50" data-aos="fade-right">
+                                Réseau international de solidarité financière
+                            </h2>
+                            <p data-aos="fade-left" className='text-center mt-20'>
+                                Notre réseau international de solidarité financière est, d'une part une réponse à plusieurs enjeux sociétaux
+                                et d'autre part une contribution à trois objectifs du développement durable éditer par les nations unies.
+                            </p>
+                            <div className="table-responsive mt-25">
+                                <table className="table table-hover table-bordered mb-0">
+                                    <thead>
+                                        <tr style={{ backgroundColor: '#ffb93a' }}>
+                                            <th className='text-white'>
+                                                <p>Enjeux sociétaux</p>
+                                            </th>
+                                            <th className='text-white'>
+                                                <p>Contribution au développement durable</p>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <p>Créer du lien social</p>
+                                            </td>
+                                            <td>
+                                                <p>Une solution créatrice d'emplois et porteuse de croissance économique (Objectif N°8)</p>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <p>Développer la solidarité internationale</p>
+                                            </td>
+                                            <td>
+                                                <p>Un vecteur de réduction des inégalités sociales : l'entrepreneuriat pour tous (Objectif N°10)</p>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <p>Faciliter l'accès aux financements</p>
+                                            </td>
+                                            <td>
+                                                <p>Un instrument pour la construction des partenariats inclusifs (Objectif N°17)</p>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -127,18 +183,9 @@ const Home = (props) => {
                     <div className='container'>
                         <div className="row center-hor-ver mb-70 flex-column intro">
                             <h2 className="font-weight-bold text-black text-center underline-title mb-50" data-aos="fade-right">
-                                Assurer le financement de votre projet ou devenir acteur d'une économie de proximité
+                                Pour une finance vertueuse et inclusive ou devenir acteur d'une économie de proximité en tant que: 
+                                actionnaire, client ou fournisseur engagé
                             </h2>
-                            <p data-aos="fade-left" className='text-center mt-20'>
-                                La plateforme MicroCap permet à chaque utilisateur de développer et animer un réseau 
-                                international de solidarité financière, bien au-delà du cercle familial et amical habituel, 
-                                afin de faciliter ses campagnes de financement participatif lesquelles dans notre contexte 
-                                se définissent plus en campagne de mobilisation du love money.
-                            </p>
-                            <p data-aos="fade-left" className='text-center mt-10'>
-                                Grâce à son réseau international, MicroCap apporte plusieurs réponses à l'entrepreneur : 
-                                créer du lien social, favoriser la solidarité internationale, faciliter l'accès aux financements
-                            </p>
                         </div>
                     </div>
 
