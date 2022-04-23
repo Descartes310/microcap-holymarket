@@ -504,6 +504,14 @@ export default [
             "permissions": null,
             "profiles": ['OPERATOR', 'PROVIDER_AGENT', 'PROVIDER_INTERMEDIARY'],
             "child_routes": null
+         },
+         {
+            "menu_title": "Mes clients",
+            "new_item": false,
+            "path": BANK.CLIENT.LIST,
+            "permissions": null,
+            "profiles": ['OPERATOR'],
+            "child_routes": null
          }
       ],
    },

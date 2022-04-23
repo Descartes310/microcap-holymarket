@@ -6,7 +6,7 @@ import {injectIntl} from "react-intl";
 import { BROKER } from 'Url/frontendUrl';
 import {withRouter, Switch, Redirect, Route} from "react-router-dom";
 
-const Orchestor = (props) => {
+const Cashdesk = (props) => {
     const { match } = props;
     return (
         <div className="full-height">
@@ -25,4 +25,4 @@ const mapStateToProps = ({ requestGlobalLoader }) => {
     return { requestGlobalLoader }
 };
 
-export default connect(mapStateToProps, {})(withRouter(injectIntl(Orchestor)));
+export default connect(mapStateToProps, {})(withRouter(injectIntl(Cashdesk)));

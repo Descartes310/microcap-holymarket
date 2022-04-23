@@ -42,15 +42,19 @@ const slides = [
     }
 ]
 
-const Home = (props) => {
+const Home = () => {
 
     const [activeIndex, setActiveIndex] = useState(0);
+
+    const navElement = document.querySelector('#main-nav');
+
+    console.log(navElement);
 
     return (
         <DiscoverLayout>
             <div className="session-inner-wrapper video-player-wrapper">
-                <div style={{ marginTop: '8.5vh' }}>
-                    <Slider {...settings}>
+                <div>
+                    <Slider {...settings} style={{ marginTop: 120 }}>
                         {slides.map((slide) => (
                             <div>
                                 <div style={{
@@ -62,7 +66,7 @@ const Home = (props) => {
                                 >
                                     <div className={`slide-content-left ${slide.leftImage && ", slide-content-right"}`}>
                                         <h1><span>{slide.title}</span></h1>
-                                        <p>{slide.description}</p>
+                                        <p className="text-justify">{slide.description}</p>
                                     </div>
                                 </div>
                             </div>
@@ -77,7 +81,7 @@ const Home = (props) => {
                             <h2 className="font-weight-bold text-black text-left underline" data-aos="fade-right">
                                 Qui nous sommes
                             </h2>
-                            <p data-aos="fade-right" className='mt-20 col-md-8'>
+                            <p data-aos="fade-right" className='mt-20 col-md-8 text-justify'>
                                 Nous sommes une société d'investissement à impact qui finance les entrepreneurs en situation de fragilité:
                                 freelances, bénéficiaires des minima sociaux, étudiants, migrants, entrepreneurs ruraux ou des quartiers
                                 défavorisés, projets se développant sur un double territoire nord-sud...
@@ -88,7 +92,7 @@ const Home = (props) => {
                             <h2 className="font-weight-bold text-black text-left underline" data-aos="fade-right">
                                 Notre mission
                             </h2>
-                            <p data-aos="fade-left" className='mt-20 col-md-8'>
+                            <p data-aos="fade-left" className='mt-20 col-md-8 text-justify'>
                                 Démocratiser l'entrepreneuriat et en faire une voie pertinente pour l'insertion ou la réinsertion professionnelle. 
                                 Dans la réalisation de cette mission, nous avons acquis la conviction selon laquelle l'entrepreneuriat pour tous 
                                 passe d'abord et surtout, par le financement pour tous.
@@ -99,7 +103,7 @@ const Home = (props) => {
                             <h2 className="font-weight-bold text-black text-left underline" data-aos="fade-right">
                                 Ce que nous proposons
                             </h2>
-                            <p data-aos="fade-left" className='mt-20 col-md-12'>
+                            <p data-aos="fade-left" className='mt-20 col-md-12 text-justify'>
                                 MicroCap invente le financement participatif par cautionnement mutuel. Un concept de mutualisation des risques 
                                 au sein d'une communauté d'entrepreneurs pour faciliter le financement de leurs projets d'entreprise surtout 
                                 pendant les phases difficiles et peu suivies par des investisseursclassiques : idéation, création, redressement, retournement.
@@ -117,11 +121,11 @@ const Home = (props) => {
 
                 <div className="showcase-card-block d-flex flex-column pb-0" style={{ padding: '10vh 10vw' }}>
                     <div className='container'>
-                        <div className="row center-hor-ver mb-70 flex-column intro">
-                            <h2 className="font-weight-bold text-black text-center underline-title mb-50" data-aos="fade-right">
+                        <div className="row mb-70 flex-column intro">
+                            <h2 className="font-weight-bold text-black text-left mb-50" data-aos="fade-right">
                                 Réseau international de solidarité financière
                             </h2>
-                            <p data-aos="fade-left" className='text-center mt-20'>
+                            <p data-aos="fade-left" className='text-center mt-20 text-justify'>
                                 Notre réseau international de solidarité financière est, d'une part une réponse à plusieurs enjeux sociétaux
                                 et d'autre part une contribution à trois objectifs du développement durable éditer par les nations unies.
                             </p>
@@ -169,7 +173,7 @@ const Home = (props) => {
                     </div>
                 </div>
 
-                <div className="product-section-title" id='produits'>
+                <div className="product-section-title d-flex justify-content-center flex-column align-items-center" id='produits'>
                     <h2
                         data-aos="fade-down"
                         style={{ fontSize: '3em' }}
@@ -177,17 +181,21 @@ const Home = (props) => {
                     >
                         AGIR AVEC MICROCAP
                     </h2>
+                    <p className="font-weight-bold text-black text-center underline-title mb-50 w-50" data-aos="fade-right" style={{ fontSize: '1.1em', marginTop: 20 }}>
+                        Pour une finance vertueuse et inclusive ou devenir acteur d'une économie de proximité en tant que: 
+                        actionnaire, client ou fournisseur engagé
+                    </p>
                 </div>
 
                 <div className="showcase-card-block d-flex flex-column pb-0" style={{ padding: '10vh 10vw' }}>
-                    <div className='container'>
+                    {/* <div className='container'>
                         <div className="row center-hor-ver mb-70 flex-column intro">
                             <h2 className="font-weight-bold text-black text-center underline-title mb-50" data-aos="fade-right">
                                 Pour une finance vertueuse et inclusive ou devenir acteur d'une économie de proximité en tant que: 
                                 actionnaire, client ou fournisseur engagé
                             </h2>
                         </div>
-                    </div>
+                    </div> */}
 
                     <div className="discover-content mt-30">
                         <Tabs

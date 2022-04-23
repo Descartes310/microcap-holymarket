@@ -56,6 +56,10 @@ export default class BankService {
         return makeRequest('post', Routes.CREATE_SUBSCRIPTION, data);
     }
 
+    static getSubscriptions(): Promise<any> {
+        return makeRequest('get', Routes.GET_SUBSCRIPTIONS);
+    }
+
     static getCoverages(): Promise<any> {
         return makeRequest('get', Routes.GET_COVERAGES);
     }

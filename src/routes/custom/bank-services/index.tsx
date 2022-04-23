@@ -1,4 +1,5 @@
 import React from 'react';
+import Clients from './clients';
 import Parties from './participants';
 import {connect} from "react-redux";
 import {injectIntl} from "react-intl";
@@ -15,9 +16,10 @@ const Bank = (props) => {
             <Switch>
                 <Redirect exact from={`${match.url}/`} to={BANK.ADMIN.SELF} />
                 <Route path={BANK.ADMIN.SELF} component={Parties} />
+                <Route path={BANK.CLIENT.SELF} component={Clients} />
                 <Route path={BANK.PARTY.SELF} component={Intermediary} />
-                <Route path={BANK.SUBSCRIPTION.SELF} component={Subscription} />
                 <Route path={BANK.OPERATION.SELF} component={Operations} />
+                <Route path={BANK.SUBSCRIPTION.SELF} component={Subscription} />
             </Switch>
         </div>
     );

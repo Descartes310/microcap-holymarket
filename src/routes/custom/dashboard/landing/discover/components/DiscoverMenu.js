@@ -58,8 +58,8 @@ class DiscoverMenu extends Component {
 
 
     render() {
-        const { authUser, history } = this.props;
-        const { width, showMobile, showMobileDorpdown, showDesktopDorpdown, show } = this.state;
+        const { authUser } = this.props;
+        const { width, showMobile, showDesktopDorpdown, show } = this.state;
 
         const isMainNav = width > MAX_MOBILE_SCREEN_WIDTH;
 

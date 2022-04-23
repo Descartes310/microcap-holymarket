@@ -424,6 +424,10 @@ export const BANK = {
         LIST: '/bank/operations/list',
         CREATE: '/bank/operations/create',
     },
+    CLIENT: {
+        SELF: '/bank/clients',
+        LIST: '/bank/clients/list'
+    },
     PARTY: {
         SELF: '/bank/party',
         AGENT: {
