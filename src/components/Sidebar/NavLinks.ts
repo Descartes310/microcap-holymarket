@@ -506,6 +506,22 @@ export default [
             "child_routes": null
          },
          {
+            "menu_title": "Monnaie de service",
+            "new_item": false,
+            "path": BANK.MONEY.SELF,
+            "permissions": null,
+            "profiles": ['OPERATOR', 'PROVIDER_INTERMEDIARY'],
+            "child_routes": null
+         },
+         {
+            "menu_title": "Comptes",
+            "new_item": false,
+            "path": BANK.OPERATION.LIST,
+            "permissions": null,
+            "profiles": ['OPERATOR', 'PROVIDER_INTERMEDIARY'],
+            "child_routes": null
+         },
+         {
             "menu_title": "Mes clients",
             "new_item": false,
             "path": BANK.CLIENT.LIST,

@@ -424,6 +424,17 @@ export const BANK = {
         LIST: '/bank/operations/list',
         CREATE: '/bank/operations/create',
     },
+    MONEY: {
+        SELF: '/bank/money',
+        INJECTION: {
+            SELF: '/bank/money/injections',
+            LIST: '/bank/money/injections/list',
+        },
+        EXTINCTION: {
+            SELF: '/bank/money/extinctions',
+            LIST: '/bank/money/extinctions/list',
+        }
+    },
     CLIENT: {
         SELF: '/bank/clients',
         LIST: '/bank/clients/list'

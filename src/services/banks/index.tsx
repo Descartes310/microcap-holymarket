@@ -103,4 +103,20 @@ export default class BankService {
     static purgeOperations(data: any): Promise<any> {
         return makeRequest('put', Routes.PURGE_OPERATIONS, data);
     }
+
+    static createInjection(data: any): Promise<any> {
+        return makeRequest('post', Routes.CREATE_INJECTION, data);
+    }
+
+    static getInjections(): Promise<any> {
+        return makeRequest('get', Routes.GET_INJECTIONS);
+    }
+
+    static createExtinction(data: any): Promise<any> {
+        return makeRequest('post', Routes.CREATE_EXTINCTION, data);
+    }
+
+    static getExtinctions(): Promise<any> {
+        return makeRequest('get', Routes.GET_EXTINCTIONS);
+    }
 }

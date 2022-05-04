@@ -28,3 +28,8 @@ export const GET_USER_PRESTATIONS = 'api/cashmanagements/subscriptions/prestatio
 export const GET_OPERATIONS = 'api/cashmanagements/operations';
 export const CREATE_OPERATION = 'api/cashmanagements/operations';
 export const PURGE_OPERATIONS = 'api/cashmanagements/operations/purge';
+
+export const GET_INJECTIONS = 'api/cashmanagements/moneys/injections';
+export const CREATE_INJECTION = 'api/cashmanagements/moneys/injections';
+export const GET_EXTINCTIONS = 'api/cashmanagements/moneys/extinctions';
+export const CREATE_EXTINCTION = 'api/cashmanagements/moneys/extinctions';

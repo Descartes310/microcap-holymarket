@@ -1,4 +1,5 @@
 import React from 'react';
+import Moneys from './moneys';
 import Clients from './clients';
 import Parties from './participants';
 import {connect} from "react-redux";
@@ -15,6 +16,7 @@ const Bank = (props) => {
         <div className="full-height">
             <Switch>
                 <Redirect exact from={`${match.url}/`} to={BANK.ADMIN.SELF} />
+                <Route path={BANK.MONEY.SELF} component={Moneys} />
                 <Route path={BANK.ADMIN.SELF} component={Parties} />
                 <Route path={BANK.CLIENT.SELF} component={Clients} />
                 <Route path={BANK.PARTY.SELF} component={Intermediary} />
