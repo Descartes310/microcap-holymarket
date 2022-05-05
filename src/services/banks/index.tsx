@@ -24,6 +24,10 @@ export default class BankService {
         return makeRequest('get', Routes.GET_INTERMEDIATE_PARTIES);
     }
 
+    static getIntermediateBanks(): Promise<any> {
+        return makeRequest('get', Routes.GET_INTERMEDIATE_BANKS);
+    }
+
     static getPotentialAgents(): Promise<any> {
         return makeRequest('get', Routes.GET_POTENTIAL_AGENT);
     }
@@ -136,11 +140,15 @@ export default class BankService {
         return makeRequest('get', Routes.GET_COMPENSATION_CREDITS);
     }
 
-    static createChargeRequest(data: any): Promise<any> {
-        return makeRequest('post', Routes.CREATE_CHARGE_REQUEST, data);
+    static createChargeRequest(data: any, config: any): Promise<any> {
+        return makeRequest('post', Routes.CREATE_CHARGE_REQUEST, data, config);
     }
 
     static getAgentChargeRequests(): Promise<any> {
         return makeRequest('get', Routes.GET_AGENT_CHARGE_REQUESTS);
+    }
+
+    static getChild(): Promise<any> {
+        return makeRequest('get', Routes.GET_CHILD);
     }
 }

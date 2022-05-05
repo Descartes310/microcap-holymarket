@@ -1,6 +1,7 @@
 import React from 'react';
 import Moneys from './moneys';
 import Clients from './clients';
+import Charges from './charges';
 import Parties from './participants';
 import {connect} from "react-redux";
 import {injectIntl} from "react-intl";
@@ -18,6 +19,7 @@ const Bank = (props) => {
                 <Redirect exact from={`${match.url}/`} to={BANK.ADMIN.SELF} />
                 <Route path={BANK.MONEY.SELF} component={Moneys} />
                 <Route path={BANK.ADMIN.SELF} component={Parties} />
+                <Route path={BANK.CHARGE.SELF} component={Charges} />
                 <Route path={BANK.CLIENT.SELF} component={Clients} />
                 <Route path={BANK.PARTY.SELF} component={Intermediary} />
                 <Route path={BANK.OPERATION.SELF} component={Operations} />

@@ -470,7 +470,7 @@ export default [
             "menu_title": "Intermediaire banquaire",
             "new_item": false,
             "path": BANK.PARTY.SELF,
-            "permissions": [Permission.bank.intermediary.name],
+            "permissions": null,
             "profiles": ['PROVIDER_INTERMEDIARY', 'PROVIDER_AGENT'],
             "child_routes": null
          },
@@ -509,9 +509,17 @@ export default [
          {
             "menu_title": "Recharges",
             "new_item": false,
-            "path": BANK.MONEY.CHARGE.REQUEST.LIST,
+            "path": BANK.CHARGE.AGENT.SELF,
             "permissions": null,
             "profiles": ['PROVIDER_AGENT'],
+            "child_routes": null
+         },
+         {
+            "menu_title": "Recharges",
+            "new_item": false,
+            "path": BANK.CHARGE.INTERMEDIARY.REQUEST.SELF,
+            "permissions": null,
+            "profiles": ['PROVIDER_INTERMEDIARY'],
             "child_routes": null
          },
          {

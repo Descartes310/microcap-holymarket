@@ -437,23 +437,29 @@ export const BANK = {
         EXPLOITATION: {
             SELF: '/bank/money/exploitations',
             LIST: '/bank/money/exploitations/list',
-        },
-        CHARGE: {
-            SELF: '/bank/money/charges',
+        }
+    },
+    CHARGE: {
+        SELF: '/bank/charges',
+        AGENT: {
+            SELF: '/bank/charges/agents',
             REQUEST: {
-                SELF: '/bank/money/charges/requests',
-                LIST: '/bank/money/charges/requests/list',
-                CREATE: '/bank/money/charges/requests/create',
-                AGENT: {
-                    SELF: '/bank/money/charges/agents',
-                    ALL: '/bank/money/charges/agent/all',
-                    PENDING: '/bank/money/charges/agent/pending',
-                }
+                SELF: '/bank/charges/agents/requests',
+                LIST: '/bank/charges/agents/requests/list',
+                CREATE: '/bank/charges/agents/requests/create',
             },
-            TRANSFERT: {
-                SELF: '/bank/money/charges/mouvements',
-                LIST: '/bank/money/charges/mouvements/list',
-                CREATE: '/bank/money/charges/mouvements/create',
+            TRANSFER: {
+                SELF: '/bank/charges/agents/transfers',
+                LIST: '/bank/charges/agents/transfers/list',
+                CREATE: '/bank/charges/agents/transfers/create',
+            }
+        },
+        INTERMEDIARY: {
+            SELF: '/bank/charges/admin',
+            REQUEST: {
+                SELF: '/bank/charges/admin/requests',
+                LIST: '/bank/charges/admin/requests/list',
+                PENDING: '/bank/charges/admin/requests/pending',
             }
         }
     },
