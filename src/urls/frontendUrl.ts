@@ -433,6 +433,28 @@ export const BANK = {
         EXTINCTION: {
             SELF: '/bank/money/extinctions',
             LIST: '/bank/money/extinctions/list',
+        },
+        EXPLOITATION: {
+            SELF: '/bank/money/exploitations',
+            LIST: '/bank/money/exploitations/list',
+        },
+        CHARGE: {
+            SELF: '/bank/money/charges',
+            REQUEST: {
+                SELF: '/bank/money/charges/requests',
+                LIST: '/bank/money/charges/requests/list',
+                CREATE: '/bank/money/charges/requests/create',
+                AGENT: {
+                    SELF: '/bank/money/charges/agents',
+                    ALL: '/bank/money/charges/agent/all',
+                    PENDING: '/bank/money/charges/agent/pending',
+                }
+            },
+            TRANSFERT: {
+                SELF: '/bank/money/charges/mouvements',
+                LIST: '/bank/money/charges/mouvements/list',
+                CREATE: '/bank/money/charges/mouvements/create',
+            }
         }
     },
     CLIENT: {

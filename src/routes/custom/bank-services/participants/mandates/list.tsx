@@ -1,20 +1,25 @@
 import { connect } from 'react-redux';
 import { BANK } from 'Url/frontendUrl';
 import BankService from 'Services/banks';
+import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
 import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
 import React, { useState, useEffect } from 'react';
+import CreateCreditModal from './creditCompensation';
 
 const List = (props) => {
 
     const [parties, setParties] = useState([]);
+    const [referralCode, setReferralCode] = useState(null);
+    const [showCreditBox, setShowCreditBox] = useState(false);
 
     useEffect(() => {
         getParties();
     }, []);
 
     const getParties = () => {
+        setReferralCode(null);
         props.setRequestGlobalAction(true),
         BankService.getIntermediateParty()
         .then(response => setParties(response))
@@ -46,6 +51,9 @@ const List = (props) => {
                                     <thead>
                                         <tr>
                                             <th className="fw-bold">Nom commercial</th>
+                                            <th className="fw-bold">Solde d'exploitation</th>
+                                            <th className="fw-bold">Solde de compensation</th>
+                                            <th className="fw-bold">Créditer</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -58,6 +66,35 @@ const List = (props) => {
                                                         </div>
                                                     </div>
                                                 </td>
+                                                <td>
+                                                    <div className="media">
+                                                        <div className="media-body pt-10">
+                                                            <h4 className="m-0 fw-bold text-dark">{ item.exploitationBalance ? item.exploitationBalance+' EUR' : '-' }</h4>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="media">
+                                                        <div className="media-body pt-10">
+                                                            <h4 className="m-0 fw-bold text-dark">{ item.compensation ? item.compensation.balance+' EUR' : '-' }</h4>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td> 
+                                                    { item.compensation && (
+                                                        <Button
+                                                            color="primary"
+                                                            variant="contained"
+                                                            onClick={() => {
+                                                                setShowCreditBox(true);
+                                                                setReferralCode(item.referralCode);
+                                                            }}
+                                                            className="text-white font-weight-bold"
+                                                        >
+                                                            Créditer le compte
+                                                        </Button>
+                                                    )}
+                                                </td>
                                             </tr>
                                         ))}
                                     </tbody>
@@ -67,6 +104,17 @@ const List = (props) => {
                     </>
                 )}
             />
+            { showCreditBox && referralCode && (
+                <CreateCreditModal
+                    show={showCreditBox}
+                    onClose={() => {
+                        setShowCreditBox(false);
+                        getParties();
+                    }}
+                    referralCode={referralCode}
+                    title={"Création d'un nouveau crédit"}
+                />
+            )}
         </>
     );
 }

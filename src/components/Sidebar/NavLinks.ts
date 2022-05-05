@@ -291,7 +291,8 @@ export default [
             "menu_title": "Mes comptes",
             "new_item": false,
             "path": FUNDING.ACCOUNT.LIST,
-            "permissions": [Permission.funding.account.name],
+            "permissions": null,
+            // "permissions": [Permission.funding.account.name],
             "profiles": null,
             "child_routes": null
          },
@@ -506,19 +507,27 @@ export default [
             "child_routes": null
          },
          {
+            "menu_title": "Recharges",
+            "new_item": false,
+            "path": BANK.MONEY.CHARGE.REQUEST.LIST,
+            "permissions": null,
+            "profiles": ['PROVIDER_AGENT'],
+            "child_routes": null
+         },
+         {
             "menu_title": "Monnaie de service",
             "new_item": false,
             "path": BANK.MONEY.SELF,
             "permissions": null,
-            "profiles": ['OPERATOR', 'PROVIDER_INTERMEDIARY'],
+            "profiles": ['PROVIDER_INTERMEDIARY'],
             "child_routes": null
          },
          {
             "menu_title": "Comptes",
             "new_item": false,
-            "path": BANK.OPERATION.LIST,
+            "path": FUNDING.ACCOUNT.LIST,
             "permissions": null,
-            "profiles": ['OPERATOR', 'PROVIDER_INTERMEDIARY'],
+            "profiles": ['PROVIDER_INTERMEDIARY'],
             "child_routes": null
          },
          {

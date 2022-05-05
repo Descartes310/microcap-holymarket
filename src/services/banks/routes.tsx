@@ -33,3 +33,12 @@ export const GET_INJECTIONS = 'api/cashmanagements/moneys/injections';
 export const CREATE_INJECTION = 'api/cashmanagements/moneys/injections';
 export const GET_EXTINCTIONS = 'api/cashmanagements/moneys/extinctions';
 export const CREATE_EXTINCTION = 'api/cashmanagements/moneys/extinctions';
+
+export const GET_EXPLOITATION_CREDITS = 'api/cashmanagements/moneys/exploitation/credits';
+export const CREATE_EXPLOITATION_CREDIT = 'api/cashmanagements/moneys/exploitation/credits';
+
+export const GET_COMPENSATION_CREDITS = 'api/cashmanagements/moneys/compensation/credits';
+export const CREATE_COMPENSATION_CREDIT = 'api/cashmanagements/moneys/compensation/credits';
+
+export const CREATE_CHARGE_REQUEST = 'api/cashmanagements/moneys/charge/requests';
+export const GET_AGENT_CHARGE_REQUESTS = 'api/cashmanagements/moneys/charge/requests';

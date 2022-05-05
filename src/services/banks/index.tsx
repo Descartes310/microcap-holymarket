@@ -119,4 +119,28 @@ export default class BankService {
     static getExtinctions(): Promise<any> {
         return makeRequest('get', Routes.GET_EXTINCTIONS);
     }
+
+    static createExploitationCredit(data: any): Promise<any> {
+        return makeRequest('post', Routes.CREATE_EXPLOITATION_CREDIT, data);
+    }
+
+    static getExploitationCredits(): Promise<any> {
+        return makeRequest('get', Routes.GET_EXPLOITATION_CREDITS);
+    }
+
+    static createCompensationCredit(data: any): Promise<any> {
+        return makeRequest('post', Routes.CREATE_COMPENSATION_CREDIT, data);
+    }
+
+    static getCompensationCredits(): Promise<any> {
+        return makeRequest('get', Routes.GET_COMPENSATION_CREDITS);
+    }
+
+    static createChargeRequest(data: any): Promise<any> {
+        return makeRequest('post', Routes.CREATE_CHARGE_REQUEST, data);
+    }
+
+    static getAgentChargeRequests(): Promise<any> {
+        return makeRequest('get', Routes.GET_AGENT_CHARGE_REQUESTS);
+    }
 }
