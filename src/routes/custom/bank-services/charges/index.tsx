@@ -1,4 +1,5 @@
 import React from 'react';
+import Admin from './admin';
 import Agents from './agents';
 import {connect} from "react-redux";
 import {injectIntl} from "react-intl";
@@ -12,6 +13,7 @@ const BankCharge = (props) => {
             <Switch>
                 <Redirect exact from={`${match.url}/`} to={BANK.CHARGE.AGENT.SELF} />
                 <Route path={BANK.CHARGE.AGENT.SELF} component={Agents} />
+                <Route path={BANK.CHARGE.INTERMEDIARY.REQUEST.SELF} component={Admin} />
             </Switch>
         </div>
     );

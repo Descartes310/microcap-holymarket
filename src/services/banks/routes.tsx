@@ -44,3 +44,7 @@ export const CREATE_COMPENSATION_CREDIT = 'api/cashmanagements/moneys/compensati
 
 export const CREATE_CHARGE_REQUEST = 'api/cashmanagements/moneys/charge/requests';
 export const GET_AGENT_CHARGE_REQUESTS = 'api/cashmanagements/moneys/charge/requests';
+
+export const GET_ADMIN_CHARGE_REQUESTS = 'api/cashmanagements/moneys/charge/requests/all';
+export const GET_ADMIN_CHARGE_REQUEST_PENDING = 'api/cashmanagements/moneys/charge/requests/pending';
+export const RESPOND_TO_CHARGE_REQUEST = (id) => `api/cashmanagements/moneys/charge/requests/${id}/respond`;

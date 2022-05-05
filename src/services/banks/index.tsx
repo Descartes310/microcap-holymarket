@@ -151,4 +151,16 @@ export default class BankService {
     static getChild(): Promise<any> {
         return makeRequest('get', Routes.GET_CHILD);
     }
+
+    static getAdminChargeRequests(): Promise<any> {
+        return makeRequest('get', Routes.GET_ADMIN_CHARGE_REQUESTS);
+    }
+
+    static getAdminChargeRequestPending(): Promise<any> {
+        return makeRequest('get', Routes.GET_ADMIN_CHARGE_REQUEST_PENDING);
+    }
+
+    static respondToChargeRequest(id: number, status: boolean): Promise<any> {
+        return makeRequest('put', Routes.RESPOND_TO_CHARGE_REQUEST(id), {status});
+    }
 }
