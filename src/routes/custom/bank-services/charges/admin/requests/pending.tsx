@@ -55,6 +55,7 @@ const List = (props) => {
                                             <th className="fw-bold">Reference couv.</th>
                                             <th className="fw-bold">Date</th>
                                             <th className="fw-bold">Status</th>
+                                            <th className="fw-bold">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>

@@ -6,6 +6,7 @@ import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
 import React, { useState, useEffect } from 'react';
 import TimeFromMoment from 'Components/TimeFromMoment';
+import {NotificationManager} from 'react-notifications';
 
 
 const List = (props) => {
@@ -25,7 +26,10 @@ const List = (props) => {
     const respond = (id, status) => {
         props.setRequestGlobalAction(true),
         BankService.respondToChargeRequest(id, status)
-        .then(response => getRequests())
+        .then(() => getRequests())
+        .catch((err) => {
+            NotificationManager.error("Votre compte de compensation ne permet pas de créditer ce montant");
+        })
         .finally(() => props.setRequestGlobalAction(false))
     }
 
