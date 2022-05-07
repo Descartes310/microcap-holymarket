@@ -50,7 +50,7 @@ const List = (props) => {
                                             <th className="fw-bold">Noms</th>
                                             <th className="fw-bold">Email</th>
                                             <th className="fw-bold">IBAN</th>
-                                            <th className="fw-bold">Reference externe</th>
+                                            <th className="fw-bold">Compte MicroCap</th>
                                         </tr>
                                     </thead>
                                     <tbody>
