@@ -22,7 +22,7 @@ const OfferDetails = () => {
                         </p>
                         <p className="font-lg">
                             Les options ne sont disponibles qu’en série limitée pendant la période de démarrage de nos activités 
-                            soit du 1er avril 2021 au 30 septembre 2021. Les détenteurs d’une option sont actionnaires du fonds 
+                            soit du 1er avril 2022 au 30 septembre 2022. Les détenteurs d’une option sont actionnaires du fonds 
                             MicroCap Invest et participent par la voix de leur représentant au conseil d’administration, aux 
                             décisions stratégiques et à la vie de l’entreprise.
                         </p>

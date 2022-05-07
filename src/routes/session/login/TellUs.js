@@ -53,7 +53,7 @@ const TellUs = (props) => {
                     <div className="showcase-card-block" style={{ backgroundImage: `url(${require('Assets/img/bg-shape-gray.png')})`, padding: '10vh 10vw' }}>
                         <div className="row center-hor-ver mb-70 flex-column intro">
                             <h2 className="font-weight-bold text-black text-center" data-aos="fade-right">
-                                Du 1<sup>er</sup> octobre 2021 au 15 decembre 2021
+                                Du 1<sup>er</sup> octobre 2022 au 15 decembre 2022
                             </h2>
                             <p data-aos="fade-left" className="text-center">Participer à notre appel à projet pour une dotation financière pouvant atteindre jusqu'à 50 000€ </p>
                         </div>

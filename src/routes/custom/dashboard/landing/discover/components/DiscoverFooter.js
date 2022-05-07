@@ -112,7 +112,7 @@ const DiscoverFooter = ({props}) => {
             <div className="bg-black">
                 <div className="row copyright">
                     <div className="col-md-12 text-center text-white py-25">
-                        <h4>&copy; 2021 | All Rights Reserved.</h4>
+                        <h4>&copy; 2022 | All Rights Reserved.</h4>
                     </div>
                 </div>
             </div>

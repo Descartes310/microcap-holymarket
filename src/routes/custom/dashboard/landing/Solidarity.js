@@ -44,10 +44,10 @@ export default class Solidarity extends Component {
 
                             <p>Les lauréat de ces parcours, sélectionner par un jury d’excellence, reçoivent une dotation financière.  </p>
                             <p>La stratégie de lancement de MicroCap repose sur une ouverture progressive. Elle consistera durant l’année 
-                                2021 à accepter  sur la plateforme uniquement des projets dans le cadre des programmes spécifiques ou 
+                                2022 à accepter  sur la plateforme uniquement des projets dans le cadre des programmes spécifiques ou 
                                 des appels à projets. Ce choix nous permet d’assurer la solidité du service. </p>
 
-                            <strong>NOS PROGRAMMES ET APPELS A PROJETS POUR LANCER VOTRE PROJET EN 2021</strong>
+                            <strong>NOS PROGRAMMES ET APPELS A PROJETS POUR LANCER VOTRE PROJET EN 2022</strong>
                             <ul style={{ padding: 40 }}>
                                 <li>
                                     <strong>Programme Reflex</strong>
