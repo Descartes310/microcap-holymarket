@@ -6,11 +6,15 @@ import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
 import React, { useState, useEffect } from 'react';
 import TimeFromMoment from "Components/TimeFromMoment";
-import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
+import { NotificationManager } from 'react-notifications';
+import LiquidOperationModal from '../../components/liquidOperationModal';
 
 const List = (props) => {
 
     const [operations, setOperations] = useState([]);
+    const [showLiquidModal, setShowLiquidModal] = useState(false);
+    const [selectedOperation, setSelectedOperation] = useState(null);
+
     useEffect(() => {
         getOperations();
     }, []);
@@ -18,7 +22,27 @@ const List = (props) => {
     const getOperations = () => {
         props.setRequestGlobalAction(true),
         BankService.getOperations()
-        .then(response => setOperations(response))
+        .then(response => {
+            let datas = response.filter(o => !o.liquidationReference);
+            setOperations(datas);
+            if(showLiquidModal && datas.length > 0) {
+                setSelectedOperation(datas[0]);
+            } else {
+                setSelectedOperation(null);
+                setShowLiquidModal(false);
+            }
+        })
+        .finally(() => props.setRequestGlobalAction(false))
+    }
+
+    const liquidOperation = (reference) => {
+        props.setRequestGlobalAction(true),
+        BankService.liquidOperation(selectedOperation.id, reference)
+        .then(() => getOperations())
+        .catch((err) => {
+            console.log(err);
+            NotificationManager.error("Une erreur s'est produite lors de la liquidation.")
+        })
         .finally(() => props.setRequestGlobalAction(false))
     }
 
@@ -76,7 +100,7 @@ const List = (props) => {
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{item.amount + ' euro.s'}</h4>
+                                                            <h4 className="m-0 fw-bold text-dark">{item.amount + ' EUR'}</h4>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -93,6 +117,10 @@ const List = (props) => {
                                                     <Button
                                                         color="primary"
                                                         variant="contained"
+                                                        onClick={() => {
+                                                            setSelectedOperation(item);
+                                                            setShowLiquidModal(true);
+                                                        }}
                                                         className="text-white font-weight-bold"
                                                     >
                                                         Liquider
@@ -107,6 +135,17 @@ const List = (props) => {
                     </>
                 )}
             />
+            { showLiquidModal && selectedOperation != null && (
+                <LiquidOperationModal
+                    show={showLiquidModal}
+                    title={"Liquider l'opération"}
+                    onClose={() => {
+                        setShowLiquidModal(false);
+                    }}
+                    operation={selectedOperation}
+                    liquidOperation={(ref) => liquidOperation(ref)}
+                />  
+            )}
         </>
     );
 }

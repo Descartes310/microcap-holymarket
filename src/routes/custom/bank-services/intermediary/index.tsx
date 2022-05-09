@@ -9,6 +9,7 @@ import AppBar from '@material-ui/core/AppBar';
 import { withRouter } from "react-router-dom";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import { setRequestGlobalAction } from "Actions/RequestGlobalAction";
+import { SET_AUTH_USER } from "Actions/types";
 
 class Catalogues extends Component<any, any> {
     constructor(props: any) {
@@ -66,14 +67,18 @@ class Catalogues extends Component<any, any> {
                                             icon={<i className="zmdi zmdi-home" />}
                                             label={"Guichets"}
                                         />
-                                        <Tab
-                                            icon={<i className="zmdi zmdi-home" />}
-                                            label={"Couvertures"}
-                                        />
-                                        <Tab
-                                            icon={<i className="zmdi zmdi-home" />}
-                                            label={"Prestations"}
-                                        />
+                                        { this.props.authUser.referralTypes.includes('PROVIDER_INTERMEDIARY') && (
+                                            <>
+                                                <Tab
+                                                    icon={<i className="zmdi zmdi-home" />}
+                                                    label={"Couvertures"}
+                                                />
+                                                <Tab
+                                                    icon={<i className="zmdi zmdi-home" />}
+                                                    label={"Prestations"}
+                                                />
+                                            </>
+                                        )}
                                     </Tabs>
                                 </div>
                             </div>

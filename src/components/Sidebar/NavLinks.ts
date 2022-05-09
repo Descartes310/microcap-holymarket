@@ -483,7 +483,7 @@ export default [
             "menu_title": "Souscription",
             "new_item": false,
             "path": BANK.SUBSCRIPTION.SELF,
-            "permissions": null,
+            "permissions": [Permission.bank.counter.subscription],
             "profiles": ['PROVIDER_COUNTER'],
             "child_routes": null
          },
@@ -491,7 +491,7 @@ export default [
             "menu_title": "Opération",
             "new_item": false,
             "path": BANK.OPERATION.CREATE,
-            "permissions": null,
+            "permissions": [Permission.bank.counter.operation],
             "profiles": ['PROVIDER_COUNTER'],
             "child_routes": null
          },
@@ -499,7 +499,7 @@ export default [
             "menu_title": "Opérations",
             "new_item": false,
             "path": BANK.OPERATION.BANK.SELF,
-            "permissions": null,
+            "permissions": [Permission.bank.bank.operation],
             "profiles": ['OPERATOR'],
             "child_routes": null
          },
@@ -507,7 +507,7 @@ export default [
             "menu_title": "Opérations",
             "new_item": false,
             "path": BANK.OPERATION.LIST,
-            "permissions": null,
+            "permissions": [Permission.bank.agent.operation, Permission.bank.intermediary.operation],
             "profiles": ['PROVIDER_AGENT', 'PROVIDER_INTERMEDIARY'],
             "child_routes": null
          },
@@ -515,7 +515,7 @@ export default [
             "menu_title": "Recharges",
             "new_item": false,
             "path": BANK.CHARGE.AGENT.SELF,
-            "permissions": null,
+            "permissions": [Permission.bank.agent.charge],
             "profiles": ['PROVIDER_AGENT'],
             "child_routes": null
          },
@@ -523,7 +523,7 @@ export default [
             "menu_title": "Recharges",
             "new_item": false,
             "path": BANK.CHARGE.INTERMEDIARY.REQUEST.SELF,
-            "permissions": null,
+            "permissions": [Permission.bank.intermediary.charge],
             "profiles": ['PROVIDER_INTERMEDIARY'],
             "child_routes": null
          },
@@ -531,7 +531,7 @@ export default [
             "menu_title": "Monnaie de service",
             "new_item": false,
             "path": BANK.MONEY.SELF,
-            "permissions": null,
+            "permissions": [Permission.bank.intermediary.money],
             "profiles": ['PROVIDER_INTERMEDIARY'],
             "child_routes": null
          },
@@ -539,7 +539,7 @@ export default [
             "menu_title": "Comptes",
             "new_item": false,
             "path": FUNDING.ACCOUNT.LIST,
-            "permissions": null,
+            "permissions": [Permission.bank.intermediary.account],
             "profiles": ['PROVIDER_INTERMEDIARY'],
             "child_routes": null
          },
@@ -547,7 +547,7 @@ export default [
             "menu_title": "Mes clients",
             "new_item": false,
             "path": BANK.CLIENT.LIST,
-            "permissions": null,
+            "permissions": [Permission.bank.bank.client],
             "profiles": ['OPERATOR'],
             "child_routes": null
          }

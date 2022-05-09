@@ -15,9 +15,7 @@ class PurgeOperationModal extends Component {
     }
 
     render() {
-
         const { onClose, show, title, operations, purgeOperations } = this.props;
-        console.log(operations);
         return (
             <DialogComponent
                 show={show}

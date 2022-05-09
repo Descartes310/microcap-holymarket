@@ -163,4 +163,8 @@ export default class BankService {
     static respondToChargeRequest(id: number, status: boolean): Promise<any> {
         return makeRequest('put', Routes.RESPOND_TO_CHARGE_REQUEST(id), {status});
     }
+
+    static liquidOperation(id: number, reference): Promise<any> {
+        return makeRequest('put', Routes.LIQUID_OPERATION(id), {liquid_reference: reference});
+    }
 }

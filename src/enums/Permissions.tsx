@@ -209,11 +209,17 @@ export default class Permission extends BaseEnum {
             },
             account: {
                 "name": "CASHMANAGEMENT_BANK_ACCOUNTS"
+            },
+            client: {
+                "name": "CASHMANAGEMENT_BANK_CLIENTS"
             }
         },
         counter: {
             operation: {
                 "name": "CASHMANAGEMENT_COUNTER_OPERATIONS"
+            },
+            subscription: {
+                "name": "CASHMANAGEMENT_COUNTER_SUBSCRIPTIONS"
             }
         }
     };

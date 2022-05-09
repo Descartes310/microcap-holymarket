@@ -7,7 +7,7 @@ import {injectIntl} from "react-intl";
 import { BANK } from 'Url/frontendUrl';
 import {withRouter, Switch, Redirect, Route} from "react-router-dom";
 
-const BankCounterOperation = (props) => {
+const BankOperation = (props) => {
     const { match } = props;
     return (
         <div className="full-height">
@@ -27,4 +27,4 @@ const mapStateToProps = ({ requestGlobalLoader }) => {
     return { requestGlobalLoader }
 };
 
-export default connect(mapStateToProps, {})(withRouter(injectIntl(BankCounterOperation)));
+export default connect(mapStateToProps, {})(withRouter(injectIntl(BankOperation)));
