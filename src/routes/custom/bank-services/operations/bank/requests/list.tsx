@@ -1,27 +1,24 @@
+import { Button } from 'reactstrap';
 import { connect } from 'react-redux';
 import BankService from 'Services/banks';
-import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
 import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
 import React, { useState, useEffect } from 'react';
-import CreatePrestationCoverageModal from 'Components/createPrestationCoverage';
-
+import TimeFromMoment from "Components/TimeFromMoment";
+import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
 
 const List = (props) => {
 
-    const [prestation, setPrestation] = useState(null);
-    const [prestations, setPrestations] = useState([]);
-    const [showCreateCoverageBox, setShowCreateCoverageBox] = useState(false);
-
+    const [operations, setOperations] = useState([]);
     useEffect(() => {
-        getPrestations();
+        getOperations();
     }, []);
 
-    const getPrestations = () => {
+    const getOperations = () => {
         props.setRequestGlobalAction(true),
-        BankService.getPrestations()
-        .then(response => setPrestations(response))
+        BankService.getOperations()
+        .then(response => setOperations(response))
         .finally(() => props.setRequestGlobalAction(false))
     }
 
@@ -29,14 +26,14 @@ const List = (props) => {
         <>
             <CustomList
                 loading={false}
-                list={prestations}
-                itemsFoundText={n => `${n} prestations trouvées`}
+                list={operations}
+                itemsFoundText={n => `${n} opérations trouvées`}
                 renderItem={list => (
                     <>
                         {list && list.length === 0 ? (
                             <div className="d-flex justify-content-center align-items-center py-50">
                                 <h4>
-                                    Aucun prestations trouvées
+                                    Aucun opérations trouvés
                                 </h4>
                             </div>
                         ) : (
@@ -44,9 +41,12 @@ const List = (props) => {
                                 <table className="table table-hover table-middle mb-0">
                                     <thead>
                                         <tr>
-                                            <th className="fw-bold">Désignation</th>
-                                            <th className="fw-bold">Description</th>
-                                            <th className="fw-bold">Action</th>
+                                            <th className="fw-bold">Ref</th>
+                                            <th className="fw-bold">Client</th>
+                                            <th className="fw-bold">Guichet</th>
+                                            <th className="fw-bold">Montant</th>
+                                            <th className="fw-bold">Date</th>
+                                            <th className="fw-bold">Liquider</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -55,14 +55,37 @@ const List = (props) => {
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{item.label}</h4>
+                                                            <h4 className="m-0 fw-bold text-dark">{item.reference.split('_')[2].toUpperCase()}</h4>
                                                         </div>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <p className="m-0 text-dark">{item.description}</p>
+                                                            <h4 className="m-0 fw-bold text-dark">{item.clientName}</h4>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="media">
+                                                        <div className="media-body pt-10">
+                                                            <h4 className="m-0 fw-bold text-dark">{item.counterName}</h4>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="media">
+                                                        <div className="media-body pt-10">
+                                                            <h4 className="m-0 fw-bold text-dark">{item.amount + ' euro.s'}</h4>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="media">
+                                                        <div className="media-body pt-10">
+                                                            <h4 className="m-0 fw-bold text-dark">
+                                                                <TimeFromMoment time={item.emittedAt} showFullDate />
+                                                            </h4>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -70,13 +93,9 @@ const List = (props) => {
                                                     <Button
                                                         color="primary"
                                                         variant="contained"
-                                                        onClick={() => {
-                                                            setPrestation(item);
-                                                            setShowCreateCoverageBox(true);
-                                                        }}
                                                         className="text-white font-weight-bold"
                                                     >
-                                                        Ajouter une couverture
+                                                        Liquider
                                                     </Button>
                                                 </td>
                                             </tr>
@@ -88,18 +107,6 @@ const List = (props) => {
                     </>
                 )}
             />
-
-            { showCreateCoverageBox && prestation && (
-                <CreatePrestationCoverageModal
-                    prestation={prestation}
-                    show={showCreateCoverageBox}
-                    onClose={() => {
-                        setShowCreateCoverageBox(false);
-                        setPrestation(null);
-                    }}
-                    title={"Ajouter une couverture"}
-                />
-            )}
         </>
     );
 }

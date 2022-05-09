@@ -166,11 +166,55 @@ export default class Permission extends BaseEnum {
     };
 
     static bank = {
-        administration: {
-            "name": "BANK_SERVICE_ADMINISTRATION_PRIVILEGE"
+        agent: {
+            agent: {
+                "name": "CASHMANAGEMENT_AGENT_AGENTS"
+            },
+            counter: {
+                "name": "CASHMANAGEMENT_AGENT_COUNTERS"
+            },
+            operation: {
+                "name": "CASHMANAGEMENT_AGENT_OPERATIONS"
+            },
+            charge: {
+                "name": "CASHMANAGEMENT_AGENT_CHARGES"
+            },
+            account: {
+                "name": "CASHMANAGEMENT_AGENT_ACCOUNTS"
+            }
         },
         intermediary: {
-            "name": "BANK_SERVICE_INTERMEDIARY_PRIVILEGE"
+            coverage: {
+                "name": "CASHMANAGEMENT_INTER_COVERAGE"
+            },
+            prestation: {
+                "name": "CASHMANAGEMENT_INTER_PRESTATIONS"
+            },
+            operation: {
+                "name": "CASHMANAGEMENT_INTER_OPERATIONS"
+            },
+            charge: {
+                "name": "CASHMANAGEMENT_INTER_CHARGES"
+            },
+            money: {
+                "name": "CASHMANAGEMENT_INTER_MONEYS"
+            },
+            account: {
+                "name": "CASHMANAGEMENT_INTER_ACCOUNTS"
+            }
+        },
+        bank: {
+            operation: {
+                "name": "CASHMANAGEMENT_BANK_OPERATIONS"
+            },
+            account: {
+                "name": "CASHMANAGEMENT_BANK_ACCOUNTS"
+            }
+        },
+        counter: {
+            operation: {
+                "name": "CASHMANAGEMENT_COUNTER_OPERATIONS"
+            }
         }
     };
 

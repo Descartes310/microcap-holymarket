@@ -460,10 +460,7 @@ export default [
       "menu_title": "Services banquaires",
       "menu_icon": "zmdi zmdi-balance",
       "new_item": false,
-      "permissions": [
-         Permission.bank.administration.name,
-         Permission.bank.intermediary.name,
-      ],
+      "permissions": null,
       "profiles": ['GROUP'],
       "child_routes": [
          {
@@ -478,7 +475,7 @@ export default [
             "menu_title": "Administration banquaire",
             "new_item": false,
             "path": BANK.ADMIN.SELF,
-            "permissions": [Permission.bank.administration.name],
+            "permissions": null,
             "profiles": ['OPERATOR'],
             "child_routes": null
          },
@@ -501,9 +498,17 @@ export default [
          {
             "menu_title": "Opérations",
             "new_item": false,
+            "path": BANK.OPERATION.BANK.SELF,
+            "permissions": null,
+            "profiles": ['OPERATOR'],
+            "child_routes": null
+         },
+         {
+            "menu_title": "Opérations",
+            "new_item": false,
             "path": BANK.OPERATION.LIST,
             "permissions": null,
-            "profiles": ['OPERATOR', 'PROVIDER_AGENT', 'PROVIDER_INTERMEDIARY'],
+            "profiles": ['PROVIDER_AGENT', 'PROVIDER_INTERMEDIARY'],
             "child_routes": null
          },
          {
