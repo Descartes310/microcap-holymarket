@@ -12,6 +12,10 @@ export default class UserService {
         return makeRequest('get', Routes.GENERATE_OTP);
     }
 
+    static kyc(): Promise<any> {
+        return makeRequest('get', Routes.KYC);
+    }
+
     static confirmOTP(otp, data): Promise<any> {
         return makeRequest('put', Routes.CONFIRM_OTP(otp), data);
     }

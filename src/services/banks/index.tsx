@@ -167,4 +167,8 @@ export default class BankService {
     static liquidOperation(id: number, reference): Promise<any> {
         return makeRequest('put', Routes.LIQUID_OPERATION(id), {liquid_reference: reference});
     }
+
+    static getMineSubscriptions(): Promise<any> {
+        return makeRequest('get', Routes.GET_MINE_SUBSCRIPTION);
+    }
 }

@@ -152,6 +152,7 @@ export const PROFILE = {
     SELF: "/profiles",
     USER: {
         SELF: "/profiles/users",
+        CARD: "/profiles/users/card",
         ACCESS: "/profiles/users/access",
         PERSONAL: "/profiles/users/personal",
     }

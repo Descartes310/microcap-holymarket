@@ -1,3 +1,4 @@
+export const KYC = "api/socialnetworks/users/self/all";
 export const GENERATE_OTP = "api/socialnetworks/users/self/otp";
 export const REGISTER = "api/socialnetworks/users/self/register";
 export const GET_USER_ACCESS = "api/socialnetworks/users/self/access";

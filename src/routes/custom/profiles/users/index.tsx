@@ -15,7 +15,8 @@ class Users extends Component<any, any> {
         super(props);
         const defaultState = (function (url) {
             if (url.includes(PROFILE.USER.PERSONAL)) return 0;
-            else if (url.includes(PROFILE.USER.ACCESS)) return 1;
+            else if (url.includes(PROFILE.USER.CARD)) return 1;
+            else if (url.includes(PROFILE.USER.ACCESS)) return 2;
             else return 0;
         })(window.location.pathname);
 
@@ -30,7 +31,8 @@ class Users extends Component<any, any> {
         if (oldActivateTab !== value) {
             switch (value) {
                 case 0: return this.props.history.push(PROFILE.USER.PERSONAL);
-                case 1: return this.props.history.push(PROFILE.USER.ACCESS);
+                case 1: return this.props.history.push(PROFILE.USER.CARD);
+                case 2: return this.props.history.push(PROFILE.USER.ACCESS);
                 default: return this.props.history.push(PROFILE.USER.PERSONAL);
             }
         }
@@ -57,6 +59,10 @@ class Users extends Component<any, any> {
                                         <Tab
                                             icon={<i className="zmdi zmdi-account" />}
                                             label={"Information personnelles"}
+                                        />
+                                        <Tab
+                                            icon={<i className="zmdi zmdi-account" />}
+                                            label={"Ma fiche client"}
                                         />
                                         <Tab
                                             icon={<i className="zmdi zmdi-account" />}

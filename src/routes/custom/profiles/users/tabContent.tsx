@@ -1,4 +1,5 @@
 import React from 'react';
+import Card from './tabs/card';
 import Access from './tabs/access';
 import { connect } from "react-redux";
 import Personal from './tabs/personal';
@@ -11,6 +12,7 @@ const TabContent = ({ match }) => {
             <Switch>
                 <Redirect exact from={`${match.url}/`} to={PROFILE.USER.PERSONAL} />
                 <Route path={PROFILE.USER.ACCESS} component={Access} />
+                <Route path={PROFILE.USER.CARD} component={Card} />
                 <Route path={PROFILE.USER.PERSONAL} component={Personal} />
             </Switch>
         </div>
