@@ -50,3 +50,6 @@ export const GET_AGENT_CHARGE_REQUESTS = 'api/cashmanagements/moneys/charge/requ
 export const GET_ADMIN_CHARGE_REQUESTS = 'api/cashmanagements/moneys/charge/requests/all';
 export const GET_ADMIN_CHARGE_REQUEST_PENDING = 'api/cashmanagements/moneys/charge/requests/pending';
 export const RESPOND_TO_CHARGE_REQUEST = (id) => `api/cashmanagements/moneys/charge/requests/${id}/respond`;
+
+export const CREATE_CHECKBOOK = 'api/cashmanagements/cheques/books';
+export const GET_CLIENT_CHECKBOOKS = 'api/cashmanagements/cheques/books/clients';

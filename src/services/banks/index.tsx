@@ -171,4 +171,12 @@ export default class BankService {
     static getMineSubscriptions(): Promise<any> {
         return makeRequest('get', Routes.GET_MINE_SUBSCRIPTION);
     }
+
+    static getClientCheckBooks(reference: string): Promise<any> {
+        return makeRequest('get', Routes.GET_CLIENT_CHECKBOOKS, {client_reference: "cashm_client_"+reference});
+    }
+
+    static createCheckBook(data: any): Promise<any> {
+        return makeRequest('post', Routes.CREATE_CHECKBOOK, data);
+    }
 }

@@ -1,13 +1,12 @@
+import { Button } from "reactstrap";
 import { connect } from 'react-redux';
 import BankService from 'Services/banks';
-import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
 import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
 import React, { useState, useEffect } from 'react';
-import { getPriceWithCurrency } from 'Helpers/helpers';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
-import { FUNDING, joinUrlWithParamsId } from 'Url/frontendUrl';
+import { BANK, joinUrlWithParamsId } from "Url/frontendUrl";
 
 const List = (props) => {
 
@@ -22,6 +21,10 @@ const List = (props) => {
         BankService.getSubscriptions()
         .then(response => setClients(response))
         .finally(() => props.setRequestGlobalAction(false))
+    }
+
+    const goToCheckBooks = (reference: any) => {
+        props.history.push(joinUrlWithParamsId(BANK.CLIENT.CHECKBOOK.LIST, reference.split('_').pop()));
     }
 
     return (
@@ -51,6 +54,7 @@ const List = (props) => {
                                             <th className="fw-bold">Email</th>
                                             <th className="fw-bold">IBAN</th>
                                             <th className="fw-bold">Compte MicroCap</th>
+                                            <th className="fw-bold">Chequier</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -83,6 +87,17 @@ const List = (props) => {
                                                             <p className="m-0 fw-bold text-dark">{item.client.externalClientReference}</p>
                                                         </div>
                                                     </div>
+                                                </td>
+                                                <td>
+                                                    <Button
+                                                        size="small"
+                                                        color="primary"
+                                                        variant="contained"
+                                                        onClick={() => goToCheckBooks(item.client.reference)}
+                                                        className={"text-white font-weight-bold mr-3"}
+                                                    >
+                                                        Chequier
+                                                    </Button>
                                                 </td>
                                             </tr>
                                         ))}

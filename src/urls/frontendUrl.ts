@@ -471,7 +471,11 @@ export const BANK = {
     },
     CLIENT: {
         SELF: '/bank/clients',
-        LIST: '/bank/clients/list'
+        LIST: '/bank/clients/list',
+        CHECKBOOK: {
+            LIST: '/bank/clients/:id/cheque-books',
+            CREATE: '/bank/clients/:id/cheque-books/create'
+        }
     },
     PARTY: {
         SELF: '/bank/party',

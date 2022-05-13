@@ -483,7 +483,7 @@ export default [
             "menu_title": "Souscription",
             "new_item": false,
             "path": BANK.SUBSCRIPTION.SELF,
-            "permissions": [Permission.bank.counter.subscription],
+            "permissions": [Permission.bank.counter.subscription.name],
             "profiles": ['PROVIDER_COUNTER'],
             "child_routes": null
          },
@@ -491,7 +491,7 @@ export default [
             "menu_title": "Opération",
             "new_item": false,
             "path": BANK.OPERATION.CREATE,
-            "permissions": [Permission.bank.counter.operation],
+            "permissions": [Permission.bank.counter.operation.name],
             "profiles": ['PROVIDER_COUNTER'],
             "child_routes": null
          },
@@ -499,7 +499,7 @@ export default [
             "menu_title": "Opérations",
             "new_item": false,
             "path": BANK.OPERATION.BANK.SELF,
-            "permissions": [Permission.bank.bank.operation],
+            "permissions": [Permission.bank.bank.operation.name],
             "profiles": ['OPERATOR'],
             "child_routes": null
          },
@@ -507,7 +507,7 @@ export default [
             "menu_title": "Opérations",
             "new_item": false,
             "path": BANK.OPERATION.LIST,
-            "permissions": [Permission.bank.agent.operation, Permission.bank.intermediary.operation],
+            "permissions": [Permission.bank.agent.operation.name, Permission.bank.intermediary.operation.name],
             "profiles": ['PROVIDER_AGENT', 'PROVIDER_INTERMEDIARY'],
             "child_routes": null
          },
@@ -515,7 +515,7 @@ export default [
             "menu_title": "Recharges",
             "new_item": false,
             "path": BANK.CHARGE.AGENT.SELF,
-            "permissions": [Permission.bank.agent.charge],
+            "permissions": [Permission.bank.agent.charge.name],
             "profiles": ['PROVIDER_AGENT'],
             "child_routes": null
          },
@@ -523,7 +523,7 @@ export default [
             "menu_title": "Recharges",
             "new_item": false,
             "path": BANK.CHARGE.INTERMEDIARY.REQUEST.SELF,
-            "permissions": [Permission.bank.intermediary.charge],
+            "permissions": [Permission.bank.intermediary.charge.name],
             "profiles": ['PROVIDER_INTERMEDIARY'],
             "child_routes": null
          },
@@ -531,7 +531,7 @@ export default [
             "menu_title": "Monnaie de service",
             "new_item": false,
             "path": BANK.MONEY.SELF,
-            "permissions": [Permission.bank.intermediary.money],
+            "permissions": [Permission.bank.intermediary.money.name],
             "profiles": ['PROVIDER_INTERMEDIARY'],
             "child_routes": null
          },
@@ -539,7 +539,7 @@ export default [
             "menu_title": "Comptes",
             "new_item": false,
             "path": FUNDING.ACCOUNT.LIST,
-            "permissions": [Permission.bank.intermediary.account],
+            "permissions": [Permission.bank.intermediary.account.name],
             "profiles": ['PROVIDER_INTERMEDIARY'],
             "child_routes": null
          },
@@ -547,7 +547,7 @@ export default [
             "menu_title": "Mes clients",
             "new_item": false,
             "path": BANK.CLIENT.LIST,
-            "permissions": [Permission.bank.bank.client],
+            "permissions": [Permission.bank.bank.client.name],
             "profiles": ['OPERATOR'],
             "child_routes": null
          }

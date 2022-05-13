@@ -1,16 +1,15 @@
 /**
  * User Block Component
  */
-import React, { Component } from 'react';
-import { Dropdown, DropdownToggle, DropdownMenu } from 'reactstrap';
-import { Link, NavLink, withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { NotificationManager } from 'react-notifications';
-import { PROFILE } from 'Url/frontendUrl';
 import { logout } from 'Actions';
-import Status from "Enums/Status";
+import { connect } from 'react-redux';
+import React, { Component } from 'react';
+import { PROFILE } from 'Url/frontendUrl';
 import { getFilePath } from "Helpers/helpers";
+import { NavLink, withRouter } from 'react-router-dom';
 import Tooltip from "@material-ui/core/Tooltip/Tooltip";
+import { NotificationManager } from 'react-notifications';
+import { Dropdown, DropdownToggle, DropdownMenu } from 'reactstrap';
 
 class UserBlock extends Component {
 

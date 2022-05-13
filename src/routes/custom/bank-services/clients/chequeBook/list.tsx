@@ -1,44 +1,48 @@
+import { Button } from "reactstrap";
 import { connect } from 'react-redux';
+import BankService from 'Services/banks';
 import { withRouter } from "react-router-dom";
 import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
 import React, { useState, useEffect } from 'react';
-import PartnershipService from 'Services/partnerships';
-import CreatePartnershipModal from '../components/createPartnership';
+import { BANK, joinUrlWithParamsId } from "Url/frontendUrl";
+import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 
 const List = (props) => {
 
-    const [partners, setPartners] = useState([]);
-    const [showPartnerShipModal, setShowPartnerShipModal] = useState(false);
+    const [checkbooks, setCheckBooks] = useState([]);
+    const [user, setUser] = useState(null);
 
     useEffect(() => {
-        getPartnerships();
+        getCheckBooks();
     }, []);
 
-    const getPartnerships = () => {
-        props.setRequestGlobalAction(true);
-        PartnershipService.getPartnerships({ type: 'OPERATOR' })
-        .then((response) => {
-            setPartners(response);
+    const getCheckBooks = () => {
+        props.setRequestGlobalAction(true),
+        BankService.getClientCheckBooks(props.match.params.id)
+        .then(response => {
+            setCheckBooks(response.checkBooks);
+            setUser(response.user);
         })
-        .finally(() => {
-            props.setRequestGlobalAction(false);
-        })
+        .finally(() => props.setRequestGlobalAction(false))
     }
 
     return (
         <>
+            <PageTitleBar
+                title={"Chequiers de "+user?.userName}
+            />
             <CustomList
-                list={partners}
+                list={checkbooks}
                 loading={false}
-                itemsFoundText={n => `${n} opérateurs trouvées`}
-                onAddClick={() => setShowPartnerShipModal(true)}
+                itemsFoundText={n => `${n} chequiers trouvés`}
+                onAddClick={() => props.history.push(joinUrlWithParamsId(BANK.CLIENT.CHECKBOOK.CREATE, props.match.params.id))}
                 renderItem={list => (
                     <>
                         {list && list.length === 0 ? (
                             <div className="d-flex justify-content-center align-items-center py-50">
                                 <h4>
-                                    Aucunes opérateurs trouvées
+                                    Aucun chequiers trouvés
                                 </h4>
                             </div>
                         ) : (
@@ -46,9 +50,8 @@ const List = (props) => {
                                 <table className="table table-hover table-middle mb-0">
                                     <thead>
                                         <tr>
-                                            <th className="fw-bold">Désignation</th>
-                                            <th className="fw-bold">Immatriculation</th>
-                                            <th className="fw-bold">Contrat</th>
+                                            <th className="fw-bold">Numéro de la premiere page</th>
+                                            <th className="fw-bold">Numéro de la derniere page</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -57,21 +60,14 @@ const List = (props) => {
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{item.partnershipDetails.find(pd => pd.type === 'COMMERCIAL_NAME')?.value}</h4>
+                                                            <h4 className="m-0 fw-bold text-dark">{item.startNumber}</h4>
                                                         </div>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <p className="m-0 text-dark">{item.partnershipDetails.find(pd => pd.type === 'IMMATRICULATION_NUMBER')?.value}</p>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div className="media">
-                                                        <div className="media-body pt-10">
-                                                            <p className="m-0 text-dark">{item.contract}</p>
+                                                            <h4 className="m-0 fw-bold text-dark">{item.endNumber}</h4>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -84,16 +80,6 @@ const List = (props) => {
                     </>
                 )}
             />
-            { showPartnerShipModal && (
-                <CreatePartnershipModal
-                    type={'OPERATOR'}
-                    show={showPartnerShipModal}
-                    onClose={() => {
-                        setShowPartnerShipModal(false);
-                    }}
-                    title={"Création d'un partenariat"}
-                />
-            )}
         </>
     );
 }
