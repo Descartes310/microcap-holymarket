@@ -9,16 +9,14 @@ import AppBar from '@material-ui/core/AppBar';
 import { withRouter } from "react-router-dom";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import { setRequestGlobalAction } from "Actions/RequestGlobalAction";
-import { SET_AUTH_USER } from "Actions/types";
 
-class Catalogues extends Component<any, any> {
+class MMS extends Component<any, any> {
     constructor(props: any) {
         super(props);
         const defaultState = (function (url) {
-            if (url.includes(BANK.PARTY.AGENT.SELF)) return 0;
-            else if (url.includes(BANK.PARTY.COUNTER.SELF)) return 1;
-            else if (url.includes(BANK.PARTY.COVERAGE.SELF)) return 2;
-            else if (url.includes(BANK.PARTY.PRESTATION.SELF)) return 3;
+            if (url.includes(BANK.MMS.CHEQUE.SELF)) return 0;
+            else if (url.includes(BANK.MMS.TRANSFER.SELF)) return 1;
+            else if (url.includes(BANK.MMS.SETTINGS.SELF)) return 2;
             else return 0;
         })(window.location.pathname);
 
@@ -32,11 +30,10 @@ class Catalogues extends Component<any, any> {
         this.setState({ activeTab: value });
         if (oldActivateTab !== value) {
             switch (value) {
-                case 0: return this.props.history.push(BANK.PARTY.AGENT.SELF);
-                case 1: return this.props.history.push(BANK.PARTY.COUNTER.SELF);
-                case 2: return this.props.history.push(BANK.PARTY.COVERAGE.SELF);
-                case 3: return this.props.history.push(BANK.PARTY.PRESTATION.SELF);
-                default: return this.props.history.push(BANK.PARTY.AGENT.SELF);
+                case 0: return this.props.history.push(BANK.MMS.CHEQUE.SELF);
+                case 1: return this.props.history.push(BANK.MMS.TRANSFER.SELF);
+                case 2: return this.props.history.push(BANK.MMS.SETTINGS.SELF);
+                default: return this.props.history.push(BANK.MMS.CHEQUE.SELF);
             }
         }
     };
@@ -46,7 +43,7 @@ class Catalogues extends Component<any, any> {
 
         return (
             <div>
-                <PageTitleBar title={"Intermédiaires banquaire"} match={this.props.match} />
+                <PageTitleBar title={"MicroCap Mobile Services"} match={this.props.match} />
                 <RctCard>
                     <div className="rct-tabs">
                         <AppBar position="static">
@@ -61,24 +58,16 @@ class Catalogues extends Component<any, any> {
                                     >
                                         <Tab
                                             icon={<i className="zmdi zmdi-home" />}
-                                            label={"Agents"}
+                                            label={"Chèques"}
                                         />
                                         <Tab
                                             icon={<i className="zmdi zmdi-home" />}
-                                            label={"Guichets"}
+                                            label={"Virements"}
                                         />
-                                        { this.props.authUser.referralTypes.includes('PROVIDER_INTERMEDIARY') && (
-                                            <Tab
-                                                icon={<i className="zmdi zmdi-home" />}
-                                                label={"Couvertures"}
-                                            />
-                                        )}
-                                        { this.props.authUser.referralTypes.includes('PROVIDER_INTERMEDIARY') && (
-                                            <Tab
-                                                icon={<i className="zmdi zmdi-home" />}
-                                                label={"Prestations"}
-                                            />
-                                        )}
+                                        <Tab
+                                            icon={<i className="zmdi zmdi-home" />}
+                                            label={"Parametrage"}
+                                        />
                                     </Tabs>
                                 </div>
                             </div>
@@ -96,4 +85,4 @@ const mapStateToProps = ({ authUser }) => {
     return { authUser: authUser.data, }
 };
 
-export default connect(mapStateToProps, { setRequestGlobalAction })(withRouter(Catalogues));
+export default connect(mapStateToProps, { setRequestGlobalAction })(withRouter(MMS));

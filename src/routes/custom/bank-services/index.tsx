@@ -1,3 +1,4 @@
+import MMS from './MMS';
 import React from 'react';
 import Moneys from './moneys';
 import Clients from './clients';
@@ -17,6 +18,7 @@ const Bank = (props) => {
         <div className="full-height">
             <Switch>
                 <Redirect exact from={`${match.url}/`} to={BANK.ADMIN.SELF} />
+                <Route path={BANK.MMS.SELF} component={MMS} />
                 <Route path={BANK.MONEY.SELF} component={Moneys} />
                 <Route path={BANK.ADMIN.SELF} component={Parties} />
                 <Route path={BANK.CHARGE.SELF} component={Charges} />

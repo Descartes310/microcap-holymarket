@@ -7,13 +7,13 @@ import { withRouter } from "react-router-dom";
 import { setRequestGlobalAction } from 'Actions';
 import React, { useState, useEffect } from 'react';
 import TextField from '@material-ui/core/TextField';
+import { getReferralTypeLabel } from 'Helpers/helpers';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { NotificationManager } from 'react-notifications';
 import UserAccountTypeService from 'Services/account-types';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { Form, FormGroup, Input as InputStrap } from 'reactstrap';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
-import { getReferralTypeLabel } from 'Helpers/helpers';
 
 const Create = (props) => {
 
@@ -30,14 +30,11 @@ const Create = (props) => {
 
     const [type, setType] = useState(null);
     const [types, setTypes] = useState([]);
-    const [agents, setAgents] = useState([]);
     const [member, setMember] = useState(null);
     const [category, setCategory] = useState(null);
     const [categories, setCategories] = useState([]);  
     const [membership, setMembership] = useState(null);
-    const [paymentMethod, setPaymentMethod] = useState(null);
-    const [selectedAgent, setSelectedAgent] = useState(null);  
-    const [selectedAccount, setSelectedAccount] = useState(null);  
+    const [paymentMethod, setPaymentMethod] = useState(null); 
 
     useEffect(() => {
         getTypes();
@@ -48,7 +45,8 @@ const Create = (props) => {
         props.setRequestGlobalAction(true);
         UserService.findUserByReference(membership)
         .then(response => {
-            if(response.referralType === 'PERSON')
+            if(response.referralType === 'PERSON' || 
+                (props.authUser.referralTypes.includes('PROVIDER_INTERMEDIARY') && props.authUser.referralId === response.referralCode))
                 setMember(response);
             else 
                 NotificationManager.error("Uniquement les personnes physiques sont autorisées");
@@ -221,4 +219,8 @@ const Create = (props) => {
     );
 };
 
-export default connect(() => { }, { setRequestGlobalAction })(withRouter(Create));
+const mapStateToProps = ({ authUser }) => {
+    return { authUser: authUser.data, }
+};
+
+export default connect(mapStateToProps, { setRequestGlobalAction })(withRouter(Create));

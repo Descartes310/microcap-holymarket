@@ -499,6 +499,24 @@ export const BANK = {
             LIST: '/bank/party/coverages/list',
             CREATE: '/bank/party/coverages/create',
         }
+    },
+    MMS: {
+        SELF: '/bank/mms',
+        CHEQUE: {
+            SELF: '/bank/mms/cheques',
+            LIST: '/bank/mms/cheques/list',
+            CREATE: '/bank/mms/cheques/create',
+        },
+        TRANSFER: {
+            SELF: '/bank/mms/transfers',
+            LIST: '/bank/mms/transfers/list',
+            CREATE: '/bank/mms/transfers/create',
+        },
+        SETTINGS: {
+            SELF: '/bank/mms/settings',
+            LIST: '/bank/mms/settings/list',
+            CREATE: '/bank/mms/settings/create',
+        }
     }
 } as const;
 

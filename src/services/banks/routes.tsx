@@ -53,3 +53,6 @@ export const RESPOND_TO_CHARGE_REQUEST = (id) => `api/cashmanagements/moneys/cha
 
 export const CREATE_CHECKBOOK = 'api/cashmanagements/cheques/books';
 export const GET_CLIENT_CHECKBOOKS = 'api/cashmanagements/cheques/books/clients';
+
+
+export const SET_MMS_SETTINGS = 'api/cashmanagements/mms/settings';

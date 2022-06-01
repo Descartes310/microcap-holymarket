@@ -179,4 +179,8 @@ export default class BankService {
     static createCheckBook(data: any): Promise<any> {
         return makeRequest('post', Routes.CREATE_CHECKBOOK, data);
     }
+
+    static setMMSSettings(data: any): Promise<any> {
+        return makeRequest('post', Routes.SET_MMS_SETTINGS, data);
+    }
 }

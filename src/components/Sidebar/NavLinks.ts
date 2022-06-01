@@ -472,6 +472,14 @@ export default [
             "child_routes": null
          },
          {
+            "menu_title": "MMS",
+            "new_item": false,
+            "path": BANK.MMS.SELF,
+            "permissions": null,
+            "profiles": ['PROVIDER_INTERMEDIARY'],
+            "child_routes": null
+         },
+         {
             "menu_title": "Administration banquaire",
             "new_item": false,
             "path": BANK.ADMIN.SELF,
