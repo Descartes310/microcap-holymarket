@@ -41,24 +41,17 @@ const List = (props) => {
                                 <table className="table table-hover table-middle mb-0">
                                     <thead>
                                         <tr>
-                                            <th className="fw-bold">Ref</th>
                                             <th className="fw-bold">Ref. liquidation</th>
                                             <th className="fw-bold">Client</th>
-                                            <th className="fw-bold">Guichet</th>
+                                            <th className="fw-bold">Compte</th>
                                             <th className="fw-bold">Montant</th>
+                                            <th className="fw-bold">Raison</th>
                                             <th className="fw-bold">Date</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {list && list.map((item, key) => (
                                             <tr key={key} className="cursor-pointer">
-                                                <td>
-                                                    <div className="media">
-                                                        <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{item.reference.split('_')[2].toUpperCase()}</h4>
-                                                        </div>
-                                                    </div>
-                                                </td>
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
@@ -76,14 +69,21 @@ const List = (props) => {
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{item.counterName}</h4>
+                                                            <h4 className="m-0 fw-bold text-dark">{item.clientAccountCode}</h4>
                                                         </div>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{item.amount + ' euro.s'}</h4>
+                                                            <h4 className="m-0 fw-bold text-dark">{item.amount + ' EUR'}</h4>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="media">
+                                                        <div className="media-body pt-10">
+                                                            <p>{item.reason}</p>
                                                         </div>
                                                     </div>
                                                 </td>

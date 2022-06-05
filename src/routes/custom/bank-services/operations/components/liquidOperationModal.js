@@ -109,14 +109,14 @@ class LiquidOperationModal extends Component {
                                 <td>
                                     <div className="media">
                                         <div className="media-body pt-10">
-                                            <h4 className="m-0 fw-bold text-dark">Agence</h4>
+                                            <h4 className="m-0 fw-bold text-dark">Numéro de compte</h4>
                                         </div>
                                     </div>
                                 </td>
                                 <td>
                                     <div className="media">
                                         <div className="media-body pt-10">
-                                            <h4 className="m-0 fw-bold text-dark">{operation.counterName}</h4>
+                                            <h4 className="m-0 fw-bold text-dark">{operation.clientAccountCode}</h4>
                                         </div>
                                     </div>
                                 </td>
