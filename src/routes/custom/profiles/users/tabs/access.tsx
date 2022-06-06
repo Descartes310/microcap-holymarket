@@ -56,7 +56,8 @@ const Access = (props) => {
                                     <thead>
                                         <tr>
                                             <th className="fw-bold">Nom de l'accès</th>
-                                            <th className="fw-bold">Type d'accès</th>
+                                            <th className="fw-bold">Type</th>
+                                            <th className="fw-bold">Catégorie</th>
                                             <th className="fw-bold">Réference</th>
                                             <th className="fw-bold">Login</th>
                                             <th className="fw-bold">Status</th>
@@ -77,7 +78,16 @@ const Access = (props) => {
                                                     <div className="media">
                                                         <div className="media-body pt-10">
                                                             <h4 className="m-0 fw-bold text-dark">
-                                                                {getReferralTypeLabel(item.referralType)}
+                                                                {item.type}
+                                                            </h4>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="media">
+                                                        <div className="media-body pt-10">
+                                                            <h4 className="m-0 fw-bold text-dark">
+                                                                {item.category}
                                                             </h4>
                                                         </div>
                                                     </div>
