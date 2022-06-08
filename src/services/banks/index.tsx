@@ -183,4 +183,12 @@ export default class BankService {
     static setMMSSettings(data: any): Promise<any> {
         return makeRequest('post', Routes.SET_MMS_SETTINGS, data);
     }
+
+    static createChequeTopic(data: any): Promise<any> {
+        return makeRequest('post', Routes.CHEQUE_TOPIC, data);
+    }
+
+    static getChequeTopics(data: any): Promise<any> {
+        return makeRequest('get', Routes.CHEQUE_TOPIC, data);
+    }
 }

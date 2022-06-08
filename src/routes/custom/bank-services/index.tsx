@@ -3,8 +3,9 @@ import React from 'react';
 import Moneys from './moneys';
 import Clients from './clients';
 import Charges from './charges';
-import Parties from './participants';
+import Topic from './chequeTopics';
 import {connect} from "react-redux";
+import Parties from './participants';
 import {injectIntl} from "react-intl";
 import Operations from './operations';
 import { BANK } from 'Url/frontendUrl';
@@ -23,6 +24,7 @@ const Bank = (props) => {
                 <Route path={BANK.ADMIN.SELF} component={Parties} />
                 <Route path={BANK.CHARGE.SELF} component={Charges} />
                 <Route path={BANK.CLIENT.SELF} component={Clients} />
+                <Route path={BANK.CHEQUE_TOPIC.SELF} component={Topic} />
                 <Route path={BANK.PARTY.SELF} component={Intermediary} />
                 <Route path={BANK.OPERATION.SELF} component={Operations} />
                 <Route path={BANK.SUBSCRIPTION.SELF} component={Subscription} />

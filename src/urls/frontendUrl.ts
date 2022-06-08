@@ -505,6 +505,11 @@ export const BANK = {
             CREATE: '/bank/party/coverages/create',
         }
     },
+    CHEQUE_TOPIC: {
+        SELF: '/bank/cheques/topics',
+        LIST: '/bank/cheques/topics/list',
+        CREATE: '/bank/cheques/topics/create',
+    },
     MMS: {
         SELF: '/bank/mms',
         CHEQUE: {

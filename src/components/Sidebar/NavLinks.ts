@@ -512,6 +512,14 @@ export default [
             "child_routes": null
          },
          {
+            "menu_title": "Objet chèque",
+            "new_item": false,
+            "path": BANK.CHEQUE_TOPIC.LIST,
+            "permissions": [Permission.bank.bank.operation.name],
+            "profiles": ['OPERATOR'],
+            "child_routes": null
+         },
+         {
             "menu_title": "Opérations",
             "new_item": false,
             "path": BANK.OPERATION.LIST,
