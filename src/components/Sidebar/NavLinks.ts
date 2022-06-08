@@ -604,6 +604,14 @@ export default [
             "child_routes": null
          },
          {
+            "menu_title": "Thème Blog",
+            "new_item": false,
+            "path": SETTING.ARTICLE.TOPIC.LIST,
+            "permissions": [Permission.setting.blog.name],
+            "profiles": ['GROUP'],
+            "child_routes": null
+         },
+         {
             "menu_title": "Evènements",
             "new_item": false,
             "path": SETTING.EVENT.LIST,

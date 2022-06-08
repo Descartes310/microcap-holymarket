@@ -37,6 +37,14 @@ export default class SettingService {
         return makeRequest('get', Routes.GET_EVENTS);
     }
 
+    static getBlogTopics(): Promise<any> {
+        return makeRequest('get', Routes.GET_BLOG_TOPICS);
+    }
+
+    static createBlogTopic(data): Promise<any> {
+        return makeRequest('post', Routes.CREATE_BLOG_TOPIC, data);
+    }
+
     static createEvent(data): Promise<any> {
         return makeRequest('post', Routes.CREATE_EVENT, data);
     }

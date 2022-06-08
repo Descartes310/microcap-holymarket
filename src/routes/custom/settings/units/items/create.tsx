@@ -55,7 +55,7 @@ const Create = (props) => {
         })
         .catch((err) => {
             console.log(err);
-            NotificationManager.success('Une erreur est survenues lors de la création de unité');
+            NotificationManager.error('Une erreur est survenues lors de la création de unité');
         })
         .finally(() => {
             props.setRequestGlobalAction(false);

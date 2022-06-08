@@ -1,18 +1,19 @@
 import ReactQuill from 'react-quill';
 import { connect } from 'react-redux';
-import React, { useState } from 'react';
 import { SETTING } from 'Url/frontendUrl';
 import { withRouter } from "react-router-dom";
 import Button from '@material-ui/core/Button';
 import SettingService from 'Services/settings';
 import {setRequestGlobalAction} from 'Actions';
+import React, { useState, useEffect } from 'react';
+import TextField from '@material-ui/core/TextField';
 import { FileUploader } from "react-drag-drop-files";
 import {NotificationManager} from 'react-notifications';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import {Form, FormGroup, Input as InputStrap} from 'reactstrap';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
-
 
 const fileTypes = ["JPG", "PNG", "GIF", "JPEG"];
 
@@ -43,8 +44,14 @@ const Create = (props) => {
     const [file, setFile] = useState(null);
     const [title, setTitle] = useState('');
     const [author, setAuthor] = useState('');
+    const [topics, setTopics] = useState([]);
+    const [topic, setTopic] = useState(null);
     const [content, setContent] = useState('');
     const [description, setDescription] = useState('');
+
+    useEffect(() => {
+        getTopics();
+    }, []);
 
     const onSubmit = () => {
 
@@ -58,6 +65,8 @@ const Create = (props) => {
             title, description, author, content, cover: file
         }
 
+        if(topic) data.topic_id = topic.id;
+
         SettingService.createArticle(data, { fileData: ['cover'], multipart: true }).then(() => {
             NotificationManager.success("L'article a été créé avec succès");
             props.history.push(SETTING.ARTICLE.LIST);
@@ -69,6 +78,16 @@ const Create = (props) => {
         })
     }
 
+    const getTopics = () => {
+        props.setRequestGlobalAction(true);
+        SettingService.getBlogTopics().then((response) => {
+            setTopics(response);
+        }).catch((err) => {
+            setTopics([]);
+        }).finally(() => {
+            props.setRequestGlobalAction(false);
+        })
+    }
 
     return (
         <>
@@ -119,6 +138,21 @@ const Create = (props) => {
                             onChange={(e) => setAuthor(e.target.value)}
                         />
                     </FormGroup>
+                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                        <InputLabel className="text-left">
+                            Thème
+                        </InputLabel>
+                        <Autocomplete
+                            value={topic}
+                            options={topics}
+                            id="combo-box-demo"
+                            onChange={(__, item) => {
+                                setTopic(item);
+                            }}
+                            getOptionLabel={(option) => option.title}
+                            renderInput={(params) => <TextField {...params} variant="outlined" />}
+                        />
+                    </div>
                     <FormGroup className="has-wrapper">
                         <InputLabel className="text-left" htmlFor="label">
                             Photo de couverture

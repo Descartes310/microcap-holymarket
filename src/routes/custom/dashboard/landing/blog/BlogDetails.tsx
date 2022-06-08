@@ -46,7 +46,10 @@ const BlogDetails = (props) => {
                 <div className="row">
                     <div className="col-xs-12 col-sm-12 col-md-12 mb-30">
                         <Card>
-                            <CardImg top width="100%" className="img-fluid ripple-effect" style={{ maxHeight: 250 }} src={article ? getFilePath(article.cover) : DEFAULT_BANNER} alt={`Bannière du groupe`} />
+                            <div>
+                                <img src={article ? getFilePath(article.cover) : DEFAULT_BANNER} style={{ maxHeight: 250, maxWidth: '100%' }}/>
+                            </div>
+                            {/* <CardImg top width="100%" className="img-fluid ripple-effect" style={{ maxHeight: 250 }} src={article ? getFilePath(article.cover) : DEFAULT_BANNER} alt={`Bannière du groupe`} /> */}
                             <CardBody>
                                 <CardTitle>
                                     <h1 className='fw-bold mt-10' style={{ fontSize: '2.5rem' }}> { article ? article.title : 'Article Title' } </h1>

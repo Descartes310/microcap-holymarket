@@ -323,6 +323,11 @@ export const SETTING = {
         SELF: "/settings/articles",
         LIST: "/settings/articles/list",
         CREATE: "/settings/articles/create",
+        TOPIC: {
+            SELF: "/settings/articles/topics",
+            LIST: "/settings/articles/topics/list",
+            CREATE: "/settings/articles/topics/create",
+        }
     }
 }
 
