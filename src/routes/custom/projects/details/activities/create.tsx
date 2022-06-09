@@ -1,5 +1,4 @@
 import { connect } from 'react-redux';
-import { joinUrlWithParamsId, PROJECT } from 'Url/frontendUrl';
 import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
 import ProjectService from 'Services/projects';
@@ -10,6 +9,7 @@ import TextField from '@material-ui/core/TextField';
 import { FileUploader } from "react-drag-drop-files";
 import {NotificationManager} from 'react-notifications';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import { joinUrlWithParamsId, PROJECT } from 'Url/frontendUrl';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { Form, FormGroup, Input as InputStrap } from 'reactstrap';

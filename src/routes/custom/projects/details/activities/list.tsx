@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 import { withRouter } from "react-router-dom";
 import CustomList from "Components/CustomList";
 import ProjectService from 'Services/projects';
+import Switch from "@material-ui/core/Switch";
 import {setRequestGlobalAction} from 'Actions';
 import React, { useEffect, useState } from 'react';
 import { joinUrlWithParamsId, PROJECT } from 'Url/frontendUrl';
@@ -21,6 +22,13 @@ const List = (props) => {
             setActivities(response);
         })
         .finally(() => props.setRequestGlobalAction(false))
+    }
+
+    const activeActivity = (id: number) => {
+        props.setRequestGlobalAction(true);
+        ProjectService.activeProjectActivity(id).then(() => {
+            getActivities();
+        }).finally(() => props.setRequestGlobalAction(false))
     }
 
     return (
@@ -48,6 +56,7 @@ const List = (props) => {
                                         <tr>
                                             <th className="fw-bold">Désignation</th>
                                             <th className="fw-bold">Description</th>
+                                            <th className="fw-bold">Status</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -66,6 +75,13 @@ const List = (props) => {
                                                             <p className="m-0 text-dark">{item.value}</p>
                                                         </div>
                                                     </div>
+                                                </td>
+                                                <td>
+                                                    <Switch
+                                                        aria-label="Actif"
+                                                        checked={item.active}
+                                                        onChange={() => { activeActivity(item.id) }}
+                                                    />
                                                 </td>
                                             </tr>
                                         ))}

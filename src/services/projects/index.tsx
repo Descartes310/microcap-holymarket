@@ -80,7 +80,15 @@ export default class ProjectService {
         return makeRequest('get', Routes.GET_TABLE_DATAS, datas);
     }
 
+    static getProjectGallery(): Promise<any> {
+        return makeRequest('get', Routes.GET_PROJECT_GALLERY);
+    }
+
     static createTableDatas(datas): Promise<any> {
         return makeRequest('post', Routes.CREATE_TABLE_DATAS, datas);
+    }
+
+    static activeProjectActivity(id): Promise<any> {
+        return makeRequest('post', Routes.ACTIVE_PROJECT_ACTIVITIES(id), {});
     }
 }

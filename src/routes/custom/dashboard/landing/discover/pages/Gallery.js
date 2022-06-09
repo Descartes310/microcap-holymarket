@@ -1,5 +1,6 @@
 import Slider from "react-slick";
 import { getFilePath } from "Helpers/helpers";
+import ProjectService from 'Services/projects';
 import EmptyResult from "Components/EmptyResult";
 import React, { useState, useEffect } from 'react';
 import HourGlassLoader from "Components/Loaders/HourGlass";
@@ -17,13 +18,30 @@ const settings = {
     nextArrow: <button type='button' className='slick-next discover-arrow pull-right'><i className='font-2x icon-hover text-primary ti-angle-right' aria-hidden='true'/></button>,
 };
 
-const imageExts = ['jpg', 'jpeg', 'png'];
-
 const DiscoverGallery = (props) => {
     const [data, setData] = useState(undefined);
+    const [loader, setLoader] = useState(true);
 
     useEffect(() => {
+        getActivities();
     }, []);
+
+    const getActivities = () => {
+        setLoader(true);
+        ProjectService.getProjectGallery().then(response => {
+            let result = response.reduce(function (r, a) {
+                r[a.projectName] = r[a.projectName] || [];
+                r[a.projectName].push(a);
+                return r;
+            }, Object.create(null));
+            setData(result);
+        })
+        .finally(() => {
+            setLoader(false);
+        });
+    }
+
+    console.log(data);
 
     return (
         <DiscoverLayout title="Gallerie projets">
@@ -32,40 +50,38 @@ const DiscoverGallery = (props) => {
                     title="Gallerie projets"
                     subTitle="Decouvrez un aperçu de l'activité des projets déjà présent sur la plateforme Microcap"
                 />
-                {data === undefined ? (
+                {loader ? (
                     <HourGlassLoader color="#FFB70F" />
-                ) : data === null ? (
+                ) : !data ? (
                    <EmptyResult
                        wrapperClassName="mb-70"
                        message="Aucun projects trouvés pour le moment"
                    />
                 ) : Object.keys(data).map((projectName, index) => {
-                    const projectNameSplitted = projectName.split(' ');
                     return (
                         <div key={index} className="container gallery-item">
                             <div className="row">
                                 <h2 className="gallery-title px-sm-3">
-                                    <span className="text-primary">{projectNameSplitted[0]}</span>
-                                    {' ' + projectNameSplitted.slice(1, projectNameSplitted.length).join(' ')}
+                                    <span className="text-primary">{projectName}</span>
                                 </h2>
                             </div>
-                            <div className="gallery-item-wrapper mb-70">
+                            <div className="gallery-item-wrapper mb-70 mt-30">
                                 <Slider {...settings}>
                                     {data[projectName].map((item, key) => (
-                                    <div key={key}>
-                                        <div className="gallery-item-block">
-                                            <div className="row px-0" onClick={() => window.open(getFilePath(item.file), 'blank')}>
-                                                <div className="img-holder col-md-6 col-sm-12 px-0 bg-repeat-no bg-size-cover" style={{ backgroundImage: `url(${imageExts.includes(item.file.split('.')[item.file.split('.').length -1].toLowerCase()) ? getFilePath(item.file) : 'https://cdn.pixabay.com/photo/2014/05/02/21/50/laptop-336378_960_720.jpg'})` }}>
-                                                </div>
-                                                <div className="col-md-6 col-sm-12 px-0">
-                                                    <div className="gallery-item-content">
-                                                        <h2>{item.title}</h2>
-                                                        <p dangerouslySetInnerHTML={{__html: item.content}} />
+                                        <div key={key}>
+                                            <div className="gallery-item-block">
+                                                <div className="row px-0" onClick={() => window.open(getFilePath(item.file), 'blank')}>
+                                                    <div className="img-holder col-md-6 col-sm-12 px-0 bg-repeat-no bg-size-cover" style={{ backgroundImage: `url(${(item.cover || item.file) ? getFilePath(item.cover ? item.cover : item.file) : 'https://cdn.pixabay.com/photo/2014/05/02/21/50/laptop-336378_960_720.jpg'})`}}>
+                                                    </div>
+                                                    <div className="col-md-6 col-sm-12 px-0">
+                                                        <div className="gallery-item-content">
+                                                            <h2>{item.label}</h2>
+                                                            <p>{item.value}</p>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
                                     ))}
                                 </Slider>
                             </div>

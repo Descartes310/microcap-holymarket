@@ -6,8 +6,10 @@ export const UPDATE_PROJECT = (id) => `api/projects/${id}`;
 export const GET_PROJECT_POSTS = 'api/projects/posts';
 export const CREATE_PROJECT_POST = 'api/projects/posts';
 
+export const GET_PROJECT_GALLERY = 'api/projects/gallery';
 export const GET_PROJECT_ACTIVITIES = (id) => `api/projects/${id}/activities`;
 export const CREATE_PROJECT_ACTIVITY = (id) => `api/projects/${id}/activities`;
+export const ACTIVE_PROJECT_ACTIVITIES = (id) => `api/projects/activities/${id}/active`;
 
 export const GET_PROJECT_ITEMS = 'api/projects/items';
 export const CREATE_PROJECT_ITEM = 'api/projects/items';
