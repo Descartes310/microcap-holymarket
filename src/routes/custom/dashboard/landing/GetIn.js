@@ -88,7 +88,7 @@ export default class MoneyManagement extends Component {
               financement d’un partenaire MicroCap</p>
 
             <ul style={{ paddingTop: 40, paddingBottom: 10 }}>
-              <li>Credit banquaire</li>
+              <li>Credit bancaire</li>
               <li>Paiement à crédit des achats sur la marketplace (terme plus populaire) microcapshop.com</li>
               <li>Paiement différé des opérations auprès des prestataires: transfert d'argent, loyer, caution pour accéder au bail. </li>
             </ul>

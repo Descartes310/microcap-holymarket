@@ -763,13 +763,13 @@ export const translatePermissionFolder = (path) => {
         case 'BROKER':
             return 'Broker';
         case 'BANK_SERVICE':
-            return 'Service banquaire';
+            return 'Service bancaire';
         case 'CASHMANAGEMENT':
             return 'Cash management';
         case 'AGENT':
             return 'Agent';
         case 'INTERMEDIARY':
-            return 'Intermédiaire banquaire';
+            return 'Intermédiaire bancaire';
         case 'BANK':
             return 'Banque';
         case 'COUNTER':

@@ -46,7 +46,7 @@ class Catalogues extends Component<any, any> {
 
         return (
             <div>
-                <PageTitleBar title={"Intermédiaires banquaire"} match={this.props.match} />
+                <PageTitleBar title={"Intermédiaires bancaire"} match={this.props.match} />
                 <RctCard>
                     <div className="rct-tabs">
                         <AppBar position="static">

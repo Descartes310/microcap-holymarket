@@ -457,14 +457,14 @@ export default [
       "permissions": [Permission.marketplace.order.name],
    },
    {
-      "menu_title": "Services banquaires",
+      "menu_title": "Services bancaires",
       "menu_icon": "zmdi zmdi-balance",
       "new_item": false,
       "permissions": null,
       "profiles": ['GROUP'],
       "child_routes": [
          {
-            "menu_title": "Intermediaire banquaire",
+            "menu_title": "Intermediaire bancaire",
             "new_item": false,
             "path": BANK.PARTY.SELF,
             "permissions": null,
@@ -480,7 +480,7 @@ export default [
             "child_routes": null
          },
          {
-            "menu_title": "Administration banquaire",
+            "menu_title": "Administration bancaire",
             "new_item": false,
             "path": BANK.ADMIN.SELF,
             "permissions": null,
