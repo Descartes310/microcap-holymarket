@@ -6,7 +6,6 @@ import { withRouter } from "react-router-dom";
 import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
 import React, { useState, useEffect } from 'react';
-import { getReferralTypeLabel } from 'Helpers/helpers';
 import ChangeAccessCredentials from 'Components/ChangeAccessCredentials';
 
 const Access = (props) => {

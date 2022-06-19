@@ -36,8 +36,12 @@ export default class UserService {
         return makeRequest('post', Routes.CHANGE_ACCESS(id), null);
     }
 
-    static changeAccessCredentials(id: number, data: any): Promise<any> {
-        return makeRequest('put', Routes.CHANGE_ACCESS_CREDENTIALS(id), data);
+    static changeAccessLogin(id: number, data: any): Promise<any> {
+        return makeRequest('put', Routes.CHANGE_ACCESS_LOGIN(id), data);
+    }
+
+    static changeAccessPassword(id: number, data: any): Promise<any> {
+        return makeRequest('put', Routes.CHANGE_ACCESS_PASSWORD(id), data);
     }
 
     static sendPasswordLink(datas: any): Promise<any> {
