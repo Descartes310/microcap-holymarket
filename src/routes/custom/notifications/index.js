@@ -44,7 +44,7 @@ class Notifications extends Component {
         const { match, currentForm } = this.props;
 
         return (
-            <div className="userProfile-wrapper overflow-hidden">
+            <div>
                 <PageTitleBar title={"Notifications"} match={this.props.match} enableBreadCrumb={false} />
                 <RctCard>
                     <div className="rct-tabs">
@@ -59,15 +59,15 @@ class Notifications extends Component {
                                         centered
                                     >
                                         <Tab
-                                            icon={<i className="zmdi zmdi-group-work" />}
+                                            icon={<i className="zmdi zmdi-email" />}
                                             label={"Non lues"}
                                         />
                                         <Tab
-                                            icon={<i className="ti-world"></i>}
+                                            icon={<i className="zmdi zmdi-email-open"></i>}
                                             label={"Lues"}
                                         />
                                         <Tab
-                                            icon={<i className="icon-shield"></i>}
+                                            icon={<i className="zmdi zmdi-flag"></i>}
                                             label={"Traitées"}
                                         />
                                     </Tabs>

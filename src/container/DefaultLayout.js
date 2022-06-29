@@ -11,7 +11,6 @@ import RctAppLayout from 'Components/RctAppLayout';
 // router service
 import routerService from "../services/_routerService";
 
-
 class DefaultLayout extends Component {
 	render() {
 		const { match } = this.props;

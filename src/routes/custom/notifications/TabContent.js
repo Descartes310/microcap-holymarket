@@ -8,7 +8,7 @@ import Treated from './tabs/treated';
 
 const TabContent = ({ match }) => {
     return (
-        <div className="vh-100">
+        <div>
             <Switch>
                 <Redirect exact from={`${match.url}/`} to={NOTIFICATIONS.LIST} />
                 <Route path={NOTIFICATIONS.LIST} component={Unread} />

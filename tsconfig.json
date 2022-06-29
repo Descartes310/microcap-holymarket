@@ -1,0 +1,56 @@
+{
+    "compilerOptions": {
+        "jsx": "react",
+        "allowSyntheticDefaultImports": true,
+        "esModuleInterop": true,
+		"noImplicitAny": false,
+		"strictNullChecks": false,
+        "baseUrl": "./",
+		"target": "es5",
+        "paths": {
+            "Actions": ["src/actions"],
+            "Actions/*": ["src/actions/*"],
+
+			"Components": ["src/components"],
+			"Components/*": ["src/components/*"],
+
+			"Assets": ["public/assets"],
+			"Assets/*": ["public/assets/*"],
+			
+			"Util": ["src/util"],
+			"Util/*": ["src/util/*"],
+			
+			"Routes": ["src/routes"],
+			"Routes/*": ["src/routes/*"],
+			
+			"Constants": ["src/constants"],
+			"Constants/*": ["src/constants/*"],
+			
+			"Helpers": ["src/helpers"],
+			"Helpers/*": ["src/helpers/*"],
+			
+			"Api": ["src/api"],
+			"Api/*": ["src/api/*"],
+			
+			"Data": ["src/data"],
+			"Data/*": ["src/data/*"],
+			
+			"Services": ["src/services"],
+			"Services/*": ["src/services/*"],
+			
+			"Url": ["src/urls"],
+			"Url/*": ["src/urls/*"],
+			
+			"Models": ["src/models"],
+			"Models/*": ["src/models/*"],
+			
+			"Permissions": ["src/permissions"],
+			"Permissions/*": ["src/permissions/*"],
+			
+			"Enums": ["src/enums"],
+			"Enums/*": ["src/enums/*"],
+        }
+    },
+
+    "exclude": ["node_modules", "build"]
+}

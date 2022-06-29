@@ -13,7 +13,7 @@ export default class ProductType {
         this.available = productType.available;
         this.defaultPFM = productType.defaultPFM;
         this.defaultMEMBER = productType.defaultMEMBER;
-        this.branch = new Branch(productType.branch);
+        // this.branch = new Branch(productType.branch);
         this.catalogs = new Catalog(productType.catalogs);
     }
 }

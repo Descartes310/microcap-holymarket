@@ -25,7 +25,7 @@ export default (state = INIT_STATE, action) => {
             return { ...state, loading: true };
 
         case SET_AUTH_USER_SUCCESS:
-            return { ...state, loading: false, data: new User(action.payload) };
+            return { ...state, loading: false, data: action.payload };
 
         case SET_AUTH_USER_FAILURE:
             return { ...state, loading: false, error: action.payload };

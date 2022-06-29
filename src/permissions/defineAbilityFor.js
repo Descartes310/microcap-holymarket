@@ -1,5 +1,5 @@
+import Permission from "Enums/Permissions.tsx";
 import { AbilityBuilder } from "@casl/ability";
-import Permission from "Enums/Permissions";
 
 export default function defineRulesFor(auth) {
     const { can, cannot, rules } = new AbilityBuilder();

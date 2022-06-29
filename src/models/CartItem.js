@@ -1,14 +1,15 @@
 export default class CartItem {
     constructor(item) {
         this.id = item.id;
-        this.name = item.name;
-        this.nature = item.nature;
-        this.price = Number(item.price);
-        this.image = item.image;
-        this.currency = item.currency;
         this.type = item.type;
-        this.distributor = item.distributor;
-        this.quantity = Number(item.quantity);
+        this.label = item.label;
+        this.image = item.image;
+        this.nature = item.nature;
+        this.seller = item.seller;
+        this.price = Number(item.price);
+        this.description = item.description;
+        this.currency = item.currency ? item.currency : 'EUR';
+        this.quantity = item.quantity ? Number(item.quantity) : 1;
     }
 
     get totalPrice() {

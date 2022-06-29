@@ -1,113 +1,31 @@
 /**
  * App Reducers
  */
-import { combineReducers } from 'redux';
 import settings from './settings';
-import AppLoadingReducer from './AppLoadingReducer';
-import emailAppReducer from './EmailAppReducer';
-import sidebarReducer from './SidebarReducer';
-import todoAppReducer from './TodoAppReducer';
+import CartReducer from './CartReducer';
+import { combineReducers } from 'redux';
+import groupReducer from './GroupReducer';
+import UsersReducer from './UsersReducer';
 import tokensReducer from './TokensReducer';
+import sidebarReducer from './SidebarReducer';
 import authUserReducer from './AuthUserReducer';
-import feedbacksReducer from './FeedbacksReducer';
-import ecommerceReducer from './EcommerceReducer';
+import AppLoadingReducer from './AppLoadingReducer';
+import NotificationsReducer from './NotificationsReducer';
 import RequestGlobalReducer from './RequestGlobalReducer';
 import PermissionAlertBoxReducer from './PermissionAlertBoxReducer';
-import NetworkProfileReducer from './NetworkProfileReducer';
-import CatalogReducer from './CatalogReducer';
-import CatalogTypeReducer from './CatalogTypeReducer';
-import BranchProductsReducer from './BranchProductsReducer';
-import CatalogProductsReducer from './CatalogProductsReducer';
-import CategoryProductsReducer from './CategoryProductsReducer';
-import ProductTypeReducer from './ProductTypeReducer';
-import UserProfileReducer from './UserProfileReducer';
-import UserPermissionsReducer from './UserPermissionsReducer';
-import NetworkProfileTypeReducer from './NetworkProfileTypeReducer';
-import UsersReducer from './UsersReducer';
-import UserCommunitiesReducer from './UserCommunitiesReducer';
-import UserCommunitiesAdminReducer from './UserCommunitiesAdminReducer';
-import UserCommunitiesNotInReducer from './UserCommunitiesNotInReducer';
-import ComInvitationsPendingReducer from './ComInvitationsPendingReducer';
-import CurrentCommunityReducer from './CurrentCommunityReducer';
-import PackagesReducer from './PackagesReducer';
-import SystemObjectReducer from './SystemObjectReducer';
-import ComOperationTypeReducer from './ComOperationTypeReducer';
-import ComOperationReducer from './ComOperationReducer';
-import ComOfferReducer from './ComOfferReducer';
-import ProductReducer from './ProductReducer';
-import CartReducer from './CartReducer';
-import MandateTypeReducer from './MandateTypeReducer';
-import MandateModelReducer from './MandateModelReducer';
-import MandateReducer from './MandateReducer';
-import BranchUsersReducer from './BranchUsersReducer';
-import ModelNotificationsReducer from './ModelNotificationsReducer';
-import NotificationsReducer from './NotificationsReducer';
-import ServicesNotificationsReducer from './ServicesNotificationsReducer';
-import UsersAccountsReducer from './UsersAccountsReducer';
-import SampleBranchesReducer from './SampleBranchesReducer';
-import ProjectWorksReducer from './ProjectWorksReducer';
-import ProjectStandardReducer from './ProjectStandardReducer';
-import InitialisationIdeasReducer from './InitialisationIdeasReducer';
-import InitialisationProgramReducer from './InitialisationProgramReducer';
-import InitialisationProjectsCallReducer from './InitialisationProjectsCallReducer';
-import ProjectStandardPresentationReducer from './ProjectStandardPresentationReducer';
-import ProjectsReducer from './ProjectsReducer';
-import FoldersReducer from './FoldersReducer';
-import CommunitySpace from './CommunityReducer';
 
 const reducers = combineReducers({
    settings,
-   appLoading: AppLoadingReducer,
-   emailApp: emailAppReducer,
-   sidebar: sidebarReducer,
-   todoApp: todoAppReducer,
-   authUser: authUserReducer,
+   cart: CartReducer,
+   group: groupReducer,
+   users: UsersReducer,
    tokens: tokensReducer,
-   feedback: feedbacksReducer,
-   ecommerce: ecommerceReducer,
+   sidebar: sidebarReducer,
+   authUser: authUserReducer,
+   appLoading: AppLoadingReducer,
+   notifications: NotificationsReducer,
    requestGlobalLoader: RequestGlobalReducer,
    permissionAlertBox: PermissionAlertBoxReducer,
-   networkProfile: NetworkProfileReducer,
-   catalogs: CatalogReducer,
-   catalogTypes: CatalogTypeReducer,
-   branchProducts: BranchProductsReducer,
-   catalogProducts: CatalogProductsReducer,
-   categoryProducts: CategoryProductsReducer,
-   productTypes: ProductTypeReducer,
-   userProfile: UserProfileReducer,
-   userPermissions: UserPermissionsReducer,
-   networkProfileType: NetworkProfileTypeReducer,
-   users: UsersReducer,
-   userCommunities: UserCommunitiesReducer,
-   userCommunitiesAdmin: UserCommunitiesAdminReducer,
-   userCommunitiesNotIn: UserCommunitiesNotInReducer,
-   comInvitationsPending: ComInvitationsPendingReducer,
-   currentCommunity: CurrentCommunityReducer,
-   packages: PackagesReducer,
-   systemObject: SystemObjectReducer,
-   comOperationType: ComOperationTypeReducer,
-   comOperation: ComOperationReducer,
-   comOffer: ComOfferReducer,
-   products: ProductReducer,
-   cart: CartReducer,
-   mandateType: MandateTypeReducer,
-   mandateModel: MandateModelReducer,
-   mandate: MandateReducer,
-   branchUsers: BranchUsersReducer,
-   modelNotifications: ModelNotificationsReducer,
-   notifications: NotificationsReducer,
-   servicesNotifications: ServicesNotificationsReducer,
-   usersAccounts: UsersAccountsReducer,
-   sampleBranches: SampleBranchesReducer,
-   projectWorks: ProjectWorksReducer,
-   projectStandard: ProjectStandardReducer,
-   initialisationIdeas: InitialisationIdeasReducer,
-   initialisationProgram: InitialisationProgramReducer,
-   initialisationProjectsCall: InitialisationProjectsCallReducer,
-   projectStandardPresentation: ProjectStandardPresentationReducer,
-   projects: ProjectsReducer,
-   folders: FoldersReducer,
-   communitySpace: CommunitySpace,
 });
 
 export default reducers;

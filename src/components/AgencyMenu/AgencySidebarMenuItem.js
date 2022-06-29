@@ -1,14 +1,15 @@
 /**
  * Nav Menu Item
  */
-import React, { Fragment, Component } from 'react';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import Collapse from '@material-ui/core/Collapse';
-import { NavLink, withRouter } from 'react-router-dom';
 import classNames from 'classnames';
+import {NavLink} from 'react-router-dom';
 import Chip from '@material-ui/core/Chip';
+import List from '@material-ui/core/List';
+import {withRouter} from 'react-router-dom';
+import Collapse from '@material-ui/core/Collapse';
+import ListItem from '@material-ui/core/ListItem';
+import React, { Fragment, Component } from 'react';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
 
 //Helper
 import { getAppLayout } from "Helpers/helpers";

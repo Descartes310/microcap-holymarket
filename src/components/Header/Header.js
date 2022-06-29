@@ -15,20 +15,11 @@ import { withRouter } from 'react-router-dom';
 import { collapsedSidebarAction, darkModeAction } from 'Actions';
 
 // helpers
-import { getAppLayout } from "Helpers/helpers";
 
 // components
 import Notifications from './Notifications';
-import DashboardOverlay from '../DashboardOverlay/DashboardOverlay';
 import Cart from './Cart';
-import SearchForm from './SearchForm';
-import QuickLinks from './QuickLinks';
-import MobileSearchForm from './MobileSearchForm';
-
-// intl messages
-import IntlMessages from 'Util/IntlMessages';
-import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
-import Switch from "@material-ui/core/Switch/Switch";
+import { LANDING } from "Url/frontendUrl";
 
 class Header extends Component {
 
@@ -44,30 +35,8 @@ class Header extends Component {
 
 	// function to change the state of collapsed sidebar
 	onToggleNavCollapsed = (event) => {
-		const val = !this.props.navCollapsed;
+		const val = !this.props.settings.navCollapsed;
 		this.props.collapsedSidebarAction(val);
-	}
-
-	// open dashboard overlay
-	openDashboardOverlay(e) {
-		var el = document.getElementsByClassName('dashboard-overlay')[0];
-		el.classList.toggle("d-none");
-		el.classList.toggle("show");
-		if (el.classList.contains('show')) {
-			document.body.style.overflow = "hidden";
-		}
-		else {
-			document.body.style.overflow = "";
-		}
-		e.preventDefault();
-	}
-
-	// close dashboard overlay
-	closeDashboardOverlay() {
-		var e = document.getElementsByClassName('dashboard-overlay')[0];
-		e.classList.remove('show');
-		e.classList.add('d-none');
-		document.body.style.overflow = "";
 	}
 
 	// mobile search form
@@ -91,14 +60,12 @@ class Header extends Component {
 	}
 
 	render() {
-
-		const { isMobileSearchFormVisible } = this.state;
-		const { horizontalMenu, agencyMenu, location, darkMode } = this.props;
+		const { settings, authUser } = this.props;
 		return (
 			<AppBar position="static" className="rct-header">
 				<Toolbar className="d-flex justify-content-between w-100 pl-0">
 					<div className="d-inline-flex align-items-center">
-						{(horizontalMenu || agencyMenu) &&
+						{(settings.horizontalMenu || settings.agencyMenu) &&
 							<div className="site-logo">
 								<Link to="/" className="logo-mini">
 									<img src={require('Assets/identity/logomicrocap.png')} className="mr-15" alt="site logo" width="35" height="35" />
@@ -108,9 +75,9 @@ class Header extends Component {
 								</Link>*/}
 							</div>
 						}
-						{!agencyMenu &&
+						{!settings.agencyMenu &&
 							<ul className="list-inline mb-0 navbar-left">
-								{!horizontalMenu ?
+								{!settings.horizontalMenu ?
 									<li className="list-inline-item" onClick={(e) => this.onToggleNavCollapsed(e)}>
 										<Tooltip title="Sidebar Toggle" placement="bottom">
 											<IconButton color="inherit" mini="true" aria-label="Menu" className="humburger p-0">
@@ -128,38 +95,27 @@ class Header extends Component {
 								}
 							</ul>
 						}
+						<Link to={LANDING.HOME} className="color-gray-muted text-decoration-underline-hover fw-500 px-3">
+							Découvir Microcap
+						</Link>
 					</div>
 					<ul className="navbar-right list-inline mb-0">
-						<Notifications />
-						<Cart />
-						{/* {!horizontalMenu &&
-						<li className="list-inline-item text-white">
-							<FormControlLabel
-								control={
-									<Switch
-										checked={darkMode}
-										onChange={(e) => this.darkModeHandler(e.target.checked)}
-										className="switch-btn"
-									/>
-								}
-								label={<IntlMessages id="themeOptions.darkMode"/>}
-								className="m-0"
-							/>
-						</li>
-						} */}
+						{authUser && (
+							<>
+								<Notifications />
+								<Cart />
+							</>
+						)}
 					</ul>
 				</Toolbar>
-				<DashboardOverlay
-					onClose={() => this.closeDashboardOverlay()}
-				/>
 			</AppBar>
 		);
 	}
 }
 
 // map state to props
-const mapStateToProps = ({ settings }) => {
-	return settings;
+const mapStateToProps = ({ settings, authUser }) => {
+	return { settings, authUser: authUser.data };
 };
 
 export default withRouter(connect(mapStateToProps, {

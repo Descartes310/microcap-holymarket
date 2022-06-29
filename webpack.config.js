@@ -4,6 +4,7 @@
 // const webpack = require('webpack');
 const path = require('path');
 const fs = require('fs');
+const Dotenv = require('dotenv-webpack');
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
@@ -20,8 +21,7 @@ const resolveApp = relativePath => path.resolve(appDirectory, relativePath);
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-// const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-const TerserPlugin = require("terser-webpack-plugin");
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
 	entry: ["babel-polyfill", "react-hot-loader/patch", "./src/index.js"],
@@ -52,7 +52,7 @@ module.exports = {
 		alias: {
 			Actions: path.resolve(__dirname, 'src/actions/'),
 			Components: path.resolve(__dirname, 'src/components/'),
-			Assets: path.resolve(__dirname, 'src/assets/'),
+			Assets: path.resolve(__dirname, 'public/assets/'),
 			Util: path.resolve(__dirname, 'src/util/'),
 			Routes: path.resolve(__dirname, 'src/routes/'),
 			Constants: path.resolve(__dirname, 'src/constants/'),
@@ -64,8 +64,12 @@ module.exports = {
 			Models: path.resolve(__dirname, 'src/models/'),
 			Permissions: path.resolve(__dirname, 'src/permissions/'),
 			Enums: path.resolve(__dirname, 'src/enums/'),
-		}
+		},
+		extensions: ['.js', '.tsx', '.ts', '.jsx']
 	},
+	// optimization: {
+	// 	minimize: true
+	// },
 	module: {
 		rules: [
 			{
@@ -74,6 +78,13 @@ module.exports = {
 				use: {
 					loader: "babel-loader"
 				}
+			},
+			{
+				test: /\.(ts|tsx)?$/,
+				exclude: /node_modules/,
+				use: {
+				  loader: 'ts-loader'
+				},
 			},
 			{
 				test: /\.html$/,
@@ -128,24 +139,12 @@ module.exports = {
 			}
 		]
 	},
-	optimization: {
-		/*minimizer: [new TerserPlugin({
-			extractComments: true,
-			parallel: 8,
-			terserOptions: {
-				compress: {
-					warnings: false
-				}
-			}
-		})],
-		minimize: true,*/
-	},
 	performance: {
 		hints: process.env.NODE_ENV === 'production' ? "warning" : false
 	},
 	plugins: [
+		new Dotenv(),
 		new FriendlyErrorsWebpackPlugin(),
-		// new webpack.optimize.UglifyJsPlugin(),
 		new CleanWebpackPlugin({
 			dry: false,
 			verbose: false,
@@ -158,7 +157,6 @@ module.exports = {
 		new MiniCssExtractPlugin({
 			filename: "[name].css",
 			chunkFilename: "static/css/[name].[hash:8].css"
-		})
-		// new BundleAnalyzerPlugin()
+		}),
 	]
 };

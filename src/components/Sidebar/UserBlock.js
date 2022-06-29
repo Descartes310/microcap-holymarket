@@ -1,26 +1,15 @@
 /**
  * User Block Component
  */
-import React, { Component } from 'react';
-import { Dropdown, DropdownToggle, DropdownMenu } from 'reactstrap';
-import { Link, NavLink, withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { Badge } from 'reactstrap';
-import { NotificationManager } from 'react-notifications';
-import { USERS } from 'Url/frontendUrl';
-
-// components
-import SupportPage from '../Support/Support';
-
-// redux action
 import { logout } from 'Actions';
-
-// intl messages
-import IntlMessages from 'Util/IntlMessages';
-import Tooltip from "@material-ui/core/Tooltip/Tooltip";
-import Status from "Enums/Status";
-import FieldsetComponent from "Components/FieldsetComponent";
+import { connect } from 'react-redux';
+import React, { Component } from 'react';
+import { PROFILE } from 'Url/frontendUrl';
 import { getFilePath } from "Helpers/helpers";
+import { NavLink, withRouter } from 'react-router-dom';
+import Tooltip from "@material-ui/core/Tooltip/Tooltip";
+import { NotificationManager } from 'react-notifications';
+import { Dropdown, DropdownToggle, DropdownMenu } from 'reactstrap';
 
 class UserBlock extends Component {
 
@@ -80,11 +69,11 @@ class UserBlock extends Component {
 								tag="div"
 								className="d-flex align-items-center"
 							>
-								{this.props.authUser.user.status === Status.PENDING ? (
+								{!this.props.authUser.active ? (
 									<Tooltip id="tooltip-status" title={"Votre compte n'est pas activé"}>
 										<div className="user-profile position-relative">
 											<img
-												src={this.props.authUser.user.avatar ? getFilePath(this.props.authUser.user.avatar) : require('Assets/avatars/profile.jpg')}
+												src={this.props.authUser.avatar ? getFilePath(this.props.authUser.avatar) : require('Assets/avatars/profile.jpg')}
 												alt="user profile"
 												className="img-fluid rounded-circle"
 												width="50"
@@ -98,7 +87,7 @@ class UserBlock extends Component {
 								) : (
 										<div className="user-profile position-relative">
 											<img
-												src={this.props.authUser.user.avatar ? getFilePath(this.props.authUser.user.avatar) : require('Assets/avatars/profile.jpg')}
+												src={this.props.authUser.avatar ? getFilePath(this.props.authUser.avatar) : require('Assets/avatars/profile.jpg')}
 												alt="user profile"
 												className="img-fluid rounded-circle"
 												width="50"
@@ -107,10 +96,10 @@ class UserBlock extends Component {
 										</div>
 									)}
 								<div className="user-info">
-									<span className="user-name ml-4">
+									<span className="user-name">
 										{this.props.authUser.userName}
 									</span>
-									<i className="zmdi zmdi-chevron-down dropdown-icon ml-2"></i>
+									<i className="zmdi zmdi-chevron-down dropdown-icon"></i>
 								</div>
 							</DropdownToggle>
 							<DropdownMenu>
@@ -119,26 +108,9 @@ class UserBlock extends Component {
 										<p className="text-white mb-0 fs-14">
 											{this.props.authUser.userName}
 										</p>
-										<span className="text-white fs-14">
-											{this.props.authUser.user.login}
-										</span>
 									</li>
-									{/* <li className="mt-3">
-										<FieldsetComponent title={"Réference"} titleClass={"text-dark"}>
-											<p className="text-dark fw-bold mb-0">{this.props.authUser.user.reference}</p>
-										</FieldsetComponent>
-									</li>
-									{
-										this.props.authUser.user.membershipNumber ?
-
-											<li className="mt-3">
-												<FieldsetComponent title={"Adhesion"} titleClass={"text-dark"}>
-													<p className="text-dark fw-bold mb-0">{this.props.authUser.user.membershipNumber}</p>
-												</FieldsetComponent>
-											</li> : null
-									} */}
 									<li className="border-top">
-										<NavLink to={USERS.USERS_PROFILE.DISPLAY_PROFILE} className="nav-link" activeClassName="active">
+										<NavLink to={PROFILE.USER.PERSONAL} className="nav-link" activeClassName="active">
 											<i className="zmdi zmdi-account text-primary mr-3"></i>
 											<span>
 												Profile
@@ -150,7 +122,7 @@ class UserBlock extends Component {
 										<a href="#" onClick={(e) => this.logoutUser(e)}>
 											<i className="zmdi zmdi-power text-danger mr-3"></i>
 											<span>
-												Deconnexion
+												Déconnexion
 										</span>
 										</a>
 									</li>
@@ -158,11 +130,6 @@ class UserBlock extends Component {
 							</DropdownMenu>
 						</Dropdown>
 					</div> : null}
-				<SupportPage
-					isOpen={this.state.isSupportModal}
-					onCloseSupportPage={() => this.onCloseSupportPage()}
-					onSubmit={() => this.onSubmitSupport()}
-				/>
 			</div>
 		);
 	}

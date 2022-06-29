@@ -9,7 +9,6 @@ import { Scrollbars } from 'react-custom-scrollbars';
 import Header from 'Components/Header/Header';
 import Footer from 'Components/Footer/Footer';
 import HorizontalMenu from 'Components/HorizontalMenu/HorizontalMenu';
-import ThemeOptions from 'Components/ThemeOptions/ThemeOptions';
 
 class RctHorizontalLayout extends Component {
 
@@ -51,7 +50,6 @@ class RctHorizontalLayout extends Component {
                                 <HorizontalMenu />
                                 {this.renderPage()}
                             </div>
-                            <ThemeOptions />
                         </div>
                     </div>
                 </div>

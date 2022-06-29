@@ -1,45 +1,40 @@
-import React, {Component, useState} from 'react';
-import { Form, FormGroup, Input } from 'reactstrap';
+import React from 'react';
+import {connect} from "react-redux";
+import {injectIntl} from "react-intl";
+import QueueAnim from 'rc-queue-anim';
+import { Link } from 'react-router-dom';
+import {useForm} from "react-hook-form";
+import UserService from 'Services/users';
+import {HOME, AUTH} from "Url/frontendUrl";
+import AppConfig from 'Constants/AppConfig';
+import IntlMessages from "Util/IntlMessages";
+import { Form, FormGroup } from 'reactstrap';
 import Button from '@material-ui/core/Button';
 import AppBar from '@material-ui/core/AppBar';
+import {setRequestGlobalAction} from "Actions";
 import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
-import { Link } from 'react-router-dom';
-import QueueAnim from 'rc-queue-anim';
-
-// app config
-import AppConfig from 'Constants/AppConfig';
-import LanguageProvider from "Components/Header/LanguageProvider";
-import {connect} from "react-redux";
-import {sendResetPasswordLink, setRequestGlobalAction} from "Actions";
-import {injectIntl} from "react-intl";
-import IntlMessages from "Util/IntlMessages";
-import {HOME, AUTH} from "../../../urls/frontendUrl";
 import InputComponent from "Components/InputComponent";
 import {emailValidatorObject} from "Helpers/validator";
-import ErrorInputComponent from "Components/ErrorInputComponent";
-import {useForm} from "react-hook-form";
 import {NotificationManager} from "react-notifications";
-import {requestErrorProcessing} from "Helpers/helpers";
+import ErrorInputComponent from "Components/ErrorInputComponent";
 
 const SendResetPasswordLink = ({intl, loading, setRequestGlobalAction}) => {
    const { register, errors, handleSubmit } = useForm();
 
    const onSubmit = ({email}) => {
       setRequestGlobalAction(true);
-      sendResetPasswordLink(email)
+
+      let datas = {
+         email,
+         branchUrl: window.location.origin+AUTH.RESET_PASSWORD
+      };
+
+      UserService.sendPasswordLink(datas)
           .then(() => {
-             NotificationManager.success(intl.formatMessage({id: "auth.resetPasswordLink.successText"}))
+             NotificationManager.success("Nous venons de vous envoyez un email. Merci de bien vouloir le consulter.");
           })
-          .catch(error => {
-             if (error && error.response && error.response.data) {
-                const errorTab = requestErrorProcessing(error.response.data);
-                errorTab.forEach(item => {
-                   NotificationManager.error(item);
-                });
-             } else {
-                NotificationManager.success(intl.formatMessage({id: "error.500"}))
-             }
+          .catch(() => {
+            NotificationManager.error("L'adresse email fournie n'est pas reconnue.")
           })
           .finally(() =>  setRequestGlobalAction(false));
    };
@@ -56,7 +51,6 @@ const SendResetPasswordLink = ({intl, loading, setRequestGlobalAction}) => {
                                <img src={AppConfig.appLogo} alt="session-logo" className="img-fluid" width="110" height="35" />
                             </Link>
                          </div>
-                         <LanguageProvider />
                       </div>
                    </div>
                 </Toolbar>
@@ -98,12 +92,6 @@ const SendResetPasswordLink = ({intl, loading, setRequestGlobalAction}) => {
                                   <IntlMessages id="auth.resetPasswordLink.btnText"/>
                                </Button>
                             </FormGroup>
-                            <Button
-                                component={Link}
-                                to={AUTH.LOGIN}
-                                className="btn-dark btn-block btn-large text-white w-100">
-                               <IntlMessages id="auth.haveAccountLogin"/> ?
-                            </Button>
                          </Form>
                       </div>
                    </div>

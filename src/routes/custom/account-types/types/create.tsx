@@ -1,0 +1,174 @@
+import { connect } from 'react-redux';
+import RoleService from 'Services/roles';
+import { withRouter } from "react-router-dom";
+import Button from '@material-ui/core/Button';
+import {setRequestGlobalAction} from 'Actions';
+import { referraTypes } from 'Helpers/helpers';
+import React, { useState, useEffect } from 'react';
+import TextField from '@material-ui/core/TextField';
+import { USER_ACCOUNT_TYPE } from 'Url/frontendUrl';
+import {NotificationManager} from 'react-notifications';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import UserAccountTypeService from 'Services/account-types';
+import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
+import {Form, FormGroup, Input as InputStrap} from 'reactstrap';
+import InputLabel from '@material-ui/core/InputLabel/InputLabel';
+import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
+
+const Create = (props) => {
+
+    const [label, setLabel] = useState('');
+    const [roles, setRoles] = useState([]);
+    const [category, setCategory] = useState(null);
+    const [categories, setCategories] = useState([]);
+    const [description, setDescription] = useState('');
+    const [selectedRoles, setSelectedRoles] = useState([]);
+    const [referralType, setReferralType] = useState(null);
+
+    useEffect(() => {
+        getTypes();
+        getRoles();
+    }, []);
+
+    const getTypes = () => {
+        setRequestGlobalAction(true),
+        UserAccountTypeService.getAccountTypeCategories()
+        .then(response => setCategories(response))
+        .finally(() => setRequestGlobalAction(false))
+    }
+
+    const getRoles = () => {
+        props.setRequestGlobalAction(true),
+        RoleService.getRoles({type: 'USER_ACCOUNT'})
+        .then(response => setRoles(response))
+        .finally(() => props.setRequestGlobalAction(false))
+    }
+
+
+    const onSubmit = () => {
+
+        if(!category || !label || selectedRoles.length <= 0)
+            return
+
+        props.setRequestGlobalAction(true);
+
+        let data: any = {
+            label: label,
+            categoryId: category.id,
+            description: description,
+            referralType: referralType.value,
+            roleRefs: selectedRoles.map(role => role.reference)
+        }
+
+        UserAccountTypeService.createAccountType(data).then(() => {
+            NotificationManager.success("Le type a été créée avec succès");
+            props.history.push(USER_ACCOUNT_TYPE.TYPE.LIST);
+        }).catch((err) => {
+            console.log(err);
+            NotificationManager.error("Une erreur est survenu lors de la création du type");
+        }).finally(() => {
+            props.setRequestGlobalAction(false);
+        })
+    }
+
+
+    return (
+        <>
+            <PageTitleBar
+                title={"Création du type de compte"}
+            />
+            <RctCollapsibleCard>
+                <Form onSubmit={onSubmit}>
+                    <FormGroup className="has-wrapper">
+                        <InputLabel className="text-left" htmlFor="label">
+                            Label
+                        </InputLabel>
+                        <InputStrap
+                            required
+                            id="label"
+                            type="text"
+                            name='label'
+                            className="input-lg"
+                            value={label}
+                            onChange={(e) => setLabel(e.target.value)}
+                        />
+                    </FormGroup>
+                    <FormGroup className="has-wrapper">
+                        <InputLabel className="text-left" htmlFor="label">
+                            Description
+                        </InputLabel>
+                        <InputStrap
+                            required
+                            id="label"
+                            type="text"
+                            name='label'
+                            className="input-lg"
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}
+                        />
+                    </FormGroup>
+                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                        <InputLabel className="text-left">
+                            Cible
+                        </InputLabel>
+                        <Autocomplete
+                            value={referralType}
+                            id="combo-box-demo"
+                            options={referraTypes()}
+                            onChange={(__, item) => {
+                                setReferralType(item);
+                            }}
+                            getOptionLabel={(option) => option.label}
+                            renderInput={(params) => <TextField {...params} variant="outlined" />}
+                        />
+                    </div>
+                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                        <InputLabel className="text-left">
+                            Catégorie de compte
+                        </InputLabel>
+                        <Autocomplete
+                            value={category}
+                            id="combo-box-demo"
+                            options={categories}
+                            onChange={(__, item) => {
+                                setCategory(item);
+                            }}
+                            getOptionLabel={(option) => option.label}
+                            renderInput={(params) => <TextField {...params} variant="outlined" />}
+                        />
+                    </div>
+
+                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                        <InputLabel className="text-left">
+                            Rôles par défaut
+                        </InputLabel>
+                        <Autocomplete
+                            multiple
+                            options={roles}
+                            id="combo-box-demo"
+                            value={selectedRoles}
+                            onChange={(__, items) => {
+                                setSelectedRoles(items);
+                            }}
+                            getOptionLabel={(option) => option.label}
+                            renderInput={(params) => <TextField {...params} variant="outlined" />}
+                        />
+                    </div>
+
+                    <FormGroup>
+                        <Button
+                            color="primary"
+                            variant="contained"
+                            onClick={onSubmit}
+                            className="text-white font-weight-bold"
+                        >
+                            Ajouter
+                        </Button>
+                    </FormGroup>
+                </Form>
+            </RctCollapsibleCard>
+        </>
+    );
+};
+
+export default connect(() => {}, { setRequestGlobalAction })(withRouter(Create));

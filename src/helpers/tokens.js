@@ -1,5 +1,17 @@
 // import { encrypt, decrypt } from './crypto';
 
+export const setSession = (token) => {
+    if (!token.accessToken) {
+        return;
+    }
+    // Set the time that the access token will expire at
+    let expiresAt = JSON.stringify((token.expiresIn * 1000) + new Date().getTime());
+    localStorage.setItem('accessToken', token.accessToken);
+    localStorage.setItem('refreshToken', token.refreshToken);
+    localStorage.setItem('expiresAt', expiresAt);
+    localStorage.setItem('expiresIn', token.expiresIn);
+}
+
 export const saveAuthToken = (
     accessToken,
     tokenType,
