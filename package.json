@@ -104,7 +104,7 @@
 		"react-beautiful-dnd": "^13.0.0",
 		"react-big-calendar": "^0.38.9",
 		"react-bootstrap-sweetalert": "^5.1.9",
-		"react-checkbox-tree": "^1.7.2",
+		"react-checkbox-tree": "^1.7.3",
 		"react-content-loader": "^5.0.4",
 		"react-custom-scrollbars": "^4.2.1",
 		"react-dnd": "^11.1.3",
