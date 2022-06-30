@@ -78,6 +78,13 @@ export default [
             ],
             "profiles": ['GROUP'],
          },
+         {
+            "menu_title": "Utilisateurs",
+            "new_item": false,
+            "path": NETWORK.COVERAGE.USERS.LIST,
+            "permissions": null,
+            "profiles": ['GROUP'],
+         },
       ]
    },
    {
