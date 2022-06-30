@@ -24,9 +24,6 @@ const List = (props) => {
         props.setRequestGlobalAction(true);
         UserService.getBranchUsers()
             .then(response => {
-                console.log('====================================');
-                console.log(response);
-                console.log('====================================');
                 setUsers(response);
             })
             .catch(err => {
@@ -40,7 +37,9 @@ const List = (props) => {
 
     const activateOrBlock = () => {
         props.setRequestGlobalAction(true)
-        UserService.activateOrBlockAccess(selectedMember.referralCode)
+        UserService.activateOrBlockAccess({
+            'reference' : selectedMember.referralCode
+        })
             .then(() => {
                 NotificationManager.success("L'opération s'est déroulée avec succès");
                 setStatus(false);
@@ -124,7 +123,7 @@ const List = (props) => {
                                                 <td>
                                                     <Switch
                                                         aria-label="Par défaut"
-                                                        checked={item.active}
+                                                        checked={item.canLoggedIn}
                                                         onChange={() => {
                                                             setStatus(false);
                                                             setSelectedMember(item);
