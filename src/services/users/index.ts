@@ -52,6 +52,13 @@ export default class UserService {
         return makeRequest('post', Routes.RESET_PASSWORD, datas);
     }
 
+    static getBranchUsers(): Promise<any> {
+        return makeRequest('get', Routes.GET_BRANCH_USERS);    
+    }
+
+    static activateOrBlockAccess(data:any): Promise<any> {
+        return makeRequest('put', Routes.ACTIVATE_OR_BLOCK_ACCESS, data);
+    }
     static createInstitution(data: any): Promise<any> {
         return makeRequest('post', Routes.CREATE_INSTITUTION, data);
     }

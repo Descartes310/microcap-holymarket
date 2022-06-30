@@ -352,6 +352,10 @@ export const NETWORK = {
            BROKER: '/network/coverage/partnerships/broker',
            OPERATOR: '/network/coverage/partnerships/operator',
            COMMUNITY: '/network/coverage/partnerships/community',
+        },
+        USERS: {
+           SELF: '/network/coverage/users',
+           LIST: '/network/coverage/users/list'
         }
     }
 } as const;
