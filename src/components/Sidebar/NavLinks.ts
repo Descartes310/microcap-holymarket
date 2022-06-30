@@ -210,13 +210,6 @@ export default [
             "permissions": [Permission.group.type.name],
             "profiles": ['GROUP'],
          },
-         // {
-         //    "menu_title": "Roles groupes",
-         //    "new_item": false,
-         //    "path": GROUP.ROLE.LIST,
-         //    "permissions": [Permission.group.role.name],
-         //    "profiles": ['GROUP'],
-         // },
          {
             "menu_title": "Catégories de groupes",
             "new_item": false,
