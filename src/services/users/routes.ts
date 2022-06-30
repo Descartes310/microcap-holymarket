@@ -12,3 +12,7 @@ export const ACTIVATE_OR_BLOCK_ACCESS = "api/socialnetworks/users/access/activat
 export const GET_USER_BY_REFERENCE = (ref) => `api/socialnetworks/users/self/reference/${ref}`;
 export const CHANGE_ACCESS_PASSWORD = (id) => `api/socialnetworks/users/access/${id}/password`;
 export const GET_USER_BY_MEMBERSHIP = (membership) => `api/socialnetworks/users/self/membership/${membership}`;
+
+export const GET_INSTITUTIONS = "api/socialnetworks/users/institutions";
+export const CREATE_INSTITUTION = "api/socialnetworks/users/institutions";
+export const GET_BANK_AGENCY_CODE = "api/socialnetworks/users/institutions/agency-code";

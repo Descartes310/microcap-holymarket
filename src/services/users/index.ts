@@ -59,4 +59,16 @@ export default class UserService {
     static activateOrBlockAccess(data:any): Promise<any> {
         return makeRequest('put', Routes.ACTIVATE_OR_BLOCK_ACCESS, data);
     }
+    static createInstitution(data: any): Promise<any> {
+        return makeRequest('post', Routes.CREATE_INSTITUTION, data);
+    }
+
+    static getInstitutions(data: any): Promise<any> {
+        return makeRequest('get', Routes.GET_INSTITUTIONS, data);
+    }
+
+    static getInstitutionCodes(data: any): Promise<any> {
+        return makeRequest('get', Routes.GET_BANK_AGENCY_CODE, data);
+    }
+
 }
