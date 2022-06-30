@@ -13,12 +13,15 @@ import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { Form, FormGroup, Input as InputStrap } from 'reactstrap';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
+import PartnershipService from 'Services/partnerships';
 
 const Create = (props) => {
 
     const [key, setKey] = useState(null);
     const [member, setMember] = useState(null);
     const [bankCode, setBankCode] = useState(null);
+    const [bankCodes, setBankCodes] = useState([]);
+    const [agencyCodes, setAgencyCodes] = useState([]);
     const [prestations, setPrestations] = useState([]);
     const [agencyCode, setAgencyCode] = useState(null);
     const [membership, setMembership] = useState(null);
@@ -28,7 +31,17 @@ const Create = (props) => {
 
     useEffect(() => {
         getPrestations();
+        getBankCodes();
     }, []);
+
+    useEffect(() => {
+        if(bankCode) {
+            getBankAgencies();
+        } else {
+            setAgencyCode(null);
+            setAgencyCodes([]);
+        }
+    }, [bankCode]);
 
     const findUserByMembership = () => {
         props.setRequestGlobalAction(true);
@@ -52,6 +65,20 @@ const Create = (props) => {
         .finally(() => props.setRequestGlobalAction(false))
     }
 
+    const getBankCodes = () => {
+        props.setRequestGlobalAction(true);
+        PartnershipService.getPartnershipDetails({type: 'BANK_CODE'})
+        .then(response => setBankCodes(response))
+        .finally(() => props.setRequestGlobalAction(false))
+    }
+
+    const getBankAgencies = () => {
+        props.setRequestGlobalAction(true);
+        UserService.getInstitutionCodes({type: 'BANK_AGENCY', reference: bankCode.referralCode})
+        .then(response => setAgencyCodes(response))
+        .finally(() => props.setRequestGlobalAction(false))
+    }
+
     const onSubmit = () => {
         if(!member || !countryCode || !bankCode || !agencyCode
             || !accountNumber || !key || selectedPrestations.length <= 0) {
@@ -60,10 +87,11 @@ const Create = (props) => {
         }
 
         let data: any = {
-            referral_code: membership, countryCode, bankCode,
-            agencyCode, accountNumber, key,
+            referral_code: membership, countryCode, bankCode: bankCode.value,
+            agencyCode: agencyCode.code, accountNumber, key,
             prestation_ids: selectedPrestations.map(p => p.id)
-        } 
+        };
+        
         props.setRequestGlobalAction(true);
         BankService.createSubscription(data).then(response => {
             NotificationManager.success("La création a réussie");
@@ -72,6 +100,7 @@ const Create = (props) => {
             }, 2000);
         }).catch(err => {
             console.log(err);
+            NotificationManager.error("Une erreur est survenue, veuillez réessayer");
         }).finally(() => {
             props.setRequestGlobalAction(false);
         })
@@ -141,31 +170,33 @@ const Create = (props) => {
                     </FormGroup>
                     <div className="row">
                         <FormGroup className="col-md-6 col-sm-12 has-wrapper">
-                            <InputLabel className="text-left" htmlFor="bankCode">
-                                Code banque
+                            <InputLabel className="text-left">
+                                Code Banque
                             </InputLabel>
-                            <InputStrap
-                                required
-                                type="text"
-                                id="bankCode"
-                                name='bankCode'
+                            <Autocomplete
+                                id="combo-box-demo"
+                                options={bankCodes}
                                 value={bankCode}
-                                className="input-lg"
-                                onChange={(e) => setBankCode(e.target.value)}
+                                onChange={(__, item) => {
+                                    setBankCode(item);
+                                }}
+                                getOptionLabel={(option) => option.value}
+                                renderInput={(params) => <TextField {...params} variant="outlined" />}
                             />
                         </FormGroup>
                         <FormGroup className="col-md-6 col-sm-12 has-wrapper">
-                            <InputLabel className="text-left" htmlFor="agencyCode">
+                            <InputLabel className="text-left">
                                 Code guichet
                             </InputLabel>
-                            <InputStrap
-                                required
-                                type="text"
-                                id="agencyCode"
-                                name='agencyCode'
+                            <Autocomplete
+                                id="combo-box-demo"
+                                options={agencyCodes}
                                 value={agencyCode}
-                                className="input-lg"
-                                onChange={(e) => setAgencyCode(e.target.value)}
+                                onChange={(__, item) => {
+                                    setAgencyCode(item);
+                                }}
+                                getOptionLabel={(option) => option.code+" ("+option.label+")"}
+                                renderInput={(params) => <TextField {...params} variant="outlined" />}
                             />
                         </FormGroup>
                     </div>

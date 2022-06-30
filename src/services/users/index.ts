@@ -52,4 +52,16 @@ export default class UserService {
         return makeRequest('post', Routes.RESET_PASSWORD, datas);
     }
 
+    static createInstitution(data: any): Promise<any> {
+        return makeRequest('post', Routes.CREATE_INSTITUTION, data);
+    }
+
+    static getInstitutions(data: any): Promise<any> {
+        return makeRequest('get', Routes.GET_INSTITUTIONS, data);
+    }
+
+    static getInstitutionCodes(data: any): Promise<any> {
+        return makeRequest('get', Routes.GET_BANK_AGENCY_CODE, data);
+    }
+
 }

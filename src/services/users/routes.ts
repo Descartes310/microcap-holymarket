@@ -10,3 +10,7 @@ export const CHANGE_ACCESS_PASSWORD = (id) => `api/socialnetworks/users/access/$
 export const RESET_PASSWORD_LINK = "api/socialnetworks/users/access/send-password-link";
 export const GET_USER_BY_REFERENCE = (ref) => `api/socialnetworks/users/self/reference/${ref}`;
 export const GET_USER_BY_MEMBERSHIP = (membership) => `api/socialnetworks/users/self/membership/${membership}`;
+
+export const GET_INSTITUTIONS = "api/socialnetworks/users/institutions";
+export const CREATE_INSTITUTION = "api/socialnetworks/users/institutions";
+export const GET_BANK_AGENCY_CODE = "api/socialnetworks/users/institutions/agency-code";

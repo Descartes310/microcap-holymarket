@@ -155,6 +155,7 @@ export const PROFILE = {
         CARD: "/profiles/users/card",
         ACCESS: "/profiles/users/access",
         PERSONAL: "/profiles/users/personal",
+        INSTITUTION: "/profiles/users/institutions",
     }
 }
 
