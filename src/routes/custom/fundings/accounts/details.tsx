@@ -46,7 +46,7 @@ const Details = (props) => {
 
     const getMouvements = () => {
         props.setRequestGlobalAction(true);
-        AccountService.getAccountMouvements(account.id).then(response => {
+        AccountService.getAccountMouvements(account.id, {types: 'POSITION'}).then(response => {
             setMouvements(response);
         }).catch((err) => {
             console.log(err);
@@ -118,11 +118,11 @@ const Details = (props) => {
                         <Card style={{ border: 0 }}>
                             <CardBody>
                                 <CardTitle className="d-flex justify-content-between">
-                                    <div>
+                                    <div style={{ flex: 1 }}>
                                         <h1 className='fw-bold mt-10' style={{ fontSize: '2.5rem' }}>{account?.label}</h1>
                                         <h3>{account?.userName}</h3>
                                     </div>
-                                    <div className='d-flex flex-column align-items-end'>
+                                    <div className='d-flex flex-column align-items-end' style={{ flex: 1 }}>
                                         <div>
                                             <h3>Solde</h3>
                                             <h1 className='fw-bold mt-10' style={{ fontSize: '2.5rem' }}>{getPriceWithCurrency(account?.balance, account?.currencyCode)}</h1>
@@ -190,6 +190,50 @@ const Details = (props) => {
                                     <div style={{ marginTop: '3em' }}>
                                         <div>
                                             <h2 className='fw-bold'>Historique des transactions</h2>
+                                            <table className="table table-hover table-middle mb-60 mt-20">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Libellé</th>
+                                                        <th>Crédit</th>
+                                                        <th>Débit</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {
+                                                        mouvements.map((mouvement, index) => (
+                                                            <tr key={index}>
+                                                                <td>
+                                                                    <div className="media">
+                                                                        <div className="media-body">
+                                                                            <h4 className="m-0 text-dark">{mouvement.reason}</h4>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    <div className="media">
+                                                                        <div className="media-body">
+                                                                            <h4 className="m-0 text-dark">{ mouvement.direction === 'CASH_IN' ? getPriceWithCurrency(mouvement.amount, mouvement.currency) : '-'}</h4>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    <div className="media">
+                                                                        <div className="media-body">
+                                                                            <h4 className="m-0 text-dark">{ mouvement.direction === 'CASH_OUT' ? getPriceWithCurrency(mouvement.amount, mouvement.currency) : '-'}</h4>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        ))
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                    <div style={{ marginTop: '3em', opacity: 0.3 }}>
+                                        <div>
+                                            <h2 className='fw-bold'>Opérations non comptabilisées</h2>
                                             <table className="table table-hover table-middle mb-60 mt-20">
                                                 <thead>
                                                     <tr>

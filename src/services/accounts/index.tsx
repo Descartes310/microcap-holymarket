@@ -28,7 +28,7 @@ export default class AccountService {
         }
     }
 
-    static getAccountMouvements(id): Promise<any> {
-        return makeRequest('get', Routes.GET_ACCOUNT_MOUVEMENTS(id));
+    static getAccountMouvements(id: number, data: any): Promise<any> {
+        return makeRequest('get', Routes.GET_ACCOUNT_MOUVEMENTS(id), data);
     }
 }
