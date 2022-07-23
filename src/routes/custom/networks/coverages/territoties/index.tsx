@@ -15,8 +15,8 @@ const Territories = (props) => {
                 <Switch>
                     <Redirect exact from={`${match.url}/`} to={NETWORK.COVERAGE.TERRITORY.LIST} />
                     <Route path={NETWORK.COVERAGE.TERRITORY.LIST} component={List} />
-                    <Route path={NETWORK.COVERAGE.TERRITORY.CHILD.SELF} component={Children} />
                     <Route path={NETWORK.COVERAGE.TERRITORY.CREATE} component={Create} />
+                    <Route path={NETWORK.COVERAGE.TERRITORY.CHILD.SELF} component={Children} />
 
                 </Switch>
             </>
