@@ -17,11 +17,13 @@ import { NETWORK } from 'Url/frontendUrl';
 const Create = (props) => {
 
     const [label, setLabel] = useState('');
+    const [countryCode, setCountryCode] = useState('');
+    const [countryFlag, setCountryFlag] = useState('');
     const [parent, setParent] = useState(null);
     const [territories, setTerritories] = useState([]);
     const [description, setDescription] = useState('');
     const [parentType, setParentType] = useState(null);
-
+    const [countrySelected, setCountrySelected] = useState(false);
 
     useEffect(() => {
         getTerritories();
@@ -30,13 +32,13 @@ const Create = (props) => {
     const getTerritories = () => {
         props.setRequestGlobalAction(true)
         TerritoryService.getAllTerritories()
-        .then((response) => setTerritories(response))
-        .catch((err) => console.log(err))
-        .finally(() => props.setRequestGlobalAction(false))
+            .then((response) => setTerritories(response))
+            .catch((err) => console.log(err))
+            .finally(() => props.setRequestGlobalAction(false))
     }
 
     const onSubmit = () => {
-        if(!label) {
+        if (!label) {
             NotificationManager.error('Veuillez renseigner au moins le nom du térritoire');
             return;
         }
@@ -45,10 +47,18 @@ const Create = (props) => {
             label, description
         };
 
-        if(parentType != null) {
-            if(parent == null) {
+        if (countryCode != null) {
+            data.countryCode = countryCode
+        }
+
+        if (countryFlag != null) {
+            data.countryFlag = countryFlag
+        }
+
+        if (parentType != null) {
+            if (parent == null) {
                 NotificationManager.error('Veuillez renseigner le térritoire parent');
-                return;  
+                return;
             } else {
                 data.parentId = parent.id;
                 data.type = getTerritoryChildrenValue(parentType.value);
@@ -59,15 +69,15 @@ const Create = (props) => {
 
         props.setRequestGlobalAction(true);
         TerritoryService.createTerritory(data)
-        .then((response) => {
-            props.history.push(NETWORK.COVERAGE.TERRITORY.LIST);
-        })
-        .catch((error) => {
-            console.log(error);
-        })
-        .finally(() => {
-            props.setRequestGlobalAction(false);
-        })
+            .then((response) => {
+                props.history.push(NETWORK.COVERAGE.TERRITORY.LIST);
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+            .finally(() => {
+                props.setRequestGlobalAction(false);
+            })
     }
 
 
@@ -117,6 +127,14 @@ const Create = (props) => {
                             options={getTerritoryTypes()}
                             value={parentType}
                             onChange={(__, item) => {
+                                console.log(item);
+                                if(item.value === 'MAINLAND_REGION') {
+                                    console.log(item.value);
+                                    
+                                    setCountrySelected(true);
+                                } else {
+                                    setCountrySelected(false);
+                                }
                                 setParentType(item);
                             }}
                             getOptionLabel={(option) => option.label}
@@ -133,6 +151,7 @@ const Create = (props) => {
                             id="combo-box-demo"
                             onChange={(__, item) => {
                                 setParent(item);
+                                
                             }}
                             getOptionLabel={(option) => option.label}
                             options={territories.filter(t => t.type === parentType?.value)}
@@ -140,6 +159,38 @@ const Create = (props) => {
                         />
                     </div>
 
+                    {countrySelected && (
+                        <>
+                        <FormGroup className="has-wrapper">
+                            <InputLabel className="text-left" htmlFor="countryCode">
+                                Préfix téléphonique
+                            </InputLabel>
+                            <InputStrap
+                                required
+                                id="countryCode"
+                                type="number"
+                                name='countryCode'
+                                className="input-lg"
+                                value={countryCode}
+                                onChange={(e) => setCountryCode(e.target.value)}
+                            />
+                        </FormGroup>
+                        <FormGroup className="has-wrapper">
+                            <InputLabel className="text-left" htmlFor="countryFlag">
+                                Lien du drapeau
+                            </InputLabel>
+                            <InputStrap
+                                required
+                                id="countryFlag"
+                                type="text"
+                                name='countryFlag'
+                                className="input-lg"
+                                value={countryFlag}
+                                onChange={(e) => setCountryFlag(e.target.value)}
+                            />
+                        </FormGroup>
+                    </>
+                    )}
                     <FormGroup>
                         <Button
                             color="primary"
