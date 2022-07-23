@@ -89,7 +89,7 @@ const List = (props) => {
                                                         color="primary"
                                                         variant="contained"
                                                         className="text-white font-weight-bold"
-                                                        onClick={() => props.history.push(joinUrlWithParamsId(NETWORK.COVERAGE.TERRITORY.CHILD, item.id))}
+                                                        onClick={() => props.history.push(joinUrlWithParamsId(NETWORK.COVERAGE.TERRITORY.CHILD.LIST, item.id))}
                                                     >
                                                         Détails
                                                     </Button>

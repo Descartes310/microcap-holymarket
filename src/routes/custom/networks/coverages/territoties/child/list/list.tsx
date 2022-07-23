@@ -34,9 +34,6 @@ const List = (props) => {
 
     return (
         <>
-            <PageTitleBar
-                title={"Liste des térritoires"}
-            />
             <CustomList
                 list={territories}
                 loading={false}

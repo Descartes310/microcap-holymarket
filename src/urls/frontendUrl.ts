@@ -337,25 +337,29 @@ export const NETWORK = {
     COVERAGE: {
         SELF: '/network/coverage',
         TERRITORY: {
-           SELF: '/network/coverage/territories',
-           LIST: '/network/coverage/territories/list',
-           CREATE: '/network/coverage/territories/create',
-           CHILD: '/network/coverage/territories/:id/sub-territories',
+            SELF: '/network/coverage/territories',
+            LIST: '/network/coverage/territories/list',
+            CREATE: '/network/coverage/territories/create',
+            CHILD: {
+                SELF: '/network/coverage/territories/:id',
+                LIST: '/network/coverage/territories/:id/sub-territories',
+                SETTING: '/network/coverage/territories/:id/settings',
+            },
         },
         CONTRACT: {
-           SELF: '/network/coverage/contracts',
-           LIST: '/network/coverage/contracts/list',
-           CREATE: '/network/coverage/contracts/create',
+            SELF: '/network/coverage/contracts',
+            LIST: '/network/coverage/contracts/list',
+            CREATE: '/network/coverage/contracts/create',
         },
         PARTNERSHIP: {
-           SELF: '/network/coverage/partnerships',
-           BROKER: '/network/coverage/partnerships/broker',
-           OPERATOR: '/network/coverage/partnerships/operator',
-           COMMUNITY: '/network/coverage/partnerships/community',
+            SELF: '/network/coverage/partnerships',
+            BROKER: '/network/coverage/partnerships/broker',
+            OPERATOR: '/network/coverage/partnerships/operator',
+            COMMUNITY: '/network/coverage/partnerships/community',
         },
         USERS: {
-           SELF: '/network/coverage/users',
-           LIST: '/network/coverage/users/list'
+            SELF: '/network/coverage/users',
+            LIST: '/network/coverage/users/list'
         }
     }
 } as const;
@@ -363,19 +367,19 @@ export const NETWORK = {
 export const BROKER = {
     SELF: '/brokers',
     AGENCY: {
-       SELF: '/brokers/agencies',
-       LIST: '/brokers/agencies/list',
-       CREATE: '/brokers/agencies/create',
+        SELF: '/brokers/agencies',
+        LIST: '/brokers/agencies/list',
+        CREATE: '/brokers/agencies/create',
     },
     COUNTER: {
-       SELF: '/brokers/counters',
-       LIST: '/brokers/counters/list',
-       CREATE: '/brokers/counters/create',
+        SELF: '/brokers/counters',
+        LIST: '/brokers/counters/list',
+        CREATE: '/brokers/counters/create',
     },
     CASHDESK: {
-       SELF: '/brokers/cashdesks',
-       LIST: '/brokers/cashdesks/list',
-       CREATE: '/brokers/cashdesks/create',
+        SELF: '/brokers/cashdesks',
+        LIST: '/brokers/cashdesks/list',
+        CREATE: '/brokers/cashdesks/create',
     }
 } as const;
 
@@ -386,27 +390,27 @@ export const MIPRO = {
         DASHBOARD: '/mipro/home/dashboard',
     },
     PREVISION: {
-       SELF: '/mipro/previsions',
-       LIST: '/mipro/previsions/list',
-       CREATE: '/mipro/previsions/create',
+        SELF: '/mipro/previsions',
+        LIST: '/mipro/previsions/list',
+        CREATE: '/mipro/previsions/create',
     },
     PERIOD: {
-       SELF: '/mipro/periods',
-       LIST: '/mipro/periods/pre/:id/list',
-       CREATE: '/mipro/periods/pre/:id/create',
+        SELF: '/mipro/periods',
+        LIST: '/mipro/periods/pre/:id/list',
+        CREATE: '/mipro/periods/pre/:id/create',
     },
     GOAL: {
-       SELF: '/mipro/goals',
-       LIST: '/mipro/goals/list',
-       CREATE: '/mipro/goals/create',
+        SELF: '/mipro/goals',
+        LIST: '/mipro/goals/list',
+        CREATE: '/mipro/goals/create',
     },
     ADMINISTRATION: {
-       SELF: '/mipro/administration',
-       GOAL: {
-           SELF: '/mipro/administration/goals',
-           LIST: '/mipro/administration/goals/list',
-           CREATE: '/mipro/administration/goals/create',
-       }
+        SELF: '/mipro/administration',
+        GOAL: {
+            SELF: '/mipro/administration/goals',
+            LIST: '/mipro/administration/goals/list',
+            CREATE: '/mipro/administration/goals/create',
+        }
     }
 } as const;
 
