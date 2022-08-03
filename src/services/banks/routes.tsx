@@ -30,8 +30,10 @@ export const GET_USER_PRESTATIONS = 'api/cashmanagements/subscriptions/prestatio
 
 export const GET_OPERATIONS = 'api/cashmanagements/operations';
 export const CREATE_OPERATION = 'api/cashmanagements/operations';
-export const LIQUID_OPERATION = (id) => `api/cashmanagements/operations/${id}/liquid`;
 export const PURGE_OPERATIONS = 'api/cashmanagements/operations/purge';
+export const ASK_PERMISSION = 'api/cashmanagements/operations/permission';
+export const CONFIRM_PERMISSION = 'api/cashmanagements/operations/permission';
+export const LIQUID_OPERATION = (id) => `api/cashmanagements/operations/${id}/liquid`;
 
 export const GET_INJECTIONS = 'api/cashmanagements/moneys/injections';
 export const CREATE_INJECTION = 'api/cashmanagements/moneys/injections';

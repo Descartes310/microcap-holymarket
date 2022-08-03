@@ -15,5 +15,7 @@ export const GET_ALL_ARTICLES = 'api/settings/articles';
 export const GET_ACTIVE_ARTICLES = 'api/settings/articles/list';
 export const GET_BLOG_TOPICS = 'api/settings/articles/topics/list';
 export const CREATE_BLOG_TOPIC = 'api/settings/articles/topics/create';
+export const FIND_BLOG_TOPIC = (id) => `api/settings/articles/topics/${id}/find`;
 export const GET_ARTICLE_DETAILS = (id) => `api/settings/articles/details/${id}`;
 export const UPDATE_ARTICLE_STATUS = (id) => `api/settings/articles/${id}/status`;
+export const UPDATE_BLOG_TOPIC = (id) => `api/settings/articles/topics/${id}/update`;

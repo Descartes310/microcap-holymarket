@@ -100,6 +100,14 @@ export default class BankService {
         return makeRequest('post', Routes.CREATE_OPERATION, data);
     }
 
+    static sendCodeToClient(data: any): Promise<any> {
+        return makeRequest('post', Routes.ASK_PERMISSION, data);
+    }
+
+    static checkCodeToClient(data: any): Promise<any> {
+        return makeRequest('get', Routes.CONFIRM_PERMISSION, data);
+    }
+
     static getOperations(): Promise<any> {
         return makeRequest('get', Routes.GET_OPERATIONS);
     }

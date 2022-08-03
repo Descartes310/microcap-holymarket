@@ -37,12 +37,20 @@ export default class SettingService {
         return makeRequest('get', Routes.GET_EVENTS);
     }
 
-    static getBlogTopics(): Promise<any> {
-        return makeRequest('get', Routes.GET_BLOG_TOPICS);
+    static getBlogTopics(isParent = false): Promise<any> {
+        return makeRequest('get', Routes.GET_BLOG_TOPICS, {parent: isParent});
     }
 
     static createBlogTopic(data): Promise<any> {
         return makeRequest('post', Routes.CREATE_BLOG_TOPIC, data);
+    }
+
+    static updateBlogTopic(id, data): Promise<any> {
+        return makeRequest('put', Routes.UPDATE_BLOG_TOPIC(id), data);
+    }
+
+    static findBlogTopic(id): Promise<any> {
+        return makeRequest('get', Routes.FIND_BLOG_TOPIC(id));
     }
 
     static createEvent(data): Promise<any> {

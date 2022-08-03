@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
-import { SETTING } from 'Url/frontendUrl';
+import { joinUrlWithParamsId, SETTING } from 'Url/frontendUrl';
 import { withRouter } from "react-router-dom";
+import Button from '@material-ui/core/Button';
 import CustomList from "Components/CustomList";
 import SettingService from 'Services/settings';
 import { setRequestGlobalAction } from 'Actions';
@@ -50,6 +51,8 @@ const List = (props) => {
                                     <thead>
                                         <tr>
                                             <th className="fw-bold">Désignation</th>
+                                            <th className="fw-bold">Parent</th>
+                                            <th className="fw-bold">Edition</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -61,6 +64,23 @@ const List = (props) => {
                                                             <h4 className="m-0 fw-bold text-dark">{item.title}</h4>
                                                         </div>
                                                     </div>
+                                                </td>
+                                                <td>
+                                                    <div className="media">
+                                                        <div className="media-body pt-10">
+                                                            <h4 className="m-0 fw-bold text-dark">{item?.parent?.title}</h4>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <Button
+                                                        color="primary"
+                                                        variant="contained"
+                                                        className="text-white font-weight-bold"
+                                                        onClick={() => props.history.push(joinUrlWithParamsId(SETTING.ARTICLE.TOPIC.UPDATE, item.id))}
+                                                    >
+                                                        Editer
+                                                    </Button>
                                                 </td>
                                             </tr>
                                         ))}

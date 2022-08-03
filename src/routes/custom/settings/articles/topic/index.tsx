@@ -1,6 +1,7 @@
 import React from 'react';
 import List from './list';
 import Create from './create';
+import Update from './update';
 import {connect} from "react-redux";
 import {injectIntl} from "react-intl";
 import { SETTING } from 'Url/frontendUrl';
@@ -15,6 +16,7 @@ const Topics = (props) => {
                     <Redirect exact from={`${match.url}/`} to={SETTING.ARTICLE.TOPIC.LIST} />
                     <Route path={SETTING.ARTICLE.TOPIC.LIST} component={List} />
                     <Route path={SETTING.ARTICLE.TOPIC.CREATE} component={Create} />
+                    <Route path={SETTING.ARTICLE.TOPIC.UPDATE} component={Update} />
                 </Switch>
             </>
         </div>

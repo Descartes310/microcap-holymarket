@@ -77,7 +77,7 @@ const Create = (props) => {
             props.setRequestGlobalAction(false);
         })
     }
-
+    
     const getTopics = () => {
         props.setRequestGlobalAction(true);
         SettingService.getBlogTopics().then((response) => {

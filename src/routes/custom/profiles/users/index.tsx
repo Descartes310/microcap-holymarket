@@ -17,7 +17,8 @@ class Users extends Component<any, any> {
             if (url.includes(PROFILE.USER.PERSONAL)) return 0;
             else if (url.includes(PROFILE.USER.CARD)) return 1;
             else if (url.includes(PROFILE.USER.ACCESS)) return 2;
-            else if (url.includes(PROFILE.USER.INSTITUTION) && props.authUser.referralTypes.includes('OPERATOR')) return 3;
+            else if (url.includes(PROFILE.USER.CONTACT)) return 3;
+            else if (url.includes(PROFILE.USER.INSTITUTION) && props.authUser.referralTypes.includes('OPERATOR')) return 4;
             else return 0;
         })(window.location.pathname);
 
@@ -34,7 +35,8 @@ class Users extends Component<any, any> {
                 case 0: return this.props.history.push(PROFILE.USER.PERSONAL);
                 case 1: return this.props.history.push(PROFILE.USER.CARD);
                 case 2: return this.props.history.push(PROFILE.USER.ACCESS);
-                case 3: return this.props.history.push(PROFILE.USER.INSTITUTION);
+                case 3: return this.props.history.push(PROFILE.USER.CONTACT);
+                case 4: return this.props.history.push(PROFILE.USER.INSTITUTION);
                 default: return this.props.history.push(PROFILE.USER.PERSONAL);
             }
         }
@@ -70,6 +72,10 @@ class Users extends Component<any, any> {
                                         <Tab
                                             icon={<i className="zmdi zmdi-account" />}
                                             label={"Mes accès"}
+                                        />
+                                        <Tab
+                                            icon={<i className="zmdi zmdi-account" />}
+                                            label={"Mes contacts"}
                                         />
                                         { authUser.referralTypes.includes('OPERATOR') && (
                                             <Tab

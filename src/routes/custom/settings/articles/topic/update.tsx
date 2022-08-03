@@ -13,15 +13,34 @@ import {Form, FormGroup, Input as InputStrap} from 'reactstrap';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
 
-const Create = (props) => {
+const Update = (props) => {
 
     const [label, setLabel] = useState('');
     const [topics, setTopics] = useState([]);
     const [topic, setTopic] = useState(null);
+    const [selectedTopic, setSelectedTopic] = useState(null);
 
     useEffect(() => {
         getTopics();
+        getTopic();
     }, []);
+
+    const getTopic = () => {
+        props.setRequestGlobalAction(true);
+
+        SettingService.findBlogTopic(props.match.params.id).then((response) => {
+            setTopic(response);
+            setLabel(response.title);
+            setSelectedTopic(response.parent);
+        })
+        .catch((err) => {
+            console.log(err);
+            NotificationManager.error('Thème non trouvé');
+        })
+        .finally(() => {
+            props.setRequestGlobalAction(false);
+        })
+    }
 
     const onSubmit = () => {
         if(!label)
@@ -31,18 +50,18 @@ const Create = (props) => {
             title: label        
         }
 
-        if(topic)
-            data.parent_id = topic.id;
+        if(selectedTopic)
+            data.parent_id = selectedTopic.id;
 
         props.setRequestGlobalAction(true);
 
-        SettingService.createBlogTopic(data).then(() => {
-            NotificationManager.success('Le thème a été créé avec succès');
+        SettingService.updateBlogTopic(props.match.params.id, data).then(() => {
+            NotificationManager.success('Le thème a été édité avec succès');
             props.history.push(SETTING.ARTICLE.TOPIC.LIST);
         })
         .catch((err) => {
             console.log(err);
-            NotificationManager.error('Une erreur est survenues lors de la création du thème');
+            NotificationManager.error('Une erreur est survenues lors de la mise a jour du thème');
         })
         .finally(() => {
             props.setRequestGlobalAction(false);
@@ -63,7 +82,7 @@ const Create = (props) => {
     return (
         <>
             <PageTitleBar
-                title={"Création d'un thème"}
+                title={"Edition d'un thème"}
             />
             <RctCollapsibleCard>
                 <Form onSubmit={onSubmit}>
@@ -86,11 +105,11 @@ const Create = (props) => {
                             Thème parent
                         </InputLabel>
                         <Autocomplete
-                            value={topic}
+                            value={selectedTopic}
                             options={topics}
                             id="combo-box-demo"
                             onChange={(__, item) => {
-                                setTopic(item);
+                                setSelectedTopic(item);
                             }}
                             getOptionLabel={(option) => option.title}
                             renderInput={(params) => <TextField {...params} variant="outlined" />}
@@ -112,4 +131,4 @@ const Create = (props) => {
     );
 };
 
-export default connect(() => { }, { setRequestGlobalAction })(withRouter(Create));
+export default connect(() => { }, { setRequestGlobalAction })(withRouter(Update));

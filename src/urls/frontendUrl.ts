@@ -154,6 +154,7 @@ export const PROFILE = {
         SELF: "/profiles/users",
         CARD: "/profiles/users/card",
         ACCESS: "/profiles/users/access",
+        CONTACT: "/profiles/users/contacts",
         PERSONAL: "/profiles/users/personal",
         INSTITUTION: "/profiles/users/institutions",
     }
@@ -328,6 +329,7 @@ export const SETTING = {
             SELF: "/settings/articles/topics",
             LIST: "/settings/articles/topics/list",
             CREATE: "/settings/articles/topics/create",
+            UPDATE: "/settings/articles/topics/:id/update",
         }
     }
 }

@@ -10,9 +10,11 @@ import { getReferralTypeLabel } from 'Helpers/helpers';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { NotificationManager } from 'react-notifications';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
+import VerifyUserOTPModal from './components/verifyUserOTPModal';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { Form, FormGroup, Input as InputStrap } from 'reactstrap';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
+import { checkPropTypes } from 'prop-types';
 
 const Create = (props) => {
 
@@ -22,6 +24,7 @@ const Create = (props) => {
     const [details, setDetails] = useState([]);
     const [accounts, setAccounts] = useState([]);
     const [account, setAccount] = useState(null);
+    const [showModal, setShowModal] = useState(false);
     const [prestation, setPrestation] = useState(null);
     const [prestations, setPrestations] = useState([]);
     const [membership, setMembership] = useState(null);
@@ -89,6 +92,34 @@ const Create = (props) => {
         }).finally(() => {
             props.setRequestGlobalAction(false);
         })
+    }
+
+    const sendCodeToUser = () => {
+
+        if(!member || !account || !prestation) {
+            NotificationManager.error("Le formulaire n'est pas correctement renseigné");
+            return;
+        }
+
+        setShowModal(false);
+
+        let data: any = {
+            account_id: account.id
+        };
+
+        props.setRequestGlobalAction(true);
+        BankService.sendCodeToClient(data).then(() => {
+            setShowModal(true);
+        }).catch(err => {
+            NotificationManager.error("Une erreur est survenue");
+        }).finally(() => {
+            props.setRequestGlobalAction(false);
+        })
+    }
+
+    const checkOTP = (otp) => {
+        setStep(2);
+        setShowModal(false);
     }
 
     return (
@@ -249,9 +280,9 @@ const Create = (props) => {
                                 <Button
                                     color="primary"
                                     variant="contained"
-                                    onClick={() => setStep(2)}
-                                    disabled={!member || !account || !prestation}
+                                    onClick={() => sendCodeToUser()}
                                     className="text-white font-weight-bold"
+                                    disabled={!member || !account || !prestation}
                                 >
                                     Continuer
                                 </Button>
@@ -279,6 +310,13 @@ const Create = (props) => {
                         }
                     </FormGroup>
                 </Form>
+                <VerifyUserOTPModal 
+                    show={showModal}
+                    accountId={account?.id}
+                    title={'Entrer le code OTP'}
+                    onClose={() => setShowModal(false)}
+                    callback={(otp) => checkOTP(otp)}
+                />
             </RctCollapsibleCard>
         </>
     );
