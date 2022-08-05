@@ -11,8 +11,10 @@ import BlogArticle from 'Routes/custom/dashboard/landing/discover/components/Blo
 const Blog = (props) => {
 
     const [topics, setTopics] = useState([]);
+    const [authors, setAuthors] = useState([]);
     const [articles, setArticles] = useState([]);
     const [topicSelected, setTopicSelected] = useState([]);
+    const [authorsSelected, setAuthorsSelected] = useState([]);
 
     useEffect(() => {
       getArticles();
@@ -21,7 +23,11 @@ const Blog = (props) => {
 
     const getArticles = () => {
         SettingService.getActiveArticles()
-        .then((response) => setArticles(response))
+        .then((response) => {
+          setArticles(response);
+          setAuthors(response.map(a => a.author));
+          setAuthorsSelected(response.map(a => a.author));
+        })
         .catch((err) => {
             console.log(err);
         });
@@ -45,6 +51,14 @@ const Blog = (props) => {
       }
     }
 
+    const sortAuthors = (name) => {
+      if(authorsSelected.includes(name)) {
+        setAuthorsSelected(authorsSelected.filter(author => author != name));
+      } else {
+        setAuthorsSelected([...authorsSelected, name]);
+      }
+    }
+
     document.body.style.overflow = "auto";
 
     return (
@@ -62,7 +76,8 @@ const Blog = (props) => {
           <div className='row d-flex flex-row'>
             <div className="col-sm-12 col-md-10 col-lg-10">
               <div className="row">
-                { articles.filter(a => topicSelected.includes(a.topic?.id)).map((article, index) => (
+                { articles.filter(a => topicSelected.includes(a.topic?.id) && authorsSelected.includes(a.author)).map((article, index) => (
+                // { articles.map((article, index) => (
                   <div 
                     key={index} 
                     className="col-sm-6 col-md-4 col-lg-4 w-8-full cursor-pointer" 
@@ -75,18 +90,33 @@ const Blog = (props) => {
             </div>
             <div className="col-sm-12 col-md-2 col-lg-2 d-flex align-items-baseline flex-column">
               <h2>Thèmes</h2>
-              <FormGroup className="col-sm-12 has-wrapper d-flex align-items-baseline">
-                { topics.map(topic => (
+              { topics.map(topic => (
+                <div className='w-100'>
                   <FormControlLabel control={
-                      <Checkbox
-                          color="primary"
-                          checked={topicSelected.includes(topic.id)}
-                          onChange={() => sortArticles(topic.id)}
-                      />
-                  } label={`${topic.title}`}
+                    <Checkbox
+                        color="primary"
+                        checked={topicSelected.includes(topic.id)}
+                        onChange={() => sortArticles(topic.id)}
+                    />
+                    } label={`${topic.title}`}
                   />
-                ))}
-              </FormGroup>
+                </div>
+                
+              ))}
+
+              <h2 className='mt-10'>Auteurs</h2>
+              { authors.map(author => (
+                <div className='w-100'>
+                  <FormControlLabel control={
+                    <Checkbox
+                        color="primary"
+                        checked={authorsSelected.includes(author)}
+                        onChange={() => sortAuthors(author)}
+                    />
+                    } label={`${author}`}
+                  />
+                </div>
+              ))}
             </div>
             
           </div>
