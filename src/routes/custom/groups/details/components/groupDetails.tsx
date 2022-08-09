@@ -12,17 +12,29 @@ const GroupDetails = ({ id, setRequestGlobalAction }: any) => {
     const [group, setGroup] = useState(null);
     const [title, setTitle] = useState(null);
     const [image, setImage] = useState(null);
+    const [articles, setArticles] = useState([]);
     const [description, setDescription] = useState(null);
 
     useEffect(() => {
         getGroup(id);
     }, [id]);
 
+    const getArticles = (reference) => {
+        GroupService.getActiveArticles({reference})
+        .then((response) => {
+          setArticles(response);
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+    }
+
     const getGroup = (reference) => {
         setRequestGlobalAction(true),
         GroupService.getGroupDetails(reference)
             .then(response => {
                 setGroup(response);
+                getArticles(response.reference)
                 let titleDetails = group.details.find(d => d.detailsType === 'TITLE');
                 let imageDetails = group.details.find(d => d.detailsType === 'IMAGE');
                 let descriptionDetails = group.details.find(d => d.detailsType === 'DESCRIPTION');
@@ -52,6 +64,33 @@ const GroupDetails = ({ id, setRequestGlobalAction }: any) => {
                             }}>
                             </span>
                         </CardBody>
+                        <div className="col-sm-12 col-md-12 col-lg-12">
+                            <div className="row">
+                                { articles.map((article, index) => (
+                                <div 
+                                    key={index} 
+                                    className="col-sm-12 col-md-12 col-lg-12 cursor-pointer" 
+                                >
+                                    <Card>
+                                        <div>
+                                            <img src={article ? getFilePath(article.cover) : DEFAULT_BANNER} style={{ maxHeight: 250, maxWidth: '100%' }}/>
+                                        </div>
+                                        <CardBody>
+                                            <CardTitle>
+                                                <h1 className='fw-bold mt-10' style={{ fontSize: '2.5rem' }}> { article ? article.title : 'Article Title' } </h1>
+                                            </CardTitle>
+                                            <CardBody>
+                                                <span dangerouslySetInnerHTML={{
+                                                    __html: article?.content
+                                                }}>
+                                                </span>
+                                            </CardBody>
+                                        </CardBody>
+                                    </Card>
+                                </div>
+                                ))}
+                            </div>
+                        </div>
                     </CardBody>
                 </Card>
             </div>

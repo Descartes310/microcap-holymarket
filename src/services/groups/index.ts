@@ -87,4 +87,40 @@ export default class GroupService {
     static findGroupMember(id: number): Promise<any> {
         return makeRequest('get', Routes.FIND_GROUP_MEMBER(id));
     }
+
+    static getBlogTopics(isParent = false): Promise<any> {
+        return makeRequest('get', Routes.GET_BLOG_TOPICS, {parent: isParent});
+    }
+
+    static createBlogTopic(data): Promise<any> {
+        return makeRequest('post', Routes.CREATE_BLOG_TOPIC, data);
+    }
+
+    static updateBlogTopic(id, data): Promise<any> {
+        return makeRequest('put', Routes.UPDATE_BLOG_TOPIC(id), data);
+    }
+
+    static findBlogTopic(id): Promise<any> {
+        return makeRequest('get', Routes.FIND_BLOG_TOPIC(id));
+    }
+
+    static getAllArticles(): Promise<any> {
+        return makeRequest('get', Routes.GET_ALL_ARTICLES);
+    }
+
+    static createArticle(data, config): Promise<any> {
+        return makeRequest('post', Routes.CREATE_ARTICLE, data, config);
+    }
+
+    static getActiveArticles(data): Promise<any> {
+        return makeRequest('get', Routes.GET_ACTIVE_ARTICLES, data);
+    }
+
+    static getArticleDetails(id: number): Promise<any> {
+        return makeRequest('get', Routes.GET_ARTICLE_DETAILS(id));
+    }
+
+    static updateArticleStatus(id: number): Promise<any> {
+        return makeRequest('put', Routes.UPDATE_ARTICLE_STATUS(id));
+    }
 }

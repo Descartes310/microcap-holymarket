@@ -260,6 +260,13 @@ export default [
             "profiles": ['GROUP'],
          },
          {
+            "menu_title": "Fil d'actualité",
+            "new_item": false,
+            "path": GROUP.ADMINISTRATION.ARTICLE.ITEM.LIST,
+            "permissions": [Permission.group.admin.request.name],
+            "profiles": ['GROUP'],
+         },
+         {
             "menu_title": "Paramètres",
             "new_item": false,
             "path": GROUP.ADMINISTRATION.PARAMETER.CREATE,

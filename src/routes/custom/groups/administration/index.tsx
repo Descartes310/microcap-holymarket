@@ -3,6 +3,7 @@ import Posts from './posts';
 import Roles from './roles';
 import Members from './members';
 import Requests from './requests';
+import Articles from './articles';
 import Settings from './settings';
 import {connect} from "react-redux";
 import {injectIntl} from "react-intl";
@@ -21,6 +22,7 @@ const GroupAdministration = (props) => {
                     <Route path={GROUP.ADMINISTRATION.MEMBER.SELF} component={Members} />
                     <Route path={GROUP.ADMINISTRATION.REQUEST.SELF} component={Requests} />
                     <Route path={GROUP.ADMINISTRATION.PARAMETER.SELF} component={Settings} />
+                    <Route path={GROUP.ADMINISTRATION.ARTICLE.SELF} component={Articles} />
                 </Switch>
             </>
         </div>

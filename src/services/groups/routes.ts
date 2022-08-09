@@ -23,3 +23,13 @@ export const GET_GROUP_POSTS = "api/socialnetworks/groups/posts";
 export const CREATE_GROUP_POST = "api/socialnetworks/groups/posts";
 export const GET_GROUP_POST_MOTIVATIONS = `api/socialnetworks/groups/posts/motivations`;
 export const CREATE_GROUP_POST_MOTIVATION = `api/socialnetworks/groups/posts/motivations`;
+
+export const CREATE_ARTICLE = 'api/socialnetworks/groups/articles';
+export const GET_ALL_ARTICLES = 'api/socialnetworks/groups/articles';
+export const GET_ACTIVE_ARTICLES = 'api/socialnetworks/groups/articles/list';
+export const GET_BLOG_TOPICS = 'api/socialnetworks/groups/articles/topics/list';
+export const CREATE_BLOG_TOPIC = 'api/socialnetworks/groups/articles/topics/create';
+export const FIND_BLOG_TOPIC = (id) => `api/socialnetworks/groups/articles/topics/${id}/find`;
+export const GET_ARTICLE_DETAILS = (id) => `api/socialnetworks/groups/articles/details/${id}`;
+export const UPDATE_ARTICLE_STATUS = (id) => `api/socialnetworks/groups/articles/${id}/status`;
+export const UPDATE_BLOG_TOPIC = (id) => `api/socialnetworks/groups/articles/topics/${id}/update`;

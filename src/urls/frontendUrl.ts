@@ -126,6 +126,17 @@ export const GROUP = {
             JOIN: '/groups/administration/requests/joins',
             INVITATION: '/groups/administration/requests/invitations',
         },
+        ARTICLE: {
+            SELF: '/groups/administration/articles',
+            ITEM: {
+                LIST: '/groups/administration/articles/items/list',
+                CREATE: '/groups/administration/articles/items/create'
+            },
+            TOPIC: {
+                LIST: '/groups/administration/articles/topic/list',
+                CREATE: '/groups/administration/articles/topic/create'
+            },
+        },
         POST: {
             SELF: '/groups/administration/posts',
             LIST: '/groups/administration/posts/list',
