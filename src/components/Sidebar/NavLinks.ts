@@ -505,7 +505,7 @@ export default [
             "child_routes": null
          },
          {
-            "menu_title": "Opération",
+            "menu_title": "Assistance",
             "new_item": false,
             "path": BANK.OPERATION.CREATE,
             "permissions": [Permission.bank.counter.operation.name],
