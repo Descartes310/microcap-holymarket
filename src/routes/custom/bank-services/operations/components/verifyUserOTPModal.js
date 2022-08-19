@@ -20,24 +20,30 @@ class verifyUserOTPModal extends Component {
     }
 
     onSubmit = () => {
-        if(!this.props.accountId || !this.state.otp) {
-            NotificationManager.error("Le formulaire n'est pas correctement renseigné");
-            return;
+        if(this.props.type == "INIT_OPERATION") {
+            if(!this.props.accountId || !this.state.otp) {
+                NotificationManager.error("Le formulaire n'est pas correctement renseigné");
+                return;
+            }
+
+            let data = {
+                otp: this.state.otp,
+                accountId: this.props.accountId,
+            };
+
+            this.props.setRequestGlobalAction(true);
+            BankService.checkCodeToClient(data).then(() => {
+                this.props.callback(this.state.otp);
+            }).catch(err => {
+                NotificationManager.error("Code incorrect");
+            }).finally(() => {
+                this.props.setRequestGlobalAction(false);
+            });
+        } else {
+            if(this.props.type == "CONFIRM_OPERATION") {
+                this.props.callback(this.state.otp);
+            }
         }
-
-        let data = {
-            otp: this.state.otp,
-            accountId: this.props.accountId,
-        };
-
-        this.props.setRequestGlobalAction(true);
-        BankService.checkCodeToClient(data).then(() => {
-            this.props.callback(this.state.otp);
-        }).catch(err => {
-            NotificationManager.error("Code incorrect");
-        }).finally(() => {
-            this.props.setRequestGlobalAction(false);
-        })
     }
 
     render() {

@@ -3,6 +3,7 @@ import React from 'react';
 import Create from './create';
 import AdminList from './bank';
 import {connect} from "react-redux";
+import Assitance from './assistance';
 import {injectIntl} from "react-intl";
 import { BANK } from 'Url/frontendUrl';
 import {withRouter, Switch, Redirect, Route} from "react-router-dom";
@@ -15,6 +16,7 @@ const BankOperation = (props) => {
                 <Switch>
                     <Redirect exact from={`${match.url}/`} to={BANK.OPERATION.CREATE} />
                     <Route path={BANK.OPERATION.CREATE} component={Create} />
+                    <Route path={BANK.OPERATION.ASSISTANCE} component={Assitance} />
                     <Route path={BANK.OPERATION.LIST} component={List} />
                     <Route path={BANK.OPERATION.BANK.SELF} component={AdminList} />
                 </Switch>

@@ -451,6 +451,7 @@ export const BANK = {
         SELF: '/bank/operations',
         LIST: '/bank/operations/list',
         CREATE: '/bank/operations/create',
+        ASSISTANCE: '/bank/operations/assistance',
         BANK: {
             SELF: '/bank/operations/bank',
             LIST: '/bank/operations/bank/list',

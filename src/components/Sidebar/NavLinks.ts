@@ -507,6 +507,14 @@ export default [
          {
             "menu_title": "Assistance",
             "new_item": false,
+            "path": BANK.OPERATION.ASSISTANCE,
+            "permissions": [Permission.bank.counter.operation.name],
+            "profiles": ['PROVIDER_COUNTER'],
+            "child_routes": null
+         },
+         {
+            "menu_title": "Opération",
+            "new_item": false,
             "path": BANK.OPERATION.CREATE,
             "permissions": [Permission.bank.counter.operation.name],
             "profiles": ['PROVIDER_COUNTER'],

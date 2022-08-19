@@ -191,12 +191,24 @@ export default class BankService {
     static setMMSSettings(data: any): Promise<any> {
         return makeRequest('post', Routes.SET_MMS_SETTINGS, data);
     }
-
+        
     static createChequeTopic(data: any): Promise<any> {
         return makeRequest('post', Routes.CHEQUE_TOPIC, data);
     }
-
+    
     static getChequeTopics(data: any): Promise<any> {
         return makeRequest('get', Routes.CHEQUE_TOPIC, data);
+    }
+    
+    static findOperationByBankAuth(data: any): Promise<any> {
+        return makeRequest('get', Routes.FIND_OPERATION_BY_BANK_AUTH, data);
+    }
+
+    static setConfirmOperationOtp(reference, data: any): Promise<any> {
+        return makeRequest('post', Routes.SEND_CONFIRM_OPERATION_OTP(reference), data);
+    }
+
+    static confirmOperation(reference, data: any): Promise<any> {
+        return makeRequest('put', Routes.CONFIRM_OPERATION(reference), data);
     }
 }

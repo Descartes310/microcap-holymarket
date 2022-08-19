@@ -34,6 +34,9 @@ export const PURGE_OPERATIONS = 'api/cashmanagements/operations/purge';
 export const ASK_PERMISSION = 'api/cashmanagements/operations/permission';
 export const CONFIRM_PERMISSION = 'api/cashmanagements/operations/permission';
 export const LIQUID_OPERATION = (id) => `api/cashmanagements/operations/${id}/liquid`;
+export const SEND_CONFIRM_OPERATION_OTP = (reference) => `api/sequences/operations/${reference}/otp`;
+export const CONFIRM_OPERATION = (reference) => `api/cashmanagements/operations/${reference}/confirm`;
+export const FIND_OPERATION_BY_BANK_AUTH = 'api/cashmanagements/operations/find-by-bank-authorization';
 
 export const GET_INJECTIONS = 'api/cashmanagements/moneys/injections';
 export const CREATE_INJECTION = 'api/cashmanagements/moneys/injections';
