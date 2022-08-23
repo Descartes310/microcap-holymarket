@@ -30,6 +30,7 @@ const Create = (props) => {
 
     const [type, setType] = useState(null);
     const [types, setTypes] = useState([]);
+    const [name, setName] = useState(null);
     const [member, setMember] = useState(null);
     const [category, setCategory] = useState(null);
     const [categories, setCategories] = useState([]);  
@@ -76,7 +77,7 @@ const Create = (props) => {
 
     const onSubmit = () => {
 
-        if(!member || !type || !paymentMethod) {
+        if(!member || !type || !paymentMethod || !name) {
             NotificationManager.error("Les informations renseignées sont incompletes ou incorrectes");
             return;
         }
@@ -84,6 +85,7 @@ const Create = (props) => {
         props.setRequestGlobalAction(true);
 
         let data = {
+            name: name,
             reference: membership,
             payment_mode: paymentMethod.value,
             account_type_reference: type.reference,
@@ -145,6 +147,21 @@ const Create = (props) => {
                             </FormGroup>
                         </div>
                     )}
+
+                    <FormGroup className="has-wrapper">
+                        <InputLabel className="text-left" htmlFor="name">
+                            Nom du guichet
+                        </InputLabel>
+                        <InputStrap
+                            required
+                            id="name"
+                            type="text"
+                            name='name'
+                            value={name}
+                            className="input-lg"
+                            onChange={(e) => setName(e.target.value)}
+                        />
+                    </FormGroup>
 
                     <div className="col-md-12 col-sm-12 has-wrapper mb-30">
                         <InputLabel className="text-left">

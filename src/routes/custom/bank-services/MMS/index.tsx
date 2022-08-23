@@ -14,9 +14,9 @@ class MMS extends Component<any, any> {
     constructor(props: any) {
         super(props);
         const defaultState = (function (url) {
-            if (url.includes(BANK.MMS.CHEQUE.SELF)) return 0;
-            else if (url.includes(BANK.MMS.TRANSFER.SELF)) return 1;
-            else if (url.includes(BANK.MMS.SETTINGS.SELF)) return 2;
+            if (url.includes(BANK.MMS.SETTINGS.SELF)) return 0;
+            // if (url.includes(BANK.MMS.CHEQUE.SELF)) return 0;
+            // else if (url.includes(BANK.MMS.TRANSFER.SELF)) return 1;
             else return 0;
         })(window.location.pathname);
 
@@ -30,9 +30,9 @@ class MMS extends Component<any, any> {
         this.setState({ activeTab: value });
         if (oldActivateTab !== value) {
             switch (value) {
-                case 0: return this.props.history.push(BANK.MMS.CHEQUE.SELF);
-                case 1: return this.props.history.push(BANK.MMS.TRANSFER.SELF);
-                case 2: return this.props.history.push(BANK.MMS.SETTINGS.SELF);
+                case 0: return this.props.history.push(BANK.MMS.SETTINGS.SELF);
+                // case 0: return this.props.history.push(BANK.MMS.CHEQUE.SELF);
+                // case 1: return this.props.history.push(BANK.MMS.TRANSFER.SELF);
                 default: return this.props.history.push(BANK.MMS.CHEQUE.SELF);
             }
         }
@@ -56,14 +56,14 @@ class MMS extends Component<any, any> {
                                         indicatorColor="primary"
                                         centered
                                     >
-                                        <Tab
+                                        {/* <Tab
                                             icon={<i className="zmdi zmdi-home" />}
                                             label={"Chèques"}
                                         />
                                         <Tab
                                             icon={<i className="zmdi zmdi-home" />}
                                             label={"Virements"}
-                                        />
+                                        /> */}
                                         <Tab
                                             icon={<i className="zmdi zmdi-home" />}
                                             label={"Parametrage"}
