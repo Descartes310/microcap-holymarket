@@ -1,6 +1,6 @@
+import Hit from './components/Hit';
 import { connect } from 'react-redux';
 import Filters from './components/Filters';
-import HitModel from './components/HitModel';
 import ProductService from 'Services/products';
 import { withRouter } from "react-router-dom";
 import { setRequestGlobalAction } from 'Actions';
@@ -9,26 +9,35 @@ import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
 
 const Shop = (props) => {
 
-	const [productModels, setProductModels] = useState([]);
+	const [model, setModel] = useState(null);
+	const [products, setProducts] = useState([]);
 
 	useEffect(() => {
+		findProductModel();
 		getProducts();
 	}, []);
 
 	const getProducts = () => {
 		props.setRequestGlobalAction(true);
-		ProductService.getShopProductModels({ type: 'PRIVATE' })
-			.then(response => setProductModels(response))
+		ProductService.getShopProducts({ type: 'PRIVATE' })
+			.then(response => setProducts(response))
+			.finally(() => props.setRequestGlobalAction(false))
+	}
+
+	const findProductModel = () => {
+		props.setRequestGlobalAction(true);
+		ProductService.findProductModel(props.match.params.reference)
+			.then(response => setModel(response))
 			.finally(() => props.setRequestGlobalAction(false))
 	}
 
 	return (
 		<div className="shop-wrapper">
-			<PageTitleBar title={'MicroCap Shop'} />
+			<PageTitleBar title={model ? model.label : 'MicroCap Shop'} />
 			<div className="ais-InstantSearch">
 				<div className="row">
-					{ productModels.map(product => (
-						<HitModel product={product} />
+					{ products.map(product => (
+						<Hit product={product} />
 					))}
 				</div>
 			</div>

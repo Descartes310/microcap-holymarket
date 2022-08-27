@@ -20,7 +20,6 @@ import ErrorInputComponent from "Components/ErrorInputComponent";
 import InputLabel from "@material-ui/core/InputLabel/InputLabel";
 import CustomAsyncComponent from "Components/CustomAsyncComponent";
 
-
 const SecondStepForGroup = props => {
 
     const { loading, previousStep, setData, defaultState, intl } = props;

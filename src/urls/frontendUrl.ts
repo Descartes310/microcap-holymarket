@@ -229,6 +229,7 @@ export const MARKETPLACE = {
     SHOP: "/marketplace/shop",
     CART: "/marketplace/cart",
     ORDERS: "/marketplace/orders",
+    SHOP_PRODUCTS: "/marketplace/shop/:reference/products",
     CHECKOUT: "/marketplace/checkout",
     SALES: "/marketplace/orders/:id/sales",
     CATAlOG: {
@@ -286,7 +287,8 @@ export const MARKETPLACE = {
         PRODUCT: {
             SELF: "/marketplace/store/products",
             LIST: "/marketplace/store/products/list",
-            CREATE: "/marketplace/store/products/create"
+            CREATE: "/marketplace/store/products/create",
+            CONFIGURE: "/marketplace/store/products/:reference/configure",
         },
         ORDER: {
             SELF: "/marketplace/store/orders",

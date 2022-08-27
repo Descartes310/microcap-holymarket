@@ -7,6 +7,7 @@ import Sales from './orders/sales';
 import Checkout from './checkout';
 import {connect} from "react-redux";
 import {injectIntl} from "react-intl";
+import ShopProducts from './shop/products';
 import { MARKETPLACE } from 'Url/frontendUrl';
 import Products from './administration/models';
 import Catalogs from './administration/catalogs';
@@ -21,6 +22,7 @@ const Marketplace = (props) => {
             <>
                 <Switch>
                     <Redirect exact from={`${match.url}/`} to={MARKETPLACE.CATAlOG.SELF} />
+                    <Route path={MARKETPLACE.SHOP_PRODUCTS} component={ShopProducts} />
                     <Route path={MARKETPLACE.SHOP} component={Shop} />
                     <Route path={MARKETPLACE.CART} component={Cart} />
                     <Route path={MARKETPLACE.SALES} component={Sales} />

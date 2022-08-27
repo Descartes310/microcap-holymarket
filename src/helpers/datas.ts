@@ -33,6 +33,15 @@ export const getIndirectSaleProcess = () => {
     ];
 }
 
+export const getProductTypes = () => {
+    return [
+        {
+            label: 'Codev',
+            value: 'CODEV'
+        }
+    ];
+}
+
 
 export const getTimeUnits = () => {
     return [

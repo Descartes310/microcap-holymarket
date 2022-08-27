@@ -20,12 +20,24 @@ export default class ProductService {
         return makeRequest('get', Routes.GET_PRODUCT_MODELS, data);
     }
 
+    static findProductModel(reference: any): Promise<any> {
+        return makeRequest('get', Routes.FIND_PRODUCT_MODEL(reference));
+    }
+
     static getProductModelAvailables(): Promise<any> {
         return makeRequest('get', Routes.GET_PRODUCT_MODEL_AVAILABLES);
     }
 
     static createProduct(data: any, config: any): Promise<any> {
         return makeRequest('post', Routes.CREATE_PRODUCT, data, config);
+    }
+
+    static createCodevProduct(data: any): Promise<any> {
+        return makeRequest('post', Routes.CREATE_CODEV_PRODUCT_MODEL, data);
+    }
+
+    static updateProductDetails(data: any): Promise<any> {
+        return makeRequest('post', Routes.UPDATE_PRODUCT_DETAILS, data);
     }
 
     static getProducts(): Promise<any> {
@@ -36,7 +48,15 @@ export default class ProductService {
         return makeRequest('get', Routes.GET_SHOP_PRODUCTS, data);
     }
 
+    static getShopProductModels(data): Promise<any> {
+        return makeRequest('get', Routes.GET_SHOP_PRODUCT_MODELS, data);
+    }
+
     static changeProductStatus(id: number): Promise<any> {
         return makeRequest('put', Routes.CHANGE_PRODUCT_STATUS(id));
+    }
+
+    static findProduct(reference: string): Promise<any> {
+        return makeRequest('get', Routes.FIND_PRODUCT(reference));
     }
 }

@@ -2,12 +2,14 @@ import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import { onAddItemToCart } from 'Actions';
 import { RctCard } from 'Components/RctCard';
+import ProductDetails from './ProductDetails';
 import { textTruncate, getFilePath } from "Helpers/helpers";
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 class Hit extends Component {
 	state = {
-		loading: false
+		loading: false,
+		showDetails: false
 	}
 
 	//Add Item to cart
@@ -33,12 +35,12 @@ class Hit extends Component {
 
 	render() {
 		const { product } = this.props;
-		const { loading } = this.state;
+		const { loading, showDetails } = this.state;
 		return (
 			<RctCard colClasses="d-flex col-md-3 col-sm-6 mb-0 flex-column justify-content-between overflow-hidden">
 				<div className="overlay-wrap overflow-hidden">
 					<div className="text-center p-4">
-						<img src={getFilePath(product.image)} className="img-fluid" alt="product" style={{ height: 185 }} />
+						<img src={product.image ? getFilePath(product.image) : require('Assets/img/product.png')} className="img-fluid" alt="product" style={{ height: 185 }} />
 					</div>
 					<div className="overlay-content d-flex align-items-end">
 						{
@@ -49,15 +51,26 @@ class Hit extends Component {
 							)}
 					</div>
 				</div>
-				<div className="product-info border-top p-3">
+				<div className="product-info border-top p-3 cursor-pointer" onClick={() => {
+					this.setState({ showDetails: true });
+				}}>
 					<div className="d-flex justify-content-between">
 						<h2 className="text-danger">€{product.price}</h2>
 					</div>
-					<h4 className="text-dark">{textTruncate(product.label, 25)}</h4>
+					<h4 className="text-dark">{product.label}</h4>
+					<h4 style={{ color: '#ffb93a' }}>{product.seller}</h4>
 					<p className="mb-5 text-muted font-xs">
 						{textTruncate(product.description, 50)}
 					</p>
 				</div>
+				{ showDetails && (
+					<ProductDetails 
+						product={product}
+						show={showDetails}
+						title={product.label}
+						onClose={() => this.setState({ showDetails: false })}
+					/>
+				)}
 			</RctCard>
 		)
 	}
