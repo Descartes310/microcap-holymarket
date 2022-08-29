@@ -36,7 +36,7 @@ import { Link } from 'react-router-dom';
 	}
  
     render() {
-       const { cart, deleteItemFromCart, match } = this.props;
+       const { cart, deleteItemFromCart } = this.props;
        return (
           <div className="cart-wrapper">
              <PageTitleBar title={'Mon panier'} />
@@ -57,7 +57,7 @@ import { Link } from 'react-router-dom';
                          {!this.isCartEmpty() ? cart.items.map((cart, key) => (
                             <tr key={key}>
                                <td className="w-10 text-center">
-                                   <img src={getFilePath(cart.image)} alt="products" className="media-object" width="100" height="100" />
+                                   <img src={cart.image ? getFilePath(cart.image) : require('Assets/img/product.png')} alt="products" className="media-object" width="100" height="100" />
                                 </td>
                                <td className="w-50">
                                   <h3>{textTruncate(cart.label, 40)}</h3>

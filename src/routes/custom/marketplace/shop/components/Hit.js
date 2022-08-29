@@ -3,23 +3,43 @@ import React, { Component } from 'react';
 import { onAddItemToCart } from 'Actions';
 import { RctCard } from 'Components/RctCard';
 import ProductDetails from './ProductDetails';
+import CodevStep1 from '../components/codev/step1';
+import CodevStep2 from '../components/codev/step2';
+import CodevStep3 from '../components/codev/step3';
 import { textTruncate, getFilePath } from "Helpers/helpers";
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 class Hit extends Component {
 	state = {
+		data: {},
+		product: null,
 		loading: false,
-		showDetails: false
+		showDetails: false,
+		showCodevStep1: false,
+		showCodevStep2: false,
+		showCodevStep3: false,
 	}
 
 	//Add Item to cart
 	onPressAddToCart(cartItem, e) {
+		switch (this.props.model.specialType) {
+			case 'CODEV':
+				this.setState({ showCodevStep1: true, product: cartItem });
+				break;
+			default:
+				this.addToCart(cartItem, e);
+				break;
+		}
+	}
+
+	addToCart = (cartItem, e = null) => {
 		this.setState({ loading: true });
-		setTimeout(() => {
-			this.props.onAddItemToCart(cartItem);
-		}, 1000)
-		e.preventDefault();
-		this.setState({ loading: false });
+		if(this.state.data)
+			cartItem.customInfos = this.state.data;
+		console.log(cartItem)
+		this.props.onAddItemToCart(cartItem);
+		if(e) e.preventDefault();
+		this.setState({ loading: false, product: null, data: null });
 	}
 
 	isItemExistInCart(id) {
@@ -35,7 +55,8 @@ class Hit extends Component {
 
 	render() {
 		const { product } = this.props;
-		const { loading, showDetails } = this.state;
+		const { loading, showDetails, showCodevStep1, 
+			showCodevStep2, showCodevStep3, data } = this.state;
 		return (
 			<RctCard colClasses="d-flex col-md-3 col-sm-6 mb-0 flex-column justify-content-between overflow-hidden">
 				<div className="overlay-wrap overflow-hidden">
@@ -46,7 +67,7 @@ class Hit extends Component {
 						{
 							!this.isItemExistInCart(product.id) && (
 								<a href="#" className="bg-primary text-center w-100 cart-link text-white py-2" onClick={(e) => this.onPressAddToCart(product, e)}>
-									{loading ? <CircularProgress className="text-white" color="inherit" size={20} /> : 'Add To Cart'}
+									{loading ? <CircularProgress className="text-white" color="inherit" size={20} /> : 'Ajouter au panier'}
 								</a>
 							)}
 					</div>
@@ -69,6 +90,51 @@ class Hit extends Component {
 						show={showDetails}
 						title={product.label}
 						onClose={() => this.setState({ showDetails: false })}
+					/>
+				)}
+				{ showCodevStep1 && (
+					<CodevStep1 
+						product={product}
+						show={showCodevStep1}
+						onClose={() => this.setState({ showCodevStep1: false })}
+						onSubmit={(data) => {
+							this.setState({ 
+								data: data,
+								showCodevStep1: false, 
+								showCodevStep2: data.plan === 'INDIVIS', 
+								showCodevStep3: data.plan === 'PERSONNAL' 
+							});
+						}}
+					/>
+				)}
+				{ showCodevStep2 && (
+					<CodevStep2 
+						data={data}
+						product={product}
+						show={showCodevStep2}
+						onClose={() => this.setState({ showCodevStep2: false })}						
+						onSubmit={(data) => {
+							this.setState({ 
+								data: data,
+								showCodevStep1: false, 
+								showCodevStep2: false, 
+								showCodevStep3: true 
+							})
+						}}
+					/>
+				)}
+				{ showCodevStep3 && (
+					<CodevStep3 
+						data={data}
+						product={product}
+						show={showCodevStep3}
+						onClose={() => this.setState({ showCodevStep3: false })}
+						onSubmit={(data) => {
+							console.log(data);
+							this.setState({ data: data, showCodevStep1: false, showCodevStep2: false, showCodevStep3: false }, () => {
+								this.addToCart(this.state.product);
+							});
+						}}
 					/>
 				)}
 			</RctCard>

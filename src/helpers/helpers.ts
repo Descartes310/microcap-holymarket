@@ -148,6 +148,11 @@ export function getTheDate(timestamp, format) {
     return moment(time).format(formatDate);
 }
 
+export function convertDate(date, format) {
+    let formatDate = format ? format : 'MM-DD-YYYY';
+    return moment(date).format(formatDate);
+}
+
 /**
  * Convert Date To Timestamp
 */

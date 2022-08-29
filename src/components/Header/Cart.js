@@ -84,7 +84,7 @@ class Carts extends Component {
 											<li className="d-flex justify-content-between" key={key}>
 												<div className="media overflow-hidden w-75">
 													<div className="mr-15">
-														<img src={getFilePath(cart.image)} alt="products" className="media-object" width="63" height="63" />
+														<img src={cart.image ? getFilePath(cart.image) : require('Assets/img/product.png')} alt="products" className="media-object" width="63" height="63" />
 													</div>
 													<div className="media-body">
 														<span className="fs-14 d-block">{textTruncate(cart.label, 25)}</span>

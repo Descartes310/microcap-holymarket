@@ -37,6 +37,7 @@ const Create = (props) => {
     const [priceUnit, setPriceUnit] = useState(null);
     const [isAccount, setIsAccount] = useState(false);
     const [description, setDescription] = useState('');
+    const [specialType, setSpecialType] = useState(null);
     const [accountUnit, setAccountUnit] = useState(null);
     const [saleTypeUnit, setSaleTypeUnit] = useState(null);
     const [maximumByUser, setMaximumByUser] = useState(null);
@@ -130,6 +131,10 @@ const Create = (props) => {
             data.accountUnitReference = accountUnit.reference;
         }
 
+        if(specialType) {
+            data.specialType = specialType.value;
+        }
+
         if(isAggregation) {
             if(aggregationProducts.length <= 0) {
                 NotificationManager.error('Sélectionnez les comptes à aggreger');
@@ -171,7 +176,7 @@ const Create = (props) => {
             <RctCollapsibleCard>
                 <Form onSubmit={onSubmit} className="pt-20">
                     <div className="row">
-                        <FormGroup className="col-md-6 col-sm-12 has-wrapper">
+                        <FormGroup className="col-md-4 col-sm-12 has-wrapper">
                             <InputLabel className="text-left" htmlFor="label">
                                 Nom du produit
                             </InputLabel>
@@ -185,7 +190,7 @@ const Create = (props) => {
                                 onChange={(e) => setLabel(e.target.value)}
                             />
                         </FormGroup>
-                        <FormGroup className="col-md-6 col-sm-12 has-wrapper">
+                        <FormGroup className="col-md-4 col-sm-12 has-wrapper">
                             <InputLabel className="text-left" htmlFor="code">
                                 Code produit
                             </InputLabel>
@@ -197,6 +202,25 @@ const Create = (props) => {
                                 className="input-lg"
                                 value={code}
                                 onChange={(e) => setCode(e.target.value)}
+                            />
+                        </FormGroup>
+                        <FormGroup className="col-md-4 col-sm-12 has-wrapper">
+                            <InputLabel className="text-left">
+                                Type produit
+                            </InputLabel>
+                            <Autocomplete
+                                value={specialType}
+                                id="combo-box-demo"
+                                onChange={(__, item) => {
+                                    setSpecialType(item);
+                                }}
+                                getOptionLabel={(option) => option.label}
+                                options={[{
+                                    label: "Pas de type spécial", value: null
+                                }, {
+                                    label: "CODEV", value: "CODEV"
+                                }]}
+                                renderInput={(params) => <TextField {...params} variant="outlined" />}
                             />
                         </FormGroup>
                     </div>

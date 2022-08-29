@@ -107,14 +107,16 @@ const List = (props) => {
                                                     />
                                                 </td>
                                                 <td>
-                                                    <Button
-                                                        color="primary"
-                                                        variant="contained"
-                                                        onClick={() => configureProduct(item)}
-                                                        className="text-white font-weight-bold mr-3"
-                                                    >
-                                                        Configurations
-                                                    </Button>
+                                                    { item.specialProduct && (
+                                                        <Button
+                                                            color="primary"
+                                                            variant="contained"
+                                                            onClick={() => configureProduct(item)}
+                                                            className="text-white font-weight-bold mr-3"
+                                                        >
+                                                            Configurations
+                                                        </Button>
+                                                    )}
                                                 </td>
                                             </tr>
                                         ))}

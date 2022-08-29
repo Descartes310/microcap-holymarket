@@ -4,6 +4,7 @@ import { withRouter } from "react-router-dom";
 import Button from '@material-ui/core/Button';
 import { MARKETPLACE } from 'Url/frontendUrl';
 import ProductService from 'Services/products';
+import SettingService from 'Services/settings';
 import { setRequestGlobalAction } from 'Actions';
 import React, { useState, useEffect } from 'react';
 import { getProductRanges } from 'Helpers/helpers';
@@ -19,7 +20,6 @@ import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { Form, FormGroup, Input as InputStrap } from 'reactstrap';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
 import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
-import SettingService from 'Services/settings';
 
 const fileTypes = ["JPG", "PNG", "GIF", "JPEG"];
 

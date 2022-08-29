@@ -4,11 +4,11 @@ import Button from '@material-ui/core/Button';
 import { MARKETPLACE } from 'Url/frontendUrl';
 import ProductService from 'Services/products';
 import {setRequestGlobalAction} from 'Actions';
-import { getProductTypes } from 'Helpers/datas';
 import React, { useState, useEffect } from 'react';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { NotificationManager } from 'react-notifications';
+import { getProductTypes, getTimeUnits } from 'Helpers/datas';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import {Form, FormGroup, Input as InputStrap} from 'reactstrap';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
@@ -44,7 +44,7 @@ const Configure = (props) => {
         let data: any = {
             reference: props.match.params.reference,
             lineGroup, minimumRate, productType: productType.value,
-            advanceType, totalDeposit, depositPeriod, depositAmount,
+            advanceType, totalDeposit, depositPeriod: depositPeriod.value, depositAmount,
             advanceOption, emitLineCount, carrencePeriod, advanceInterest,
             availableCapital, subscriptionFees, quotientAvailable, investmentCapital,
             subscriptionEndDate, ticketCaracteristic, advanceOptionVoteDate, subscriptionStartDate
@@ -101,20 +101,21 @@ const Configure = (props) => {
                                 onChange={(e) => setSubscriptionFees(e.target.value)}
                             />
                         </FormGroup>
-                        <FormGroup className="col-md-6 col-sm-12 has-wrapper">
-                            <InputLabel className="text-left" htmlFor="depositPeriod">
+                        <div className="col-md-6 col-sm-12 has-wrapper mb-30">
+                            <InputLabel className="text-left">
                                 Période de versement
                             </InputLabel>
-                            <InputStrap
-                                required
-                                type="date"
-                                id="depositPeriod"
-                                name='depositPeriod'
-                                className="input-lg"
+                            <Autocomplete
                                 value={depositPeriod}
-                                onChange={(e) => setDepositPeriod(e.target.value)}
+                                id="combo-box-demo"
+                                options={getTimeUnits()}
+                                onChange={(__, item) => {
+                                    setDepositPeriod(item);
+                                }}
+                                getOptionLabel={(option) => option.label}
+                                renderInput={(params) => <TextField {...params} variant="outlined" />}
                             />
-                        </FormGroup>
+                        </div>
                     </div>
                     <div className="row">
                         <FormGroup className="col-md-6 col-sm-12 has-wrapper">

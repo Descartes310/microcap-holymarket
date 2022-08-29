@@ -5,6 +5,7 @@ import ProductService from 'Services/products';
 import { setRequestGlobalAction } from 'Actions';
 import { RctCardContent } from 'Components/RctCard';
 import DialogComponent from "Components/dialog/DialogComponent";
+import { getProductDetailsByName, getTimeUnitByValue } from "Helpers/datas";
 
 class ProductDetails extends Component {
 
@@ -46,6 +47,23 @@ class ProductDetails extends Component {
                 )}
             >
                 <RctCardContent>
+                    <table className='table table-striped table-bordered'>
+                        <thead>
+                            <th>Nom du détails</th>
+                            <th>Valeur courante</th>
+                        </thead>
+                        <tbody>
+                            {product?.details.map(details => (
+                                <tr>
+                                    <td>{getProductDetailsByName(details.type)?.label}</td>
+                                    { details.type == 'DEPOSITPERIOD' ?
+                                        <td>{getTimeUnitByValue(details.value)?.label}</td> :
+                                        <td>{details.value}</td>
+                                    }
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
                 </RctCardContent>
             </DialogComponent>
         );

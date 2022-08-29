@@ -57,7 +57,7 @@ class CheckoutItem extends Component<any, any> {
                         <li className="d-flex justify-content-between p-3" key={key}>
                            <div className="media overflow-hidden w-75">
                               <div className="mr-15">
-                                 <img src={getFilePath(cart.image)} alt="products" className="media-object" width="63" height="63" />
+                                 <img src={cart.image ? getFilePath(cart.image) : require('Assets/img/product.png')} alt="products" className="media-object" width="63" height="63" />
                               </div>
                               <div className="media-body text-truncate">
                                  <span className="fs-14 d-block text-truncate">{cart.label}</span>
