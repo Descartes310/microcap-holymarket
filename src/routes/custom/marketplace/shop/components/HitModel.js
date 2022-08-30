@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import { RctCard } from 'Components/RctCard';
 import { withRouter } from 'react-router-dom';
-import { textTruncate } from "Helpers/helpers";
+import { textTruncate, getFilePath } from "Helpers/helpers";
 import { joinUrlWithParams, MARKETPLACE } from 'Url/frontendUrl';
 
 class HitModel extends Component {
