@@ -43,6 +43,10 @@ class CodevStep1 extends Component {
         this.props.setRequestGlobalAction(true);
         ProductService.findProduct(this.props.product.reference)
         .then(response => {
+            if(response.details.length <= 0) {
+                NotificationManager.error('Produit non configuré');
+                this.props.onClose();
+            }
             this.setState({product: response}, () => {
                 this.computeAvailableDate();
             });
@@ -52,9 +56,9 @@ class CodevStep1 extends Component {
 
     computeAvailableDate = () => {
         let dates = [];
-        let startDate = new Date(this.state.product?.details.find(d => d.type === 'STARTDATE').value);
-        let endDate = new Date(this.state.product?.details.find(d => d.type === 'ENDDATE').value);
-        let depositPeriod = getTimeUnitByValue(this.state.product?.details.find(d => d.type === 'DEPOSITPERIOD').value)?.days;
+        let startDate = new Date(this.state.product?.details.find(d => d.type === 'STARTDATE')?.value);
+        let endDate = new Date(this.state.product?.details.find(d => d.type === 'ENDDATE')?.value);
+        let depositPeriod = getTimeUnitByValue(this.state.product?.details.find(d => d.type === 'DEPOSITPERIOD')?.value)?.days;
         let date = startDate;
         while(date <= endDate) {
             dates.push(convertDate(date));

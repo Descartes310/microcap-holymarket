@@ -29,6 +29,10 @@ class CodevStep3 extends Component {
         this.props.setRequestGlobalAction(true);
         ProductService.findProduct(this.props.product.reference)
         .then(response => {
+            if(response.details.length <= 0) {
+                NotificationManager.error('Produit non configuré');
+                this.props.onClose();
+            }
             this.setState({product: response});
         })
         .finally(() => this.props.setRequestGlobalAction(false))
