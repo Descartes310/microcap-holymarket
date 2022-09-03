@@ -70,14 +70,14 @@ class CodevStep1 extends Component {
     onValidate = () => {
         const { product, cessible, editable, advanceValue, advanceType, selectedDate, plan } = this.state;
 
-        if(!product || !plan || !advanceType || advanceValue == null || !selectedDate) {
+        if(!product || !plan || !advanceType || !selectedDate) {
             NotificationManager.error('Le formulaire est mal renseigné');
             return;
         }
 
         let data = {
-            plan: plan.value, advanceType: advanceType.value,
-            selectedDate, cessible, editable, advanceValue, productReference: product.reference
+            plan: plan.value,
+            selectedDate, advanceValue, productReference: product.reference
         }
 
         this.props.onSubmit(data);
@@ -154,7 +154,7 @@ class CodevStep1 extends Component {
                             renderInput={(params) => <TextField {...params} variant="outlined" />}
                         />
                     </div>
-                    <div className="col-md-12 col-sm-12 has-wrapper mb-30 mt-20">
+                    {/* <div className="col-md-12 col-sm-12 has-wrapper mb-30 mt-20">
                         <InputLabel className="text-left">
                             Caractéristiques des coupons d'avance
                         </InputLabel>
@@ -178,7 +178,7 @@ class CodevStep1 extends Component {
                                 } label={'Modifiable'}
                             />
                         </FormGroup>
-                    </div>
+                    </div> */}
                     {/* <p>Validité du 20 juin 2022 au 30 septembre 2022</p> */}
                     <div className="col-md-12 col-sm-12 has-wrapper mb-30 mt-20">
                         <InputLabel className="text-left">
@@ -199,7 +199,7 @@ class CodevStep1 extends Component {
                             renderInput={(params) => <TextField {...params} variant="outlined" />}
                         />
                     </div>
-                    <FormGroup className="col-md-12 col-sm-12 has-wrapper">
+                    {/* <FormGroup className="col-md-12 col-sm-12 has-wrapper">
                         <InputLabel className="text-left" htmlFor="advanceValue">
                             Inscrit sur avance
                         </InputLabel>
@@ -212,7 +212,7 @@ class CodevStep1 extends Component {
                             value={advanceValue}
                             onChange={(e) => this.setState({advanceValue: e.target.value})}
                         />
-                    </FormGroup>
+                    </FormGroup> */}
                     <FormGroup className="float-right mb-20">
                         <Button
                             color="primary"

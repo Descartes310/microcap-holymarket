@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { datediff } from 'Helpers/helpers';
 import { withRouter } from "react-router-dom";
 import Button from '@material-ui/core/Button';
 import { MARKETPLACE } from 'Url/frontendUrl';
@@ -8,15 +9,19 @@ import React, { useState, useEffect } from 'react';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { NotificationManager } from 'react-notifications';
+import Checkbox from "@material-ui/core/Checkbox/Checkbox";
 import { getProductTypes, getTimeUnits } from 'Helpers/datas';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import {Form, FormGroup, Input as InputStrap} from 'reactstrap';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
+import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
 
 const Configure = (props) => {
 
+    const [endDate, setEndDate] = useState(null);
     const [lineGroup, setLineGroup] = useState(null);
+    const [startDate, setStartDate] = useState(null);
     const [minimumRate, setMinimumRate] = useState(null);
     const [productType, setProductType] = useState(null);
     const [advanceType, setAdvanceType] = useState(null);
@@ -31,23 +36,53 @@ const Configure = (props) => {
     const [subscriptionFees, setSubscriptionFees] = useState(null);
     const [quotientAvailable, setQuotientAvailable] = useState(null);
     const [investmentCapital, setInvestmentCapital] = useState(null);
+    const [ticketCaracteristic, setTicketCaracteristic] = useState([]);
     const [subscriptionEndDate, setSubscriptionEndDate] = useState(null);
-    const [ticketCaracteristic, setTicketCaracteristic] = useState(null);
-    const [advanceOptionVoteDate, setAdvanceOptionVoteDate] = useState(null);
     const [subscriptionStartDate, setSubscriptionStartDate] = useState(null);
+    const [periode, setPeriode] = useState(0);
 
     useEffect(() => {
-    }, []);
+        if(subscriptionEndDate && subscriptionStartDate && depositPeriod) {
+            if(lineGroup) {
+                setEmitLineCount(datediff(subscriptionStartDate, subscriptionEndDate, depositPeriod.days) * lineGroup);
+            }
+            setPeriode(datediff(subscriptionStartDate, subscriptionEndDate, depositPeriod.days));
+        }
+    }, [subscriptionEndDate, subscriptionStartDate, lineGroup, depositPeriod]);
+
+    useEffect(() => {
+        if(depositAmount && periode) {
+            setTotalDeposit(depositAmount*periode);
+        }
+
+        if(depositAmount && minimumRate) {
+            console.log(depositAmount, minimumRate, depositAmount*Math.pow(1+minimumRate, emitLineCount));
+            setAvailableCapital(depositAmount*Math.pow(1+minimumRate, emitLineCount));
+        }
+    }, [depositAmount, periode, minimumRate])
+
+    useEffect(() => {
+        if(availableCapital && lineGroup) {
+            setInvestmentCapital(availableCapital*lineGroup);
+        }
+    }, [availableCapital, lineGroup])
+
 
     const onSubmit = () => {
 
         let data: any = {
+            firstLot: startDate, lastLot: endDate,
             reference: props.match.params.reference,
-            lineGroup, minimumRate, productType: productType.value,
-            advanceType, totalDeposit, depositPeriod: depositPeriod.value, depositAmount,
-            advanceOption, emitLineCount, carrencePeriod, advanceInterest,
-            availableCapital, subscriptionFees, quotientAvailable, investmentCapital,
-            subscriptionEndDate, ticketCaracteristic, advanceOptionVoteDate, subscriptionStartDate
+            productType: productType.value.toString(),
+            subscriptionStartDate: subscriptionStartDate.toString(),
+            lineGroup: lineGroup.toString(), minimumRate: minimumRate.toString(), 
+            advanceType: advanceType.toString(), totalDeposit: totalDeposit.toString(), 
+            advanceOption: advanceOption+"", emitLineCount: emitLineCount.toString(), 
+            depositPeriod: depositPeriod.value.toString(), depositAmount: depositAmount.toString(),
+            carrencePeriod: carrencePeriod.toString(), advanceInterest: advanceInterest.toString(),
+            availableCapital: availableCapital.toString(), subscriptionFees: subscriptionFees.toString(), 
+            quotientAvailable: quotientAvailable.toString(), investmentCapital: investmentCapital.toString(),
+            subscriptionEndDate: subscriptionEndDate.toString(), ticketCaracteristic: ticketCaracteristic[0].value.toString(), 
         }
 
         props.setRequestGlobalAction(true);
@@ -103,7 +138,7 @@ const Configure = (props) => {
                         </FormGroup>
                         <div className="col-md-6 col-sm-12 has-wrapper mb-30">
                             <InputLabel className="text-left">
-                                Période de versement
+                                Périodicité des versements
                             </InputLabel>
                             <Autocomplete
                                 value={depositPeriod}
@@ -134,7 +169,7 @@ const Configure = (props) => {
                         </FormGroup>
                         <FormGroup className="col-md-6 col-sm-12 has-wrapper">
                             <InputLabel className="text-left" htmlFor="minimumRate">
-                                Taux minimal grarantie
+                                Taux de rémunération minimal garantie (%)
                             </InputLabel>
                             <InputStrap
                                 required
@@ -153,7 +188,7 @@ const Configure = (props) => {
                                 Total des versements
                             </InputLabel>
                             <InputStrap
-                                required
+                                disabled
                                 type="number"
                                 id="totalDeposit"
                                 name='totalDeposit'
@@ -167,7 +202,7 @@ const Configure = (props) => {
                                 Capital disponible à terme
                             </InputLabel>
                             <InputStrap
-                                required
+                                disabled
                                 type="number"
                                 className="input-lg"
                                 id="availableCapital"
@@ -192,25 +227,23 @@ const Configure = (props) => {
                                 onChange={(e) => setLineGroup(e.target.value)}
                             />
                         </FormGroup>
-                        <FormGroup className="col-md-6 col-sm-12 has-wrapper">
-                            <InputLabel className="text-left" htmlFor="advanceOption">
-                                Option d'avance sur capital
-                            </InputLabel>
-                            <InputStrap
-                                required
-                                type="text"
-                                id="advanceOption"
-                                name='advanceOption'
-                                className="input-lg"
-                                value={advanceOption}
-                                onChange={(e) => setAdvanceOption(e.target.value)}
+                        <FormGroup className="col-md-6 col-sm-12 has-wrapper mb-0">
+                            <FormControlLabel control={
+                                <Checkbox
+                                    color="primary"
+                                    checked={advanceOption}
+                                    onChange={() => {
+                                        setAdvanceOption(!advanceOption);
+                                    }}
+                                />
+                            } label={"Option d'avance sur capital"}
                             />
                         </FormGroup>
                     </div>
                     <div className="row">
                         <FormGroup className="col-md-6 col-sm-12 has-wrapper">
                             <InputLabel className="text-left" htmlFor="quotientAvailable">
-                                Quotité disponible sur avance
+                                Quotité disponible sur avance (%)
                             </InputLabel>
                             <InputStrap
                                 required
@@ -228,7 +261,7 @@ const Configure = (props) => {
                             </InputLabel>
                             <InputStrap
                                 required
-                                type="text"
+                                disabled="text"
                                 className="input-lg"
                                 id="investmentCapital"
                                 name='investmentCapital'
@@ -273,7 +306,7 @@ const Configure = (props) => {
                                 Nombre de ligne emises
                             </InputLabel>
                             <InputStrap
-                                required
+                                disabled
                                 type="number"
                                 id="emitLineCount"
                                 name='emitLineCount'
@@ -284,11 +317,11 @@ const Configure = (props) => {
                         </FormGroup>
                         <FormGroup className="col-md-6 col-sm-12 has-wrapper">
                             <InputLabel className="text-left" htmlFor="carrencePeriod">
-                                Période de carrence
+                                Nombre de période de carrence
                             </InputLabel>
                             <InputStrap
                                 required
-                                type="date"
+                                type="number"
                                 id="carrencePeriod"
                                 name='carrencePeriod'
                                 className="input-lg"
@@ -299,52 +332,73 @@ const Configure = (props) => {
                     </div>
                     <div className="row">
                         <FormGroup className="col-md-6 col-sm-12 has-wrapper">
-                            <InputLabel className="text-left" htmlFor="advanceOptionVoteDate">
-                                Date de tirage pour l'option d'avance
+                            <InputLabel className="text-left" htmlFor="startDate">
+                                Date du premier tirage
                             </InputLabel>
                             <InputStrap
                                 required
                                 type="date"
+                                id="startDate"
+                                name='startDate'
+                                value={startDate}
                                 className="input-lg"
-                                id="advanceOptionVoteDate"
-                                name='advanceOptionVoteDate'
-                                value={advanceOptionVoteDate}
-                                onChange={(e) => setAdvanceOptionVoteDate(e.target.value)}
+                                onChange={(e) => setStartDate(e.target.value)}
                             />
                         </FormGroup>
                         <FormGroup className="col-md-6 col-sm-12 has-wrapper">
-                            <InputLabel className="text-left" htmlFor="ticketCaracteristic">
-                                Caracteristique des coupons d'avance
+                            <InputLabel className="text-left" htmlFor="endDate">
+                                Date du dernier tirage
                             </InputLabel>
                             <InputStrap
                                 required
-                                type="text"
+                                type="date"
+                                id="endDate"
+                                name='endDate'
+                                value={endDate}
                                 className="input-lg"
-                                id="ticketCaracteristic"
-                                name='ticketCaracteristic'
-                                value={ticketCaracteristic}
-                                onChange={(e) => setTicketCaracteristic(e.target.value)}
+                                onChange={(e) => setEndDate(e.target.value)}
                             />
                         </FormGroup>
                     </div>
+
+                    <div className='row'>
+                        <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                            <InputLabel className="text-left">
+                                Caracteristique des coupons d'avance
+                            </InputLabel>
+                            <Autocomplete
+                                multiple
+                                id="combo-box-demo"
+                                options={[{label: 'Cessible', value: 'CESSIBLE'}, {label: 'Modifiable', value: 'EDITABLE'}]}
+                                value={ticketCaracteristic}
+                                onChange={(__, item) => {
+                                    setTicketCaracteristic(item);
+                                }}
+                                getOptionLabel={(option) => option.label}
+                                renderInput={(params) => <TextField {...params} variant="outlined" />}
+                            />
+                        </div>
+                    </div>
                     <div className="row">
-                        <FormGroup className="col-md-6 col-sm-12 has-wrapper">
-                            <InputLabel className="text-left" htmlFor="advanceType">
+
+                        <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                            <InputLabel className="text-left">
                                 Type d'avance
                             </InputLabel>
-                            <InputStrap
-                                required
-                                type="text"
-                                id="advanceType"
-                                name="advanceType"
+                            <Autocomplete
+                                id="combo-box-demo"
                                 value={advanceType}
-                                className="input-lg"
-                                onChange={(e) => setAdvanceType(e.target.value)}
+                                options={getTimeUnits()}
+                                onChange={(__, item) => {
+                                    setAdvanceType(item);
+                                }}
+                                getOptionLabel={(option) => option.label}
+                                renderInput={(params) => <TextField {...params} variant="outlined" />}
                             />
-                        </FormGroup>
+                        </div>
                         <FormGroup className="col-md-6 col-sm-12 has-wrapper">
                             <InputLabel className="text-left" htmlFor="advanceInterest">
-                                Interet sur avance
+                                Interet sur avance (%)
                             </InputLabel>
                             <InputStrap
                                 required

@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import UnitService from 'Services/units';
+import { SETTING } from 'Url/frontendUrl';
 import Switch from "@material-ui/core/Switch";
-import { MARKETPLACE, SETTING } from 'Url/frontendUrl';
 import { withRouter } from "react-router-dom";
 import CustomList from "Components/CustomList";
 import { setRequestGlobalAction } from 'Actions';

@@ -601,6 +601,9 @@ export const datediff = (first, second, time = 1) => {
             case 90:
                 start.setMonth(start.getMonth() + 3);
                 break;
+            case 180:
+                start.setMonth(start.getMonth() + 6);
+                break;
             default:
                 start.setDate(start.getDate() + 1);
                 break;
