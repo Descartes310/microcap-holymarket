@@ -16,11 +16,13 @@ import {Form, FormGroup, Input as InputStrap} from 'reactstrap';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
 import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
+import moment from 'moment';
 
 const Configure = (props) => {
 
     const [endDate, setEndDate] = useState(null);
     const [lineGroup, setLineGroup] = useState(null);
+    const [cycleTime, setCycleTime] = useState(null);
     const [startDate, setStartDate] = useState(null);
     const [minimumRate, setMinimumRate] = useState(null);
     const [productType, setProductType] = useState(null);
@@ -32,6 +34,7 @@ const Configure = (props) => {
     const [emitLineCount, setEmitLineCount] = useState(null);
     const [carrencePeriod, setCarrencePeriod] = useState(null);
     const [advanceInterest, setAdvanceInterest] = useState(null);
+    const [startDepositDate, setStartDepositDate] = useState(null);
     const [availableCapital, setAvailableCapital] = useState(null);
     const [subscriptionFees, setSubscriptionFees] = useState(null);
     const [quotientAvailable, setQuotientAvailable] = useState(null);
@@ -42,30 +45,56 @@ const Configure = (props) => {
     const [periode, setPeriode] = useState(0);
 
     useEffect(() => {
-        if(subscriptionEndDate && subscriptionStartDate && depositPeriod) {
-            if(lineGroup) {
-                setEmitLineCount(datediff(subscriptionStartDate, subscriptionEndDate, depositPeriod.days) * lineGroup);
-            }
-            setPeriode(datediff(subscriptionStartDate, subscriptionEndDate, depositPeriod.days));
+        if(lineGroup && cycleTime) {
+            setEmitLineCount(cycleTime * lineGroup);
         }
-    }, [subscriptionEndDate, subscriptionStartDate, lineGroup, depositPeriod]);
+        if(subscriptionEndDate && subscriptionStartDate * depositPeriod)
+            setPeriode(datediff(subscriptionStartDate, subscriptionEndDate, depositPeriod.days));
+    }, [subscriptionEndDate, subscriptionStartDate, lineGroup, depositPeriod, cycleTime]);
 
     useEffect(() => {
-        if(depositAmount && periode) {
-            setTotalDeposit(depositAmount*periode);
+        if(depositAmount && cycleTime) {
+            setTotalDeposit(depositAmount*cycleTime);
         }
 
         if(depositAmount && minimumRate) {
             console.log(depositAmount, minimumRate, depositAmount*Math.pow(1+minimumRate, emitLineCount));
             setAvailableCapital(depositAmount*Math.pow(1+minimumRate, emitLineCount));
         }
-    }, [depositAmount, periode, minimumRate])
+    }, [depositAmount, cycleTime, minimumRate])
 
     useEffect(() => {
-        if(availableCapital && lineGroup) {
-            setInvestmentCapital(availableCapital*lineGroup);
+        if(depositAmount && lineGroup && quotientAvailable) {
+            setInvestmentCapital(depositAmount*lineGroup*quotientAvailable);
         }
-    }, [availableCapital, lineGroup])
+    }, [depositAmount, lineGroup, quotientAvailable ])
+
+    useEffect(() => {
+        if(startDepositDate && carrencePeriod && cycleTime) {
+            console.log("startDepositDate => ", startDepositDate);
+            console.log("carrence => ", carrencePeriod);
+            console.log("depositPeriod.value => ", depositPeriod.value);
+            let newDate = moment(startDepositDate).add(carrencePeriod, depositPeriod.value.toLowerCase()).format('YYYY-MM-DD');
+            setStartDate(newDate);
+            console.log("newDate => ", newDate);
+            console.log("endDate => ", moment(newDate).add(cycleTime, depositPeriod.value.toLowerCase()).format('YYYY-MM-DD'));
+            setEndDate(moment(newDate).add(cycleTime, depositPeriod.value.toLowerCase()).format('YYYY-MM-DD'))
+        }
+    }, [startDepositDate, carrencePeriod, depositPeriod, cycleTime])
+
+    useEffect(() => {
+        if(minimumRate && depositPeriod && cycleTime && depositAmount) {
+            computeCapital();
+        }
+    }, [minimumRate, depositPeriod, cycleTime, depositAmount])
+
+    const computeCapital = () => {
+        let t1 = minimumRate;
+        let j = depositPeriod.days * cycleTime;
+        let t1Rate = t1/360;
+        let capital = (depositAmount * (Math.pow(1+t1Rate, j)-1))/t1Rate;
+        setAvailableCapital(capital);
+    }
 
 
     const onSubmit = () => {
@@ -121,6 +150,22 @@ const Configure = (props) => {
                         />
                     </div>
 
+                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                        <InputLabel className="text-left">
+                            Périodicité des versements
+                        </InputLabel>
+                        <Autocomplete
+                            value={depositPeriod}
+                            id="combo-box-demo"
+                            options={getTimeUnits()}
+                            onChange={(__, item) => {
+                                setDepositPeriod(item);
+                            }}
+                            getOptionLabel={(option) => option.label}
+                            renderInput={(params) => <TextField {...params} variant="outlined" />}
+                        />
+                    </div>
+
                     <div className="row">
                         <FormGroup className="col-md-6 col-sm-12 has-wrapper">
                             <InputLabel className="text-left" htmlFor="subscriptionFees">
@@ -136,21 +181,21 @@ const Configure = (props) => {
                                 onChange={(e) => setSubscriptionFees(e.target.value)}
                             />
                         </FormGroup>
-                        <div className="col-md-6 col-sm-12 has-wrapper mb-30">
-                            <InputLabel className="text-left">
-                                Périodicité des versements
+                        <FormGroup className="col-md-6 col-sm-12 has-wrapper">
+                            <InputLabel className="text-left" htmlFor="cycleTime">
+                                Durée du cycle
                             </InputLabel>
-                            <Autocomplete
-                                value={depositPeriod}
-                                id="combo-box-demo"
-                                options={getTimeUnits()}
-                                onChange={(__, item) => {
-                                    setDepositPeriod(item);
-                                }}
-                                getOptionLabel={(option) => option.label}
-                                renderInput={(params) => <TextField {...params} variant="outlined" />}
+                            <InputStrap
+                                required
+                                type="number"
+                                id="cycleTime"
+                                name='cycleTime'
+                                value={cycleTime}
+                                className="input-lg"
+                                onChange={(e) => setCycleTime(e.target.value)}
                             />
-                        </div>
+                        </FormGroup>
+                        
                     </div>
                     <div className="row">
                         <FormGroup className="col-md-6 col-sm-12 has-wrapper">
@@ -271,7 +316,7 @@ const Configure = (props) => {
                         </FormGroup>
                     </div>
                     <div className="row">
-                        <FormGroup className="col-md-6 col-sm-12 has-wrapper">
+                        <FormGroup className="col-md-4 col-sm-12 has-wrapper">
                             <InputLabel className="text-left" htmlFor="subscriptionStartDate">
                                 Date de début des souscriptions
                             </InputLabel>
@@ -285,7 +330,7 @@ const Configure = (props) => {
                                 onChange={(e) => setSubscriptionStartDate(e.target.value)}
                             />
                         </FormGroup>
-                        <FormGroup className="col-md-6 col-sm-12 has-wrapper">
+                        <FormGroup className="col-md-4 col-sm-12 has-wrapper">
                             <InputLabel className="text-left" htmlFor="subscriptionEndDate">
                                 Date de fin des souscriptions
                             </InputLabel>
@@ -297,6 +342,20 @@ const Configure = (props) => {
                                 name='subscriptionEndDate'
                                 value={subscriptionEndDate}
                                 onChange={(e) => setSubscriptionEndDate(e.target.value)}
+                            />
+                        </FormGroup>
+                        <FormGroup className="col-md-4 col-sm-12 has-wrapper">
+                            <InputLabel className="text-left" htmlFor="depositStartDate">
+                                Date de début des versements
+                            </InputLabel>
+                            <InputStrap
+                                required
+                                type="date"
+                                className="input-lg"
+                                id="depositStartDate"
+                                name='depositStartDate'
+                                value={startDepositDate}
+                                onChange={(e) => setStartDepositDate(e.target.value)}
                             />
                         </FormGroup>
                     </div>
@@ -381,7 +440,7 @@ const Configure = (props) => {
                     </div>
                     <div className="row">
 
-                        <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                        <div className="col-md-6 col-sm-12 has-wrapper mb-30">
                             <InputLabel className="text-left">
                                 Type d'avance
                             </InputLabel>
