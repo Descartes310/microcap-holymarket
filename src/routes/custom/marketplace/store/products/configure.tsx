@@ -100,18 +100,29 @@ const Configure = (props) => {
     const onSubmit = () => {
 
         let data: any = {
-            firstLot: startDate, lastLot: endDate,
             reference: props.match.params.reference,
             productType: productType.value.toString(),
+            depositPeriod: depositPeriod.value.toString(), 
+            subscriptionFees: subscriptionFees.toString(),
+            cycleTime: cycleTime.toString(), 
+            depositAmount: depositAmount.toString(),
+            minimumRate: minimumRate.toString(), 
+            totalDeposit: totalDeposit.toString(), 
+            availableCapital: availableCapital.toString(), 
+            lineGroup: lineGroup.toString(),
+            advanceOption: advanceOption+"", 
+            quotientAvailable: quotientAvailable.toString(), 
+            investmentCapital: investmentCapital.toString(),
             subscriptionStartDate: subscriptionStartDate.toString(),
-            lineGroup: lineGroup.toString(), minimumRate: minimumRate.toString(), 
-            advanceType: advanceType.toString(), totalDeposit: totalDeposit.toString(), 
-            advanceOption: advanceOption+"", emitLineCount: emitLineCount.toString(), 
-            depositPeriod: depositPeriod.value.toString(), depositAmount: depositAmount.toString(),
-            carrencePeriod: carrencePeriod.toString(), advanceInterest: advanceInterest.toString(),
-            availableCapital: availableCapital.toString(), subscriptionFees: subscriptionFees.toString(), 
-            quotientAvailable: quotientAvailable.toString(), investmentCapital: investmentCapital.toString(),
-            subscriptionEndDate: subscriptionEndDate.toString(), ticketCaracteristic: ticketCaracteristic[0].value.toString(), 
+            subscriptionEndDate: subscriptionEndDate.toString(), 
+            startDepositDate: startDepositDate.toString(),
+            emitLineCount: emitLineCount.toString(), 
+            carrencePeriod: carrencePeriod.toString(), 
+            firstLot: startDate,
+            lastLot: endDate,
+            ticketCaracteristic: ticketCaracteristic[0].value.toString(), 
+            advanceType: advanceType.value.toString(), 
+            advanceInterest: advanceInterest.toString(),
         }
 
         props.setRequestGlobalAction(true);
