@@ -11,6 +11,7 @@ import { NotificationManager } from 'react-notifications';
 import Checkbox from "@material-ui/core/Checkbox/Checkbox";
 import DialogComponent from "Components/dialog/DialogComponent";
 import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
+import Indivision from './createIndivision.tsx';
 
 class CodevStep2 extends Component {
 
@@ -18,7 +19,8 @@ class CodevStep2 extends Component {
         lines: [],
         product: null,
         checkAll: 'none',
-        selectedLines: []
+        selectedLines: [],
+        showCreateIndivision: false,
     }
 
     constructor(props) {
@@ -26,7 +28,7 @@ class CodevStep2 extends Component {
     }
 
     componentDidMount() {
-        if(this.props.product) {
+        if (this.props.product) {
             this.findProduct();
         }
     }
@@ -34,14 +36,14 @@ class CodevStep2 extends Component {
     findProduct = () => {
         this.props.setRequestGlobalAction(true);
         ProductService.findProduct(this.props.product.reference)
-        .then(response => {
-            if(response.details.length <= 0) {
-                NotificationManager.error('Produit non configuré');
-                this.props.onClose();
-            }
-            this.setState({product: response}, () => this.computeLines());
-        })
-        .finally(() => this.props.setRequestGlobalAction(false))
+            .then(response => {
+                if (response.details.length <= 0) {
+                    NotificationManager.error('Produit non configuré');
+                    this.props.onClose();
+                }
+                this.setState({ product: response }, () => this.computeLines());
+            })
+            .finally(() => this.props.setRequestGlobalAction(false))
     }
 
     computeLines = () => {
@@ -49,7 +51,7 @@ class CodevStep2 extends Component {
         let lineCount = Number(this.state.product?.details.find(d => d.type === 'LINEGROUP').value);
 
         for (let index = 1; index <= lineCount; index++) {
-            let line = { label: 'Ligne numéro '+index, id: index };
+            let line = { label: 'Ligne numéro ' + index, id: index };
             lines.push(line);
         }
 
@@ -79,7 +81,7 @@ class CodevStep2 extends Component {
     onValidate = () => {
         const { selectedLines } = this.state;
 
-        if(selectedLines.length <= 0) {
+        if (selectedLines.length <= 0) {
             NotificationManager.error('Le formulaire est mal renseigné');
             return;
         }
@@ -94,7 +96,7 @@ class CodevStep2 extends Component {
     render() {
 
         const { onClose, show, } = this.props;
-        const { selectedLines, lines } = this.state;
+        const { selectedLines, lines, showCreateIndivision } = this.state;
 
         return (
             <DialogComponent
@@ -111,6 +113,7 @@ class CodevStep2 extends Component {
                     <CustomList
                         list={lines}
                         loading={false}
+                        onAddClick={() => this.setState({ showCreateIndivision: true })}
                         itemsFoundText={n => `${n} lignes trouvées`}
                         renderItem={list => (
                             <>
@@ -188,6 +191,10 @@ class CodevStep2 extends Component {
                         </Button>
                     </FormGroup>
                 </RctCardContent>
+                <Indivision
+                    show={showCreateIndivision}
+                    onClose={() => this.setState({ showCreateIndivision: false })}
+                    />
             </DialogComponent>
         );
     }

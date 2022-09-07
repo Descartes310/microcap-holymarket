@@ -101,8 +101,8 @@ class Hit extends Component {
 							this.setState({ 
 								data: data,
 								showCodevStep1: false, 
-								showCodevStep2: data.plan === 'INDIVIS', 
-								showCodevStep3: data.plan === 'PERSONNAL' 
+								showCodevStep2: true, 
+								showCodevStep3: false 
 							});
 						}}
 					/>

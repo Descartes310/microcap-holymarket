@@ -16,6 +16,19 @@ import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { getProductDetailsByName, getTimeUnitByValue } from "Helpers/datas";
 import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
 
+const advanceTypeEnum = [
+    {
+        label: 'Infine',
+        value: 'INFINE'
+    },
+    {
+        label: 'Amortissement constant',
+        value: 'AMORTISSEMENT'
+    },
+    {
+        label: 'Capital constant',
+        value: 'CAPITAL'
+    }];
 class CodevStep1 extends Component {
 
     state = {
@@ -27,6 +40,7 @@ class CodevStep1 extends Component {
         advanceType: null,
         advanceValue: null,
         selectedDate: null,
+        drawDate: null,
     }
 
     constructor(props) {
@@ -34,7 +48,7 @@ class CodevStep1 extends Component {
     }
 
     componentDidMount() {
-        if(this.props.product) {
+        if (this.props.product) {
             this.findProduct();
         }
     }
@@ -42,16 +56,16 @@ class CodevStep1 extends Component {
     findProduct = () => {
         this.props.setRequestGlobalAction(true);
         ProductService.findProduct(this.props.product.reference)
-        .then(response => {
-            if(response.details.length <= 0) {
-                NotificationManager.error('Produit non configuré');
-                this.props.onClose();
-            }
-            this.setState({product: response}, () => {
-                this.computeAvailableDate();
-            });
-        })
-        .finally(() => this.props.setRequestGlobalAction(false))
+            .then(response => {
+                if (response.details.length <= 0) {
+                    NotificationManager.error('Produit non configuré');
+                    this.props.onClose();
+                }
+                this.setState({ product: response }, () => {
+                    this.computeAvailableDate();
+                });
+            })
+            .finally(() => this.props.setRequestGlobalAction(false))
     }
 
     computeAvailableDate = () => {
@@ -60,7 +74,7 @@ class CodevStep1 extends Component {
         let endDate = new Date(this.state.product?.details.find(d => d.type === 'ENDDATE')?.value);
         let depositPeriod = getTimeUnitByValue(this.state.product?.details.find(d => d.type === 'DEPOSITPERIOD')?.value)?.days;
         let date = startDate;
-        while(date <= endDate) {
+        while (date <= endDate) {
             dates.push(convertDate(date));
             date.setDate(date.getDate() + depositPeriod);
         }
@@ -69,14 +83,15 @@ class CodevStep1 extends Component {
 
     onValidate = () => {
         const { product, cessible, editable, advanceValue, advanceType, selectedDate, plan } = this.state;
-
-        if(!product || !plan || !advanceType || !selectedDate) {
+        console.log(product,plan);
+        console.log(advanceType, selectedDate);
+        if (!product || !advanceType || !selectedDate) {
             NotificationManager.error('Le formulaire est mal renseigné');
             return;
         }
 
         let data = {
-            plan: plan.value,
+            // plan: plan.value,
             selectedDate, advanceValue, productReference: product.reference
         }
 
@@ -86,7 +101,7 @@ class CodevStep1 extends Component {
     render() {
 
         const { onClose, show } = this.props;
-        const { product, cessible, editable, advanceValue, 
+        const { product, cessible, editable, advanceValue,
             advanceType, dates, plan, selectedDate } = this.state;
 
         return (
@@ -110,7 +125,7 @@ class CodevStep1 extends Component {
                             {product?.details.map(details => (
                                 <tr>
                                     <td>{getProductDetailsByName(details.type)?.label}</td>
-                                    { details.type == 'DEPOSITPERIOD' ?
+                                    {details.type == 'DEPOSITPERIOD' ?
                                         <td>{getTimeUnitByValue(details.value)?.label}</td> :
                                         <td>{details.value}</td>
                                     }
@@ -118,87 +133,36 @@ class CodevStep1 extends Component {
                             ))}
                         </tbody>
                     </table>
-                    <div className="col-md-12 col-sm-12 has-wrapper mb-30 mt-20">
-                        <InputLabel className="text-left">
-                            Plan souhaité
+                    <h1>Specification de la souscription</h1>
+                    <FormGroup className="col-md-12 col-sm-12 has-wrapper mb-30 mt-20">
+                        <InputLabel className="text-left" htmlFor="startDate">
+                            Date du tirage
                         </InputLabel>
-                        <Autocomplete
-                            value={plan}
-                            id="combo-box-demo"
-                            options={[
-                                {
-                                    label: 'Ligne indivis', value: 'INDIVIS'
-                                }, {
-                                    label: 'Ligne individuelle', value: 'PERSONNAL'
-                                }]
-                            }
-                            onChange={(__, item) => {
-                                this.setState({plan: item});
-                            }}
-                            getOptionLabel={(option) => option.label}
-                            renderInput={(params) => <TextField {...params} variant="outlined" />}
+                        <InputStrap
+                            required
+                            type="date"
+                            id="selectedDate"
+                            name='selectedDate'
+                            value={this.state.selectedDate}
+                            className="input-lg"
+                            onChange={(e) => this.setState({ selectedDate: e.target.value })}
                         />
-                    </div>
-                    <div className="col-md-12 col-sm-12 has-wrapper mb-30 mt-20">
-                        <InputLabel className="text-left">
-                            Date de tirage pour l'option d'avance
-                        </InputLabel>
-                        <Autocomplete
-                            value={selectedDate}
-                            id="combo-box-demo"
-                            options={dates}
-                            onChange={(__, item) => {
-                                this.setState({selectedDate: item});
-                            }}
-                            getOptionLabel={(option) => option}
-                            renderInput={(params) => <TextField {...params} variant="outlined" />}
-                        />
-                    </div>
-                    {/* <div className="col-md-12 col-sm-12 has-wrapper mb-30 mt-20">
-                        <InputLabel className="text-left">
-                            Caractéristiques des coupons d'avance
-                        </InputLabel>
-                        <FormGroup className="col-sm-12 mb-0">
-                            <FormControlLabel control={
-                                <Checkbox
-                                    color="primary"
-                                    checked={cessible}
-                                    onChange={() => this.setState({ cessible: !cessible })}
-                                />
-                                } label={'Cessible'}
-                            />
-                        </FormGroup>
-                        <FormGroup className="col-sm-12 mb-0">
-                            <FormControlLabel control={
-                                <Checkbox
-                                    color="primary"
-                                    checked={editable}
-                                    onChange={() => this.setState({ editable: !editable })}
-                                />
-                                } label={'Modifiable'}
-                            />
-                        </FormGroup>
-                    </div> */}
-                    {/* <p>Validité du 20 juin 2022 au 30 septembre 2022</p> */}
-                    <div className="col-md-12 col-sm-12 has-wrapper mb-30 mt-20">
+                    </FormGroup>
+                    <FormGroup className="col-md-12 col-sm-12 has-wrapper mb-30 mt-20">
                         <InputLabel className="text-left">
                             Type d'avance
                         </InputLabel>
                         <Autocomplete
                             value={advanceType}
                             id="combo-box-demo"
-                            options={[{
-                                label: 'Amortissement', value: 'AMORTISSEMENT'
-                            }, {
-                                label: 'Infinie', value: 'INFINITY'
-                            }]}
+                            options={advanceTypeEnum}
                             onChange={(__, item) => {
-                                this.setState({advanceType: item});
+                                this.setState({ advanceType: item });
                             }}
                             getOptionLabel={(option) => option.label}
                             renderInput={(params) => <TextField {...params} variant="outlined" />}
                         />
-                    </div>
+                    </FormGroup>
                     {/* <FormGroup className="col-md-12 col-sm-12 has-wrapper">
                         <InputLabel className="text-left" htmlFor="advanceValue">
                             Inscrit sur avance
