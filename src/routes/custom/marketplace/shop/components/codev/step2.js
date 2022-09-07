@@ -99,103 +99,109 @@ class CodevStep2 extends Component {
         const { selectedLines, lines, showCreateIndivision } = this.state;
 
         return (
-            <DialogComponent
-                show={show}
-                onClose={onClose}
-                size="md"
-                title={(
-                    <h3 className="fw-bold">
-                        Configuration du produit
-                    </h3>
-                )}
-            >
-                <RctCardContent>
-                    <CustomList
-                        list={lines}
-                        loading={false}
-                        onAddClick={() => this.setState({ showCreateIndivision: true })}
-                        itemsFoundText={n => `${n} lignes trouvées`}
-                        renderItem={list => (
-                            <>
-                                {list && list.length === 0 ? (
-                                    <div className="d-flex justify-content-center align-items-center py-50">
-                                        <h4>
-                                            Aucunes lignes trouvées
-                                        </h4>
-                                    </div>
-                                ) : (
-                                    <div className="table-responsive">
-                                        <table className="table table-hover table-middle mb-0">
-                                            <thead>
-                                                <tr>
-                                                    <th className="w-5">
-                                                        <FormControlLabel
-                                                            control={
-                                                                <Checkbox
-                                                                    indeterminate={selectedLines.length > 0 && selectedLines.length < lines.length}
-                                                                    checked={selectedLines.length > 0}
-                                                                    onChange={(e) => this.onCheckerAll()}
-                                                                    value="all"
-                                                                    color="primary"
-                                                                />
-                                                            }
-                                                            label="Tous"
-                                                        />
-                                                    </th>
-                                                    <th className="fw-bold">Nom de ligne</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {list && list.map((item, key) => (
-                                                    <tr key={key} className="cursor-pointer">
-                                                        <td>
-                                                            <div className="media">
-                                                                <div className="media-body pt-10">
-                                                                    <FormControlLabel
-                                                                        control={
-                                                                            <Checkbox
-                                                                                checked={selectedLines.includes(item.id)}
-                                                                                onChange={() => this.onToggle([item.id])}
-                                                                                color="primary"
-                                                                            />
-                                                                        }
-                                                                        label=""
-                                                                    />
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div className="media">
-                                                                <div className="media-body pt-10">
-                                                                    <h4 className="m-0 fw-bold text-dark">{item.label}</h4>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                ))}
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                )}
-                            </>
+            <>
+                {showCreateIndivision
+                    ? <Indivision
+                        show={showCreateIndivision}
+                        onClose={() => this.setState({ showCreateIndivision: false })}
+                    /> :
+                    <DialogComponent
+                        show={show}
+                        onClose={onClose}
+                        size="md"
+                        title={(
+                            <h3 className="fw-bold">
+                                Configuration du produit
+                            </h3>
                         )}
-                    />
-                    <FormGroup className="float-right mb-20">
-                        <Button
-                            color="primary"
-                            variant="contained"
-                            onClick={() => { this.onValidate() }}
-                            className="text-white font-weight-bold mb-20"
-                        >
-                            Soumettre
-                        </Button>
-                    </FormGroup>
-                </RctCardContent>
-                <Indivision
-                    show={showCreateIndivision}
-                    onClose={() => this.setState({ showCreateIndivision: false })}
-                    />
-            </DialogComponent>
+                    >
+                        <RctCardContent>
+                            <CustomList
+                                list={lines}
+                                loading={false}
+                                onAddClick={() => this.setState({ showCreateIndivision: true })}
+                                itemsFoundText={n => `${n} lignes trouvées`}
+                                renderItem={list => (
+                                    <>
+                                        {list && list.length === 0 ? (
+                                            <div className="d-flex justify-content-center align-items-center py-50">
+                                                <h4>
+                                                    Aucunes lignes trouvées
+                                                </h4>
+                                            </div>
+                                        ) : (
+                                            <div className="table-responsive">
+                                                <table className="table table-hover table-middle mb-0">
+                                                    <thead>
+                                                        <tr>
+                                                            <th className="w-5">
+                                                                <FormControlLabel
+                                                                    control={
+                                                                        <Checkbox
+                                                                            indeterminate={selectedLines.length > 0 && selectedLines.length < lines.length}
+                                                                            checked={selectedLines.length > 0}
+                                                                            onChange={(e) => this.onCheckerAll()}
+                                                                            value="all"
+                                                                            color="primary"
+                                                                        />
+                                                                    }
+                                                                    label="Tous"
+                                                                />
+                                                            </th>
+                                                            <th className="fw-bold">Nom de ligne</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {list && list.map((item, key) => (
+                                                            <tr key={key} className="cursor-pointer">
+                                                                <td>
+                                                                    <div className="media">
+                                                                        <div className="media-body pt-10">
+                                                                            <FormControlLabel
+                                                                                control={
+                                                                                    <Checkbox
+                                                                                        checked={selectedLines.includes(item.id)}
+                                                                                        onChange={() => this.onToggle([item.id])}
+                                                                                        color="primary"
+                                                                                    />
+                                                                                }
+                                                                                label=""
+                                                                            />
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    <div className="media">
+                                                                        <div className="media-body pt-10">
+                                                                            <h4 className="m-0 fw-bold text-dark">{item.label}</h4>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        ))}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        )}
+                                    </>
+                                )}
+                            />
+                            <FormGroup className="float-right mb-20">
+                                <Button
+                                    color="primary"
+                                    variant="contained"
+                                    onClick={() => { this.onValidate() }}
+                                    className="text-white font-weight-bold mb-20"
+                                >
+                                    Soumettre
+                                </Button>
+                            </FormGroup>
+                        </RctCardContent>
+
+                    </DialogComponent>
+                }
+            </>
+
         );
     }
 }
