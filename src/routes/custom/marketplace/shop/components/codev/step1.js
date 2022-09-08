@@ -116,7 +116,7 @@ class CodevStep1 extends Component {
                 )}
             >
                 <RctCardContent>
-                    <table className='table table-striped table-bordered'>
+                    {/* <table className='table table-striped table-bordered'>
                         <thead>
                             <th>Nom du détails</th>
                             <th>Valeur courante</th>
@@ -132,7 +132,7 @@ class CodevStep1 extends Component {
                                 </tr>
                             ))}
                         </tbody>
-                    </table>
+                    </table> */}
                     <h1>Specification de la souscription</h1>
                     <FormGroup className="col-md-12 col-sm-12 has-wrapper mb-30 mt-20">
                         <InputLabel className="text-left" htmlFor="startDate">

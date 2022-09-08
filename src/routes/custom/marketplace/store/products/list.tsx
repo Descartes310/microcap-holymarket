@@ -33,7 +33,6 @@ const List = (props) => {
     }
 
     const configureProduct = (item) => {
-        console.log(item.reference)
         props.history.push(joinUrlWithParams(MARKETPLACE.STORE.PRODUCT.CONFIGURE, [{param: 'reference', value: item.reference}]));
     }
 

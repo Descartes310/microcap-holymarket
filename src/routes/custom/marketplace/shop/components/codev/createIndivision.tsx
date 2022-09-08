@@ -41,7 +41,7 @@ const Indivision = (props) => {
             size="md"
             title={(
                 <h3 className="fw-bold">
-                    Nouvelle Indivsion
+                    Nouvelle Indivision
                 </h3>
             )}
         >
@@ -49,7 +49,7 @@ const Indivision = (props) => {
                 <div className="col-md-12 col-sm-12 has-wrapper mb-30 mt-20">
                     Une indivision autorise plusieurs personne à faire les versements sur un même compte/plan d'épargne
                 </div>
-                <div className="col-md-10 col-sm-12 has-wrapper mb-30 mt-20">
+                <div className="col-md-12 col-sm-12 has-wrapper mb-30 mt-20">
                     <h4>Reservation: {lineReference}</h4>
                     <div className='row'>
                         <FormGroup className="col-md-8 col-sm-12 has-wrapper">

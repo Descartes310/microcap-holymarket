@@ -59,4 +59,37 @@ export default class ProductService {
     static findProduct(reference: string): Promise<any> {
         return makeRequest('get', Routes.FIND_PRODUCT(reference));
     }
+
+    static getCodevOptionTypes(): Promise<any> {
+        return makeRequest('get', Routes.GET_CODEV_OPTION_TYPE);
+    }
+
+    static getCodevOptions(): Promise<any> {
+        return makeRequest('get', Routes.GET_CODEV_OPTION);
+    }
+
+    static createCodevOptionType(data: any): Promise<any> {
+        return makeRequest('post', Routes.CREATE_CODEV_OPTION_TYPE, data);
+    }
+
+    static createCodevOption(data: any): Promise<any> {
+        return makeRequest('post', Routes.CREATE_CODEV_OPTION, data);
+    }
+
+    static getCodevSupportOptionTypes(): Promise<any> {
+        return makeRequest('get', Routes.GET_CODEV_SUPPORT_OPTION_TYPE);
+    }
+
+    static getCodevSupportOptions(): Promise<any> {
+        return makeRequest('get', Routes.GET_CODEV_SUPPORT_OPTION);
+    }
+
+    static createCodevSupportOptionType(data: any): Promise<any> {
+        return makeRequest('post', Routes.CREATE_CODEV_SUPPORT_OPTION_TYPE, data);
+    }
+
+    static createCodevSupportOption(data: any): Promise<any> {
+        return makeRequest('post', Routes.CREATE_CODEV_SUPPORT_OPTION, data);
+    }
+
 }

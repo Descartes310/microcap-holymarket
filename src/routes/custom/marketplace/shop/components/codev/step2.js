@@ -48,7 +48,7 @@ class CodevStep2 extends Component {
 
     computeLines = () => {
         let lines = [];
-        let lineCount = Number(this.state.product?.details.find(d => d.type === 'LINEGROUP').value);
+        let lineCount = Number(this.state.product?.details.find(d => d.type === 'LINE_GROUP').value);
 
         for (let index = 1; index <= lineCount; index++) {
             let line = { label: 'Ligne numéro ' + index, id: index };
