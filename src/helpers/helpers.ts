@@ -323,7 +323,6 @@ export const getPermissionOfPath = (path) => {
 
     let permissions = [];
     for (let item of currentMenus) {
-        console.log('Permission of path => ' + item);
         if (item.path === path) {
             permissions = item.permissions;
             break;
@@ -708,7 +707,6 @@ export const getNodeFromPermissions = (permissions: any) => {
     if (permissions) {
         let result = [];
         let level = { result };
-        console.log(permissions);
         permissions.forEach(permission => {
             permission.folders.split('/').reduce((r, name, i, a) => {
                 if (!r[name]) {
@@ -720,7 +718,6 @@ export const getNodeFromPermissions = (permissions: any) => {
                 return r[name];
             }, level);
         })
-        console.log(result);
         return result;
     }
     return [];

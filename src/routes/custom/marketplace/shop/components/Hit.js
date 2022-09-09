@@ -36,7 +36,6 @@ class Hit extends Component {
 		this.setState({ loading: true });
 		if(this.state.data)
 			cartItem.customInfos = this.state.data;
-		console.log(cartItem)
 		this.props.onAddItemToCart(cartItem);
 		if(e) e.preventDefault();
 		this.setState({ loading: false, product: null, data: null });
@@ -130,7 +129,6 @@ class Hit extends Component {
 						show={showCodevStep3}
 						onClose={() => this.setState({ showCodevStep3: false })}
 						onSubmit={(data) => {
-							console.log(data);
 							this.setState({ data: data, showCodevStep1: false, showCodevStep2: false, showCodevStep3: false }, () => {
 								this.addToCart(this.state.product);
 							});

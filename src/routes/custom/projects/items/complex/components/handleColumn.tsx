@@ -14,7 +14,6 @@ class HandleColumnModal extends Component<any, any> {
 
     constructor(props) {
         super(props);
-        console.log(this.props.column);
     }
 
     componentDidUpdate(prevProps) {

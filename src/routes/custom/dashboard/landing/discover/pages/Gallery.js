@@ -41,8 +41,6 @@ const DiscoverGallery = (props) => {
         });
     }
 
-    console.log(data);
-
     return (
         <DiscoverLayout title="Gallerie projets">
             <div className="session-inner-wrapper">

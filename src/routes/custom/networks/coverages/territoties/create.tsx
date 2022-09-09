@@ -127,9 +127,7 @@ const Create = (props) => {
                             options={getTerritoryTypes()}
                             value={parentType}
                             onChange={(__, item) => {
-                                console.log(item);
                                 if(item.value === 'MAINLAND_REGION') {
-                                    console.log(item.value);
                                     
                                     setCountrySelected(true);
                                 } else {

@@ -60,7 +60,6 @@ const Configure = (props: any) => {
     const [ticketCaracteristic, setTicketCaracteristic] = useState([]);
     const [subscriptionEndDate, setSubscriptionEndDate] = useState(null);
     const [subscriptionStartDate, setSubscriptionStartDate] = useState(null);
-    const [periode, setPeriode] = useState(0);
 
     useEffect(() => {
         findProduct();
@@ -69,12 +68,28 @@ const Configure = (props: any) => {
     }, []);
 
     useEffect(() => {
+        if(!option) {
+            let tmp = options.find(t => t.reference == product?.details.find(d => d.type == 'OPTION')?.value);
+            if(tmp) {
+                tmp.label = tmp.type.label+': '+tmp.startDate;
+                setOption(tmp);
+            }
+        }
+
+        if(!supportOption) {
+            let tmp = supports.find(t => t.reference == product?.details.find(d => d.type == 'SUPPORT_OPTION')?.value);
+            if(tmp) {
+                tmp.label = tmp.type.label+': '+tmp.startDate;
+                setSupportOption(tmp);
+            }
+        }
+    }, [product, supports, options])
+
+    useEffect(() => {
         if(lineGroup && cycleTime) {
             setEmitLineCount(cycleTime * lineGroup);
         }
-        if(subscriptionEndDate && subscriptionStartDate * depositPeriod)
-            setPeriode(datediff(subscriptionStartDate, subscriptionEndDate, depositPeriod.days));
-    }, [subscriptionEndDate, subscriptionStartDate, lineGroup, depositPeriod, cycleTime]);
+    }, [lineGroup, cycleTime]);
 
     useEffect(() => {
         if(depositAmount && cycleTime) {
@@ -82,7 +97,6 @@ const Configure = (props: any) => {
         }
 
         if(depositAmount && minimumRate) {
-            console.log(depositAmount, minimumRate, depositAmount*Math.pow(1+minimumRate, emitLineCount));
             setAvailableCapital(depositAmount*Math.pow(1+minimumRate, emitLineCount));
         }
     }, [depositAmount, cycleTime, minimumRate])
@@ -152,11 +166,9 @@ const Configure = (props: any) => {
 
         props.setRequestGlobalAction(true);
         ProductService.updateProductDetails(data).then(() => {
-            console.log(data);
             NotificationManager.success('Le product a été mis à jour avec succès !');
             props.history.push(MARKETPLACE.STORE.PRODUCT.LIST);
         }).catch((err) => {
-            console.log(err);
         }).finally(() => {
             props.setRequestGlobalAction(false);
         });
@@ -185,8 +197,6 @@ const Configure = (props: any) => {
             setInvestmentCapital(response.details.find(d => d.type == 'INVESTMENT_CAPITAL')?.value);
             setSubscriptionEndDate(response.details.find(d => d.type == 'START_DATE')?.value);
             setSubscriptionStartDate(response.details.find(d => d.type == 'END_DATE')?.value);
-            setOption(options.find(t => t.reference == response.details.find(d => d.type == 'OPTION')?.value));
-            setSupportOption(supports.find(t => t.reference == response.details.find(d => d.type == 'SUPPORT_OPTION')?.value));
             setAdvanceType(ADVANCE_TYPES.find(t => t.value == response.details.find(d => d.type == 'ADVANCE_TYPE')?.value));
             setDepositPeriod(getTimeUnits().find(t => t.value == response.details.find(d => d.type == 'DEPOSIT_PERIOD')?.value));
             setTicketCaracteristic(TICKET_FEATURES.filter(t => t.value == response.details.find(d => d.type == 'TICKET_FEATURE')?.value));

@@ -48,8 +48,6 @@ const Home = () => {
 
     const navElement = document.querySelector('#main-nav');
 
-    console.log(navElement);
-
     return (
         <DiscoverLayout>
             <div className="session-inner-wrapper video-player-wrapper">

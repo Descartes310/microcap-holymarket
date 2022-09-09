@@ -83,8 +83,6 @@ class CodevStep1 extends Component {
 
     onValidate = () => {
         const { product, cessible, editable, advanceValue, advanceType, selectedDate, plan } = this.state;
-        console.log(product,plan);
-        console.log(advanceType, selectedDate);
         if (!product || !advanceType || !selectedDate) {
             NotificationManager.error('Le formulaire est mal renseigné');
             return;
