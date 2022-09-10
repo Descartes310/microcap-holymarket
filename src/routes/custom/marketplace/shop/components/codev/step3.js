@@ -65,7 +65,7 @@ class CodevStep3 extends Component {
                         <tbody>
                             <tr>
                                 <td>Montant par versement</td>
-                                <td>{ data.selectedLine.amount } EUR</td>
+                                <td>{ data?.selectedLine?.amount ? data.selectedLine.amount : this.state.product?.details.find(d => d.type === 'DEPOSIT_AMOUNT').value } EUR</td>
                             </tr>
                             <tr>
                                 <td>Capital à terme</td>
@@ -81,7 +81,7 @@ class CodevStep3 extends Component {
                             </tr>
                             <tr>
                                 <td>Date de tirage pour une avance</td>
-                                <td>{data.selectedDate.date}</td>
+                                <td>{data?.selectedDate?.date ? data.selectedDate.date : new Date()}</td>
                             </tr>
                         </tbody>
                     </table>

@@ -20,6 +20,7 @@ const Indivision = (props) => {
     const [amount, setAmount] = useState(null);
     const [showPlan, setShowPlan] = useState(false);
     const [priceUnit, setPriceUnit] = useState(null);
+    const [distribution, setDistribution] = useState(null);
     const [selectedLine, setSelectedLine] = useState(null);
     const [denomination, setDenomination] = useState(null);
 
@@ -119,7 +120,7 @@ const Indivision = (props) => {
                         </FormGroup>
                     </div>
                     <div className="row d-flex align-items-center">
-                        <FormGroup className="col-md-8 col-sm-12 has-wrapper">
+                        <FormGroup className="col-md-4 col-sm-12 has-wrapper">
                             <InputLabel className="text-left" htmlFor="denomination">
                                 Dénomination de l'indivision
                             </InputLabel>
@@ -131,6 +132,21 @@ const Indivision = (props) => {
                                 className="input-lg"
                                 value={denomination}
                                 onChange={(e) => setDenomination(e.target.value)}
+                            />
+                        </FormGroup>
+                        <FormGroup className="col-md-4 col-sm-12 has-wrapper">
+                            <InputLabel className="text-left">
+                                Distribution de l'indivision
+                            </InputLabel>
+                            <Autocomplete
+                                value={distribution}
+                                id="combo-box-demo"
+                                onChange={(__, item) => {
+                                    setDistribution(item);
+                                }}
+                                getOptionLabel={(option) => option.label}
+                                options={[{label: 'Libre', value: 'FREE'}, {label: 'Privée', value: 'PRIVATE'}]}
+                                renderInput={(params) => <TextField {...params} variant="outlined" />}
                             />
                         </FormGroup>
                         <FormGroup className="col-md-4 col-sm-12 has-wrapper mt-30">

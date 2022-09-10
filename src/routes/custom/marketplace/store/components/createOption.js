@@ -7,6 +7,7 @@ import React, { useEffect, useState } from 'react';
 import TextField from '@material-ui/core/TextField';
 import { RctCardContent } from 'Components/RctCard';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import { NotificationManager } from 'react-notifications';
 import {FormGroup, Input as InputStrap} from 'reactstrap';
 import Checkbox from "@material-ui/core/Checkbox/Checkbox";
 import DialogComponent from "Components/dialog/DialogComponent";
@@ -19,13 +20,18 @@ const CreateOption = (props) => {
 
     const [type, setType] = useState(null);
     const [types, setTypes] = useState([]);
+    const [label, setLabel] = useState(null);
     const [parent, setParent] = useState(null);
     const [parents, setParents] = useState([]);
+    const [support, setSupport] = useState(null);
     const [endDate, setEndDate] = useState(null);
     const [typeName, setTypeName] = useState(null);
     const [startDate, setStartDate] = useState(null);
     const [effectDate, setEffectDate] = useState(null);
     const [createType, setCreateType] = useState(false);
+    const [description1, setDescription1] = useState(null);
+    const [description2, setDescription2] = useState(null);
+    const [description3, setDescription3] = useState(null);
     const [typeDescription, setTypeDescription] = useState(null);
 
     useEffect(() => {
@@ -51,33 +57,16 @@ const CreateOption = (props) => {
 
     const onSumit = () => {
 
-        if(!endDate || !startDate || !effectDate) {
+        if(!label || !type || !support) {
             return;
         }
 
         let data = {
-            end_date: endDate,
-            start_date: startDate,
-            effect_date: effectDate,
-            reference: props.match.params.reference
-        }
-
-        if(parent) {
-            data.option_parent = parent.reference;
-        }
-
-
-        if(!createType) {
-            if(!type) {
-                return;
-            }
-            data.type_reference = type.reference;
-        } else {
-            if(!typeName || !typeDescription) {
-                return;
-            }
-            data.type_name = typeName;
-            data.type_description = typeDescription;
+            title: type,
+            label: label,
+            support: support,
+            reference: props.match.params.reference,
+            description1, description2, description3
         }
 
         props.setRequestGlobalAction(true);
@@ -85,6 +74,16 @@ const CreateOption = (props) => {
             onClose();
         })
         .finally(() => props.setRequestGlobalAction(false))
+    }
+
+    const onSaveConfig = () => {
+
+        if(!type || !support) {
+            NotificationManager.error("Le formulaire n'est pas bien rempli !");
+            return;
+        }
+
+        NotificationManager.success('La configuration a été enregistrée !');
     }
     
     return (
@@ -100,7 +99,7 @@ const CreateOption = (props) => {
         >
             <RctCardContent>
 
-                <div className="row">
+                {/* <div className="row">
                     <FormGroup className="col-md-6 col-sm-12 has-wrapper mb-0">
                         <FormControlLabel control={
                             <Checkbox
@@ -113,9 +112,51 @@ const CreateOption = (props) => {
                         } label={"Créer un nouveau type d'option"}
                         />
                     </FormGroup>
-                </div>
+                </div> */}
 
-                { !createType ? 
+                <FormGroup className="col-md-12 col-sm-12 has-wrapper">
+                    <InputLabel className="text-left" htmlFor="name">
+                        Libellé
+                    </InputLabel>
+                    <InputStrap
+                        required
+                        id="name"
+                        type="text"
+                        name='name'
+                        value={label}
+                        className="input-lg"
+                        onChange={(e) => setLabel(e.target.value)}
+                    />
+                </FormGroup>
+                <FormGroup className="col-md-12 col-sm-12 has-wrapper">
+                    <InputLabel className="text-left" htmlFor="type">
+                        Type de titre d'option
+                    </InputLabel>
+                    <InputStrap
+                        required
+                        id="type"
+                        type="text"
+                        name='type'
+                        value={type}
+                        className="input-lg"
+                        onChange={(e) => setType(e.target.value)}
+                    />
+                </FormGroup>
+                <FormGroup className="col-md-12 col-sm-12 has-wrapper">
+                    <InputLabel className="text-left" htmlFor="support">
+                        Type de support d'option
+                    </InputLabel>
+                    <InputStrap
+                        required
+                        type="text"
+                        id="support"
+                        name="support"
+                        value={support}
+                        className="input-lg"
+                        onChange={(e) => setSupport(e.target.value)}
+                    />
+                </FormGroup>
+                {/* { !createType ? 
                     <div className="col-md-12 col-sm-12 has-wrapper mb-30">
                         <InputLabel className="text-left">
                             Type d'option
@@ -161,9 +202,9 @@ const CreateOption = (props) => {
                             />
                         </FormGroup>
                     </div>
-                }
+                } */}
 
-                <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                {/* <div className="col-md-12 col-sm-12 has-wrapper mb-30">
                     <InputLabel className="text-left">
                         Options parent
                     </InputLabel>
@@ -177,9 +218,9 @@ const CreateOption = (props) => {
                         getOptionLabel={(option) => option.startDate}
                         renderInput={(params) => <TextField {...params} variant="outlined" />}
                     />
-                </div>
+                </div> */}
                 
-                <FormGroup className="col-md-12 col-sm-12 has-wrapper">
+                {/* <FormGroup className="col-md-12 col-sm-12 has-wrapper">
                     <InputLabel className="text-left" htmlFor="startDate">
                         Date de début validité
                     </InputLabel>
@@ -222,18 +263,73 @@ const CreateOption = (props) => {
                         className="input-lg"
                         onChange={(e) => setEffectDate(e.target.value)}
                     />
+                </FormGroup> */}
+
+                <FormGroup className="col-md-12 col-sm-12 has-wrapper">
+                    <InputLabel className="text-left" htmlFor="description1">
+                        Description
+                    </InputLabel>
+                    <InputStrap
+                        required
+                        type="text"
+                        id="description1"
+                        name='description1'
+                        className="input-lg"
+                        value={description1}
+                        onChange={(e) => setDescription1(e.target.value)}
+                    />
+                </FormGroup>
+                <FormGroup className="col-md-12 col-sm-12 has-wrapper">
+                    <InputLabel className="text-left" htmlFor="description2">
+                        Description
+                    </InputLabel>
+                    <InputStrap
+                        required
+                        type="text"
+                        id="description2"
+                        name='description2'
+                        className="input-lg"
+                        value={description2}
+                        onChange={(e) => setDescription2(e.target.value)}
+                    />
+                </FormGroup>
+                <FormGroup className="col-md-12 col-sm-12 has-wrapper">
+                    <InputLabel className="text-left" htmlFor="description3">
+                        Description
+                    </InputLabel>
+                    <InputStrap
+                        required
+                        type="text"
+                        id="description3"
+                        name='description3'
+                        className="input-lg"
+                        value={description3}
+                        onChange={(e) => setDescription3(e.target.value)}
+                    />
                 </FormGroup>
 
-                <FormGroup className="float-right mb-20">
-                    <Button
-                        color="primary"
-                        variant="contained"
-                        onClick={() => onSumit()}
-                        className="text-white font-weight-bold mb-20"
-                    >
-                        Enregistrer
-                    </Button>
-                </FormGroup>
+                <div className="d-flex align-items-end">
+                    <FormGroup className="mb-20 mr-10">
+                        <Button
+                            color="primary"
+                            variant="contained"
+                            onClick={() => onSaveConfig()}
+                            className="text-white font-weight-bold mb-20"
+                        >
+                            Ajouter un support
+                        </Button>
+                    </FormGroup>
+                    <FormGroup className="mb-20">
+                        <Button
+                            color="primary"
+                            variant="contained"
+                            onClick={() => onSumit()}
+                            className="text-white font-weight-bold mb-20"
+                        >
+                            Enregistrer
+                        </Button>
+                    </FormGroup>
+                </div>
             </RctCardContent>
         </DialogComponent>
     )

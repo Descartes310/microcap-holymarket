@@ -17,10 +17,12 @@ export const UPDATE_PRODUCT_DETAILS = 'api/products/details';
 export const CREATE_CODEV_PRODUCT_MODEL = 'api/products/codevs';
 
 
+export const CREATE_CODEV_OPTION = 'api/products/codev/options';
 export const CREATE_CODEV_OPTION_TYPE = 'api/products/codev/type_option_titles';
 export const GET_CODEV_OPTION_TYPE = 'api/products/codev/type_option_titles';
-export const CREATE_CODEV_OPTION = 'api/products/codev/option_titles';
-export const GET_CODEV_OPTION = 'api/products/codev/option_titles';
+export const GET_CODEV_OPTION = 'api/products/codev/options';
+export const CREATE_CODEV_DETAILS = 'api/products/codevs/details';
+export const GET_CODEV_DETAILS = 'api/products/codevs/details';
 
 export const CREATE_CODEV_SUPPORT_OPTION_TYPE = 'api/products/codev/support_options/types';
 export const GET_CODEV_SUPPORT_OPTION_TYPE = 'api/products/codev/support_options/types';

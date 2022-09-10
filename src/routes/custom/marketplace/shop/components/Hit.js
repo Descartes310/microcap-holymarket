@@ -97,12 +97,21 @@ class Hit extends Component {
 						show={showCodevStep1}
 						onClose={() => this.setState({ showCodevStep1: false })}
 						onSubmit={(data) => {
-							this.setState({ 
-								data: data,
-								showCodevStep1: false, 
-								showCodevStep2: true, 
-								showCodevStep3: false 
-							});
+							if(data?.subscriptionType.value == 'INDIVISION') {
+								this.setState({ 
+									data: data,
+									showCodevStep1: false, 
+									showCodevStep2: true, 
+									showCodevStep3: false 
+								});
+							} else {
+								this.setState({ 
+									data: data,
+									showCodevStep1: false, 
+									showCodevStep2: false, 
+									showCodevStep3: true 
+								});
+							}
 						}}
 					/>
 				)}

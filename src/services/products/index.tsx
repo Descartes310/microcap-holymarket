@@ -104,4 +104,12 @@ export default class ProductService {
         return makeRequest('get', Routes.GET_LINE_BY_DATE, data);
     }
 
+    static getCodevDetails(data: any): Promise<any> {
+        return makeRequest('get', Routes.GET_CODEV_DETAILS, data);
+    }
+
+    static createCodevDetails(data: any): Promise<any> {
+        return makeRequest('post', Routes.CREATE_CODEV_DETAILS, data);
+    }
+
 }

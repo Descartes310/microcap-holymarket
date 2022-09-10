@@ -1,6 +1,7 @@
 import moment from 'moment';
 import { connect } from 'react-redux';
-import { convertDate, datediff } from 'Helpers/helpers';
+import UnitService from 'Services/units';
+import { convertDate } from 'Helpers/helpers';
 import { withRouter } from "react-router-dom";
 import Button from '@material-ui/core/Button';
 import { MARKETPLACE } from 'Url/frontendUrl';
@@ -9,16 +10,14 @@ import {setRequestGlobalAction} from 'Actions';
 import React, { useState, useEffect } from 'react';
 import TextField from '@material-ui/core/TextField';
 import CreateOption from '../components/createOption';
+import CreateDetails from '../components/createDetails';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { NotificationManager } from 'react-notifications';
-import Checkbox from "@material-ui/core/Checkbox/Checkbox";
-import { getProductTypes, getTimeUnitByValue, getTimeUnits } from 'Helpers/datas';
+import { getProductTypes, getTimeUnits } from 'Helpers/datas';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import {Form, FormGroup, Input as InputStrap} from 'reactstrap';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
-// import CreateSupportOption from '../components/createSupportOption';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
-import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
 
 const TICKET_FEATURES = [{label: 'Cessible', value: 'CESSIBLE'}, {label: 'Modifiable', value: 'EDITABLE'}];
 const ADVANCE_TYPES = [
@@ -31,41 +30,44 @@ const Configure = (props: any) => {
 
     const [option, setOption] = useState(null);
     const [options, setOptions] = useState([]);
-    // const [supports, setSupports] = useState([]);
-    const [showAddOption, setShowAddOption] = useState<Boolean>(false);
-    // const [showAddSupportOption, setShowAddSupportOption] = useState<Boolean>(false);
-
+    
+    const [units, setUnits] = useState([]);
+    const [details, setDetails] = useState([]);
     const [endDate, setEndDate] = useState(null);
     const [product, setProduct] = useState(null);
+    const [priceUnit, setPriceUnit] = useState(null);
     const [placement, setPlacement] = useState(null);
     const [lineGroup, setLineGroup] = useState(null);
     const [cycleTime, setCycleTime] = useState(null);
     const [startDate, setStartDate] = useState(null);
     const [tirageDates, setTirageDates] = useState([]);
+    const [detailsType, setDetailsType] = useState(null);
     const [minimumRate, setMinimumRate] = useState(null);
     const [productType, setProductType] = useState(null);
     const [advanceType, setAdvanceType] = useState(null);
     const [totalDeposit, setTotalDeposit] = useState(null);
-    // const [supportOption, setSupportOption] = useState(null);
     const [depositPeriod, setDepositPeriod] = useState(null);
     const [depositAmount, setDepositAmount] = useState(null);
     const [advanceOption, setAdvanceOption] = useState(null);
     const [emitLineCount, setEmitLineCount] = useState(null);
     const [carrencePeriod, setCarrencePeriod] = useState(null);
+    const [showDetailsBox, setShowDetailsBox] = useState(false);
     const [advanceInterest, setAdvanceInterest] = useState(null);
     const [startDepositDate, setStartDepositDate] = useState(null);
     const [availableCapital, setAvailableCapital] = useState(null);
     const [subscriptionFees, setSubscriptionFees] = useState(null);
     const [quotientAvailable, setQuotientAvailable] = useState(null);
     const [investmentCapital, setInvestmentCapital] = useState(null);
+    const [showAddOption, setShowAddOption] = useState<Boolean>(false);
     const [ticketCaracteristic, setTicketCaracteristic] = useState([]);
     const [subscriptionEndDate, setSubscriptionEndDate] = useState(null);
     const [subscriptionStartDate, setSubscriptionStartDate] = useState(null);
 
     useEffect(() => {
+        getUnits();
         findProduct();
         getCodevOptions();
-        // getCodevSupportOptions();
+        getCodevDetails();
     }, []);
 
     useEffect(() => {
@@ -120,7 +122,14 @@ const Configure = (props: any) => {
         if(minimumRate && depositPeriod && cycleTime && depositAmount) {
             computeCapital();
         }
-    }, [minimumRate, depositPeriod, cycleTime, depositAmount])
+    }, [minimumRate, depositPeriod, cycleTime, depositAmount])    
+    
+    useEffect(() => {
+        if(details.length > 0 && product) {
+            setAdvanceType(details.find(t => t.reference == product.details.find(d => d.type == 'ADVANCE_TYPE')?.value));
+            setPlacement(details.find(t => t.reference == product.details.find(d => d.type == 'PLACEMENT')?.value));
+        }
+    }, [product, details])
 
     const computeCapital = () => {
         let t1 = minimumRate;
@@ -143,6 +152,17 @@ const Configure = (props: any) => {
         }
     }, [startDate, endDate, cycleTime, depositPeriod]);
 
+    const getUnits = () => {
+        props.setRequestGlobalAction(false);
+        UnitService.getUnits()
+            .then((response) => setUnits(response))
+            .catch((err) => {
+                console.log(err);
+            })
+            .finally(() => {
+                props.setRequestGlobalAction(false);
+            })
+    }
 
     const onSubmit = () => {
 
@@ -173,9 +193,10 @@ const Configure = (props: any) => {
             tirages: tirageDates,
             lastLot: endDate,
             option: option.reference,
+            placement: placement.reference,
             // supportOption: supportOption.reference,
             ticketCaracteristic: ticketCaracteristic[0].value.toString(), 
-            advanceType: advanceType.value.toString(), 
+            advanceType: advanceType.reference, 
             advanceInterest: advanceInterest.toString(),
         }
 
@@ -212,7 +233,6 @@ const Configure = (props: any) => {
             setInvestmentCapital(response.details.find(d => d.type == 'INVESTMENT_CAPITAL')?.value);
             setSubscriptionEndDate(response.details.find(d => d.type == 'START_DATE')?.value);
             setSubscriptionStartDate(response.details.find(d => d.type == 'END_DATE')?.value);
-            setAdvanceType(ADVANCE_TYPES.find(t => t.value == response.details.find(d => d.type == 'ADVANCE_TYPE')?.value));
             setDepositPeriod(getTimeUnits().find(t => t.value == response.details.find(d => d.type == 'DEPOSIT_PERIOD')?.value));
             setTicketCaracteristic(TICKET_FEATURES.filter(t => t.value == response.details.find(d => d.type == 'TICKET_FEATURE')?.value));
         })
@@ -227,13 +247,13 @@ const Configure = (props: any) => {
         .finally(() => props.setRequestGlobalAction(false))
     }
 
-    // const getCodevSupportOptions = () => {
-    //     props.setRequestGlobalAction(true);
-    //     ProductService.getCodevSupportOptions().then(response => {
-    //         setSupports(response);
-    //     })
-    //     .finally(() => props.setRequestGlobalAction(false))
-    // }
+    const getCodevDetails = () => {
+        props.setRequestGlobalAction(true);
+        ProductService.getCodevDetails({types: ['ADVANCE_TYPE', 'PLACEMENT']}).then(response => {
+            setDetails(response);
+        })
+        .finally(() => props.setRequestGlobalAction(false))
+    }
 
     return (
         <>
@@ -244,36 +264,37 @@ const Configure = (props: any) => {
                 <Form onSubmit={onSubmit}>
 
                     <h2 className='mb-30 mt-10'>Spécifications générales du plan</h2>
-                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
-                        <InputLabel className="text-left">
-                            Type du modèle
-                        </InputLabel>
-                        <Autocomplete
-                            value={productType}
-                            options={getProductTypes()}
-                            id="combo-box-demo"
-                            onChange={(__, item) => {
-                                setProductType(item);
-                            }}
-                            getOptionLabel={(option) => option.label}
-                            renderInput={(params) => <TextField {...params} variant="outlined" />}
-                        />
-                    </div>
-
-                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
-                        <InputLabel className="text-left">
-                            Périodicité des versements
-                        </InputLabel>
-                        <Autocomplete
-                            value={depositPeriod}
-                            id="combo-box-demo"
-                            options={getTimeUnits()}
-                            onChange={(__, item) => {
-                                setDepositPeriod(item);
-                            }}
-                            getOptionLabel={(option) => option.label}
-                            renderInput={(params) => <TextField {...params} variant="outlined" />}
-                        />
+                    <div className="row">
+                        <div className="col-md-6 col-sm-12 has-wrapper mb-30">
+                            <InputLabel className="text-left">
+                                Type du modèle
+                            </InputLabel>
+                            <Autocomplete
+                                value={productType}
+                                options={getProductTypes()}
+                                id="combo-box-demo"
+                                onChange={(__, item) => {
+                                    setProductType(item);
+                                }}
+                                getOptionLabel={(option) => option.label}
+                                renderInput={(params) => <TextField {...params} variant="outlined" />}
+                            />
+                        </div>
+                        <div className="col-md-6 col-sm-12 has-wrapper mb-30">
+                            <InputLabel className="text-left">
+                                Périodicité des versements
+                            </InputLabel>
+                            <Autocomplete
+                                value={depositPeriod}
+                                id="combo-box-demo"
+                                options={getTimeUnits()}
+                                onChange={(__, item) => {
+                                    setDepositPeriod(item);
+                                }}
+                                getOptionLabel={(option) => option.label}
+                                renderInput={(params) => <TextField {...params} variant="outlined" />}
+                            />
+                        </div>
                     </div>
 
                     <div className="row">
@@ -320,6 +341,50 @@ const Configure = (props: any) => {
                             />
                         </FormGroup>
                     </div>
+                    
+                    <div className='row'>
+                        <div className="col-md-6 col-sm-12 has-wrapper mb-30">
+                            <InputLabel className="text-left">
+                                Options du plan
+                            </InputLabel>
+                            <Autocomplete
+                                id="combo-box-demo"
+                                value={option}
+                                options={[{label: 'Ajouter une option', value: 'add'}, ...options]}
+                                onChange={(__, item) => {
+                                    if(item.value == 'add') {
+                                        setShowAddOption(true);
+                                    } else {
+                                        setOption(item);
+                                    }
+                                }}
+                                getOptionLabel={(option) => option.label}
+                                renderInput={(params) => <TextField {...params} variant="outlined" />}
+                            />
+                        </div>
+                        <div className="col-md-6 col-sm-12 has-wrapper mb-30">
+                            <InputLabel className="text-left">
+                                Placements programmés
+                            </InputLabel>
+                            <Autocomplete
+                                id="combo-box-demo"
+                                value={placement}
+                                options={[{label: 'Ajouter un placement programmé', value: 'add'}, ...details.filter(d => d.type === 'PLACEMENT')]}
+                                onChange={(__, item) => {
+                                    if(item.value == 'add') {
+                                        setShowDetailsBox(true);
+                                        setDetailsType("PLACEMENT")
+                                    } else {
+                                        setPlacement(item);
+                                    }
+                                }}
+                                getOptionLabel={(option) => option.value}
+                                renderInput={(params) => <TextField {...params} variant="outlined" />}
+                            />
+                        </div>
+                    </div>
+                    <h2 className='mb-30 mt-10'>Spécifications financières du plan</h2>
+
                     <div className="row">
                         <FormGroup className="col-md-4 col-sm-12 has-wrapper">
                             <InputLabel className="text-left" htmlFor="subscriptionStartDate">
@@ -408,64 +473,9 @@ const Configure = (props: any) => {
                             />
                         </FormGroup>
                     </div>
-                    <div className='row'>
-                        <div className="col-md-6 col-sm-12 has-wrapper mb-30">
-                            <InputLabel className="text-left">
-                                Options du plan
-                            </InputLabel>
-                            <Autocomplete
-                                id="combo-box-demo"
-                                value={option}
-                                options={[{label: 'Ajouter une option', value: 'add'}, ...options.map(o => { return {...o, label: o.type.label+': '+o.startDate}})]}
-                                onChange={(__, item) => {
-                                    if(item.value == 'add') {
-                                        setShowAddOption(true);
-                                    } else {
-                                        setOption(item);
-                                    }
-                                }}
-                                getOptionLabel={(option) => option.label}
-                                renderInput={(params) => <TextField {...params} variant="outlined" />}
-                            />
-                        </div>
-                        {/* <div className="col-md-4 col-sm-12 has-wrapper mb-30">
-                            <InputLabel className="text-left">
-                                Supports d'options du plan
-                            </InputLabel>
-                            <Autocomplete
-                                id="combo-box-demo"
-                                value={supportOption}
-                                options={[{label: 'Ajouter un support option', value: 'add'}, ...supports.map(o => { return {...o, label: o.type.label+': '+o.startDate}})]}
-                                onChange={(__, item) => {
-                                    if(item.value == 'add') {
-                                        setShowAddSupportOption(true);
-                                    } else {
-                                        setSupportOption(item);
-                                    }
-                                }}
-                                getOptionLabel={(option) => option.label}
-                                renderInput={(params) => <TextField {...params} variant="outlined" />}
-                            />
-                        </div> */}
-                        <div className="col-md-6 col-sm-12 has-wrapper mb-30">
-                            <InputLabel className="text-left">
-                                Placements programmés
-                            </InputLabel>
-                            <Autocomplete
-                                id="combo-box-demo"
-                                value={placement}
-                                options={[{label: 'Ajouter un placement programmé', value: 'add'}]}
-                                onChange={(__, item) => {
-                                    setPlacement(item);
-                                }}
-                                getOptionLabel={(option) => option.label}
-                                renderInput={(params) => <TextField {...params} variant="outlined" />}
-                            />
-                        </div>
-                    </div>
-                    <h2 className='mb-30 mt-10'>Spécifications financières du plan</h2>
+
                     <div className="row">
-                        <FormGroup className="col-md-4 col-sm-12 has-wrapper">
+                        <FormGroup className="col-md-3 col-sm-12 has-wrapper">
                             <InputLabel className="text-left" htmlFor="subscriptionFees">
                                 Frais de souscription
                             </InputLabel>
@@ -479,7 +489,22 @@ const Configure = (props: any) => {
                                 onChange={(e) => setSubscriptionFees(e.target.value)}
                             />
                         </FormGroup>
-                        <FormGroup className="col-md-4 col-sm-12 has-wrapper">
+                        <FormGroup className="col-md-3 col-sm-12 has-wrapper">
+                            <InputLabel className="text-left">
+                                Devise
+                            </InputLabel>
+                            <Autocomplete
+                                value={priceUnit}
+                                id="combo-box-demo"
+                                onChange={(__, item) => {
+                                    setPriceUnit(item);
+                                }}
+                                getOptionLabel={(option) => option.label}
+                                options={units.filter(u => ['dévise', 'devise', 'devises', 'dévises'].includes(u.type.label.toLowerCase()))}
+                                renderInput={(params) => <TextField {...params} variant="outlined" />}
+                            />
+                        </FormGroup>
+                        <FormGroup className="col-md-3 col-sm-12 has-wrapper">
                             <InputLabel className="text-left" htmlFor="depositAmount">
                                 Montant périodique
                             </InputLabel>
@@ -493,7 +518,7 @@ const Configure = (props: any) => {
                                 onChange={(e) => setDepositAmount(e.target.value)}
                             />
                         </FormGroup>
-                        <FormGroup className="col-md-4 col-sm-12 has-wrapper">
+                        <FormGroup className="col-md-3 col-sm-12 has-wrapper">
                             <InputLabel className="text-left" htmlFor="minimumRate">
                                 Taux de rémunération minimal garantie (%)
                             </InputLabel>
@@ -568,39 +593,6 @@ const Configure = (props: any) => {
                             />
                         </FormGroup>
                     </div>
-                    {/* <div className="row">
-                        <FormGroup className="col-md-6 col-sm-12 has-wrapper mb-0">
-                            <FormControlLabel control={
-                                <Checkbox
-                                    color="primary"
-                                    checked={advanceOption}
-                                    onChange={() => {
-                                        setAdvanceOption(!advanceOption);
-                                    }}
-                                />
-                            } label={"Option d'avance sur capital"}
-                            />
-                        </FormGroup>
-                    </div> */}
-
-                    {/* <div className='row'>
-                        <div className="col-md-12 col-sm-12 has-wrapper mb-30">
-                            <InputLabel className="text-left">
-                                Caracteristique des coupons d'avance
-                            </InputLabel>
-                            <Autocomplete
-                                multiple
-                                id="combo-box-demo"
-                                options={TICKET_FEATURES}
-                                value={ticketCaracteristic}
-                                onChange={(__, item) => {
-                                    setTicketCaracteristic(item);
-                                }}
-                                getOptionLabel={(option) => option.label}
-                                renderInput={(params) => <TextField {...params} variant="outlined" />}
-                            />
-                        </div>
-                    </div> */}
                     <div className="row">
                         <div className="col-md-6 col-sm-12 has-wrapper mb-30">
                             <InputLabel className="text-left">
@@ -609,11 +601,16 @@ const Configure = (props: any) => {
                             <Autocomplete
                                 id="combo-box-demo"
                                 value={advanceType}
-                                options={ADVANCE_TYPES}
+                                options={[{label: "Ajouter un type d'avance autorisé", value: 'add'}, ...details.filter(d => d.type === 'ADVANCE_TYPE')]}
                                 onChange={(__, item) => {
-                                    setAdvanceType(item);
+                                    if(item.value == 'add') {
+                                        setShowDetailsBox(true);
+                                        setDetailsType("ADVANCE_TYPE");
+                                    } else {
+                                        setAdvanceType(item);
+                                    }
                                 }}
-                                getOptionLabel={(option) => option.label}
+                                getOptionLabel={(option) => option.value}
                                 renderInput={(params) => <TextField {...params} variant="outlined" />}
                             />
                         </div>
@@ -645,8 +642,17 @@ const Configure = (props: any) => {
                     </FormGroup>
                 </Form>
             </RctCollapsibleCard>
-            <CreateOption show={showAddOption} onClose={() => { setShowAddOption(false); getCodevOptions() }} dates={tirageDates} />
-            {/* <CreateSupportOption show={showAddSupportOption} onClose={() => { setShowAddSupportOption(false); getCodevSupportOptions() }} dates={tirageDates} /> */}
+            <CreateOption 
+                dates={tirageDates}
+                show={showAddOption} 
+                onClose={() => { setShowAddOption(false); getCodevOptions() }} 
+            />
+            <CreateDetails 
+                type={detailsType} 
+                show={showDetailsBox} 
+                title={"Ajout d'un nouvel élément"} 
+                onClose={() => { setShowDetailsBox(false); setDetailsType(null); getCodevDetails() }} 
+            />
         </>
     );
 };
