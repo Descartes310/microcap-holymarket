@@ -19,7 +19,7 @@ class CodevStep2 extends Component {
         lines: [],
         product: null,
         checkAll: 'none',
-        selectedLines: [],
+        selectedLine: null,
         showCreateIndivision: false,
     }
 
@@ -28,66 +28,28 @@ class CodevStep2 extends Component {
     }
 
     componentDidMount() {
-        if (this.props.product) {
-            this.findProduct();
-        }
+        this.findLines();
     }
 
-    findProduct = () => {
+    findLines = () => {
         this.props.setRequestGlobalAction(true);
-        ProductService.findProduct(this.props.product.reference)
-            .then(response => {
-                if (response.details.length <= 0) {
-                    NotificationManager.error('Produit non configuré');
-                    this.props.onClose();
-                }
-                this.setState({ product: response }, () => this.computeLines());
-            })
-            .finally(() => this.props.setRequestGlobalAction(false))
+        ProductService.getLinesByDate({reference: this.props.product.reference, date: this.props.data.selectedDate.date})
+        .then(response => {
+            this.setState({ lines: response });
+        })
+        .finally(() => this.props.setRequestGlobalAction(false))
     }
-
-    computeLines = () => {
-        let lines = [];
-        let lineCount = Number(this.state.product?.details.find(d => d.type === 'LINE_GROUP').value);
-
-        for (let index = 1; index <= lineCount; index++) {
-            let line = { label: 'Ligne numéro ' + index, id: index };
-            lines.push(line);
-        }
-
-        this.setState({ lines });
-    }
-
-    onToggle = (lineIds) => {
-        let newLines = [...this.state.selectedLines];
-        lineIds.forEach(userId => {
-            if (newLines.includes(userId)) {
-                newLines = newLines.filter(u => u !== userId);
-            } else newLines.push(userId);
-        });
-        this.setState({ selectedLines: newLines });
-    };
-
-    onCheckerAll = () => {
-        if (this.state.checkerAll !== 'all') {
-            this.setState({ checkAll: 'all' });
-            this.onToggle([...this.state.lines.map(o => o.id)]);
-        } else {
-            this.setState({ checkAll: 'none' });
-            this.setState({ selectedLines: [] });
-        }
-    };
 
     onValidate = () => {
-        const { selectedLines } = this.state;
+        const { selectedLine } = this.state;
 
-        if (selectedLines.length <= 0) {
+        if (!selectedLine) {
             NotificationManager.error('Le formulaire est mal renseigné');
             return;
         }
 
         let data = {
-            ...this.props.data, selectedLines
+            ...this.props.data, selectedLine
         }
 
         this.props.onSubmit(data);
@@ -96,14 +58,19 @@ class CodevStep2 extends Component {
     render() {
 
         const { onClose, show, } = this.props;
-        const { selectedLines, lines, showCreateIndivision } = this.state;
+        const { selectedLine, lines, showCreateIndivision } = this.state;
 
         return (
             <>
                 {showCreateIndivision
                     ? <Indivision
+                        data={this.props.data}
+                        product={this.props.product}
                         show={showCreateIndivision}
-                        onClose={() => this.setState({ showCreateIndivision: false })}
+                        onClose={() => {
+                            this.setState({ showCreateIndivision: false });
+                            findLines();
+                        }}
                     /> :
                     <DialogComponent
                         show={show}
@@ -135,20 +102,11 @@ class CodevStep2 extends Component {
                                                     <thead>
                                                         <tr>
                                                             <th className="w-5">
-                                                                <FormControlLabel
-                                                                    control={
-                                                                        <Checkbox
-                                                                            indeterminate={selectedLines.length > 0 && selectedLines.length < lines.length}
-                                                                            checked={selectedLines.length > 0}
-                                                                            onChange={(e) => this.onCheckerAll()}
-                                                                            value="all"
-                                                                            color="primary"
-                                                                        />
-                                                                    }
-                                                                    label="Tous"
-                                                                />
+                                                                Sélectionner
                                                             </th>
-                                                            <th className="fw-bold">Nom de ligne</th>
+                                                            <th className="fw-bold">Référence</th>
+                                                            <th className="fw-bold">Nom</th>
+                                                            <th className="fw-bold">Montant</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -160,8 +118,8 @@ class CodevStep2 extends Component {
                                                                             <FormControlLabel
                                                                                 control={
                                                                                     <Checkbox
-                                                                                        checked={selectedLines.includes(item.id)}
-                                                                                        onChange={() => this.onToggle([item.id])}
+                                                                                        checked={selectedLine?.id == item.id}
+                                                                                        onChange={() => this.setState({ selectedLine: item })}
                                                                                         color="primary"
                                                                                     />
                                                                                 }
@@ -173,7 +131,21 @@ class CodevStep2 extends Component {
                                                                 <td>
                                                                     <div className="media">
                                                                         <div className="media-body pt-10">
-                                                                            <h4 className="m-0 fw-bold text-dark">{item.label}</h4>
+                                                                            <h4 className="m-0 fw-bold text-dark">{item.line.reference}</h4>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    <div className="media">
+                                                                        <div className="media-body pt-10">
+                                                                            <h4 className="m-0 fw-bold text-dark">{item.denomination}</h4>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    <div className="media">
+                                                                        <div className="media-body pt-10">
+                                                                            <h4 className="m-0 fw-bold text-dark">{item.amount} EUR</h4>
                                                                         </div>
                                                                     </div>
                                                                 </td>

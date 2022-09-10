@@ -41,8 +41,9 @@ class CodevStep3 extends Component {
 
     render() {
 
-        const { onClose, show, onSubmit, data } = this.props;
         const { product } = this.state;
+        const { onClose, show, onSubmit, data } = this.props;
+        console.log(this.props.data, product)
 
         return (
             <DialogComponent
@@ -63,28 +64,24 @@ class CodevStep3 extends Component {
                         </thead>
                         <tbody>
                             <tr>
-                                <td>Nombre de bon de versement</td>
-                                <td>xxx</td>
-                            </tr>
-                            <tr>
                                 <td>Montant par versement</td>
-                                <td>{this.state.product?.details.find(d => d.type === 'DEPOSITAMOUNT').value}</td>
+                                <td>{ data.selectedLine.amount } EUR</td>
                             </tr>
                             <tr>
                                 <td>Capital à terme</td>
-                                <td>{this.state.product?.details.find(d => d.type === 'AVAILABLECAPITAL').value}</td>
+                                <td>{this.state.product?.details.find(d => d.type === 'AVAILABLE_CAPITAL').value} EUR</td>
                             </tr>
                             <tr>
                                 <td>Capital disponible sur avance</td>
-                                <td>xxx</td>
+                                <td>{this.state.product?.details.find(d => d.type === "INVESTMENT_CAPITAL").value} EUR</td>
                             </tr>
                             <tr>
                                 <td>Capital disponible par groupe de ligne pour un projet de n associés maxi</td>
-                                <td>xxx</td>
+                                <td>{this.state.product?.details.find(d => d.type === "ADVANCE_INTEREST").value} EUR</td>
                             </tr>
                             <tr>
                                 <td>Date de tirage pour une avance</td>
-                                <td>{data.selectedDate}</td>
+                                <td>{data.selectedDate.date}</td>
                             </tr>
                         </tbody>
                     </table>

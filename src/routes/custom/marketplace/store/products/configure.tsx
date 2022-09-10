@@ -1,6 +1,6 @@
 import moment from 'moment';
 import { connect } from 'react-redux';
-import { datediff } from 'Helpers/helpers';
+import { convertDate, datediff } from 'Helpers/helpers';
 import { withRouter } from "react-router-dom";
 import Button from '@material-ui/core/Button';
 import { MARKETPLACE } from 'Url/frontendUrl';
@@ -12,11 +12,11 @@ import CreateOption from '../components/createOption';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { NotificationManager } from 'react-notifications';
 import Checkbox from "@material-ui/core/Checkbox/Checkbox";
-import { getProductTypes, getTimeUnits } from 'Helpers/datas';
+import { getProductTypes, getTimeUnitByValue, getTimeUnits } from 'Helpers/datas';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import {Form, FormGroup, Input as InputStrap} from 'reactstrap';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
-import CreateSupportOption from '../components/createSupportOption';
+// import CreateSupportOption from '../components/createSupportOption';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
 import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
 
@@ -31,9 +31,9 @@ const Configure = (props: any) => {
 
     const [option, setOption] = useState(null);
     const [options, setOptions] = useState([]);
-    const [supports, setSupports] = useState([]);
+    // const [supports, setSupports] = useState([]);
     const [showAddOption, setShowAddOption] = useState<Boolean>(false);
-    const [showAddSupportOption, setShowAddSupportOption] = useState<Boolean>(false);
+    // const [showAddSupportOption, setShowAddSupportOption] = useState<Boolean>(false);
 
     const [endDate, setEndDate] = useState(null);
     const [product, setProduct] = useState(null);
@@ -41,11 +41,12 @@ const Configure = (props: any) => {
     const [lineGroup, setLineGroup] = useState(null);
     const [cycleTime, setCycleTime] = useState(null);
     const [startDate, setStartDate] = useState(null);
+    const [tirageDates, setTirageDates] = useState([]);
     const [minimumRate, setMinimumRate] = useState(null);
     const [productType, setProductType] = useState(null);
     const [advanceType, setAdvanceType] = useState(null);
     const [totalDeposit, setTotalDeposit] = useState(null);
-    const [supportOption, setSupportOption] = useState(null);
+    // const [supportOption, setSupportOption] = useState(null);
     const [depositPeriod, setDepositPeriod] = useState(null);
     const [depositAmount, setDepositAmount] = useState(null);
     const [advanceOption, setAdvanceOption] = useState(null);
@@ -64,7 +65,7 @@ const Configure = (props: any) => {
     useEffect(() => {
         findProduct();
         getCodevOptions();
-        getCodevSupportOptions();
+        // getCodevSupportOptions();
     }, []);
 
     useEffect(() => {
@@ -76,14 +77,14 @@ const Configure = (props: any) => {
             }
         }
 
-        if(!supportOption) {
-            let tmp = supports.find(t => t.reference == product?.details.find(d => d.type == 'SUPPORT_OPTION')?.value);
-            if(tmp) {
-                tmp.label = tmp.type.label+': '+tmp.startDate;
-                setSupportOption(tmp);
-            }
-        }
-    }, [product, supports, options])
+        // if(!supportOption) {
+        //     let tmp = supports.find(t => t.reference == product?.details.find(d => d.type == 'SUPPORT_OPTION')?.value);
+        //     if(tmp) {
+        //         tmp.label = tmp.type.label+': '+tmp.startDate;
+        //         setSupportOption(tmp);
+        //     }
+        // }
+    }, [product, options])
 
     useEffect(() => {
         if(lineGroup && cycleTime) {
@@ -129,10 +130,23 @@ const Configure = (props: any) => {
         setAvailableCapital(capital);
     }
 
+    useEffect(() => {
+        if(startDate && endDate && cycleTime && depositPeriod) {
+            let tmpDates = [];
+            let date = new Date(startDate);
+            let end = new Date(endDate);
+            while (date <= end) {
+                tmpDates.push(convertDate(date, "YYYY-MM-DD"));
+                date.setDate(date.getDate() + depositPeriod.days);
+            }
+            setTirageDates(tmpDates);
+        }
+    }, [startDate, endDate, cycleTime, depositPeriod]);
+
 
     const onSubmit = () => {
 
-        if(!option || !supportOption) {
+        if(!option) {
             return;
         }
 
@@ -156,9 +170,10 @@ const Configure = (props: any) => {
             emitLineCount: emitLineCount.toString(), 
             carrencePeriod: carrencePeriod.toString(), 
             firstLot: startDate,
+            tirages: tirageDates,
             lastLot: endDate,
             option: option.reference,
-            supportOption: supportOption.reference,
+            // supportOption: supportOption.reference,
             ticketCaracteristic: ticketCaracteristic[0].value.toString(), 
             advanceType: advanceType.value.toString(), 
             advanceInterest: advanceInterest.toString(),
@@ -212,13 +227,13 @@ const Configure = (props: any) => {
         .finally(() => props.setRequestGlobalAction(false))
     }
 
-    const getCodevSupportOptions = () => {
-        props.setRequestGlobalAction(true);
-        ProductService.getCodevSupportOptions().then(response => {
-            setSupports(response);
-        })
-        .finally(() => props.setRequestGlobalAction(false))
-    }
+    // const getCodevSupportOptions = () => {
+    //     props.setRequestGlobalAction(true);
+    //     ProductService.getCodevSupportOptions().then(response => {
+    //         setSupports(response);
+    //     })
+    //     .finally(() => props.setRequestGlobalAction(false))
+    // }
 
     return (
         <>
@@ -394,7 +409,7 @@ const Configure = (props: any) => {
                         </FormGroup>
                     </div>
                     <div className='row'>
-                        <div className="col-md-4 col-sm-12 has-wrapper mb-30">
+                        <div className="col-md-6 col-sm-12 has-wrapper mb-30">
                             <InputLabel className="text-left">
                                 Options du plan
                             </InputLabel>
@@ -413,7 +428,7 @@ const Configure = (props: any) => {
                                 renderInput={(params) => <TextField {...params} variant="outlined" />}
                             />
                         </div>
-                        <div className="col-md-4 col-sm-12 has-wrapper mb-30">
+                        {/* <div className="col-md-4 col-sm-12 has-wrapper mb-30">
                             <InputLabel className="text-left">
                                 Supports d'options du plan
                             </InputLabel>
@@ -431,8 +446,8 @@ const Configure = (props: any) => {
                                 getOptionLabel={(option) => option.label}
                                 renderInput={(params) => <TextField {...params} variant="outlined" />}
                             />
-                        </div>
-                        <div className="col-md-4 col-sm-12 has-wrapper mb-30">
+                        </div> */}
+                        <div className="col-md-6 col-sm-12 has-wrapper mb-30">
                             <InputLabel className="text-left">
                                 Placements programmés
                             </InputLabel>
@@ -630,8 +645,8 @@ const Configure = (props: any) => {
                     </FormGroup>
                 </Form>
             </RctCollapsibleCard>
-            <CreateOption show={showAddOption} onClose={() => { setShowAddOption(false); getCodevOptions() }} />
-            <CreateSupportOption show={showAddSupportOption} onClose={() => { setShowAddSupportOption(false); getCodevSupportOptions() }} />
+            <CreateOption show={showAddOption} onClose={() => { setShowAddOption(false); getCodevOptions() }} dates={tirageDates} />
+            {/* <CreateSupportOption show={showAddSupportOption} onClose={() => { setShowAddSupportOption(false); getCodevSupportOptions() }} dates={tirageDates} /> */}
         </>
     );
 };

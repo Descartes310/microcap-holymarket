@@ -28,19 +28,33 @@ const advanceTypeEnum = [
     {
         label: 'Capital constant',
         value: 'CAPITAL'
-    }];
+    }
+];
+
+const subscriptionTypeEnum = [
+    {
+        label: 'Individuelle',
+        value: 'ALONE'
+    },
+    {
+        label: 'Indivision',
+        value: 'INDIVISION'
+    }
+];
+
 class CodevStep1 extends Component {
 
     state = {
         dates: [],
         plan: null,
         product: null,
+        drawDate: null,
         cessible: false,
         editable: false,
         advanceType: null,
         advanceValue: null,
         selectedDate: null,
-        drawDate: null,
+        subscriptionType: null,
     }
 
     constructor(props) {
@@ -56,29 +70,23 @@ class CodevStep1 extends Component {
     findProduct = () => {
         this.props.setRequestGlobalAction(true);
         ProductService.findProduct(this.props.product.reference)
-            .then(response => {
-                if (response.details.length <= 0) {
-                    NotificationManager.error('Produit non configuré');
-                    this.props.onClose();
-                }
-                this.setState({ product: response }, () => {
-                    this.computeAvailableDate();
-                });
-            })
-            .finally(() => this.props.setRequestGlobalAction(false))
+        .then(response => {
+            if (response.details.length <= 0) {
+                NotificationManager.error('Produit non configuré');
+                this.props.onClose();
+            }
+            this.setState({ product: response }, () => this.findTirageDates());
+        })
+        .finally(() => this.props.setRequestGlobalAction(false))
     }
 
-    computeAvailableDate = () => {
-        let dates = [];
-        let startDate = new Date(this.state.product?.details.find(d => d.type === 'STARTDATE')?.value);
-        let endDate = new Date(this.state.product?.details.find(d => d.type === 'ENDDATE')?.value);
-        let depositPeriod = getTimeUnitByValue(this.state.product?.details.find(d => d.type === 'DEPOSITPERIOD')?.value)?.days;
-        let date = startDate;
-        while (date <= endDate) {
-            dates.push(convertDate(date));
-            date.setDate(date.getDate() + depositPeriod);
-        }
-        this.setState({ dates });
+    findTirageDates = () => {
+        this.props.setRequestGlobalAction(true);
+        ProductService.getFreeTirages({reference: this.props.product.reference})
+        .then(response => {
+            this.setState({ dates: response });
+        })
+        .finally(() => this.props.setRequestGlobalAction(false))
     }
 
     onValidate = () => {
@@ -89,8 +97,9 @@ class CodevStep1 extends Component {
         }
 
         let data = {
-            // plan: plan.value,
-            selectedDate, advanceValue, productReference: product.reference
+            selectedDate, 
+            advanceValue, 
+            productReference: product.reference
         }
 
         this.props.onSubmit(data);
@@ -100,7 +109,7 @@ class CodevStep1 extends Component {
 
         const { onClose, show } = this.props;
         const { product, cessible, editable, advanceValue,
-            advanceType, dates, plan, selectedDate } = this.state;
+            advanceType, dates, plan, selectedDate, subscriptionType } = this.state;
 
         return (
             <DialogComponent
@@ -136,14 +145,15 @@ class CodevStep1 extends Component {
                         <InputLabel className="text-left" htmlFor="startDate">
                             Date du tirage
                         </InputLabel>
-                        <InputStrap
-                            required
-                            type="date"
-                            id="selectedDate"
-                            name='selectedDate'
-                            value={this.state.selectedDate}
-                            className="input-lg"
-                            onChange={(e) => this.setState({ selectedDate: e.target.value })}
+                        <Autocomplete
+                            options={dates}
+                            value={selectedDate}
+                            id="combo-box-demo"
+                            onChange={(__, item) => {
+                                this.setState({ selectedDate: item });
+                            }}
+                            getOptionLabel={(option) => option.date}
+                            renderInput={(params) => <TextField {...params} variant="outlined" />}
                         />
                     </FormGroup>
                     <FormGroup className="col-md-12 col-sm-12 has-wrapper mb-30 mt-20">
@@ -161,20 +171,22 @@ class CodevStep1 extends Component {
                             renderInput={(params) => <TextField {...params} variant="outlined" />}
                         />
                     </FormGroup>
-                    {/* <FormGroup className="col-md-12 col-sm-12 has-wrapper">
-                        <InputLabel className="text-left" htmlFor="advanceValue">
-                            Inscrit sur avance
+                    <FormGroup className="col-md-12 col-sm-12 has-wrapper mb-30 mt-20">
+                        <InputLabel className="text-left">
+                            Type de souscription
                         </InputLabel>
-                        <InputStrap
-                            required
-                            type="number"
-                            id="advanceValue"
-                            name='advanceValue'
-                            className="input-lg"
-                            value={advanceValue}
-                            onChange={(e) => this.setState({advanceValue: e.target.value})}
+                        <Autocomplete
+                            id="combo-box-demo"
+                            value={subscriptionType}
+                            options={subscriptionTypeEnum}
+                            onChange={(__, item) => {
+                                this.setState({ subscriptionType: item });
+                            }}
+                            getOptionLabel={(option) => option.label}
+                            renderInput={(params) => <TextField {...params} variant="outlined" />}
                         />
-                    </FormGroup> */}
+                    </FormGroup>
+                    
                     <FormGroup className="float-right mb-20">
                         <Button
                             color="primary"

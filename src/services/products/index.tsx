@@ -92,4 +92,16 @@ export default class ProductService {
         return makeRequest('post', Routes.CREATE_CODEV_SUPPORT_OPTION, data);
     }
 
+    static createIndivision(data: any): Promise<any> {
+        return makeRequest('post', Routes.CREATE_INDIVIVIONS, data);
+    }
+
+    static getFreeTirages(data: any): Promise<any> {
+        return makeRequest('get', Routes.GET_FREE_TIRAGE, data);
+    }
+
+    static getLinesByDate(data: any): Promise<any> {
+        return makeRequest('get', Routes.GET_LINE_BY_DATE, data);
+    }
+
 }

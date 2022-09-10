@@ -15,12 +15,12 @@ import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabe
 
 const CreateOption = (props) => {
 
-    const {show, onClose} = props;
+    const {show, onClose, dates} = props;
+
     const [type, setType] = useState(null);
     const [types, setTypes] = useState([]);
     const [parent, setParent] = useState(null);
     const [parents, setParents] = useState([]);
-    const [tirage, setTirage] = useState(null);
     const [endDate, setEndDate] = useState(null);
     const [typeName, setTypeName] = useState(null);
     const [startDate, setStartDate] = useState(null);
@@ -31,7 +31,7 @@ const CreateOption = (props) => {
     useEffect(() => {
         getCodevOptionTypes();
         getCodevOptions();
-    }, []);
+    }, [show]);
 
     const getCodevOptionTypes = () => {
         props.setRequestGlobalAction(true);
@@ -58,7 +58,8 @@ const CreateOption = (props) => {
         let data = {
             end_date: endDate,
             start_date: startDate,
-            effect_date: effectDate
+            effect_date: effectDate,
+            reference: props.match.params.reference
         }
 
         if(parent) {
@@ -98,22 +99,6 @@ const CreateOption = (props) => {
             )}
         >
             <RctCardContent>
-
-                <div className="col-md-12 col-sm-12 has-wrapper mb-30">
-                    <InputLabel className="text-left">
-                        Tirage
-                    </InputLabel>
-                    <Autocomplete
-                        id="combo-box-demo"
-                        value={tirage}
-                        options={[]}
-                        onChange={(__, item) => {
-                            setTirage(item);
-                        }}
-                        getOptionLabel={(option) => option.label}
-                        renderInput={(params) => <TextField {...params} variant="outlined" />}
-                    />
-                </div>
 
                 <div className="row">
                     <FormGroup className="col-md-6 col-sm-12 has-wrapper mb-0">
