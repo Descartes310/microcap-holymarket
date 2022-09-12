@@ -36,7 +36,7 @@ const Configure = (props: any) => {
     const [endDate, setEndDate] = useState(null);
     const [product, setProduct] = useState(null);
     const [priceUnit, setPriceUnit] = useState(null);
-    const [placement, setPlacement] = useState(null);
+    const [placements, setPlacements] = useState([]);
     const [lineGroup, setLineGroup] = useState(null);
     const [cycleTime, setCycleTime] = useState(null);
     const [startDate, setStartDate] = useState(null);
@@ -126,8 +126,9 @@ const Configure = (props: any) => {
     
     useEffect(() => {
         if(details.length > 0 && product) {
+            let refs = product.details.find(d => d.type == 'PLACEMENT')?.value.split(',');
             setAdvanceType(details.find(t => t.reference == product.details.find(d => d.type == 'ADVANCE_TYPE')?.value));
-            setPlacement(details.find(t => t.reference == product.details.find(d => d.type == 'PLACEMENT')?.value));
+            setPlacements(details.filter(t => refs.includes(t.reference)));
         }
     }, [product, details])
 
@@ -193,7 +194,7 @@ const Configure = (props: any) => {
             tirages: tirageDates,
             lastLot: endDate,
             option: option.reference,
-            placement: placement.reference,
+            placement: placements.map(p => p.reference).join(','),
             // supportOption: supportOption.reference,
             ticketCaracteristic: ticketCaracteristic[0].value.toString(), 
             advanceType: advanceType.reference, 
@@ -367,15 +368,16 @@ const Configure = (props: any) => {
                                 Placements programmés
                             </InputLabel>
                             <Autocomplete
+                                multiple
                                 id="combo-box-demo"
-                                value={placement}
+                                value={placements}
                                 options={[{label: 'Ajouter un placement programmé', value: 'add'}, ...details.filter(d => d.type === 'PLACEMENT')]}
                                 onChange={(__, item) => {
-                                    if(item.value == 'add') {
+                                    if(item.find(i => i.value == 'add')) {
                                         setShowDetailsBox(true);
                                         setDetailsType("PLACEMENT")
                                     } else {
-                                        setPlacement(item);
+                                        setPlacements(item);
                                     }
                                 }}
                                 getOptionLabel={(option) => option.value}

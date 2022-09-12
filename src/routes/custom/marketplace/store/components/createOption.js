@@ -58,6 +58,7 @@ const CreateOption = (props) => {
     const onSumit = () => {
 
         if(!label || !type || !support) {
+            NotificationManager.error("Le formulaire n'est pas bien renseigné");
             return;
         }
 
@@ -70,10 +71,19 @@ const CreateOption = (props) => {
         }
 
         props.setRequestGlobalAction(true);
-        ProductService.createCodevOption(data).then(response => {
-            onClose();
+        ProductService.createCodevOption(data).then(() => {
+            setType("");
+            setLabel("");
+            setSupport("");
+            setDescription1("");
+            setDescription2("");
+            setDescription3("");
+        }).catch(() => {
+            NotificationManager.error("Le formulaire n'est pas bien renseigné");
         })
-        .finally(() => props.setRequestGlobalAction(false))
+        .finally(() => {
+            props.setRequestGlobalAction(false);
+        });
     }
 
     const onSaveConfig = () => {
@@ -99,214 +109,100 @@ const CreateOption = (props) => {
         >
             <RctCardContent>
 
-                {/* <div className="row">
-                    <FormGroup className="col-md-6 col-sm-12 has-wrapper mb-0">
-                        <FormControlLabel control={
-                            <Checkbox
-                                color="primary"
-                                checked={createType}
-                                onChange={() => {
-                                    setCreateType(!createType);
-                                }}
-                            />
-                        } label={"Créer un nouveau type d'option"}
+                <div className='row'>
+                    <FormGroup className="col-md-6 col-sm-12 has-wrapper">
+                        <InputLabel className="text-left" htmlFor="name">
+                            Libellé
+                        </InputLabel>
+                        <InputStrap
+                            required
+                            id="name"
+                            type="text"
+                            name='name'
+                            value={label}
+                            className="input-lg"
+                            onChange={(e) => setLabel(e.target.value)}
                         />
                     </FormGroup>
-                </div> */}
 
-                <FormGroup className="col-md-12 col-sm-12 has-wrapper">
-                    <InputLabel className="text-left" htmlFor="name">
-                        Libellé
-                    </InputLabel>
-                    <InputStrap
-                        required
-                        id="name"
-                        type="text"
-                        name='name'
-                        value={label}
-                        className="input-lg"
-                        onChange={(e) => setLabel(e.target.value)}
-                    />
-                </FormGroup>
-                <FormGroup className="col-md-12 col-sm-12 has-wrapper">
-                    <InputLabel className="text-left" htmlFor="type">
-                        Type de titre d'option
-                    </InputLabel>
-                    <InputStrap
-                        required
-                        id="type"
-                        type="text"
-                        name='type'
-                        value={type}
-                        className="input-lg"
-                        onChange={(e) => setType(e.target.value)}
-                    />
-                </FormGroup>
-                <FormGroup className="col-md-12 col-sm-12 has-wrapper">
-                    <InputLabel className="text-left" htmlFor="support">
-                        Type de support d'option
-                    </InputLabel>
-                    <InputStrap
-                        required
-                        type="text"
-                        id="support"
-                        name="support"
-                        value={support}
-                        className="input-lg"
-                        onChange={(e) => setSupport(e.target.value)}
-                    />
-                </FormGroup>
-                {/* { !createType ? 
-                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
-                        <InputLabel className="text-left">
-                            Type d'option
+                    <FormGroup className="col-md-6 col-sm-12 has-wrapper">
+                        <InputLabel className="text-left" htmlFor="description1">
+                            Description
                         </InputLabel>
-                        <Autocomplete
-                            id="combo-box-demo"
-                            value={type}
-                            options={types}
-                            onChange={(__, item) => {
-                                setType(item);
-                            }}
-                            getOptionLabel={(option) => option.label}
-                            renderInput={(params) => <TextField {...params} variant="outlined" />}
+                        <InputStrap
+                            required
+                            type="text"
+                            id="description1"
+                            name='description1'
+                            className="input-lg"
+                            value={description1}
+                            onChange={(e) => setDescription1(e.target.value)}
                         />
-                    </div> :
-                    <div className='row'>
-                        <FormGroup className="col-md-6 col-sm-12 has-wrapper">
-                            <InputLabel className="text-left" htmlFor="label">
-                                Libellé du type d'option
-                            </InputLabel>
-                            <InputStrap
-                                required
-                                id="label"
-                                type="text"
-                                name='label'
-                                value={typeName}
-                                className="input-lg"
-                                onChange={(e) => setTypeName(e.target.value)}
-                            />
-                        </FormGroup>
-                        <FormGroup className="col-md-6 col-sm-12 has-wrapper">
-                            <InputLabel className="text-left" htmlFor="description">
-                                Description du type d'option
-                            </InputLabel>
-                            <InputStrap
-                                required
-                                type="text"
-                                id="description"
-                                name='description'
-                                className="input-lg"
-                                value={typeDescription}
-                                onChange={(e) => setTypeDescription(e.target.value)}
-                            />
-                        </FormGroup>
-                    </div>
-                } */}
+                    </FormGroup>
+                </div>
 
-                {/* <div className="col-md-12 col-sm-12 has-wrapper mb-30">
-                    <InputLabel className="text-left">
-                        Options parent
-                    </InputLabel>
-                    <Autocomplete
-                        id="combo-box-demo"
-                        value={parent}
-                        options={parents}
-                        onChange={(__, item) => {
-                            setParent(item);
-                        }}
-                        getOptionLabel={(option) => option.startDate}
-                        renderInput={(params) => <TextField {...params} variant="outlined" />}
-                    />
-                </div> */}
-                
-                {/* <FormGroup className="col-md-12 col-sm-12 has-wrapper">
-                    <InputLabel className="text-left" htmlFor="startDate">
-                        Date de début validité
-                    </InputLabel>
-                    <InputStrap
-                        required
-                        type="date"
-                        id="startDate"
-                        name='startDate'
-                        value={startDate}
-                        className="input-lg"
-                        onChange={(e) => setStartDate(e.target.value)}
-                    />
-                </FormGroup>
-                
-                <FormGroup className="col-md-12 col-sm-12 has-wrapper">
-                    <InputLabel className="text-left" htmlFor="endDate">
-                        Date de fin validité
-                    </InputLabel>
-                    <InputStrap
-                        required
-                        type="date"
-                        id="endDate"
-                        name='endDate'
-                        value={endDate}
-                        className="input-lg"
-                        onChange={(e) => setEndDate(e.target.value)}
-                    />
-                </FormGroup>
-                
-                <FormGroup className="col-md-12 col-sm-12 has-wrapper">
-                    <InputLabel className="text-left" htmlFor="effectDate">
-                        Date d'effet
-                    </InputLabel>
-                    <InputStrap
-                        required
-                        type="date"
-                        id="effectDate"
-                        name='effectDate'
-                        value={effectDate}
-                        className="input-lg"
-                        onChange={(e) => setEffectDate(e.target.value)}
-                    />
-                </FormGroup> */}
+                <div className='row'>
+                    <FormGroup className="col-md-6 col-sm-12 has-wrapper">
+                        <InputLabel className="text-left" htmlFor="type">
+                            Type de titre d'option
+                        </InputLabel>
+                        <InputStrap
+                            required
+                            id="type"
+                            type="text"
+                            name='type'
+                            value={type}
+                            className="input-lg"
+                            onChange={(e) => setType(e.target.value)}
+                        />
+                    </FormGroup>
 
-                <FormGroup className="col-md-12 col-sm-12 has-wrapper">
-                    <InputLabel className="text-left" htmlFor="description1">
-                        Description
-                    </InputLabel>
-                    <InputStrap
-                        required
-                        type="text"
-                        id="description1"
-                        name='description1'
-                        className="input-lg"
-                        value={description1}
-                        onChange={(e) => setDescription1(e.target.value)}
-                    />
-                </FormGroup>
-                <FormGroup className="col-md-12 col-sm-12 has-wrapper">
-                    <InputLabel className="text-left" htmlFor="description2">
-                        Description
-                    </InputLabel>
-                    <InputStrap
-                        required
-                        type="text"
-                        id="description2"
-                        name='description2'
-                        className="input-lg"
-                        value={description2}
-                        onChange={(e) => setDescription2(e.target.value)}
-                    />
-                </FormGroup>
-                <FormGroup className="col-md-12 col-sm-12 has-wrapper">
-                    <InputLabel className="text-left" htmlFor="description3">
-                        Description
-                    </InputLabel>
-                    <InputStrap
-                        required
-                        type="text"
-                        id="description3"
-                        name='description3'
-                        className="input-lg"
-                        value={description3}
-                        onChange={(e) => setDescription3(e.target.value)}
-                    />
-                </FormGroup>
+                    <FormGroup className="col-md-6 col-sm-12 has-wrapper">
+                        <InputLabel className="text-left" htmlFor="description2">
+                            Description
+                        </InputLabel>
+                        <InputStrap
+                            required
+                            type="text"
+                            id="description2"
+                            name='description2'
+                            className="input-lg"
+                            value={description2}
+                            onChange={(e) => setDescription2(e.target.value)}
+                        />
+                    </FormGroup>
+                </div>
+                <div className='row'>
+                    <FormGroup className="col-md-6 col-sm-12 has-wrapper">
+                        <InputLabel className="text-left" htmlFor="support">
+                            Type de support d'option
+                        </InputLabel>
+                        <InputStrap
+                            required
+                            type="text"
+                            id="support"
+                            name="support"
+                            value={support}
+                            className="input-lg"
+                            onChange={(e) => setSupport(e.target.value)}
+                        />
+                    </FormGroup>
+
+                    <FormGroup className="col-md-6 col-sm-12 has-wrapper">
+                        <InputLabel className="text-left" htmlFor="description3">
+                            Description
+                        </InputLabel>
+                        <InputStrap
+                            required
+                            type="text"
+                            id="description3"
+                            name='description3'
+                            className="input-lg"
+                            value={description3}
+                            onChange={(e) => setDescription3(e.target.value)}
+                        />
+                    </FormGroup>
+                </div>
 
                 <div className="d-flex align-items-end">
                     <FormGroup className="mb-20 mr-10">
