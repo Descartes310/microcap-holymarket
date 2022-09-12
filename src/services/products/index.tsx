@@ -112,4 +112,16 @@ export default class ProductService {
         return makeRequest('post', Routes.CREATE_CODEV_DETAILS, data);
     }
 
+    static createCodevSimpleOption(data: any): Promise<any> {
+        return makeRequest('post', Routes.CREATE_CODEV_SIMPLE_OPTION, data);
+    }
+
+    static createCodevOptionDetails(reference: string, data: any): Promise<any> {
+        return makeRequest('post', Routes.CREATE_CODEV_OPTION_DETAILS(reference), data);
+    }
+
+    static getCodevOptionDetails(reference: string): Promise<any> {
+        return makeRequest('get', Routes.GET_CODEV_OPTION_DETAILS(reference));
+    }
+
 }

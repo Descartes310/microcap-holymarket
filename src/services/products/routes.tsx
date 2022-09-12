@@ -18,6 +18,9 @@ export const CREATE_CODEV_PRODUCT_MODEL = 'api/products/codevs';
 
 
 export const CREATE_CODEV_OPTION = 'api/products/codev/options';
+export const CREATE_CODEV_OPTION_DETAILS = (reference) => `api/products/codev/options/${reference}/details`;
+export const GET_CODEV_OPTION_DETAILS = (reference) => `api/products/codev/options/${reference}/details`;
+export const CREATE_CODEV_SIMPLE_OPTION = 'api/products/codev/options/create';
 export const CREATE_CODEV_OPTION_TYPE = 'api/products/codev/type_option_titles';
 export const GET_CODEV_OPTION_TYPE = 'api/products/codev/type_option_titles';
 export const GET_CODEV_OPTION = 'api/products/codev/options';

@@ -1,5 +1,6 @@
 import React from 'react';
 import Orders from './orders';
+import Options from './options';
 import Products from './products';
 import Purchases from './purchases';
 import {connect} from "react-redux";
@@ -17,6 +18,7 @@ const Store = (props) => {
                     <Route path={MARKETPLACE.STORE.ORDER.SELF} component={Orders} />
                     <Route path={MARKETPLACE.STORE.PRODUCT.SELF} component={Products} />
                     <Route path={MARKETPLACE.STORE.PURCHASE.SELF} component={Purchases} />
+                    <Route path={MARKETPLACE.STORE.OPTION.SELF} component={Options} />
                 </Switch>
             </>
         </div>

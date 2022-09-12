@@ -294,6 +294,11 @@ export const MARKETPLACE = {
             SELF: "/marketplace/store/orders",
             LIST: "/marketplace/store/orders/list",
         },
+        OPTION: {
+            SELF: "/marketplace/store/options",
+            LIST: "/marketplace/store/options/list",
+            CREATE: "/marketplace/store/options/create",
+        },
         PURCHASE: {
             SELF: "/marketplace/store/purchase",
             LIST: "/marketplace/store/purchase/list",
