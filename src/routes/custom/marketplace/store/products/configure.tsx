@@ -371,9 +371,9 @@ const Configure = (props: any) => {
                                 multiple
                                 id="combo-box-demo"
                                 value={placements}
-                                options={[{label: 'Ajouter un placement programmé', value: 'add'}, ...details.filter(d => d.type === 'PLACEMENT')]}
+                                options={[{value: 'Ajouter un placement programmé', ref: 'add'}, ...details.filter(d => d.type === 'PLACEMENT')]}
                                 onChange={(__, item) => {
-                                    if(item.find(i => i.value == 'add')) {
+                                    if(item.find(i => i.ref == 'add')) {
                                         setShowDetailsBox(true);
                                         setDetailsType("PLACEMENT")
                                     } else {
