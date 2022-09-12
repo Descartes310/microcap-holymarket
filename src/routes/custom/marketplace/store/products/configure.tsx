@@ -128,7 +128,7 @@ const Configure = (props: any) => {
         if(details.length > 0 && product) {
             let refs = product.details.find(d => d.type == 'PLACEMENT')?.value.split(',');
             setAdvanceType(details.find(t => t.reference == product.details.find(d => d.type == 'ADVANCE_TYPE')?.value));
-            setPlacements(details.filter(t => refs.includes(t.reference)));
+            setPlacements(details.filter(t => refs?.includes(t.reference)));
         }
     }, [product, details])
 
