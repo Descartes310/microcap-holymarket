@@ -28,8 +28,8 @@ const ADVANCE_TYPES = [
 
 const Configure = (props: any) => {
 
-    const [option, setOption] = useState(null);
-    const [options, setOptions] = useState([]);
+    const [config, setConfig] = useState(null);
+    const [configs, setConfigs] = useState([]);
     
     const [units, setUnits] = useState([]);
     const [details, setDetails] = useState([]);
@@ -66,27 +66,19 @@ const Configure = (props: any) => {
     useEffect(() => {
         getUnits();
         findProduct();
-        getCodevOptions();
+        getCodevConfigOptions();
         getCodevDetails();
     }, []);
 
     useEffect(() => {
-        if(!option) {
-            let tmp = options.find(t => t.reference == product?.details.find(d => d.type == 'OPTION')?.value);
+        if(!config) {
+            let tmp = configs.find(t => t.reference == product?.details.find(d => d.type == 'OPTION')?.value);
             if(tmp) {
-                tmp.label = tmp.type.label+': '+tmp.startDate;
-                setOption(tmp);
+                setConfig(tmp);
             }
         }
 
-        // if(!supportOption) {
-        //     let tmp = supports.find(t => t.reference == product?.details.find(d => d.type == 'SUPPORT_OPTION')?.value);
-        //     if(tmp) {
-        //         tmp.label = tmp.type.label+': '+tmp.startDate;
-        //         setSupportOption(tmp);
-        //     }
-        // }
-    }, [product, options])
+    }, [product, configs])
 
     useEffect(() => {
         if(lineGroup && cycleTime) {
@@ -167,7 +159,7 @@ const Configure = (props: any) => {
 
     const onSubmit = () => {
 
-        if(!option) {
+        if(!config) {
             return;
         }
 
@@ -193,7 +185,7 @@ const Configure = (props: any) => {
             firstLot: startDate,
             tirages: tirageDates,
             lastLot: endDate,
-            option: option.reference,
+            option: config.reference,
             placement: placements.map(p => p.reference).join(','),
             // supportOption: supportOption.reference,
             ticketCaracteristic: ticketCaracteristic[0].value.toString(), 
@@ -240,10 +232,10 @@ const Configure = (props: any) => {
         .finally(() => props.setRequestGlobalAction(false))
     }
 
-    const getCodevOptions = () => {
+    const getCodevConfigOptions = () => {
         props.setRequestGlobalAction(true);
-        ProductService.getCodevOptions().then(response => {
-            setOptions(response);
+        ProductService.getCodevConfigOptions({product_reference: props.match.params.reference}).then(response => {
+            setConfigs(response.map(co => { return {...co, label: co.option.label}}));
         })
         .finally(() => props.setRequestGlobalAction(false))
     }
@@ -350,13 +342,13 @@ const Configure = (props: any) => {
                             </InputLabel>
                             <Autocomplete
                                 id="combo-box-demo"
-                                value={option}
-                                options={[{label: 'Ajouter une option', value: 'add'}, ...options]}
+                                value={config}
+                                options={[{label: 'Ajouter une option', value: 'add'}, ...configs]}
                                 onChange={(__, item) => {
                                     if(item.value == 'add') {
                                         setShowAddOption(true);
                                     } else {
-                                        setOption(item);
+                                        setConfig(item);
                                     }
                                 }}
                                 getOptionLabel={(option) => option.label}
@@ -647,7 +639,7 @@ const Configure = (props: any) => {
             <CreateOption 
                 dates={tirageDates}
                 show={showAddOption} 
-                onClose={() => { setShowAddOption(false); getCodevOptions() }} 
+                onClose={() => { setShowAddOption(false); getCodevConfigOptions() }} 
             />
             <CreateDetails 
                 type={detailsType} 

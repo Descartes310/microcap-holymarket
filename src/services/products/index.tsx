@@ -124,4 +124,12 @@ export default class ProductService {
         return makeRequest('get', Routes.GET_CODEV_OPTION_DETAILS(reference));
     }
 
+    static createCodevConfigOption(data: any): Promise<any> {
+        return makeRequest('post', Routes.CREATE_CONFIG_OPTION, data);
+    }
+
+    static getCodevConfigOptions(data: any): Promise<any> {
+        return makeRequest('get', Routes.GET_CONFIG_OPTIONS, data);
+    }
+
 }

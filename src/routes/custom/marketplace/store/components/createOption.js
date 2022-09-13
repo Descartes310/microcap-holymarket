@@ -9,73 +9,52 @@ import { RctCardContent } from 'Components/RctCard';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { NotificationManager } from 'react-notifications';
 import {FormGroup, Input as InputStrap} from 'reactstrap';
-import Checkbox from "@material-ui/core/Checkbox/Checkbox";
 import DialogComponent from "Components/dialog/DialogComponent";
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
-import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
 
 const CreateOption = (props) => {
 
-    const {show, onClose, dates} = props;
+    const {show, onClose} = props;
 
     const [type, setType] = useState(null);
-    const [types, setTypes] = useState([]);
-    const [label, setLabel] = useState(null);
-    const [parent, setParent] = useState(null);
-    const [parents, setParents] = useState([]);
+    const [option, setOption] = useState(null);
+    const [options, setOptions] = useState([]);
     const [support, setSupport] = useState(null);
-    const [endDate, setEndDate] = useState(null);
-    const [typeName, setTypeName] = useState(null);
-    const [startDate, setStartDate] = useState(null);
-    const [effectDate, setEffectDate] = useState(null);
-    const [createType, setCreateType] = useState(false);
-    const [description1, setDescription1] = useState(null);
+
     const [description2, setDescription2] = useState(null);
     const [description3, setDescription3] = useState(null);
-    const [typeDescription, setTypeDescription] = useState(null);
 
     useEffect(() => {
-        getCodevOptionTypes();
         getCodevOptions();
     }, [show]);
-
-    const getCodevOptionTypes = () => {
-        props.setRequestGlobalAction(true);
-        ProductService.getCodevOptionTypes().then(response => {
-            setTypes(response);
-        })
-        .finally(() => props.setRequestGlobalAction(false))
-    }
 
     const getCodevOptions = () => {
         props.setRequestGlobalAction(true);
         ProductService.getCodevOptions().then(response => {
-            setParents(response);
+            setOptions(response);
         })
         .finally(() => props.setRequestGlobalAction(false))
     }
 
     const onSumit = () => {
 
-        if(!label || !type || !support) {
+        if(!option || !type || !support) {
             NotificationManager.error("Le formulaire n'est pas bien renseigné");
             return;
         }
 
         let data = {
-            title: type,
-            label: label,
-            support: support,
-            reference: props.match.params.reference,
-            description1, description2, description3
+            option_reference: option.reference,
+            option_title_label: type,
+            product_reference: props.match.params.reference,
+            support_option_label: support, option_title_description: description2, 
+            support_option_description: description3
         }
 
         props.setRequestGlobalAction(true);
-        ProductService.createCodevOption(data).then(() => {
+        ProductService.createCodevConfigOption(data).then(() => {
             setType("");
-            setLabel("");
             setSupport("");
-            setDescription1("");
             setDescription2("");
             setDescription3("");
         }).catch(() => {
@@ -85,16 +64,6 @@ const CreateOption = (props) => {
             props.setRequestGlobalAction(false);
         });
     }
-
-    const onSaveConfig = () => {
-
-        if(!type || !support) {
-            NotificationManager.error("Le formulaire n'est pas bien rempli !");
-            return;
-        }
-
-        NotificationManager.success('La configuration a été enregistrée !');
-    }
     
     return (
         <DialogComponent
@@ -103,42 +72,28 @@ const CreateOption = (props) => {
             size="md"
             title={(
                 <h3 className="fw-bold">
-                    Ajout d'une nouvelle option
+                    Ajout d'une nouvelle config
                 </h3>
             )}
         >
             <RctCardContent>
 
                 <div className='row'>
-                    <FormGroup className="col-md-6 col-sm-12 has-wrapper">
-                        <InputLabel className="text-left" htmlFor="name">
-                            Libellé
+                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                        <InputLabel className="text-left">
+                            Options disponible
                         </InputLabel>
-                        <InputStrap
-                            required
-                            id="name"
-                            type="text"
-                            name='name'
-                            value={label}
-                            className="input-lg"
-                            onChange={(e) => setLabel(e.target.value)}
+                        <Autocomplete
+                            id="combo-box-demo"
+                            value={option}
+                            options={options}
+                            onChange={(__, item) => {
+                                setOption(item);
+                            }}
+                            getOptionLabel={(option) => option.label}
+                            renderInput={(params) => <TextField {...params} variant="outlined" />}
                         />
-                    </FormGroup>
-
-                    <FormGroup className="col-md-6 col-sm-12 has-wrapper">
-                        <InputLabel className="text-left" htmlFor="description1">
-                            Description
-                        </InputLabel>
-                        <InputStrap
-                            required
-                            type="text"
-                            id="description1"
-                            name='description1'
-                            className="input-lg"
-                            value={description1}
-                            onChange={(e) => setDescription1(e.target.value)}
-                        />
-                    </FormGroup>
+                    </div>
                 </div>
 
                 <div className='row'>
@@ -205,16 +160,6 @@ const CreateOption = (props) => {
                 </div>
 
                 <div className="d-flex align-items-end">
-                    <FormGroup className="mb-20 mr-10">
-                        <Button
-                            color="primary"
-                            variant="contained"
-                            onClick={() => onSaveConfig()}
-                            className="text-white font-weight-bold mb-20"
-                        >
-                            Ajouter un support
-                        </Button>
-                    </FormGroup>
                     <FormGroup className="mb-20">
                         <Button
                             color="primary"
