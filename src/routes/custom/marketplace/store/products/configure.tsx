@@ -28,7 +28,7 @@ const ADVANCE_TYPES = [
 
 const Configure = (props: any) => {
 
-    const [config, setConfig] = useState(null);
+    const [config, setConfig] = useState([]);
     const [configs, setConfigs] = useState([]);
     
     const [units, setUnits] = useState([]);
@@ -71,11 +71,9 @@ const Configure = (props: any) => {
     }, []);
 
     useEffect(() => {
-        if(!config) {
-            let tmp = configs.find(t => t.reference == product?.details.find(d => d.type == 'OPTION')?.value);
-            if(tmp) {
-                setConfig(tmp);
-            }
+        let tmp = configs.filter(t => product?.details.find(d => d.type == 'OPTION')?.value.split(',').includes(t.reference));
+        if(tmp) {
+            setConfig(tmp);
         }
 
     }, [product, configs])
@@ -185,7 +183,7 @@ const Configure = (props: any) => {
             firstLot: startDate,
             tirages: tirageDates,
             lastLot: endDate,
-            option: config.reference,
+            option: config.map(c => c.reference).join(','),
             placement: placements.map(p => p.reference).join(','),
             // supportOption: supportOption.reference,
             ticketCaracteristic: ticketCaracteristic[0].value.toString(), 
@@ -341,11 +339,12 @@ const Configure = (props: any) => {
                                 Options du plan
                             </InputLabel>
                             <Autocomplete
+                                multiple
                                 id="combo-box-demo"
                                 value={config}
-                                options={[{label: 'Ajouter une option', value: 'add'}, ...configs]}
+                                options={[{label: 'Ajouter une option', reference: 'add'}, ...configs]}
                                 onChange={(__, item) => {
-                                    if(item.value == 'add') {
+                                    if(item.find(i => i.reference == 'add')) {
                                         setShowAddOption(true);
                                     } else {
                                         setConfig(item);
