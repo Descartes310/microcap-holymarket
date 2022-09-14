@@ -446,7 +446,7 @@ const Configure = (props: any) => {
                                 Date du premier tirage
                             </InputLabel>
                             <InputStrap
-                                required
+                                disabled
                                 type="date"
                                 id="startDate"
                                 name='startDate'
@@ -460,7 +460,7 @@ const Configure = (props: any) => {
                                 Date du dernier tirage
                             </InputLabel>
                             <InputStrap
-                                required
+                                disabled
                                 type="date"
                                 id="endDate"
                                 name='endDate'
