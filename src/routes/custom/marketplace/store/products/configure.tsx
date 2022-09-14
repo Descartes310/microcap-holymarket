@@ -161,6 +161,10 @@ const Configure = (props: any) => {
             return;
         }
 
+        console.log(productType);
+        console.log(depositPeriod);
+        console.log(ticketCaracteristic);
+
         let data: any = {
             reference: props.match.params.reference,
             productType: productType.value.toString(),
