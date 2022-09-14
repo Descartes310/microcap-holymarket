@@ -59,7 +59,7 @@ const Configure = (props: any) => {
     const [quotientAvailable, setQuotientAvailable] = useState(null);
     const [investmentCapital, setInvestmentCapital] = useState(null);
     const [showAddOption, setShowAddOption] = useState<Boolean>(false);
-    const [ticketCaracteristic, setTicketCaracteristic] = useState([]);
+    //const [ticketCaracteristic, setTicketCaracteristic] = useState([]);
     const [subscriptionEndDate, setSubscriptionEndDate] = useState(null);
     const [subscriptionStartDate, setSubscriptionStartDate] = useState(null);
 
@@ -163,7 +163,7 @@ const Configure = (props: any) => {
 
         console.log(productType);
         console.log(depositPeriod);
-        console.log(ticketCaracteristic);
+        //console.log(ticketCaracteristic);
 
         let data: any = {
             reference: props.match.params.reference,
@@ -190,7 +190,7 @@ const Configure = (props: any) => {
             option: config.map(c => c.reference).join(','),
             placement: placements.map(p => p.reference).join(','),
             // supportOption: supportOption.reference,
-            ticketCaracteristic: ticketCaracteristic[0].value.toString(), 
+            //ticketCaracteristic: ticketCaracteristic[0].value.toString(), 
             advanceType: advanceType.reference, 
             advanceInterest: advanceInterest.toString(),
         }
@@ -229,7 +229,7 @@ const Configure = (props: any) => {
             setSubscriptionEndDate(response.details.find(d => d.type == 'START_DATE')?.value);
             setSubscriptionStartDate(response.details.find(d => d.type == 'END_DATE')?.value);
             setDepositPeriod(getTimeUnits().find(t => t.value == response.details.find(d => d.type == 'DEPOSIT_PERIOD')?.value));
-            setTicketCaracteristic(TICKET_FEATURES.filter(t => t.value == response.details.find(d => d.type == 'TICKET_FEATURE')?.value));
+            //setTicketCaracteristic(TICKET_FEATURES.filter(t => t.value == response.details.find(d => d.type == 'TICKET_FEATURE')?.value));
         })
         .finally(() => props.setRequestGlobalAction(false))
     }
