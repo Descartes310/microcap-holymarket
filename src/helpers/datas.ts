@@ -175,3 +175,34 @@ export const getDateDiff = (startDate, endDate, days) => {
     const milliseconds = 1000 * 60 * 60 * 24 * days;
     return Math.round(Math.abs(endDate - startDate) / milliseconds);
 }
+
+export const productOptionDetails = [
+    {
+        label: 'Date du premier tirage',
+        value: 'FIRST_LOT'
+    },
+    {
+        label: 'Date du dernier tirage',
+        value: 'LAST_LOT'
+    },
+    {
+        label: 'Quotité disponible sur avance (%)',
+        value: 'QUOTIENT_AVAILABLE'
+    },
+    {
+        label: 'Franchise (en nombre de période)',
+        value: 'FRANCHISE'
+    },
+    {
+        label: "Type d'avance autorisé",
+        value: 'ADVANCE_TYPE'
+    },
+    {
+        label: 'Intérêt sur avance (en %)',
+        value: 'ADVANCE_INTEREST'
+    },
+    {
+        label: 'Capital disponible par tirage (groupe de ligne)',
+        value: 'AVAILABLE_CAPITAL'
+    },
+];

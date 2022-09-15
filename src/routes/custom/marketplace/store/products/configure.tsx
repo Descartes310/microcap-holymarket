@@ -33,31 +33,31 @@ const Configure = (props: any) => {
     
     const [units, setUnits] = useState([]);
     const [details, setDetails] = useState([]);
-    const [endDate, setEndDate] = useState(null);
+    // const [endDate, setEndDate] = useState(null);
     const [product, setProduct] = useState(null);
     const [priceUnit, setPriceUnit] = useState(null);
     const [placements, setPlacements] = useState([]);
     const [lineGroup, setLineGroup] = useState(null);
     const [cycleTime, setCycleTime] = useState(null);
-    const [startDate, setStartDate] = useState(null);
+    // const [startDate, setStartDate] = useState(null);
     const [tirageDates, setTirageDates] = useState([]);
     const [detailsType, setDetailsType] = useState(null);
     const [minimumRate, setMinimumRate] = useState(null);
     const [productType, setProductType] = useState(null);
-    const [advanceType, setAdvanceType] = useState(null);
+    // const [advanceType, setAdvanceType] = useState(null);
     const [totalDeposit, setTotalDeposit] = useState(null);
     const [depositPeriod, setDepositPeriod] = useState(null);
     const [depositAmount, setDepositAmount] = useState(null);
     const [advanceOption, setAdvanceOption] = useState(null);
     const [emitLineCount, setEmitLineCount] = useState(null);
-    const [carrencePeriod, setCarrencePeriod] = useState(null);
+    // const [carrencePeriod, setCarrencePeriod] = useState(null);
     const [showDetailsBox, setShowDetailsBox] = useState(false);
-    const [advanceInterest, setAdvanceInterest] = useState(null);
+    // const [advanceInterest, setAdvanceInterest] = useState(null);
     const [startDepositDate, setStartDepositDate] = useState(null);
     const [availableCapital, setAvailableCapital] = useState(null);
     const [subscriptionFees, setSubscriptionFees] = useState(null);
-    const [quotientAvailable, setQuotientAvailable] = useState(null);
-    const [investmentCapital, setInvestmentCapital] = useState(null);
+    // const [quotientAvailable, setQuotientAvailable] = useState(null);
+    // const [investmentCapital, setInvestmentCapital] = useState(null);
     const [showAddOption, setShowAddOption] = useState<Boolean>(false);
     //const [ticketCaracteristic, setTicketCaracteristic] = useState([]);
     const [subscriptionEndDate, setSubscriptionEndDate] = useState(null);
@@ -90,23 +90,9 @@ const Configure = (props: any) => {
         }
 
         if(depositAmount && minimumRate) {
-            setAvailableCapital(depositAmount*Math.pow(1+minimumRate, emitLineCount));
+            setAvailableCapital((depositAmount*Math.pow(1+minimumRate, emitLineCount)).toFixed(2));
         }
     }, [depositAmount, cycleTime, minimumRate])
-
-    useEffect(() => {
-        if(depositAmount && lineGroup && quotientAvailable) {
-            setInvestmentCapital(depositAmount*lineGroup*quotientAvailable);
-        }
-    }, [depositAmount, lineGroup, quotientAvailable ])
-
-    useEffect(() => {
-        if(startDepositDate && carrencePeriod && cycleTime && depositPeriod) {
-            let newDate = moment(startDepositDate).add(carrencePeriod, depositPeriod.value.toLowerCase()).format('YYYY-MM-DD');
-            setStartDate(newDate);
-            setEndDate(moment(newDate).add(cycleTime, depositPeriod.value.toLowerCase()).format('YYYY-MM-DD'))
-        }
-    }, [startDepositDate, carrencePeriod, depositPeriod, cycleTime])
 
     useEffect(() => {
         if(minimumRate && depositPeriod && cycleTime && depositAmount) {
@@ -117,7 +103,7 @@ const Configure = (props: any) => {
     useEffect(() => {
         if(details.length > 0 && product) {
             let refs = product.details.find(d => d.type == 'PLACEMENT')?.value.split(',');
-            setAdvanceType(details.find(t => t.reference == product.details.find(d => d.type == 'ADVANCE_TYPE')?.value));
+            // setAdvanceType(details.find(t => t.reference == product.details.find(d => d.type == 'ADVANCE_TYPE')?.value));
             setPlacements(details.filter(t => refs?.includes(t.reference)));
         }
     }, [product, details])
@@ -131,17 +117,17 @@ const Configure = (props: any) => {
     }
 
     useEffect(() => {
-        if(startDate && endDate && cycleTime && depositPeriod) {
+        if(cycleTime && depositPeriod) {
             let tmpDates = [];
-            let date = new Date(startDate);
-            let end = new Date(endDate);
+            let date = new Date();
+            let end = new Date();
             while (date <= end) {
                 tmpDates.push(convertDate(date, "YYYY-MM-DD"));
                 date.setDate(date.getDate() + depositPeriod.days);
             }
             setTirageDates(tmpDates);
         }
-    }, [startDate, endDate, cycleTime, depositPeriod]);
+    }, [cycleTime, depositPeriod]);
 
     const getUnits = () => {
         props.setRequestGlobalAction(false);
@@ -161,10 +147,6 @@ const Configure = (props: any) => {
             return;
         }
 
-        console.log(productType);
-        console.log(depositPeriod);
-        //console.log(ticketCaracteristic);
-
         let data: any = {
             reference: props.match.params.reference,
             productType: productType.value.toString(),
@@ -177,22 +159,22 @@ const Configure = (props: any) => {
             availableCapital: availableCapital.toString(), 
             lineGroup: lineGroup.toString(),
             advanceOption: advanceOption+"", 
-            quotientAvailable: quotientAvailable.toString(), 
-            investmentCapital: investmentCapital.toString(),
+            // quotientAvailable: quotientAvailable.toString(), 
+            // investmentCapital: investmentCapital.toString(),
             subscriptionStartDate: subscriptionStartDate.toString(),
             subscriptionEndDate: subscriptionEndDate.toString(), 
             startDepositDate: startDepositDate.toString(),
             emitLineCount: emitLineCount.toString(), 
-            carrencePeriod: carrencePeriod.toString(), 
-            firstLot: startDate,
+            // carrencePeriod: carrencePeriod.toString(), 
+            // firstLot: startDate,
             tirages: tirageDates,
-            lastLot: endDate,
+            // lastLot: endDate,
             option: config.map(c => c.reference).join(','),
             placement: placements.map(p => p.reference).join(','),
             // supportOption: supportOption.reference,
             //ticketCaracteristic: ticketCaracteristic[0].value.toString(), 
-            advanceType: advanceType.reference, 
-            advanceInterest: advanceInterest.toString(),
+            // advanceType: advanceType.reference, 
+            // advanceInterest: advanceInterest.toString(),
         }
 
         props.setRequestGlobalAction(true);
@@ -209,27 +191,26 @@ const Configure = (props: any) => {
         props.setRequestGlobalAction(true);
         ProductService.findProduct(props.match.params.reference).then(response => {
             setProduct(response);
-            setEndDate(response.details.find(d => d.type == 'LAST_LOT')?.value);
+            // setEndDate(response.details.find(d => d.type == 'LAST_LOT')?.value);
             setLineGroup(response.details.find(d => d.type == 'LINE_GROUP')?.value);
             setCycleTime(response.details.find(d => d.type == 'CYCLE_TIME')?.value);
-            setStartDate(response.details.find(d => d.type == 'FIRST_LOT')?.value);
+            // setStartDate(response.details.find(d => d.type == 'FIRST_LOT')?.value);
             setMinimumRate(response.details.find(d => d.type == 'MINIMUM_RATE')?.value);
             setProductType(getProductTypes().find(pt => pt.value == 'CODEV'));
             setTotalDeposit(response.details.find(d => d.type == 'TOTAL_DEPOSIT')?.value);
             setDepositAmount(response.details.find(d => d.type == 'DEPOSIT_AMOUNT')?.value);
             setAdvanceOption(response.details.find(d => d.type == 'ADVANCE_OPTION')?.value);
             setEmitLineCount(response.details.find(d => d.type == 'EMIT_LINE_COUNT')?.value);
-            setCarrencePeriod(response.details.find(d => d.type == 'WAITING_PERIOD')?.value);
-            setAdvanceInterest(response.details.find(d => d.type == 'ADVANCE_INTEREST')?.value);
+            // setCarrencePeriod(response.details.find(d => d.type == 'WAITING_PERIOD')?.value);
+            // setAdvanceInterest(response.details.find(d => d.type == 'ADVANCE_INTEREST')?.value);
             setStartDepositDate(response.details.find(d => d.type == 'START_DEPOSIT_DATE')?.value);
             setAvailableCapital(response.details.find(d => d.type == 'AVAILABLE_CAPITAL')?.value);
             setSubscriptionFees(response.details.find(d => d.type == 'SUBSCRIPTION_FEES')?.value);
-            setQuotientAvailable(response.details.find(d => d.type == 'QUOTIENT_AVAILABLE')?.value);
-            setInvestmentCapital(response.details.find(d => d.type == 'INVESTMENT_CAPITAL')?.value);
+            // setQuotientAvailable(response.details.find(d => d.type == 'QUOTIENT_AVAILABLE')?.value);
+            // setInvestmentCapital(response.details.find(d => d.type == 'INVESTMENT_CAPITAL')?.value);
             setSubscriptionEndDate(response.details.find(d => d.type == 'START_DATE')?.value);
             setSubscriptionStartDate(response.details.find(d => d.type == 'END_DATE')?.value);
             setDepositPeriod(getTimeUnits().find(t => t.value == response.details.find(d => d.type == 'DEPOSIT_PERIOD')?.value));
-            //setTicketCaracteristic(TICKET_FEATURES.filter(t => t.value == response.details.find(d => d.type == 'TICKET_FEATURE')?.value));
         })
         .finally(() => props.setRequestGlobalAction(false))
     }
@@ -309,7 +290,7 @@ const Configure = (props: any) => {
                         </FormGroup>
                         <FormGroup className="col-md-4 col-sm-12 has-wrapper">
                             <InputLabel className="text-left" htmlFor="lineGroup">
-                                Groupage (nombre de ligne)
+                                Groupage (par tirage)
                             </InputLabel>
                             <InputStrap
                                 required
@@ -380,6 +361,29 @@ const Configure = (props: any) => {
                             />
                         </div>
                     </div>
+
+                    {
+                        config?.map(c => (
+                            <>
+                                <h2 className='mb-30 mt-10'>Spécification {c.option.label}</h2>
+                                
+                                { c.option.optionDetails.map(d => (
+                                    <FormGroup className="col-md-4 col-sm-12 has-wrapper">
+                                        <InputLabel className="text-left">
+                                            {d.label}
+                                        </InputLabel>
+                                        <InputStrap
+                                            disabled
+                                            type="text"
+                                            value={d.value}
+                                            className="input-lg"
+                                        />
+                                    </FormGroup>
+                                ))}
+                            </>    
+                        ))
+                    }
+
                     <h2 className='mb-30 mt-10'>Spécifications financières du plan</h2>
 
                     <div className="row">
@@ -426,7 +430,7 @@ const Configure = (props: any) => {
                             />
                         </FormGroup>
                     </div>
-                    <div className='row'>
+                    {/* <div className='row'>
                         <FormGroup className="col-md-4 col-sm-12 has-wrapper">
                             <InputLabel className="text-left" htmlFor="carrencePeriod">
                                 Franchise (en nombre de période)
@@ -469,7 +473,7 @@ const Configure = (props: any) => {
                                 onChange={(e) => setEndDate(e.target.value)}
                             />
                         </FormGroup>
-                    </div>
+                    </div> */}
 
                     <div className="row">
                         <FormGroup className="col-md-3 col-sm-12 has-wrapper">
@@ -561,7 +565,7 @@ const Configure = (props: any) => {
                         </FormGroup>
                     </div>
                     <div className="row">
-                        <FormGroup className="col-md-6 col-sm-12 has-wrapper">
+                        {/* <FormGroup className="col-md-6 col-sm-12 has-wrapper">
                             <InputLabel className="text-left" htmlFor="quotientAvailable">
                                 Quotité disponible sur avance (%)
                             </InputLabel>
@@ -588,9 +592,9 @@ const Configure = (props: any) => {
                                 value={investmentCapital}
                                 onChange={(e) => setInvestmentCapital(e.target.value)}
                             />
-                        </FormGroup>
+                        </FormGroup> */}
                     </div>
-                    <div className="row">
+                    {/* <div className="row">
                         <div className="col-md-6 col-sm-12 has-wrapper mb-30">
                             <InputLabel className="text-left">
                                 Type d'avance autorisé
@@ -625,7 +629,7 @@ const Configure = (props: any) => {
                                 onChange={(e) => setAdvanceInterest(e.target.value)}
                             />
                         </FormGroup>
-                    </div>
+                    </div> */}
 
                     <FormGroup>
                         <Button

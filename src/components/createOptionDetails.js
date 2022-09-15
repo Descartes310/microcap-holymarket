@@ -5,6 +5,9 @@ import { withRouter } from "react-router-dom";
 import ProductService from 'Services/products';
 import { setRequestGlobalAction } from 'Actions';
 import { RctCardContent } from 'Components/RctCard';
+import TextField from '@material-ui/core/TextField';
+import { productOptionDetails } from "Helpers/datas";
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import { NotificationManager } from 'react-notifications';
 import DialogComponent from "Components/dialog/DialogComponent";
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
@@ -13,7 +16,8 @@ import { FormGroup, Button, Input as InputStrap  } from 'reactstrap';
 class CreateOptionDetailsModal extends Component {
   
     state = {
-        label: null,
+        type: null,
+        value: null,
         description: null
     }
 
@@ -23,16 +27,16 @@ class CreateOptionDetailsModal extends Component {
 
     onSubmit = () => {
 
-        const { label, description } = this.state;
+        const { value, description, type } = this.state;
 
-        if(!label) {
+        if(!type || !value) {
             NotificationManager.error("La désignation est obligatoire");
             return;
         }
 
         this.props.setRequestGlobalAction(true);
 
-        let data = {label, description};
+        let data = {type: type.value, label: type.label, value, description};
 
         ProductService.createCodevOptionDetails(this.props.option.reference, data).then(() => {
             NotificationManager.success("Le détails a été créé avec succès");
@@ -47,7 +51,7 @@ class CreateOptionDetailsModal extends Component {
     render() {
 
         const { onClose, show, title } = this.props;
-        const { label, description } = this.state;
+        const { type, value, description } = this.state;
 
         return (
             <DialogComponent
@@ -61,18 +65,33 @@ class CreateOptionDetailsModal extends Component {
                 )}
             >
                 <RctCardContent>
+                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                        <InputLabel className="text-left">
+                            Type du détails
+                        </InputLabel>
+                        <Autocomplete
+                            value={type}
+                            id="combo-box-demo"
+                            onChange={(__, item) => {
+                                this.setState({ type: item });
+                            }}
+                            options={productOptionDetails}
+                            getOptionLabel={(option) => option.label}
+                            renderInput={(params) => <TextField {...params} variant="outlined" />}
+                        />
+                    </div>
                     <FormGroup className="has-wrapper">
-                        <InputLabel className="text-left" htmlFor="label">
-                            Label
+                        <InputLabel className="text-left" htmlFor="value">
+                            Valeur
                         </InputLabel>
                         <InputStrap
                             required
                             type="text"
-                            id="label"
-                            name='label'
-                            value={label}
+                            id="value"
+                            name='value'
+                            value={value}
                             className="input-lg"
-                            onChange={(e) => this.setState({ label: e.target.value })}
+                            onChange={(e) => this.setState({ value: e.target.value })}
                         />
                     </FormGroup>
                     <FormGroup className="has-wrapper">
