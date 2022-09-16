@@ -38,3 +38,8 @@ export const CREATE_INDIVIVIONS = 'api/products/codevs/indivision';
 
 export const GET_CONFIG_OPTIONS = 'api/products/codev/config_options';
 export const CREATE_CONFIG_OPTION = 'api/products/codev/config_options';
+
+export const CREATE_CODEV_TYPE_SUPPORT_OPTION = 'api/products/codev/options/create/support';
+export const CREATE_CODEV_TYPE_OPTION_TITLE = 'api/products/codev/options/create/title';
+export const GET_CODEV_TYPE_SUPPORT_OPTION = 'api/products/codev/options/supports';
+export const GET_CODEV_TYPE_OPTION_TITLE = 'api/products/codev/options/titles';

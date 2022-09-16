@@ -1,15 +1,12 @@
 import { connect } from 'react-redux';
-import BankService from 'Services/banks';
-import { MARKETPLACE } from 'Url/frontendUrl';
 import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
-import CustomList from "Components/CustomList";
-import {setRequestGlobalAction} from 'Actions';
+import { MARKETPLACE } from 'Url/frontendUrl';
 import ProductService from 'Services/products';
-import React, { useState, useEffect } from 'react';
-import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
+import CustomList from "Components/CustomList";
+import { setRequestGlobalAction } from 'Actions';
+import React, { useEffect, useState } from 'react';
 import CreateOptionDetailsModal from 'Components/createOptionDetails';
-
 
 const List = (props) => {
 
@@ -29,14 +26,11 @@ const List = (props) => {
     }
 
     const goToCreate = () => {
-        props.history.push(MARKETPLACE.STORE.OPTION.CREATE);
+        props.history.push(MARKETPLACE.STORE.OPTION.ITEM.CREATE);
     }
 
     return (
         <>
-            <PageTitleBar
-                title={"Mes options"}
-            />
             <CustomList
                 loading={false}
                 list={options}
@@ -52,10 +46,11 @@ const List = (props) => {
                             </div>
                         ) : (
                             <div className="table-responsive">
-                                <table className="table table-hover table-middle mb-0">
+                                <table className="table table-hover table-middle mb-0 w-auto">
                                     <thead>
                                         <tr>
                                             <th className="fw-bold">Désignation</th>
+                                            <th className="fw-bold">Réference</th>
                                             <th className="fw-bold">Description</th>
                                             <th className="fw-bold">Détails</th>
                                         </tr>
@@ -67,6 +62,13 @@ const List = (props) => {
                                                     <div className="media">
                                                         <div className="media-body pt-10">
                                                             <h4 className="m-0 fw-bold text-dark">{item.label}</h4>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="media">
+                                                        <div className="media-body pt-10">
+                                                            <p className="m-0 text-dark">{item.reference}</p>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -87,7 +89,7 @@ const List = (props) => {
                                                         }}
                                                         className="text-white font-weight-bold"
                                                     >
-                                                        Ajouter un détails
+                                                        Détails de l'option
                                                     </Button>
                                                 </td>
                                             </tr>
@@ -115,4 +117,4 @@ const List = (props) => {
     );
 }
 
-export default connect(() => {}, { setRequestGlobalAction })(withRouter(List));
+export default connect(() => { }, { setRequestGlobalAction })(withRouter(List));

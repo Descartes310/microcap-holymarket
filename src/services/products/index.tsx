@@ -136,4 +136,20 @@ export default class ProductService {
         return makeRequest('get', Routes.GET_CONFIG_OPTIONS, data);
     }
 
+    static createCodevTypeSupportOption(data: any): Promise<any> {
+        return makeRequest('post', Routes.CREATE_CODEV_TYPE_SUPPORT_OPTION, data);
+    }
+
+    static createCodevTypeOptionTitle(data: any): Promise<any> {
+        return makeRequest('post', Routes.CREATE_CODEV_TYPE_OPTION_TITLE, data);
+    }
+
+    static getCodevTypeSupportOptions(): Promise<any> {
+        return makeRequest('get', Routes.GET_CODEV_TYPE_SUPPORT_OPTION);
+    }
+
+    static getCodevTypeOptionTitles(): Promise<any> {
+        return makeRequest('get', Routes.GET_CODEV_TYPE_OPTION_TITLE);
+    }
+
 }

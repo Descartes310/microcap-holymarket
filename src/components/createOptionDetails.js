@@ -86,11 +86,11 @@ class CreateOptionDetailsModal extends Component {
                         </InputLabel>
                         <InputStrap
                             required
-                            type="text"
                             id="value"
-                            name='value'
+                            name="value"
                             value={value}
                             className="input-lg"
+                            type={type ? type.inputType : "text"}
                             onChange={(e) => this.setState({ value: e.target.value })}
                         />
                     </FormGroup>

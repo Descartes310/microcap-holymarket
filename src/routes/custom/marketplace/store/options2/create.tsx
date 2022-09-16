@@ -33,7 +33,7 @@ const Create = (props) => {
 
         ProductService.createCodevSimpleOption(data).then(() => {
             NotificationManager.success("L'option a été ajoutée avec succès");
-            props.history.push(MARKETPLACE.STORE.OPTION.LIST);
+            props.history.push(MARKETPLACE.STORE.OPTION.ITEM.LIST);
         }).catch((err) => {
             console.log(err);
             NotificationManager.error("Une erreur est survenu lors de la création de l'option");

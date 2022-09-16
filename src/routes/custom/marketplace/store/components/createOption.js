@@ -17,15 +17,16 @@ const CreateOption = (props) => {
     const {show, onClose} = props;
 
     const [type, setType] = useState(null);
+    const [types, setTypes] = useState([]);
     const [option, setOption] = useState(null);
     const [options, setOptions] = useState([]);
     const [support, setSupport] = useState(null);
-
-    const [description2, setDescription2] = useState(null);
-    const [description3, setDescription3] = useState(null);
+    const [supports, setSupports] = useState([]);
 
     useEffect(() => {
         getCodevOptions();
+        getSupports();
+        getTypes();
     }, [show]);
 
     const getCodevOptions = () => {
@@ -33,6 +34,20 @@ const CreateOption = (props) => {
         ProductService.getCodevOptions().then(response => {
             setOptions(response);
         })
+        .finally(() => props.setRequestGlobalAction(false))
+    }
+
+    const getSupports = () => {
+        props.setRequestGlobalAction(true),
+        ProductService.getCodevTypeSupportOptions()
+        .then(response => setSupports(response))
+        .finally(() => props.setRequestGlobalAction(false))
+    }
+
+    const getTypes = () => {
+        props.setRequestGlobalAction(true),
+        ProductService.getCodevTypeOptionTitles()
+        .then(response => setTypes(response))
         .finally(() => props.setRequestGlobalAction(false))
     }
 
@@ -44,19 +59,16 @@ const CreateOption = (props) => {
         }
 
         let data = {
+            type_reference: type.reference,
             option_reference: option.reference,
-            option_title_label: type,
+            support_reference: support.reference,
             product_reference: props.match.params.reference,
-            support_option_label: support, option_title_description: description2, 
-            support_option_description: description3
         }
 
         props.setRequestGlobalAction(true);
         ProductService.createCodevConfigOption(data).then(() => {
-            setType("");
-            setSupport("");
-            setDescription2("");
-            setDescription3("");
+            setType(null);
+            setSupport(null);
         }).catch(() => {
             NotificationManager.error("Le formulaire n'est pas bien renseigné");
         })
@@ -97,66 +109,38 @@ const CreateOption = (props) => {
                 </div>
 
                 <div className='row'>
-                    <FormGroup className="col-md-6 col-sm-12 has-wrapper">
-                        <InputLabel className="text-left" htmlFor="type">
-                            Type de titre d'option
+                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                        <InputLabel className="text-left">
+                            Option de titre associé
                         </InputLabel>
-                        <InputStrap
-                            required
-                            id="type"
-                            type="text"
-                            name='type'
+                        <Autocomplete
+                            id="combo-box-demo"
                             value={type}
-                            className="input-lg"
-                            onChange={(e) => setType(e.target.value)}
+                            options={types}
+                            onChange={(__, item) => {
+                                setType(item);
+                            }}
+                            getOptionLabel={(option) => option.label}
+                            renderInput={(params) => <TextField {...params} variant="outlined" />}
                         />
-                    </FormGroup>
-
-                    <FormGroup className="col-md-6 col-sm-12 has-wrapper">
-                        <InputLabel className="text-left" htmlFor="description2">
-                            Description
-                        </InputLabel>
-                        <InputStrap
-                            required
-                            type="text"
-                            id="description2"
-                            name='description2'
-                            className="input-lg"
-                            value={description2}
-                            onChange={(e) => setDescription2(e.target.value)}
-                        />
-                    </FormGroup>
+                    </div>
                 </div>
                 <div className='row'>
-                    <FormGroup className="col-md-6 col-sm-12 has-wrapper">
-                        <InputLabel className="text-left" htmlFor="support">
-                            Type de support d'option
+                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                        <InputLabel className="text-left">
+                            Support d'option associé
                         </InputLabel>
-                        <InputStrap
-                            required
-                            type="text"
-                            id="support"
-                            name="support"
+                        <Autocomplete
+                            id="combo-box-demo"
                             value={support}
-                            className="input-lg"
-                            onChange={(e) => setSupport(e.target.value)}
+                            options={supports}
+                            onChange={(__, item) => {
+                                setSupport(item);
+                            }}
+                            getOptionLabel={(option) => option.label}
+                            renderInput={(params) => <TextField {...params} variant="outlined" />}
                         />
-                    </FormGroup>
-
-                    <FormGroup className="col-md-6 col-sm-12 has-wrapper">
-                        <InputLabel className="text-left" htmlFor="description3">
-                            Description
-                        </InputLabel>
-                        <InputStrap
-                            required
-                            type="text"
-                            id="description3"
-                            name='description3'
-                            className="input-lg"
-                            value={description3}
-                            onChange={(e) => setDescription3(e.target.value)}
-                        />
-                    </FormGroup>
+                    </div>
                 </div>
 
                 <div className="d-flex align-items-end">

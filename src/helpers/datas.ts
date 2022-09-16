@@ -179,30 +179,37 @@ export const getDateDiff = (startDate, endDate, days) => {
 export const productOptionDetails = [
     {
         label: 'Date du premier tirage',
-        value: 'FIRST_LOT'
+        value: 'FIRST_LOT',
+        inputType: 'date'
     },
     {
         label: 'Date du dernier tirage',
-        value: 'LAST_LOT'
+        value: 'LAST_LOT',
+        inputType: 'date'
     },
     {
         label: 'Quotité disponible sur avance (%)',
-        value: 'QUOTIENT_AVAILABLE'
+        value: 'QUOTIENT_AVAILABLE',
+        inputType: 'number'
     },
     {
         label: 'Franchise (en nombre de période)',
-        value: 'FRANCHISE'
+        value: 'FRANCHISE',
+        inputType: 'number'
     },
     {
         label: "Type d'avance autorisé",
-        value: 'ADVANCE_TYPE'
+        value: 'ADVANCE_TYPE',
+        inputType: 'text'
     },
     {
         label: 'Intérêt sur avance (en %)',
-        value: 'ADVANCE_INTEREST'
+        value: 'ADVANCE_INTEREST',
+        inputType: 'number'
     },
     {
         label: 'Capital disponible par tirage (groupe de ligne)',
-        value: 'AVAILABLE_CAPITAL'
+        value: 'AVAILABLE_CAPITAL',
+        inputType: 'number'
     },
 ];
