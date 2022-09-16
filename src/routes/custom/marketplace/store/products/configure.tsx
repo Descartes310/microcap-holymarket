@@ -143,7 +143,10 @@ const Configure = (props: any) => {
 
     const onSubmit = () => {
 
-        if(!config) {
+        if(!config || !depositPeriod || !cycleTime || !lineGroup || placements.length <= 0 || 
+            !subscriptionStartDate || !subscriptionEndDate || !startDepositDate || !subscriptionFees || 
+            !depositAmount || !minimumRate) {
+            NotificationManager.success('Le formulaire est mal rempli');
             return;
         }
 
@@ -290,7 +293,7 @@ const Configure = (props: any) => {
                         </FormGroup>
                         <FormGroup className="col-md-4 col-sm-12 has-wrapper">
                             <InputLabel className="text-left" htmlFor="lineGroup">
-                                Groupage (par tirage)
+                                Groupage (nombre de ligne par tirage)
                             </InputLabel>
                             <InputStrap
                                 required
@@ -638,7 +641,7 @@ const Configure = (props: any) => {
                             onClick={onSubmit}
                             className="text-white font-weight-bold"
                         >
-                            Ajouter
+                            Valider
                         </Button>
                     </FormGroup>
                 </Form>

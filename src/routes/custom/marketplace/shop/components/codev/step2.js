@@ -78,7 +78,7 @@ class CodevStep2 extends Component {
                         size="md"
                         title={(
                             <h3 className="fw-bold">
-                                Configuration du produit
+                                Indivisions
                             </h3>
                         )}
                     >
