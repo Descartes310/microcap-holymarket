@@ -104,6 +104,10 @@ export default class ProductService {
         return makeRequest('get', Routes.GET_LINE_BY_DATE, data);
     }
 
+    static getIndivisionsByDate(data: any): Promise<any> {
+        return makeRequest('get', Routes.GET_INDIVISION_BY_DATE, data);
+    }
+
     static getCodevDetails(data: any): Promise<any> {
         return makeRequest('get', Routes.GET_CODEV_DETAILS, data);
     }

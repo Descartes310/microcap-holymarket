@@ -1,18 +1,22 @@
 import { connect } from 'react-redux';
 import { FormGroup } from 'reactstrap';
 import React, { Component } from 'react';
+import { convertDate } from 'Helpers/helpers';
 import { withRouter } from "react-router-dom";
 import Button from '@material-ui/core/Button';
 import ProductService from 'Services/products';
 import { setRequestGlobalAction } from 'Actions';
 import { RctCardContent } from 'Components/RctCard';
+import Checkbox from "@material-ui/core/Checkbox/Checkbox";
 import DialogComponent from "Components/dialog/DialogComponent";
-import { getProductDetailsByName, getTimeUnitByValue } from "Helpers/datas";
+import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
 
 class CodevStep3 extends Component {
 
     state = {
-        product: null
+        product: null,
+        dates: [],
+        configs: [],
     }
 
     constructor(props) {
@@ -25,6 +29,15 @@ class CodevStep3 extends Component {
         }
     }
 
+    getCodevConfigOptions = () => {
+        this.props.setRequestGlobalAction(true);
+        ProductService.getCodevConfigOptions({product_reference: this.state.product.reference}).then(response => {
+            this.setState({configs: response.filter(t => this.state.product?.details.find(d => d.type == 'OPTION')?.value.split(',').includes(t.reference))
+            .map(co => { return {...co, label: co.option.label}})});
+        })
+        .finally(() => this.props.setRequestGlobalAction(false))
+    }
+
     findProduct = () => {
         this.props.setRequestGlobalAction(true);
         ProductService.findProduct(this.props.product.reference)
@@ -33,7 +46,35 @@ class CodevStep3 extends Component {
                 NotificationManager.error('Produit non configuré');
                 this.props.onClose();
             }
-            this.setState({product: response});
+            let startDate = response.details.find(d => d.type == 'START_DATE')?.value;
+            let endDate = response.details.find(d => d.type == 'END_DATE')?.value;
+            let cycle = Number(response.details.find(d => d.type == 'CYCLE_TIME')?.value);
+            let period = response.details.find(d => d.type == 'DEPOSIT_PERIOD')?.value;
+
+            let tmpDates = [];
+            let date = new Date(startDate);
+            let end = new Date(endDate);
+
+            while (date <= end) {
+                tmpDates.push(convertDate(date, "YYYY-MM-DD"));
+                switch (period) {
+                    case "DAYS":
+                        date.setDate(date.getDate() + cycle);
+                        break;
+                    case "WEEK":
+                        date.setDate(date.getDate() + (cycle*7));
+                        break;
+                    case "MONTH":
+                        date.setDate(date.getDate() + (cycle*30));
+                        break;
+                
+                    default:
+                        date.setDate(date.getDate() + cycle);
+                        break;
+                }
+            }
+
+            this.setState({product: response, dates: tmpDates}, () => this.getCodevConfigOptions());
         })
         .finally(() => this.props.setRequestGlobalAction(false))
     }
@@ -41,9 +82,8 @@ class CodevStep3 extends Component {
 
     render() {
 
-        const { product } = this.state;
+        const { configs, dates } = this.state;
         const { onClose, show, onSubmit, data } = this.props;
-        console.log(this.props.data, product)
 
         return (
             <DialogComponent
@@ -52,37 +92,36 @@ class CodevStep3 extends Component {
                 size="md"
                 title={(
                     <h3 className="fw-bold">
-                        Récapitulatif de la commande
+                        Rythme des versement
                     </h3>
                 )}
             >
                 <RctCardContent>
-                    <table className='table table-striped table-bordered'>
+                    <table className='table table-bordered'>
                         <thead>
-                            <th>Nom du détails</th>
-                            <th>Valeur courante</th>
+                            <th>Date de versement</th>
+                            <th>Tickets</th>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>Montant par versement</td>
-                                <td>{ data?.selectedLine?.amount ? data.selectedLine.amount : this.state.product?.details.find(d => d.type === 'DEPOSIT_AMOUNT').value } EUR</td>
-                            </tr>
-                            <tr>
-                                <td>Capital à terme</td>
-                                <td>{this.state.product?.details.find(d => d.type === 'AVAILABLE_CAPITAL').value} EUR</td>
-                            </tr>
-                            <tr>
-                                <td>Capital disponible sur avance</td>
-                                <td>{this.state.product?.details.find(d => d.type === "INVESTMENT_CAPITAL").value} EUR</td>
-                            </tr>
-                            <tr>
-                                <td>Capital disponible par groupe de ligne pour un projet de n associés maxi</td>
-                                <td>{this.state.product?.details.find(d => d.type === "ADVANCE_INTEREST").value} EUR</td>
-                            </tr>
-                            <tr>
-                                <td>Date de tirage pour une avance</td>
-                                <td>{data?.selectedDate?.date ? data.selectedDate.date : new Date()}</td>
-                            </tr>
+                            { dates.map(d => (
+                                <tr>
+                                    <td>{d}</td>
+                                    <td>
+                                        {
+                                            configs.map(op => (
+                                                <FormGroup className="col-sm-12 has-wrapper">
+                                                    <FormControlLabel control={
+                                                        <Checkbox
+                                                            color="primary"
+                                                        />
+                                                    } label={op.label}
+                                                    />
+                                                </FormGroup>
+                                            ))
+                                        }
+                                    </td>
+                                </tr>
+                            ))}
                         </tbody>
                     </table>
                     <FormGroup className="float-right mb-20">
@@ -92,7 +131,7 @@ class CodevStep3 extends Component {
                             onClick={() => { onSubmit(data) }}
                             className="text-white font-weight-bold mb-20"
                         >
-                            Souscrire
+                            Continuer
                         </Button>
                     </FormGroup>
                 </RctCardContent>

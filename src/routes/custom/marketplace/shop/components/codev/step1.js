@@ -46,12 +46,14 @@ class CodevStep1 extends Component {
 
     state = {
         dates: [],
+        lines: [],
         plan: null,
         product: null,
         drawDate: null,
         cessible: false,
         editable: false,
         advanceType: null,
+        selectedLine: null,
         advanceValue: null,
         selectedDate: null,
         subscriptionType: null,
@@ -65,6 +67,16 @@ class CodevStep1 extends Component {
         if (this.props.product) {
             this.findProduct();
         }
+    }
+
+    findLines = () => {
+        this.props.setRequestGlobalAction(true);
+        ProductService.getIndivisionsByDate({reference: this.props.product.reference, date: this.state.selectedDate.date})
+        .then(response => {
+            this.setState({ lines: response });
+            this.setState({ selectedLine: response[0] });
+        })
+        .finally(() => props.setRequestGlobalAction(false))
     }
 
     findProduct = () => {
@@ -89,18 +101,23 @@ class CodevStep1 extends Component {
         .finally(() => this.props.setRequestGlobalAction(false))
     }
 
-    onValidate = () => {
-        const { product, cessible, editable, advanceValue, advanceType, selectedDate, subscriptionType } = this.state;
-        if (!product || !advanceType || !selectedDate) {
+    onValidate = async () => {
+        const { product, selectedDate, subscriptionType, selectedLine } = this.state;
+
+        if (!product || !selectedDate) {
             NotificationManager.error('Le formulaire est mal renseigné');
             return;
         }
 
         let data = {
-            selectedDate, 
-            advanceValue, 
+            selectedDate,  
             subscriptionType, 
             productReference: product.reference
+        }
+
+        if(subscriptionType.value == 'ALONE') {
+            await this.findLines();
+            data.line_reference = selectedLine?.rereference
         }
 
         this.props.onSubmit(data);
@@ -109,8 +126,7 @@ class CodevStep1 extends Component {
     render() {
 
         const { onClose, show } = this.props;
-        const { product, cessible, editable, advanceValue,
-            advanceType, dates, plan, selectedDate, subscriptionType } = this.state;
+        const { dates, selectedDate, subscriptionType } = this.state;
 
         return (
             <DialogComponent
@@ -154,21 +170,6 @@ class CodevStep1 extends Component {
                                 this.setState({ selectedDate: item });
                             }}
                             getOptionLabel={(option) => option.date}
-                            renderInput={(params) => <TextField {...params} variant="outlined" />}
-                        />
-                    </FormGroup>
-                    <FormGroup className="col-md-12 col-sm-12 has-wrapper mb-30 mt-20">
-                        <InputLabel className="text-left">
-                            Type d'avance
-                        </InputLabel>
-                        <Autocomplete
-                            value={advanceType}
-                            id="combo-box-demo"
-                            options={advanceTypeEnum}
-                            onChange={(__, item) => {
-                                this.setState({ advanceType: item });
-                            }}
-                            getOptionLabel={(option) => option.label}
                             renderInput={(params) => <TextField {...params} variant="outlined" />}
                         />
                     </FormGroup>

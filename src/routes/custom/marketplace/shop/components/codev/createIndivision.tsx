@@ -54,6 +54,8 @@ const Indivision = (props) => {
 
     const onSumit = () => {
 
+        console.log(lines, selectedLine);
+
         if(!denomination || !amount || !selectedLine) {
             return;
         }
@@ -61,7 +63,7 @@ const Indivision = (props) => {
         let data = {
             amount: amount,
             title: denomination,
-            line_reference: selectedLine?.line.reference
+            line_reference: selectedLine?.reference
         }
 
         props.setRequestGlobalAction(true);

@@ -33,7 +33,7 @@ class CodevStep2 extends Component {
 
     findLines = () => {
         this.props.setRequestGlobalAction(true);
-        ProductService.getLinesByDate({reference: this.props.product.reference, date: this.props.data.selectedDate.date})
+        ProductService.getIndivisionsByDate({reference: this.props.product.reference, date: this.props.data.selectedDate.date})
         .then(response => {
             this.setState({ lines: response });
         })
@@ -69,7 +69,7 @@ class CodevStep2 extends Component {
                         show={showCreateIndivision}
                         onClose={() => {
                             this.setState({ showCreateIndivision: false });
-                            findLines();
+                            this.findLines();
                         }}
                     /> :
                     <DialogComponent
