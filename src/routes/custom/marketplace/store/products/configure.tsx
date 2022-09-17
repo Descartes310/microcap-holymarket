@@ -118,8 +118,15 @@ const Configure = (props: any) => {
 
     useEffect(() => {
         if(cycleTime && depositPeriod && config) {
+
+            console.log(config);
+
             let firstLot = config?.option?.optionDetails.find(od => od.type == 'FIRST_LOT')?.value;
             let lastLot = config?.option?.optionDetails.find(od => od.type == 'LAST_LOT')?.value;
+
+            console.log("firstLot => ", firstLot);
+            console.log("lastLot => ", lastLot);
+
             if(firstLot && lastLot) {    
                 let tmpDates = [];
                 let date = new Date(firstLot);
@@ -149,7 +156,7 @@ const Configure = (props: any) => {
 
         if(!config || !depositPeriod || !cycleTime || !lineGroup || placements.length <= 0 || 
             !subscriptionStartDate || !subscriptionEndDate || !startDepositDate || !subscriptionFees || 
-            !depositAmount || !minimumRate || tirageDates.length > 0) {
+            !depositAmount || !minimumRate || tirageDates.length < 0) {
             NotificationManager.success('Le formulaire est mal rempli');
             return;
         }
