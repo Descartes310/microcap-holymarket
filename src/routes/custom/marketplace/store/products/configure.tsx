@@ -28,7 +28,7 @@ const ADVANCE_TYPES = [
 
 const Configure = (props: any) => {
 
-    const [config, setConfig] = useState([]);
+    const [config, setConfig] = useState<any>([]);
     const [configs, setConfigs] = useState([]);
     
     const [units, setUnits] = useState([]);
@@ -117,17 +117,21 @@ const Configure = (props: any) => {
     }
 
     useEffect(() => {
-        if(cycleTime && depositPeriod) {
-            let tmpDates = [];
-            let date = new Date();
-            let end = new Date();
-            while (date <= end) {
-                tmpDates.push(convertDate(date, "YYYY-MM-DD"));
-                date.setDate(date.getDate() + depositPeriod.days);
+        if(cycleTime && depositPeriod && config) {
+            let firstLot = config?.option?.optionDetails.find(od => od.type == 'FIRST_LOT')?.value;
+            let lastLot = config?.option?.optionDetails.find(od => od.type == 'LAST_LOT')?.value;
+            if(firstLot && lastLot) {    
+                let tmpDates = [];
+                let date = new Date(firstLot);
+                let end = new Date(lastLot);
+                while (date <= end) {
+                    tmpDates.push(convertDate(date, "YYYY-MM-DD"));
+                    date.setDate(date.getDate() + depositPeriod.days);
+                }
+                setTirageDates(tmpDates);
             }
-            setTirageDates(tmpDates);
         }
-    }, [cycleTime, depositPeriod]);
+    }, [cycleTime, depositPeriod, config]);
 
     const getUnits = () => {
         props.setRequestGlobalAction(false);
@@ -145,7 +149,7 @@ const Configure = (props: any) => {
 
         if(!config || !depositPeriod || !cycleTime || !lineGroup || placements.length <= 0 || 
             !subscriptionStartDate || !subscriptionEndDate || !startDepositDate || !subscriptionFees || 
-            !depositAmount || !minimumRate) {
+            !depositAmount || !minimumRate || tirageDates.length > 0) {
             NotificationManager.success('Le formulaire est mal rempli');
             return;
         }
