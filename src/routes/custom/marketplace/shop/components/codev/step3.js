@@ -16,10 +16,11 @@ class CodevStep3 extends Component {
 
     state = {
         dates: [],
+        lines: [],
         configs: [],
         product: null,
-        endDate: '2100-12-31',
-        startDate: '1900-01-01',
+        endDate: null,
+        startDate: null,
     }
 
     constructor(props) {
@@ -37,6 +38,15 @@ class CodevStep3 extends Component {
         ProductService.getCodevConfigOptions({product_reference: this.state.product.reference}).then(response => {
             this.setState({configs: response.filter(t => this.state.product?.details.find(d => d.type == 'OPTION')?.value.split(',').includes(t.reference))
             .map(co => { return {...co, label: co.option.label}})});
+        })
+        .finally(() => this.props.setRequestGlobalAction(false))
+    }
+
+    findLines = () => {
+        this.props.setRequestGlobalAction(true);
+        ProductService.getIndivisionsByDate({reference: this.state.product.reference, date: this.props.data.selectedDate.date})
+        .then(response => {
+            this.setState({ lines: response });
         })
         .finally(() => this.props.setRequestGlobalAction(false))
     }
@@ -77,7 +87,10 @@ class CodevStep3 extends Component {
                 }
             }
 
-            this.setState({product: response, dates: tmpDates}, () => this.getCodevConfigOptions());
+            this.setState({product: response, dates: tmpDates, startDate, endDate}, () => {
+                this.getCodevConfigOptions();
+                this.findLines();
+            });
         })
         .finally(() => this.props.setRequestGlobalAction(false))
     }
@@ -86,7 +99,7 @@ class CodevStep3 extends Component {
     render() {
 
         const { onClose, show, onSubmit, data } = this.props;
-        const { configs, dates, startDate, endDate } = this.state;
+        const { configs, dates, startDate, endDate, lines } = this.state;
 
         return (
             <DialogComponent
@@ -145,11 +158,11 @@ class CodevStep3 extends Component {
                                             <Autocomplete
                                                 multiple
                                                 id="combo-box-demo"
-                                                options={configs}
+                                                options={Array(lines.length).fill(configs).flatMap(a => a)}
                                                 onChange={(__, item) => {
                                                     //setDepositPeriod(item);
                                                 }}
-                                                getOptionLabel={(option) => option.label}
+                                                getOptionLabel={(option) => option.support.label}
                                                 renderInput={(params) => <TextField {...params} variant="outlined" />}
                                             />
                                         </div>
