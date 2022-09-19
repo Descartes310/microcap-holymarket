@@ -184,7 +184,7 @@ export const productOptionDetails = [
     },
     {
         label: 'Franchise (en nombre de période)',
-        value: 'FRANCHISE',
+        value: 'WAITING_PERIOD',
         inputType: 'number'
     },
     {
