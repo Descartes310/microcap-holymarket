@@ -34,6 +34,8 @@ const GenerateTirage = (props) => {
         .catch((err) => {
             if(err?.response?.status == 409) {
                 NotificationManager.error('Les tirages ont déjà été générés');
+            } else if(err?.response?.status == 404) {
+                NotificationManager.error("L'option n'est pas correctement configurée");
             } else {
                 NotificationManager.error('La configuration du plan est obligatoire');
             }

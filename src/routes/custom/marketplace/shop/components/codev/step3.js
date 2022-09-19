@@ -59,35 +59,34 @@ class CodevStep3 extends Component {
                 NotificationManager.error('Produit non configuré');
                 this.props.onClose();
             }
-            let startDate = response.details.find(d => d.type == 'START_DATE')?.value;
-            let endDate = response.details.find(d => d.type == 'END_DATE')?.value;
-            let cycle = Number(response.details.find(d => d.type == 'CYCLE_TIME')?.value);
+
             let period = response.details.find(d => d.type == 'DEPOSIT_PERIOD')?.value;
+            let depositStartDate = response.details.find(d => d.type == 'START_DEPOSIT_DATE')?.value;
+            let cycleTime = response.details.find(d => d.type == 'CYCLE_TIME')?.value;
 
             let tmpDates = [];
-            let date = new Date(startDate);
-            let end = new Date(endDate);
+            let date = new Date(depositStartDate);
 
-            while (date <= end) {
+            for (let index = 0; index < Number(cycleTime); index++) {
+
                 tmpDates.push(convertDate(date, "YYYY-MM-DD"));
                 switch (period) {
                     case "DAYS":
-                        date.setDate(date.getDate() + cycle);
+                        date.setDate(date.getDate() + 1);
                         break;
-                    case "WEEK":
-                        date.setDate(date.getDate() + (cycle*7));
+                    case "WEEKS":
+                        date.setDate(date.getDate() + 7);
                         break;
-                    case "MONTH":
-                        date.setDate(date.getDate() + (cycle*30));
+                    case "MONTHS":
+                        date.setDate(date.getDate() + 30);
                         break;
-                
                     default:
-                        date.setDate(date.getDate() + cycle);
+                        date.setDate(date.getDate() + 1);
                         break;
                 }
             }
 
-            this.setState({product: response, dates: tmpDates, startDate, endDate}, () => {
+            this.setState({product: response, dates: tmpDates, startDate: depositStartDate, endDate: tmpDates[tmpDates.length-1]}, () => {
                 this.getCodevConfigOptions();
                 this.findLines();
             });

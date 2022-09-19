@@ -52,18 +52,13 @@ export const getTimeUnits = () => {
         },
         {
             label: 'Semaine',
-            value: 'WEEK',
+            value: 'WEEKS',
             days: 7
         },
         {
             label: 'Mois',
-            value: 'MONTH',
+            value: 'MONTHS',
             days: 30
-        },
-        {
-            label: 'Semestre',
-            value: 'SEMESTER',
-            days: 180
         }
     ];
 }

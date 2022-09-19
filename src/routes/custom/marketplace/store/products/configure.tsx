@@ -121,6 +121,11 @@ const Configure = (props: any) => {
             return;
         }
 
+        if(subscriptionStartDate >= subscriptionEndDate) {
+            NotificationManager.success('Les dates ne sont pas correctement renseignées');
+            return;
+        }
+
         let data: any = {
             reference: props.match.params.reference,
             productType: productType.value.toString(),
@@ -276,6 +281,8 @@ const Configure = (props: any) => {
                         </FormGroup>
                     </div>
 
+                    <h2 className='mb-30 mt-10'>Spécifications financières du plan</h2>
+
                     <div className="row">
                         <FormGroup className="col-md-4 col-sm-12 has-wrapper">
                             <InputLabel className="text-left" htmlFor="subscriptionStartDate">
@@ -320,76 +327,6 @@ const Configure = (props: any) => {
                             />
                         </FormGroup>
                     </div>
-                    
-                    <div className='row'>
-                        <div className="col-md-6 col-sm-12 has-wrapper mb-30">
-                            <InputLabel className="text-left">
-                                Options du plan
-                            </InputLabel>
-                            <Autocomplete
-                                multiple
-                                id="combo-box-demo"
-                                value={config}
-                                options={[{label: 'Ajouter une option', reference: 'add'}, ...configs]}
-                                onChange={(__, item) => {
-                                    if(item.find(i => i.reference == 'add')) {
-                                        setShowAddOption(true);
-                                    } else {
-                                        setConfig(item);
-                                    }
-                                }}
-                                getOptionLabel={(option) => option.label}
-                                renderInput={(params) => <TextField {...params} variant="outlined" />}
-                            />
-                        </div>
-                        <div className="col-md-6 col-sm-12 has-wrapper mb-30">
-                            <InputLabel className="text-left">
-                                Placements programmés
-                            </InputLabel>
-                            <Autocomplete
-                                multiple
-                                id="combo-box-demo"
-                                value={placements}
-                                options={[{value: 'Ajouter un placement programmé', ref: 'add'}, ...details.filter(d => d.type === 'PLACEMENT')]}
-                                onChange={(__, item) => {
-                                    if(item.find(i => i.ref == 'add')) {
-                                        setShowDetailsBox(true);
-                                        setDetailsType("PLACEMENT")
-                                    } else {
-                                        setPlacements(item);
-                                    }
-                                }}
-                                getOptionLabel={(option) => option.value}
-                                renderInput={(params) => <TextField {...params} variant="outlined" />}
-                            />
-                        </div>
-                    </div>
-
-                    {
-                        config?.map(c => (
-                            <>
-                                <h2 className='mb-30 mt-10'>Spécification {c.option.label}</h2>
-                                
-                                <div className="row">
-                                    { c.option.optionDetails.map(d => (
-                                        <FormGroup className="col-md-4 col-sm-12 has-wrapper">
-                                            <InputLabel className="text-left">
-                                                {d.label}
-                                            </InputLabel>
-                                            <InputStrap
-                                                disabled
-                                                type="text"
-                                                value={d.value}
-                                                className="input-lg"
-                                            />
-                                        </FormGroup>
-                                    ))}
-                                </div>
-                            </>    
-                        ))
-                    }
-
-                    <h2 className='mb-30 mt-10'>Spécifications financières du plan</h2>
 
                     <div className="row">
                         <FormGroup className="col-md-3 col-sm-12 has-wrapper">
@@ -475,11 +412,80 @@ const Configure = (props: any) => {
                                 className="input-lg"
                                 id="availableCapital"
                                 name='availableCapital'
-                                value={availableCapital}
+                                value={Number(availableCapital)?.toFixed(2)}
                                 onChange={(e) => setAvailableCapital(e.target.value)}
                             />
                         </FormGroup>
                     </div>
+
+
+                    <div className='row'>
+                        <div className="col-md-6 col-sm-12 has-wrapper mb-30">
+                            <InputLabel className="text-left">
+                                Options du plan
+                            </InputLabel>
+                            <Autocomplete
+                                multiple
+                                id="combo-box-demo"
+                                value={config}
+                                options={[{label: 'Ajouter une option', reference: 'add'}, ...configs]}
+                                onChange={(__, item) => {
+                                    if(item.find(i => i.reference == 'add')) {
+                                        setShowAddOption(true);
+                                    } else {
+                                        setConfig(item);
+                                    }
+                                }}
+                                getOptionLabel={(option) => option.label}
+                                renderInput={(params) => <TextField {...params} variant="outlined" />}
+                            />
+                        </div>
+                        <div className="col-md-6 col-sm-12 has-wrapper mb-30">
+                            <InputLabel className="text-left">
+                                Placements programmés
+                            </InputLabel>
+                            <Autocomplete
+                                multiple
+                                id="combo-box-demo"
+                                value={placements}
+                                options={[{value: 'Ajouter un placement programmé', ref: 'add'}, ...details.filter(d => d.type === 'PLACEMENT')]}
+                                onChange={(__, item) => {
+                                    if(item.find(i => i.ref == 'add')) {
+                                        setShowDetailsBox(true);
+                                        setDetailsType("PLACEMENT")
+                                    } else {
+                                        setPlacements(item);
+                                    }
+                                }}
+                                getOptionLabel={(option) => option.value}
+                                renderInput={(params) => <TextField {...params} variant="outlined" />}
+                            />
+                        </div>
+                    </div>
+
+                    {
+                        config?.map(c => (
+                            <>
+                                <h2 className='mb-30 mt-10'>Spécification {c.option.label}</h2>
+                                
+                                <div className="row">
+                                    { c.option.optionDetails.map(d => (
+                                        <FormGroup className="col-md-4 col-sm-12 has-wrapper">
+                                            <InputLabel className="text-left">
+                                                {d.label}
+                                            </InputLabel>
+                                            <InputStrap
+                                                disabled
+                                                type="text"
+                                                value={d.value}
+                                                className="input-lg"
+                                            />
+                                        </FormGroup>
+                                    ))}
+                                </div>
+                            </>    
+                        ))
+                    }
 
                     <FormGroup>
                         <Button
