@@ -275,6 +275,51 @@ const Configure = (props: any) => {
                             />
                         </FormGroup>
                     </div>
+
+                    <div className="row">
+                        <FormGroup className="col-md-4 col-sm-12 has-wrapper">
+                            <InputLabel className="text-left" htmlFor="subscriptionStartDate">
+                                Date de début des souscriptions
+                            </InputLabel>
+                            <InputStrap
+                                required
+                                type="date"
+                                className="input-lg"
+                                id="subscriptionStartDate"
+                                name='subscriptionStartDate'
+                                value={subscriptionStartDate}
+                                onChange={(e) => setSubscriptionStartDate(e.target.value)}
+                            />
+                        </FormGroup>
+                        <FormGroup className="col-md-4 col-sm-12 has-wrapper">
+                            <InputLabel className="text-left" htmlFor="subscriptionEndDate">
+                                Date de fin des souscriptions
+                            </InputLabel>
+                            <InputStrap
+                                required
+                                type="date"
+                                className="input-lg"
+                                id="subscriptionEndDate"
+                                name='subscriptionEndDate'
+                                value={subscriptionEndDate}
+                                onChange={(e) => setSubscriptionEndDate(e.target.value)}
+                            />
+                        </FormGroup>
+                        <FormGroup className="col-md-4 col-sm-12 has-wrapper">
+                            <InputLabel className="text-left" htmlFor="depositStartDate">
+                                Date de début des versements
+                            </InputLabel>
+                            <InputStrap
+                                required
+                                type="date"
+                                className="input-lg"
+                                id="depositStartDate"
+                                name='depositStartDate'
+                                value={startDepositDate}
+                                onChange={(e) => setStartDepositDate(e.target.value)}
+                            />
+                        </FormGroup>
+                    </div>
                     
                     <div className='row'>
                         <div className="col-md-6 col-sm-12 has-wrapper mb-30">
@@ -325,69 +370,26 @@ const Configure = (props: any) => {
                             <>
                                 <h2 className='mb-30 mt-10'>Spécification {c.option.label}</h2>
                                 
-                                { c.option.optionDetails.map(d => (
-                                    <FormGroup className="col-md-4 col-sm-12 has-wrapper">
-                                        <InputLabel className="text-left">
-                                            {d.label}
-                                        </InputLabel>
-                                        <InputStrap
-                                            disabled
-                                            type="text"
-                                            value={d.value}
-                                            className="input-lg"
-                                        />
-                                    </FormGroup>
-                                ))}
+                                <div className="row">
+                                    { c.option.optionDetails.map(d => (
+                                        <FormGroup className="col-md-4 col-sm-12 has-wrapper">
+                                            <InputLabel className="text-left">
+                                                {d.label}
+                                            </InputLabel>
+                                            <InputStrap
+                                                disabled
+                                                type="text"
+                                                value={d.value}
+                                                className="input-lg"
+                                            />
+                                        </FormGroup>
+                                    ))}
+                                </div>
                             </>    
                         ))
                     }
 
                     <h2 className='mb-30 mt-10'>Spécifications financières du plan</h2>
-
-                    <div className="row">
-                        <FormGroup className="col-md-4 col-sm-12 has-wrapper">
-                            <InputLabel className="text-left" htmlFor="subscriptionStartDate">
-                                Date de début des souscriptions
-                            </InputLabel>
-                            <InputStrap
-                                required
-                                type="date"
-                                className="input-lg"
-                                id="subscriptionStartDate"
-                                name='subscriptionStartDate'
-                                value={subscriptionStartDate}
-                                onChange={(e) => setSubscriptionStartDate(e.target.value)}
-                            />
-                        </FormGroup>
-                        <FormGroup className="col-md-4 col-sm-12 has-wrapper">
-                            <InputLabel className="text-left" htmlFor="subscriptionEndDate">
-                                Date de fin des souscriptions
-                            </InputLabel>
-                            <InputStrap
-                                required
-                                type="date"
-                                className="input-lg"
-                                id="subscriptionEndDate"
-                                name='subscriptionEndDate'
-                                value={subscriptionEndDate}
-                                onChange={(e) => setSubscriptionEndDate(e.target.value)}
-                            />
-                        </FormGroup>
-                        <FormGroup className="col-md-4 col-sm-12 has-wrapper">
-                            <InputLabel className="text-left" htmlFor="depositStartDate">
-                                Date de début des versements
-                            </InputLabel>
-                            <InputStrap
-                                required
-                                type="date"
-                                className="input-lg"
-                                id="depositStartDate"
-                                name='depositStartDate'
-                                value={startDepositDate}
-                                onChange={(e) => setStartDepositDate(e.target.value)}
-                            />
-                        </FormGroup>
-                    </div>
 
                     <div className="row">
                         <FormGroup className="col-md-3 col-sm-12 has-wrapper">
