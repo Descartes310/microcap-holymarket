@@ -178,16 +178,6 @@ export const getDateDiff = (startDate, endDate, days) => {
 
 export const productOptionDetails = [
     {
-        label: 'Date du premier tirage',
-        value: 'FIRST_LOT',
-        inputType: 'date'
-    },
-    {
-        label: 'Date du dernier tirage',
-        value: 'LAST_LOT',
-        inputType: 'date'
-    },
-    {
         label: 'Quotité disponible sur avance (%)',
         value: 'QUOTIENT_AVAILABLE',
         inputType: 'number'

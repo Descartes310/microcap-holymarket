@@ -110,6 +110,7 @@ class CodevStep1 extends Component {
         }
 
         let data = {
+            product,
             selectedDate,  
             subscriptionType, 
             productReference: product.reference

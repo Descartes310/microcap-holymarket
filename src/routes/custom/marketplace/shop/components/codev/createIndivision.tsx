@@ -31,7 +31,7 @@ const Indivision = (props) => {
 
     const findLines = () => {
         props.setRequestGlobalAction(true);
-        ProductService.getLinesByDate({reference: props.product.reference, date: props.data.selectedDate.date})
+        ProductService.getLinesByDate({reference: props.data.product.reference, date: props.data.selectedDate.date})
         .then(response => {
             setLines(response);
             setSelectedLine(response[0]);
@@ -54,8 +54,6 @@ const Indivision = (props) => {
 
     const onSumit = () => {
 
-        console.log(lines, selectedLine);
-
         if(!denomination || !amount || !selectedLine) {
             return;
         }
@@ -67,7 +65,8 @@ const Indivision = (props) => {
         }
 
         props.setRequestGlobalAction(true);
-        ProductService.createIndivision(data).then(response => {
+        ProductService.createIndivision(data).then((response) => {
+            props.onValidate(response[0]);
             onClose();
         })
         .finally(() => props.setRequestGlobalAction(false))
@@ -90,6 +89,7 @@ const Indivision = (props) => {
                 </div>
                 <div className="col-md-12 col-sm-12 has-wrapper mb-30 mt-20">
                     <h4 className='mb-40'>Reservation: {selectedLine?.reference}</h4>
+                    <h4 className='mb-40'>Montant périodique: {props?.data.product?.details.find(d => d.type == 'DEPOSIT_AMOUNT')?.value}</h4>
                     <div className='row'>
                         <FormGroup className="col-md-8 col-sm-12 has-wrapper">
                             <InputLabel className="text-left" htmlFor="amount">

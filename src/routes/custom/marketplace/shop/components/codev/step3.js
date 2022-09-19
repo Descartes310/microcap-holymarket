@@ -1,5 +1,4 @@
 import { connect } from 'react-redux';
-import { FormGroup } from 'reactstrap';
 import React, { Component } from 'react';
 import { convertDate } from 'Helpers/helpers';
 import { withRouter } from "react-router-dom";
@@ -7,16 +6,20 @@ import Button from '@material-ui/core/Button';
 import ProductService from 'Services/products';
 import { setRequestGlobalAction } from 'Actions';
 import { RctCardContent } from 'Components/RctCard';
-import Checkbox from "@material-ui/core/Checkbox/Checkbox";
+import TextField from '@material-ui/core/TextField';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import { FormGroup, Input as InputStrap } from 'reactstrap';
 import DialogComponent from "Components/dialog/DialogComponent";
-import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
+import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 
 class CodevStep3 extends Component {
 
     state = {
-        product: null,
         dates: [],
         configs: [],
+        product: null,
+        endDate: '2100-12-31',
+        startDate: '1900-01-01',
     }
 
     constructor(props) {
@@ -82,8 +85,8 @@ class CodevStep3 extends Component {
 
     render() {
 
-        const { configs, dates } = this.state;
         const { onClose, show, onSubmit, data } = this.props;
+        const { configs, dates, startDate, endDate } = this.state;
 
         return (
             <DialogComponent
@@ -92,33 +95,64 @@ class CodevStep3 extends Component {
                 size="md"
                 title={(
                     <h3 className="fw-bold">
-                        Rythme des versement
+                        Rythme des versements
                     </h3>
                 )}
             >
                 <RctCardContent>
+                    <h4>Filtre</h4>
+                    <div className="row">
+                        <FormGroup className="col-md-6 col-sm-12 has-wrapper">
+                            <InputLabel className="text-left" htmlFor="startDate">
+                                Date de début
+                            </InputLabel>
+                            <InputStrap
+                                required
+                                type="date"
+                                className="input-lg"
+                                id="startDate"
+                                name='startDate'
+                                value={startDate}
+                                onChange={(e) => this.setState({ startDate: e.target.value })}
+                            />
+                        </FormGroup>
+                        <FormGroup className="col-md-6 col-sm-12 has-wrapper">
+                            <InputLabel className="text-left" htmlFor="endDate">
+                                Date de fin
+                            </InputLabel>
+                            <InputStrap
+                                required
+                                type="date"
+                                id="endDate"
+                                name='endDate'
+                                value={endDate}
+                                className="input-lg"
+                                onChange={(e) => this.setState({ endDate: e.target.value })}
+                            />
+                        </FormGroup>
+                    </div>
                     <table className='table table-bordered'>
                         <thead>
                             <th>Date de versement</th>
                             <th>Tickets</th>
                         </thead>
                         <tbody>
-                            { dates.map(d => (
+                            { dates.filter(d => d >= startDate && d <= endDate).map(d => (
                                 <tr>
                                     <td>{d}</td>
                                     <td>
-                                        {
-                                            configs.map(op => (
-                                                <FormGroup className="col-sm-12 has-wrapper">
-                                                    <FormControlLabel control={
-                                                        <Checkbox
-                                                            color="primary"
-                                                        />
-                                                    } label={op.label}
-                                                    />
-                                                </FormGroup>
-                                            ))
-                                        }
+                                        <div className="col-md-12 col-sm-12">
+                                            <Autocomplete
+                                                multiple
+                                                id="combo-box-demo"
+                                                options={configs}
+                                                onChange={(__, item) => {
+                                                    //setDepositPeriod(item);
+                                                }}
+                                                getOptionLabel={(option) => option.label}
+                                                renderInput={(params) => <TextField {...params} variant="outlined" />}
+                                            />
+                                        </div>
                                     </td>
                                 </tr>
                             ))}

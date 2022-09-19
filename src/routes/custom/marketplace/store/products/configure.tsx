@@ -1,7 +1,5 @@
-import moment from 'moment';
 import { connect } from 'react-redux';
 import UnitService from 'Services/units';
-import { convertDate } from 'Helpers/helpers';
 import { withRouter } from "react-router-dom";
 import Button from '@material-ui/core/Button';
 import { MARKETPLACE } from 'Url/frontendUrl';
@@ -19,12 +17,6 @@ import {Form, FormGroup, Input as InputStrap} from 'reactstrap';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
 
-const TICKET_FEATURES = [{label: 'Cessible', value: 'CESSIBLE'}, {label: 'Modifiable', value: 'EDITABLE'}];
-const ADVANCE_TYPES = [
-    {label: 'Infiné', value: 'INFINE'}, 
-    {label: 'Annuité constant', value: 'CONSTANT_ANNUITY'},
-    {label: 'Amortissement constant', value: 'CONSTANT_AMMORTISSEMENT'}
-];
 
 const Configure = (props: any) => {
 
@@ -33,33 +25,25 @@ const Configure = (props: any) => {
     
     const [units, setUnits] = useState([]);
     const [details, setDetails] = useState([]);
-    // const [endDate, setEndDate] = useState(null);
     const [product, setProduct] = useState(null);
     const [priceUnit, setPriceUnit] = useState(null);
     const [placements, setPlacements] = useState([]);
     const [lineGroup, setLineGroup] = useState(null);
     const [cycleTime, setCycleTime] = useState(null);
-    // const [startDate, setStartDate] = useState(null);
     const [tirageDates, setTirageDates] = useState([]);
     const [detailsType, setDetailsType] = useState(null);
     const [minimumRate, setMinimumRate] = useState(null);
     const [productType, setProductType] = useState(null);
-    // const [advanceType, setAdvanceType] = useState(null);
     const [totalDeposit, setTotalDeposit] = useState(null);
     const [depositPeriod, setDepositPeriod] = useState(null);
     const [depositAmount, setDepositAmount] = useState(null);
     const [advanceOption, setAdvanceOption] = useState(null);
     const [emitLineCount, setEmitLineCount] = useState(null);
-    // const [carrencePeriod, setCarrencePeriod] = useState(null);
     const [showDetailsBox, setShowDetailsBox] = useState(false);
-    // const [advanceInterest, setAdvanceInterest] = useState(null);
     const [startDepositDate, setStartDepositDate] = useState(null);
     const [availableCapital, setAvailableCapital] = useState(null);
     const [subscriptionFees, setSubscriptionFees] = useState(null);
-    // const [quotientAvailable, setQuotientAvailable] = useState(null);
-    // const [investmentCapital, setInvestmentCapital] = useState(null);
     const [showAddOption, setShowAddOption] = useState<Boolean>(false);
-    //const [ticketCaracteristic, setTicketCaracteristic] = useState([]);
     const [subscriptionEndDate, setSubscriptionEndDate] = useState(null);
     const [subscriptionStartDate, setSubscriptionStartDate] = useState(null);
 
@@ -116,30 +100,6 @@ const Configure = (props: any) => {
         setAvailableCapital(capital);
     }
 
-    useEffect(() => {
-        if(cycleTime && depositPeriod && config) {
-
-            console.log(config);
-
-            let firstLot = config?.option?.optionDetails.find(od => od.type == 'FIRST_LOT')?.value;
-            let lastLot = config?.option?.optionDetails.find(od => od.type == 'LAST_LOT')?.value;
-
-            console.log("firstLot => ", firstLot);
-            console.log("lastLot => ", lastLot);
-
-            if(firstLot && lastLot) {    
-                let tmpDates = [];
-                let date = new Date(firstLot);
-                let end = new Date(lastLot);
-                while (date <= end) {
-                    tmpDates.push(convertDate(date, "YYYY-MM-DD"));
-                    date.setDate(date.getDate() + depositPeriod.days);
-                }
-                setTirageDates(tmpDates);
-            }
-        }
-    }, [cycleTime, depositPeriod, config]);
-
     const getUnits = () => {
         props.setRequestGlobalAction(false);
         UnitService.getUnits()
@@ -172,23 +132,13 @@ const Configure = (props: any) => {
             totalDeposit: totalDeposit.toString(), 
             availableCapital: availableCapital.toString(), 
             lineGroup: lineGroup.toString(),
-            advanceOption: advanceOption+"", 
-            // quotientAvailable: quotientAvailable.toString(), 
-            // investmentCapital: investmentCapital.toString(),
+            advanceOption: advanceOption+"",
             subscriptionStartDate: subscriptionStartDate.toString(),
             subscriptionEndDate: subscriptionEndDate.toString(), 
             startDepositDate: startDepositDate.toString(),
             emitLineCount: emitLineCount.toString(), 
-            // carrencePeriod: carrencePeriod.toString(), 
-            // firstLot: startDate,
-            tirages: tirageDates,
-            // lastLot: endDate,
             option: config.map(c => c.reference).join(','),
             placement: placements.map(p => p.reference).join(','),
-            // supportOption: supportOption.reference,
-            //ticketCaracteristic: ticketCaracteristic[0].value.toString(), 
-            // advanceType: advanceType.reference, 
-            // advanceInterest: advanceInterest.toString(),
         }
 
         props.setRequestGlobalAction(true);
@@ -205,23 +155,17 @@ const Configure = (props: any) => {
         props.setRequestGlobalAction(true);
         ProductService.findProduct(props.match.params.reference).then(response => {
             setProduct(response);
-            // setEndDate(response.details.find(d => d.type == 'LAST_LOT')?.value);
             setLineGroup(response.details.find(d => d.type == 'LINE_GROUP')?.value);
             setCycleTime(response.details.find(d => d.type == 'CYCLE_TIME')?.value);
-            // setStartDate(response.details.find(d => d.type == 'FIRST_LOT')?.value);
             setMinimumRate(response.details.find(d => d.type == 'MINIMUM_RATE')?.value);
             setProductType(getProductTypes().find(pt => pt.value == 'CODEV'));
             setTotalDeposit(response.details.find(d => d.type == 'TOTAL_DEPOSIT')?.value);
             setDepositAmount(response.details.find(d => d.type == 'DEPOSIT_AMOUNT')?.value);
             setAdvanceOption(response.details.find(d => d.type == 'ADVANCE_OPTION')?.value);
             setEmitLineCount(response.details.find(d => d.type == 'EMIT_LINE_COUNT')?.value);
-            // setCarrencePeriod(response.details.find(d => d.type == 'WAITING_PERIOD')?.value);
-            // setAdvanceInterest(response.details.find(d => d.type == 'ADVANCE_INTEREST')?.value);
             setStartDepositDate(response.details.find(d => d.type == 'START_DEPOSIT_DATE')?.value);
             setAvailableCapital(response.details.find(d => d.type == 'AVAILABLE_CAPITAL')?.value);
             setSubscriptionFees(response.details.find(d => d.type == 'SUBSCRIPTION_FEES')?.value);
-            // setQuotientAvailable(response.details.find(d => d.type == 'QUOTIENT_AVAILABLE')?.value);
-            // setInvestmentCapital(response.details.find(d => d.type == 'INVESTMENT_CAPITAL')?.value);
             setSubscriptionEndDate(response.details.find(d => d.type == 'START_DATE')?.value);
             setSubscriptionStartDate(response.details.find(d => d.type == 'END_DATE')?.value);
             setDepositPeriod(getTimeUnits().find(t => t.value == response.details.find(d => d.type == 'DEPOSIT_PERIOD')?.value));
@@ -444,50 +388,6 @@ const Configure = (props: any) => {
                             />
                         </FormGroup>
                     </div>
-                    {/* <div className='row'>
-                        <FormGroup className="col-md-4 col-sm-12 has-wrapper">
-                            <InputLabel className="text-left" htmlFor="carrencePeriod">
-                                Franchise (en nombre de période)
-                            </InputLabel>
-                            <InputStrap
-                                required
-                                type="number"
-                                id="carrencePeriod"
-                                name='carrencePeriod'
-                                className="input-lg"
-                                value={carrencePeriod}
-                                onChange={(e) => setCarrencePeriod(e.target.value)}
-                            />
-                        </FormGroup>
-                        <FormGroup className="col-md-4 col-sm-12 has-wrapper">
-                            <InputLabel className="text-left" htmlFor="startDate">
-                                Date du premier tirage
-                            </InputLabel>
-                            <InputStrap
-                                disabled
-                                type="date"
-                                id="startDate"
-                                name='startDate'
-                                value={startDate}
-                                className="input-lg"
-                                onChange={(e) => setStartDate(e.target.value)}
-                            />
-                        </FormGroup>
-                        <FormGroup className="col-md-4 col-sm-12 has-wrapper">
-                            <InputLabel className="text-left" htmlFor="endDate">
-                                Date du dernier tirage
-                            </InputLabel>
-                            <InputStrap
-                                disabled
-                                type="date"
-                                id="endDate"
-                                name='endDate'
-                                value={endDate}
-                                className="input-lg"
-                                onChange={(e) => setEndDate(e.target.value)}
-                            />
-                        </FormGroup>
-                    </div> */}
 
                     <div className="row">
                         <FormGroup className="col-md-3 col-sm-12 has-wrapper">
@@ -578,72 +478,6 @@ const Configure = (props: any) => {
                             />
                         </FormGroup>
                     </div>
-                    <div className="row">
-                        {/* <FormGroup className="col-md-6 col-sm-12 has-wrapper">
-                            <InputLabel className="text-left" htmlFor="quotientAvailable">
-                                Quotité disponible sur avance (%)
-                            </InputLabel>
-                            <InputStrap
-                                required
-                                type="number"
-                                className="input-lg"
-                                id="quotientAvailable"
-                                name='quotientAvailable'
-                                value={quotientAvailable}
-                                onChange={(e) => setQuotientAvailable(e.target.value)}
-                            />
-                        </FormGroup>
-                        <FormGroup className="col-md-6 col-sm-12 has-wrapper">
-                            <InputLabel className="text-left" htmlFor="investmentCapital">
-                                Capital disponible par tirage (groupe de ligne)
-                            </InputLabel>
-                            <InputStrap
-                                required
-                                disabled="text"
-                                className="input-lg"
-                                id="investmentCapital"
-                                name='investmentCapital'
-                                value={investmentCapital}
-                                onChange={(e) => setInvestmentCapital(e.target.value)}
-                            />
-                        </FormGroup> */}
-                    </div>
-                    {/* <div className="row">
-                        <div className="col-md-6 col-sm-12 has-wrapper mb-30">
-                            <InputLabel className="text-left">
-                                Type d'avance autorisé
-                            </InputLabel>
-                            <Autocomplete
-                                id="combo-box-demo"
-                                value={advanceType}
-                                options={[{label: "Ajouter un type d'avance autorisé", value: 'add'}, ...details.filter(d => d.type === 'ADVANCE_TYPE')]}
-                                onChange={(__, item) => {
-                                    if(item.value == 'add') {
-                                        setShowDetailsBox(true);
-                                        setDetailsType("ADVANCE_TYPE");
-                                    } else {
-                                        setAdvanceType(item);
-                                    }
-                                }}
-                                getOptionLabel={(option) => option.value}
-                                renderInput={(params) => <TextField {...params} variant="outlined" />}
-                            />
-                        </div>
-                        <FormGroup className="col-md-6 col-sm-12 has-wrapper">
-                            <InputLabel className="text-left" htmlFor="advanceInterest">
-                                Interet sur avance (en %)
-                            </InputLabel>
-                            <InputStrap
-                                required
-                                type="text"
-                                className="input-lg"
-                                id="advanceInterest"
-                                name="advanceInterest"
-                                value={advanceInterest}
-                                onChange={(e) => setAdvanceInterest(e.target.value)}
-                            />
-                        </FormGroup>
-                    </div> */}
 
                     <FormGroup>
                         <Button

@@ -26,6 +26,7 @@ export const GET_CODEV_OPTION_TYPE = 'api/products/codev/type_option_titles';
 export const GET_CODEV_OPTION = 'api/products/codev/options';
 export const CREATE_CODEV_DETAILS = 'api/products/codevs/details';
 export const GET_CODEV_DETAILS = 'api/products/codevs/details';
+export const GENERATE_TIRAGES = 'api/products/codevs/tirage/active';
 
 export const CREATE_CODEV_SUPPORT_OPTION_TYPE = 'api/products/codev/support_options/types';
 export const GET_CODEV_SUPPORT_OPTION_TYPE = 'api/products/codev/support_options/types';

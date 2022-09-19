@@ -4,6 +4,7 @@ import Button from "@material-ui/core/Button";
 import Switch from "@material-ui/core/Switch";
 import ProductService from 'Services/products';
 import CustomList from "Components/CustomList";
+import GenerateTirage from './components/tirages';
 import { setRequestGlobalAction } from 'Actions';
 import React, { useState, useEffect } from 'react';
 import { getProductRangeLabel } from 'Helpers/helpers';
@@ -13,6 +14,8 @@ import { joinUrlWithParams, MARKETPLACE } from 'Url/frontendUrl';
 const List = (props) => {
 
     const [products, setProducts] = useState([]);
+    const [showOptionsBox, setShowOptionsBox] = useState(false);
+    const [selectedProduct, setSelectedProduct] = useState(null);
 
     useEffect(() => {
         getProducts();
@@ -65,6 +68,7 @@ const List = (props) => {
                                             <th className="fw-bold">Portée</th>
                                             <th className="fw-bold">Disponible</th>
                                             <th className="fw-bold">Configuration</th>
+                                            <th className="fw-bold">Tirage</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -117,6 +121,21 @@ const List = (props) => {
                                                         </Button>
                                                     )}
                                                 </td>
+                                                <td>
+                                                    { item.specialProduct && (
+                                                        <Button
+                                                            color="primary"
+                                                            variant="contained"
+                                                            onClick={() => {
+                                                                setSelectedProduct(item);
+                                                                setShowOptionsBox(true);
+                                                            }}
+                                                            className="text-white font-weight-bold mr-3"
+                                                        >
+                                                            Tirages
+                                                        </Button>
+                                                    )}
+                                                </td>
                                             </tr>
                                         ))}
                                     </tbody>
@@ -126,6 +145,13 @@ const List = (props) => {
                     </>
                 )}
             />
+            { selectedProduct && (
+                <GenerateTirage
+                    product={selectedProduct}
+                    show={showOptionsBox && selectedProduct} 
+                    onClose={() => { setShowOptionsBox(false); }} 
+                />
+            )}
         </>
     );
 }

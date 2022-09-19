@@ -65,11 +65,15 @@ class CodevStep2 extends Component {
                 {showCreateIndivision
                     ? <Indivision
                         data={this.props.data}
-                        product={this.props.product}
                         show={showCreateIndivision}
                         onClose={() => {
                             this.setState({ showCreateIndivision: false });
                             this.findLines();
+                        }}
+                        onValidate={(line) => {
+                            this.setState({ selectedLine: line }, () => {
+                                this.onValidate()
+                            });  
                         }}
                     /> :
                     <DialogComponent
@@ -131,7 +135,7 @@ class CodevStep2 extends Component {
                                                                 <td>
                                                                     <div className="media">
                                                                         <div className="media-body pt-10">
-                                                                            <h4 className="m-0 fw-bold text-dark">{item.line.reference}</h4>
+                                                                            <h4 className="m-0 fw-bold text-dark">{item.reference}</h4>
                                                                         </div>
                                                                     </div>
                                                                 </td>

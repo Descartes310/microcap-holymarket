@@ -152,4 +152,8 @@ export default class ProductService {
         return makeRequest('get', Routes.GET_CODEV_TYPE_OPTION_TITLE);
     }
 
+    static generateCodevTirage(data: any): Promise<any> {
+        return makeRequest('post', Routes.GENERATE_TIRAGES, data);
+    }
+
 }
