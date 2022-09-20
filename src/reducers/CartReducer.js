@@ -8,6 +8,7 @@ import {
 } from "../actions/types";
 import Cart from "Models/Cart";
 import { oldCartItemChecked } from "Helpers/helpers";
+import ProductService from 'Services/products';
 
 const INIT_STATE = {
 	items: [],
@@ -29,7 +30,16 @@ export default (state = INIT_STATE, action) => {
 			return new Cart(obj);
 
 		case CART_REMOVE_ITEM:
+			let cartItem = state.items.find(item => item.id == action.payload.id);
 			obj.data[action.authId] = state.items.filter(item => item.id !== action.payload.id);
+			
+			if(cartItem?.customInfos?.type == 'CODEV') {
+				if(cartItem.customInfos.line)
+					ProductService.deleteLineBooking({line_references: [cartItem.customInfos.line.reference]});
+				if(cartItem.customInfos.indivision)
+					ProductService.deleteIndivisionBooking({indivision_references: [cartItem.customInfos.indivision.reference]});
+			}
+
 			return new Cart(obj);
 
 		case CART_UPDATE_ITEM:

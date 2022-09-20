@@ -156,4 +156,20 @@ export default class ProductService {
         return makeRequest('post', Routes.GENERATE_TIRAGES, data);
     }
 
+    static deleteLineBooking(data: any): Promise<any> {
+        return makeRequest('delete', Routes.DELETE_LINE_BOOKING, data);
+    }
+
+    static deleteIndivisionBooking(data: any): Promise<any> {
+        return makeRequest('delete', Routes.DELETE_INDIVISION_BOOKING, data);
+    }
+
+    static createLineBooking(data: any): Promise<any> {
+        return makeRequest('post', Routes.CREATE_LINE_BOOKING, data);
+    }
+
+    static createIndivisionBooking(data: any): Promise<any> {
+        return makeRequest('post', Routes.CREATE_INDIVISION_BOOKING, data);
+    }
+
 }

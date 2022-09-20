@@ -49,7 +49,7 @@ class CodevStep2 extends Component {
         }
 
         let data = {
-            ...this.props.data, selectedLine
+            ...this.props.data, indivision: selectedLine
         }
 
         this.props.onSubmit(data);

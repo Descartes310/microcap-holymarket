@@ -44,3 +44,9 @@ export const CREATE_CODEV_TYPE_SUPPORT_OPTION = 'api/products/codev/options/crea
 export const CREATE_CODEV_TYPE_OPTION_TITLE = 'api/products/codev/options/create/title';
 export const GET_CODEV_TYPE_SUPPORT_OPTION = 'api/products/codev/options/supports';
 export const GET_CODEV_TYPE_OPTION_TITLE = 'api/products/codev/options/titles';
+
+
+export const DELETE_LINE_BOOKING = 'api/products/codevs/lines/free';
+export const DELETE_INDIVISION_BOOKING = 'api/products/codevs/indivisions/free';
+export const CREATE_LINE_BOOKING = 'api/products/codevs/lines/book';
+export const CREATE_INDIVISION_BOOKING = 'api/products/codevs/indivisions/book';

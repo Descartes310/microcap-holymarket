@@ -60,6 +60,7 @@ const Indivision = (props) => {
 
         let data = {
             amount: amount,
+            line: selectedLine,
             title: denomination,
             line_reference: selectedLine?.reference
         }

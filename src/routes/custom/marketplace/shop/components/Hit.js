@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { onAddItemToCart } from 'Actions';
 import { RctCard } from 'Components/RctCard';
 import ProductDetails from './ProductDetails';
+import ProductService from 'Services/products';
 import CodevStep1 from '../components/codev/step1';
 import CodevStep2 from '../components/codev/step2';
 import CodevStep3 from '../components/codev/step3';
@@ -41,6 +42,13 @@ class Hit extends Component {
 		this.props.onAddItemToCart(cartItem);
 		if(e) e.preventDefault();
 		this.setState({ loading: false, product: null, data: null });
+		console.log(cartItem);
+		if(cartItem?.customInfos?.type == 'CODEV') {
+			if(cartItem.customInfos.line)
+				ProductService.createLineBooking({line_references: [cartItem.customInfos.line.reference]});
+			if(cartItem.customInfos.indivision)
+				ProductService.createIndivisionBooking({indivision_references: [cartItem.customInfos.indivision.reference]});
+		}
 	}
 
 	isItemExistInCart(id) {

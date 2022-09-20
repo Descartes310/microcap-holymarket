@@ -76,7 +76,7 @@ class CodevStep1 extends Component {
             this.setState({ lines: response });
             this.setState({ selectedLine: response[0] });
         })
-        .finally(() => props.setRequestGlobalAction(false))
+        .finally(() => this.props.setRequestGlobalAction(false))
     }
 
     findProduct = () => {
@@ -112,16 +112,22 @@ class CodevStep1 extends Component {
         let data = {
             product,
             selectedDate,  
+            type: 'CODEV',
             subscriptionType, 
             productReference: product.reference
         }
 
         if(subscriptionType.value == 'ALONE') {
-            await this.findLines();
-            data.line_reference = selectedLine?.rereference
+            ProductService.getLinesByDate({reference: product.reference, date: selectedDate.date})
+            .then(response => {
+                data.line_reference = response[0]?.rereference
+                data.line = response[0];
+                this.props.onSubmit(data);
+            })
+        } else {
+            this.props.onSubmit(data);
         }
 
-        this.props.onSubmit(data);
     }
 
     render() {

@@ -38,12 +38,17 @@ class CodevStep4 extends Component {
         .finally(() => this.props.setRequestGlobalAction(false))
     }
 
+    computeAvailableCapital = () => {
+        let depositAmount = this.state.product?.details.find(d => d.type === "DEPOSIT_AMOUNT")?.value;
+        let minimumRate = this.state.product?.details.find(d => d.type === "MINIMUM_RATE")?.value;
+        let emitLineCount = this.state.product?.details.find(d => d.type === "EMIT_LINE_COUNT")?.value;
+        return (depositAmount && minimumRate && emitLineCount) ? (depositAmount*Math.pow(1+minimumRate, emitLineCount)).toFixed(2) : 0;
+    }
 
     render() {
 
         const { product } = this.state;
         const { onClose, show, onSubmit, data } = this.props;
-        console.log(this.props.data, product)
 
         return (
             <DialogComponent
@@ -65,20 +70,20 @@ class CodevStep4 extends Component {
                         <tbody>
                             <tr>
                                 <td>Montant par versement</td>
-                                <td>{ data?.selectedLine?.amount ? data.selectedLine.amount : this.state.product?.details.find(d => d.type === 'DEPOSIT_AMOUNT').value } EUR</td>
+                                <td>{ data?.selectedLine?.amount ? data.selectedLine.amount : this.state.product?.details.find(d => d.type === 'DEPOSIT_AMOUNT')?.value } EUR</td>
                             </tr>
                             <tr>
-                                <td>Capital à terme</td>
-                                <td>{this.state.product?.details.find(d => d.type === 'AVAILABLE_CAPITAL').value} EUR</td>
+                                <td>Capital disponible par tirage (groupe de ligne)</td>
+                                <td>{this.computeAvailableCapital()} EUR</td>
                             </tr>
-                            <tr>
+                            {/* <tr>
                                 <td>Capital disponible sur avance</td>
-                                <td>{this.state.product?.details.find(d => d.type === "INVESTMENT_CAPITAL").value} EUR</td>
+                                <td>{this.state.product?.details.find(d => d.type === "INVESTMENT_CAPITAL")?.value} EUR</td>
                             </tr>
                             <tr>
                                 <td>Capital disponible par groupe de ligne pour un projet de n associés maxi</td>
-                                <td>{this.state.product?.details.find(d => d.type === "ADVANCE_INTEREST").value} EUR</td>
-                            </tr>
+                                <td>{this.state.product?.details.find(d => d.type === "ADVANCE_INTEREST")?.value} EUR</td>
+                            </tr> */}
                             <tr>
                                 <td>Date de tirage pour une avance</td>
                                 <td>{data?.selectedDate?.date ? data.selectedDate.date : new Date()}</td>
