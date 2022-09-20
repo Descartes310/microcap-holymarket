@@ -44,7 +44,7 @@ class CodevStep3 extends Component {
 
     findLines = () => {
         this.props.setRequestGlobalAction(true);
-        ProductService.getIndivisionsByDate({reference: this.state.product.reference, date: this.props.data.selectedDate.date})
+        ProductService.getIndivisionsByDate({show: true, reference: this.state.product.reference, date: this.props.data.selectedDate.date})
         .then(response => {
             this.setState({ lines: response });
         })
