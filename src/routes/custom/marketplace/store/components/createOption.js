@@ -9,8 +9,10 @@ import { RctCardContent } from 'Components/RctCard';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { NotificationManager } from 'react-notifications';
 import {FormGroup, Input as InputStrap} from 'reactstrap';
+import Checkbox from "@material-ui/core/Checkbox/Checkbox";
 import DialogComponent from "Components/dialog/DialogComponent";
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
+import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
 
 const CreateOption = (props) => {
 
@@ -22,6 +24,7 @@ const CreateOption = (props) => {
     const [options, setOptions] = useState([]);
     const [support, setSupport] = useState(null);
     const [supports, setSupports] = useState([]);
+    const [hasTirage, setHasTirage] = useState(false);
 
     useEffect(() => {
         getCodevOptions();
@@ -59,6 +62,7 @@ const CreateOption = (props) => {
         }
 
         let data = {
+            hasTirage,
             type_reference: type.reference,
             option_reference: option.reference,
             support_reference: support.reference,
@@ -142,6 +146,18 @@ const CreateOption = (props) => {
                         />
                     </div>
                 </div>
+                <FormGroup className="col-md-12 col-sm-12 has-wrapper mb-0">
+                    <FormControlLabel control={
+                        <Checkbox
+                            color="primary"
+                            checked={hasTirage}
+                            onChange={() => {
+                                setHasTirage(!hasTirage);
+                            }}
+                        />
+                    } label={"Associer un tirage"}
+                    />
+                </FormGroup>
 
                 <div className="d-flex align-items-end">
                     <FormGroup className="mb-20">

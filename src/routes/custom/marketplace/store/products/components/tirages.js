@@ -30,6 +30,7 @@ const GenerateTirage = (props) => {
         props.setRequestGlobalAction(true);
         ProductService.generateCodevTirage({reference: product.reference, option_reference: reference}).then(() => {
             NotificationManager.success('Les tirages ont été générés');
+            getCodevConfigOptions();
         })
         .catch((err) => {
             if(err?.response?.status == 409) {
@@ -102,14 +103,28 @@ const GenerateTirage = (props) => {
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <Button
-                                                        color="primary"
-                                                        variant="contained"
-                                                        onClick={() => generate(item.reference)}
-                                                        className="text-white font-weight-bold mr-3"
-                                                    >
-                                                        Générer le tirage
-                                                    </Button>
+                                                    { item.canHaveTirage && (
+                                                        <>
+                                                            { item.hasTirage ?
+                                                                <Button
+                                                                    color="warning"
+                                                                    variant="contained"
+                                                                    // onClick={() => generate(item.reference)}
+                                                                    className="text-white font-weight-bold mr-3"
+                                                                >
+                                                                    Reprogrammer le tirage
+                                                                </Button> :
+                                                                <Button
+                                                                    color="primary"
+                                                                    variant="contained"
+                                                                    onClick={() => generate(item.reference)}
+                                                                    className="text-white font-weight-bold mr-3"
+                                                                >
+                                                                    Générer le tirage
+                                                                </Button>
+                                                            }
+                                                        </>
+                                                    )}
                                                 </td>
                                             </tr>
                                         ))}
