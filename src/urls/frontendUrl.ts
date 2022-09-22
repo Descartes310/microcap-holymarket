@@ -294,6 +294,24 @@ export const MARKETPLACE = {
             SELF: "/marketplace/store/orders",
             LIST: "/marketplace/store/orders/list",
         },
+        OPTION: {
+            SELF: "/marketplace/store/options",
+            ITEM: {
+                SELF: "/marketplace/store/options/items",
+                LIST: "/marketplace/store/options/items/list",
+                CREATE: "/marketplace/store/options/items/create",
+            },
+            SUPPORT: {
+                SELF: "/marketplace/store/options/supports",
+                LIST: "/marketplace/store/options/supports/list",
+                CREATE: "/marketplace/store/options/supports/create",
+            }, 
+            TITLE: {
+                SELF: "/marketplace/store/options/titles",
+                LIST: "/marketplace/store/options/titles/list",
+                CREATE: "/marketplace/store/options/titles/create",
+            }
+        },
         PURCHASE: {
             SELF: "/marketplace/store/purchase",
             LIST: "/marketplace/store/purchase/list",

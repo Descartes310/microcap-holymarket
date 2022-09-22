@@ -42,7 +42,6 @@ class ComplexTable extends Component {
     getTotalColumns = (datas) => {
         this.setState({ numberOfColumnsArray: [], numberOfColumns: 1 });
         let result = this.getMaxIndex(datas);
-        console.log(result);
         Array(this.getMaxFromArray(result[1])).fill(0).map((__, level) => {
             let maxColumn = this.getMaxFromLevel(datas, level);
             this.setState({ numberOfColumnsArray: [...this.state.numberOfColumnsArray, ...Array(maxColumn).fill(maxColumn)] });
@@ -129,7 +128,6 @@ class ComplexTable extends Component {
     }
 
     getValueFromCordinates = (d2, index, position = 0) => {
-        // console.log("X => ", d2, " Y => ", index, " Position => ", position);
         try {
             let value = this.state.values ? this.state.values.length > 0 ?
                 this.state.values.filter(v => v.x == this.state.datas[Math.floor(d2 / COLUMNS)].books[index].parent.id && v.y == this.state.datas[Math.floor(d2 / COLUMNS)].books[index].id && v.type == this.getTypeString(d2 % COLUMNS))[position] ?
@@ -194,7 +192,6 @@ class ComplexTable extends Component {
 
     render() {
         const { datas, numberOfColumns, numberOfColumnsArray, values } = this.state;
-        console.log("Le gars ci ", numberOfColumnsArray)
         return (
             <RctCollapsibleCard>
                 <div className="d-flex justify-content-center align-items-center" style={{ flexDirection: 'column' }}>

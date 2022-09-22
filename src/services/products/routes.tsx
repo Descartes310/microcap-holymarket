@@ -15,3 +15,38 @@ export const FIND_PRODUCT = (reference) => `api/products/find/${reference}`;
 
 export const UPDATE_PRODUCT_DETAILS = 'api/products/details';
 export const CREATE_CODEV_PRODUCT_MODEL = 'api/products/codevs';
+
+
+export const CREATE_CODEV_OPTION = 'api/products/codev/options';
+export const CREATE_CODEV_OPTION_DETAILS = (reference) => `api/products/codev/options/${reference}/details`;
+export const GET_CODEV_OPTION_DETAILS = (reference) => `api/products/codev/options/${reference}/details`;
+export const CREATE_CODEV_SIMPLE_OPTION = 'api/products/codev/options/create';
+export const CREATE_CODEV_OPTION_TYPE = 'api/products/codev/type_option_titles';
+export const GET_CODEV_OPTION_TYPE = 'api/products/codev/type_option_titles';
+export const GET_CODEV_OPTION = 'api/products/codev/options';
+export const CREATE_CODEV_DETAILS = 'api/products/codevs/details';
+export const GET_CODEV_DETAILS = 'api/products/codevs/details';
+export const GENERATE_TIRAGES = 'api/products/codevs/tirage/active';
+
+export const CREATE_CODEV_SUPPORT_OPTION_TYPE = 'api/products/codev/support_options/types';
+export const GET_CODEV_SUPPORT_OPTION_TYPE = 'api/products/codev/support_options/types';
+export const CREATE_CODEV_SUPPORT_OPTION = 'api/products/codev/support_options';
+export const GET_CODEV_SUPPORT_OPTION = 'api/products/codev/support_options';
+export const GET_FREE_TIRAGE = 'api/products/codevs/tirages/availables';
+export const GET_LINE_BY_DATE = 'api/products/codevs/line/dates';
+export const GET_INDIVISION_BY_DATE = 'api/products/codevs/indivisions/dates';
+export const CREATE_INDIVIVIONS = 'api/products/codevs/indivision';
+
+export const GET_CONFIG_OPTIONS = 'api/products/codev/config_options';
+export const CREATE_CONFIG_OPTION = 'api/products/codev/config_options';
+
+export const CREATE_CODEV_TYPE_SUPPORT_OPTION = 'api/products/codev/options/create/support';
+export const CREATE_CODEV_TYPE_OPTION_TITLE = 'api/products/codev/options/create/title';
+export const GET_CODEV_TYPE_SUPPORT_OPTION = 'api/products/codev/options/supports';
+export const GET_CODEV_TYPE_OPTION_TITLE = 'api/products/codev/options/titles';
+
+
+export const DELETE_LINE_BOOKING = 'api/products/codevs/lines/free';
+export const DELETE_INDIVISION_BOOKING = 'api/products/codevs/indivisions/free';
+export const CREATE_LINE_BOOKING = 'api/products/codevs/lines/book';
+export const CREATE_INDIVISION_BOOKING = 'api/products/codevs/indivisions/book';

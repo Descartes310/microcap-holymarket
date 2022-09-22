@@ -3,9 +3,11 @@ import React, { Component } from 'react';
 import { onAddItemToCart } from 'Actions';
 import { RctCard } from 'Components/RctCard';
 import ProductDetails from './ProductDetails';
+import ProductService from 'Services/products';
 import CodevStep1 from '../components/codev/step1';
 import CodevStep2 from '../components/codev/step2';
 import CodevStep3 from '../components/codev/step3';
+import CodevStep4 from '../components/codev/step4';
 import { textTruncate, getFilePath } from "Helpers/helpers";
 import CircularProgress from '@material-ui/core/CircularProgress';
 
@@ -18,6 +20,7 @@ class Hit extends Component {
 		showCodevStep1: false,
 		showCodevStep2: false,
 		showCodevStep3: false,
+		showCodevStep4: false,
 	}
 
 	//Add Item to cart
@@ -36,10 +39,16 @@ class Hit extends Component {
 		this.setState({ loading: true });
 		if(this.state.data)
 			cartItem.customInfos = this.state.data;
-		console.log(cartItem)
 		this.props.onAddItemToCart(cartItem);
 		if(e) e.preventDefault();
 		this.setState({ loading: false, product: null, data: null });
+		console.log(cartItem);
+		if(cartItem?.customInfos?.type == 'CODEV') {
+			if(cartItem.customInfos.line)
+				ProductService.createLineBooking({line_references: [cartItem.customInfos.line.reference]});
+			if(cartItem.customInfos.indivision)
+				ProductService.createIndivisionBooking({indivision_references: [cartItem.customInfos.indivision.reference]});
+		}
 	}
 
 	isItemExistInCart(id) {
@@ -56,7 +65,7 @@ class Hit extends Component {
 	render() {
 		const { product } = this.props;
 		const { loading, showDetails, showCodevStep1, 
-			showCodevStep2, showCodevStep3, data } = this.state;
+			showCodevStep2, showCodevStep3, showCodevStep4, data } = this.state;
 		return (
 			<RctCard colClasses="d-flex col-md-3 col-sm-6 mb-0 flex-column justify-content-between overflow-hidden">
 				<div className="overlay-wrap overflow-hidden">
@@ -98,12 +107,23 @@ class Hit extends Component {
 						show={showCodevStep1}
 						onClose={() => this.setState({ showCodevStep1: false })}
 						onSubmit={(data) => {
-							this.setState({ 
-								data: data,
-								showCodevStep1: false, 
-								showCodevStep2: true, 
-								showCodevStep3: false 
-							});
+							if(data?.subscriptionType.value == 'INDIVISION') {
+								this.setState({ 
+									data: data,
+									showCodevStep1: false, 
+									showCodevStep2: true, 
+									showCodevStep3: false,
+									showCodevStep4: false 
+								});
+							} else {
+								this.setState({ 
+									data: data,
+									showCodevStep1: false, 
+									showCodevStep2: false, 
+									showCodevStep3: false,
+									showCodevStep4: true
+								});
+							}
 						}}
 					/>
 				)}
@@ -118,7 +138,8 @@ class Hit extends Component {
 								data: data,
 								showCodevStep1: false, 
 								showCodevStep2: false, 
-								showCodevStep3: true 
+								showCodevStep3: true,
+								showCodevStep4: false,
 							})
 						}}
 					/>
@@ -130,8 +151,18 @@ class Hit extends Component {
 						show={showCodevStep3}
 						onClose={() => this.setState({ showCodevStep3: false })}
 						onSubmit={(data) => {
-							console.log(data);
-							this.setState({ data: data, showCodevStep1: false, showCodevStep2: false, showCodevStep3: false }, () => {
+							this.setState({ data: data, showCodevStep1: false, showCodevStep2: false, showCodevStep3: false, showCodevStep4: true });
+						}}
+					/>
+				)}
+				{ showCodevStep4 && (
+					<CodevStep4
+						data={data}
+						product={product}
+						show={showCodevStep4}
+						onClose={() => this.setState({ showCodevStep4: false })}
+						onSubmit={(data) => {
+							this.setState({ data: data, showCodevStep1: false, showCodevStep2: false, showCodevStep3: false , showCodevStep4: false }, () => {
 								this.addToCart(this.state.product);
 							});
 						}}

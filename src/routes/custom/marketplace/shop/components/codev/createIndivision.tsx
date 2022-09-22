@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 import UnitService from 'Services/units';
 import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
+import ProductService from 'Services/products';
 import { setRequestGlobalAction } from 'Actions';
 import React, { useEffect, useState } from 'react';
 import { RctCardContent } from 'Components/RctCard';
@@ -11,17 +12,32 @@ import { FormGroup, Input as InputStrap } from 'reactstrap';
 import DialogComponent from "Components/dialog/DialogComponent";
 
 const Indivision = (props) => {
+
     const { show, onClose } = props;
-    const [lineReference, setLineReference] = useState("ld243214");
-    const [amount, setAmount] = useState(null);
-    const [units, setUnits] = useState([]);
-    const [priceUnit, setPriceUnit] = useState(null);
     const [plan, setPlan] = useState([]);
-    const [denomination, setDenomination] = useState(null);
+    const [units, setUnits] = useState([]);
+    const [lines, setLines] = useState([]);
+    const [amount, setAmount] = useState(null);
     const [showPlan, setShowPlan] = useState(false);
+    const [priceUnit, setPriceUnit] = useState(null);
+    const [distribution, setDistribution] = useState(null);
+    const [selectedLine, setSelectedLine] = useState(null);
+    const [denomination, setDenomination] = useState(null);
+
     useEffect(() => {
         getUnits();
+        findLines();
     }, []);
+
+    const findLines = () => {
+        props.setRequestGlobalAction(true);
+        ProductService.getLinesByDate({reference: props.data.product.reference, date: props.data.selectedDate.date})
+        .then(response => {
+            setLines(response);
+            setSelectedLine(response[0]);
+        })
+        .finally(() => props.setRequestGlobalAction(false))
+    }
 
     const getUnits = () => {
         props.setRequestGlobalAction(false);
@@ -34,6 +50,29 @@ const Indivision = (props) => {
                 props.setRequestGlobalAction(false);
             })
     }
+
+
+    const onSumit = () => {
+
+        if(!denomination || !amount || !selectedLine) {
+            return;
+        }
+
+        let data = {
+            amount: amount,
+            line: selectedLine,
+            title: denomination,
+            line_reference: selectedLine?.reference
+        }
+
+        props.setRequestGlobalAction(true);
+        ProductService.createIndivision(data).then((response) => {
+            props.onValidate(response[0]);
+            onClose();
+        })
+        .finally(() => props.setRequestGlobalAction(false))
+    }
+
     return (
         <DialogComponent
             show={show}
@@ -41,16 +80,17 @@ const Indivision = (props) => {
             size="md"
             title={(
                 <h3 className="fw-bold">
-                    Nouvelle Indivsion
+                    Nouvelle Indivision
                 </h3>
             )}
         >
             <RctCardContent>
                 <div className="col-md-12 col-sm-12 has-wrapper mb-30 mt-20">
-                    Une indivision autorise plusieurs personne à faire les versements sur un même compte/plan d'épargne
+                    Une indivision autorise plusieurs personnes à faire les versements sur un même compte/plan d'épargne
                 </div>
-                <div className="col-md-10 col-sm-12 has-wrapper mb-30 mt-20">
-                    <h4>Reservation: {lineReference}</h4>
+                <div className="col-md-12 col-sm-12 has-wrapper mb-30 mt-20">
+                    <h4 className='mb-40'>Reservation: {selectedLine?.reference}</h4>
+                    <h4 className='mb-40'>Montant périodique: {props?.data.product?.details.find(d => d.type == 'DEPOSIT_AMOUNT')?.value}</h4>
                     <div className='row'>
                         <FormGroup className="col-md-8 col-sm-12 has-wrapper">
                             <InputLabel className="text-left" htmlFor="amount">
@@ -83,7 +123,7 @@ const Indivision = (props) => {
                         </FormGroup>
                     </div>
                     <div className="row d-flex align-items-center">
-                        <FormGroup className="col-md-8 col-sm-12 has-wrapper">
+                        <FormGroup className="col-md-4 col-sm-12 has-wrapper">
                             <InputLabel className="text-left" htmlFor="denomination">
                                 Dénomination de l'indivision
                             </InputLabel>
@@ -95,6 +135,21 @@ const Indivision = (props) => {
                                 className="input-lg"
                                 value={denomination}
                                 onChange={(e) => setDenomination(e.target.value)}
+                            />
+                        </FormGroup>
+                        <FormGroup className="col-md-4 col-sm-12 has-wrapper">
+                            <InputLabel className="text-left">
+                                Distribution de l'indivision
+                            </InputLabel>
+                            <Autocomplete
+                                value={distribution}
+                                id="combo-box-demo"
+                                onChange={(__, item) => {
+                                    setDistribution(item);
+                                }}
+                                getOptionLabel={(option) => option.label}
+                                options={[{label: 'Libre', value: 'FREE'}, {label: 'Privée', value: 'PRIVATE'}]}
+                                renderInput={(params) => <TextField {...params} variant="outlined" />}
                             />
                         </FormGroup>
                         <FormGroup className="col-md-4 col-sm-12 has-wrapper mt-30">
@@ -134,7 +189,7 @@ const Indivision = (props) => {
                         <Button
                             color="primary"
                             variant="outlined"
-                            onClick={onClose}
+                            onClick={() => onClose()}
                             className="primary font-weight-bold mb-20"
                         >
                             Annuler
@@ -144,10 +199,10 @@ const Indivision = (props) => {
                         <Button
                             color="primary"
                             variant="contained"
-                            onClick={() => console.log("hi")}
+                            onClick={() => onSumit()}
                             className="text-white font-weight-bold mb-20"
                         >
-                            Valider
+                            Créer l'indivision
                         </Button>
                     </FormGroup>
                 </div>

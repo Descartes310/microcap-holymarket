@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { datediff } from 'Helpers/helpers';
+import UnitService from 'Services/units';
 import { withRouter } from "react-router-dom";
 import Button from '@material-ui/core/Button';
 import { MARKETPLACE } from 'Url/frontendUrl';
@@ -7,50 +7,66 @@ import ProductService from 'Services/products';
 import {setRequestGlobalAction} from 'Actions';
 import React, { useState, useEffect } from 'react';
 import TextField from '@material-ui/core/TextField';
+import CreateOption from '../components/createOption';
+import CreateDetails from '../components/createDetails';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { NotificationManager } from 'react-notifications';
-import Checkbox from "@material-ui/core/Checkbox/Checkbox";
 import { getProductTypes, getTimeUnits } from 'Helpers/datas';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import {Form, FormGroup, Input as InputStrap} from 'reactstrap';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
-import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
-import moment from 'moment';
 
-const Configure = (props) => {
 
-    const [endDate, setEndDate] = useState(null);
+const Configure = (props: any) => {
+
+    const [config, setConfig] = useState<any>([]);
+    const [configs, setConfigs] = useState([]);
+    
+    const [units, setUnits] = useState([]);
+    const [details, setDetails] = useState([]);
+    const [product, setProduct] = useState(null);
+    const [priceUnit, setPriceUnit] = useState(null);
+    const [placements, setPlacements] = useState([]);
     const [lineGroup, setLineGroup] = useState(null);
     const [cycleTime, setCycleTime] = useState(null);
-    const [startDate, setStartDate] = useState(null);
+    const [tirageDates, setTirageDates] = useState([]);
+    const [detailsType, setDetailsType] = useState(null);
     const [minimumRate, setMinimumRate] = useState(null);
     const [productType, setProductType] = useState(null);
-    const [advanceType, setAdvanceType] = useState(null);
     const [totalDeposit, setTotalDeposit] = useState(null);
     const [depositPeriod, setDepositPeriod] = useState(null);
     const [depositAmount, setDepositAmount] = useState(null);
     const [advanceOption, setAdvanceOption] = useState(null);
     const [emitLineCount, setEmitLineCount] = useState(null);
-    const [carrencePeriod, setCarrencePeriod] = useState(null);
-    const [advanceInterest, setAdvanceInterest] = useState(null);
+    const [showDetailsBox, setShowDetailsBox] = useState(false);
     const [startDepositDate, setStartDepositDate] = useState(null);
     const [availableCapital, setAvailableCapital] = useState(null);
     const [subscriptionFees, setSubscriptionFees] = useState(null);
-    const [quotientAvailable, setQuotientAvailable] = useState(null);
-    const [investmentCapital, setInvestmentCapital] = useState(null);
-    const [ticketCaracteristic, setTicketCaracteristic] = useState([]);
+    const [showAddOption, setShowAddOption] = useState<Boolean>(false);
     const [subscriptionEndDate, setSubscriptionEndDate] = useState(null);
     const [subscriptionStartDate, setSubscriptionStartDate] = useState(null);
-    const [periode, setPeriode] = useState(0);
+
+    useEffect(() => {
+        getUnits();
+        findProduct();
+        getCodevConfigOptions();
+        getCodevDetails();
+    }, []);
+
+    useEffect(() => {
+        let tmp = configs.filter(t => product?.details.find(d => d.type == 'OPTION')?.value.split(',').includes(t.reference));
+        if(tmp) {
+            setConfig(tmp);
+        }
+
+    }, [product, configs])
 
     useEffect(() => {
         if(lineGroup && cycleTime) {
             setEmitLineCount(cycleTime * lineGroup);
         }
-        if(subscriptionEndDate && subscriptionStartDate * depositPeriod)
-            setPeriode(datediff(subscriptionStartDate, subscriptionEndDate, depositPeriod.days));
-    }, [subscriptionEndDate, subscriptionStartDate, lineGroup, depositPeriod, cycleTime]);
+    }, [lineGroup, cycleTime]);
 
     useEffect(() => {
         if(depositAmount && cycleTime) {
@@ -58,35 +74,23 @@ const Configure = (props) => {
         }
 
         if(depositAmount && minimumRate) {
-            console.log(depositAmount, minimumRate, depositAmount*Math.pow(1+minimumRate, emitLineCount));
-            setAvailableCapital(depositAmount*Math.pow(1+minimumRate, emitLineCount));
+            setAvailableCapital((depositAmount*Math.pow(1+minimumRate, emitLineCount)).toFixed(2));
         }
     }, [depositAmount, cycleTime, minimumRate])
-
-    useEffect(() => {
-        if(depositAmount && lineGroup && quotientAvailable) {
-            setInvestmentCapital(depositAmount*lineGroup*quotientAvailable);
-        }
-    }, [depositAmount, lineGroup, quotientAvailable ])
-
-    useEffect(() => {
-        if(startDepositDate && carrencePeriod && cycleTime) {
-            console.log("startDepositDate => ", startDepositDate);
-            console.log("carrence => ", carrencePeriod);
-            console.log("depositPeriod.value => ", depositPeriod.value);
-            let newDate = moment(startDepositDate).add(carrencePeriod, depositPeriod.value.toLowerCase()).format('YYYY-MM-DD');
-            setStartDate(newDate);
-            console.log("newDate => ", newDate);
-            console.log("endDate => ", moment(newDate).add(cycleTime, depositPeriod.value.toLowerCase()).format('YYYY-MM-DD'));
-            setEndDate(moment(newDate).add(cycleTime, depositPeriod.value.toLowerCase()).format('YYYY-MM-DD'))
-        }
-    }, [startDepositDate, carrencePeriod, depositPeriod, cycleTime])
 
     useEffect(() => {
         if(minimumRate && depositPeriod && cycleTime && depositAmount) {
             computeCapital();
         }
-    }, [minimumRate, depositPeriod, cycleTime, depositAmount])
+    }, [minimumRate, depositPeriod, cycleTime, depositAmount])    
+    
+    useEffect(() => {
+        if(details.length > 0 && product) {
+            let refs = product.details.find(d => d.type == 'PLACEMENT')?.value.split(',');
+            // setAdvanceType(details.find(t => t.reference == product.details.find(d => d.type == 'ADVANCE_TYPE')?.value));
+            setPlacements(details.filter(t => refs?.includes(t.reference)));
+        }
+    }, [product, details])
 
     const computeCapital = () => {
         let t1 = minimumRate;
@@ -96,8 +100,31 @@ const Configure = (props) => {
         setAvailableCapital(capital);
     }
 
+    const getUnits = () => {
+        props.setRequestGlobalAction(false);
+        UnitService.getUnits()
+            .then((response) => setUnits(response))
+            .catch((err) => {
+                console.log(err);
+            })
+            .finally(() => {
+                props.setRequestGlobalAction(false);
+            })
+    }
 
     const onSubmit = () => {
+
+        if(!config || !depositPeriod || !cycleTime || !lineGroup || placements.length <= 0 || 
+            !subscriptionStartDate || !subscriptionEndDate || !startDepositDate || !subscriptionFees || 
+            !depositAmount || !minimumRate || tirageDates.length < 0) {
+            NotificationManager.error('Le formulaire est mal rempli');
+            return;
+        }
+
+        if(subscriptionStartDate >= subscriptionEndDate) {
+            NotificationManager.error('Les dates ne sont pas correctement renseignées');
+            return;
+        }
 
         let data: any = {
             reference: props.match.params.reference,
@@ -110,31 +137,61 @@ const Configure = (props) => {
             totalDeposit: totalDeposit.toString(), 
             availableCapital: availableCapital.toString(), 
             lineGroup: lineGroup.toString(),
-            advanceOption: advanceOption+"", 
-            quotientAvailable: quotientAvailable.toString(), 
-            investmentCapital: investmentCapital.toString(),
+            advanceOption: advanceOption+"",
             subscriptionStartDate: subscriptionStartDate.toString(),
             subscriptionEndDate: subscriptionEndDate.toString(), 
             startDepositDate: startDepositDate.toString(),
             emitLineCount: emitLineCount.toString(), 
-            carrencePeriod: carrencePeriod.toString(), 
-            firstLot: startDate,
-            lastLot: endDate,
-            ticketCaracteristic: ticketCaracteristic[0].value.toString(), 
-            advanceType: advanceType.value.toString(), 
-            advanceInterest: advanceInterest.toString(),
+            option: config.map(c => c.reference).join(','),
+            placement: placements.map(p => p.reference).join(','),
         }
 
         props.setRequestGlobalAction(true);
         ProductService.updateProductDetails(data).then(() => {
-            console.log(data);
             NotificationManager.success('Le product a été mis à jour avec succès !');
             props.history.push(MARKETPLACE.STORE.PRODUCT.LIST);
         }).catch((err) => {
-            console.log(err);
         }).finally(() => {
             props.setRequestGlobalAction(false);
         });
+    }
+
+    const findProduct = () => {
+        props.setRequestGlobalAction(true);
+        ProductService.findProduct(props.match.params.reference).then(response => {
+            setProduct(response);
+            setLineGroup(response.details.find(d => d.type == 'LINE_GROUP')?.value);
+            setCycleTime(response.details.find(d => d.type == 'CYCLE_TIME')?.value);
+            setMinimumRate(response.details.find(d => d.type == 'MINIMUM_RATE')?.value);
+            setProductType(getProductTypes().find(pt => pt.value == 'CODEV'));
+            setTotalDeposit(response.details.find(d => d.type == 'TOTAL_DEPOSIT')?.value);
+            setDepositAmount(response.details.find(d => d.type == 'DEPOSIT_AMOUNT')?.value);
+            setAdvanceOption(response.details.find(d => d.type == 'ADVANCE_OPTION')?.value);
+            setEmitLineCount(response.details.find(d => d.type == 'EMIT_LINE_COUNT')?.value);
+            setStartDepositDate(response.details.find(d => d.type == 'START_DEPOSIT_DATE')?.value);
+            setAvailableCapital(response.details.find(d => d.type == 'AVAILABLE_CAPITAL')?.value);
+            setSubscriptionFees(response.details.find(d => d.type == 'SUBSCRIPTION_FEES')?.value);
+            setSubscriptionEndDate(response.details.find(d => d.type == 'END_DATE')?.value);
+            setSubscriptionStartDate(response.details.find(d => d.type == 'START_DATE')?.value);
+            setDepositPeriod(getTimeUnits().find(t => t.value == response.details.find(d => d.type == 'DEPOSIT_PERIOD')?.value));
+        })
+        .finally(() => props.setRequestGlobalAction(false))
+    }
+
+    const getCodevConfigOptions = () => {
+        props.setRequestGlobalAction(true);
+        ProductService.getCodevConfigOptions({product_reference: props.match.params.reference}).then(response => {
+            setConfigs(response.map(co => { return {...co, label: co.option.label}}));
+        })
+        .finally(() => props.setRequestGlobalAction(false))
+    }
+
+    const getCodevDetails = () => {
+        props.setRequestGlobalAction(true);
+        ProductService.getCodevDetails({types: ['ADVANCE_TYPE', 'PLACEMENT']}).then(response => {
+            setDetails(response);
+        })
+        .finally(() => props.setRequestGlobalAction(false))
     }
 
     return (
@@ -145,54 +202,42 @@ const Configure = (props) => {
             <RctCollapsibleCard>
                 <Form onSubmit={onSubmit}>
 
-                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
-                        <InputLabel className="text-left">
-                            Type du modèle
-                        </InputLabel>
-                        <Autocomplete
-                            value={productType}
-                            options={getProductTypes()}
-                            id="combo-box-demo"
-                            onChange={(__, item) => {
-                                setProductType(item);
-                            }}
-                            getOptionLabel={(option) => option.label}
-                            renderInput={(params) => <TextField {...params} variant="outlined" />}
-                        />
-                    </div>
-
-                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
-                        <InputLabel className="text-left">
-                            Périodicité des versements
-                        </InputLabel>
-                        <Autocomplete
-                            value={depositPeriod}
-                            id="combo-box-demo"
-                            options={getTimeUnits()}
-                            onChange={(__, item) => {
-                                setDepositPeriod(item);
-                            }}
-                            getOptionLabel={(option) => option.label}
-                            renderInput={(params) => <TextField {...params} variant="outlined" />}
-                        />
+                    <h2 className='mb-30 mt-10'>Spécifications générales du plan</h2>
+                    <div className="row">
+                        <div className="col-md-6 col-sm-12 has-wrapper mb-30">
+                            <InputLabel className="text-left">
+                                Type du modèle
+                            </InputLabel>
+                            <Autocomplete
+                                value={productType}
+                                options={getProductTypes()}
+                                id="combo-box-demo"
+                                onChange={(__, item) => {
+                                    setProductType(item);
+                                }}
+                                getOptionLabel={(option) => option.label}
+                                renderInput={(params) => <TextField {...params} variant="outlined" />}
+                            />
+                        </div>
+                        <div className="col-md-6 col-sm-12 has-wrapper mb-30">
+                            <InputLabel className="text-left">
+                                Périodicité des versements
+                            </InputLabel>
+                            <Autocomplete
+                                value={depositPeriod}
+                                id="combo-box-demo"
+                                options={getTimeUnits()}
+                                onChange={(__, item) => {
+                                    setDepositPeriod(item);
+                                }}
+                                getOptionLabel={(option) => option.label}
+                                renderInput={(params) => <TextField {...params} variant="outlined" />}
+                            />
+                        </div>
                     </div>
 
                     <div className="row">
-                        <FormGroup className="col-md-6 col-sm-12 has-wrapper">
-                            <InputLabel className="text-left" htmlFor="subscriptionFees">
-                                Frais de souscription
-                            </InputLabel>
-                            <InputStrap
-                                required
-                                type="number"
-                                className="input-lg"
-                                id="subscriptionFees"
-                                name='subscriptionFees'
-                                value={subscriptionFees}
-                                onChange={(e) => setSubscriptionFees(e.target.value)}
-                            />
-                        </FormGroup>
-                        <FormGroup className="col-md-6 col-sm-12 has-wrapper">
+                        <FormGroup className="col-md-4 col-sm-12 has-wrapper">
                             <InputLabel className="text-left" htmlFor="cycleTime">
                                 Durée du cycle
                             </InputLabel>
@@ -206,72 +251,9 @@ const Configure = (props) => {
                                 onChange={(e) => setCycleTime(e.target.value)}
                             />
                         </FormGroup>
-                        
-                    </div>
-                    <div className="row">
-                        <FormGroup className="col-md-6 col-sm-12 has-wrapper">
-                            <InputLabel className="text-left" htmlFor="depositAmount">
-                                Montant périodique
-                            </InputLabel>
-                            <InputStrap
-                                required
-                                type="number"
-                                id="depositAmount"
-                                name='depositAmount'
-                                className="input-lg"
-                                value={depositAmount}
-                                onChange={(e) => setDepositAmount(e.target.value)}
-                            />
-                        </FormGroup>
-                        <FormGroup className="col-md-6 col-sm-12 has-wrapper">
-                            <InputLabel className="text-left" htmlFor="minimumRate">
-                                Taux de rémunération minimal garantie (%)
-                            </InputLabel>
-                            <InputStrap
-                                required
-                                type="number"
-                                id="minimumRate"
-                                name='minimumRate'
-                                className="input-lg"
-                                value={minimumRate}
-                                onChange={(e) => setMinimumRate(e.target.value)}
-                            />
-                        </FormGroup>
-                    </div>
-                    <div className="row">
-                        <FormGroup className="col-md-6 col-sm-12 has-wrapper">
-                            <InputLabel className="text-left" htmlFor="totalDeposit">
-                                Total des versements
-                            </InputLabel>
-                            <InputStrap
-                                disabled
-                                type="number"
-                                id="totalDeposit"
-                                name='totalDeposit'
-                                className="input-lg"
-                                value={totalDeposit}
-                                onChange={(e) => setTotalDeposit(e.target.value)}
-                            />
-                        </FormGroup>
-                        <FormGroup className="col-md-6 col-sm-12 has-wrapper">
-                            <InputLabel className="text-left" htmlFor="availableCapital">
-                                Capital disponible à terme
-                            </InputLabel>
-                            <InputStrap
-                                disabled
-                                type="number"
-                                className="input-lg"
-                                id="availableCapital"
-                                name='availableCapital'
-                                value={availableCapital}
-                                onChange={(e) => setAvailableCapital(e.target.value)}
-                            />
-                        </FormGroup>
-                    </div>
-                    <div className="row">
-                        <FormGroup className="col-md-6 col-sm-12 has-wrapper">
+                        <FormGroup className="col-md-4 col-sm-12 has-wrapper">
                             <InputLabel className="text-left" htmlFor="lineGroup">
-                                Groupage de ligne
+                                Groupage (nombre de ligne par tirage)
                             </InputLabel>
                             <InputStrap
                                 required
@@ -283,49 +265,24 @@ const Configure = (props) => {
                                 onChange={(e) => setLineGroup(e.target.value)}
                             />
                         </FormGroup>
-                        <FormGroup className="col-md-6 col-sm-12 has-wrapper mb-0">
-                            <FormControlLabel control={
-                                <Checkbox
-                                    color="primary"
-                                    checked={advanceOption}
-                                    onChange={() => {
-                                        setAdvanceOption(!advanceOption);
-                                    }}
-                                />
-                            } label={"Option d'avance sur capital"}
-                            />
-                        </FormGroup>
-                    </div>
-                    <div className="row">
-                        <FormGroup className="col-md-6 col-sm-12 has-wrapper">
-                            <InputLabel className="text-left" htmlFor="quotientAvailable">
-                                Quotité disponible sur avance (%)
+                        <FormGroup className="col-md-4 col-sm-12 has-wrapper">
+                            <InputLabel className="text-left" htmlFor="emitLineCount">
+                                Nombre total de ligne
                             </InputLabel>
                             <InputStrap
-                                required
+                                disabled
                                 type="number"
+                                id="emitLineCount"
+                                name='emitLineCount'
                                 className="input-lg"
-                                id="quotientAvailable"
-                                name='quotientAvailable'
-                                value={quotientAvailable}
-                                onChange={(e) => setQuotientAvailable(e.target.value)}
-                            />
-                        </FormGroup>
-                        <FormGroup className="col-md-6 col-sm-12 has-wrapper">
-                            <InputLabel className="text-left" htmlFor="investmentCapital">
-                                Capital à investir par groupe de ligne
-                            </InputLabel>
-                            <InputStrap
-                                required
-                                disabled="text"
-                                className="input-lg"
-                                id="investmentCapital"
-                                name='investmentCapital'
-                                value={investmentCapital}
-                                onChange={(e) => setInvestmentCapital(e.target.value)}
+                                value={emitLineCount}
+                                onChange={(e) => setEmitLineCount(e.target.value)}
                             />
                         </FormGroup>
                     </div>
+
+                    <h2 className='mb-30 mt-10'>Spécifications financières du plan</h2>
+
                     <div className="row">
                         <FormGroup className="col-md-4 col-sm-12 has-wrapper">
                             <InputLabel className="text-left" htmlFor="subscriptionStartDate">
@@ -370,117 +327,165 @@ const Configure = (props) => {
                             />
                         </FormGroup>
                     </div>
+
+                    <div className="row">
+                        <FormGroup className="col-md-3 col-sm-12 has-wrapper">
+                            <InputLabel className="text-left" htmlFor="subscriptionFees">
+                                Frais de souscription
+                            </InputLabel>
+                            <InputStrap
+                                required
+                                type="number"
+                                className="input-lg"
+                                id="subscriptionFees"
+                                name='subscriptionFees'
+                                value={subscriptionFees}
+                                onChange={(e) => setSubscriptionFees(e.target.value)}
+                            />
+                        </FormGroup>
+                        <FormGroup className="col-md-3 col-sm-12 has-wrapper">
+                            <InputLabel className="text-left">
+                                Devise
+                            </InputLabel>
+                            <Autocomplete
+                                value={priceUnit}
+                                id="combo-box-demo"
+                                onChange={(__, item) => {
+                                    setPriceUnit(item);
+                                }}
+                                getOptionLabel={(option) => option.label}
+                                options={units.filter(u => ['dévise', 'devise', 'devises', 'dévises'].includes(u.type.label.toLowerCase()))}
+                                renderInput={(params) => <TextField {...params} variant="outlined" />}
+                            />
+                        </FormGroup>
+                        <FormGroup className="col-md-3 col-sm-12 has-wrapper">
+                            <InputLabel className="text-left" htmlFor="depositAmount">
+                                Montant périodique
+                            </InputLabel>
+                            <InputStrap
+                                required
+                                type="number"
+                                id="depositAmount"
+                                name='depositAmount'
+                                className="input-lg"
+                                value={depositAmount}
+                                onChange={(e) => setDepositAmount(e.target.value)}
+                            />
+                        </FormGroup>
+                        <FormGroup className="col-md-3 col-sm-12 has-wrapper">
+                            <InputLabel className="text-left" htmlFor="minimumRate">
+                                Taux de rémunération minimal garantie (%)
+                            </InputLabel>
+                            <InputStrap
+                                required
+                                type="number"
+                                id="minimumRate"
+                                name='minimumRate'
+                                className="input-lg"
+                                value={minimumRate}
+                                onChange={(e) => setMinimumRate(e.target.value)}
+                            />
+                        </FormGroup>
+                    </div>
                     <div className="row">
                         <FormGroup className="col-md-6 col-sm-12 has-wrapper">
-                            <InputLabel className="text-left" htmlFor="emitLineCount">
-                                Nombre de ligne emises
+                            <InputLabel className="text-left" htmlFor="totalDeposit">
+                                Total des versements à terme par ligne
                             </InputLabel>
                             <InputStrap
                                 disabled
                                 type="number"
-                                id="emitLineCount"
-                                name='emitLineCount'
+                                id="totalDeposit"
+                                name='totalDeposit'
                                 className="input-lg"
-                                value={emitLineCount}
-                                onChange={(e) => setEmitLineCount(e.target.value)}
+                                value={totalDeposit}
+                                onChange={(e) => setTotalDeposit(e.target.value)}
                             />
                         </FormGroup>
                         <FormGroup className="col-md-6 col-sm-12 has-wrapper">
-                            <InputLabel className="text-left" htmlFor="carrencePeriod">
-                                Nombre de période de carrence
+                            <InputLabel className="text-left" htmlFor="availableCapital">
+                                Capital disponible à terme par ligne
                             </InputLabel>
                             <InputStrap
-                                required
+                                disabled
                                 type="number"
-                                id="carrencePeriod"
-                                name='carrencePeriod'
                                 className="input-lg"
-                                value={carrencePeriod}
-                                onChange={(e) => setCarrencePeriod(e.target.value)}
-                            />
-                        </FormGroup>
-                    </div>
-                    <div className="row">
-                        <FormGroup className="col-md-6 col-sm-12 has-wrapper">
-                            <InputLabel className="text-left" htmlFor="startDate">
-                                Date du premier tirage
-                            </InputLabel>
-                            <InputStrap
-                                required
-                                type="date"
-                                id="startDate"
-                                name='startDate'
-                                value={startDate}
-                                className="input-lg"
-                                onChange={(e) => setStartDate(e.target.value)}
-                            />
-                        </FormGroup>
-                        <FormGroup className="col-md-6 col-sm-12 has-wrapper">
-                            <InputLabel className="text-left" htmlFor="endDate">
-                                Date du dernier tirage
-                            </InputLabel>
-                            <InputStrap
-                                required
-                                type="date"
-                                id="endDate"
-                                name='endDate'
-                                value={endDate}
-                                className="input-lg"
-                                onChange={(e) => setEndDate(e.target.value)}
+                                id="availableCapital"
+                                name='availableCapital'
+                                value={Number(availableCapital)?.toFixed(2)}
+                                onChange={(e) => setAvailableCapital(e.target.value)}
                             />
                         </FormGroup>
                     </div>
 
+
                     <div className='row'>
-                        <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                        <div className="col-md-6 col-sm-12 has-wrapper mb-30">
                             <InputLabel className="text-left">
-                                Caracteristique des coupons d'avance
+                                Options du plan
                             </InputLabel>
                             <Autocomplete
                                 multiple
                                 id="combo-box-demo"
-                                options={[{label: 'Cessible', value: 'CESSIBLE'}, {label: 'Modifiable', value: 'EDITABLE'}]}
-                                value={ticketCaracteristic}
+                                value={config}
+                                options={[{label: 'Ajouter une option', reference: 'add'}, ...configs]}
                                 onChange={(__, item) => {
-                                    setTicketCaracteristic(item);
+                                    if(item.find(i => i.reference == 'add')) {
+                                        setShowAddOption(true);
+                                    } else {
+                                        setConfig(item);
+                                    }
                                 }}
                                 getOptionLabel={(option) => option.label}
                                 renderInput={(params) => <TextField {...params} variant="outlined" />}
                             />
                         </div>
-                    </div>
-                    <div className="row">
-
                         <div className="col-md-6 col-sm-12 has-wrapper mb-30">
                             <InputLabel className="text-left">
-                                Type d'avance
+                                Placements programmés
                             </InputLabel>
                             <Autocomplete
+                                multiple
                                 id="combo-box-demo"
-                                value={advanceType}
-                                options={getTimeUnits()}
+                                value={placements}
+                                options={[{value: 'Ajouter un placement programmé', ref: 'add'}, ...details.filter(d => d.type === 'PLACEMENT')]}
                                 onChange={(__, item) => {
-                                    setAdvanceType(item);
+                                    if(item.find(i => i.ref == 'add')) {
+                                        setShowDetailsBox(true);
+                                        setDetailsType("PLACEMENT")
+                                    } else {
+                                        setPlacements(item);
+                                    }
                                 }}
-                                getOptionLabel={(option) => option.label}
+                                getOptionLabel={(option) => option.value}
                                 renderInput={(params) => <TextField {...params} variant="outlined" />}
                             />
                         </div>
-                        <FormGroup className="col-md-6 col-sm-12 has-wrapper">
-                            <InputLabel className="text-left" htmlFor="advanceInterest">
-                                Interet sur avance (%)
-                            </InputLabel>
-                            <InputStrap
-                                required
-                                type="text"
-                                className="input-lg"
-                                id="advanceInterest"
-                                name="advanceInterest"
-                                value={advanceInterest}
-                                onChange={(e) => setAdvanceInterest(e.target.value)}
-                            />
-                        </FormGroup>
                     </div>
+
+                    {
+                        config?.map(c => (
+                            <>
+                                <h2 className='mb-30 mt-10'>Spécification {c.option.label}</h2>
+                                
+                                <div className="row">
+                                    { c.option.optionDetails.map(d => (
+                                        <FormGroup className="col-md-4 col-sm-12 has-wrapper">
+                                            <InputLabel className="text-left">
+                                                {d.label}
+                                            </InputLabel>
+                                            <InputStrap
+                                                disabled
+                                                type="text"
+                                                value={d.value}
+                                                className="input-lg"
+                                            />
+                                        </FormGroup>
+                                    ))}
+                                </div>
+                            </>    
+                        ))
+                    }
 
                     <FormGroup>
                         <Button
@@ -489,11 +494,22 @@ const Configure = (props) => {
                             onClick={onSubmit}
                             className="text-white font-weight-bold"
                         >
-                            Ajouter
+                            Valider
                         </Button>
                     </FormGroup>
                 </Form>
             </RctCollapsibleCard>
+            <CreateOption 
+                dates={tirageDates}
+                show={showAddOption} 
+                onClose={() => { setShowAddOption(false); getCodevConfigOptions() }} 
+            />
+            <CreateDetails 
+                type={detailsType} 
+                show={showDetailsBox} 
+                title={"Ajout d'un nouvel élément"} 
+                onClose={() => { setShowDetailsBox(false); setDetailsType(null); getCodevDetails() }} 
+            />
         </>
     );
 };

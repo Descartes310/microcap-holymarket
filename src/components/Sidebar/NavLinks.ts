@@ -430,6 +430,14 @@ export default [
             "child_routes": null
          },
          {
+            "menu_title": "Options produit",
+            "new_item": false,
+            "path": MARKETPLACE.STORE.OPTION.ITEM.LIST,
+            "permissions": [Permission.marketplace.store.product.name],
+            "profiles": ['GROUP'],
+            "child_routes": null
+         },
+         {
             "menu_title": "Demandes d'achats ",
             "new_item": false,
             "path": MARKETPLACE.STORE.PURCHASE.LIST,

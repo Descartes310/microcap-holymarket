@@ -52,18 +52,13 @@ export const getTimeUnits = () => {
         },
         {
             label: 'Semaine',
-            value: 'WEEK',
+            value: 'WEEKS',
             days: 7
         },
         {
             label: 'Mois',
-            value: 'MONTH',
+            value: 'MONTHS',
             days: 30
-        },
-        {
-            label: 'Semestre',
-            value: 'SEMESTER',
-            days: 180
         }
     ];
 }
@@ -77,77 +72,94 @@ export const getProductDetails = () => {
     return [
         {
             label: 'Date de fin des souscriptions',
-            value: 'ENDDATE'
+            value: 'END_DATE'
         },
         {
             label: 'Date de début des souscriptions',
-            value: 'STARTDATE'
+            value: 'START_DATE'
+        },
+        {
+            label: 'Date du premier tirage',
+            value: 'FIRST_LOT'
+        },
+        {
+            label: 'Date du dernier tirage',
+            value: 'LAST_LOT'
         },
         {
             label: 'Période de carrence',
-            value: 'CARRENCEPERIOD'
+            value: 'WAITING_PERIOD'
         },
         {
             label: "Type d'avance",
-            value: 'ADVANCETYPE'
+            value: 'ADVANCE_TYPE'
         },
         {
             label: "Date de tirage pour l'option d'avance",
-            value: 'ADVANCEOPTIONDATE'
+            value: 'ADVANCE_OPTION_DATE'
         },
         {
             label: "Caracteristique des coupons d'avance",
-            value: 'TICKETCARACTERISTIC'
+            value: 'TICKET_FEATURE'
         },
         {
             label: 'Période de versement',
-            value: 'DEPOSITPERIOD'
+            value: 'DEPOSIT_PERIOD'
         },
         {
             label: 'Interet sur avance',
-            value: 'ADVANCEINTEREST'
+            value: 'ADVANCE_INTEREST'
         },
         {
             label: "Option d'avance sur capital",
-            value: 'ADVANCEOPTION'
+            value: 'ADVANCE_OPTION'
         },
         {
             label: 'Capital disponible à terme',
-            value: 'AVAILABLECAPITAL'
+            value: 'AVAILABLE_CAPITAL'
         },
         {
             label: 'Nombre de ligne emises',
-            value: 'EMITLINECOUNT'
+            value: 'EMIT_LINE_COUNT'
         },
         {
             label: 'Montant périodique',
-            value: 'DEPOSITAMOUNT'
+            value: 'DEPOSIT_AMOUNT'
         },
         {
             label: 'Total des versements',
-            value: 'TOTALDEPOSIT'
+            value: 'TOTAL_DEPOSIT'
         },
         {
             label: 'Taux minimal grarantie',
-            value: 'MINIMUMRATE'
+            value: 'MINIMUM_RATE'
         },
         {
             label: 'Groupage de ligne',
-            value: 'LINEGROUP'
+            value: 'LINE_GROUP'
         },
         {
             label: 'Capital à investir par groupe de ligne',
-            value: 'INVESTMENTCAPITAL'
+            value: 'INVESTMENT_CAPITAL'
         },
         {
             label: 'Quotité disponible sur avance',
-            value: 'QUOTIENTAVAILABLE'
+            value: 'QUOTIENT_AVAILABLE'
         },
         {
             label: 'Frais de souscription',
-            value: 'SUBSCRIPTIONFEES'
+            value: 'SUBSCRIPTION_FEES'
         },
+        {
+            label: 'Durée du cycle',
+            value: 'CYCLE_TIME'
+        },
+        {
+            label: 'Date du premier versement',
+            value: 'START_DEPOSIT_DATE'
+        }
     ];
+    
 }
 
 export const getProductDetailsByName = (name) => {
@@ -158,3 +170,31 @@ export const getDateDiff = (startDate, endDate, days) => {
     const milliseconds = 1000 * 60 * 60 * 24 * days;
     return Math.round(Math.abs(endDate - startDate) / milliseconds);
 }
+
+export const productOptionDetails = [
+    {
+        label: 'Quotité disponible sur avance (%)',
+        value: 'QUOTIENT_AVAILABLE',
+        inputType: 'number'
+    },
+    {
+        label: 'Franchise (en nombre de période)',
+        value: 'WAITING_PERIOD',
+        inputType: 'number'
+    },
+    {
+        label: "Type d'avance autorisé",
+        value: 'ADVANCE_TYPE',
+        inputType: 'text'
+    },
+    {
+        label: 'Intérêt sur avance (en %)',
+        value: 'ADVANCE_INTEREST',
+        inputType: 'number'
+    },
+    {
+        label: 'Capital disponible par tirage (groupe de ligne)',
+        value: 'AVAILABLE_CAPITAL',
+        inputType: 'number'
+    },
+];

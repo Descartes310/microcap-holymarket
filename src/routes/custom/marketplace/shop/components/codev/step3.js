@@ -1,18 +1,26 @@
 import { connect } from 'react-redux';
-import { FormGroup } from 'reactstrap';
 import React, { Component } from 'react';
+import { convertDate } from 'Helpers/helpers';
 import { withRouter } from "react-router-dom";
 import Button from '@material-ui/core/Button';
 import ProductService from 'Services/products';
 import { setRequestGlobalAction } from 'Actions';
 import { RctCardContent } from 'Components/RctCard';
+import TextField from '@material-ui/core/TextField';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import { FormGroup, Input as InputStrap } from 'reactstrap';
 import DialogComponent from "Components/dialog/DialogComponent";
-import { getProductDetailsByName, getTimeUnitByValue } from "Helpers/datas";
+import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 
 class CodevStep3 extends Component {
 
     state = {
-        product: null
+        dates: [],
+        lines: [],
+        configs: [],
+        product: null,
+        endDate: null,
+        startDate: null,
     }
 
     constructor(props) {
@@ -25,6 +33,24 @@ class CodevStep3 extends Component {
         }
     }
 
+    getCodevConfigOptions = () => {
+        this.props.setRequestGlobalAction(true);
+        ProductService.getCodevConfigOptions({product_reference: this.state.product.reference}).then(response => {
+            this.setState({configs: response.filter(t => this.state.product?.details.find(d => d.type == 'OPTION')?.value.split(',').includes(t.reference))
+            .map(co => { return {...co, label: co.option.label}})});
+        })
+        .finally(() => this.props.setRequestGlobalAction(false))
+    }
+
+    findLines = () => {
+        this.props.setRequestGlobalAction(true);
+        ProductService.getIndivisionsByDate({show: true, reference: this.state.product.reference, date: this.props.data.selectedDate.date})
+        .then(response => {
+            this.setState({ lines: response });
+        })
+        .finally(() => this.props.setRequestGlobalAction(false))
+    }
+
     findProduct = () => {
         this.props.setRequestGlobalAction(true);
         ProductService.findProduct(this.props.product.reference)
@@ -33,16 +59,52 @@ class CodevStep3 extends Component {
                 NotificationManager.error('Produit non configuré');
                 this.props.onClose();
             }
-            this.setState({product: response});
+
+            let period = response.details.find(d => d.type == 'DEPOSIT_PERIOD')?.value;
+            let depositStartDate = response.details.find(d => d.type == 'START_DEPOSIT_DATE')?.value;
+            let cycleTime = response.details.find(d => d.type == 'CYCLE_TIME')?.value;
+
+            let tmpDates = [];
+            let date = new Date(depositStartDate);
+
+            for (let index = 0; index < Number(cycleTime); index++) {
+
+                tmpDates.push(convertDate(date, "YYYY-MM-DD"));
+                switch (period) {
+                    case "DAYS":
+                        date.setDate(date.getDate() + 1);
+                        break;
+                    case "WEEKS":
+                        date.setDate(date.getDate() + 7);
+                        break;
+                    case "MONTHS":
+                        date.setDate(date.getDate() + 30);
+                        break;
+                    default:
+                        date.setDate(date.getDate() + 1);
+                        break;
+                }
+            }
+
+            this.setState({product: response, dates: tmpDates, startDate: depositStartDate, endDate: tmpDates[tmpDates.length-1]}, () => {
+                this.getCodevConfigOptions();
+                this.findLines();
+            });
         })
         .finally(() => this.props.setRequestGlobalAction(false))
+    }
+
+    uuidv4 = () => {
+        return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+          (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+        );
     }
 
 
     render() {
 
         const { onClose, show, onSubmit, data } = this.props;
-        const { product } = this.state;
+        const { configs, dates, startDate, endDate, lines } = this.state;
 
         return (
             <DialogComponent
@@ -51,41 +113,67 @@ class CodevStep3 extends Component {
                 size="md"
                 title={(
                     <h3 className="fw-bold">
-                        Récapitulatif de la commande
+                        Rythme des versements
                     </h3>
                 )}
             >
                 <RctCardContent>
-                    <table className='table table-striped table-bordered'>
+                    <h4>Filtre</h4>
+                    <div className="row">
+                        <FormGroup className="col-md-6 col-sm-12 has-wrapper">
+                            <InputLabel className="text-left" htmlFor="startDate">
+                                Date de début
+                            </InputLabel>
+                            <InputStrap
+                                required
+                                type="date"
+                                className="input-lg"
+                                id="startDate"
+                                name='startDate'
+                                value={startDate}
+                                onChange={(e) => this.setState({ startDate: e.target.value })}
+                            />
+                        </FormGroup>
+                        <FormGroup className="col-md-6 col-sm-12 has-wrapper">
+                            <InputLabel className="text-left" htmlFor="endDate">
+                                Date de fin
+                            </InputLabel>
+                            <InputStrap
+                                required
+                                type="date"
+                                id="endDate"
+                                name='endDate'
+                                value={endDate}
+                                className="input-lg"
+                                onChange={(e) => this.setState({ endDate: e.target.value })}
+                            />
+                        </FormGroup>
+                    </div>
+                    <table className='table table-bordered'>
                         <thead>
-                            <th>Nom du détails</th>
-                            <th>Valeur courante</th>
+                            <th>Date de versement</th>
+                            <th>Tickets</th>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>Nombre de bon de versement</td>
-                                <td>xxx</td>
-                            </tr>
-                            <tr>
-                                <td>Montant par versement</td>
-                                <td>{this.state.product?.details.find(d => d.type === 'DEPOSITAMOUNT').value}</td>
-                            </tr>
-                            <tr>
-                                <td>Capital à terme</td>
-                                <td>{this.state.product?.details.find(d => d.type === 'AVAILABLECAPITAL').value}</td>
-                            </tr>
-                            <tr>
-                                <td>Capital disponible sur avance</td>
-                                <td>xxx</td>
-                            </tr>
-                            <tr>
-                                <td>Capital disponible par groupe de ligne pour un projet de n associés maxi</td>
-                                <td>xxx</td>
-                            </tr>
-                            <tr>
-                                <td>Date de tirage pour une avance</td>
-                                <td>{data.selectedDate}</td>
-                            </tr>
+                            { dates.filter(d => d >= startDate && d <= endDate).map(d => (
+                                <tr>
+                                    <td>{d}</td>
+                                    <td>
+                                        <div className="col-md-12 col-sm-12">
+                                            <Autocomplete
+                                                multiple
+                                                id="combo-box-demo"
+                                                onChange={(__, item) => {
+                                                    //setDepositPeriod(item);
+                                                }}
+                                                getOptionLabel={(option) => option.label}
+                                                renderInput={(params) => <TextField {...params} variant="outlined" />}
+                                                options={Array(lines.length).fill(configs).flatMap(c => c).map((c, index) => { return {...c, label: this.uuidv4()} })}
+                                            />
+                                        </div>
+                                    </td>
+                                </tr>
+                            ))}
                         </tbody>
                     </table>
                     <FormGroup className="float-right mb-20">
@@ -95,7 +183,7 @@ class CodevStep3 extends Component {
                             onClick={() => { onSubmit(data) }}
                             className="text-white font-weight-bold mb-20"
                         >
-                            Souscrire
+                            Continuer
                         </Button>
                     </FormGroup>
                 </RctCardContent>

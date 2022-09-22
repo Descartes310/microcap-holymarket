@@ -7,7 +7,7 @@ export default class CartItem {
         this.nature = item.nature;
         this.seller = item.seller;
         this.price = Number(item.price);
-        this.customInfos = this.customInfos;
+        this.customInfos = item.customInfos;
         this.description = item.description;
         this.currency = item.currency ? item.currency : 'EUR';
         this.quantity = item.quantity ? Number(item.quantity) : 1;

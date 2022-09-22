@@ -2,7 +2,6 @@ import CartItem from "Models/CartItem";
 
 export default class Cart {
     constructor(objectCart) {
-        console.log(objectCart)
         this.items = objectCart.data[objectCart.authId].map(item => new CartItem(item));
         if (!objectCart.shouldSkipSaving)
             localStorage.setItem('cartItems', JSON.stringify(objectCart.data));

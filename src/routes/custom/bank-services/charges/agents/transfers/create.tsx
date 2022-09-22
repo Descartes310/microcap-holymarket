@@ -46,7 +46,6 @@ const Create = (props) => {
             source, target
         };
 
-        console.log(data);
 
         // BankService.createChargeRequest(data, { fileData: ['proof'], multipart: true }).then(() => {
         //     NotificationManager.success("La demande de recharge a été créée avec succès");
