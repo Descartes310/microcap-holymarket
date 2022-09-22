@@ -102,7 +102,7 @@ class CodevStep1 extends Component {
     }
 
     onValidate = async () => {
-        const { product, selectedDate, subscriptionType, selectedLine } = this.state;
+        const { product, selectedDate, subscriptionType } = this.state;
 
         if (!product || !selectedDate) {
             NotificationManager.error('Le formulaire est mal renseigné');

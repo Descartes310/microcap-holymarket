@@ -162,7 +162,7 @@ class CodevStep3 extends Component {
                                                 }}
                                                 getOptionLabel={(option) => option.label}
                                                 renderInput={(params) => <TextField {...params} variant="outlined" />}
-                                                options={Array(lines.length).fill(configs).flatMap(c => c).map((c, index) => { return {...c, label: 'Ticket N° '+index+': '+c.support.label} })}
+                                                options={Array(lines.length).fill(configs).flatMap(c => c).map((c, index) => { return {...c, label: c.support.reference.split('_')[2]} })}
                                             />
                                         </div>
                                     </td>

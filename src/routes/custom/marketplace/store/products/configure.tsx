@@ -171,8 +171,8 @@ const Configure = (props: any) => {
             setStartDepositDate(response.details.find(d => d.type == 'START_DEPOSIT_DATE')?.value);
             setAvailableCapital(response.details.find(d => d.type == 'AVAILABLE_CAPITAL')?.value);
             setSubscriptionFees(response.details.find(d => d.type == 'SUBSCRIPTION_FEES')?.value);
-            setSubscriptionEndDate(response.details.find(d => d.type == 'START_DATE')?.value);
-            setSubscriptionStartDate(response.details.find(d => d.type == 'END_DATE')?.value);
+            setSubscriptionEndDate(response.details.find(d => d.type == 'END_DATE')?.value);
+            setSubscriptionStartDate(response.details.find(d => d.type == 'START_DATE')?.value);
             setDepositPeriod(getTimeUnits().find(t => t.value == response.details.find(d => d.type == 'DEPOSIT_PERIOD')?.value));
         })
         .finally(() => props.setRequestGlobalAction(false))
