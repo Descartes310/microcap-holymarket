@@ -94,6 +94,12 @@ class CodevStep3 extends Component {
         .finally(() => this.props.setRequestGlobalAction(false))
     }
 
+    uuidv4 = () => {
+        return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+          (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+        );
+    }
+
 
     render() {
 
@@ -162,7 +168,7 @@ class CodevStep3 extends Component {
                                                 }}
                                                 getOptionLabel={(option) => option.label}
                                                 renderInput={(params) => <TextField {...params} variant="outlined" />}
-                                                options={Array(lines.length).fill(configs).flatMap(c => c).map((c, index) => { return {...c, label: c.support.reference.split('_')[2]} })}
+                                                options={Array(lines.length).fill(configs).flatMap(c => c).map((c, index) => { return {...c, label: this.uuidv4()} })}
                                             />
                                         </div>
                                     </td>

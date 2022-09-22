@@ -117,12 +117,12 @@ const Configure = (props: any) => {
         if(!config || !depositPeriod || !cycleTime || !lineGroup || placements.length <= 0 || 
             !subscriptionStartDate || !subscriptionEndDate || !startDepositDate || !subscriptionFees || 
             !depositAmount || !minimumRate || tirageDates.length < 0) {
-            NotificationManager.success('Le formulaire est mal rempli');
+            NotificationManager.error('Le formulaire est mal rempli');
             return;
         }
 
         if(subscriptionStartDate >= subscriptionEndDate) {
-            NotificationManager.success('Les dates ne sont pas correctement renseignées');
+            NotificationManager.error('Les dates ne sont pas correctement renseignées');
             return;
         }
 
