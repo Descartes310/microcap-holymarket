@@ -116,14 +116,14 @@ class CodevStep4 extends Component {
                         >
                             Souscrire
                         </Button>
-                        <Button
+                        {/* <Button
                             color="primary"
                             variant="contained"
                             onClick={() => { print() }}
                             className="text-white font-weight-bold mb-20"
                         >
                             Imprimer
-                        </Button>
+                        </Button> */}
                     </FormGroup>
                 </RctCardContent>
             </DialogComponent>
