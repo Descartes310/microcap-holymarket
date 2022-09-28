@@ -1,7 +1,4 @@
-/**
- * Billing Form Component
- */
-
+import { connect } from "react-redux";
 import React, { Component } from 'react';
 import Button from '@material-ui/core/Button';
 import IntlMessages from 'Util/IntlMessages';
@@ -151,4 +148,11 @@ class BillingForm extends Component<any, any> {
       )
    }
 }
-export default BillingForm;
+
+const mapStateToProps = ({ authUser }) => {
+   return {
+       authUser: authUser.data,
+   }
+};
+
+export default connect(mapStateToProps, {})(BillingForm);

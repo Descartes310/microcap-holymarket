@@ -29,11 +29,29 @@ class Checkout extends Component<any, any> {
             telephone: billingForm.mobileNumber,
             productIds: this.props.cart.items.map(product => product.id),
             productQuantities: this.props.cart.items.map(product => product.quantity),
+            productDetails: JSON.stringify(this.props.cart.items.map(item => {
+                let details: any = {};
+                if(item?.customInfos) {
+                    details.type = item?.customInfos?.type;
+                    if(item?.customInfos?.type == 'CODEV') {
+                        if(item.customInfos.indivision)
+                            details.indivision_ref = item.customInfos.indivision.reference;
+                        if(item.customInfos.line_reference)
+                            details.line_ref = item.customInfos.line_reference;
+                        details.product_ref = item.customInfos.productReference;
+                        details.tirage_ref = item.customInfos.selectedDate.reference;
+                        details.subscription_type = item.customInfos.subscriptionType.value;
+                    }
+                }
+                return details;
+            }))
         }
+
+        //console.log(data);
         this.props.setRequestGlobalAction(true);
         OrderService.createOrder(data).then((response) => {
             this.setState({ showSweetAlert: true });
-            this.props.onClearCart();
+            //sthis.props.onClearCart();
         })
         .catch((err) => {
             console.log(err);

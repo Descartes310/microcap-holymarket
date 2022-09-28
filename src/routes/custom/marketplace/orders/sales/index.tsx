@@ -17,10 +17,6 @@ class Payments extends Component<any, any> {
         showSweetAlert: false
     }
 
-    componentDidMount(): void {
-        console.log('Identifiant => ', this.props.match.params.id);
-    }
-
     validateBillingForm = (billingForm) => {
         let data = {
             city: billingForm.state,
