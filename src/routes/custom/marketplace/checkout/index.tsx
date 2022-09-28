@@ -34,10 +34,12 @@ class Checkout extends Component<any, any> {
                 if(item?.customInfos) {
                     details.type = item?.customInfos?.type;
                     if(item?.customInfos?.type == 'CODEV') {
-                        if(item.customInfos.indivision)
-                            details.indivision_ref = item.customInfos.indivision.reference;
                         if(item.customInfos.line_reference)
                             details.line_ref = item.customInfos.line_reference;
+                        if(item.customInfos.indivision) {
+                            details.line_ref = item.customInfos.indivision.line.reference;
+                            details.indivision_ref = item.customInfos.indivision.reference;
+                        }
                         details.product_ref = item.customInfos.productReference;
                         details.tirage_ref = item.customInfos.selectedDate.reference;
                         details.subscription_type = item.customInfos.subscriptionType.value;

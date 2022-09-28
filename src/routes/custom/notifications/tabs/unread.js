@@ -9,6 +9,7 @@ import NotificationService from "Services/notifications";
 import Item from "Routes/custom/notifications/components/Item";
 import ActivationBox from "Routes/custom/notifications/ActivationBox";
 import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
+import CodevInvitationBox from "Routes/custom/notifications/CodevInvitationBox";
 
 class Unread extends Component {
     constructor(props) {
@@ -18,6 +19,7 @@ class Unread extends Component {
             notifications: [],
             notification: null,
             showActivationBox: false,
+            showCodevInvitationBox: false
         }
     }
 
@@ -49,8 +51,19 @@ class Unread extends Component {
         })
     };
 
+    onCodevInvitationClick = (notification) => {
+        let codevLineRef = notification.details.find(nd => nd.type === "CODEV_LINE_REF")?.value;
+        this.setState({ showCodevInvitationBox: true });
+        // this.props.setRequestGlobalAction(true);
+        // AccountService.activeAccount(accountId, { orderId, notificationId }).then(() => {
+        //     window.location.reload();
+        // }).finally(() => {
+        //     this.props.setRequestGlobalAction(false);
+        // })
+    };
+
     render() {
-        const { notifications, loading, showActivationBox, notification } = this.state;
+        const { notifications, loading, showActivationBox, notification, showCodevInvitationBox } = this.state;
 
         if (loading) {
             return (<RctSectionLoader />);
@@ -79,6 +92,7 @@ class Unread extends Component {
                                             reloadNotifications={this.getNotifications}
                                             setRequestGlobalAction={this.props.setRequestGlobalAction}
                                             onActivationClick={() => this.onActivationClick(notification)}
+                                            onCodevInvitationClick={() => this.onCodevInvitationClick(notification)}
                                             onFundingActivationClick={() => this.onFundingActivationClick(notification)}
                                         />
                                     ))}
@@ -94,6 +108,12 @@ class Unread extends Component {
                         onClose={() => this.setState({ showActivationBox: false })}
                     />
                 )}
+                <CodevInvitationBox
+                    notification={notification}
+                    show={showCodevInvitationBox}
+                    onClose={() => this.setState({ showCodevInvitationBox: false })}
+                    codevLine={notification?.details?.find(nd => nd.type === "CODEV_LINE_REF")?.value}
+                />
             </div>
         );
     }

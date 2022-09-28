@@ -176,4 +176,12 @@ export default class ProductService {
         return makeRequest('post', Routes.CREATE_INDIVISION_BOOKING, data);
     }
 
+    static getParticipantsByOrderRef(data: any): Promise<any> {
+        return makeRequest('get', Routes.CODEV_PARTICIPANTS, data);
+    }
+
+    static inviteCodevSubscriber(data: any): Promise<any> {
+        return makeRequest('post', Routes.CODEV_INVITE_PARTICIPANT, data);
+    }
+
 }
