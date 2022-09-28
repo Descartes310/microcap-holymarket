@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import OrderDetails from './OrderDetails';
 import OrderService from 'Services/orders';
 import { withRouter } from "react-router-dom";
 import Button from '@material-ui/core/Button';
@@ -16,6 +17,7 @@ const List = (props) => {
     const [orders, setOrders] = useState([]);
     const [order, setOrder] = useState(null);
     const [showAddFileBox, setShowAddFileBox] = useState(false);
+    const [showOrderDetailsBox, setShowOrderDetailsBox] = useState(false);
 
     useEffect(() => {
       getOrders();
@@ -54,6 +56,7 @@ const List = (props) => {
                                             <th className="fw-bold">Date</th>
                                             <th className="fw-bold">Status</th>
                                             <th className="fw-bold">Détails</th>
+                                            <th className="fw-bold">Paiements</th>
                                             <th className="fw-bold">Dossiers</th>
                                         </tr>
                                     </thead>
@@ -104,6 +107,20 @@ const List = (props) => {
                                                         }
                                                     </div>
                                                 </td>
+
+                                                <td>
+                                                    <Button
+                                                        color="primary"
+                                                        variant="contained"
+                                                        className="text-white font-weight-bold"
+                                                        onClick={() => {
+                                                            setOrder(item);
+                                                            setShowOrderDetailsBox(true);
+                                                        }}
+                                                    >
+                                                        Détails
+                                                    </Button>
+                                                </td>
                                                 <td>
                                                     { 
                                                         item.status !== 'PENDING' ?
@@ -141,6 +158,17 @@ const List = (props) => {
                     </>
                 )}
             />
+
+            { order && (
+                <OrderDetails
+                    orderId={order.id} 
+                    show={showOrderDetailsBox && order}
+                    onClose={() => {
+                        setOrder(null);
+                        setShowOrderDetailsBox(false);
+                    }}
+                />
+            )}
 
             { order && (
                 <AddFileToOrderModal

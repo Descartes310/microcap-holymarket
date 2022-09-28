@@ -10,6 +10,7 @@ import React, { useState, useEffect } from 'react';
 import { getProductRangeLabel } from 'Helpers/helpers';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import { joinUrlWithParams, MARKETPLACE } from 'Url/frontendUrl';
+import ProductDetailsButton from 'Components/ProductDetailsButton';
 
 const List = (props) => {
 
@@ -67,6 +68,7 @@ const List = (props) => {
                                             <th className="fw-bold">Prix</th>
                                             <th className="fw-bold">Portée</th>
                                             <th className="fw-bold">Disponible</th>
+                                            <th className="fw-bold">Détails</th>
                                             <th className="fw-bold">Configuration</th>
                                             <th className="fw-bold">Tirage</th>
                                         </tr>
@@ -108,6 +110,9 @@ const List = (props) => {
                                                         checked={item.status}
                                                         onChange={() => { changeStatus(item) }}
                                                     />
+                                                </td>
+                                                <td>
+                                                    <ProductDetailsButton reference={item.reference} />
                                                 </td>
                                                 <td>
                                                     { item.specialProduct && (

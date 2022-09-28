@@ -801,7 +801,7 @@ module.exports = {
    "components.placeOrder": "Passer la commande",
    "components.payment": "Paiement",
    "components.billingAddress": "Adresse de facturation",
-   "components.ShippingAddressText": "L'adresse de livraison est la même que l'adresse de facturation.",
+   "components.ShippingAddressText": "L'adresse de facturation est différente de l'adresse de livraison.",
    "components.CartEmptyText": "Votre panier est vide!",
    "components.NoItemFound": "Aucun article trouvé",
    "components.goToShop": "Aller à la boutique",

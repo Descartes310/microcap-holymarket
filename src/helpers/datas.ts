@@ -95,6 +95,14 @@ export const getProductDetails = () => {
             value: 'ADVANCE_TYPE'
         },
         {
+            label: "Placements",
+            value: 'PLACEMENT'
+        },
+        {
+            label: "Options",
+            value: 'OPTION'
+        },
+        {
             label: "Date de tirage pour l'option d'avance",
             value: 'ADVANCE_OPTION_DATE'
         },

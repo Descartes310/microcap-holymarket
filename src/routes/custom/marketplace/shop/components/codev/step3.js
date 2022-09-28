@@ -31,6 +31,8 @@ class CodevStep3 extends Component {
         if(this.props.product) {
             this.findProduct();
         }
+
+        console.log(this.props.data);
     }
 
     getCodevConfigOptions = () => {
@@ -44,7 +46,7 @@ class CodevStep3 extends Component {
 
     findLines = () => {
         this.props.setRequestGlobalAction(true);
-        ProductService.getIndivisionsByDate({show: true, reference: this.state.product.reference, date: this.props.data.selectedDate.date})
+        ProductService.getIndivisionsByLine({show: true, reference: this.props.data.indivision.line.reference})
         .then(response => {
             this.setState({ lines: response });
         })
@@ -168,7 +170,7 @@ class CodevStep3 extends Component {
                                                 }}
                                                 getOptionLabel={(option) => option.label}
                                                 renderInput={(params) => <TextField {...params} variant="outlined" />}
-                                                options={Array(lines.length).fill(configs).flatMap(c => c).map((c, index) => { return {...c, label: this.uuidv4()} })}
+                                                options={Array(lines.length).fill(configs).flatMap(c => c).map((c, index) => { return {...c, label: "Ticket N° "+index+" de référence "+this.uuidv4()} })}
                                             />
                                         </div>
                                     </td>

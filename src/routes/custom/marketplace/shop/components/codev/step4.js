@@ -45,6 +45,14 @@ class CodevStep4 extends Component {
         return (depositAmount && minimumRate && emitLineCount) ? (depositAmount*Math.pow(1+minimumRate, emitLineCount)).toFixed(2) : 0;
     }
 
+    Print = () =>{     
+        let printContents = document.getElementById('printablediv').innerHTML;
+        let originalContents = document.body.innerHTML;
+        document.body.innerHTML = printContents;
+        window.print();
+        document.body.innerHTML = originalContents; 
+    }
+
     render() {
 
         const { product } = this.state;
@@ -62,12 +70,21 @@ class CodevStep4 extends Component {
                 )}
             >
                 <RctCardContent>
-                    <table className='table table-striped table-bordered'>
+                    <table className='table table-striped table-bordered' id="printablediv">
                         <thead>
                             <th>Nom du détails</th>
                             <th>Valeur courante</th>
                         </thead>
                         <tbody>
+                            {this.state.product?.details.map(details => (
+                                <tr>
+                                    <td>{getProductDetailsByName(details.type)?.label}</td>
+                                    { details.type == 'DEPOSITPERIOD' ?
+                                        <td>{getTimeUnitByValue(details.value)?.label}</td> :
+                                        <td>{details.value}</td>
+                                    }
+                                </tr>
+                            ))}
                             <tr>
                                 <td>Montant par versement</td>
                                 <td>{ data?.selectedLine?.amount ? data.selectedLine.amount : this.state.product?.details.find(d => d.type === 'DEPOSIT_AMOUNT')?.value } EUR</td>
@@ -99,6 +116,14 @@ class CodevStep4 extends Component {
                         >
                             Souscrire
                         </Button>
+                        {/* <Button
+                            color="primary"
+                            variant="contained"
+                            onClick={() => { print() }}
+                            className="text-white font-weight-bold mb-20"
+                        >
+                            Imprimer
+                        </Button> */}
                     </FormGroup>
                 </RctCardContent>
             </DialogComponent>
