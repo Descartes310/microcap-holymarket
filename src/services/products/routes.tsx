@@ -15,6 +15,8 @@ export const FIND_PRODUCT = (reference) => `api/products/find/${reference}`;
 
 export const UPDATE_PRODUCT_DETAILS = 'api/products/details';
 export const CREATE_CODEV_PRODUCT_MODEL = 'api/products/codevs';
+export const CODEV_PARTICIPANTS = 'api/products/codevs/participants';
+export const CODEV_INVITE_PARTICIPANT = 'api/products/codevs/subscribers/invite';
 
 
 export const CREATE_CODEV_OPTION = 'api/products/codev/options';

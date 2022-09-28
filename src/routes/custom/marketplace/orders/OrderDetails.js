@@ -1,7 +1,10 @@
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import OrderService from 'Services/orders';
+import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
+import ProductService from 'Services/products';
+import CodevParticipants from "./Participants";
 import { setRequestGlobalAction } from 'Actions';
 import { RctCardContent } from 'Components/RctCard';
 import DialogComponent from "Components/dialog/DialogComponent";
@@ -11,6 +14,8 @@ class OrderDetails extends Component {
 
     state = {
         order: null,
+        participants: [],
+        showParticipants: false,
         showPrintDetails: false
     }
 
@@ -22,14 +27,23 @@ class OrderDetails extends Component {
     findOrder = () => {
         this.props.setRequestGlobalAction(true);
         OrderService.findOrder(this.props.orderId)
-        .then(response => this.setState({order: response}))
+        .then(response => {
+            this.setState({order: response});
+        })
+        .finally(() => this.props.setRequestGlobalAction(false))
+    }
+
+    getParticipants = () => {
+        this.props.setRequestGlobalAction(true);
+        ProductService.getParticipantsByOrderRef({reference: this.state.order.reference})
+        .then(response => this.setState({participants: response}))
         .finally(() => this.props.setRequestGlobalAction(false))
     }
 
     render() {
 
-        const { order } = this.state;
         const { onClose, show } = this.props;
+        const { order, participants, showParticipants } = this.state;
 
         return (
             <DialogComponent
@@ -43,6 +57,21 @@ class OrderDetails extends Component {
                 )}
             >
                 <RctCardContent>
+
+                    {
+                        order?.details?.find(d => d.type == "CODEV_PRODUCT_REF") && (
+                        <Button
+                            color="primary"
+                            variant="contained"
+                            className="text-white font-weight-bold mb-30"
+                            onClick={() => {
+                                this.setState({ showParticipants: true })
+                                this.getParticipants()
+                            }}
+                        >
+                            Liste des souscripteurs
+                        </Button>
+                    )}
                     <table className='table table-striped table-bordered'>
                         <thead>
                             <th>Nom</th>
@@ -60,6 +89,12 @@ class OrderDetails extends Component {
                         </tbody>
                     </table>
                 </RctCardContent>
+                <CodevParticipants
+                    show={showParticipants}
+                    participants={participants}
+                    onClose={() => this.setState({ showParticipants: false })}
+                    codevLine={order?.details?.find(d => d.type == "CODEV_LINE_REF")?.value}
+                />
             </DialogComponent>
         );
     }
