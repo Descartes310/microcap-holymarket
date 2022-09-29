@@ -45,10 +45,10 @@ class Item extends Component {
                             { notification.type === NotificationType.ACTIVATION && !authUser.active && (
                                 <DropdownItem onClick={() => onActivationClick()}>Activer mon compte</DropdownItem>
                             )}
-                            { notification.type === NotificationType.CODEV_INVITATION && (
+                            { (notification.type === NotificationType.CODEV_INVITATION && notification.treatedAt == null) && (
                                 <DropdownItem onClick={() => onCodevInvitationClick()}>Accepter l'invitation</DropdownItem>
                             )}
-                            { notification.type === NotificationType.ACTIVATE_FUNDING_ACCOUNT && (
+                            { (notification.type === NotificationType.ACTIVATE_FUNDING_ACCOUNT && notification.treatedAt == null) && (
                                 <DropdownItem onClick={() => onFundingActivationClick()}>Activer le compte</DropdownItem>
                             )}
                             { notification.status === NotificationType.UNREAD && (

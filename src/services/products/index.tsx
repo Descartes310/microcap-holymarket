@@ -184,4 +184,8 @@ export default class ProductService {
         return makeRequest('post', Routes.CODEV_INVITE_PARTICIPANT, data);
     }
 
+    static getLineGlobalInfo(data: any): Promise<any> {
+        return makeRequest('get', Routes.GET_LINE_GLOBAL_INFO, data);
+    }
+
 }

@@ -15,4 +15,8 @@ export default class NotificationService {
     static markNotificationAsRead(id: number): Promise<any> {
         return makeRequest('put', Routes.MARK_AS_READ(id));
     }
+
+    static markNotificationAsTreat(id: number): Promise<any> {
+        return makeRequest('put', Routes.MARK_AS_TREATED(id));
+    }
 }

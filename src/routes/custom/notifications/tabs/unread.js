@@ -52,14 +52,7 @@ class Unread extends Component {
     };
 
     onCodevInvitationClick = (notification) => {
-        let codevLineRef = notification.details.find(nd => nd.type === "CODEV_LINE_REF")?.value;
-        this.setState({ showCodevInvitationBox: true });
-        // this.props.setRequestGlobalAction(true);
-        // AccountService.activeAccount(accountId, { orderId, notificationId }).then(() => {
-        //     window.location.reload();
-        // }).finally(() => {
-        //     this.props.setRequestGlobalAction(false);
-        // })
+        this.setState({ showCodevInvitationBox: true, notification });
     };
 
     render() {

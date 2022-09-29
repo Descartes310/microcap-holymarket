@@ -53,3 +53,6 @@ export const DELETE_LINE_BOOKING = 'api/products/codevs/lines/free';
 export const DELETE_INDIVISION_BOOKING = 'api/products/codevs/indivisions/free';
 export const CREATE_LINE_BOOKING = 'api/products/codevs/lines/book';
 export const CREATE_INDIVISION_BOOKING = 'api/products/codevs/indivisions/book';
+
+
+export const GET_LINE_GLOBAL_INFO = 'api/products/codevs/line/global';
