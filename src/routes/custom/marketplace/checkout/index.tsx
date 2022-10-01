@@ -53,7 +53,7 @@ class Checkout extends Component<any, any> {
         this.props.setRequestGlobalAction(true);
         OrderService.createOrder(data).then((response) => {
             this.setState({ showSweetAlert: true });
-            //sthis.props.onClearCart();
+            this.props.onClearCart();
         })
         .catch((err) => {
             console.log(err);
