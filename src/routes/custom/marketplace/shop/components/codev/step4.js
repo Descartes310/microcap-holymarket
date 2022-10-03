@@ -1,18 +1,24 @@
 import { connect } from 'react-redux';
 import { FormGroup } from 'reactstrap';
 import React, { Component } from 'react';
+import UserService from 'Services/users';
 import { withRouter } from "react-router-dom";
 import Button from '@material-ui/core/Button';
 import ProductService from 'Services/products';
 import { setRequestGlobalAction } from 'Actions';
 import { RctCardContent } from 'Components/RctCard';
+import TextField from '@material-ui/core/TextField';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import DialogComponent from "Components/dialog/DialogComponent";
+import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { getProductDetailsByName, getTimeUnitByValue } from "Helpers/datas";
 
 class CodevStep4 extends Component {
 
     state = {
-        product: null
+        alias: null,
+        aliases: [],
+        product: null,
     }
 
     constructor(props) {
@@ -23,6 +29,13 @@ class CodevStep4 extends Component {
         if(this.props.product) {
             this.findProduct();
         }
+        this.getAliases();
+    }
+
+    getAliases = () => {
+        UserService.getContacts().then((contacts) => {
+            this.setState({ aliases: contacts.filter(c => c.type === 'ALIAS') });
+        });
     }
 
     findProduct = () => {
@@ -55,7 +68,7 @@ class CodevStep4 extends Component {
 
     render() {
 
-        const { product } = this.state;
+        const { aliases, alias } = this.state;
         const { onClose, show, onSubmit, data } = this.props;
 
         return (
@@ -70,6 +83,22 @@ class CodevStep4 extends Component {
                 )}
             >
                 <RctCardContent>
+
+                    <FormGroup className="col-md-12 col-sm-12 has-wrapper mb-30 mt-20">
+                        <InputLabel className="text-left" htmlFor="startDate">
+                            Alias à utiliser
+                        </InputLabel>
+                        <Autocomplete
+                            value={alias}
+                            options={aliases}
+                            id="combo-box-demo"
+                            onChange={(__, item) => {
+                                this.setState({ alias: item });
+                            }}
+                            getOptionLabel={(option) => option.value}
+                            renderInput={(params) => <TextField {...params} variant="outlined" />}
+                        />
+                    </FormGroup>
                     <table className='table table-striped table-bordered' id="printablediv">
                         <thead>
                             <th>Nom du détails</th>
@@ -93,14 +122,6 @@ class CodevStep4 extends Component {
                                 <td>Capital disponible par tirage (groupe de ligne)</td>
                                 <td>{this.computeAvailableCapital()} EUR</td>
                             </tr>
-                            {/* <tr>
-                                <td>Capital disponible sur avance</td>
-                                <td>{this.state.product?.details.find(d => d.type === "INVESTMENT_CAPITAL")?.value} EUR</td>
-                            </tr>
-                            <tr>
-                                <td>Capital disponible par groupe de ligne pour un projet de n associés maxi</td>
-                                <td>{this.state.product?.details.find(d => d.type === "ADVANCE_INTEREST")?.value} EUR</td>
-                            </tr> */}
                             <tr>
                                 <td>Date de tirage pour une avance</td>
                                 <td>{data?.selectedDate?.date ? data.selectedDate.date : new Date()}</td>
@@ -111,19 +132,17 @@ class CodevStep4 extends Component {
                         <Button
                             color="primary"
                             variant="contained"
-                            onClick={() => { onSubmit(data) }}
+                            onClick={() => {
+                                if(alias) {
+                                    onSubmit({...data, alias: alias});
+                                } else {
+                                    onSubmit(data);
+                                }
+                            }}
                             className="text-white font-weight-bold mb-20"
                         >
                             Souscrire
                         </Button>
-                        {/* <Button
-                            color="primary"
-                            variant="contained"
-                            onClick={() => { print() }}
-                            className="text-white font-weight-bold mb-20"
-                        >
-                            Imprimer
-                        </Button> */}
                     </FormGroup>
                 </RctCardContent>
             </DialogComponent>

@@ -1,13 +1,13 @@
 import { connect } from 'react-redux';
+import UserService from 'Services/users';
+import { Switch } from '@material-ui/core';
 import { withRouter } from "react-router-dom";
 import CustomList from "Components/CustomList";
 import { setRequestGlobalAction } from 'Actions';
 import React, { useState, useEffect } from 'react';
-import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
-import UserService from 'Services/users';
-import { Badge, Switch } from '@material-ui/core';
 import ConfirmBox from "Components/dialog/ConfirmBox"
 import { NotificationManager } from "react-notifications";
+import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 
 const List = (props) => {
 

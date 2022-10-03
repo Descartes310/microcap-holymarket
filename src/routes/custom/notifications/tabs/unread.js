@@ -1,7 +1,9 @@
 import { connect } from "react-redux";
 import React, { Component } from 'react';
 import AccountService from "Services/accounts";
+import ProductService from "Services/products";
 import { setRequestGlobalAction } from "Actions";
+import ConfirmBox from "Components/dialog/ConfirmBox"
 import NotificationType from "Enums/NotificationType";
 import { List as ListMaterial } from '@material-ui/core';
 import SingleTitleText from "Components/SingleTitleText";
@@ -19,7 +21,8 @@ class Unread extends Component {
             notifications: [],
             notification: null,
             showActivationBox: false,
-            showCodevInvitationBox: false
+            showCodevInvitationBox: false,
+            showConfirmCodevInvitationBox: false
         }
     }
 
@@ -32,6 +35,20 @@ class Unread extends Component {
         .then(notifications => this.setState({notifications}))
         .finally(() => {
            this.setState({ loading: false })
+        });
+     }
+
+    responseToInvitationRequest = (status) => {
+        let referralCode = this.state.notification.details.find(nd => nd.type === "CODEV_MEMBER_TO_INVITE")?.value;
+        let lineReference = this.state.notification.details.find(nd => nd.type === "CODEV_LINE_REF")?.value;
+        ProductService.responseToInviteCodevSubscriber({
+            status,
+            referral_code: referralCode,
+            line_reference: lineReference,
+            notification_id: this.state.notification.id
+        })
+        .finally(() => {
+           this.setState({ loading: false, showConfirmCodevInvitationBox: false, notification: null });
         });
      }
 
@@ -55,8 +72,13 @@ class Unread extends Component {
         this.setState({ showCodevInvitationBox: true, notification });
     };
 
+    onCodevInvitationRequestClick = (notification) => {
+        this.setState({ showConfirmCodevInvitationBox: true, notification });
+    };
+
     render() {
-        const { notifications, loading, showActivationBox, notification, showCodevInvitationBox } = this.state;
+        const { notifications, loading, showActivationBox, notification, 
+            showCodevInvitationBox, showConfirmCodevInvitationBox } = this.state;
 
         if (loading) {
             return (<RctSectionLoader />);
@@ -87,6 +109,7 @@ class Unread extends Component {
                                             onActivationClick={() => this.onActivationClick(notification)}
                                             onCodevInvitationClick={() => this.onCodevInvitationClick(notification)}
                                             onFundingActivationClick={() => this.onFundingActivationClick(notification)}
+                                            onCodevInvitationRequestClick={() => this.onCodevInvitationRequestClick(notification)}
                                         />
                                     ))}
                                 </ListMaterial>
@@ -106,6 +129,17 @@ class Unread extends Component {
                     show={showCodevInvitationBox}
                     onClose={() => this.setState({ showCodevInvitationBox: false })}
                     codevLine={notification?.details?.find(nd => nd.type === "CODEV_LINE_REF")?.value}
+                />
+
+                <ConfirmBox
+                    show={showConfirmCodevInvitationBox}
+                    rightButtonOnClick={() => {
+                        this.responseToInvitationRequest(true);
+                    }}
+                    leftButtonOnClick={() => {
+                        this.responseToInvitationRequest(false);
+                    }}
+                    message={"Souhaitez-vous approuver la demande d'invitation?"}
                 />
             </div>
         );

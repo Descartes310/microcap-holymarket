@@ -1,8 +1,10 @@
+import CreateAlias from './alias';
 import { connect } from 'react-redux';
 import UserService from 'Services/users';
 import { RctCard } from 'Components/RctCard';
 import { withRouter } from "react-router-dom";
 import Button from '@material-ui/core/Button';
+import CustomList from "Components/CustomList";
 import { setRequestGlobalAction } from 'Actions';
 import React, { useEffect, useState } from 'react';
 import { NotificationManager } from 'react-notifications';
@@ -13,9 +15,11 @@ const PROFILE_BANNER = 'https://reactify.theironnetwork.org/static/media/profile
 
 const Personal = (props) => {
 
+    const [alias, setAlias] = useState([]);
     const [email, setEmail] = useState(null);
     const [phone, setPhone] = useState(null);
     const [address, setAddress] = useState(null);
+    const [showCreateAliasBox, setShowCreateAliasBox] = useState(false);
 
     useEffect(() => {
         getContacts();
@@ -23,6 +27,7 @@ const Personal = (props) => {
 
     const getContacts = () => {
         UserService.getContacts().then((contacts) => {
+            setAlias(contacts.filter(c => c.type === 'ALIAS'));
             setEmail(contacts.find(c => c.type === 'EMAIL')?.value);
             setPhone(contacts.find(c => c.type === 'PHONE')?.value);
             setAddress(contacts.find(c => c.type === 'ADDRESS')?.value)
@@ -110,6 +115,49 @@ const Personal = (props) => {
                                 onChange={(e) => setAddress(e.target.value)}
                             />
                         </FormGroup>
+
+                        <h2>Mes Alias</h2>
+                        <CustomList
+                            list={alias}
+                            loading={false}
+                            onAddClick={() => setShowCreateAliasBox(true)}
+                            itemsFoundText={n => `${n} alias trouvés`}
+                            renderItem={list => (
+                                <>
+                                    {list && list.length === 0 ? (
+                                        <div className="d-flex justify-content-center align-items-center py-50">
+                                            <h4>
+                                                Aucun alias trouvé
+                                            </h4>
+                                        </div>
+                                    ) : (
+                                        <div className="table-responsive">
+                                            <table className="table table-hover table-middle mb-0">
+                                                <thead>
+                                                    <tr>
+                                                        <th className="fw-bold">Alias</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {list && list.map((item, key) => (
+                                                        <tr key={key} className="cursor-pointer">
+                                                            <td>
+                                                                <div className="media">
+                                                                    <div className="media-body pt-10">
+                                                                        <h4 className="m-0 fw-bold text-dark">{item.value}</h4>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    ))}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    )}
+                                </>
+                            )}
+                        />
+
                         <FormGroup>
                             <Button
                                 color="primary"
@@ -123,6 +171,7 @@ const Personal = (props) => {
                     </Form>
                 </div>
             </RctCard>
+            <CreateAlias show={showCreateAliasBox} onClose={() => setShowCreateAliasBox(false)} />
         </div>
     );
 }

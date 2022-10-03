@@ -1,35 +1,17 @@
 import { connect } from 'react-redux';
+import { FormGroup } from 'reactstrap';
 import React, { Component } from 'react';
+import UserService from 'Services/users';
 import { withRouter } from "react-router-dom";
 import Button from '@material-ui/core/Button';
-import { convertDate } from "Helpers/helpers";
 import ProductService from 'Services/products';
 import { setRequestGlobalAction } from 'Actions';
 import { RctCardContent } from 'Components/RctCard';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { NotificationManager } from 'react-notifications';
-import Checkbox from "@material-ui/core/Checkbox/Checkbox";
-import { FormGroup, Input as InputStrap } from 'reactstrap';
 import DialogComponent from "Components/dialog/DialogComponent";
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
-import { getProductDetailsByName, getTimeUnitByValue } from "Helpers/datas";
-import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
-
-const advanceTypeEnum = [
-    {
-        label: 'Infine',
-        value: 'INFINE'
-    },
-    {
-        label: 'Amortissement constant',
-        value: 'AMORTISSEMENT'
-    },
-    {
-        label: 'Capital constant',
-        value: 'CAPITAL'
-    }
-];
 
 const subscriptionTypeEnum = [
     {
@@ -48,6 +30,8 @@ class CodevStep1 extends Component {
         dates: [],
         lines: [],
         plan: null,
+        alias: null,
+        aliases: [],
         product: null,
         drawDate: null,
         cessible: false,
@@ -67,6 +51,7 @@ class CodevStep1 extends Component {
         if (this.props.product) {
             this.findProduct();
         }
+        this.getAliases();
     }
 
     findLines = () => {
@@ -147,23 +132,6 @@ class CodevStep1 extends Component {
                 )}
             >
                 <RctCardContent>
-                    {/* <table className='table table-striped table-bordered'>
-                        <thead>
-                            <th>Nom du détails</th>
-                            <th>Valeur courante</th>
-                        </thead>
-                        <tbody>
-                            {product?.details.map(details => (
-                                <tr>
-                                    <td>{getProductDetailsByName(details.type)?.label}</td>
-                                    {details.type == 'DEPOSITPERIOD' ?
-                                        <td>{getTimeUnitByValue(details.value)?.label}</td> :
-                                        <td>{details.value}</td>
-                                    }
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table> */}
                     <h1>Specification de la souscription</h1>
                     <FormGroup className="col-md-12 col-sm-12 has-wrapper mb-30 mt-20">
                         <InputLabel className="text-left" htmlFor="startDate">

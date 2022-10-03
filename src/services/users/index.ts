@@ -79,4 +79,8 @@ export default class UserService {
         return makeRequest('get', Routes.GET_CONTACTS);
     }
 
+    static createContact(datas: any): Promise<any> {
+        return makeRequest('post', Routes.CREATE_CONTACT, datas);
+    }
+
 }

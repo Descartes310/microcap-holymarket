@@ -18,4 +18,5 @@ export const CREATE_INSTITUTION = "api/socialnetworks/users/institutions";
 export const GET_BANK_AGENCY_CODE = "api/socialnetworks/users/institutions/agency-code";
 
 export const GET_CONTACTS = "api/socialnetworks/users/self/contacts";
+export const CREATE_CONTACT = "api/socialnetworks/users/self/contacts";
 export const UPDATE_CONTACTS = "api/socialnetworks/users/self/contacts";

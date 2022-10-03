@@ -20,7 +20,8 @@ class Item extends Component {
     };
 
     render() {
-        const { notification, onActivationClick, authUser, onFundingActivationClick, onCodevInvitationClick } = this.props;
+        const { notification, onActivationClick, authUser, onFundingActivationClick, 
+            onCodevInvitationClick, onCodevInvitationRequestClick } = this.props;
         return (
             <ListItem className="row px-20 py-3 align-items-center">
                 <div className="col-md-9">
@@ -47,6 +48,9 @@ class Item extends Component {
                             )}
                             { (notification.type === NotificationType.CODEV_INVITATION && notification.treatedAt == null) && (
                                 <DropdownItem onClick={() => onCodevInvitationClick()}>Accepter l'invitation</DropdownItem>
+                            )}
+                            { (notification.type === NotificationType.CODEV_INVITATION_REQUEST && notification.treatedAt == null) && (
+                                <DropdownItem onClick={() => onCodevInvitationRequestClick()}>Repondre à la requête</DropdownItem>
                             )}
                             { (notification.type === NotificationType.ACTIVATE_FUNDING_ACCOUNT && notification.treatedAt == null) && (
                                 <DropdownItem onClick={() => onFundingActivationClick()}>Activer le compte</DropdownItem>
