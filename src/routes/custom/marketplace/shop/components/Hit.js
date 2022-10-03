@@ -47,7 +47,7 @@ class Hit extends Component {
 			if(cartItem.customInfos.line)
 				ProductService.createLineBooking({line_references: [cartItem.customInfos.line.reference]});
 			if(cartItem.customInfos.indivision)
-				ProductService.createIndivisionBooking({indivision_references: [cartItem.customInfos.indivision.reference]});
+				ProductService.createIndivisionBooking({indivision_references: [cartItem.customInfos.indivision.reference], dates: cartItem.customInfos.dates});
 		}
 	}
 

@@ -192,4 +192,8 @@ export default class ProductService {
         return makeRequest('get', Routes.GET_LINE_GLOBAL_INFO, data);
     }
 
+    static getLineSupports(data: any): Promise<any> {
+        return makeRequest('get', Routes.GET_LINE_SUPPORTS, data);
+    }
+
 }

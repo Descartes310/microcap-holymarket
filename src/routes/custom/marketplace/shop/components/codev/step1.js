@@ -51,7 +51,6 @@ class CodevStep1 extends Component {
         if (this.props.product) {
             this.findProduct();
         }
-        this.getAliases();
     }
 
     findLines = () => {

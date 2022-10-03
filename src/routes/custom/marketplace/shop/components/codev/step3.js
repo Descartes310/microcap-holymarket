@@ -18,9 +18,11 @@ class CodevStep3 extends Component {
         dates: [],
         lines: [],
         configs: [],
+        supports: [],
         product: null,
         endDate: null,
         startDate: null,
+        selectedSupports: [],
     }
 
     constructor(props) {
@@ -31,6 +33,7 @@ class CodevStep3 extends Component {
         if(this.props.product) {
             this.findProduct();
         }
+        this.findSupports();
     }
 
     getCodevConfigOptions = () => {
@@ -47,6 +50,15 @@ class CodevStep3 extends Component {
         ProductService.getIndivisionsByLine({show: true, reference: this.props.data.indivision.line.reference})
         .then(response => {
             this.setState({ lines: response });
+        })
+        .finally(() => this.props.setRequestGlobalAction(false))
+    }
+
+    findSupports = () => {
+        this.props.setRequestGlobalAction(true);
+        ProductService.getLineSupports({reference: this.props.data.indivision.line.reference})
+        .then(response => {
+            this.setState({ supports: response });
         })
         .finally(() => this.props.setRequestGlobalAction(false))
     }
@@ -94,6 +106,7 @@ class CodevStep3 extends Component {
         .finally(() => this.props.setRequestGlobalAction(false))
     }
 
+
     uuidv4 = () => {
         return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
           (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
@@ -103,7 +116,7 @@ class CodevStep3 extends Component {
     render() {
 
         const { onClose, show, onSubmit, data } = this.props;
-        const { configs, dates, startDate, endDate, lines } = this.state;
+        const { selectedSupports, dates, startDate, endDate, supports, lines, configs } = this.state;
 
         return (
             <DialogComponent
@@ -163,11 +176,12 @@ class CodevStep3 extends Component {
                                                 multiple
                                                 id="combo-box-demo"
                                                 onChange={(__, item) => {
-                                                    //setDepositPeriod(item);
+                                                    this.setState({ selectedSupports: item});
                                                 }}
                                                 getOptionLabel={(option) => option.label}
                                                 renderInput={(params) => <TextField {...params} variant="outlined" />}
-                                                options={Array(lines.length).fill(configs).flatMap(c => c).map((c, index) => { return {...c, label: "Ticket N° "+index+" de référence "+this.uuidv4()} })}
+                                                options={Array(lines.length).fill(configs).map((c, index) => 
+                                                    { return {...c, label: "Ticket N° "+index+" de référence "+this.uuidv4(), date: d} }).slice(0, supports.filter(s => s.date === d).length > 0 ? -supports.filter(s => s.date === d).length : 10000000000 )}
                                             />
                                         </div>
                                     </td>
@@ -179,7 +193,7 @@ class CodevStep3 extends Component {
                         <Button
                             color="primary"
                             variant="contained"
-                            onClick={() => { onSubmit(data) }}
+                            onClick={() => { onSubmit({...data, dates: selectedSupports.map(ss => ss.date)}) }}
                             className="text-white font-weight-bold mb-20"
                         >
                             Continuer
