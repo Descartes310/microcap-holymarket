@@ -1,3 +1,4 @@
+import moment from 'moment';
 import { connect } from 'react-redux';
 import { FormGroup } from 'reactstrap';
 import React, { Component } from 'react';
@@ -13,12 +14,16 @@ import DialogComponent from "Components/dialog/DialogComponent";
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { getProductDetailsByName, getTimeUnitByValue } from "Helpers/datas";
 
+const TO_AVOID = ['ADVANCE_OPTION'];
+
 class CodevStep4 extends Component {
 
     state = {
-        alias: null,
+        alias: null,        
+        options: [],
         aliases: [],
         product: null,
+        placements: [],
     }
 
     constructor(props) {
@@ -30,6 +35,24 @@ class CodevStep4 extends Component {
             this.findProduct();
         }
         this.getAliases();
+        this.getCodevDetails();
+        this.getCodevConfigOptions();
+    }
+
+    getCodevDetails = () => {
+        this.props.setRequestGlobalAction(true);
+        ProductService.getCodevDetails({types: ['PLACEMENT']}).then(response => {
+            this.setState({ placements: response });
+        })
+        .finally(() => this.props.setRequestGlobalAction(false))
+    }
+
+    getCodevConfigOptions = () => {
+        this.props.setRequestGlobalAction(true);
+        ProductService.getCodevConfigOptions({product_reference: this.props.product.reference}).then(response => {
+            this.setState({ options: response.map(co => { return {...co, label: co.option.label}}) });
+        })
+        .finally(() => this.props.setRequestGlobalAction(false))
     }
 
     getAliases = () => {
@@ -68,8 +91,8 @@ class CodevStep4 extends Component {
 
     render() {
 
-        const { aliases, alias } = this.state;
         const { onClose, show, onSubmit, data } = this.props;
+        const { aliases, alias, placements, options } = this.state;
 
         return (
             <DialogComponent
@@ -105,11 +128,21 @@ class CodevStep4 extends Component {
                             <th>Valeur courante</th>
                         </thead>
                         <tbody>
-                            {this.state.product?.details.map(details => (
+                            {this.state.product?.details.filter(d => !TO_AVOID.includes(d.type)).map(details => (
                                 <tr>
                                     <td>{getProductDetailsByName(details.type)?.label}</td>
                                     { details.type == 'DEPOSITPERIOD' ?
                                         <td>{getTimeUnitByValue(details.value)?.label}</td> :
+                                        details.type == 'PLACEMENT' ?
+                                        <td>{placements.filter(p => details.value.split(',').includes(p.reference)).map(p => p.value).join(', ')}</td> :
+                                        details.type == 'OPTION' ?
+                                        <td>{options.filter(t => details.value.split(',').includes(t.reference)).map(p => p.label).join(', ')}</td> :
+                                        details.type == 'START_DATE' ?
+                                        <td>{moment(details.value).format('DD/MM/YYYY')}</td> :
+                                        details.type == 'END_DATE' ?
+                                        <td>{moment(details.value).format('DD/MM/YYYY')}</td> :
+                                        details.type == 'AVAILABLE_CAPITAL' ?
+                                        <td>{Number(details.value).toFixed(2)}</td> :
                                         <td>{details.value}</td>
                                     }
                                 </tr>

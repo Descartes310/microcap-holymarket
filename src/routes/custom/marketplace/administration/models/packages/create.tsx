@@ -143,8 +143,6 @@ const Create = (props) => {
         data.quantities_for_package = associatedProducts.map(ap => ap.quantity);
         data.prices_for_package = associatedProducts.map(ap => ap.price);
 
-        //console.log(data);
-
         props.setRequestGlobalAction(true);
         ProductService.createProductModel(data, { fileData: ['image'], multipart: true })
             .then(() => {
@@ -200,7 +198,7 @@ const Create = (props) => {
                         <InputStrap
                             required
                             id="description"
-                            type="text"
+                            type="textarea"
                             name='description'
                             className="input-lg"
                             value={description}

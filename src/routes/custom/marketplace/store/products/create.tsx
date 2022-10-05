@@ -228,12 +228,12 @@ const Create = (props) => {
                             </div>
                             <FormGroup className="has-wrapper">
                                 <InputLabel className="text-left" htmlFor="description">
-                                    Description package
+                                    Description du produit
                                 </InputLabel>
                                 <InputStrap
                                     required
                                     id="description"
-                                    type="text"
+                                    type="textarea"
                                     name='description'
                                     className="input-lg"
                                     value={description}

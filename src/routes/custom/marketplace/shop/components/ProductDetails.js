@@ -1,3 +1,5 @@
+import './style.css';
+import moment from 'moment';
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import { withRouter } from "react-router-dom";
@@ -8,12 +10,15 @@ import PrintDetails from './codev/printDetails';
 import { RctCardContent } from 'Components/RctCard';
 import DialogComponent from "Components/dialog/DialogComponent";
 import { getProductDetailsByName, getTimeUnitByValue } from "Helpers/datas";
-import './style.css';
+
+const TO_AVOID = ['ADVANCE_OPTION'];
 
 class ProductDetails extends Component {
 
     state = {
+        options: [],
         product: null,
+        placements: [],
         showPrintDetails: false
     }
 
@@ -25,6 +30,24 @@ class ProductDetails extends Component {
         if(this.props.product) {
             this.findProduct();
         }
+        this.getCodevDetails();
+        this.getCodevConfigOptions();
+    }
+
+    getCodevDetails = () => {
+        this.props.setRequestGlobalAction(true);
+        ProductService.getCodevDetails({types: ['PLACEMENT']}).then(response => {
+            this.setState({ placements: response });
+        })
+        .finally(() => this.props.setRequestGlobalAction(false))
+    }
+
+    getCodevConfigOptions = () => {
+        this.props.setRequestGlobalAction(true);
+        ProductService.getCodevConfigOptions({product_reference: this.props.product.reference}).then(response => {
+            this.setState({ options: response.map(co => { return {...co, label: co.option.label}}) });
+        })
+        .finally(() => this.props.setRequestGlobalAction(false))
     }
 
     findProduct = () => {
@@ -35,7 +58,6 @@ class ProductDetails extends Component {
     }    
 
     print = () =>{     
-
         let printContents = document.getElementById('printablediv').innerHTML;
         var a = window.open('', '', 'height=500, width=500');
         a.document.write('<html>');
@@ -48,8 +70,8 @@ class ProductDetails extends Component {
 
     render() {
 
-        const { product } = this.state;
         const { onClose, show, title } = this.props;
+        const { product, placements, options } = this.state;
 
         return (
             <DialogComponent
@@ -69,11 +91,21 @@ class ProductDetails extends Component {
                             <th>Valeur courante</th>
                         </thead>
                         <tbody>
-                            {product?.details.map(details => (
+                            {product?.details.filter(d => !TO_AVOID.includes(d.type)).map(details => (
                                 <tr>
                                     <td>{getProductDetailsByName(details.type)?.label}</td>
                                     { details.type == 'DEPOSITPERIOD' ?
                                         <td>{getTimeUnitByValue(details.value)?.label}</td> :
+                                        details.type == 'PLACEMENT' ?
+                                        <td>{placements.filter(p => details.value.split(',').includes(p.reference)).map(p => p.value).join(', ')}</td> :
+                                        details.type == 'OPTION' ?
+                                        <td>{options.filter(t => details.value.split(',').includes(t.reference)).map(p => p.label).join(', ')}</td> :
+                                        details.type == 'START_DATE' ?
+                                        <td>{moment(details.value).format('DD/MM/YYYY')}</td> :
+                                        details.type == 'END_DATE' ?
+                                        <td>{moment(details.value).format('DD/MM/YYYY')}</td> :
+                                        details.type == 'AVAILABLE_CAPITAL' ?
+                                        <td>{Number(details.value).toFixed(2)}</td> :
                                         <td>{details.value}</td>
                                     }
                                 </tr>

@@ -54,7 +54,10 @@ class AccountInformationModal extends Component {
 
         this.props.setRequestGlobalAction(true);
         OrderService.approvedOrder(this.props.order.id, data)
-        .then(() => getPurchases())
+        .then(() => {
+            NotificationManager.error('Opération déroulée avec succès');
+            window.location.reload();
+        })
         .finally(() => {
             this.props.setRequestGlobalAction(false);
             this.props.onClose();

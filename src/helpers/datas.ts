@@ -118,10 +118,10 @@ export const getProductDetails = () => {
             label: 'Interet sur avance',
             value: 'ADVANCE_INTEREST'
         },
-        {
-            label: "Option d'avance sur capital",
-            value: 'ADVANCE_OPTION'
-        },
+        // {
+        //     label: "Option d'avance sur capital",
+        //     value: 'ADVANCE_OPTION'
+        // },
         {
             label: 'Capital disponible à terme',
             value: 'AVAILABLE_CAPITAL'
