@@ -21,7 +21,7 @@ class Item extends Component {
 
     render() {
         const { notification, onActivationClick, authUser, onFundingActivationClick, 
-            onCodevInvitationClick, onCodevInvitationRequestClick } = this.props;
+            onCodevInvitationClick, onCodevInvitationRequestClick, onActivationPassClick } = this.props;
         return (
             <ListItem className="row px-20 py-3 align-items-center">
                 <div className="col-md-9">
@@ -45,6 +45,9 @@ class Item extends Component {
                         <DropdownMenu>
                             { notification.type === NotificationType.ACTIVATION && !authUser.active && (
                                 <DropdownItem onClick={() => onActivationClick()}>Activer mon compte</DropdownItem>
+                            )}
+                            { notification.type === NotificationType.ACTIVATION_PASS && (
+                                <DropdownItem onClick={() => onActivationPassClick()}>Activer mon pass</DropdownItem>
                             )}
                             { (notification.type === NotificationType.CODEV_INVITATION && notification.treatedAt == null) && (
                                 <DropdownItem onClick={() => onCodevInvitationClick()}>Accepter l'invitation</DropdownItem>

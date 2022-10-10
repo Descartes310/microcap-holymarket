@@ -50,7 +50,20 @@ class ChangeAccessCredentials extends Component {
             this.props.onClose();
         })
         .finally(() => this.props.setRequestGlobalAction(false))
-     }
+    }
+
+    activatePass = () => {
+        this.props.setRequestGlobalAction(true);
+
+        UserService.activatePass(this.state.pass).then((response) => {
+            console.log(response);
+        })
+        .catch(err => {
+            console.log(err);
+            NotificationManager.error("Une erreur s'est produite, veuillez reessayer plutard.");
+        })
+        .finally(() => this.props.setRequestGlobalAction(false))
+    }
 
      onSubmitLogin = () => {
 
@@ -144,18 +157,17 @@ class ChangeAccessCredentials extends Component {
                                 type="text"
                                 name='pass'
                                 value={pass}
-                                disabled={true}
                                 className="input-lg"
                                 onChange={(e) => this.setState({ pass: e.target.value })}
                             />
                         </FormGroup>
                         <Button
                             color="primary"
-                            disabled={true}
+                            disabled={!this.state.pass}
+                            onClick={() => this.activatePass()}
                             className="ml-0 text-white float-right"
-                            onClick={() => this.onSubmitProfile()}
                         >
-                            Enregistrer
+                            Valider
                         </Button>
                     </FormGroup>
                     <FormGroup tag="fieldset">

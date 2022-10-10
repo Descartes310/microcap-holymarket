@@ -19,6 +19,7 @@ class Read extends Component {
             notifications: [],
             notification: null,
             showActivationBox: false,
+            showActivationPassBox: false,
             showCodevInvitationBox: false
         }
     }
@@ -33,10 +34,14 @@ class Read extends Component {
         .finally(() => {
            this.setState({ loading: false })
         });
-     }
+    }
 
     onActivationClick = (notification) => {
         this.setState({ showActivationBox: true, notification })
+    };
+
+    onActivationPassClick = (notification) => {
+        this.setState({ showActivationPassBox: true, notification })
     };
 
     onFundingActivationClick = (notification) => {
@@ -56,7 +61,7 @@ class Read extends Component {
     };
 
     render() {
-        const { notifications, loading, showActivationBox, notification } = this.state;
+        const { notifications, loading, showActivationBox, notification, showCodevInvitationBox } = this.state;
 
         if (loading) {
             return (<RctSectionLoader />);
@@ -84,6 +89,7 @@ class Read extends Component {
                                             authUser={this.props.authUser}
                                             reloadNotifications={this.getNotifications}
                                             onActivationClick={() => this.onActivationClick(notification)}
+                                            onActivationPassClick={() => this.onActivationPassClick(notification)}
                                             onCodevInvitationClick={() => this.onCodevInvitationClick(notification)}
                                             onFundingActivationClick={() => this.onFundingActivationClick(notification)}
                                         />

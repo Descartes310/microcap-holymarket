@@ -83,4 +83,8 @@ export default class UserService {
         return makeRequest('post', Routes.CREATE_CONTACT, datas);
     }
 
+    static activatePass(reference: string): Promise<any> {
+        return makeRequest('put', Routes.ACTIVATE_PASS(reference));
+    }
+
 }
