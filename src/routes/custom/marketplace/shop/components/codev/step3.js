@@ -106,17 +106,10 @@ class CodevStep3 extends Component {
         .finally(() => this.props.setRequestGlobalAction(false))
     }
 
-
-    uuidv4 = () => {
-        return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
-          (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
-        );
-    }
-
     render() {
 
         const { onClose, show, onSubmit, data } = this.props;
-        const { selectedSupports, dates, startDate, endDate, supports, lines, configs } = this.state;
+        const { selectedSupports, dates, startDate, endDate, supports } = this.state;
 
         return (
             <DialogComponent
@@ -178,10 +171,9 @@ class CodevStep3 extends Component {
                                                 onChange={(__, item) => {
                                                     this.setState({ selectedSupports: item});
                                                 }}
-                                                getOptionLabel={(option) => option.label}
+                                                getOptionLabel={(option) => 'Tiquet de reférence: '+option.reference.split('_')[2]}
                                                 renderInput={(params) => <TextField {...params} variant="outlined" />}
-                                                options={Array(lines.length).fill(configs).map((c, index) => 
-                                                    { return {...c, label: "Ticket N° "+index+" de référence "+this.uuidv4(), date: d} }).slice(0, supports.filter(s => s.date === d).length > 0 ? -supports.filter(s => s.date === d).length : 10000000000 )}
+                                                options={supports.filter(s => s.date === d && s.referralCode == null)}
                                             />
                                         </div>
                                     </td>
@@ -193,7 +185,12 @@ class CodevStep3 extends Component {
                         <Button
                             color="primary"
                             variant="contained"
-                            onClick={() => { onSubmit({...data, dates: selectedSupports.map(ss => ss.date)}) }}
+                            onClick={() => { if(selectedSupports.length >= 0) {
+                                    onSubmit({...data, supports: selectedSupports.map(ss => ss.reference)}); 
+                                } else {
+                                    NotificationManager.error('Sélectionnez au moins un tiquet');
+                                }
+                            }}
                             className="text-white font-weight-bold mb-20"
                         >
                             Continuer

@@ -33,7 +33,7 @@ class CodevInvitationBox extends Component {
 			if(cartItem.customInfos.line)
 				ProductService.createLineBooking({line_references: [cartItem.customInfos.line.reference]});
 			if(cartItem.customInfos.indivision)
-				ProductService.createIndivisionBooking({indivision_references: [cartItem.customInfos.indivision.reference], dates: cartItem.customInfos.dates});
+				ProductService.createIndivisionBooking({indivision_references: [cartItem.customInfos.indivision.reference], supports: cartItem.customInfos.supports});
 		}
         this.markAsTreat();
         this.props.onClose();

@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 import UnitService from 'Services/units';
+import { convertDate } from 'Helpers/helpers';
 import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
 import ProductService from 'Services/products';
@@ -18,6 +19,7 @@ const Indivision = (props) => {
     const [units, setUnits] = useState([]);
     const [lines, setLines] = useState([]);
     const [amount, setAmount] = useState(null);
+    const [product, setProduct] = useState(null);
     const [showPlan, setShowPlan] = useState(false);
     const [priceUnit, setPriceUnit] = useState(null);
     const [distribution, setDistribution] = useState(null);
@@ -27,6 +29,7 @@ const Indivision = (props) => {
     useEffect(() => {
         getUnits();
         findLines();
+        findProduct();
     }, []);
 
     const findLines = () => {
@@ -51,6 +54,16 @@ const Indivision = (props) => {
             })
     }
 
+    const findProduct = () => {
+        setRequestGlobalAction(true);
+        ProductService.findProduct(props.data.product.reference)
+        .then(response => {
+            setProduct(response);
+        })
+        .finally(() => setRequestGlobalAction(false))
+    }
+
+
 
     const onSumit = () => {
 
@@ -58,8 +71,35 @@ const Indivision = (props) => {
             return;
         }
 
+        let period = product.details.find(d => d.type == 'DEPOSIT_PERIOD')?.value;
+        let depositStartDate = product.details.find(d => d.type == 'START_DEPOSIT_DATE')?.value;
+        let cycleTime = product.details.find(d => d.type == 'CYCLE_TIME')?.value;
+
+        let tmpDates = [];
+        let date = new Date(depositStartDate);
+
+        for (let index = 0; index < Number(cycleTime); index++) {
+
+            tmpDates.push(convertDate(date, "YYYY-MM-DD"));
+            switch (period) {
+                case "DAYS":
+                    date.setDate(date.getDate() + 1);
+                    break;
+                case "WEEKS":
+                    date.setDate(date.getDate() + 7);
+                    break;
+                case "MONTHS":
+                    date.setDate(date.getDate() + 30);
+                    break;
+                default:
+                    date.setDate(date.getDate() + 1);
+                    break;
+            }
+        }
+
         let data = {
             amount: amount,
+            dates: tmpDates,
             line: selectedLine,
             title: denomination,
             line_reference: selectedLine?.reference
