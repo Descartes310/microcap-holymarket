@@ -211,4 +211,12 @@ export default class BankService {
     static confirmOperation(reference, data: any): Promise<any> {
         return makeRequest('put', Routes.CONFIRM_OPERATION(reference), data);
     }
+
+    static getOrderServiceItems(data: any): Promise<any> {
+        return makeRequest('get', Routes.GET_ORDER_SERVICE_ITEMS, data);
+    }
+
+    static createOrderServiceItem(data: any): Promise<any> {
+        return makeRequest('post', Routes.CREATE_ORDER_SERVICE_ITEM, data);
+    }
 }

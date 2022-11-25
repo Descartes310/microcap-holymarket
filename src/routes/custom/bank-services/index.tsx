@@ -11,6 +11,7 @@ import Operations from './operations';
 import { BANK } from 'Url/frontendUrl';
 import Intermediary from './intermediary';
 import Subscription from './subscriptions';
+import OrderServiceItems from './serviceOrderItem';
 import {withRouter, Switch, Redirect, Route} from "react-router-dom";
 
 const Bank = (props) => {
@@ -28,6 +29,7 @@ const Bank = (props) => {
                 <Route path={BANK.PARTY.SELF} component={Intermediary} />
                 <Route path={BANK.OPERATION.SELF} component={Operations} />
                 <Route path={BANK.SUBSCRIPTION.SELF} component={Subscription} />
+                <Route path={BANK.ORDERSERVICE.ITEM.SELF} component={OrderServiceItems} />
             </Switch>
         </div>
     );

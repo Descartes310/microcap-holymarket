@@ -63,3 +63,6 @@ export const GET_CLIENT_CHECKBOOKS = 'api/cashmanagements/cheques/books/clients'
 export const SET_MMS_SETTINGS = 'api/cashmanagements/mms/settings';
 
 export const CHEQUE_TOPIC = 'api/cashmanagements/cheques/topics';
+
+export const CREATE_ORDER_SERVICE_ITEM = 'api/cashmanagements/serviceorders/items';
+export const GET_ORDER_SERVICE_ITEMS = 'api/cashmanagements/serviceorders/items';

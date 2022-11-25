@@ -591,6 +591,14 @@ export default [
             "permissions": null,
             "profiles": ['OPERATOR'],
             "child_routes": null
+         },
+         {
+            "menu_title": "Ordre de services",
+            "new_item": false,
+            "path": BANK.ORDERSERVICE.ITEM.LIST,
+            "permissions": null,
+            "profiles": ['OPERATOR'],
+            "child_routes": null
          }
       ],
    },

@@ -525,6 +525,15 @@ export const BANK = {
             CREATE: '/bank/clients/:id/cheque-books/create'
         }
     },
+    ORDERSERVICE: {
+        SELF: '/bank/order-services',
+        LIST: '/bank/order-services/list',
+        ITEM: {
+            SELF: '/bank/order-services/items',
+            LIST: '/bank/order-services/items/list',
+            CREATE: '/bank/order-services/items/create'
+        }
+    },
     PARTY: {
         SELF: '/bank/party',
         AGENT: {
