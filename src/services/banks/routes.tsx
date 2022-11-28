@@ -66,3 +66,6 @@ export const CHEQUE_TOPIC = 'api/cashmanagements/cheques/topics';
 
 export const CREATE_ORDER_SERVICE_ITEM = 'api/cashmanagements/serviceorders/items';
 export const GET_ORDER_SERVICE_ITEMS = 'api/cashmanagements/serviceorders/items';
+
+
+export const FIND_SERVICE_ORDER_BY_BANK_AUTH = (reference) => `api/cashmanagements/operations/find-order-service/by-bank-auth/${reference}`;

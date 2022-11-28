@@ -219,4 +219,8 @@ export default class BankService {
     static createOrderServiceItem(data: any): Promise<any> {
         return makeRequest('post', Routes.CREATE_ORDER_SERVICE_ITEM, data);
     }
+
+    static findServiceOrderByBankAuth(bankAuth: string): Promise<any> {
+        return makeRequest('get', Routes.FIND_SERVICE_ORDER_BY_BANK_AUTH(bankAuth));
+    }
 }
