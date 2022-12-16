@@ -1,16 +1,66 @@
-import { Button } from 'reactstrap';
+import { Button } from "reactstrap";
 import { connect } from 'react-redux';
 import BankService from 'Services/banks';
 import { withRouter } from "react-router-dom";
 import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
+import Brouillard from './components/brouillard';
 import React, { useState, useEffect } from 'react';
+import TextField from '@material-ui/core/TextField';
 import TimeFromMoment from "Components/TimeFromMoment";
-import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import EditOperation from './components/updateOperation';
+import { NotificationManager } from 'react-notifications';
+import Checkbox from "@material-ui/core/Checkbox/Checkbox";
+import LiquidOperationModal from '../../components/liquidOperationModal';
+import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
 
+const ACTIONS = [
+    {
+        label: "Consulter l'OS",
+        value: 'CONSULT',
+        canHandleMany: false
+    },{
+        label: "Traiter",
+        value: 'TREAT',
+        canHandleMany: false
+    },{
+        label: "Retirer",
+        value: 'REMOVE',
+        canHandleMany: false
+    },{
+        label: "Imprimer",
+        value: 'PRINT',
+        canHandleMany: false
+    },{
+        label: "Editer",
+        value: 'EDIT',
+        canHandleMany: false
+    },{
+        label: "Mise en liquidation",
+        value: 'LIQUID',
+        canHandleMany: false
+    },{
+        label: "Validation",
+        value: 'VALIDATE',
+        canHandleMany: false
+    },{
+        label: "Brouillard",
+        value: 'FOG',
+        canHandleMany: true
+    },
+]
 const List = (props) => {
 
+    const [action, setAction] = useState(null);
     const [operations, setOperations] = useState([]);
+    const [checkerAll, setCheckAll] = useState('none');
+    const [showLiquidModal, setShowLiquidModal] = useState(false);
+    const [selectedOperation, setSelectedOperation] = useState(null);
+    const [selectedOperations, setSelectedOperations] = useState([]);
+    const [showBrouillardModal, setShowBrouillardModal] = useState(false);
+    const [showUpdateOperationModal, setShowUpdateOperationModal] = useState(false);
+
     useEffect(() => {
         getOperations();
     }, []);
@@ -18,9 +68,49 @@ const List = (props) => {
     const getOperations = () => {
         props.setRequestGlobalAction(true),
         BankService.getOperations()
-        .then(response => setOperations(response))
+        .then(response => {
+            let datas = response.filter(o => !o.liquidationReference);
+            setOperations(datas);
+            if(showLiquidModal && datas.length > 0) {
+                setSelectedOperation(datas[0]);
+            } else {
+                setSelectedOperation(null);
+                setShowLiquidModal(false);
+            }
+        })
         .finally(() => props.setRequestGlobalAction(false))
     }
+
+    const liquidOperation = (reference) => {
+        props.setRequestGlobalAction(true),
+        BankService.liquidOperation(selectedOperation.id, reference)
+        .then(() => getOperations())
+        .catch((err) => {
+            console.log(err);
+            NotificationManager.error("Une erreur s'est produite lors de la liquidation.")
+        })
+        .finally(() => props.setRequestGlobalAction(false))
+    }
+
+    const onToggleOperation = (operationIds) => {
+        let newOperations = [...selectedOperations];
+        operationIds.forEach(userId => {
+            if (newOperations.includes(userId)) {
+                newOperations = newOperations.filter(u => u !== userId);
+            } else newOperations.push(userId);
+        });
+        setSelectedOperations(newOperations);
+    };
+
+    const onCheckerAll = () => {
+        if (checkerAll !== 'all') {
+            setCheckAll('all');
+            onToggleOperation([...operations.map(o => o.id)]);
+        } else {
+            setCheckAll('none');
+            setSelectedOperations([]);
+        }
+    };
 
     return (
         <>
@@ -28,6 +118,36 @@ const List = (props) => {
                 loading={false}
                 list={operations}
                 itemsFoundText={n => `${n} opérations trouvées`}
+                rightComponent={() => (
+                    <div className="col-md-12 col-sm-12 d-flex has-wrapper">
+                        <Autocomplete
+                            value={action}
+                            options={ACTIONS}
+                            id="combo-box-demo"
+                            onChange={(__, item) => {
+                                setAction(item);
+                            }}
+                            getOptionLabel={(option) => option.label}
+                            style={{ width: 250 }}
+                            renderInput={(params) => <TextField {...params} variant="outlined" />}
+                        />
+                        <Button
+                            color="primary"
+                            className="text-white mr-2 ml-10"
+                            onClick={() => {
+                                if(action?.value == 'EDIT') {
+                                    setShowUpdateOperationModal(true);
+                                }
+                                if(action?.value == 'FOG') {
+                                    setShowBrouillardModal(true);
+                                }
+                            }}
+                            disabled={action == null || ((!action?.canHandleMany && selectedOperations.length > 1) || selectedOperations.length <= 0)}
+                        >
+                            Confirmer
+                        </Button>
+                    </div>
+                )}
                 renderItem={list => (
                     <>
                         {list && list.length === 0 ? (
@@ -41,24 +161,47 @@ const List = (props) => {
                                 <table className="table table-hover table-middle mb-0">
                                     <thead>
                                         <tr>
-                                            <th className="fw-bold">Ref. liquidation</th>
+                                            <th className="w-5">
+                                                <FormControlLabel
+                                                    control={
+                                                        <Checkbox
+                                                            indeterminate={selectedOperations.length > 0 && selectedOperations.length < operations.length}
+                                                            checked={selectedOperations.length > 0}
+                                                            onChange={(e) => onCheckerAll()}
+                                                            value="all"
+                                                            color="primary"
+                                                        />
+                                                    }
+                                                    label="Tous"
+                                                />
+                                            </th>
                                             <th className="fw-bold">Client</th>
                                             <th className="fw-bold">Compte</th>
                                             <th className="fw-bold">Montant</th>
                                             <th className="fw-bold">Raison</th>
                                             <th className="fw-bold">Date</th>
+                                            {/* <th className="fw-bold">Liquider</th> */}
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {list && list.map((item, key) => (
                                             <tr key={key} className="cursor-pointer">
-                                                <td>
-                                                    <div className="media">
-                                                        <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{item.liquidationReference}</h4>
-                                                        </div>
+                                            <td>
+                                                <div className="media">
+                                                    <div className="media-body pt-10">
+                                                        <FormControlLabel
+                                                            control={
+                                                                <Checkbox
+                                                                    checked={selectedOperations.includes(item.id)}
+                                                                    onChange={() => onToggleOperation([item.id])}
+                                                                    color="primary"
+                                                                />
+                                                            }
+                                                            label=""
+                                                        />
                                                     </div>
-                                                </td>
+                                                </div>
+                                            </td>
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
@@ -96,6 +239,19 @@ const List = (props) => {
                                                         </div>
                                                     </div>
                                                 </td>
+                                                {/* <td>
+                                                    <Button
+                                                        color="primary"
+                                                        variant="contained"
+                                                        onClick={() => {
+                                                            setSelectedOperation(item);
+                                                            setShowLiquidModal(true);
+                                                        }}
+                                                        className="text-white font-weight-bold"
+                                                    >
+                                                        Liquider
+                                                    </Button>
+                                                </td> */}
                                             </tr>
                                         ))}
                                     </tbody>
@@ -105,6 +261,39 @@ const List = (props) => {
                     </>
                 )}
             />
+            { showLiquidModal && selectedOperation != null && (
+                <LiquidOperationModal
+                    show={showLiquidModal}
+                    title={"Liquider l'opération"}
+                    onClose={() => {
+                        setShowLiquidModal(false);
+                    }}
+                    operation={selectedOperation}
+                    liquidOperation={(ref) => liquidOperation(ref)}
+                />  
+            )}
+
+            { showUpdateOperationModal && action?.value == 'EDIT'  && (
+                <EditOperation
+                    show={showUpdateOperationModal}
+                    onClose={() => {
+                        setShowUpdateOperationModal(false);
+                        setAction(null);
+                    }}
+                    title={"Editer une opération"}
+                />
+            )}
+
+            { showBrouillardModal && action?.value == 'FOG'  && (
+                <Brouillard
+                    show={showBrouillardModal}
+                    onClose={() => {
+                        setShowBrouillardModal(false);
+                        setAction(null);
+                    }}
+                    title={"Brouillard"}
+                />
+            )}
         </>
     );
 }

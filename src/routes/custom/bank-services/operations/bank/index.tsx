@@ -15,8 +15,10 @@ class BankOperations extends Component<any, any> {
     constructor(props: any) {
         super(props);
         const defaultState = (function (url) {
-            if (url.includes(BANK.OPERATION.BANK.LIST)) return 0;
-            else if (url.includes(BANK.OPERATION.BANK.PENDING)) return 1;
+            if (url.includes(BANK.OPERATION.BANK.PENDING)) return 0;
+            else if (url.includes(BANK.OPERATION.BANK.DRAFT)) return 1;
+            else if (url.includes(BANK.OPERATION.BANK.LIQUIDATION)) return 2;
+            else if (url.includes(BANK.OPERATION.BANK.LIST)) return 3;
             else return 0;
         })(window.location.pathname);
 
@@ -30,16 +32,17 @@ class BankOperations extends Component<any, any> {
         this.setState({ activeTab: value });
         if (oldActivateTab !== value) {
             switch (value) {
-                case 0: return this.props.history.push(BANK.OPERATION.BANK.LIST);
-                case 1: return this.props.history.push(BANK.OPERATION.BANK.PENDING);
-                default: return this.props.history.push(BANK.OPERATION.BANK.LIST);
+                case 0: return this.props.history.push(BANK.OPERATION.BANK.PENDING);
+                case 1: return this.props.history.push(BANK.OPERATION.BANK.DRAFT);
+                case 2: return this.props.history.push(BANK.OPERATION.BANK.LIQUIDATION);
+                case 3: return this.props.history.push(BANK.OPERATION.BANK.LIST);
+                default: return this.props.history.push(BANK.OPERATION.BANK.PENDING);
             }
         }
     };
 
     render() {
         const { activeTab } = this.state;
-
         return (
             <div>
                 <PageTitleBar title={"Mes opérations"} match={this.props.match} />
@@ -57,7 +60,15 @@ class BankOperations extends Component<any, any> {
                                     >
                                         <Tab
                                             icon={<i className="zmdi zmdi-home" />}
-                                            label={"En attente"}
+                                            label={"Opérations"}
+                                        />
+                                        <Tab
+                                            icon={<i className="zmdi zmdi-home" />}
+                                            label={"Brouillards de bordereau"}
+                                        />
+                                        <Tab
+                                            icon={<i className="zmdi zmdi-home" />}
+                                            label={"Bordereau de liquidation"}
                                         />
                                         <Tab
                                             icon={<i className="zmdi zmdi-home" />}

@@ -1,19 +1,19 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
-import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
-import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
-import { Button, Input, InputGroup, InputGroupAddon, FormGroup } from "reactstrap";
-import FormControl from "@material-ui/core/FormControl";
-import IconButton from "@material-ui/core/IconButton";
 import { withStyles } from "@material-ui/core";
-import { canArray, globalSearch } from "Helpers/helpers";
-import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
-import { permissionMiddleware } from "Actions/PermissionAlertBoxAction";
-import { AbilityContext } from "Permissions/Can";
 import Permission from "Enums/Permissions.tsx";
+import { AbilityContext } from "Permissions/Can";
+import IconButton from "@material-ui/core/IconButton";
+import FormControl from "@material-ui/core/FormControl";
+import { canArray, globalSearch } from "Helpers/helpers";
+import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import FetchFailedComponent from "Components/FetchFailedComponent";
+import { Button, Input, InputGroup, InputGroupAddon } from "reactstrap";
+import { permissionMiddleware } from "Actions/PermissionAlertBoxAction";
+import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
+import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
 
 class CustomList extends Component {
     static contextType = AbilityContext;
@@ -48,7 +48,7 @@ class CustomList extends Component {
             loading, list, error, renderItem, style,
             match, history, classes, showSearch, onRetryClick,
             addText, onAddClick, addPermissions, searchPermissions,
-            showBackBtn, titleClassName, wrapClassName,
+            showBackBtn, titleClassName, wrapClassName, rightComponent
         } = this.props;
 
         let orderedItems = this.handleSearch(this.state.searched, list);
@@ -74,7 +74,7 @@ class CustomList extends Component {
                         <FetchFailedComponent _onRetryClick={onRetryClick} />
                     ) : (
                             <RctCollapsibleCard>
-                                <div className="align-items-center mb-30 px-15 row">
+                                <div className={`align-items-center mb-30 px-15 row ${rightComponent && 'justify-content-between'} `}>
                                     {(onAddClick && canAdd && !addingButton) && (
                                         <Button
                                             color="primary"
@@ -87,7 +87,7 @@ class CustomList extends Component {
                                     )}
                                     {showSearch && (
                                         <>
-                                            <div className={classes.flex}>
+                                            <div>
                                                 <FormControl>
                                                     <InputGroup>
                                                         <InputGroupAddon addonType="prepend">
@@ -105,26 +105,20 @@ class CustomList extends Component {
                                                     </InputGroup>
                                                 </FormControl>
                                             </div>
-                                            {/* <div className="col-sm-12 col-md-3 col-xl-3 mb-10">
-                                                <div className="app-selectbox">
-                                                    <FormGroup className="mb-0">
-                                                        <Input type="select" name="select" id="exampleSelect">
-                                                            <option>Filter: Popularity</option>
-                                                            <option>1</option>
-                                                            <option>2</option>
-                                                            <option>3</option>
-                                                            <option>4</option>
-                                                            <option>5</option>
-                                                        </Input>
-                                                    </FormGroup>
-                                                </div>
-                                            </div> */}
                                         </>
                                     )}
-                                    {itemsFoundText && (
-                                        <p className={classes.title}>
-                                            {itemsFoundText(orderedItems.length)}
-                                        </p>
+                                    {!rightComponent ? (
+                                        <>
+                                            {itemsFoundText && (
+                                                <p className={classes.title}>
+                                                {itemsFoundText(orderedItems.length)}
+                                                </p>
+                                            )}
+                                        </>
+                                    ) : (
+                                        <div className="d-flex align-items-center">
+                                            {rightComponent()}
+                                        </div>
                                     )}
                                 </div>
                                 {renderItem(orderedItems)}

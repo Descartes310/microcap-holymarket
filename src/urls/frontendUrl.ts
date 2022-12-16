@@ -389,6 +389,11 @@ export const NETWORK = {
             BROKER: '/network/coverage/partnerships/broker',
             OPERATOR: '/network/coverage/partnerships/operator',
             COMMUNITY: '/network/coverage/partnerships/community',
+            COMPLEMENTARY: '/network/coverage/partnerships/complementary',
+        },
+        AFFECTATION: {
+            SELF: '/network/coverage/affectation',
+            LIST: '/network/coverage/affectation/list'
         },
         USERS: {
             SELF: '/network/coverage/users',
@@ -475,7 +480,9 @@ export const BANK = {
         BANK: {
             SELF: '/bank/operations/bank',
             LIST: '/bank/operations/bank/list',
-            PENDING: '/bank/operations/bank/pending'
+            DRAFT: '/bank/operations/bank/slip/draft',
+            PENDING: '/bank/operations/bank/pending',
+            LIQUIDATION: '/bank/operations/bank/slip/liquidation',
         }
     },
     MONEY: {

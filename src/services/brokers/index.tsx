@@ -31,4 +31,12 @@ export default class BrokerService {
     static creditCashdesk(id, data: any): Promise<any> {
         return makeRequest('post', Routes.CREDIT_CASHDESK(id), data);
     }
+
+    static getAgenciesByBroker(data: any): Promise<any> {
+        return makeRequest('get', Routes.GET_AGENCIES_BY_BROKER, data);
+    }
+
+    static getCountersByAgencies(data: any): Promise<any> {
+        return makeRequest('get', Routes.GET_COUNTERS_BY_AGENCY, data);
+    }
 }

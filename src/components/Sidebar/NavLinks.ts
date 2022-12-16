@@ -60,6 +60,16 @@ export default [
             ],
             "profiles": ['GROUP'],
          },
+
+         {
+            "menu_title": "Affectation",
+            "new_item": false,
+            "path": NETWORK.COVERAGE.AFFECTATION.LIST,
+            "permissions": [
+               Permission.network.coverage.territory.name,
+            ],
+            "profiles": ['GROUP'],
+         },
          {
             "menu_title": "Contrats",
             "new_item": false,

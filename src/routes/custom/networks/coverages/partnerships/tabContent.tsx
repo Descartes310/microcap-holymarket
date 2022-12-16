@@ -5,6 +5,7 @@ import Operators from './tabs/operator';
 import Brokers from './tabs/broker';
 import { NETWORK } from 'Url/frontendUrl';
 import Communities from './tabs/community';
+import Complementary from './tabs/complementary';
 import {withRouter, Switch, Redirect, Route} from "react-router-dom";
 
 const Catalogs = (props) => {
@@ -17,6 +18,7 @@ const Catalogs = (props) => {
                     <Route path={NETWORK.COVERAGE.PARTNERSHIP.COMMUNITY} component={Communities} />
                     <Route path={NETWORK.COVERAGE.PARTNERSHIP.OPERATOR} component={Operators} />
                     <Route path={NETWORK.COVERAGE.PARTNERSHIP.BROKER} component={Brokers} />
+                    <Route path={NETWORK.COVERAGE.PARTNERSHIP.COMPLEMENTARY} component={Complementary} />
                 </Switch>
             </>
         </div>

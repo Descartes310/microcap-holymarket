@@ -6,11 +6,11 @@ import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
 import React, { useState, useEffect } from 'react';
 import TimeFromMoment from "Components/TimeFromMoment";
+import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
 
 const List = (props) => {
 
     const [operations, setOperations] = useState([]);
-
     useEffect(() => {
         getOperations();
     }, []);
