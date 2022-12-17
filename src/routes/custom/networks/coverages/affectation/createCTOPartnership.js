@@ -16,6 +16,7 @@ import { NotificationManager } from 'react-notifications';
 import DialogComponent from "Components/dialog/DialogComponent";
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { FormGroup, Button, Input as InputStrap  } from 'reactstrap';
+import { ThreeDRotationSharp } from "@material-ui/icons";
 
 const PARTNER_TYPES = [
     {label: 'Opérateur', value: 'OPERATOR'},
@@ -42,6 +43,8 @@ class CreateCTOPartnershipModal extends Component {
         counters: [],
         ctos: [],
         cto: null,
+        brokers: [],
+        broker: null,
         selectedAgencies: [],
         selectedCTOAgencies: [],
         selectedCounters: [],
@@ -54,12 +57,13 @@ class CreateCTOPartnershipModal extends Component {
     componentDidMount() {
         this.getContracts();
         this.getCountries();
-        this.getCTOPartnerships();
+        this.getBrokerPartnerships();
+        //this.getCTOPartnerships();
     }
 
     getPartnerships = () => {
         this.props.setRequestGlobalAction(true);
-        PartnershipService.getPartnerships({ type: this.state.partnerType.value })
+        PartnershipService.getPartnershipByCountry({ type: this.state.partnerType.value, country: this.state.country.reference })
         .then((response) => {
             this.setState({ partners: response });
         })
@@ -68,11 +72,42 @@ class CreateCTOPartnershipModal extends Component {
         })
     }
 
-    getCTOPartnerships = () => {
+    getPartnership = (broker) => {
         this.props.setRequestGlobalAction(true);
-        PartnershipService.getPartnerships({ type: 'CTO' })
+        PartnershipService.getPartnershipByType({ type: 'CTO', code: broker.referralCode })
         .then((response) => {
             this.setState({ ctos: response });
+        })
+        .finally(() => {
+            this.props.setRequestGlobalAction(false);
+        })
+    }
+
+    attachPartnershipCounter = () => {
+        this.props.setRequestGlobalAction(true);
+        PartnershipService.addAttachedCounters({ partnership_reference: this.state.cto.reference, counters_reference: this.state.selectedCounters.map(c => c.reference).join(',') })
+        .finally(() => {
+            this.props.onClose();
+            this.props.setRequestGlobalAction(false);
+        })
+    }
+
+    // getCTOPartnerships = () => {
+    //     this.props.setRequestGlobalAction(true);
+    //     PartnershipService.getPartnerships({ type: 'CTO' })
+    //     .then((response) => {
+    //         this.setState({ ctos: response });
+    //     })
+    //     .finally(() => {
+    //         this.props.setRequestGlobalAction(false);
+    //     })
+    // }
+
+    getBrokerPartnerships = () => {
+        this.props.setRequestGlobalAction(true);
+        PartnershipService.getPartnerships({ type: 'BROKER' })
+        .then((response) => {
+            this.setState({ brokers: response });
         })
         .finally(() => {
             this.props.setRequestGlobalAction(false);
@@ -125,7 +160,7 @@ class CreateCTOPartnershipModal extends Component {
 
     getCounters = (items) => {
         this.props.setRequestGlobalAction(true);
-        BrokerService.getCountersByAgencies({references: items.map(a => a.reference)})
+        BrokerService.getCountersByAgenciesWithoutCTO({references: items.map(a => a.reference)})
         .then(response => this.setState({ counters: response }))
         .finally(() => this.props.setRequestGlobalAction(false))
     }
@@ -165,7 +200,7 @@ class CreateCTOPartnershipModal extends Component {
 
         const { onClose, show, title } = this.props;
         const { cto, partnerType, partners, ctos, partner,
-            selectedCTOAgencies, country, countries, agencies, selectedAgencies, 
+            broker, brokers, country, countries, agencies, selectedAgencies, 
             counters, selectedCounters } = this.state;
 
         return (
@@ -208,6 +243,7 @@ class CreateCTOPartnershipModal extends Component {
                             id="combo-box-demo"
                             value={partnerType}
                             options={PARTNER_TYPES}
+                            disabled={!this.state.country}
                             onChange={(__, item) => {
                                 this.setState({ partnerType: item }, () => this.getPartnerships());
                             }}
@@ -275,10 +311,10 @@ class CreateCTOPartnershipModal extends Component {
                         </InputLabel>
                         <Autocomplete
                             id="combo-box-demo"
-                            value={cto}
-                            options={ctos}
+                            value={broker}
+                            options={brokers}
                             onChange={(__, item) => {
-                                this.setState({ cto: item });
+                                this.setState({ broker: item }, () => this.getPartnership(item));
                             }}
                             getOptionLabel={(option) => option.partnershipDetails.find(pd => pd.type === 'COMMERCIAL_NAME')?.value}
                             renderInput={(params) => <TextField {...params} variant="outlined" />}
@@ -287,17 +323,16 @@ class CreateCTOPartnershipModal extends Component {
 
                     <div className="col-md-12 col-sm-12 has-wrapper mb-30">
                         <InputLabel className="text-left">
-                            Agences
+                            CTO MCM
                         </InputLabel>
                         <Autocomplete
-                            multiple
+                            value={cto}
+                            options={ctos}
                             id="combo-box-demo"
-                            value={selectedCTOAgencies}
-                            options={agencies}
-                            onChange={(__, items) => {
-                                this.setState({ selectedCTOAgencies: [...items] });
+                            onChange={(__, item) => {
+                                this.setState({ cto: item });
                             }}
-                            getOptionLabel={(option) => option.label}
+                            getOptionLabel={(option) => option.partnershipDetails.find(pd => pd.type === 'COMMERCIAL_NAME')?.value}
                             renderInput={(params) => <TextField {...params} variant="outlined" />}
                         />
                     </div>
@@ -306,7 +341,7 @@ class CreateCTOPartnershipModal extends Component {
                         <Button
                             color="primary"
                             variant="contained"
-                            onClick={() => this.onSubmit()}
+                            onClick={() => this.attachPartnershipCounter()}
                             className="text-white font-weight-bold"
                         >
                             Enregistrer l'asso

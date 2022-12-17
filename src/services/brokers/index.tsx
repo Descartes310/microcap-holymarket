@@ -39,4 +39,8 @@ export default class BrokerService {
     static getCountersByAgencies(data: any): Promise<any> {
         return makeRequest('get', Routes.GET_COUNTERS_BY_AGENCY, data);
     }
+
+    static getCountersByAgenciesWithoutCTO(data: any): Promise<any> {
+        return makeRequest('get', Routes.GET_COUNTERS_BY_AGENCY_WITHOUT_CTO, data);
+    }
 }

@@ -10,18 +10,18 @@ import PartnershipService from 'Services/partnerships';
 
 const List = (props) => {
 
-    const [territories, setTerritories] = useState([]);
+    const [datas, setDatas] = useState([]);
     const [showPartnerShipModal, setShowPartnerShipModal] = useState(false);
 
     useEffect(() => {
-        getTerritories();
+        getDatas();
     }, []);
 
-    const getTerritories = () => {
+    const getDatas = () => {
         props.setRequestGlobalAction(true);
-        TerritoryService.getTerritoryChild({})
+        PartnershipService.getAttachedCounters()
         .then(response => {
-            setTerritories(response);
+            setDatas(response);
         })
         .catch(err => {
             console.log(err);
@@ -37,7 +37,7 @@ const List = (props) => {
                 title={"Centre de traitement"}
             />
             <CustomList
-                list={[]}
+                list={datas}
                 loading={false}
                 itemsFoundText={n => `${n} opérateurs trouvées`}
                 onAddClick={() => setShowPartnerShipModal(true)}
@@ -54,9 +54,8 @@ const List = (props) => {
                                 <table className="table table-hover table-middle mb-0">
                                     <thead>
                                         <tr>
-                                            <th className="fw-bold">Désignation</th>
-                                            <th className="fw-bold">Immatriculation</th>
-                                            <th className="fw-bold">Contrat</th>
+                                            <th className="fw-bold">Guichet</th>
+                                            <th className="fw-bold">CTO</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -65,21 +64,14 @@ const List = (props) => {
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{item.partnershipDetails.find(pd => pd.type === 'COMMERCIAL_NAME')?.value}</h4>
+                                                            <h4 className="m-0 fw-bold text-dark">{item.counterName}</h4>
                                                         </div>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <p className="m-0 text-dark">{item.partnershipDetails.find(pd => pd.type === 'IMMATRICULATION_NUMBER')?.value}</p>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div className="media">
-                                                        <div className="media-body pt-10">
-                                                            <p className="m-0 text-dark">{item.contract}</p>
+                                                            <h4 className="m-0 fw-bold text-dark">{item.partnerName}</h4>
                                                         </div>
                                                     </div>
                                                 </td>
