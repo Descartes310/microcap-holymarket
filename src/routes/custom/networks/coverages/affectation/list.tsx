@@ -34,7 +34,7 @@ const List = (props) => {
     return (
         <>
             <PageTitleBar
-                title={"Liste des térritoires"}
+                title={"Centre de traitement"}
             />
             <CustomList
                 list={[]}
@@ -99,7 +99,7 @@ const List = (props) => {
                     onClose={() => {
                         setShowPartnerShipModal(false);
                     }}
-                    title={"Création d'un partenariat"}
+                    title={"Affectation CTO MCM"}
                 />
             )}
         </>

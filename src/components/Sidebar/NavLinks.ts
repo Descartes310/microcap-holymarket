@@ -62,7 +62,7 @@ export default [
          },
 
          {
-            "menu_title": "Affectation",
+            "menu_title": "Centre de traitement",
             "new_item": false,
             "path": NETWORK.COVERAGE.AFFECTATION.LIST,
             "permissions": [

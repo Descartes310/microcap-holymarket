@@ -20,7 +20,7 @@ import { FormGroup, Button, Input as InputStrap  } from 'reactstrap';
 const PARTNER_TYPES = [
     {label: 'Opérateur', value: 'OPERATOR'},
     {label: 'Communauté', value: 'COMMUNITY'},
-    {label: 'Boker', value: 'BROKER'},
+    {label: 'Broker', value: 'BROKER'},
 ]
 
 class CreateCTOPartnershipModal extends Component {
@@ -40,7 +40,10 @@ class CreateCTOPartnershipModal extends Component {
         partners: [],
         agencies: [],
         counters: [],
+        ctos: [],
+        cto: null,
         selectedAgencies: [],
+        selectedCTOAgencies: [],
         selectedCounters: [],
     }
 
@@ -51,14 +54,25 @@ class CreateCTOPartnershipModal extends Component {
     componentDidMount() {
         this.getContracts();
         this.getCountries();
-        this.getPartnerships();
+        this.getCTOPartnerships();
     }
 
     getPartnerships = () => {
         this.props.setRequestGlobalAction(true);
-        PartnershipService.getPartnerships({ type: 'CTO' })
+        PartnershipService.getPartnerships({ type: this.state.partnerType.value })
         .then((response) => {
             this.setState({ partners: response });
+        })
+        .finally(() => {
+            this.props.setRequestGlobalAction(false);
+        })
+    }
+
+    getCTOPartnerships = () => {
+        this.props.setRequestGlobalAction(true);
+        PartnershipService.getPartnerships({ type: 'CTO' })
+        .then((response) => {
+            this.setState({ ctos: response });
         })
         .finally(() => {
             this.props.setRequestGlobalAction(false);
@@ -120,8 +134,6 @@ class CreateCTOPartnershipModal extends Component {
 
         const { partner, contract, commercialName, selectedCounters } = this.state;
 
-        console.log(partner, contract, commercialName, selectedCounters);
-
         if(!contract || !partner || !commercialName || selectedCounters.length <= 0) {
             NotificationManager.error("Les informations renseignées sont incompletes ou incorrectes");
             return;
@@ -152,8 +164,8 @@ class CreateCTOPartnershipModal extends Component {
     render() {
 
         const { onClose, show, title } = this.props;
-        const { contracts, partnerType, partners, contract, partner,
-            commercialName, country, countries, agencies, selectedAgencies, 
+        const { cto, partnerType, partners, ctos, partner,
+            selectedCTOAgencies, country, countries, agencies, selectedAgencies, 
             counters, selectedCounters } = this.state;
 
         return (
@@ -168,6 +180,9 @@ class CreateCTOPartnershipModal extends Component {
                 )}
             >
                 <RctCardContent>
+
+                    <h2>Selectionner un guichet</h2>
+                    <br />
 
                     <div className="col-md-12 col-sm-12 has-wrapper mb-30">
                         <InputLabel className="text-left">
@@ -251,23 +266,8 @@ class CreateCTOPartnershipModal extends Component {
                         />
                     </div>
 
-                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
-                        <InputLabel className="text-left">
-                            Séléctionnez un contrat
-                        </InputLabel>
-                        <Autocomplete
-                            id="combo-box-demo"
-                            value={contract}
-                            options={contracts}
-                            onChange={(__, item) => {
-                                this.setState({ contract: item });
-                            }}
-                            getOptionLabel={(option) => option.label}
-                            renderInput={(params) => <TextField {...params} variant="outlined" />}
-                        />
-                    </div>
-
-                    <h1>CTO MCM</h1>
+                    <h2>CTO MCM</h2>
+                    <br />
 
                     <div className="col-md-12 col-sm-12 has-wrapper mb-30">
                         <InputLabel className="text-left">
@@ -275,10 +275,10 @@ class CreateCTOPartnershipModal extends Component {
                         </InputLabel>
                         <Autocomplete
                             id="combo-box-demo"
-                            value={partner}
-                            options={partners}
+                            value={cto}
+                            options={ctos}
                             onChange={(__, item) => {
-                                this.setState({ partner: item }, () => this.getAgencies());
+                                this.setState({ cto: item });
                             }}
                             getOptionLabel={(option) => option.partnershipDetails.find(pd => pd.type === 'COMMERCIAL_NAME')?.value}
                             renderInput={(params) => <TextField {...params} variant="outlined" />}
@@ -292,10 +292,10 @@ class CreateCTOPartnershipModal extends Component {
                         <Autocomplete
                             multiple
                             id="combo-box-demo"
-                            value={selectedAgencies}
+                            value={selectedCTOAgencies}
                             options={agencies}
                             onChange={(__, items) => {
-                                this.setState({ selectedAgencies: [...items] }, this.getCounters(items));
+                                this.setState({ selectedCTOAgencies: [...items] });
                             }}
                             getOptionLabel={(option) => option.label}
                             renderInput={(params) => <TextField {...params} variant="outlined" />}
@@ -309,7 +309,7 @@ class CreateCTOPartnershipModal extends Component {
                             onClick={() => this.onSubmit()}
                             className="text-white font-weight-bold"
                         >
-                            Créer le partenariat
+                            Enregistrer l'asso
                         </Button>
                     </FormGroup>
                 </RctCardContent>
