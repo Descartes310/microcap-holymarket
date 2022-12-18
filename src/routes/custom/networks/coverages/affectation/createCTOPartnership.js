@@ -17,7 +17,6 @@ import DialogComponent from "Components/dialog/DialogComponent";
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { FormGroup, Button, Input as InputStrap  } from 'reactstrap';
 import { ThreeDRotationSharp } from "@material-ui/icons";
-import { NULL } from "node-sass";
 
 const PARTNER_TYPES = [
     {label: 'Opérateur', value: 'OPERATOR'},
@@ -104,15 +103,18 @@ class CreateCTOPartnershipModal extends Component {
     //     })
     // }
 
-    getBrokerPartnerships = () => {
-        this.props.setRequestGlobalAction(true);
-        PartnershipService.getPartnershipByCountry({ type: 'BROKER', country: this.state.country.reference })
-        .then((response) => {
-            this.setState({ brokers: response });
-        })
-        .finally(() => {
-            this.props.setRequestGlobalAction(false);
-        })
+    getBrokerPartnerships = (country) => {
+        if(country) {
+            this.props.setRequestGlobalAction(true);
+            //PartnershipService.getPartnerships({ type: 'BROKER' })
+            PartnershipService.getPartnershipByCountry({ type: 'BROKER', country: country.reference })
+            .then((response) => {
+                this.setState({ brokers: response });
+            })
+            .finally(() => {
+                this.props.setRequestGlobalAction(false);
+            });
+        }
     }
 
     getContracts = () => {
@@ -229,7 +231,8 @@ class CreateCTOPartnershipModal extends Component {
                             value={country}
                             options={countries}
                             onChange={(__, item) => {
-                                this.setState({ country: item }, () => this.getBrokerPartnerships());
+                                this.setState({ country: item });
+                                this.getBrokerPartnerships(item);
                             }}
                             renderInput={(params) => <TextField {...params} variant="outlined" />}
                             getOptionLabel={(option) => option.label}
@@ -311,9 +314,9 @@ class CreateCTOPartnershipModal extends Component {
                             Partenaires
                         </InputLabel>
                         <Autocomplete
+                            id="combo-box-demo"
                             value={broker}
                             options={brokers}
-                            id="combo-box-demo"
                             disabled={!this.state.country}
                             onChange={(__, item) => {
                                 this.setState({ broker: item }, () => this.getPartnership(item));

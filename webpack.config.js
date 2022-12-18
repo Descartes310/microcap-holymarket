@@ -47,9 +47,6 @@ module.exports = {
 		historyApiFallback: true,
 		quiet: true
 	},
-	node: {
-		fs: "empty",
-	},
 	// resolve alias (Absolute paths)
 	resolve: {
 		alias: {
