@@ -46,9 +46,10 @@ const Create = (props) => {
         BankService.findServiceOrderByBankAuth(authCode)
         .then(response => {
             setServiceOrder(response);
-            setServiceOrderChecked(response.items.map(i => { return { id: i.id, checked: false }}))
+            setServiceOrderChecked(response.details.map(i => { return { id: i.id, checked: i.complement?.toLowerCase() === 'true' }}))
         })
         .catch((err) => {
+            console.log(err)
             NotificationManager.error("Aucun ordre de service trouvé");
         })
         .finally(() => {
@@ -181,7 +182,7 @@ const Create = (props) => {
                                 <div className='row'>
                                     <h2 style={{ marginBottom: 30 }}>Ordre de service</h2>
                                     {
-                                        serviceOrder.items.map((item, index) => (
+                                        serviceOrder.details.map((item, index) => (
                                             <FormGroup className="col-sm-12 has-wrapper">
                                                 <FormControlLabel control={
                                                     <Checkbox
@@ -189,7 +190,7 @@ const Create = (props) => {
                                                         checked={serviceOrderChecked.find(so => so.id === item.id)?.checked}
                                                         onChange={(e) => onChecked(index, e.target.checked)}
                                                     />
-                                                } label={item.serviceOrderItem.label}
+                                                } label={item.label}
                                                 />
                                             </FormGroup>
                                         ))
