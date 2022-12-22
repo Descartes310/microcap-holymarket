@@ -541,7 +541,7 @@ export default [
          {
             "menu_title": "Opérations",
             "new_item": false,
-            "path": BANK.OPERATION.BANK.SELF,
+            "path": BANK.OPERATION.BANK.PENDING,
             "permissions": null,
             "profiles": ['OPERATOR'],
             "child_routes": null

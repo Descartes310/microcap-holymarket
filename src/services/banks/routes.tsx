@@ -69,3 +69,8 @@ export const GET_ORDER_SERVICE_ITEMS = 'api/cashmanagements/serviceorders/items'
 
 
 export const FIND_SERVICE_ORDER_BY_BANK_AUTH = (reference) => `api/cashmanagements/operations/find-order-service/by-bank-auth/${reference}`;
+
+
+export const LIQUID_SERVICE_ORDER = (reference) => `api/cashmanagements/operations/${reference}/os/liquid`;
+export const ARCHIVE_SERVICE_ORDER = (reference) => `api/cashmanagements/operations/${reference}/os/archive`;
+export const LIQUIDOPMCM_SERVICE_ORDER = (reference) => `api/cashmanagements/operations/${reference}/os/liquidopmcm`;

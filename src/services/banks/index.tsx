@@ -223,4 +223,16 @@ export default class BankService {
     static findServiceOrderByBankAuth(bankAuth: string): Promise<any> {
         return makeRequest('get', Routes.FIND_SERVICE_ORDER_BY_BANK_AUTH(bankAuth));
     }
+
+    static liquidServiceOrder(reference: string, liquidationreference): Promise<any> {
+        return makeRequest('post', Routes.LIQUID_SERVICE_ORDER(reference), {liquid_reference: liquidationreference});
+    }
+
+    static liquidOPMCMServiceOrder(reference: string, liquidationreference): Promise<any> {
+        return makeRequest('post', Routes.LIQUIDOPMCM_SERVICE_ORDER(reference), {liquid_reference: liquidationreference});
+    }
+
+    static archiveServiceOrder(reference: string, archivereference): Promise<any> {
+        return makeRequest('post', Routes.ARCHIVE_SERVICE_ORDER(reference), {archive_reference: archivereference});
+    }
 }
