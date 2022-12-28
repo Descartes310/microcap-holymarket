@@ -162,6 +162,7 @@ const List = (props) => {
                     onClose={() => {
                         setBl(null);
                         setShowDetailsModal(false);
+                        getOperations();
                     }}
                     bl={bl}
                     title={"Operations"}
