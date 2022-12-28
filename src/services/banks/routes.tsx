@@ -74,3 +74,13 @@ export const FIND_SERVICE_ORDER_BY_BANK_AUTH = (reference) => `api/cashmanagemen
 export const LIQUID_SERVICE_ORDER = (reference) => `api/cashmanagements/operations/${reference}/os/liquid`;
 export const ARCHIVE_SERVICE_ORDER = (reference) => `api/cashmanagements/operations/${reference}/os/archive`;
 export const LIQUIDOPMCM_SERVICE_ORDER = (reference) => `api/cashmanagements/operations/${reference}/os/liquidopmcm`;
+
+
+export const GET_BL = `api/documents/bl`;
+export const CREATE_BL = `api/documents/bl`;
+export const BL_OP_AVAILABLE = `api/documents/bl/operations/availables`;
+export const UPDATE_BL = (reference) => `api/documents/bl/${reference}/update`;
+export const LIQUID_BL = (reference) => `api/documents/bl/${reference}/liquid`;
+export const VALIDATE_BL = (reference) => `api/documents/bl/${reference}/validate`;
+export const GET_BL_OPERATIONS = (reference) => `api/documents/bl/${reference}/operations`;
+export const CHANGE_BL_OPERATIONS = (reference) => `api/documents/bl/${reference}/operations`;

@@ -235,4 +235,36 @@ export default class BankService {
     static archiveServiceOrder(reference: string, archivereference): Promise<any> {
         return makeRequest('post', Routes.ARCHIVE_SERVICE_ORDER(reference), {archive_reference: archivereference});
     }
+
+    static createBL(data): Promise<any> {
+        return makeRequest('post', Routes.CREATE_BL, data);
+    }
+
+    static changeBLOperations(reference: string, data): Promise<any> {
+        return makeRequest('post', Routes.CHANGE_BL_OPERATIONS(reference), data);
+    }
+
+    static updateBL(reference: string, data): Promise<any> {
+        return makeRequest('post', Routes.UPDATE_BL(reference), data);
+    }
+
+    static validateBL(reference: string): Promise<any> {
+        return makeRequest('post', Routes.VALIDATE_BL(reference));
+    }
+
+    static liquidBL(reference: string, liquid: string): Promise<any> {
+        return makeRequest('post', Routes.LIQUID_BL(reference), {liquid});
+    }
+
+    static getAvailableOP(): Promise<any> {
+        return makeRequest('get', Routes.BL_OP_AVAILABLE);
+    }
+
+    static getBLs(status = true): Promise<any> {
+        return makeRequest('get', Routes.GET_BL, {status});
+    }
+
+    static getBLOP(reference: string): Promise<any> {
+        return makeRequest('get', Routes.GET_BL_OPERATIONS(reference));
+    }
 }

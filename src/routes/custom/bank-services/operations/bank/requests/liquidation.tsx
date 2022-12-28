@@ -6,34 +6,64 @@ import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
 import React, { useState, useEffect } from 'react';
 import TimeFromMoment from "Components/TimeFromMoment";
-import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
+import Checkbox from "@material-ui/core/Checkbox/Checkbox";
+import BLOperationsModal from './components/BLLiquidOperations';
+import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
 
 const List = (props) => {
 
+    const [bl, setBl] = useState(null);
+    const [action, setAction] = useState(null);
     const [operations, setOperations] = useState([]);
+    const [checkerAll, setCheckAll] = useState('none');
+    const [showDetailsModal, setShowDetailsModal] = useState(false);
+    const [selectedOperations, setSelectedOperations] = useState([]);
+
     useEffect(() => {
         getOperations();
     }, []);
 
     const getOperations = () => {
         props.setRequestGlobalAction(true),
-        BankService.getOperations()
+        BankService.getBLs(false)
         .then(response => setOperations(response))
         .finally(() => props.setRequestGlobalAction(false))
     }
+
+    const onToggleOperation = (operationIds) => {
+        let newOperations = [...selectedOperations];
+
+        operationIds.forEach(opId => {
+            if (newOperations.includes(opId)) {
+                newOperations = newOperations.filter(u => u !== opId);
+            } else newOperations.push(opId);
+        });
+
+        setSelectedOperations(newOperations);
+    };
+
+    const onCheckerAll = () => {
+        if (checkerAll !== 'all') {
+            setCheckAll('all');
+            onToggleOperation([...operations.map(o => o.reference)]);
+        } else {
+            setCheckAll('none');
+            setSelectedOperations([]);
+        }
+    };
 
     return (
         <>
             <CustomList
                 loading={false}
                 list={operations}
-                itemsFoundText={n => `${n} opérations trouvées`}
+                itemsFoundText={n => `${n} BL trouvées`}
                 renderItem={list => (
                     <>
                         {list && list.length === 0 ? (
                             <div className="d-flex justify-content-center align-items-center py-50">
                                 <h4>
-                                    Aucun opérations trouvés
+                                    Aucun BL trouvés
                                 </h4>
                             </div>
                         ) : (
@@ -41,12 +71,24 @@ const List = (props) => {
                                 <table className="table table-hover table-middle mb-0">
                                     <thead>
                                         <tr>
-                                            <th className="fw-bold">Ref. liquidation</th>
-                                            <th className="fw-bold">Client</th>
-                                            <th className="fw-bold">Compte</th>
-                                            <th className="fw-bold">Montant</th>
-                                            <th className="fw-bold">Raison</th>
+                                            <th className="w-5">
+                                                <FormControlLabel
+                                                    control={
+                                                        <Checkbox
+                                                            indeterminate={selectedOperations.length > 0 && selectedOperations.length < operations.length}
+                                                            checked={selectedOperations.length > 0}
+                                                            onChange={(e) => onCheckerAll()}
+                                                            value="all"
+                                                            color="primary"
+                                                        />
+                                                    }
+                                                    label="Tous"
+                                                />
+                                            </th>
+                                            <th className="fw-bold">Reference</th>
+                                            <th className="fw-bold">Numéro</th>
                                             <th className="fw-bold">Date</th>
+                                            <th className="fw-bold">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -55,35 +97,30 @@ const List = (props) => {
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{item.liquidationReference}</h4>
+                                                            <FormControlLabel
+                                                                control={
+                                                                    <Checkbox
+                                                                        checked={selectedOperations.includes(item.reference)}
+                                                                        onChange={() => onToggleOperation([item.reference])}
+                                                                        color="primary"
+                                                                    />
+                                                                }
+                                                                label=""
+                                                            />
                                                         </div>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{item.clientName}</h4>
+                                                            <h4 className="m-0 fw-bold text-dark">{item.reference}</h4>
                                                         </div>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{item.clientAccountCode}</h4>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div className="media">
-                                                        <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{item.amount + ' EUR'}</h4>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div className="media">
-                                                        <div className="media-body pt-10">
-                                                            <p>{item.reason}</p>
+                                                            <h4 className="m-0 fw-bold text-dark">{item.number}</h4>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -96,6 +133,18 @@ const List = (props) => {
                                                         </div>
                                                     </div>
                                                 </td>
+                                                <td>
+                                                    <Button
+                                                        color="primary"
+                                                        className="text-white mr-2 ml-10"
+                                                        onClick={() => {
+                                                            setBl(item);
+                                                            setShowDetailsModal(true);
+                                                        }}
+                                                    >
+                                                        Details
+                                                    </Button>
+                                                </td>
                                             </tr>
                                         ))}
                                     </tbody>
@@ -105,6 +154,17 @@ const List = (props) => {
                     </>
                 )}
             />
+            { showDetailsModal && bl && (
+                <BLOperationsModal
+                    show={showDetailsModal}
+                    onClose={() => {
+                        setBl(null);
+                        setShowDetailsModal(false);
+                    }}
+                    bl={bl}
+                    title={"Operations"}
+                />
+            )}
         </>
     );
 }

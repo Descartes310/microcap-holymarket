@@ -44,11 +44,12 @@ const ACTIONS = [
     //     value: 'EDIT',
     //     canHandleMany: false
     // },
+    // {
+    //     label: "Mise en liquidation",
+    //     value: 'LIQUID',
+    //     canHandleMany: false
+    // },
     {
-        label: "Mise en liquidation",
-        value: 'LIQUID',
-        canHandleMany: false
-    },{
         label: "Archiver",
         value: 'ARCHIVE',
         canHandleMany: false
@@ -57,12 +58,13 @@ const ACTIONS = [
         value: 'VALIDATE',
         canHandleMany: false
     },
-    // {
-    //     label: "Brouillard",
-    //     value: 'FOG',
-    //     canHandleMany: true
-    // },
-]
+    {
+        label: "Brouillard de bordereaux",
+        value: 'FOG',
+        canHandleMany: true
+    },
+];
+
 const List = (props) => {
 
     const [action, setAction] = useState(null);
@@ -84,7 +86,7 @@ const List = (props) => {
 
     const getOperations = () => {
         props.setRequestGlobalAction(true),
-        BankService.getOperations()
+        BankService.getAvailableOP()
         .then(response => {
             let datas = response//.filter(o => !o.liquidationReference);
             setOperations(datas);
@@ -142,6 +144,23 @@ const List = (props) => {
         .catch((err) => {
             console.log(err);
             NotificationManager.error("Une erreur s'est produite lors de l'archivage.")
+        })
+        .finally(() => {
+            setShowArchiveModal(false);
+            props.setRequestGlobalAction(false)
+        });
+    }
+
+    const brouillardBL = () => {
+        props.setRequestGlobalAction(true),
+        BankService.createBL({op_references: operations.filter(op => selectedOperations.includes(op.id)).map(op => op.reference)})
+        .then(() => {
+            NotificationManager.success("La création du brouillard a réussie.")
+            getOperations();
+        })
+        .catch((err) => {
+            console.log(err);
+            NotificationManager.error("Une erreur s'est produite lors de la création du brouillard.")
         })
         .finally(() => {
             setShowArchiveModal(false);
@@ -208,7 +227,7 @@ const List = (props) => {
                                     setShowUpdateOperationModal(true);
                                 }
                                 if(action?.value == 'FOG') {
-                                    setShowBrouillardModal(true);
+                                    brouillardBL();
                                 }
                                 if(action?.value == 'LIQUID') {
                                     setShowLiquidModal(true);
@@ -270,22 +289,22 @@ const List = (props) => {
                                     <tbody>
                                         {list && list.map((item, key) => (
                                             <tr key={key} className="cursor-pointer">
-                                            <td>
-                                                <div className="media">
-                                                    <div className="media-body pt-10">
-                                                        <FormControlLabel
-                                                            control={
-                                                                <Checkbox
-                                                                    checked={selectedOperations.includes(item.id)}
-                                                                    onChange={() => onToggleOperation([item.id])}
-                                                                    color="primary"
-                                                                />
-                                                            }
-                                                            label=""
-                                                        />
+                                                <td>
+                                                    <div className="media">
+                                                        <div className="media-body pt-10">
+                                                            <FormControlLabel
+                                                                control={
+                                                                    <Checkbox
+                                                                        checked={selectedOperations.includes(item.id)}
+                                                                        onChange={() => onToggleOperation([item.id])}
+                                                                        color="primary"
+                                                                    />
+                                                                }
+                                                                label=""
+                                                            />
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </td>
+                                                </td>
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
