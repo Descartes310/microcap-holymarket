@@ -216,7 +216,7 @@ const Create = (props) => {
                                 }}
                                 getOptionLabel={(option) => option.label}
                                 options={[{
-                                    label: "Pas de type spécial", value: null
+                                    label: "Pas de type spécial", value: 'NONE'
                                 }, {
                                     label: "CODEV", value: "CODEV"
                                 }]}
