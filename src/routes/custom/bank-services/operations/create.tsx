@@ -1,10 +1,12 @@
 import { connect } from 'react-redux';
 import { BANK } from 'Url/frontendUrl';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import BankService from 'Services/banks';
 import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
 import { setRequestGlobalAction } from 'Actions';
+import TextField from '@material-ui/core/TextField';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import { NotificationManager } from 'react-notifications';
 import Checkbox from "@material-ui/core/Checkbox/Checkbox";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
@@ -21,16 +23,23 @@ const Create = (props) => {
     const [authCode, setAuthCode] = useState(null);
     const [operation, setOperation] = useState(null);
     const [showModal, setShowModal] = useState(false);
+    const [prestation, setPrestation] = useState(null);
+    const [prestations, setPrestations] = useState([]);
     const [serviceOrder, setServiceOrder] = useState(null);
     const [serviceOrderChecked, setServiceOrderChecked] = useState([]);
 
+    useEffect(() => {
+        getPrestations();
+    }, []);
+
     const findOperation = () => {
         props.setRequestGlobalAction(true);
-        BankService.findOperationByBankAuth({auth_code: authCode})
+        BankService.findOperationByBankAuth({auth_code: authCode, prestation_reference: prestation?.reference})
         .then(response => {
             setUser(response.user);
             setDetails(response.details);
             setOperation(response.operation);
+            findServiceOrder();
         })
         .catch((err) => {
             console.log(err);
@@ -39,6 +48,13 @@ const Create = (props) => {
         .finally(() => {
             props.setRequestGlobalAction(false);
         })
+    }
+
+    const getPrestations = () => {
+        props.setRequestGlobalAction(true);
+        BankService.getPrestations()
+        .then(response => setPrestations(response))
+        .finally(() => props.setRequestGlobalAction(false))
     }
 
     const findServiceOrder = () => {
@@ -119,6 +135,21 @@ const Create = (props) => {
                             onChange={(e) => setAuthCode(e.target.value)}
                         />
                     </FormGroup>
+                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                        <InputLabel className="text-left">
+                            Prestation
+                        </InputLabel>
+                        <Autocomplete
+                            id="combo-box-demo"
+                            value={prestation}
+                            options={prestations}
+                            onChange={(__, item) => {
+                                setPrestation(item);
+                            }}
+                            getOptionLabel={(option) => option.label}
+                            renderInput={(params) => <TextField {...params} variant="outlined" />}
+                        />
+                    </div> 
 
                     {operation && (
                         <>
@@ -207,7 +238,6 @@ const Create = (props) => {
                             disabled={!authCode}
                             onClick={() => {
                                 findOperation();
-                                findServiceOrder();
                             }}
                             className="text-white font-weight-bold mr-20 bg-blue"
                         >
