@@ -104,7 +104,7 @@ class CodevStep1 extends Component {
         if(subscriptionType.value == 'ALONE') {
             ProductService.getLinesByDate({reference: product.reference, date: selectedDate.date})
             .then(response => {
-                data.line_reference = response[0]?.rereference
+                data.line_reference = response[0]?.reference
                 data.line = response[0];
                 this.props.onSubmit(data);
             })

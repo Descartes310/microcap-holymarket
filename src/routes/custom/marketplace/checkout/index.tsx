@@ -57,7 +57,7 @@ class Checkout extends Component<any, any> {
 
         //console.log(data);
         this.props.setRequestGlobalAction(true);
-        OrderService.createOrder(data).then((response) => {
+        OrderService.createOrder(data).then(() => {
             this.setState({ showSweetAlert: true });
             this.props.onClearCart();
         })
