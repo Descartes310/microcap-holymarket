@@ -6,14 +6,11 @@ import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
 import React, { useState, useEffect } from 'react';
 import TimeFromMoment from "Components/TimeFromMoment";
-import Checkbox from "@material-ui/core/Checkbox/Checkbox";
 import BLOperationsModal from './components/BLLiquidOperations';
-import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
 
 const List = (props) => {
 
     const [bl, setBl] = useState(null);
-    const [action, setAction] = useState(null);
     const [operations, setOperations] = useState([]);
     const [checkerAll, setCheckAll] = useState('none');
     const [showDetailsModal, setShowDetailsModal] = useState(false);
@@ -71,20 +68,6 @@ const List = (props) => {
                                 <table className="table table-hover table-middle mb-0">
                                     <thead>
                                         <tr>
-                                            <th className="w-5">
-                                                <FormControlLabel
-                                                    control={
-                                                        <Checkbox
-                                                            indeterminate={selectedOperations.length > 0 && selectedOperations.length < operations.length}
-                                                            checked={selectedOperations.length > 0}
-                                                            onChange={(e) => onCheckerAll()}
-                                                            value="all"
-                                                            color="primary"
-                                                        />
-                                                    }
-                                                    label="Tous"
-                                                />
-                                            </th>
                                             <th className="fw-bold">Reference</th>
                                             <th className="fw-bold">Numéro</th>
                                             <th className="fw-bold">Date</th>
@@ -94,22 +77,6 @@ const List = (props) => {
                                     <tbody>
                                         {list && list.map((item, key) => (
                                             <tr key={key} className="cursor-pointer">
-                                                <td>
-                                                    <div className="media">
-                                                        <div className="media-body pt-10">
-                                                            <FormControlLabel
-                                                                control={
-                                                                    <Checkbox
-                                                                        checked={selectedOperations.includes(item.reference)}
-                                                                        onChange={() => onToggleOperation([item.reference])}
-                                                                        color="primary"
-                                                                    />
-                                                                }
-                                                                label=""
-                                                            />
-                                                        </div>
-                                                    </div>
-                                                </td>
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
@@ -128,7 +95,7 @@ const List = (props) => {
                                                     <div className="media">
                                                         <div className="media-body pt-10">
                                                             <h4 className="m-0 fw-bold text-dark">
-                                                                <TimeFromMoment time={item.emittedAt} showFullDate />
+                                                                <TimeFromMoment time={item.createdAt} showFullDate />
                                                             </h4>
                                                         </div>
                                                     </div>

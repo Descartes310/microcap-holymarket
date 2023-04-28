@@ -130,7 +130,7 @@ const List = (props) => {
                                                     <div className="media">
                                                         <div className="media-body pt-10">
                                                             <h4 className="m-0 fw-bold text-dark">
-                                                                <TimeFromMoment time={item.emittedAt} showFullDate />
+                                                                <TimeFromMoment time={item.createdAt} showFullDate />
                                                             </h4>
                                                         </div>
                                                     </div>

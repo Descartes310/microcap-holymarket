@@ -108,8 +108,12 @@ const Create = (props) => {
 
         let data: any = {
             label, code, description, price, range: range.value,
-            indirectSell: isIndirectSell || product?.mirrorAccount, acceptManyPayment: acceptManyPayment,
+            acceptManyPayment: acceptManyPayment,
             productModelId: product.id, commercialOfferId: commercialOffer.id
+        }
+
+        if(isIndirectSell) {
+            data.indirectSell = isIndirectSell || product?.mirrorAccount
         }
 
         if (file)

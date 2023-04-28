@@ -20,40 +20,17 @@ import LiquidOPMCMOperationModal from './components/liquidOPMCMOperationModal';
 import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
 
 const ACTIONS = [
+    // {
+    //     label: "Confirmation",
+    //     value: 'CONFIRM',
+    //     canHandleMany: false
+    // },
     {
-        label: "Confirmation",
-        value: 'CONFIRM',
-        canHandleMany: false
-    },{
         label: "Executer",
         value: 'TREAT',
         canHandleMany: false
     },
-    // {
-    //     label: "Retirer",
-    //     value: 'REMOVE',
-    //     canHandleMany: false
-    // },
-    // {
-    //     label: "Imprimer",
-    //     value: 'PRINT',
-    //     canHandleMany: false
-    // },
-    // {
-    //     label: "Editer",
-    //     value: 'EDIT',
-    //     canHandleMany: false
-    // },
-    // {
-    //     label: "Mise en liquidation",
-    //     value: 'LIQUID',
-    //     canHandleMany: false
-    // },
     {
-        label: "Archiver",
-        value: 'ARCHIVE',
-        canHandleMany: false
-    },{
         label: "Validation",
         value: 'VALIDATE',
         canHandleMany: false
@@ -134,22 +111,22 @@ const List = (props) => {
         });
     }
 
-    const archiveOperation = (reference) => {
-        props.setRequestGlobalAction(true),
-        BankService.archiveServiceOrder(operations.find(op => op.id === selectedOperations[0]).reference, reference)
-        .then(() => {
-            NotificationManager.success("L'archivage a réussie.")
-            getOperations();
-        })
-        .catch((err) => {
-            console.log(err);
-            NotificationManager.error("Une erreur s'est produite lors de l'archivage.")
-        })
-        .finally(() => {
-            setShowArchiveModal(false);
-            props.setRequestGlobalAction(false)
-        });
-    }
+    // const archiveOperation = (reference) => {
+    //     props.setRequestGlobalAction(true),
+    //     BankService.archiveServiceOrder(operations.find(op => op.id === selectedOperations[0]).reference, reference)
+    //     .then(() => {
+    //         NotificationManager.success("L'archivage a réussie.")
+    //         getOperations();
+    //     })
+    //     .catch((err) => {
+    //         console.log(err);
+    //         NotificationManager.error("Une erreur s'est produite lors de l'archivage.")
+    //     })
+    //     .finally(() => {
+    //         setShowArchiveModal(false);
+    //         props.setRequestGlobalAction(false)
+    //     });
+    // }
 
     const brouillardBL = () => {
         props.setRequestGlobalAction(true),
@@ -174,11 +151,11 @@ const List = (props) => {
         getOperations();
     }
 
-    const validateOperation = () => {
-        NotificationManager.success("La validation a réussie.");
-        setShowValidateModal(false);
-        getOperations();
-    }
+    // const validateOperation = () => {
+    //     NotificationManager.success("La validation a réussie.");
+    //     setShowValidateModal(false);
+    //     getOperations();
+    // }
 
     const onToggleOperation = (operationIds) => {
         let newOperations = [...selectedOperations];
@@ -232,18 +209,18 @@ const List = (props) => {
                                 if(action?.value == 'LIQUID') {
                                     setShowLiquidModal(true);
                                 }
-                                if(action?.value == 'ARCHIVE') {
-                                    setShowArchiveModal(true);
-                                }
+                                // if(action?.value == 'ARCHIVE') {
+                                //     setShowArchiveModal(true);
+                                // }
                                 if(action?.value == 'VALIDATE') {
                                     setShowValidateModal(true);
                                 }
                                 if(action?.value == 'TREAT') {
                                     setShowExecuteModal(true);
                                 }
-                                if(action?.value == 'CONFIRM') {
-                                    setShowLiquidOPMCMModal(true);
-                                }
+                                // if(action?.value == 'CONFIRM') {
+                                //     setShowLiquidOPMCMModal(true);
+                                // }
                             }}
                             disabled={action == null || ((!action?.canHandleMany && selectedOperations.length > 1) || selectedOperations.length <= 0)}
                         >
@@ -375,7 +352,7 @@ const List = (props) => {
                     liquidOperation={(ref) => liquidOperation(ref)}
                 />  
             )}
-            { showLiquidOPMCMModal && selectedOperations.length > 0 && (
+            {/* { showLiquidOPMCMModal && selectedOperations.length > 0 && (
                 <LiquidOPMCMOperationModal
                     show={showLiquidOPMCMModal}
                     title={"Confirmer l'ordre de service"}
@@ -385,9 +362,9 @@ const List = (props) => {
                     operation={selectedOperations[0]}
                     liquidOperation={(ref) => liquidOPMCMOperation(ref)}
                 />  
-            )}
+            )} */}
 
-            { showArchiveModal && selectedOperations.length > 0 && (
+            {/* { showArchiveModal && selectedOperations.length > 0 && (
                 <ArchiveOperationModal
                     show={showArchiveModal}
                     title={"Archiver l'order de service"}
@@ -397,7 +374,7 @@ const List = (props) => {
                     operation={selectedOperations[0]}
                     archiveOperation={(ref) => archiveOperation(ref)}
                 />  
-            )}
+            )} */}
 
             { showExecuteModal && selectedOperations.length > 0 && (
                 <ExecuteOperationModal
@@ -411,7 +388,7 @@ const List = (props) => {
                 />  
             )}
 
-            { showValidateModal && selectedOperations.length > 0 && (
+            {/* { showValidateModal && selectedOperations.length > 0 && (
                 <ValidateOperationModal
                     show={showValidateModal}
                     title={"Valider l'ordre de service"}
@@ -421,7 +398,7 @@ const List = (props) => {
                     operation={selectedOperations[0]}
                     validateOperation={() => validateOperation()}
                 />  
-            )}
+            )} */}
 
             { showUpdateOperationModal && action?.value == 'EDIT'  && (
                 <EditOperation

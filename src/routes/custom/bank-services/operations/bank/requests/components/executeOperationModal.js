@@ -26,7 +26,7 @@ class ExecuteOperationModal extends Component {
             <DialogComponent
                 show={show}
                 onClose={onClose}
-                size="lg"
+                size="sm"
                 title={(
                     <h3 className="fw-bold">
                         {title}
