@@ -65,7 +65,7 @@ const Create = (props) => {
     return (
         <>
             <PageTitleBar
-                title={"Création d'un objectif"}
+                title={"Création d'une prévision"}
             />
             <RctCollapsibleCard>
                 <Form onSubmit={onSubmit}>

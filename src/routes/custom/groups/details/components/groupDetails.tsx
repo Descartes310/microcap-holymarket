@@ -35,9 +35,9 @@ const GroupDetails = ({ id, setRequestGlobalAction }: any) => {
             .then(response => {
                 setGroup(response);
                 getArticles(response.reference)
-                let titleDetails = group.details.find(d => d.detailsType === 'TITLE');
-                let imageDetails = group.details.find(d => d.detailsType === 'IMAGE');
-                let descriptionDetails = group.details.find(d => d.detailsType === 'DESCRIPTION');
+                let titleDetails = response.details.find(d => d.detailsType === 'TITLE');
+                let imageDetails = response.details.find(d => d.detailsType === 'IMAGE');
+                let descriptionDetails = response.details.find(d => d.detailsType === 'DESCRIPTION');
                 setTitle(titleDetails ? titleDetails.value : null);
                 setImage(imageDetails ? imageDetails.value : null);
                 setDescription(descriptionDetails ? descriptionDetails.value : null);
@@ -53,7 +53,8 @@ const GroupDetails = ({ id, setRequestGlobalAction }: any) => {
         <div className="row">
             <div className="col-xs-12 col-sm-12 col-md-12 mb-30">
                 <Card>
-                    <CardImg top width="100%" className="img-fluid ripple-effect" style={{ maxHeight: 250 }} src={image ? getFilePath(image) : DEFAULT_BANNER} alt={`Bannière du groupe`} />
+                    <CardImg top width="100%" className="img-fluid ripple-effect" src={image ? getFilePath(image) : DEFAULT_BANNER} alt={`Bannière du groupe`} />
+                    {/* <CardImg top width="100%" className="img-fluid ripple-effect" style={{ maxHeight: 250 }} src={image ? getFilePath(image) : DEFAULT_BANNER} alt={`Bannière du groupe`} /> */}
                     <CardBody>
                         <CardTitle>
                             <h1 className='fw-bold mt-10' style={{ fontSize: '2.5rem' }}> { title ? title : group ? group.label : 'Titre du groupe' } </h1>
