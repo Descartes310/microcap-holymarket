@@ -35,9 +35,9 @@ export default (state = INIT_STATE, action) => {
 			
 			if(cartItem?.customInfos?.type == 'CODEV') {
 				if(cartItem.customInfos.line)
-					ProductService.deleteLineBooking({line_references: [cartItem.customInfos.line.reference]});
+					ProductService.deleteLineBooking({line_references: [cartItem.customInfos.line.reference], tirage_reference: cartItem.customInfos.selectedDate.reference});
 				if(cartItem.customInfos.indivision)
-					ProductService.deleteIndivisionBooking({indivision_references: [cartItem.customInfos.indivision.reference]});
+					ProductService.deleteIndivisionBooking({indivision_references: [cartItem.customInfos.indivision.reference], tirage_reference: cartItem.customInfos.selectedDate.reference});
 			}
 
 			return new Cart(obj);

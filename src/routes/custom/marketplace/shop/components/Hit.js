@@ -44,9 +44,9 @@ class Hit extends Component {
 		this.setState({ loading: false, product: null, data: null });
 		if(cartItem?.customInfos?.type == 'CODEV') {
 			if(cartItem.customInfos.line)
-				ProductService.createLineBooking({line_references: [cartItem.customInfos.line.reference]});
+				ProductService.createLineBooking({line_references: [cartItem.customInfos.line.reference], tirage_reference: this.state.data.selectedDate.reference});
 			if(cartItem.customInfos.indivision)
-				ProductService.createIndivisionBooking({indivision_references: [cartItem.customInfos.indivision.reference], supports: cartItem.customInfos.supports});
+				ProductService.createIndivisionBooking({indivision_references: [cartItem.customInfos.indivision.reference], supports: cartItem.customInfos.supports, tirage_reference: this.state.data.selectedDate.reference});
 		}
 	}
 
