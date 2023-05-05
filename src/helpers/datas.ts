@@ -47,17 +47,17 @@ export const getTimeUnits = () => {
     return [
         {
             label: 'Jour',
-            value: 'DAYS',
+            value: 'DAY',
             days: 1
         },
         {
             label: 'Semaine',
-            value: 'WEEKS',
+            value: 'WEEK',
             days: 7
         },
         {
             label: 'Mois',
-            value: 'MONTHS',
+            value: 'MONTH',
             days: 30
         }
     ];
