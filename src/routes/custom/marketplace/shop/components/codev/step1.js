@@ -1,10 +1,10 @@
 import { connect } from 'react-redux';
 import { FormGroup } from 'reactstrap';
 import React, { Component } from 'react';
-import UserService from 'Services/users';
 import { withRouter } from "react-router-dom";
 import Button from '@material-ui/core/Button';
 import ProductService from 'Services/products';
+import Indivision from './createIndivision.tsx';
 import { setRequestGlobalAction } from 'Actions';
 import { RctCardContent } from 'Components/RctCard';
 import TextField from '@material-ui/core/TextField';
@@ -28,19 +28,21 @@ class CodevStep1 extends Component {
 
     state = {
         dates: [],
-        lines: [],
         plan: null,
         alias: null,
         aliases: [],
         product: null,
         drawDate: null,
         cessible: false,
+        indivision: null,
         editable: false,
-        advanceType: null,
         selectedLine: null,
+        advanceType: null,
         advanceValue: null,
         selectedDate: null,
         subscriptionType: null,
+        showCreateIndivisionBox: false,
+        indivisions: [{id: 0, name: 'Nouvelle indivision'}],
     }
 
     constructor(props) {
@@ -53,12 +55,11 @@ class CodevStep1 extends Component {
         }
     }
 
-    findLines = () => {
+    findIndivisions = () => {
         this.props.setRequestGlobalAction(true);
-        ProductService.getIndivisionsByDate({reference: this.props.product.reference, date: this.state.selectedDate.date})
+        ProductService.getIndivisionsByProduct({reference: this.props.product.reference})
         .then(response => {
-            this.setState({ lines: response });
-            this.setState({ selectedLine: response[0] });
+            this.setState({ indivisions: [...this.state.indivisions, ...response.map(i => { return {...i, name: 'Date: '+i.line.tirage+', Denomination: '+i.denomination+', Montant: '+i.amount}})] });
         })
         .finally(() => this.props.setRequestGlobalAction(false))
     }
@@ -70,8 +71,10 @@ class CodevStep1 extends Component {
             if (response.details.length <= 0) {
                 NotificationManager.error('Produit non configuré');
                 this.props.onClose();
+            } else {
+                this.setState({ product: response }, () => this.findTirageDates());
+                this.findIndivisions();
             }
-            this.setState({ product: response }, () => this.findTirageDates());
         })
         .finally(() => this.props.setRequestGlobalAction(false))
     }
@@ -86,7 +89,12 @@ class CodevStep1 extends Component {
     }
 
     onValidate = async () => {
-        const { product, selectedDate, subscriptionType } = this.state;
+        const { product, selectedDate, subscriptionType, indivision } = this.state;
+
+        if(subscriptionType.value === 'INDIVISION' && indivision.id === 0) {
+            this.setState({ showCreateIndivisionBox: true });
+            return;
+        }
 
         if (!product || !selectedDate) {
             NotificationManager.error('Le formulaire est mal renseigné');
@@ -109,6 +117,7 @@ class CodevStep1 extends Component {
                 this.props.onSubmit(data);
             })
         } else {
+            data.indivision = indivision;
             this.props.onSubmit(data);
         }
 
@@ -116,10 +125,29 @@ class CodevStep1 extends Component {
 
     render() {
 
-        const { onClose, show } = this.props;
-        const { dates, selectedDate, subscriptionType } = this.state;
+        const { onClose, show, product } = this.props;
+        const { dates, selectedDate, subscriptionType, indivisions, indivision, showCreateIndivisionBox } = this.state;
 
         return (
+            showCreateIndivisionBox
+            ? <Indivision
+                data={{
+                    product,
+                    selectedDate,  
+                    type: 'CODEV',
+                    subscriptionType, 
+                    productReference: product.reference 
+                }}
+                show={showCreateIndivisionBox}
+                onClose={() => {
+                    this.setState({ showCreateIndivisionBox: false });
+                }}
+                onValidate={(line) => {
+                    this.setState({ indivision: line }, () => {
+                        this.onValidate()
+                    });  
+                }}
+            /> :
             <DialogComponent
                 show={show}
                 onClose={onClose}
@@ -132,21 +160,7 @@ class CodevStep1 extends Component {
             >
                 <RctCardContent>
                     <h1>Specification de la souscription</h1>
-                    <FormGroup className="col-md-12 col-sm-12 has-wrapper mb-30 mt-20">
-                        <InputLabel className="text-left" htmlFor="startDate">
-                            Date du tirage
-                        </InputLabel>
-                        <Autocomplete
-                            options={dates}
-                            value={selectedDate}
-                            id="combo-box-demo"
-                            onChange={(__, item) => {
-                                this.setState({ selectedDate: item });
-                            }}
-                            getOptionLabel={(option) => option.date}
-                            renderInput={(params) => <TextField {...params} variant="outlined" />}
-                        />
-                    </FormGroup>
+
                     <FormGroup className="col-md-12 col-sm-12 has-wrapper mb-30 mt-20">
                         <InputLabel className="text-left">
                             Type de souscription
@@ -162,7 +176,61 @@ class CodevStep1 extends Component {
                             renderInput={(params) => <TextField {...params} variant="outlined" />}
                         />
                     </FormGroup>
+                    {
+                        subscriptionType != null && (
+                        subscriptionType.value == 'ALONE' ?
                     
+                        <FormGroup className="col-md-12 col-sm-12 has-wrapper mb-30 mt-20">
+                            <InputLabel className="text-left" htmlFor="startDate">
+                                Date du tirage
+                            </InputLabel>
+                            <Autocomplete
+                                options={dates}
+                                value={selectedDate}
+                                id="combo-box-demo"
+                                onChange={(__, item) => {
+                                    this.setState({ selectedDate: item });
+                                }}
+                                getOptionLabel={(option) => option.date}
+                                renderInput={(params) => <TextField {...params} variant="outlined" />}
+                            />
+                        </FormGroup> : 
+                        <>
+                            <FormGroup className="col-md-12 col-sm-12 has-wrapper mb-30 mt-20">
+                                <InputLabel className="text-left">
+                                    Indivisions disponibles
+                                </InputLabel>
+                                <Autocomplete
+                                    options={indivisions}
+                                    value={indivision}
+                                    id="combo-box-demo"
+                                    onChange={(__, item) => {
+                                        this.setState({ indivision: item });
+                                    }}
+                                    getOptionLabel={(option) => option.name}
+                                    renderInput={(params) => <TextField {...params} variant="outlined" />}
+                                />
+                            </FormGroup>
+
+                            { indivision?.id === 0 && (
+                                <FormGroup className="col-md-12 col-sm-12 has-wrapper mb-30 mt-20">
+                                    <InputLabel className="text-left" htmlFor="startDate">
+                                        Date du tirage
+                                    </InputLabel>
+                                    <Autocomplete
+                                        options={dates}
+                                        value={selectedDate}
+                                        id="combo-box-demo"
+                                        onChange={(__, item) => {
+                                            this.setState({ selectedDate: item });
+                                        }}
+                                        getOptionLabel={(option) => option.date}
+                                        renderInput={(params) => <TextField {...params} variant="outlined" />}
+                                    />
+                                </FormGroup>
+                            )}
+                        </>
+                    )}
                     <FormGroup className="float-right mb-20">
                         <Button
                             color="primary"

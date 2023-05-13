@@ -24,19 +24,17 @@ const affectations = [
 const Create = (props) => {
 
     const [goals, setGoals] = useState([]);
-    const [label, setLabel] = useState('');
     const [amounts, setAmounts] = useState([
-        { percent: 0, value: 0 }, 
-        { percent: 0, value: 0 }, 
-        { percent: 0, value: 0 }, 
-        { percent: 0, value: 0 }
+        { percent: null, value: null }, 
+        { percent: null, value: null }, 
+        { percent: null, value: null }, 
+        { percent: null, value: null }
     ]);
     const [amount, setAmount] = useState(0);
     const [endDate, setEndDate] = useState(null);
     const [timeUnit, setTimeUnit] = useState(null);
     const [prevision, setPrevision] = useState(null);
     const [startDate, setStartDate] = useState(null);
-    const [selectedGoals, setSelectedGoals] = useState([]);
 
     useEffect(() => {
         getPrevision();

@@ -50,7 +50,7 @@ class HeaderNotifications extends Component {
    render() {
       const { notifications, unreadCount, loading } = this.state;
       return (
-         <UncontrolledDropdown nav className="list-inline-item notification-dropdown">
+         <UncontrolledDropdown nav className="list-inline-item notification-dropdown" >
             <DropdownToggle nav className="p-0">
                <Tooltip title="Notifications" placement="bottom">
                   <IconButton className={unreadCount > 0 ? "shake" : ''} aria-label="bell">

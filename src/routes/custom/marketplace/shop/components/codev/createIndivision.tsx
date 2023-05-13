@@ -15,12 +15,9 @@ import DialogComponent from "Components/dialog/DialogComponent";
 const Indivision = (props) => {
 
     const { show, onClose } = props;
-    const [plan, setPlan] = useState([]);
     const [units, setUnits] = useState([]);
-    const [lines, setLines] = useState([]);
     const [amount, setAmount] = useState(null);
     const [product, setProduct] = useState(null);
-    const [showPlan, setShowPlan] = useState(false);
     const [priceUnit, setPriceUnit] = useState(null);
     const [distribution, setDistribution] = useState(null);
     const [selectedLine, setSelectedLine] = useState(null);
@@ -30,13 +27,13 @@ const Indivision = (props) => {
         getUnits();
         findLines();
         findProduct();
+        console.log(props.data);
     }, []);
 
     const findLines = () => {
         props.setRequestGlobalAction(true);
-        ProductService.getLinesByDate({reference: props.data.product.reference, date: props.data.selectedDate.date})
+        ProductService.getLinesByDate({reference: props.data.product.reference, date: props.data.selectedDate.date, show: true})
         .then(response => {
-            setLines(response);
             setSelectedLine(response[0]);
         })
         .finally(() => props.setRequestGlobalAction(false))
@@ -63,11 +60,9 @@ const Indivision = (props) => {
         .finally(() => setRequestGlobalAction(false))
     }
 
-
-
     const onSumit = () => {
 
-        if(!denomination || !amount || !selectedLine) {
+        if(!denomination || !amount || !selectedLine || !distribution) {
             return;
         }
 
@@ -100,8 +95,8 @@ const Indivision = (props) => {
         let data = {
             amount: amount,
             dates: tmpDates,
-            line: selectedLine,
             title: denomination,
+            distribution: distribution.value,
             line_reference: selectedLine?.reference
         }
 
@@ -163,7 +158,7 @@ const Indivision = (props) => {
                         </FormGroup>
                     </div>
                     <div className="row d-flex align-items-center">
-                        <FormGroup className="col-md-4 col-sm-12 has-wrapper">
+                        <FormGroup className="col-md-6 col-sm-12 has-wrapper">
                             <InputLabel className="text-left" htmlFor="denomination">
                                 Dénomination de l'indivision
                             </InputLabel>
@@ -177,7 +172,7 @@ const Indivision = (props) => {
                                 onChange={(e) => setDenomination(e.target.value)}
                             />
                         </FormGroup>
-                        <FormGroup className="col-md-4 col-sm-12 has-wrapper">
+                        <FormGroup className="col-md-6 col-sm-12 has-wrapper">
                             <InputLabel className="text-left">
                                 Distribution de l'indivision
                             </InputLabel>
@@ -188,41 +183,11 @@ const Indivision = (props) => {
                                     setDistribution(item);
                                 }}
                                 getOptionLabel={(option) => option.label}
-                                options={[{label: 'Libre', value: 'FREE'}, {label: 'Privée', value: 'PRIVATE'}]}
+                                options={[{label: 'Libre', value: 'PUBLIC'}, {label: 'Privée', value: 'PRIVATE'}]}
                                 renderInput={(params) => <TextField {...params} variant="outlined" />}
                             />
                         </FormGroup>
-                        <FormGroup className="col-md-4 col-sm-12 has-wrapper mt-30">
-                            <Button
-                                color="primary"
-                                variant="contained"
-                                onClick={() => setShowPlan(true)}
-                                className="text-white font-weight-bold mb-20"
-                            >
-                                Visualiser le plan
-                            </Button>
-                        </FormGroup>
                     </div>
-                    {
-                        showPlan && (
-                            <table className='table table-striped table-bordered'>
-                                <thead>
-                                    <th>Reference indivision</th>
-                                    <th>Dénomination</th>
-                                    <th>Reference plan</th>
-                                </thead>
-                                <tbody>
-                                    {plan?.map(item => (
-                                        <tr>
-                                            <td>{item.label}</td>
-                                            <td>{item.label}</td>
-                                            <td>{item.label}</td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        )
-                    }
                 </div>
                 <div className="row justify-content-around">
                     <FormGroup className="float-right mb-20">

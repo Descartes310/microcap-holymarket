@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import Button from '@material-ui/core/Button';
 import IntlMessages from 'Util/IntlMessages';
 import { Form, FormGroup, Input, Label, Col } from 'reactstrap';
+import UserService from "Services/users";
 
 class BillingForm extends Component<any, any> {
 
@@ -17,6 +18,22 @@ class BillingForm extends Component<any, any> {
          state: ''
       }
    }
+
+   componentDidMount(): void {
+      this.getContacts();
+   }
+
+   getContacts = () => {
+      UserService.getContacts().then((contacts) => {
+          this.setState({ 
+            billingInformation : {...this.state.billingInformation,
+               mobileNumber: contacts.find(c => c.type === 'PHONE')?.value,
+               addressLine1: contacts.find(c => c.type === 'ADDRESS')?.value,
+               addressLine2: contacts.find(c => c.type === 'ADDRESS')?.value
+            }
+         })
+      });
+  }
 
    /**
     * On Change Billing Information
@@ -44,6 +61,7 @@ class BillingForm extends Component<any, any> {
    }
 
    render() {
+      console.log(this.props.authUser);
       return (
          <div className="billing-form-warp py-4">
             <Form>
@@ -55,6 +73,7 @@ class BillingForm extends Component<any, any> {
                         name="mail"
                         id="emailId"
                         className="mb-4 mb-sm-0 input-lg"
+                        defaultValue={this.props.authUser.email}
                         onChange={(e) => this.onChangeBillingInformation('emailId', e.target.value)}
                      />
                   </Col>
@@ -65,6 +84,7 @@ class BillingForm extends Component<any, any> {
                         name="number"
                         id="contactNumber"
                         className="mb-4 mb-sm-0 input-lg"
+                        defaultValue={this.state.billingInformation.mobileNumber}
                         onChange={(e) => this.onChangeBillingInformation('mobileNumber', e.target.value)}
                      />
                   </Col>
@@ -77,6 +97,7 @@ class BillingForm extends Component<any, any> {
                         name="address"
                         id="address1"
                         className="mb-4 mb-sm-0 input-lg"
+                        defaultValue={this.state.billingInformation.addressLine1}
                         onChange={(e) => this.onChangeBillingInformation('addressLine1', e.target.value)}
                      />
                   </Col>
@@ -89,6 +110,7 @@ class BillingForm extends Component<any, any> {
                         name="address"
                         id="address2"
                         className="mb-4 mb-sm-0 input-lg"
+                        defaultValue={this.state.billingInformation.addressLine2}
                         onChange={(e) => this.onChangeBillingInformation('addressLine2', e.target.value)}
                      />
                   </Col>
@@ -125,13 +147,13 @@ class BillingForm extends Component<any, any> {
                      />
                   </Col>
                </FormGroup>
-               <FormGroup row className="mb-0">
+               {/* <FormGroup row className="mb-0">
                   <Col sm={12}>
                      <Label className="ml-4">
                         <Input type="checkbox" /><IntlMessages id="components.ShippingAddressText" />
                      </Label>
                   </Col>
-               </FormGroup>
+               </FormGroup> */}
             </Form>
             <div className="d-flex justify-content-end">
                <Button
@@ -151,7 +173,7 @@ class BillingForm extends Component<any, any> {
 
 const mapStateToProps = ({ authUser }) => {
    return {
-       authUser: authUser.data,
+       authUser: authUser.data
    }
 };
 

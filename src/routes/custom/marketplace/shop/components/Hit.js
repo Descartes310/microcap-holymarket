@@ -110,8 +110,8 @@ class Hit extends Component {
 								this.setState({ 
 									data: data,
 									showCodevStep1: false, 
-									showCodevStep2: true, 
-									showCodevStep3: false,
+									showCodevStep2: false, 
+									showCodevStep3: true,
 									showCodevStep4: false 
 								});
 							} else {
