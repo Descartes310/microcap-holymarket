@@ -173,7 +173,7 @@ class CodevStep3 extends Component {
                                                 }}
                                                 getOptionLabel={(option) => 'Tiquet de reférence: '+option.reference.split('_')[2]}
                                                 renderInput={(params) => <TextField {...params} variant="outlined" />}
-                                                options={supports.filter(s => s.date === d && s.referralCode == null)}
+                                                options={supports.filter(s => s.date === d && s.referralCode == null && s.status == 'FREE')}
                                             />
                                         </div>
                                     </td>

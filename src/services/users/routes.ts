@@ -20,5 +20,7 @@ export const GET_BANK_AGENCY_CODE = "api/socialnetworks/users/institutions/agenc
 export const GET_CONTACTS = "api/socialnetworks/users/self/contacts";
 export const CREATE_CONTACT = "api/socialnetworks/users/self/contacts";
 export const UPDATE_CONTACTS = "api/socialnetworks/users/self/contacts";
+export const CONFIRM_CONTACT_CODE = `api/socialnetworks/users/self/contacts/confirm-code`;
+export const SEND_CONTACT_CODE = (id) => `api/socialnetworks/users/self/contacts/${id}/send-code`;
 
 export const ACTIVATE_PASS = (reference) => `api/socialnetworks/users/pass/${reference}/active`;

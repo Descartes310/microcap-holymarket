@@ -83,6 +83,14 @@ export default class UserService {
         return makeRequest('post', Routes.CREATE_CONTACT, datas);
     }
 
+    static sendContactCode(id: any): Promise<any> {
+        return makeRequest('post', Routes.SEND_CONTACT_CODE(id), null);
+    }
+
+    static confirmContactCode(data: any): Promise<any> {
+        return makeRequest('post', Routes.CONFIRM_CONTACT_CODE, data);
+    }
+
     static activatePass(reference: string): Promise<any> {
         return makeRequest('put', Routes.ACTIVATE_PASS(reference));
     }

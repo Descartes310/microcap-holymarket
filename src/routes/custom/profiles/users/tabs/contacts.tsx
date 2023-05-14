@@ -1,57 +1,45 @@
 import CreateAlias from './alias';
 import { connect } from 'react-redux';
 import UserService from 'Services/users';
+import CreateContact from './createContact';
 import { RctCard } from 'Components/RctCard';
 import { withRouter } from "react-router-dom";
 import Button from '@material-ui/core/Button';
 import CustomList from "Components/CustomList";
 import { setRequestGlobalAction } from 'Actions';
 import React, { useEffect, useState } from 'react';
+import ConfirmContactCode from './confirmContactCode';
 import { NotificationManager } from 'react-notifications';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { FormGroup, Input as InputStrap, Form } from 'reactstrap';
+import { getContactTypeLabel, getStatusLabel } from '../../../../../data'
 
 const PROFILE_BANNER = 'https://reactify.theironnetwork.org/static/media/profile-bg.5573c7e7.jpg';
 
 const Personal = (props) => {
 
     const [alias, setAlias] = useState([]);
-    const [email, setEmail] = useState(null);
-    const [phone, setPhone] = useState(null);
-    const [address, setAddress] = useState(null);
+    const [contacts, setContacts] = useState([]);
     const [showCreateAliasBox, setShowCreateAliasBox] = useState(false);
+    const [showCreateContactBox, setShowCreateContactBox] = useState(false);
+    const [showConfirmContactBox, setShowConfirmContactBox] = useState(false);
 
     useEffect(() => {
         getContacts();
     }, []);
 
     const getContacts = () => {
-        UserService.getContacts().then((contacts) => {
-            setAlias(contacts.filter(c => c.type === 'ALIAS'));
-            setEmail(contacts.find(c => c.type === 'EMAIL')?.value);
-            setPhone(contacts.find(c => c.type === 'PHONE')?.value);
-            setAddress(contacts.find(c => c.type === 'ADDRESS')?.value)
+        UserService.getContacts().then((response) => {
+            setContacts(response)
+            setAlias(response.filter(c => c.type === 'ALIAS'));
         });
     }
 
-    const onSubmit = () => {
-
+    const sendVerifyCode = (reference) => {
         props.setRequestGlobalAction(true);
-
-        let data: any = {};
-
-        if(email) data.email = email;
-        if(phone) data.phone = phone;
-        if(address) data.address = address;
-
-        UserService.updateContact(data).then(() => {
-            NotificationManager.success('Le contact a été enregistré');
-        })
-        .catch((err) => {
-            console.log(err);
-            NotificationManager.success("Une erreur s'est produite");
-        })
-        .finally(() => {
+        UserService.sendContactCode(reference).then(() => {
+            setShowConfirmContactBox(true);
+        }).finally(() => {
             props.setRequestGlobalAction(false);
         });
     }
@@ -74,7 +62,7 @@ const Personal = (props) => {
                     </div>
                 </div>
                 <div className="p-50">
-                    <Form onSubmit={onSubmit}>
+                    <Form>
                         <FormGroup className="has-wrapper">
                             <InputLabel className="text-left" htmlFor="reference">
                                 Adresse email principale
@@ -85,36 +73,79 @@ const Personal = (props) => {
                                 value={props.authUser.email}
                             />
                         </FormGroup>
-                        <FormGroup className="has-wrapper">
-                            <InputLabel className="text-left" htmlFor="email">
-                                Adresse email secondaire
-                            </InputLabel>
-                            <InputStrap
-                                value={email}
-                                className="input-lg"
-                                onChange={(e) => setEmail(e.target.value)}
-                            />
-                        </FormGroup>
-                        <FormGroup className="has-wrapper">
-                            <InputLabel className="text-left" htmlFor="phone">
-                                Numéro de téléphone
-                            </InputLabel>
-                            <InputStrap
-                                value={phone}
-                                className="input-lg"
-                                onChange={(e) => setPhone(e.target.value)}
-                            />
-                        </FormGroup>
-                        <FormGroup className="has-wrapper">
-                            <InputLabel className="text-left" htmlFor="address">
-                                Adresse
-                            </InputLabel>
-                            <InputStrap
-                                value={address}
-                                className="input-lg"
-                                onChange={(e) => setAddress(e.target.value)}
-                            />
-                        </FormGroup>
+
+                        <h2>Mes contacts</h2>
+                        <CustomList
+                            list={contacts.filter(c => c.type !== 'ALIAS')}
+                            loading={false}
+                            onAddClick={() => setShowCreateContactBox(true)}
+                            itemsFoundText={n => `${n} contacts trouvés`}
+                            renderItem={list => (
+                                <>
+                                    {list && list.length === 0 ? (
+                                        <div className="d-flex justify-content-center align-items-center py-50">
+                                            <h4>
+                                                Aucun contact trouvé
+                                            </h4>
+                                        </div>
+                                    ) : (
+                                        <div className="table-responsive">
+                                            <table className="table table-hover table-middle mb-0">
+                                                <thead>
+                                                    <tr>
+                                                        <th className="fw-bold">Type</th>
+                                                        <th className="fw-bold">Valeur</th>
+                                                        <th className="fw-bold">Status</th>
+                                                        <th className="fw-bold">Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {list && list.map((item, key) => (
+                                                        <tr key={key} className="cursor-pointer">
+                                                            <td>
+                                                                <div className="media">
+                                                                    <div className="media-body pt-10">
+                                                                        <h4 className="m-0 fw-bold text-dark">{getContactTypeLabel(item.type)}</h4>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div className="media">
+                                                                    <div className="media-body pt-10">
+                                                                        <h4 className="m-0 fw-bold text-dark">{item.value}</h4>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div className="media">
+                                                                    <div className="media-body pt-10">
+                                                                        <h4 className="m-0 fw-bold text-dark">{getStatusLabel(item.status)}</h4>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                { ['EMAIL'].includes(item.type) && item.status !== 'VERIFIED' && (
+                                                                    <div className="media">
+                                                                        <Button
+                                                                            color="primary"
+                                                                            variant="contained"
+                                                                            className="text-white font-weight-bold"
+                                                                            onClick={() => sendVerifyCode(item.id)}
+                                                                        >
+                                                                            Vérifier
+                                                                        </Button>
+                                                                    </div>
+                                                                )}
+                                                            </td>
+                                                        </tr>
+                                                    ))}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    )}
+                                </>
+                            )}
+                        />
 
                         <h2>Mes Alias</h2>
                         <CustomList
@@ -157,21 +188,22 @@ const Personal = (props) => {
                                 </>
                             )}
                         />
-
-                        <FormGroup>
-                            <Button
-                                color="primary"
-                                variant="contained"
-                                onClick={onSubmit}
-                                className="text-white font-weight-bold"
-                            >
-                                Enregistrer
-                            </Button>
-                        </FormGroup>
                     </Form>
                 </div>
             </RctCard>
             <CreateAlias show={showCreateAliasBox} onClose={() => setShowCreateAliasBox(false)} />
+            <CreateContact show={showCreateContactBox} onClose={(reload = false) => {
+                    setShowCreateContactBox(false);
+                    if(reload)
+                        getContacts();
+                }
+            } />
+            <ConfirmContactCode show={showConfirmContactBox} onClose={(reload = false) => {
+                    setShowConfirmContactBox(false);
+                    if(reload)
+                        getContacts();
+                }
+            } />
         </div>
     );
 }

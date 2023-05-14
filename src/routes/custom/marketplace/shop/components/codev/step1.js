@@ -96,7 +96,7 @@ class CodevStep1 extends Component {
             return;
         }
 
-        if (!product || !selectedDate) {
+        if (!product || (!selectedDate && subscriptionType.value === 'ALONE')) {
             NotificationManager.error('Le formulaire est mal renseigné');
             return;
         }

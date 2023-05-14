@@ -27,6 +27,7 @@ class BillingForm extends Component<any, any> {
       UserService.getContacts().then((contacts) => {
           this.setState({ 
             billingInformation : {...this.state.billingInformation,
+               emailId: this.props.authUser.email,
                mobileNumber: contacts.find(c => c.type === 'PHONE')?.value,
                addressLine1: contacts.find(c => c.type === 'ADDRESS')?.value,
                addressLine2: contacts.find(c => c.type === 'ADDRESS')?.value
@@ -61,7 +62,6 @@ class BillingForm extends Component<any, any> {
    }
 
    render() {
-      console.log(this.props.authUser);
       return (
          <div className="billing-form-warp py-4">
             <Form>
