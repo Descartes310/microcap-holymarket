@@ -874,6 +874,10 @@ export const getProductRanges = () => {
 export const getSellWay = () => {
     return [
         {
+            label: 'Vente classique',
+            value: 'CLASSIC'
+        },
+        {
             label: 'Vente privée',
             value: 'PRIVATE'
         },

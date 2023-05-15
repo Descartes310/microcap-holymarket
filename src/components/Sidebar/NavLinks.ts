@@ -466,7 +466,7 @@ export default [
       ],
    },
    {
-      "path": MARKETPLACE.SHOP,
+      "path": MARKETPLACE.SHOP.CLASSIC,
       "menu_title": "MicroCap Shop",
       "menu_icon": "zmdi zmdi-shopping-cart",
       "new_item": false,

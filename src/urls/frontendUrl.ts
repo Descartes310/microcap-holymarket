@@ -226,12 +226,17 @@ export const PROJECT = {
 
 export const MARKETPLACE = {
     SELF: "/marketplace",
-    SHOP: "/marketplace/shop",
     CART: "/marketplace/cart",
     ORDERS: "/marketplace/orders",
     SHOP_PRODUCTS: "/marketplace/shop/:reference/products",
     CHECKOUT: "/marketplace/checkout",
     SALES: "/marketplace/orders/:id/sales",
+    SHOP: {
+        SELF: "/marketplace/shop",
+        PRIVATE: "/marketplace/shop/private",
+        CLASSIC: "/marketplace/shop/classic",
+        FINANCIAL: "/marketplace/shop/financial",
+    },
     CATAlOG: {
         SELF: "/marketplace/catalogs",
         PRODUCTS: `/marketplace/catalogs/:id/products`,

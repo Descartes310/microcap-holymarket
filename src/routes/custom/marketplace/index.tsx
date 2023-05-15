@@ -23,7 +23,7 @@ const Marketplace = (props) => {
                 <Switch>
                     <Redirect exact from={`${match.url}/`} to={MARKETPLACE.CATAlOG.SELF} />
                     <Route path={MARKETPLACE.SHOP_PRODUCTS} component={ShopProducts} />
-                    <Route path={MARKETPLACE.SHOP} component={Shop} />
+                    <Route path={MARKETPLACE.SHOP.SELF} component={Shop} />
                     <Route path={MARKETPLACE.CART} component={Cart} />
                     <Route path={MARKETPLACE.SALES} component={Sales} />
                     <Route path={MARKETPLACE.ORDERS} component={Orders} />
