@@ -74,7 +74,7 @@ class PersonRegister extends Component {
                 NotificationManager.success("La création de votre compte a réussie.");
                 this.props.history.push(AUTH.LOGIN);
             }).catch(err => {
-                NotificationManager.error("Cette adresse email est déjà utilisée.");
+                NotificationManager.error("Une erreur est survenue, veuillez reessayer plus tard.");
             });
     };
 
