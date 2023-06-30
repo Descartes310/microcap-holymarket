@@ -8,8 +8,8 @@ import CodevStep1 from '../components/codev/step1';
 import CodevStep2 from '../components/codev/step2';
 import CodevStep3 from '../components/codev/step3';
 import CodevStep4 from '../components/codev/step4';
-import { textTruncate, getFilePath } from "Helpers/helpers";
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { textTruncate, getFilePath, getPriceWithCurrency } from "Helpers/helpers";
 
 class Hit extends Component {
 	state = {
@@ -84,7 +84,7 @@ class Hit extends Component {
 					this.setState({ showDetails: true });
 				}}>
 					<div className="d-flex justify-content-between">
-						<h2 className="text-danger">€{product.price}</h2>
+						<h2 className="text-danger">{getPriceWithCurrency(product.price, product.currency)}</h2>
 					</div>
 					<h4 className="text-dark">{product.label}</h4>
 					<h4 style={{ color: '#ffb93a' }}>{product.seller}</h4>

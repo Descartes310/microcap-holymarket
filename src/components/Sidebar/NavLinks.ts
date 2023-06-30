@@ -291,10 +291,11 @@ export default [
       "menu_icon": "zmdi zmdi-home",
       "new_item": false,
       "permissions": [
-         Permission.group.space.name,
-         Permission.project.project.name,
-         Permission.project.item.name,
-         Permission.funding.account.name
+         Permission.microcap360.network.name,
+         Permission.microcap360.wallets.name,
+         Permission.microcap360.projects.name,
+         Permission.microcap360.mymicrocap.name,
+         Permission.microcap360.ideas.name,
       ],
       "profiles": null,
       "child_routes": [
@@ -302,7 +303,7 @@ export default [
             "menu_title": "Réseau",
             "new_item": false,
             "path": GROUP.COMMUNITY.SPACE.MINE,
-            "permissions": [Permission.group.space.name],
+            "permissions": [Permission.microcap360.network.name],
             "profiles": null,
             "child_routes": null
          },
@@ -310,8 +311,7 @@ export default [
             "menu_title": "Mes comptes",
             "new_item": false,
             "path": FUNDING.ACCOUNT.LIST,
-            "permissions": null,
-            // "permissions": [Permission.funding.account.name],
+            "permissions": [Permission.microcap360.wallets.name],
             "profiles": null,
             "child_routes": null
          },
@@ -319,7 +319,7 @@ export default [
             "menu_title": "Mes projets",
             "new_item": false,
             "path": PROJECT.MINE.FOLDER.LIST,
-            "permissions": [Permission.project.project.name],
+            "permissions": [Permission.microcap360.projects.name],
             "profiles": null,
             "child_routes": null
          },
@@ -327,7 +327,7 @@ export default [
             "menu_title": "Mon Microcap",
             "new_item": false,
             "path": MIPRO.HOME.SELF,
-            "permissions": null,
+            "permissions": [Permission.microcap360.mymicrocap.name],
             "profiles": null,
             "child_routes": null
          },
@@ -335,7 +335,7 @@ export default [
             "menu_title": "Créations personnelles",
             "new_item": false,
             "path": PROJECT.MINE.ITEM.LIST,
-            "permissions": [Permission.project.item.name],
+            "permissions": [Permission.microcap360.ideas.name],
             "profiles": null,
             "child_routes": null
          },

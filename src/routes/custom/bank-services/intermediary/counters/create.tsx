@@ -31,6 +31,8 @@ const Create = (props) => {
     const [type, setType] = useState(null);
     const [types, setTypes] = useState([]);
     const [name, setName] = useState(null);
+    const [party, setParty] = useState(null);
+    const [parties, setParties] = useState([]);
     const [member, setMember] = useState(null);
     const [category, setCategory] = useState(null);
     const [categories, setCategories] = useState([]);  
@@ -39,6 +41,9 @@ const Create = (props) => {
 
     useEffect(() => {
         getTypes();
+        if(props.authUser.referralTypes.includes('PROVIDER_INTERMEDIARY')) {
+            getParties();
+        }
         getCategories();
     }, []);
 
@@ -61,6 +66,13 @@ const Create = (props) => {
         })
     }
 
+    const getParties = () => {
+        props.setRequestGlobalAction(true),
+        BankService.getAgents()
+        .then(response => setParties(response))
+        .finally(() => props.setRequestGlobalAction(false))
+    }
+
     const getCategories = () => {
         props.setRequestGlobalAction(true),
         UserAccountTypeService.getAccountTypeCategories()
@@ -77,18 +89,22 @@ const Create = (props) => {
 
     const onSubmit = () => {
 
-        if(!member || !type || !paymentMethod || !name) {
+        if(!member || !type || !paymentMethod || !name || (!party && props.authUser.referralTypes.includes('PROVIDER_INTERMEDIARY'))) {
             NotificationManager.error("Les informations renseignées sont incompletes ou incorrectes");
             return;
         }
 
         props.setRequestGlobalAction(true);
 
-        let data = {
+        let data: any = {
             name: name,
             reference: membership,
             payment_mode: paymentMethod.value,
             account_type_reference: type.reference,
+        }
+
+        if(props.authUser.referralTypes.includes('PROVIDER_INTERMEDIARY')) {
+            data.party_reference = party.reference;
         }
 
         BankService.createCounter(data).then(() => {
@@ -162,6 +178,24 @@ const Create = (props) => {
                             onChange={(e) => setName(e.target.value)}
                         />
                     </FormGroup>
+
+                    { props.authUser.referralTypes.includes('PROVIDER_INTERMEDIARY') && (
+                        <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                            <InputLabel className="text-left">
+                                Agence
+                            </InputLabel>
+                            <Autocomplete
+                                id="combo-box-demo"
+                                options={parties}
+                                value={party}
+                                onChange={(__, item) => {
+                                    setParty(item);
+                                }}
+                                getOptionLabel={(option) => option.commercialName}
+                                renderInput={(params) => <TextField {...params} variant="outlined" />}
+                            />
+                        </div>
+                    )}
 
                     <div className="col-md-12 col-sm-12 has-wrapper mb-30">
                         <InputLabel className="text-left">

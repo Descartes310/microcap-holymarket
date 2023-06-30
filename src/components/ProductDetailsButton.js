@@ -5,6 +5,7 @@ import Button from '@material-ui/core/Button';
 import ProductService from 'Services/products';
 import { setRequestGlobalAction } from 'Actions';
 import { RctCardContent } from 'Components/RctCard';
+import { getPriceWithCurrency } from "Helpers/helpers";
 import DialogComponent from "Components/dialog/DialogComponent";
 import { getProductDetailsByName, getTimeUnitByValue } from "Helpers/datas";
 
@@ -72,9 +73,10 @@ class ProductDetailsButton extends Component {
                                 </tr>
                                 <tr>
                                     <td>Prix de vente</td>
-                                    <td>{product?.price}</td>
+                                    <td>{getPriceWithCurrency(product?.price, product?.currency)}</td>
                                 </tr>
-                                {product?.details.map(details => (
+
+                                { product?.specialProduct == 'CODEV' ? product?.details.filter(pd => !['PRICE_CURRENCY'].includes(pd.type)).map(details => (
                                     <tr>
                                         <td>{getProductDetailsByName(details.type)?.label}</td>
                                         { details.type == 'DEPOSITPERIOD' ?
@@ -82,7 +84,7 @@ class ProductDetailsButton extends Component {
                                             <td>{details.value}</td>
                                         }
                                     </tr>
-                                ))}
+                                )) : <></>}
                             </tbody>
                         </table>
                     </RctCardContent>

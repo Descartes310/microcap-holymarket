@@ -224,4 +224,22 @@ export default class Permission extends BaseEnum {
         }
     };
 
+    static microcap360 = {
+        network: {
+            "name": "NETWORK_ACCESS"
+        },
+        wallets: {
+            "name": "ACCOUNT_ACCESS"
+        },
+        projects: {
+            "name": "PROJECT_ACCESS"
+        },
+        mymicrocap: {
+            "name": "MY_MICROCAP_ACCESS"
+        },
+        ideas: {
+            "name": "PERSONNAL_CREATION_ACCESS"
+        }
+    };
+
 }

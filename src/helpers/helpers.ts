@@ -402,14 +402,25 @@ export const getSessonId = () => {
     }
 };
 
-export const getPriceWithCurrency = (price = 0, currency = 'EUR') => {
+export const getPriceWithCurrency = (price = 0, currency = null) => {
 
+    currency = currency ? currency : getDefaultCurrency();
+    
     var formatter = new Intl.NumberFormat('en-US', {
         style: 'currency',
         currency: currency
     });
 
     return `${formatter.format(price)}`;
+};
+
+export const getDefaultCurrency = () => {
+    const currency = localStorage.getItem('currency');
+    if (currency) {
+        return currency;
+    } else {
+        return `EUR`;
+    }
 };
 
 export function getFilePath(file) {

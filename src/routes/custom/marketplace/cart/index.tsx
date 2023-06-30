@@ -5,10 +5,10 @@ import { Link } from 'react-router-dom';
  import { MARKETPLACE } from 'Url/frontendUrl';
  import Button from '@material-ui/core/Button';
  import IconButton from '@material-ui/core/IconButton';
- import { textTruncate, getFilePath } from "Helpers/helpers";
  import { RctCard, RctCardContent } from 'Components/RctCard';
  import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
  import { deleteItemFromCart, onChangeProductQuantity } from "Actions";
+ import { textTruncate, getFilePath, getPriceWithCurrency } from "Helpers/helpers";
  
  class Carts extends Component<any, any> {
  
@@ -37,6 +37,7 @@ import { Link } from 'react-router-dom';
  
     render() {
        const { cart, deleteItemFromCart } = this.props;
+       console.log(cart.items);
        return (
           <div className="cart-wrapper">
              <PageTitleBar title={'Mon panier'} />
@@ -70,8 +71,8 @@ import { Link } from 'react-router-dom';
                                      onChange={(e) => this.onChangeQuantity(e.target.value, cart)}
                                   />
                                </td>
-                               <td className="text-danger text-center">€{cart.price}</td>
-                               <td className="text-bold text-center">€{(Number(cart.price) * Number(cart.quantity)).toFixed(2)}</td>
+                               <td className="text-danger text-center">{getPriceWithCurrency(cart.price, cart.currency)}</td>
+                               <td className="text-bold text-center">{getPriceWithCurrency(Number(cart.price) * Number(cart.quantity), cart.currency)}</td>
                                <td className="text-center">
                                   <IconButton onClick={() => deleteItemFromCart(cart)}>
                                      <i className="zmdi zmdi-close"></i>

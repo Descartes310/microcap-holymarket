@@ -19,7 +19,7 @@ const Shop = (props) => {
 
 	const getProducts = () => {
 		props.setRequestGlobalAction(true);
-		ProductService.getShopProducts({ type: 'PRIVATE' })
+		ProductService.getShopProducts({ model_reference: props.match.params.reference })
 			.then(response => setProducts(response))
 			.finally(() => props.setRequestGlobalAction(false))
 	}

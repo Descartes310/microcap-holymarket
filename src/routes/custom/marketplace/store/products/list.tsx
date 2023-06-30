@@ -7,10 +7,10 @@ import CustomList from "Components/CustomList";
 import GenerateTirage from './components/tirages';
 import { setRequestGlobalAction } from 'Actions';
 import React, { useState, useEffect } from 'react';
-import { getProductRangeLabel } from 'Helpers/helpers';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import { joinUrlWithParams, MARKETPLACE } from 'Url/frontendUrl';
 import ProductDetailsButton from 'Components/ProductDetailsButton';
+import { getProductRangeLabel, getPriceWithCurrency } from 'Helpers/helpers';
 
 const List = (props) => {
 
@@ -93,7 +93,7 @@ const List = (props) => {
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">€{item.price}</h4>
+                                                            <h4 className="m-0 fw-bold text-dark">{getPriceWithCurrency(item.price, item.currency)}</h4>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -115,7 +115,7 @@ const List = (props) => {
                                                     <ProductDetailsButton reference={item.reference} />
                                                 </td>
                                                 <td>
-                                                    { item.specialProduct && (
+                                                    { item.specialProduct == 'CODEV' && (
                                                         <Button
                                                             color="primary"
                                                             variant="contained"
@@ -127,7 +127,7 @@ const List = (props) => {
                                                     )}
                                                 </td>
                                                 <td>
-                                                    { item.specialProduct && (
+                                                    { item.specialProduct == 'CODEV' && (
                                                         <Button
                                                             color="primary"
                                                             variant="contained"

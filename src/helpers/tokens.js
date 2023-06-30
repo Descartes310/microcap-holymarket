@@ -27,6 +27,13 @@ export const saveAuthToken = (
     localStorage.setItem('expiresIn', expiresIn.toString());
 };
 
+export const saveSettings = (
+    currency
+) => {
+
+    localStorage.setItem('currency', currency ? currency : 'EUR');
+};
+
 export const removeAuthToken = () => {
     localStorage.removeItem('tokenType');
     localStorage.removeItem('expiresIn');

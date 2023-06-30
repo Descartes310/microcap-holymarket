@@ -24,9 +24,6 @@ class HitModel extends Component {
 				<div className="product-info border-top p-3" onClick={() => {
 					this.props.history.push(joinUrlWithParams(MARKETPLACE.SHOP_PRODUCTS, [{param: 'reference', value: product.reference}]));
 				}}>
-					{/* <div className="d-flex justify-content-between">
-						<h2 className="text-danger">€{product.price}</h2>
-					</div> */}
 					<h4 className="text-dark">{textTruncate(product.label, 25)}</h4>
 					<p className="mb-5 text-muted font-xs">
 						{textTruncate(product.description, 50)}

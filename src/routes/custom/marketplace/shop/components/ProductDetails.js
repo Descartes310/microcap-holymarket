@@ -8,6 +8,7 @@ import ProductService from 'Services/products';
 import { setRequestGlobalAction } from 'Actions';
 import PrintDetails from './codev/printDetails';
 import { RctCardContent } from 'Components/RctCard';
+import { getPriceWithCurrency } from "Helpers/helpers";
 import DialogComponent from "Components/dialog/DialogComponent";
 import { getProductDetailsByName, getTimeUnitByValue } from "Helpers/datas";
 
@@ -91,7 +92,23 @@ class ProductDetails extends Component {
                             <th>Valeur courante</th>
                         </thead>
                         <tbody>
-                            {product?.details.filter(d => !TO_AVOID.includes(d.type)).map(details => (
+                            <tr>
+                                <td>Nom du produit</td>
+                                <td>{product?.label}</td>
+                            </tr>
+                            <tr>
+                                <td>Description</td>
+                                <td>{product?.description}</td>
+                            </tr>
+                            <tr>
+                                <td>Prix de vente</td>
+                                <td>{getPriceWithCurrency(product?.price, product?.currency)}</td>
+                            </tr>
+                            <tr>
+                                <td>Vendeur</td>
+                                <td>{product?.seller}</td>
+                            </tr>
+                            {product?.specialProduct == 'CODEV' && product?.details.filter(d => !TO_AVOID.includes(d.type)).map(details => (
                                 <tr>
                                     <td>{getProductDetailsByName(details.type)?.label}</td>
                                     { details.type == 'DEPOSITPERIOD' ?
@@ -112,15 +129,16 @@ class ProductDetails extends Component {
                             ))}
                         </tbody>
                     </table>
-
-                    <Button
-                        color="primary"
-                        variant="contained"
-                        onClick={() => { this.setState({ showPrintDetails: true }) }}
-                        className="text-white font-weight-bold mb-20"
-                    >
-                        Consulter la fiche
-                    </Button>
+                    {product?.specialProduct == 'CODEV' &&
+                        <Button
+                            color="primary"
+                            variant="contained"
+                            onClick={() => { this.setState({ showPrintDetails: true }) }}
+                            className="text-white font-weight-bold mb-20"
+                        >
+                            Consulter la fiche
+                        </Button>
+                    }
                 </RctCardContent>
                 { this.state.showPrintDetails && (
                     <PrintDetails 

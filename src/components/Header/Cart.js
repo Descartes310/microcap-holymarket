@@ -8,11 +8,11 @@ import { deleteItemFromCart } from "Actions";
 import { getFilePath } from "Helpers/helpers";
 import { withRouter } from "react-router-dom";
 import Button from '@material-ui/core/Button';
-import { textTruncate } from "Helpers/helpers";
 import Tooltip from '@material-ui/core/Tooltip';
 import React, { Component, Fragment } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 import IconButton from '@material-ui/core/IconButton';
+import { textTruncate, getPriceWithCurrency } from "Helpers/helpers";
 import { UncontrolledDropdown, DropdownToggle, DropdownMenu } from 'reactstrap';
 
 class Carts extends Component {
@@ -92,7 +92,7 @@ class Carts extends Component {
 													</div>
 												</div>
 												<div className="text-center">
-													<span className="text-muted fs-12 d-block mb-10">€{cart.price} X {cart.quantity}</span>
+													<span className="text-muted fs-12 d-block mb-10">{getPriceWithCurrency(cart.price, cart.currency)} X {cart.quantity}</span>
 													<button
 														type="button"
 														className="hover-close rct-link-btn"
@@ -117,7 +117,7 @@ class Carts extends Component {
 										</Button>
 									</div>
 									<span className="fw-normal text-dark font-weight-bold font-xs">
-										<IntlMessages id="widgets.total" /> €{this.getTotalPrice()}
+										<IntlMessages id="widgets.total" /> {getPriceWithCurrency(this.getTotalPrice(), cart.items[0]?.currency)}
 									</span>
 								</div>
 							</Fragment>

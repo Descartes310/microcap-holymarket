@@ -7,7 +7,8 @@ import {
     SET_AUTH_USER_FAILURE,
     CLEAR_AUTH_USER,
 } from 'Actions/types';
-import User from "Models/User";
+import { saveSettings } from 'Helpers/tokens';
+import { setSyntheticTrailingComments } from 'typescript';
 
 /**
  * initial state
@@ -25,6 +26,7 @@ export default (state = INIT_STATE, action) => {
             return { ...state, loading: true };
 
         case SET_AUTH_USER_SUCCESS:
+            saveSettings(action.payload.currency);
             return { ...state, loading: false, data: action.payload };
 
         case SET_AUTH_USER_FAILURE:

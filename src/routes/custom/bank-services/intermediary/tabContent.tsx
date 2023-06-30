@@ -13,7 +13,7 @@ const BankAgent = (props) => {
     return (
         <div>
             <Switch>
-                <Redirect exact from={`${match.url}/`} to={BANK.PARTY.AGENT.SELF} />
+                <Redirect exact from={`${match.url}/`} to={BANK.PARTY.COUNTER.SELF} />
                 <Route path={BANK.PARTY.AGENT.SELF} component={Agents} />
                 <Route path={BANK.PARTY.COUNTER.SELF} component={Counters} />
                 <Route path={BANK.PARTY.COVERAGE.SELF} component={Coverages} />
