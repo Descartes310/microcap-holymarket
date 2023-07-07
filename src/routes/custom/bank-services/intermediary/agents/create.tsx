@@ -7,6 +7,7 @@ import { withRouter } from "react-router-dom";
 import { setRequestGlobalAction } from 'Actions';
 import React, { useState, useEffect } from 'react';
 import TextField from '@material-ui/core/TextField';
+import { getReferralTypeLabel } from 'Helpers/helpers';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { NotificationManager } from 'react-notifications';
 import UserAccountTypeService from 'Services/account-types';
@@ -27,12 +28,15 @@ const Create = (props) => {
         }
     ]
 
+    const [name, setName] = useState(null);
     const [type, setType] = useState(null);
     const [types, setTypes] = useState([]);
     const [agents, setAgents] = useState([]);
+    const [member, setMember] = useState(null);
     const [category, setCategory] = useState(null);
     const [categories, setCategories] = useState([]);  
     const [prestations, setPrestations] = useState([]);
+    const [membership, setMembership] = useState(null);
     const [paymentMethod, setPaymentMethod] = useState(null);
     const [selectedAgent, setSelectedAgent] = useState(null);  
 
@@ -42,6 +46,25 @@ const Create = (props) => {
         getPrestations();
         getPotentialAgents();
     }, []);
+
+    const findUserByMembership = () => {
+        props.setRequestGlobalAction(true);
+        UserService.findUserByReference(membership)
+        .then(response => {
+            if(response.referralType === 'PERSON' || 
+                (props.authUser.referralTypes.includes('PROVIDER_INTERMEDIARY') && props.authUser.referralId === response.referralCode))
+                setMember(response);
+            else 
+                NotificationManager.error("Uniquement les personnes physiques sont autorisées");
+        })
+        .catch((err) => {
+            console.log(err);
+            NotificationManager.error("Ce numéro utilisateur est inexistant");
+        })
+        .finally(() => {
+            props.setRequestGlobalAction(false);
+        })
+    }
 
     const getCategories = () => {
         props.setRequestGlobalAction(true),
@@ -73,7 +96,7 @@ const Create = (props) => {
 
     const onSubmit = () => {
 
-        if(!selectedAgent || !type || !paymentMethod) {
+        if(!selectedAgent || !type || !paymentMethod || !name) {
             NotificationManager.error("Les informations renseignées sont incompletes ou incorrectes");
             return;
         }
@@ -81,9 +104,11 @@ const Create = (props) => {
         props.setRequestGlobalAction(true);
 
         let data = {
+            name: name,
+            reference: membership,
             payment_mode: paymentMethod.value,
-            reference: selectedAgent.reference,
-            account_type_reference: type.reference
+            account_type_reference: type.reference,
+            agence_reference: selectedAgent.reference
         }
 
         BankService.createAgent(data).then(() => {
@@ -104,7 +129,7 @@ const Create = (props) => {
                     
                     <div className="col-md-12 col-sm-12 has-wrapper mb-30">
                         <InputLabel className="text-left">
-                            Potentiel agents
+                            Potentiels agences
                         </InputLabel>
                         <Autocomplete
                             id="combo-box-demo"
@@ -117,6 +142,62 @@ const Create = (props) => {
                             renderInput={(params) => <TextField {...params} variant="outlined" />}
                         />
                     </div>
+
+                    <FormGroup className="has-wrapper">
+                        <InputLabel className="text-left" htmlFor="name">
+                            Nom de l'agence
+                        </InputLabel>
+                        <InputStrap
+                            required
+                            id="name"
+                            type="text"
+                            name='name'
+                            value={name}
+                            className="input-lg"
+                            onChange={(e) => setName(e.target.value)}
+                        />
+                    </FormGroup>
+                    
+                    <FormGroup className="has-wrapper">
+                        <InputLabel className="text-left" htmlFor="membership">
+                            Numéro utilisateur
+                        </InputLabel>
+                        <InputStrap
+                            required
+                            type="text"
+                            id="membership"
+                            name='membership'
+                            value={membership}
+                            className="input-lg"
+                            onChange={(e) => setMembership(e.target.value)}
+                        />
+                    </FormGroup>
+
+                    {member && (
+                        <div className="row">
+                            <FormGroup className="col-md-4 col-sm-12 has-wrapper">
+                                <InputStrap
+                                    disabled
+                                    className="input-lg"
+                                    value={member.userName}
+                                />
+                            </FormGroup>
+                            <FormGroup className="col-md-4 col-sm-12 has-wrapper">
+                                <InputStrap
+                                    disabled
+                                    className="input-lg"
+                                    value={member.email}
+                                />
+                            </FormGroup>
+                            <FormGroup className="col-md-4 col-sm-12 has-wrapper">
+                                <InputStrap
+                                    disabled
+                                    className="input-lg"
+                                    value={getReferralTypeLabel(member.referralType)}
+                                />
+                            </FormGroup>
+                        </div>
+                    )}
 
                     <div className="col-md-12 col-sm-12 has-wrapper mb-30">
                         <InputLabel className="text-left">
@@ -167,6 +248,15 @@ const Create = (props) => {
                     </div>
 
                     <FormGroup>
+                        <Button
+                            color="primary"
+                            variant="contained"
+                            disabled={!membership}
+                            onClick={() => findUserByMembership()}
+                            className="text-white font-weight-bold mr-20 bg-blue"
+                        >
+                            Vérifier l'utilisateur
+                        </Button>
                         <Button
                             color="primary"
                             variant="contained"

@@ -18,6 +18,7 @@ export const GET_PARTIES = 'api/cashmanagements/parties';
 export const GET_CHILD = 'api/cashmanagements/parties/child';
 export const GET_COUNTERS = 'api/cashmanagements/parties/counters';
 export const CREATE_COUNTER = 'api/cashmanagements/parties/counters';
+export const GET_PARTY_COUNTERS = 'api/cashmanagements/parties/potential-counters';
 export const GET_INTERMEDIATE_PARTIES = 'api/cashmanagements/parties/intermediates';
 export const GET_INTERMEDIATE_BANKS = 'api/cashmanagements/parties/intermediates/banks';
 

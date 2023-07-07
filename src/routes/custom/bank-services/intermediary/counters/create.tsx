@@ -33,6 +33,8 @@ const Create = (props) => {
     const [name, setName] = useState(null);
     const [party, setParty] = useState(null);
     const [parties, setParties] = useState([]);
+    const [counters, setCounters] = useState([]);
+    const [counter, setCounter] = useState(null);
     const [member, setMember] = useState(null);
     const [category, setCategory] = useState(null);
     const [categories, setCategories] = useState([]);  
@@ -46,6 +48,15 @@ const Create = (props) => {
         }
         getCategories();
     }, []);
+
+    useEffect(() => {
+        if(party) {
+            getAgentCounters();
+        } else {
+            setCounter(null);
+            setCounters([]);
+        }
+    }, [party])
 
     const findUserByMembership = () => {
         props.setRequestGlobalAction(true);
@@ -64,6 +75,13 @@ const Create = (props) => {
         .finally(() => {
             props.setRequestGlobalAction(false);
         })
+    }
+
+    const getAgentCounters = () => {
+        props.setRequestGlobalAction(true),
+        BankService.getAgentCounters({party_reference: party.reference})
+        .then(response => setCounters(response))
+        .finally(() => props.setRequestGlobalAction(false))
     }
 
     const getParties = () => {
@@ -89,7 +107,7 @@ const Create = (props) => {
 
     const onSubmit = () => {
 
-        if(!member || !type || !paymentMethod || !name || (!party && props.authUser.referralTypes.includes('PROVIDER_INTERMEDIARY'))) {
+        if(!member || !type || !paymentMethod || !name || ((!party || !counter) && props.authUser.referralTypes.includes('PROVIDER_INTERMEDIARY'))) {
             NotificationManager.error("Les informations renseignées sont incompletes ou incorrectes");
             return;
         }
@@ -105,6 +123,7 @@ const Create = (props) => {
 
         if(props.authUser.referralTypes.includes('PROVIDER_INTERMEDIARY')) {
             data.party_reference = party.reference;
+            data.counter_reference = counter.reference
         }
 
         BankService.createCounter(data).then(() => {
@@ -180,21 +199,38 @@ const Create = (props) => {
                     </FormGroup>
 
                     { props.authUser.referralTypes.includes('PROVIDER_INTERMEDIARY') && (
-                        <div className="col-md-12 col-sm-12 has-wrapper mb-30">
-                            <InputLabel className="text-left">
-                                Agence
-                            </InputLabel>
-                            <Autocomplete
-                                id="combo-box-demo"
-                                options={parties}
-                                value={party}
-                                onChange={(__, item) => {
-                                    setParty(item);
-                                }}
-                                getOptionLabel={(option) => option.commercialName}
-                                renderInput={(params) => <TextField {...params} variant="outlined" />}
-                            />
-                        </div>
+                        <>
+                            <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                                <InputLabel className="text-left">
+                                    Agence
+                                </InputLabel>
+                                <Autocomplete
+                                    id="combo-box-demo"
+                                    options={parties}
+                                    value={party}
+                                    onChange={(__, item) => {
+                                        setParty(item);
+                                    }}
+                                    getOptionLabel={(option) => option.commercialName}
+                                    renderInput={(params) => <TextField {...params} variant="outlined" />}
+                                />
+                            </div>
+                            <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                                <InputLabel className="text-left">
+                                    Guichets potentiels
+                                </InputLabel>
+                                <Autocomplete
+                                    id="combo-box-demo"
+                                    options={counters}
+                                    value={counter}
+                                    onChange={(__, item) => {
+                                        setCounter(item);
+                                    }}
+                                    getOptionLabel={(option) => option.label}
+                                    renderInput={(params) => <TextField {...params} variant="outlined" />}
+                                />
+                            </div>
+                        </>
                     )}
 
                     <div className="col-md-12 col-sm-12 has-wrapper mb-30">
