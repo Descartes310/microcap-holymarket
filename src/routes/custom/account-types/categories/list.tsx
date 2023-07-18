@@ -50,6 +50,7 @@ const Categories = (props) => {
                                     <thead>
                                         <tr>
                                             <th className="fw-bold">Désignation</th>
+                                            <th className="fw-bold">Catégorie parent</th>
                                             <th className="fw-bold">Description</th>
                                             {/* <th className="fw-bold">Type</th> */}
                                         </tr>
@@ -61,6 +62,13 @@ const Categories = (props) => {
                                                     <div className="media">
                                                         <div className="media-body pt-10">
                                                             <h4 className="m-0 fw-bold text-dark">{item.label}</h4>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="media">
+                                                        <div className="media-body pt-10">
+                                                            <h4 className="m-0 fw-bold text-dark">{item?.parentName}</h4>
                                                         </div>
                                                     </div>
                                                 </td>
