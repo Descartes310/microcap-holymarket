@@ -1,6 +1,7 @@
 import React from 'react';
 import List from './list';
 import Create from './create';
+import Update from './update';
 import {connect} from "react-redux";
 import {injectIntl} from "react-intl";
 import { GROUP } from 'Url/frontendUrl';
@@ -15,6 +16,7 @@ const GroupCategories = (props) => {
                     <Redirect exact from={`${match.url}/`} to={GROUP.CATEGORY.LIST} />
                     <Route path={GROUP.CATEGORY.LIST} component={List} />
                     <Route path={GROUP.CATEGORY.CREATE} component={Create} />
+                    <Route path={GROUP.CATEGORY.UPDATE} component={Update} />
                 </Switch>
             </>
         </div>

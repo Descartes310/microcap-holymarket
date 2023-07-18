@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
-import { GROUP } from 'Url/frontendUrl';
+import { GROUP, joinUrlWithParamsId } from 'Url/frontendUrl';
 import GroupService from 'Services/groups';
+import Button from '@material-ui/core/Button';
 import Switch from "@material-ui/core/Switch";
 import { withRouter } from "react-router-dom";
 import CustomList from "Components/CustomList";
@@ -64,6 +65,7 @@ const Types = (props) => {
                                             <th className="fw-bold">Catégorie</th>
                                             <th className="fw-bold">Type parent</th>
                                             <th className="fw-bold">Par défaut</th>
+                                            <th className="fw-bold">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -103,6 +105,16 @@ const Types = (props) => {
                                                         checked={item.default}
                                                         onChange={() => { changeGroupTypeStatus(item) }}
                                                     />
+                                                </td>
+                                                <td>
+                                                    <Button
+                                                        color="primary"
+                                                        variant="contained"
+                                                        className="text-white font-weight-bold"
+                                                        onClick={() => props.history.push(joinUrlWithParamsId(GROUP.TYPE.UPDATE, item.reference))}
+                                                    >
+                                                        Editer
+                                                    </Button>
                                                 </td>
                                             </tr>
                                         ))}

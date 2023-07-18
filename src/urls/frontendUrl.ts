@@ -85,7 +85,8 @@ export const GROUP = {
     TYPE: {
         SELF: '/groups/types',
         LIST: '/groups/types/list',
-        CREATE: '/groups/types/create'
+        CREATE: '/groups/types/create',
+        UPDATE: '/groups/types/:id/update'
     },
     DETAILS: {
         SELF: '/groups/details',
@@ -96,7 +97,8 @@ export const GROUP = {
     CATEGORY: {
         SELF: '/groups/categories',
         LIST: '/groups/categories/list',
-        CREATE: '/groups/categories/create'
+        CREATE: '/groups/categories/create',
+        UPDATE: '/groups/categories/:id/update'
     },
     COMMUNITY: {
         SELF: '/groups/communities',

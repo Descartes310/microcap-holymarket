@@ -12,12 +12,28 @@ export default class GroupService {
         return makeRequest('post', Routes.CREATE_GROUP_CATEGORY, data);
     }
 
+    static updateGroupCategory(reference: string, data: any): Promise<any> {
+        return makeRequest('post', Routes.UPDATE_GROUP_CATEGORY(reference), data);
+    }
+
+    static findGroupCategory(reference: string): Promise<any> {
+        return makeRequest('get', Routes.GET_GROUP_CATEGORY(reference));
+    }
+
     static getGroupTypes(data: any): Promise<any> {
         return makeRequest('get', Routes.GET_GROUP_TYPES, data);
     }
 
     static createGroupType(data: any): Promise<any> {
         return makeRequest('post', Routes.CREATE_GROUP_TYPE, data);
+    }
+
+    static updateGroupType(reference: string, data: any): Promise<any> {
+        return makeRequest('post', Routes.UPDATE_GROUP_TYPE(reference), data);
+    }
+
+    static findGroupType(reference: string): Promise<any> {
+        return makeRequest('get', Routes.FIND_GROUP_TYPE(reference));
     }
 
     static addMemberToRole(data: any): Promise<any> {

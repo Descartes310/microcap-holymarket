@@ -1,9 +1,13 @@
 export const GET_GROUP_CATEGORIES = 'api/socialnetworks/groups/categories';
 export const CREATE_GROUP_CATEGORY = 'api/socialnetworks/groups/categories';
+export const GET_GROUP_CATEGORY = (reference) => `api/socialnetworks/groups/categories/${reference}`;
+export const UPDATE_GROUP_CATEGORY = (reference) => `api/socialnetworks/groups/categories/${reference}`;
 
 export const GET_GROUP_TYPES = 'api/socialnetworks/groups/types';
 export const CREATE_GROUP_TYPE = 'api/socialnetworks/groups/types';
+export const UPDATE_GROUP_TYPE = (reference) => `api/socialnetworks/groups/types/${reference}`;
 export const SET_GROUP_TYPE_AS_DEFAULT = (id) => `api/socialnetworks/groups/types/${id}/status`;
+export const FIND_GROUP_TYPE = (reference) => `api/socialnetworks/groups/types/find/${reference}`;
 
 export const GET_GROUP_MEMBERS = 'api/socialnetworks/groups/members';
 export const ADD_MEMBER_TO_GROUP = 'api/socialnetworks/groups/members';
