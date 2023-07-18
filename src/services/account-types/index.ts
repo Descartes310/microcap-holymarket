@@ -12,12 +12,28 @@ export default class UserAccountTypeService {
         return makeRequest('post', Routes.CREATE_ACCOUNT_TYPE_CATEGORY, data);
     }
 
+    static updateAccountTypeCategory(id: number, data: any): Promise<any> {
+        return makeRequest('post', Routes.UPDATE_ACCOUNT_TYPE_CATEGORY(id), data);
+    }
+
+    static findAccountTypeCategory(id: number): Promise<any> {
+        return makeRequest('get', Routes.FIND_ACCOUNT_TYPE_CATEGORY(id));
+    }
+
     static getAccountTypes(): Promise<any> {
         return makeRequest('get', Routes.GET_ACCOUNT_TYPES);
     }
 
     static createAccountType(data: any): Promise<any> {
         return makeRequest('post', Routes.CREATE_ACCOUNT_TYPE, data);
+    }
+
+    static updateAccountType(id: number, data: any): Promise<any> {
+        return makeRequest('post', Routes.UPDATE_ACCOUNT_TYPE(id), data);
+    }
+
+    static findAccountType(id: number): Promise<any> {
+        return makeRequest('get', Routes.FIND_ACCOUNT_TYPE(id));
     }
 
     static getAccounts(): Promise<any> {

@@ -71,7 +71,7 @@ export const USER_ACCOUNT_TYPE = {
         SELF: '/user-account-types/categories',
         LIST: '/user-account-types/categories/list',
         CREATE: '/user-account-types/categories/create',
-        UPDATE: (id) => `/user-account-types/categories/${id}/update`
+        UPDATE: `/user-account-types/categories/:id/update`
     }
 }
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import List from './list';
+import Update from './update';
 import Create from './create';
 import {connect} from "react-redux";
 import {injectIntl} from "react-intl";
@@ -15,6 +16,7 @@ const UserAccountTypeCategories = (props) => {
                     <Redirect exact from={`${match.url}/`} to={USER_ACCOUNT_TYPE.CATEGORY.LIST} />
                     <Route path={USER_ACCOUNT_TYPE.CATEGORY.LIST} component={List} />
                     <Route path={USER_ACCOUNT_TYPE.CATEGORY.CREATE} component={Create} />
+                    <Route path={USER_ACCOUNT_TYPE.CATEGORY.UPDATE} component={Update} />
                 </Switch>
             </>
         </div>

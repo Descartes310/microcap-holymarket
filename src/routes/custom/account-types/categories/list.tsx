@@ -1,11 +1,12 @@
 import { connect } from 'react-redux';
 import { withRouter } from "react-router-dom";
+import Button from '@material-ui/core/Button';
 import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
 import React, { useState, useEffect } from 'react';
-import { USER_ACCOUNT_TYPE } from 'Url/frontendUrl';
 import UserAccountTypeService from 'Services/account-types';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
+import { joinUrlWithParamsId, USER_ACCOUNT_TYPE } from 'Url/frontendUrl';
 
 const Categories = (props) => {
 
@@ -52,7 +53,7 @@ const Categories = (props) => {
                                             <th className="fw-bold">Désignation</th>
                                             <th className="fw-bold">Catégorie parent</th>
                                             <th className="fw-bold">Description</th>
-                                            {/* <th className="fw-bold">Type</th> */}
+                                            <th className="fw-bold">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -79,13 +80,16 @@ const Categories = (props) => {
                                                         </div>
                                                     </div>
                                                 </td>
-                                                {/* <td>
-                                                    <div className="media">
-                                                        <div className="media-body pt-10">
-                                                            <h4 className="m-0 text-dark">{item.type}</h4>
-                                                        </div>
-                                                    </div>
-                                                </td> */}
+                                                <td>
+                                                    <Button
+                                                        color="primary"
+                                                        variant="contained"
+                                                        className="text-white font-weight-bold"
+                                                        onClick={() => props.history.push(joinUrlWithParamsId(USER_ACCOUNT_TYPE.CATEGORY.UPDATE, item.id))}
+                                                    >
+                                                        Editer
+                                                    </Button>
+                                                </td>
                                             </tr>
                                         ))}
                                     </tbody>
