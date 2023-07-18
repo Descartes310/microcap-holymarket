@@ -15,20 +15,33 @@ import {Form, FormGroup, Input as InputStrap} from 'reactstrap';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
 
-const Create = (props) => {
+const Update = (props) => {
 
     const [label, setLabel] = useState('');
-    const [roles, setRoles] = useState([]);
     const [role, setRole] = useState(null);
+    const [roles, setRoles] = useState([]);
     const [category, setCategory] = useState(null);
     const [categories, setCategories] = useState([]);
     const [description, setDescription] = useState('');
     const [referralType, setReferralType] = useState(null);
 
     useEffect(() => {
+        getType();
         getTypes();
         getRoles();
     }, []);
+
+    const getType = () => {
+        setRequestGlobalAction(true),
+        UserAccountTypeService.findAccountType(props.match.params.id)
+        .then(response => {
+            setRole(response.role);
+            setLabel(response.label);
+            setDescription(response.description);
+            setReferralType(referraTypes().find(t => t.value == response.referralType));
+            setCategory(response.userAccountTypeCategory);
+        }).finally(() => setRequestGlobalAction(false))
+    }
 
     const getTypes = () => {
         setRequestGlobalAction(true),
@@ -43,7 +56,6 @@ const Create = (props) => {
         .then(response => setRoles(response))
         .finally(() => props.setRequestGlobalAction(false))
     }
-
 
     const onSubmit = () => {
 
@@ -60,17 +72,16 @@ const Create = (props) => {
             roleRef: role.reference
         }
 
-        UserAccountTypeService.createAccountType(data).then(() => {
-            NotificationManager.success("Le type a été créée avec succès");
+        UserAccountTypeService.updateAccountType(props.match.params.id, data).then(() => {
+            NotificationManager.success("Le type a été édité avec succès");
             props.history.push(USER_ACCOUNT_TYPE.TYPE.LIST);
         }).catch((err) => {
             console.log(err);
-            NotificationManager.error("Une erreur est survenu lors de la création du type");
+            NotificationManager.error("Une erreur est survenue lors de l'édition du type");
         }).finally(() => {
             props.setRequestGlobalAction(false);
         })
     }
-
 
     return (
         <>
@@ -143,9 +154,9 @@ const Create = (props) => {
                             Rôles par défaut
                         </InputLabel>
                         <Autocomplete
+                            value={role}
                             options={roles}
                             id="combo-box-demo"
-                            value={role}
                             onChange={(__, item) => {
                                 setRole(item);
                             }}
@@ -170,4 +181,4 @@ const Create = (props) => {
     );
 };
 
-export default connect(() => {}, { setRequestGlobalAction })(withRouter(Create));
+export default connect(() => {}, { setRequestGlobalAction })(withRouter(Update));

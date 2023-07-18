@@ -65,7 +65,7 @@ const Types = (props) => {
                                             <th className="fw-bold">Description</th>
                                             <th className="fw-bold">Catégorie</th>
                                             <th className="fw-bold">Par défaut</th>
-                                            {/* <th className="fw-bold">Action</th> */}
+                                            <th className="fw-bold">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -116,6 +116,17 @@ const Types = (props) => {
                                                         Chaine
                                                     </Button>
                                                 </td> */}
+
+                                                <td>
+                                                    <Button
+                                                        color="primary"
+                                                        variant="contained"
+                                                        className="text-white font-weight-bold"
+                                                        onClick={() => props.history.push(joinUrlWithParamsId(USER_ACCOUNT_TYPE.TYPE.UPDATE, item.reference))}
+                                                    >
+                                                        Editer
+                                                    </Button>
+                                                </td>
                                             </tr>
                                         ))}
                                     </tbody>

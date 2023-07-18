@@ -2,6 +2,7 @@ import React from 'react';
 import List from './list';
 import Chain from './chain';
 import Create from './create';
+import Update from './update';
 import {connect} from "react-redux";
 import {injectIntl} from "react-intl";
 import ChainCreate from './chainCreate';
@@ -19,6 +20,7 @@ const UserAccountTypes = (props) => {
                     <Route path={USER_ACCOUNT_TYPE.TYPE.CHAIN_CREATE} component={ChainCreate} />
                     <Route path={USER_ACCOUNT_TYPE.TYPE.CHAIN} component={Chain} />
                     <Route path={USER_ACCOUNT_TYPE.TYPE.CREATE} component={Create} />
+                    <Route path={USER_ACCOUNT_TYPE.TYPE.UPDATE} component={Update} />
                 </Switch>
             </>
         </div>

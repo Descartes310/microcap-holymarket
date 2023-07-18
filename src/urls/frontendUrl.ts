@@ -65,6 +65,7 @@ export const USER_ACCOUNT_TYPE = {
         LIST: '/user-account-types/types/list',
         CREATE: '/user-account-types/types/create',
         CHAIN: '/user-account-types/types/:id/chains',
+        UPDATE: `/user-account-types/types/:id/update`,
         CHAIN_CREATE: '/user-account-types/types/:id/chains/create',
     },
     CATEGORY: {
