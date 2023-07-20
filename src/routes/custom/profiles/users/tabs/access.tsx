@@ -5,6 +5,7 @@ import { setSession } from 'Helpers/tokens';
 import { withRouter } from "react-router-dom";
 import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
+import CreateAccessBox from './createAccessBox';
 import React, { useState, useEffect } from 'react';
 import ChangeAccessCredentials from 'Components/ChangeAccessCredentials';
 
@@ -13,6 +14,7 @@ const Access = (props) => {
     const [access, setAccess] = useState([]);
     const [selectedAccess, setSelectedAccess] = useState(null);
     const [showCredentialBox, setShowCredentialBox] = useState(false);
+    const [showCreateAccessBox, setShowCreateAccessBox] = useState(false);
 
     useEffect(() => {
         getAccess();
@@ -41,6 +43,7 @@ const Access = (props) => {
                 loading={false}
                 list={access}
                 itemsFoundText={n => `${n} accès.s trouvé.s`}
+                onAddClick={() => setShowCreateAccessBox(true)}
                 renderItem={list => (
                     <>
                         {list && list.length === 0 ? (
@@ -156,7 +159,13 @@ const Access = (props) => {
                     setShowCredentialBox(false);
                     setSelectedAccess(false);
                 }}
-            />
+            />            
+            <CreateAccessBox show={showCreateAccessBox} onClose={(reload = false) => {
+                setShowCreateAccessBox(false);
+                if(reload)
+                    getAccess();
+            }
+        } />
         </>
     );
 }

@@ -66,6 +66,7 @@ const Types = (props) => {
                                             <th className="fw-bold">Catégorie</th>
                                             <th className="fw-bold">Par défaut</th>
                                             <th className="fw-bold">Action</th>
+                                            <th className="fw-bold">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -106,7 +107,7 @@ const Types = (props) => {
                                                         onChange={() => { changeAccountTypeStatus(item) }}
                                                     />
                                                 </td>
-                                                {/* <td>
+                                                <td>
                                                     <Button
                                                         color="primary"
                                                         variant="contained"
@@ -115,7 +116,7 @@ const Types = (props) => {
                                                     >
                                                         Chaine
                                                     </Button>
-                                                </td> */}
+                                                </td>
 
                                                 <td>
                                                     <Button

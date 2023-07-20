@@ -757,7 +757,7 @@ export const translatePermissionFolder = (path) => {
         case 'DETAILS':
             return 'Détails';
         case 'MARKETPLACE':
-            return 'Market Place';
+            return 'MicroCap Store';
         case 'SETTING':
             return 'Paramètrage';
         case 'STORE':

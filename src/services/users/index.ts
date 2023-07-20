@@ -36,6 +36,10 @@ export default class UserService {
         return makeRequest('post', Routes.CHANGE_ACCESS(id), null);
     }
 
+    static createUserAccess(data: any): Promise<any> {
+        return makeRequest('post', Routes.CREATE_ACCESS, data);
+    }
+
     static changeAccessLogin(id: number, data: any): Promise<any> {
         return makeRequest('put', Routes.CHANGE_ACCESS_LOGIN(id), data);
     }
