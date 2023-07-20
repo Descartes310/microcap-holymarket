@@ -40,7 +40,7 @@ const Shop = (props) => {
 
     return (
         <div className="userProfile-wrapper overflow-hidden">
-            <PageTitleBar title={"Market Place"} match={props.match} enableBreadCrumb={false} />
+            <PageTitleBar title={"MicroCap Store"} match={props.match} enableBreadCrumb={false} />
             <RctCard>
                 <div className="rct-tabs">
                     <AppBar position="static">
@@ -59,7 +59,7 @@ const Shop = (props) => {
                                     />
                                     <Tab
                                         icon={<i className="ti-world"></i>}
-                                        label={"Solutions financières"}
+                                        label={"Distributions bancaires"}
                                     />
                                     <Tab
                                         icon={<i className="icon-shield"></i>}
