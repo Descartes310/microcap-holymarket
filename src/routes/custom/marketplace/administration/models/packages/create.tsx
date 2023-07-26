@@ -16,6 +16,7 @@ import { Form, FormGroup, Input as InputStrap } from 'reactstrap';
 import AddAssociationToProduct from '../components/AddAssociationToProduct'
 import { getProductNatures, getProductRanges, getSellWay } from 'Helpers/helpers';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
+import UserAccountTypeService from 'Services/account-types';
 
 const fileTypes = ["JPG", "PNG", "GIF", "JPEG"];
 
@@ -28,6 +29,7 @@ const Create = (props) => {
     const [price, setPrice] = useState(null);
     const [range, setRange] = useState(null);
     const [nature, setNature] = useState(null);
+    const [profiles, setProfiles] = useState([]);
     const [sellWay, setSellWay] = useState(null);
     const [products, setProducts] = useState([]);
     const [saleUnit, setSaleUnit] = useState(null);
@@ -38,11 +40,13 @@ const Create = (props) => {
     const [description, setDescription] = useState('');
     const [saleTypeUnit, setSaleTypeUnit] = useState(null);
     const [maximumByUser, setMaximumByUser] = useState(null);
+    const [selectedProfiles, setSelectedProfiles] = useState([]);
     const [showAddProductbox, setShowAddProductbox] = useState(false);
     const [associatedProducts, setAssociatedProducts] = useState([]);
 
 
     useEffect(() => {
+        getTypes();
         getUnits();
         getProducts();
         getTypeUnits();
@@ -54,6 +58,14 @@ const Create = (props) => {
         ProductService.getCategories()
             .then(response => setCategories(response))
             .finally(() => props.setRequestGlobalAction(false))
+    }
+
+    const getTypes = () => {
+        props.setRequestGlobalAction(true),
+        UserAccountTypeService.getAccountTypes()
+        .then(response => {
+            setProfiles(response);
+        }).finally(() => props.setRequestGlobalAction(false))
     }
 
     const getProducts = () => {
@@ -117,8 +129,9 @@ const Create = (props) => {
             !description ||
             !sellWay ||
             !maximumByUser ||
-            !priceUnit
-            || associatedProducts.length <= 0
+            !priceUnit ||
+            associatedProducts.length <= 0 ||
+            selectedProfiles.length <= 0
         ) {
             NotificationManager.error('Le formulaire est mal renseigné');
             return;
@@ -127,7 +140,8 @@ const Create = (props) => {
         let data: any = {
             label, code, price, description, maximumByUser, sellWay: sellWay.value,
             priceUnitReference: priceUnit.reference, categoryId: category.id,
-            image: file, nature: nature.value, range: range.value, type: 'PACKAGE'
+            image: file, nature: nature.value, range: range.value, type: 'PACKAGE',
+            profiles: selectedProfiles.map(sp => sp.reference)
         }
 
         if (associatedProducts.length <= 0) {
@@ -295,7 +309,7 @@ const Create = (props) => {
                             }} name="file" types={fileTypes} />
                     </FormGroup>
                     <div className="row">
-                        <div className="col-md-3 col-sm-12 has-wrapper mb-30">
+                        <div className="col-md-6 col-sm-12 has-wrapper mb-30">
                             <InputLabel className="text-left">
                                 Catégorie du package
                             </InputLabel>
@@ -310,7 +324,25 @@ const Create = (props) => {
                                 renderInput={(params) => <TextField {...params} variant="outlined" />}
                             />
                         </div>
-                        <div className="col-md-3 col-sm-12 has-wrapper mb-30">
+                        <div className="col-md-6 col-sm-12 has-wrapper mb-30">
+                            <InputLabel className="text-left">
+                                Profiles autorisées
+                            </InputLabel>
+                            <Autocomplete
+                                multiple
+                                options={profiles}
+                                id="combo-box-demo"
+                                value={selectedProfiles}
+                                onChange={(__, items) => {
+                                    setSelectedProfiles(items);
+                                }}
+                                getOptionLabel={(option) => option.label}
+                                renderInput={(params) => <TextField {...params} variant="outlined" />}
+                            />
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="col-md-4 col-sm-12 has-wrapper mb-30">
                             <InputLabel className="text-left">
                                 Canal de vente
                             </InputLabel>
@@ -325,7 +357,7 @@ const Create = (props) => {
                                 renderInput={(params) => <TextField {...params} variant="outlined" />}
                             />
                         </div>
-                        <div className="col-md-3 col-sm-12 has-wrapper mb-30">
+                        <div className="col-md-4 col-sm-12 has-wrapper mb-30">
                             <InputLabel className="text-left">
                                 Nature du package
                             </InputLabel>
@@ -340,7 +372,7 @@ const Create = (props) => {
                                 renderInput={(params) => <TextField {...params} variant="outlined" />}
                             />
                         </div>
-                        <div className="col-md-3 col-sm-12 has-wrapper mb-30">
+                        <div className="col-md-4 col-sm-12 has-wrapper mb-30">
                             <InputLabel className="text-left">
                                 Portée du package
                             </InputLabel>

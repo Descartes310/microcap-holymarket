@@ -11,6 +11,7 @@ import { FileUploader } from "react-drag-drop-files";
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { NotificationManager } from 'react-notifications';
 import Checkbox from "@material-ui/core/Checkbox/Checkbox";
+import UserAccountTypeService from 'Services/account-types';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { Form, FormGroup, Input as InputStrap } from 'reactstrap';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
@@ -25,9 +26,11 @@ const Create = (props) => {
     const [file, setFile] = useState(null);
     const [units, setUnits] = useState([]);
     const [label, setLabel] = useState('');
+    const [lines, setLines] = useState(null);
     const [price, setPrice] = useState(null);
     const [range, setRange] = useState(null);
     const [nature, setNature] = useState(null);
+    const [profiles, setProfiles] = useState([]);
     const [sellWay, setSellWay] = useState(null);
     const [products, setProducts] = useState([]);
     const [category, setCategory] = useState(null);
@@ -43,6 +46,7 @@ const Create = (props) => {
     const [maximumByUser, setMaximumByUser] = useState(null);
     const [isAggregation, setIsAggregation] = useState(false);
     const [accountTypeUnit, setAccountTypeUnit] = useState(null);
+    const [selectedProfiles, setSelectedProfiles] = useState([]);
     const [isMirrorAccount, setIsMirrorAccount] = useState(false);
     const [minAccountbalance, setMinAccountBalance] = useState(null);
     const [maxAccountBalance, setMaxAccountBalance] = useState(null);
@@ -52,6 +56,7 @@ const Create = (props) => {
 
     useEffect(() => {
         getUnits();
+        getTypes();
         getProducts();
         getTypeUnits();
         getCategories();
@@ -62,6 +67,14 @@ const Create = (props) => {
         ProductService.getCategories()
             .then(response => setCategories(response))
             .finally(() => props.setRequestGlobalAction(false))
+    }
+
+    const getTypes = () => {
+        props.setRequestGlobalAction(true),
+        UserAccountTypeService.getAccountTypes()
+        .then(response => {
+            setProfiles(response);
+        }).finally(() => props.setRequestGlobalAction(false))
     }
 
     const getProducts = () => {
@@ -107,7 +120,8 @@ const Create = (props) => {
             !sellWay ||
             !description ||
             !maximumByUser ||
-            !priceUnit
+            !priceUnit ||
+            selectedProfiles.length <= 0
         ) {
             NotificationManager.error('Le formulaire est mal renseigné');
             return;
@@ -117,12 +131,15 @@ const Create = (props) => {
             label, code, price, description, maximumByUser, sellWay: sellWay.value,
             priceUnitReference: priceUnit.reference, categoryId: category.id,
             image: file, nature: nature.value, range: range.value, type: 'PRODUCT',
+            profiles: selectedProfiles.map(sp => sp.reference)
         }
 
         if (isAccount && (!minAccountbalance || !maxAccountBalance || !accountUnit)) {
             NotificationManager.error('Les détails du compte sont invalides');
             return;
         }
+
+        if(lines) data.lines = lines;
 
         if (isAccount) {
             data.minBalance = minAccountbalance;
@@ -215,29 +232,53 @@ const Create = (props) => {
                                     setSpecialType(item);
                                 }}
                                 getOptionLabel={(option) => option.label}
-                                options={[{
-                                    label: "Pas de type spécial", value: 'NONE'
-                                }, {
-                                    label: "CODEV", value: "CODEV"
-                                }]}
+                                options={[
+                                    {
+                                        label: "Pas de type spécial", value: 'NONE'
+                                    }, {
+                                        label: "Djangui Plan", value: "CODEV"
+                                    }, {
+                                        label: "Deal Plan", value: "CODEV_DEAL_PLAN"
+                                    }
+                                ]}
                                 renderInput={(params) => <TextField {...params} variant="outlined" />}
                             />
                         </FormGroup>
                     </div>
-                    <FormGroup className="has-wrapper">
-                        <InputLabel className="text-left" htmlFor="description">
-                            Description produit
-                        </InputLabel>
-                        <InputStrap
-                            required
-                            id="description"
-                            type="text"
-                            name='description'
-                            className="input-lg"
-                            value={description}
-                            onChange={(e) => setDescription(e.target.value)}
-                        />
-                    </FormGroup>
+                    <div className="row">
+                        <FormGroup className={`${specialType?.value == 'CODEV_DEAL_PLAN' ? 'col-md-6' : 'col-md-12'} col-sm-12 has-wrapper`}>
+                            <InputLabel className="text-left" htmlFor="description">
+                                Description produit
+                            </InputLabel>
+                            <InputStrap
+                                required
+                                id="description"
+                                type="text"
+                                name='description'
+                                className="input-lg"
+                                value={description}
+                                onChange={(e) => setDescription(e.target.value)}
+                            />
+                        </FormGroup>
+                        {
+                            specialType?.value == 'CODEV_DEAL_PLAN' && (
+                                <FormGroup className={`col-md-6 col-sm-12 has-wrapper`}>
+                                    <InputLabel className="text-left" htmlFor="lines">
+                                        Nombre de ligne groupée par lot
+                                    </InputLabel>
+                                    <InputStrap
+                                        required
+                                        id="lines"
+                                        value={lines}
+                                        name='lines'
+                                        type="number"
+                                        className="input-lg"
+                                        onChange={(e) => setLines(e.target.value)}
+                                    />
+                                </FormGroup>
+                            )
+                        }
+                    </div>
                     <div className="row">
                         <FormGroup className="col-md-4 col-sm-12 has-wrapper">
                             <InputLabel className="text-left" htmlFor="price">
@@ -328,7 +369,7 @@ const Create = (props) => {
                             }} name="file" types={fileTypes} />
                     </FormGroup>
                     <div className="row">
-                        <div className="col-md-3 col-sm-12 has-wrapper mb-30">
+                        <div className="col-md-6 col-sm-12 has-wrapper mb-30">
                             <InputLabel className="text-left">
                                 Catégorie du produit
                             </InputLabel>
@@ -343,7 +384,25 @@ const Create = (props) => {
                                 renderInput={(params) => <TextField {...params} variant="outlined" />}
                             />
                         </div>
-                        <div className="col-md-3 col-sm-12 has-wrapper mb-30">
+                        <div className="col-md-6 col-sm-12 has-wrapper mb-30">
+                            <InputLabel className="text-left">
+                                Profiles autorisées
+                            </InputLabel>
+                            <Autocomplete
+                                multiple
+                                options={profiles}
+                                value={selectedProfiles}
+                                id="combo-box-demo"
+                                onChange={(__, items) => {
+                                    setSelectedProfiles(items);
+                                }}
+                                getOptionLabel={(option) => option.label}
+                                renderInput={(params) => <TextField {...params} variant="outlined" />}
+                            />
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="col-md-4 col-sm-12 has-wrapper mb-30">
                             <InputLabel className="text-left">
                                 Canal de vente
                             </InputLabel>
@@ -358,7 +417,7 @@ const Create = (props) => {
                                 renderInput={(params) => <TextField {...params} variant="outlined" />}
                             />
                         </div>
-                        <div className="col-md-3 col-sm-12 has-wrapper mb-30">
+                        <div className="col-md-4 col-sm-12 has-wrapper mb-30">
                             <InputLabel className="text-left">
                                 Nature du produit
                             </InputLabel>
@@ -373,7 +432,7 @@ const Create = (props) => {
                                 renderInput={(params) => <TextField {...params} variant="outlined" />}
                             />
                         </div>
-                        <div className="col-md-3 col-sm-12 has-wrapper mb-30">
+                        <div className="col-md-4 col-sm-12 has-wrapper mb-30">
                             <InputLabel className="text-left">
                                 Portée du produit
                             </InputLabel>
