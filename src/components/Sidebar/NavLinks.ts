@@ -343,6 +343,44 @@ export default [
    },
 
    {
+      "menu_title": "Bourse de financement",
+      "menu_icon": "zmdi zmdi-home",
+      "new_item": false,
+      "permissions": [
+         Permission.bourse.projects.name,
+         Permission.bourse.request.name,
+         Permission.bourse.offer.name
+      ],
+      "profiles": null,
+      "child_routes": [
+         {
+            "menu_title": "Projets",
+            "new_item": false,
+            "path": FUNDING.BOURSE.PROJECT.LIST,
+            "permissions": [Permission.bourse.projects.name],
+            "profiles": null,
+            "child_routes": null
+         },
+         {
+            "menu_title": "Demande de financement",
+            "new_item": false,
+            "path": FUNDING.BOURSE.REQUEST.LIST,
+            "permissions": [Permission.bourse.request.name],
+            "profiles": null,
+            "child_routes": null
+         },
+         {
+            "menu_title": "Offre de financement",
+            "new_item": false,
+            "path": FUNDING.BOURSE.OFFER.LIST,
+            "permissions": [Permission.bourse.offer.name],
+            "profiles": null,
+            "child_routes": null
+         }
+      ],
+   },
+
+   {
       "menu_title": "Produits & Services",
       "menu_icon": "zmdi zmdi-labels",
       "new_item": false,

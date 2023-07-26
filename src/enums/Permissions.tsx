@@ -242,4 +242,16 @@ export default class Permission extends BaseEnum {
         }
     };
 
+    static bourse = {
+        projects: {
+            "name": "FUNDING_PROJECT"
+        },
+        request: {
+            "name": "ENDORSMENT_REQUEST"
+        },
+        offer: {
+            "name": "ENDORSMENT_OFFER"
+        }
+    };
+
 }

@@ -48,6 +48,21 @@ export const FUNDING = {
         SELF: '/funding/accounts',
         LIST: '/funding/accounts/list',
         DETAILS: '/funding/accounts/:id/details',
+    },
+    BOURSE: {
+        SELF: '/funding/bourse',
+        PROJECT: {
+            SELF: '/funding/bourse/projects',
+            LIST: '/funding/bourse/projects/list',
+        },
+        REQUEST: {
+            SELF: '/funding/bourse/requests',
+            LIST: '/funding/bourse/requests/list',
+        },
+        OFFER: {
+            SELF: '/funding/bourse/offers',
+            LIST: '/funding/bourse/offers/list',
+        }
     }
 } as const;
 
