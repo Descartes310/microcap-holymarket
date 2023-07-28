@@ -111,8 +111,8 @@ class Hit extends Component {
 									data: data,
 									showCodevStep1: false, 
 									showCodevStep2: false, 
-									showCodevStep3: true,
-									showCodevStep4: false 
+									showCodevStep3: data.indivision.refereference ? false : true,
+									showCodevStep4: data.indivision.refereference ? true : false 
 								});
 							} else {
 								this.setState({ 
@@ -137,8 +137,8 @@ class Hit extends Component {
 								data: data,
 								showCodevStep1: false, 
 								showCodevStep2: false, 
-								showCodevStep3: true,
-								showCodevStep4: false,
+								showCodevStep3: data.newIndivision,
+								showCodevStep4: data.newIndivision,
 							})
 						}}
 					/>

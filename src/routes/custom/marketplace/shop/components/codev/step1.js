@@ -9,6 +9,7 @@ import Indivision from './createIndivision.tsx';
 import { setRequestGlobalAction } from 'Actions';
 import { RctCardContent } from 'Components/RctCard';
 import TextField from '@material-ui/core/TextField';
+import { getPriceWithCurrency } from 'Helpers/helpers';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { NotificationManager } from 'react-notifications';
 import DialogComponent from "Components/dialog/DialogComponent";
@@ -60,7 +61,8 @@ class CodevStep1 extends Component {
         this.props.setRequestGlobalAction(true);
         ProductService.getIndivisionsByProduct({reference: this.props.product.reference})
         .then(response => {
-            this.setState({ indivisions: [...this.state.indivisions, ...response.map(i => { return {...i, name: 'Date: '+i.line.tirage+', Denomination: '+i.denomination+', Montant: '+i.amount}})] });
+            this.setState({ indivisions: [...this.state.indivisions, ...response
+                .map(i => { return {...i, name: 'Date: '+convertDate(i.date, 'DD MMMM YYYY')+', Dénomination: '+i.denomination+', Montant: '+getPriceWithCurrency(i.amount, this.props.product?.details.find(d => d.type == 'PRICE_CURRENCY')?.value)}})] });
         })
         .finally(() => this.props.setRequestGlobalAction(false))
     }
@@ -220,7 +222,7 @@ class CodevStep1 extends Component {
                                         onChange={(__, item) => {
                                             this.setState({ selectedDate: item });
                                         }}
-                                        getOptionLabel={(option) => option.date}
+                                        getOptionLabel={(option) => convertDate(option.date, 'DD MMMM YYYY')}
                                         renderInput={(params) => <TextField {...params} variant="outlined" />}
                                     />
                                 </FormGroup>

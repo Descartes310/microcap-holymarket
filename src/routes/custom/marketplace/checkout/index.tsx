@@ -37,16 +37,15 @@ class Checkout extends Component<any, any> {
                 if(item?.customInfos) {
                     details.type = item?.customInfos?.type;
                     if(item?.customInfos?.type == 'CODEV') {
-
-                        if(item.customInfos.line_reference)
-                            details.line_ref = item.customInfos.line_reference;
                             
                         if(item.customInfos.alias != null)
                             details.alias = item.customInfos.alias.value;
                             
                         if(item.customInfos.indivision) {
-                            details.line_ref = item.customInfos.indivision.line.reference;
-                            details.indivision_ref = item.customInfos.indivision.reference;
+                            details.unit_amount = item.customInfos.indivision.unitAmount;
+                            details.distribution = item.customInfos.indivision.distribution;
+                            details.denomination = item.customInfos.indivision.denomination;
+                            details.tirage_ref = item.customInfos.selectedDate.reference;
                         } else {
                             details.tirage_ref = item.customInfos.selectedDate.reference;
                         }
@@ -60,7 +59,7 @@ class Checkout extends Component<any, any> {
             )
         }
 
-        //console.log(data);
+        // console.log(data);
         this.props.setRequestGlobalAction(true);
         OrderService.createOrder(data).then(() => {
             this.setState({ showSweetAlert: true });

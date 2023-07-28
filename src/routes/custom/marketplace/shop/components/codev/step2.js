@@ -27,37 +27,9 @@ class CodevStep2 extends Component {
         super(props);
     }
 
-    componentDidMount() {
-        this.findLines();
-    }
-
-    findLines = () => {
-        this.props.setRequestGlobalAction(true);
-        ProductService.getIndivisionsByDate({reference: this.props.product.reference, date: this.props.data.selectedDate.date})
-        .then(response => {
-            this.setState({ lines: response });
-        })
-        .finally(() => this.props.setRequestGlobalAction(false))
-    }
-
-    onValidate = () => {
-        const { selectedLine } = this.state;
-
-        if (!selectedLine) {
-            NotificationManager.error('Le formulaire est mal renseigné');
-            return;
-        }
-
-        let data = {
-            ...this.props.data, indivision: selectedLine
-        }
-
-        this.props.onSubmit(data);
-    }
-
     render() {
 
-        const { onClose, show, } = this.props;
+        const { onClose, show } = this.props;
         const { selectedLine, lines, showCreateIndivision } = this.state;
 
         return (
@@ -68,12 +40,12 @@ class CodevStep2 extends Component {
                         show={showCreateIndivision}
                         onClose={() => {
                             this.setState({ showCreateIndivision: false });
-                            this.findLines();
                         }}
-                        onValidate={(line) => {
-                            this.setState({ selectedLine: line }, () => {
-                                this.onValidate()
-                            });  
+                        onValidate={(indivision) => {
+                            let data = {
+                                ...this.props.data, ...indivision, newIndivision: true
+                            }
+                            this.props.onSubmit(data); 
                         }}
                     /> :
                     <DialogComponent

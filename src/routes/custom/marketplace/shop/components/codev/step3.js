@@ -45,18 +45,18 @@ class CodevStep3 extends Component {
         .finally(() => this.props.setRequestGlobalAction(false))
     }
 
-    findLines = () => {
-        this.props.setRequestGlobalAction(true);
-        ProductService.getIndivisionsByLine({show: true, reference: this.props.data.indivision.line.reference})
-        .then(response => {
-            this.setState({ lines: response });
-        })
-        .finally(() => this.props.setRequestGlobalAction(false))
-    }
+    // findLines = () => {
+    //     this.props.setRequestGlobalAction(true);
+    //     ProductService.getIndivisionsByLine({show: true, reference: this.props.data.indivision.line.reference})
+    //     .then(response => {
+    //         this.setState({ lines: response });
+    //     })
+    //     .finally(() => this.props.setRequestGlobalAction(false))
+    // }
 
     findSupports = () => {
         this.props.setRequestGlobalAction(true);
-        ProductService.getLineSupports({reference: this.props.data.indivision.line.reference})
+        ProductService.getLineSupports({reference: 'xxo'})
         .then(response => {
             this.setState({ supports: response });
         })
@@ -100,7 +100,7 @@ class CodevStep3 extends Component {
 
             this.setState({product: response, dates: tmpDates, startDate: depositStartDate, endDate: tmpDates[tmpDates.length-1]}, () => {
                 this.getCodevConfigOptions();
-                this.findLines();
+                // this.findLines();
             });
         })
         .finally(() => this.props.setRequestGlobalAction(false))
