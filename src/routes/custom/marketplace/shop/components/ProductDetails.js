@@ -129,7 +129,7 @@ class ProductDetails extends Component {
                             ))}
                         </tbody>
                     </table>
-                    {product?.specialProduct == 'CODEV' &&
+                    {/* {product?.specialProduct == 'CODEV' &&
                         <Button
                             color="primary"
                             variant="contained"
@@ -138,7 +138,7 @@ class ProductDetails extends Component {
                         >
                             Consulter la fiche
                         </Button>
-                    }
+                    } */}
                 </RctCardContent>
                 { this.state.showPrintDetails && (
                     <PrintDetails 

@@ -11,10 +11,10 @@ import CreateOption from '../components/createOption';
 import CreateDetails from '../components/createDetails';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { NotificationManager } from 'react-notifications';
-import { getProductTypes, getTimeUnits } from 'Helpers/datas';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import {Form, FormGroup, Input as InputStrap} from 'reactstrap';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
+import { getProductTypes, getConvertableTimeUnits } from 'Helpers/datas';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
 
 
@@ -49,10 +49,15 @@ const Configure = (props: any) => {
 
     useEffect(() => {
         getUnits();
-        findProduct();
         getCodevConfigOptions();
         getCodevDetails();
     }, []);
+
+    useEffect(() => {
+        if(units.length > 0) {
+            findProduct();
+        }
+    }, [units])
 
     useEffect(() => {
         let tmp = configs.filter(t => product?.details.find(d => d.type == 'OPTION')?.value.split(',').includes(t.reference));
@@ -103,8 +108,9 @@ const Configure = (props: any) => {
     const getUnits = () => {
         props.setRequestGlobalAction(false);
         UnitService.getUnits()
-            .then((response) => setUnits(response))
-            .catch((err) => {
+            .then((response) => {
+                setUnits(response);
+            }).catch((err) => {
                 console.log(err);
             })
             .finally(() => {
@@ -116,7 +122,7 @@ const Configure = (props: any) => {
 
         if(!config || !depositPeriod || !cycleTime || !lineGroup || placements.length <= 0 || 
             !subscriptionStartDate || !subscriptionEndDate || !startDepositDate || !subscriptionFees || 
-            !depositAmount || !minimumRate || tirageDates.length < 0) {
+            !depositAmount || !minimumRate || tirageDates.length < 0 || !priceUnit) {
             NotificationManager.error('Le formulaire est mal rempli');
             return;
         }
@@ -144,6 +150,7 @@ const Configure = (props: any) => {
             emitLineCount: emitLineCount.toString(), 
             option: config.map(c => c.reference).join(','),
             placement: placements.map(p => p.reference).join(','),
+            priceUnit: priceUnit.code
         }
 
         props.setRequestGlobalAction(true);
@@ -173,7 +180,8 @@ const Configure = (props: any) => {
             setSubscriptionFees(response.details.find(d => d.type == 'SUBSCRIPTION_FEES')?.value);
             setSubscriptionEndDate(response.details.find(d => d.type == 'END_DATE')?.value);
             setSubscriptionStartDate(response.details.find(d => d.type == 'START_DATE')?.value);
-            setDepositPeriod(getTimeUnits().find(t => t.value == response.details.find(d => d.type == 'DEPOSIT_PERIOD')?.value));
+            setDepositPeriod(getConvertableTimeUnits().find(t => t.value == response.details.find(d => d.type == 'DEPOSIT_PERIOD')?.value));
+            setPriceUnit(units.find(t => t.code == response.details.find(d => d.type == 'PRICE_CURRENCY')?.value));
         })
         .finally(() => props.setRequestGlobalAction(false))
     }
@@ -226,7 +234,7 @@ const Configure = (props: any) => {
                             <Autocomplete
                                 value={depositPeriod}
                                 id="combo-box-demo"
-                                options={getTimeUnits()}
+                                options={getConvertableTimeUnits()}
                                 onChange={(__, item) => {
                                     setDepositPeriod(item);
                                 }}
@@ -344,6 +352,20 @@ const Configure = (props: any) => {
                             />
                         </FormGroup>
                         <FormGroup className="col-md-3 col-sm-12 has-wrapper">
+                            <InputLabel className="text-left" htmlFor="depositAmount">
+                                Montant périodique
+                            </InputLabel>
+                            <InputStrap
+                                required
+                                type="number"
+                                id="depositAmount"
+                                name='depositAmount'
+                                className="input-lg"
+                                value={depositAmount}
+                                onChange={(e) => setDepositAmount(e.target.value)}
+                            />
+                        </FormGroup>
+                        <FormGroup className="col-md-3 col-sm-12 has-wrapper">
                             <InputLabel className="text-left">
                                 Devise
                             </InputLabel>
@@ -356,20 +378,6 @@ const Configure = (props: any) => {
                                 getOptionLabel={(option) => option.label}
                                 options={units.filter(u => ['dévise', 'devise', 'devises', 'dévises'].includes(u.type.label.toLowerCase()))}
                                 renderInput={(params) => <TextField {...params} variant="outlined" />}
-                            />
-                        </FormGroup>
-                        <FormGroup className="col-md-3 col-sm-12 has-wrapper">
-                            <InputLabel className="text-left" htmlFor="depositAmount">
-                                Montant périodique
-                            </InputLabel>
-                            <InputStrap
-                                required
-                                type="number"
-                                id="depositAmount"
-                                name='depositAmount'
-                                className="input-lg"
-                                value={depositAmount}
-                                onChange={(e) => setDepositAmount(e.target.value)}
                             />
                         </FormGroup>
                         <FormGroup className="col-md-3 col-sm-12 has-wrapper">

@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 import { FormGroup } from 'reactstrap';
 import React, { Component } from 'react';
+import { convertDate } from 'Helpers/helpers';
 import { withRouter } from "react-router-dom";
 import Button from '@material-ui/core/Button';
 import ProductService from 'Services/products';
@@ -110,12 +111,7 @@ class CodevStep1 extends Component {
         }
 
         if(subscriptionType.value == 'ALONE') {
-            ProductService.getLinesByDate({reference: product.reference, date: selectedDate.date})
-            .then(response => {
-                data.line_reference = response[0]?.reference
-                data.line = response[0];
-                this.props.onSubmit(data);
-            })
+            this.props.onSubmit(data);
         } else {
             data.indivision = indivision;
             this.props.onSubmit(data);
@@ -191,7 +187,7 @@ class CodevStep1 extends Component {
                                 onChange={(__, item) => {
                                     this.setState({ selectedDate: item });
                                 }}
-                                getOptionLabel={(option) => option.date}
+                                getOptionLabel={(option) => convertDate(option.date, 'DD MMMM YYYY')}
                                 renderInput={(params) => <TextField {...params} variant="outlined" />}
                             />
                         </FormGroup> : 

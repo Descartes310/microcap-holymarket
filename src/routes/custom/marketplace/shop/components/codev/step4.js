@@ -140,18 +140,6 @@ class CodevStep4 extends Component {
                                     }
                                 </tr>
                             ))}
-                            {/* <tr>
-                                <td>Montant par versement</td>
-                                <td>{ data?.selectedLine ? data.selectedLine.amount : this.state.product?.details.find(d => d.type === 'DEPOSIT_AMOUNT')?.value } EUR</td>
-                            </tr>
-                            <tr>
-                                <td>Capital disponible par tirage (groupe de ligne)</td>
-                                <td>{this.computeAvailableCapital()} EUR</td>
-                            </tr>
-                            <tr>
-                                <td>Date de tirage pour une avance</td>
-                                <td>{data?.selectedDate ? data.selectedDate.date : new Date()}</td>
-                            </tr> */}
                         </tbody>
                     </table>
                     <FormGroup className="float-right mb-20">

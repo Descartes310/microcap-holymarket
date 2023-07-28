@@ -11,6 +11,7 @@ import { RctCard, RctCardContent } from 'Components/RctCard';
 import { setRequestGlobalAction, onClearCart } from 'Actions';
 import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
+import { SourceMapDevToolPlugin } from 'webpack';
 
 class Checkout extends Component<any, any> {
 
@@ -29,7 +30,9 @@ class Checkout extends Component<any, any> {
             telephone: billingForm.mobileNumber,
             productIds: this.props.cart.items.map(product => product.id),
             productQuantities: this.props.cart.items.map(product => product.quantity),
-            productDetails: JSON.stringify(this.props.cart.items.map(item => {
+            productDetails: 
+            JSON.stringify(
+                this.props.cart.items.map(item => {
                 let details: any = {};
                 if(item?.customInfos) {
                     details.type = item?.customInfos?.type;
@@ -38,22 +41,23 @@ class Checkout extends Component<any, any> {
                         if(item.customInfos.line_reference)
                             details.line_ref = item.customInfos.line_reference;
                             
-                            if(item.customInfos.alias != null)
+                        if(item.customInfos.alias != null)
                             details.alias = item.customInfos.alias.value;
                             
-                            if(item.customInfos.indivision) {
-                                details.line_ref = item.customInfos.indivision.line.reference;
-                                details.indivision_ref = item.customInfos.indivision.reference;
-                            } else {
-                                details.tirage_ref = item.customInfos.selectedDate.reference;
-                            }
+                        if(item.customInfos.indivision) {
+                            details.line_ref = item.customInfos.indivision.line.reference;
+                            details.indivision_ref = item.customInfos.indivision.reference;
+                        } else {
+                            details.tirage_ref = item.customInfos.selectedDate.reference;
+                        }
 
                         details.product_ref = item.customInfos.productReference;
                         details.subscription_type = item.customInfos.subscriptionType.value;
                     }
                 }
                 return details;
-            }))
+            })
+            )
         }
 
         //console.log(data);

@@ -17,8 +17,8 @@ const Shop = (props) => {
     useEffect(() => {
         const defaultState = (function (url) {
             if (url.includes(MARKETPLACE.SHOP.CLASSIC)) return 0;
-            if (url.includes(MARKETPLACE.SHOP.PRIVATE)) return 1;
-            if (url.includes(MARKETPLACE.SHOP.FINANCIAL)) return 2;
+            if (url.includes(MARKETPLACE.SHOP.FINANCIAL)) return 1;
+            if (url.includes(MARKETPLACE.SHOP.PRIVATE)) return 2;
             else return 0;
         })(window.location.pathname);
 
@@ -31,8 +31,8 @@ const Shop = (props) => {
         if (oldActivateTab !== value) {
             switch (value) {
                 case 0: return props.history.push(MARKETPLACE.SHOP.CLASSIC);
-                case 1: return props.history.push(MARKETPLACE.SHOP.PRIVATE);
-                case 2: return props.history.push(MARKETPLACE.SHOP.FINANCIAL);
+                case 1: return props.history.push(MARKETPLACE.SHOP.FINANCIAL);
+                case 2: return props.history.push(MARKETPLACE.SHOP.PRIVATE);
                 default: return props.history.push(MARKETPLACE.SHOP.CLASSIC);
             }
         }

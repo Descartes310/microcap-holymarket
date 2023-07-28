@@ -63,6 +63,26 @@ export const getTimeUnits = () => {
     ];
 }
 
+export const getConvertableTimeUnits = () => {
+    return [
+        {
+            label: 'Jour',
+            value: 'DAYS',
+            days: 1
+        },
+        {
+            label: 'Semaine',
+            value: 'WEEKS',
+            days: 7
+        },
+        {
+            label: 'Mois',
+            value: 'MONTHS',
+            days: 30
+        }
+    ];
+}
+
 export const getTimeUnitByValue = (name) => {
     return getTimeUnits().find(d => d.value === name);
 }
@@ -165,6 +185,10 @@ export const getProductDetails = () => {
         {
             label: 'Date du premier versement',
             value: 'START_DEPOSIT_DATE'
+        },
+        {
+            label: 'Devise',
+            value: 'PRICE_CURRENCY'
         }
     ];
     

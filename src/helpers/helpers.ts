@@ -895,7 +895,7 @@ export const getSellWay = () => {
             value: 'PRIVATE'
         },
         {
-            label: 'Produit financier',
+            label: 'Distribution bancaire',
             value: 'FINANCIAL'
         }
     ]
