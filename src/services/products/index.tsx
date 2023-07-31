@@ -116,6 +116,10 @@ export default class ProductService {
         return makeRequest('get', Routes.GET_INDIVISION_BY_LINE, data);
     }
 
+    static getTicketsByIndivision(data: any): Promise<any> {
+        return makeRequest('get', Routes.GET_TICKET_BY_INDIVISION, data);
+    }
+
     static getCodevDetails(data: any): Promise<any> {
         return makeRequest('get', Routes.GET_CODEV_DETAILS, data);
     }

@@ -30,17 +30,7 @@ export default (state = INIT_STATE, action) => {
 			return new Cart(obj);
 
 		case CART_REMOVE_ITEM:
-			let cartItem = state.items.find(item => item.id == action.payload.id);
 			obj.data[action.authId] = state.items.filter(item => item.id !== action.payload.id);
-			
-			if(cartItem?.customInfos?.type == 'CODEV') {
-				console.log(cartItem.customInfos)
-				if(cartItem.customInfos.line)
-					ProductService.deleteLineBooking({line_references: [cartItem.customInfos.line.reference], tirage_reference: cartItem.customInfos.selectedDate.reference});
-				if(cartItem.customInfos.indivision)
-					ProductService.deleteIndivisionBooking({indivision_references: [cartItem.customInfos.indivision.reference]});
-			}
-
 			return new Cart(obj);
 
 		case CART_UPDATE_ITEM:

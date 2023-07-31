@@ -39,6 +39,7 @@ export const GET_FREE_TIRAGE = 'api/products/codevs/tirages/availables';
 export const GET_LINE_BY_DATE = 'api/products/codevs/line/dates';
 export const GET_INDIVISION_BY_DATE = 'api/products/codevs/indivisions/dates';
 export const GET_INDIVISION_BY_LINE = 'api/products/codevs/indivisions/line';
+export const GET_TICKET_BY_INDIVISION = 'api/products/codevs/indivisions/tickets';
 export const GET_INDIVISION_BY_PRODUCT = 'api/products/codevs/indivisions/availables';
 export const CREATE_INDIVIVIONS = 'api/products/codevs/indivision';
 

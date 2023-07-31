@@ -11,7 +11,6 @@ import { RctCard, RctCardContent } from 'Components/RctCard';
 import { setRequestGlobalAction, onClearCart } from 'Actions';
 import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
-import { SourceMapDevToolPlugin } from 'webpack';
 
 class Checkout extends Component<any, any> {
 
@@ -42,10 +41,14 @@ class Checkout extends Component<any, any> {
                             details.alias = item.customInfos.alias.value;
                             
                         if(item.customInfos.indivision) {
-                            details.unit_amount = item.customInfos.indivision.unitAmount;
-                            details.distribution = item.customInfos.indivision.distribution;
-                            details.denomination = item.customInfos.indivision.denomination;
-                            details.tirage_ref = item.customInfos.selectedDate.reference;
+                            if(item.customInfos.tickets) {
+                                details.tickets = item.customInfos.tickets.join(',');
+                            } else {
+                                details.unit_amount = item.customInfos.indivision.unitAmount;
+                                details.distribution = item.customInfos.indivision.distribution;
+                                details.denomination = item.customInfos.indivision.denomination;
+                                details.tirage_ref = item.customInfos.selectedDate.reference;
+                            }
                         } else {
                             details.tirage_ref = item.customInfos.selectedDate.reference;
                         }

@@ -16,13 +16,11 @@ class CodevStep3 extends Component {
 
     state = {
         dates: [],
-        lines: [],
-        configs: [],
-        supports: [],
+        tickets: [],
         product: null,
         endDate: null,
         startDate: null,
-        selectedSupports: [],
+        selectedTickets: [],
     }
 
     constructor(props) {
@@ -33,32 +31,14 @@ class CodevStep3 extends Component {
         if(this.props.product) {
             this.findProduct();
         }
-        this.findSupports();
+        this.findTickets();
     }
 
-    getCodevConfigOptions = () => {
+    findTickets = () => {
         this.props.setRequestGlobalAction(true);
-        ProductService.getCodevConfigOptions({product_reference: this.state.product.reference}).then(response => {
-            this.setState({configs: response.filter(t => this.state.product?.details.find(d => d.type == 'OPTION')?.value.split(',').includes(t.reference))
-            .map(co => { return {...co, label: co.option.label}})});
-        })
-        .finally(() => this.props.setRequestGlobalAction(false))
-    }
-
-    // findLines = () => {
-    //     this.props.setRequestGlobalAction(true);
-    //     ProductService.getIndivisionsByLine({show: true, reference: this.props.data.indivision.line.reference})
-    //     .then(response => {
-    //         this.setState({ lines: response });
-    //     })
-    //     .finally(() => this.props.setRequestGlobalAction(false))
-    // }
-
-    findSupports = () => {
-        this.props.setRequestGlobalAction(true);
-        ProductService.getLineSupports({reference: 'xxo'})
+        ProductService.getTicketsByIndivision({show: false, reference: this.props.data.indivision.reference})
         .then(response => {
-            this.setState({ supports: response });
+            this.setState({ tickets: response });
         })
         .finally(() => this.props.setRequestGlobalAction(false))
     }
@@ -98,10 +78,7 @@ class CodevStep3 extends Component {
                 }
             }
 
-            this.setState({product: response, dates: tmpDates, startDate: depositStartDate, endDate: tmpDates[tmpDates.length-1]}, () => {
-                this.getCodevConfigOptions();
-                // this.findLines();
-            });
+            this.setState({product: response, dates: tmpDates, startDate: depositStartDate, endDate: tmpDates[tmpDates.length-1]});
         })
         .finally(() => this.props.setRequestGlobalAction(false))
     }
@@ -109,7 +86,7 @@ class CodevStep3 extends Component {
     render() {
 
         const { onClose, show, onSubmit, data } = this.props;
-        const { selectedSupports, dates, startDate, endDate, supports } = this.state;
+        const { dates, startDate, endDate, tickets, selectedTickets } = this.state;
 
         return (
             <DialogComponent
@@ -168,12 +145,12 @@ class CodevStep3 extends Component {
                                             <Autocomplete
                                                 multiple
                                                 id="combo-box-demo"
-                                                onChange={(__, item) => {
-                                                    this.setState({ selectedSupports: item});
+                                                onChange={(__, items) => {
+                                                    this.setState({ selectedTickets: [...selectedTickets.filter(t => !tickets.filter(s => s.date === d).includes(t)), ...items]});
                                                 }}
-                                                getOptionLabel={(option) => 'Tiquet de reférence: '+option.reference.split('_')[2]}
+                                                getOptionLabel={(option) => 'Code de tiquet: '+option.code}
                                                 renderInput={(params) => <TextField {...params} variant="outlined" />}
-                                                options={supports.filter(s => s.date === d && s.referralCode == null && s.status == 'FREE')}
+                                                options={tickets.filter(s => s.date === d)}
                                             />
                                         </div>
                                     </td>
@@ -185,8 +162,8 @@ class CodevStep3 extends Component {
                         <Button
                             color="primary"
                             variant="contained"
-                            onClick={() => { if(selectedSupports.length >= 0) {
-                                    onSubmit({...data, supports: selectedSupports.map(ss => ss.reference)}); 
+                            onClick={() => { if(selectedTickets.length >= 0) {
+                                    onSubmit({...data, tickets: selectedTickets.map(ss => ss.reference)}); 
                                 } else {
                                     NotificationManager.error('Sélectionnez au moins un tiquet');
                                 }
