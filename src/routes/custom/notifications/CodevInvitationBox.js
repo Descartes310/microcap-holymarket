@@ -1,43 +1,44 @@
 import { Button } from "reactstrap";
 import { connect } from "react-redux";
 import React, { Component } from 'react';
+import UserService from "Services/users";
+import { convertDate } from 'Helpers/helpers';
 import ProductService from "Services/products";
+import { RctCardContent } from 'Components/RctCard';
+import TextField from '@material-ui/core/TextField';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import NotificationService from "Services/notifications";
 import DialogComponent from "Components/DialogComponent";
+import { FormGroup, Input as InputStrap } from 'reactstrap';
+import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { setRequestGlobalAction, onAddItemToCart } from "Actions";
-import CodevStep3 from 'Routes/custom/marketplace/shop/components/codev/step3';
-import CodevStep4 from 'Routes/custom/marketplace/shop/components/codev/step4';
 
 class CodevInvitationBox extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            data: {},
+            alias: null,
+            aliases: [],
+            dates: [],
+            tickets: [],
             product: null,
-            loading: false,
-            showCodevStep3: false,
-            showCodevStep4: false
+            endDate: null,
+            startDate: null,
+            selectedTickets: [],
         }
     }
 
-    addToCart = (cartItem, e = null) => {
-		this.setState({ loading: true });
-		if(this.state.data)
-			cartItem.customInfos = this.state.data;
+    componentDidMount() {
+        this.findGlobalLineData();
+        this.getAliases();
+    }
 
-		this.props.onAddItemToCart(cartItem);
-		if(e) e.preventDefault();
-		this.setState({ loading: false, product: null, data: null });
-		if(cartItem?.customInfos?.type == 'CODEV') {
-			if(cartItem.customInfos.line)
-				ProductService.createLineBooking({line_references: [cartItem.customInfos.line.reference]});
-			if(cartItem.customInfos.indivision)
-				ProductService.createIndivisionBooking({indivision_references: [cartItem.customInfos.indivision.reference], supports: cartItem.customInfos.supports});
-		}
-        this.markAsTreat();
-        this.props.onClose();
-	}
+    getAliases = () => {
+        UserService.getContacts().then((contacts) => {
+            this.setState({ aliases: contacts.filter(c => c.type === 'ALIAS') });
+        });
+    }
 
     markAsTreat = () => {
         this.props.setRequestGlobalAction(true);
@@ -47,75 +48,181 @@ class CodevInvitationBox extends Component {
         });
     };
 
-    findGlobalLineData = () => {
+    findTickets = () => {
         this.props.setRequestGlobalAction(true);
-        ProductService.getLineGlobalInfo({line_reference: this.props.codevLine})
+        ProductService.getTicketsByIndivision({show: false, reference: this.state.indivision.reference})
         .then(response => {
-            this.setState({ data: {
-                type: 'CODEV',
-                line: response.line,
-                selectedDate: response.tirage,
-                subscriptionType: 'INDIVISION',
-                indivision: response.indivision,
-                line_reference: response.line.reference,
-                productReference: response.product.reference,
-            }, showCodevStep3: true, product: response.product })
+            this.setState({ tickets: response });
         })
         .finally(() => this.props.setRequestGlobalAction(false))
     }
 
+    findGlobalLineData = () => {
+        this.props.setRequestGlobalAction(true);
+        ProductService.getLineGlobalInfo({line_reference: this.props.notification?.details?.find(nd => nd.type === "CODEV_LINE_REF")?.value})
+        .then(response => {
+            this.setState({
+                indivision: response.indivision,
+                product: response.product 
+            });
+
+            let period = response.product.details.find(d => d.type == 'DEPOSIT_PERIOD')?.value;
+            let depositStartDate = response.product.details.find(d => d.type == 'START_DEPOSIT_DATE')?.value;
+            let cycleTime = response.product.details.find(d => d.type == 'CYCLE_TIME')?.value;
+
+            let tmpDates = [];
+            let date = new Date(depositStartDate);
+
+            for (let index = 0; index < Number(cycleTime); index++) {
+
+                tmpDates.push(convertDate(date, "YYYY-MM-DD"));
+                switch (period) {
+                    case "DAYS":
+                        date.setDate(date.getDate() + 1);
+                        break;
+                    case "WEEKS":
+                        date.setDate(date.getDate() + 7);
+                        break;
+                    case "MONTHS":
+                        date.setDate(date.getDate() + 30);
+                        break;
+                    default:
+                        date.setDate(date.getDate() + 1);
+                        break;
+                }
+            }
+
+            this.setState({product: response, dates: tmpDates, startDate: depositStartDate, endDate: tmpDates[tmpDates.length-1]});
+            this.findTickets();
+        })
+        .finally(() => this.props.setRequestGlobalAction(false))
+    }
+
+    onSubmit = () => {
+        if(this.state.selectedTickets.length <= 0) {
+
+        }
+        let datas = {
+            tickets: this.state.selectedTickets.map(t => t.reference)
+        }
+        if(this.state.alias) datas.alias = this.state.alias.value;
+
+        //console.log(datas);
+
+        this.props.setRequestGlobalAction(true)
+        ProductService.createSubscriber(datas)
+        .then(() => {
+            this.props.onClose();
+            this.markAsTreat();
+        })
+        .finally(() => this.props.setRequestGlobalAction(false))
+
+    }
+
     render() {
 
-        const { notification } = this.props;
-        const { showCodevStep3, showCodevStep4, product, data } = this.state;
+        const { show, onClose } = this.props;
+        const { data, startDate, endDate, tickets, selectedTickets, aliases, dates, alias } = this.state;
 
         return (
             <DialogComponent
-                title="Vous etes invités à un plan codev"
-                onClose={this.props.onClose}
-                show={this.props.show}
+                show={show}
+                onClose={onClose}
+                size="md"
+                title={(
+                    <h3 className="fw-bold">
+                        Rythme des versements
+                    </h3>
+                )}
             >
-                <div className="p-sm-20 pt-sm-30 p-10 pt-15 border-top">
-                    <div>
-                        <p>Vous êtes invité à participer au plan de codeveloppement de {notification?.details?.find(nd => nd.type === "CODEV_INDIVISION_NAME")?.value}</p>
-                        <p>Vous devez renseigner les montants et les rythmes de votre participation financière. 
-                            Le ticket de participation est de {notification?.details?.find(nd => nd.type === "CODEV_INDIVISION_AMOUNT")?.value} EUR par période de versement.</p>
-                        <p>Choisissez pour chaque date de versement, le nombre de ickets nécessire pour atteindre 
-                            le montant souhaité pour votre participation financière au plan</p>
-                    </div>
-                    <Button
-                        color="primary"
-                        className="text-white mr-2"
-                        onClick={() => this.findGlobalLineData()}
-                    >
-                        Continuer
-                    </Button>
-                </div>
+                <RctCardContent>
+                    <FormGroup className="col-md-12 col-sm-12 has-wrapper mb-30 mt-20">
+                        <InputLabel className="text-left" htmlFor="startDate">
+                            Alias à utiliser
+                        </InputLabel>
+                        <Autocomplete
+                            value={alias}
+                            options={aliases}
+                            id="combo-box-demo"
+                            onChange={(__, item) => {
+                                this.setState({ alias: item });
+                            }}
+                            getOptionLabel={(option) => option.value}
+                            renderInput={(params) => <TextField {...params} variant="outlined" />}
+                        />
+                    </FormGroup>
 
-                { showCodevStep3 && (
-					<CodevStep3 
-						data={data}
-						product={product}
-						show={showCodevStep3}
-						onClose={() => this.setState({ showCodevStep3: false })}
-						onSubmit={(data) => {
-							this.setState({ data: data, showCodevStep3: false, showCodevStep4: true });
-						}}
-					/>
-				)}
-				{ showCodevStep4 && (
-					<CodevStep4
-						data={data}
-						product={product}
-						show={showCodevStep4}
-						onClose={() => this.setState({ showCodevStep4: false })}
-						onSubmit={(data) => {
-							this.setState({ data: data,  showCodevStep3: false , showCodevStep4: false }, () => {
-								this.addToCart(this.state.product);
-							});
-						}}
-					/>
-				)}
+                    <h4>Filtre</h4>
+                    <div className="row">
+                        <FormGroup className="col-md-6 col-sm-12 has-wrapper">
+                            <InputLabel className="text-left" htmlFor="startDate">
+                                Date de début
+                            </InputLabel>
+                            <InputStrap
+                                required
+                                type="date"
+                                className="input-lg"
+                                id="startDate"
+                                name='startDate'
+                                value={startDate}
+                                onChange={(e) => this.setState({ startDate: e.target.value })}
+                            />
+                        </FormGroup>
+                        <FormGroup className="col-md-6 col-sm-12 has-wrapper">
+                            <InputLabel className="text-left" htmlFor="endDate">
+                                Date de fin
+                            </InputLabel>
+                            <InputStrap
+                                required
+                                type="date"
+                                id="endDate"
+                                name='endDate'
+                                value={endDate}
+                                className="input-lg"
+                                onChange={(e) => this.setState({ endDate: e.target.value })}
+                            />
+                        </FormGroup>
+                    </div>
+                    <table className='table table-bordered'>
+                        <thead>
+                            <th>Date de versement</th>
+                            <th>Tickets</th>
+                        </thead>
+                        <tbody>
+                            { dates.filter(d => d >= startDate && d <= endDate).map(d => (
+                                <tr>
+                                    <td>{d}</td>
+                                    <td>
+                                        <div className="col-md-12 col-sm-12">
+                                            <Autocomplete
+                                                multiple
+                                                id="combo-box-demo"
+                                                onChange={(__, items) => {
+                                                    this.setState({ selectedTickets: [...selectedTickets.filter(t => !tickets.filter(s => s.date === d).includes(t)), ...items]});
+                                                }}
+                                                getOptionLabel={(option) => 'Code de tiquet: '+option.code}
+                                                renderInput={(params) => <TextField {...params} variant="outlined" />}
+                                                options={tickets.filter(s => s.date === d)}
+                                            />
+                                        </div>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                    <FormGroup className="float-right mb-20">
+                        <Button
+                            color="primary"
+                            variant="contained"
+                            onClick={() => {
+                                this.onSubmit(); 
+                            }}
+                            className="text-white font-weight-bold mb-20"
+                        >
+                            Continuer
+                        </Button>
+                    </FormGroup>
+                </RctCardContent>
             </DialogComponent>
         );
     }

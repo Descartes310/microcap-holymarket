@@ -9,6 +9,7 @@ import StripeCheckout from 'react-stripe-checkout';
 import { RctCard, RctCardContent } from 'Components/RctCard';
 import { FormGroup, Label, Input, Button } from 'reactstrap';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
+import { MARKETPLACE } from "Url/frontendUrl";
 
 class PaymentCard extends Component<any, any> {
 
@@ -18,8 +19,6 @@ class PaymentCard extends Component<any, any> {
       showStripeBox: false,
    }
 
-   componentDidMount() { }
-
    computePrice = () => {
       const { amount } = this.state;
       return amount * 100;
@@ -28,17 +27,13 @@ class PaymentCard extends Component<any, any> {
    onSubmit = (token) => {
       this.props.setRequestGlobalAction(true);
       OrderService.paySale(this.props.match.params.id, {stripeToken: token, amount: this.state.amount})
-         .then(response => window.location.reload())
+         .then(() => window.location.reload())
          .finally(() => this.props.setRequestGlobalAction(false))
    }
 
    onStripePayment = (token) => {
       this.onSubmit(token.id);
    }
-
-   getPayPalPaymentLink = () => {
-   }
-
 
    render() {
       const { paymentMethod, amount } = this.state;
@@ -63,7 +58,7 @@ class PaymentCard extends Component<any, any> {
                      </Label>
                   </FormGroup>
 
-                  <FormGroup check className="mb-25">
+                  {/* <FormGroup check className="mb-25">
                      <Label check>
                         <Input
                            disabled
@@ -77,7 +72,7 @@ class PaymentCard extends Component<any, any> {
                            <img src={require('Assets/img/paypal-payment.png')} alt='PayPal payment' style={{ maxHeight: 20 }} />
                         </div>
                      </Label>
-                  </FormGroup>
+                  </FormGroup> */}
 
                   <FormGroup className="has-wrapper">
                      <InputLabel className="text-left" htmlFor="label">
@@ -94,8 +89,8 @@ class PaymentCard extends Component<any, any> {
                      />
                   </FormGroup>
 
-                  {
-                     paymentMethod ? (
+                  {/* { */}
+                  {/*   paymentMethod ? ( */}
                         <StripeCheckout
                            name={'MicroCap'}
                            currency={'EUR'}
@@ -113,17 +108,17 @@ class PaymentCard extends Component<any, any> {
                               Payer
                            </Button>
                         </StripeCheckout>
-                     ) : (
-                        <Button
-                           color="primary"
-                           disabled={!paymentMethod || amount <= 0}
-                           className="w-100 ml-0 mt-15 text-white"
-                           onClick={() => this.getPayPalPaymentLink()}
-                        >
-                           Payer
-                        </Button>
-                     )
-                  }
+                      {/* ) : (
+                         <Button
+                            color="primary"
+                            disabled={!paymentMethod || amount <= 0}
+                            className="w-100 ml-0 mt-15 text-white"
+                            onClick={() => this.getPayPalPaymentLink()}
+                         >
+                            Payer
+                         </Button>
+                      ) */}
+                  {/* } */}
                </FormGroup>
             </RctCardContent>
          </RctCard>

@@ -5,6 +5,7 @@ import CustomList from "Components/CustomList";
 import ProductService from "Services/products";
 import { setRequestGlobalAction } from 'Actions';
 import SearchMember from "Components/SearchMember";
+import TimeFromMoment from "Components/TimeFromMoment";
 import DialogComponent from "Components/dialog/DialogComponent";
 
 class CodevParticipants extends Component {
@@ -14,7 +15,12 @@ class CodevParticipants extends Component {
     }
 
     state = {
+        participants: [],
         showSearchMember: false
+    }
+
+    componentDidMount() {
+        this.getParticipants();
     }
 
     inviteSubscriber = (member) => {
@@ -32,10 +38,17 @@ class CodevParticipants extends Component {
         })
     }
 
+    getParticipants = () => {
+        this.props.setRequestGlobalAction(true);
+        ProductService.getParticipantsByOrderRef({reference: this.props.codevLine})
+        .then(response => this.setState({participants: response}))
+        .finally(() => this.props.setRequestGlobalAction(false))
+    }
+
     render() {
 
-        const { showSearchMember } = this.state;
-        const { onClose, show, participants } = this.props;
+        const { onClose, show } = this.props;
+        const { showSearchMember, participants } = this.state;
 
         return (
             <DialogComponent
@@ -67,7 +80,7 @@ class CodevParticipants extends Component {
                                         <thead>
                                             <tr>
                                                 <th className="fw-bold">Noms & prénoms</th>
-                                                <th className="fw-bold">Adresse email</th>
+                                                <th className="fw-bold">Date de souscriptions</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -76,14 +89,14 @@ class CodevParticipants extends Component {
                                                     <td>
                                                         <div className="media">
                                                             <div className="media-body pt-10">
-                                                                <h4 className="m-0 fw-bold text-dark">{item.userName}</h4>
+                                                                <h4 className="m-0 fw-bold text-dark">{item.alias}</h4>
                                                             </div>
                                                         </div>
                                                     </td>
                                                     <td>
                                                         <div className="media">
                                                             <div className="media-body pt-10">
-                                                                <h4 className="m-0 text-dark">{item.email}</h4>
+                                                                <h4 className="m-0 text-dark"><TimeFromMoment time={item.createdAt} showFullDate /></h4>
                                                             </div>
                                                         </div>
                                                     </td>

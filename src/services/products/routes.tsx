@@ -42,6 +42,7 @@ export const GET_INDIVISION_BY_LINE = 'api/products/codevs/indivisions/line';
 export const GET_TICKET_BY_INDIVISION = 'api/products/codevs/indivisions/tickets';
 export const GET_INDIVISION_BY_PRODUCT = 'api/products/codevs/indivisions/availables';
 export const CREATE_INDIVIVIONS = 'api/products/codevs/indivision';
+export const CREATE_SUBSCRIBER = 'api/products/codevs/subscribers';
 
 export const GET_CONFIG_OPTIONS = 'api/products/codev/config_options';
 export const CREATE_CONFIG_OPTION = 'api/products/codev/config_options';

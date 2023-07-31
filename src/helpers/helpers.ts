@@ -909,6 +909,10 @@ export const getProductRangeLabel = (value) => {
         return "";
 }
 
+export const getCodevCodes = () => {
+    return ["CODEV", "CODEV_DEAL_PLAN"];
+}
+
 export const getOrderStatus = () => {
     return [
         {

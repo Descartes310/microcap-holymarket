@@ -10,7 +10,7 @@ import { RctCardContent } from 'Components/RctCard';
 import DialogComponent from "Components/dialog/DialogComponent";
 import ProductDetailsButton from "Components/ProductDetailsButton";
 
-class OrderDetails extends Component {
+class BondDetails extends Component {
 
     state = {
         order: null,
@@ -52,7 +52,7 @@ class OrderDetails extends Component {
                 size="md"
                 title={(
                     <h3 className="fw-bold">
-                        Détails de la commande
+                        Liste des bonds
                     </h3>
                 )}
             >
@@ -101,4 +101,4 @@ class OrderDetails extends Component {
 }
 
 
-export default connect(() => { }, { setRequestGlobalAction })(withRouter(OrderDetails));
+export default connect(() => { }, { setRequestGlobalAction })(withRouter(BondDetails));

@@ -1,8 +1,8 @@
 import { connect } from 'react-redux';
-import OrderDetails from './OrderDetails';
 import OrderService from 'Services/orders';
 import { withRouter } from "react-router-dom";
 import Button from '@material-ui/core/Button';
+import CodevParticipants from "./Participants";
 import CustomList from "Components/CustomList";
 import { setRequestGlobalAction } from 'Actions';
 import React, { useState, useEffect } from 'react';
@@ -17,7 +17,7 @@ const List = (props) => {
     const [orders, setOrders] = useState([]);
     const [order, setOrder] = useState(null);
     const [showAddFileBox, setShowAddFileBox] = useState(false);
-    const [showOrderDetailsBox, setShowOrderDetailsBox] = useState(false);
+    const [showParticipants, setShowParticipants] = useState(false);
 
     useEffect(() => {
       getOrders();
@@ -51,8 +51,8 @@ const List = (props) => {
                                     <thead>
                                         <tr>
                                             <th className="fw-bold">#Reference</th>
+                                            <th className="fw-bold">Label</th>
                                             <th className="fw-bold">Vendeur</th>
-                                            <th className="fw-bold">Telephone</th>
                                             <th className="fw-bold">Date</th>
                                             <th className="fw-bold">Status</th>
                                             <th className="fw-bold">Détails</th>
@@ -73,14 +73,14 @@ const List = (props) => {
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{item.userName}</h4>
+                                                            <h4 className="m-0 fw-bold text-dark">{item.label}</h4>
                                                         </div>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{item.telephone}</h4>
+                                                            <h4 className="m-0 fw-bold text-dark">{item.userName}</h4>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -107,19 +107,20 @@ const List = (props) => {
                                                         }
                                                     </div>
                                                 </td>
-
                                                 <td>
-                                                    <Button
-                                                        color="primary"
-                                                        variant="contained"
-                                                        className="text-white font-weight-bold"
-                                                        onClick={() => {
-                                                            setOrder(item);
-                                                            setShowOrderDetailsBox(true);
-                                                        }}
-                                                    >
-                                                        Détails
-                                                    </Button>
+                                                    {item.status == 'PAID' && item?.details?.find(d => d.type == "CODEV_INDIVISION_DISTRIBUTION")?.value == "PRIVATE" && (
+                                                        <Button
+                                                            color="primary"
+                                                            variant="contained"
+                                                            className="text-white font-weight-bold"
+                                                            onClick={() => {
+                                                                setOrder(item);
+                                                                setShowParticipants(true);
+                                                            }}
+                                                        >
+                                                            Souscripteurs
+                                                        </Button>
+                                                    )}
                                                 </td>
                                                 <td>
                                                     { 
@@ -160,13 +161,14 @@ const List = (props) => {
             />
 
             { order && (
-                <OrderDetails
-                    orderId={order.id} 
-                    show={showOrderDetailsBox && order}
+                <CodevParticipants
+                    order={order}
+                    show={showParticipants}
                     onClose={() => {
                         setOrder(null);
-                        setShowOrderDetailsBox(false);
+                        setShowParticipants(false);
                     }}
+                    codevLine={order?.details?.find(d => d.type == "CODEV_LINE_REF")?.value}
                 />
             )}
 

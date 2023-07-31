@@ -132,12 +132,14 @@ class Unread extends Component {
                         onClose={() => this.setState({ showActivationBox: false })}
                     />
                 )}
-                <CodevInvitationBox
-                    notification={notification}
-                    show={showCodevInvitationBox}
-                    onClose={() => this.setState({ showCodevInvitationBox: false })}
-                    codevLine={notification?.details?.find(nd => nd.type === "CODEV_LINE_REF")?.value}
-                />
+
+                {notification && showCodevInvitationBox && (
+                    <CodevInvitationBox
+                        notification={notification}
+                        show={showCodevInvitationBox}
+                        onClose={() => this.setState({ showCodevInvitationBox: false })}
+                    />
+                )}
 
                 <ConfirmBox
                     show={showConfirmCodevInvitationBox}

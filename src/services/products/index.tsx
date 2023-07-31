@@ -204,4 +204,9 @@ export default class ProductService {
         return makeRequest('get', Routes.GET_LINE_SUPPORTS, data);
     }
 
+    static createSubscriber(data: any): Promise<any> {
+        return makeRequest('post', Routes.CREATE_SUBSCRIBER, data);
+    }
+
+
 }
