@@ -1,8 +1,8 @@
 import { connect } from 'react-redux';
-import { HOME } from 'Url/frontendUrl';
 import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
 import AccountService from 'Services/accounts';
+import CodevPrevisions from './codevPrevisions';
 import { setRequestGlobalAction } from 'Actions';
 import DebitAccount from 'Components/DebitAccount';
 import React, { useState, useEffect } from 'react';
@@ -20,6 +20,7 @@ const Details = (props) => {
     const [endDate, setEndDate] = useState(null);
     const [startDate, setStartDate] = useState(null);
     const [mouvements, setMouvements] = useState([]);
+    const [showTicketBox, setShowTicketBox] = useState(false);
     const [showDebitAccountBox, setShowDebitAccountBox] = useState(false);
     const [showCreditAccountBox, setShowCreditAccountBox] = useState(false);
 
@@ -145,20 +146,23 @@ const Details = (props) => {
                                                 >
                                                     Décaisser
                                                 </Button>
-                                                <Button
-                                                    color="primary"
-                                                    variant="contained"
-                                                    className="text-white font-weight-bold ml-10"
-                                                >
-                                                    Imprimer
-                                                </Button>
+                                                { account?.hasPrevision && (
+                                                    <Button
+                                                        color="primary"
+                                                        variant="contained"
+                                                        onClick={() => setShowTicketBox(true)}
+                                                        className="text-white font-weight-bold ml-10"
+                                                    >
+                                                        Tickets de versement
+                                                    </Button>
+                                                )}
                                             </div>
                                         )}
                                     </div>
                                 </CardTitle>
                                 <CardBody>
                                     <div className='row align-items-end' style={{ marginTop: '5em' }}>
-                                        <FormGroup className="col-md-4 col-sm-12 has-wrapper">
+                                        <FormGroup className="col-md-6 col-sm-12 has-wrapper">
                                             <InputLabel className="text-left" htmlFor="startDate">
                                                 Date de début
                                             </InputLabel>
@@ -172,7 +176,7 @@ const Details = (props) => {
                                                 onChange={(e) => setStartDate(e.target.value)}
                                             />
                                         </FormGroup>
-                                        <FormGroup className="col-md-4 col-sm-12 has-wrapper">
+                                        <FormGroup className="col-md-6 col-sm-12 has-wrapper">
                                             <InputLabel className="text-left" htmlFor="endDate">
                                                 Date de fin
                                             </InputLabel>
@@ -291,6 +295,14 @@ const Details = (props) => {
                     show={showDebitAccountBox}
                     onClose={() => setShowDebitAccountBox(false)}
                 />
+                { showTicketBox && account && (
+                    <CodevPrevisions
+                        show={showTicketBox}
+                        reference={account?.reference}
+                        title='Tickets de versements'
+                        onClose={() => setShowTicketBox(false)}
+                    />
+                )}
             </RctCollapsibleCard>
         </>
     );
