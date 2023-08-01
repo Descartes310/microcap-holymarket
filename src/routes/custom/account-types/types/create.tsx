@@ -1,15 +1,12 @@
 import { connect } from 'react-redux';
 import RoleService from 'Services/roles';
 import { withRouter } from "react-router-dom";
-import TerritoryType from "Enums/Territories";
 import Button from '@material-ui/core/Button';
 import {setRequestGlobalAction} from 'Actions';
 import { referraTypes } from 'Helpers/helpers';
 import React, { useState, useEffect } from 'react';
 import TextField from '@material-ui/core/TextField';
 import { USER_ACCOUNT_TYPE } from 'Url/frontendUrl';
-import TerritoryService from 'Services/territories';
-import IconButton from "@material-ui/core/IconButton";
 import {NotificationManager} from 'react-notifications';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import UserAccountTypeService from 'Services/account-types';
@@ -21,20 +18,16 @@ import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard
 const Create = (props) => {
 
     const [label, setLabel] = useState('');
-    const [sigle, setSigle] = useState('');
     const [roles, setRoles] = useState([]);
     const [role, setRole] = useState(null);
-    const [countries, setCountries] = useState([]);
     const [category, setCategory] = useState(null);
     const [categories, setCategories] = useState([]);
-    const [territories, setTerritories] = useState([]);
     const [description, setDescription] = useState('');
     const [referralType, setReferralType] = useState(null);
 
     useEffect(() => {
         getTypes();
         getRoles();
-        getCountries();
     }, []);
 
     const getTypes = () => {
@@ -51,17 +44,6 @@ const Create = (props) => {
         .finally(() => props.setRequestGlobalAction(false))
     }
 
-    const getCountries = () => {
-        TerritoryService.getTerritories(TerritoryType.COUNTRY)
-        .then(countries => {
-            setCountries(countries);
-        })
-        .catch(error => {
-            setCountries([]);
-            NotificationManager.error("An error occur " + error);
-        });
-    };
-
     const onSubmit = () => {
 
         if(!category || !label || !role)
@@ -69,12 +51,10 @@ const Create = (props) => {
 
         let data: any = {
             label: label,
-            sigle: sigle,
             roleRef: role.reference,
             categoryId: category.id,
             description: description,
             referralType: referralType.value,
-            territories: territories.map(t => t.reference)
         }
             
         props.setRequestGlobalAction(true);
@@ -109,20 +89,6 @@ const Create = (props) => {
                             className="input-lg"
                             value={label}
                             onChange={(e) => setLabel(e.target.value)}
-                        />
-                    </FormGroup>
-                    <FormGroup className="has-wrapper">
-                        <InputLabel className="text-left" htmlFor="sigle">
-                            Sigle
-                        </InputLabel>
-                        <InputStrap
-                            required
-                            id="sigle"
-                            type="text"
-                            name='sigle'
-                            className="input-lg"
-                            value={sigle}
-                            onChange={(e) => setSigle(e.target.value)}
                         />
                     </FormGroup>
                     <FormGroup className="has-wrapper">
@@ -182,45 +148,6 @@ const Create = (props) => {
                                 setRole(item);
                             }}
                             getOptionLabel={(option) => option.label}
-                            renderInput={(params) => <TextField {...params} variant="outlined" />}
-                        />
-                    </div>
-
-                    <div className="col-md-12 col-sm-12 has-wrapper mb-30 p-0">
-                        <InputLabel className="text-left">
-                            Pays autorisés
-                        </InputLabel>
-                        <Autocomplete
-                            multiple
-                            value={territories}
-                            options={countries}
-                            id="combo-box-demo"
-                            classes={{ paper: 'custom-input' }}
-                            getOptionLabel={(option) => option.label}
-                            onChange={(__, items) => { setTerritories(items) }}
-                            renderTags={options => {
-                                return (
-                                    options.map(option =>
-                                        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center'  }}>
-                                            <IconButton color="primary">
-                                                <img src={option.details.find(d => d.code === 'FLAG')?.value} style={{ width: 25, height: 15 }}/>
-                                            </IconButton>
-                                            {option.label}
-                                        </div>
-                                    )
-                                )
-                        
-                            }}
-                            renderOption={option => {
-                                return (
-                                    <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center'  }}>
-                                        <IconButton color="primary">
-                                            <img src={option.details.find(d => d.code === 'FLAG')?.value} style={{ width: 25, height: 15 }} />
-                                        </IconButton>
-                                        {option.label}
-                                    </div>
-                                );
-                            }}
                             renderInput={(params) => <TextField {...params} variant="outlined" />}
                         />
                     </div>
