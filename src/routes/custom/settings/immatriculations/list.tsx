@@ -1,18 +1,17 @@
 import { connect } from 'react-redux';
-import Switch from "@material-ui/core/Switch";
 import { withRouter } from "react-router-dom";
 import Button from '@material-ui/core/Button';
+import SettingService from 'Services/settings';
 import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
 import React, { useState, useEffect } from 'react';
 import { getReferralTypeLabel } from 'Helpers/helpers';
-import UserAccountTypeService from 'Services/account-types';
+import { joinUrlWithParamsId, SETTING } from 'Url/frontendUrl';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
-import { joinUrlWithParamsId, USER_ACCOUNT_TYPE } from 'Url/frontendUrl';
 
-const Types = (props) => {
+const Immatriculations = (props) => {
 
-    const [types, setTypes] = useState([]);
+    const [datas, setDatas] = useState([]);
 
     useEffect(() => {
         getTypes();
@@ -20,39 +19,31 @@ const Types = (props) => {
 
     const getTypes = () => {
         props.setRequestGlobalAction(true),
-        UserAccountTypeService.getAccountTypes()
-        .then(response => setTypes(response))
+        SettingService.getImmatriculations()
+        .then(response => setDatas(response))
         .finally(() => props.setRequestGlobalAction(false))
     }
-
-    const changeAccountTypeStatus = (account) => {
-        props.setRequestGlobalAction(true),
-        UserAccountTypeService.setAccountTypeAsDefault(account.id, !account.default)
-        .then(() => getTypes())
-        .finally(() => props.setRequestGlobalAction(false))
-    }
-
 
     const goToCreate = () => {
-        props.history.push(USER_ACCOUNT_TYPE.TYPE.CREATE);
+        props.history.push(SETTING.IMMATRICULATION.CREATE);
     }
 
     return (
         <>
             <PageTitleBar
-                title={"Liste des type de comptes"}
+                title={"Liste des immatriculations"}
             />
             <CustomList
                 loading={false}
-                list={types}
-                itemsFoundText={n => `${n} type.s trouvé.s`}
+                list={datas}
+                itemsFoundText={n => `${n} données trouvées`}
                 onAddClick={() => goToCreate()}
                 renderItem={list => (
                     <>
                         {list && list.length === 0 ? (
                             <div className="d-flex justify-content-center align-items-center py-50">
                                 <h4>
-                                    Aucun type.s trouvé.s
+                                    Aucunes données trouvées
                                 </h4>
                             </div>
                         ) : (
@@ -61,12 +52,9 @@ const Types = (props) => {
                                     <thead>
                                         <tr>
                                             <th className="fw-bold">Désignation</th>
-                                            <th className="fw-bold">Sigle</th>
+                                            <th className="fw-bold">Code</th>
                                             <th className="fw-bold">Cible</th>
                                             <th className="fw-bold">Description</th>
-                                            <th className="fw-bold">Catégorie</th>
-                                            <th className="fw-bold">Par défaut</th>
-                                            {/* <th className="fw-bold">Action</th> */}
                                             <th className="fw-bold">Action</th>
                                         </tr>
                                     </thead>
@@ -83,7 +71,7 @@ const Types = (props) => {
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{item.sigle}</h4>
+                                                            <h4 className="m-0 fw-bold text-dark">{item.code}</h4>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -102,35 +90,11 @@ const Types = (props) => {
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <div className="media">
-                                                        <div className="media-body pt-10">
-                                                            <h4 className="m-0 text-dark">{item.userAccountTypeCategory.label}</h4>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <Switch
-                                                        aria-label="Par défaut"
-                                                        checked={item.default}
-                                                        onChange={() => { changeAccountTypeStatus(item) }}
-                                                    />
-                                                </td>
-                                                {/* <td>
                                                     <Button
                                                         color="primary"
                                                         variant="contained"
                                                         className="text-white font-weight-bold"
-                                                        onClick={() => props.history.push(joinUrlWithParamsId(USER_ACCOUNT_TYPE.TYPE.CHAIN, item.id))}
-                                                    >
-                                                        Chaine
-                                                    </Button>
-                                                </td> */}
-                                                <td>
-                                                    <Button
-                                                        color="primary"
-                                                        variant="contained"
-                                                        className="text-white font-weight-bold"
-                                                        onClick={() => props.history.push(joinUrlWithParamsId(USER_ACCOUNT_TYPE.TYPE.UPDATE, item.reference))}
+                                                        onClick={() => props.history.push(joinUrlWithParamsId(SETTING.IMMATRICULATION.UPDATE, item.id))}
                                                     >
                                                         Editer
                                                     </Button>
@@ -148,4 +112,4 @@ const Types = (props) => {
     );
 }
 
-export default connect(() => {}, { setRequestGlobalAction })(withRouter(Types));
+export default connect(() => {}, { setRequestGlobalAction })(withRouter(Immatriculations));

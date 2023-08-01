@@ -7,6 +7,7 @@ import UserFiles from './user-files';
 import {connect} from "react-redux";
 import {injectIntl} from "react-intl";
 import { SETTING } from 'Url/frontendUrl';
+import Immatriculations from './immatriculations';
 import {withRouter, Switch, Redirect, Route} from "react-router-dom";
 
 const Setting = (props) => {
@@ -21,6 +22,7 @@ const Setting = (props) => {
                 <Route path={SETTING.PIONIER.SELF} component={Agents} />
                 <Route path={SETTING.ARTICLE.SELF} component={Articles} />
                 <Route path={SETTING.USER_FILE.SELF} component={UserFiles} />
+                <Route path={SETTING.IMMATRICULATION.SELF} component={Immatriculations} />
             </Switch>
         </div>
     );

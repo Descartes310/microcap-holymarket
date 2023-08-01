@@ -77,4 +77,25 @@ export default class SettingService {
     static updateArticleStatus(id: number): Promise<any> {
         return makeRequest('put', Routes.UPDATE_ARTICLE_STATUS(id));
     }
+
+
+    static createImmatriculation(data): Promise<any> {
+        return makeRequest('post', Routes.CREATE_IMMATRICULATION, data);
+    }
+
+    static getImmatriculations(): Promise<any> {
+        return makeRequest('get', Routes.GET_IMMATRICULATIONS);
+    }
+
+    static getImmatriculationsByTerritory(data: any): Promise<any> {
+        return makeRequest('get', Routes.GET_IMMATRICULATIONS_BY_TERRITORY, data);
+    }
+
+    static findImmatriculation(id: number): Promise<any> {
+        return makeRequest('get', Routes.FIND_IMMATRICULATION(id));
+    }
+
+    static updateImmatriculation(id: number, data: any): Promise<any> {
+        return makeRequest('put', Routes.UPDATE_IMMATRICULATION(id), data);
+    }
 }

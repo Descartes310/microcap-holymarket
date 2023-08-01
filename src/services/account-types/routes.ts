@@ -5,6 +5,7 @@ export const UPDATE_ACCOUNT_TYPE_CATEGORY = (id) => `api/socialnetworks/user-acc
 
 export const GET_ACCOUNT_TYPES = 'api/socialnetworks/user-account-types/self';
 export const CREATE_ACCOUNT_TYPE = 'api/socialnetworks/user-account-types/self';
+export const GET_BY_TERRITORY = 'api/socialnetworks/user-account-types/self/territory';
 export const FIND_ACCOUNT_TYPE = (id) => `api/socialnetworks/user-account-types/self/reference/${id}`;
 export const UPDATE_ACCOUNT_TYPE = (id) => `api/socialnetworks/user-account-types/self/${id}`;
 

@@ -19,3 +19,9 @@ export const FIND_BLOG_TOPIC = (id) => `api/settings/articles/topics/${id}/find`
 export const GET_ARTICLE_DETAILS = (id) => `api/settings/articles/details/${id}`;
 export const UPDATE_ARTICLE_STATUS = (id) => `api/settings/articles/${id}/status`;
 export const UPDATE_BLOG_TOPIC = (id) => `api/settings/articles/topics/${id}/update`;
+
+export const CREATE_IMMATRICULATION = 'api/identifications/immatriculations/types';
+export const GET_IMMATRICULATIONS = 'api/identifications/immatriculations/types';
+export const FIND_IMMATRICULATION = (id) => `api/identifications/immatriculations/types/${id}`;
+export const UPDATE_IMMATRICULATION = (id) => `api/identifications/immatriculations/types/${id}`;
+export const GET_IMMATRICULATIONS_BY_TERRITORY = 'api/identifications/immatriculations/types/public/list';

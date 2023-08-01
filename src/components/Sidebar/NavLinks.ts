@@ -669,6 +669,14 @@ export default [
             "child_routes": null
          },
          {
+            "menu_title": "Immatriculations",
+            "new_item": false,
+            "path": SETTING.IMMATRICULATION.LIST,
+            "permissions": [Permission.setting.unit.name],
+            "profiles": ['GROUP'],
+            "child_routes": null
+         },
+         {
             "menu_title": "Objectifs",
             "new_item": false,
             "path": MIPRO.ADMINISTRATION.GOAL.SELF,

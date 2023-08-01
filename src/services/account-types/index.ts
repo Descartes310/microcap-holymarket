@@ -52,6 +52,10 @@ export default class UserAccountTypeService {
         return makeRequest('get', Routes.GET_CHAINS(id));
     }
 
+    static getTypeByTerritory(data: any): Promise<any> {
+        return makeRequest('get', Routes.GET_BY_TERRITORY, data);
+    }
+
     static createChain(id: number, data: any): Promise<any> {
         return makeRequest('post', Routes.CREATE_CHAIN(id), data);
     }

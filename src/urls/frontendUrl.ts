@@ -385,7 +385,13 @@ export const SETTING = {
             CREATE: "/settings/articles/topics/create",
             UPDATE: "/settings/articles/topics/:id/update",
         }
-    }
+    },
+    IMMATRICULATION: {
+        SELF: "/settings/immatriculations",
+        LIST: "/settings/immatriculations/list",
+        CREATE: "/settings/immatriculations/create",
+        UPDATE: "/settings/immatriculations/:id/update",
+    },
 }
 
 export const NETWORK = {
