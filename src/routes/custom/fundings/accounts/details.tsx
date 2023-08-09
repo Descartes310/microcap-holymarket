@@ -104,7 +104,7 @@ const Details = (props) => {
         })
         .finally(() => {
             props.setRequestGlobalAction(false);
-            setShowCreditAccountBox(false);
+            setShowDebitAccountBox(false);
         })
     }
 
