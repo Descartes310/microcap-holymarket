@@ -90,6 +90,9 @@ export default class Permission extends BaseEnum {
             offer: {
                 "name": "MARKETPLACE_COMMERCIAL_OFFER_PRIVILEGE"
             },
+            markets: {
+                "name": "MARKETPLACE_MARKETS"
+            },
         },
         store: {
             product: {

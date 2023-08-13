@@ -4,7 +4,7 @@ import Button from "@material-ui/core/Button";
 import Switch from "@material-ui/core/Switch";
 import ProductService from 'Services/products';
 import CustomList from "Components/CustomList";
-import GenerateTirage from './components/tirages';
+import Cotations from './components/cotations';
 import { setRequestGlobalAction } from 'Actions';
 import React, { useState, useEffect } from 'react';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
@@ -15,8 +15,8 @@ import { getProductRangeLabel, getPriceWithCurrency } from 'Helpers/helpers';
 const List = (props) => {
 
     const [products, setProducts] = useState([]);
-    const [showOptionsBox, setShowOptionsBox] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState(null);
+    const [showCotationBox, setShowCotationBox] = useState(false);
 
     useEffect(() => {
         getProducts();
@@ -70,7 +70,7 @@ const List = (props) => {
                                             <th className="fw-bold">Disponible</th>
                                             <th className="fw-bold">Détails</th>
                                             <th className="fw-bold">Configuration</th>
-                                            <th className="fw-bold">Tirage</th>
+                                            <th className="fw-bold">Cotation</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -127,19 +127,17 @@ const List = (props) => {
                                                     )}
                                                 </td>
                                                 <td>
-                                                    { item.specialProduct == 'CODEV' && (
-                                                        <Button
-                                                            color="primary"
-                                                            variant="contained"
-                                                            onClick={() => {
-                                                                setSelectedProduct(item);
-                                                                setShowOptionsBox(true);
-                                                            }}
-                                                            className="text-white font-weight-bold mr-3"
-                                                        >
-                                                            Tirages
-                                                        </Button>
-                                                    )}
+                                                    <Button
+                                                        color="primary"
+                                                        variant="contained"
+                                                        onClick={() => {
+                                                            setSelectedProduct(item);
+                                                            setShowCotationBox(true);
+                                                        }}
+                                                        className="text-white font-weight-bold mr-3"
+                                                    >
+                                                        Cotations
+                                                    </Button>
                                                 </td>
                                             </tr>
                                         ))}
@@ -151,10 +149,10 @@ const List = (props) => {
                 )}
             />
             { selectedProduct && (
-                <GenerateTirage
+                <Cotations
                     product={selectedProduct}
-                    show={showOptionsBox && selectedProduct} 
-                    onClose={() => { setShowOptionsBox(false); }} 
+                    show={showCotationBox && selectedProduct} 
+                    onClose={() => { setShowCotationBox(false); }} 
                 />
             )}
         </>

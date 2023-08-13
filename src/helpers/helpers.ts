@@ -792,6 +792,8 @@ export const translatePermissionFolder = (path) => {
             return 'Guichet';
         case 'BOURSE':
             return 'Bourse de financement';
+        case 'MARKETS':
+            return 'Marchés';
         default:
             return path;
     }

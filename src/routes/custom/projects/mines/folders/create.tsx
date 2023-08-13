@@ -164,6 +164,8 @@ const Create = (props) => {
         // if(!checkProjectItemsValidity())
         //     return;
 
+        console.log(label, budget, unit, items);
+        
         if(!label || !budget || !unit || items.length <= 0) {
             NotificationManager.error('Les informations du projet ne sont pas correctement renseignées');
             return;

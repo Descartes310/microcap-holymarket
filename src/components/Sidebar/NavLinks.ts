@@ -399,6 +399,14 @@ export default [
             "permissions": [Permission.marketplace.admin.model.name],
             "profiles": ['GROUP'],
             "child_routes": null
+         },
+         {
+            "menu_title": "Marchés",
+            "new_item": false,
+            "path": MARKETPLACE.MARKET.LIST,
+            "permissions": [Permission.marketplace.admin.markets.name],
+            "profiles": ['GROUP'],
+            "child_routes": null
          }, {
             "menu_title": "Catégories produits",
             "new_item": false,

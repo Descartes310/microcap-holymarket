@@ -62,3 +62,6 @@ export const CREATE_INDIVISION_BOOKING = 'api/products/codevs/indivisions/book';
 
 export const GET_LINE_GLOBAL_INFO = 'api/products/codevs/line/global';
 export const GET_LINE_SUPPORTS = 'api/products/codevs/line/supports';
+
+export const GET_COTATIONS = (reference) => `api/products/${reference}/cotations`;
+export const UPDATE_COTATION = (reference) => `api/products/${reference}/cotations`;

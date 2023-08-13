@@ -66,7 +66,6 @@ export const FUNDING = {
     }
 } as const;
 
-
 export const USER_ACCOUNT_TYPE = {
     SELF: '/user-account-types',
     ROLE: {
@@ -291,6 +290,12 @@ export const MARKETPLACE = {
         SELF: "/marketplace/categories",
         LIST: "/marketplace/categories/list",
         CREATE: "/marketplace/categories/create",
+    },
+    MARKET: {
+        SELF: "/marketplace/markets",
+        LIST: "/marketplace/markets/list",
+        CREATE: "/marketplace/markets/create",
+        UPDATE: "/marketplace/markets/:id/update",
     },
     MODEL: {
         SELF: "/marketplace/models",

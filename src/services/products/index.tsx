@@ -213,4 +213,12 @@ export default class ProductService {
         return makeRequest('get', Routes.GET_TICKET_BY_ACCOUNT, data);
     }
 
+    static updateCotation(reference: string, data: any): Promise<any> {
+        return makeRequest('post', Routes.UPDATE_COTATION(reference), data);
+    }
+    
+    static getCotations(reference: string): Promise<any> {
+        return makeRequest('get', Routes.GET_COTATIONS(reference));
+    }
+
 }

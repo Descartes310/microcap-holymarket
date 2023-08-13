@@ -8,6 +8,7 @@ import Checkout from './checkout';
 import {connect} from "react-redux";
 import {injectIntl} from "react-intl";
 import ShopProducts from './shop/products';
+import Market from './administration/markets';
 import { MARKETPLACE } from 'Url/frontendUrl';
 import Products from './administration/models';
 import Catalogs from './administration/catalogs';
@@ -33,6 +34,7 @@ const Marketplace = (props) => {
                     <Route path={MARKETPLACE.CATAlOG.SELF} component={Catalogs} />
                     <Route path={MARKETPLACE.CATEGORY.SELF} component={Categories} />
                     <Route path={MARKETPLACE.COMMERCIAL.SELF} component={Commercial} />
+                    <Route path={MARKETPLACE.MARKET.SELF} component={Market} />
                 </Switch>
             </>
         </div>
