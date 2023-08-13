@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import { onAddItemToCart } from 'Actions';
 import { RctCard } from 'Components/RctCard';
 import ProductDetails from './ProductDetails';
-import ProductService from 'Services/products';
 import CodevStep1 from '../components/codev/step1';
 import CodevStep2 from '../components/codev/step2';
 import CodevStep3 from '../components/codev/step3';
@@ -25,7 +24,7 @@ class Hit extends Component {
 
 	//Add Item to cart
 	onPressAddToCart(cartItem, e) {
-		switch (this.props.model.specialType) {
+		switch (this.props.model?.specialType) {
 			case 'CODEV':
 				this.setState({ showCodevStep1: true, product: cartItem });
 				break;
@@ -39,15 +38,9 @@ class Hit extends Component {
 		this.setState({ loading: true });
 		if(this.state.data)
 			cartItem.customInfos = this.state.data;
-		this.props.onAddItemToCart(cartItem);
+		this.props.onAddItemToCart({...cartItem, source: this.props.source});
 		if(e) e.preventDefault();
 		this.setState({ loading: false, product: null, data: null });
-		// if(cartItem?.customInfos?.type == 'CODEV') {
-		// 	if(cartItem.customInfos.line)
-		// 		ProductService.createLineBooking({line_references: [cartItem.customInfos.line.reference], tirage_reference: this.state.data.selectedDate.reference});
-		// 	if(cartItem.customInfos.indivision)
-		// 		ProductService.createIndivisionBooking({indivision_references: [cartItem.customInfos.indivision.reference], supports: cartItem.customInfos.supports});
-		// }
 	}
 
 	isItemExistInCart(id) {

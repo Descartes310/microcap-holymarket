@@ -1,13 +1,16 @@
 import { connect } from 'react-redux';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import UserService from 'Services/users';
 import MarketService from 'Services/markets';
 import { MARKETPLACE } from 'Url/frontendUrl';
 import { withRouter } from "react-router-dom";
 import Button from '@material-ui/core/Button';
 import {setRequestGlobalAction} from 'Actions';
+import TextField from '@material-ui/core/TextField';
 import { getReferralTypeLabel } from 'Helpers/helpers';
 import {NotificationManager} from 'react-notifications';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import UserAccountTypeService from 'Services/account-types';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import {Form, FormGroup, Input as InputStrap} from 'reactstrap';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
@@ -17,8 +20,22 @@ const Create = (props) => {
 
     const [label, setLabel] = useState(null);
     const [member, setMember] = useState(null);
+    const [profiles, setProfiles] = useState([]);
     const [membership, setMembership] = useState('');
     const [description, setDescription] = useState('');
+    const [selectedProfiles, setSelectedProfiles] = useState([]);
+
+    useEffect(() => {
+        getTypes();
+    }, []);
+
+    const getTypes = () => {
+        props.setRequestGlobalAction(true),
+        UserAccountTypeService.getAccountTypes()
+        .then(response => {
+            setProfiles(response);
+        }).finally(() => props.setRequestGlobalAction(false))
+    }
 
     const findUserByMembership = () => {
         props.setRequestGlobalAction(true);
@@ -37,7 +54,7 @@ const Create = (props) => {
 
     const onSubmit = () => {
 
-        if(!label) {
+        if(!label || selectedProfiles.length <= 0) {
             NotificationManager.error('Veuillez bien remplir le formulaire')
             return;
         }
@@ -46,6 +63,7 @@ const Create = (props) => {
         let data: any = {
             label: label,
             description: description,
+            profiles: selectedProfiles.map(sp => sp.reference)
         }
 
         if(membership)
@@ -97,6 +115,23 @@ const Create = (props) => {
                             onChange={(e) => setDescription(e.target.value)}
                         />
                     </FormGroup>
+
+                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                        <InputLabel className="text-left">
+                            Profiles autorisées
+                        </InputLabel>
+                        <Autocomplete
+                            multiple
+                            options={profiles}
+                            value={selectedProfiles}
+                            id="combo-box-demo"
+                            onChange={(__, items) => {
+                                setSelectedProfiles(items);
+                            }}
+                            getOptionLabel={(option) => option.label}
+                            renderInput={(params) => <TextField {...params} variant="outlined" />}
+                        />
+                    </div>
 
                     <FormGroup className="has-wrapper">
                         <InputLabel className="text-left" htmlFor="membership">

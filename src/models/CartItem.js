@@ -4,6 +4,7 @@ export default class CartItem {
         this.type = item.type;
         this.label = item.label;
         this.image = item.image;
+        this.source = item.source;
         this.nature = item.nature;
         this.seller = item.seller;
         this.price = Number(item.price);

@@ -252,6 +252,7 @@ export const MARKETPLACE = {
         SELF: "/marketplace/shop",
         PRIVATE: "/marketplace/shop/private",
         CLASSIC: "/marketplace/shop/classic",
+        MARKETS: "/marketplace/shop/markets",
         FINANCIAL: "/marketplace/shop/financial",
     },
     CATAlOG: {

@@ -12,12 +12,16 @@ export default class MarketService {
         return makeRequest('get', Routes.GET_MINE);
     }
 
+    static getAvailables(): Promise<any> {
+        return makeRequest('get', Routes.GET_AVAILABLES);
+    }
+
     static find(reference: string): Promise<any> {
         return makeRequest('get', Routes.FIND(reference));
     }
 
     static update(reference: string, data: any): Promise<any> {
-        return makeRequest('get', Routes.UPDATE(reference));
+        return makeRequest('put', Routes.UPDATE(reference), data);
     }
 
     static create(data: any): Promise<any> {

@@ -28,6 +28,7 @@ class Checkout extends Component<any, any> {
             address2: billingForm.addressLine2,
             telephone: billingForm.mobileNumber,
             productIds: this.props.cart.items.map(product => product.id),
+            sources: this.props.cart.items.map(product => product.source),
             productQuantities: this.props.cart.items.map(product => product.quantity),
             productDetails: 
             JSON.stringify(
@@ -85,6 +86,7 @@ class Checkout extends Component<any, any> {
     render() {
         const { match } = this.props;
         const { showSweetAlert } = this.state;
+        console.log(this.props.cart)
         return (
             <>
                 <PageTitleBar title={'Valider ma commande'} match={match} />

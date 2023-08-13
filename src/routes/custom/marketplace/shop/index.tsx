@@ -1,14 +1,14 @@
-import React, { Component, useEffect, useState } from 'react';
-import AppBar from '@material-ui/core/AppBar';
-import Tabs from '@material-ui/core/Tabs';
+import { connect } from "react-redux";
 import Tab from '@material-ui/core/Tab';
+import Tabs from '@material-ui/core/Tabs';
+import TabContent from "./shopTabContent";
 import { RctCard } from 'Components/RctCard';
 import { MARKETPLACE } from "Url/frontendUrl";
-import { connect } from "react-redux";
-import { setRequestGlobalAction } from "Actions/RequestGlobalAction";
 import { withRouter } from "react-router-dom";
+import AppBar from '@material-ui/core/AppBar';
+import React, { useEffect, useState } from 'react';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
-import TabContent from "./shopTabContent";
+import { setRequestGlobalAction } from "Actions/RequestGlobalAction";
 
 const Shop = (props) => {
 
@@ -19,6 +19,7 @@ const Shop = (props) => {
             if (url.includes(MARKETPLACE.SHOP.CLASSIC)) return 0;
             if (url.includes(MARKETPLACE.SHOP.FINANCIAL)) return 1;
             if (url.includes(MARKETPLACE.SHOP.PRIVATE)) return 2;
+            if (url.includes(MARKETPLACE.SHOP.MARKETS)) return 3;
             else return 0;
         })(window.location.pathname);
 
@@ -33,6 +34,7 @@ const Shop = (props) => {
                 case 0: return props.history.push(MARKETPLACE.SHOP.CLASSIC);
                 case 1: return props.history.push(MARKETPLACE.SHOP.FINANCIAL);
                 case 2: return props.history.push(MARKETPLACE.SHOP.PRIVATE);
+                case 3: return props.history.push(MARKETPLACE.SHOP.MARKETS);
                 default: return props.history.push(MARKETPLACE.SHOP.CLASSIC);
             }
         }
@@ -64,6 +66,10 @@ const Shop = (props) => {
                                     <Tab
                                         icon={<i className="icon-shield"></i>}
                                         label={"Ventes privées"}
+                                    />
+                                    <Tab
+                                        icon={<i className="zmdi zmdi-store"></i>}
+                                        label={"Marchés"}
                                     />
                                 </Tabs>
                             </div>

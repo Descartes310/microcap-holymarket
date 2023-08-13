@@ -37,7 +37,7 @@ const Shop = (props) => {
 			<div className="ais-InstantSearch">
 				<div className="row">
 					{ products.map(product => (
-						<Hit product={product} model={model} />
+						<Hit product={product} model={model} source={props.match.params.reference} />
 					))}
 				</div>
 			</div>
