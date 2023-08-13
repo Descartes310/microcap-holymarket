@@ -1,4 +1,5 @@
 import React from 'react';
+import { getPriceWithCurrency } from 'Helpers/helpers';
 import UpdateComplexTable from 'Components/UpdateComplexTable';
 
 const ProjectDetails = (props) => {
@@ -9,7 +10,7 @@ const ProjectDetails = (props) => {
                 <h1 className='fw-bold mt-10' style={{ fontSize: '2.5rem' }}>{ project.label } </h1>
                 <div className='mt-70'>
                     <h3 className="fw-500" style={{ fontSize: '1.5rem' }}> Budget estimé</h3>
-                    <p style={{ fontSize: '1.2rem', paddingLeft: 20 }}>{project.budget}</p>
+                    <p style={{ fontSize: '1.2rem', paddingLeft: 20 }}>{getPriceWithCurrency(project.budget, project.currency)}</p>
                 </div>
                 {
                     project.items.filter(i => i.showable).map(item => (

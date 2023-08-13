@@ -5,6 +5,7 @@ import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
 import ProjectService from 'Services/projects';
 import React, { useState, useEffect } from 'react';
+import { getPriceWithCurrency } from 'Helpers/helpers';
 import { joinUrlWithParamsId, PROJECT } from 'Url/frontendUrl';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 
@@ -68,7 +69,7 @@ const List = (props) => {
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <p className="m-0 text-dark">{item.budget}</p>
+                                                            <p className="m-0 text-dark">{getPriceWithCurrency(item.budget, item.currency)}</p>
                                                         </div>
                                                     </div>
                                                 </td>

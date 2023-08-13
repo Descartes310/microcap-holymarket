@@ -967,6 +967,9 @@ export const getInputTypes = () => {
             label: 'Texte formaté',
             value: 'TEXTAREA'
         }, {
+            label: 'Date',
+            value: 'DATE'
+        }, {
             label: 'Nombre',
             value: 'NUMBER'
         }, {

@@ -159,10 +159,12 @@ const Create = (props) => {
     
     const onSubmit = () => {
 
+        console.log("PROJECT ITEM => ", projectItems);
+
         let items = projectItems.filter(pi => pi.value != null);
         
-        // if(!checkProjectItemsValidity())
-        //     return;
+        if(!checkProjectItemsValidity())
+            return;
 
         console.log(label, budget, unit, items);
         

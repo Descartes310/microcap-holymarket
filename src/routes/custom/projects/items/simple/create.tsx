@@ -58,13 +58,13 @@ const Create = (props) => {
             NotificationManager.success('Ouvrage  créé avec succès');
             props.history.push(PROJECT.ITEM.SIMPLE.LIST);
         })
-            .catch((err) => {
-                console.log(err);
-                NotificationManager.success('Une erreur est survenues lors de la création de ouvrage');
-            })
-            .finally(() => {
-                props.setRequestGlobalAction(false);
-            })
+        .catch((err) => {
+            console.log(err);
+            NotificationManager.success('Une erreur est survenues lors de la création de ouvrage');
+        })
+        .finally(() => {
+            props.setRequestGlobalAction(false);
+        })
     }
 
     return (

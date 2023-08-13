@@ -126,14 +126,15 @@ const Update = (props) => {
 
         let data: any = {
             item_ids: projectItems.map(pi => pi.id),
-            item_parents: projectItems.map(pi => pi.id),
             label, budget, unitReference: unit.reference,
             item_positions: projectItems.map(pi => pi.position),
             item_showables: projectItems.map(pi => pi.showable),
+            item_parents: projectItems.map(pi => pi.projectItem.id),
             item_values: JSON.stringify(projectItems.map(pi => pi.value)),
             item_subvalues: JSON.stringify(projectItems.filter(pi => pi.subValues).flatMap(pi => pi.subValues).map(sv => { return { id: sv.id, value: sv.value } }))
         }
 
+        props.setRequestGlobalAction(true);
         ProjectService.updateProject(props.match.params.id, data, { fileData: ['document'], multipart: true }).then(() => {
             NotificationManager.success("Le projet a été créé avec succès");
             props.history.push(PROJECT.MINE.FOLDER.LIST);
@@ -175,6 +176,7 @@ const Update = (props) => {
         ordererdItems.push({projectItem: itemData.item, position: projectItems.length+1, 
             value: '', subValues: null, id: -new Date().getTime(), showable: true })
         setProject({...project, items: ordererdItems});
+        setProjectItems(ordererdItems);
         setAddPersonalItemModal(false);
     }
 
@@ -329,7 +331,9 @@ const Update = (props) => {
                 show={addPersonalItemModal}
                 title={'Ajouter un ouvrage personnalisé'}
                 items={personalProjectItems}
-                onAdd={(itemData) => addPersonalItem(itemData)}
+                onAdd={(itemData) => {
+                    addPersonalItem(itemData)
+                }}
                 onClose={() => {
                     setAddPersonalItemModal(false);
                 }}
