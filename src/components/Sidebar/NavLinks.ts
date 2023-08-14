@@ -238,8 +238,10 @@ export default [
          Permission.group.admin.role.name,
          Permission.group.admin.setting.name,
          Permission.group.admin.post.name,
+         Permission.group.admin.project.name,
       ],
       "profiles": ['GROUP'],
+      "type_multi": true,
       "child_routes": [
          {
             "menu_title": "Membres",
@@ -268,6 +270,35 @@ export default [
             "path": GROUP.ADMINISTRATION.REQUEST.SELF,
             "permissions": [Permission.group.admin.request.name],
             "profiles": ['GROUP'],
+         },
+         {
+            "menu_title": "Projets",
+            "new_item": false,
+            "permissions": [Permission.group.admin.project.name],
+            "profiles": ['PROJECT'],
+            "child_routes": [
+               {
+                  "menu_title": "Editer",
+                  "new_item": false,
+                  "path": GROUP.ADMINISTRATION.PROJECT.LIST,
+                  "permissions": [Permission.group.admin.project.name],
+                  "profiles": null,
+               },
+               {
+                  "menu_title": "Deals",
+                  "new_item": false,
+                  "path": GROUP.ADMINISTRATION.PROJECT.LIST,
+                  "permissions": [Permission.group.admin.project.name],
+                  "profiles": null,
+               },
+               {
+                  "menu_title": "Financement",
+                  "new_item": false,
+                  "path": GROUP.ADMINISTRATION.PROJECT.LIST,
+                  "permissions": [Permission.group.admin.project.name],
+                  "profiles": null,
+               },
+            ]
          },
          {
             "menu_title": "Fil d'actualité",

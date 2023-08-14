@@ -143,6 +143,11 @@ export const GROUP = {
             JOIN: '/groups/administration/requests/joins',
             INVITATION: '/groups/administration/requests/invitations',
         },
+        PROJECT: {
+            SELF: '/groups/administration/projects',
+            LIST: '/groups/administration/projects/list',
+            DEALS: '/groups/administration/projects/deals',
+        },
         ARTICLE: {
             SELF: '/groups/administration/articles',
             ITEM: {

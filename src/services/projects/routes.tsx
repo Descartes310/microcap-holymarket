@@ -1,6 +1,7 @@
 export const CREATE_POST = 'api/projects';
 export const GET_PROJECTS = 'api/projects';
 export const GET_PROJECT = (id) => `api/projects/${id}`;
+export const GET_PROJECTS_BY_GROUP = 'api/projects/groups';
 export const UPDATE_PROJECT = (id) => `api/projects/${id}`;
 
 export const GET_PROJECT_POSTS = 'api/projects/posts';

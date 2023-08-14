@@ -8,6 +8,10 @@ export default class ProjectService {
         return makeRequest('get', Routes.GET_PROJECTS);
     }
 
+    static getGroupProjects(): Promise<any> {
+        return makeRequest('get', Routes.GET_PROJECTS_BY_GROUP);
+    }
+
     static getProjectById(id: number): Promise<any> {
         return makeRequest('get', Routes.GET_PROJECT(id));
     }

@@ -163,8 +163,8 @@ const Create = (props) => {
 
         let items = projectItems.filter(pi => pi.value != null);
         
-        if(!checkProjectItemsValidity())
-            return;
+        // if(!checkProjectItemsValidity())
+        //     return;
 
         console.log(label, budget, unit, items);
         

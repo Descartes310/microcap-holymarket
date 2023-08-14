@@ -55,6 +55,9 @@ export default class Permission extends BaseEnum {
             post: {
                 "name": "GROUP_ADMIN_POST_PRIVELEGE"
             },
+            project: {
+                "name": "GROUP_ADMIN_PROJECT"
+            },
         }
     };
 

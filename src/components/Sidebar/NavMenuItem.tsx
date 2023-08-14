@@ -86,7 +86,6 @@ class NavMenuItem extends Component<Props, State> {
                                           </ListItem>
                                        )
                                     }
-                                    return null;
                                  })}
                               </List>
                               :

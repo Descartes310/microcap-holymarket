@@ -137,7 +137,7 @@ const Update = (props) => {
         props.setRequestGlobalAction(true);
         ProjectService.updateProject(props.match.params.id, data, { fileData: ['document'], multipart: true }).then(() => {
             NotificationManager.success("Le projet a été créé avec succès");
-            props.history.push(PROJECT.MINE.FOLDER.LIST);
+            props.history.goBack();
         }).catch((err) => {
             console.log(err);
             NotificationManager.error("Une erreur est survenu lors de la mise a jour du projet");
