@@ -6,6 +6,7 @@ import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
 import React, { useState, useEffect } from 'react';
 import TimeFromMoment from "Components/TimeFromMoment";
+import { getPriceWithCurrency } from 'Helpers/helpers';
 
 const List = (props) => {
 
@@ -76,7 +77,7 @@ const List = (props) => {
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{item.amount + ' EUR'}</h4>
+                                                            <h4 className="m-0 fw-bold text-dark">{getPriceWithCurrency(item.amount, item.currency)}</h4>
                                                         </div>
                                                     </div>
                                                 </td>

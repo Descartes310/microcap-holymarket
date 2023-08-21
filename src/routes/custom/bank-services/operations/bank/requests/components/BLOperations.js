@@ -7,6 +7,7 @@ import { withRouter } from "react-router-dom";
 import CustomList from "Components/CustomList";
 import { setRequestGlobalAction } from 'Actions';
 import TextField from '@material-ui/core/TextField';
+import { getPriceWithCurrency } from 'Helpers/helpers';
 import TimeFromMoment from "Components/TimeFromMoment";
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import Checkbox from "@material-ui/core/Checkbox/Checkbox";
@@ -252,7 +253,7 @@ class BLOperations extends Component {
                                                     <td>
                                                         <div className="media">
                                                             <div className="media-body pt-10">
-                                                                <h4 className="m-0 fw-bold text-dark">{item.amount + ' EUR'}</h4>
+                                                                <h4 className="m-0 fw-bold text-dark">{getPriceWithCurrency(item.amount, item.currency)}</h4>
                                                             </div>
                                                         </div>
                                                     </td>
@@ -357,7 +358,7 @@ class BLOperations extends Component {
                                                     <td>
                                                         <div className="media">
                                                             <div className="media-body pt-10">
-                                                                <h4 className="m-0 fw-bold text-dark">{item.amount + ' EUR'}</h4>
+                                                                <h4 className="m-0 fw-bold text-dark">{getPriceWithCurrency(item.amount, item.currency)}</h4>
                                                             </div>
                                                         </div>
                                                     </td>

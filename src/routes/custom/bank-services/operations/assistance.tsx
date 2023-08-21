@@ -14,6 +14,7 @@ import VerifyUserOTPModal from './components/verifyUserOTPModal';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { Form, FormGroup, Input as InputStrap } from 'reactstrap';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
+import UnitService from 'Services/units';
 
 const Create = (props) => {
 
@@ -23,10 +24,16 @@ const Create = (props) => {
     const [details, setDetails] = useState([]);
     const [accounts, setAccounts] = useState([]);
     const [account, setAccount] = useState(null);
+    const [currency, setCurrency] = useState(null);
+    const [currencies, setCurrencies] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [prestation, setPrestation] = useState(null);
     const [prestations, setPrestations] = useState([]);
     const [membership, setMembership] = useState(null);
+
+    useEffect(() => {
+        getCurrencies();
+    }, []);
 
     const findUserByMembership = () => {
         props.setRequestGlobalAction(true);
@@ -39,6 +46,18 @@ const Create = (props) => {
         .catch((err) => {
             console.log(err);
             NotificationManager.error("Ce numéro utilisateur est inexistant");
+        })
+        .finally(() => {
+            props.setRequestGlobalAction(false);
+        })
+    }
+
+    const getCurrencies = () => {
+        props.setRequestGlobalAction(false);
+        UnitService.getCurrencies()
+        .then((response) => setCurrencies(response))
+        .catch((err) => {
+            console.log(err);
         })
         .finally(() => {
             props.setRequestGlobalAction(false);
@@ -66,7 +85,7 @@ const Create = (props) => {
     }
 
     const onSubmit = () => {
-        if(!member || !account || !prestation) {
+        if(!member || !account || !prestation || !currency) {
             NotificationManager.error("Le formulaire n'est pas correctement renseigné");
             return;
         }
@@ -75,6 +94,7 @@ const Create = (props) => {
             amount,
             reference: membership,
             accountId: account.id,
+            currency: currency.code,
             prestationId: prestation.id,
             detailsValues: details.map(d => d.value),
             detailsIds: details.map(d => d.id.split('-')[1]),
@@ -244,6 +264,22 @@ const Create = (props) => {
                                     onChange={(e) => setAmount(e.target.value)}
                                 />
                             </FormGroup>
+
+                            <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                                <InputLabel className="text-left">
+                                    Devise
+                                </InputLabel>
+                                <Autocomplete
+                                    id="combo-box-demo"
+                                    value={currency}
+                                    options={currencies}
+                                    onChange={(__, item) => {
+                                        setCurrency(item);
+                                    }}
+                                    getOptionLabel={(option) => option.label}
+                                    renderInput={(params) => <TextField {...params} variant="outlined" />}
+                                />
+                            </div> 
 
                             { prestation.details.map(prestationDetails => (
                                 <FormGroup className="col-md-12 col-sm-12 has-wrapper">

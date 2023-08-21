@@ -18,6 +18,7 @@ import ExecuteOperationModal from './components/executeOperationModal';
 import ValidateOperationModal from './components/validateOperationModal';
 import LiquidOPMCMOperationModal from './components/liquidOPMCMOperationModal';
 import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
+import { getPriceWithCurrency } from "Helpers/helpers";
 
 const ACTIONS = [
     // {
@@ -299,7 +300,7 @@ const List = (props) => {
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{item.amount + ' EUR'}</h4>
+                                                            <h4 className="m-0 fw-bold text-dark">{getPriceWithCurrency(item.amount, item.currency)}</h4>
                                                         </div>
                                                     </div>
                                                 </td>

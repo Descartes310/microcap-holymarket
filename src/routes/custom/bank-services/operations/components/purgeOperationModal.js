@@ -5,6 +5,7 @@ import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
 import CustomList from "Components/CustomList";
 import { setRequestGlobalAction } from 'Actions';
+import { getPriceWithCurrency } from 'Helpers/helpers';
 import TimeFromMoment from "Components/TimeFromMoment";
 import DialogComponent from "Components/dialog/DialogComponent";
 
@@ -78,7 +79,7 @@ class PurgeOperationModal extends Component {
                                                     <td>
                                                         <div className="media">
                                                             <div className="media-body pt-10">
-                                                                <h4 className="m-0 fw-bold text-dark">{item.amount + ' EUR'}</h4>
+                                                                <h4 className="m-0 fw-bold text-dark">{getPriceWithCurrency(item.amount, item.currency)}</h4>
                                                             </div>
                                                         </div>
                                                     </td>

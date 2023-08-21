@@ -3,15 +3,13 @@ import { FormGroup } from 'reactstrap';
 import React, { Component } from 'react';
 import { withRouter } from "react-router-dom";
 import Button from '@material-ui/core/Button';
-import ProductService from 'Services/products';
 import CustomList from "Components/CustomList";
+import Indivision from './createIndivision.tsx';
 import { setRequestGlobalAction } from 'Actions';
 import { RctCardContent } from 'Components/RctCard';
-import { NotificationManager } from 'react-notifications';
 import Checkbox from "@material-ui/core/Checkbox/Checkbox";
 import DialogComponent from "Components/dialog/DialogComponent";
 import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
-import Indivision from './createIndivision.tsx';
 
 class CodevStep2 extends Component {
 

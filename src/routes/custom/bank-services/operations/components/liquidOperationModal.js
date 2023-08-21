@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
 import { setRequestGlobalAction } from 'Actions';
+import { getPriceWithCurrency } from 'Helpers/helpers';
 import TimeFromMoment from "Components/TimeFromMoment";
 import { FormGroup, Input as InputStrap } from 'reactstrap';
 import DialogComponent from "Components/dialog/DialogComponent";
@@ -132,7 +133,7 @@ class LiquidOperationModal extends Component {
                                 <td>
                                     <div className="media">
                                         <div className="media-body pt-10">
-                                            <h4 className="m-0 fw-bold text-dark">{operation.amount + ' EUR'}</h4>
+                                            <h4 className="m-0 fw-bold text-dark">{getPriceWithCurrency(operation.amount, operation.currency)}</h4>
                                         </div>
                                     </div>
                                 </td>
