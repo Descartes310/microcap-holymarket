@@ -1,39 +1,51 @@
 import { connect } from 'react-redux';
-import { MARKETPLACE } from 'Url/frontendUrl';
+import UnitService from 'Services/units';
+import { SETTING } from 'Url/frontendUrl';
+import Switch from "@material-ui/core/Switch";
 import { withRouter } from "react-router-dom";
-import ProductService from 'Services/products';
 import CustomList from "Components/CustomList";
 import { setRequestGlobalAction } from 'Actions';
-import React, { useState, useEffect } from 'react';
-import { getPriceWithCurrency, getProductNatureLabel, getProductRangeLabel } from 'Helpers/helpers';
+import React, { useEffect, useState } from 'react';
 
 const List = (props) => {
 
-    const [packages, setPackages] = useState([]);
+    const [units, setUnits] = useState([]);
 
     useEffect(() => {
-        getPackages();
+        getUnits();
     }, []);
 
-    const getPackages = () => {
-        props.setRequestGlobalAction(true);
-        ProductService.getProductModels({types: ['PACKAGE']})
-            .then(response => setPackages(response))
-            .finally(() => props.setRequestGlobalAction(false))
+    const getUnits = () => {
+        props.setRequestGlobalAction(false);
+        UnitService.getCurrencies()
+        .then((response) => setUnits(response))
+        .catch((err) => {
+            console.log(err);
+        })
+        .finally(() => {
+            props.setRequestGlobalAction(false);
+        })
+    }
+
+    const changeStatus = (unit) => {
+        props.setRequestGlobalAction(true),
+        UnitService.changeUnitStatus(unit.id)
+        .then(() => getUnits())
+        .finally(() => props.setRequestGlobalAction(false))
     }
 
     return (
         <CustomList
-            list={packages}
+            list={units}
             loading={false}
-            itemsFoundText={n => `${n} packages trouvés`}
-            onAddClick={() => props.history.push(MARKETPLACE.MODEL.PACKAGE.CREATE)}
+            itemsFoundText={n => `${n} dévises trouvées`}
+            onAddClick={() => props.history.push(SETTING.UNIT.CURRENCY.CREATE)}
             renderItem={list => (
                 <>
                     {list && list.length === 0 ? (
                         <div className="d-flex justify-content-center align-items-center py-50">
                             <h4>
-                                Aucun packages trouvés
+                                Aucunes dévises trouvées
                             </h4>
                         </div>
                     ) : (
@@ -42,11 +54,10 @@ const List = (props) => {
                                 <thead>
                                     <tr>
                                         <th className="fw-bold">Désignation</th>
-                                        <th className="fw-bold">Code</th>
-                                        <th className="fw-bold">Prix</th>
-                                        <th className="fw-bold">Nature</th>
-                                        <th className="fw-bold">Portée</th>
-                                        <th className="fw-bold">Catégorie</th>
+                                        <th className="fw-bold">code</th>
+                                        <th className="fw-bold">Description</th>
+                                        <th className="fw-bold">Taux de change</th>
+                                        <th className="fw-bold">Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -69,30 +80,23 @@ const List = (props) => {
                                             <td>
                                                 <div className="media">
                                                     <div className="media-body pt-10">
-                                                        <h4 className="m-0 fw-bold text-dark">{getPriceWithCurrency(item.price, item.currency)}</h4>
+                                                        <p className="m-0 text-dark">{item.description}</p>
                                                     </div>
                                                 </div>
                                             </td>
                                             <td>
                                                 <div className="media">
                                                     <div className="media-body pt-10">
-                                                        <h4 className="m-0 fw-bold text-dark">{getProductNatureLabel(item.nature)}</h4>
+                                                        <p className="m-0 text-dark">{item.rate}</p>
                                                     </div>
                                                 </div>
                                             </td>
                                             <td>
-                                                <div className="media">
-                                                    <div className="media-body pt-10">
-                                                        <h4 className="m-0 fw-bold text-dark">{getProductRangeLabel(item.range)}</h4>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div className="media">
-                                                    <div className="media-body pt-10">
-                                                        <h4 className="m-0 fw-bold text-dark">{item.categoryProduct.label}</h4>
-                                                    </div>
-                                                </div>
+                                                <Switch
+                                                    aria-label="Par défaut"
+                                                    checked={item.status}
+                                                    onChange={() => { changeStatus(item) }}
+                                                />
                                             </td>
                                         </tr>
                                     ))}

@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
  import { RctCard, RctCardContent } from 'Components/RctCard';
  import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
  import { deleteItemFromCart, onChangeProductQuantity } from "Actions";
- import { textTruncate, getFilePath, getPriceWithCurrency } from "Helpers/helpers";
+ import { textTruncate, getFilePath, getPriceWithCurrency, addCurrency, getPrice } from "Helpers/helpers";
  
  class Carts extends Component<any, any> {
  
@@ -23,7 +23,7 @@ import { Link } from 'react-router-dom';
 		const { cart } = this.props;
 		let totalPrice = 0;
 		if(cart.count() === 0) return 0;
-		totalPrice = cart.items.map(ci => ci.price * ci.quantity).reduce((sum, current) => sum + current);
+		totalPrice = cart.items.map(ci => getPrice(ci.price * ci.quantity, ci.currency)).reduce((sum, current) => sum + current);
 		return totalPrice.toFixed(2);
 	}
  
@@ -92,7 +92,7 @@ import { Link } from 'react-router-dom';
                          <tr className="text-center">
                             <td colSpan={3} />
                             <td><span className="font-weight-bold">Total</span></td>
-                            <td><span className="font-weight-bold">€{this.getTotalPrice()}</span></td>
+                            <td><span className="font-weight-bold">{addCurrency(this.getTotalPrice())}</span></td>
                             <td>
                                <Button variant="contained" size="large" color="primary" className="text-white" component={Link} to={MARKETPLACE.CHECKOUT}>
                                  Commander

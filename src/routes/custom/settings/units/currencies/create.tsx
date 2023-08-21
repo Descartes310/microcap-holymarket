@@ -5,8 +5,6 @@ import { withRouter } from "react-router-dom";
 import Button from '@material-ui/core/Button';
 import { setRequestGlobalAction } from 'Actions';
 import React, { useState, useEffect } from 'react';
-import TextField from '@material-ui/core/TextField';
-import Autocomplete from '@material-ui/lab/Autocomplete';
 import { NotificationManager } from 'react-notifications';
 import {Form, FormGroup, Input as InputStrap} from 'reactstrap';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
@@ -17,41 +15,27 @@ const Create = (props) => {
     const [code, setCode] = useState('');
     const [label, setLabel] = useState('');
     const [type, setType] = useState(null);
+    const [rate, setRate] = useState(null);
     const [types, setTypes] = useState([]);
     const [description, setDescription] = useState('');    
-    
-    useEffect(() => {
-        getTypeUnits();
-    }, []);
 
-    const getTypeUnits = () => {
-        props.setRequestGlobalAction(true);
-        UnitService.getTypeUnits({include_currency: false})
-        .then((response) => setTypes(response))
-        .catch((err) => {
-            console.log(err);
-        })
-        .finally(() => {
-            props.setRequestGlobalAction(false);
-        })
-    }
 
     const onSubmit = () => {
-        if(!label || !code || !type)
+        if(!label || !code || !rate)
             return;
 
         var data = {
             label: label,
             code: code,
-            type_unit_id: type.id,
+            rate: rate,
             description: description,
         }
 
         props.setRequestGlobalAction(true);
 
-        UnitService.createUnit(data).then(() => {
+        UnitService.createCurrency(data).then(() => {
             NotificationManager.success('Unité a été créé avec succès');
-            props.history.push(SETTING.UNIT.LIST);
+            props.history.push(SETTING.UNIT.CURRENCY.LIST);
         })
         .catch((err) => {
             console.log(err);
@@ -95,6 +79,20 @@ const Create = (props) => {
                         />
                     </FormGroup>
                     <FormGroup className="has-wrapper">
+                        <InputLabel className="text-left" htmlFor="rate">
+                            Taux de change (par rapport à la référence)
+                        </InputLabel>
+                        <InputStrap
+                            required
+                            id="rate"
+                            type="number"
+                            name='rate'
+                            className="input-lg"
+                            value={rate}
+                            onChange={(e) => setRate(e.target.value)}
+                        />
+                    </FormGroup>
+                    <FormGroup className="has-wrapper">
                         <InputLabel className="text-left" htmlFor="description">
                             Description
                         </InputLabel>
@@ -108,21 +106,6 @@ const Create = (props) => {
                             onChange={(e) => setDescription(e.target.value)}
                         />
                     </FormGroup>
-                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
-                        <InputLabel className="text-left">
-                            Type d'unité
-                        </InputLabel>
-                        <Autocomplete
-                            value={type}
-                            options={types}
-                            id="combo-box-demo"
-                            onChange={(__, item) => {
-                                setType(item);
-                            }}
-                            getOptionLabel={(option) => option.label}
-                            renderInput={(params) => <TextField {...params} variant="outlined" />}
-                        />
-                    </div>
                     <FormGroup>
                         <Button
                             color="primary"

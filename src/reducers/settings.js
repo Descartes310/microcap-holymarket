@@ -1,8 +1,3 @@
-/**
- * App Settings Reducers
- */
-import update from 'react-addons-update';
-
 import {
 	COLLAPSED_SIDEBAR,
 	DARK_MODE,
@@ -19,6 +14,7 @@ import {
 	STOP_USER_TOUR,
 	TOGGLE_DARK_SIDENAV,
 	CHANGE_AGENCY_LAYOUT_BG,
+	SET_CURRENCY
 } from 'Actions/types';
 
 // app config
@@ -77,8 +73,9 @@ const INIT_STATE = {
 	],
 	enableSidebarBackgroundImage: AppConfig.enableSidebarBackgroundImage, // default enable sidebar background
 	selectedSidebarImage: AppConfig.sidebarImage, // default sidebar background image
-	locale: getDefaultLanguage(),
+	locale: AppConfig.locale,
 	languages: AppConfig.languages,
+	currency: AppConfig.currency,
 	agencyLayoutBgColors: [
 		{
 			id: 1,
@@ -155,6 +152,10 @@ export default (state = INIT_STATE, action) => {
 		// set language
 		case SET_LANGUAGE:
 			return { ...state, locale: action.payload };
+
+		// set currency
+		case SET_CURRENCY:
+			return { ...state, currency: action.payload };
 
 		// set currencies
 		case SET_CURRENCIES_SUCCESS:

@@ -93,7 +93,7 @@ class PaymentCard extends Component<any, any> {
                   {/*   paymentMethod ? ( */}
                         <StripeCheckout
                            name={'MicroCap'}
-                           currency={'EUR'}
+                           currency={this.props.currency}
                            token={this.onStripePayment}
                            amount={this.computePrice()}
                            stripeKey={AppConfig.payments.stripe}
@@ -127,9 +127,10 @@ class PaymentCard extends Component<any, any> {
 }
 
 // map state to props
-const mapStateToProps = ({ requestGlobalLoader, authUser }) => {
+const mapStateToProps = ({ requestGlobalLoader, authUser, settings }) => {
    return {
       requestGlobalLoader,
+      currency: settings.currency,
       authUser: authUser.data,
    }
 };

@@ -361,9 +361,14 @@ export const SETTING = {
         LIST: "/settings/units/list",
         CREATE: "/settings/units/create",
         TYPE: {
-            SELF: "/settings/units",
+            SELF: "/settings/units/types",
             LIST: "/settings/units/types/list",
             CREATE: "/settings/units/types/create"
+        },
+        CURRENCY: {
+            SELF: "/settings/units/currencies",
+            LIST: "/settings/units/currencies/list",
+            CREATE: "/settings/units/currencies/create"
         }
     },
     USER_FILE: {

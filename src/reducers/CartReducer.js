@@ -8,7 +8,6 @@ import {
 } from "../actions/types";
 import Cart from "Models/Cart";
 import { oldCartItemChecked } from "Helpers/helpers";
-import ProductService from 'Services/products';
 
 const INIT_STATE = {
 	items: [],
@@ -20,9 +19,9 @@ export default (state = INIT_STATE, action) => {
 	};
 	const oldItems = JSON.parse(localStorage.getItem('cartItems'));
 
-	if (oldCartItemChecked(oldItems)) {
+	//if (oldCartItemChecked(oldItems)) {
 		obj.data = oldItems;
-	}
+	//}
 
 	switch (action.type) {
 		case CART_ADD_ITEM:

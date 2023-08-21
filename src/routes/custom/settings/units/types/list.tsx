@@ -16,7 +16,7 @@ const List = (props) => {
 
     const getTypeUnits = () => {
         props.setRequestGlobalAction(true);
-        UnitService.getTypeUnits()
+        UnitService.getTypeUnits({include_currency: false})
         .then((response) => setTypeUnits(response))
         .catch((err) => {
             console.log(err);

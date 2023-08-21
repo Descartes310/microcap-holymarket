@@ -4,6 +4,7 @@
 import _ from 'lodash';
 import moment from 'moment';
 import api from "Api/index";
+import store from '../store';
 import AppConfig from 'Constants/AppConfig';
 import { NotificationManager } from 'react-notifications';
 import NavLinks, { MenuItem } from "Components/Sidebar/NavLinks";
@@ -402,13 +403,42 @@ export const getSessonId = () => {
     }
 };
 
-export const getPriceWithCurrency = (price = 0, currency = null) => {
+export const getPriceWithCurrency = (price = 0, currencyCode = null) => {
 
-    currency = currency ? currency : getDefaultCurrency();
+    currencyCode = currencyCode ? currencyCode : getDefaultCurrency();
+    let storeCurrency = store.getState().settings.currency;
+    let storeCurrencies = store.getState().settings.currencies;
+    let currency = storeCurrencies.find(c => c.code === currencyCode);
+    currency = currency ? currency : AppConfig.currency;
+
+    price = (price*currency.rate) / storeCurrency.rate
     
     var formatter = new Intl.NumberFormat('en-US', {
         style: 'currency',
-        currency: currency
+        currency: storeCurrency.code
+    });
+
+    return `${formatter.format(price)}`;
+};
+
+export const getPrice = (price = 0, currencyCode = null) => {
+
+    currencyCode = currencyCode ? currencyCode : getDefaultCurrency();
+    let storeCurrency = store.getState().settings.currency;
+    let storeCurrencies = store.getState().settings.currencies;
+    let currency = storeCurrencies.find(c => c.code === currencyCode);
+    currency = currency ? currency : AppConfig.currency;
+
+    price = (price*currency.rate) / storeCurrency.rate
+
+    return price;
+};
+
+export const addCurrency = (price: any = 0) => {
+    let storeCurrency = store.getState().settings.currency;
+    var formatter = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: storeCurrency.code
     });
 
     return `${formatter.format(price)}`;

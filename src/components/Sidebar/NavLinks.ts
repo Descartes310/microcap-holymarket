@@ -702,7 +702,7 @@ export default [
          {
             "menu_title": "Unités",
             "new_item": false,
-            "path": SETTING.UNIT.LIST,
+            "path": SETTING.UNIT.CURRENCY.LIST,
             "permissions": [Permission.setting.unit.name],
             "profiles": ['GROUP'],
             "child_routes": null

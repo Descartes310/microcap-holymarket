@@ -4,16 +4,16 @@ import { makeRequest } from 'Helpers/helpers';
 
 export default class UnitService {
 
-    static getUnits(): Promise<any> {
-        return makeRequest('get', Routes.GET_UNITS);
+    static getUnits(data: any = null): Promise<any> {
+        return makeRequest('get', Routes.GET_UNITS, data);
     }
 
     static createUnit(data: any): Promise<any> {
         return makeRequest('post', Routes.CREATE_UNIT, data);
     }
 
-    static getTypeUnits(): Promise<any> {
-        return makeRequest('get', Routes.GET_UNIT_TYPES);
+    static getTypeUnits(data: any = null): Promise<any> {
+        return makeRequest('get', Routes.GET_UNIT_TYPES, data);
     }
 
     static createTypeUnit(data: any): Promise<any> {
@@ -27,4 +27,13 @@ export default class UnitService {
     static getUnitByType(id: number): Promise<any> {
         return makeRequest('get', Routes.GET_UNITS_BY_TYPE(id));
     }
+
+    static getCurrencies(): Promise<any> {
+        return makeRequest('get', Routes.GET_CURRENCIES);
+    }
+
+    static createCurrency(data: any): Promise<any> {
+        return makeRequest('post', Routes.CREATE_CURRENCY, data);
+    }
+
 }

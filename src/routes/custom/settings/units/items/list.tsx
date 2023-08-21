@@ -17,7 +17,7 @@ const List = (props) => {
 
     const getUnits = () => {
         props.setRequestGlobalAction(false);
-        UnitService.getUnits()
+        UnitService.getUnits({include_currency: false})
         .then((response) => setUnits(response))
         .catch((err) => {
             console.log(err);
@@ -25,13 +25,6 @@ const List = (props) => {
         .finally(() => {
             props.setRequestGlobalAction(false);
         })
-    }
-
-    const changeStatus = (unit) => {
-        props.setRequestGlobalAction(true),
-        UnitService.changeUnitStatus(unit.id)
-        .then(() => getUnits())
-        .finally(() => props.setRequestGlobalAction(false))
     }
 
     return (
@@ -57,7 +50,7 @@ const List = (props) => {
                                         <th className="fw-bold">code</th>
                                         <th className="fw-bold">Description</th>
                                         <th className="fw-bold">Type</th>
-                                        <th className="fw-bold">Status</th>
+                                        {/* <th className="fw-bold">Status</th> */}
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -91,13 +84,13 @@ const List = (props) => {
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td>
+                                            {/* <td>
                                                 <Switch
                                                     aria-label="Par défaut"
                                                     checked={item.status}
                                                     onChange={() => { changeStatus(item) }}
                                                 />
-                                            </td>
+                                            </td> */}
                                         </tr>
                                     ))}
                                 </tbody>

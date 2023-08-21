@@ -50,6 +50,11 @@ const AppConfig = {
       name: 'French',
       icon: 'fr',
    },
+   currency: {
+		label: 'Euro',
+		code: 'EUR',
+		rate: 1
+	},
    languages: [
       {
          languageId: 'english',

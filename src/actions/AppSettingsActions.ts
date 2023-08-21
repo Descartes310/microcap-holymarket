@@ -15,7 +15,9 @@ import {
     START_USER_TOUR,
     STOP_USER_TOUR,
     TOGGLE_DARK_SIDENAV,
-	 CHANGE_AGENCY_LAYOUT_BG,
+    CHANGE_AGENCY_LAYOUT_BG,
+    SET_CURRENCY,
+    SET_CURRENCIES_SUCCESS
 } from './types';
 
 /**
@@ -143,6 +145,22 @@ export const toggleDarkSidebar = () => ({
 export const agencyLayoutBgHandler = (color) => ({
     type: CHANGE_AGENCY_LAYOUT_BG,
     payload: color
+}) as const;
+
+/**
+ * Redux Action To Set Currency
+ */
+export const setCurrency = (currency) => ({
+    type: SET_CURRENCY,
+    payload: currency
+}) as const;
+
+/**
+ * Redux Action To Set Currency
+ */
+ export const setCurrencies = (currencies) => ({
+    type: SET_CURRENCIES_SUCCESS,
+    payload: currencies
 }) as const;
 
 

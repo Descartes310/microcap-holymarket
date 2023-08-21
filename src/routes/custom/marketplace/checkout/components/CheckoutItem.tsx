@@ -2,9 +2,9 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import React, { Component } from 'react';
 import Button from '@material-ui/core/Button';
-import { getFilePath } from 'Helpers/helpers';
 import { MARKETPLACE } from 'Url/frontendUrl';
 import { Scrollbars } from 'react-custom-scrollbars';
+import { getFilePath, getPrice, getPriceWithCurrency, addCurrency } from 'Helpers/helpers';
 
 class CheckoutItem extends Component<any, any> {
 
@@ -25,7 +25,7 @@ class CheckoutItem extends Component<any, any> {
       const { cart } = this.props;
       let totalPrice = 0;
       if (cart.count() === 0) return 0;
-      totalPrice = cart.items.map(ci => ci.price * ci.quantity).reduce((sum, current) => sum + current);
+      totalPrice = cart.items.map(ci => getPrice(ci.price * ci.quantity, ci.currency)).reduce((sum, current) => sum + current);
       return totalPrice.toFixed(2);
    }
 
@@ -68,7 +68,7 @@ class CheckoutItem extends Component<any, any> {
                               <span className="text-muted fs-12 d-block mb-10">{cart.quantity}</span>
                            </div>
                            <div className="w-15">
-                              <span className="text-muted fs-12 d-block mb-10">€{cart.price}</span>
+                              <span className="text-muted fs-12 d-block mb-10">{getPriceWithCurrency(cart.price, cart.currency)}</span>
                            </div>
                         </li>
                      ))}
@@ -78,12 +78,12 @@ class CheckoutItem extends Component<any, any> {
             }
             <div className="border-top d-flex justify-content-between align-items-center py-4">
                <span className="font-weight-bold text-muted">Total</span>
-               <span className="font-weight-bold">€{this.getTotalPrice()}</span>
+               <span className="font-weight-bold">{addCurrency(this.getTotalPrice())}</span>
             </div>
             <div className="d-flex justify-content-end align-items-center">
                {this.isCartEmpty() && (
                   <Button variant="contained" color="secondary" component={Link} to={MARKETPLACE} className="text-white">
-                     MicroCap Shop
+                     MicroCap Store
                   </Button>
                )
                }

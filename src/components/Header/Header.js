@@ -19,6 +19,7 @@ import { collapsedSidebarAction, darkModeAction } from 'Actions';
 // components
 import Notifications from './Notifications';
 import Cart from './Cart';
+import Currencies from './Currencies';
 import { LANDING } from "Url/frontendUrl";
 
 class Header extends Component {
@@ -102,6 +103,7 @@ class Header extends Component {
 					<ul className="navbar-right list-inline mb-0">
 						{authUser && (
 							<>
+								<Currencies />
 								<Notifications />
 								<Cart />
 							</>
