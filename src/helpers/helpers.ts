@@ -768,6 +768,8 @@ export const translatePermissionFolder = (path) => {
     switch (path) {
         case 'USER_ACCOUNT':
             return 'Comptes utilisateurs'
+        case 'USERS':
+            return 'Gestion des tilisateurs'
         case 'CATEGORY':
             return 'Catégories';
         case 'TYPE':
@@ -776,8 +778,8 @@ export const translatePermissionFolder = (path) => {
             return 'Comptes';
         case 'ROLE':
             return 'Rôles';
-        case 'GROUP':
-            return 'Groupes';
+        case 'GROUPS':
+            return 'Gestion des groupes';
         case 'ADMIN':
             return 'Administration';
         case 'MEMBER':
@@ -786,15 +788,15 @@ export const translatePermissionFolder = (path) => {
             return 'Configuration';
         case 'DETAILS':
             return 'Détails';
-        case 'MARKETPLACE':
+        case 'MARKETPLACES':
             return 'MicroCap Store';
-        case 'SETTING':
+        case 'SETTINGS':
             return 'Paramètrage';
         case 'STORE':
             return 'Ma boutique';
         case 'ACCESS':
             return 'Accès';
-        case 'PROJECT':
+        case 'PROJECTS':
             return 'Projet';
         case 'COVERAGE':
             return 'Couverture';
@@ -824,6 +826,16 @@ export const translatePermissionFolder = (path) => {
             return 'Bourse de financement';
         case 'MARKETS':
             return 'Marchés';
+        case 'NETWORKS':
+            return 'Gestion du réseaux';
+        case 'MICROCAP360':
+            return 'MicroCap 360';
+        case 'BROKERS':
+            return 'Brokers';
+        case 'PSGAV':
+            return 'PSGAV';
+        case 'COMMUNITY':
+            return 'Gestion des communautés';
         default:
             return path;
     }

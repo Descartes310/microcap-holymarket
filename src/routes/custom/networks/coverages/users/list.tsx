@@ -6,6 +6,7 @@ import CustomList from "Components/CustomList";
 import { setRequestGlobalAction } from 'Actions';
 import React, { useState, useEffect } from 'react';
 import ConfirmBox from "Components/dialog/ConfirmBox"
+import TimeFromMoment from "Components/TimeFromMoment";
 import { NotificationManager } from "react-notifications";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 
@@ -84,6 +85,7 @@ const List = (props) => {
                                             <th className="fw-bold">Email</th>
                                             <th className="fw-bold">Numéro utilisateur</th>
                                             <th className="fw-bold">Compte activé</th>
+                                            <th className="fw-bold">Date activation</th>
                                             <th className="fw-bold">Actions</th>
                                         </tr>
                                     </thead>
@@ -117,6 +119,13 @@ const List = (props) => {
                                                             <div className={`user-status-pending-circle rct-notify`} style={{
                                                                 background: item.active ? 'green' : 'red'
                                                             }} />
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="media">
+                                                        <div className="media-body pt-10">
+                                                            <TimeFromMoment time={item.updatedAt} />
                                                         </div>
                                                     </div>
                                                 </td>

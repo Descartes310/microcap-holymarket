@@ -136,12 +136,6 @@ export default class Permission extends BaseEnum {
         },
     };
 
-    static funding = {
-        account: {
-            "name": "FUNDING_ACCOUNT_PRIVILEGE"
-        },
-    };
-
     static network = {
         coverage: {
             territory: {
