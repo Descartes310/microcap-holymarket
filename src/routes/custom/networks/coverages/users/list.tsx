@@ -123,11 +123,13 @@ const List = (props) => {
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <div className="media">
-                                                        <div className="media-body pt-10">
-                                                            <TimeFromMoment time={item.updatedAt} />
+                                                    { item.updatedAt != null && (
+                                                        <div className="media">
+                                                            <div className="media-body pt-10">
+                                                                <TimeFromMoment time={item.updatedAt} />
+                                                            </div>
                                                         </div>
-                                                    </div>
+                                                    )}
                                                 </td>
                                                 <td>
                                                     <Switch
