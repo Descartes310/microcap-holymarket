@@ -3,22 +3,27 @@ import {Form, FormGroup} from 'reactstrap';
 import { withRouter } from "react-router-dom";
 import Button from '@material-ui/core/Button';
 import {setRequestGlobalAction} from 'Actions';
+import { referraTypes } from 'Helpers/helpers';
 import { getChainEventTypes } from 'Helpers/datas';
 import React, { useState, useEffect } from 'react';
 import TextField from '@material-ui/core/TextField';
 import {NotificationManager} from 'react-notifications';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import Checkbox from "@material-ui/core/Checkbox/Checkbox";
 import UserAccountTypeService from 'Services/account-types';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { joinUrlWithParamsId, USER_ACCOUNT_TYPE } from 'Url/frontendUrl';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
+import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
 
 const Create = (props) => {
 
     const [event, setEvent] = useState(null);
     const [accountType, setAccountType] = useState(null);
     const [accountTypes, setAccountTypes] = useState([]);
+    const [referralType, setReferralType] = useState(null);
+    const [createAccess, setCreateAccess] = useState(false);
 
     useEffect(() => {
         getTypes();
@@ -33,15 +38,17 @@ const Create = (props) => {
 
     const onSubmit = () => {
 
-        if(!accountType || !event)
+        if(!accountType || !event || !referralType)
             return
-
-        props.setRequestGlobalAction(true);
 
         let data: any = {
             event: event.value,
-            nextId: accountType.id
+            nextId: accountType.id,
+            referralType: referralType.value,
+            createAccess
         }
+        
+        props.setRequestGlobalAction(true);
 
         UserAccountTypeService.createChain(props.match.params.id, data).then(() => {
             NotificationManager.success("Le lien a été créée avec succès");
@@ -91,6 +98,33 @@ const Create = (props) => {
                             renderInput={(params) => <TextField {...params} variant="outlined" />}
                         />
                     </div>
+
+                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                        <InputLabel className="text-left">
+                            Cible
+                        </InputLabel>
+                        <Autocomplete
+                            value={referralType}
+                            id="combo-box-demo"
+                            options={referraTypes()}
+                            onChange={(__, item) => {
+                                setReferralType(item);
+                            }}
+                            getOptionLabel={(option) => option.label}
+                            renderInput={(params) => <TextField {...params} variant="outlined" />}
+                        />
+                    </div>
+
+                    <FormGroup className="col-sm-12 has-wrapper">
+                        <FormControlLabel control={
+                            <Checkbox
+                                color="primary"
+                                checked={createAccess}
+                                onChange={() => setCreateAccess(!createAccess)}
+                            />
+                        } label={'Ajout de souscription'}
+                        />
+                    </FormGroup>
 
                     <FormGroup>
                         <Button

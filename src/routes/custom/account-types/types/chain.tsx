@@ -4,6 +4,7 @@ import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
 import React, { useState, useEffect } from 'react';
 import { getChainEventTypeValue } from 'Helpers/datas';
+import { getReferralTypeLabel } from 'Helpers/helpers';
 import UserAccountTypeService from 'Services/account-types';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import { joinUrlWithParamsId, USER_ACCOUNT_TYPE } from 'Url/frontendUrl';
@@ -52,6 +53,7 @@ const List = (props) => {
                                         <tr>
                                             <th className="fw-bold">Type de compte initial</th>
                                             <th className="fw-bold">Type de compte destination</th>
+                                            <th className="fw-bold">Cible</th>
                                             <th className="fw-bold">Evènement</th>
                                         </tr>
                                     </thead>
@@ -69,6 +71,13 @@ const List = (props) => {
                                                     <div className="media">
                                                         <div className="media-body pt-10">
                                                             <h4 className="m-0 text-dark fw-bold ">{item.next.label}</h4>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="media">
+                                                        <div className="media-body pt-10">
+                                                            <h4 className="m-0 text-dark">{getReferralTypeLabel(item.referralType)}</h4>
                                                         </div>
                                                     </div>
                                                 </td>
