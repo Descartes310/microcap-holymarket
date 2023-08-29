@@ -55,7 +55,7 @@ class Currencies extends Component {
 								{currencies.map((c, key) => (
 									<li key={key} onClick={() => this.onChangeCurrency(c)}>
 										<a href="#" onClick={e => e.preventDefault()}>
-											{c.label}
+											{c.code}
 										</a>
 									</li>
 								))}

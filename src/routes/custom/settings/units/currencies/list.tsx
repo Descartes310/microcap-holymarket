@@ -1,11 +1,12 @@
 import { connect } from 'react-redux';
 import UnitService from 'Services/units';
-import { SETTING } from 'Url/frontendUrl';
+import Button from '@material-ui/core/Button';
 import Switch from "@material-ui/core/Switch";
 import { withRouter } from "react-router-dom";
 import CustomList from "Components/CustomList";
 import { setRequestGlobalAction } from 'Actions';
 import React, { useEffect, useState } from 'react';
+import { joinUrlWithParamsId, SETTING } from 'Url/frontendUrl';
 
 const List = (props) => {
 
@@ -58,6 +59,7 @@ const List = (props) => {
                                         <th className="fw-bold">Description</th>
                                         <th className="fw-bold">Taux de change</th>
                                         <th className="fw-bold">Status</th>
+                                        <th className="fw-bold">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -97,6 +99,16 @@ const List = (props) => {
                                                     checked={item.status}
                                                     onChange={() => { changeStatus(item) }}
                                                 />
+                                            </td>
+                                            <td>
+                                                <Button
+                                                    color="primary"
+                                                    variant="contained"
+                                                    className="text-white font-weight-bold"
+                                                    onClick={() => props.history.push(joinUrlWithParamsId(SETTING.UNIT.CURRENCY.UPDATE, item.reference))}
+                                                >
+                                                    Editer
+                                                </Button>
                                             </td>
                                         </tr>
                                     ))}

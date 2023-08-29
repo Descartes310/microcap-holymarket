@@ -368,7 +368,8 @@ export const SETTING = {
         CURRENCY: {
             SELF: "/settings/units/currencies",
             LIST: "/settings/units/currencies/list",
-            CREATE: "/settings/units/currencies/create"
+            CREATE: "/settings/units/currencies/create",
+            UPDATE: "/settings/units/currencies/:id/update"
         }
     },
     USER_FILE: {

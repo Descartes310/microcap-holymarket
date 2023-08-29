@@ -8,3 +8,5 @@ export const GET_UNITS_BY_TYPE = (id) => `api/settings/units/types/${id}/units`;
 
 export const GET_CURRENCIES = 'api/settings/units/currencies';
 export const CREATE_CURRENCY = 'api/settings/units/currencies';
+export const UPDATE_CURRENCY = (reference) => `api/settings/units/${reference}/currencies`;
+export const FIND_CURRENCY = (reference) => `api/settings/units/${reference}/currencies`;

@@ -7,6 +7,7 @@ import ListUnitTypes from './types/list';
 import { SETTING } from 'Url/frontendUrl';
 import CreateUnitType from './types/create';
 import ListCurrencies from './currencies/list';
+import UpdateCurrency from './currencies/update';
 import CreateCurrencies from './currencies/create';
 import {withRouter, Switch, Redirect, Route} from "react-router-dom";
 
@@ -21,6 +22,7 @@ const Units = (props) => {
                 <Route path={SETTING.UNIT.TYPE.LIST} component={ListUnitTypes} />
                 <Route path={SETTING.UNIT.CURRENCY.LIST} component={ListCurrencies} />
                 <Route path={SETTING.UNIT.CURRENCY.CREATE} component={CreateCurrencies} />
+                <Route path={SETTING.UNIT.CURRENCY.UPDATE} component={UpdateCurrency} />
                 <Route path={SETTING.UNIT.TYPE.CREATE} component={CreateUnitType} />
             </Switch>
         </div>

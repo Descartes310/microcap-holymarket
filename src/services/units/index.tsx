@@ -36,4 +36,12 @@ export default class UnitService {
         return makeRequest('post', Routes.CREATE_CURRENCY, data);
     }
 
+    static findCurrency(reference: string): Promise<any> {
+        return makeRequest('get', Routes.FIND_CURRENCY(reference));
+    }
+
+    static updateCurrency(reference: string, data: any): Promise<any> {
+        return makeRequest('put', Routes.UPDATE_CURRENCY(reference), data);
+    }
+
 }
