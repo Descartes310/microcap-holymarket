@@ -35,11 +35,15 @@ class Hit extends Component {
 	}
 
 	addToCart = (cartItem, e = null) => {
+		if(e) e.preventDefault();
+		if(!cartItem.profileBuyable) {
+			alert("Votre profile ne vous donne pas accès à ce produit");
+			return;
+		}
 		this.setState({ loading: true });
 		if(this.state.data)
 			cartItem.customInfos = this.state.data;
 		this.props.onAddItemToCart({...cartItem, source: this.props.source});
-		if(e) e.preventDefault();
 		this.setState({ loading: false, product: null, data: null });
 	}
 
