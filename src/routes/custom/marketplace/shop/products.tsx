@@ -33,7 +33,7 @@ const Shop = (props) => {
 
 	return (
 		<div className="shop-wrapper">
-			<PageTitleBar title={model ? model.label : 'MicroCap Shop'} />
+			<PageTitleBar title={model ? model.label : 'MicroCap Store'} />
 			<div className="ais-InstantSearch">
 				<div className="row">
 					{ products.map(product => (

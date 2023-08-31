@@ -6,6 +6,10 @@ export const getChainEventTypes = () => {
             value: 'ACTIVATE_PROFILE'
         },
         {
+            label: 'Authentification',
+            value: 'AUTHENTIFICATION'
+        },
+        {
             label: 'Obtention du numéro d\'adhésion',
             value: 'GET_MEMBERSHIP_NUMBER'
         },

@@ -3,6 +3,7 @@ import Permission from "Enums/Permissions";
 import {
    BANK,
    GROUP,
+   MIPRO,
    BROKER,
    PROJECT,
    PROFILE,
@@ -10,10 +11,10 @@ import {
    FUNDING,
    NETWORK,
    MARKETPLACE,
+   SUPERVISION,
    USER_ACCOUNT_TYPE,
    joinUrlWithParams,
-   joinUrlWithParamsId,
-   MIPRO
+   joinUrlWithParamsId
 } from 'Url/frontendUrl';
 
 export type MenuItem = {
@@ -87,16 +88,53 @@ export default [
                Permission.network.coverage.partner.name,
             ],
             "profiles": ['GROUP'],
-         },
+         }
+      ]
+   },
+   {
+      "menu_title": "Supervision",
+      "menu_icon": "zmdi zmdi-case",
+      "new_item": false,
+      "permissions": [
+         Permission.supervision.member.name,
+         Permission.supervision.user.name,
+         Permission.supervision.partner.name,
+         Permission.supervision.project.name,
+      ],
+      "type_multi": true,
+      "child_routes": [
          {
             "menu_title": "Utilisateurs",
             "new_item": false,
-            "path": NETWORK.COVERAGE.USERS.LIST,
+            "path": SUPERVISION.USERS.LIST,
             "permissions": [
-               Permission.network.coverage.partner.name,
+               Permission.supervision.user.name,
             ],
-            "profiles": ['GROUP'],
          },
+         {
+            "menu_title": "Partenaires",
+            "new_item": false,
+            "path": SUPERVISION.USERS.LIST,
+            "permissions": [
+               Permission.supervision.partner.name,
+            ],
+         },
+         {
+            "menu_title": "Membres",
+            "new_item": false,
+            "path": SUPERVISION.USERS.LIST,
+            "permissions": [
+               Permission.supervision.member.name,
+            ],
+         },
+         {
+            "menu_title": "Projets",
+            "new_item": false,
+            "path": SUPERVISION.USERS.LIST,
+            "permissions": [
+               Permission.supervision.project.name,
+            ],
+         }
       ]
    },
    {
@@ -544,7 +582,7 @@ export default [
    },
    {
       "path": MARKETPLACE.SHOP.CLASSIC,
-      "menu_title": "MicroCap Shop",
+      "menu_title": "MicroCap Store",
       "menu_icon": "zmdi zmdi-shopping-cart",
       "new_item": false,
       "child_routes": null,

@@ -635,6 +635,27 @@ export const BANK = {
     }
 } as const;
 
+export const SUPERVISION = {
+    SELF: '/supervision',
+    USERS: {
+        SELF: '/supervision/users',
+        LIST: '/supervision/users/list',
+        DETAILS: '/supervision/users/:id/details',
+    },
+    PARTNERS: {
+        SELF: '/supervision/partners',
+        LIST: '/supervision/partners/list',
+    },
+    MEMBERS: {
+        SELF: '/supervision/members',
+        LIST: '/supervision/members/list',
+    },
+    PROJECTS: {
+        SELF: '/supervision/projects',
+        LIST: '/supervision/projects/list',
+    }
+}
+
 export const joinUrlWithParams = (to, params) => {
     let url = to;
     params.forEach(param => {

@@ -7,6 +7,7 @@ export const GET_BRANCH_USERS = "api/socialnetworks/users/self/by-branch";
 export const CONFIRM_OTP = (otp) => `api/socialnetworks/users/self/otp/${otp}`;
 export const RESET_PASSWORD = "api/socialnetworks/users/access/reset-password";
 export const CHANGE_ACCESS = (id) => `api/socialnetworks/users/access/${id}/change`;
+export const USER_KYC = (reference) => `api/socialnetworks/users/self/${reference}/all`;
 export const RESET_PASSWORD_LINK = "api/socialnetworks/users/access/send-password-link";
 export const CHANGE_ACCESS_LOGIN = (id) => `api/socialnetworks/users/access/${id}/login`;
 export const ACTIVATE_OR_BLOCK_ACCESS = "api/socialnetworks/users/access/activate-or-block";
@@ -25,3 +26,4 @@ export const CONFIRM_CONTACT_CODE = `api/socialnetworks/users/self/contacts/conf
 export const SEND_CONTACT_CODE = (id) => `api/socialnetworks/users/self/contacts/${id}/send-code`;
 
 export const ACTIVATE_PASS = (reference) => `api/socialnetworks/users/pass/${reference}/active`;
+export const AUTHENTICATE = (reference) => `api/socialnetworks/users/self/${reference}/authenticate`;

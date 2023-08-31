@@ -254,4 +254,19 @@ export default class Permission extends BaseEnum {
         }
     };
 
+    static supervision = {
+        user: {
+            "name": "SUPERVISION_USER"
+        },
+        partner: {
+            "name": "SUPERVISION_PARTNER"
+        },
+        member: {
+            "name": "SUPERVISION_MEMBER"
+        },
+        project: {
+            "name": "SUPERVISION_PROJECT"
+        },
+    };
+
 }

@@ -16,6 +16,10 @@ export default class UserService {
         return makeRequest('get', Routes.KYC);
     }
 
+    static userKYC(reference: string): Promise<any> {
+        return makeRequest('get', Routes.USER_KYC(reference));
+    }
+
     static confirmOTP(otp, data): Promise<any> {
         return makeRequest('put', Routes.CONFIRM_OTP(otp), data);
     }
@@ -97,6 +101,10 @@ export default class UserService {
 
     static activatePass(reference: string): Promise<any> {
         return makeRequest('put', Routes.ACTIVATE_PASS(reference));
+    }
+
+    static authenticate(reference: string): Promise<any> {
+        return makeRequest('post', Routes.AUTHENTICATE(reference));
     }
 
 }

@@ -17,6 +17,7 @@ import {
     AsyncNetworks,
     AsyncProjects,
     AsyncPrevision,
+    AsyncSupervision,
     AsyncMarketplace,
     AsyncNotifications,
     AsyncUserAccountTypes,
@@ -36,6 +37,7 @@ import {
     LANDING,
     PROJECT,
     NETWORK,
+    SUPERVISION,
     MARKETPLACE,
     NOTIFICATIONS,
     USER_ACCOUNT_TYPE,
@@ -124,6 +126,12 @@ const Dashboard = ({ onInitCart }) => {
                         permissions={[]}
                         path={MIPRO.SELF}
                         component={AsyncPrevision}
+                    />
+
+                    <CanRoute
+                        permissions={[]}
+                        path={SUPERVISION.SELF}
+                        component={AsyncSupervision}
                     />
                     <Redirect to={HOME} />
 

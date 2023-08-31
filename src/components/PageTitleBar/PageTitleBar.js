@@ -4,7 +4,7 @@ import _ from "lodash";
 import PropTypes from 'prop-types';
 // intl messages
 
-const PageTitleBar = ({ title, history, titleClassName, style, showBackBtn, onBackClick, className }) => {
+const PageTitleBar = ({ title, history, titleClassName, style, showBackBtn, onBackClick, className, rightComponent }) => {
    return (
       <div className={`page-title d-flex justify-content-between align-items-center ${className}`} style={style}>
          {title &&
@@ -18,6 +18,11 @@ const PageTitleBar = ({ title, history, titleClassName, style, showBackBtn, onBa
                <h2 className={titleClassName}>{title}</h2>
             </div>
          }
+         {rightComponent && (
+            <div className="page-title-wrap">
+               {rightComponent}
+            </div>
+         )}
       </div>
    )
 };
