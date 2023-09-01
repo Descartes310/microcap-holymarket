@@ -88,7 +88,16 @@ export default [
                Permission.network.coverage.partner.name,
             ],
             "profiles": ['GROUP'],
-         }
+         },
+         {
+            "menu_title": "Utilisateurs",
+            "new_item": false,
+            "path": NETWORK.COVERAGE.USERS.LIST,
+            "permissions": [
+               Permission.network.coverage.partner.name,
+            ],
+            "profiles": ['GROUP'],
+         },
       ]
    },
    {

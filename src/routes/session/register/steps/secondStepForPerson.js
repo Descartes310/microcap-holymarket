@@ -42,10 +42,10 @@ const SecondStepForPerson = props => {
     const [residenceCountry, setResidenceCountry] = useState(null);
 
     useEffect(() => {
-        if(nationality) {
+        if(residenceCountry) {
             _getIdentificationType();
         }
-    }, [nationality]);
+    }, [residenceCountry]);
 
     useEffect(() => {
         _getCountries();
@@ -63,7 +63,7 @@ const SecondStepForPerson = props => {
     };
 
     const _getIdentificationType = () => {
-        SettingService.getImmatriculationsByTerritory({territory: nationality.reference, referral_type: 'PERSON'})
+        SettingService.getImmatriculationsByTerritory({territory: residenceCountry.reference, referral_type: 'PERSON'})
         .then(response => setTypes(response))
     }
 

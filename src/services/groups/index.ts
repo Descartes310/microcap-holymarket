@@ -136,7 +136,15 @@ export default class GroupService {
         return makeRequest('get', Routes.GET_ARTICLE_DETAILS(id));
     }
 
+    static getJuridicTypes(): Promise<any> {
+        return makeRequest('get', Routes.GET_JURIDIC_TYPES);
+    }
+
     static updateArticleStatus(id: number): Promise<any> {
         return makeRequest('put', Routes.UPDATE_ARTICLE_STATUS(id));
+    }
+
+    static changeCategoryToJuridic(reference: string): Promise<any> {
+        return makeRequest('put', Routes.CHANGE_CATEGORY_TO_JURIDIC(reference));
     }
 }

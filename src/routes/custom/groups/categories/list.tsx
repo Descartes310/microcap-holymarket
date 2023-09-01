@@ -1,10 +1,12 @@
 import { connect } from 'react-redux';
 import GroupService from 'Services/groups';
+import { Switch } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
 import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
 import React, { useState, useEffect } from 'react';
+import { NotificationManager } from "react-notifications";
 import { GROUP, joinUrlWithParamsId } from 'Url/frontendUrl';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 
@@ -21,6 +23,21 @@ const Categories = (props) => {
         GroupService.getGroupCategories()
         .then(response => setCategories(response))
         .finally(() => props.setRequestGlobalAction(false))
+    }
+
+    const setToJuridic = (reference) => {
+        props.setRequestGlobalAction(true)
+        GroupService.changeCategoryToJuridic(reference)
+        .then(() => {
+            getCategories();
+        })
+        .catch(err => {
+            console.log(err);
+            NotificationManager.error("Une erreur s'est produite, veuillez contacter l'assistance")
+        })
+        .finally(() => {
+            props.setRequestGlobalAction(false);
+        })
     }
 
     const goToCreate = () => {
@@ -53,6 +70,7 @@ const Categories = (props) => {
                                             <th className="fw-bold">Désignation</th>
                                             <th className="fw-bold">Catégorie parent</th>
                                             <th className="fw-bold">Description</th>
+                                            <th className="fw-bold">Juridique ?</th>
                                             <th className="fw-bold">Action</th>
                                         </tr>
                                     </thead>
@@ -79,6 +97,15 @@ const Categories = (props) => {
                                                             <h4 className="m-0 text-dark">{item.description}</h4>
                                                         </div>
                                                     </div>
+                                                </td>
+                                                <td>
+                                                    <Switch
+                                                        aria-label="Par défaut"
+                                                        checked={item.juridic}
+                                                        onChange={() => {
+                                                            setToJuridic(item.reference);
+                                                        }}
+                                                    />
                                                 </td>
                                                 <td>
                                                     <Button

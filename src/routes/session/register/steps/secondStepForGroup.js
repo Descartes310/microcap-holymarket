@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import { injectIntl } from 'react-intl';
 import { useForm } from "react-hook-form";
+import GroupService from 'Services/groups';
 import { Form, FormGroup } from "reactstrap";
 import IntlMessages from "Util/IntlMessages";
 import Button from "@material-ui/core/Button";
@@ -36,6 +37,7 @@ const SecondStepForGroup = props => {
 
     const [types, setTypes] = useState([]);
     const [countries, setCountries] = useState([]);
+    const [juridicForms, setJuridicForms] = useState([]);
     const [residenceCountry, setResidenceCountry] = useState(null);
 
     useEffect(() => {
@@ -46,6 +48,7 @@ const SecondStepForGroup = props => {
 
     useEffect(() => {
         _getCountries();
+        getJuridicForms();
     }, []);
 
     const _getCountries = () => {
@@ -58,6 +61,11 @@ const SecondStepForGroup = props => {
             NotificationManager.error("An error occur " + error);
         });
     };
+
+    const getJuridicForms = () => {
+        GroupService.getJuridicTypes()
+        .then(response => setJuridicForms(response))
+    }
 
     const _getIdentificationType = () => {
         SettingService.getImmatriculationsByTerritory({territory: residenceCountry.reference, referral_type: 'GROUP'})
@@ -139,10 +147,46 @@ const SecondStepForGroup = props => {
 
             <div className="row align-items-flex-end">
                 <CustomAsyncComponent
+                    data={juridicForms}
+                    component={data => {
+                        return (
+                            <div className="col-12 form-group text-left">
+                                <FormControl fullWidth>
+                                    <InputLabel className="text-left" htmlFor="groupTypeReference">
+                                        Forme juridique
+                                    </InputLabel>
+                                    <InputComponent
+                                        errors={errors}
+                                        control={control}
+                                        isRequired={false}
+                                        register={register}
+                                        componentType="select"
+                                        id="groupTypeReference"
+                                        name={'groupTypeReference'}
+                                        as={
+                                            <MaterialSelect
+                                                input={<Input name="groupTypeReference"
+                                                    id="groupTypeReference-helper" />
+                                                }>
+                                                {data.map((item, index) => (
+                                                    <MenuItem key={index} value={item.reference}>
+                                                        {item.label}
+                                                    </MenuItem>
+                                                ))
+                                                }
+                                            </MaterialSelect>
+                                        }
+                                    />
+                                </FormControl>
+                            </div>
+                        )
+                    }}
+                />
+                <CustomAsyncComponent
                     data={types}
                     component={data => {
                         return (
-                            <div className="col-6 form-group text-left">
+                            <div className="col-12 form-group text-left">
                                 <FormControl fullWidth>
                                     <InputLabel className="text-left" htmlFor="identificationType">
                                         Type d'immatriculation
@@ -174,7 +218,7 @@ const SecondStepForGroup = props => {
                         )
                     }}
                 />
-                <FormGroup className="col-6 has-wrapper">
+                <FormGroup className="col-12 has-wrapper">
                     <InputComponent
                         id="identificationNumber"
                         type="text"

@@ -6,6 +6,7 @@ import UserService from 'Services/users';
 import IntlMessages from "Util/IntlMessages";
 import TerritoryType from "Enums/Territories";
 import { withRouter } from "react-router-dom";
+import {setRequestGlobalAction} from 'Actions';
 import Step from "@material-ui/core/Step/Step";
 import Stepper from "@material-ui/core/Stepper/Stepper";
 import { NotificationManager } from 'react-notifications';
@@ -36,17 +37,24 @@ class PersonRegister extends Component {
 
     onSubmit = (data) => {
         const _data = { ...data };
+
         if (_data.residenceCountry)
             _data.residenceCountry = _data.residenceCountry.id;
+
         if (_data.nationality)
             _data.nationality = _data.nationality.id;
+
         _data.identificationValue = _data.identificationNumber;
         _data.identificationType = _data.identificationType;
+
         if (_data.startingValidityDate)
             _data.identificationStartDate = _data.startingValidityDate;
+
         if (_data.endingValidityDate)
             _data.identificationEndDate = _data.endingValidityDate;
+
         _data.isOrganisation = _data.isOrganisation ? _data.isOrganisation : false;
+
         if(!_data.isOrganisation) {
             _data.telephone = '+' + _data.phoneNumberPrefix.details.find(d => d.code === TerritoryType.PHONE_INDICATOR)?.value + ' ' + _data.phoneNumber;
         }
@@ -69,13 +77,18 @@ class PersonRegister extends Component {
         if (!_data.login || !_data.email)
             return;
 
+        console.log(_data);
+
+        this.props.setRequestGlobalAction(true);
         UserService.registerUser(_data)
-            .then(() => {
-                NotificationManager.success("La création de votre compte a réussie.");
-                this.props.history.push(AUTH.LOGIN);
-            }).catch(err => {
-                NotificationManager.error("Une erreur est survenue, veuillez reessayer plus tard.");
-            });
+        .then(() => {
+            NotificationManager.success("La création de votre compte a réussie.");
+            this.props.history.push(AUTH.LOGIN);
+        }).catch(() => {
+            NotificationManager.error("Une erreur est survenue, veuillez reessayer plus tard.");
+        }).finally(() => {
+            this.props.setRequestGlobalAction(false);
+        })
     };
 
     previousStep = () => this.setState({ activeStep: this.state.activeStep - 1 < 0 ? 0 : this.state.activeStep - 1 });
@@ -134,4 +147,4 @@ const mapStateToProps = ({ requestGlobalLoader }) => {
     return { loading: requestGlobalLoader }
 };
 
-export default connect(mapStateToProps, {})(withRouter(PersonRegister));
+export default connect(mapStateToProps, {setRequestGlobalAction})(withRouter(PersonRegister));

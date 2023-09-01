@@ -2,9 +2,11 @@ export const GET_GROUP_CATEGORIES = 'api/socialnetworks/groups/categories';
 export const CREATE_GROUP_CATEGORY = 'api/socialnetworks/groups/categories';
 export const GET_GROUP_CATEGORY = (reference) => `api/socialnetworks/groups/categories/${reference}`;
 export const UPDATE_GROUP_CATEGORY = (reference) => `api/socialnetworks/groups/categories/${reference}`;
+export const CHANGE_CATEGORY_TO_JURIDIC = (reference) => `api/socialnetworks/groups/categories/${reference}/juridic`;
 
 export const GET_GROUP_TYPES = 'api/socialnetworks/groups/types';
 export const CREATE_GROUP_TYPE = 'api/socialnetworks/groups/types';
+export const GET_JURIDIC_TYPES = 'api/socialnetworks/groups/types/juridics';
 export const UPDATE_GROUP_TYPE = (reference) => `api/socialnetworks/groups/types/${reference}`;
 export const SET_GROUP_TYPE_AS_DEFAULT = (id) => `api/socialnetworks/groups/types/${id}/status`;
 export const FIND_GROUP_TYPE = (reference) => `api/socialnetworks/groups/types/find/${reference}`;
