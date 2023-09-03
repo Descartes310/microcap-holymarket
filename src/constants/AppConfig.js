@@ -91,7 +91,7 @@ const AppConfig = {
    darkThemeColors: {
       darkBgColor: '#424242'
    },
-   minPasswordLength: 3,
+   minPasswordLength: 8,
    minYearOld: 10,
    oauth: {
       clientId: 'microcap-app',

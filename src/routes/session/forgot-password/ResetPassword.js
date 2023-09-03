@@ -1,7 +1,7 @@
-import React from 'react';
 import {connect} from "react-redux";
 import QueueAnim from 'rc-queue-anim';
 import {injectIntl} from "react-intl";
+import React, { useState } from 'react';
 import {useForm} from "react-hook-form";
 import {useQuery} from "Helpers/helpers";
 import UserService from 'Services/users';
@@ -14,14 +14,15 @@ import Toolbar from '@material-ui/core/Toolbar';
 import { Link, useLocation } from 'react-router-dom';
 import {HOME, AUTH} from "../../../urls/frontendUrl";
 import InputComponent from "Components/InputComponent";
-import {minMaxValidatorObject} from "Helpers/validator";
-import {NotificationManager} from "react-notifications";
-import {resetPassword, setRequestGlobalAction} from "Actions";
+import { NotificationManager } from "react-notifications";
+import { resetPassword, setRequestGlobalAction } from "Actions";
 import ErrorInputComponent from "Components/ErrorInputComponent";
+import { minMaxValidatorObject, passwordValidatorObject } from "Helpers/validator";
 
 const ResetPassword = ({intl, loading, setRequestGlobalAction, history}) => {
-    const { register, errors, handleSubmit } = useForm();
+    const { register, errors, handleSubmit, watch } = useForm();
 
+    const [passwordType, setPasswordType] = useState('password');
     const query = useQuery(useLocation);
     const token = query.get('token');
     const isTokenInvalid = (!token === false) || token === '';
@@ -41,14 +42,14 @@ const ResetPassword = ({intl, loading, setRequestGlobalAction, history}) => {
         };
   
         UserService.resetPassword(datas)
-            .then(() => {
-                NotificationManager.success(intl.formatMessage({id: "auth.resetPassword.successText"}));
-                history.push(AUTH.LOGIN);
-            })
-            .catch(() => {
-              NotificationManager.error("Une erreur est survenu, veuillez réessayer plus tard.");
-            })
-            .finally(() =>  setRequestGlobalAction(false));
+        .then(() => {
+            NotificationManager.success(intl.formatMessage({id: "auth.resetPassword.successText"}));
+            history.push(AUTH.LOGIN);
+        })
+        .catch(() => {
+            NotificationManager.error("Une erreur est survenu, veuillez réessayer plus tard.");
+        })
+        .finally(() =>  setRequestGlobalAction(false));
      };
 
     return (
@@ -82,11 +83,11 @@ const ResetPassword = ({intl, loading, setRequestGlobalAction, history}) => {
                                         <InputComponent
                                             isRequired
                                             id="password"
-                                            type="Password"
                                             errors={errors}
                                             name={'password'}
+                                            type={passwordType}
                                             register={register}
-                                            placeholder="......."
+                                            placeholder="Nouveau de passe"
                                             className="has-input input-lg"
                                             otherValidator={{minLength: AppConfig.minPasswordLength}}
                                         >
@@ -94,7 +95,26 @@ const ResetPassword = ({intl, loading, setRequestGlobalAction, history}) => {
                                                 <ErrorInputComponent text={intl.formatMessage({id: minMaxValidatorObject.minMessage}, {min: AppConfig.minPasswordLength})} />
                                             )}
                                         </InputComponent>
-                                        <span className="has-icon"><i className="ti-lock"></i></span>
+                                        <span onClick={() => setPasswordType(passwordType === 'password' ? 'text' : 'password')} className="has-icon">
+                                            <i className={`zmdi zmdi-${passwordType === 'password' ? 'eye' : 'eye-off'}`}></i>
+                                        </span>
+                                    </FormGroup>
+                                    <FormGroup className="has-wrapper">
+                                        <InputComponent
+                                            isRequired
+                                            errors={errors}
+                                            type={passwordType}
+                                            register={register}
+                                            id="passwordConfirmation"
+                                            name={'passwordConfirmation'}
+                                            className="has-input input-lg"
+                                            placeholder={intl.formatMessage({ id: "auth.passwordConfirmation" })}
+                                            otherValidator={{ validate: value => value === watch('password') }}
+                                        >
+                                            {errors.passwordConfirmation && (
+                                                <ErrorInputComponent text={intl.formatMessage({ id: passwordValidatorObject.passwordConfirmation })} />
+                                            )}
+                                        </InputComponent>
                                     </FormGroup>
                                     <FormGroup>
                                         <Button

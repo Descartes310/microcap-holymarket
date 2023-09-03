@@ -376,6 +376,7 @@ export const SETTING = {
         SELF: "/settings/user-files",
         LIST: "/settings/user-files/list",
         CREATE: "/settings/user-files/create",
+        UPDATE: "/settings/user-files/:id/update",
     },
     AGENT: {
         SELF: "/settings/agents",

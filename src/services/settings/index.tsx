@@ -98,4 +98,12 @@ export default class SettingService {
     static updateImmatriculation(id: number, data: any): Promise<any> {
         return makeRequest('put', Routes.UPDATE_IMMATRICULATION(id), data);
     }
+
+    static updateUserFileType(id, datas, config): Promise<any> {
+        return makeRequest('put', Routes.UPDATE_USER_TYPE(id), datas, config);
+    }
+
+    static findUserFileType(id): Promise<any> {
+        return makeRequest('get', Routes.FIND_USER_TYPE(id));
+    }
 }

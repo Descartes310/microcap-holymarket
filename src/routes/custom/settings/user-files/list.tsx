@@ -1,11 +1,12 @@
 import { connect } from 'react-redux';
-import { SETTING } from 'Url/frontendUrl';
+import Button from '@material-ui/core/Button';
 import { getFilePath } from 'Helpers/helpers';
 import { withRouter } from "react-router-dom";
 import CustomList from "Components/CustomList";
 import SettingService from 'Services/settings';
 import {setRequestGlobalAction} from 'Actions';
 import React, { useState, useEffect } from 'react';
+import { joinUrlWithParamsId, SETTING } from 'Url/frontendUrl';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 
 const List = (props) => {
@@ -53,6 +54,7 @@ const List = (props) => {
                                             <th className="fw-bold">Désignation</th>
                                             <th className="fw-bold">Exemple</th>
                                             <th className="fw-bold">Description</th>
+                                            <th className="fw-bold">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -68,9 +70,11 @@ const List = (props) => {
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <span onClick={() => window.open(getFilePath(item.sample), 'blank')}>
-                                                                Consulter l'exemple
-                                                            </span>
+                                                            { item.sample && (
+                                                                <span onClick={() => window.open(getFilePath(item.sample), 'blank')}>
+                                                                    Consulter l'exemple
+                                                                </span>
+                                                            )}
                                                         </div>
                                                     </div>
                                                 </td>
@@ -80,6 +84,16 @@ const List = (props) => {
                                                             <h4 className="m-0 text-dark">{item.description}</h4>
                                                         </div>
                                                     </div>
+                                                </td>
+                                                <td>
+                                                    <Button
+                                                        color="primary"
+                                                        variant="contained"
+                                                        className="text-white font-weight-bold"
+                                                        onClick={() => props.history.push(joinUrlWithParamsId(SETTING.USER_FILE.UPDATE, item.reference))}
+                                                    >
+                                                        Editer
+                                                    </Button>
                                                 </td>
                                             </tr>
                                         ))}

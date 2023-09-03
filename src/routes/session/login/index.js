@@ -113,17 +113,12 @@ const Signin = (props) => {
                                                 <InputComponent
                                                     isRequired
                                                     id="password"
-                                                    type="Password"
                                                     errors={errors}
                                                     name={'password'}
                                                     register={register}
                                                     type={passwordType}
                                                     className="has-input input-lg"
-                                                    otherValidator={{ minLength: AppConfig.minPasswordLength }}
                                                 >
-                                                    {errors.password?.type === 'minLength' && (
-                                                        <ErrorInputComponent text={intl.formatMessage({ id: minMaxValidatorObject.minMessage }, { min: AppConfig.minPasswordLength })} />
-                                                    )}
                                                 </InputComponent>
                                                 <span onClick={() => setPasswordType(passwordType === 'password' ? 'text' : 'password')} className="has-icon">
                                                     <i className={`zmdi zmdi-${passwordType === 'password' ? 'eye' : 'eye-off'}`}></i>
