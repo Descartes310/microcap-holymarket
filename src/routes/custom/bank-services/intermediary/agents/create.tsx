@@ -112,11 +112,11 @@ const Create = (props) => {
         }
 
         BankService.createAgent(data).then(() => {
-            NotificationManager.success("L'agent a été créé avec succès");
+            NotificationManager.success("Le point de service a été créé avec succès");
             props.history.push(BANK.PARTY.AGENT.LIST);
         }).catch((err) => {
             console.log(err);
-            NotificationManager.error("Une erreur est survenu lors de l'agent");
+            NotificationManager.error("Une erreur est survenue lors de la création du point de service");
         }).finally(() => {
             props.setRequestGlobalAction(false);
         })
@@ -126,10 +126,9 @@ const Create = (props) => {
         <>
             <RctCollapsibleCard>
                 <Form onSubmit={onSubmit}>
-                    
                     <div className="col-md-12 col-sm-12 has-wrapper mb-30">
                         <InputLabel className="text-left">
-                            Potentiels agences
+                            Potentiels point de service
                         </InputLabel>
                         <Autocomplete
                             id="combo-box-demo"
@@ -145,7 +144,7 @@ const Create = (props) => {
 
                     <FormGroup className="has-wrapper">
                         <InputLabel className="text-left" htmlFor="name">
-                            Nom de l'agence
+                            Nom du point
                         </InputLabel>
                         <InputStrap
                             required
@@ -259,8 +258,9 @@ const Create = (props) => {
                         </Button>
                         <Button
                             color="primary"
-                            variant="contained"
                             onClick={onSubmit}
+                            variant="contained"
+                            disabled={!member}
                             className="text-white font-weight-bold"
                         >
                             Ajouter

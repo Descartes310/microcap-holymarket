@@ -46,11 +46,11 @@ const Create = (props) => {
         }
 
         BrokerService.createAgency(data).then(() => {
-            NotificationManager.success("L'agence a été créée avec succès");
+            NotificationManager.success("L'agent a été créé avec succès");
             props.history.push(BROKER.AGENCY.LIST);
         }).catch((err) => {
             console.log(err);
-            NotificationManager.error("Une erreur est survenu lors de la création de l'agence");
+            NotificationManager.error("Une erreur est survenue lors de la création de l'agent");
         }).finally(() => {
             props.setRequestGlobalAction(false);
         })
@@ -59,7 +59,7 @@ const Create = (props) => {
     return (
         <>
             <PageTitleBar
-                title={"Création d'agence"}
+                title={"Création d'un agent"}
             />
             <RctCollapsibleCard>
                 <Form onSubmit={onSubmit}>
@@ -146,6 +146,7 @@ const Create = (props) => {
                             color="primary"
                             variant="contained"
                             onClick={onSubmit}
+                            disabled={!member}
                             className="text-white font-weight-bold"
                         >
                             Ajouter

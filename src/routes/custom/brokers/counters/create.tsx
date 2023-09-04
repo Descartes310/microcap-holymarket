@@ -62,11 +62,11 @@ const Create = (props) => {
         }
 
         BrokerService.createCounter(data).then(() => {
-            NotificationManager.success("Le guichet a été créée avec succès");
+            NotificationManager.success("Le point a été créée avec succès");
             props.history.push(BROKER.COUNTER.LIST);
         }).catch((err) => {
             console.log(err);
-            NotificationManager.error("Une erreur est survenu lors de la création du guichet");
+            NotificationManager.error("Une erreur est survenue lors de la création du point");
         }).finally(() => {
             props.setRequestGlobalAction(false);
         })
@@ -75,7 +75,7 @@ const Create = (props) => {
     return (
         <>
             <PageTitleBar
-                title={"Création de guichet"}
+                title={"Création du point de service"}
             />
             <RctCollapsibleCard>
                 <Form onSubmit={onSubmit}>
@@ -109,7 +109,7 @@ const Create = (props) => {
                     </FormGroup>
                     <div className="col-md-12 col-sm-12 has-wrapper mb-30">
                         <InputLabel className="text-left">
-                            Agence mère
+                            Agent associé
                         </InputLabel>
                         <Autocomplete
                             options={agencies}
@@ -175,8 +175,9 @@ const Create = (props) => {
                         </Button>
                         <Button
                             color="primary"
-                            variant="contained"
                             onClick={onSubmit}
+                            variant="contained"
+                            disabled={!member}
                             className="text-white font-weight-bold"
                         >
                             Ajouter

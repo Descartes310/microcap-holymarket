@@ -27,19 +27,19 @@ const List = (props) => {
     return (
         <>
             <PageTitleBar
-                title={"Liste des guichets"}
+                title={"Liste des points de service"}
             />
             <CustomList
                 list={counters}
                 loading={false}
-                itemsFoundText={n => `${n} guichets trouvés`}
+                itemsFoundText={n => `${n} points trouvés`}
                 onAddClick={() => props.history.push(BROKER.COUNTER.CREATE)}
                 renderItem={list => (
                     <>
                         {list && list.length === 0 ? (
                             <div className="d-flex justify-content-center align-items-center py-50">
                                 <h4>
-                                    Aucun guichets trouvés
+                                    Aucun point trouvé
                                 </h4>
                             </div>
                         ) : (

@@ -117,7 +117,10 @@ const Create = (props) => {
             image: file,
             title: title,
             description: description,
-            supervisorReference: partner ? partner.reference : '00000'
+        }
+
+        if(partner) {
+            data.supervisorReference = partner.reference;
         }
 
         if(selectedUserFiles.length > 0) {

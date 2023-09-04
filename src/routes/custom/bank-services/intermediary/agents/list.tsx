@@ -31,13 +31,13 @@ const List = (props) => {
                 list={parties}
                 loading={false}
                 onAddClick={() => goToCreate()}
-                itemsFoundText={n => `${n} intermédiaires trouvés`}
+                itemsFoundText={n => `${n} points de services`}
                 renderItem={list => (
                     <>
                         {list && list.length === 0 ? (
                             <div className="d-flex justify-content-center align-items-center py-50">
                                 <h4>
-                                    Aucun intermédiaires trouvés
+                                    Aucun point trouvé
                                 </h4>
                             </div>
                         ) : (

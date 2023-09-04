@@ -27,19 +27,19 @@ const List = (props) => {
     return (
         <>
             <PageTitleBar
-                title={"Liste des agences"}
+                title={"Liste des agents"}
             />
             <CustomList
                 list={agencies}
                 loading={false}
-                itemsFoundText={n => `${n} agences trouvées`}
+                itemsFoundText={n => `${n} agents trouvés`}
                 onAddClick={() => props.history.push(BROKER.AGENCY.CREATE)}
                 renderItem={list => (
                     <>
                         {list && list.length === 0 ? (
                             <div className="d-flex justify-content-center align-items-center py-50">
                                 <h4>
-                                    Aucune agences trouvées
+                                    Aucun agent trouvé
                                 </h4>
                             </div>
                         ) : (

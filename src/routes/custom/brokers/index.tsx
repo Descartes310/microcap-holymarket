@@ -16,7 +16,7 @@ const Broker = (props) => {
                     <Redirect exact from={`${match.url}/`} to={BROKER.AGENCY.SELF} />
                     <Route path={BROKER.AGENCY.SELF} component={Agencies} />
                     <Route path={BROKER.COUNTER.SELF} component={Counters} />
-                    <Route path={BROKER.CASHDESK.SELF} component={Cashdesks} />
+                    {/* <Route path={BROKER.CASHDESK.SELF} component={Cashdesks} /> */}
                 </Switch>
             </>
         </div>

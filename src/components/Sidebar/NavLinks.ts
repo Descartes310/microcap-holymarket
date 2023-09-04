@@ -169,7 +169,7 @@ export default [
             "profiles": ['BROKER'],
          },
          {
-            "menu_title": "Mes agences",
+            "menu_title": "Agents",
             "new_item": false,
             "path": BROKER.AGENCY.LIST,
             "permissions": [
@@ -178,7 +178,7 @@ export default [
             "profiles": ['BROKER'],
          },
          {
-            "menu_title": "Mes guichets",
+            "menu_title": "Points de service",
             "new_item": false,
             "path": BROKER.COUNTER.LIST,
             "permissions": [
@@ -186,15 +186,15 @@ export default [
             ],
             "profiles": ['BROKER'],
          },
-         {
-            "menu_title": "Mes caisses",
-            "new_item": false,
-            "path": BROKER.CASHDESK.LIST,
-            "permissions": [
-               Permission.broker.cashdesk.name,
-            ],
-            "profiles": ['BROKER'],
-         },
+         // {
+         //    "menu_title": "Mes caisses",
+         //    "new_item": false,
+         //    "path": BROKER.CASHDESK.LIST,
+         //    "permissions": [
+         //       Permission.broker.cashdesk.name,
+         //    ],
+         //    "profiles": ['BROKER'],
+         // },
       ]
    },
    {

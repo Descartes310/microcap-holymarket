@@ -246,6 +246,7 @@ class CreatePartnershipModal extends Component {
                         </Button>
                         <Button
                             color="primary"
+                            disabled={!member}
                             variant="contained"
                             onClick={() => this.onSubmit()}
                             className="text-white font-weight-bold"
