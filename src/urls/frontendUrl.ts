@@ -524,6 +524,10 @@ export const BANK = {
         LIST: '/bank/operations/list',
         CREATE: '/bank/operations/create',
         ASSISTANCE: '/bank/operations/assistance',
+        CASHDESK: {
+            SELF: '/bank/operations/cashdesks',
+            LIST: '/bank/operations/cashdesks/list',
+        },
         BANK: {
             SELF: '/bank/operations/bank',
             LIST: '/bank/operations/bank/list',
@@ -594,6 +598,11 @@ export const BANK = {
             SELF: '/bank/party/agents',
             LIST: '/bank/party/agents/list',
             CREATE: '/bank/party/agents/create',
+        },
+        CASHDESK: {
+            SELF: '/bank/party/cashdesks',
+            LIST: '/bank/party/cashdesks/list',
+            CREATE: '/bank/party/cashdesks/create',
         },
         COUNTER: {
             SELF: '/bank/party/counters',

@@ -1,6 +1,7 @@
 import React from 'react';
 import Agents from './agents';
 import Counters from './counters';
+import Cashdesks from './cashdesks';
 import Coverages from './coverages';
 import {connect} from "react-redux";
 import {injectIntl} from "react-intl";
@@ -16,6 +17,7 @@ const BankAgent = (props) => {
                 <Redirect exact from={`${match.url}/`} to={BANK.PARTY.COUNTER.SELF} />
                 <Route path={BANK.PARTY.AGENT.SELF} component={Agents} />
                 <Route path={BANK.PARTY.COUNTER.SELF} component={Counters} />
+                <Route path={BANK.PARTY.CASHDESK.SELF} component={Cashdesks} />
                 <Route path={BANK.PARTY.COVERAGE.SELF} component={Coverages} />
                 <Route path={BANK.PARTY.PRESTATION.SELF} component={Prestations} />
             </Switch>

@@ -14,10 +14,11 @@ class Catalogues extends Component<any, any> {
     constructor(props: any) {
         super(props);
         const defaultState = (function (url) {
-            if (url.includes(BANK.PARTY.COUNTER.SELF)) return 0;
-            else if (url.includes(BANK.PARTY.AGENT.SELF)) return 1;
-            else if (url.includes(BANK.PARTY.COVERAGE.SELF)) return 2;
-            else if (url.includes(BANK.PARTY.PRESTATION.SELF)) return 3;
+            if (url.includes(BANK.PARTY.CASHDESK.SELF)) return 0;
+            if (url.includes(BANK.PARTY.COUNTER.SELF)) return 1;
+            else if (url.includes(BANK.PARTY.AGENT.SELF)) return 2;
+            else if (url.includes(BANK.PARTY.COVERAGE.SELF)) return 3;
+            else if (url.includes(BANK.PARTY.PRESTATION.SELF)) return 4;
             else return 0;
         })(window.location.pathname);
 
@@ -31,11 +32,12 @@ class Catalogues extends Component<any, any> {
         this.setState({ activeTab: value });
         if (oldActivateTab !== value) {
             switch (value) {
-                case 0: return this.props.history.push(BANK.PARTY.COUNTER.SELF);
-                case 1: return this.props.history.push(BANK.PARTY.AGENT.SELF);
-                case 2: return this.props.history.push(BANK.PARTY.COVERAGE.SELF);
-                case 3: return this.props.history.push(BANK.PARTY.PRESTATION.SELF);
-                default: return this.props.history.push(BANK.PARTY.COUNTER.SELF);
+                case 0: return this.props.history.push(BANK.PARTY.CASHDESK.SELF);
+                case 1: return this.props.history.push(BANK.PARTY.COUNTER.SELF);
+                case 2: return this.props.history.push(BANK.PARTY.AGENT.SELF);
+                case 3: return this.props.history.push(BANK.PARTY.COVERAGE.SELF);
+                case 4: return this.props.history.push(BANK.PARTY.PRESTATION.SELF);
+                default: return this.props.history.push(BANK.PARTY.CASHDESK.SELF);
             }
         }
     };
@@ -58,10 +60,18 @@ class Catalogues extends Component<any, any> {
                                         indicatorColor="primary"
                                         centered
                                     >
-                                        <Tab
-                                            icon={<i className="zmdi zmdi-home" />}
-                                            label={"Guichets"}
-                                        />
+                                        { this.props.authUser.referralTypes.includes('PROVIDER_INTERMEDIARY') && (
+                                            <Tab
+                                                icon={<i className="zmdi zmdi-home" />}
+                                                label={"Caisses"}
+                                            />
+                                        )}
+                                        { this.props.authUser.referralTypes.includes('PROVIDER_INTERMEDIARY') && (
+                                            <Tab
+                                                icon={<i className="zmdi zmdi-home" />}
+                                                label={"Guichets"}
+                                            />
+                                        )}
                                         { this.props.authUser.referralTypes.includes('PROVIDER_INTERMEDIARY') && (
                                             <Tab
                                                 icon={<i className="zmdi zmdi-home" />}

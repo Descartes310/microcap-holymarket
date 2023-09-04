@@ -6,39 +6,38 @@ import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
 import React, { useState, useEffect } from 'react';
 
-
 const List = (props) => {
 
-    const [coverages, setCoverages] = useState([]);
+    const [cashdesks, setCashdesks] = useState([]);
 
     useEffect(() => {
-        getCoverages();
+        getCashdesks();
     }, []);
 
-    const getCoverages = () => {
+    const getCashdesks = () => {
         props.setRequestGlobalAction(true),
-        BankService.getCoverages()
-        .then(response => setCoverages(response))
+        BankService.getCashdesks()
+        .then(response => setCashdesks(response))
         .finally(() => props.setRequestGlobalAction(false))
     }
 
     const goToCreate = () => {
-        props.history.push(BANK.PARTY.COVERAGE.CREATE);
+        props.history.push(BANK.PARTY.CASHDESK.CREATE);
     }
 
     return (
         <>
             <CustomList
+                list={cashdesks}
                 loading={false}
-                list={coverages}
-                itemsFoundText={n => `${n} couvertures trouvées`}
                 onAddClick={() => goToCreate()}
+                itemsFoundText={n => `${n} caisses trouvées`}
                 renderItem={list => (
                     <>
                         {list && list.length === 0 ? (
                             <div className="d-flex justify-content-center align-items-center py-50">
                                 <h4>
-                                    Aucune couverture trouvée
+                                    Aucune caisse trouvée
                                 </h4>
                             </div>
                         ) : (
@@ -56,14 +55,14 @@ const List = (props) => {
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{item.label}</h4>
+                                                            <h4 className="m-0 fw-bold text-dark">{item.commercialName}</h4>
                                                         </div>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <p className="m-0 text-dark">{item.description}</p>
+                                                            <h4 className="m-0 fw-bold text-dark">{item.description}</h4>
                                                         </div>
                                                     </div>
                                                 </td>

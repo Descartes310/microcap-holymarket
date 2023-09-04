@@ -52,6 +52,14 @@ export default class BankService {
         return makeRequest('get', Routes.GET_COUNTERS);
     }
 
+    static createCashdesk(data: any): Promise<any> {
+        return makeRequest('post', Routes.CREATE_CASHDESK, data);
+    }
+
+    static getCashdesks(): Promise<any> {
+        return makeRequest('get', Routes.GET_CASHDESKS);
+    }
+
     static createEffect(id: number, data: any): Promise<any> {
         return makeRequest('post', Routes.CREATE_EFFECT(id), data);
     }
@@ -270,5 +278,13 @@ export default class BankService {
 
     static getBLOP(reference: string): Promise<any> {
         return makeRequest('get', Routes.GET_BL_OPERATIONS(reference));
+    }
+
+    static getPendingOperations(): Promise<any> {
+        return makeRequest('get', Routes.GET_PENDING_OPERATIONS);
+    }
+
+    static validatePendingOperation(reference: string): Promise<any> {
+        return makeRequest('post', Routes.VALIDATE_OPERATION(reference));
     }
 }

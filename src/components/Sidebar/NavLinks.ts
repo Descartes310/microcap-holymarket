@@ -655,7 +655,7 @@ export default [
             "child_routes": null
          },
          {
-            "menu_title": "Opération",
+            "menu_title": "Opérations",
             "new_item": false,
             "path": BANK.OPERATION.CREATE,
             "permissions": null,
@@ -668,6 +668,14 @@ export default [
             "path": BANK.OPERATION.BANK.PENDING,
             "permissions": null,
             "profiles": ['OPERATOR'],
+            "child_routes": null
+         },
+         {
+            "menu_title": "Opérations",
+            "new_item": false,
+            "path": BANK.OPERATION.CASHDESK.LIST,
+            "permissions": null,
+            "profiles": ['PROVIDER_CASHDESK'],
             "child_routes": null
          },
          {
