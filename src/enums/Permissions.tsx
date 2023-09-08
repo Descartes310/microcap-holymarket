@@ -269,4 +269,22 @@ export default class Permission extends BaseEnum {
         },
     };
 
+    static assets = {
+        all: {
+            "name": "GET_ASSETS"
+        },
+        mine: {
+            "name": "GET_MY_ASSETS"
+        },
+        create: {
+            "name": "CREATE_ASSETS"
+        },
+        createSub: {
+            "name": "CREATE_SUB_ASSETS"
+        },
+        seriesType: {
+            "name": "MANAGE_SERIES_TYPES"
+        },
+    };
+
 }

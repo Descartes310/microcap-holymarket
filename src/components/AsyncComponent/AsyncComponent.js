@@ -124,6 +124,11 @@ export const AsyncSupervision = Loadable({
 	loading: () => <RctPageLoader />,
 });
 
+export const AsyncAsset = Loadable({
+	loader: () => import("Routes/custom/assets"),
+	loading: () => <RctPageLoader />,
+});
+
 export {
 	AsyncThemifyIconsComponent,
 	AsyncSimpleLineIconsComponent,

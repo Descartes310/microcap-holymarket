@@ -66,6 +66,36 @@ export const FUNDING = {
     }
 } as const;
 
+export const ASSETS = {
+    SELF: '/assets',
+    ITEM: {
+        SELF: '/assets/items',
+        LIST: '/assets/items/list',
+        MINE: '/assets/items/mine',
+        CREATE: '/assets/items/create',
+        UPDATE: '/assets/items/:id/update',
+        CHILD: '/assets/items/:id/assets',
+        MINE_CHILD: '/assets/items/mine/:id/assets',
+        SUB_CHILD: '/assets/items/:id/assets/:ref',
+        MINE_SUB_CHILD: '/assets/items/mine/:id/assets/:ref',
+    },
+    PROFILE: {
+        SELF: '/assets/profiles',
+        LIST: '/assets/profiles/list',
+        CREATE: '/assets/profiles/create',
+    },
+    SERIES: {
+        SELF: '/assets/series',
+        LIST: '/assets/series/list',
+        CREATE: '/assets/series/create',
+        TYPE: {
+            SELF: '/assets/series/types',
+            LIST: '/assets/series/types/list', 
+            CREATE: '/assets/series/types/create',
+        }
+    }
+} as const;
+
 export const USER_ACCOUNT_TYPE = {
     SELF: '/user-account-types',
     ROLE: {

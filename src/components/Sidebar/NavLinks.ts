@@ -14,7 +14,8 @@ import {
    SUPERVISION,
    USER_ACCOUNT_TYPE,
    joinUrlWithParams,
-   joinUrlWithParamsId
+   joinUrlWithParamsId,
+   ASSETS
 } from 'Url/frontendUrl';
 
 export type MenuItem = {
@@ -419,7 +420,6 @@ export default [
          },
       ],
    },
-
    {
       "menu_title": "Bourse de financement",
       "menu_icon": "zmdi zmdi-home",
@@ -458,6 +458,51 @@ export default [
       ],
    },
 
+   {
+      "menu_title": "Gestion des actifs",
+      "menu_icon": "zmdi zmdi-home",
+      "new_item": false,
+      "permissions": [
+         Permission.assets.all.name,
+         Permission.assets.mine.name,
+         Permission.assets.seriesType.name,
+      ],
+      "profiles": null,
+      "child_routes": [
+         {
+            "menu_title": "Actifs",
+            "new_item": false,
+            "path": ASSETS.ITEM.LIST,
+            "permissions": [Permission.assets.all.name],
+            "profiles": null,
+            "child_routes": null
+         },
+         {
+            "menu_title": "Type de series",
+            "new_item": false,
+            "path": ASSETS.SERIES.TYPE.LIST,
+            "permissions": [Permission.assets.seriesType.name],
+            "profiles": null,
+            "child_routes": null
+         },
+         {
+            "menu_title": "Profiles de gestion",
+            "new_item": false,
+            "path": ASSETS.PROFILE.LIST,
+            "permissions": [Permission.assets.seriesType.name],
+            "profiles": null,
+            "child_routes": null
+         },
+         {
+            "menu_title": "Mes actifs",
+            "new_item": false,
+            "path": ASSETS.ITEM.MINE,
+            "permissions": [Permission.assets.mine.name],
+            "profiles": null,
+            "child_routes": null
+         }
+      ],
+   },
    {
       "menu_title": "Produits & Services",
       "menu_icon": "zmdi zmdi-labels",

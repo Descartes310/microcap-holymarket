@@ -8,6 +8,7 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 // async components
 import {
     AsyncBank,
+    AsyncAsset,
     AsyncBroker,
     AsyncGroups,
     AsyncLanding,
@@ -26,6 +27,7 @@ import {
 import { useAbility } from "@casl/react";
 import {
     ROOT,
+    ASSETS,
     BANK,
     HOME,
     GROUP,
@@ -127,12 +129,17 @@ const Dashboard = ({ onInitCart }) => {
                         path={MIPRO.SELF}
                         component={AsyncPrevision}
                     />
-
                     <CanRoute
                         permissions={[]}
                         path={SUPERVISION.SELF}
                         component={AsyncSupervision}
                     />
+                    <CanRoute
+                        permissions={[]}
+                        path={ASSETS.SELF}
+                        component={AsyncAsset}
+                    />
+
                     <Redirect to={HOME} />
 
                 </Switch>

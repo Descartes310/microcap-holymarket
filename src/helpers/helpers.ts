@@ -836,6 +836,12 @@ export const translatePermissionFolder = (path) => {
             return 'PSGAV';
         case 'COMMUNITY':
             return 'Gestion des communautés';
+        case 'ASSETS':
+            return 'Gestion des actifs';
+        case 'SUPERVISION':
+            return 'Gestion des actifs';
+        case 'PROJECT':
+            return 'Projets';
         default:
             return path;
     }
@@ -1070,8 +1076,6 @@ export const getInitializationType = (value) => {
         return "";
 }
 
-
-
 export const getActivitypes = () => {
     return [
         {
@@ -1085,4 +1089,50 @@ export const getActivitypes = () => {
             value: 'ILLUSTRATION',
         }
     ]
+}
+
+export const assetSeriesTypes = () => {
+    return [
+        {
+            label: 'Bon de garantie',
+            value: 'BG'
+        }
+    ]
+}
+
+export const getAssetSeriesTypeLabel = (value: any) => {
+    let assetSeriesType = assetSeriesTypes().find(rt => rt.value === value);
+    if (assetSeriesType)
+        return assetSeriesType.label;
+    else
+        return value;
+}
+
+export const assetActionTypes = () => {
+    return [
+        {
+            label: "Ventre",
+            value: 'SELL'
+        },
+        {
+            label: 'Louer',
+            value: 'LEASE'
+        },
+        {
+            label: 'Nantir',
+            value: 'PLEDGE'
+        },
+        {
+            label: 'Hypothéquer',
+            value: 'MORTGAGE'
+        }
+    ]
+}
+
+export const getAssetActionTypeLabel = (value: any) => {
+    let assetActionType = assetActionTypes().find(rt => rt.value === value);
+    if (assetActionType)
+        return assetActionType.label;
+    else
+        return value;
 }
