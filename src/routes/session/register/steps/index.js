@@ -59,13 +59,16 @@ class PersonRegister extends Component {
             _data.telephone = '+' + _data.phoneNumberPrefix.details.find(d => d.code === TerritoryType.PHONE_INDICATOR)?.value + ' ' + _data.phoneNumber;
         }
 
-        if(_data.useEmailAsLogin)
-            _data.login = _data.email;
-        else
+        if(!_data.useEmailAsLogin)
             _data.login = _data.login; 
+        else
+            delete _data.login;
 
         if (this.token)
             _data.token = this.token;
+        
+        if (this.useMicrocapEmail)
+            delete _data.email;
 
         delete _data.operator;
         delete _data.phoneNumberPrefix;
@@ -74,16 +77,15 @@ class PersonRegister extends Component {
         delete _data.endingValidityDate;
         delete _data.passwordConfirmation;
 
-        if (!_data.login || !_data.email)
+        if (!_data.useMicrocapEmail && !_data.email)
             return;
-
-        console.log(_data);
+        if (!_data.useEmailAsLogin && !_data.login)
+            return;
 
         this.props.setRequestGlobalAction(true);
         UserService.registerUser(_data)
-        .then(() => {
-            NotificationManager.success("La création de votre compte a réussie.");
-            this.props.history.push(AUTH.LOGIN);
+        .then((response) => {
+            this.props.onSuccess(response);
         }).catch(() => {
             NotificationManager.error("Une erreur est survenue, veuillez reessayer plus tard.");
         }).finally(() => {
@@ -95,7 +97,9 @@ class PersonRegister extends Component {
     nextStep = () => this.setState({ activeStep: this.state.activeStep + 1 >= steps.length ? steps.length - 1 : this.state.activeStep + 1 });
 
     render() {
+
         const { loading, history } = this.props;
+
         return (
             <>
                 <Stepper activeStep={this.state.activeStep} alternativeLabel className="stepper-rtl">

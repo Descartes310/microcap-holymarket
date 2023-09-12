@@ -84,7 +84,7 @@ class ActivationPassBox extends Component {
             })
             .catch((err) => {
                 console.log(err);
-                NotificationManager.error("Le code OTP est incorrect");
+                NotificationManager.error("Le code de validation est incorrect");
             })
             .finally(() => {
                 this.setState({ loading: false });
@@ -138,7 +138,7 @@ class ActivationPassBox extends Component {
                             <TabContainer>
                                 <div className="p-sm-20 pt-sm-30 p-10 pt-15 border-top">
                                     <div>
-                                        <p>Commencez la procédure en demandant un code OTP qui vous sera envoyé par email.</p>
+                                        <p>Commencez la procédure en demandant un code de validation qui vous sera envoyé par email.</p>
                                         <p>Cliquez sur le boutton ci-dessous.</p>
                                     </div>
                                     <Button

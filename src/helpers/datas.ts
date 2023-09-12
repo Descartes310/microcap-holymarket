@@ -234,3 +234,20 @@ export const productOptionDetails = [
         inputType: 'number'
     },
 ];
+
+export const getUserAssistanceTypes = () => {
+    return [
+        {
+            label: 'Activation du profile',
+            value: 'ACTIVATE_PROFILE'
+        }
+    ];
+}
+
+export const getUserAssistanceTypeValue = (value): any => {
+    let type = getUserAssistanceTypes().find(t => t.value === value);
+    if (type)
+        return type.value;
+    else
+        return value;
+}

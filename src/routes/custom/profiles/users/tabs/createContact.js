@@ -27,6 +27,14 @@ const CreateContact = (props) => {
             value, type
         };
 
+        if(props.setAsNotificatioAddress) {
+            data.notification_address = true
+        }
+
+        if(props.member) {
+            data.referral_code = props.member.referralCode;
+        }
+
         UserService.createContact(data).then(() => {
             NotificationManager.success('Le contact a été enregistré');
         })

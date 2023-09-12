@@ -72,6 +72,17 @@ const Personal = (props) => {
                             value={getReferralTypeLabel(props.authUser.referralType)}
                         />
                     </FormGroup>
+
+                    <FormGroup className="has-wrapper">
+                        <InputLabel className="text-left" htmlFor="reference">
+                            Adresse de notification
+                        </InputLabel>
+                        <InputStrap
+                            disabled
+                            className="input-lg"
+                            value={props.authUser.notificationAddress}
+                        />
+                    </FormGroup>
                 </div>
             </RctCard>
         </div>

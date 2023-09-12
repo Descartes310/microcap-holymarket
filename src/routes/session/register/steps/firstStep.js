@@ -20,12 +20,14 @@ const FirstStep = props => {
 
     const { register, errors, handleSubmit, watch, control, setValue } = useForm({
         defaultValues: !_.isEqual(defaultState, {}) ? defaultState : {
-            useEmailAsLogin: true
+            useEmailAsLogin: true,
+            useMicrocapEmail: false
         }
     });
 
     const isOrganisation = watch('isOrganisation');
     const useEmailAsLogin = watch('useEmailAsLogin');
+    const useMicrocapEmail = watch('useMicrocapEmail');
     /**
      * On submit
      */
@@ -52,18 +54,41 @@ const FirstStep = props => {
                 </FormGroup>
             </div>
 
-            <FormGroup className="has-wrapper">
+            <FormControl fullWidth>
                 <InputComponent
                     isRequired
-                    id="email"
-                    type="email"
-                    name={'email'}
+                    className="mt-0"
                     errors={errors}
+                    id="useMicrocapEmail"
+                    control={control}
+                    name={'useMicrocapEmail'}
                     register={register}
-                    className="has-input input-lg"
-                    placeholder={"Email"}
+                    componentType="select"
+                    as={<FormControlLabel control={
+                        <Checkbox
+                            color="primary"
+                            checked={useMicrocapEmail}
+                            onChange={() => setValue('useMicrocapEmail', !useMicrocapEmail)}
+                        />
+                    } label={"Utiliser une adresse e-mail MicroCap"}
+                    />}
                 />
-            </FormGroup>
+            </FormControl>
+
+            { !useMicrocapEmail && (
+                <FormGroup className="has-wrapper">
+                    <InputComponent
+                        isRequired
+                        id="email"
+                        type="email"
+                        name={'email'}
+                        errors={errors}
+                        register={register}
+                        className="has-input input-lg"
+                        placeholder={"Email"}
+                    />
+                </FormGroup>
+            )}
 
             <FormControl fullWidth>
                 <InputComponent

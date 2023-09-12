@@ -220,6 +220,10 @@ export const PROFILE = {
         CONTACT: "/profiles/users/contacts",
         PERSONAL: "/profiles/users/personal",
         INSTITUTION: "/profiles/users/institutions",
+    },
+    ASSISTANCE: {
+        SELF: "/profiles/assistance",
+        USER: "/profiles/assistance/user",
     }
 }
 

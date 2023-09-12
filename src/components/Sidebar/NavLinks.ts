@@ -364,6 +364,23 @@ export default [
          }
       ],
    },
+   {
+      "menu_title": "Assistance client",
+      "menu_icon": "zmdi zmdi-store",
+      "new_item": false,
+      "permissions": [Permission.accountType.assistance.name],
+      "profiles": null,
+      "child_routes": [
+         {
+            "menu_title": "Utilisateurs",
+            "new_item": false,
+            "path": PROFILE.ASSISTANCE.USER,
+            "permissions": [Permission.accountType.assistance.name],
+            "profiles": null,
+            "child_routes": null
+         },
+      ],
+   },
 
    {
       "menu_title": "MicroCap 360",
@@ -478,7 +495,7 @@ export default [
             "child_routes": null
          },
          {
-            "menu_title": "Type de series",
+            "menu_title": "Séries",
             "new_item": false,
             "path": ASSETS.SERIES.TYPE.LIST,
             "permissions": [Permission.assets.seriesType.name],

@@ -12,6 +12,7 @@ import { setRequestGlobalAction, logout } from "Actions";
 import { NotificationManager } from "react-notifications";
 import Checkbox from "@material-ui/core/Checkbox/Checkbox";
 import { FormGroup, Input, Button, Alert } from "reactstrap";
+import CreateContact from '../profiles/users/tabs/createContact';
 import InputLabel from "@material-ui/core/InputLabel/InputLabel";
 
 class ActivationBox extends Component {
@@ -26,8 +27,18 @@ class ActivationBox extends Component {
             acceptCGU: false,
             numPages: 1,
             pageNumber: 1,
-            membership: props.authUser.referralId,
+            showCreateContactBox: false,
             member: props.authUser,
+            membership: props.authUser.referralId
+        }
+    }
+
+    componentDidUpdate(prevProps) {
+        if (this.props.member != prevProps.member && this.props.member) {
+            this.setState({
+                member: this.props.member,
+                membership: this.props.member.referralCode
+            })
         }
     }
 
@@ -56,10 +67,19 @@ class ActivationBox extends Component {
     onAskCode = () => {
         this.props.setRequestGlobalAction(true);
         this.setState({ loading: true });
-        UserService.generateOTP()
+        let data = {};
+
+        if(this.props.member) {
+            data.referral_code = this.props.member.referralCode
+        }
+
+        UserService.generateOTP(data)
             .then(() => {
-                NotificationManager.success("Un code vous a été envoyé par email. Veuillez saisir ce code dans ce formulaire");
+                NotificationManager.success("Un code de vérification vous a été envoyé. Veuillez saisir ce code dans ce formulaire");
                 this.setState({ activeTab: 1, hasAskCode: true });
+            })
+            .catch(() => {
+                NotificationManager.error("Aucune adresse de notification fournie.");
             })
             .finally(() => {
                 this.setState({ loading: false });
@@ -74,27 +94,38 @@ class ActivationBox extends Component {
     onVerifyCode = () => {
         this.props.setRequestGlobalAction(true);
         this.setState({ loading: true });
-        UserService.confirmOTP(this.state.codeToVerify, {userReference: this.state.membership, notificationId: this.props.notification.id})
-            .then(() => {
-                NotificationManager.success("Vos nouveaux paramètres on été envoyés à votre email");
-                this.props.onClose();
+
+        let data= {
+            userReference: this.props.member ? this.props.member.referralCode : this.state.membership, 
+        };
+
+        if(this.props.notification) {
+            data.notificationId = this.props.notification.id;
+        }
+
+        UserService.confirmOTP(this.state.codeToVerify, data)
+        .then(() => {
+            NotificationManager.success("Vous avez activaté le profile avec succès");
+            if(!this.props.member) {
                 setTimeout(() => {
                     this.logoutUser();
                 }, 2000);
-            })
-            .catch((err) => {
-                console.log(err);
-                NotificationManager.error("Le code OTP est incorrect");
-            })
-            .finally(() => {
-                this.setState({ loading: false });
-                this.props.setRequestGlobalAction(false);
-            });
+            }
+        })
+        .catch((err) => {
+            console.log(err);
+            NotificationManager.error("Le code de validation est incorrect");
+        })
+        .finally(() => {
+            this.setState({ loading: false });
+            this.props.onClose();
+            this.props.setRequestGlobalAction(false);
+        });
     };
 
     findUserByMembership = () => {
         this.props.setRequestGlobalAction(true);
-        UserService.findUserByReference(this.state.membership)
+        UserService.findUserByReference(this.props.member ? this.props.member.referralCode : this.state.membership)
         .then(response => {
             this.setState({ member: response });
         })
@@ -108,8 +139,9 @@ class ActivationBox extends Component {
     }
 
     render() {
-
-        const { member, membership, hasAskCode, acceptCGU } = this.state;
+        // console.log(this.props.member, this.state.member, this.state.membership);
+        const { authUser } = this.props;
+        const { member, membership, hasAskCode, acceptCGU, showCreateContactBox } = this.state;
 
         return (
             <DialogComponent
@@ -136,20 +168,37 @@ class ActivationBox extends Component {
                         index={this.state.activeTab}>
                         <div className="card mb-0 transaction-box">
                             <TabContainer>
-                                <div className="p-sm-20 pt-sm-30 p-10 pt-15 border-top">
-                                    <div>
-                                        <p>Commencez la procédure en demandant un code OTP qui vous sera envoyé par email.</p>
-                                        <p>Cliquez sur le boutton ci-dessous.</p>
+                                { ((this.props.member && this.props.member.notificationAddress) || (!this.props.member && authUser.notificationAddress)) ? (
+                                    <div className="p-sm-20 pt-sm-30 p-10 pt-15 border-top">
+                                        <div>
+                                            <p>Commencez la procédure en demandant un code de validation qui vous sera envoyé par email.</p>
+                                            <p>Cliquez sur le boutton ci-dessous.</p>
+                                        </div>
+                                        <Button
+                                            color="primary"
+                                            disabled={this.state.loading}
+                                            className="text-white mr-2"
+                                            onClick={this.onAskCode}
+                                        >
+                                            Initier la demande
+                                        </Button>
                                     </div>
-                                    <Button
-                                        color="primary"
-                                        disabled={this.state.loading}
-                                        className="text-white mr-2"
-                                        onClick={this.onAskCode}
-                                    >
-                                        Initier la demande
-                                    </Button>
-                                </div>
+                                ) : (
+                                    <div className="p-sm-20 pt-sm-30 p-10 pt-15 border-top">
+                                        <div>
+                                            <p>Vous n'anez aucune adresse de notification enregistreée dans votre profile.</p>
+                                            <p>Veuillez commencer par en créer une en cliquant sur le boutton ci-dessous.</p>
+                                        </div>
+                                        <Button
+                                            color="primary"
+                                            disabled={this.state.loading}
+                                            className="text-white mr-2"
+                                            onClick={() => this.setState({ showCreateContactBox: true })}
+                                        >
+                                            Créer une adresse
+                                        </Button>
+                                    </div>
+                                )}
                             </TabContainer>
                         </div>
                         <div className="card mb-0 transaction-box">
@@ -269,6 +318,15 @@ class ActivationBox extends Component {
                         </div>
                     </SwipeableViews>
                 </>
+                <CreateContact 
+                    show={showCreateContactBox}
+                    member={this.props.member ?? this.props.member }
+                    setAsNotificatioAddress={true}
+                    onClose={() => {
+                        this.setState({ showCreateContactBox: false });
+                        this.onAskCode()
+                    }} 
+                />
             </DialogComponent>
         );
     }

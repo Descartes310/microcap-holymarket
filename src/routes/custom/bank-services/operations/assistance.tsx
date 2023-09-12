@@ -349,7 +349,7 @@ const Create = (props) => {
                     show={showModal}
                     type="INIT_OPERATION"
                     accountId={account?.id}
-                    title={'Entrer le code OTP'}
+                    title={'Entrer le code de validation'}
                     callback={(otp) => checkOTP(otp)}
                     onClose={() => setShowModal(false)}
                 />

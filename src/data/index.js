@@ -23,7 +23,7 @@ export const contactTypes = [
         value: 'EMAIL'
     },
     {
-        name: 'Numéro téléphonique',
+        name: 'Télephone mobile',
         value: 'PHONE'
     },
     {
@@ -42,7 +42,7 @@ export const getContactTypeLabel = (type) => {
             typeLabel = 'Adresse email'
             break;
         case 'PHONE':
-            typeLabel = 'Numéro téléphonique'
+            typeLabel = 'Télephone mobile'
             break;
         case 'ADDRESS':
             typeLabel = 'Adresse'

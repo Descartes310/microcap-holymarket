@@ -769,7 +769,7 @@ export const translatePermissionFolder = (path) => {
         case 'USER_ACCOUNT':
             return 'Comptes utilisateurs'
         case 'USERS':
-            return 'Gestion des tilisateurs'
+            return 'Gestion des utilisateurs'
         case 'CATEGORY':
             return 'Catégories';
         case 'TYPE':

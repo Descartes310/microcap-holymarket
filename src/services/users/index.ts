@@ -8,8 +8,8 @@ export default class UserService {
         return makeRequest('post', Routes.REGISTER, {...data, branchUrl: window.location.host});
     }
 
-    static generateOTP(): Promise<any> {
-        return makeRequest('get', Routes.GENERATE_OTP);
+    static generateOTP(data: any): Promise<any> {
+        return makeRequest('get', Routes.GENERATE_OTP, data);
     }
 
     static kyc(): Promise<any> {

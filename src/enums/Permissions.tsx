@@ -14,6 +14,9 @@ export default class Permission extends BaseEnum {
         },
         role: {
             "name": "USER_ACCOUNT_ROLE_PRIVILEGE"
+        },
+        assistance: {
+            "name": "USER_ASSISTANCE_PRIVILEGE"
         }
     };
 
