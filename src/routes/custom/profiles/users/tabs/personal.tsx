@@ -1,15 +1,18 @@
 import { connect } from 'react-redux';
-import React, { useEffect } from 'react';
 import { RctCard } from 'Components/RctCard';
 import { withRouter } from "react-router-dom";
 import { setRequestGlobalAction } from 'Actions';
+import React, { useEffect, useState } from 'react';
 import { getReferralTypeLabel } from 'Helpers/helpers';
-import { FormGroup, Input as InputStrap } from 'reactstrap';
+import UpdateProfile from '../components/updateProfile';
+import { FormGroup, Input as InputStrap, Button } from 'reactstrap';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 
 const PROFILE_BANNER = 'https://reactify.theironnetwork.org/static/media/profile-bg.5573c7e7.jpg';
 
 const Personal = (props) => {
+
+    const [showUpdateBox, setShowUpdateBox] = useState(false);
 
     useEffect(() => {
     }, []);
@@ -83,8 +86,23 @@ const Personal = (props) => {
                             value={props.authUser.notificationAddress}
                         />
                     </FormGroup>
+                    <FormGroup>
+                        <Button
+                            color="primary"
+                            className="ml-0 text-white float-right"
+                            onClick={() => {
+                                setShowUpdateBox(true);
+                            }}
+                        >
+                            Editer mes informations
+                        </Button>
+                    </FormGroup>
                 </div>
             </RctCard>
+            <UpdateProfile show={showUpdateBox} onClose={() => {
+                    setShowUpdateBox(false);
+                }
+            } />
         </div>
     );
 }

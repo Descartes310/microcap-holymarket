@@ -1,10 +1,10 @@
 import QRCode from "react-qr-code";
 import { connect } from 'react-redux';
+import UserService from "Services/users";
 import BankService from "Services/banks";
 import { withRouter } from "react-router-dom";
 import {setRequestGlobalAction} from 'Actions';
 import React, { useEffect, useState } from 'react';
-import UserService from "Services/users";
 
 const Card = (props) => {
 

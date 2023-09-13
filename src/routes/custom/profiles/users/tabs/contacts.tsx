@@ -1,16 +1,15 @@
-import CreateAlias from './alias';
 import { connect } from 'react-redux';
 import UserService from 'Services/users';
-import CreateContact from './createContact';
 import { RctCard } from 'Components/RctCard';
 import { withRouter } from "react-router-dom";
 import Button from '@material-ui/core/Button';
+import CreateAlias from '../components//alias';
 import CustomList from "Components/CustomList";
 import { setRequestGlobalAction } from 'Actions';
 import React, { useEffect, useState } from 'react';
-import ConfirmContactCode from './confirmContactCode';
-import { NotificationManager } from 'react-notifications';
+import CreateContact from '../components/createContact';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
+import ConfirmContactCode from '../components/confirmContactCode';
 import { FormGroup, Input as InputStrap, Form } from 'reactstrap';
 import { getContactTypeLabel, getStatusLabel } from '../../../../../data'
 

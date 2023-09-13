@@ -12,8 +12,8 @@ import { setRequestGlobalAction, logout } from "Actions";
 import { NotificationManager } from "react-notifications";
 import Checkbox from "@material-ui/core/Checkbox/Checkbox";
 import { FormGroup, Input, Button, Alert } from "reactstrap";
-import CreateContact from '../profiles/users/tabs/createContact';
 import InputLabel from "@material-ui/core/InputLabel/InputLabel";
+import CreateContact from '../profiles/users/components/createContact';
 
 class ActivationBox extends Component {
 

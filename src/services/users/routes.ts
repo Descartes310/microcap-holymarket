@@ -3,6 +3,7 @@ export const GENERATE_OTP = "api/socialnetworks/users/self/otp";
 export const REGISTER = "api/socialnetworks/users/self/register";
 export const CREATE_ACCESS = 'api/socialnetworks/users/access/new';
 export const GET_USER_ACCESS = "api/socialnetworks/users/self/access";
+export const UPDATE_PROFILE = "api/socialnetworks/users/self/profile";
 export const GET_BRANCH_USERS = "api/socialnetworks/users/self/by-branch";
 export const CONFIRM_OTP = (otp) => `api/socialnetworks/users/self/otp/${otp}`;
 export const RESET_PASSWORD = "api/socialnetworks/users/access/reset-password";

@@ -5,8 +5,8 @@ import { setSession } from 'Helpers/tokens';
 import { withRouter } from "react-router-dom";
 import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
-import CreateAccessBox from './createAccessBox';
 import React, { useState, useEffect } from 'react';
+import CreateAccessBox from '../components/createAccessBox';
 import ChangeAccessCredentials from 'Components/ChangeAccessCredentials';
 
 const Access = (props) => {

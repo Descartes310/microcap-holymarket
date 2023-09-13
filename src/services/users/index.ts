@@ -107,4 +107,8 @@ export default class UserService {
         return makeRequest('post', Routes.AUTHENTICATE(reference));
     }
 
+    static updateProfile(data: any): Promise<any> {
+        return makeRequest('put', Routes.UPDATE_PROFILE, data);
+    }
+
 }

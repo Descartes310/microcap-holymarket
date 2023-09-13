@@ -34,7 +34,7 @@ const Update = (props) => {
 
     useEffect(() => {
         if(countries.length > 0 && immatriculation) {
-            setTerritories(countries.filter(c => immatriculation.territories.split(',').includes(c.reference)));
+            setTerritories(countries.filter(c => immatriculation.territories?.split(',').includes(c.reference)));
         }
     }, [countries, immatriculation])
 

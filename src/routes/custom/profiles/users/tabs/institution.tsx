@@ -1,11 +1,11 @@
 import { connect } from 'react-redux';
 import UserService from 'Services/users';
+import { PROFILE } from 'Url/frontendUrl';
 import { withRouter } from "react-router-dom";
 import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
 import React, { useState, useEffect } from 'react';
 import CreateInstitution from 'Components/CreateInstitution';
-import { PROFILE } from 'Url/frontendUrl';
 
 const Institutions = (props) => {
 
