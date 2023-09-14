@@ -2,6 +2,7 @@ import CartItem from "Models/CartItem";
 
 export default class Cart {
     constructor(objectCart) {
+        this.items = [];
         if(objectCart) {
             if(objectCart.data) {
                 if(objectCart.data[objectCart.authId]) {
