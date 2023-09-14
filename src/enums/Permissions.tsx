@@ -17,6 +17,18 @@ export default class Permission extends BaseEnum {
         },
         assistance: {
             "name": "USER_ASSISTANCE_PRIVILEGE"
+        },
+        profile: {
+            "name": "USER_PROFILE"
+        },
+        access: {
+            "name": "USER_PROFILE_ACCESS"
+        },
+        contact: {
+            "name": "USER_PROFILE_CONTACTS"
+        },    
+        fiche: {
+            "name": "USER_PROFILE_FICHE"
         }
     };
 

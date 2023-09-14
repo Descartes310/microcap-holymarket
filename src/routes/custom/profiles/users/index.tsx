@@ -4,13 +4,16 @@ import { PROFILE } from "Url/frontendUrl";
 import React, { Component } from 'react';
 import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
+import Permissions from "Enums/Permissions";
 import { RctCard } from 'Components/RctCard';
 import AppBar from '@material-ui/core/AppBar';
 import { withRouter } from "react-router-dom";
+import { AbilityContext } from "Permissions/Can";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import { setRequestGlobalAction } from "Actions/RequestGlobalAction";
 
 class Users extends Component<any, any> {
+    static contextType = AbilityContext;
     constructor(props: any) {
         super(props);
         const defaultState = (function (url) {
@@ -45,7 +48,6 @@ class Users extends Component<any, any> {
     render() {
         const { authUser } = this.props;
         const { activeTab } = this.state;
-
         return (
             <div>
                 <PageTitleBar title={"Mon profile"} match={this.props.match} />
@@ -64,18 +66,22 @@ class Users extends Component<any, any> {
                                         <Tab
                                             icon={<i className="zmdi zmdi-account" />}
                                             label={"Information personnelles"}
+                                            disabled={!this.context.can(Permissions.accountType.profile.name, Permissions)}
                                         />
                                         <Tab
                                             icon={<i className="zmdi zmdi-account" />}
                                             label={"Ma fiche client"}
+                                            disabled={!this.context.can(Permissions.accountType.fiche.name, Permissions)}
                                         />
                                         <Tab
                                             icon={<i className="zmdi zmdi-account" />}
                                             label={"Mes accès"}
+                                            disabled={!this.context.can(Permissions.accountType.access.name, Permissions)}
                                         />
                                         <Tab
                                             icon={<i className="zmdi zmdi-account" />}
                                             label={"Mes contacts"}
+                                            disabled={!this.context.can(Permissions.accountType.contact.name, Permissions)}
                                         />
                                         { authUser.referralTypes.includes('OPERATOR') && (
                                             <Tab

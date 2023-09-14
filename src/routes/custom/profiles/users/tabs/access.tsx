@@ -5,6 +5,7 @@ import { setSession } from 'Helpers/tokens';
 import { withRouter } from "react-router-dom";
 import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
+import ListRoles from '../components/listRoles';
 import React, { useState, useEffect } from 'react';
 import CreateAccessBox from '../components/createAccessBox';
 import ChangeAccessCredentials from 'Components/ChangeAccessCredentials';
@@ -13,6 +14,7 @@ const Access = (props) => {
 
     const [access, setAccess] = useState([]);
     const [selectedAccess, setSelectedAccess] = useState(null);
+    const [showListRolesBox, setShowListRolesBox] = useState(false);
     const [showCredentialBox, setShowCredentialBox] = useState(false);
     const [showCreateAccessBox, setShowCreateAccessBox] = useState(false);
 
@@ -40,10 +42,24 @@ const Access = (props) => {
     return (
         <>
             <CustomList
-                loading={false}
                 list={access}
+                loading={false}
+                showSearch={false}
                 itemsFoundText={n => `${n} accès.s trouvé.s`}
                 onAddClick={() => setShowCreateAccessBox(true)}
+                rightComponent={() => (
+                    <div className="col-md-12 col-sm-12 d-flex has-wrapper">
+                        <Button
+                            color="primary"
+                            className="text-white mr-2 ml-10"
+                            onClick={() => {
+                                setShowListRolesBox(true);
+                            }}
+                        >
+                            Roles internes
+                        </Button>
+                    </div>
+                )}
                 renderItem={list => (
                     <>
                         {list && list.length === 0 ? (
@@ -159,13 +175,19 @@ const Access = (props) => {
                     setShowCredentialBox(false);
                     setSelectedAccess(false);
                 }}
-            />            
+            />    
+            <ListRoles 
+                show={showListRolesBox} 
+                onClose={() => {
+                    setShowListRolesBox(false);
+                }} 
+            />        
             <CreateAccessBox show={showCreateAccessBox} onClose={(reload = false) => {
                 setShowCreateAccessBox(false);
                 if(reload)
                     getAccess();
-            }
-        } />
+                }} 
+            />
         </>
     );
 }

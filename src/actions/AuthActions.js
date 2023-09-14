@@ -26,7 +26,7 @@ export const setAuthUser = () => (dispatch) => {
     return api
         .get(url, {skipError: true})
         .then((response) => {
-            dispatch({ type: SET_AUTH_USER_SUCCESS, payload: response.data });
+            dispatch({ type: SET_AUTH_USER_SUCCESS, payload: {...response.data, permissionNames: response.data.userAccount.permissions.map(p => p.name)} });
             return Promise.resolve();
         })
         .catch((error) => {
