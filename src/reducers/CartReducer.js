@@ -47,7 +47,7 @@ export default (state = INIT_STATE, action) => {
 			return new Cart(obj);
 
 		case CART_INIT_ITEM:
-			if (!obj.data.hasOwnProperty(obj.authId)) {
+			if (!obj.data?.hasOwnProperty(obj?.authId)) {
 				obj.data[obj.authId] = [];
 			}
 			return new Cart(obj);

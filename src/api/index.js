@@ -61,7 +61,7 @@ customAxios.interceptors.response.use(
       if (response && response.data) {
          if (Array.isArray(response.data)) {
             response.data = response.data.map(item => toCamelCase(item));
-         } else if (response.data.hasOwnProperty('data')) {
+         } else if (response?.data?.hasOwnProperty('data')) {
             if (Array.isArray(response.data.data)) {
                // @ts-ignore
                response.data.data = response.data.data.map(item => toCamelCase(item));

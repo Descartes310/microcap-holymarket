@@ -202,7 +202,7 @@ export function deepMapObject(obj, callback) {
         } else {
             rtn = {};
             for (let key in obj) {
-                if (obj.hasOwnProperty(key)) {
+                if (obj?.hasOwnProperty(key)) {
                     // apply the change on the string
                     const newKey = callback(key);
 
