@@ -5,15 +5,21 @@ import BankService from "Services/banks";
 import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
 import {setRequestGlobalAction} from 'Actions';
+import { userActionTypes } from "Helpers/helpers";
 import React, { useEffect, useState } from 'react';
-import ConfirmBox from "Components/dialog/ConfirmBox";
+import TextField from '@material-ui/core/TextField';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import AuthenticateUser from '../components/authenticateUser';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
+import SendContactMessage from '../components/sendContactMessage';
 
 const UserDetails = (props) => {
 
     const [user, setUser] = useState(null);
+    const [action, setAction] = useState(null);
     const [subscriptions, setSubscriptions] = useState([]);
-    const [showConfirmBox, setShowConfirmBox] = useState(false);
+    const [showMessageBox, setShowMessageBox] = useState(false);
+    const [showAuthentificationBox, setShowAuthentificationBox] = useState(false);
 
     useEffect(() => {
         getMineSubscriptions();
@@ -42,16 +48,18 @@ const UserDetails = (props) => {
         });
     }
 
-    const authenticateUser = () => {
-        props.setRequestGlobalAction(true);
-        UserService.authenticate(props.match.params.id).then((response: any) => {
-            getUser();
-        }).catch((err) => {
-            console.log(err)
-        }).finally(() => {
-            props.setRequestGlobalAction(false);
-            setShowConfirmBox(false);
-        });
+    const handleCallAction = () => {
+        switch (action?.value) {
+            case 'CONTACT':
+                setShowMessageBox(true);
+                break;
+            case 'AUTHENTICATE':
+                setShowAuthentificationBox(true);
+                break;
+        
+            default:
+                break;
+        }
     }
 
     return (
@@ -59,20 +67,30 @@ const UserDetails = (props) => {
             <PageTitleBar
                 title={"Liste des utilisateurs"}
                 rightComponent={
-                    <>
-                        { !user?.authenticate && (
+                    <div className="row align-items-center">
+                        <div className="has-wrapper mr-10" style={{ width: '20em' }}>
+                            <Autocomplete
+                                id="combo-box-demo"
+                                value={action}
+                                options={userActionTypes()}
+                                onChange={(__, item) => {
+                                    setAction(item);
+                                }}
+                                getOptionLabel={(option) => option.label}
+                                renderInput={(params) => <TextField {...params} variant="outlined" />}
+                            />
+                        </div>
+                        <div>
                             <Button
                                 color="primary"
                                 variant="contained"
+                                onClick={() => handleCallAction()}
                                 className="text-white font-weight-bold"
-                                onClick={() => {
-                                    setShowConfirmBox(true);
-                                }}
                             >
-                                Authentifier
+                                Confirmer
                             </Button>
-                        )}
-                    </>
+                        </div>
+                    </div>
                 }
             />
             <div style={{ padding: '3%' }}>
@@ -289,14 +307,25 @@ const UserDetails = (props) => {
                     </table>
                 </div>
             </div>
-            <ConfirmBox
-                show={showConfirmBox}
-                rightButtonOnClick={() => authenticateUser()}
-                leftButtonOnClick={() => {
-                    setShowConfirmBox(false);
-                }}
-                message={'Etes vous sure de vouloir marquer comme authentifié ?'}
-            />
+            { user && (
+                <SendContactMessage
+                    user={user}
+                    show={showMessageBox}
+                    onClose={() => {
+                        setShowMessageBox(false);
+                    }}
+                />
+            )}
+            { user && (
+                <AuthenticateUser
+                    user={user}
+                    show={showAuthentificationBox}
+                    onClose={(reload = false) => {
+                        setShowAuthentificationBox(false);
+                        if(reload) getUser();
+                    }}
+                />
+            )}
         </>
     );
 }

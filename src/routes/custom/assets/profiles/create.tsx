@@ -5,7 +5,7 @@ import AssetService from 'Services/assets';
 import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
 import { setRequestGlobalAction } from 'Actions';
-import { assetActionTypes, assetSeriesTypes } from 'Helpers/helpers';
+import { assetActionTypes } from 'Helpers/helpers';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { NotificationManager } from 'react-notifications';
@@ -71,7 +71,7 @@ const Create = (props) => {
 
                     <div className="col-md-12 col-sm-12 has-wrapper mb-30">
                         <InputLabel className="text-left">
-                            Actions associés
+                            Actions associées
                         </InputLabel>
                         <Autocomplete
                             id="combo-box-demo"

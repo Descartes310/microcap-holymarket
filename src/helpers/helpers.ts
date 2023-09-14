@@ -839,7 +839,7 @@ export const translatePermissionFolder = (path) => {
         case 'ASSETS':
             return 'Gestion des actifs';
         case 'SUPERVISION':
-            return 'Gestion des actifs';
+            return 'Supervision';
         case 'PROJECT':
             return 'Projets';
         default:
@@ -1133,6 +1133,27 @@ export const getAssetActionTypeLabel = (value: any) => {
     let assetActionType = assetActionTypes().find(rt => rt.value === value);
     if (assetActionType)
         return assetActionType.label;
+    else
+        return value;
+}
+
+export const userActionTypes = () => {
+    return [
+        {
+            label: "Contacter",
+            value: 'CONTACT'
+        },
+        {
+            label: 'Authentifier',
+            value: 'AUTHENTICATE'
+        }
+    ]
+}
+
+export const getUserActionTypeLabel = (value: any) => {
+    let userActionType = userActionTypes().find(rt => rt.value === value);
+    if (userActionType)
+        return userActionType.label;
     else
         return value;
 }

@@ -83,8 +83,8 @@ export default class UserService {
         return makeRequest('put', Routes.UPDATE_CONTACTS, datas);
     }
 
-    static getContacts(): Promise<any> {
-        return makeRequest('get', Routes.GET_CONTACTS);
+    static getContacts(data: any = null): Promise<any> {
+        return makeRequest('get', Routes.GET_CONTACTS, data);
     }
 
     static createContact(datas: any): Promise<any> {
