@@ -511,7 +511,7 @@ export default [
             "child_routes": null
          },
          {
-            "menu_title": "Mes actifs",
+            "menu_title": "Mes suretés",
             "new_item": false,
             "path": ASSETS.ITEM.MINE,
             "permissions": [Permission.assets.mine.name],

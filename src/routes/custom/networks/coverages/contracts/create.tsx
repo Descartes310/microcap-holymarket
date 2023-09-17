@@ -13,6 +13,7 @@ import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { Form, FormGroup, Input as InputStrap } from 'reactstrap';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
 import UserAccountTypeService from 'Services/account-types';
+import { contractTypes } from 'Helpers/helpers';
 
 const Create = (props) => {
 
@@ -22,6 +23,7 @@ const Create = (props) => {
     const [number, setNumber] = useState('');
     const [category, setCategory] = useState(null);
     const [categories, setCategories] = useState([]);
+    const [contractType, setContractType] = useState(null);
 
 
     useEffect(() => {
@@ -48,7 +50,7 @@ const Create = (props) => {
     }
 
     const onSubmit = () => {
-        if(!label || !number) {
+        if(!label || !number || !contractType) {
             NotificationManager.error('Veuillez renseigner les informations');
             return;
         }
@@ -56,8 +58,17 @@ const Create = (props) => {
         let data: any = {
             label, 
             number,
-            accountTypeReference: type.reference
+            type: contractType.value
         };
+
+        if(contractType.value === 'PARTNER') {
+            if(!type) {
+                NotificationManager.error('Veuillez renseigner les informations');
+                return;
+            } else {
+                data.accountTypeReference = type.reference;
+            }
+        }
 
         props.setRequestGlobalAction(true);
         ContractService.createContract(data)
@@ -111,35 +122,55 @@ const Create = (props) => {
 
                     <div className="col-md-12 col-sm-12 has-wrapper mb-30">
                         <InputLabel className="text-left">
-                            Catégorie du contrat
+                            Nature de contract
                         </InputLabel>
                         <Autocomplete
                             id="combo-box-demo"
-                            options={categories}
-                            value={category}
+                            options={contractTypes()}
+                            value={contractType}
                             onChange={(__, item) => {
-                                setCategory(item);
+                                setContractType(item);
                             }}
                             getOptionLabel={(option) => option.label}
                             renderInput={(params) => <TextField {...params} variant="outlined" />}
                         />
                     </div>
 
-                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
-                        <InputLabel className="text-left">
-                            Type du contrat
-                        </InputLabel>
-                        <Autocomplete
-                            value={type}
-                            id="combo-box-demo"
-                            onChange={(__, item) => {
-                                setType(item);
-                            }}
-                            getOptionLabel={(option) => option.label}
-                            options={types.filter(t => t.userAccountTypeCategory.id === category?.id)}
-                            renderInput={(params) => <TextField {...params} variant="outlined" />}
-                        />
-                    </div>
+                    { contractType?.value == 'PARTNER' && (
+                        <>
+                            <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                                <InputLabel className="text-left">
+                                    Catégorie du contrat
+                                </InputLabel>
+                                <Autocomplete
+                                    id="combo-box-demo"
+                                    options={categories}
+                                    value={category}
+                                    onChange={(__, item) => {
+                                        setCategory(item);
+                                    }}
+                                    getOptionLabel={(option) => option.label}
+                                    renderInput={(params) => <TextField {...params} variant="outlined" />}
+                                />
+                            </div>
+
+                            <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                                <InputLabel className="text-left">
+                                    Type du contrat
+                                </InputLabel>
+                                <Autocomplete
+                                    value={type}
+                                    id="combo-box-demo"
+                                    onChange={(__, item) => {
+                                        setType(item);
+                                    }}
+                                    getOptionLabel={(option) => option.label}
+                                    options={types.filter(t => t.userAccountTypeCategory.id === category?.id)}
+                                    renderInput={(params) => <TextField {...params} variant="outlined" />}
+                                />
+                            </div>
+                        </>
+                    )}
 
                     <FormGroup>
                         <Button

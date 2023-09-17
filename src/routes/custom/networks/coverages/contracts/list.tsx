@@ -6,6 +6,7 @@ import {setRequestGlobalAction} from 'Actions';
 import React, { useState, useEffect } from 'react';
 import ContractService from 'Services/contracts';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
+import { getContractTypeLabel } from 'Helpers/helpers';
 
 const List = (props) => {
 
@@ -77,7 +78,7 @@ const List = (props) => {
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{item?.typeName}</h4>
+                                                            <h4 className="m-0 fw-bold text-dark">{getContractTypeLabel(item.type)}</h4>
                                                         </div>
                                                     </div>
                                                 </td>

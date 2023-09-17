@@ -8,8 +8,8 @@ export default class ContractService {
         return makeRequest('get', `${Routes.GET_ALL_CONTRACTS}`);
     }
 
-    static getAvailableContracts(): Promise<any> {
-        return makeRequest('get', `${Routes.GET_AVAILABLE_CONTRACTS}`);
+    static getAvailableContracts(data: any): Promise<any> {
+        return makeRequest('get', `${Routes.GET_AVAILABLE_CONTRACTS}`, data);
     }
 
     static createContract(data: any): Promise<any> {

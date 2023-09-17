@@ -1157,3 +1157,24 @@ export const getUserActionTypeLabel = (value: any) => {
     else
         return value;
 }
+
+export const contractTypes = () => {
+    return [
+        {
+            label: "Partenaire",
+            value: 'PARTNER'
+        },
+        {
+            label: 'Actif',
+            value: 'ASSET'
+        }
+    ]
+}
+
+export const getContractTypeLabel = (value: any) => {
+    let contractType = contractTypes().find(rt => rt.value === value);
+    if (contractType)
+        return contractType.label;
+    else
+        return value;
+}

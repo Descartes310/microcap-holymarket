@@ -119,7 +119,7 @@ class CreateCTOPartnershipModal extends Component {
 
     getContracts = () => {
         this.props.setRequestGlobalAction(true);
-        ContractService.getAvailableContracts()
+        ContractService.getAvailableContracts({type: 'PARTNER'})
         .then(response => {
             this.setState({ contracts: response });
         })
