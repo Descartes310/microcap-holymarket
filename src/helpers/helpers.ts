@@ -1096,6 +1096,14 @@ export const assetSeriesTypes = () => {
         {
             label: 'Bon de garantie',
             value: 'BG'
+        },
+        {
+            label: 'Actif primaire',
+            value: 'PRIMARY'
+        },
+        {
+            label: 'Actif composé',
+            value: 'COMPOSITION'
         }
     ]
 }

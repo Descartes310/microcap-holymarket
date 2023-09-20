@@ -7,8 +7,9 @@ import {setRequestGlobalAction} from 'Actions';
 import React, { useState, useEffect } from 'react';
 import { getPriceWithCurrency } from 'Helpers/helpers';
 import TimeFromMoment from "Components/TimeFromMoment";
+import { getAssetSeriesTypeLabel } from 'Helpers/helpers';
+import { ASSETS, joinUrlWithParams } from 'Url/frontendUrl';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
-import { ASSETS, joinUrlWithParamsId } from 'Url/frontendUrl';
 
 const Assets = (props) => {
 
@@ -55,7 +56,9 @@ const Assets = (props) => {
                                     <thead>
                                         <tr>
                                             <th className="fw-bold">Désignation</th>
+                                            <th className="fw-bold">Type</th>
                                             <th className="fw-bold">Valeur faciale</th>
+                                            <th className="fw-bold">Valeur résiduelle</th>
                                             <th className="fw-bold">Date enregistrement</th>
                                             <th className="fw-bold">Actions</th>
                                         </tr>
@@ -73,7 +76,21 @@ const Assets = (props) => {
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
+                                                            <p className="m-0 fw-bold text-dark">{getAssetSeriesTypeLabel(item.type)}</p>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="media">
+                                                        <div className="media-body pt-10">
                                                             <p className="m-0 fw-bold text-dark">{getPriceWithCurrency(item.facialWorth, item.currency)}</p>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="media">
+                                                        <div className="media-body pt-10">
+                                                            <p className="m-0 fw-bold text-dark">{getPriceWithCurrency(item.residualWorth, item.currency)}</p>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -90,7 +107,7 @@ const Assets = (props) => {
                                                         variant="contained"
                                                         className="text-white font-weight-bold"
                                                         onClick={() => {
-                                                            props.history.push(joinUrlWithParamsId(ASSETS.ITEM.MINE_CHILD, item.reference))
+                                                            props.history.push(joinUrlWithParams(ASSETS.ITEM.MINE_SUB_CHILD, [{param: 'id', value: item.parent.reference}, {param: 'ref', value: item.reference}]))
                                                         }}
                                                     >
                                                         Démembrements

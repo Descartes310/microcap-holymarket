@@ -5,13 +5,14 @@ import { withRouter } from "react-router-dom";
 import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
 import React, { useState, useEffect } from 'react';
-import TimeFromMoment from "Components/TimeFromMoment";
 import { getPriceWithCurrency } from 'Helpers/helpers';
 import { NotificationManager } from 'react-notifications';
+import { getAssetSeriesTypeLabel } from 'Helpers/helpers';
 import { ASSETS, joinUrlWithParams } from 'Url/frontendUrl';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import CreateAssetItemModal from '../components/createAssetItemModal';
 import ManageAssetItemModal from '../components/manageAssetItemModal';
+import AssetMultiActionButton from '../components/assetMultiActionButton';
 
 const Assets = (props) => {
 
@@ -27,27 +28,9 @@ const Assets = (props) => {
     }, [props.match.params.id, props.match.params.ref]);
 
     const loadDatas = () => {
-        if(props.match.params.ref) {
-            getSubChilds();
-            findAsset();
-        } else {
-            getChilds();
-        }
+        getSubChilds();
+        findAsset();
         findParent();
-    }
-
-    const getChilds = () => {
-        props.setRequestGlobalAction(true);
-        AssetService.getParentItems(props.match.params.id, {level: 1})
-        .then(response => {
-            setDatas(response);
-        })
-        .catch(err => {
-            console.log(err);
-        })
-        .finally(() => {
-            props.setRequestGlobalAction(false);
-        })
     }
 
     const findParent = () => {
@@ -96,11 +79,12 @@ const Assets = (props) => {
         if(props.match.params.ref) {
             data = {...data, asset_reference: props.match.params.ref}
         }
-        console.log(data);
         props.setRequestGlobalAction(true);
         AssetService.createItem(data)
         .then(() => {
             NotificationManager.success("La création est terminée");
+            setShowAddBox(false);
+            loadDatas();
         })
         .catch(err => {
             console.log(err);
@@ -108,8 +92,6 @@ const Assets = (props) => {
         })
         .finally(() => {
             props.setRequestGlobalAction(false);
-            setShowAddBox(false);
-            loadDatas();
         })
     }
 
@@ -142,10 +124,11 @@ const Assets = (props) => {
                                     <thead>
                                         <tr>
                                             <th className="fw-bold">Désignation</th>
+                                            <th className="fw-bold">Type</th>
                                             <th className="fw-bold">Valeur Ref.</th>
-                                            <th className="fw-bold">Date emission</th>
-                                            <th className="fw-bold">Date fin</th>
+                                            <th className="fw-bold">Valeur résiduelle</th>
                                             <th className="fw-bold">Gestion</th>
+                                            <th className="fw-bold">Démembrements</th>
                                             <th className="fw-bold">Actions</th>
                                         </tr>
                                     </thead>
@@ -162,6 +145,13 @@ const Assets = (props) => {
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
+                                                            <p className="m-0 fw-bold text-dark">{getAssetSeriesTypeLabel(item.type)}</p>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="media">
+                                                        <div className="media-body pt-10">
                                                             <h4 className="m-0 fw-bold text-dark">{getPriceWithCurrency(item.series.referenceWorth, item.parent.currency)}</h4>
                                                         </div>
                                                     </div>
@@ -169,14 +159,7 @@ const Assets = (props) => {
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <TimeFromMoment time={item.series.startDate} showFullDate />
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div className="media">
-                                                        <div className="media-body pt-10">
-                                                            <TimeFromMoment time={item.series.endDate} showFullDate />
+                                                            <p className="m-0 fw-bold text-dark">{getPriceWithCurrency(item.residualWorth, item.currency)}</p>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -205,6 +188,9 @@ const Assets = (props) => {
                                                         Démembrements
                                                     </Button>
                                                 </td>
+                                                <td>
+                                                    <AssetMultiActionButton position={key} asset={item} />
+                                                </td>
                                             </tr>
                                         ))}
                                     </tbody>
@@ -217,6 +203,7 @@ const Assets = (props) => {
             <CreateAssetItemModal
                 parent={parent}
                 show={showAddBox}
+                asset={asset}
                 title={'Créer un démembrement'}
                 onClose={() => {
                     setShowAddBox(false);

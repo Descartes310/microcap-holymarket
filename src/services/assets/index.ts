@@ -58,4 +58,12 @@ export default class AssetService {
     static createManagement(data: any): Promise<any> {
         return makeRequest('post', Routes.CREATE_MANAGEMENT, data);
     }
+
+    static getComposable(reference: string): Promise<any> {
+        return makeRequest('get', Routes.GET_COMPOSABLE(reference));
+    }
+
+    static createComposable(reference: string, data: any): Promise<any> {
+        return makeRequest('post', Routes.CREATE_COMPOSABLE(reference), data);
+    }
 }

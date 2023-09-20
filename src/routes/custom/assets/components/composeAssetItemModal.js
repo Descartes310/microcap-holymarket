@@ -15,16 +15,13 @@ import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { FormGroup, Button, Input as InputStrap  } from 'reactstrap';
 import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
 
-class CreateAssetItemModal extends Component {
+class ComposeAssetItemModal extends Component {
   
     state = {
-        types: [],
-        type: null,
+        assets: [],
         label: null,
-        worth: null,
-        endDate: null,
-        startDate: null,
-        fluctuable: false,
+        description: null,
+        selectedAssets: [],
     }
 
     constructor(props) {
@@ -32,14 +29,14 @@ class CreateAssetItemModal extends Component {
     }
 
     componentDidMount() {
-        this.getSeriesTypes();
+        this.getComposableAssets();
     }
 
-    getSeriesTypes = () => {
+    getComposableAssets = () => {
         this.props.setRequestGlobalAction(true);
-        AssetService.getSeriesTypes()
+        AssetService.getComposable(this.props.asset.reference)
         .then(response => {
-            this.setState({ types: response });
+            this.setState({ assets: response });
         })
         .finally(() => {
             this.props.setRequestGlobalAction(false);
@@ -48,24 +45,34 @@ class CreateAssetItemModal extends Component {
 
     onSubmit = () => {
 
-        const { type, label, description, worth, startDate, endDate, fluctuable } = this.state;
+        const { label, description, selectedAssets } = this.state;
 
-        if(!type || !label || !worth || !startDate || !endDate) {
+        if(!label || selectedAssets.length <= 0) {
             NotificationManager.error("Les informations renseignées sont incompletes ou incorrectes");
             return;
         }
 
-        this.props.onSubmit({
-            label, description, startDate, endDate,
-            series_type_reference: type.reference, fluctuable, worth
+        this.props.setRequestGlobalAction(true);
+        AssetService.createComposable(this.props.asset.reference, {
+            label, description, asset_references: selectedAssets.map(a => a.reference)
+        })
+        .then(() => {
+            NotificationManager.success("La création est terminée");
+            this.props.onClose();
+        })
+        .catch(err => {
+            console.log(err);
+            NotificationManager.error("Une erreur est survenue");
+        })
+        .finally(() => {
+            this.props.setRequestGlobalAction(false);
         })
     }
 
     render() {
 
+        const { label, description, selectedAssets, assets } = this.state;
         const { onClose, show, title, asset } = this.props;
-        const { types, type, label, description, 
-            worth, startDate, endDate, fluctuable } = this.state;
 
         return (
             <DialogComponent
@@ -74,7 +81,7 @@ class CreateAssetItemModal extends Component {
                 size="md"
                 title={(
                     <h3 className="fw-bold">
-                        {title} ({getPriceWithCurrency(asset?.residualWorth, asset?.currency)})
+                        {title}
                     </h3>
                 )}
             >
@@ -95,21 +102,6 @@ class CreateAssetItemModal extends Component {
                     </FormGroup>
 
                     <FormGroup className="has-wrapper">
-                        <InputLabel className="text-left" htmlFor="worth">
-                            Valeur de reference (en {asset?.parent?.currency})
-                        </InputLabel>
-                        <InputStrap
-                            required
-                            type="number"
-                            id="worth"
-                            className="input-lg"
-                            name='worth'
-                            value={worth}
-                            onChange={(e) => this.setState({ worth: e.target.value })}
-                        />
-                    </FormGroup>
-
-                    <FormGroup className="has-wrapper">
                         <InputLabel className="text-left" htmlFor="description">
                             Description
                         </InputLabel>
@@ -126,58 +118,20 @@ class CreateAssetItemModal extends Component {
 
                     <div className="col-md-12 col-sm-12 has-wrapper mb-30">
                         <InputLabel className="text-left">
-                            Type de série
+                           Valeurs résiduelles disponibles
                         </InputLabel>
                         <Autocomplete
+                            multiple
                             id="combo-box-demo"
-                            value={type}
-                            options={types}
-                            onChange={(__, item) => {
-                                this.setState({ type: item });
+                            value={selectedAssets}
+                            options={assets}
+                            onChange={(__, items) => {
+                                this.setState({ selectedAssets: items });
                             }}
-                            getOptionLabel={(option) => option.label}
+                            getOptionLabel={(option) => option.series.label+": "+getPriceWithCurrency(option.residualWorth, option.parent.currency)+" | Série: "+option.series.number}
                             renderInput={(params) => <TextField {...params} variant="outlined" />}
                         />
                     </div>
-
-                    <FormGroup className="has-wrapper">
-                        <InputLabel className="text-left" htmlFor="startDate">
-                            Date d'emission
-                        </InputLabel>
-                        <InputStrap
-                            required
-                            type="date"
-                            id="startDate"
-                            className="input-lg"
-                            name='startDate'
-                            value={startDate}
-                            onChange={(e) => this.setState({ startDate: e.target.value })}
-                        />
-                    </FormGroup>
-                    <FormGroup className="has-wrapper">
-                        <InputLabel className="text-left" htmlFor="endDate">
-                            Date de fin
-                        </InputLabel>
-                        <InputStrap
-                            required
-                            type="date"
-                            id="endDate"
-                            className="input-lg"
-                            name='endDate'
-                            value={endDate}
-                            onChange={(e) => this.setState({ endDate: e.target.value })}
-                        />
-                    </FormGroup>
-                    <FormGroup className="col-sm-12 has-wrapper">
-                        <FormControlLabel control={
-                            <Checkbox
-                                color="primary"
-                                checked={fluctuable}
-                                onChange={() => this.setState({fluctuable: !fluctuable})}
-                            />
-                        } label={"Valeur fluctante"}
-                        />
-                    </FormGroup>
                     
                     <FormGroup>
                         <Button
@@ -186,7 +140,7 @@ class CreateAssetItemModal extends Component {
                             onClick={() => this.onSubmit()}
                             className="text-white font-weight-bold"
                         >
-                            Créer le démembrement
+                            Valider la composition: {getPriceWithCurrency(selectedAssets.reduce((worth, item) => worth + item.residualWorth, 0), asset.parent.currency)}
                         </Button>
                     </FormGroup>
                 </RctCardContent>
@@ -202,4 +156,4 @@ const mapStateToProps = ({ authUser }) => {
     }
 };
 
-export default connect(mapStateToProps, { setRequestGlobalAction })(withRouter(injectIntl(CreateAssetItemModal)));
+export default connect(mapStateToProps, { setRequestGlobalAction })(withRouter(injectIntl(ComposeAssetItemModal)));

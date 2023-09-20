@@ -7,6 +7,7 @@ import {setRequestGlobalAction} from 'Actions';
 import React, { useState, useEffect } from 'react';
 import TimeFromMoment from "Components/TimeFromMoment";
 import { getPriceWithCurrency } from 'Helpers/helpers';
+import { getAssetSeriesTypeLabel } from 'Helpers/helpers';
 import { ASSETS, joinUrlWithParams } from 'Url/frontendUrl';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import ManageAssetItemModal from '../components/manageAssetItemModal';
@@ -113,7 +114,9 @@ const Assets = (props) => {
                                     <thead>
                                         <tr>
                                             <th className="fw-bold">Désignation</th>
+                                            <th className="fw-bold">Type</th>
                                             <th className="fw-bold">Valeur Ref.</th>
+                                            <th className="fw-bold">Valeur résiduelle</th>
                                             <th className="fw-bold">Date emission</th>
                                             <th className="fw-bold">Date fin</th>
                                             <th className="fw-bold">Gestion</th>
@@ -133,7 +136,21 @@ const Assets = (props) => {
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
+                                                            <p className="m-0 fw-bold text-dark">{getAssetSeriesTypeLabel(item.type)}</p>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="media">
+                                                        <div className="media-body pt-10">
                                                             <h4 className="m-0 fw-bold text-dark">{getPriceWithCurrency(item.series.referenceWorth, item.parent.currency)}</h4>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="media">
+                                                        <div className="media-body pt-10">
+                                                            <p className="m-0 fw-bold text-dark">{getPriceWithCurrency(item.residualWorth, item.currency)}</p>
                                                         </div>
                                                     </div>
                                                 </td>

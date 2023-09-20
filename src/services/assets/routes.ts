@@ -14,4 +14,6 @@ export const CREATE_SERIES_TYPE = 'api/assets/series/types';
 export const CREATE_MANAGEMENT = '/api/assets/management';
 export const GET_PROFILES = '/api/assets/management/profiles';
 export const CREATE_PROFILE = '/api/assets/management/profiles';
+export const GET_COMPOSABLE = (reference) => `/api/assets/${reference}/composable`;
+export const CREATE_COMPOSABLE = (reference) => `/api/assets/${reference}/composable`;
 export const ASSET_PARTICIPANTS = (reference) => `/api/assets/management/${reference}/participants`;

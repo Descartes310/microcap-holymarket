@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { ASSETS } from 'Url/frontendUrl';
 import AssetService from 'Services/assets';
 import { withRouter } from "react-router-dom";
 import CustomList from "Components/CustomList";
@@ -7,7 +8,6 @@ import React, { useState, useEffect } from 'react';
 import TimeFromMoment from "Components/TimeFromMoment";
 import { getAssetSeriesTypeLabel } from 'Helpers/helpers';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
-import { ASSETS, joinUrlWithParamsId, SUPERVISION } from 'Url/frontendUrl';
 
 const Assets = (props) => {
 
