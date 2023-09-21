@@ -825,6 +825,13 @@ export default [
             "child_routes": null
          },
          {
+            "menu_title": "Modèles messages",
+            "new_item": false,
+            "path": SETTING.MESSAGE_TEMPLATE.LIST,
+            "permissions": [Permission.setting.unit.name],
+            "profiles": ['GROUP'],
+            "child_routes": null
+         },         {
             "menu_title": "Immatriculations",
             "new_item": false,
             "path": SETTING.IMMATRICULATION.LIST,

@@ -79,16 +79,16 @@ export default class UserService {
         return makeRequest('get', Routes.GET_BANK_AGENCY_CODE, data);
     }
 
-    static updateContact(datas: any): Promise<any> {
-        return makeRequest('put', Routes.UPDATE_CONTACTS, datas);
-    }
-
     static getContacts(data: any = null): Promise<any> {
         return makeRequest('get', Routes.GET_CONTACTS, data);
     }
 
     static createContact(datas: any): Promise<any> {
         return makeRequest('post', Routes.CREATE_CONTACT, datas);
+    }
+
+    static updateContact(id: number, datas: any): Promise<any> {
+        return makeRequest('put', Routes.UPDATE_CONTACTS(id), datas);
     }
 
     static sendContactCode(id: any): Promise<any> {

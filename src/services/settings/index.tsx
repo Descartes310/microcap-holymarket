@@ -106,4 +106,22 @@ export default class SettingService {
     static findUserFileType(id): Promise<any> {
         return makeRequest('get', Routes.FIND_USER_TYPE(id));
     }
+
+
+    static getMessageTemplates(): Promise<any> {
+        return makeRequest('get', Routes.GET_MESSAGE_TEMPLATES);
+    }
+
+    static findMessageTemplate(reference: string): Promise<any> {
+        return makeRequest('get', Routes.FIND_MESSAGE_TEMPLATE(reference));
+    }
+
+    static createMessageTemplate(data: any): Promise<any> {
+        return makeRequest('post', Routes.CREATE_MESSAGE_TEMPLATE, data);
+    }
+
+
+    static updateMessageTemplate(reference: string, data: any): Promise<any> {
+        return makeRequest('put', Routes.UPDATE_MESSAGE_TEMPLATE(reference), data);
+    }
 }

@@ -8,6 +8,7 @@ import CustomList from "Components/CustomList";
 import { setRequestGlobalAction } from 'Actions';
 import React, { useEffect, useState } from 'react';
 import CreateContact from '../components/createContact';
+import UpdateContact from '../components/updateContact';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import ConfirmContactCode from '../components/confirmContactCode';
 import { FormGroup, Input as InputStrap, Form } from 'reactstrap';
@@ -19,8 +20,10 @@ const Personal = (props) => {
 
     const [alias, setAlias] = useState([]);
     const [contacts, setContacts] = useState([]);
+    const [contact, setContact] = useState(null);
     const [showCreateAliasBox, setShowCreateAliasBox] = useState(false);
     const [showCreateContactBox, setShowCreateContactBox] = useState(false);
+    const [showUpdateContactBox, setShowUpdateContactBox] = useState(false);
     const [showConfirmContactBox, setShowConfirmContactBox] = useState(false);
 
     useEffect(() => {
@@ -95,6 +98,7 @@ const Personal = (props) => {
                                                         <th className="fw-bold">Type</th>
                                                         <th className="fw-bold">Valeur</th>
                                                         <th className="fw-bold">Status</th>
+                                                        <th className="fw-bold">Editer</th>
                                                         <th className="fw-bold">Action</th>
                                                     </tr>
                                                 </thead>
@@ -123,7 +127,22 @@ const Personal = (props) => {
                                                                 </div>
                                                             </td>
                                                             <td>
-                                                                { ['EMAIL'].includes(item.type) && item.status !== 'VERIFIED' && (
+                                                                <div className="media">
+                                                                    <Button
+                                                                        color="primary"
+                                                                        variant="contained"
+                                                                        className="text-white font-weight-bold"
+                                                                        onClick={() => {
+                                                                            setShowUpdateContactBox(true);
+                                                                            setContact(item);
+                                                                        }}
+                                                                    >
+                                                                        Editer
+                                                                    </Button>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                { item.status !== 'VERIFIED' && (
                                                                     <div className="media">
                                                                         <Button
                                                                             color="primary"
@@ -197,6 +216,19 @@ const Personal = (props) => {
                         getContacts();
                 }
             } />
+            {showUpdateContactBox && contact && (
+                <UpdateContact 
+                    show={showUpdateContactBox} 
+                    contact={contact}
+                    onClose={(reload = false) => {
+                        setShowUpdateContactBox(false);
+                        setContact(null);
+                        if(reload) {
+                            getContacts();
+                        }
+                    }} 
+                />
+            )}
             <ConfirmContactCode show={showConfirmContactBox} onClose={(reload = false) => {
                     setShowConfirmContactBox(false);
                     if(reload)

@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 import UserService from 'Services/users';
 import { withRouter } from "react-router-dom";
+import SettingService from 'Services/settings';
 import MessageService from 'Services/messages';
 import { setRequestGlobalAction } from 'Actions';
 import React, { useState, useEffect } from 'react';
@@ -19,10 +20,32 @@ const SendContactMessage = (props) => {
     const [contacts, setContacts] = useState([]);
     const [contact, setContact] = useState(null);
     const [message, setMessage] = useState(null);
+    const [templates, setTemplates] = useState([]);
+    const [template, setTemplate] = useState(null);
 
     useEffect(() => {
         getContacts();
+        getMessages();
     }, []);
+
+    useEffect(() => {
+        if(template) {
+            setTitle(template.title);
+            setMessage(template.content);
+        }
+    }, [template]);
+
+    const getMessages = () => {
+        props.setRequestGlobalAction(true);
+        SettingService.getMessageTemplates()
+        .then((response) => setTemplates(response))
+        .catch((err) => {
+            console.log(err);
+        })
+        .finally(() => {
+            props.setRequestGlobalAction(false);
+        })
+    }
 
     const getContacts = () => {
         UserService.getContacts({referral_code: props.user?.referralId}).then((response) => {
@@ -80,6 +103,21 @@ const SendContactMessage = (props) => {
                             setContact(item);
                         }}
                         getOptionLabel={(option) => option.value}
+                        renderInput={(params) => <TextField {...params} variant="outlined" />}
+                    />
+                </div>
+                <div className="has-wrapper col-md-12 col-sm-12 mb-30 ">
+                    <InputLabel className="text-left">
+                        Modèle de message
+                    </InputLabel>
+                    <Autocomplete
+                        id="combo-box-demo"
+                        value={template}
+                        options={templates}
+                        onChange={(__, item) => {
+                            setTemplate(item);
+                        }}
+                        getOptionLabel={(option) => option.title}
                         renderInput={(params) => <TextField {...params} variant="outlined" />}
                     />
                 </div>

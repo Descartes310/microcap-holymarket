@@ -27,3 +27,8 @@ export const GET_IMMATRICULATIONS = 'api/identifications/immatriculations/types'
 export const FIND_IMMATRICULATION = (id) => `api/identifications/immatriculations/types/${id}`;
 export const UPDATE_IMMATRICULATION = (id) => `api/identifications/immatriculations/types/${id}`;
 export const GET_IMMATRICULATIONS_BY_TERRITORY = 'api/identifications/immatriculations/types/public/list';
+
+export const CREATE_MESSAGE_TEMPLATE = 'api/messages/templates';
+export const GET_MESSAGE_TEMPLATES = 'api/messages/templates';
+export const FIND_MESSAGE_TEMPLATE = (reference) => `api/messages/templates/${reference}`;
+export const UPDATE_MESSAGE_TEMPLATE = (reference) => `api/messages/templates/${reference}`;

@@ -30,6 +30,10 @@ export const contactTypes = [
         name: 'Adresse',
         value: 'ADDRESS'
     },
+    {
+        name: 'Adresse de notification',
+        value: 'NOTIFICATION_ADDRESS'
+    },
 ];
 
 export const getContactTypeLabel = (type) => {
@@ -46,6 +50,9 @@ export const getContactTypeLabel = (type) => {
             break;
         case 'ADDRESS':
             typeLabel = 'Adresse'
+            break;
+        case 'NOTIFICATION_ADDRESS':
+            typeLabel = 'Adresse de notification'
             break;
         default:
             break;

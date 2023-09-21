@@ -444,6 +444,12 @@ export const SETTING = {
         CREATE: "/settings/immatriculations/create",
         UPDATE: "/settings/immatriculations/:id/update",
     },
+    MESSAGE_TEMPLATE: {
+        SELF: "/settings/messages/templates",
+        LIST: "/settings/messages/templates/list",
+        CREATE: "/settings/messages/templates/create",
+        UPDATE: "/settings/messages/templates/:id/update",
+    },
 }
 
 export const NETWORK = {
