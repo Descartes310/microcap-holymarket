@@ -163,12 +163,12 @@ class UpdateComplexTable extends Component {
                                                                     key={si} 
                                                                     style={{ 
                                                                         cursor: 'pointer', 
-                                                                        borderColor: this.props.selectedCells.filter(sc => sc.row == row.id && sc.column == subcolumn.id && sc.position == (index+1)).length > 0 ? 'orange' : '#ebedf3', 
-                                                                        borderWidth:  this.props.selectedCells.filter(sc => sc.row == row.id && sc.column == subcolumn.id && sc.position == (index+1)).length > 0 ? 'thick' : '1px' 
+                                                                        borderColor: this.props?.selectedCells?.filter(sc => sc.row == row.id && sc.column == subcolumn.id && sc.position == (index+1))?.length > 0 ? 'orange' : '#ebedf3', 
+                                                                        borderWidth:  this.props?.selectedCells?.filter(sc => sc.row == row.id && sc.column == subcolumn.id && sc.position == (index+1))?.length > 0 ? 'thick' : '1px' 
                                                                     }} 
                                                                     onClick={() => {
-                                                                            if(this.props.selectable) {
-                                                                                this.props.onSelected({ row: row.id, column: subcolumn.id, position: (index+1) });
+                                                                            if(this.props?.selectable) {
+                                                                                this.props?.onSelected({ row: row.id, column: subcolumn.id, position: (index+1) });
                                                                             }
                                                                         }
                                                                     }
