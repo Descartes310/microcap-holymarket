@@ -589,17 +589,27 @@ export default [
             "permissions": [Permission.project.admin.item.name],
             "profiles": null,
             "child_routes": null
-         }, {
+         }, 
+         {
             "menu_title": "Option initialisations",
             "new_item": false,
             "path": joinUrlWithParams(PROJECT.INITIALIZATION.LIST, [{param: 'type', value: 'ideas'}]),
             "permissions": [Permission.project.admin.initialization.name],
             "profiles": null,
             "child_routes": null
-         }, {
-            "menu_title": "Postes projet",
+         }, 
+         {
+            "menu_title": "Postes",
             "new_item": false,
             "path": PROJECT.POST.LIST,
+            "permissions": [Permission.project.admin.post.name],
+            "profiles": null,
+            "child_routes": null
+         }, 
+         {
+            "menu_title": "Configurations",
+            "new_item": false,
+            "path": PROJECT.CONFIGURATION.ATTRIBUTE.SELF,
             "permissions": [Permission.project.admin.post.name],
             "profiles": null,
             "child_routes": null

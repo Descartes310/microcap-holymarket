@@ -3,7 +3,7 @@ import TabContent from "./tabContent";
 import React, { Component } from 'react';
 import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
-import { SETTING } from "Url/frontendUrl";
+import { PROJECT } from "Url/frontendUrl";
 import { RctCard } from 'Components/RctCard';
 import AppBar from '@material-ui/core/AppBar';
 import { withRouter } from "react-router-dom";
@@ -14,9 +14,9 @@ class Catalogues extends Component<any, any> {
     constructor(props: any) {
         super(props);
         const defaultState = (function (url) {
-            if (url.includes(SETTING.UNIT.CURRENCY.LIST)) return 0;
-            else if (url.includes(SETTING.UNIT.LIST)) return 1;
-            else if (url.includes(SETTING.UNIT.TYPE.LIST)) return 2;
+            if (url.includes(PROJECT.CONFIGURATION.ATTRIBUTE.SELF)) return 0;
+            else if (url.includes(PROJECT.CONFIGURATION.ATTRIBUTE.SELF)) return 1;
+            else if (url.includes(PROJECT.CONFIGURATION.ATTRIBUTE.SELF)) return 2;
             else return 0;
         })(window.location.pathname);
 
@@ -30,10 +30,10 @@ class Catalogues extends Component<any, any> {
         this.setState({ activeTab: value });
         if (oldActivateTab !== value) {
             switch (value) {
-                case 0: return this.props.history.push(SETTING.UNIT.CURRENCY.LIST);
-                case 1: return this.props.history.push(SETTING.UNIT.LIST);
-                case 2: return this.props.history.push(SETTING.UNIT.TYPE.LIST);
-                default: return this.props.history.push(SETTING.UNIT.LIST);
+                case 0: return this.props.history.push(PROJECT.CONFIGURATION.ATTRIBUTE.SELF);
+                case 1: return this.props.history.push(PROJECT.CONFIGURATION.ATTRIBUTE.SELF);
+                case 2: return this.props.history.push(PROJECT.CONFIGURATION.ATTRIBUTE.SELF);
+                default: return this.props.history.push(PROJECT.CONFIGURATION.ATTRIBUTE.SELF);
             }
         }
     };
@@ -43,7 +43,7 @@ class Catalogues extends Component<any, any> {
 
         return (
             <div>
-                <PageTitleBar title={"Unités de décompte"} match={this.props.match} />
+                <PageTitleBar title={"Configuration projet"} match={this.props.match} />
                 <RctCard>
                     <div className="rct-tabs">
                         <AppBar position="static">
@@ -58,15 +58,11 @@ class Catalogues extends Component<any, any> {
                                     >
                                         <Tab
                                             icon={<i className="zmdi zmdi-home" />}
-                                            label={"Dévises"}
+                                            label={"Produits"}
                                         />
                                         <Tab
                                             icon={<i className="zmdi zmdi-home" />}
-                                            label={"Unités de décompte"}
-                                        />
-                                        <Tab
-                                            icon={<i className="zmdi zmdi-cloud-outline-alt"></i>}
-                                            label={"Type d'unités"}
+                                            label={"Attributs"}
                                         />
                                     </Tabs>
                                 </div>

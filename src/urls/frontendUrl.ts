@@ -220,6 +220,7 @@ export const PROFILE = {
         CONTACT: "/profiles/users/contacts",
         PERSONAL: "/profiles/users/personal",
         INSTITUTION: "/profiles/users/institutions",
+        ACCOUNTS: "/profiles/users/account",
     },
     ASSISTANCE: {
         SELF: "/profiles/assistance",
@@ -276,6 +277,16 @@ export const PROJECT = {
             SELF: "/projects/mines/items",
             LIST: "/projects/mines/items/list",
             CREATE: "/projects/mines/items/create",
+        }
+    },
+    CONFIGURATION: {  
+        SELF: "/projects/configurations",  
+        ATTRIBUTE: {
+            SELF: "/projects/configurations/attributes",
+            LIST: "/projects/configurations/attributes/list",
+            CREATE: "/projects/configurations/attributes/create",
+            UPDATE: "/projects/configurations/attributes/:id/update",
+            PROPERTIES: "/projects/configurations/attributes/:id/properties"
         }
     }
 }

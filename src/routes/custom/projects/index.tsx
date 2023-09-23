@@ -6,6 +6,7 @@ import Details from './details';
 import {connect} from "react-redux";
 import {injectIntl} from "react-intl";
 import { PROJECT } from 'Url/frontendUrl';
+import Configurations from './configurations';
 import Initializations from './initializations';
 import {withRouter, Switch, Redirect, Route} from "react-router-dom";
 
@@ -21,6 +22,7 @@ const Projects = (props) => {
                     <Route path={PROJECT.MINE.SELF} component={Mines} />
                     <Route path={PROJECT.DETAILS.SELF} component={Details} />
                     <Route path={PROJECT.INITIALIZATION.SELF} component={Initializations} />
+                    <Route path={PROJECT.CONFIGURATION.SELF} component={Configurations} />
                 </Switch>
             </>
         </div>

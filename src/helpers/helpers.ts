@@ -1186,3 +1186,53 @@ export const getContractTypeLabel = (value: any) => {
     else
         return value;
 }
+
+export const projectObjectNatures = () => {
+    return [
+        {
+            label: "Projet",
+            value: 'PROJECT'
+        }
+    ]
+}
+
+export const getProjectObjectNatureLabel = (value: any) => {
+    let projectNature = projectObjectNatures().find(rt => rt.value === value);
+    if (projectNature)
+        return projectNature.label;
+    else
+        return value;
+}
+
+export const propertyTypes = () => {
+    return [
+        {
+            label: "Montant souscription au capital",
+            value: 'CAPITAL_AMOUNT_SUBSCRIPTION'
+        },
+        {
+            label: "Libellé d'un emprunt",
+            value: 'LOAN_LABEL'
+        },
+        {
+            label: "Devise",
+            value: 'CURRENCY'
+        },
+        {
+            label: "Libellé poste de capital",
+            value: 'CAPITAL_POST_LABEL'
+        },
+        {
+            label: "Libellé poste de compte courant",
+            value: 'CHECKING_ACCOUNT_POST_LABEL'
+        }
+    ]
+}
+
+export const getPropertyTypeLabel = (value: any) => {
+    let propertyType = propertyTypes().find(rt => rt.value === value);
+    if (propertyType)
+        return propertyType.label;
+    else
+        return value;
+}

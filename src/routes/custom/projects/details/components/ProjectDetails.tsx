@@ -39,7 +39,7 @@ const ProjectDetails = (props) => {
                     project.tables.map((table, index) => (
                         <>
                             <h3 className="fw-500" style={{ fontSize: '1.3rem' }}>{table.label}</h3>
-                            <UpdateComplexTable key={index} id={table.id} editMode={false} />
+                            <UpdateComplexTable key={index}  projectId={project.id} id={table.id} editMode={false} />
                         </>
                     ))
                 }

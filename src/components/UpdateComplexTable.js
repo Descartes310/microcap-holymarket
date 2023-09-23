@@ -25,7 +25,7 @@ class UpdateComplexTable extends Component {
     }
 
     getDataValues = () => {
-        ProjectService.getTableValues({ projectItemId: this.props.id, projectId: this.props.match.params.id }).then((response) => {
+        ProjectService.getTableValues({ projectItemId: this.props.id, projectId: this.props.projectId }).then((response) => {
             this.setState({  
                 datas: response
             });
@@ -90,7 +90,7 @@ class UpdateComplexTable extends Component {
 
         let data = {
             projectItemId: this.props.id,
-            projectId: this.props.match.params.id,
+            projectId: this.props.projectId,
             values: JSON.stringify(datas.map(d => { return {
                 rowId: d.row.id,
                 value: d.value,
@@ -159,7 +159,20 @@ class UpdateComplexTable extends Component {
 
                                                         {
                                                             subColumns.filter(sc => sc.column.id === column.id).map((subcolumn, si) => (
-                                                                <td key={index}>
+                                                                <td 
+                                                                    key={si} 
+                                                                    style={{ 
+                                                                        cursor: 'pointer', 
+                                                                        borderColor: this.props.selectedCells.filter(sc => sc.row == row.id && sc.column == subcolumn.id && sc.position == (index+1)).length > 0 ? 'orange' : '#ebedf3', 
+                                                                        borderWidth:  this.props.selectedCells.filter(sc => sc.row == row.id && sc.column == subcolumn.id && sc.position == (index+1)).length > 0 ? 'thick' : '1px' 
+                                                                    }} 
+                                                                    onClick={() => {
+                                                                            if(this.props.selectable) {
+                                                                                this.props.onSelected({ row: row.id, column: subcolumn.id, position: (index+1) });
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                >
                                                                     {this.props.editMode ?
                                                                     <InputStrap
                                                                         type="text"

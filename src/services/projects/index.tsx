@@ -36,6 +36,10 @@ export default class ProjectService {
         return makeRequest('get', Routes.GET_PROJECT_ITEMS, {types});
     }
 
+    static getProjectValues(reference: string): Promise<any> {
+        return makeRequest('get', Routes.GET_PROJECT_ITEMS_BY_PROJECT(reference));
+    }
+
     static getProjectMyItems(): Promise<any> {
         return makeRequest('get', Routes.GET_PROJECT_MINE_ITEMS);
     }
@@ -94,5 +98,29 @@ export default class ProjectService {
 
     static activeProjectActivity(id): Promise<any> {
         return makeRequest('post', Routes.ACTIVE_PROJECT_ACTIVITIES(id), {});
+    }
+
+    static getAttributes(): Promise<any> {
+        return makeRequest('get', Routes.GET_ATTRIBUTES);
+    }
+
+    static findAttribute(reference: string): Promise<any> {
+        return makeRequest('get', Routes.FIND_ATTRIBUTE(reference));
+    }
+
+    static createAttribute(data: any): Promise<any> {
+        return makeRequest('post', Routes.CREATE_ATTRIBUTE, data);
+    }
+
+    static updateAttribute(reference: string, data: any): Promise<any> {
+        return makeRequest('put', Routes.UPDATE_ATTRIBUTE(reference), data);
+    }
+
+    static getAttributeProperties(data: any): Promise<any> {
+        return makeRequest('get', Routes.GET_PROPERTIES, data);
+    }
+
+    static createProperty(data: any): Promise<any> {
+        return makeRequest('post', Routes.CREATE_PROPERTY, data);
     }
 }
