@@ -111,4 +111,8 @@ export default class UserService {
         return makeRequest('put', Routes.UPDATE_PROFILE, data);
     }
 
+    static setContactAsNotification(id: number): Promise<any> {
+        return makeRequest('put', Routes.SET_AS_NOTIFICATION(id));
+    }
+
 }

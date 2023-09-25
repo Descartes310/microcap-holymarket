@@ -30,10 +30,10 @@ export const contactTypes = [
         name: 'Adresse',
         value: 'ADDRESS'
     },
-    {
-        name: 'Adresse de notification',
-        value: 'NOTIFICATION_ADDRESS'
-    },
+    // {
+    //     name: 'Adresse de notification',
+    //     value: 'NOTIFICATION_ADDRESS'
+    // },
 ];
 
 export const getContactTypeLabel = (type) => {
@@ -68,6 +68,9 @@ export const getStatusLabel = (type) => {
             break;
         case 'PENDING':
             statusLabel = 'En attente'
+            break;
+        case 'APPROVED':
+            statusLabel = 'Approuvé'
             break;
         default:
             break;

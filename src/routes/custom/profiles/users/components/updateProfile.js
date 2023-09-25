@@ -23,10 +23,10 @@ const UpdateProfile = (props) => {
     const [countries, setCountries] = useState([]);
     const [name, setName] = useState(user.userName);
     const [nationality, setNationality] = useState(null);
-    const [telephone, setTelephone] = useState(user.telephone);
+    // const [telephone, setTelephone] = useState(user.telephone);
     const [residenceCountry, setResidenceCountry] = useState(null);
     const [immatriculationType, setImmatriculationType] = useState(null);
-    const [notificationAddress, setNotificationAddress] = useState(user.notificationAddress);
+    // const [notificationAddress, setNotificationAddress] = useState(user.notificationAddress);
     const [immatriculationNumber, setImmatriculationNumber] = useState(user.identificationNumber);
     const [immatriculationEndDate, setImmatriculationEndDate] = useState(user.identificationEndDate);
     const [immatriculationStartDate, setImmatriculationStartDate] = useState(user.identificationStartDate);
@@ -66,12 +66,12 @@ const UpdateProfile = (props) => {
     };
 
     const _getIdentificationType = () => {
-        SettingService.getImmatriculationsByTerritory({territory: residenceCountry.reference, referral_type: 'GROUP'})
+        SettingService.getImmatriculationsByTerritory({territory: residenceCountry.reference, referral_type: user?.referralType})
         .then(response => setTypes(response))
     }
 
     const checkFormValidity = () => {
-        if(!name || !email || !telephone || !notificationAddress || !residenceCountry 
+        if(!name || !email || !residenceCountry 
             || !immatriculationType || !immatriculationNumber || !immatriculationStartDate || !immatriculationEndDate) {
                 NotificationManager.error("Le formulaire est mal rempli");
                 return false;
@@ -84,8 +84,9 @@ const UpdateProfile = (props) => {
         checkFormValidity();
         let data = {
             user_name: name,
-            email, telephone,
-            notification_address: notificationAddress,
+            email, 
+            // telephone,
+            // notification_address: notificationAddress,
             residence_country: residenceCountry.id,
             identification_type: immatriculationType.id,
             identification_value: immatriculationNumber,
@@ -149,7 +150,7 @@ const UpdateProfile = (props) => {
                         />
                     </FormGroup>
                 </div>
-                <div className='row'>
+                {/* <div className='row'>
                     <FormGroup className="col-6 has-wrapper">
                         <InputLabel className="text-left" htmlFor="telephone">
                             Téléphone
@@ -176,7 +177,7 @@ const UpdateProfile = (props) => {
                             onChange={(e) => setNotificationAddress(e.target.value)}
                         />
                     </FormGroup>
-                </div>
+                </div> */}
                 <div className='row'>
                     { user.referralType != 'GROUP' && (
                         <div className="col-md-6 col-sm-12 has-wrapper mb-30">

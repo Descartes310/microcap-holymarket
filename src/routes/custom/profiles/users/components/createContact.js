@@ -1,13 +1,12 @@
 import { connect } from 'react-redux';
 import React, { useState } from 'react';
 import UserService from 'Services/users';
-import Input from "@material-ui/core/Input";
 import { withRouter } from "react-router-dom";
 import { setRequestGlobalAction } from 'Actions';
-import MenuItem from "@material-ui/core/MenuItem";
 import { contactTypes } from '../../../../../data';
+import TextField from '@material-ui/core/TextField';
 import { RctCardContent } from 'Components/RctCard';
-import Select from "@material-ui/core/Select/Select";
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import { NotificationManager } from 'react-notifications';
 import DialogComponent from "Components/dialog/DialogComponent";
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
@@ -21,10 +20,21 @@ const CreateContact = (props) => {
 
     const onSubmit = () => {
 
+        if(!value || !type) {
+            return;
+        }
+
+        if(type.value == 'PHONE') {
+            if(!(value+"").startsWith("+")) {
+                NotificationManager.error('Le téléphone est invalide');
+                return;
+            }
+        }
+
         props.setRequestGlobalAction(true);
 
         let data = {
-            value, type
+            value, type: type.value
         };
 
         if(props.setAsNotificatioAddress) {
@@ -62,26 +72,23 @@ const CreateContact = (props) => {
             )}
         >
             <RctCardContent>
-                <FormGroup className="has-wrapper">
-                    <InputLabel className="text-left pl-2" htmlFor="type-helper">
+                <div className="col-md-12 col-sm-12 has-wrapper mb-30 p-0">
+                    <InputLabel className="text-left">
                         Type de contact
                     </InputLabel>
-                    <Select
+                    <Autocomplete
                         value={type}
-                        style={{ width: '100%' }}
-                        onChange={(e) => setType(e.target.value)}
-                        input={<Input name="type" id="type-helper" style={{ width: '100%' }} />}
-                    >
-                        {contactTypes.map(item => (
-                            <MenuItem key={item.value} value={item.value} style={{ width: '100%' }}>
-                                {item.name}
-                            </MenuItem>
-                        ))}
-                    </Select>
-                </FormGroup>
+                        options={contactTypes}
+                        id="combo-box-demo"
+                        classes={{ paper: 'custom-input' }}
+                        getOptionLabel={(option) => option.name}
+                        onChange={(__, item) => { setType(item) }}
+                        renderInput={(params) => <TextField {...params} variant="outlined" />}
+                    />
+                </div>
                 <FormGroup className="has-wrapper">
                     <InputLabel className="text-left" htmlFor="value">
-                        Valeur
+                        Valeur {type?.value == 'PHONE' && "(Veuillez préfixer le numéro par le code téléphonique. Exp: +237)" }
                     </InputLabel>
                     <InputStrap
                         required

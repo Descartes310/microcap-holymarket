@@ -3,6 +3,7 @@ import UserService from 'Services/users';
 import { RctCard } from 'Components/RctCard';
 import { withRouter } from "react-router-dom";
 import Button from '@material-ui/core/Button';
+import Switch from "@material-ui/core/Switch";
 import CreateAlias from '../components//alias';
 import CustomList from "Components/CustomList";
 import { setRequestGlobalAction } from 'Actions';
@@ -32,9 +33,16 @@ const Personal = (props) => {
 
     const getContacts = () => {
         UserService.getContacts().then((response) => {
-            setContacts(response)
+            setContacts(response.filter(c => c.type !== 'NOTIFICATION_ADDRESS'))
             setAlias(response.filter(c => c.type === 'ALIAS'));
         });
+    }
+
+    const changeStatus = (contact) => {
+        props.setRequestGlobalAction(true),
+        UserService.setContactAsNotification(contact.id)
+        .then(() => getContacts())
+        .finally(() => props.setRequestGlobalAction(false))
     }
 
     const sendVerifyCode = (reference) => {
@@ -98,6 +106,7 @@ const Personal = (props) => {
                                                         <th className="fw-bold">Type</th>
                                                         <th className="fw-bold">Valeur</th>
                                                         <th className="fw-bold">Status</th>
+                                                        <th className="fw-bold">Notification</th>
                                                         <th className="fw-bold">Editer</th>
                                                         <th className="fw-bold">Action</th>
                                                     </tr>
@@ -125,6 +134,13 @@ const Personal = (props) => {
                                                                         <h4 className="m-0 fw-bold text-dark">{getStatusLabel(item.status)}</h4>
                                                                     </div>
                                                                 </div>
+                                                            </td>
+                                                            <td>
+                                                                <Switch
+                                                                    aria-label="Notification"
+                                                                    checked={item.notificationAddress}
+                                                                    onChange={() => { changeStatus(item) }}
+                                                                />
                                                             </td>
                                                             <td>
                                                                 <div className="media">
@@ -210,7 +226,10 @@ const Personal = (props) => {
                 </div>
             </RctCard>
             <CreateAlias show={showCreateAliasBox} onClose={() => setShowCreateAliasBox(false)} />
-            <CreateContact show={showCreateContactBox} onClose={(reload = false) => {
+            <CreateContact 
+                show={showCreateContactBox}
+                setAsNotificatioAddress={false}
+                onClose={(reload = false) => {
                     setShowCreateContactBox(false);
                     if(reload)
                         getContacts();
@@ -219,6 +238,7 @@ const Personal = (props) => {
             {showUpdateContactBox && contact && (
                 <UpdateContact 
                     show={showUpdateContactBox} 
+                    setAsNotificatioAddress={false}
                     contact={contact}
                     onClose={(reload = false) => {
                         setShowUpdateContactBox(false);
