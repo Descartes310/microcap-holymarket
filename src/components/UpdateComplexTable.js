@@ -118,8 +118,20 @@ class UpdateComplexTable extends Component {
                                 <thead>
                                     <tr>
                                         <th></th>
-                                        <th key={index} 
+                                        <th 
+                                            key={index} 
                                             colSpan={subColumns.filter(sc => sc.column.id === column.id).length}
+                                            style={{ 
+                                                cursor: 'pointer', 
+                                                borderColor: this.props?.selectedCells?.filter(sc => sc.column == column.id && sc.position == index && sc.type == 'COLUMN')?.length > 0 ? 'orange' : '#ebedf3', 
+                                                borderWidth:  this.props?.selectedCells?.filter(sc => sc.column == column.id && sc.position == index && sc.type == 'COLUMN')?.length > 0 ? 'thick' : '1px' 
+                                            }} 
+                                            onClick={() => {
+                                                    if(this.props?.selectable) {
+                                                        this.props?.onSelected({ row: 0, column: column.id, position: index, type: 'COLUMN' });
+                                                    }
+                                                }
+                                            }
                                         >
                                             {column.label}
                                         </th>
@@ -133,7 +145,22 @@ class UpdateComplexTable extends Component {
                                         <td></td>
                                         {
                                             subColumns.filter(sc => sc.column.id === column.id).map((subcolumn, index) => (
-                                                <td key={index}>{ subcolumn.label }</td>
+                                                <td 
+                                                    key={index}
+                                                    style={{ 
+                                                        cursor: 'pointer', 
+                                                        borderColor: this.props?.selectedCells?.filter(sc => sc.column == subcolumn.id && sc.position == index && sc.type == 'SUBCOLUMN')?.length > 0 ? 'orange' : '#ebedf3', 
+                                                        borderWidth:  this.props?.selectedCells?.filter(sc => sc.column == subcolumn.id && sc.position == index && sc.type == 'SUBCOLUMN')?.length > 0 ? 'thick' : '1px' 
+                                                    }} 
+                                                    onClick={() => {
+                                                            if(this.props?.selectable) {
+                                                                this.props?.onSelected({ row: 0, column: subcolumn.id, position: index, type: 'SUBCOLUMN' });
+                                                            }
+                                                        }
+                                                    }
+                                                >
+                                                    { subcolumn.label }
+                                                </td>
                                             ))
                                         }
                                         {this.props.editMode && (
@@ -152,6 +179,17 @@ class UpdateComplexTable extends Component {
                                                                     :
                                                                     (Math.ceil(datas.filter(d => d.row.id === row.id).length/subColumns.length))
                                                                 }
+                                                                style={{ 
+                                                                    cursor: 'pointer', 
+                                                                    borderColor: this.props?.selectedCells?.filter(sc => sc.row == row.id && sc.column == subColumns[0].id && sc.position == i && sc.type == 'ROW')?.length > 0 ? 'orange' : '#ebedf3', 
+                                                                    borderWidth:  this.props?.selectedCells?.filter(sc => sc.row == row.id && sc.column == subColumns[0].id && sc.position == i && sc.type == 'ROW')?.length > 0 ? 'thick' : '1px' 
+                                                                }} 
+                                                                onClick={() => {
+                                                                        if(this.props?.selectable) {
+                                                                            this.props?.onSelected({ row: row.id, column: subColumns[0].id, position: i, type: 'ROW' });
+                                                                        }
+                                                                    }
+                                                                }
                                                             >
                                                                 {row.label}
                                                             </td>
@@ -163,12 +201,12 @@ class UpdateComplexTable extends Component {
                                                                     key={si} 
                                                                     style={{ 
                                                                         cursor: 'pointer', 
-                                                                        borderColor: this.props?.selectedCells?.filter(sc => sc.row == row.id && sc.column == subcolumn.id && sc.position == (index+1))?.length > 0 ? 'orange' : '#ebedf3', 
-                                                                        borderWidth:  this.props?.selectedCells?.filter(sc => sc.row == row.id && sc.column == subcolumn.id && sc.position == (index+1))?.length > 0 ? 'thick' : '1px' 
+                                                                        borderColor: this.props?.selectedCells?.filter(sc => sc.row == row.id && sc.column == subcolumn.id && sc.position == (index+1) && sc.type == 'CELL')?.length > 0 ? 'orange' : '#ebedf3', 
+                                                                        borderWidth:  this.props?.selectedCells?.filter(sc => sc.row == row.id && sc.column == subcolumn.id && sc.position == (index+1) && sc.type == 'CELL')?.length > 0 ? 'thick' : '1px' 
                                                                     }} 
                                                                     onClick={() => {
                                                                             if(this.props?.selectable) {
-                                                                                this.props?.onSelected({ row: row.id, column: subcolumn.id, position: (index+1) });
+                                                                                this.props?.onSelected({ row: row.id, column: subcolumn.id, position: (index+1), type: 'CELL' });
                                                                             }
                                                                         }
                                                                     }

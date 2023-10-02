@@ -120,6 +120,10 @@ export default class ProjectService {
         return makeRequest('get', Routes.GET_PROPERTIES, data);
     }
 
+    static getAttributeFullProperties(data: any): Promise<any> {
+        return makeRequest('get', Routes.GET_FULL_PROPERTIES, data);
+    }
+
     static createProperty(data: any): Promise<any> {
         return makeRequest('post', Routes.CREATE_PROPERTY, data);
     }

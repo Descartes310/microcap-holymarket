@@ -17,7 +17,7 @@ const Properties = (props) => {
     const [showAddBox, setShowAddBox] = useState(false);
 
     useEffect(() => {
-        getAttributes();
+        getProperties();
         findAttribute();
     }, []);
 
@@ -31,7 +31,7 @@ const Properties = (props) => {
         }).finally(() => props.setRequestGlobalAction(false))
     }
 
-    const getAttributes = () => {
+    const getProperties = () => {
         props.setRequestGlobalAction(true);
         ProjectService.getAttributeProperties({ attribute_reference: props.match.params.id }).then(response => {
             setProperties(response);
@@ -64,6 +64,7 @@ const Properties = (props) => {
                                 <table className="table table-hover table-middle mb-0">
                                     <thead>
                                         <tr>
+                                            <th className="fw-bold">Désignation</th>
                                             <th className="fw-bold">Type</th>
                                             <th className="fw-bold">Valeur</th>
                                             <th className="fw-bold">Date création</th>
@@ -73,6 +74,13 @@ const Properties = (props) => {
                                     <tbody>
                                         {list && list.map((item, key) => (
                                             <tr key={key} className="cursor-pointer">
+                                                <td>
+                                                    <div className="media">
+                                                        <div className="media-body pt-10">
+                                                            <h4 className="m-0 fw-bold text-dark">{item.label}</h4>
+                                                        </div>
+                                                    </div>
+                                                </td>
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
@@ -120,7 +128,8 @@ const Properties = (props) => {
                     show={showAddBox}
                     attribute={attribute}
                     onClose={() => {
-                        setShowAddBox(false)
+                        setShowAddBox(false);
+                        getProperties();
                     }}
                 />
             )}

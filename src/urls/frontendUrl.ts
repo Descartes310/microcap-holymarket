@@ -287,6 +287,11 @@ export const PROJECT = {
             CREATE: "/projects/configurations/attributes/create",
             UPDATE: "/projects/configurations/attributes/:id/update",
             PROPERTIES: "/projects/configurations/attributes/:id/properties"
+        },
+        FINANCEMENT: {
+            SELF: "/projects/configurations/financements",
+            LIST: "/projects/configurations/financements/list",
+            UPDATE: "/projects/configurations/financements/:id/update",
         }
     }
 }

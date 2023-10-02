@@ -36,3 +36,4 @@ export const UPDATE_ATTRIBUTE = (reference) => `api/projects/attributes/${refere
 
 export const GET_PROPERTIES = `api/projects/properties`;
 export const CREATE_PROPERTY = `api/projects/properties`;
+export const GET_FULL_PROPERTIES = `api/projects/properties/full`;
