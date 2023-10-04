@@ -15,7 +15,7 @@ import {Form, FormGroup, Input as InputStrap} from 'reactstrap';
 import DialogComponent from "Components/dialog/DialogComponent";
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 
-const GenerateTirage = (props) => {
+const Cotation = (props) => {
 
     const {show, onClose, product} = props;
     
@@ -238,4 +238,4 @@ const GenerateTirage = (props) => {
     )
 }
 
-export default connect(() => {}, { setRequestGlobalAction })(withRouter(GenerateTirage));
+export default connect(() => {}, { setRequestGlobalAction })(withRouter(Cotation));

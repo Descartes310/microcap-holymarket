@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import AccountService from "Services/accounts";
 import ProductService from "Services/products";
 import { setRequestGlobalAction } from "Actions";
-import ConfirmBox from "Components/dialog/ConfirmBox"
+import ConfirmBox from "Components/dialog/ConfirmBox";
 import NotificationType from "Enums/NotificationType";
 import { List as ListMaterial } from '@material-ui/core';
 import SingleTitleText from "Components/SingleTitleText";

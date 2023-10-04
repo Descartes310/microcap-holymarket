@@ -13,6 +13,7 @@ import { FormGroup, Input as InputStrap } from 'reactstrap';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
+import { FUNDING, joinUrlWithParamsId } from 'Url/frontendUrl';
 
 const Details = (props) => {
 
@@ -20,6 +21,7 @@ const Details = (props) => {
     const [endDate, setEndDate] = useState(null);
     const [startDate, setStartDate] = useState(null);
     const [mouvements, setMouvements] = useState([]);
+    const [provisions, setProvisions] = useState([]);
     const [showTicketBox, setShowTicketBox] = useState(false);
     const [showDebitAccountBox, setShowDebitAccountBox] = useState(false);
     const [showCreditAccountBox, setShowCreditAccountBox] = useState(false);
@@ -29,8 +31,10 @@ const Details = (props) => {
     }, []);    
     
     useEffect(() => {
-        if(account)
+        if(account) {
             getMouvements();
+            getProvisions();
+        }
     }, [account]);
 
     const findAccount = () => {
@@ -49,6 +53,18 @@ const Details = (props) => {
         props.setRequestGlobalAction(true);
         AccountService.getAccountMouvements(account.id, {types: 'POSITION'}).then(response => {
             setMouvements(response);
+        }).catch((err) => {
+            console.log(err);
+        })
+        .finally(() => {
+            props.setRequestGlobalAction(false);
+        })
+    }
+
+    const getProvisions = () => {
+        props.setRequestGlobalAction(true);
+        AccountService.getAccountMouvements(account.id, {types: 'PROVISION'}).then(response => {
+            setProvisions(response);
         }).catch((err) => {
             console.log(err);
         })
@@ -158,6 +174,20 @@ const Details = (props) => {
                                                 )}
                                             </div>
                                         )}
+                                        { account?.consolidation && (
+                                            <div>
+                                                <Button
+                                                    color="primary"
+                                                    variant="contained"
+                                                    className="text-white font-weight-bold"
+                                                    onClick={() => {
+                                                        props.history.push(joinUrlWithParamsId(FUNDING.ACCOUNT.CONSOLIDATIONS, account?.id))
+                                                    }}
+                                                >
+                                                    Consolidations
+                                                </Button>
+                                            </div>
+                                        )}
                                     </div>
                                 </CardTitle>
                                 <CardBody>
@@ -248,7 +278,7 @@ const Details = (props) => {
                                                 </thead>
                                                 <tbody>
                                                     {
-                                                        mouvements.map((mouvement, index) => (
+                                                        provisions.map((mouvement, index) => (
                                                             <tr key={index}>
                                                                 <td>
                                                                     <div className="media">

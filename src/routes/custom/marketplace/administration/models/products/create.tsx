@@ -145,6 +145,7 @@ const Create = (props) => {
             data.minBalance = minAccountbalance;
             data.maxBalance = maxAccountBalance;
             data.mirrorAccount = isMirrorAccount;
+            data.isAggregation = isAggregation;
             data.accountUnitReference = accountUnit.reference;
         }
 
@@ -153,11 +154,9 @@ const Create = (props) => {
         }
 
         if(isAggregation) {
-            if(aggregationProducts.length <= 0) {
-                NotificationManager.error('Sélectionnez les comptes à aggreger');
-                return;
+            if(aggregationProducts.length > 0) {
+                data.aggregationIds = aggregationProducts.map(ap => ap.id);
             }
-            data.aggregationIds = aggregationProducts.map(ap => ap.id);
         }
 
         if(hasComplementaryProducts) {
@@ -537,14 +536,14 @@ const Create = (props) => {
                                         checked={isAggregation}
                                         onChange={() => setIsAggregation(!isAggregation)}
                                     />
-                                } label={'Associer des comptes à consolider'}
+                                } label={'Compte de consolidation'}
                                 />
                             </FormGroup>
                             {
                                 isAggregation && (
                                     <div className="col-md-12 col-sm-12 has-wrapper mb-30">
                                         <InputLabel className="text-left">
-                                            Sélectionnez les comptes à aggreger
+                                            Sélectionnez les comptes à consolider
                                         </InputLabel>
                                         <Autocomplete
                                             multiple

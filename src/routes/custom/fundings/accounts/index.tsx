@@ -4,6 +4,7 @@ import Details from './details';
 import {connect} from "react-redux";
 import {injectIntl} from "react-intl";
 import { FUNDING } from 'Url/frontendUrl';
+import consolidations from './consolidations';
 import {withRouter, Switch, Redirect, Route} from "react-router-dom";
 
 const Accounts = (props) => {
@@ -15,6 +16,7 @@ const Accounts = (props) => {
                     <Redirect exact from={`${match.url}/`} to={FUNDING.ACCOUNT.LIST} />
                     <Route path={FUNDING.ACCOUNT.LIST} component={List} />
                     <Route path={FUNDING.ACCOUNT.DETAILS} component={Details} />
+                    <Route path={FUNDING.ACCOUNT.CONSOLIDATIONS} component={consolidations} />
                 </Switch>
             </>
         </div>

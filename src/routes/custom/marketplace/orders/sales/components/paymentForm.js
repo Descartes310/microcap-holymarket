@@ -9,9 +9,8 @@ import StripeCheckout from 'react-stripe-checkout';
 import { RctCard, RctCardContent } from 'Components/RctCard';
 import { FormGroup, Label, Input, Button } from 'reactstrap';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
-import { MARKETPLACE } from "Url/frontendUrl";
 
-class PaymentCard extends Component<any, any> {
+class PaymentCard extends Component {
 
    state = {
       amount: 0,
@@ -36,8 +35,8 @@ class PaymentCard extends Component<any, any> {
    }
 
    render() {
+      const { order } = this.props;
       const { paymentMethod, amount } = this.state;
-
       return (
          <RctCard className="payment">
             <RctCardContent>
@@ -93,7 +92,7 @@ class PaymentCard extends Component<any, any> {
                   {/*   paymentMethod ? ( */}
                         <StripeCheckout
                            name={'MicroCap'}
-                           currency={this.props.currency}
+                           currency={order?.currency}
                            token={this.onStripePayment}
                            amount={this.computePrice()}
                            stripeKey={AppConfig.payments.stripe}

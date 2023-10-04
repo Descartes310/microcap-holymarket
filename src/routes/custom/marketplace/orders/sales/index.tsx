@@ -45,7 +45,7 @@ class Payments extends Component<any, any> {
                             </div>
                             { ['CONFIRMED', 'PAYING'].includes(order?.status) && (
                                 <div className={`col-lg-3 col-md-4 col-sm-12`} style={{ padding: 20 }}>
-                                    <PaymentForm />
+                                    <PaymentForm order={order} />
                                 </div>
                             )}
                         </div>

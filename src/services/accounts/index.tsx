@@ -28,6 +28,15 @@ export default class AccountService {
         }
     }
 
+    static getConsolidations(id): Promise<any> {
+        var regExp = /[a-zA-Z]/g;
+        if(!regExp.test(id)) {
+            return makeRequest('get', Routes.FIND_ACCOUNT(id));
+        } else {
+            return makeRequest('get', Routes.FIND_CONSOLIDATION_BY_REFERENCE(id));
+        }
+    }
+
     static getAccountMouvements(id: number, data: any): Promise<any> {
         return makeRequest('get', Routes.GET_ACCOUNT_MOUVEMENTS(id), data);
     }
@@ -38,5 +47,13 @@ export default class AccountService {
 
     static createExternalAccount(data: any): Promise<any> {
         return makeRequest('post', Routes.CREATE_EXTERNAL_ACCOUNTS, data);
+    }
+
+    static addConsolidation(consolidation: string, consolidated: string): Promise<any> {
+        return makeRequest('post', Routes.ADD_CONSOLIDATION(consolidation, consolidated));
+    }
+
+    static deleteConsolidation(consolidation: string, consolidated: string): Promise<any> {
+        return makeRequest('delete', Routes.REMOVE_CONSOLIDATION(consolidation, consolidated));
     }
 }
