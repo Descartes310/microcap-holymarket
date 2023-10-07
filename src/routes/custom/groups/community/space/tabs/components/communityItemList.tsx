@@ -19,7 +19,7 @@ const CommunityItemList = ({ community, onSelectCommunity, favourite = false, ad
                             width={50}
                             height={50}
                             name={community.userName}
-                            avatar={community.image ? getFilePath(community.image) : DEFAULT_IMAGE}
+                            avatar={community.photo ? getFilePath(community.photo) : DEFAULT_IMAGE}
                         />
                     </div>
                     <div className="media-body" style={{ width: '100%' }}>

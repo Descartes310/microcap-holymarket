@@ -2,11 +2,13 @@ import QRCode from "react-qr-code";
 import { connect } from 'react-redux';
 import UserService from "Services/users";
 import BankService from "Services/banks";
+import TerritoryType from "Enums/Territories";
 import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
 import {setRequestGlobalAction} from 'Actions';
 import { userActionTypes } from "Helpers/helpers";
 import React, { useEffect, useState } from 'react';
+import TerritoryService from "Services/territories";
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import AuthenticateUser from '../components/authenticateUser';
@@ -17,6 +19,7 @@ const UserDetails = (props) => {
 
     const [user, setUser] = useState(null);
     const [action, setAction] = useState(null);
+    const [countries, setCountries] = useState([]);
     const [subscriptions, setSubscriptions] = useState([]);
     const [showMessageBox, setShowMessageBox] = useState(false);
     const [showAuthentificationBox, setShowAuthentificationBox] = useState(false);
@@ -24,7 +27,18 @@ const UserDetails = (props) => {
     useEffect(() => {
         getMineSubscriptions();
         getUser();
+        _getCountries();
     }, []);
+
+    const _getCountries = () => {
+        TerritoryService.getTerritories(TerritoryType.COUNTRY)
+        .then(countries => {
+            setCountries(countries);
+        })
+        .catch(error => {
+            setCountries([]);
+        });
+    };
 
     const getMineSubscriptions = () => {
         props.setRequestGlobalAction(true);
@@ -118,7 +132,7 @@ const UserDetails = (props) => {
                                     <div className="media">
                                         <div className="media-body pt-10">
                                             <h4 className="m-0 fw-bold text-dark">
-                                                {user?.reference}
+                                                {user?.referralId}
                                             </h4>
                                         </div>
                                     </div>
@@ -173,7 +187,7 @@ const UserDetails = (props) => {
                                     <div className="media">
                                         <div className="media-body pt-10">
                                             <h4 className="m-0 fw-bold text-dark">
-                                                {user?.fullname}
+                                                {user?.userName}
                                             </h4>
                                         </div>
                                     </div>
@@ -184,7 +198,7 @@ const UserDetails = (props) => {
                                     <div className="media">
                                         <div className="media-body pt-10">
                                             <h4 className="m-0 fw-bold text-dark">
-                                                Date de naissance
+                                                Email
                                             </h4>
                                         </div>
                                     </div>
@@ -193,27 +207,7 @@ const UserDetails = (props) => {
                                     <div className="media">
                                         <div className="media-body pt-10">
                                             <h4 className="m-0 fw-bold text-dark">
-                                                {user?.birthdate}
-                                            </h4>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr className="cursor-pointer">
-                                <td>
-                                    <div className="media">
-                                        <div className="media-body pt-10">
-                                            <h4 className="m-0 fw-bold text-dark">
-                                                Localisation
-                                            </h4>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div className="media">
-                                        <div className="media-body pt-10">
-                                            <h4 className="m-0 fw-bold text-dark">
-                                                {user?.localisation}
+                                                {user?.email}
                                             </h4>
                                         </div>
                                     </div>
@@ -224,7 +218,7 @@ const UserDetails = (props) => {
                                     <div className="media">
                                         <div className="media-body pt-10">
                                             <h4 className="m-0 fw-bold text-dark">
-                                                Situation proféssionnelle
+                                                Adresse de notification
                                             </h4>
                                         </div>
                                     </div>
@@ -233,6 +227,68 @@ const UserDetails = (props) => {
                                     <div className="media">
                                         <div className="media-body pt-10">
                                             <h4 className="m-0 fw-bold text-dark">
+                                                {user?.notificationAddress}
+                                            </h4>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr className="cursor-pointer">
+                                <td>
+                                    <div className="media">
+                                        <div className="media-body pt-10">
+                                            <h4 className="m-0 fw-bold text-dark">
+                                                Numéro d'identification
+                                            </h4>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div className="media">
+                                        <div className="media-body pt-10">
+                                            <h4 className="m-0 fw-bold text-dark">
+                                                {user?.identificationNumber}
+                                            </h4>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr className="cursor-pointer">
+                                <td>
+                                    <div className="media">
+                                        <div className="media-body pt-10">
+                                            <h4 className="m-0 fw-bold text-dark">
+                                                période de validité
+                                            </h4>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div className="media">
+                                        <div className="media-body pt-10">
+                                            <h4 className="m-0 fw-bold text-dark">
+                                                du {user?.identificationStartDate} au {user?.identificationEndDate}
+                                            </h4>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr className="cursor-pointer">
+                                <td>
+                                    <div className="media">
+                                        <div className="media-body pt-10">
+                                            <h4 className="m-0 fw-bold text-dark">
+                                                Pays de résidence
+                                            </h4>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div className="media">
+                                        <div className="media-body pt-10">
+                                            <h4 className="m-0 fw-bold text-dark">
+                                                {countries?.find(c => c.id == user?.residenceCountry)?.label}
                                             </h4>
                                         </div>
                                     </div>
@@ -242,9 +298,7 @@ const UserDetails = (props) => {
                     </table>
                 </div>
 
-
-
-                <h1 style={{ marginTop: '5%' }}>Informations bancaires</h1>
+                {/* <h1 style={{ marginTop: '5%' }}>Informations bancaires</h1>
 
                 <div className="table-responsive mt-30">
                     <table className="table table-bordered table-middle mb-0">
@@ -305,7 +359,7 @@ const UserDetails = (props) => {
                             ))}
                         </tbody>
                     </table>
-                </div>
+                </div> */}
             </div>
             { user && (
                 <SendContactMessage

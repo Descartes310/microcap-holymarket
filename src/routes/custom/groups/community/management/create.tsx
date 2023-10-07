@@ -5,14 +5,18 @@ import { withRouter } from "react-router-dom";
 import Button from '@material-ui/core/Button';
 import { setRequestGlobalAction } from 'Actions';
 import React, { useState, useEffect } from 'react';
+import { FileUploader } from "react-drag-drop-files";
 import { NotificationManager } from 'react-notifications';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { Form, FormGroup, Input as InputStrap } from 'reactstrap';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
 
+const fileTypes = ["JPG", "PNG", "GIF", "JPEG"];
+
 const Create = (props) => {
 
+    const [file, setFile] = useState(null);
     const [label, setLabel] = useState(null);
     const [description, setDescription] = useState(null);
 
@@ -20,17 +24,19 @@ const Create = (props) => {
     }, []);
 
     const onSubmit = () => {
-        if(!label)
+        if(!label || !file) {
             return
+        }
 
         props.setRequestGlobalAction(true);
 
         let data: any = {
             label: label,
+            avatar: file,
             description: description
         }
 
-        GroupService.createUnconventionnatedGroup(data).then(() => {
+        GroupService.createUnconventionnatedGroup(data, { fileData: ['avatar'], multipart: true }).then(() => {
             NotificationManager.success("La communauté a été créé avec succès");
             props.history.push(GROUP.COMMUNITY.SPACE.MINE);
         }).catch((err) => {
@@ -74,6 +80,19 @@ const Create = (props) => {
                             value={description}
                             className="input-lg"
                             onChange={(e) => setDescription(e.target.value)}
+                        />
+                    </FormGroup>
+
+                    <FormGroup className="has-wrapper">
+                        <InputLabel className="text-left" htmlFor="title">
+                            Image
+                        </InputLabel>
+                        <FileUploader
+                            classes="mw-100"
+                            label="Sélectionner l'image de votre communauté ici"
+                            handleChange={(file) => {
+                                setFile(file);
+                            }} name="file" types={fileTypes} 
                         />
                     </FormGroup>
 

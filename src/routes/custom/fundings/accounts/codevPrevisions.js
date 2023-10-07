@@ -53,7 +53,7 @@ class CodevPrevisions extends Component {
                     <table className='table table-striped table-bordered' style={{ width: '90%', marginLeft: '5%' }}>
                         <thead>
                             <th>Code</th>
-                            <th>Date de versement</th>
+                            <th>Echéance</th>
                             <th>Montant</th>
                             <th>Status</th>
                         </thead>

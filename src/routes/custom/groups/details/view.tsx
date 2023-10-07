@@ -13,7 +13,7 @@ const View = (props) => {
     const [group, setGroup] = useState(null);
 
     useEffect(() => {
-        getGroup(props.match.params.id ? ("grp_"+props.match.params.id+"").toLowerCase() : props.authUser.referralId);
+        getGroup(props.match.params.id ? props.match.params.id : props.authUser.referralId);
     }, []);
 
     const getGroup = (reference) => {
@@ -35,7 +35,7 @@ const View = (props) => {
                 title={"Détails du groupe"}
             />
             <RctCollapsibleCard>
-                <GroupDetails id={props.match.params.id ? ("grp_"+props.match.params.id+"").toLowerCase() : props.authUser.referralId} />
+                <GroupDetails id={props.match.params.id ? props.match.params.id : props.authUser.referralId} />
             </RctCollapsibleCard>
         </>
     );

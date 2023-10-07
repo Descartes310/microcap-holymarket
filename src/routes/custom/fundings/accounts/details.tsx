@@ -1,19 +1,21 @@
+import '../resources/index.css';
 import { connect } from 'react-redux';
 import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
 import AccountService from 'Services/accounts';
 import CodevPrevisions from './codevPrevisions';
+import { Input as InputStrap } from 'reactstrap';
 import { setRequestGlobalAction } from 'Actions';
 import DebitAccount from 'Components/DebitAccount';
 import React, { useState, useEffect } from 'react';
 import CreditAccount from 'Components/CreditAccount';
 import { getPriceWithCurrency } from 'Helpers/helpers';
 import { Card, CardBody, CardTitle } from 'reactstrap';
-import { FormGroup, Input as InputStrap } from 'reactstrap';
+import TimeFromMoment from 'Components/TimeFromMoment';
+import { FUNDING, joinUrlWithParamsId } from 'Url/frontendUrl';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
-import { FUNDING, joinUrlWithParamsId } from 'Url/frontendUrl';
 
 const Details = (props) => {
 
@@ -71,6 +73,11 @@ const Details = (props) => {
         .finally(() => {
             props.setRequestGlobalAction(false);
         })
+    }
+
+    const getDetails = (keys) => {
+        const details = account?.details.find(d => keys.includes(d.type));
+        return details ? details.value : null
     }
 
     const onStripeSubmit = (token, amount) => {
@@ -136,17 +143,38 @@ const Details = (props) => {
                             <CardBody>
                                 <CardTitle className="d-flex justify-content-between">
                                     <div style={{ flex: 1 }}>
-                                        <h1 className='fw-bold mt-10' style={{ fontSize: '2.5rem' }}>{account?.label}</h1>
-                                        <h3>{account?.userName}</h3>
+                                        { getDetails(['IBAN', 'BIC']) && (
+                                            <>
+                                                <h2 className='fw-bold mt-10'>Reference</h2>
+                                                { getDetails(['IBAN']) && <p>IBAN: {getDetails(['IBAN'])}</p> }
+                                                { getDetails(['BIC']) && <p>BIC: {getDetails(['BIC'])}</p> }
+                                            </>
+                                        )}
+                                        { getDetails(['BANK_NAME', 'AGENCY_NAME']) && (
+                                            <>
+                                                <h2 className='fw-bold mt-10'>Domiciliation</h2>
+                                                { getDetails(['BANK_NAME']) && <p>Etablissement: {getDetails(['BANK_NAME'])}</p> }
+                                                { getDetails(['AGENCY_NAME']) && <p>Agence: {getDetails(['AGENCY_NAME'])}</p> }
+                                            </>
+                                        )}
+                                        { getDetails(['ADVISOR_NAME', 'ADVISOR_PHONE', 'ADVISOR_EMAIL']) && (
+                                            <>
+                                                <h2 className='fw-bold mt-10'>Conseiller</h2>
+                                                { getDetails(['ADVISOR_NAME']) && <p>Noms: {getDetails(['ADVISOR_NAME'])}</p> }
+                                                { getDetails(['ADVISOR_PHONE']) && <p>Télephone: {getDetails(['ADVISOR_PHONE'])}</p> }
+                                                { getDetails(['ADVISOR_EMAIL']) && <p>Adresse email: {getDetails(['ADVISOR_EMAIL'])}</p> }
+                                            </>
+                                        )}
+                                        {/* <h3>{account?.userName}</h3> */}
                                     </div>
                                     <div className='d-flex flex-column align-items-end' style={{ flex: 1 }}>
-                                        <div>
+                                        {/* <div>
                                             <h3>Solde</h3>
                                             <h1 className='fw-bold mt-10' style={{ fontSize: '2.5rem' }}>{getPriceWithCurrency(account?.balance, account?.currencyCode)}</h1>
-                                        </div>
+                                        </div> */}
                                         { account?.accountType?.type === 'PRIMARY' && (
                                             <div>
-                                                <Button
+                                                {/* <Button
                                                     color="primary"
                                                     variant="contained"
                                                     className="text-white font-weight-bold"
@@ -161,7 +189,7 @@ const Details = (props) => {
                                                     onClick={() => setShowDebitAccountBox(true)}
                                                 >
                                                     Décaisser
-                                                </Button>
+                                                </Button> */}
                                                 { account?.hasPrevision && (
                                                     <Button
                                                         color="primary"
@@ -169,7 +197,7 @@ const Details = (props) => {
                                                         onClick={() => setShowTicketBox(true)}
                                                         className="text-white font-weight-bold ml-10"
                                                     >
-                                                        Tickets de versement
+                                                        Echéancier
                                                     </Button>
                                                 )}
                                             </div>
@@ -191,8 +219,8 @@ const Details = (props) => {
                                     </div>
                                 </CardTitle>
                                 <CardBody>
-                                    <div className='row align-items-end' style={{ marginTop: '5em' }}>
-                                        <FormGroup className="col-md-6 col-sm-12 has-wrapper">
+                                    <div className='row align-items-end' style={{ marginTop: '2em' }}>
+                                        <div className="col-md-4 col-sm-12 has-wrapper">
                                             <InputLabel className="text-left" htmlFor="startDate">
                                                 Date de début
                                             </InputLabel>
@@ -205,8 +233,8 @@ const Details = (props) => {
                                                 value={startDate}
                                                 onChange={(e) => setStartDate(e.target.value)}
                                             />
-                                        </FormGroup>
-                                        <FormGroup className="col-md-6 col-sm-12 has-wrapper">
+                                        </div>
+                                        <div className="col-md-4 col-sm-12 has-wrapper">
                                             <InputLabel className="text-left" htmlFor="endDate">
                                                 Date de fin
                                             </InputLabel>
@@ -219,7 +247,13 @@ const Details = (props) => {
                                                 className="input-lg"
                                                 onChange={(e) => setEndDate(e.target.value)}
                                             />
-                                        </FormGroup>
+
+                                        </div>
+                                        <div className="col-md-4 col-sm-12 has-wrapper balance-details">
+                                            <p>Solde</p>
+                                            <p className='fw-bold mt-10' style={{ fontSize: '2.5rem' }}>{getPriceWithCurrency(account?.balance, account?.currencyCode)}</p>
+                                        </div>
+
                                     </div>
                                     <div style={{ marginTop: '3em' }}>
                                         <div>
@@ -228,6 +262,8 @@ const Details = (props) => {
                                                 <thead>
                                                     <tr>
                                                         <th>Libellé</th>
+                                                        <th>Date opération</th>
+                                                        <th>Date valeur</th>
                                                         <th>Crédit</th>
                                                         <th>Débit</th>
                                                     </tr>
@@ -240,6 +276,20 @@ const Details = (props) => {
                                                                     <div className="media">
                                                                         <div className="media-body">
                                                                             <h4 className="m-0 text-dark">{mouvement.reason}</h4>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    <div className="media">
+                                                                        <div className="media-body">
+                                                                            <h4 className="m-0 text-dark"><TimeFromMoment time={mouvement.createdAt} showFullDate /></h4>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    <div className="media">
+                                                                        <div className="media-body">
+                                                                            <h4 className="m-0 text-dark"><TimeFromMoment time={mouvement.createdAt} showFullDate /></h4>
                                                                         </div>
                                                                     </div>
                                                                 </td>
@@ -272,6 +322,8 @@ const Details = (props) => {
                                                 <thead>
                                                     <tr>
                                                         <th>Libellé</th>
+                                                        <th>Date opération</th>
+                                                        <th>Date valeur</th>
                                                         <th>Crédit</th>
                                                         <th>Débit</th>
                                                     </tr>
@@ -284,6 +336,20 @@ const Details = (props) => {
                                                                     <div className="media">
                                                                         <div className="media-body">
                                                                             <h4 className="m-0 text-dark">{mouvement.reason}</h4>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    <div className="media">
+                                                                        <div className="media-body">
+                                                                            <h4 className="m-0 text-dark"><TimeFromMoment time={mouvement.createdAt} showFullDate /></h4>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    <div className="media">
+                                                                        <div className="media-body">
+                                                                            <h4 className="m-0 text-dark"><TimeFromMoment time={mouvement.createdAt} showFullDate /></h4>
                                                                         </div>
                                                                     </div>
                                                                 </td>
@@ -329,7 +395,7 @@ const Details = (props) => {
                     <CodevPrevisions
                         show={showTicketBox}
                         reference={account?.reference}
-                        title='Tickets de versements'
+                        title='Echéancier'
                         onClose={() => setShowTicketBox(false)}
                     />
                 )}

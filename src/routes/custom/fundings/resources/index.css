@@ -1,0 +1,6 @@
+.balance-details {
+    display: flex;
+    flex-direction: column;
+    line-height: 15px;
+    align-items: flex-end;
+}

@@ -59,6 +59,9 @@ const Create = (props) => {
             setPrice(product.price);
             setDescription(product.description);
             setRange(getProductRanges().find(pr => pr.value === product.range));
+            if(product?.account) {
+                setIsIndirectSell(true);
+            }
         }
     }, [product]);
 
@@ -113,7 +116,7 @@ const Create = (props) => {
         }
 
         if(isIndirectSell) {
-            data.indirectSell = isIndirectSell || product?.mirrorAccount
+            data.indirectSell = isIndirectSell || product?.mirrorAccount || product?.account
         }
 
         if (file)
@@ -147,16 +150,16 @@ const Create = (props) => {
 
         props.setRequestGlobalAction(true);
         ProductService.createProduct(data, { fileData: ['image'], multipart: true })
-            .then(() => {
-                NotificationManager.success('Le produit a été crée avec succès !');
-                props.history.push(MARKETPLACE.STORE.PRODUCT.LIST);
-            })
-            .catch(err => {
-                console.log(err);
-                NotificationManager.error('Une erreur est survenu lors de la création du produit !');
-            }).finally(() => {
-                props.setRequestGlobalAction(false);
-            });
+        .then(() => {
+            NotificationManager.success('Le produit a été crée avec succès !');
+            props.history.push(MARKETPLACE.STORE.PRODUCT.LIST);
+        })
+        .catch(err => {
+            console.log(err);
+            NotificationManager.error('Une erreur est survenu lors de la création du produit !');
+        }).finally(() => {
+            props.setRequestGlobalAction(false);
+        });
     }
 
     return (
@@ -351,8 +354,8 @@ const Create = (props) => {
                                 <FormControlLabel control={
                                     <Checkbox
                                         color="primary"
-                                        checked={isIndirectSell || product?.mirrorAccount}
-                                        disabled={product?.mirrorAccount}
+                                        checked={isIndirectSell || product?.mirrorAccount || product?.account}
+                                        disabled={product?.mirrorAccount || product?.account}
                                         onChange={() => {
                                             if(isIndirectSell) {
                                                 setSelectedPieces([]);

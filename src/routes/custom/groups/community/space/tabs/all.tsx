@@ -25,9 +25,9 @@ const All = (props) => {
 
     const getGroups = () => {
         props.setRequestGlobalAction(true),
-            GroupService.getCommunityDatas({ belongs: false })
-                .then(response => setGroups(response))
-                .finally(() => props.setRequestGlobalAction(false))
+        GroupService.getCommunityDatas({ belongs: false })
+        .then(response => setGroups(response))
+        .finally(() => props.setRequestGlobalAction(false))
     }
 
     const sendRequest = (motivation) => {
@@ -70,10 +70,19 @@ const All = (props) => {
                         ) : (
                             <div className='row'>
                                 {list && list.map((item, index) => (
-                                    <CommunityItemGrid key={index} community={item} openDetails={() => {
-                                        setGroup(item);
-                                        setShowDetailsModal(true);
-                                    }} />
+                                    <CommunityItemGrid 
+                                        key={index}
+                                        community={item}
+                                        authUser={props.authUser}
+                                        onAskRequest={() => {
+                                            setShowRequestModal(true);
+                                            setGroup(item);
+                                        }}
+                                        openDetails={() => {
+                                            setGroup(item);
+                                            setShowDetailsModal(true);
+                                        }}
+                                    />
                                 ))}
                             </div>
                         )}

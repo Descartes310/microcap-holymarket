@@ -31,13 +31,13 @@ const List = (props) => {
 
     const approvedOrder = (order, status) => {
         setSelectedOrder(order);
-        if(order.mirrorAccount && status) {
+        if((order.mirrorAccount || order.account) && status) {
             setShowAccountInfoModal(true);
         } else {
-            props.setRequestGlobalAction(true);
-            OrderService.approvedOrder(order.id, { status })
-            .then(() => getPurchases())
-            .finally(() => props.setRequestGlobalAction(false))
+            // props.setRequestGlobalAction(true);
+            // OrderService.approvedOrder(order.id, { status })
+            // .then(() => getPurchases())
+            // .finally(() => props.setRequestGlobalAction(false))
         }
     }
 

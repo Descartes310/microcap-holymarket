@@ -118,7 +118,7 @@ const Request = (props) => {
                                                                 size="small"
                                                                 variant="contained"
                                                                 onClick={() => {
-                                                                    props.history.push(joinUrlWithParamsId(GROUP.DETAILS.VIEW, item.groupReference.split('_')[1]))
+                                                                    props.history.push(joinUrlWithParamsId(GROUP.DETAILS.VIEW, item.groupReference))
                                                                 }}
                                                                 className="btn-primary mb-10 text-white"
                                                             >
@@ -148,7 +148,7 @@ const Request = (props) => {
                                                                         size="small"
                                                                         variant="contained"
                                                                         onClick={() => {
-                                                                            setStatus(false);
+                                                                            setStatus(true);
                                                                             setSelectedMember(item);
                                                                             setShowConfirmBox(true);
                                                                         }}

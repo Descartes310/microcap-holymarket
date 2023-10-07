@@ -9,7 +9,7 @@ import AppConfig from 'Constants/AppConfig';
 import { NotificationManager } from 'react-notifications';
 import NavLinks, { MenuItem } from "Components/Sidebar/NavLinks";
 
-export const DEFAULT_IMAGE = 'https://skillz4kidzmartialarts.com/wp-content/uploads/2017/04/default-image-620x600.jpg';
+export const DEFAULT_IMAGE = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTB7L1NxyNX_Q6qbVd2JAEx3k_CXQ1R-9VAJyVYlEJ6&s';
 
 const TABLE_OF_256_HEXADECIMAL = (function () {
     const arr = [];
