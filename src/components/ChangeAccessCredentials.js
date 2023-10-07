@@ -52,18 +52,18 @@ class ChangeAccessCredentials extends Component {
         .finally(() => this.props.setRequestGlobalAction(false))
     }
 
-    activatePass = () => {
-        this.props.setRequestGlobalAction(true);
+    // activatePass = () => {
+    //     this.props.setRequestGlobalAction(true);
 
-        UserService.activatePass(this.state.pass).then((response) => {
-            console.log(response);
-        })
-        .catch(err => {
-            console.log(err);
-            NotificationManager.error("Une erreur s'est produite, veuillez reessayer plutard.");
-        })
-        .finally(() => this.props.setRequestGlobalAction(false))
-    }
+    //     UserService.activatePass(this.state.pass).then((response) => {
+    //         console.log(response);
+    //     })
+    //     .catch(err => {
+    //         console.log(err);
+    //         NotificationManager.error("Une erreur s'est produite, veuillez reessayer plutard.");
+    //     })
+    //     .finally(() => this.props.setRequestGlobalAction(false))
+    // }
 
      onSubmitLogin = () => {
 
@@ -146,9 +146,9 @@ class ChangeAccessCredentials extends Component {
                 )}
             >
                 <RctCardContent>
-                    <FormGroup tag="fieldset">
-                        <h2 className="mb-10 mb-20">Profil utilisateur</h2>
+                    {/* <FormGroup tag="fieldset">
                         <FormGroup className="has-wrapper">
+                            <h2 className="mb-10 mb-20">Profil utilisateur</h2>
                             <InputLabel className="text-left" htmlFor="login">
                                 Réference du pass
                             </InputLabel>
@@ -169,7 +169,7 @@ class ChangeAccessCredentials extends Component {
                         >
                             Valider
                         </Button>
-                    </FormGroup>
+                    </FormGroup> */}
                     <FormGroup tag="fieldset">
                         <h2 className="mb-10 mb-20 mt-20">Login</h2>
                         <FormGroup className="has-wrapper">

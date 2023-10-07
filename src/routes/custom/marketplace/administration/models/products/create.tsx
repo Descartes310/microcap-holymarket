@@ -47,6 +47,7 @@ const Create = (props) => {
     const [isAggregation, setIsAggregation] = useState(false);
     const [accountTypeUnit, setAccountTypeUnit] = useState(null);
     const [selectedProfiles, setSelectedProfiles] = useState([]);
+    const [userAccountType, setUserAccountType] = useState(null);
     const [isMirrorAccount, setIsMirrorAccount] = useState(false);
     const [minAccountbalance, setMinAccountBalance] = useState(null);
     const [maxAccountBalance, setMaxAccountBalance] = useState(null);
@@ -134,6 +135,11 @@ const Create = (props) => {
             profiles: selectedProfiles.map(sp => sp.reference)
         }
 
+        if (specialType?.value == 'PASS' && !userAccountType) {
+            NotificationManager.error('Un type de compte est nécessaire');
+            return;
+        }
+
         if (isAccount && (!minAccountbalance || !maxAccountBalance || !accountUnit)) {
             NotificationManager.error('Les détails du compte sont invalides');
             return;
@@ -151,6 +157,9 @@ const Create = (props) => {
 
         if(specialType) {
             data.specialType = specialType.value;
+            if(specialType?.value == 'PASS') {
+                data.userAccountTypeReference = userAccountType.reference
+            }
         }
 
         if(isAggregation) {
@@ -171,20 +180,20 @@ const Create = (props) => {
             data.sale_unit_reference = saleTypeUnit.reference;
         }
 
-        //console.log(data);
+//        console.log(data);
 
         props.setRequestGlobalAction(true);
         ProductService.createProductModel(data, { fileData: ['image'], multipart: true })
-            .then(() => {
-                NotificationManager.success('Le modèle a été crée avec succès !');
-                props.history.push(MARKETPLACE.MODEL.PRODUCT.LIST);
-            })
-            .catch(err => {
-                console.log(err);
-                NotificationManager.error('Une erreur est survenu lors de la création du modèle !');
-            }).finally(() => {
-                props.setRequestGlobalAction(false);
-            });
+        .then(() => {
+            NotificationManager.success('Le modèle a été crée avec succès !');
+            props.history.push(MARKETPLACE.MODEL.PRODUCT.LIST);
+        })
+        .catch(err => {
+            console.log(err);
+            NotificationManager.error('Une erreur est survenu lors de la création du modèle !');
+        }).finally(() => {
+            props.setRequestGlobalAction(false);
+        });
     }
 
     return (
@@ -238,12 +247,31 @@ const Create = (props) => {
                                         label: "Djangui Plan", value: "CODEV"
                                     }, {
                                         label: "Deal Plan", value: "CODEV_DEAL_PLAN"
+                                    }, {
+                                        label: "Pass MicroCap", value: "PASS"
                                     }
                                 ]}
                                 renderInput={(params) => <TextField {...params} variant="outlined" />}
                             />
                         </FormGroup>
                     </div>
+                    { specialType?.value == 'PASS' && (
+                        <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                            <InputLabel className="text-left">
+                                Profile utilisateur associé
+                            </InputLabel>
+                            <Autocomplete
+                                options={profiles}
+                                value={userAccountType}
+                                id="combo-box-demo"
+                                onChange={(__, item) => {
+                                    setUserAccountType(item);
+                                }}
+                                getOptionLabel={(option) => option.label}
+                                renderInput={(params) => <TextField {...params} variant="outlined" />}
+                            />
+                        </div>
+                    )}
                     <div className="row">
                         <FormGroup className={`${specialType?.value == 'CODEV_DEAL_PLAN' ? 'col-md-6' : 'col-md-12'} col-sm-12 has-wrapper`}>
                             <InputLabel className="text-left" htmlFor="description">

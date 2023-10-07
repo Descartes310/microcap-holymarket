@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import PassDetails from './PassDetails';
 import OrderService from 'Services/orders';
 import { withRouter } from "react-router-dom";
 import Button from '@material-ui/core/Button';
@@ -16,6 +17,7 @@ const List = (props) => {
 
     const [orders, setOrders] = useState([]);
     const [order, setOrder] = useState(null);
+    const [showPassBox, setShowPassBox] = useState(false);
     const [showAddFileBox, setShowAddFileBox] = useState(false);
     const [showParticipants, setShowParticipants] = useState(false);
 
@@ -121,6 +123,19 @@ const List = (props) => {
                                                             Souscripteurs
                                                         </Button>
                                                     )}
+                                                    {item.status == 'PAID' && item?.type == "PASS" && (
+                                                        <Button
+                                                            color="primary"
+                                                            variant="contained"
+                                                            className="text-white font-weight-bold"
+                                                            onClick={() => {
+                                                                setOrder(item);
+                                                                setShowPassBox(true);
+                                                            }}
+                                                        >
+                                                            Pass
+                                                        </Button>
+                                                    )}
                                                 </td>
                                                 <td>
                                                     { 
@@ -160,7 +175,7 @@ const List = (props) => {
                 )}
             />
 
-            { order && (
+            { (order  && showParticipants) && (
                 <CodevParticipants
                     order={order}
                     show={showParticipants}
@@ -172,7 +187,18 @@ const List = (props) => {
                 />
             )}
 
-            { order && (
+            { (order && showPassBox) && (
+                <PassDetails
+                    order={order}
+                    show={showPassBox}
+                    onClose={() => {
+                        setOrder(null);
+                        setShowPassBox(false);
+                    }}
+                />
+            )}
+
+            { (order && showAddFileBox) && (
                 <AddFileToOrderModal
                     order={order}
                     title={'Renseigner le dossier commande'} 

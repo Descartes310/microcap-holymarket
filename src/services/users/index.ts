@@ -115,4 +115,12 @@ export default class UserService {
         return makeRequest('put', Routes.SET_AS_NOTIFICATION(id));
     }
 
+    static transferPass(reference: string, data: any): Promise<any> {
+        return makeRequest('post', Routes.TRANSFER_PASS(reference), data);
+    }
+
+    static findPassFromOrder(reference: string): Promise<any> {
+        return makeRequest('get', Routes.FIND_PASS_FROM_ORDER(reference));
+    }
+
 }

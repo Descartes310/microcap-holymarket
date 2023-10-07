@@ -52,22 +52,20 @@ const CreateAccessBox = (props) => {
 
     const onSubmit = () => {
 
-        if(!user) {
-            NotificationManager.error("Le formulaire est mal renseigné");
-            return;
-        }
-        
-        let data = {
-            reference: userReference
-        };
-        
+        let data = {};
+
         if(newSubscription) {
-            data.subscription_reference = subscriptionReference;
-        } else {
-            if(!login || !password || !role) {
+            if(!subscriptionReference) {
                 NotificationManager.error("Le formulaire est mal renseigné");
                 return;
             }
+            data.subscription_reference = subscriptionReference;
+        } else {
+            if(!login || !password || !role || !user) {
+                NotificationManager.error("Le formulaire est mal renseigné");
+                return;
+            }
+            data.reference = userReference;
             data.login = login;
             data.password = password;
             data.role_reference = role.reference; 
@@ -105,44 +103,6 @@ const CreateAccessBox = (props) => {
             )}
         >
             <RctCardContent>
-                <FormGroup className="has-wrapper">
-                    <InputLabel className="text-left" htmlFor="userReference">
-                        Réference utilisateur
-                    </InputLabel>
-                    <InputStrap
-                        required
-                        type="text"
-                        id="userReference"
-                        name="userReference"
-                        className="input-lg"
-                        onChange={(e) => setUserReference(e.target.value)}
-                    />
-                </FormGroup>
-                {user && (
-                    <>
-                        <FormGroup className="has-wrapper">
-                            <InputStrap
-                                disabled
-                                className="input-lg"
-                                value={user.userName}
-                            />
-                        </FormGroup>
-                        <FormGroup className="has-wrapper">
-                            <InputStrap
-                                disabled
-                                className="input-lg"
-                                value={user.email}
-                            />
-                        </FormGroup>
-                        <FormGroup className="has-wrapper">
-                            <InputStrap
-                                disabled
-                                className="input-lg"
-                                value={getReferralTypeLabel(user.referralType)}
-                            />
-                        </FormGroup>
-                    </>
-                )}
                 <FormGroup>
                     <Checkbox
                         color="primary"
@@ -168,6 +128,44 @@ const CreateAccessBox = (props) => {
                     </FormGroup> 
                 :
                     <>
+                        <FormGroup className="has-wrapper">
+                            <InputLabel className="text-left" htmlFor="userReference">
+                                Réference utilisateur
+                            </InputLabel>
+                            <InputStrap
+                                required
+                                type="text"
+                                id="userReference"
+                                name="userReference"
+                                className="input-lg"
+                                onChange={(e) => setUserReference(e.target.value)}
+                            />
+                        </FormGroup>
+                        {user && (
+                            <>
+                                <FormGroup className="has-wrapper">
+                                    <InputStrap
+                                        disabled
+                                        className="input-lg"
+                                        value={user.userName}
+                                    />
+                                </FormGroup>
+                                <FormGroup className="has-wrapper">
+                                    <InputStrap
+                                        disabled
+                                        className="input-lg"
+                                        value={user.email}
+                                    />
+                                </FormGroup>
+                                <FormGroup className="has-wrapper">
+                                    <InputStrap
+                                        disabled
+                                        className="input-lg"
+                                        value={getReferralTypeLabel(user.referralType)}
+                                    />
+                                </FormGroup>
+                            </>
+                        )}
                         <FormGroup className="has-wrapper">
                             <InputLabel className="text-left" htmlFor="login">
                                 Login
