@@ -937,11 +937,11 @@ export const getProductRanges = () => {
 export const getSellWay = () => {
     return [
         {
-            label: 'Vente classique',
+            label: 'Produits MicroCap',
             value: 'CLASSIC'
         },
         {
-            label: 'Vente privée',
+            label: 'Ventes promotionnelles',
             value: 'PRIVATE'
         },
         {

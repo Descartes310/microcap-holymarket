@@ -57,7 +57,7 @@ const Shop = (props) => {
                                 >
                                     <Tab
                                         icon={<i className="zmdi zmdi-group-work" />}
-                                        label={"Ventes classiques"}
+                                        label={"Produits MicroCap"}
                                     />
                                     <Tab
                                         icon={<i className="ti-world"></i>}
@@ -65,7 +65,7 @@ const Shop = (props) => {
                                     />
                                     <Tab
                                         icon={<i className="icon-shield"></i>}
-                                        label={"Ventes privées"}
+                                        label={"Ventes promotionnelles"}
                                     />
                                     <Tab
                                         icon={<i className="zmdi zmdi-store"></i>}

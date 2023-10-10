@@ -8,10 +8,10 @@ import NotificationType from "Enums/NotificationType";
 import { List as ListMaterial } from '@material-ui/core';
 import SingleTitleText from "Components/SingleTitleText";
 import NotificationService from "Services/notifications";
+import AccountAgreement from "Components/AccountAgreement";
 import Item from "Routes/custom/notifications/components/Item";
 import ActivationBox from "Routes/custom/notifications/ActivationBox";
 import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
-import ActivationPassBox from "Routes/custom/notifications/ActivationPassBox";
 import CodevInvitationBox from "Routes/custom/notifications/CodevInvitationBox";
 
 class Unread extends Component {
@@ -25,6 +25,7 @@ class Unread extends Component {
             showActivationBox: false,
             showActivationPassBox: false,
             showCodevInvitationBox: false,
+            showAccountActivationBox: false,
             showConfirmCodevInvitationBox: false
         }
     }
@@ -67,12 +68,13 @@ class Unread extends Component {
         let accountId = notification.details.find(nd => nd.type === "ACCOUNT_ID")?.value;
         let orderId = notification.details.find(nd => nd.type === "ORDER_ID")?.value;
         let notificationId = notification.id;
-        this.props.setRequestGlobalAction(true);
-        AccountService.activeAccount(accountId, { orderId, notificationId }).then(() => {
-            window.location.reload();
-        }).finally(() => {
-            this.props.setRequestGlobalAction(false);
-        })
+        this.setState({ showAccountActivationBox: true, notification })
+        // this.props.setRequestGlobalAction(true);
+        // AccountService.activeAccount(accountId, { orderId, notificationId }).then(() => {
+        //     window.location.reload();
+        // }).finally(() => {
+        //     this.props.setRequestGlobalAction(false);
+        // })
     };
 
     onCodevInvitationClick = (notification) => {
@@ -85,7 +87,7 @@ class Unread extends Component {
 
     render() {
         const { notifications, loading, showActivationBox, notification, 
-            showCodevInvitationBox, showConfirmCodevInvitationBox } = this.state;
+            showCodevInvitationBox, showConfirmCodevInvitationBox, showAccountActivationBox } = this.state;
 
         if (loading) {
             return (<RctSectionLoader />);
@@ -138,6 +140,19 @@ class Unread extends Component {
                         notification={notification}
                         show={showCodevInvitationBox}
                         onClose={() => this.setState({ showCodevInvitationBox: false })}
+                    />
+                )}
+
+                {notification && showAccountActivationBox && (
+                    <AccountAgreement 
+                        isUserValidating={true}
+                        show={showAccountActivationBox}
+                        notification_id={notification.id}
+                        title={'Convention de compte'}
+                        onClose={() => {
+                            this.setState({ showAccountActivationBox: false, notification: null })
+                        }}
+                        accountReference={notification.details.find(nd => nd.type === "ACCOUNT_REFERENCE")?.value}
                     />
                 )}
 

@@ -111,6 +111,7 @@ class ActivationBox extends Component {
                     this.logoutUser();
                 }, 2000);
             }
+            this.props.onClose();
         })
         .catch((err) => {
             console.log(err);
@@ -118,7 +119,6 @@ class ActivationBox extends Component {
         })
         .finally(() => {
             this.setState({ loading: false });
-            this.props.onClose();
             this.props.setRequestGlobalAction(false);
         });
     };

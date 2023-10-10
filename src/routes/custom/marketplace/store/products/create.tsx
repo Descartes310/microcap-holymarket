@@ -11,7 +11,6 @@ import { getProductRanges } from 'Helpers/helpers';
 import TextField from '@material-ui/core/TextField';
 import CommercialService from 'Services/commercials';
 import { FileUploader } from "react-drag-drop-files";
-import { getIndirectSaleProcess } from 'Helpers/datas';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { NotificationManager } from 'react-notifications';
 import Checkbox from "@material-ui/core/Checkbox/Checkbox";
@@ -19,6 +18,7 @@ import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { Form, FormGroup, Input as InputStrap } from 'reactstrap';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
+import { getIndirectSaleProcess, uneditableProductModelType } from 'Helpers/datas';
 import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
 
 const fileTypes = ["JPG", "PNG", "GIF", "JPEG"];
@@ -35,6 +35,7 @@ const Create = (props) => {
     const [products, setProducts] = useState([]);
     const [product, setProduct] = useState(null);
     const [userFiles, setUserFiles] = useState([]);
+    const [updatable, setUpdatable] = useState(true);
     const [description, setDescription] = useState('');
     const [selectedPieces, setSelectedPieces] = useState([]);
     const [isIndirectSell, setIsIndirectSell] = useState(false);
@@ -62,6 +63,7 @@ const Create = (props) => {
             if(product?.account) {
                 setIsIndirectSell(true);
             }
+            setUpdatable(!uneditableProductModelType.includes(product.specialType));
         }
     }, [product]);
 
@@ -127,7 +129,7 @@ const Create = (props) => {
         }
 
         if (range.value === 'COMMUNITY')
-            data.groupReference = group.reference;
+            data.groupReference = group.groupReference;
 
         if (acceptManyPayment) {
             if (!maximumDaysToPay || !minimalPercentageForFirstPayment) {
@@ -213,8 +215,9 @@ const Create = (props) => {
                                         id="label"
                                         type="text"
                                         name='label'
-                                        className="input-lg"
                                         value={label}
+                                        disabled={!updatable}
+                                        className="input-lg"
                                         onChange={(e) => setLabel(e.target.value)}
                                     />
                                 </FormGroup>
@@ -227,8 +230,9 @@ const Create = (props) => {
                                         id="code"
                                         type="text"
                                         name='code'
-                                        className="input-lg"
                                         value={code}
+                                        className="input-lg"
+                                        disabled={!updatable}
                                         onChange={(e) => setCode(e.target.value)}
                                     />
                                 </FormGroup>
@@ -244,6 +248,7 @@ const Create = (props) => {
                                     name='description'
                                     className="input-lg"
                                     value={description}
+                                    disabled={!updatable}
                                     onChange={(e) => setDescription(e.target.value)}
                                 />
                             </FormGroup>
@@ -289,7 +294,7 @@ const Create = (props) => {
                                             onChange={(__, item) => {
                                                 setGroup(item);
                                             }}
-                                            getOptionLabel={(option) => option.label}
+                                            getOptionLabel={(option) => option.userName}
                                             renderInput={(params) => <TextField {...params} variant="outlined" />}
                                         />
                                     </div>
@@ -301,9 +306,9 @@ const Create = (props) => {
                                 </InputLabel>
                                 <FileUploader
                                     classes="mw-100"
+                                    disabled={!updatable}
                                     label="Sélectionner l'image de votre package ici"
-                                    handleChange={(file) => {
-                                        setFile(file);    }} name="file" types={fileTypes} />
+                                    handleChange={(file) => { setFile(file);}} name="file" types={fileTypes} />
                             </FormGroup>
                             <FormGroup className="col-sm-12 has-wrapper">
                                 <FormControlLabel control={
@@ -355,7 +360,7 @@ const Create = (props) => {
                                     <Checkbox
                                         color="primary"
                                         checked={isIndirectSell || product?.mirrorAccount || product?.account}
-                                        disabled={product?.mirrorAccount || product?.account}
+                                        disabled={product?.mirrorAccount || product?.account || !updatable}
                                         onChange={() => {
                                             if(isIndirectSell) {
                                                 setSelectedPieces([]);

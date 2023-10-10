@@ -56,4 +56,16 @@ export default class AccountService {
     static deleteConsolidation(consolidation: string, consolidated: string): Promise<any> {
         return makeRequest('delete', Routes.REMOVE_CONSOLIDATION(consolidation, consolidated));
     }
+
+    static getAgreements(reference: string): Promise<any> {
+        return makeRequest('get', Routes.GET_AGREEMENTS(reference));
+    }
+
+    static setAgreement(reference: string, data: any, config: any): Promise<any> {
+        return makeRequest('post', Routes.SET_AGREEMENT(reference), data, config);
+    }
+
+    static setAgreementTemplate(reference: string, data: any, config: any): Promise<any> {
+        return makeRequest('post', Routes.SET_AGREEMENT_TEMPLATE(reference), data, config);
+    }
 }

@@ -45,7 +45,7 @@ class Read extends Component {
     };
 
     onFundingActivationClick = (notification) => {
-        let accountId = notification.details.find(nd => nd.type === "ACCOUNT_ID")?.value;
+        let accountId = notification.details.find(nd => nd.type === "ACCOUNT_REFERENCE")?.value;
         let orderId = notification.details.find(nd => nd.type === "ORDER_ID")?.value;
         let notificationId = notification.id;
         this.props.setRequestGlobalAction(true);

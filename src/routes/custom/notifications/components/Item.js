@@ -58,9 +58,9 @@ class Item extends Component {
                             { (notification.type === NotificationType.ACTIVATE_FUNDING_ACCOUNT && notification.treatedAt == null) && (
                                 <DropdownItem onClick={() => onFundingActivationClick()}>Activer le compte</DropdownItem>
                             )}
-                            { notification.status === NotificationType.UNREAD && (
+                            {/* { notification.status === NotificationType.UNREAD && (
                                 <DropdownItem onClick={() => this.markAsRead()}>Marquer comme lue</DropdownItem>
-                            )}
+                            )} */}
                         </DropdownMenu>
                     </Dropdown>
                 </div>

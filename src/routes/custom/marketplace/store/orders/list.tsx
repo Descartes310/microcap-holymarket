@@ -6,22 +6,25 @@ import CustomList from "Components/CustomList";
 import { setRequestGlobalAction } from 'Actions';
 import React, { useState, useEffect } from 'react';
 import { getOrderStatusItem } from 'Helpers/helpers';
-import TimeFromMoment from 'Components/TimeFromMoment'
+import TimeFromMoment from 'Components/TimeFromMoment';
+import AccountAgreement from 'Components/AccountAgreement';
 import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
 
 const List = (props) => {
 
     const [purchases, setPurchases] = useState([]);
+    const [selectedItem, setSelectedItem] = useState(null);
+    const [showAccountAgreementBox, setShowAccountAgreementBox] = useState(false);
 
     useEffect(() => {
         getPurchases();
     }, []);
 
     const getPurchases = () => {
-        props.setRequestGlobalAction(true),
-            OrderService.getPurchases()
-                .then(response => setPurchases(response))
-                .finally(() => props.setRequestGlobalAction(false))
+        props.setRequestGlobalAction(true);
+        OrderService.getPurchases()
+        .then(response => setPurchases(response))
+        .finally(() => props.setRequestGlobalAction(false))
     }
 
     return (
@@ -44,7 +47,7 @@ const List = (props) => {
                                 <table className="table table-hover table-middle mb-0">
                                     <thead>
                                         <tr>
-                                            <th className="fw-bold">#Reference</th>
+                                            <th className="fw-bold">Désignation</th>
                                             <th className="fw-bold">Client</th>
                                             <th className="fw-bold">Telephone</th>
                                             <th className="fw-bold">Date</th>
@@ -58,7 +61,7 @@ const List = (props) => {
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">#{item.reference.split('_').pop().toUpperCase()}</h4>
+                                                            <h4 className="m-0 fw-bold text-dark">{item.label}</h4>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -100,20 +103,33 @@ const List = (props) => {
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <Button
-                                                        color="primary"
-                                                        disabled={true}
-                                                        variant="contained"
-                                                        className="text-white font-weight-bold"
-                                                    >
-                                                        Détails
-                                                    </Button>
+                                                    { ((item.mirrorAccount || item.account) && item.externalReference)  && (
+                                                        <Button
+                                                            color="primary"
+                                                            variant="contained"
+                                                            className="text-white font-weight-bold"
+                                                            onClick={() => {
+                                                                setSelectedItem(item);
+                                                                setShowAccountAgreementBox(true);
+                                                            }}
+                                                        >
+                                                            Convention
+                                                        </Button>
+                                                    )}
                                                 </td>
                                             </tr>
                                         ))}
                                     </tbody>
                                 </table>
                             </div>
+                        )}
+                        { showAccountAgreementBox && selectedItem && (
+                            <AccountAgreement 
+                                show={showAccountAgreementBox}
+                                title={'Convention de compte'}
+                                onClose={() => setShowAccountAgreementBox(false)}
+                                accountReference={selectedItem?.externalReference}
+                            />
                         )}
                     </>
                 )}

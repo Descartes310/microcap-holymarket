@@ -61,7 +61,7 @@ const List = (props) => {
                                 <table className="table table-hover table-middle mb-0">
                                     <thead>
                                         <tr>
-                                            <th className="fw-bold">#Reference</th>
+                                            <th className="fw-bold">Désignation</th>
                                             <th className="fw-bold">Client</th>
                                             <th className="fw-bold">Telephone</th>
                                             <th className="fw-bold">Date</th>
@@ -76,7 +76,7 @@ const List = (props) => {
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">#{item.reference.split('_').pop().toUpperCase()}</h4>
+                                                            <h4 className="m-0 fw-bold text-dark">{item.label}</h4>
                                                         </div>
                                                     </div>
                                                 </td>

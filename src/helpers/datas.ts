@@ -251,3 +251,7 @@ export const getUserAssistanceTypeValue = (value): any => {
     else
         return value;
 }
+
+export const uneditableProductModelType = [
+    "CPMCM"
+]

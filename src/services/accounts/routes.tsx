@@ -13,3 +13,7 @@ export const CREATE_EXTERNAL_ACCOUNTS = 'api/fundings/accounts/externals';
 export const FIND_CONSOLIDATION_BY_REFERENCE = (reference) => `api/fundings/accounts/${reference}/consolidations`;
 export const ADD_CONSOLIDATION = (reference1, reference2) => `api/fundings/accounts/${reference1}/consolidate/${reference2}`;
 export const REMOVE_CONSOLIDATION = (reference1, reference2) => `api/fundings/accounts/${reference1}/consolidate/${reference2}`;
+
+export const SET_AGREEMENT = (reference) => `api/fundings/accounts/${reference}/agreements`;
+export const GET_AGREEMENTS = (reference) => `api/fundings/accounts/${reference}/agreements`;
+export const SET_AGREEMENT_TEMPLATE = (reference) => `api/fundings/accounts/${reference}/agreements/templates`;
