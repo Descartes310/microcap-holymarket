@@ -25,6 +25,12 @@ export default (state = INIT_STATE, action) => {
 
 	switch (action.type) {
 		case CART_ADD_ITEM:
+			console.log("obj", obj);
+			console.log("obj.data", obj.data);
+			console.log("action", action);
+			console.log("action.authId", action.authId);
+			console.log("state.items", state.items);
+			console.log("action.payload", action.payload);
 			obj.data[action.authId] = [...state.items, action.payload];
 			return new Cart(obj);
 
