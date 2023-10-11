@@ -26,7 +26,7 @@ const stripePublishableKey = (function (mode) {
       case 'PRE_PROD':
          return process.env.STRIPE_KEY_TEST;
       case 'PROD':
-         return process.env.STRIPE_KEY_LIVE;
+         return process.env.STRIPE_KEY_TEST;
       default:
          return process.env.STRIPE_KEY_TEST;
    }
