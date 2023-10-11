@@ -93,14 +93,14 @@ const Create = (props) => {
         };
         
         props.setRequestGlobalAction(true);
-        BankService.createSubscription(data).then(response => {
+        BankService.createSubscription(data).then(() => {
             NotificationManager.success("La création a réussie");
-            setTimeout(() => {
-                window.location.reload();
-            }, 2000);
+            // setTimeout(() => {
+            //     window.location.reload();
+            // }, 2000);
         }).catch(err => {
             console.log(err);
-            NotificationManager.error("Une erreur est survenue, veuillez réessayer");
+            NotificationManager.error("Ce compte est introuvable");
         }).finally(() => {
             props.setRequestGlobalAction(false);
         })

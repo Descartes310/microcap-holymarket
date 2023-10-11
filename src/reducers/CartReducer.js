@@ -20,7 +20,7 @@ export default (state = INIT_STATE, action) => {
 	const oldItems = JSON.parse(localStorage.getItem('cartItems'));
 
 	//if (oldCartItemChecked(oldItems)) {
-		obj.data = oldItems;
+	obj.data = oldItems ? oldItems : [];
 	//}
 
 	switch (action.type) {

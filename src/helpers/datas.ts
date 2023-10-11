@@ -254,4 +254,16 @@ export const getUserAssistanceTypeValue = (value): any => {
 
 export const uneditableProductModelType = [
     "CPMCM"
-]
+];
+
+export const getSpecificOperations = () => {
+    return [
+        {
+            label: 'Versement Spontané',
+            value: 'DIRECT_DEPOSIT'
+        }, {
+            label: 'Versement CODEV',
+            value: 'CODEV_DEPOSIT'
+        }
+    ];
+}

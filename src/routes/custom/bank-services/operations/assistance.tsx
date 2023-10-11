@@ -15,6 +15,7 @@ import VerifyUserOTPModal from './components/verifyUserOTPModal';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { Form, FormGroup, Input as InputStrap } from 'reactstrap';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
+import { getSpecificOperations } from 'Helpers/datas';
 
 const Create = (props) => {
 
@@ -30,6 +31,7 @@ const Create = (props) => {
     const [prestation, setPrestation] = useState(null);
     const [prestations, setPrestations] = useState([]);
     const [membership, setMembership] = useState(null);
+    const [specificity, setSpecificity] = useState(null);
 
     useEffect(() => {
         getCurrencies();
@@ -136,7 +138,7 @@ const Create = (props) => {
         })
     }
 
-    const checkOTP = (otp) => {
+    const checkOTP = () => {
         setStep(2);
         setShowModal(false);
     }
@@ -250,6 +252,46 @@ const Create = (props) => {
                                 />
                             </FormGroup>
 
+                            { prestation?.direction == 'CASH_IN' && (
+                                <div>
+                                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                                        <InputLabel className="text-left">
+                                            Spécificité
+                                        </InputLabel>
+                                        <Autocomplete
+                                            id="combo-box-demo"
+                                            value={specificity}
+                                            options={getSpecificOperations()}
+                                            onChange={(__, item) => {
+                                                setSpecificity(item);
+                                            }}
+                                            getOptionLabel={(option) => option.label}
+                                            renderInput={(params) => <TextField {...params} variant="outlined" />}
+                                        />
+                                    </div>
+                                    {
+                                        specificity.value  == 'CODEV_DEPOSIT' && (
+                                            <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                                                <InputLabel className="text-left">
+                                                    Bonds de versement
+                                                </InputLabel>
+                                                <Autocomplete
+                                                    multiple
+                                                    id="combo-box-demo"
+                                                    value={specificity}
+                                                    options={getSpecificOperations()}
+                                                    onChange={(__, item) => {
+                                                        setSpecificity(item);
+                                                    }}
+                                                    getOptionLabel={(option) => option.label}
+                                                    renderInput={(params) => <TextField {...params} variant="outlined" />}
+                                                />
+                                            </div>
+                                        )
+                                    }
+                                </div>
+                            )}
+
                             <FormGroup className="col-md-12 col-sm-12 has-wrapper">
                                 <InputLabel className="text-left" htmlFor="amount">
                                     Montant
@@ -315,7 +357,7 @@ const Create = (props) => {
                                 <Button
                                     color="primary"
                                     variant="contained"
-                                    onClick={() => sendCodeToUser()}
+                                    onClick={() => checkOTP()}
                                     className="text-white font-weight-bold"
                                     disabled={!member || !account || !prestation}
                                 >
@@ -350,7 +392,7 @@ const Create = (props) => {
                     type="INIT_OPERATION"
                     accountId={account?.id}
                     title={'Entrer le code de validation'}
-                    callback={(otp) => checkOTP(otp)}
+                    callback={(otp) => checkOTP()}
                     onClose={() => setShowModal(false)}
                 />
             </RctCollapsibleCard>

@@ -22,7 +22,8 @@ class AccountInformationModal extends Component {
         agency: null,
         name: null,
         telephone: null,
-        email: null
+        email: null,
+        key: null
     }
 
     constructor(props) {
@@ -41,20 +42,18 @@ class AccountInformationModal extends Component {
     }
 
     onSubmit = () => {
-        const { iban, agency, bic, name, email, telephone } = this.state;
+        const { iban, agency, bic, name, email, telephone, key } = this.state;
 
-        if(!iban || !bic || !agency || !name || !telephone) {
+        if(!iban || !bic || !agency || !key || !name || !telephone) {
             NotificationManager.error('Toutes les informations du formulaire sont requises');
             return;
         }
 
         let data = {
             iban, bic, agency_code: agency.code, 
-            name, telephone, email, status: true,
+            name, telephone, email, status: true, key,
             use_domiciliation_datas: true, agency_name: agency.label
         };
-
-        console.log(data);
 
         this.props.setRequestGlobalAction(true);
         OrderService.approvedOrder(this.props.order.id, data)
@@ -71,7 +70,7 @@ class AccountInformationModal extends Component {
     render() {
 
         const { onClose, show, title, authUser } = this.props;
-        const { iban, agency, agencies, bic, name, email, telephone } = this.state;
+        const { iban, agency, agencies, bic, name, email, telephone, key } = this.state;
 
         return (
             <DialogComponent
