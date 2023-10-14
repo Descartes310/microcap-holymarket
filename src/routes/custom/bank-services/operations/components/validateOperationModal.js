@@ -9,7 +9,6 @@ import { setRequestGlobalAction } from 'Actions';
 import { getPriceWithCurrency } from 'Helpers/helpers';
 import { NotificationManager } from 'react-notifications';
 import DialogComponent from "Components/dialog/DialogComponent";
-import { tileLayer } from "leaflet";
 
 class validateOperationModal extends Component {
 

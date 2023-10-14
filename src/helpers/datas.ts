@@ -1,3 +1,4 @@
+import { resourceLimits } from "worker_threads";
 
 export const getChainEventTypes = () => {
     return [
@@ -256,14 +257,18 @@ export const uneditableProductModelType = [
     "CPMCM"
 ];
 
-export const getSpecificOperations = () => {
-    return [
-        {
-            label: 'Versement Spontané',
-            value: 'DIRECT_DEPOSIT'
-        }, {
+export const getSpecificOperations = (paymentAccount) => {
+    var result = [{
+        label: 'Versement Spontané',
+        value: 'DIRECT_DEPOSIT'
+    }];
+
+    if(paymentAccount) {
+        result = [...result, {
             label: 'Versement CODEV',
-            value: 'CODEV_DEPOSIT'
-        }
-    ];
+            value: 'CODEV_DEPOSIT'}
+        ];
+    }
+    
+    return result;
 }

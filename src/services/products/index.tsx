@@ -221,4 +221,12 @@ export default class ProductService {
         return makeRequest('get', Routes.GET_COTATIONS(reference));
     }
 
+    static findTicketByCode(code: string): Promise<any> {
+        return makeRequest('get', Routes.FIND_TICKET_BY_CODE, {code});
+    }
+
+    static findTicketByPeriod(data: any): Promise<any> {
+        return makeRequest('get', Routes.FIND_TICKET_BY_PERIOD, data);
+    }
+
 }

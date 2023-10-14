@@ -7,7 +7,9 @@ import { withRouter } from "react-router-dom";
 import { setRequestGlobalAction } from 'Actions';
 import React, { useEffect, useState } from 'react';
 import TextField from '@material-ui/core/TextField';
+import { getSpecificOperations } from 'Helpers/datas';
 import { getReferralTypeLabel } from 'Helpers/helpers';
+import DepositTickets from './components/depositTickets';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { NotificationManager } from 'react-notifications';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
@@ -15,7 +17,6 @@ import VerifyUserOTPModal from './components/verifyUserOTPModal';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { Form, FormGroup, Input as InputStrap } from 'reactstrap';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
-import { getSpecificOperations } from 'Helpers/datas';
 
 const Create = (props) => {
 
@@ -23,10 +24,12 @@ const Create = (props) => {
     const [member, setMember] = useState(null);
     const [amount, setAmount] = useState(null);
     const [details, setDetails] = useState([]);
+    const [tickets, setTickets] = useState([]);
     const [accounts, setAccounts] = useState([]);
     const [account, setAccount] = useState(null);
     const [currency, setCurrency] = useState(null);
     const [currencies, setCurrencies] = useState([]);
+    const [minAmount, setMinAmount] = useState(null);
     const [showModal, setShowModal] = useState(false);
     const [prestation, setPrestation] = useState(null);
     const [prestations, setPrestations] = useState([]);
@@ -37,12 +40,21 @@ const Create = (props) => {
         getCurrencies();
     }, []);
 
+    useEffect(() => {
+        if(account) {
+            getPrestations(account.reference);
+        } else {
+            setPrestation(null);
+            setPrestations([]);
+        }
+    }, [account]);
+
     const findUserByMembership = () => {
         props.setRequestGlobalAction(true);
         UserService.findUserByReference(membership)
         .then(response => {
             setMember(response);
-            getPrestations(membership);
+            //getPrestations(membership);
             getAccounts(membership);
         })
         .catch((err) => {
@@ -68,7 +80,7 @@ const Create = (props) => {
 
     const getPrestations = (reference: string) => {
         props.setRequestGlobalAction(true);
-        BankService.getUserPrestations(reference)
+        BankService.getDomiciliationPrestations(reference)
         .then(response => setPrestations(response))
         .finally(() => props.setRequestGlobalAction(false))
     }
@@ -92,6 +104,11 @@ const Create = (props) => {
             return;
         }
 
+        if(specificity?.value  == 'CODEV_DEPOSIT' && amount < minAmount) {
+            NotificationManager.warning("Le montant minimum pour les tickets de "+minAmount+" "+currency.code);
+            return;
+        }
+
         let data: any = {
             amount,
             reference: membership,
@@ -101,6 +118,10 @@ const Create = (props) => {
             detailsValues: details.map(d => d.value),
             detailsIds: details.map(d => d.id.split('-')[1]),
         };
+
+        if(specificity?.value  == 'CODEV_DEPOSIT') {
+            data.tickets = tickets.map(t => t.code);
+        }
 
         props.setRequestGlobalAction(true);
         BankService.createOperation(data).then(() => {
@@ -252,7 +273,7 @@ const Create = (props) => {
                                 />
                             </FormGroup>
 
-                            { prestation?.direction == 'CASH_IN' && (
+                            { (prestation?.direction == 'CASH_IN') && (
                                 <div>
                                     <div className="col-md-12 col-sm-12 has-wrapper mb-30">
                                         <InputLabel className="text-left">
@@ -261,7 +282,7 @@ const Create = (props) => {
                                         <Autocomplete
                                             id="combo-box-demo"
                                             value={specificity}
-                                            options={getSpecificOperations()}
+                                            options={getSpecificOperations(account?.paymentAccount)}
                                             onChange={(__, item) => {
                                                 setSpecificity(item);
                                             }}
@@ -270,21 +291,17 @@ const Create = (props) => {
                                         />
                                     </div>
                                     {
-                                        specificity.value  == 'CODEV_DEPOSIT' && (
+                                        specificity?.value  == 'CODEV_DEPOSIT' && (
                                             <div className="col-md-12 col-sm-12 has-wrapper mb-30">
                                                 <InputLabel className="text-left">
                                                     Bonds de versement
                                                 </InputLabel>
-                                                <Autocomplete
-                                                    multiple
-                                                    id="combo-box-demo"
-                                                    value={specificity}
-                                                    options={getSpecificOperations()}
-                                                    onChange={(__, item) => {
-                                                        setSpecificity(item);
+                                                <DepositTickets 
+                                                    referralCode={membership}
+                                                    updateAmount={(selectedTickets) => {
+                                                        setTickets(selectedTickets)
+                                                        setMinAmount(selectedTickets.reduce((amt, currentValue) => amt + currentValue.amount, 0))
                                                     }}
-                                                    getOptionLabel={(option) => option.label}
-                                                    renderInput={(params) => <TextField {...params} variant="outlined" />}
                                                 />
                                             </div>
                                         )
@@ -357,7 +374,7 @@ const Create = (props) => {
                                 <Button
                                     color="primary"
                                     variant="contained"
-                                    onClick={() => checkOTP()}
+                                    onClick={() => sendCodeToUser()}
                                     className="text-white font-weight-bold"
                                     disabled={!member || !account || !prestation}
                                 >

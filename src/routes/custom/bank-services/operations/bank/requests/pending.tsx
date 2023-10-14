@@ -152,12 +152,6 @@ const List = (props) => {
         getOperations();
     }
 
-    // const validateOperation = () => {
-    //     NotificationManager.success("La validation a réussie.");
-    //     setShowValidateModal(false);
-    //     getOperations();
-    // }
-
     const onToggleOperation = (operationIds) => {
         let newOperations = [...selectedOperations];
         operationIds.forEach(userId => {
@@ -389,17 +383,19 @@ const List = (props) => {
                 />  
             )}
 
-            {/* { showValidateModal && selectedOperations.length > 0 && (
+            { showValidateModal && selectedOperations.length > 0 && (
                 <ValidateOperationModal
                     show={showValidateModal}
                     title={"Valider l'ordre de service"}
                     onClose={() => {
                         setShowValidateModal(false);
+                        getOperations()
                     }}
                     operation={selectedOperations[0]}
-                    validateOperation={() => validateOperation()}
+                    operations={operations.filter(op => selectedOperations.includes(op.id))}
+                    validateOperation={() => {}}
                 />  
-            )} */}
+            )}
 
             { showUpdateOperationModal && action?.value == 'EDIT'  && (
                 <EditOperation

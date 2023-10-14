@@ -7,13 +7,13 @@ import { setRequestGlobalAction } from 'Actions';
 import React, { useEffect, useState } from 'react';
 import TextField from '@material-ui/core/TextField';
 import { getReferralTypeLabel } from 'Helpers/helpers';
+import PartnershipService from 'Services/partnerships';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { NotificationManager } from 'react-notifications';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { Form, FormGroup, Input as InputStrap } from 'reactstrap';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
-import PartnershipService from 'Services/partnerships';
 
 const Create = (props) => {
 
@@ -95,9 +95,9 @@ const Create = (props) => {
         props.setRequestGlobalAction(true);
         BankService.createSubscription(data).then(() => {
             NotificationManager.success("La création a réussie");
-            // setTimeout(() => {
-            //     window.location.reload();
-            // }, 2000);
+            setTimeout(() => {
+                window.location.reload();
+            }, 2000);
         }).catch(err => {
             console.log(err);
             NotificationManager.error("Ce compte est introuvable");
@@ -113,7 +113,7 @@ const Create = (props) => {
             />
             <RctCollapsibleCard>
                 <Form onSubmit={onSubmit}>
-                <FormGroup className="has-wrapper">
+                    <FormGroup className="has-wrapper">
                         <InputLabel className="text-left" htmlFor="membership">
                             Numéro utilisateur
                         </InputLabel>
