@@ -62,7 +62,9 @@ export const FUNDING = {
         },
         OFFER: {
             SELF: '/funding/bourse/offers',
+            MINE: '/funding/bourse/offers/mine',
             LIST: '/funding/bourse/offers/list',
+            CREATE_MINE: '/funding/bourse/offers/mine/create',
         }
     }
 } as const;

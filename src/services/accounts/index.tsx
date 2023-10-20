@@ -68,4 +68,8 @@ export default class AccountService {
     static setAgreementTemplate(reference: string, data: any, config: any): Promise<any> {
         return makeRequest('post', Routes.SET_AGREEMENT_TEMPLATE(reference), data, config);
     }
+
+    static getPaymentAccounts(): Promise<any> {
+        return makeRequest('get', Routes.GET_PAYMENT_ACCOUNTS);
+    }
 }

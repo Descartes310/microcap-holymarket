@@ -457,7 +457,7 @@ export default [
             "child_routes": null
          },
          {
-            "menu_title": "Demande de financement",
+            "menu_title": "Demandes",
             "new_item": false,
             "path": FUNDING.BOURSE.REQUEST.LIST,
             "permissions": [Permission.bourse.request.name],
@@ -465,9 +465,9 @@ export default [
             "child_routes": null
          },
          {
-            "menu_title": "Offre de financement",
+            "menu_title": "Offres",
             "new_item": false,
-            "path": FUNDING.BOURSE.OFFER.LIST,
+            "path": FUNDING.BOURSE.OFFER.MINE,
             "permissions": [Permission.bourse.offer.name],
             "profiles": null,
             "child_routes": null

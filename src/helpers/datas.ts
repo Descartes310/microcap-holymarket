@@ -272,3 +272,16 @@ export const getSpecificOperations = (paymentAccount) => {
     
     return result;
 }
+
+export const getFundingOfferInterventionTypes = () => {
+    return [
+        {
+            label: 'Deal bancaire',
+            value: 'BANK_DEAL'
+        },
+        {
+            label: 'Carnet du bénéficiaire',
+            value: 'RECIPIENT_BOOK'
+        }
+    ];
+}
