@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from "react-redux";
 import Attributes from './attributes';
 import {injectIntl} from "react-intl";
-import { PROJECT } from 'Url/frontendUrl';
+import { GROUP } from 'Url/frontendUrl';
 import financements from './financements';
 import {withRouter, Switch, Redirect, Route} from "react-router-dom";
 
@@ -11,9 +11,9 @@ const ProjectConfig = (props) => {
     return (
         <div>
             <Switch>
-                <Redirect exact from={`${match.url}/`} to={PROJECT.CONFIGURATION.ATTRIBUTE.SELF} />
-                <Route path={PROJECT.CONFIGURATION.ATTRIBUTE.SELF} component={Attributes} />
-                <Route path={PROJECT.CONFIGURATION.FINANCEMENT.SELF} component={financements} />
+                <Redirect exact from={`${match.url}/`} to={GROUP.ADMINISTRATION.PROJECT.CONFIGURATION.ATTRIBUTE.SELF} />
+                <Route path={GROUP.ADMINISTRATION.PROJECT.CONFIGURATION.ATTRIBUTE.SELF} component={Attributes} />
+                <Route path={GROUP.ADMINISTRATION.PROJECT.CONFIGURATION.FINANCEMENT.SELF} component={financements} />
             </Switch>
         </div>
     );

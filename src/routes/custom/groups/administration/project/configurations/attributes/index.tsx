@@ -5,7 +5,7 @@ import Update from './update';
 import {connect} from "react-redux";
 import {injectIntl} from "react-intl";
 import properties from './properties';
-import { PROJECT } from 'Url/frontendUrl';
+import { GROUP } from 'Url/frontendUrl';
 import {withRouter, Switch, Redirect, Route} from "react-router-dom";
 
 const Attribute = (props) => {
@@ -14,11 +14,11 @@ const Attribute = (props) => {
         <div className="full-height">
             <>
                 <Switch>
-                    <Redirect exact from={`${match.url}/`} to={PROJECT.CONFIGURATION.ATTRIBUTE.LIST} />
-                    <Route path={PROJECT.CONFIGURATION.ATTRIBUTE.LIST} component={List} />
-                    <Route path={PROJECT.CONFIGURATION.ATTRIBUTE.CREATE} component={Create} />
-                    <Route path={PROJECT.CONFIGURATION.ATTRIBUTE.UPDATE} component={Update} />
-                    <Route path={PROJECT.CONFIGURATION.ATTRIBUTE.PROPERTIES} component={properties} />
+                    <Redirect exact from={`${match.url}/`} to={GROUP.ADMINISTRATION.PROJECT.CONFIGURATION.ATTRIBUTE.LIST} />
+                    <Route path={GROUP.ADMINISTRATION.PROJECT.CONFIGURATION.ATTRIBUTE.LIST} component={List} />
+                    <Route path={GROUP.ADMINISTRATION.PROJECT.CONFIGURATION.ATTRIBUTE.CREATE} component={Create} />
+                    <Route path={GROUP.ADMINISTRATION.PROJECT.CONFIGURATION.ATTRIBUTE.UPDATE} component={Update} />
+                    <Route path={GROUP.ADMINISTRATION.PROJECT.CONFIGURATION.ATTRIBUTE.PROPERTIES} component={properties} />
                 </Switch>
             </>
         </div>

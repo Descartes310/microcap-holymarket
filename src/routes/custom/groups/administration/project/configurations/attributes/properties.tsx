@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { PROJECT } from 'Url/frontendUrl';
+import { GROUP } from 'Url/frontendUrl';
 import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
 import CustomList from "Components/CustomList";
@@ -27,7 +27,7 @@ const Properties = (props) => {
         .then((response) => {
             setAttribute(response);
         }).catch(() => {
-            props.history.push(PROJECT.CONFIGURATION.ATTRIBUTE.LIST);
+            props.history.push(GROUP.ADMINISTRATION.PROJECT.CONFIGURATION.ATTRIBUTE.LIST);
         }).finally(() => props.setRequestGlobalAction(false))
     }
 
@@ -37,7 +37,7 @@ const Properties = (props) => {
             setProperties(response);
         }).catch((error) => {
             console.log(error);
-            props.history.push(PROJECT.CONFIGURATION.ATTRIBUTE.LIST);
+            props.history.push(GROUP.ADMINISTRATION.PROJECT.CONFIGURATION.ATTRIBUTE.LIST);
         })
         .finally(() => props.setRequestGlobalAction(false))
     }

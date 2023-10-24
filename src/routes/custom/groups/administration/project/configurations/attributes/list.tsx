@@ -5,7 +5,7 @@ import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
 import ProjectService from 'Services/projects';
 import React, { useEffect, useState } from 'react';
-import { joinUrlWithParamsId, PROJECT } from 'Url/frontendUrl';
+import { joinUrlWithParamsId, GROUP } from 'Url/frontendUrl';
 
 const List = (props) => {
 
@@ -29,7 +29,7 @@ const List = (props) => {
                 list={attributes}
                 loading={false}
                 itemsFoundText={n => `${n} attributs trouvés`}
-                onAddClick={() => props.history.push(PROJECT.CONFIGURATION.ATTRIBUTE.CREATE)}
+                onAddClick={() => props.history.push(GROUP.ADMINISTRATION.PROJECT.CONFIGURATION.ATTRIBUTE.CREATE)}
                 renderItem={list => (
                     <>
                         {list && list.length === 0 ? (
@@ -79,7 +79,7 @@ const List = (props) => {
                                                         color="primary"
                                                         variant="contained"
                                                         className="text-white font-weight-bold"
-                                                        onClick={() => props.history.push(joinUrlWithParamsId(PROJECT.CONFIGURATION.ATTRIBUTE.PROPERTIES, item.reference))}
+                                                        onClick={() => props.history.push(joinUrlWithParamsId(GROUP.ADMINISTRATION.PROJECT.CONFIGURATION.ATTRIBUTE.PROPERTIES, item.reference))}
                                                     >
                                                         Propriétés
                                                     </Button>
@@ -89,7 +89,7 @@ const List = (props) => {
                                                         color="primary"
                                                         variant="contained"
                                                         className="text-white font-weight-bold"
-                                                        onClick={() => props.history.push(joinUrlWithParamsId(PROJECT.CONFIGURATION.ATTRIBUTE.UPDATE, item.reference))}
+                                                        onClick={() => props.history.push(joinUrlWithParamsId(GROUP.ADMINISTRATION.PROJECT.CONFIGURATION.ATTRIBUTE.UPDATE, item.reference))}
                                                     >
                                                         Editer
                                                     </Button>

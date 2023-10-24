@@ -64,6 +64,11 @@ export const getTimeUnits = () => {
             label: 'Mois',
             value: 'MONTH',
             days: 30
+        },
+        {
+            label: 'Année',
+            value: 'YEAR',
+            days: 365
         }
     ];
 }
@@ -282,6 +287,19 @@ export const getFundingOfferInterventionTypes = () => {
         {
             label: 'Carnet du bénéficiaire',
             value: 'RECIPIENT_BOOK'
+        }
+    ];
+}
+
+export const initDealMethods = () => {
+    return [
+        {
+            label: 'Supports de versements',
+            value: 'TICKETS'
+        },
+        {
+            label: 'Echeances de versements',
+            value: 'PERIOD'
         }
     ];
 }

@@ -345,7 +345,15 @@ export default [
                   "path": GROUP.ADMINISTRATION.PROJECT.LIST,
                   "permissions": [Permission.group.admin.project.name],
                   "profiles": null,
-               },
+               }, 
+               {
+                  "menu_title": "Configurations",
+                  "new_item": false,
+                  "path": GROUP.ADMINISTRATION.PROJECT.CONFIGURATION.ATTRIBUTE.SELF,
+                  "permissions": [Permission.group.admin.project.name],
+                  "profiles": null,
+                  "child_routes": null
+               }
             ]
          },
          {
@@ -602,14 +610,6 @@ export default [
             "menu_title": "Postes",
             "new_item": false,
             "path": PROJECT.POST.LIST,
-            "permissions": [Permission.project.admin.post.name],
-            "profiles": null,
-            "child_routes": null
-         }, 
-         {
-            "menu_title": "Configurations",
-            "new_item": false,
-            "path": PROJECT.CONFIGURATION.ATTRIBUTE.SELF,
             "permissions": [Permission.project.admin.post.name],
             "profiles": null,
             "child_routes": null

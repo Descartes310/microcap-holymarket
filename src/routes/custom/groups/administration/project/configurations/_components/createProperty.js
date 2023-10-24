@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { GROUP } from 'Url/frontendUrl';
 import { withRouter } from "react-router-dom";
 import ProjectService from 'Services/projects';
 import { setRequestGlobalAction } from 'Actions';
@@ -70,14 +71,14 @@ const CreateProperty = (props) => {
             setProperties(response);
         }).catch((error) => {
             console.log(error);
-            props.history.push(PROJECT.CONFIGURATION.ATTRIBUTE.LIST);
+            props.history.push(GROUP.ADMINISTRATION.PROJECT.CONFIGURATION.ATTRIBUTE.LIST);
         })
         .finally(() => props.setRequestGlobalAction(false))
     }
 
     const getProjects = () => {
         props.setRequestGlobalAction(true);
-        ProjectService.getProjects().then(response => {
+        ProjectService.getGroupProjects().then(response => {
             setObjects(response);
         })
         .finally(() => props.setRequestGlobalAction(false))

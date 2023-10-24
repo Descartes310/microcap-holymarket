@@ -88,7 +88,7 @@ const Create = (props) => {
         }
 
         props.setRequestGlobalAction(true);
-        FundingService.createGrantOffer(data).then(() => {
+        FundingService.createFundingOffer(data).then(() => {
             props.history.push(FUNDING.BOURSE.OFFER.MINE);
         }).catch(err => {
             NotificationManager.error("Une erreur est survenue");

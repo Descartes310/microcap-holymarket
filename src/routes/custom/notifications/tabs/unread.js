@@ -12,6 +12,7 @@ import AccountAgreement from "Components/AccountAgreement";
 import Item from "Routes/custom/notifications/components/Item";
 import ActivationBox from "Routes/custom/notifications/ActivationBox";
 import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
+import InitDealModal from "Routes/custom/fundings/components/InitDealModal";
 import CodevInvitationBox from "Routes/custom/notifications/CodevInvitationBox";
 
 class Unread extends Component {
@@ -22,6 +23,7 @@ class Unread extends Component {
             loading: true,
             notifications: [],
             notification: null,
+            showInitDealBox: false,
             showActivationBox: false,
             showActivationPassBox: false,
             showCodevInvitationBox: false,
@@ -69,12 +71,10 @@ class Unread extends Component {
         let orderId = notification.details.find(nd => nd.type === "ORDER_ID")?.value;
         let notificationId = notification.id;
         this.setState({ showAccountActivationBox: true, notification })
-        // this.props.setRequestGlobalAction(true);
-        // AccountService.activeAccount(accountId, { orderId, notificationId }).then(() => {
-        //     window.location.reload();
-        // }).finally(() => {
-        //     this.props.setRequestGlobalAction(false);
-        // })
+    };    
+    
+    onInitDealClick = (notification) => {
+        this.setState({ showInitDealBox: true, notification })
     };
 
     onCodevInvitationClick = (notification) => {
@@ -86,7 +86,7 @@ class Unread extends Component {
     };
 
     render() {
-        const { notifications, loading, showActivationBox, notification, 
+        const { notifications, loading, showActivationBox, notification, showInitDealBox,
             showCodevInvitationBox, showConfirmCodevInvitationBox, showAccountActivationBox } = this.state;
 
         if (loading) {
@@ -114,6 +114,7 @@ class Unread extends Component {
                                             notification={notification}
                                             authUser={this.props.authUser}
                                             reloadNotifications={this.getNotifications}
+                                            onInitDealClick={() => this.onInitDealClick(notification)}
                                             setRequestGlobalAction={this.props.setRequestGlobalAction}
                                             onActivationClick={() => this.onActivationClick(notification)}
                                             onActivationPassClick={() => this.onActivationPassClick(notification)}
@@ -153,6 +154,16 @@ class Unread extends Component {
                             this.setState({ showAccountActivationBox: false, notification: null })
                         }}
                         accountReference={notification.details.find(nd => nd.type === "ACCOUNT_REFERENCE")?.value}
+                    />
+                )}
+
+                {notification && showInitDealBox && (
+                    <InitDealModal 
+                        show={showInitDealBox}
+                        onClose={() => {
+                            this.setState({ showInitDealBox: false, notification: null })
+                        }}
+                        reference={notification.details.find(nd => nd.type === "GRANT_OFFER_REFERENCE")?.value}
                     />
                 )}
 

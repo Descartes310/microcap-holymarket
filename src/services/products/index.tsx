@@ -229,4 +229,16 @@ export default class ProductService {
         return makeRequest('get', Routes.FIND_TICKET_BY_PERIOD, data);
     }
 
+    static findMyTickets(): Promise<any> {
+        return makeRequest('get', Routes.FIND_MY_TICKETS);
+    }
+
+    static findMyCodevs(): Promise<any> {
+        return makeRequest('get', Routes.FIND_MY_CODEVS);
+    }
+
+    static findTicketsFromProduct(data): Promise<any> {
+        return makeRequest('get', Routes.FIND_TICKETS_FROM_PRODUCT, data);
+    }
+
 }

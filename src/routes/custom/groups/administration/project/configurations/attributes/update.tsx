@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { PROJECT } from 'Url/frontendUrl';
+import { GROUP } from 'Url/frontendUrl';
 import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
 import ProjectService from 'Services/projects';
@@ -47,7 +47,7 @@ const Update = (props) => {
             setLabel(response.label);
             setDescription(response.description);
         }).catch(() => {
-            props.history.push(PROJECT.CONFIGURATION.ATTRIBUTE.LIST);
+            props.history.push(GROUP.ADMINISTRATION.PROJECT.CONFIGURATION.ATTRIBUTE.LIST);
             NotificationManager.error('Une erreur est survenue');
         }).finally(() => props.setRequestGlobalAction(false))
     }
@@ -69,7 +69,7 @@ const Update = (props) => {
         ProjectService.updateAttribute(props.match.params.id, data)
         .then(() => {
             NotificationManager.success('L\'attribut projet a été édité avec succès');
-            props.history.push(PROJECT.CONFIGURATION.ATTRIBUTE.LIST);
+            props.history.push(GROUP.ADMINISTRATION.PROJECT.CONFIGURATION.ATTRIBUTE.LIST);
         }).catch((error) => {
             console.log(error);
             NotificationManager.error('Une erreur est survenue');

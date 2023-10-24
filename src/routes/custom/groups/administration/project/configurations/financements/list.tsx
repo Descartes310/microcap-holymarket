@@ -9,7 +9,7 @@ import TextField from '@material-ui/core/TextField';
 import { RctCardContent } from 'Components/RctCard';
 import PropertyTable from 'Components/PropertyTable';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import { joinUrlWithParamsId, PROJECT } from 'Url/frontendUrl';
+import { joinUrlWithParamsId, GROUP } from 'Url/frontendUrl';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 
 const List = (props) => {
@@ -31,7 +31,7 @@ const List = (props) => {
 
 
     const goToUpdate = () => {
-        props.push(joinUrlWithParamsId(PROJECT.CONFIGURATION.FINANCEMENT.UPDATE, attribute.id));
+        props.push(joinUrlWithParamsId(GROUP.ADMINISTRATION.PROJECT.CONFIGURATION.FINANCEMENT.UPDATE, attribute.id));
     }
 
     return (

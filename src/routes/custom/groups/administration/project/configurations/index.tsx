@@ -2,8 +2,8 @@ import { connect } from "react-redux";
 import TabContent from "./tabContent";
 import React, { Component } from 'react';
 import Tab from '@material-ui/core/Tab';
+import { GROUP } from "Url/frontendUrl";
 import Tabs from '@material-ui/core/Tabs';
-import { PROJECT } from "Url/frontendUrl";
 import { RctCard } from 'Components/RctCard';
 import AppBar from '@material-ui/core/AppBar';
 import { withRouter } from "react-router-dom";
@@ -14,9 +14,9 @@ class Catalogues extends Component<any, any> {
     constructor(props: any) {
         super(props);
         const defaultState = (function (url) {
-            if (url.includes(PROJECT.CONFIGURATION.FINANCEMENT.SELF)) return 0;
-            else if (url.includes(PROJECT.CONFIGURATION.ATTRIBUTE.SELF)) return 1;
-            else if (url.includes(PROJECT.CONFIGURATION.ATTRIBUTE.SELF)) return 2;
+            if (url.includes(GROUP.ADMINISTRATION.PROJECT.CONFIGURATION.FINANCEMENT.SELF)) return 0;
+            else if (url.includes(GROUP.ADMINISTRATION.PROJECT.CONFIGURATION.ATTRIBUTE.SELF)) return 1;
+            else if (url.includes(GROUP.ADMINISTRATION.PROJECT.CONFIGURATION.ATTRIBUTE.SELF)) return 2;
             else return 0;
         })(window.location.pathname);
 
@@ -30,10 +30,10 @@ class Catalogues extends Component<any, any> {
         this.setState({ activeTab: value });
         if (oldActivateTab !== value) {
             switch (value) {
-                case 0: return this.props.history.push(PROJECT.CONFIGURATION.FINANCEMENT.SELF);
-                case 1: return this.props.history.push(PROJECT.CONFIGURATION.ATTRIBUTE.SELF);
-                case 2: return this.props.history.push(PROJECT.CONFIGURATION.ATTRIBUTE.SELF);
-                default: return this.props.history.push(PROJECT.CONFIGURATION.ATTRIBUTE.SELF);
+                case 0: return this.props.history.push(GROUP.ADMINISTRATION.PROJECT.CONFIGURATION.FINANCEMENT.SELF);
+                case 1: return this.props.history.push(GROUP.ADMINISTRATION.PROJECT.CONFIGURATION.ATTRIBUTE.SELF);
+                case 2: return this.props.history.push(GROUP.ADMINISTRATION.PROJECT.CONFIGURATION.ATTRIBUTE.SELF);
+                default: return this.props.history.push(GROUP.ADMINISTRATION.PROJECT.CONFIGURATION.ATTRIBUTE.SELF);
             }
         }
     };

@@ -180,6 +180,21 @@ export const GROUP = {
             SELF: '/groups/administration/projects',
             LIST: '/groups/administration/projects/list',
             DEALS: '/groups/administration/projects/deals',
+            CONFIGURATION: {  
+                SELF: "/groups/administration/projects/configurations",  
+                ATTRIBUTE: {
+                    SELF: "/groups/administration/projects/configurations/attributes",
+                    LIST: "/groups/administration/projects/configurations/attributes/list",
+                    CREATE: "/groups/administration/projects/configurations/attributes/create",
+                    UPDATE: "/groups/administration/projects/configurations/attributes/:id/update",
+                    PROPERTIES: "/groups/administration/projects/configurations/attributes/:id/properties"
+                },
+                FINANCEMENT: {
+                    SELF: "/groups/administration/projects/configurations/financements",
+                    LIST: "/groups/administration/projects/configurations/financements/list",
+                    UPDATE: "/groups/administration/projects/configurations/financements/:id/update",
+                }
+            }
         },
         ARTICLE: {
             SELF: '/groups/administration/articles',

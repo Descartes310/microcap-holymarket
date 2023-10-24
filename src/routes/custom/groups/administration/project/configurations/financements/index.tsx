@@ -3,7 +3,7 @@ import List from './list';
 import update from './update';
 import {connect} from "react-redux";
 import {injectIntl} from "react-intl";
-import { PROJECT } from 'Url/frontendUrl';
+import { GROUP } from 'Url/frontendUrl';
 import {withRouter, Switch, Redirect, Route} from "react-router-dom";
 
 const Financement = (props) => {
@@ -12,9 +12,9 @@ const Financement = (props) => {
         <div className="full-height">
             <>
                 <Switch>
-                    <Redirect exact from={`${match.url}/`} to={PROJECT.CONFIGURATION.FINANCEMENT.LIST} />
-                    <Route path={PROJECT.CONFIGURATION.FINANCEMENT.LIST} component={List} />
-                    <Route path={PROJECT.CONFIGURATION.FINANCEMENT.UPDATE} component={update} />
+                    <Redirect exact from={`${match.url}/`} to={GROUP.ADMINISTRATION.PROJECT.CONFIGURATION.FINANCEMENT.LIST} />
+                    <Route path={GROUP.ADMINISTRATION.PROJECT.CONFIGURATION.FINANCEMENT.LIST} component={List} />
+                    <Route path={GROUP.ADMINISTRATION.PROJECT.CONFIGURATION.FINANCEMENT.UPDATE} component={update} />
                 </Switch>
             </>
         </div>
