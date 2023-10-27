@@ -18,4 +18,15 @@ export default class FundingService {
     static findFundingOffer(reference: string): Promise<any> {
         return makeRequest('get', Routes.FIND_FUNDING_OFFER_BY_REFERENCE(reference));
     }
+
+    static createProposition(data: any): Promise<any> {
+        return makeRequest('post', Routes.CREATE_PROPOSITION, data);
+    }
+
+    static getPropositions(reference: string): Promise<any> {
+        return makeRequest('get', Routes.GET_PROPOSITIONS, {reference});
+    }
+    static findProposition(reference: string): Promise<any> {
+        return makeRequest('get', Routes.FIND_PROPOSITION(reference));
+    }
 }

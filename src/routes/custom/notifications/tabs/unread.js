@@ -163,6 +163,7 @@ class Unread extends Component {
                         onClose={() => {
                             this.setState({ showInitDealBox: false, notification: null })
                         }}
+                        notification={notification?.id}
                         reference={notification.details.find(nd => nd.type === "GRANT_OFFER_REFERENCE")?.value}
                     />
                 )}

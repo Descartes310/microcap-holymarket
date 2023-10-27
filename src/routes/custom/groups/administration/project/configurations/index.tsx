@@ -16,7 +16,7 @@ class Catalogues extends Component<any, any> {
         const defaultState = (function (url) {
             if (url.includes(GROUP.ADMINISTRATION.PROJECT.CONFIGURATION.FINANCEMENT.SELF)) return 0;
             else if (url.includes(GROUP.ADMINISTRATION.PROJECT.CONFIGURATION.ATTRIBUTE.SELF)) return 1;
-            else if (url.includes(GROUP.ADMINISTRATION.PROJECT.CONFIGURATION.ATTRIBUTE.SELF)) return 2;
+            else if (url.includes(GROUP.ADMINISTRATION.PROJECT.CONFIGURATION.PRODUCT.SELF)) return 2;
             else return 0;
         })(window.location.pathname);
 
@@ -32,7 +32,7 @@ class Catalogues extends Component<any, any> {
             switch (value) {
                 case 0: return this.props.history.push(GROUP.ADMINISTRATION.PROJECT.CONFIGURATION.FINANCEMENT.SELF);
                 case 1: return this.props.history.push(GROUP.ADMINISTRATION.PROJECT.CONFIGURATION.ATTRIBUTE.SELF);
-                case 2: return this.props.history.push(GROUP.ADMINISTRATION.PROJECT.CONFIGURATION.ATTRIBUTE.SELF);
+                case 2: return this.props.history.push(GROUP.ADMINISTRATION.PROJECT.CONFIGURATION.PRODUCT.SELF);
                 default: return this.props.history.push(GROUP.ADMINISTRATION.PROJECT.CONFIGURATION.ATTRIBUTE.SELF);
             }
         }

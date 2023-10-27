@@ -1,4 +1,5 @@
 import React from 'react';
+import products from './products';
 import {connect} from "react-redux";
 import Attributes from './attributes';
 import {injectIntl} from "react-intl";
@@ -13,6 +14,7 @@ const ProjectConfig = (props) => {
             <Switch>
                 <Redirect exact from={`${match.url}/`} to={GROUP.ADMINISTRATION.PROJECT.CONFIGURATION.ATTRIBUTE.SELF} />
                 <Route path={GROUP.ADMINISTRATION.PROJECT.CONFIGURATION.ATTRIBUTE.SELF} component={Attributes} />
+                <Route path={GROUP.ADMINISTRATION.PROJECT.CONFIGURATION.PRODUCT.SELF} component={products} />
                 <Route path={GROUP.ADMINISTRATION.PROJECT.CONFIGURATION.FINANCEMENT.SELF} component={financements} />
             </Switch>
         </div>

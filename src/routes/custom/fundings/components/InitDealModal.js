@@ -1,20 +1,20 @@
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import FundingService from 'Services/funding';
+import ProjectService from 'Services/projects';
 import { withRouter } from "react-router-dom";
 import CustomList from "Components/CustomList";
 import ProductService from 'Services/products';
 import { setRequestGlobalAction } from 'Actions';
 import { RctCardContent } from 'Components/RctCard';
 import TextField from '@material-ui/core/TextField';
-import { getPriceWithCurrency } from 'Helpers/helpers';
-import TimeFromMoment from "Components/TimeFromMoment";
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { NotificationManager } from 'react-notifications';
 import { initDealMethods, getTimeUnits } from 'Helpers/datas';
 import DialogComponent from "Components/dialog/DialogComponent";
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { FormGroup, Input as InputStrap, Button } from 'reactstrap';
+import { getPriceWithCurrency, objToString } from 'Helpers/helpers';
 
 class InitDealModal extends Component {
 
@@ -43,13 +43,33 @@ class InitDealModal extends Component {
         offer: null,
         product: null,
         unit: null,
-        natureCompensations: []
+        natureCompensations: [],
+
+        projects: [],
+        products: []
     }
 
     constructor(props) {
         super(props);
         this.findMyCodevs();
         this.findOffer();
+        this.getProjects();
+    }
+
+    getProjects = () => {
+        this.props.setRequestGlobalAction(true);
+        ProjectService.getProjects().then(response => {
+            this.setState({ projects: response });
+        })
+        .finally(() => this.props.setRequestGlobalAction(false))
+    }
+
+    getProducts = () => {
+        this.props.setRequestGlobalAction(true);
+        ProjectService.getProducts({ project_reference: this.state.source.reference }).then(response => {
+            this.setState({ products: response });
+        })
+        .finally(() => this.props.setRequestGlobalAction(false))
     }
 
     findMyCodevs = () => {
@@ -108,10 +128,10 @@ class InitDealModal extends Component {
         let compensation = {
             length,
             fixPart,
-            periodicity,
             variablePart,
             endDate: periodEndDate,
-            startDate: periodStartDate
+            startDate: periodStartDate,
+            periodicity: periodicity.value
         }
 
         this.setState({ 
@@ -140,12 +160,12 @@ class InitDealModal extends Component {
         let compensation = {
             unit,
             offer,
-            source,
-            product,
+            source: source,
+            product: product,
             length: natureLength,
-            periodicity: naturePeriodicity,
             endDate: naturePeriodEndDate,
-            startDate: naturePeriodStartDate
+            startDate: naturePeriodStartDate,
+            periodicity: naturePeriodicity.value
         }
 
         this.setState({ 
@@ -165,13 +185,66 @@ class InitDealModal extends Component {
         this.setState({ natureCompensations: this.state.natureCompensations.filter(c => c != item) });
     }
 
+    onSubmit = () => {
+
+        const {initMethod, compensations, natureCompensations, selectedTickets, startDate, endDate} = this.state;
+
+        if(compensations.length <= 0 && natureCompensations.length <= 0) {
+            NotificationManager.error("Remplissez toutes les informations");
+            return;
+        }
+
+        if(selectedTickets.length <= 0 && (!startDate && !endDate)) {
+            NotificationManager.error("Remplissez toutes les informations");
+            return;
+        }
+
+        let datas = {
+            init_method: initMethod?.value,
+            offer_reference: this.props.reference
+        };
+
+        if(this.props.notification) {
+            datas.notification_id = this.props.notification;
+        }
+
+        if(initMethod?.value == 'TICKETS') {
+            datas.tickets = selectedTickets.map(t => t.reference);
+        } else {
+            datas.end_date = endDate;
+            datas.start_date = startDate;
+        }
+
+        if(compensations.length > 0) {
+            datas.compensations = JSON.stringify(compensations);
+        }
+
+        if(natureCompensations.length > 0) {
+            datas.nature_compensations = JSON.stringify(natureCompensations.map(c => { return {...c, source: c.source.reference, product: c.product.reference } }));
+        }
+
+        this.props.setRequestGlobalAction(true);
+        FundingService.createProposition(datas)
+        .then(response => {
+            console.log(response);
+            NotificationManager.success("La proposition a bien été enregistré");
+            this.props.onClose();
+        })
+        .catch(err => {
+            NotificationManager.error("Une erreure est survenue");
+        })
+        .finally(() => this.props.setRequestGlobalAction(false))
+
+
+    }
+
     render() {
 
         const { onClose, show, reference } = this.props;
         const { initMethod, codevs, codev, tickets, selectedTickets, startDate, endDate,
         periodStartDate, periodEndDate, periodicity, length, fixPart, variablePart,
         naturePeriodStartDate, naturePeriodEndDate, naturePeriodicity, natureLength,
-        source, offer, product, unit, compensations, natureCompensations } = this.state;
+        source, offer, product, unit, compensations, natureCompensations, projects, products } = this.state;
 
         return (
             <DialogComponent
@@ -422,7 +495,7 @@ class InitDealModal extends Component {
                                                                 <td>
                                                                     <div className="media">
                                                                         <div className="media-body pt-10">
-                                                                            <h4 className="m-0 fw-bold text-dark">{item.periodicity.label}</h4>
+                                                                            <h4 className="m-0 fw-bold text-dark">{getTimeUnits().find(t => t.value == item.periodicity).label}</h4>
                                                                         </div>
                                                                     </div>
                                                                 </td>
@@ -529,13 +602,17 @@ class InitDealModal extends Component {
                                 <InputLabel className="text-left">
                                     Source
                                 </InputLabel>
-                                <InputStrap
-                                    type="number"
-                                    id="source"
-                                    name='source'
+                                <Autocomplete
+                                    id="combo-box-demo"
                                     value={source}
-                                    className="input-lg"
-                                    onChange={(e) => this.setState({ source: e.target.value })}
+                                    options={projects}
+                                    onChange={(__, item) => {
+                                        this.setState({ source: item }, () => {
+                                            this.getProducts();
+                                        });
+                                    }}
+                                    getOptionLabel={(option) => option.label}
+                                    renderInput={(params) => <TextField {...params} variant="outlined" />}
                                 />
                             </FormGroup>
                             <FormGroup className="has-wrapper mr-20" style={{ flex: 1 }}>
@@ -557,13 +634,15 @@ class InitDealModal extends Component {
                                 <InputLabel className="text-left">
                                     Produit
                                 </InputLabel>
-                                <InputStrap
-                                    type="number"
-                                    id="product"
-                                    name='product'
+                                <Autocomplete
+                                    id="combo-box-demo"
                                     value={product}
-                                    className="input-lg"
-                                    onChange={(e) => this.setState({ product: e.target.value })}
+                                    options={products}
+                                    onChange={(__, item) => {
+                                        this.setState({ product: item, unit: item?.currency });
+                                    }}
+                                    getOptionLabel={(option) => option.label}
+                                    renderInput={(params) => <TextField {...params} variant="outlined" />}
                                 />
                             </FormGroup>
                             <FormGroup className="has-wrapper mr-20" style={{ flex: 1 }}>
@@ -571,12 +650,12 @@ class InitDealModal extends Component {
                                     Unité
                                 </InputLabel>
                                 <InputStrap
-                                    type="number"
                                     id="unit"
                                     name='unit'
+                                    type="text"
                                     value={unit}
                                     className="input-lg"
-                                    onChange={(e) => this.setState({ unit: e.target.value })}
+                                    disabled={true}
                                 />
                             </FormGroup>
                             <FormGroup className="has-wrapper mr-20" style={{ flex: 1 }}>
@@ -640,7 +719,7 @@ class InitDealModal extends Component {
                                                                 <td>
                                                                     <div className="media">
                                                                         <div className="media-body pt-10">
-                                                                            <h4 className="m-0 fw-bold text-dark">{item.periodicity.label}</h4>
+                                                                            <h4 className="m-0 fw-bold text-dark">{getTimeUnits().find(t => t.value == item.periodicity).label}</h4>
                                                                         </div>
                                                                     </div>
                                                                 </td>
@@ -654,7 +733,7 @@ class InitDealModal extends Component {
                                                                 <td>
                                                                     <div className="media">
                                                                         <div className="media-body pt-10">
-                                                                            <h4 className="m-0 fw-bold text-dark">{item.source}</h4>
+                                                                            <h4 className="m-0 fw-bold text-dark">{item.source?.label}</h4>
                                                                         </div>
                                                                     </div>
                                                                 </td>
@@ -668,7 +747,7 @@ class InitDealModal extends Component {
                                                                 <td>
                                                                     <div className="media">
                                                                         <div className="media-body pt-10">
-                                                                            <h4 className="m-0 fw-bold text-dark">{item.product}</h4>
+                                                                            <h4 className="m-0 fw-bold text-dark">{item.product?.label}</h4>
                                                                         </div>
                                                                     </div>
                                                                 </td>
@@ -696,6 +775,18 @@ class InitDealModal extends Component {
                                 )}
                             />
                         )}
+                        <FormGroup className="has-wrapper mr-20" style={{ flex: 1 }}>
+                            <Button
+                                color="primary"
+                                variant="contained"
+                                onClick={() => {
+                                    this.onSubmit();
+                                }}
+                                className="text-white font-weight-bold w-100"
+                            >
+                                Enregistrer
+                            </Button>
+                        </FormGroup>
                     </div>
                 </RctCardContent>
             </DialogComponent>

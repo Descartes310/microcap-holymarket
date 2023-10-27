@@ -33,7 +33,7 @@ class FundingOfferDetails extends Component {
 
     render() {
 
-        const { onClose, show } = this.props;
+        const { onClose, show, authUser } = this.props;
         const { offer } = this.state;
 
         return (

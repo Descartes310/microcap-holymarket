@@ -127,4 +127,12 @@ export default class ProjectService {
     static createProperty(data: any): Promise<any> {
         return makeRequest('post', Routes.CREATE_PROPERTY, data);
     }
+
+    static getProducts(data: any = null): Promise<any> {
+        return makeRequest('get', Routes.GET_PRODUCTS, data);
+    }
+
+    static addProduct(data: any): Promise<any> {
+        return makeRequest('post', Routes.CREATE_PRODUCT, data);
+    }
 }

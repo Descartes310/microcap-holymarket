@@ -34,7 +34,7 @@ const List = (props) => {
                 list={projects}
                 loading={false}
                 itemsFoundText={n => `${n} projets trouvés`}
-                onAddClick={() => props.history.push(PROJECT.MINE.FOLDER.CREATE)}
+                // onAddClick={() => props.history.push(PROJECT.MINE.FOLDER.CREATE)}
                 renderItem={list => (
                     <>
                         {list && list.length === 0 ? (

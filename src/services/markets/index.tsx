@@ -27,4 +27,8 @@ export default class MarketService {
     static create(data: any): Promise<any> {
         return makeRequest('post', Routes.CREATE, data);
     }
+
+    static getProducts(reference: string): Promise<any> {
+        return makeRequest('get', Routes.GET_PRODUCTS(reference));
+    }
 }

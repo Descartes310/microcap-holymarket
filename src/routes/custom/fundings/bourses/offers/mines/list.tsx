@@ -9,12 +9,17 @@ import React, { useEffect, useState } from 'react';
 import { getPriceWithCurrency } from 'Helpers/helpers';
 import TimeFromMoment from 'Components/TimeFromMoment';
 import FundingOfferDetails from '../../../components/FundingOfferDetails';
+import FundingOfferPropositions from '../../../components/OfferPropositions';
+import PropositionDetailsModal from '../../../components/PropositionDetailsModal';
 
 const List = (props) => {
 
     const [datas, setDatas] = useState([]);
     const [selectedOffer, setSelectedOffer] = useState(null);
     const [showOfferDetails, setShowOfferDetails] = useState(false);
+    const [propositionReference, setPropositionReference] = useState(null);
+    const [showOfferPropositions, setShowOfferPropositions] = useState(false);
+    const [showPropositionDetails, setShowPropositionDetails] = useState(false);
 
     useEffect(() => {
         getDatas();
@@ -48,22 +53,15 @@ const List = (props) => {
                                 <table className="table table-hover table-middle mb-0">
                                     <thead>
                                         <tr>
-                                            <th className="fw-bold">Compte</th>
                                             <th className="fw-bold">Montant</th>
                                             <th className="fw-bold">Date de création</th>
                                             <th className="fw-bold">Action</th>
+                                            <th className="fw-bold">Propositions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {list && list.map((item, key) => (
                                             <tr key={key} className="cursor-pointer">
-                                                <td>
-                                                    <div className="media">
-                                                        <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{item.account.label}</h4>
-                                                        </div>
-                                                    </div>
-                                                </td>
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
@@ -91,6 +89,19 @@ const List = (props) => {
                                                         Détails
                                                     </Button>
                                                 </td>
+                                                <td>
+                                                    <Button
+                                                        color="primary"
+                                                        variant="contained"
+                                                        className="text-white font-weight-bold"
+                                                        onClick={() => {
+                                                            setSelectedOffer(item);
+                                                            setShowOfferPropositions(true);
+                                                        }}
+                                                    >
+                                                        Propositions
+                                                    </Button>
+                                                </td>
                                             </tr>
                                         ))}
                                     </tbody>
@@ -108,6 +119,34 @@ const List = (props) => {
                         setShowOfferDetails(false);
                     }}
                     reference={selectedOffer.reference}
+                />
+            )}
+
+            {selectedOffer && (
+                <FundingOfferPropositions
+                    show={showOfferPropositions}
+                    onClose={() => {
+                        setSelectedOffer(null);
+                        setShowOfferPropositions(false);
+                    }}
+                    reference={selectedOffer.reference}
+                    showDetails={(reference) => {
+                        setSelectedOffer(null);
+                        setShowOfferPropositions(false);
+                        setShowPropositionDetails(true);
+                        setPropositionReference(reference);
+                    }}
+                />
+            )}
+
+            {propositionReference && (
+                <PropositionDetailsModal
+                    show={showPropositionDetails}
+                    onClose={() => {
+                        setPropositionReference(null);
+                        setShowPropositionDetails(false);
+                    }}
+                    reference={propositionReference}
                 />
             )}
         </>
