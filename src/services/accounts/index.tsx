@@ -72,4 +72,21 @@ export default class AccountService {
     static getPaymentAccounts(): Promise<any> {
         return makeRequest('get', Routes.GET_PAYMENT_ACCOUNTS);
     }
+
+    static getSynchronisations(id): Promise<any> {
+        var regExp = /[a-zA-Z]/g;
+        if(!regExp.test(id)) {
+            return makeRequest('get', Routes.FIND_ACCOUNT(id));
+        } else {
+            return makeRequest('get', Routes.FIND_SYNCHRONISATION_BY_REFERENCE(id));
+        }
+    }
+
+    static addSynchronisation(synchronisation: string, synchronised: string): Promise<any> {
+        return makeRequest('post', Routes.ADD_SYNCHRONISATION(synchronisation, synchronised));
+    }
+
+    static deleteSynchronisation(synchronisation: string, synchronised: string): Promise<any> {
+        return makeRequest('delete', Routes.REMOVE_SYNCHRONISATION(synchronisation, synchronised));
+    }
 }

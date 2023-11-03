@@ -53,7 +53,7 @@ const Details = (props) => {
 
     const getMouvements = () => {
         props.setRequestGlobalAction(true);
-        AccountService.getAccountMouvements(account.id, {types: 'POSITION'}).then(response => {
+        AccountService.getAccountMouvements(account.id, {types: ['POSITION', 'SYNCRONISATION']}).then(response => {
             setMouvements(response);
         }).catch((err) => {
             console.log(err);
@@ -65,7 +65,7 @@ const Details = (props) => {
 
     const getProvisions = () => {
         props.setRequestGlobalAction(true);
-        AccountService.getAccountMouvements(account.id, {types: 'PROVISION'}).then(response => {
+        AccountService.getAccountMouvements(account.id, {types: ['PROVISION']}).then(response => {
             setProvisions(response);
         }).catch((err) => {
             console.log(err);
@@ -190,6 +190,16 @@ const Details = (props) => {
                                                 >
                                                     Décaisser
                                                 </Button> */}
+                                                <Button
+                                                    color="primary"
+                                                    variant="contained"
+                                                    className="text-white font-weight-bold"
+                                                    onClick={() => {
+                                                        props.history.push(joinUrlWithParamsId(FUNDING.ACCOUNT.SYNCHRONISATIONS, account?.id))
+                                                    }}
+                                                >
+                                                    Synchronisations
+                                                </Button>
                                                 { account?.hasPrevision && (
                                                     <Button
                                                         color="primary"

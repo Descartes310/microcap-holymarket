@@ -15,6 +15,10 @@ export const FIND_CONSOLIDATION_BY_REFERENCE = (reference) => `api/fundings/acco
 export const ADD_CONSOLIDATION = (reference1, reference2) => `api/fundings/accounts/${reference1}/consolidate/${reference2}`;
 export const REMOVE_CONSOLIDATION = (reference1, reference2) => `api/fundings/accounts/${reference1}/consolidate/${reference2}`;
 
+export const FIND_SYNCHRONISATION_BY_REFERENCE = (reference) => `api/fundings/accounts/${reference}/synchronisation`;
+export const ADD_SYNCHRONISATION = (reference1, reference2) => `api/fundings/accounts/${reference1}/synchronise/${reference2}`;
+export const REMOVE_SYNCHRONISATION = (reference1, reference2) => `api/fundings/accounts/${reference1}/synchronise/${reference2}`;
+
 export const SET_AGREEMENT = (reference) => `api/fundings/accounts/${reference}/agreements`;
 export const GET_AGREEMENTS = (reference) => `api/fundings/accounts/${reference}/agreements`;
 export const SET_AGREEMENT_TEMPLATE = (reference) => `api/fundings/accounts/${reference}/agreements/templates`;
