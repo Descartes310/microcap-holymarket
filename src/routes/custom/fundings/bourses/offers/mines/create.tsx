@@ -20,6 +20,7 @@ import { Form, FormGroup, Input as InputStrap, InputGroup, InputGroupAddon } fro
 
 const Create = (props) => {
     
+    const [label, setLabel] = useState(null);
     const [amount, setAmount] = useState(null);
     const [member, setMember] = useState(null);
     const [accounts, setAccounts] = useState([]);
@@ -72,15 +73,15 @@ const Create = (props) => {
 
     const onSubmit = () => {
 
-        if(!currency || !interventionType || !account || !amount) {
+        if(!currency || !interventionType || !account || !amount || !label) {
             NotificationManager.error("Le formulaire est mal rempli");
             return;
         }
 
         let data: any = {
-            currency: currency.code, affected, negociable, 
-            amount, intervention_type: interventionType.value,
-            account_reference: account.reference,
+            label, currency: currency.code, affected, amount,
+            negociable, intervention_type: interventionType.value,
+            account_reference: account.reference, nature: 'OFFER'
         };
 
         if(member) {
@@ -171,6 +172,21 @@ const Create = (props) => {
                     />
                 </FormGroup>
 
+                <FormGroup className="has-wrapper">
+                    <InputLabel className="text-left" htmlFor="label">
+                        Désignation
+                    </InputLabel>
+                    <InputStrap
+                        required
+                        id="label"
+                        type="text"
+                        name='label'
+                        value={label}
+                        className="input-lg"
+                        onChange={(e) => setLabel(e.target.value)}
+                    />
+                </FormGroup>
+
                 <div className="col-md-12 col-sm-12 has-wrapper mb-30">
                     <InputLabel className="text-left">
                         Mode d'intervention
@@ -204,13 +220,13 @@ const Create = (props) => {
                 </div>
 
                 <FormGroup className="has-wrapper">
-                    <InputLabel className="text-left" htmlFor="label">
+                    <InputLabel className="text-left" htmlFor="amount">
                         Montant de l'offre
                     </InputLabel>
                     <InputStrap
                         required
-                        id="label"
-                        name='label'
+                        id="amount"
+                        name='amount'
                         type="number"
                         value={amount}
                         className="input-lg"

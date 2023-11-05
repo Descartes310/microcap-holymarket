@@ -72,7 +72,41 @@ const SecondStepForPerson = props => {
      */
     const onSubmit = (data) => {
         data.nationality = nationality;
-        data.residenceCountry = residenceCountry;
+
+        if(!data.phoneNumber || !data.phoneNumberPrefix) {
+            NotificationManager.error("Le prefix et le numéro de téléphone sont obligatoire");
+            return;
+        }
+        
+        if(!data.endingValidityDate) {
+            delete data.endingValidityDate;
+        }
+        if(!data.identificationNumber) {
+            delete data.identificationNumber;
+        }
+        if(!data.identificationType) {
+            delete data.identificationType;
+        }
+        if(!data.nationality || !nationality) {
+            delete data.nationality;
+        }
+        if(!data.phoneNumber) {
+            delete data.phoneNumber;
+        }
+        if(!data.phoneNumberPrefix) {
+            delete data.phoneNumberPrefix;
+        }
+        if(!data.residenceCountry || !residenceCountry) {
+            delete data.residenceCountry;
+        }
+        if(!data.startingValidityDate) {
+            delete data.startingValidityDate;
+        }
+
+        if(nationality) data.nationality = nationality;
+        if(residenceCountry) data.residenceCountry = residenceCountry;
+        
+        //console.log(data);
         setData(data, true);
     };
 

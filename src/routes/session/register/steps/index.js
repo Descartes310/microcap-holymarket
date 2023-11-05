@@ -44,8 +44,11 @@ class PersonRegister extends Component {
         if (_data.nationality)
             _data.nationality = _data.nationality.id;
 
-        _data.identificationValue = _data.identificationNumber;
-        _data.identificationType = _data.identificationType;
+        if(_data.identificationNumber)
+            _data.identificationValue = _data.identificationNumber;
+
+        if(_data.identificationType)
+            _data.identificationType = _data.identificationType;
 
         if (_data.startingValidityDate)
             _data.identificationStartDate = _data.startingValidityDate;

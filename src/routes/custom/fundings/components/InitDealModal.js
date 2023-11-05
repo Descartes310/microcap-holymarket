@@ -19,6 +19,7 @@ import { getPriceWithCurrency, objToString } from 'Helpers/helpers';
 class InitDealModal extends Component {
 
     state = {
+        deal: null,
         codevs: [],
         offer: null,
         codev: null,
@@ -52,7 +53,15 @@ class InitDealModal extends Component {
     constructor(props) {
         super(props);
         this.findMyCodevs();
-        this.findOffer();
+
+        if(this.props.reference) {
+            this.findOffer();
+        }
+
+        if(this.props.deal) {
+            this.findDeal();
+        }
+
         this.getProjects();
     }
 
@@ -113,6 +122,20 @@ class InitDealModal extends Component {
         FundingService.findFundingOffer(this.props.reference)
         .then(response => {
             this.setState({offer: response});
+        })
+        .finally(() => this.props.setRequestGlobalAction(false))
+    }
+
+    findDeal = () => {
+        this.props.setRequestGlobalAction(true);
+        FundingService.findDeal(this.props.deal?.reference)
+        .then(response => {
+            this.setState({
+                deal: response, 
+                offer: response?.offer,
+                compensations: response?.counterParts?.filter(c => c.fixPart).map(cp => { return {...cp, length: cp.duration }}),
+                natureCompensations: response?.counterParts?.filter(c => !c.fixPart).map(cp => { return {...cp, length: cp.duration }}),
+            });
         })
         .finally(() => this.props.setRequestGlobalAction(false))
     }
@@ -190,33 +213,38 @@ class InitDealModal extends Component {
         const {initMethod, compensations, natureCompensations, selectedTickets, startDate, endDate} = this.state;
 
         if(compensations.length <= 0 && natureCompensations.length <= 0) {
-            NotificationManager.error("Remplissez toutes les informations");
-            return;
-        }
-
-        if(selectedTickets.length <= 0 && (!startDate && !endDate)) {
-            NotificationManager.error("Remplissez toutes les informations");
+            NotificationManager.error("Remplissez toutes les informations 1");
             return;
         }
 
         let datas = {
-            init_method: initMethod?.value,
-            offer_reference: this.props.reference
+            offer_reference: this.state.offer.reference
         };
+
+        if(!this.props.deal) {
+            if(selectedTickets.length <= 0 && (!startDate && !endDate)) {
+                NotificationManager.error("Remplissez toutes les informations 2");
+                return;
+            }
+            datas.init_method = initMethod?.value;
+            if(initMethod?.value == 'TICKETS') {
+                datas.tickets = selectedTickets.map(t => t.reference);
+            } else {
+                datas.end_date = endDate;
+                datas.start_date = startDate;
+            }
+        }
 
         if(this.props.notification) {
             datas.notification_id = this.props.notification;
         }
 
-        if(initMethod?.value == 'TICKETS') {
-            datas.tickets = selectedTickets.map(t => t.reference);
-        } else {
-            datas.end_date = endDate;
-            datas.start_date = startDate;
-        }
-
         if(compensations.length > 0) {
             datas.compensations = JSON.stringify(compensations);
+        }
+
+        if(this.props.deal) {
+            datas.deal_reference = this.props.deal?.reference;
         }
 
         if(natureCompensations.length > 0) {
@@ -235,12 +263,11 @@ class InitDealModal extends Component {
         })
         .finally(() => this.props.setRequestGlobalAction(false))
 
-
     }
 
     render() {
 
-        const { onClose, show, reference } = this.props;
+        const { onClose, show, deal } = this.props;
         const { initMethod, codevs, codev, tickets, selectedTickets, startDate, endDate,
         periodStartDate, periodEndDate, periodicity, length, fixPart, variablePart,
         naturePeriodStartDate, naturePeriodEndDate, naturePeriodicity, natureLength,
@@ -259,93 +286,97 @@ class InitDealModal extends Component {
             >
                 <RctCardContent>
                     <div>
-                        <p>Contexte: Offre de cautionnement N. XXX</p>
-                        <p>Dealer: Exploitant MicroCap</p>
-                        <p>Souscripteur: Personne Physique 1</p>
-                        <div className="col-md-12 col-sm-12 has-wrapper mb-30">
-                            <InputLabel className="text-left">
-                                Methode de reglement
-                            </InputLabel>
-                            <Autocomplete
-                                id="combo-box-demo"
-                                value={initMethod}
-                                options={initDealMethods()}
-                                onChange={(__, item) => {
-                                    this.setState({ initMethod: item });
-                                }}
-                                getOptionLabel={(option) => option.label}
-                                renderInput={(params) => <TextField {...params} variant="outlined" />}
-                            />
-                        </div>
-                        { initMethod?.value == 'TICKETS' && (
-                            <div className="col-md-12 col-sm-12 mb-30 d-flex">
-                                <div className="col-md-6 col-sm-12">
+                        <p>Objet: Offre de cautionnement {offer?.reference}</p>
+                        <p>Souscripteur: {offer?.sender}</p>
+                        <p>Beneficiaire: {offer?.receiver}</p>
+                        {!deal && (
+                            <>
+                                <div className="col-md-12 col-sm-12 has-wrapper mb-30">
                                     <InputLabel className="text-left">
-                                        Mes codevs
+                                        Methode de reglement
                                     </InputLabel>
                                     <Autocomplete
-                                        value={codev}
-                                        options={codevs}
                                         id="combo-box-demo"
+                                        value={initMethod}
+                                        options={initDealMethods()}
                                         onChange={(__, item) => {
-                                            this.setState({ codev: item }, () => {
-                                                this.findTickets();
-                                            });
+                                            this.setState({ initMethod: item });
                                         }}
                                         getOptionLabel={(option) => option.label}
                                         renderInput={(params) => <TextField {...params} variant="outlined" />}
                                     />
                                 </div>
+                                { initMethod?.value == 'TICKETS' && (
+                                    <div className="col-md-12 col-sm-12 mb-30 d-flex">
+                                        <div className="col-md-6 col-sm-12">
+                                            <InputLabel className="text-left">
+                                                Mes codevs
+                                            </InputLabel>
+                                            <Autocomplete
+                                                value={codev}
+                                                options={codevs}
+                                                id="combo-box-demo"
+                                                onChange={(__, item) => {
+                                                    this.setState({ codev: item }, () => {
+                                                        this.findTickets();
+                                                    });
+                                                }}
+                                                getOptionLabel={(option) => option.label}
+                                                renderInput={(params) => <TextField {...params} variant="outlined" />}
+                                            />
+                                        </div>
 
-                                <div className="col-md-6 col-sm-12">
-                                    <InputLabel className="text-left">
-                                        Mes tickets
-                                    </InputLabel>
-                                    <Autocomplete
-                                        multiple
-                                        options={tickets}
-                                        id="combo-box-demo"
-                                        value={selectedTickets}
-                                        onChange={(__, items) => {
-                                            this.setState({ selectedTickets: items });
-                                        }}
-                                        getOptionLabel={(option) => `Code: ${option.code}, Montant: ${getPriceWithCurrency(option.amount, option.currency)}, Date d'échéance: ${option.dueDate}`}
-                                        renderInput={(params) => <TextField {...params} variant="outlined" />}
-                                    />
-                                </div>
-                            </div>
-                        )}
-                        { initMethod?.value == 'PERIOD' && (
-                            <div className='d-flex direction-column align-items-stretch' style={{ flex: 1 }}>
-                                <FormGroup className="has-wrapper mr-20" style={{ flex: 1 }}>
-                                    <InputLabel className="text-left">
-                                        Du
-                                    </InputLabel>
-                                    <InputStrap
-                                        type="date"
-                                        id="startDate"
-                                        name='startDate'
-                                        value={startDate}
-                                        className="input-lg"
-                                        placeholder="Date de début"
-                                        onChange={(e) => this.setState({ startDate: e.target.value })}
-                                    />
-                                </FormGroup>
-                                <FormGroup className="has-wrapper mr-20" style={{ flex: 1 }}>
-                                    <InputLabel className="text-left">
-                                        Au
-                                    </InputLabel>
-                                    <InputStrap
-                                        type="date"
-                                        id="endDate"
-                                        name='endDate'
-                                        value={endDate}
-                                        className="input-lg"
-                                        placeholder="Date de fin"
-                                        onChange={(e) => this.setState({ endDate: e.target.value })}
-                                    />
-                                </FormGroup>
-                            </div>
+                                        <div className="col-md-6 col-sm-12">
+                                            <InputLabel className="text-left">
+                                                Mes tickets
+                                            </InputLabel>
+                                            <Autocomplete
+                                                multiple
+                                                options={tickets}
+                                                id="combo-box-demo"
+                                                value={selectedTickets}
+                                                onChange={(__, items) => {
+                                                    this.setState({ selectedTickets: items });
+                                                }}
+                                                getOptionLabel={(option) => `Code: ${option.code}, Montant: ${getPriceWithCurrency(option.amount, option.currency)}, Date d'échéance: ${option.dueDate}`}
+                                                renderInput={(params) => <TextField {...params} variant="outlined" />}
+                                            />
+                                        </div>
+                                    </div>
+                                )}
+                                { initMethod?.value == 'PERIOD' && (
+                                    <div className='d-flex direction-column align-items-stretch' style={{ flex: 1 }}>
+                                        <FormGroup className="has-wrapper mr-20" style={{ flex: 1 }}>
+                                            <InputLabel className="text-left">
+                                                Du
+                                            </InputLabel>
+                                            <InputStrap
+                                                type="date"
+                                                id="startDate"
+                                                name='startDate'
+                                                value={startDate}
+                                                className="input-lg"
+                                                placeholder="Date de début"
+                                                onChange={(e) => this.setState({ startDate: e.target.value })}
+                                            />
+                                        </FormGroup>
+                                        <FormGroup className="has-wrapper mr-20" style={{ flex: 1 }}>
+                                            <InputLabel className="text-left">
+                                                Au
+                                            </InputLabel>
+                                            <InputStrap
+                                                type="date"
+                                                id="endDate"
+                                                name='endDate'
+                                                value={endDate}
+                                                className="input-lg"
+                                                placeholder="Date de fin"
+                                                onChange={(e) => this.setState({ endDate: e.target.value })}
+                                            />
+                                        </FormGroup>
+                                    </div>
+                                )}
+                            </>
                         )}
                         <h2 className='mb-20'>Contrepartie en numeraire</h2>
                         <div className='d-flex direction-column align-items-stretch' style={{ flex: 1 }}>
@@ -608,7 +639,11 @@ class InitDealModal extends Component {
                                     options={projects}
                                     onChange={(__, item) => {
                                         this.setState({ source: item }, () => {
-                                            this.getProducts();
+                                            if(item) {
+                                                this.getProducts();
+                                            } else {
+                                                this.setState({ products: [], product: null })
+                                            }
                                         });
                                     }}
                                     getOptionLabel={(option) => option.label}

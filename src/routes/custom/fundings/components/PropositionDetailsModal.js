@@ -54,7 +54,7 @@ class PropositionDetailsModal extends Component {
                 size="md"
                 title={(
                     <h3 className="fw-bold">
-                        Proposition de deal
+                        Détails deal
                     </h3>
                 )}
             >

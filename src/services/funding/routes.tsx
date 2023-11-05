@@ -6,3 +6,6 @@ export const FIND_FUNDING_OFFER_BY_REFERENCE = (reference) => `api/fundings/fund
 export const GET_PROPOSITIONS = 'api/fundings/funding-offers/propositions';
 export const CREATE_PROPOSITION = 'api/fundings/funding-offers/propositions';
 export const FIND_PROPOSITION = (reference) => `api/fundings/funding-offers/propositions/${reference}`;
+
+export const GET_DEALS = 'api/fundings/funding-offers/deals';
+export const FIND_DEAL = (reference) => `api/fundings/funding-offers/deals/${reference}`;

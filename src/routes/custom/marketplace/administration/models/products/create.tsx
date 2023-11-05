@@ -53,6 +53,7 @@ const Create = (props) => {
     const [maxAccountBalance, setMaxAccountBalance] = useState(null);
     const [associatedProducts, setAssociatedProducts] = useState([]);
     const [aggregationProducts, setAggregationProducts] = useState([]);
+    const [transactionalPageCount, setTransactionalPageCount] = useState(null);
     const [hasComplementaryProducts, setHasComplementaryProducts] = useState(null);
 
     useEffect(() => {
@@ -140,18 +141,18 @@ const Create = (props) => {
             return;
         }
 
-        if (isAccount && (!minAccountbalance || !maxAccountBalance || !accountUnit)) {
-            NotificationManager.error('Les détails du compte sont invalides');
-            return;
-        }
-
         if(lines) data.lines = lines;
 
-        if (isAccount) {
+        if (isAccount || ['TRANSACTION_BOOK'].includes(specialType?.value)) {
+            
+            if (!minAccountbalance || !maxAccountBalance || !accountUnit) {
+                NotificationManager.error('Les détails du compte sont invalides');
+                return;
+            }
+
             data.minBalance = minAccountbalance;
             data.maxBalance = maxAccountBalance;
             data.mirrorAccount = isMirrorAccount;
-            data.isAggregation = isAggregation;
             data.accountUnitReference = accountUnit.reference;
         }
 
@@ -160,9 +161,14 @@ const Create = (props) => {
             if(specialType?.value == 'PASS') {
                 data.userAccountTypeReference = userAccountType.reference
             }
+            if(specialType?.value == 'TRANSACTION_BOOK') {
+                data.numberOfJournals = transactionalPageCount;
+                data.aggregationIds = aggregationProducts.map(ap => ap.id);
+            }
         }
 
-        if(isAggregation) {
+        if(isAggregation) { 
+            data.isAggregation = isAggregation;
             if(aggregationProducts.length > 0) {
                 data.aggregationIds = aggregationProducts.map(ap => ap.id);
             }
@@ -180,7 +186,7 @@ const Create = (props) => {
             data.sale_unit_reference = saleTypeUnit.reference;
         }
 
-//        console.log(data);
+        //console.log(data);
 
         props.setRequestGlobalAction(true);
         ProductService.createProductModel(data, { fileData: ['image'], multipart: true })
@@ -249,6 +255,8 @@ const Create = (props) => {
                                         label: "Deal Plan", value: "CODEV_DEAL_PLAN"
                                     }, {
                                         label: "Pass MicroCap", value: "PASS"
+                                    }, {
+                                        label: "Carnet transactionnel", value: "TRANSACTION_BOOK"
                                     }
                                 ]}
                                 renderInput={(params) => <TextField {...params} variant="outlined" />}
@@ -273,7 +281,7 @@ const Create = (props) => {
                         </div>
                     )}
                     <div className="row">
-                        <FormGroup className={`${specialType?.value == 'CODEV_DEAL_PLAN' ? 'col-md-6' : 'col-md-12'} col-sm-12 has-wrapper`}>
+                        <FormGroup className={`${['CODEV_DEAL_PLAN'].includes(specialType?.value) ? 'col-md-6' : 'col-md-12'} col-sm-12 has-wrapper`}>
                             <InputLabel className="text-left" htmlFor="description">
                                 Description produit
                             </InputLabel>
@@ -303,6 +311,41 @@ const Create = (props) => {
                                         onChange={(e) => setLines(e.target.value)}
                                     />
                                 </FormGroup>
+                            )
+                        }
+                        {
+                            specialType?.value == 'TRANSACTION_BOOK' && (
+                                <>
+                                    <FormGroup className={`col-md-6 col-sm-12 has-wrapper`}>
+                                        <InputLabel className="text-left" htmlFor="journals">
+                                            Nombre de journaux
+                                        </InputLabel>
+                                        <InputStrap
+                                            required
+                                            id="journals"
+                                            name='lines'
+                                            type="number"
+                                            className="input-lg"
+                                            value={transactionalPageCount}
+                                            onChange={(e) => setTransactionalPageCount(e.target.value)}
+                                        />
+                                    </FormGroup>
+                                    <div className="col-md-6 col-sm-12 has-wrapper mb-30">
+                                        <InputLabel className="text-left">
+                                            Sélectionnez le type de compte constitutif
+                                        </InputLabel>
+                                        <Autocomplete
+                                            id="combo-box-demo"
+                                            value={aggregationProducts[0]}
+                                            options={products.filter(p => p.account)}
+                                            onChange={(__, item) => {
+                                                setAggregationProducts([item]);
+                                            }}
+                                            getOptionLabel={(option) => option.label}
+                                            renderInput={(params) => <TextField {...params} variant="outlined" />}
+                                        />
+                                    </div>
+                                </>
                             )
                         }
                     </div>
@@ -479,13 +522,14 @@ const Create = (props) => {
                         <FormControlLabel control={
                             <Checkbox
                                 color="primary"
-                                checked={isAccount}
                                 onChange={() => setIsAccount(!isAccount)}
+                                disabled={['TRANSACTION_BOOK'].includes(specialType?.value)}
+                                checked={isAccount || ['TRANSACTION_BOOK'].includes(specialType?.value)}
                             />
                         } label={'Associer le produit a une unité de décompte'}
                         />
                     </FormGroup>
-                    {isAccount && (
+                    {(isAccount || ['TRANSACTION_BOOK'].includes(specialType?.value)) && (
                         <>
                             <div className="row">
                                 <div className="col-md-3 col-sm-12 has-wrapper mb-30">
@@ -557,36 +601,40 @@ const Create = (props) => {
                                 />
                             </FormGroup>
 
-                            <FormGroup className="col-sm-12 has-wrapper">
-                                <FormControlLabel control={
-                                    <Checkbox
-                                        color="primary"
-                                        checked={isAggregation}
-                                        onChange={() => setIsAggregation(!isAggregation)}
-                                    />
-                                } label={'Compte de consolidation'}
-                                />
-                            </FormGroup>
-                            {
-                                isAggregation && (
-                                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
-                                        <InputLabel className="text-left">
-                                            Sélectionnez les comptes à consolider
-                                        </InputLabel>
-                                        <Autocomplete
-                                            multiple
-                                            id="combo-box-demo"
-                                            value={aggregationProducts}
-                                            options={products.filter(p => p.account)}
-                                            onChange={(__, items) => {
-                                                setAggregationProducts(items)
-                                            }}
-                                            getOptionLabel={(option) => option.label}
-                                            renderInput={(params) => <TextField {...params} variant="outlined" />}
+                            { !['TRANSACTION_BOOK'].includes(specialType?.value) && (
+                                <div>
+                                    <FormGroup className="col-sm-12 has-wrapper">
+                                        <FormControlLabel control={
+                                            <Checkbox
+                                                color="primary"
+                                                onChange={() => setIsAggregation(!isAggregation)}
+                                                checked={isAggregation}
+                                            />
+                                        } label={'Compte de consolidation'}
                                         />
-                                    </div>
-                                )
-                            }
+                                    </FormGroup>
+                                    {
+                                        isAggregation && (
+                                            <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                                                <InputLabel className="text-left">
+                                                    Sélectionnez les comptes à consolider
+                                                </InputLabel>
+                                                <Autocomplete
+                                                    multiple
+                                                    id="combo-box-demo"
+                                                    value={aggregationProducts}
+                                                    options={products.filter(p => p.account)}
+                                                    onChange={(__, items) => {
+                                                        setAggregationProducts(items)
+                                                    }}
+                                                    getOptionLabel={(option) => option.label}
+                                                    renderInput={(params) => <TextField {...params} variant="outlined" />}
+                                                />
+                                            </div>
+                                        )
+                                    }
+                                </div>
+                            )}
                         </>
                     )}
 

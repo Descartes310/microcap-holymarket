@@ -29,7 +29,7 @@ const List = (props) => {
 
     const getDatas = () => {
         props.setRequestGlobalAction(true),
-        FundingService.getAllFundingOffers()
+        FundingService.getAllFundingOffers({nature: 'OFFER'})
             .then(response => setDatas(response))
             .finally(() => props.setRequestGlobalAction(false))
     }
@@ -55,6 +55,7 @@ const List = (props) => {
                                 <table className="table table-hover table-middle mb-0">
                                     <thead>
                                         <tr>
+                                            <th className="fw-bold">Désignation</th>
                                             <th className="fw-bold">Montant</th>
                                             <th className="fw-bold">Date de création</th>
                                             <th className="fw-bold">Action</th>
@@ -64,6 +65,13 @@ const List = (props) => {
                                     <tbody>
                                         {list && list.map((item, key) => (
                                             <tr key={key} className="cursor-pointer">
+                                                <td>
+                                                    <div className="media">
+                                                        <div className="media-body pt-10">
+                                                            <p className="m-0 text-dark">{item?.label}</p>
+                                                        </div>
+                                                    </div>
+                                                </td>
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
@@ -102,7 +110,7 @@ const List = (props) => {
                                                                 setShowOfferPropositions(true);
                                                             }}
                                                         >
-                                                            Propositions
+                                                            Deals
                                                         </Button>
                                                     )}
                                                 </td>

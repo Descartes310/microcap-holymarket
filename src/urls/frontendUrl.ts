@@ -66,6 +66,11 @@ export const FUNDING = {
             MINE: '/funding/bourse/offers/mine',
             LIST: '/funding/bourse/offers/list',
             CREATE_MINE: '/funding/bourse/offers/mine/create',
+        },
+        DEALS: {
+            SELF: '/funding/deals',
+            SENT: '/funding/deals/sent',
+            RECEIVED: '/funding/deals/received',
         }
     }
 } as const;
@@ -549,32 +554,33 @@ export const BROKER = {
 } as const;
 
 export const MIPRO = {
-    SELF: '/mipro',
+    SELF: '/360',
     HOME: {
-        SELF: '/mipro/home',
-        DASHBOARD: '/mipro/home/dashboard',
+        SELF: '/360/home',
+        DASHBOARD: '/360/home/dashboard',
+        ACTIVITY: '/360/home/activities',
     },
     PREVISION: {
-        SELF: '/mipro/previsions',
-        LIST: '/mipro/previsions/list',
-        CREATE: '/mipro/previsions/create',
+        SELF: '/360/previsions',
+        LIST: '/360/previsions/list',
+        CREATE: '/360/previsions/create',
     },
     PERIOD: {
-        SELF: '/mipro/periods',
-        LIST: '/mipro/periods/pre/:id/list',
-        CREATE: '/mipro/periods/pre/:id/create',
+        SELF: '/360/periods',
+        LIST: '/360/periods/pre/:id/list',
+        CREATE: '/360/periods/pre/:id/create',
     },
     GOAL: {
-        SELF: '/mipro/goals',
-        LIST: '/mipro/goals/list',
-        CREATE: '/mipro/goals/create',
+        SELF: '/360/goals',
+        LIST: '/360/goals/list',
+        CREATE: '/360/goals/create',
     },
     ADMINISTRATION: {
-        SELF: '/mipro/administration',
+        SELF: '/360/administration',
         GOAL: {
-            SELF: '/mipro/administration/goals',
-            LIST: '/mipro/administration/goals/list',
-            CREATE: '/mipro/administration/goals/create',
+            SELF: '/360/administration/goals',
+            LIST: '/360/administration/goals/list',
+            CREATE: '/360/administration/goals/create',
         }
     }
 } as const;

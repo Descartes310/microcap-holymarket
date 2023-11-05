@@ -1,25 +1,20 @@
 import { connect } from 'react-redux';
-import { FUNDING } from 'Url/frontendUrl';
 import { Button } from '@material-ui/core';
 import { withRouter } from "react-router-dom";
 import FundingService from 'Services/funding';
 import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
 import React, { useEffect, useState } from 'react';
-import { getPriceWithCurrency } from 'Helpers/helpers';
 import TimeFromMoment from 'Components/TimeFromMoment';
-import FundingOfferDetails from '../../../components/FundingOfferDetails';
-import FundingOfferPropositions from '../../../components/OfferPropositions';
-import PropositionDetailsModal from '../../../components/PropositionDetailsModal';
+import InitDealModal from '../../components/InitDealModal';
+import DealDetailsModal from '../../components/DealDetailsModal';
 
 const List = (props) => {
 
     const [datas, setDatas] = useState([]);
-    const [selectedOffer, setSelectedOffer] = useState(null);
-    const [showOfferDetails, setShowOfferDetails] = useState(false);
-    const [propositionReference, setPropositionReference] = useState(null);
-    const [showOfferPropositions, setShowOfferPropositions] = useState(false);
-    const [showPropositionDetails, setShowPropositionDetails] = useState(false);
+    const [deal, setDeal] = useState(null);
+    const [showInitDeal, setShowInitDeal] = useState(false);
+    const [showDealDetails, setShowDealDetails] = useState(false);
 
     useEffect(() => {
         getDatas();
@@ -27,9 +22,9 @@ const List = (props) => {
 
     const getDatas = () => {
         props.setRequestGlobalAction(true),
-        FundingService.getMineFundingOffers({nature: 'OFFER'})
-            .then(response => setDatas(response))
-            .finally(() => props.setRequestGlobalAction(false))
+        FundingService.getDeals({received: true})
+        .then(response => setDatas(response))
+        .finally(() => props.setRequestGlobalAction(false))
     }
 
     return (
@@ -37,15 +32,13 @@ const List = (props) => {
             <CustomList
                 list={datas}
                 loading={false}
-                addText="Nouvelle offre"
-                itemsFoundText={n => `${n} offres trouvées`}
-                onAddClick={() => props.history.push(FUNDING.BOURSE.OFFER.CREATE_MINE)}
+                itemsFoundText={n => `${n} deals trouvés`}
                 renderItem={list => (
                     <>
                         {list && list.length === 0 ? (
                             <div className="d-flex justify-content-center align-items-center py-50">
                                 <h4>
-                                    Aucune offre trouvée
+                                    Aucun deal trouvé
                                 </h4>
                             </div>
                         ) : (
@@ -54,10 +47,9 @@ const List = (props) => {
                                     <thead>
                                         <tr>
                                             <th className="fw-bold">Désignation</th>
-                                            <th className="fw-bold">Montant</th>
+                                            <th className="fw-bold">Destinataire</th>
                                             <th className="fw-bold">Date de création</th>
                                             <th className="fw-bold">Action</th>
-                                            <th className="fw-bold">Propositions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -66,14 +58,14 @@ const List = (props) => {
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <p className="m-0 text-dark">{item?.label}</p>
+                                                            <p className="m-0 text-dark">{item?.offer?.label}</p>
                                                         </div>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <p className="m-0 text-dark">{getPriceWithCurrency(item.amount, item.currency)}</p>
+                                                            <p className="m-0 text-dark">{item?.receiver}</p>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -90,24 +82,11 @@ const List = (props) => {
                                                         variant="contained"
                                                         className="text-white font-weight-bold"
                                                         onClick={() => {
-                                                            setSelectedOffer(item);
-                                                            setShowOfferDetails(true);
+                                                            setDeal(item);
+                                                            setShowDealDetails(true);
                                                         }}
                                                     >
                                                         Détails
-                                                    </Button>
-                                                </td>
-                                                <td>
-                                                    <Button
-                                                        color="primary"
-                                                        variant="contained"
-                                                        className="text-white font-weight-bold"
-                                                        onClick={() => {
-                                                            setSelectedOffer(item);
-                                                            setShowOfferPropositions(true);
-                                                        }}
-                                                    >
-                                                        Deals
                                                     </Button>
                                                 </td>
                                             </tr>
@@ -119,42 +98,30 @@ const List = (props) => {
                     </>
                 )}
             />
-            {selectedOffer && (
-                <FundingOfferDetails
-                    show={showOfferDetails}
-                    onClose={() => {
-                        setSelectedOffer(null);
-                        setShowOfferDetails(false);
-                    }}
-                    reference={selectedOffer.reference}
-                />
-            )}
 
-            {selectedOffer && (
-                <FundingOfferPropositions
-                    show={showOfferPropositions}
+            {deal && (
+                <DealDetailsModal
+                    show={showDealDetails}
                     onClose={() => {
-                        setSelectedOffer(null);
-                        setShowOfferPropositions(false);
+                        setDeal(null);
+                        setShowDealDetails(false);
                     }}
-                    reference={selectedOffer.reference}
-                    showDetails={(reference) => {
-                        setSelectedOffer(null);
-                        setShowOfferPropositions(false);
-                        setShowPropositionDetails(true);
-                        setPropositionReference(reference);
+                    reference={deal?.reference}
+                    negociate={() => {
+                        setShowDealDetails(false);
+                        setShowInitDeal(true);
                     }}
                 />
             )}
 
-            {propositionReference && (
-                <PropositionDetailsModal
-                    show={showPropositionDetails}
+            {deal && showInitDeal && (
+                <InitDealModal 
+                    show={showInitDeal}
                     onClose={() => {
-                        setPropositionReference(null);
-                        setShowPropositionDetails(false);
+                        setDeal(null);
+                        setShowInitDeal(false);
                     }}
-                    reference={propositionReference}
+                    deal={deal}
                 />
             )}
         </>

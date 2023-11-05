@@ -7,12 +7,12 @@ export default class FundingService {
         return makeRequest('post', Routes.CREATE_FUNDING_OFFER, data);
     }
 
-    static getMineFundingOffers(): Promise<any> {
-        return makeRequest('get', Routes.GET_MINE_FUNDING_OFFERS);
+    static getMineFundingOffers(data: any): Promise<any> {
+        return makeRequest('get', Routes.GET_MINE_FUNDING_OFFERS, data);
     }
 
-    static getAllFundingOffers(): Promise<any> {
-        return makeRequest('get', Routes.GET_ALL_FUNDING_OFFERS);
+    static getAllFundingOffers(data: any): Promise<any> {
+        return makeRequest('get', Routes.GET_ALL_FUNDING_OFFERS, data);
     }
 
     static findFundingOffer(reference: string): Promise<any> {
@@ -23,10 +23,19 @@ export default class FundingService {
         return makeRequest('post', Routes.CREATE_PROPOSITION, data);
     }
 
-    static getPropositions(reference: string): Promise<any> {
-        return makeRequest('get', Routes.GET_PROPOSITIONS, {reference});
+    static getPropositions(): Promise<any> {
+        return makeRequest('get', Routes.GET_PROPOSITIONS);
     }
+
     static findProposition(reference: string): Promise<any> {
         return makeRequest('get', Routes.FIND_PROPOSITION(reference));
+    }
+
+    static getDeals(data): Promise<any> {
+        return makeRequest('get', Routes.GET_DEALS, data);
+    }
+    
+    static findDeal(reference): Promise<any> {
+        return makeRequest('get', Routes.FIND_DEAL(reference));
     }
 }

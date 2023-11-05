@@ -33,7 +33,7 @@ class PropositionModal extends Component {
 
     getPropositions = () => {
         this.props.setRequestGlobalAction(true);
-        FundingService.getPropositions(this.props.reference).then(response => {
+        FundingService.getPropositions().then(response => {
             this.setState({ propositions: response });
         })
         .finally(() => this.props.setRequestGlobalAction(false))

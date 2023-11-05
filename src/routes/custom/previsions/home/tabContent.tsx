@@ -1,5 +1,6 @@
 import React from 'react';
 import Dashboard from './dashboard';
+import Activity from './activities';
 import {connect} from "react-redux";
 import {injectIntl} from "react-intl";
 import { MIPRO } from 'Url/frontendUrl';
@@ -12,6 +13,7 @@ const Home = (props) => {
             <Switch>
                 <Redirect exact from={`${match.url}/`} to={MIPRO.HOME.DASHBOARD} />
                 <Route path={MIPRO.HOME.DASHBOARD} component={Dashboard} />
+                <Route path={MIPRO.HOME.ACTIVITY} component={Activity} />
             </Switch>
         </div>
     );

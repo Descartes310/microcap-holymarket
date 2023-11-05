@@ -76,6 +76,24 @@ const SecondStepForGroup = props => {
      * On submit
      */
     const onSubmit = (data) => {
+
+        if(!data.endingValidityDate) {
+            delete data.endingValidityDate;
+        }
+        if(!data.groupTypeReference) {
+            delete data.groupTypeReference;
+        }
+        if(!data.identificationNumber) {
+            delete data.identificationNumber;
+        }
+        if(!data.identificationType) {
+            delete data.identificationType;
+        }
+        if(!data.startingValidityDate) {
+            delete data.startingValidityDate;
+        }
+
+        //console.log(data);
         setData(data, true);
     };
 
