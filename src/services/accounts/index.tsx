@@ -41,6 +41,14 @@ export default class AccountService {
         return makeRequest('get', Routes.GET_ACCOUNT_MOUVEMENTS(id), data);
     }
 
+    static getAccountByTypes(data: any): Promise<any> {
+        return makeRequest('get', Routes.GET_ACCOUNTS_BY_TYPE, data);
+    }
+
+    static getAccountBySpeciality(data: any): Promise<any> {
+        return makeRequest('get', Routes.GET_ACCOUNTS_BY_SPECIALITY, data);
+    }
+
     static getExternalAccounts(): Promise<any> {
         return makeRequest('get', Routes.GET_EXTERNAL_ACCOUNTS);
     }

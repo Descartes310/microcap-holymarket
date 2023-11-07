@@ -105,6 +105,22 @@ class FundingOfferDetails extends Component {
                                         </div>
                                     </td>
                                 </tr>
+                                <tr className="cursor-pointer">
+                                    <td>
+                                        <div className="media">
+                                            <div className="media-body pt-10">
+                                                <h4 className="m-0 fw-bold text-dark">Message</h4>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div className="media">
+                                            <div className="media-body pt-10">
+                                                <h4 className="m-0 text-dark">{offer?.description}</h4>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
                                 { offer?.dedicatedReferralCode && (
                                     <tr className="cursor-pointer">
                                         <td>

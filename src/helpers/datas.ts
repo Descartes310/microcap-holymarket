@@ -281,12 +281,15 @@ export const getSpecificOperations = (paymentAccount) => {
 export const getFundingOfferInterventionTypes = () => {
     return [
         {
+            label: 'Sureté MicroCap',
+            value: 'CPT',
+        },        {
             label: 'Deal bancaire',
-            value: 'BANK_DEAL'
+            value: 'CODEV'
         },
         {
             label: 'Carnet du bénéficiaire',
-            value: 'RECIPIENT_BOOK'
+            value: 'TRANSACTION_BOOK'
         }
     ];
 }

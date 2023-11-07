@@ -33,14 +33,25 @@ const Create = (props) => {
     const [interventionType, setInterventionType] = useState(null);
 
     useEffect(() => {
-        getAccounts();
         getCurrencies();
     }, []);
 
+    useEffect(() => {
+        if(interventionType) {
+            getAccounts();
+        } else {
+            setAccount(null);
+            setAccounts([]);
+        }
+    }, [interventionType]);
+
     const getAccounts = () => {
         props.setRequestGlobalAction(true),
-        AccountService.getPaymentAccounts()
-            .then(response => setAccounts(response))
+        AccountService.getAccountBySpeciality({special_product: interventionType?.value})
+            .then(response => {
+                setAccounts(response);
+                setAccount(null);
+            })
             .finally(() => props.setRequestGlobalAction(false))
     }
 

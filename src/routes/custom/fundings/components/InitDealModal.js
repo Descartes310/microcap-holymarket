@@ -121,7 +121,7 @@ class InitDealModal extends Component {
         this.props.setRequestGlobalAction(true);
         FundingService.findFundingOffer(this.props.reference)
         .then(response => {
-            this.setState({offer: response});
+            this.setState({offer: response, initMethod: response?.intervention == 'CPT' ? initDealMethods().find(init => init.value == 'PERIOD') : initDealMethods().find(init => init.value == 'TICKETS')});
         })
         .finally(() => this.props.setRequestGlobalAction(false))
     }
@@ -135,6 +135,7 @@ class InitDealModal extends Component {
                 offer: response?.offer,
                 compensations: response?.counterParts?.filter(c => c.fixPart).map(cp => { return {...cp, length: cp.duration }}),
                 natureCompensations: response?.counterParts?.filter(c => !c.fixPart).map(cp => { return {...cp, length: cp.duration }}),
+                initMethod: response?.offer?.intervention == 'CPT' ? initDealMethods().find(init => init.value == 'PERIOD') : initDealMethods().find(init => init.value == 'TICKETS')
             });
         })
         .finally(() => this.props.setRequestGlobalAction(false))
@@ -291,7 +292,7 @@ class InitDealModal extends Component {
                         <p>Beneficiaire: {offer?.receiver}</p>
                         {!deal && (
                             <>
-                                <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                                {/* <div className="col-md-12 col-sm-12 has-wrapper mb-30">
                                     <InputLabel className="text-left">
                                         Methode de reglement
                                     </InputLabel>
@@ -305,43 +306,56 @@ class InitDealModal extends Component {
                                         getOptionLabel={(option) => option.label}
                                         renderInput={(params) => <TextField {...params} variant="outlined" />}
                                     />
-                                </div>
+                                </div> */}
                                 { initMethod?.value == 'TICKETS' && (
-                                    <div className="col-md-12 col-sm-12 mb-30 d-flex">
-                                        <div className="col-md-6 col-sm-12">
-                                            <InputLabel className="text-left">
-                                                Mes codevs
-                                            </InputLabel>
-                                            <Autocomplete
-                                                value={codev}
-                                                options={codevs}
-                                                id="combo-box-demo"
-                                                onChange={(__, item) => {
-                                                    this.setState({ codev: item }, () => {
-                                                        this.findTickets();
-                                                    });
-                                                }}
-                                                getOptionLabel={(option) => option.label}
-                                                renderInput={(params) => <TextField {...params} variant="outlined" />}
-                                            />
-                                        </div>
+                                    <div>
+                                        <div className="col-md-12 col-sm-12 mb-30 d-flex">
+                                            <div className="col-md-6 col-sm-12">
+                                                <InputLabel className="text-left">
+                                                    Mes codevs
+                                                </InputLabel>
+                                                <Autocomplete
+                                                    value={codev}
+                                                    options={codevs}
+                                                    id="combo-box-demo"
+                                                    onChange={(__, item) => {
+                                                        this.setState({ codev: item }, () => {
+                                                            this.findTickets();
+                                                        });
+                                                    }}
+                                                    getOptionLabel={(option) => option.label}
+                                                    renderInput={(params) => <TextField {...params} variant="outlined" />}
+                                                />
+                                            </div>
 
-                                        <div className="col-md-6 col-sm-12">
-                                            <InputLabel className="text-left">
-                                                Mes tickets
-                                            </InputLabel>
-                                            <Autocomplete
-                                                multiple
-                                                options={tickets}
-                                                id="combo-box-demo"
-                                                value={selectedTickets}
-                                                onChange={(__, items) => {
-                                                    this.setState({ selectedTickets: items });
-                                                }}
-                                                getOptionLabel={(option) => `Code: ${option.code}, Montant: ${getPriceWithCurrency(option.amount, option.currency)}, Date d'échéance: ${option.dueDate}`}
-                                                renderInput={(params) => <TextField {...params} variant="outlined" />}
-                                            />
+                                            <div className="col-md-6 col-sm-12">
+                                                <InputLabel className="text-left">
+                                                    Mes tickets
+                                                </InputLabel>
+                                                <Autocomplete
+                                                    multiple
+                                                    options={tickets}
+                                                    id="combo-box-demo"
+                                                    value={selectedTickets}
+                                                    onChange={(__, items) => {
+                                                        this.setState({ selectedTickets: items });
+                                                    }}
+                                                    getOptionLabel={(option) => `Code: ${option.code}, Montant: ${getPriceWithCurrency(option.amount, option.currency)}, Date d'échéance: ${option.dueDate}`}
+                                                    renderInput={(params) => <TextField {...params} variant="outlined" />}
+                                                />
+                                            </div>
                                         </div>
+                                        <FormGroup className="col-md-12 col-sm-12 has-wrapper mr-20">
+                                            <InputLabel className="text-left">
+                                                Montant
+                                            </InputLabel>
+                                            <InputStrap
+                                                type="text"
+                                                disabled={true}
+                                                className="input-lg"
+                                                value={getPriceWithCurrency(selectedTickets.reduce((amount, ticket) => amount + Number(ticket.amount), 0), selectedTickets[0]?.currency)}
+                                            />
+                                        </FormGroup>
                                     </div>
                                 )}
                                 { initMethod?.value == 'PERIOD' && (

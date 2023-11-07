@@ -23,8 +23,8 @@ export default class FundingService {
         return makeRequest('post', Routes.CREATE_PROPOSITION, data);
     }
 
-    static getPropositions(): Promise<any> {
-        return makeRequest('get', Routes.GET_PROPOSITIONS);
+    static getPropositions(data): Promise<any> {
+        return makeRequest('get', Routes.GET_PROPOSITIONS, data);
     }
 
     static findProposition(reference: string): Promise<any> {

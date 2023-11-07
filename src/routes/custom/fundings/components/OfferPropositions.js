@@ -23,6 +23,7 @@ class PropositionModal extends Component {
     }
 
     findOffer = () => {
+        this.setState({ offer: null });
         this.props.setRequestGlobalAction(true);
         FundingService.findFundingOffer(this.props.reference)
         .then(response => {
@@ -32,8 +33,9 @@ class PropositionModal extends Component {
     }
 
     getPropositions = () => {
+        this.setState({ propositions: [] });
         this.props.setRequestGlobalAction(true);
-        FundingService.getPropositions().then(response => {
+        FundingService.getPropositions({reference: this.props.reference}).then(response => {
             this.setState({ propositions: response });
         })
         .finally(() => this.props.setRequestGlobalAction(false))
