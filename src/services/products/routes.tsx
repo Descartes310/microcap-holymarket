@@ -70,3 +70,8 @@ export const FIND_TICKET_BY_PERIOD = 'api/products/codevs/tickets/period';
 export const FIND_TICKETS_FROM_PRODUCT = 'api/products/codevs/tickets/product';
 export const GET_COTATIONS = (reference) => `api/products/${reference}/cotations`;
 export const UPDATE_COTATION = (reference) => `api/products/${reference}/cotations`;
+
+export const GET_TICKET_TYPES = 'api/products/codevs/tickets/types';
+export const CREATE_TICKET_TYPE = 'api/products/codevs/tickets/types';
+export const GET_CHILD_TICKETS = (reference) => `api/products/codevs/tickets/${reference}/child`;
+export const CREATE_CHILD_TICKETS = (reference) => `api/products/codevs/tickets/${reference}/child`;

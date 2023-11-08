@@ -1,11 +1,13 @@
 import '../resources/index.css';
 import { connect } from 'react-redux';
+import CreateTicket from './createTicket';
 import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
 import AccountService from 'Services/accounts';
 import CodevPrevisions from './codevPrevisions';
 import { Input as InputStrap } from 'reactstrap';
 import { setRequestGlobalAction } from 'Actions';
+import CodevChildTicket from './codevChildTickets';
 import DebitAccount from 'Components/DebitAccount';
 import React, { useState, useEffect } from 'react';
 import CreditAccount from 'Components/CreditAccount';
@@ -25,8 +27,11 @@ const Details = (props) => {
     const [mouvements, setMouvements] = useState([]);
     const [provisions, setProvisions] = useState([]);
     const [showTicketBox, setShowTicketBox] = useState(false);
+    const [selectedTicket, setSelectedTicket] = useState(null);
+    const [showChildTicketBox, setShowChildTicketBox] = useState(false);
     const [showDebitAccountBox, setShowDebitAccountBox] = useState(false);
     const [showCreditAccountBox, setShowCreditAccountBox] = useState(false);
+    const [showCreateChildTicketBox, setShowCreateChildTicketBox] = useState(false);
 
     useEffect(() => {
         findAccount();
@@ -407,6 +412,31 @@ const Details = (props) => {
                         reference={account?.reference}
                         title='Echéancier'
                         onClose={() => setShowTicketBox(false)}
+                        openTicket={(ticket) => {
+                            setShowTicketBox(false);
+                            setSelectedTicket(ticket);
+                            setShowChildTicketBox(true);
+                        }}
+                    />
+                )}
+                { showChildTicketBox && selectedTicket && (
+                    <CodevChildTicket
+                        ticket={selectedTicket}
+                        show={showChildTicketBox}
+                        title='Versement complementaire'
+                        onClose={() => setShowChildTicketBox(false)}
+                        onCreate={() => {
+                            setShowChildTicketBox(false);
+                            setShowCreateChildTicketBox(true);
+                        }}
+                    />
+                )}
+                { showCreateChildTicketBox && selectedTicket && (
+                    <CreateTicket
+                        ticket={selectedTicket}
+                        show={showCreateChildTicketBox}
+                        title='Versement complementaire'
+                        onClose={() => setShowCreateChildTicketBox(false)}
                     />
                 )}
             </RctCollapsibleCard>

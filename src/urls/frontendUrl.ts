@@ -407,6 +407,11 @@ export const MARKETPLACE = {
             SELF: "/marketplace/store/orders",
             LIST: "/marketplace/store/orders/list",
         },
+        TICKET: {
+            SELF: "/marketplace/store/tickets",
+            LIST: "/marketplace/store/tickets/list",
+            CREATE: "/marketplace/store/tickets/create",
+        },
         OPTION: {
             SELF: "/marketplace/store/options",
             ITEM: {

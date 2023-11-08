@@ -658,6 +658,13 @@ export default [
             "permissions": [Permission.marketplace.store.order.name],
             "profiles": ['GROUP'],
             "child_routes": null
+         }, {
+            "menu_title": "Type de versements",
+            "new_item": false,
+            "path": MARKETPLACE.STORE.TICKET.LIST,
+            "permissions": [Permission.marketplace.store.product.name],
+            "profiles": ['GROUP'],
+            "child_routes": null
          }
       ],
    },

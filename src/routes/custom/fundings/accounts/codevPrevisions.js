@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
+import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
 import ProductService from "Services/products";
 import { setRequestGlobalAction } from 'Actions';
@@ -56,6 +57,7 @@ class CodevPrevisions extends Component {
                             <th>Echéance</th>
                             <th>Montant</th>
                             <th>Status</th>
+                            <th>Action</th>
                         </thead>
                         <tbody>
                             {tickets.map(ticket => (
@@ -64,6 +66,18 @@ class CodevPrevisions extends Component {
                                     <td>{ticket.date}</td>
                                     <td>{getPriceWithCurrency(ticket.amount, ticket.currency)}</td>
                                     <td>{ticket.status}</td>
+                                    <td>
+                                        <Button
+                                            color="primary"
+                                            variant="contained"
+                                            className="text-white font-weight-bold"
+                                            onClick={() => {
+                                                this.props.openTicket(ticket);
+                                            }}
+                                        >
+                                            Supplementaires
+                                        </Button>
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>

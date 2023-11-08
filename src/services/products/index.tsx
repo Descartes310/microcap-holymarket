@@ -203,7 +203,6 @@ export default class ProductService {
     static getLineSupports(data: any): Promise<any> {
         return makeRequest('get', Routes.GET_LINE_SUPPORTS, data);
     }
-
     
     static createSubscriber(data: any): Promise<any> {
         return makeRequest('post', Routes.CREATE_SUBSCRIBER, data);
@@ -241,4 +240,19 @@ export default class ProductService {
         return makeRequest('get', Routes.FIND_TICKETS_FROM_PRODUCT, data);
     }
 
+    static createTicketType(data: any): Promise<any> {
+        return makeRequest('post', Routes.CREATE_TICKET_TYPE, data);
+    }
+    
+    static getTicketTypes(): Promise<any> {
+        return makeRequest('get', Routes.GET_TICKET_TYPES);
+    }
+
+    static getChildTickets(reference: string): Promise<any> {
+        return makeRequest('get', Routes.GET_CHILD_TICKETS(reference));
+    }
+
+    static createChildTicket(reference: string, data: any): Promise<any> {
+        return makeRequest('post', Routes.CREATE_CHILD_TICKETS(reference), data);
+    }
 }
