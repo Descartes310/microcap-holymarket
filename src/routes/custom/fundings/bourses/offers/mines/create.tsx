@@ -84,7 +84,7 @@ const Create = (props) => {
 
     const onSubmit = () => {
 
-        if(!currency || !interventionType || !account || !amount || !label) {
+        if(!currency || !interventionType || !amount || !label) {
             NotificationManager.error("Le formulaire est mal rempli");
             return;
         }
@@ -92,8 +92,12 @@ const Create = (props) => {
         let data: any = {
             label, currency: currency.code, affected, amount,
             negociable, intervention_type: interventionType.value,
-            account_reference: account.reference, nature: 'OFFER'
+            nature: 'OFFER'
         };
+
+        if(account) {
+            data.account_reference = account?.reference;
+        }
 
         if(member) {
             data.user_reference = member?.referralCode;
