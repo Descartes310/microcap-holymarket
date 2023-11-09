@@ -95,7 +95,7 @@ const Create = (props) => {
             nature: 'OFFER'
         };
 
-        if(account) {
+        if(account?.id) {
             data.account_reference = account?.reference;
         }
 
@@ -228,7 +228,7 @@ const Create = (props) => {
                         onChange={(__, item) => {
                             setAccount(item);
                         }}
-                        options={accounts}
+                        options={[...accounts, {label: 'Non disponible', id: null}]}
                         getOptionLabel={(option) => option.label}
                         renderInput={(params) => <TextField {...params} variant="outlined" />}
                     />
