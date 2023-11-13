@@ -33,7 +33,7 @@ class UpdateComplexTableModal extends Component {
                 <RctCardContent>
                     {
                         tables.map((table, index) => (
-                            <UpdateComplexTable key={index} projectId={projectId} id={table.id} editMode={true} />
+                            <UpdateComplexTable key={index} projectId={projectId} id={table.id} editMode={true} showOptionsMenu={true} />
                         ))
                     }
                 </RctCardContent>

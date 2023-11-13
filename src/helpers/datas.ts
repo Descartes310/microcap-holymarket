@@ -306,3 +306,20 @@ export const initDealMethods = () => {
         }
     ];
 }
+
+export const territoryDetailsTypes = () => {
+    return [
+        {
+            label: "Type d'organisation",
+            value: 'TYPE_GROUP'
+        },
+        {
+            label: "Immatriculation",
+            value: 'IMMATRICULATION'
+        }
+    ];
+}
+
+export const translateTerritoryDetailsType = (value) => {
+    return territoryDetailsTypes().find(d => d.value == value)?.label
+}

@@ -43,12 +43,12 @@ const SecondStepForGroup = props => {
     useEffect(() => {
         if(residenceCountry) {
             _getIdentificationType();
+            getJuridicForms();;
         }
     }, [residenceCountry]);
 
     useEffect(() => {
         _getCountries();
-        getJuridicForms();
     }, []);
 
     const _getCountries = () => {
@@ -63,7 +63,7 @@ const SecondStepForGroup = props => {
     };
 
     const getJuridicForms = () => {
-        GroupService.getJuridicTypes()
+        GroupService.getJuridicTypes({territory: residenceCountry.reference})
         .then(response => setJuridicForms(response))
     }
 

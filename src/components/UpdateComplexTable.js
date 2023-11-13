@@ -3,6 +3,7 @@ import { withRouter } from "react-router-dom";
 import Button from '@material-ui/core/Button';
 import ProjectService from 'Services/projects';
 import { AbilityContext } from "Permissions/Can";
+import ComplexTableMenu from './ComplexTableMenu';
 import { NotificationManager } from 'react-notifications';
 import { FormGroup, Input as InputStrap } from 'reactstrap';
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
@@ -18,6 +19,7 @@ class UpdateComplexTable extends Component {
         columns: [],
         flatRows: [],
         subColumns: [],
+        showMenuModal: false
     };
 
     componentDidMount() {
@@ -108,7 +110,10 @@ class UpdateComplexTable extends Component {
     }
 
     render() {
-        const { columns, subColumns, datas } = this.state;
+
+        const { showOptionsMenu } = this.props;
+        const { columns, subColumns, datas, showMenuModal } = this.state;
+
         return (
             <RctCollapsibleCard>
                 <div className="d-flex justify-content-center align-items-center" style={{ flexDirection: 'column' }}>
@@ -212,12 +217,32 @@ class UpdateComplexTable extends Component {
                                                                     }
                                                                 >
                                                                     {this.props.editMode ?
-                                                                    <InputStrap
-                                                                        type="text"
-                                                                        className="input-lg"
-                                                                        onChange={(e) => this.updateRowValue(row, subcolumn, index+1, e.target.value)}
-                                                                        value={datas.find(d => d.row.id === row.id && d.column.id === subcolumn.id && d.position === (index+1))?.value }
-                                                                    />
+                                                                        !showOptionsMenu ? 
+                                                                            <InputStrap
+                                                                                type="text"
+                                                                                className="input-lg"
+                                                                                onChange={(e) => this.updateRowValue(row, subcolumn, index+1, e.target.value)}
+                                                                                value={datas.find(d => d.row.id === row.id && d.column.id === subcolumn.id && d.position === (index+1))?.value }
+                                                                            /> :
+                                                                            <div className='d-flex direction-row'>
+                                                                                <InputStrap
+                                                                                    type="text"
+                                                                                    className="input-lg"
+                                                                                    onChange={(e) => this.updateRowValue(row, subcolumn, index+1, e.target.value)}
+                                                                                    value={datas.find(d => d.row.id === row.id && d.column.id === subcolumn.id && d.position === (index+1))?.value }
+                                                                                />
+                                                                                <Button
+                                                                                    color="primary"
+                                                                                    variant="contained"
+                                                                                    onClick={() => {
+                                                                                        this.setState({ showMenuModal: true });
+                                                                                    }}
+                                                                                    className="text-white font-weight-bold"
+                                                                                >
+                                                                                    Options
+                                                                                </Button>
+                                                                            </div>
+
                                                                     : 
                                                                     <p>{datas.find(d => d.row.id === row.id && d.column.id === subcolumn.id && d.position === (index+1))?.value }</p>
                                                                     }
@@ -271,6 +296,7 @@ class UpdateComplexTable extends Component {
                         </Button>
                     </FormGroup>
                 )}
+                <ComplexTableMenu show={showMenuModal} onClose={() => { this.setState({ showMenuModal: false }) }} />
             </RctCollapsibleCard >
         );
     }

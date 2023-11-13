@@ -338,15 +338,17 @@ const Update = (props) => {
                     setAddPersonalItemModal(false);
                 }}
             />
-            <UpdateComplexTableModal 
-                show={showUpdateTableModal}
-                title={'Edition ouvrage personnalisé'}
-                onClose={() => {
-                    setShowUpdateTableModal(false);
-                }}
-                projectId={project?.id}
-                tables={project?.tables ? project?.tables : []}
-            />
+            { (showUpdateTableModal && project) && (
+                <UpdateComplexTableModal 
+                    show={showUpdateTableModal}
+                    title={'Edition ouvrage personnalisé'}
+                    onClose={() => {
+                        setShowUpdateTableModal(false);
+                    }}
+                    projectId={project?.id}
+                    tables={project?.tables ? project?.tables : []}
+                />
+            )}
             { showUpdateItemModal && selectedProjectItem && (
                 <UpdateItemModal 
                     item={selectedProjectItem}
