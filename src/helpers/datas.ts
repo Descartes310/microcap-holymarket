@@ -323,3 +323,40 @@ export const territoryDetailsTypes = () => {
 export const translateTerritoryDetailsType = (value) => {
     return territoryDetailsTypes().find(d => d.value == value)?.label
 }
+
+export const projectTypes = () => {
+    return [
+        {
+            label: "Project de création",
+            value: 'CREATION'
+        },
+        {
+            label: "Project de developpement",
+            value: 'DEVELOPMENT'
+        },
+        {
+            label: "Project de restructuration",
+            value: 'RESTRUCTURATION'
+        },
+        {
+            label: "Project de retournement",
+            value: 'TURNAROUND'
+        },
+        {
+            label: "Project de redressement",
+            value: 'ADJUSTMENT'
+        },
+        {
+            label: "Project de amiable",
+            value: 'VOLUNTARY_LIQUIDATION'
+        },
+        {
+            label: "Project de judiciaire",
+            value: 'JUDICIAL_LIQUIDATION'
+        }
+    ];
+}
+
+export const translateProjectTypes = (value) => {
+    return projectTypes().find(d => d.value == value)?.label
+}

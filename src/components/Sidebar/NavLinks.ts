@@ -262,13 +262,18 @@ export default [
       "profiles": ['GROUP'],
       "child_routes": [
          {
+            "menu_title": "Options de financement",
+            "new_item": false,
+            "path": GROUP.FUNDING_OPTION.OPTION.LIST,
+            "permissions": [Permission.group.type.name],
+            "profiles": ['GROUP'],
+         }, {
             "menu_title": "Types de groupes",
             "new_item": false,
             "path": GROUP.TYPE.LIST,
             "permissions": [Permission.group.type.name],
             "profiles": ['GROUP'],
-         },
-         {
+         }, {
             "menu_title": "Catégories de groupes",
             "new_item": false,
             "path": GROUP.CATEGORY.LIST,

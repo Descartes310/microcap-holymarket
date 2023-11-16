@@ -154,6 +154,29 @@ export const GROUP = {
         CREATE: '/groups/categories/create',
         UPDATE: '/groups/categories/:id/update'
     },
+    FUNDING_OPTION: {
+        SELF: '/groups/funding-options',
+        OPTION: {
+            SELF: '/groups/funding-options/options',
+            LIST: '/groups/funding-options/options/list',
+            CREATE: '/groups/funding-options/options/create',
+        },
+        CATEGORY: {
+            SELF: '/groups/funding-options/categories',
+            LIST: '/groups/funding-options/categories/list',
+            CREATE: '/groups/funding-options/categories/create',
+        },
+        TYPE: {
+            SELF: '/groups/funding-options/types',
+            LIST: '/groups/funding-options/types/list',
+            CREATE: '/groups/funding-options/types/create',
+        },
+        SUPPORT_TYPE: {
+            SELF: '/groups/funding-options/supports/types',
+            LIST: '/groups/funding-options/supports/types/list',
+            CREATE: '/groups/funding-options/supports/types/create',
+        },
+    },
     COMMUNITY: {
         SELF: '/groups/communities',
         SPACE: {

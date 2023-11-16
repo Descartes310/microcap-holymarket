@@ -7,6 +7,7 @@ import Communities from './community';
 import Categories from './categories';
 import {injectIntl} from "react-intl";
 import { GROUP } from 'Url/frontendUrl';
+import fundingOptions from './fundingOptions';
 import Administration from './administration';
 import {withRouter, Switch, Redirect, Route} from "react-router-dom";
 
@@ -24,6 +25,7 @@ const Groups = (props) => {
                     <Route path={GROUP.CATEGORY.SELF} component={Categories} />
                     <Route path={GROUP.COMMUNITY.SELF} component={Communities} />
                     <Route path={GROUP.ADMINISTRATION.SELF} component={Administration} />
+                    <Route path={GROUP.FUNDING_OPTION.SELF} component={fundingOptions} />
                 </Switch>
             </>
         </div>

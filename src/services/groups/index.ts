@@ -147,4 +147,49 @@ export default class GroupService {
     static changeCategoryToJuridic(reference: string): Promise<any> {
         return makeRequest('put', Routes.CHANGE_CATEGORY_TO_JURIDIC(reference));
     }
+
+    static getBranchFundingOptions(): Promise<any> {
+        return makeRequest('get', Routes.GET_BRANCH_FUNDING_OPTIONS);
+    }
+
+    static createFundingOption(data): Promise<any> {
+        return makeRequest('post', Routes.CREATE_FUNDING_OPTIONS, data);
+    }
+
+    static getFundingOptionCategories(data: any = {}): Promise<any> {
+        return makeRequest('get', Routes.GET_FUNDING_OPTION_CATEGORIES, data);
+    }
+
+    static createFundingOptionCategories(data): Promise<any> {
+        return makeRequest('post', Routes.CREATE_FUNDING_OPTION_CATEGORIES, data);
+    }
+
+    static getFundingOptionTypes(): Promise<any> {
+        return makeRequest('get', Routes.GET_FUNDING_OPTION_TYPES);
+    }
+
+    static createFundingOptionTypes(data): Promise<any> {
+        return makeRequest('post', Routes.CREATE_FUNDING_OPTION_TYPES, data);
+    }
+
+    static getSupportTypes(): Promise<any> {
+        return makeRequest('get', Routes.GET_SUPPORT_TYPES);
+    }
+
+    static createSupportTypes(data): Promise<any> {
+        return makeRequest('post', Routes.CREATE_SUPPORT_TYPES, data);
+    }
+
+    static getGroupOptionTypes(reference): Promise<any> {
+        return makeRequest('get', Routes.GET_GROUP_OPTION_TYPES(reference));
+    }
+
+    static createGroupOptionTypes(reference, data): Promise<any> {
+        return makeRequest('post', Routes.ADD_GROUP_OPTION_TYPE(reference), data);
+    }
+
+    static deleteGroupOptionTypes(reference, data): Promise<any> {
+        return makeRequest('delete', Routes.DELETE_GROUP_OPTION_TYPE(reference), data);
+    }
+    
 }

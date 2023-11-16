@@ -39,3 +39,19 @@ export const FIND_BLOG_TOPIC = (id) => `api/socialnetworks/groups/articles/topic
 export const GET_ARTICLE_DETAILS = (id) => `api/socialnetworks/groups/articles/details/${id}`;
 export const UPDATE_ARTICLE_STATUS = (id) => `api/socialnetworks/groups/articles/${id}/status`;
 export const UPDATE_BLOG_TOPIC = (id) => `api/socialnetworks/groups/articles/topics/${id}/update`;
+
+export const CREATE_FUNDING_OPTIONS = `api/socialnetworks/groups/types/funding-options`;
+export const GET_BRANCH_FUNDING_OPTIONS = `api/socialnetworks/groups/types/funding-options`;
+export const GET_GROUP_FUNDING_OPTIONS = (reference) => `api/socialnetworks/groups/types/${reference}/funding-options`;
+
+export const CREATE_FUNDING_OPTION_CATEGORIES = `api/socialnetworks/groups/types/funding-options/categories`;
+export const GET_FUNDING_OPTION_CATEGORIES = `api/socialnetworks/groups/types/funding-options/categories`;
+export const CREATE_FUNDING_OPTION_TYPES = `api/socialnetworks/groups/types/funding-options/types`;
+export const GET_FUNDING_OPTION_TYPES = `api/socialnetworks/groups/types/funding-options/types`;
+
+export const CREATE_SUPPORT_TYPES = `api/socialnetworks/groups/types/funding-options/supports/types`;
+export const GET_SUPPORT_TYPES = `api/socialnetworks/groups/types/funding-options/supports/types`;
+
+export const ADD_GROUP_OPTION_TYPE = (reference) => `api/socialnetworks/groups/types/funding-options/types/${reference}/groups`;
+export const GET_GROUP_OPTION_TYPES = (reference) => `api/socialnetworks/groups/types/funding-options/types/${reference}/groups`;
+export const DELETE_GROUP_OPTION_TYPE = (reference) => `api/socialnetworks/groups/types/funding-options/types/${reference}/groups`;

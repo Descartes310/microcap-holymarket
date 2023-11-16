@@ -1,13 +1,18 @@
 import { connect } from 'react-redux';
 import UnitService from 'Services/units';
 import { PROJECT } from 'Url/frontendUrl';
+import GroupService from 'Services/groups';
+import { projectTypes } from 'Helpers/datas';
+import TerritoryType from "Enums/Territories";
 import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
 import ProjectService from 'Services/projects';
 import { setRequestGlobalAction } from 'Actions';
 import React, { useState, useEffect } from 'react';
+import TerritoryService from 'Services/territories';
 import TextField from '@material-ui/core/TextField';
 import { FileUploader } from "react-drag-drop-files";
+import IconButton from "@material-ui/core/IconButton";
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { getInitializationTypes } from 'Helpers/helpers';
 import { NotificationManager } from 'react-notifications';
@@ -23,10 +28,15 @@ const fileTypes = ["JPG", "PNG", "GIF", "JPEG"];
 const Create = (props) => {
 
     const [units, setUnits] = useState([]);
+    const [type, setType] = useState(null);
     const [file, setFile] = useState(null);
     const [label, setLabel] = useState('');
     const [unit, setUnit] = useState(null);
     const [budget, setBudget] = useState(null);
+    const [country, setCountry] = useState(null);
+    const [countries, setCountries] = useState([]);
+    const [juridicForms, setJuridicForms] = useState([]);
+    const [juridicForm, setJuridicForm] = useState(null);
     const [projectItems, setProjectItems] = useState([]);
     const [projectType, setProjectType] = useState(null);
     const [initializations, setInitializations] = useState([]);
@@ -35,6 +45,7 @@ const Create = (props) => {
 
     useEffect(() => {
         getUnits();
+        getCountries();
     }, []);
 
     useEffect(() => {
@@ -52,6 +63,28 @@ const Create = (props) => {
         else
             setInitializationItems([]);
     }, [initialization]);
+
+    useEffect(() => {
+        if(country) {
+            getJuridicForms();;
+        }
+    }, [country]);
+
+    const getJuridicForms = () => {
+        GroupService.getJuridicTypes({territory: country.reference})
+        .then(response => setJuridicForms(response))
+    }
+
+    const getCountries = () => {
+        TerritoryService.getTerritories(TerritoryType.COUNTRY)
+        .then(countries => {
+            setCountries(countries);
+        })
+        .catch(error => {
+            setCountries([]);
+            NotificationManager.error("An error occur " + error);
+        });
+    };
 
     const getUnits = () => {
         props.setRequestGlobalAction(false);
@@ -159,14 +192,7 @@ const Create = (props) => {
     
     const onSubmit = () => {
 
-        console.log("PROJECT ITEM => ", projectItems);
-
         let items = projectItems.filter(pi => pi.value != null);
-        
-        // if(!checkProjectItemsValidity())
-        //     return;
-
-        console.log(label, budget, unit, items);
         
         if(!label || !budget || !unit || items.length <= 0) {
             NotificationManager.error('Les informations du projet ne sont pas correctement renseignées');
@@ -259,6 +285,80 @@ const Create = (props) => {
                                 setFile(file);
                             }} name="file" types={fileTypes} />
                     </FormGroup>
+
+                    <div className="row">
+                        <FormGroup className="col-md-12 col-sm-12 has-wrapper">
+                            <InputLabel className="text-left">
+                                Type de projet
+                            </InputLabel>
+                            <Autocomplete
+                                value={type}
+                                id="combo-box-demo"
+                                onChange={(__, item) => {
+                                    setType(item);
+                                }}
+                                getOptionLabel={(option) => option.label}
+                                options={projectTypes()}
+                                renderInput={(params) => <TextField {...params} variant="outlined" />}
+                            />
+                        </FormGroup>
+                    </div>
+
+                    <div className="col-md-12 col-sm-12 has-wrapper mb-30 p-0">
+                        <InputLabel className="text-left">
+                            Lieu d'implantantion
+                        </InputLabel>
+                        <Autocomplete
+                            value={country}
+                            options={countries}
+                            id="combo-box-demo"
+                            classes={{ paper: 'custom-input' }}
+                            getOptionLabel={(option) => option.label}
+                            onChange={(__, items) => { setCountry(items) }}
+                            renderTags={options => {
+                                return (
+                                    options.map(option =>
+                                        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center'  }}>
+                                            <IconButton color="primary">
+                                                <img src={option.details.find(d => d.code === 'FLAG')?.value} style={{ width: 25, height: 15 }}/>
+                                            </IconButton>
+                                            {option.label}
+                                        </div>
+                                    )
+                                )
+                        
+                            }}
+                            renderOption={option => {
+                                return (
+                                    <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center'  }}>
+                                        <IconButton color="primary">
+                                            <img src={option.details.find(d => d.code === 'FLAG')?.value} style={{ width: 25, height: 15 }} />
+                                        </IconButton>
+                                        {option.label}
+                                    </div>
+                                );
+                            }}
+                            renderInput={(params) => <TextField {...params} variant="outlined" />}
+                        />
+                    </div>
+
+                    <div className="row">
+                        <FormGroup className="col-md-12 col-sm-12 has-wrapper">
+                            <InputLabel className="text-left">
+                                Forme juridique
+                            </InputLabel>
+                            <Autocomplete
+                                value={juridicForm}
+                                id="combo-box-demo"
+                                onChange={(__, item) => {
+                                    setJuridicForm(item);
+                                }}
+                                getOptionLabel={(option) => option.label}
+                                options={juridicForms}
+                                renderInput={(params) => <TextField {...params} variant="outlined" />}
+                            />
+                        </FormGroup>
+                    </div>
 
                     <div className="row">
                         <FormGroup className="col-md-6 col-sm-12 has-wrapper">
