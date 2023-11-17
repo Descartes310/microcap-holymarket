@@ -55,3 +55,14 @@ export const GET_SUPPORT_TYPES = `api/socialnetworks/groups/types/funding-option
 export const ADD_GROUP_OPTION_TYPE = (reference) => `api/socialnetworks/groups/types/funding-options/types/${reference}/groups`;
 export const GET_GROUP_OPTION_TYPES = (reference) => `api/socialnetworks/groups/types/funding-options/types/${reference}/groups`;
 export const DELETE_GROUP_OPTION_TYPE = (reference) => `api/socialnetworks/groups/types/funding-options/types/${reference}/groups`;
+
+export const GET_POST_TYPES = `api/socialnetworks/groups/structures/post-types`;
+export const CREATE_POST_TYPE = `api/socialnetworks/groups/structures/post-types`;
+export const GET_STRUCTURE_TYPES = `api/socialnetworks/groups/structures/types`;
+export const CREATE_STRUCTURE_TYPE = `api/socialnetworks/groups/structures/types`;
+export const GET_STRUCTURE_MISSIONS = `api/socialnetworks/groups/structures/missions`;
+export const CREATE_STRUCTURE_MISSION = `api/socialnetworks/groups/structures/missions`;
+
+export const ADD_GROUP_STRUCTURE_TYPE = (reference) => `api/socialnetworks/groups/structures/types/${reference}/groups`;
+export const GET_GROUP_STRUCTURE_TYPES = (reference) => `api/socialnetworks/groups/structures/types/${reference}/groups`;
+export const DELETE_GROUP_STRUCTURE_TYPE = (reference) => `api/socialnetworks/groups/structures/types/${reference}/groups`;

@@ -6,6 +6,7 @@ import {connect} from "react-redux";
 import Communities from './community';
 import Categories from './categories';
 import {injectIntl} from "react-intl";
+import structures from './structures';
 import { GROUP } from 'Url/frontendUrl';
 import fundingOptions from './fundingOptions';
 import Administration from './administration';
@@ -26,6 +27,7 @@ const Groups = (props) => {
                     <Route path={GROUP.COMMUNITY.SELF} component={Communities} />
                     <Route path={GROUP.ADMINISTRATION.SELF} component={Administration} />
                     <Route path={GROUP.FUNDING_OPTION.SELF} component={fundingOptions} />
+                    <Route path={GROUP.STRUCTURE.SELF} component={structures} />
                 </Switch>
             </>
         </div>

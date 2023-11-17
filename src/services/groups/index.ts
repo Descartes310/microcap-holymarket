@@ -191,5 +191,42 @@ export default class GroupService {
     static deleteGroupOptionTypes(reference, data): Promise<any> {
         return makeRequest('delete', Routes.DELETE_GROUP_OPTION_TYPE(reference), data);
     }
+
+    static createStructureMission(data): Promise<any> {
+        return makeRequest('post', Routes.CREATE_STRUCTURE_MISSION, data);
+    }
+
+    static getStructureMissions(): Promise<any> {
+        return makeRequest('get', Routes.GET_STRUCTURE_MISSIONS);
+    }
+
+    static createPostType(data): Promise<any> {
+        return makeRequest('post', Routes.CREATE_POST_TYPE, data);
+    }
+
+    static getPostTypes(): Promise<any> {
+        return makeRequest('get', Routes.GET_POST_TYPES);
+    }
+
+    static createStructureType(data): Promise<any> {
+        return makeRequest('post', Routes.CREATE_STRUCTURE_TYPE, data);
+    }
+
+    static getStructureTypes(): Promise<any> {
+        return makeRequest('get', Routes.GET_STRUCTURE_TYPES);
+    }
+
+
+    static getGroupStructureTypes(reference): Promise<any> {
+        return makeRequest('get', Routes.GET_GROUP_STRUCTURE_TYPES(reference));
+    }
+
+    static createGroupStructureTypes(reference, data): Promise<any> {
+        return makeRequest('post', Routes.ADD_GROUP_STRUCTURE_TYPE(reference), data);
+    }
+
+    static deleteGroupStructureTypes(reference, data): Promise<any> {
+        return makeRequest('delete', Routes.DELETE_GROUP_STRUCTURE_TYPE(reference), data);
+    }
     
 }

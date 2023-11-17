@@ -360,3 +360,57 @@ export const projectTypes = () => {
 export const translateProjectTypes = (value) => {
     return projectTypes().find(d => d.value == value)?.label
 }
+
+export const structureMissionTypes = () => {
+    return [
+        {
+            label: "Gouvernance",
+            value: 'GOVERNANCE'
+        },
+        {
+            label: "Direction",
+            value: 'DIRECTION'
+        },
+        {
+            label: "Representation",
+            value: 'REPRESENTATION'
+        },
+        {
+            label: "Opération",
+            value: 'OPERATION'
+        }
+    ];
+}
+
+export const translateStructureMissionTypes = (value) => {
+    return structureMissionTypes().find(d => d.value == value)?.label
+}
+
+export const organeTypes = () => {
+    return [
+        {
+            label: "CA",
+            value: 'CA'
+        },
+        {
+            label: "CS",
+            value: 'CS'
+        },
+        {
+            label: "CODIR",
+            value: 'CODIR'
+        },
+        {
+            label: "CO",
+            value: 'CO'
+        },
+        {
+            label: "PIL",
+            value: 'PIL'
+        }
+    ];
+}
+
+export const translateOrganeTypes = (value) => {
+    return organeTypes().find(d => d.value == value)?.label
+}

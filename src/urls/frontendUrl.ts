@@ -177,6 +177,24 @@ export const GROUP = {
             CREATE: '/groups/funding-options/supports/types/create',
         },
     },
+    STRUCTURE: {
+        SELF: '/groups/structures',
+        MISSION: {
+            SELF: '/groups/structures/missions',
+            LIST: '/groups/structures/missions/list',
+            CREATE: '/groups/structures/missions/create',
+        },
+        POST_TYPE: {
+            SELF: '/groups/structures/post-types',
+            LIST: '/groups/structures/post-types/list',
+            CREATE: '/groups/structures/post-types/create',
+        },
+        ORGANE_TYPE: {
+            SELF: '/groups/structures/organes-types',
+            LIST: '/groups/structures/organes-types/list',
+            CREATE: '/groups/structures/organes-types/create',
+        }
+    },
     COMMUNITY: {
         SELF: '/groups/communities',
         SPACE: {

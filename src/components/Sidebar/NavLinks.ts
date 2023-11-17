@@ -262,6 +262,13 @@ export default [
       "profiles": ['GROUP'],
       "child_routes": [
          {
+            "menu_title": "Structurations",
+            "new_item": false,
+            "path": GROUP.STRUCTURE.ORGANE_TYPE.LIST,
+            "permissions": [Permission.group.type.name],
+            "profiles": ['GROUP'],
+         },
+         {
             "menu_title": "Options de financement",
             "new_item": false,
             "path": GROUP.FUNDING_OPTION.OPTION.LIST,
