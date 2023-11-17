@@ -168,6 +168,14 @@ export default class GroupService {
         return makeRequest('get', Routes.GET_FUNDING_OPTION_TYPES);
     }
 
+    static getFundingOptionTypesByGroup(): Promise<any> {
+        return makeRequest('get', Routes.GET_FUNDING_OPTION_TYPES_BY_GROUP);
+    }
+
+    static getOptionTypesSupport(reference: string): Promise<any> {
+        return makeRequest('get', Routes.GET_FUNDING_OPTION_TYPES_SUPPORTS(reference));
+    }
+
     static createFundingOptionTypes(data): Promise<any> {
         return makeRequest('post', Routes.CREATE_FUNDING_OPTION_TYPES, data);
     }

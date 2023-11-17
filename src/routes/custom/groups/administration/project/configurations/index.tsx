@@ -17,6 +17,7 @@ class Catalogues extends Component<any, any> {
             if (url.includes(GROUP.ADMINISTRATION.PROJECT.CONFIGURATION.FINANCEMENT.SELF)) return 0;
             else if (url.includes(GROUP.ADMINISTRATION.PROJECT.CONFIGURATION.ATTRIBUTE.SELF)) return 1;
             else if (url.includes(GROUP.ADMINISTRATION.PROJECT.CONFIGURATION.PRODUCT.SELF)) return 2;
+            else if (url.includes(GROUP.ADMINISTRATION.PROJECT.CONFIGURATION.SETTING.SELF)) return 3;
             else return 0;
         })(window.location.pathname);
 
@@ -33,6 +34,7 @@ class Catalogues extends Component<any, any> {
                 case 0: return this.props.history.push(GROUP.ADMINISTRATION.PROJECT.CONFIGURATION.FINANCEMENT.SELF);
                 case 1: return this.props.history.push(GROUP.ADMINISTRATION.PROJECT.CONFIGURATION.ATTRIBUTE.SELF);
                 case 2: return this.props.history.push(GROUP.ADMINISTRATION.PROJECT.CONFIGURATION.PRODUCT.SELF);
+                case 3: return this.props.history.push(GROUP.ADMINISTRATION.PROJECT.CONFIGURATION.SETTING.SELF);
                 default: return this.props.history.push(GROUP.ADMINISTRATION.PROJECT.CONFIGURATION.ATTRIBUTE.SELF);
             }
         }
@@ -67,6 +69,10 @@ class Catalogues extends Component<any, any> {
                                         <Tab
                                             icon={<i className="zmdi zmdi-home" />}
                                             label={"Produits"}
+                                        />
+                                        <Tab
+                                            icon={<i className="zmdi zmdi-home" />}
+                                            label={"Parametrages"}
                                         />
                                     </Tabs>
                                 </div>

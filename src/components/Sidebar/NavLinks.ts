@@ -431,6 +431,42 @@ export default [
             "profiles": null,
             "child_routes": null
          },
+         // {
+         //    "menu_title": "Mes projets",
+         //    "new_item": false,
+         //    "path": PROJECT.MINE.FOLDER.LIST,
+         //    "permissions": [Permission.microcap360.projects.name],
+         //    "profiles": null,
+         //    "child_routes": null
+         // },
+         {
+            "menu_title": "Mon Microcap",
+            "new_item": false,
+            "path": MIPRO.HOME.SELF,
+            "permissions": [Permission.microcap360.mymicrocap.name],
+            "profiles": null,
+            "child_routes": null
+         },
+         // {
+         //    "menu_title": "Créations personnelles",
+         //    "new_item": false,
+         //    "path": PROJECT.MINE.ITEM.LIST,
+         //    "permissions": [Permission.microcap360.ideas.name],
+         //    "profiles": null,
+         //    "child_routes": null
+         // },
+      ],
+   },
+   {
+      "menu_title": "Mes projets",
+      "menu_icon": "zmdi zmdi-home",
+      "new_item": false,
+      "permissions": [
+         Permission.microcap360.projects.name,
+         Permission.microcap360.ideas.name,
+      ],
+      "profiles": null,
+      "child_routes": [
          {
             "menu_title": "Mes projets",
             "new_item": false,
@@ -440,10 +476,10 @@ export default [
             "child_routes": null
          },
          {
-            "menu_title": "Mon Microcap",
+            "menu_title": "Mes souscriptions",
             "new_item": false,
-            "path": MIPRO.HOME.SELF,
-            "permissions": [Permission.microcap360.mymicrocap.name],
+            "path": PROJECT.MINE.FOLDER.LIST,
+            "permissions": [Permission.microcap360.projects.name],
             "profiles": null,
             "child_routes": null
          },

@@ -255,4 +255,12 @@ export default class ProductService {
     static createChildTicket(reference: string, data: any): Promise<any> {
         return makeRequest('post', Routes.CREATE_CHILD_TICKETS(reference), data);
     }
+
+    static getCustomCarts(): Promise<any> {
+        return makeRequest('get', Routes.GET_CUSTOM_CARTS);
+    }
+
+    static createCustomCart(data: any): Promise<any> {
+        return makeRequest('post', Routes.CREATE_CUSTOM_CART, data);
+    }
 }

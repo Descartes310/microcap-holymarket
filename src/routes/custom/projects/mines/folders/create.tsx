@@ -194,13 +194,16 @@ const Create = (props) => {
 
         let items = projectItems.filter(pi => pi.value != null);
         
-        if(!label || !budget || !unit || items.length <= 0) {
+        if(!label || !budget || !unit || items.length <= 0 || !country || !juridicForm || !type) {
             NotificationManager.error('Les informations du projet ne sont pas correctement renseignées');
             return;
         }
 
         let data: any = {
+            type: type?.value,
+            country: country?.reference,
             initializationId: initialization.id,
+            group_type_reference: juridicForm?.reference,
             label, budget, unitReference: unit.reference, document: file,
             initializationParents: JSON.stringify(items.filter(pi => pi.item.complexType !== 'TABLE').map(pi => pi.id)),
             initializationValues: JSON.stringify(items.filter(pi => pi.item.complexType !== 'TABLE').map(pi => pi.value)),

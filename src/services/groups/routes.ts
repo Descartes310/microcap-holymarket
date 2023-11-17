@@ -48,6 +48,8 @@ export const CREATE_FUNDING_OPTION_CATEGORIES = `api/socialnetworks/groups/types
 export const GET_FUNDING_OPTION_CATEGORIES = `api/socialnetworks/groups/types/funding-options/categories`;
 export const CREATE_FUNDING_OPTION_TYPES = `api/socialnetworks/groups/types/funding-options/types`;
 export const GET_FUNDING_OPTION_TYPES = `api/socialnetworks/groups/types/funding-options/types`;
+export const GET_FUNDING_OPTION_TYPES_BY_GROUP = `api/socialnetworks/groups/types/funding-options/types/by-group`;
+export const GET_FUNDING_OPTION_TYPES_SUPPORTS = (reference) => `api/socialnetworks/groups/types/funding-options/types/${reference}/supports`;
 
 export const CREATE_SUPPORT_TYPES = `api/socialnetworks/groups/types/funding-options/supports/types`;
 export const GET_SUPPORT_TYPES = `api/socialnetworks/groups/types/funding-options/supports/types`;

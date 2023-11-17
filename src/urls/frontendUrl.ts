@@ -245,6 +245,10 @@ export const GROUP = {
                     SELF: "/groups/administration/projects/configurations/products",
                     LIST: "/groups/administration/projects/configurations/products/list",
                     CREATE: "/groups/administration/projects/configurations/products/create",
+                },
+                SETTING: {
+                    SELF: "/groups/administration/projects/configurations/settings",
+                    SETTING: "/groups/administration/projects/configurations/settings/self",
                 }
             }
         },

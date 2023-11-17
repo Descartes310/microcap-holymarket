@@ -75,3 +75,6 @@ export const GET_TICKET_TYPES = 'api/products/codevs/tickets/types';
 export const CREATE_TICKET_TYPE = 'api/products/codevs/tickets/types';
 export const GET_CHILD_TICKETS = (reference) => `api/products/codevs/tickets/${reference}/child`;
 export const CREATE_CHILD_TICKETS = (reference) => `api/products/codevs/tickets/${reference}/child`;
+
+export const GET_CUSTOM_CARTS = 'api/products/custom-carts';
+export const CREATE_CUSTOM_CART = 'api/products/custom-carts';

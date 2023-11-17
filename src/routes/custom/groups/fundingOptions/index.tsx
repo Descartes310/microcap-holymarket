@@ -14,10 +14,9 @@ class FundingOptions extends Component<any, any> {
     constructor(props: any) {
         super(props);
         const defaultState = (function (url) {
-            if (url.includes(GROUP.FUNDING_OPTION.OPTION.LIST)) return 0;
-            else if (url.includes(GROUP.FUNDING_OPTION.TYPE.LIST)) return 1;
-            else if (url.includes(GROUP.FUNDING_OPTION.CATEGORY.LIST)) return 2;
-            else if (url.includes(GROUP.FUNDING_OPTION.SUPPORT_TYPE.LIST)) return 3;
+            if (url.includes(GROUP.FUNDING_OPTION.TYPE.LIST)) return 0;
+            else if (url.includes(GROUP.FUNDING_OPTION.CATEGORY.LIST)) return 1;
+            else if (url.includes(GROUP.FUNDING_OPTION.SUPPORT_TYPE.LIST)) return 2;
             else return 0;
         })(window.location.pathname);
 
@@ -31,11 +30,10 @@ class FundingOptions extends Component<any, any> {
         this.setState({ activeTab: value });
         if (oldActivateTab !== value) {
             switch (value) {
-                case 0: return this.props.history.push(GROUP.FUNDING_OPTION.OPTION.LIST);
-                case 1: return this.props.history.push(GROUP.FUNDING_OPTION.TYPE.LIST);
-                case 2: return this.props.history.push(GROUP.FUNDING_OPTION.CATEGORY.LIST);
-                case 3: return this.props.history.push(GROUP.FUNDING_OPTION.SUPPORT_TYPE.LIST);
-                default: return this.props.history.push(GROUP.FUNDING_OPTION.OPTION.LIST);
+                case 0: return this.props.history.push(GROUP.FUNDING_OPTION.TYPE.LIST);
+                case 1: return this.props.history.push(GROUP.FUNDING_OPTION.CATEGORY.LIST);
+                case 2: return this.props.history.push(GROUP.FUNDING_OPTION.SUPPORT_TYPE.LIST);
+                default: return this.props.history.push(GROUP.FUNDING_OPTION.TYPE.LIST);
             }
         }
     };
@@ -58,10 +56,6 @@ class FundingOptions extends Component<any, any> {
                                         indicatorColor="primary"
                                         centered
                                     >
-                                        <Tab
-                                            icon={<i className="zmdi zmdi-home" />}
-                                            label={"Options"}
-                                        />
                                         <Tab
                                             icon={<i className="zmdi zmdi-home" />}
                                             label={"Types option"}
