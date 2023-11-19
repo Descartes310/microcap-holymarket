@@ -1,46 +1,51 @@
 import { connect } from 'react-redux';
 import GroupService from 'Services/groups';
-import { Switch } from '@material-ui/core';
-import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
 import CustomList from "Components/CustomList";
-import {setRequestGlobalAction} from 'Actions';
+import { setRequestGlobalAction } from 'Actions';
 import React, { useState, useEffect } from 'react';
-import { NotificationManager } from "react-notifications";
-import { GROUP, joinUrlWithParamsId } from 'Url/frontendUrl';
-import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
+import { getPriceWithCurrency } from 'Helpers/helpers';
+import DialogComponent from "Components/dialog/DialogComponent";
 
-const List = (props) => {
+const FundingOptions = (props) => {
 
-    const [datas, setDatas] = useState([]);
+    const {show, onClose, onCreate} = props;
+    
+    const [options, setOptions] = useState([]);
 
     useEffect(() => {
-        getDatas();
-    }, []);
+        getOptions();
+    }, [])
 
-    const getDatas = () => {
-        props.setRequestGlobalAction(true),
-        GroupService.getFundingOptions()
-        .then(response => setDatas(response))
-        .finally(() => props.setRequestGlobalAction(false))
-    }
-
-    const goToCreate = () => {
-        props.history.push(GROUP.FUNDING_OPTION.OPTION.CREATE);
-    }
-
+    const getOptions = () => {
+		props.setRequestGlobalAction(true);
+		GroupService.getFundingOptions()
+		.then(response => setOptions(response))
+		.finally(() => props.setRequestGlobalAction(false))
+	}
+    
     return (
+        <DialogComponent
+            show={show}
+            onClose={onClose}
+            size="lg"
+            title={(
+                <h3 className="fw-bold">
+                    Structure financiere
+                </h3>
+            )}
+        >
             <CustomList
+                list={options}
                 loading={false}
-                list={datas}
-                itemsFoundText={n => `${n} donnée.s trouvée.s`}
-                onAddClick={() => goToCreate()}
+                itemsFoundText={n => `${n} élements trouvés`}
+                onAddClick={() => onCreate()}
                 renderItem={list => (
                     <>
                         {list && list.length === 0 ? (
                             <div className="d-flex justify-content-center align-items-center py-50">
                                 <h4>
-                                    Aucun donnée.s trouvées
+                                    Aucun élement trouvé
                                 </h4>
                             </div>
                         ) : (
@@ -48,10 +53,10 @@ const List = (props) => {
                                 <table className="table table-hover table-middle mb-0">
                                     <thead>
                                         <tr>
-                                            <th className="fw-bold">Désignation</th>
-                                            <th className="fw-bold">Type option</th>
-                                            <th className="fw-bold">Description</th>
-                                            {/* <th className="fw-bold">Action</th> */}
+                                            <th className="fw-bold">Support</th>
+                                            <th className="fw-bold">Valeur</th>
+                                            <th className="fw-bold">Estimation</th>
+                                            <th className="fw-bold">Souscription</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -60,34 +65,31 @@ const List = (props) => {
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{item.label}</h4>
+                                                            <h4 className="m-0 fw-bold text-dark">{item?.supportType?.label}</h4>
                                                         </div>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{item?.type?.label}</h4>
+                                                            <h4 className="m-0 fw-bold text-dark">{getPriceWithCurrency(item.nominalAmount, item.currency)}</h4>
                                                         </div>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <h4 className="m-0 text-dark">{item.description}</h4>
+                                                            <h4 className="m-0 fw-bold text-dark">{item?.quantity}</h4>
                                                         </div>
                                                     </div>
                                                 </td>
-                                                {/* <td>
-                                                    <Button
-                                                        color="primary"
-                                                        variant="contained"
-                                                        className="text-white font-weight-bold"
-                                                        onClick={() => props.history.push(joinUrlWithParamsId(GROUP.CATEGORY.UPDATE, item.reference))}
-                                                    >
-                                                        Editer
-                                                    </Button>
-                                                </td> */}
+                                                <td>
+                                                    <div className="media">
+                                                        <div className="media-body pt-10">
+                                                            <h4 className="m-0 fw-bold text-dark"></h4>
+                                                        </div>
+                                                    </div>
+                                                </td>
                                             </tr>
                                         ))}
                                     </tbody>
@@ -97,7 +99,8 @@ const List = (props) => {
                     </>
                 )}
             />
-    );
+        </DialogComponent>
+    )
 }
 
-export default connect(() => {}, { setRequestGlobalAction })(withRouter(List));
+export default connect(() => {}, { setRequestGlobalAction })(withRouter(FundingOptions));

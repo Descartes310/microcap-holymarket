@@ -339,6 +339,12 @@ export const PROJECT = {
             CREATE: "/projects/items/complexes/create"
         }
     },
+    SUBSCRIPTION: {
+        SELF: "/projects/subscriptions",
+        LIST: "/projects/subscriptions/list",
+        CREATE: "/projects/subscriptions/create"
+        
+    },
     MINE: {
         SELF: "/projects/mines",
         FOLDER: {

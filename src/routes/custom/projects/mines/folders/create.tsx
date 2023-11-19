@@ -89,13 +89,13 @@ const Create = (props) => {
     const getUnits = () => {
         props.setRequestGlobalAction(false);
         UnitService.getUnits()
-            .then((response) => setUnits(response))
-            .catch((err) => {
-                console.log(err);
-            })
-            .finally(() => {
-                props.setRequestGlobalAction(false);
-            })
+        .then((response) => setUnits(response))
+        .catch((err) => {
+            console.log(err);
+        })
+        .finally(() => {
+            props.setRequestGlobalAction(false);
+        })
     }
 
     const getInitializations = () => {

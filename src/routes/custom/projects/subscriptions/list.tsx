@@ -1,46 +1,46 @@
 import { connect } from 'react-redux';
-import GroupService from 'Services/groups';
-import { Switch } from '@material-ui/core';
-import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
+import Button from '@material-ui/core/Button';
 import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
+import ProjectService from 'Services/projects';
 import React, { useState, useEffect } from 'react';
-import { NotificationManager } from "react-notifications";
-import { GROUP, joinUrlWithParamsId } from 'Url/frontendUrl';
+import { getPriceWithCurrency } from 'Helpers/helpers';
+import { joinUrlWithParamsId, PROJECT } from 'Url/frontendUrl';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 
-const List = (props) => {
-
-    const [datas, setDatas] = useState([]);
+const List = (props) => {    
+    
+    const [subscriptions, setSubscriptions] = useState([]);
 
     useEffect(() => {
-        getDatas();
+        getProjectSubscriptions();
     }, []);
 
-    const getDatas = () => {
-        props.setRequestGlobalAction(true),
-        GroupService.getFundingOptions()
-        .then(response => setDatas(response))
-        .finally(() => props.setRequestGlobalAction(false))
-    }
-
-    const goToCreate = () => {
-        props.history.push(GROUP.FUNDING_OPTION.OPTION.CREATE);
+    const getProjectSubscriptions = () => {
+        props.setRequestGlobalAction(true);
+        ProjectService.getProjectSubscriptions().then(response => {
+            setSubscriptions(response);
+        })
+        .finally(() => props.setRequestGlobalAction(false));
     }
 
     return (
+        <>
+            <PageTitleBar
+                title={"Mes souscriptions"}
+            />
             <CustomList
+                list={subscriptions}
                 loading={false}
-                list={datas}
-                itemsFoundText={n => `${n} donnée.s trouvée.s`}
-                onAddClick={() => goToCreate()}
+                itemsFoundText={n => `${n} projets trouvés`}
+                onAddClick={() => props.history.push(PROJECT.SUBSCRIPTION.CREATE)}
                 renderItem={list => (
                     <>
                         {list && list.length === 0 ? (
                             <div className="d-flex justify-content-center align-items-center py-50">
                                 <h4>
-                                    Aucun donnée.s trouvées
+                                    Aucun projets trouvés
                                 </h4>
                             </div>
                         ) : (
@@ -49,9 +49,10 @@ const List = (props) => {
                                     <thead>
                                         <tr>
                                             <th className="fw-bold">Désignation</th>
-                                            <th className="fw-bold">Type option</th>
-                                            <th className="fw-bold">Description</th>
-                                            {/* <th className="fw-bold">Action</th> */}
+                                            <th className="fw-bold">Valeur nominale</th>
+                                            <th className="fw-bold">Projet</th>
+                                            <th className="fw-bold">Support option</th>
+                                            <th className="fw-bold">Quantité</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -67,27 +68,32 @@ const List = (props) => {
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{item?.type?.label}</h4>
+                                                            <p className="m-0 text-dark">{getPriceWithCurrency(item.nominalAmount, item.currency)}</p>
                                                         </div>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <h4 className="m-0 text-dark">{item.description}</h4>
+                                                            <h4 className="m-0 fw-bold text-dark">{item?.project?.label}</h4>
                                                         </div>
                                                     </div>
                                                 </td>
-                                                {/* <td>
-                                                    <Button
-                                                        color="primary"
-                                                        variant="contained"
-                                                        className="text-white font-weight-bold"
-                                                        onClick={() => props.history.push(joinUrlWithParamsId(GROUP.CATEGORY.UPDATE, item.reference))}
-                                                    >
-                                                        Editer
-                                                    </Button>
-                                                </td> */}
+
+                                                <td>
+                                                    <div className="media">
+                                                        <div className="media-body pt-10">
+                                                            <h4 className="m-0 fw-bold text-dark">{item?.supportType?.label}</h4>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="media">
+                                                        <div className="media-body pt-10">
+                                                            <h4 className="m-0 fw-bold text-dark">{item?.quantity}</h4>
+                                                        </div>
+                                                    </div>
+                                                </td>
                                             </tr>
                                         ))}
                                     </tbody>
@@ -97,6 +103,7 @@ const List = (props) => {
                     </>
                 )}
             />
+        </>
     );
 }
 

@@ -1,5 +1,6 @@
 export const CREATE_POST = 'api/projects';
 export const GET_PROJECTS = 'api/projects';
+export const GET_ALL_PROJECTS = 'api/projects/all';
 export const GET_PROJECT = (id) => `api/projects/${id}`;
 export const GET_PROJECTS_BY_GROUP = 'api/projects/groups';
 export const UPDATE_PROJECT = (id) => `api/projects/${id}`;
@@ -40,3 +41,6 @@ export const GET_FULL_PROPERTIES = `api/projects/properties/full`;
 
 export const GET_PRODUCTS = `api/projects/products`;
 export const CREATE_PRODUCT = `api/projects/products`;
+
+export const GET_PROJECT_SUBSCRIPTIONS = `api/projects/subscriptions`;
+export const CREATE_PROJECT_SUBSCRIPTION = `api/projects/subscriptions`;

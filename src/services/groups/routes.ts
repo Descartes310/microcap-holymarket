@@ -40,8 +40,8 @@ export const GET_ARTICLE_DETAILS = (id) => `api/socialnetworks/groups/articles/d
 export const UPDATE_ARTICLE_STATUS = (id) => `api/socialnetworks/groups/articles/${id}/status`;
 export const UPDATE_BLOG_TOPIC = (id) => `api/socialnetworks/groups/articles/topics/${id}/update`;
 
+export const GET_FUNDING_OPTIONS = `api/socialnetworks/groups/types/funding-options`;
 export const CREATE_FUNDING_OPTIONS = `api/socialnetworks/groups/types/funding-options`;
-export const GET_BRANCH_FUNDING_OPTIONS = `api/socialnetworks/groups/types/funding-options`;
 export const GET_GROUP_FUNDING_OPTIONS = (reference) => `api/socialnetworks/groups/types/${reference}/funding-options`;
 
 export const CREATE_FUNDING_OPTION_CATEGORIES = `api/socialnetworks/groups/types/funding-options/categories`;
@@ -49,6 +49,7 @@ export const GET_FUNDING_OPTION_CATEGORIES = `api/socialnetworks/groups/types/fu
 export const CREATE_FUNDING_OPTION_TYPES = `api/socialnetworks/groups/types/funding-options/types`;
 export const GET_FUNDING_OPTION_TYPES = `api/socialnetworks/groups/types/funding-options/types`;
 export const GET_FUNDING_OPTION_TYPES_BY_GROUP = `api/socialnetworks/groups/types/funding-options/types/by-group`;
+export const GET_FUNDING_TYPE_BY_CATEGORY = (reference) => `api/socialnetworks/groups/types/funding-options/categories/${reference}/types`;
 export const GET_FUNDING_OPTION_TYPES_SUPPORTS = (reference) => `api/socialnetworks/groups/types/funding-options/types/${reference}/supports`;
 
 export const CREATE_SUPPORT_TYPES = `api/socialnetworks/groups/types/funding-options/supports/types`;
@@ -68,3 +69,5 @@ export const CREATE_STRUCTURE_MISSION = `api/socialnetworks/groups/structures/mi
 export const ADD_GROUP_STRUCTURE_TYPE = (reference) => `api/socialnetworks/groups/structures/types/${reference}/groups`;
 export const GET_GROUP_STRUCTURE_TYPES = (reference) => `api/socialnetworks/groups/structures/types/${reference}/groups`;
 export const DELETE_GROUP_STRUCTURE_TYPE = (reference) => `api/socialnetworks/groups/structures/types/${reference}/groups`;
+
+export const GET_FUNDING_OPTION_BY_GROUP_TYPE = (reference) => `api/socialnetworks/groups/types/${reference}/funding-option-types`;

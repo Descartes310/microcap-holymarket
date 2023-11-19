@@ -1,44 +1,39 @@
 import { connect } from 'react-redux';
+import GroupService from 'Services/groups';
 import { withRouter } from "react-router-dom";
+import Button from '@material-ui/core/Button';
 import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
 import ProjectService from 'Services/projects';
 import ProductService from 'Services/products';
 import CustomCart from '../_components/customCart';
 import React, { useEffect, useState } from 'react';
-import TextField from '@material-ui/core/TextField';
-import Autocomplete from '@material-ui/lab/Autocomplete';
+import { getPriceWithCurrency } from 'Helpers/helpers';
+import { NotificationManager } from 'react-notifications';
 import { FormGroup, Input as InputStrap } from 'reactstrap';
+import FundingOptionsModal from '../_components/fundingOptions';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
+import CreateFundingOption from '../_components/createFundingOption';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
-import GroupService from 'Services/groups';
 
 const List = (props) => {
 
     const [products, setProducts] = useState([]);
+    const [options, setOptions] = useState([]);
     const [minBase, setMinBase] = useState(null);
     const [maxBase, setMaxBase] = useState(null);
     const [minRate, setMinRate] = useState(null);
-    const [supports, setSupports] = useState([]);
     const [maxRate, setMaxRate] = useState(null);
     const [customCarts, setCustomCarts] = useState([]);
-    const [optionTypes, setOptionTypes] = useState([]);
-    const [optionType, setOptionType] = useState(null);
     const [showCreateProduct, setShowCreateProduct] = useState(false);
+    const [showFundingOptions, setShowFundingOptions] = useState(false);
+    const [showCreateFundingOption, setShowCreateFundingOption] = useState(false);
 
     useEffect(() => {
         getProducts();
         getCustomCarts();
-        getOptionTypes();
+        getOptions();
     }, []);
-
-    useEffect(() => {
-        if(optionType) {
-            getSupports();
-        } else {
-            setSupports([]);
-        }
-    }, [optionType]);
 
     const getProducts = () => {
         props.setRequestGlobalAction(true);
@@ -56,20 +51,34 @@ const List = (props) => {
         .finally(() => props.setRequestGlobalAction(false))
     }
 
-    const getOptionTypes = () => {
+    const getOptions = () => {
         props.setRequestGlobalAction(true);
-        GroupService.getFundingOptionTypesByGroup().then(response => {
-            setOptionTypes(response);
+        GroupService.getFundingOptions().then(response => {
+            setOptions(response);
         })
         .finally(() => props.setRequestGlobalAction(false))
     }
 
-    const getSupports = () => {
+    const onSubmit = () => {        
+        if(!minBase || !maxBase || !minRate || !maxRate) {
+            NotificationManager.error('Veuillez bien remplir le formulaire')
+            return;
+        }
+
+        let data = {
+            minBase, maxBase,
+            minRate, maxRate,
+        }
+                
         props.setRequestGlobalAction(true);
-        GroupService.getOptionTypesSupport(optionType.reference).then(response => {
-            setSupports(response);
-        })
-        .finally(() => props.setRequestGlobalAction(false))
+        // ProductService.createCustomCart(data).then(() => {
+        //     NotificationManager.success("L'item a été créé avec succès");
+        // }).catch((err) => {
+        //     console.log(err);
+        //     NotificationManager.error("Une erreur est survenu lors de l'item");
+        // }).finally(() => {
+        //     props.setRequestGlobalAction(false);
+        // })
     }
 
     return (
@@ -118,7 +127,7 @@ const List = (props) => {
                             name='minRate'
                             value={minRate}
                             className="input-lg"
-                            onChange={(e) => minRate(e.target.value)}
+                            onChange={(e) => setMinRate(e.target.value)}
                         />
                     </FormGroup>
                     <FormGroup className="col-md-6 col-sm-12 has-wrapper">
@@ -186,20 +195,75 @@ const List = (props) => {
                     )}
                 />
 
-                <FormGroup className="col-md-12 col-sm-12 has-wrapper mb-30">
-                    <InputLabel className="text-left">
-                        Option de financement autorisées
-                    </InputLabel>
-                    <Autocomplete
-                        id="combo-box-demo"
-                        value={optionType}
-                        options={optionTypes}
-                        onChange={(__, item) => {
-                            setOptionType(item);
-                        }}
-                        getOptionLabel={(option) => option.label}
-                        renderInput={(params) => <TextField {...params} variant="outlined" />}
-                    />
+                <h1 className='mb-20 mt-20'>Structure financiere</h1>
+                <CustomList
+                    list={options}
+                    loading={false}
+                    addText='Editer'
+                    showAddIcon={false}
+                    itemsFoundText={n => `${n} éléments trouvés`}
+                    onAddClick={() => setShowFundingOptions(true)}
+                    renderItem={list => (
+                        <>
+                            {list && list.length === 0 ? (
+                                <div className="d-flex justify-content-center align-items-center py-50">
+                                    <h4>
+                                        Aucun élément trouvé
+                                    </h4>
+                                </div>
+                            ) : (
+                                <div className="table-responsive">
+                                    <table className="table table-hover table-middle mb-0">
+                                        <thead>
+                                            <tr>
+                                                <th className="fw-bold">Support</th>
+                                                <th className="fw-bold">Valeur</th>
+                                                <th className="fw-bold">Estimation</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {list && list.map((item, key) => (
+                                                <tr key={key} className="cursor-pointer">
+                                                    <td>
+                                                        <div className="media">
+                                                            <div className="media-body pt-10">
+                                                                <h4 className="m-0 fw-bold text-dark">{item?.supportType?.label}</h4>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div className="media">
+                                                            <div className="media-body pt-10">
+                                                                <h4 className="m-0 fw-bold text-dark">{getPriceWithCurrency(item.nominalAmount, item.currency)}</h4>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div className="media">
+                                                            <div className="media-body pt-10">
+                                                                <h4 className="m-0 fw-bold text-dark">{item?.quantity}</h4>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            )}
+                        </>
+                    )}
+                />
+
+                <FormGroup>
+                    <Button
+                        color="primary"
+                        variant="contained"
+                        onClick={onSubmit}
+                        className="text-white font-weight-bold"
+                    >
+                        Enregistrer
+                    </Button>
                 </FormGroup>
 
                 <CustomCart
@@ -207,6 +271,27 @@ const List = (props) => {
                     onClose={() => {
                         setShowCreateProduct(false);
                         getCustomCarts();
+                    }}
+                />
+
+                <FundingOptionsModal
+                    show={showFundingOptions}
+                    onClose={() => {
+                        setShowFundingOptions(false);
+                        getOptions();
+                    }}
+                    onCreate={() => {
+                        setShowFundingOptions(false);
+                        setShowCreateFundingOption(true);
+                    }}
+                />
+
+                <CreateFundingOption
+                    show={showCreateFundingOption}
+                    onClose={() => {
+                        getOptions();
+                        setShowCreateFundingOption(false);
+                        setShowFundingOptions(true);
                     }}
                 />
             </RctCollapsibleCard>

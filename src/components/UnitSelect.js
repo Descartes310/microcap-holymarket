@@ -1,0 +1,57 @@
+import { FormGroup } from 'reactstrap';
+import { injectIntl } from "react-intl";
+import React, { Component } from 'react';
+import UnitService from 'Services/units';
+import { withRouter } from "react-router-dom";
+import TextField from '@material-ui/core/TextField';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import InputLabel from '@material-ui/core/InputLabel/InputLabel';
+
+class UnitSelect extends Component {
+
+    state = {
+        unit: null,
+        units: []
+    }
+  
+     constructor(props) {
+        super(props);
+        this.getUnits();
+     }
+
+     getUnits = () => {
+        UnitService.getUnits()
+        .then((response) => this.setState({ units: response, unit: null }))
+        .catch((err) => {
+            console.log(err);
+        });
+    }
+  
+    render() {
+
+        const { unit, units } = this.state;
+        const { label, onChange, isCurrency } = this.props;
+
+        return (
+            <FormGroup className="col-md-6 col-sm-12 has-wrapper">
+                <InputLabel className="text-left">
+                    {label}
+                </InputLabel>
+                <Autocomplete
+                    value={unit}
+                    id="combo-box-demo"
+                    onChange={(__, item) => {
+                        this.setState({ unit: item }, () => {
+                            onChange(item);
+                        });
+                    }}
+                    getOptionLabel={(option) => option.label}
+                    options={isCurrency ? units.filter(u => ['dévise', 'devise', 'devises', 'dévises'].includes(u.type.label.toLowerCase())) : units}
+                    renderInput={(params) => <TextField {...params} variant="outlined" />}
+                />
+            </FormGroup>
+        );
+    }
+}
+
+export default withRouter(injectIntl(UnitSelect));

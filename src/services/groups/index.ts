@@ -148,8 +148,8 @@ export default class GroupService {
         return makeRequest('put', Routes.CHANGE_CATEGORY_TO_JURIDIC(reference));
     }
 
-    static getBranchFundingOptions(): Promise<any> {
-        return makeRequest('get', Routes.GET_BRANCH_FUNDING_OPTIONS);
+    static getFundingOptions(): Promise<any> {
+        return makeRequest('get', Routes.GET_FUNDING_OPTIONS);
     }
 
     static createFundingOption(data): Promise<any> {
@@ -174,6 +174,10 @@ export default class GroupService {
 
     static getOptionTypesSupport(reference: string): Promise<any> {
         return makeRequest('get', Routes.GET_FUNDING_OPTION_TYPES_SUPPORTS(reference));
+    }
+
+    static getOptionTypeByCategory(reference: string): Promise<any> {
+        return makeRequest('get', Routes.GET_FUNDING_TYPE_BY_CATEGORY(reference));
     }
 
     static createFundingOptionTypes(data): Promise<any> {
@@ -224,7 +228,6 @@ export default class GroupService {
         return makeRequest('get', Routes.GET_STRUCTURE_TYPES);
     }
 
-
     static getGroupStructureTypes(reference): Promise<any> {
         return makeRequest('get', Routes.GET_GROUP_STRUCTURE_TYPES(reference));
     }
@@ -235,6 +238,10 @@ export default class GroupService {
 
     static deleteGroupStructureTypes(reference, data): Promise<any> {
         return makeRequest('delete', Routes.DELETE_GROUP_STRUCTURE_TYPE(reference), data);
+    }
+
+    static getFundingTypeByGroup(reference): Promise<any> {
+        return makeRequest('get', Routes.GET_FUNDING_OPTION_BY_GROUP_TYPE(reference));
     }
     
 }

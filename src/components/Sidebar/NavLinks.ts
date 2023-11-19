@@ -478,7 +478,7 @@ export default [
          {
             "menu_title": "Mes souscriptions",
             "new_item": false,
-            "path": PROJECT.MINE.FOLDER.LIST,
+            "path": PROJECT.SUBSCRIPTION.LIST,
             "permissions": [Permission.microcap360.projects.name],
             "profiles": null,
             "child_routes": null
