@@ -352,6 +352,13 @@ export default [
                   "profiles": null,
                },
                {
+                  "menu_title": "Structure financiere",
+                  "new_item": false,
+                  "path": GROUP.ADMINISTRATION.PROJECT.FINANCIAL_STRUCTURE.LIST,
+                  "permissions": [Permission.group.admin.project.name],
+                  "profiles": null,
+               },
+               {
                   "menu_title": "Financement",
                   "new_item": false,
                   "path": GROUP.ADMINISTRATION.PROJECT.LIST,

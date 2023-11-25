@@ -16,7 +16,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabe
 
 const CreateFundingOption = (props) => {
 
-    const {show, onClose} = props;
+    const {show, onClose, structure} = props;
     
     const [label, setLabel] = useState('');
     const [types, setTypes] = useState([]);
@@ -91,6 +91,10 @@ const CreateFundingOption = (props) => {
             currency: currency?.code,
             option_type_reference: type?.reference,
             support_type_reference: support?.reference
+        }
+
+        if(structure) {
+            data.structure_reference = structure?.reference;
         }
 
         GroupService.createFundingOption(data).then(() => {

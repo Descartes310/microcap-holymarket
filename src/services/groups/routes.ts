@@ -71,3 +71,10 @@ export const GET_GROUP_STRUCTURE_TYPES = (reference) => `api/socialnetworks/grou
 export const DELETE_GROUP_STRUCTURE_TYPE = (reference) => `api/socialnetworks/groups/structures/types/${reference}/groups`;
 
 export const GET_FUNDING_OPTION_BY_GROUP_TYPE = (reference) => `api/socialnetworks/groups/types/${reference}/funding-option-types`;
+
+export const GET_FINANCIAL_STRUCTURES = `api/socialnetworks/groups/types/financial-structures`;
+export const CREATE_FINANCIAL_STRUCTURES = `api/socialnetworks/groups/types/financial-structures`;
+
+export const GET_CAMPAIGNS = `api/socialnetworks/groups/structures/campaigns`;
+export const CREATE_CAMPAIGN = `api/socialnetworks/groups/structures/campaigns`;
+

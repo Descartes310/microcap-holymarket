@@ -250,6 +250,13 @@ export const GROUP = {
                     SELF: "/groups/administration/projects/configurations/settings",
                     SETTING: "/groups/administration/projects/configurations/settings/self",
                 }
+            },
+            FINANCIAL_STRUCTURE: {
+                SELF: "/groups/administration/projects/financial-structures",
+                LIST: "/groups/administration/projects/financial-structures/list",
+                CREATE: "/groups/administration/projects/financial-structures/create",
+                CAMPAIGN_LIST: "/groups/administration/projects/financial-structures/:id/list",
+                CAMPAIGN_CREATE: "/groups/administration/projects/financial-structures/:id/create",
             }
         },
         ARTICLE: {
