@@ -7,6 +7,10 @@ export const getChainEventTypes = () => {
             value: 'ACTIVATE_PROFILE'
         },
         {
+            label: 'Activation d\'un pass',
+            value: 'PASS'
+        },
+        {
             label: 'Authentification',
             value: 'AUTHENTIFICATION'
         },

@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import UserService from 'Services/users';
 import OrderService from 'Services/orders';
 import { withRouter } from "react-router-dom";
+import UserSelect from 'Components/UserSelect';
 import { setRequestGlobalAction } from 'Actions';
 import TextField from '@material-ui/core/TextField';
 import { RctCardContent } from 'Components/RctCard';
@@ -23,7 +24,9 @@ class AccountInformationModal extends Component {
         name: null,
         telephone: null,
         email: null,
-        key: null
+        key: null,
+        referralCode: null,
+        member: null
     }
 
     constructor(props) {
@@ -42,16 +45,18 @@ class AccountInformationModal extends Component {
     }
 
     onSubmit = () => {
-        const { iban, agency, bic, name, email, telephone, key } = this.state;
+        const { iban, agency, bic, referralCode, key, member } = this.state;
 
-        if(!iban || !bic || !agency || !key || !name || !telephone) {
+        console.log(iban, agency, bic, referralCode, member);
+
+        if(!iban || !bic || !agency || !referralCode || !member) {
             NotificationManager.error('Toutes les informations du formulaire sont requises');
             return;
         }
 
         let data = {
             iban, bic, agency_code: agency.code, 
-            name, telephone, email, status: true, key,
+            referralCode, status: true,
             use_domiciliation_datas: true, agency_name: agency.label
         };
 
@@ -70,7 +75,7 @@ class AccountInformationModal extends Component {
     render() {
 
         const { onClose, show, title, authUser } = this.props;
-        const { iban, agency, agencies, bic, name, email, telephone, key } = this.state;
+        const { iban, agency, agencies, bic, referralCode, member } = this.state;
 
         return (
             <DialogComponent
@@ -155,103 +160,11 @@ class AccountInformationModal extends Component {
                     </FormGroup>
 
                     <h2>Conseiller</h2>
-                    <FormGroup className="has-wrapper mt-20">
-                        <InputLabel className="text-left" htmlFor="name">
-                            Noms
-                        </InputLabel>
-                        <InputStrap
-                            required
-                            type="text"
-                            id="name"
-                            name='name'
-                            value={name}
-                            className="input-lg"
-                            onChange={(e) => this.setState({ name: e.target.value })}
-                        />
-                    </FormGroup>
-                    <FormGroup className="has-wrapper">
-                        <InputLabel className="text-left" htmlFor="telephone">
-                            Téléphone
-                        </InputLabel>
-                        <InputStrap
-                            required
-                            type="text"
-                            id="telephone"
-                            name='telephone'
-                            value={telephone}
-                            className="input-lg"
-                            onChange={(e) => this.setState({ telephone: e.target.value })}
-                        />
-                    </FormGroup>
-                    <FormGroup className="has-wrapper">
-                        <InputLabel className="text-left" htmlFor="email">
-                            Adresse email
-                        </InputLabel>
-                        <InputStrap
-                            type="text"
-                            id="email"
-                            name='email'
-                            value={email}
-                            className="input-lg"
-                            onChange={(e) => this.setState({ email: e.target.value })}
-                        />
-                    </FormGroup>
-                    {/* <FormGroup className="has-wrapper">
-                        <InputLabel className="text-left" htmlFor="bankCode">
-                            Code banque
-                        </InputLabel>
-                        <InputStrap
-                            required
-                            type="text"
-                            id="bankCode"
-                            name='bankCode'
-                            value={bankCode}
-                            className="input-lg"
-                            onChange={(e) => this.setState({ bankCode: e.target.value })}
-                        />
-                    </FormGroup>
-                    <FormGroup className="has-wrapper">
-                        <InputLabel className="text-left" htmlFor="agencyCode">
-                            Code guichet
-                        </InputLabel>
-                        <InputStrap
-                            required
-                            type="text"
-                            id="agencyCode"
-                            name='agencyCode'
-                            value={agencyCode}
-                            className="input-lg"
-                            onChange={(e) => this.setState({ agencyCode: e.target.value })}
-                        />
-                    </FormGroup>
-                    <FormGroup className="has-wrapper">
-                        <InputLabel className="text-left" htmlFor="accountNumber">
-                            Numéro de compte
-                        </InputLabel>
-                        <InputStrap
-                            required
-                            type="text"
-                            id="accountNumber"
-                            name='accountNumber'
-                            value={accountNumber}
-                            className="input-lg"
-                            onChange={(e) => this.setState({ accountNumber: e.target.value })}
-                        />
-                    </FormGroup>
-                    <FormGroup className="has-wrapper">
-                        <InputLabel className="text-left" htmlFor="key">
-                            Clé
-                        </InputLabel>
-                        <InputStrap
-                            required
-                            type="text"
-                            id="key"
-                            name='key'
-                            value={key}
-                            className="input-lg"
-                            onChange={(e) => this.setState({ key: e.target.value })}
-                        />
-                    </FormGroup> */}
+
+                    <UserSelect onChange={(membership, user) => {
+                        this.setState({ referralCode: membership, member: user });
+                    }}/>
+                    
                     <FormGroup>
                         <Button
                             color="primary"
