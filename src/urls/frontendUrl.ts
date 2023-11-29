@@ -193,6 +193,7 @@ export const GROUP = {
             SELF: '/groups/structures/organes-types',
             LIST: '/groups/structures/organes-types/list',
             CREATE: '/groups/structures/organes-types/create',
+            UPDATE: '/groups/structures/organes-types/:id/update',
         }
     },
     COMMUNITY: {

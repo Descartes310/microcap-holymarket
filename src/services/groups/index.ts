@@ -224,8 +224,16 @@ export default class GroupService {
         return makeRequest('post', Routes.CREATE_STRUCTURE_TYPE, data);
     }
 
+    static updateStructureType(reference, data): Promise<any> {
+        return makeRequest('put', Routes.UPDATE_STRUCTURE_TYPE(reference), data);
+    }
+
     static getStructureTypes(): Promise<any> {
         return makeRequest('get', Routes.GET_STRUCTURE_TYPES);
+    }
+
+    static findStructureType(reference: string): Promise<any> {
+        return makeRequest('get', Routes.FIND_STRUCTURE_TYPE(reference));
     }
 
     static getGroupStructureTypes(reference): Promise<any> {

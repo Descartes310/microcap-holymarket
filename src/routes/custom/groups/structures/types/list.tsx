@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { GROUP } from 'Url/frontendUrl';
+import { GROUP, joinUrlWithParamsId } from 'Url/frontendUrl';
 import GroupService from 'Services/groups';
 import Organisations from './organisations';
 import { withRouter } from "react-router-dom";
@@ -53,8 +53,8 @@ const List = (props) => {
                                             <th className="fw-bold">Désignation</th>
                                             <th className="fw-bold">Description</th>
                                             <th className="fw-bold">Mission</th>
-                                            <th className="fw-bold">Type poste</th>
                                             <th className="fw-bold">Type Org.</th>
+                                            <th className="fw-bold">Edition</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -82,13 +82,6 @@ const List = (props) => {
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <div className="media">
-                                                        <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{item?.postType?.label}</h4>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>
                                                     <Button
                                                         color="primary"
                                                         variant="contained"
@@ -99,6 +92,18 @@ const List = (props) => {
                                                         className="text-white font-weight-bold mr-3"
                                                     >
                                                         Type org.
+                                                    </Button>
+                                                </td>
+                                                <td>
+                                                    <Button
+                                                        color="primary"
+                                                        variant="contained"
+                                                        onClick={() => {
+                                                            props.history.push(joinUrlWithParamsId(GROUP.STRUCTURE.ORGANE_TYPE.UPDATE, item.reference));
+                                                        }}
+                                                        className="text-white font-weight-bold mr-3"
+                                                    >
+                                                        Editer
                                                     </Button>
                                                 </td>
                                             </tr>

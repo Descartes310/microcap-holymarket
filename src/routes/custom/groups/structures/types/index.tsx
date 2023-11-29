@@ -1,6 +1,7 @@
 import React from 'react';
 import List from './list';
 import Create from './create';
+import Update from './update';
 import {connect} from "react-redux";
 import {injectIntl} from "react-intl";
 import { GROUP } from 'Url/frontendUrl';
@@ -13,6 +14,7 @@ const GroupStructureTypes = (props) => {
             <Switch>
                 <Redirect exact from={`${match.url}/`} to={GROUP.STRUCTURE.ORGANE_TYPE.LIST} />
                 <Route path={GROUP.STRUCTURE.ORGANE_TYPE.LIST} component={List} />
+                <Route path={GROUP.STRUCTURE.ORGANE_TYPE.UPDATE} component={Update} />
                 <Route path={GROUP.STRUCTURE.ORGANE_TYPE.CREATE} component={Create} />
             </Switch>
         </div>
