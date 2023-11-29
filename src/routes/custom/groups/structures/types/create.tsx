@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { GROUP } from 'Url/frontendUrl';
 import GroupService from 'Services/groups';
-import { organeTypes } from 'Helpers/datas';
+import { organeTypes, structureMissionTypes } from 'Helpers/datas';
 import { withRouter } from "react-router-dom";
 import Button from '@material-ui/core/Button';
 import {setRequestGlobalAction} from 'Actions';
@@ -18,13 +18,11 @@ const Create = (props) => {
     const [label, setLabel] = useState('');
     const [posts, setPosts] = useState([]);
     const [post, setPost] = useState(null);
-    const [type, setType] = useState(null);
-    const [missions, setMissions] = useState([]);
+    // const [type, setType] = useState(null);
     const [mission, setMission] = useState(null);
     const [description, setDescription] = useState('');    
 
     useEffect(() => {
-        getMissions();
         getPosts();
     }, []);
 
@@ -35,26 +33,18 @@ const Create = (props) => {
         .finally(() => props.setRequestGlobalAction(false))
     }
 
-    const getMissions = () => {
-        props.setRequestGlobalAction(true),
-        GroupService.getStructureMissions()
-        .then(response => setMissions(response))
-        .finally(() => props.setRequestGlobalAction(false))
-    }
-
     const onSubmit = () => {
 
-        if(!label || !description || !type || !post || !mission) {
+        if(!label || !description || !post || !mission) {
             NotificationManager.error("Le formulaire est mal renseigné");
             return;
         }
 
         let data: any = {
             label: label,
-            type: type.value,
+            mission: mission.value,
             description: description,
             post_type_reference: post.reference,
-            mission_reference: mission.reference,
         }
         
         props.setRequestGlobalAction(true);
@@ -103,22 +93,6 @@ const Create = (props) => {
 
                 <div className="col-md-12 col-sm-12 has-wrapper mb-30">
                     <InputLabel className="text-left">
-                        Type
-                    </InputLabel>
-                    <Autocomplete
-                        value={type}
-                        id="combo-box-demo"
-                        options={organeTypes()}
-                        onChange={(__, item) => {
-                            setType(item);
-                        }}
-                        getOptionLabel={(option) => option.label}
-                        renderInput={(params) => <TextField {...params} variant="outlined" />}
-                    />
-                </div>
-
-                <div className="col-md-12 col-sm-12 has-wrapper mb-30">
-                    <InputLabel className="text-left">
                         Type de poste
                     </InputLabel>
                     <Autocomplete
@@ -140,10 +114,10 @@ const Create = (props) => {
                     <Autocomplete
                         value={mission}
                         id="combo-box-demo"
-                        options={missions}
                         onChange={(__, item) => {
                             setMission(item);
                         }}
+                        options={structureMissionTypes()}
                         getOptionLabel={(option) => option.label}
                         renderInput={(params) => <TextField {...params} variant="outlined" />}
                     />

@@ -16,19 +16,17 @@ import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard
 const Create = (props) => {
 
     const [label, setLabel] = useState('');
-    const [type, setType] = useState(null);
     const [description, setDescription] = useState('');
 
     const onSubmit = () => {
 
-        if(!label || !type) {
+        if(!label) {
             NotificationManager.error("Le formulaire est mal renseigné");
             return;
         }
 
         let data: any = {
             label: label,
-            type: type?.value,
             description: description
         }
         
@@ -75,22 +73,6 @@ const Create = (props) => {
                         onChange={(e) => setDescription(e.target.value)}
                     />
                 </FormGroup>
-
-                <div className="col-md-12 col-sm-12 has-wrapper mb-30">
-                    <InputLabel className="text-left">
-                        Type
-                    </InputLabel>
-                    <Autocomplete
-                        value={type}
-                        id="combo-box-demo"
-                        onChange={(__, item) => {
-                            setType(item);
-                        }}
-                        options={structureMissionTypes()}
-                        getOptionLabel={(option) => option.label}
-                        renderInput={(params) => <TextField {...params} variant="outlined" />}
-                    />
-                </div>
 
                 <FormGroup>
                     <Button

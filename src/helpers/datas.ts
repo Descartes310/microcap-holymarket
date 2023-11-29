@@ -318,7 +318,7 @@ export const territoryDetailsTypes = () => {
             value: 'TYPE_GROUP'
         },
         {
-            label: "Immatriculation",
+            label: "Type Immatriculation",
             value: 'IMMATRICULATION'
         }
     ];

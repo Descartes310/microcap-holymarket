@@ -118,7 +118,7 @@ const CreateTerritoryDetails = (props) => {
                 { type?.value == 'IMMATRICULATION' && (
                     <div className="col-md-12 col-sm-12 has-wrapper mb-30">
                         <InputLabel className="text-left">
-                            Immatriculations
+                            Types immatriculations
                         </InputLabel>
                         <Autocomplete
                             id="combo-box-demo"

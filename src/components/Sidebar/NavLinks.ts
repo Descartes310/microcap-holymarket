@@ -325,13 +325,6 @@ export default [
             "profiles": ['GROUP'],
          },
          {
-            "menu_title": "Invitations/Demandes",
-            "new_item": false,
-            "path": GROUP.ADMINISTRATION.REQUEST.SELF,
-            "permissions": [Permission.group.admin.request.name],
-            "profiles": ['GROUP'],
-         },
-         {
             "menu_title": "Projets",
             "new_item": false,
             "permissions": [Permission.group.admin.project.name],
@@ -345,26 +338,12 @@ export default [
                   "profiles": null,
                },
                {
-                  "menu_title": "Deals",
-                  "new_item": false,
-                  "path": GROUP.ADMINISTRATION.PROJECT.LIST,
-                  "permissions": [Permission.group.admin.project.name],
-                  "profiles": null,
-               },
-               {
                   "menu_title": "Structure financiere",
                   "new_item": false,
                   "path": GROUP.ADMINISTRATION.PROJECT.FINANCIAL_STRUCTURE.LIST,
                   "permissions": [Permission.group.admin.project.name],
                   "profiles": null,
                },
-               {
-                  "menu_title": "Financement",
-                  "new_item": false,
-                  "path": GROUP.ADMINISTRATION.PROJECT.LIST,
-                  "permissions": [Permission.group.admin.project.name],
-                  "profiles": null,
-               }, 
                {
                   "menu_title": "Configurations",
                   "new_item": false,
@@ -374,6 +353,13 @@ export default [
                   "child_routes": null
                }
             ]
+         },
+         {
+            "menu_title": "Invitations/Demandes",
+            "new_item": false,
+            "path": GROUP.ADMINISTRATION.REQUEST.SELF,
+            "permissions": [Permission.group.admin.request.name],
+            "profiles": ['GROUP'],
          },
          {
             "menu_title": "Fil d'actualité",
@@ -690,14 +676,14 @@ export default [
             "profiles": ['GROUP'],
             "child_routes": null
          },
-         {
-            "menu_title": "Options produit",
-            "new_item": false,
-            "path": MARKETPLACE.STORE.OPTION.ITEM.LIST,
-            "permissions": [Permission.marketplace.store.product.name],
-            "profiles": ['GROUP'],
-            "child_routes": null
-         },
+         // {
+         //    "menu_title": "Options produit",
+         //    "new_item": false,
+         //    "path": MARKETPLACE.STORE.OPTION.ITEM.LIST,
+         //    "permissions": [Permission.marketplace.store.product.name],
+         //    "profiles": ['GROUP'],
+         //    "child_routes": null
+         // },
          {
             "menu_title": "Demandes d'achats ",
             "new_item": false,

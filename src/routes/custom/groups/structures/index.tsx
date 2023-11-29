@@ -15,8 +15,7 @@ class Structures extends Component<any, any> {
         super(props);
         const defaultState = (function (url) {
             if (url.includes(GROUP.STRUCTURE.ORGANE_TYPE.LIST)) return 0;
-            else if (url.includes(GROUP.STRUCTURE.MISSION.LIST)) return 1;
-            else if (url.includes(GROUP.STRUCTURE.POST_TYPE.LIST)) return 2;
+            else if (url.includes(GROUP.STRUCTURE.POST_TYPE.LIST)) return 1;
             else return 0;
         })(window.location.pathname);
 
@@ -31,8 +30,7 @@ class Structures extends Component<any, any> {
         if (oldActivateTab !== value) {
             switch (value) {
                 case 0: return this.props.history.push(GROUP.STRUCTURE.ORGANE_TYPE.LIST);
-                case 1: return this.props.history.push(GROUP.STRUCTURE.MISSION.LIST);
-                case 2: return this.props.history.push(GROUP.STRUCTURE.POST_TYPE.LIST);
+                case 1: return this.props.history.push(GROUP.STRUCTURE.POST_TYPE.LIST);
                 default: return this.props.history.push(GROUP.STRUCTURE.ORGANE_TYPE.LIST);
             }
         }
@@ -59,10 +57,6 @@ class Structures extends Component<any, any> {
                                         <Tab
                                             icon={<i className="zmdi zmdi-home" />}
                                             label={"Type organes"}
-                                        />
-                                        <Tab
-                                            icon={<i className="zmdi zmdi-cloud-outline-alt"></i>}
-                                            label={"Mission organes"}
                                         />
                                         <Tab
                                             icon={<i className="zmdi zmdi-cloud-outline-alt"></i>}

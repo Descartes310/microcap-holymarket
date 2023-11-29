@@ -7,7 +7,7 @@ import Button from '@material-ui/core/Button';
 import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
 import React, { useState, useEffect } from 'react';
-import { translateOrganeTypes } from 'Helpers/datas';
+import { translateOrganeTypes, translateStructureMissionTypes } from 'Helpers/datas';
 
 const List = (props) => {
 
@@ -52,7 +52,6 @@ const List = (props) => {
                                         <tr>
                                             <th className="fw-bold">Désignation</th>
                                             <th className="fw-bold">Description</th>
-                                            <th className="fw-bold">Type</th>
                                             <th className="fw-bold">Mission</th>
                                             <th className="fw-bold">Type poste</th>
                                             <th className="fw-bold">Type Org.</th>
@@ -78,14 +77,7 @@ const List = (props) => {
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <h4 className="m-0 text-dark">{translateOrganeTypes(item.type)}</h4>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div className="media">
-                                                        <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{item?.structureMission?.label}</h4>
+                                                            <h4 className="m-0 fw-bold text-dark">{translateStructureMissionTypes(item?.mission)}</h4>
                                                         </div>
                                                     </div>
                                                 </td>

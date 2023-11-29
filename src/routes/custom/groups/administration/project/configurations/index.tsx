@@ -60,7 +60,7 @@ class Catalogues extends Component<any, any> {
                                     >
                                         <Tab
                                             icon={<i className="zmdi zmdi-home" />}
-                                            label={"Plan de financement"}
+                                            label={"Investissements"}
                                         />
                                         <Tab
                                             icon={<i className="zmdi zmdi-home" />}

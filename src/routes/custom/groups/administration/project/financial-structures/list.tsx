@@ -36,7 +36,7 @@ const List = (props) => {
                 list={datas}
                 loading={false}
                 itemsFoundText={n => `${n} données trouvées`}
-                onAddClick={() => props.history.push(GROUP.ADMINISTRATION.PROJECT.FINANCIAL_STRUCTURE.CREATE)}
+                // onAddClick={() => props.history.push(GROUP.ADMINISTRATION.PROJECT.FINANCIAL_STRUCTURE.CREATE)}
                 renderItem={list => (
                     <>
                         {list && list.length === 0 ? (

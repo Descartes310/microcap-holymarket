@@ -25,7 +25,7 @@ const Create = (props) => {
 
     const getCategories = () => {
         props.setRequestGlobalAction(true),
-        GroupService.getFundingOptionCategories({root: true})
+        GroupService.getFundingOptionCategories()
         .then(response => setCategories(response))
         .finally(() => props.setRequestGlobalAction(false))
     }

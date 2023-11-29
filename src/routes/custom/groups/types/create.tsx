@@ -118,7 +118,7 @@ const Create = (props) => {
                             renderInput={(params) => <TextField {...params} variant="outlined" />}
                         />
                     </div>
-                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                    {/* <div className="col-md-12 col-sm-12 has-wrapper mb-30">
                         <InputLabel className="text-left">
                             Type parent
                         </InputLabel>
@@ -132,7 +132,7 @@ const Create = (props) => {
                             getOptionLabel={(option) => option.label}
                             renderInput={(params) => <TextField {...params} variant="outlined" />}
                         />
-                    </div>
+                    </div> */}
 
                     <FormGroup>
                         <Button
