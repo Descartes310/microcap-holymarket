@@ -6,10 +6,10 @@ import Button from '@material-ui/core/Button';
 import {setRequestGlobalAction} from 'Actions';
 import { referraTypes } from 'Helpers/helpers';
 import SettingService from 'Services/settings';
+import { territoriesTypes } from 'Helpers/datas';
 import React, { useState, useEffect } from 'react';
 import TextField from '@material-ui/core/TextField';
 import TerritoryService from 'Services/territories';
-import IconButton from "@material-ui/core/IconButton";
 import {NotificationManager} from 'react-notifications';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
@@ -21,17 +21,36 @@ const Create = (props) => {
 
     const [code, setCode] = useState('');
     const [label, setLabel] = useState('');
+    const [regions, setRegions] = useState([]);
+    const [region, setRegion] = useState(null);
     const [countries, setCountries] = useState([]);
+    const [continents, setContinents] = useState([]);
+    const [continent, setContinent] = useState(null);
     const [territories, setTerritories] = useState([]);
     const [description, setDescription] = useState('');
     const [referralType, setReferralType] = useState(null);
+    const [territoryType, setTerritoryType] = useState(null);
 
     useEffect(() => {
-        getCountries();
-    }, []);
+        if(territoryType?.value == 'MAINLAND') {
+            getContinents();
+        }
+    }, [territoryType]);
+
+    useEffect(() => {
+        if(continent) {
+            getRegions();
+        }
+    }, [continent]);
+
+    useEffect(() => {
+        if(region) {
+            getCountries();
+        }
+    }, [region]);
 
     const getCountries = () => {
-        TerritoryService.getTerritories(TerritoryType.COUNTRY)
+        TerritoryService.getTerritoryChild({id: region?.id})
         .then(countries => {
             setCountries(countries);
         })
@@ -41,17 +60,53 @@ const Create = (props) => {
         });
     };
 
+    const getContinents = () => {
+        TerritoryService.getTerritories(TerritoryType.MAINLAND)
+        .then(continents => {
+            setContinents(continents);
+        })
+        .catch(error => {
+            setContinents([]);
+            NotificationManager.error("An error occur " + error);
+        });
+    };
+
+    const getRegions = () => {
+        TerritoryService.getTerritoryChild({id: continent?.id})
+        .then(regions => {
+            setRegions(regions);
+        })
+        .catch(error => {
+            setRegions([]);
+            NotificationManager.error("An error occur " + error);
+        });
+    };
+
     const onSubmit = () => {
 
-        if(!label || !code || territories.length <= 0 || !referralType)
-            return
+        if(!label || !code || (territories.length <= 0 && !region && !continent) || !referralType) {
+            return;
+        }
 
         let data: any = {
             code: code,
             label: label,
             description: description,
             referralType: referralType.value,
-            territories: territories.map(t => t.reference)
+        }
+
+        if(territories.length > 0) {
+            data.territories = territories.map(t => t.id);
+        } else {
+            if(region) {
+                data.territories = [region.id];
+            } else {
+                if(continent) {
+                    data.territories = [continent.id];
+                } else {
+                    return;
+                }
+            }
         }
             
         props.setRequestGlobalAction(true);
@@ -134,42 +189,70 @@ const Create = (props) => {
 
                     <div className="col-md-12 col-sm-12 has-wrapper mb-30 p-0">
                         <InputLabel className="text-left">
-                            Pays autorisés
+                            Type de territoires
                         </InputLabel>
                         <Autocomplete
-                            multiple
-                            value={territories}
-                            options={countries}
                             id="combo-box-demo"
+                            value={territoryType}
+                            options={territoriesTypes()}
                             classes={{ paper: 'custom-input' }}
                             getOptionLabel={(option) => option.label}
-                            onChange={(__, items) => { setTerritories(items) }}
-                            renderTags={options => {
-                                return (
-                                    options.map(option =>
-                                        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center'  }}>
-                                            <IconButton color="primary">
-                                                <img src={option.details.find(d => d.code === 'FLAG')?.value} style={{ width: 25, height: 15 }}/>
-                                            </IconButton>
-                                            {option.label}
-                                        </div>
-                                    )
-                                )
-                        
-                            }}
-                            renderOption={option => {
-                                return (
-                                    <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center'  }}>
-                                        <IconButton color="primary">
-                                            <img src={option.details.find(d => d.code === 'FLAG')?.value} style={{ width: 25, height: 15 }} />
-                                        </IconButton>
-                                        {option.label}
-                                    </div>
-                                );
-                            }}
+                            onChange={(__, item) => { setTerritoryType(item) }}
                             renderInput={(params) => <TextField {...params} variant="outlined" />}
                         />
                     </div>
+
+                    { territoryType?.value == 'MAINLAND' && (
+                        <div className="col-md-12 col-sm-12 has-wrapper mb-30 p-0">
+                            <InputLabel className="text-left">
+                                Continents
+                            </InputLabel>
+                            <Autocomplete
+                                value={continent}
+                                options={continents}
+                                id="combo-box-demo"
+                                classes={{ paper: 'custom-input' }}
+                                getOptionLabel={(option) => option.label}
+                                onChange={(__, item) => { setContinent(item) }}
+                                renderInput={(params) => <TextField {...params} variant="outlined" />}
+                            />
+                        </div>
+                    )}
+
+                    { continent && (
+                        <div className="col-md-12 col-sm-12 has-wrapper mb-30 p-0">
+                            <InputLabel className="text-left">
+                                Sous régions (laisser vide pour considérer tout le continent)
+                            </InputLabel>
+                            <Autocomplete
+                                value={region}
+                                options={regions}
+                                id="combo-box-demo"
+                                classes={{ paper: 'custom-input' }}
+                                getOptionLabel={(option) => option.label}
+                                onChange={(__, item) => { setRegion(item) }}
+                                renderInput={(params) => <TextField {...params} variant="outlined" />}
+                            />
+                        </div>
+                    )}
+
+                    { region && (
+                        <div className="col-md-12 col-sm-12 has-wrapper mb-30 p-0">
+                            <InputLabel className="text-left">
+                                Pays (laisser vide pour considérer toute la région)
+                            </InputLabel>
+                            <Autocomplete
+                                multiple
+                                value={territories}
+                                options={countries}
+                                id="combo-box-demo"
+                                classes={{ paper: 'custom-input' }}
+                                getOptionLabel={(option) => option.label}
+                                onChange={(__, items) => { setTerritories(items) }}
+                                renderInput={(params) => <TextField {...params} variant="outlined" />}
+                            />
+                        </div>
+                    )}
 
                     <FormGroup>
                         <Button

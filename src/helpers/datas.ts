@@ -418,3 +418,12 @@ export const organeTypes = () => {
 export const translateOrganeTypes = (value) => {
     return organeTypes().find(d => d.value == value)?.label
 }
+
+export const territoriesTypes = () => {
+    return [
+        {
+            label: "Continents",
+            value: 'MAINLAND'
+        }
+    ];
+}
