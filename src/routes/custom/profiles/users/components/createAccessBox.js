@@ -194,7 +194,7 @@ const CreateAccessBox = (props) => {
                         </FormGroup>
                         <div className="has-wrapper col-md-12 col-sm-12 mb-30 ">
                             <InputLabel className="text-left">
-                                Roles internes
+                                Procurations
                             </InputLabel>
                             <Autocomplete
                                 id="combo-box-demo"

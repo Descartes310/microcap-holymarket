@@ -56,7 +56,7 @@ const Access = (props) => {
                                 setShowListRolesBox(true);
                             }}
                         >
-                            Roles internes
+                            Procurations
                         </Button>
                     </div>
                 )}

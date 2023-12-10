@@ -769,7 +769,7 @@ export const translatePermissionFolder = (path) => {
         case 'USER_ACCOUNT':
             return 'Comptes utilisateurs'
         case 'USERS':
-            return 'Gestion des utilisateurs'
+            return 'Utilisateurs'
         case 'CATEGORY':
             return 'Catégories';
         case 'TYPE':
@@ -779,7 +779,7 @@ export const translatePermissionFolder = (path) => {
         case 'ROLE':
             return 'Rôles';
         case 'GROUPS':
-            return 'Gestion des groupes';
+            return 'Organisations';
         case 'ADMIN':
             return 'Administration';
         case 'MEMBER':
@@ -789,7 +789,7 @@ export const translatePermissionFolder = (path) => {
         case 'DETAILS':
             return 'Détails';
         case 'MARKETPLACES':
-            return 'MicroCap Store';
+            return 'Marketplace';
         case 'SETTINGS':
             return 'Paramètrage';
         case 'STORE':
@@ -806,6 +806,8 @@ export const translatePermissionFolder = (path) => {
             return 'Contrat';
         case 'PARTNER':
             return 'Partenaire';
+        case 'PARTNERS':
+            return 'Partenaires';
         case 'FUNDING':
             return 'Financement';
         case 'BROKER':
@@ -842,6 +844,24 @@ export const translatePermissionFolder = (path) => {
             return 'Supervision';
         case 'PROJECT':
             return 'Projets';
+        case 'SYSTEM':
+            return 'Système';
+        case 'CONFIG':
+            return 'Configuration';
+        case 'ACCESSORIES':
+            return 'Accessoires';
+        case 'PROFILE':
+            return 'Profile';
+        case 'MPADMIN':
+            return 'Produits & services';
+        case 'SUPPORT':
+            return 'Métiers support';
+        case 'NETWORK':
+            return 'Réseau social';
+        case 'NUSER':
+            return 'Réseau utilisateur';
+        case 'USER':
+            return 'Utilisateurs';
         default:
             return path;
     }

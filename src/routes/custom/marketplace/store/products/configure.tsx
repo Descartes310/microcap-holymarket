@@ -26,6 +26,7 @@ const Configure = (props: any) => {
     const [units, setUnits] = useState([]);
     const [details, setDetails] = useState([]);
     const [product, setProduct] = useState(null);
+    const [quotient, setQuotient] = useState(null);
     const [priceUnit, setPriceUnit] = useState(null);
     const [placements, setPlacements] = useState([]);
     const [lineGroup, setLineGroup] = useState(null);
@@ -122,7 +123,7 @@ const Configure = (props: any) => {
 
         if(!config || !depositPeriod || !cycleTime || !lineGroup || placements.length <= 0 || 
             !subscriptionStartDate || !subscriptionEndDate || !startDepositDate || !subscriptionFees || 
-            !depositAmount || !minimumRate || tirageDates.length < 0 || !priceUnit) {
+            !depositAmount || !minimumRate || tirageDates.length < 0 || !priceUnit || !quotient) {
             NotificationManager.error('Le formulaire est mal rempli');
             return;
         }
@@ -139,6 +140,7 @@ const Configure = (props: any) => {
             subscriptionFees: subscriptionFees.toString(),
             cycleTime: cycleTime.toString(), 
             depositAmount: depositAmount.toString(),
+            quotient: quotient.toString(),
             minimumRate: minimumRate.toString(), 
             totalDeposit: totalDeposit.toString(), 
             availableCapital: availableCapital.toString(), 
@@ -167,6 +169,7 @@ const Configure = (props: any) => {
         props.setRequestGlobalAction(true);
         ProductService.findProduct(props.match.params.reference).then(response => {
             setProduct(response);
+            setQuotient(response.details.find(d => d.type == 'QUOTIENT')?.value);
             setLineGroup(response.details.find(d => d.type == 'LINE_GROUP')?.value);
             setCycleTime(response.details.find(d => d.type == 'CYCLE_TIME')?.value);
             setMinimumRate(response.details.find(d => d.type == 'MINIMUM_RATE')?.value);
@@ -429,7 +432,18 @@ const Configure = (props: any) => {
 
                     <div className='row'>
                         <div className="col-md-6 col-sm-12 has-wrapper mb-30">
-                            <InputLabel className="text-left">
+                            <InputLabel className="text-left" htmlFor="quotient">
+                                Quotité
+                            </InputLabel>
+                            <InputStrap
+                                type="number"
+                                className="input-lg"
+                                id="quotient"
+                                name='quotient'
+                                value={quotient}
+                                onChange={(e) => setQuotient(e.target.value)}
+                            />
+                            {/* <InputLabel className="text-left">
                                 Options du plan
                             </InputLabel>
                             <Autocomplete
@@ -446,7 +460,7 @@ const Configure = (props: any) => {
                                 }}
                                 getOptionLabel={(option) => option.label}
                                 renderInput={(params) => <TextField {...params} variant="outlined" />}
-                            />
+                            /> */}
                         </div>
                         <div className="col-md-6 col-sm-12 has-wrapper mb-30">
                             <InputLabel className="text-left">

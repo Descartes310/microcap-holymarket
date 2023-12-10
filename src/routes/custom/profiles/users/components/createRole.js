@@ -66,7 +66,7 @@ const CreateRole = (props) => {
             size="md"
             title={(
                 <h3 className="fw-bold">
-                    Créer un role interne
+                    Créer une procuration
                 </h3>
             )}
         >

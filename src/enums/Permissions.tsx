@@ -42,6 +42,12 @@ export default class Permission extends BaseEnum {
         type: {
             "name": "GROUP_TYPE_PRIVILEGE"
         },
+        structure: {
+            "name": "GROUP_STRUCTURE"
+        },
+        fundingOption: {
+            "name": "FUNDING_OPTIONS"
+        },
         role: {
             "name": "GROUP_ROLE_PRIVILEGE"
         },
@@ -91,6 +97,18 @@ export default class Permission extends BaseEnum {
         },
         pionier: {
             "name": "SETTING_PIONIER_PRIVILEGE"
+        },
+        messageModel: {
+            "name": "SETTING_MESSAGE_MODEL"
+        },
+        immatriculation: {
+            "name": "SETTING_IMMATRICULATION"
+        },
+        userGoal: {
+            "name": "SETTING_USER_GOAL"
+        },
+        userFolder: {
+            "name": "SETTING_USER_FOLDER"
         },
     };
 
@@ -149,6 +167,15 @@ export default class Permission extends BaseEnum {
         item: {
             "name": "PROJECT_PERSONNAL_ITEM_PRIVILEGE"
         },
+        financialStructure: {
+            "name": "FINANCIAL_STRUCTURE"
+        },
+        edit: {
+            "name": "FINANCIAL_STRUCTURE"
+        },
+        setting: {
+            "name": "FINANCIAL_STRUCTURE"
+        },
     };
 
     static network = {
@@ -161,6 +188,12 @@ export default class Permission extends BaseEnum {
             },
             partner: {
                 "name": "COVERAGE_PARTNER_PRIVILEGE"
+            },
+            center: {
+                "name": "COVERAGE_CENTER_PRIVILEGE"
+            },
+            user: {
+                "name": "COVERAGE_USER_PRIVILEGE"
             }
         }
     };

@@ -174,21 +174,6 @@ const Create = (props) => {
                     <div className="row">
                         <FormGroup className="col-md-6 col-sm-12 has-wrapper">
                             <InputLabel className="text-left">
-                                Modèle de produit
-                            </InputLabel>
-                            <Autocomplete
-                                value={product}
-                                options={products}
-                                id="combo-box-demo"
-                                onChange={(__, item) => {
-                                    setProduct(item);
-                                }}
-                                getOptionLabel={(option) => option.label}
-                                renderInput={(params) => <TextField {...params} variant="outlined" />}
-                            />
-                        </FormGroup>
-                        <FormGroup className="col-md-6 col-sm-12 has-wrapper">
-                            <InputLabel className="text-left">
                                 Offre commerciale
                             </InputLabel>
                             <Autocomplete
@@ -197,6 +182,21 @@ const Create = (props) => {
                                 options={commercialOffers}
                                 onChange={(__, item) => {
                                     setCommercialOffer(item);
+                                }}
+                                getOptionLabel={(option) => option.label}
+                                renderInput={(params) => <TextField {...params} variant="outlined" />}
+                            />
+                        </FormGroup>
+                        <FormGroup className="col-md-6 col-sm-12 has-wrapper">
+                            <InputLabel className="text-left">
+                                Modèle de produit
+                            </InputLabel>
+                            <Autocomplete
+                                value={product}
+                                options={products}
+                                id="combo-box-demo"
+                                onChange={(__, item) => {
+                                    setProduct(item);
                                 }}
                                 getOptionLabel={(option) => option.label}
                                 renderInput={(params) => <TextField {...params} variant="outlined" />}

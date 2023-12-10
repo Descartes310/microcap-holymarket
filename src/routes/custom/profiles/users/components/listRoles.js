@@ -37,7 +37,7 @@ const ListRoles = (props) => {
             size="md"
             title={(
                 <h3 className="fw-bold">
-                    Mes roles internes
+                    Mes procurations
                 </h3>
             )}
         >

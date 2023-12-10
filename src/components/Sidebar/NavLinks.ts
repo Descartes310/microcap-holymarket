@@ -49,6 +49,8 @@ export default [
          Permission.network.coverage.territory.name,
          Permission.network.coverage.contract.name,
          Permission.network.coverage.partner.name,
+         Permission.network.coverage.user.name,
+         Permission.network.coverage.center.name,
       ],
       "profiles": ['GROUP'],
       "type_multi": true,
@@ -68,7 +70,7 @@ export default [
             "new_item": false,
             "path": NETWORK.COVERAGE.AFFECTATION.LIST,
             "permissions": [
-               Permission.network.coverage.territory.name,
+               Permission.network.coverage.center.name,
             ],
             "profiles": ['GROUP'],
          },
@@ -95,7 +97,7 @@ export default [
             "new_item": false,
             "path": NETWORK.COVERAGE.USERS.LIST,
             "permissions": [
-               Permission.network.coverage.partner.name,
+               Permission.network.coverage.user.name,
             ],
             "profiles": ['GROUP'],
          },
@@ -155,7 +157,6 @@ export default [
          Permission.broker.agency.name,
          Permission.broker.counter.name,
          Permission.broker.cashdesk.name,
-         Permission.broker.account.name,
       ],
       "profiles": ['BROKER'],
       "type_multi": true,
@@ -255,9 +256,10 @@ export default [
       "menu_icon": "zmdi zmdi-view-dashboard",
       "new_item": false,
       "permissions": [
-         Permission.group.category.name,
          Permission.group.type.name,
-         Permission.group.role.name,
+         Permission.group.category.name,
+         Permission.group.structure.name,
+         Permission.group.fundingOption.name,
       ],
       "profiles": ['GROUP'],
       "child_routes": [
@@ -265,14 +267,14 @@ export default [
             "menu_title": "Structurations",
             "new_item": false,
             "path": GROUP.STRUCTURE.ORGANE_TYPE.LIST,
-            "permissions": [Permission.group.type.name],
+            "permissions": [Permission.group.structure.name],
             "profiles": ['GROUP'],
          },
          {
             "menu_title": "Options de financement",
             "new_item": false,
             "path": GROUP.FUNDING_OPTION.OPTION.LIST,
-            "permissions": [Permission.group.type.name],
+            "permissions": [Permission.group.fundingOption.name],
             "profiles": ['GROUP'],
          }, {
             "menu_title": "Types de groupes",
@@ -298,7 +300,6 @@ export default [
          Permission.group.admin.role.name,
          Permission.group.admin.setting.name,
          Permission.group.admin.post.name,
-         Permission.group.admin.project.name,
       ],
       "profiles": ['GROUP'],
       "type_multi": true,
@@ -323,36 +324,6 @@ export default [
             "path": GROUP.ADMINISTRATION.POST.LIST,
             "permissions": [Permission.group.admin.post.name,],
             "profiles": ['GROUP'],
-         },
-         {
-            "menu_title": "Projets",
-            "new_item": false,
-            "permissions": [Permission.group.admin.project.name],
-            "profiles": ['PROJECT'],
-            "child_routes": [
-               {
-                  "menu_title": "Editer",
-                  "new_item": false,
-                  "path": GROUP.ADMINISTRATION.PROJECT.LIST,
-                  "permissions": [Permission.group.admin.project.name],
-                  "profiles": null,
-               },
-               {
-                  "menu_title": "Structure financiere",
-                  "new_item": false,
-                  "path": GROUP.ADMINISTRATION.PROJECT.FINANCIAL_STRUCTURE.LIST,
-                  "permissions": [Permission.group.admin.project.name],
-                  "profiles": null,
-               },
-               {
-                  "menu_title": "Configurations",
-                  "new_item": false,
-                  "path": GROUP.ADMINISTRATION.PROJECT.CONFIGURATION.ATTRIBUTE.SELF,
-                  "permissions": [Permission.group.admin.project.name],
-                  "profiles": null,
-                  "child_routes": null
-               }
-            ]
          },
          {
             "menu_title": "Invitations/Demandes",
@@ -457,9 +428,40 @@ export default [
       "permissions": [
          Permission.microcap360.projects.name,
          Permission.microcap360.ideas.name,
+         Permission.group.admin.project.name,
+         Permission.project.admin.item.name,
+         Permission.project.admin.initialization.name,
+         Permission.project.admin.post.name,
+         Permission.group.admin.project.name,
+         Permission.group.admin.project.name,
+         Permission.group.admin.project.name
       ],
       "profiles": null,
       "child_routes": [
+         {
+            "menu_title": "Ouvrages",
+            "new_item": false,
+            "path": PROJECT.ITEM.SIMPLE.LIST,
+            "permissions": [Permission.project.admin.item.name],
+            "profiles": null,
+            "child_routes": null
+         }, 
+         {
+            "menu_title": "Option initialisations",
+            "new_item": false,
+            "path": joinUrlWithParams(PROJECT.INITIALIZATION.LIST, [{param: 'type', value: 'ideas'}]),
+            "permissions": [Permission.project.admin.initialization.name],
+            "profiles": null,
+            "child_routes": null
+         }, 
+         {
+            "menu_title": "Postes",
+            "new_item": false,
+            "path": PROJECT.POST.LIST,
+            "permissions": [Permission.project.admin.post.name],
+            "profiles": null,
+            "child_routes": null
+         },
          {
             "menu_title": "Mes projets",
             "new_item": false,
@@ -484,6 +486,27 @@ export default [
             "profiles": null,
             "child_routes": null
          },
+         {
+            "menu_title": "Editer",
+            "new_item": false,
+            "path": GROUP.ADMINISTRATION.PROJECT.LIST,
+            "permissions": [Permission.group.admin.project.name],
+            "profiles": ['PROJECT'],
+         },
+         {
+            "menu_title": "Structure financiere",
+            "new_item": false,
+            "path": GROUP.ADMINISTRATION.PROJECT.FINANCIAL_STRUCTURE.LIST,
+            "permissions": [Permission.project.financialStructure.name],
+            "profiles": ['PROJECT'],
+         },
+         {
+            "menu_title": "Configurations",
+            "new_item": false,
+            "path": GROUP.ADMINISTRATION.PROJECT.CONFIGURATION.ATTRIBUTE.SELF,
+            "permissions": [Permission.group.admin.project.name],
+            "profiles": ['PROJECT'],
+         }
       ],
    },
    {
@@ -621,50 +644,11 @@ export default [
       ],
    },
    {
-      "menu_title": "Projets",
-      "menu_icon": "zmdi zmdi-laptop",
-      "new_item": false,
-      "permissions": [
-         Permission.project.admin.item.name,
-         Permission.project.admin.initialization.name,
-         Permission.project.admin.post.name,
-      ],
-      "profiles": null,
-      "child_routes": [
-         {
-            "menu_title": "Ouvrages",
-            "new_item": false,
-            "path": PROJECT.ITEM.SIMPLE.LIST,
-            "permissions": [Permission.project.admin.item.name],
-            "profiles": null,
-            "child_routes": null
-         }, 
-         {
-            "menu_title": "Option initialisations",
-            "new_item": false,
-            "path": joinUrlWithParams(PROJECT.INITIALIZATION.LIST, [{param: 'type', value: 'ideas'}]),
-            "permissions": [Permission.project.admin.initialization.name],
-            "profiles": null,
-            "child_routes": null
-         }, 
-         {
-            "menu_title": "Postes",
-            "new_item": false,
-            "path": PROJECT.POST.LIST,
-            "permissions": [Permission.project.admin.post.name],
-            "profiles": null,
-            "child_routes": null
-         }
-      ],
-   },
-   {
       "menu_title": "Ma boutique",
       "menu_icon": "zmdi zmdi-store",
       "new_item": false,
       "permissions": [
-         Permission.marketplace.store.product.name,
-         Permission.marketplace.store.purchase.name,
-         Permission.marketplace.store.order.name,
+         Permission.marketplace.store.product.name
       ],
       "profiles": ['GROUP'],
       "child_routes": [
@@ -676,19 +660,19 @@ export default [
             "profiles": ['GROUP'],
             "child_routes": null
          },
-         // {
-         //    "menu_title": "Options produit",
-         //    "new_item": false,
-         //    "path": MARKETPLACE.STORE.OPTION.ITEM.LIST,
-         //    "permissions": [Permission.marketplace.store.product.name],
-         //    "profiles": ['GROUP'],
-         //    "child_routes": null
-         // },
+         {
+            "menu_title": "Options produit",
+            "new_item": false,
+            "path": MARKETPLACE.STORE.OPTION.ITEM.LIST,
+            "permissions": [Permission.marketplace.store.product.name],
+            "profiles": ['GROUP'],
+            "child_routes": null
+         },
          {
             "menu_title": "Demandes d'achats ",
             "new_item": false,
             "path": MARKETPLACE.STORE.PURCHASE.LIST,
-            "permissions": [Permission.marketplace.store.purchase.name],
+            "permissions": [Permission.marketplace.store.product.name],
             "profiles": ['GROUP'],
             "child_routes": null
          },
@@ -696,7 +680,7 @@ export default [
             "menu_title": "Commandes reçus",
             "new_item": false,
             "path": MARKETPLACE.STORE.ORDER.LIST,
-            "permissions": [Permission.marketplace.store.order.name],
+            "permissions": [Permission.marketplace.store.product.name],
             "profiles": ['GROUP'],
             "child_routes": null
          }, {
@@ -725,7 +709,7 @@ export default [
       "new_item": false,
       "child_routes": null,
       "profiles": null,
-      "permissions": [Permission.marketplace.order.name],
+      "permissions": [Permission.marketplace.shop.name],
    },
    {
       "menu_title": "Services bancaires",
@@ -870,7 +854,13 @@ export default [
       "new_item": false,
       "permissions": [
          Permission.setting.unit.name,
-         Permission.setting.unit.name,
+         Permission.setting.messageModel.name,
+         Permission.setting.immatriculation.name,
+         Permission.setting.userGoal.name,
+         Permission.setting.userFileType.name,
+         Permission.setting.blog.name,
+         Permission.setting.pionier.name,
+         Permission.setting.event.name,
       ],
       "profiles": ['GROUP'],
       "child_routes": [
@@ -886,14 +876,14 @@ export default [
             "menu_title": "Modèles messages",
             "new_item": false,
             "path": SETTING.MESSAGE_TEMPLATE.LIST,
-            "permissions": [Permission.setting.unit.name],
+            "permissions": [Permission.setting.messageModel.name],
             "profiles": ['GROUP'],
             "child_routes": null
          },         {
             "menu_title": "Immatriculations",
             "new_item": false,
             "path": SETTING.IMMATRICULATION.LIST,
-            "permissions": [Permission.setting.unit.name],
+            "permissions": [Permission.setting.immatriculation.name],
             "profiles": ['GROUP'],
             "child_routes": null
          },
@@ -901,7 +891,7 @@ export default [
             "menu_title": "Objectifs",
             "new_item": false,
             "path": MIPRO.ADMINISTRATION.GOAL.SELF,
-            "permissions": [Permission.setting.unit.name],
+            "permissions": [Permission.setting.userGoal.name],
             "profiles": ['GROUP'],
             "child_routes": null
          },
@@ -909,7 +899,7 @@ export default [
             "menu_title": "Dossiers utilisateurs",
             "new_item": false,
             "path": SETTING.USER_FILE.LIST,
-            "permissions": [Permission.setting.unit.name],
+            "permissions": [Permission.setting.userFileType.name],
             "profiles": ['GROUP'],
             "child_routes": null
          },
