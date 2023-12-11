@@ -195,7 +195,7 @@ const Details = (props) => {
                                                 >
                                                     Décaisser
                                                 </Button> */}
-                                                <Button
+                                                {/* <Button
                                                     color="primary"
                                                     variant="contained"
                                                     className="text-white font-weight-bold"
@@ -204,7 +204,7 @@ const Details = (props) => {
                                                     }}
                                                 >
                                                     Synchronisations
-                                                </Button>
+                                                </Button> */}
                                                 { account?.hasPrevision && (
                                                     <Button
                                                         color="primary"

@@ -99,7 +99,10 @@ const Indivision = (props) => {
                                     setDistribution(item);
                                 }}
                                 getOptionLabel={(option) => option.label}
-                                options={[{label: 'Libre', value: 'PUBLIC'}, {label: 'Privée', value: 'PRIVATE'}]}
+                                options={[
+                                    // {label: 'Libre', value: 'PUBLIC'}, 
+                                    {label: 'Privée', value: 'PRIVATE'}
+                                ]}
                                 renderInput={(params) => <TextField {...params} variant="outlined" />}
                             />
                         </FormGroup>

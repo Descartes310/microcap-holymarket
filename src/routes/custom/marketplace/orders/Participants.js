@@ -7,6 +7,7 @@ import { setRequestGlobalAction } from 'Actions';
 import SearchMember from "Components/SearchMember";
 import TimeFromMoment from "Components/TimeFromMoment";
 import DialogComponent from "Components/dialog/DialogComponent";
+import InitDealModal from 'Routes/custom/fundings/components/InitDealModal';
 
 class CodevParticipants extends Component {
 
@@ -15,7 +16,9 @@ class CodevParticipants extends Component {
     }
 
     state = {
+        member: null,
         participants: [],
+        showInitDeal: false,
         showSearchMember: false
     }
 
@@ -48,7 +51,7 @@ class CodevParticipants extends Component {
     render() {
 
         const { onClose, show } = this.props;
-        const { showSearchMember, participants } = this.state;
+        const { showSearchMember, participants, showInitDeal, member } = this.state;
 
         return (
             <DialogComponent
@@ -113,11 +116,22 @@ class CodevParticipants extends Component {
                 <SearchMember
                     show={showSearchMember}
                     submit={(member) => {
-                        this.inviteSubscriber(member);
-                        this.setState({ showSearchMember: false });
+                        //this.inviteSubscriber(member);
+                        this.setState({ showSearchMember: false, member, showInitDeal: true });
                     }}
                     onClose={() => this.setState({ showSearchMember: false })}
                 />
+
+                {member && (
+                    <InitDealModal 
+                        show={showInitDeal}
+                        onClose={() => {
+                            this.setState({ showSearchMember: false, member: null, showInitDeal: false });
+                        }}
+                        dealType='NDJANGUI'
+                        lineReference={this.props.codevLine}
+                    />
+                )}
             </DialogComponent>
         );
     }

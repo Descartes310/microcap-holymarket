@@ -203,6 +203,10 @@ export const getProductDetails = () => {
         {
             label: 'Devise',
             value: 'PRICE_CURRENCY'
+        },
+        {
+            label: 'Quotation',
+            value: 'QUOTIENT'
         }
     ];
     

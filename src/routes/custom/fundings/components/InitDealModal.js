@@ -1,25 +1,26 @@
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import FundingService from 'Services/funding';
-import ProjectService from 'Services/projects';
 import { withRouter } from "react-router-dom";
+import ProjectService from 'Services/projects';
 import CustomList from "Components/CustomList";
 import ProductService from 'Services/products';
 import { setRequestGlobalAction } from 'Actions';
 import { RctCardContent } from 'Components/RctCard';
 import TextField from '@material-ui/core/TextField';
+import { getPriceWithCurrency } from 'Helpers/helpers';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { NotificationManager } from 'react-notifications';
 import { initDealMethods, getTimeUnits } from 'Helpers/datas';
 import DialogComponent from "Components/dialog/DialogComponent";
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { FormGroup, Input as InputStrap, Button } from 'reactstrap';
-import { getPriceWithCurrency, objToString } from 'Helpers/helpers';
 
 class InitDealModal extends Component {
 
     state = {
         deal: null,
+        line: null,
         codevs: [],
         offer: null,
         codev: null,
@@ -54,8 +55,12 @@ class InitDealModal extends Component {
         super(props);
         this.findMyCodevs();
 
-        if(this.props.reference) {
-            this.findOffer();
+        if(this.props.dealType == 'NDJANGUI' && this.props.lineReference) {
+            this.findLine();
+        } else {
+            if(this.props.reference) {
+                this.findOffer();
+            }
         }
 
         if(this.props.deal) {
@@ -122,6 +127,17 @@ class InitDealModal extends Component {
         FundingService.findFundingOffer(this.props.reference)
         .then(response => {
             this.setState({offer: response, initMethod: response?.intervention == 'CPT' ? initDealMethods().find(init => init.value == 'PERIOD') : initDealMethods().find(init => init.value == 'TICKETS')});
+        })
+        .finally(() => this.props.setRequestGlobalAction(false))
+    }
+
+    findLine = () => {
+        this.props.setRequestGlobalAction(true);
+        ProductService.getLineGlobalInfo({line_reference: this.props.lineReference})
+        .then(response => {
+            this.setState({
+                line: response
+            });
         })
         .finally(() => this.props.setRequestGlobalAction(false))
     }
@@ -268,11 +284,13 @@ class InitDealModal extends Component {
 
     render() {
 
-        const { onClose, show, deal } = this.props;
+        const { onClose, show, deal, dealType } = this.props;
         const { initMethod, codevs, codev, tickets, selectedTickets, startDate, endDate,
         periodStartDate, periodEndDate, periodicity, length, fixPart, variablePart,
-        naturePeriodStartDate, naturePeriodEndDate, naturePeriodicity, natureLength,
+        naturePeriodStartDate, naturePeriodEndDate, naturePeriodicity, natureLength, line,
         source, offer, product, unit, compensations, natureCompensations, projects, products } = this.state;
+
+        const natureOfferEnabled = (this.props.dealType == 'NDJANGUI');
 
         return (
             <DialogComponent
@@ -287,7 +305,7 @@ class InitDealModal extends Component {
             >
                 <RctCardContent>
                     <div>
-                        <p>Objet: Offre de cautionnement {offer?.reference}</p>
+                        <p>Objet: { natureOfferEnabled ? `Ndjangui ${line?.reference}` : `Offre de cautionnement ${offer?.reference}`}</p>
                         <p>Souscripteur: {offer?.sender}</p>
                         <p>Beneficiaire: {offer?.receiver}</p>
                         {!deal && (
@@ -401,9 +419,9 @@ class InitDealModal extends Component {
                                 <InputStrap
                                     type="date"
                                     id="periodStartDate"
+                                    className="input-lg"
                                     name='periodStartDate'
                                     value={periodStartDate}
-                                    className="input-lg"
                                     placeholder="Date de début"
                                     onChange={(e) => this.setState({ periodStartDate: e.target.value })}
                                 />
@@ -591,10 +609,11 @@ class InitDealModal extends Component {
                                 </InputLabel>
                                 <InputStrap
                                     type="date"
+                                    className="input-lg"
                                     id="naturePeriodStartDate"
                                     name='naturePeriodStartDate'
                                     value={naturePeriodStartDate}
-                                    className="input-lg"
+                                    disabled={natureOfferEnabled}
                                     onChange={(e) => this.setState({ naturePeriodStartDate: e.target.value })}
                                 />
                             </FormGroup>
@@ -604,10 +623,11 @@ class InitDealModal extends Component {
                                 </InputLabel>
                                 <InputStrap
                                     type="date"
+                                    className="input-lg"
                                     id="naturePeriodEndDate"
                                     name='naturePeriodEndDate'
                                     value={naturePeriodEndDate}
-                                    className="input-lg"
+                                    disabled={natureOfferEnabled}
                                     onChange={(e) => this.setState({ naturePeriodEndDate: e.target.value })}
                                 />
                             </FormGroup>
@@ -621,6 +641,7 @@ class InitDealModal extends Component {
                                     id="combo-box-demo"
                                     value={naturePeriodicity}
                                     options={getTimeUnits()}
+                                    disabled={natureOfferEnabled}
                                     onChange={(__, item) => {
                                         this.setState({ naturePeriodicity: item });
                                     }}
@@ -638,6 +659,7 @@ class InitDealModal extends Component {
                                     name='natureLength'
                                     value={natureLength}
                                     className="input-lg"
+                                    disabled={natureOfferEnabled}
                                     onChange={(e) => this.setState({ natureLength: e.target.value })}
                                 />
                             </FormGroup>
@@ -651,6 +673,7 @@ class InitDealModal extends Component {
                                     id="combo-box-demo"
                                     value={source}
                                     options={projects}
+                                    disabled={natureOfferEnabled}
                                     onChange={(__, item) => {
                                         this.setState({ source: item }, () => {
                                             if(item) {
@@ -674,6 +697,7 @@ class InitDealModal extends Component {
                                     name='offer'
                                     value={offer}
                                     className="input-lg"
+                                    disabled={natureOfferEnabled}
                                     onChange={(e) => this.setState({ offer: e.target.value })}
                                 />
                             </FormGroup>
@@ -687,6 +711,7 @@ class InitDealModal extends Component {
                                     id="combo-box-demo"
                                     value={product}
                                     options={products}
+                                    disabled={natureOfferEnabled}
                                     onChange={(__, item) => {
                                         this.setState({ product: item, unit: item?.currency });
                                     }}
@@ -703,14 +728,15 @@ class InitDealModal extends Component {
                                     name='unit'
                                     type="text"
                                     value={unit}
-                                    className="input-lg"
                                     disabled={true}
+                                    className="input-lg"
                                 />
                             </FormGroup>
                             <FormGroup className="has-wrapper mr-20" style={{ flex: 1 }}>
                                 <Button
                                     color="primary"
                                     variant="contained"
+                                    disabled={natureOfferEnabled}
                                     onClick={() => {
                                         this.addNewNatureCompensations();
                                     }}
@@ -720,7 +746,7 @@ class InitDealModal extends Component {
                                 </Button>
                             </FormGroup>
                         </div>
-                        { natureCompensations.length > 0 && (
+                        { (natureCompensations.length > 0 && !natureOfferEnabled) && (
                             <CustomList
                                 loading={false}
                                 list={natureCompensations}
