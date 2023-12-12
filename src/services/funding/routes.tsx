@@ -9,3 +9,4 @@ export const FIND_PROPOSITION = (reference) => `api/fundings/funding-offers/prop
 
 export const GET_DEALS = 'api/fundings/funding-offers/deals';
 export const FIND_DEAL = (reference) => `api/fundings/funding-offers/deals/${reference}`;
+export const VALIDATE_DEAL = (reference) => `api/fundings/funding-offers/deals/${reference}/validate`;

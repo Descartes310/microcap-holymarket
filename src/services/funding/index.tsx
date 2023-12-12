@@ -38,4 +38,8 @@ export default class FundingService {
     static findDeal(reference): Promise<any> {
         return makeRequest('get', Routes.FIND_DEAL(reference));
     }
+    
+    static validateDeal(reference): Promise<any> {
+        return makeRequest('put', Routes.VALIDATE_DEAL(reference));
+    }
 }

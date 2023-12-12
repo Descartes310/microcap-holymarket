@@ -129,6 +129,7 @@ class CodevParticipants extends Component {
                             this.setState({ showSearchMember: false, member: null, showInitDeal: false });
                         }}
                         dealType='NDJANGUI'
+                        subscriber={member}
                         lineReference={this.props.codevLine}
                     />
                 )}

@@ -48,14 +48,17 @@ class InitDealModal extends Component {
         natureCompensations: [],
 
         projects: [],
-        products: []
+        products: [],
+
+        senderName: '',
+        receiverName: ''
     }
 
     constructor(props) {
         super(props);
         this.findMyCodevs();
 
-        if(this.props.dealType == 'NDJANGUI' && this.props.lineReference) {
+        if((this.props.dealType == 'NDJANGUI' && this.props.lineReference) || this.props.deal?.type == 'NDJANGUI') {
             this.findLine();
         } else {
             if(this.props.reference) {
@@ -126,18 +129,29 @@ class InitDealModal extends Component {
         this.props.setRequestGlobalAction(true);
         FundingService.findFundingOffer(this.props.reference)
         .then(response => {
-            this.setState({offer: response, initMethod: response?.intervention == 'CPT' ? initDealMethods().find(init => init.value == 'PERIOD') : initDealMethods().find(init => init.value == 'TICKETS')});
+            this.setState({
+                offer: response, 
+                initMethod: response?.intervention == 'CPT' ? initDealMethods().find(init => init.value == 'PERIOD') : initDealMethods().find(init => init.value == 'TICKETS'),
+                senderName: response?.sender,
+                receiverName: response?.receiver
+            });
         })
         .finally(() => this.props.setRequestGlobalAction(false))
     }
 
     findLine = () => {
         this.props.setRequestGlobalAction(true);
-        ProductService.getLineGlobalInfo({line_reference: this.props.lineReference})
+        ProductService.getLineGlobalInfo({line_reference: this.props.lineReference ? this.props.lineReference : this.props.deal?.entityReference, withTickets: true})
         .then(response => {
             this.setState({
                 line: response
             });
+            if(!this.props.deal) {
+                this.setState({
+                    senderName: this.props.subscriber?.userName,
+                    receiverName: this.props.authUser?.userName
+                });
+            }
         })
         .finally(() => this.props.setRequestGlobalAction(false))
     }
@@ -149,6 +163,9 @@ class InitDealModal extends Component {
             this.setState({
                 deal: response, 
                 offer: response?.offer,
+                senderName: response?.sender,
+                receiverName: response?.receiver,
+                selectedTickets: response?.tickets,
                 compensations: response?.counterParts?.filter(c => c.fixPart).map(cp => { return {...cp, length: cp.duration }}),
                 natureCompensations: response?.counterParts?.filter(c => !c.fixPart).map(cp => { return {...cp, length: cp.duration }}),
                 initMethod: response?.offer?.intervention == 'CPT' ? initDealMethods().find(init => init.value == 'PERIOD') : initDealMethods().find(init => init.value == 'TICKETS')
@@ -234,11 +251,24 @@ class InitDealModal extends Component {
             return;
         }
 
-        let datas = {
-            offer_reference: this.state.offer.reference
-        };
+        let datas = {};
 
-        if(!this.props.deal) {
+        if(this.state.offer) {
+            datas.offer_reference = this.state.offer.reference;
+        } else {
+            if(this.state.line) {
+                datas.line_reference = this.state.line.reference;
+                if(this.props.subscriber) {
+                    datas.subscriber_reference = this.props.subscriber?.referralCode;
+                }
+                datas.init_method = 'TICKETS';
+            } else {
+                NotificationManager.error("Remplissez toutes les informations 1.5");
+                return;
+            }
+        }
+
+        if(!this.props.deal && this.props.dealType !== 'NDJANGUI') {
             if(selectedTickets.length <= 0 && (!startDate && !endDate)) {
                 NotificationManager.error("Remplissez toutes les informations 2");
                 return;
@@ -250,6 +280,11 @@ class InitDealModal extends Component {
                 datas.end_date = endDate;
                 datas.start_date = startDate;
             }
+        }
+
+        if(this.state.line && selectedTickets.length > 0) {
+            datas.tickets = selectedTickets.map(t => t.reference);
+            datas.init_method = 'TICKETS';
         }
 
         if(this.props.notification) {
@@ -267,6 +302,8 @@ class InitDealModal extends Component {
         if(natureCompensations.length > 0) {
             datas.nature_compensations = JSON.stringify(natureCompensations.map(c => { return {...c, source: c.source.reference, product: c.product.reference } }));
         }
+
+        console.log(datas);
 
         this.props.setRequestGlobalAction(true);
         FundingService.createProposition(datas)
@@ -286,11 +323,11 @@ class InitDealModal extends Component {
 
         const { onClose, show, deal, dealType } = this.props;
         const { initMethod, codevs, codev, tickets, selectedTickets, startDate, endDate,
-        periodStartDate, periodEndDate, periodicity, length, fixPart, variablePart,
-        naturePeriodStartDate, naturePeriodEndDate, naturePeriodicity, natureLength, line,
+        periodStartDate, periodEndDate, periodicity, length, fixPart, variablePart, senderName,
+        naturePeriodStartDate, naturePeriodEndDate, naturePeriodicity, natureLength, line, receiverName,
         source, offer, product, unit, compensations, natureCompensations, projects, products } = this.state;
 
-        const natureOfferEnabled = (this.props.dealType == 'NDJANGUI');
+        const natureOfferEnabled = (this.props.dealType == 'NDJANGUI' || deal?.type == 'NDJANGUI');
 
         return (
             <DialogComponent
@@ -306,11 +343,11 @@ class InitDealModal extends Component {
                 <RctCardContent>
                     <div>
                         <p>Objet: { natureOfferEnabled ? `Ndjangui ${line?.reference}` : `Offre de cautionnement ${offer?.reference}`}</p>
-                        <p>Souscripteur: {offer?.sender}</p>
-                        <p>Beneficiaire: {offer?.receiver}</p>
-                        {!deal && (
+                        <p>Souscripteur: {senderName}</p>
+                        <p>Beneficiaire: {receiverName}</p>
+                        {!deal && dealType !== 'NDJANGUI' && (
                             <>
-                                {/* <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                                <div className="col-md-12 col-sm-12 has-wrapper mb-30">
                                     <InputLabel className="text-left">
                                         Methode de reglement
                                     </InputLabel>
@@ -324,7 +361,7 @@ class InitDealModal extends Component {
                                         getOptionLabel={(option) => option.label}
                                         renderInput={(params) => <TextField {...params} variant="outlined" />}
                                     />
-                                </div> */}
+                                </div>
                                 { initMethod?.value == 'TICKETS' && (
                                     <div>
                                         <div className="col-md-12 col-sm-12 mb-30 d-flex">
@@ -376,6 +413,7 @@ class InitDealModal extends Component {
                                         </FormGroup>
                                     </div>
                                 )}
+                                
                                 { initMethod?.value == 'PERIOD' && (
                                     <div className='d-flex direction-column align-items-stretch' style={{ flex: 1 }}>
                                         <FormGroup className="has-wrapper mr-20" style={{ flex: 1 }}>
@@ -409,6 +447,37 @@ class InitDealModal extends Component {
                                     </div>
                                 )}
                             </>
+                        )}
+                        { line?.tickets.length > 0 && deal && (
+                            <div>
+                                <div className="col-md-12 col-sm-12 has-wrapper">
+                                    <InputLabel className="text-left">
+                                        Tickets
+                                    </InputLabel>
+                                    <Autocomplete
+                                        multiple
+                                        options={line?.tickets}
+                                        id="combo-box-demo"
+                                        value={selectedTickets}
+                                        onChange={(__, items) => {
+                                            this.setState({ selectedTickets: items });
+                                        }}
+                                        getOptionLabel={(option) => `Code: ${option.code}, Montant: ${getPriceWithCurrency(option.amount, option.currency)}, Date d'échéance: ${option.date}`}
+                                        renderInput={(params) => <TextField {...params} variant="outlined" />}
+                                    />
+                                </div>
+                                <FormGroup className="col-md-12 col-sm-12 has-wrapper mr-20 mt-20">
+                                    <InputLabel className="text-left">
+                                        Montant
+                                    </InputLabel>
+                                    <InputStrap
+                                        type="text"
+                                        disabled={true}
+                                        className="input-lg"
+                                        value={getPriceWithCurrency(selectedTickets.reduce((amount, ticket) => amount + Number(ticket.amount), 0), selectedTickets[0]?.currency)}
+                                    />
+                                </FormGroup>
+                            </div>
                         )}
                         <h2 className='mb-20'>Contrepartie en numeraire</h2>
                         <div className='d-flex direction-column align-items-stretch' style={{ flex: 1 }}>

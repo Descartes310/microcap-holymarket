@@ -7,6 +7,7 @@ import CustomList from "Components/CustomList";
 import { setRequestGlobalAction } from 'Actions';
 import { RctCardContent } from 'Components/RctCard';
 import TextField from '@material-ui/core/TextField';
+import ConfirmBox from "Components/dialog/ConfirmBox"
 import { getPriceWithCurrency } from 'Helpers/helpers';
 import TimeFromMoment from 'Components/TimeFromMoment';
 import Autocomplete from '@material-ui/lab/Autocomplete';
@@ -21,6 +22,7 @@ class DealDetailsModal extends Component {
     state = {
         deal: null,
         compensations: [],
+        showConfirmBox: false,
         interventionType: null,
         natureCompensations: [],
     }
@@ -44,10 +46,23 @@ class DealDetailsModal extends Component {
         .finally(() => this.props.setRequestGlobalAction(false))
     }
 
+    validateDeal = () => {
+        this.props.setRequestGlobalAction(true);
+        FundingService.validateDeal(this.props.reference)
+        .then(response => {
+            this.props.onClose()
+        })
+        .catch((err) => {
+            NotificationManager.error('Une erreur est survenue');
+            this.setState({ showConfirmBox: false });
+        })
+        .finally(() => this.props.setRequestGlobalAction(false))
+    }
+
     render() {
 
         const { onClose, show } = this.props;
-        const { deal, compensations, natureCompensations, interventionType } = this.state;
+        const { deal, compensations, natureCompensations, interventionType, showConfirmBox } = this.state;
 
         return (
             <DialogComponent
@@ -66,7 +81,7 @@ class DealDetailsModal extends Component {
 
                         <h2 className='mb-20'>Contexte</h2>
 
-                        <p>Objet: Offre de cautionnement {deal?.offer?.reference}</p>
+                        <p>Objet: {deal?.type == 'NDJANGUI' ? `Ndjangui ` : `Offre de cautionnement `} {deal?.offer?.reference}</p>
                         <p>Souscripteur: {deal?.sender}</p>
                         <p>Beneficiaire: {deal?.receiver}</p>
                         <p>Mode d'intervention: {interventionType?.label}</p>
@@ -89,7 +104,9 @@ class DealDetailsModal extends Component {
 
                         <p>Domiciliation: {deal?.account}</p>
 
-                        <h2 className='mb-20'>Versements</h2>
+                        { deal?.tickets.length > 0 && (
+                            <h2 className='mb-20'>Versements</h2>
+                        )}
 
                         { deal?.tickets.length > 0 && (
                             <CustomList
@@ -340,8 +357,9 @@ class DealDetailsModal extends Component {
                                 color="primary"
                                 variant="contained"
                                 onClick={() => {
-                                    //this.onSubmit();
+                                    this.setState({ showConfirmBox: true });
                                 }}
+                                disabled={deal?.status != 'PENDING'}
                                 className="text-white font-weight-bold"
                             >
                                 Accepter
@@ -352,6 +370,7 @@ class DealDetailsModal extends Component {
                                 onClick={() => {
                                     this.props.negociate();
                                 }}
+                                disabled={deal?.status != 'PENDING'}
                                 className="text-white font-weight-bold ml-20"
                             >
                                 Négocier
@@ -359,6 +378,14 @@ class DealDetailsModal extends Component {
                         </FormGroup>
                     </div>
                 </RctCardContent>
+                <ConfirmBox
+                    show={showConfirmBox}
+                    rightButtonOnClick={() => this.validateDeal()}
+                    leftButtonOnClick={() => {
+                        this.setState({ showConfirmBox: false });
+                    }}
+                    message={'Etes vous sure de vouloir approuver ce deal ?'}
+                />
             </DialogComponent>
         );
     }
