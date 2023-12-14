@@ -32,6 +32,10 @@ export default class ProductService {
         return makeRequest('post', Routes.CREATE_PRODUCT, data, config);
     }
 
+    static updateProduct(reference: string, data: any, config: any): Promise<any> {
+        return makeRequest('post', Routes.UPDATE_PRODUCT(reference), data, config);
+    }
+
     static createCodevProduct(data: any): Promise<any> {
         return makeRequest('post', Routes.CREATE_CODEV_PRODUCT_MODEL, data);
     }

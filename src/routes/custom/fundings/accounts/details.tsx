@@ -1,6 +1,7 @@
 import '../resources/index.css';
 import { connect } from 'react-redux';
 import CreateTicket from './createTicket';
+import AccountDeals from './accountDeals';
 import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
 import AccountService from 'Services/accounts';
@@ -10,32 +11,43 @@ import { setRequestGlobalAction } from 'Actions';
 import CodevChildTicket from './codevChildTickets';
 import DebitAccount from 'Components/DebitAccount';
 import React, { useState, useEffect } from 'react';
+import { ACCOUNT_PERIOD_LIMIT } from 'Helpers/datas';
 import CreditAccount from 'Components/CreditAccount';
-import { getPriceWithCurrency } from 'Helpers/helpers';
 import { Card, CardBody, CardTitle } from 'reactstrap';
 import TimeFromMoment from 'Components/TimeFromMoment';
 import { FUNDING, joinUrlWithParamsId } from 'Url/frontendUrl';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
+import { getPriceWithCurrency, convertDate } from 'Helpers/helpers';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
 
 const Details = (props) => {
 
+    const today = new Date();
+    const previousDate = new Date();
     const [account, setAccount] = useState(null);
-    const [endDate, setEndDate] = useState(null);
-    const [startDate, setStartDate] = useState(null);
     const [mouvements, setMouvements] = useState([]);
     const [provisions, setProvisions] = useState([]);
+    const [showDealBox, setShowDealBox] = useState(false);
     const [showTicketBox, setShowTicketBox] = useState(false);
     const [selectedTicket, setSelectedTicket] = useState(null);
+    previousDate.setDate(previousDate.getDate() - ACCOUNT_PERIOD_LIMIT);
     const [showChildTicketBox, setShowChildTicketBox] = useState(false);
     const [showDebitAccountBox, setShowDebitAccountBox] = useState(false);
     const [showCreditAccountBox, setShowCreditAccountBox] = useState(false);
+    const [endDate, setEndDate] = useState(convertDate(today, 'YYYY-MM-DD'));
     const [showCreateChildTicketBox, setShowCreateChildTicketBox] = useState(false);
+    const [startDate, setStartDate] = useState(convertDate(previousDate, 'YYYY-MM-DD'));
 
     useEffect(() => {
         findAccount();
-    }, []);    
+    }, []); 
+    
+    useEffect(() => {
+        if(account) {
+            getMouvements();
+        }
+    }, [account, startDate, endDate]); 
     
     useEffect(() => {
         if(account) {
@@ -58,7 +70,7 @@ const Details = (props) => {
 
     const getMouvements = () => {
         props.setRequestGlobalAction(true);
-        AccountService.getAccountMouvements(account.id, {types: ['POSITION', 'SYNCRONISATION']}).then(response => {
+        AccountService.getAccountMouvements(account.id, {types: ['POSITION', 'SYNCRONISATION'], startDate, endDate}).then(response => {
             setMouvements(response);
         }).catch((err) => {
             console.log(err);
@@ -209,6 +221,16 @@ const Details = (props) => {
                                                     <Button
                                                         color="primary"
                                                         variant="contained"
+                                                        onClick={() => setShowDealBox(true)}
+                                                        className="text-white font-weight-bold ml-10"
+                                                    >
+                                                        Deals
+                                                    </Button>
+                                                )}
+                                                { account?.hasPrevision && (
+                                                    <Button
+                                                        color="primary"
+                                                        variant="contained"
                                                         onClick={() => setShowTicketBox(true)}
                                                         className="text-white font-weight-bold ml-10"
                                                     >
@@ -237,7 +259,7 @@ const Details = (props) => {
                                     <div className='row align-items-end' style={{ marginTop: '2em' }}>
                                         <div className="col-md-4 col-sm-12 has-wrapper">
                                             <InputLabel className="text-left" htmlFor="startDate">
-                                                Date de début
+                                                Du
                                             </InputLabel>
                                             <InputStrap
                                                 required
@@ -246,12 +268,15 @@ const Details = (props) => {
                                                 name='startDate'
                                                 className="input-lg"
                                                 value={startDate}
-                                                onChange={(e) => setStartDate(e.target.value)}
+                                                onChange={(e) => {
+                                                    console.log(e.target.value);
+                                                    setStartDate(e.target.value)
+                                                }}
                                             />
                                         </div>
                                         <div className="col-md-4 col-sm-12 has-wrapper">
                                             <InputLabel className="text-left" htmlFor="endDate">
-                                                Date de fin
+                                                Au
                                             </InputLabel>
                                             <InputStrap
                                                 required
@@ -417,6 +442,14 @@ const Details = (props) => {
                             setSelectedTicket(ticket);
                             setShowChildTicketBox(true);
                         }}
+                    />
+                )}
+                { showDealBox && account && (
+                    <AccountDeals
+                        title='Deals'
+                        show={showDealBox}
+                        reference={account?.reference}
+                        onClose={() => setShowDealBox(false)}
                     />
                 )}
                 { showChildTicketBox && selectedTicket && (

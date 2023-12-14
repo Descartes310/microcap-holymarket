@@ -40,6 +40,10 @@ const List = (props) => {
         props.history.push(joinUrlWithParams(MARKETPLACE.STORE.PRODUCT.CONFIGURE, [{param: 'reference', value: item.reference}]));
     }
 
+    const updateProduct = (item) => {
+        props.history.push(joinUrlWithParams(MARKETPLACE.STORE.PRODUCT.UPDATE, [{param: 'reference', value: item.reference}]));
+    }
+
     return (
         <>
             <PageTitleBar
@@ -71,6 +75,7 @@ const List = (props) => {
                                             <th className="fw-bold">Détails</th>
                                             <th className="fw-bold">Configuration</th>
                                             <th className="fw-bold">Cotation</th>
+                                            <th className="fw-bold">Edition</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -137,6 +142,18 @@ const List = (props) => {
                                                         className="text-white font-weight-bold mr-3"
                                                     >
                                                         Cotations
+                                                    </Button>
+                                                </td>
+                                                <td>
+                                                    <Button
+                                                        color="primary"
+                                                        variant="contained"
+                                                        onClick={() => {
+                                                            updateProduct(item);
+                                                        }}
+                                                        className="text-white font-weight-bold mr-3"
+                                                    >
+                                                        Edition
                                                     </Button>
                                                 </td>
                                             </tr>

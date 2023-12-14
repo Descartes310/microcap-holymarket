@@ -149,7 +149,7 @@ export function getTheDate(timestamp, format) {
     return moment(time).format(formatDate);
 }
 
-export function convertDate(date, format) {
+export function convertDate(date, format = null) {
     let formatDate = format ? format : 'MM-DD-YYYY';
     return moment(date).format(formatDate);
 }

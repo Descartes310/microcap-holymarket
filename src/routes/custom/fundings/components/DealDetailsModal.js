@@ -40,7 +40,7 @@ class DealDetailsModal extends Component {
                 deal: response,
                 compensations: response?.counterParts?.filter(c => c.fixPart),
                 natureCompensations: response?.counterParts?.filter(c => !c.fixPart),
-                interventionType: getFundingOfferInterventionTypes().find(i => i.value == response?.offer?.intervention)
+                interventionType: getFundingOfferInterventionTypes().find(i => i.value == response?.intervention)
             });
         })
         .finally(() => this.props.setRequestGlobalAction(false))
@@ -104,11 +104,11 @@ class DealDetailsModal extends Component {
 
                         <p>Domiciliation: {deal?.account}</p>
 
-                        { deal?.tickets.length > 0 && (
+                        { deal?.tickets?.length > 0 && (
                             <h2 className='mb-20'>Versements</h2>
                         )}
 
-                        { deal?.tickets.length > 0 && (
+                        { deal?.tickets?.length > 0 && (
                             <CustomList
                                 loading={false}
                                 list={deal?.tickets}

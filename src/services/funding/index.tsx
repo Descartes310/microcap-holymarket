@@ -42,4 +42,8 @@ export default class FundingService {
     static validateDeal(reference): Promise<any> {
         return makeRequest('put', Routes.VALIDATE_DEAL(reference));
     }
+
+    static getDealsByAccount(data: any): Promise<any> {
+        return makeRequest('get', Routes.GET_DEALS_BY_ACCOUNT, data);
+    }
 }

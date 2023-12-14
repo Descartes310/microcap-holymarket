@@ -460,6 +460,7 @@ export const MARKETPLACE = {
             SELF: "/marketplace/store/products",
             LIST: "/marketplace/store/products/list",
             CREATE: "/marketplace/store/products/create",
+            UPDATE: "/marketplace/store/products/:reference/update",
             CONFIGURE: "/marketplace/store/products/:reference/configure",
         },
         ORDER: {

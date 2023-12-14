@@ -1,6 +1,7 @@
 import React from 'react';
 import List from './list';
 import Create from './create';
+import Update from './update';
 import Configure from './configure';
 import {connect} from "react-redux";
 import {injectIntl} from "react-intl";
@@ -16,6 +17,7 @@ const Product = (props) => {
                     <Redirect exact from={`${match.url}/`} to={MARKETPLACE.STORE.PRODUCT.LIST} />
                     <Route path={MARKETPLACE.STORE.PRODUCT.LIST} component={List} />
                     <Route path={MARKETPLACE.STORE.PRODUCT.CREATE} component={Create} />
+                    <Route path={MARKETPLACE.STORE.PRODUCT.UPDATE} component={Update} />
                     <Route path={MARKETPLACE.STORE.PRODUCT.CONFIGURE} component={Configure} />
                 </Switch>
             </>

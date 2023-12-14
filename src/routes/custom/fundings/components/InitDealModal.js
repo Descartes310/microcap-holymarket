@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
+import AccountService from 'Services/accounts';
 import FundingService from 'Services/funding';
 import { withRouter } from "react-router-dom";
 import ProjectService from 'Services/projects';
@@ -11,10 +12,10 @@ import TextField from '@material-ui/core/TextField';
 import { getPriceWithCurrency } from 'Helpers/helpers';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { NotificationManager } from 'react-notifications';
-import { initDealMethods, getTimeUnits } from 'Helpers/datas';
 import DialogComponent from "Components/dialog/DialogComponent";
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { FormGroup, Input as InputStrap, Button } from 'reactstrap';
+import { initDealMethods, getTimeUnits, getFundingOfferInterventionTypes } from 'Helpers/datas';
 
 class InitDealModal extends Component {
 
@@ -25,6 +26,8 @@ class InitDealModal extends Component {
         offer: null,
         codev: null,
         tickets: [],
+        accounts: [],
+        account: null,
         endDate: null,
         startDate: null,
         initMethod: null,
@@ -36,7 +39,7 @@ class InitDealModal extends Component {
         fixPart: null,
         variablePart: null,
         compensations: [],
-
+        interventionType: null,
         naturePeriodStartDate: null,
         naturePeriodEndDate: null,
         naturePeriodicity: null,
@@ -77,6 +80,15 @@ class InitDealModal extends Component {
         this.props.setRequestGlobalAction(true);
         ProjectService.getProjects().then(response => {
             this.setState({ projects: response });
+        })
+        .finally(() => this.props.setRequestGlobalAction(false))
+    }
+
+    getAccounts = () => {
+        this.props.setRequestGlobalAction(true),
+        AccountService.getAccountBySpeciality({special_product: this.state.interventionType?.value})
+        .then(response => {
+            this.setState({ accounts: response, account: null });
         })
         .finally(() => this.props.setRequestGlobalAction(false))
     }
@@ -168,7 +180,7 @@ class InitDealModal extends Component {
                 selectedTickets: response?.tickets,
                 compensations: response?.counterParts?.filter(c => c.fixPart).map(cp => { return {...cp, length: cp.duration }}),
                 natureCompensations: response?.counterParts?.filter(c => !c.fixPart).map(cp => { return {...cp, length: cp.duration }}),
-                initMethod: response?.offer?.intervention == 'CPT' ? initDealMethods().find(init => init.value == 'PERIOD') : initDealMethods().find(init => init.value == 'TICKETS')
+                initMethod: response?.intervention == 'CPT' ? initDealMethods().find(init => init.value == 'PERIOD') : initDealMethods().find(init => init.value == 'TICKETS')
             });
         })
         .finally(() => this.props.setRequestGlobalAction(false))
@@ -244,7 +256,7 @@ class InitDealModal extends Component {
 
     onSubmit = () => {
 
-        const {initMethod, compensations, natureCompensations, selectedTickets, startDate, endDate} = this.state;
+        const {initMethod, compensations, natureCompensations, selectedTickets, startDate, endDate, interventionType, account} = this.state;
 
         if(compensations.length <= 0 && natureCompensations.length <= 0) {
             NotificationManager.error("Remplissez toutes les informations 1");
@@ -303,7 +315,13 @@ class InitDealModal extends Component {
             datas.nature_compensations = JSON.stringify(natureCompensations.map(c => { return {...c, source: c.source.reference, product: c.product.reference } }));
         }
 
-        console.log(datas);
+        if(interventionType) {
+            datas.interventionType = interventionType?.value
+        }
+
+        if(account?.id) {
+            datas.account_reference = account?.reference;
+        }
 
         this.props.setRequestGlobalAction(true);
         FundingService.createProposition(datas)
@@ -323,9 +341,9 @@ class InitDealModal extends Component {
 
         const { onClose, show, deal, dealType } = this.props;
         const { initMethod, codevs, codev, tickets, selectedTickets, startDate, endDate,
-        periodStartDate, periodEndDate, periodicity, length, fixPart, variablePart, senderName,
-        naturePeriodStartDate, naturePeriodEndDate, naturePeriodicity, natureLength, line, receiverName,
-        source, offer, product, unit, compensations, natureCompensations, projects, products } = this.state;
+        periodStartDate, periodEndDate, periodicity, length, fixPart, variablePart, senderName, account,
+        naturePeriodStartDate, naturePeriodEndDate, naturePeriodicity, natureLength, line, receiverName, accounts,
+        source, offer, product, unit, compensations, natureCompensations, projects, products, interventionType } = this.state;
 
         const natureOfferEnabled = (this.props.dealType == 'NDJANGUI' || deal?.type == 'NDJANGUI');
 
@@ -345,6 +363,47 @@ class InitDealModal extends Component {
                         <p>Objet: { natureOfferEnabled ? `Ndjangui ${line?.reference}` : `Offre de cautionnement ${offer?.reference}`}</p>
                         <p>Souscripteur: {senderName}</p>
                         <p>Beneficiaire: {receiverName}</p>
+
+                        { !deal && (
+                            <>
+                                <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                                    <InputLabel className="text-left">
+                                        Mode d'intervention
+                                    </InputLabel>
+                                    <Autocomplete
+                                        value={interventionType}
+                                        id="combo-box-demo"
+                                        onChange={(__, item) => {
+                                            if(item) {
+                                                this.setState({ interventionType: item }, () => {
+                                                    this.getAccounts();
+                                                });
+                                            } else {
+                                                this.setState({ account: null, accounts: [] });
+                                            }
+                                        }}
+                                        getOptionLabel={(option) => option.label}
+                                        options={getFundingOfferInterventionTypes()}
+                                        renderInput={(params) => <TextField {...params} variant="outlined" />}
+                                    />
+                                </div>
+                                <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                                    <InputLabel className="text-left">
+                                        Compte payeur
+                                    </InputLabel>
+                                    <Autocomplete
+                                        value={account}
+                                        id="combo-box-demo"
+                                        onChange={(__, item) => {
+                                            this.setState({ account: item });
+                                        }}
+                                        options={[...accounts, {label: 'Non disponible', id: null}]}
+                                        getOptionLabel={(option) => option.label}
+                                        renderInput={(params) => <TextField {...params} variant="outlined" />}
+                                    />
+                                </div>
+                            </>
+                        )}
                         {!deal && dealType !== 'NDJANGUI' && (
                             <>
                                 <div className="col-md-12 col-sm-12 has-wrapper mb-30">

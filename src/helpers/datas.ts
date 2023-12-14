@@ -1,5 +1,7 @@
 import { resourceLimits } from "worker_threads";
 
+export const ACCOUNT_PERIOD_LIMIT = 60;
+
 export const getChainEventTypes = () => {
     return [
         {
