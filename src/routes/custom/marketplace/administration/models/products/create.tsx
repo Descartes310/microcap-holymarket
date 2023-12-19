@@ -26,7 +26,7 @@ const Create = (props) => {
     const [file, setFile] = useState(null);
     const [units, setUnits] = useState([]);
     const [label, setLabel] = useState('');
-    const [lines, setLines] = useState(null);
+    // const [lines, setLines] = useState(null);
     const [price, setPrice] = useState(null);
     const [range, setRange] = useState(null);
     const [nature, setNature] = useState(null);
@@ -141,7 +141,7 @@ const Create = (props) => {
             return;
         }
 
-        if(lines) data.lines = lines;
+        // if(lines) data.lines = lines;
 
         if (isAccount || ['TRANSACTION_BOOK'].includes(specialType?.value)) {
             
@@ -281,7 +281,7 @@ const Create = (props) => {
                         </div>
                     )}
                     <div className="row">
-                        <FormGroup className={`${['CODEV_DEAL_PLAN'].includes(specialType?.value) ? 'col-md-6' : 'col-md-12'} col-sm-12 has-wrapper`}>
+                        <FormGroup className='col-md-12 col-sm-12 has-wrapper'>
                             <InputLabel className="text-left" htmlFor="description">
                                 Description produit
                             </InputLabel>
@@ -295,7 +295,7 @@ const Create = (props) => {
                                 onChange={(e) => setDescription(e.target.value)}
                             />
                         </FormGroup>
-                        {
+                        {/* {
                             specialType?.value == 'CODEV_DEAL_PLAN' && (
                                 <FormGroup className={`col-md-6 col-sm-12 has-wrapper`}>
                                     <InputLabel className="text-left" htmlFor="lines">
@@ -312,7 +312,7 @@ const Create = (props) => {
                                     />
                                 </FormGroup>
                             )
-                        }
+                        } */}
                         {
                             specialType?.value == 'TRANSACTION_BOOK' && (
                                 <>
