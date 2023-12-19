@@ -189,56 +189,54 @@ const Details = (props) => {
                                             <h3>Solde</h3>
                                             <h1 className='fw-bold mt-10' style={{ fontSize: '2.5rem' }}>{getPriceWithCurrency(account?.balance, account?.currencyCode)}</h1>
                                         </div> */}
-                                        { account?.accountType?.type === 'PRIMARY' && (
-                                            <div>
-                                                {/* <Button
-                                                    color="primary"
-                                                    variant="contained"
-                                                    className="text-white font-weight-bold"
-                                                    onClick={() => setShowCreditAccountBox(true)}
-                                                >
-                                                    Encaisser
-                                                </Button>
+                                        <div>
+                                            {/* <Button
+                                                color="primary"
+                                                variant="contained"
+                                                className="text-white font-weight-bold"
+                                                onClick={() => setShowCreditAccountBox(true)}
+                                            >
+                                                Encaisser
+                                            </Button>
+                                            <Button
+                                                color="primary"
+                                                variant="contained"
+                                                className="text-white font-weight-bold ml-10"
+                                                onClick={() => setShowDebitAccountBox(true)}
+                                            >
+                                                Décaisser
+                                            </Button> */}
+                                            {/* <Button
+                                                color="primary"
+                                                variant="contained"
+                                                className="text-white font-weight-bold"
+                                                onClick={() => {
+                                                    props.history.push(joinUrlWithParamsId(FUNDING.ACCOUNT.SYNCHRONISATIONS, account?.id))
+                                                }}
+                                            >
+                                                Synchronisations
+                                            </Button> */}
+                                            { account?.hasPrevision &&  (
                                                 <Button
                                                     color="primary"
                                                     variant="contained"
+                                                    onClick={() => setShowDealBox(true)}
                                                     className="text-white font-weight-bold ml-10"
-                                                    onClick={() => setShowDebitAccountBox(true)}
                                                 >
-                                                    Décaisser
-                                                </Button> */}
-                                                {/* <Button
+                                                    Deals
+                                                </Button>
+                                            )}
+                                            { account?.hasPrevision && (
+                                                <Button
                                                     color="primary"
                                                     variant="contained"
-                                                    className="text-white font-weight-bold"
-                                                    onClick={() => {
-                                                        props.history.push(joinUrlWithParamsId(FUNDING.ACCOUNT.SYNCHRONISATIONS, account?.id))
-                                                    }}
+                                                    onClick={() => setShowTicketBox(true)}
+                                                    className="text-white font-weight-bold ml-10"
                                                 >
-                                                    Synchronisations
-                                                </Button> */}
-                                                { account?.hasPrevision && (
-                                                    <Button
-                                                        color="primary"
-                                                        variant="contained"
-                                                        onClick={() => setShowDealBox(true)}
-                                                        className="text-white font-weight-bold ml-10"
-                                                    >
-                                                        Deals
-                                                    </Button>
-                                                )}
-                                                { account?.hasPrevision && (
-                                                    <Button
-                                                        color="primary"
-                                                        variant="contained"
-                                                        onClick={() => setShowTicketBox(true)}
-                                                        className="text-white font-weight-bold ml-10"
-                                                    >
-                                                        Echéancier
-                                                    </Button>
-                                                )}
-                                            </div>
-                                        )}
+                                                    Echéancier
+                                                </Button>
+                                            )}
+                                        </div>
                                         { account?.consolidation && (
                                             <div>
                                                 <Button

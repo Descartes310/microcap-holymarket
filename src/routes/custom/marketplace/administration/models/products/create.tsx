@@ -162,6 +162,7 @@ const Create = (props) => {
                 data.userAccountTypeReference = userAccountType.reference
             }
             if(specialType?.value == 'TRANSACTION_BOOK') {
+                data.isAggregation = true;
                 data.numberOfJournals = transactionalPageCount;
                 data.aggregationIds = aggregationProducts.map(ap => ap.id);
             }
