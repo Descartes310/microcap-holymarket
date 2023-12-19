@@ -4,6 +4,7 @@ import { getTimeUnits } from 'Helpers/datas';
 import FundingService from 'Services/funding';
 import { withRouter } from "react-router-dom";
 import CustomList from "Components/CustomList";
+import AccountService from 'Services/accounts';
 import { setRequestGlobalAction } from 'Actions';
 import { RctCardContent } from 'Components/RctCard';
 import TextField from '@material-ui/core/TextField';
@@ -14,14 +15,16 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import { NotificationManager } from 'react-notifications';
 import DialogComponent from "Components/dialog/DialogComponent";
 import { getFundingOfferInterventionTypes } from 'Helpers/datas';
-import InputLabel from '@material-ui/core/InputLabel/InputLabel';
-import { FormGroup, Input as InputStrap, Button } from 'reactstrap';
+import { FormGroup, Button, InputGroup, InputGroupAddon } from 'reactstrap';
 
 class DealDetailsModal extends Component {
 
     state = {
         deal: null,
+        accounts: [],
+        account: null,
         compensations: [],
+        editAccount: false,
         showConfirmBox: false,
         interventionType: null,
         natureCompensations: [],
@@ -30,6 +33,15 @@ class DealDetailsModal extends Component {
     constructor(props) {
         super(props);
         this.findDeal();
+    }
+
+    getAccounts = () => {
+        this.props.setRequestGlobalAction(true),
+        AccountService.getAccountBySpeciality({special_product: this.state.interventionType?.value})
+        .then(response => {
+            this.setState({ accounts: response, account: null });
+        })
+        .finally(() => this.props.setRequestGlobalAction(false))
     }
 
     findDeal = () => {
@@ -41,6 +53,8 @@ class DealDetailsModal extends Component {
                 compensations: response?.counterParts?.filter(c => c.fixPart),
                 natureCompensations: response?.counterParts?.filter(c => !c.fixPart),
                 interventionType: getFundingOfferInterventionTypes().find(i => i.value == response?.intervention)
+            }, () => {
+                this.getAccounts();
             });
         })
         .finally(() => this.props.setRequestGlobalAction(false))
@@ -59,10 +73,30 @@ class DealDetailsModal extends Component {
         .finally(() => this.props.setRequestGlobalAction(false))
     }
 
+    changeAccount = () => {
+        if(!this.state.account) {
+            return
+        }
+
+        this.props.setRequestGlobalAction(true);
+        FundingService.changeAccountDeal(this.props.reference, {account_reference: this.state.account?.reference})
+        .then((response) => {
+            NotificationManager.success('Domiciliation mise a jour');
+            this.findDeal();
+        })
+        .catch((err) => {
+            NotificationManager.error('Une erreur est survenue');
+        })
+        .finally(() => {
+            this.setState({ editAccount: false });
+            this.props.setRequestGlobalAction(false);
+        })
+    }
+
     render() {
 
-        const { onClose, show } = this.props;
-        const { deal, compensations, natureCompensations, interventionType, showConfirmBox } = this.state;
+        const { onClose, show, isSender } = this.props;
+        const { deal, compensations, natureCompensations, interventionType, showConfirmBox, editAccount, account, accounts } = this.state;
 
         return (
             <DialogComponent
@@ -86,23 +120,40 @@ class DealDetailsModal extends Component {
                         <p>Beneficiaire: {deal?.receiver}</p>
                         <p>Mode d'intervention: {interventionType?.label}</p>
 
-                        {/* <div className="col-md-12 col-sm-12 has-wrapper mb-30 mt-10">
-                            <InputLabel className="text-left">
-                                Mode d'intervention
-                            </InputLabel>
-                            <Autocomplete
-                                id="combo-box-demo"
-                                value={interventionType}
-                                onChange={(__, item) => {
-                                    this.setState({ interventionType: item })
-                                }}
-                                getOptionLabel={(option) => option.label}
-                                options={getFundingOfferInterventionTypes()}
-                                renderInput={(params) => <TextField {...params} variant="outlined" />}
-                            />
-                        </div> */}
+                        <p>Domiciliation: {deal?.account} &nbsp;
+                            { isSender && (
+                                <span 
+                                    onClick={() => { this.setState({ editAccount: !editAccount }) }}
+                                    style={{ fontStyle: 'italic', color: 'blue', cursor: 'pointer' }}
+                                >
+                                    Modifier
+                                </span>
+                            )}
+                        </p>
 
-                        <p>Domiciliation: {deal?.account}</p>
+                        { editAccount && (
+                            <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                                <InputGroup className='w-100'>
+                                    <Autocomplete
+                                        value={account}
+                                        options={accounts}
+                                        id="combo-box-demo"
+                                        onChange={(__, item) => {
+                                            this.setState({ account: item });
+                                        }}
+                                        getOptionLabel={(option) => option.label}
+                                        renderInput={(params) => <TextField {...params} variant="outlined" />}
+                                    />
+                                    <InputGroupAddon addonType="append">
+                                        <Button color="primary" variant="contained" onClick={() => {
+                                            this.changeAccount();
+                                        }} >
+                                            <span className='text-white'>Enregistrer</span>
+                                        </Button>
+                                    </InputGroupAddon>
+                                </InputGroup>
+                            </div>
+                        )}
 
                         { deal?.tickets?.length > 0 && (
                             <h2 className='mb-20'>Versements</h2>

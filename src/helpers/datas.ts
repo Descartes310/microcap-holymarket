@@ -294,11 +294,11 @@ export const getFundingOfferInterventionTypes = () => {
             label: 'Sureté MicroCap',
             value: 'CPT',
         },        {
-            label: 'Deal bancaire',
+            label: 'Ndjangui Deal',
             value: 'CODEV'
         },
         {
-            label: 'Carnet du bénéficiaire',
+            label: 'Carnet du Deal',
             value: 'TRANSACTION_BOOK'
         }
     ];

@@ -422,7 +422,7 @@ export default [
       ],
    },
    {
-      "menu_title": "Mes projets",
+      "menu_title": "Projets",
       "menu_icon": "zmdi zmdi-home",
       "new_item": false,
       "permissions": [

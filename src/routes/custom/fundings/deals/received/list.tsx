@@ -47,6 +47,7 @@ const List = (props) => {
                                     <thead>
                                         <tr>
                                             <th className="fw-bold">Désignation</th>
+                                            <th className="fw-bold">Souscripteur</th>
                                             <th className="fw-bold">Destinataire</th>
                                             <th className="fw-bold">Date de création</th>
                                             <th className="fw-bold">Action</th>
@@ -59,6 +60,13 @@ const List = (props) => {
                                                     <div className="media">
                                                         <div className="media-body pt-10">
                                                             <p className="m-0 text-dark">{item?.offer?.label}</p>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="media">
+                                                        <div className="media-body pt-10">
+                                                            <p className="m-0 text-dark">{item?.sender}</p>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -111,6 +119,7 @@ const List = (props) => {
                         setShowDealDetails(false);
                         setShowInitDeal(true);
                     }}
+                    isSender={false}
                 />
             )}
 

@@ -11,3 +11,4 @@ export const GET_DEALS = 'api/fundings/funding-offers/deals';
 export const GET_DEALS_BY_ACCOUNT = 'api/fundings/funding-offers/deals/by-account';
 export const FIND_DEAL = (reference) => `api/fundings/funding-offers/deals/${reference}`;
 export const VALIDATE_DEAL = (reference) => `api/fundings/funding-offers/deals/${reference}/validate`;
+export const CHANGE_ACCOUNT_DEAL = (reference) => `api/fundings/funding-offers/deals/${reference}/account`;

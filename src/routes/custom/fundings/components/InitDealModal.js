@@ -26,8 +26,8 @@ class InitDealModal extends Component {
         offer: null,
         codev: null,
         tickets: [],
-        accounts: [],
-        account: null,
+        // accounts: [],
+        // account: null,
         endDate: null,
         startDate: null,
         initMethod: null,
@@ -84,14 +84,14 @@ class InitDealModal extends Component {
         .finally(() => this.props.setRequestGlobalAction(false))
     }
 
-    getAccounts = () => {
-        this.props.setRequestGlobalAction(true),
-        AccountService.getAccountBySpeciality({special_product: this.state.interventionType?.value})
-        .then(response => {
-            this.setState({ accounts: response, account: null });
-        })
-        .finally(() => this.props.setRequestGlobalAction(false))
-    }
+    // getAccounts = () => {
+    //     this.props.setRequestGlobalAction(true),
+    //     AccountService.getAccountBySpeciality({special_product: this.state.interventionType?.value})
+    //     .then(response => {
+    //         this.setState({ accounts: response, account: null });
+    //     })
+    //     .finally(() => this.props.setRequestGlobalAction(false))
+    // }
 
     getProducts = () => {
         this.props.setRequestGlobalAction(true);
@@ -178,6 +178,7 @@ class InitDealModal extends Component {
                 senderName: response?.sender,
                 receiverName: response?.receiver,
                 selectedTickets: response?.tickets,
+                interventionType: getFundingOfferInterventionTypes().find(init => init.value == response.intervention),
                 compensations: response?.counterParts?.filter(c => c.fixPart).map(cp => { return {...cp, length: cp.duration }}),
                 natureCompensations: response?.counterParts?.filter(c => !c.fixPart).map(cp => { return {...cp, length: cp.duration }}),
                 initMethod: response?.intervention == 'CPT' ? initDealMethods().find(init => init.value == 'PERIOD') : initDealMethods().find(init => init.value == 'TICKETS')
@@ -256,7 +257,7 @@ class InitDealModal extends Component {
 
     onSubmit = () => {
 
-        const {initMethod, compensations, natureCompensations, selectedTickets, startDate, endDate, interventionType, account} = this.state;
+        const {initMethod, compensations, natureCompensations, selectedTickets, startDate, endDate, interventionType} = this.state;
 
         if(compensations.length <= 0 && natureCompensations.length <= 0) {
             NotificationManager.error("Remplissez toutes les informations 1");
@@ -319,9 +320,9 @@ class InitDealModal extends Component {
             datas.interventionType = interventionType?.value
         }
 
-        if(account?.id) {
-            datas.account_reference = account?.reference;
-        }
+        // if(account?.id) {
+        //     datas.account_reference = account?.reference;
+        // }
 
         this.props.setRequestGlobalAction(true);
         FundingService.createProposition(datas)
@@ -364,7 +365,7 @@ class InitDealModal extends Component {
                         <p>Souscripteur: {senderName}</p>
                         <p>Beneficiaire: {receiverName}</p>
 
-                        { !deal && (
+                        {/* { !deal && ( */}
                             <>
                                 <div className="col-md-12 col-sm-12 has-wrapper mb-30">
                                     <InputLabel className="text-left">
@@ -374,20 +375,21 @@ class InitDealModal extends Component {
                                         value={interventionType}
                                         id="combo-box-demo"
                                         onChange={(__, item) => {
-                                            if(item) {
-                                                this.setState({ interventionType: item }, () => {
-                                                    this.getAccounts();
-                                                });
-                                            } else {
-                                                this.setState({ account: null, accounts: [] });
-                                            }
+                                            this.setState({ interventionType: item });
+                                            // if(item) {
+                                            //     this.setState({ interventionType: item }, () => {
+                                            //         this.getAccounts();
+                                            //     });
+                                            // } else {
+                                            //     this.setState({ account: null, accounts: [] });
+                                            // }
                                         }}
                                         getOptionLabel={(option) => option.label}
                                         options={getFundingOfferInterventionTypes()}
                                         renderInput={(params) => <TextField {...params} variant="outlined" />}
                                     />
                                 </div>
-                                <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                                {/* <div className="col-md-12 col-sm-12 has-wrapper mb-30">
                                     <InputLabel className="text-left">
                                         Compte payeur
                                     </InputLabel>
@@ -401,9 +403,9 @@ class InitDealModal extends Component {
                                         getOptionLabel={(option) => option.label}
                                         renderInput={(params) => <TextField {...params} variant="outlined" />}
                                     />
-                                </div>
+                                </div> */}
                             </>
-                        )}
+                        {/* )} */}
                         {!deal && dealType !== 'NDJANGUI' && (
                             <>
                                 <div className="col-md-12 col-sm-12 has-wrapper mb-30">

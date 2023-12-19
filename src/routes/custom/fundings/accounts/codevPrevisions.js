@@ -54,6 +54,7 @@ class CodevPrevisions extends Component {
                     <table className='table table-striped table-bordered' style={{ width: '90%', marginLeft: '5%' }}>
                         <thead>
                             <th>Code</th>
+                            <th>Beneficiaire</th>
                             <th>Echéance</th>
                             <th>Montant</th>
                             <th>Status</th>
@@ -63,20 +64,23 @@ class CodevPrevisions extends Component {
                             {tickets.map(ticket => (
                                 <tr>
                                     <td>{ticket.code}</td>
+                                    <td>{ticket?.userName}</td>
                                     <td>{ticket.date}</td>
                                     <td>{getPriceWithCurrency(ticket.amount, ticket.currency)}</td>
                                     <td>{ticket.status}</td>
                                     <td>
-                                        <Button
-                                            color="primary"
-                                            variant="contained"
-                                            className="text-white font-weight-bold"
-                                            onClick={() => {
-                                                this.props.openTicket(ticket);
-                                            }}
-                                        >
-                                            Supplementaires
-                                        </Button>
+                                        { ticket?.editable && (
+                                            <Button
+                                                color="primary"
+                                                variant="contained"
+                                                className="text-white font-weight-bold"
+                                                onClick={() => {
+                                                    this.props.openTicket(ticket);
+                                                }}
+                                            >
+                                                Supplementaires
+                                            </Button>
+                                        )}
                                     </td>
                                 </tr>
                             ))}
