@@ -120,15 +120,13 @@ class DealDetailsModal extends Component {
                         <p>Beneficiaire: {deal?.receiver}</p>
                         <p>Mode d'intervention: {interventionType?.label}</p>
 
-                        <p>Domiciliation: {deal?.account} &nbsp;
-                            { isSender && (
-                                <span 
-                                    onClick={() => { this.setState({ editAccount: !editAccount }) }}
-                                    style={{ fontStyle: 'italic', color: 'blue', cursor: 'pointer' }}
-                                >
-                                    Modifier
-                                </span>
-                            )}
+                        <p>Domiciliation: {isSender ? deal?.account : deal?.receptorAccount} &nbsp;
+                            <span 
+                                onClick={() => { this.setState({ editAccount: !editAccount }) }}
+                                style={{ fontStyle: 'italic', color: 'blue', cursor: 'pointer' }}
+                            >
+                                Modifier
+                            </span>
                         </p>
 
                         { editAccount && (

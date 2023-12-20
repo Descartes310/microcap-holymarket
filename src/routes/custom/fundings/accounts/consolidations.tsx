@@ -9,6 +9,7 @@ import ConfirmBox from "Components/dialog/ConfirmBox";
 import { NotificationManager } from 'react-notifications';
 import AddConsolidation from '../components/addConsolidation';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
+import { FUNDING, joinUrlWithParamsId } from 'Url/frontendUrl';
 
 const Consolidation = (props) => {
 
@@ -78,7 +79,7 @@ const Consolidation = (props) => {
                 list={accounts}
                 loading={false}
                 itemsFoundText={n => `${n} comptes`}
-                onAddClick={() => setShowAddBox(true)}
+                // onAddClick={() => setShowAddBox(true)}
                 renderItem={list => (
                     <>
                         {list && list.length === 0 ? (
@@ -128,11 +129,10 @@ const Consolidation = (props) => {
                                                         variant="contained"
                                                         className="text-white font-weight-bold"
                                                         onClick={() => {
-                                                            setSelectedAccount(item);
-                                                            setShowDeleteConfirmationBox(true);
+                                                            props.history.push(joinUrlWithParamsId(FUNDING.ACCOUNT.DETAILS, item.id))
                                                         }}
                                                     >
-                                                        Rétirer
+                                                        Détails
                                                     </Button>
                                                 </td>
                                             </tr>
