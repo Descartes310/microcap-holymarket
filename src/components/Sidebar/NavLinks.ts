@@ -426,7 +426,7 @@ export default [
       "menu_icon": "zmdi zmdi-home",
       "new_item": false,
       "permissions": [
-         Permission.microcap360.projects.name,
+         Permission.project.project.name,
          Permission.microcap360.ideas.name,
          Permission.group.admin.project.name,
          Permission.project.admin.item.name,
@@ -466,7 +466,7 @@ export default [
             "menu_title": "Mes projets",
             "new_item": false,
             "path": PROJECT.MINE.FOLDER.LIST,
-            "permissions": [Permission.microcap360.projects.name],
+            "permissions": [Permission.project.project.name],
             "profiles": null,
             "child_routes": null
          },
@@ -474,7 +474,7 @@ export default [
             "menu_title": "Mes souscriptions",
             "new_item": false,
             "path": PROJECT.SUBSCRIPTION.LIST,
-            "permissions": [Permission.microcap360.projects.name],
+            "permissions": [Permission.project.project.name],
             "profiles": null,
             "child_routes": null
          },
