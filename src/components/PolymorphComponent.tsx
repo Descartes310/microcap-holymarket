@@ -47,12 +47,27 @@ const PolymorphComponent = ({ projectItem, componentType, value, label, isRequir
             );
         }
         else if (inputComponentType === 'textarea') {
+            // console.log("Bonjour le monde => ", inputLabel)
             return (
                 <FormGroup className="col-md-12 col-sm-12 has-wrapper">
                     <InputLabel className="text-left" htmlFor="description">
                         { inputLabel } {!inputIsRequired && ' (optionnel)'}
                     </InputLabel>
-                    <ReactQuill value={projectItem?.value} modules={modules} onChange={(e) => handleOnChange(projectItem, e, subItemId)} formats={formats} />
+                    {/* <ReactQuill 
+                        value={projectItem?.value} 
+                        modules={modules} 
+                        onChange={(e) => {
+                            // console.log(e);
+                            handleOnChange(projectItem, e, subItemId)
+                        }} 
+                        formats={formats} 
+                    /> */}
+                    <textarea
+                        name={inputLabel}
+                        value={projectItem?.value}
+                        rows={5}
+                        onChange={(e) => handleOnChange(projectItem, e.target.value, subItemId)}
+                    />
                 </FormGroup>
             )
         }
