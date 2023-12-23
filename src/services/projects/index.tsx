@@ -147,4 +147,12 @@ export default class ProjectService {
     static createProjectSubscription(data: any): Promise<any> {
         return makeRequest('post', Routes.CREATE_PROJECT_SUBSCRIPTION, data);
     }
+
+    static createProjectSetting(data: any): Promise<any> {
+        return makeRequest('post', Routes.CREATE_PROJECT_SETTINGS, data);
+    }
+
+    static getProjectSetting(data: any): Promise<any> {
+        return makeRequest('get', Routes.GET_PROJECT_SETTINGS, data);
+    }
 }

@@ -18,6 +18,7 @@ import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard
 
 const List = (props) => {
 
+    const [details, setDetails] = useState([]);
     const [products, setProducts] = useState([]);
     const [options, setOptions] = useState([]);
     const [minBase, setMinBase] = useState(null);
@@ -33,12 +34,25 @@ const List = (props) => {
         getProducts();
         getCustomCarts();
         getOptions();
+        getProjectDetails();
     }, []);
 
     const getProducts = () => {
         props.setRequestGlobalAction(true);
         ProjectService.getProducts().then(response => {
             setProducts(response);
+        })
+        .finally(() => props.setRequestGlobalAction(false))
+    }
+
+    const getProjectDetails = () => {
+        props.setRequestGlobalAction(true);
+        ProjectService.getProjectSetting({}).then(response => {
+            setDetails(response);
+            setMinBase(response.find(t => t.type == 'MINIMUM_FIXED_BASE')?.value ?? null);
+            setMaxBase(response.find(t => t.type == 'MAXIMUM_FIXED_BASE')?.value ?? null);
+            setMinRate(response.find(t => t.type == 'MINIMUM_RATE')?.value ?? null);
+            setMaxRate(response.find(t => t.type == 'MAXIMUM_RATE')?.value ?? null)
         })
         .finally(() => props.setRequestGlobalAction(false))
     }
@@ -71,14 +85,14 @@ const List = (props) => {
         }
                 
         props.setRequestGlobalAction(true);
-        // ProductService.createCustomCart(data).then(() => {
-        //     NotificationManager.success("L'item a été créé avec succès");
-        // }).catch((err) => {
-        //     console.log(err);
-        //     NotificationManager.error("Une erreur est survenu lors de l'item");
-        // }).finally(() => {
-        //     props.setRequestGlobalAction(false);
-        // })
+        ProjectService.createProjectSetting(data).then(() => {
+            NotificationManager.success("L'item a été créé avec succès");
+        }).catch((err) => {
+            console.log(err);
+            NotificationManager.error("Une erreur est survenu lors de l'item");
+        }).finally(() => {
+            props.setRequestGlobalAction(false);
+        })
     }
 
     return (

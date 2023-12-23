@@ -48,7 +48,7 @@ const Create = (props) => {
         <>
 
             <PageTitleBar
-                title={"Structures financieres"}
+                title={"Campagnes"}
             />
             <RctCollapsibleCard>
                 <Form onSubmit={onSubmit}>
