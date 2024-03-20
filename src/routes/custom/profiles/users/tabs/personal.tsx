@@ -26,7 +26,7 @@ const Personal = (props) => {
                         <div className="media">
                             <img src={require('Assets/avatars/profile.jpg')} alt="user profile" className="rounded-circle mr-30 bordered" width="140" height="140" />
                             <div className="media-body pt-25">
-                                <div className="mb-20">
+                                <div>
                                     <h2>{props.authUser.userName}</h2>
                                     <p>{props.authUser.email}</p>
                                 </div>

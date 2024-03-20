@@ -61,8 +61,9 @@ class Users extends Component<any, any> {
                                     <Tabs
                                         value={activeTab}
                                         onChange={this.handleChange}
-                                        scrollButtons="off"
+                                        scrollButtons="auto"
                                         indicatorColor="primary"
+                                        variant="scrollable"
                                         centered
                                     >
                                         <Tab

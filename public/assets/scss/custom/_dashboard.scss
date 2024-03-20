@@ -448,11 +448,14 @@
   }
   .page-title {
     h2 {
-      width: 50px;
+      //width: 50px;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
       vertical-align: middle;
     }
+  }
+  .rct-sidebar {
+    transform: translateY(56px);
   }
 }
