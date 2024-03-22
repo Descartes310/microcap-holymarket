@@ -1,3 +1,4 @@
+import "./home.scss";
 import Slider from "react-slick";
 import React, {useState} from 'react';
 import { connect } from "react-redux";
@@ -51,16 +52,17 @@ const Home = () => {
     return (
         <DiscoverLayout>
             <div className="session-inner-wrapper video-player-wrapper">
-                <div>
-                    <Slider {...settings} style={{ marginTop: 120 }}>
+                <div className="header-slide">
+                    <Slider {...settings}>
                         {slides.map((slide) => (
                             <div>
-                                <div style={{
-                                    backgroundImage: `url(${slide.image})`,
-                                    backgroundSize: 'cover', height: '52vh',
-                                    display: 'flex',
-                                    justifyContent: slide.leftImage ? 'flex-end' : 'flex-start'
-                                }}
+                                <div 
+                                    className="slide-item"
+                                    style={{
+                                        backgroundImage: `url(${slide.image})`,
+                                        display: 'flex',
+                                        justifyContent: slide.leftImage ? 'flex-end' : 'flex-start'
+                                    }}
                                 >
                                     <div className={`slide-content-left ${slide.leftImage && ", slide-content-right"}`}>
                                         <h1><span>{slide.title}</span></h1>
@@ -72,7 +74,7 @@ const Home = () => {
                     </Slider>
                 </div>
 
-                <div className="showcase-card-block d-flex flex-column pb-0" style={{ padding: '15vh 10vw', backgroundImage: `url(${require('Assets/img/bg-shape-gray.png')})` }}>
+                <div className="showcase-card-block d-flex flex-column pb-0">
                     <div className='container'>
 
                         <div className="row mb-30 flex-column intro">
@@ -117,7 +119,7 @@ const Home = () => {
                     </div>
                 </div>
 
-                <div className="showcase-card-block d-flex flex-column pb-0" style={{ padding: '10vh 10vw' }}>
+                <div className="showcase-card-block d-flex flex-column pb-0">
                     <div className='container'>
                         <div className="row mb-70 flex-column intro">
                             <h2 className="font-weight-bold text-black text-left mb-50" data-aos="fade-right">
@@ -185,15 +187,7 @@ const Home = () => {
                     </p>
                 </div>
 
-                <div className="showcase-card-block d-flex flex-column pb-0" style={{ padding: '10vh 10vw' }}>
-                    {/* <div className='container'>
-                        <div className="row center-hor-ver mb-70 flex-column intro">
-                            <h2 className="font-weight-bold text-black text-center underline-title mb-50" data-aos="fade-right">
-                                Pour une finance vertueuse et inclusive ou devenir acteur d'une économie de proximité en tant que: 
-                                actionnaire, client ou fournisseur engagé
-                            </h2>
-                        </div>
-                    </div> */}
+                <div className="showcase-card-block d-flex flex-column pb-0">
 
                     <div className="discover-content mt-30">
                         <Tabs
@@ -201,7 +195,8 @@ const Home = () => {
                             onChange={(e, value) => setActiveIndex(value)}
                             textColor="primary"
                             indicatorColor="primary"
-                            centered
+                            centered={true}
+                            variant="scrollable"
                         >
                             <Tab label="Dévenir membre du réseau" />
                             <Tab label="Booster votre épargne" />

@@ -6,7 +6,7 @@ import { RctCard, RctCardContent } from 'Components/RctCard';
 const BecomeMember = () => {
     return (
        <Typography component="div" style={{ padding: 8 * 3 }}>
-           <div id="services" data-aos="fade-up" style={{ padding: '2vh 10vw' }}>
+           <div id="services" class="become-member-card" data-aos="fade-up">
                 <div className='container'>
                     <p data-aos="fade-left" className='text-center mt-40 mb-70' style={{ fontSize: '1.2em' }}>
                         Une démarche en trois points chacun Simple et rapide
