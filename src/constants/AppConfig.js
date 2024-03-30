@@ -2,36 +2,6 @@
  * App Config File
  */
 
-const backendBaseUrl = (function (mode) {
-   switch (mode) {
-      case 'DEV1':
-         return process.env.API_URL_DEV1;
-      case 'DEV2':
-         return process.env.API_URL_DEV2;
-      case 'PRE_PROD':
-         return process.env.API_URL_PRE_PROD;
-      case 'PROD':
-         return process.env.API_URL_PROD;
-      default:
-         return process.env.API_URL_LOCAL;
-   }
-})(process.env.BACKEND_MODE);
-
-const stripePublishableKey = (function (mode) {
-   switch (mode) {
-      case 'DEV1':
-         return process.env.STRIPE_KEY_TEST;
-      case 'DEV2':
-         return process.env.STRIPE_KEY_TEST;
-      case 'PRE_PROD':
-         return process.env.STRIPE_KEY_TEST;
-      case 'PROD':
-         return process.env.STRIPE_KEY_TEST;
-      default:
-         return process.env.STRIPE_KEY_TEST;
-   }
-})(process.env.BACKEND_MODE);
-
 const AppConfig = {
    appLogo: require('Assets/identity/logomicrocap.png'),          // App Logo
    brandName: 'Microcap',                                    // Brand Name
@@ -99,12 +69,12 @@ const AppConfig = {
       grantType: 'password',
    },
    payments: {
-      stripe: stripePublishableKey,
+      stripe: process.env.STRIPE_KEY,
       version: '1.0'
    },
 
    api: {
-      baseUrl: backendBaseUrl,
+      baseUrl: process.env.API_URL,
       version: '1.0',
       // forbiddenCode: 401,
    },

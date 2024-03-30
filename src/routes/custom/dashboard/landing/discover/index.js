@@ -12,6 +12,8 @@ import { Card, CardImg, CardText, CardBody, CardFooter } from 'reactstrap';
 import DiscoverLayout from "Routes/custom/dashboard/landing/discover/DiscoverLayout";
 import DiscoverVideo from "Routes/custom/dashboard/landing/discover/components/DiscoverVideo";
 import { PIONIERS, SOLIDARITY, MONEY_MANAGEMENT, GETIN, PASS_DETAILS, AGENTS } from "Url/frontendUrl";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 const settings = {
     dots: false,

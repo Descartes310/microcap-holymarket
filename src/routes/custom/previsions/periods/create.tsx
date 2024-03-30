@@ -205,7 +205,7 @@ const Create = (props) => {
                             type="number"
                             value={amount}
                             className="input-lg"
-                            onChange={(e) => setAmount(e.target.value)}
+                            onChange={(e) => setAmount(Number(e.target.value))}
                         />
                     </FormGroup>
 

@@ -13,6 +13,8 @@ import SaveBoosting from "./components/tabs/SaveBoosting";
 import FinanceProject from "./components/tabs/FinanceProject";
 import FarAwayWithMicrocap from "./components/tabs/FarAwayWithMicrocap";
 import DiscoverLayout from "Routes/custom/dashboard/landing/discover/DiscoverLayout";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 const settings = {
     dots: false,

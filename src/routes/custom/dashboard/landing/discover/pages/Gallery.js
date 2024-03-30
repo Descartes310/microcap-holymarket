@@ -6,6 +6,8 @@ import React, { useState, useEffect } from 'react';
 import HourGlassLoader from "Components/Loaders/HourGlass";
 import DiscoverLayout from "Routes/custom/dashboard/landing/discover/DiscoverLayout";
 import TitleHeader from "Routes/custom/dashboard/landing/discover/components/TitleHeader";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 const settings = {
     dots: true,

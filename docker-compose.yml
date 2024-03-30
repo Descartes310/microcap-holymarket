@@ -1,0 +1,39 @@
+version: '3.7'
+
+services:
+
+  traefik:
+    image: "traefik:v2.5"
+    container_name: traefik
+    ports:
+      - "80:80"
+      #- "443:443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      #- ./traefik:/etc/traefik  # Map a local Traefik configuration directory
+    command:
+      - "--api.insecure=false"
+      - "--api.dashboard=false"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--log.level=DEBUG"
+      - "--log.filePath=/etc/traefik/traefik.log"
+
+  microcap-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: microcap
+    environment:
+      PORT: 3000
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.microcap-app.rule=Host(`app.localhost`)"
+      - "traefik.http.routers.microcap-app.entrypoints=web"
+      # - "traefik.http.services.microcap-app.loadbalancer.server.port=3000"
+
+networks:
+  default:
+    name: app-net
+    external: true

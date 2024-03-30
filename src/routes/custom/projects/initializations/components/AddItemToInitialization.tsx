@@ -141,7 +141,7 @@ const AddItemToInitialization = (props) => {
                                         name='maxOccurence'
                                         className="input-lg"
                                         value={maxOccurence}
-                                        onChange={(e) => setMaxOccurence(e.target.value)}
+                                        onChange={(e) => setMaxOccurence(Number(e.target.value))}
                                     />
                                 </FormGroup>
 
