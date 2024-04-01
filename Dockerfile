@@ -1,9 +1,9 @@
 FROM node:14 AS build
-FROM ubuntu:bionic
 
 WORKDIR /app
 COPY package.json ./
 COPY .env.example.test ./.env
+RUN rm -rf node_modules
 RUN yarn install
 COPY . ./
 RUN yarn build

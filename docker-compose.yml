@@ -30,10 +30,10 @@ services:
       PORT: 3000
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.microcap-app.rule=Host(`test.microcap.fr`)"
-      - "traefik.http.routers.microcap-app.entrypoints=web-secure"
-      - "traefik.http.routers.spring-app.tls=true"
-      - "traefik.http.routers.spring-app.tls.certresolver=myresolver"
+      - "traefik.http.routers.microcap-app.rule=Host(`app.microcap`)"
+      - "traefik.http.routers.microcap-app.entrypoints=web"
+      # - "traefik.http.routers.spring-app.tls=true"
+      # - "traefik.http.routers.spring-app.tls.certresolver=myresolver"
 
 networks:
   default:
