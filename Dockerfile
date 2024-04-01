@@ -1,4 +1,6 @@
 FROM node:14 AS build
+FROM ubuntu:bionic
+
 WORKDIR /app
 COPY package.json ./
 COPY .env.example.test ./.env
