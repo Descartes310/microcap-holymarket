@@ -6,6 +6,12 @@
 	"plugins": [
 		"react-hot-loader/babel",
 		[
+			"@babel/plugin-proposal-private-methods",
+			{
+				"loose": true
+			}
+		],
+		[
 			"@babel/plugin-proposal-class-properties",
 			{
 				"loose": true
