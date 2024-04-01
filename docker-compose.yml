@@ -21,7 +21,10 @@ services:
       - "--log.filePath=/etc/traefik/traefik.log"
 
   microcap-app:
-    image: ghcr.io/descartes310/microcap-app-test:latest
+    # image: ghcr.io/descartes310/microcap-app-test:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: microcap
     environment:
       PORT: 3000

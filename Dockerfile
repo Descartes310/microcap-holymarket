@@ -1,6 +1,7 @@
 FROM node:14 AS build
 WORKDIR /app
 COPY package.json ./
+COPY .env.example.test ./.env
 RUN yarn install
 COPY . ./
 RUN yarn build
