@@ -1,11 +1,11 @@
 FROM node:14-alpine AS build
 
 WORKDIR /app
+COPY . ./
 COPY package.json ./
 COPY .env.example.test ./.env
 RUN rm -rf node_modules
 RUN yarn install
-COPY . ./
 RUN yarn build
 
 FROM nginx:alpine
