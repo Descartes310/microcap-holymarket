@@ -21,7 +21,8 @@ class HeaderNotifications extends Component {
       this.state = {
          loading: true,
          unreadCount: 0,
-         notifications: []
+         notifications: [],
+         toggled: false
       }
    }
 
@@ -44,13 +45,14 @@ class HeaderNotifications extends Component {
    }
 
    viewAll = () => {
+      this.setState({ toggled: false })
       this.props.history.push(NOTIFICATIONS.LIST);
    };
 
    render() {
-      const { notifications, unreadCount, loading } = this.state;
+      const { notifications, unreadCount, loading, toggled } = this.state;
       return (
-         <UncontrolledDropdown nav className="list-inline-item notification-dropdown" >
+         <UncontrolledDropdown nav className="list-inline-item notification-dropdown" toggle={() => this.setState({ toggled: !this.state.toggled })} isOpen={toggled}>
             <DropdownToggle nav className="p-0">
                <Tooltip title="Notifications" placement="bottom">
                   <IconButton className={unreadCount > 0 ? "shake" : ''} aria-label="bell">

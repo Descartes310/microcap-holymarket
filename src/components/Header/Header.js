@@ -100,7 +100,7 @@ class Header extends Component {
 							Découvir Microcap
 						</Link>
 					</div>
-					<ul className="navbar-right list-inline mb-0">
+					<ul className="list-inline mb-0">
 						{authUser && (
 							<>
 								<Currencies />

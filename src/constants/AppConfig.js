@@ -40,7 +40,7 @@ const AppConfig = {
       }
    ],
    enableUserTour: false,  // Enable / Disable User Tour
-   copyRightText: 'Microcap © 2022 All Rights Reserved.',      // Copy Right Text
+   copyRightText: `Microcap © ${new Date().getFullYear()} All Rights Reserved.`,      // Copy Right Text
    // light theme colors
    themeColors: {
       'primary': '#FFB70F',
@@ -76,6 +76,7 @@ const AppConfig = {
    api: {
       baseUrl: process.env.API_URL,
       version: '1.0',
+      territory: process.env.TERRITORY_URL
       // forbiddenCode: 401,
    },
 };

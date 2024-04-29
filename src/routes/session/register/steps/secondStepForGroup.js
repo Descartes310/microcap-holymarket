@@ -2,6 +2,7 @@ import _ from 'lodash';
 import { injectIntl } from 'react-intl';
 import { useForm } from "react-hook-form";
 import GroupService from 'Services/groups';
+import AppConfig from 'Constants/AppConfig';
 import { Form, FormGroup } from "reactstrap";
 import IntlMessages from "Util/IntlMessages";
 import Button from "@material-ui/core/Button";
@@ -140,7 +141,7 @@ const SecondStepForGroup = props => {
                                 options.map(option =>
                                     <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center'  }}>
                                         <IconButton color="primary">
-                                            <img src={option.details.find(d => d.code === 'FLAG')?.value} style={{ width: 25, height: 15 }}/>
+                                            <img src={AppConfig.api.territory+option.details.find(d => d.code === 'FLAG')?.value} style={{ width: 25, height: 15 }}/>
                                         </IconButton>
                                         {option.label}
                                     </div>
@@ -152,7 +153,7 @@ const SecondStepForGroup = props => {
                             return (
                                 <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center'  }}>
                                     <IconButton color="primary">
-                                        <img src={option.details.find(d => d.code === 'FLAG')?.value} style={{ width: 25, height: 15 }} />
+                                        <img src={AppConfig.api.territory+option.details.find(d => d.code === 'FLAG')?.value} style={{ width: 25, height: 15 }} />
                                     </IconButton>
                                     {option.label}
                                 </div>

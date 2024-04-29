@@ -2,6 +2,7 @@ import _ from 'lodash';
 import Select from "react-select";
 import { injectIntl } from 'react-intl';
 import { useForm } from "react-hook-form";
+import AppConfig from 'Constants/AppConfig';
 import { Form, FormGroup } from "reactstrap";
 import IntlMessages from "Util/IntlMessages";
 import Button from "@material-ui/core/Button";
@@ -18,11 +19,11 @@ import InputComponent from "Components/InputComponent";
 import FormControl from '@material-ui/core/FormControl';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { NotificationManager } from 'react-notifications';
-import { filterCountryNameAndFlag } from 'Helpers/helpers';
 import { Select as MaterialSelect } from "@material-ui/core";
 import ErrorInputComponent from "Components/ErrorInputComponent";
 import InputLabel from "@material-ui/core/InputLabel/InputLabel";
 import CustomAsyncComponent from "Components/CustomAsyncComponent";
+import { filterCountryNameAndFlag, filterCountryPhoneCodeAndFlag } from 'Helpers/helpers';
 
 const SecondStepForPerson = props => {
     const { loading, previousStep, setData, defaultState, intl } = props;
@@ -140,8 +141,8 @@ const SecondStepForPerson = props => {
                             as={(
                                 <Select
                                     options={countries}
-                                    filterOption={filterCountryNameAndFlag}
-                                    getOptionLabel={option => <FlagCountry label={option.details.find(d => d.code === TerritoryType.PHONE_INDICATOR)?.value} flag={option.details.find(d => d.code === TerritoryType.FLAG)?.value} />}
+                                    filterOption={filterCountryPhoneCodeAndFlag}
+                                    getOptionLabel={option => <FlagCountry label={'+ '+option.details.find(d => d.code === TerritoryType.PHONE_INDICATOR)?.value} flag={AppConfig.api.territory+option.details.find(d => d.code === TerritoryType.FLAG)?.value} />}
                                 />
                             )}
 
@@ -183,7 +184,7 @@ const SecondStepForPerson = props => {
                                 options.map(option =>
                                     <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center'  }}>
                                         <IconButton color="primary">
-                                            <img src={option.details.find(d => d.code === 'FLAG')?.value} style={{ width: 25, height: 15 }}/>
+                                            <img src={AppConfig.api.territory+option.details.find(d => d.code === 'FLAG')?.value} style={{ width: 25, height: 15 }}/>
                                         </IconButton>
                                         {option.label}
                                     </div>
@@ -195,7 +196,7 @@ const SecondStepForPerson = props => {
                             return (
                                 <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center'  }}>
                                     <IconButton color="primary">
-                                        <img src={option.details.find(d => d.code === 'FLAG')?.value} style={{ width: 25, height: 15 }} />
+                                        <img src={AppConfig.api.territory+option.details.find(d => d.code === 'FLAG')?.value} style={{ width: 25, height: 15 }} />
                                     </IconButton>
                                     {option.label}
                                 </div>
@@ -222,7 +223,7 @@ const SecondStepForPerson = props => {
                             options.map(option =>
                                 <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center'  }}>
                                     <IconButton color="primary">
-                                        <img src={option.details.find(d => d.code === 'FLAG')?.value} style={{ width: 25, height: 15 }}/>
+                                        <img src={AppConfig.api.territory+option.details.find(d => d.code === 'FLAG')?.value} style={{ width: 25, height: 15 }}/>
                                     </IconButton>
                                     {option.label}
                                 </div>
@@ -234,7 +235,7 @@ const SecondStepForPerson = props => {
                         return (
                             <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center'  }}>
                                 <IconButton color="primary">
-                                    <img src={option.details.find(d => d.code === 'FLAG')?.value} style={{ width: 25, height: 15 }} />
+                                    <img src={AppConfig.api.territory+option.details.find(d => d.code === 'FLAG')?.value} style={{ width: 25, height: 15 }} />
                                 </IconButton>
                                 {option.label}
                             </div>

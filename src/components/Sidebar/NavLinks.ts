@@ -644,7 +644,7 @@ export default [
       ],
    },
    {
-      "menu_title": "Ma boutique",
+      "menu_title": "Catalogue produits",
       "menu_icon": "zmdi zmdi-store",
       "new_item": false,
       "permissions": [

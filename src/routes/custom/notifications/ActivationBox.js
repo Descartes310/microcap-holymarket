@@ -158,7 +158,7 @@ class ActivationBox extends Component {
                                 indicatorColor="primary"
                                 textColor="primary"
                             >
-                                <Tab label="Demander un code d'activation" />
+                                <Tab label="Code d'activation" />
                                 <Tab label="Paramètres de l'accès"  disabled={!hasAskCode} />
                                 <Tab label="Activer l'accès" disabled={!member || !hasAskCode} />
                             </Tabs>
@@ -171,8 +171,8 @@ class ActivationBox extends Component {
                                 { ((this.props.member && this.props.member.notificationAddress) || (!this.props.member && authUser.notificationAddress)) ? (
                                     <div className="p-sm-20 pt-sm-30 p-10 pt-15 border-top">
                                         <div>
-                                            <p>Commencez la procédure en demandant un code de validation qui vous sera envoyé par email.</p>
-                                            <p>Cliquez sur le boutton ci-dessous.</p>
+                                            <p>Pour valider votre compte, un code de confirmation vous sera envoyé par le contact que vous avez enregistré.</p>
+                                            <p>Cliquez sur le boutton ci-dessous pouur débuter la procédure.</p>
                                         </div>
                                         <Button
                                             color="primary"
@@ -180,14 +180,14 @@ class ActivationBox extends Component {
                                             className="text-white mr-2"
                                             onClick={this.onAskCode}
                                         >
-                                            Initier la demande
+                                            Envoyer le code de validation
                                         </Button>
                                     </div>
                                 ) : (
                                     <div className="p-sm-20 pt-sm-30 p-10 pt-15 border-top">
                                         <div>
-                                            <p>Vous n'anez aucune adresse de notification enregistreée dans votre profile.</p>
-                                            <p>Veuillez commencer par en créer une en cliquant sur le boutton ci-dessous.</p>
+                                            <p>Vous n'avez pas encore un contact sur lequel nous pouvons vous envoyer votre code de vérification.</p>
+                                            <p>Veuillez commencer par créer un nouveau contact en cliquant sur le boutton ci-dessous.</p>
                                         </div>
                                         <Button
                                             color="primary"
@@ -195,7 +195,7 @@ class ActivationBox extends Component {
                                             className="text-white mr-2"
                                             onClick={() => this.setState({ showCreateContactBox: true })}
                                         >
-                                            Créer une adresse
+                                            Créer un nouveau contact
                                         </Button>
                                     </div>
                                 )}
@@ -210,6 +210,7 @@ class ActivationBox extends Component {
                                         </InputLabel>
                                         <Input
                                             required
+                                            disabled
                                             type="text"
                                             id="membership"
                                             name='membership'
@@ -237,7 +238,7 @@ class ActivationBox extends Component {
                                         </>
                                     )}
                                     <FormGroup>
-                                        <Button
+                                        {/* <Button
                                             color="primary"
                                             variant="contained"
                                             disabled={!membership}
@@ -245,14 +246,14 @@ class ActivationBox extends Component {
                                             className="text-white font-weight-bold mr-20 bg-blue"
                                         >
                                             Vérifier l'utilisateur
-                                        </Button>
+                                        </Button> */}
                                         <Button
                                             color="primary"
                                             disabled={this.state.loading}
                                             className="text-white mr-2"
                                             onClick={() => this.setState({ activeTab: 2 })}
                                         >
-                                            Continuer
+                                            Continuer ma validation
                                         </Button>
                                     </FormGroup>
                                 </div>
@@ -265,8 +266,8 @@ class ActivationBox extends Component {
                                         <Alert color="success" className="w-100">
                                             <h4 className="alert-heading">Note importante!</h4>
                                             <p>
-                                                Après l'activation, de nouveaux paramètres de connexion vous serons envoyés par demail.
-                                                Veuillez les utiliser pour les prochaines connexions.
+                                                Le code d'activation a été envoyé au contact que vous avez fourni.
+                                                Veuillez saisir le code reçu et confirmer les conditions générales d'utilisation de MicroCap.
                                             </p>
                                             <hr />
                                             <p className="mb-0">

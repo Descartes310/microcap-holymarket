@@ -17,8 +17,6 @@ import { AUTH, HOME, LANDING} from "Url/frontendUrl";
 import InputLabel from "@material-ui/core/InputLabel";
 import InputComponent from "Components/InputComponent";
 import { NotificationManager } from "react-notifications";
-import { minMaxValidatorObject } from "Helpers/validator";
-import ErrorInputComponent from "Components/ErrorInputComponent";
 import { loginUserWithLoginAndPassword, setRequestGlobalAction } from 'Actions';
 
 const Signin = (props) => {

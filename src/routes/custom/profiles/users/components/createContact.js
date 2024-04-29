@@ -90,6 +90,11 @@ const CreateContact = (props) => {
                     <InputLabel className="text-left" htmlFor="value">
                         Valeur {type?.value == 'PHONE' && "(Veuillez préfixer le numéro par le code téléphonique. Exp: +237)" }
                     </InputLabel>
+                    { (type?.value == 'PHONE' && value != null && (value+"").length > 0  && !(value+"").startsWith("+")) && (
+                        <InputLabel className="text-left" style={{ color: 'red' }}>
+                            Le préfixe du numéro de téléphone est obligatoire
+                        </InputLabel>
+                    )}
                     <InputStrap
                         required
                         id="value"

@@ -6,6 +6,7 @@ import moment from 'moment';
 import api from "Api/index";
 import store from '../store';
 import AppConfig from 'Constants/AppConfig';
+import TerritoryType from "Enums/Territories";
 import { NotificationManager } from 'react-notifications';
 import NavLinks, { MenuItem } from "Components/Sidebar/NavLinks";
 
@@ -690,6 +691,15 @@ export const isMenuAllowed = (authUser: any, menu: MenuItem): boolean => {
 export const filterCountryNameAndFlag = (candidate, input) => {
     if (input) {
         return candidate.data.label.toLowerCase().includes(input.toLowerCase());
+    }
+    return true;
+};
+
+export const filterCountryPhoneCodeAndFlag = (candidate, input) => {
+    console.log(candidate, input)
+    if (input) {
+        let result = candidate.data.details.find(d => d.code === "PHONE_INDICATOR" && d.value.includes(input.toLowerCase()));
+        return result?.id != null;
     }
     return true;
 };

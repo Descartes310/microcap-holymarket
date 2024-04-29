@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
 import Tooltip from '@material-ui/core/Tooltip';
 import ListItem from "@material-ui/core/ListItem";
+import Button from '@material-ui/core/Button';
 import NotificationType from "Enums/NotificationType";
 import NotificationService from "Services/notifications";
-import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 
 class Item extends Component {
 
@@ -23,8 +24,8 @@ class Item extends Component {
         const { notification, onActivationClick, authUser, onFundingActivationClick, 
             onCodevInvitationClick, onCodevInvitationRequestClick, onActivationPassClick, onInitDealClick } = this.props;
         return (
-            <ListItem className="row px-20 py-3 align-items-center">
-                <div className="col-md-9">
+            <ListItem className="row px-20 py-3 d-flex justify-content-between align-items-center">
+                <div className="d-flex">
                     <div className="d-flex align-items-start">
                         <div className="avatar-wrap mr-15">
                             <span className={`badge badge-xs badge-success mr-10 mt-10 position-relative`}>&nbsp;</span>
@@ -35,12 +36,13 @@ class Item extends Component {
                         </div>
                     </div>
                 </div>
-                <div className="col-md-3 comment-action w-20 d-flex justify-content-end">
-                    <Dropdown direction='left' isOpen={this.state.open} toggle={() => { this.setState({ open: !this.state.open }); }}>
-                        <DropdownToggle nav className="header-icon p-0">
-                            <Tooltip title="Actions" placement="bottom">
-                                <i className="zmdi zmdi-view-list-alt"></i>
-                            </Tooltip>
+                <div className="comment-action d-flex justify-content-end">
+                    <UncontrolledDropdown direction='botton' isOpen={this.state.open} toggle={() => { this.setState({ open: !this.state.open }); }}>
+                        <DropdownToggle
+                            caret
+                            color="primary"
+                        >
+                            Mes options
                         </DropdownToggle>
                         <DropdownMenu>
                             { notification.type === NotificationType.ACTIVATION && !authUser.active && (
@@ -65,7 +67,7 @@ class Item extends Component {
                                 <DropdownItem onClick={() => this.markAsRead()}>Marquer comme lue</DropdownItem>
                             )} */}
                         </DropdownMenu>
-                    </Dropdown>
+                    </UncontrolledDropdown>
                 </div>
             </ListItem>
         );
