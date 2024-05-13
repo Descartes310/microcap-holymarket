@@ -1,12 +1,12 @@
 
-name: test-app-deployment # workflow name
+name: prod-app-deployment # workflow name
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "prod" ]
 
 jobs:
-  build-and-deploy-docker-test-image: #job name
+  build-and-deploy-prod-image: #job name
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -29,17 +29,16 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: ./deployments/test/Dockerfile
+          file: ./deployments/prod/Dockerfile
           push: true
-          tags: ghcr.io/descartes310/microcap-app-test:latest
-#          build-args: VITE_API_BASE_URL=${{ env.VITE_API_BASE_URL }}
+          tags: ghcr.io/descartes310/microcap-app-prod:latest
 
       - name: Set up SSH key
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
-          ssh-keyscan ${{ secrets.SSH_TEST_HOST }} >> ~/.ssh/known_hosts
+          ssh-keyscan ${{ secrets.SSH_PROD_HOST }} >> ~/.ssh/known_hosts
         env:
           SSH_AUTH_SOCK: /dev/null  # Disable the SSH agent
 
@@ -47,4 +46,4 @@ jobs:
         run: sudo apt-get install sshpass
       - name: SSH into server and run docker-compose
         run: |
-            sshpass -p ${{ secrets.SSH_TEST_PASSWORD }} ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_TEST_HOST }} 'cd server/apps/microcap/test/frontend && docker compose pull && docker compose up -d'
+            sshpass -p ${{ secrets.SSH_PROD_PASSWORD }} ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_PROD_HOST }} 'cd apps/microcap/frontend && docker compose pull && docker compose up -d'
