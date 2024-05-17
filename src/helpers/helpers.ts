@@ -412,8 +412,8 @@ export const getPriceWithCurrency = (price = 0, currencyCode = null) => {
     let currency = storeCurrencies.find(c => c.code === currencyCode);
     currency = currency ? currency : AppConfig.currency;
 
-    price = (price*currency.rate) / storeCurrency.rate
-    
+    price = getPrice(price, currencyCode);//(price*currency.rate) / storeCurrency.rate
+
     var formatter = new Intl.NumberFormat('en-US', {
         style: 'currency',
         currency: storeCurrency.code
@@ -429,8 +429,10 @@ export const getPrice = (price = 0, currencyCode = null) => {
     let storeCurrencies = store.getState().settings.currencies;
     let currency = storeCurrencies.find(c => c.code === currencyCode);
     currency = currency ? currency : AppConfig.currency;
+    let rate = currency.rate ? currency.rate : 1;
+    let storeRate = storeCurrency.rate ? storeCurrency.rate : 1;
 
-    price = (price*currency.rate) / storeCurrency.rate
+    price = (price * rate) / storeRate
 
     return price;
 };

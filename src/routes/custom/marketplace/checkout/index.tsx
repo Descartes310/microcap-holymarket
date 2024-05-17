@@ -18,15 +18,24 @@ class Checkout extends Component<any, any> {
         showSweetAlert: false
     }
 
-    validateBillingForm = (billingForm) => {
+    validateBillingForm = (informations) => {
+        let billingInformation = informations.billingInformation;
+        let shippingInformation = informations?.shippingInformation;
+
+        if(!shippingInformation) {
+            shippingInformation = billingInformation;
+        }
         let data = {
-            city: billingForm.state,
-            zip: billingForm.zipCode,
-            email: billingForm.emailId,
-            country: billingForm.country,
-            address1: billingForm.addressLine1,
-            address2: billingForm.addressLine2,
-            telephone: billingForm.mobileNumber,
+            city: billingInformation.state,
+            zip: billingInformation.zipCode,
+            email: billingInformation.emailId,
+            country: billingInformation.country?.reference,
+            address1: billingInformation.addressLine1,
+            telephone: billingInformation.mobileNumber,
+            shipping_city: shippingInformation.state,
+            shipping_zip: shippingInformation.zipCode,
+            shipping_country: shippingInformation.country?.reference,
+            shipping_address1: shippingInformation.addressLine1,
             productIds: this.props.cart.items.map(product => product.id),
             sources: this.props.cart.items.map(product => product.source),
             productQuantities: this.props.cart.items.map(product => product.quantity),
@@ -86,7 +95,6 @@ class Checkout extends Component<any, any> {
     render() {
         const { match } = this.props;
         const { showSweetAlert } = this.state;
-        console.log(this.props.cart)
         return (
             <>
                 <PageTitleBar title={'Valider ma commande'} match={match} />

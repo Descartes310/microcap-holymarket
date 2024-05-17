@@ -164,9 +164,6 @@ export default class Permission extends BaseEnum {
         project: {
             "name": "PROJECT_MINE_PRIVILEGE"
         },
-        item: {
-            "name": "PROJECT_PERSONNAL_ITEM_PRIVILEGE"
-        },
         financialStructure: {
             "name": "FINANCIAL_STRUCTURE"
         },
@@ -202,9 +199,6 @@ export default class Permission extends BaseEnum {
         agency: {
             "name": "BROKER_AGENCY_PRIVILEGE"
         },
-        counter: {
-            "name": "BROKER_COUNTER_PRIVILEGE"
-        },
         cashdesk: {
             "name": "BROKER_CASHDESK_PRIVILEGE"
         },
@@ -218,17 +212,8 @@ export default class Permission extends BaseEnum {
             agent: {
                 "name": "CASHMANAGEMENT_AGENT_AGENTS"
             },
-            counter: {
-                "name": "CASHMANAGEMENT_AGENT_COUNTERS"
-            },
-            operation: {
-                "name": "CASHMANAGEMENT_AGENT_OPERATIONS"
-            },
             charge: {
                 "name": "CASHMANAGEMENT_AGENT_CHARGES"
-            },
-            account: {
-                "name": "CASHMANAGEMENT_AGENT_ACCOUNTS"
             }
         },
         intermediary: {
@@ -238,23 +223,11 @@ export default class Permission extends BaseEnum {
             prestation: {
                 "name": "CASHMANAGEMENT_INTER_PRESTATIONS"
             },
-            operation: {
-                "name": "CASHMANAGEMENT_INTER_OPERATIONS"
-            },
-            charge: {
-                "name": "CASHMANAGEMENT_INTER_CHARGES"
-            },
             money: {
                 "name": "CASHMANAGEMENT_INTER_MONEYS"
-            },
-            account: {
-                "name": "CASHMANAGEMENT_INTER_ACCOUNTS"
             }
         },
         bank: {
-            operation: {
-                "name": "CASHMANAGEMENT_BANK_OPERATIONS"
-            },
             account: {
                 "name": "CASHMANAGEMENT_BANK_ACCOUNTS"
             },
@@ -263,9 +236,6 @@ export default class Permission extends BaseEnum {
             }
         },
         counter: {
-            operation: {
-                "name": "CASHMANAGEMENT_COUNTER_OPERATIONS"
-            },
             subscription: {
                 "name": "CASHMANAGEMENT_COUNTER_SUBSCRIPTIONS"
             }
@@ -278,9 +248,6 @@ export default class Permission extends BaseEnum {
         },
         wallets: {
             "name": "ACCOUNT_ACCESS"
-        },
-        projects: {
-            "name": "PROJECT_ACCESS"
         },
         mymicrocap: {
             "name": "MY_MICROCAP_ACCESS"
@@ -334,5 +301,20 @@ export default class Permission extends BaseEnum {
             "name": "MANAGE_SERIES_TYPES"
         },
     };
+
+    static general = {
+        counter: {
+            "name": "COUNTER_MANAGEMENT"
+        },
+        operation: {
+            "name": "OPERATION_MANAGEMENT"
+        },
+        charge: {
+            "name": "CHARGE_MANAGEMENT"
+        },
+        account: {
+            "name": "ACCOUNT_MANAGEMENT"
+        }
+    }
 
 }

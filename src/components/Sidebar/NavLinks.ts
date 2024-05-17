@@ -155,7 +155,7 @@ export default [
       "new_item": false,
       "permissions": [
          Permission.broker.agency.name,
-         Permission.broker.counter.name,
+         Permission.general.counter.name,
          Permission.broker.cashdesk.name,
       ],
       "profiles": ['BROKER'],
@@ -166,7 +166,7 @@ export default [
             "new_item": false,
             "path": joinUrlWithParamsId(FUNDING.ACCOUNT.DETAILS, 'operation'),
             "permissions": [
-               Permission.broker.counter.name,
+               Permission.general.counter.name,
             ],
             "profiles": ['BROKER'],
          },
@@ -184,7 +184,7 @@ export default [
             "new_item": false,
             "path": BROKER.COUNTER.LIST,
             "permissions": [
-               Permission.broker.counter.name,
+               Permission.general.counter.name,
             ],
             "profiles": ['BROKER'],
          },
@@ -373,7 +373,6 @@ export default [
       "permissions": [
          Permission.microcap360.network.name,
          Permission.microcap360.wallets.name,
-         Permission.microcap360.projects.name,
          Permission.microcap360.mymicrocap.name,
          Permission.microcap360.ideas.name,
       ],
@@ -395,14 +394,6 @@ export default [
             "profiles": null,
             "child_routes": null
          },
-         // {
-         //    "menu_title": "Mes projets",
-         //    "new_item": false,
-         //    "path": PROJECT.MINE.FOLDER.LIST,
-         //    "permissions": [Permission.microcap360.projects.name],
-         //    "profiles": null,
-         //    "child_routes": null
-         // },
          {
             "menu_title": "Mon Microcap",
             "new_item": false,
@@ -411,14 +402,6 @@ export default [
             "profiles": null,
             "child_routes": null
          },
-         // {
-         //    "menu_title": "Créations personnelles",
-         //    "new_item": false,
-         //    "path": PROJECT.MINE.ITEM.LIST,
-         //    "permissions": [Permission.microcap360.ideas.name],
-         //    "profiles": null,
-         //    "child_routes": null
-         // },
       ],
    },
    {
@@ -802,7 +785,7 @@ export default [
             "menu_title": "Recharges",
             "new_item": false,
             "path": BANK.CHARGE.AGENT.SELF,
-            "permissions": [Permission.bank.agent.charge.name],
+            "permissions": [Permission.general.charge.name],
             "profiles": ['PROVIDER_AGENT'],
             "child_routes": null
          },
