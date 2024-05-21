@@ -36,6 +36,21 @@ export const contactTypes = [
     // },
 ];
 
+export const communityTypes = [
+    {
+        name: 'Communauté conventionnée',
+        value: 'CONVENTIONATED_COMMUNITY'
+    },
+    {
+        name: 'Communauté non conventionnée',
+        value: 'UNCONVENTIONATED_COMMUNITY'
+    },
+    {
+        name: 'Communauté projet',
+        value: 'PROJECT'
+    }
+];
+
 export const getContactTypeLabel = (type) => {
     let typeLabel = type;
     switch (type) {

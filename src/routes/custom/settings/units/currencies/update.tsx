@@ -33,7 +33,7 @@ const Update = (props) => {
         })
         .catch((err) => {
             console.log(err);
-            props.history.push(SETTING.UNIT.CURRENCY.LIST);
+            props.history.goBack();
         })
         .finally(() => {
             props.setRequestGlobalAction(false);
@@ -56,7 +56,7 @@ const Update = (props) => {
 
         UnitService.updateCurrency(props.match.params.id, data).then(() => {
             NotificationManager.success('Unité a été éditée avec succès');
-            props.history.push(SETTING.UNIT.CURRENCY.LIST);
+            props.history.goBack();
         })
         .catch((err) => {
             console.log(err);

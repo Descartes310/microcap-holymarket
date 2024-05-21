@@ -1,11 +1,12 @@
 import { connect } from 'react-redux';
 import UnitService from 'Services/units';
-import { SETTING } from 'Url/frontendUrl';
+import Button from '@material-ui/core/Button';
 import Switch from "@material-ui/core/Switch";
 import { withRouter } from "react-router-dom";
 import CustomList from "Components/CustomList";
 import { setRequestGlobalAction } from 'Actions';
 import React, { useEffect, useState } from 'react';
+import { joinUrlWithParamsId, SETTING } from 'Url/frontendUrl';
 
 const List = (props) => {
 
@@ -25,6 +26,13 @@ const List = (props) => {
         .finally(() => {
             props.setRequestGlobalAction(false);
         })
+    }
+
+    const changeStatus = (unit) => {
+        props.setRequestGlobalAction(true),
+        UnitService.changeUnitStatus(unit.id)
+        .then(() => getUnits())
+        .finally(() => props.setRequestGlobalAction(false))
     }
 
     return (
@@ -49,8 +57,10 @@ const List = (props) => {
                                         <th className="fw-bold">Désignation</th>
                                         <th className="fw-bold">code</th>
                                         <th className="fw-bold">Description</th>
+                                        <th className="fw-bold">Taux de change</th>
+                                        <th className="fw-bold">Status</th>
                                         <th className="fw-bold">Type</th>
-                                        {/* <th className="fw-bold">Status</th> */}
+                                        <th className="fw-bold">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -80,17 +90,34 @@ const List = (props) => {
                                             <td>
                                                 <div className="media">
                                                     <div className="media-body pt-10">
-                                                        <p className="m-0 text-dark">{item.type.label}</p>
+                                                        <p className="m-0 text-dark">{item.rate}</p>
                                                     </div>
                                                 </div>
                                             </td>
-                                            {/* <td>
+                                            <td>
                                                 <Switch
                                                     aria-label="Par défaut"
                                                     checked={item.status}
                                                     onChange={() => { changeStatus(item) }}
                                                 />
-                                            </td> */}
+                                            </td>
+                                            <td>
+                                                <div className="media">
+                                                    <div className="media-body pt-10">
+                                                        <p className="m-0 text-dark">{item.type.label}</p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <Button
+                                                    color="primary"
+                                                    variant="contained"
+                                                    className="text-white font-weight-bold"
+                                                    onClick={() => props.history.push(joinUrlWithParamsId(SETTING.UNIT.CURRENCY.UPDATE, item.reference))}
+                                                >
+                                                    Editer
+                                                </Button>
+                                            </td>
                                         </tr>
                                     ))}
                                 </tbody>

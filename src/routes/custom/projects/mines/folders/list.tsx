@@ -6,8 +6,8 @@ import {setRequestGlobalAction} from 'Actions';
 import ProjectService from 'Services/projects';
 import React, { useState, useEffect } from 'react';
 import { getPriceWithCurrency } from 'Helpers/helpers';
-import { joinUrlWithParamsId, PROJECT } from 'Url/frontendUrl';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
+import { joinUrlWithParamsId, PROJECT, GROUP } from 'Url/frontendUrl';
 
 const List = (props) => {    
     
@@ -35,6 +35,18 @@ const List = (props) => {
                 loading={false}
                 itemsFoundText={n => `${n} projets trouvés`}
                 onAddClick={() => props.history.push(PROJECT.MINE.FOLDER.CREATE)}
+                rightComponent={() => (
+                    <Button
+                        color="primary"
+                        variant="contained"
+                        onClick={() => {
+                            props.history.push(`${GROUP.COMMUNITY.SPACE.ALL}?type=PROJECT`);
+                        }}
+                        className="text-white font-weight-bold"
+                    >
+                        Rejoindre un projet
+                    </Button>
+                )}
                 renderItem={list => (
                     <>
                         {list && list.length === 0 ? (

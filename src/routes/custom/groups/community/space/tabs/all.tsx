@@ -1,31 +1,41 @@
 import { connect } from 'react-redux';
+import { communityTypes } from 'Data';
 import GroupService from 'Services/groups';
-import Button from "@material-ui/core/Button";
+import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
 import CustomList from "Components/CustomList";
 import { setRequestGlobalAction } from 'Actions';
 import React, { useState, useEffect } from 'react';
-import { getGroupTypeLabel } from 'Helpers/helpers';
+import TextField from '@material-ui/core/TextField';
 import GroupDetails from './components/groupDetails';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import {NotificationManager} from 'react-notifications';
-import { GROUP, joinUrlWithParamsId } from 'Url/frontendUrl';
 import CommunityItemGrid from './components/communityItemGrid';
+import InputLabel from '@material-ui/core/InputLabel/InputLabel';
+import { Form, FormGroup, Input as InputStrap } from 'reactstrap';
 import SendJoinRequestModal from '../../../components/sendJoinRequestModal';
 
 const All = (props) => {
 
+    const [name, setName] = useState("");
     const [groups, setGroups] = useState([]);
     const [group, setGroup] = useState(null);
+    const [userReference, setUserReference] = useState("");
     const [showRequestModal, setShowRequestModal] = useState(false);
     const [showDetailsModal, setShowDetailsModal] = useState(false);
+    const [groupType, setGroupType] = useState(communityTypes.find(ct => ct.value === new URLSearchParams(props.location.search).get("type")));
 
     useEffect(() => {
         getGroups();
     }, []);
 
     const getGroups = () => {
-        props.setRequestGlobalAction(true),
-        GroupService.getCommunityDatas({ belongs: false })
+        let datas: any = {belongs: false}
+        if(name) datas.name = name;
+        if(groupType) datas.type = groupType.value;
+        if(userReference) datas.user_reference = userReference;
+        props.setRequestGlobalAction(true);
+        GroupService.getCommunityDatas(datas)
         .then(response => setGroups(response))
         .finally(() => props.setRequestGlobalAction(false))
     }
@@ -55,9 +65,67 @@ const All = (props) => {
 
     return (
         <>
+            <div className='d-flex flex-row justify-content-end align-items-center pr-30 mt-50'>
+                <FormGroup className="has-wrapper">
+                    <InputLabel className="text-left" htmlFor="label">
+                        Nom de la communauté
+                    </InputLabel>
+                    <InputStrap
+                        required
+                        id="label"
+                        type="text"
+                        name='label'
+                        value={name}
+                        className="input-lg"
+                        onChange={(e) => setName(e.target.value)}
+                    />
+                </FormGroup>
+                <FormGroup className="has-wrapper ml-10">
+                    <InputLabel className="text-left" htmlFor="userReference">
+                        Référence d'utilisateur
+                    </InputLabel>
+                    <InputStrap
+                        required
+                        type="text"
+                        id="userReference"
+                        name='userReference'
+                        value={userReference}
+                        className="input-lg"
+                        onChange={(e) => setUserReference(e.target.value)}
+                    />
+                </FormGroup>
+                <div className="col-md-2 col-sm-12 has-wrapper mb-30">
+                    <InputLabel className="text-left">
+                        Type de communauté
+                    </InputLabel>
+                    <Autocomplete
+                        value={groupType}
+                        options={communityTypes}
+                        id="combo-box-demo"
+                        onChange={(__, item) => {
+                            setGroupType(item);
+                        }}
+                        getOptionLabel={(option) => option.name}
+                        renderInput={(params) => <TextField {...params} variant="outlined" />}
+                    />
+                </div>
+                <FormGroup>
+                    <Button
+                        color="primary"
+                        variant="contained"
+                        onClick={() => {
+                            getGroups();
+                        }}
+                        className="text-white font-weight-bold"
+                    >
+                        Rechercher
+                    </Button>
+                </FormGroup>
+            </div>
             <CustomList
                 loading={false}
                 list={groups}
+                showSearch={false}
                 itemsFoundText={n => `${n} communauté.s trouvée.s`}
                 renderItem={list => (
                     <>

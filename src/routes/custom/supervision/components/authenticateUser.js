@@ -5,6 +5,7 @@ import { withRouter } from "react-router-dom";
 import { FormGroup, Button } from 'reactstrap';
 import { setRequestGlobalAction } from 'Actions';
 import { RctCardContent } from 'Components/RctCard';
+import { NotificationManager } from 'react-notifications';
 import Checkbox from "@material-ui/core/Checkbox/Checkbox";
 import DialogComponent from "Components/dialog/DialogComponent";
 import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
@@ -18,9 +19,10 @@ const AuthenticateUser = (props) => {
     const onSubmit = () => {
         props.setRequestGlobalAction(true);
         UserService.authenticate(props.user?.referralId).then(() => {
+            NotificationManager.success('Authentification réussie');
             props.onClose(true);
         }).catch((err) => {
-            console.log(err);
+            NotificationManager.error('Veuillez réessayer plus tard');
             props.onClose(false);
         }).finally(() => {
             setPieceReceived(false);
