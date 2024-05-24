@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { injectIntl } from "react-intl";
 import { NETWORK } from 'Url/frontendUrl';
 import { withRouter, Switch, Redirect, Route } from "react-router-dom";
+import details from './details';
 
 const Users = (props) => {
     const { match } = props;
@@ -12,6 +13,7 @@ const Users = (props) => {
             <>
                 <Switch>
                     <Route path={NETWORK.COVERAGE.USERS.LIST} component={List} />
+                    <Route path={NETWORK.COVERAGE.USERS.DETAILS} component={details} />
                     <Redirect exact from={`${match.url}/`} to={NETWORK.COVERAGE.USERS.LIST} />
                 </Switch>
             </>

@@ -3,12 +3,14 @@ import UserService from 'Services/users';
 import { Switch } from '@material-ui/core';
 import { withRouter } from "react-router-dom";
 import CustomList from "Components/CustomList";
+import Button from '@material-ui/core/Button';
 import { setRequestGlobalAction } from 'Actions';
 import React, { useState, useEffect } from 'react';
 import ConfirmBox from "Components/dialog/ConfirmBox"
 import TimeFromMoment from "Components/TimeFromMoment";
 import { NotificationManager } from "react-notifications";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
+import { joinUrlWithParamsId, NETWORK } from 'Url/frontendUrl';
 
 const List = (props) => {
 
@@ -86,6 +88,7 @@ const List = (props) => {
                                             <th className="fw-bold">Numéro utilisateur</th>
                                             <th className="fw-bold">Compte activé</th>
                                             <th className="fw-bold">Date activation</th>
+                                            <th className="fw-bold">Status</th>
                                             <th className="fw-bold">Actions</th>
                                         </tr>
                                     </thead>
@@ -141,6 +144,18 @@ const List = (props) => {
                                                             setShowConfirmBox(true);
                                                         }}
                                                     />
+                                                </td>
+                                                <td>
+                                                    <Button
+                                                        color="primary"
+                                                        variant="contained"
+                                                        className="text-white font-weight-bold"
+                                                        onClick={() => {
+                                                            props.history.push(joinUrlWithParamsId(NETWORK.COVERAGE.USERS.DETAILS, item.referralCode))
+                                                        }}
+                                                    >
+                                                        Détails
+                                                    </Button>
                                                 </td>
                                             </tr>
                                         ))}

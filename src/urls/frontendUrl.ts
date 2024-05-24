@@ -596,7 +596,8 @@ export const NETWORK = {
         },
         USERS: {
             SELF: '/network/coverage/users',
-            LIST: '/network/coverage/users/list'
+            LIST: '/network/coverage/users/list',
+            DETAILS: '/network/coverage/users/:id/details',
         }
     }
 } as const;
