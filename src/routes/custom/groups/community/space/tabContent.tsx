@@ -3,6 +3,7 @@ import All from './tabs/all';
 import Mines from './tabs/mine';
 import Chat from './tabs/chat';
 import Request from './tabs/request';
+import members from './tabs/members';
 import { connect } from "react-redux";
 import { GROUP } from "Url/frontendUrl";
 import { Redirect, Route, Switch, withRouter } from 'react-router-dom';
@@ -16,7 +17,7 @@ const TabContent = ({ match }) => {
                 <Route path={GROUP.COMMUNITY.SPACE.MINE} component={Mines} />
                 <Route path={GROUP.COMMUNITY.SPACE.MESSAGE} component={Chat} />
                 <Route path={GROUP.COMMUNITY.SPACE.REQUEST} component={Request} />
-                {/* <Route path={GROUP.COMMUNITY.SPACE.PENDING} component={Request} /> */}
+                <Route path={GROUP.COMMUNITY.SPACE.MEMBER} component={members} />
             </Switch>
         </div>
     )

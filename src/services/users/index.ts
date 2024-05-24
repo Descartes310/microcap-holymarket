@@ -20,6 +20,22 @@ export default class UserService {
         return makeRequest('get', Routes.USER_KYC(reference));
     }
 
+    static getBlogs(): Promise<any> {
+        return makeRequest('get', Routes.USER_BLOGS);
+    }
+
+    static getArticles(reference: string): Promise<any> {
+        return makeRequest('get', Routes.USER_ARTICLES(reference));
+    }
+
+    static getBlogSettings(): Promise<any> {
+        return makeRequest('get', Routes.GET_BLOG_SETTINGS);
+    }
+
+    static updateBlogSettings(data, config): Promise<any> {
+        return makeRequest('put', Routes.UPDATE_BLOG_SETTINGS, data, config);
+    }
+
     static confirmOTP(otp, data): Promise<any> {
         return makeRequest('put', Routes.CONFIRM_OTP(otp), data);
     }

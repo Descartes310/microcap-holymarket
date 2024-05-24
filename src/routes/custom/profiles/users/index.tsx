@@ -22,7 +22,8 @@ class Users extends Component<any, any> {
             else if (url.includes(PROFILE.USER.CARD)) return 2;
             else if (url.includes(PROFILE.USER.ACCESS)) return 3;
             else if (url.includes(PROFILE.USER.CONTACT)) return 4;
-            else if (url.includes(PROFILE.USER.INSTITUTION) && props.authUser.referralTypes.includes('OPERATOR')) return 5;
+            else if (url.includes(PROFILE.USER.BLOG)) return 5;
+            else if (url.includes(PROFILE.USER.INSTITUTION) && props.authUser.referralTypes.includes('OPERATOR')) return 6;
             else return 0;
         })(window.location.pathname);
 
@@ -41,7 +42,8 @@ class Users extends Component<any, any> {
                 case 2: return this.props.history.push(PROFILE.USER.CARD);
                 case 3: return this.props.history.push(PROFILE.USER.ACCESS);
                 case 4: return this.props.history.push(PROFILE.USER.CONTACT);
-                case 5: return this.props.history.push(PROFILE.USER.INSTITUTION);
+                case 5: return this.props.history.push(PROFILE.USER.BLOG);
+                case 6: return this.props.history.push(PROFILE.USER.INSTITUTION);
                 default: return this.props.history.push(PROFILE.USER.PERSONAL);
             }
         }
@@ -90,6 +92,11 @@ class Users extends Component<any, any> {
                                             icon={<i className="zmdi zmdi-account" />}
                                             label={"Mes contacts"}
                                             disabled={!this.context.can(Permissions.accountType.contact.name, Permissions)}
+                                        />
+                                        <Tab
+                                            icon={<i className="zmdi zmdi-account" />}
+                                            label={"Fil d'actualité"}
+                                            disabled={!this.context.can(Permissions.accountType.blog.name, Permissions)}
                                         />
                                         { authUser.referralTypes.includes('OPERATOR') && (
                                             <Tab

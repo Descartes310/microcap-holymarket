@@ -37,8 +37,8 @@ export default class SettingService {
         return makeRequest('get', Routes.GET_EVENTS);
     }
 
-    static getBlogTopics(isParent = false): Promise<any> {
-        return makeRequest('get', Routes.GET_BLOG_TOPICS, {parent: isParent});
+    static getBlogTopics(isParent = false, personal = false): Promise<any> {
+        return makeRequest('get', Routes.GET_BLOG_TOPICS, {parent: isParent, personal});
     }
 
     static createBlogTopic(data): Promise<any> {
@@ -57,9 +57,12 @@ export default class SettingService {
         return makeRequest('post', Routes.CREATE_EVENT, data);
     }
 
-
     static getAllArticles(): Promise<any> {
         return makeRequest('get', Routes.GET_ALL_ARTICLES);
+    }
+
+    static getMyArticles(data = {}): Promise<any> {
+        return makeRequest('get', Routes.GET_USER_ARTICLES, data);
     }
 
     static createArticle(data, config): Promise<any> {

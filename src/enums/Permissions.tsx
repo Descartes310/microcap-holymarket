@@ -29,6 +29,9 @@ export default class Permission extends BaseEnum {
         },    
         fiche: {
             "name": "USER_PROFILE_FICHE"
+        },
+        blog: {
+            "name": "USER_PROFILE_BLOG"
         }
     };
 

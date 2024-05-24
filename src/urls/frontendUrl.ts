@@ -204,7 +204,8 @@ export const GROUP = {
             MINE: '/groups/communities/space/mine',
             REQUEST: '/groups/communities/space/requests',
             PENDING: '/groups/communities/space/pending',
-            MESSAGE: '/groups/communities/space/messages'
+            MESSAGE: '/groups/communities/space/messages',
+            MEMBER: '/groups/communities/space/members'
         },
         MANAGEMENT: {
             SELF: '/groups/communities/management',
@@ -303,6 +304,7 @@ export const PROFILE = {
         PERSONAL: "/profiles/users/personal",
         INSTITUTION: "/profiles/users/institutions",
         ACCOUNTS: "/profiles/users/account",
+        BLOG: "/profiles/users/blog",
     },
     ASSISTANCE: {
         SELF: "/profiles/assistance",

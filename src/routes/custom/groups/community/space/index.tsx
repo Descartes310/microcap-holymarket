@@ -16,9 +16,9 @@ class Requests extends Component<any, any> {
         const defaultState = (function (url) {
             if (url.includes(GROUP.COMMUNITY.SPACE.MINE)) return 0;
             else if (url.includes(GROUP.COMMUNITY.SPACE.ALL)) return 1;
-            else if (url.includes(GROUP.COMMUNITY.SPACE.REQUEST)) return 2;
-            else if (url.includes(GROUP.COMMUNITY.SPACE.MESSAGE)) return 3;
-            else if (url.includes(GROUP.COMMUNITY.SPACE.PENDING)) return 4;
+            else if (url.includes(GROUP.COMMUNITY.SPACE.MEMBER)) return 2;
+            else if (url.includes(GROUP.COMMUNITY.SPACE.REQUEST)) return 3;
+            else if (url.includes(GROUP.COMMUNITY.SPACE.MESSAGE)) return 4;
             else return 0;
         })(window.location.pathname);
 
@@ -34,9 +34,9 @@ class Requests extends Component<any, any> {
             switch (value) {
                 case 0: return this.props.history.push(GROUP.COMMUNITY.SPACE.MINE);
                 case 1: return this.props.history.push(GROUP.COMMUNITY.SPACE.ALL);
-                case 2: return this.props.history.push(GROUP.COMMUNITY.SPACE.REQUEST);
-                case 3: return this.props.history.push(GROUP.COMMUNITY.SPACE.MESSAGE);
-                case 4: return this.props.history.push(GROUP.COMMUNITY.SPACE.PENDING);
+                case 2: return this.props.history.push(GROUP.COMMUNITY.SPACE.MEMBER);
+                case 3: return this.props.history.push(GROUP.COMMUNITY.SPACE.REQUEST);
+                case 4: return this.props.history.push(GROUP.COMMUNITY.SPACE.MESSAGE);
                 default: return this.props.history.push(GROUP.COMMUNITY.SPACE.MINE);
             }
         }
@@ -66,7 +66,11 @@ class Requests extends Component<any, any> {
                                         />
                                         <Tab
                                             icon={<i className="zmdi zmdi-cloud-outline-alt"></i>}
-                                            label={"Réseau MicroCap"}
+                                            label={"Communautés"}
+                                        />
+                                        <Tab
+                                            icon={<i className="zmdi zmdi-cloud-outline-alt"></i>}
+                                            label={"Membres"}
                                         />
                                         <Tab
                                             icon={<i className="zmdi zmdi-time-restore"></i>}
@@ -76,10 +80,6 @@ class Requests extends Component<any, any> {
                                             icon={<i className="zmdi zmdi-comment-outline"></i>}
                                             label={"Messagerie"}
                                         />
-                                        {/* <Tab
-                                            icon={<i className="zmdi zmdi-time"></i>}
-                                            label={"En attentes"}
-                                        /> */}
                                     </Tabs>
                                 </div>
                             </div>

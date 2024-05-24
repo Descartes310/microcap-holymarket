@@ -14,6 +14,7 @@ export const GET_EVENTS = 'api/settings/events/list';
 
 export const CREATE_ARTICLE = 'api/settings/articles';
 export const GET_ALL_ARTICLES = 'api/settings/articles';
+export const GET_USER_ARTICLES = 'api/settings/articles/mines';
 export const GET_ACTIVE_ARTICLES = 'api/settings/articles/list';
 export const GET_BLOG_TOPICS = 'api/settings/articles/topics/list';
 export const CREATE_BLOG_TOPIC = 'api/settings/articles/topics/create';
