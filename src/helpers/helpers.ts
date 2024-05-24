@@ -790,9 +790,9 @@ export const translatePermissionFolder = (path) => {
             return 'Comptes';
         case 'ROLE':
             return 'Rôles';
-        case 'GROUPS':
+        case 'ORGANISATION':
             return 'Organisations';
-        case 'ADMIN':
+        case 'ADMINISTRATION':
             return 'Administration';
         case 'MEMBER':
             return 'Membres';
@@ -800,12 +800,12 @@ export const translatePermissionFolder = (path) => {
             return 'Configuration';
         case 'DETAILS':
             return 'Détails';
-        case 'MARKETPLACES':
+        case 'MARKETPLACE':
             return 'Marketplace';
-        case 'SETTINGS':
+        case 'SETTING':
             return 'Paramètrage';
         case 'STORE':
-            return 'Ma boutique';
+            return 'Commercant';
         case 'ACCESS':
             return 'Accès';
         case 'PROJECTS':
@@ -849,7 +849,7 @@ export const translatePermissionFolder = (path) => {
         case 'PSGAV':
             return 'PSGAV';
         case 'COMMUNITY':
-            return 'Gestion des communautés';
+            return 'Communauté';
         case 'ASSETS':
             return 'Gestion des actifs';
         case 'SUPERVISION':
@@ -858,7 +858,7 @@ export const translatePermissionFolder = (path) => {
             return 'Projets';
         case 'SYSTEM':
             return 'Système';
-        case 'CONFIG':
+        case 'CONFIGURATION':
             return 'Configuration';
         case 'ACCESSORIES':
             return 'Accessoires';
@@ -874,6 +874,18 @@ export const translatePermissionFolder = (path) => {
             return 'Réseau utilisateur';
         case 'USER':
             return 'Utilisateurs';
+        case 'SOCIALNETWORK':
+            return 'Réseau social';
+        case 'PERSONAL_PROFILE':
+            return 'Profil personnel';
+        case 'SHOP':
+            return 'MicroCap Store';
+        case 'ASSIST':
+            return 'Assistance';
+        case 'MENU':
+            return 'Menu';
+        case 'EXTENSION':
+            return 'Extensions';
         default:
             return path;
     }

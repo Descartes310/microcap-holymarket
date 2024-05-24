@@ -187,16 +187,7 @@ export default [
                Permission.general.counter.name,
             ],
             "profiles": ['BROKER'],
-         },
-         // {
-         //    "menu_title": "Mes caisses",
-         //    "new_item": false,
-         //    "path": BROKER.CASHDESK.LIST,
-         //    "permissions": [
-         //       Permission.broker.cashdesk.name,
-         //    ],
-         //    "profiles": ['BROKER'],
-         // },
+         }
       ]
    },
    {
@@ -232,15 +223,6 @@ export default [
             "profiles": ['GROUP'],
          },
       ],
-   },
-   {
-      "path": GROUP.DETAILS.VIEW_SELF,
-      "menu_title": "Vitrine membre",
-      "menu_icon": "zmdi zmdi-info-outline",
-      "new_item": false,
-      "child_routes": null,
-      "profiles": ['GROUP'],
-      "permissions": [Permission.group.details.name],
    },
    {
       "path": GROUP.DETAILS.MEMBERS,
@@ -766,7 +748,7 @@ export default [
             "child_routes": null
          },
          {
-            "menu_title": "Objet chèque",
+            "menu_title": "Chequier",
             "new_item": false,
             "path": BANK.CHEQUE_TOPIC.LIST,
             "permissions": null,
