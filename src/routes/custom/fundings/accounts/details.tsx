@@ -93,7 +93,7 @@ const Details = (props) => {
     }
 
     const getDetails = (keys) => {
-        const details = account?.details.find(d => keys.includes(d.type));
+        const details = account?.details?.find(d => keys.includes(d.type));
         return details ? details.value : null
     }
 
