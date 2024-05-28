@@ -75,7 +75,7 @@ class Catalogues extends Component<any, any> {
                                         { this.props.authUser.referralTypes.includes('PROVIDER_INTERMEDIARY') && (
                                             <Tab
                                                 icon={<i className="zmdi zmdi-home" />}
-                                                label={"Points de service"}
+                                                label={"Agences"}
                                             />
                                         )}
                                         { this.props.authUser.referralTypes.includes('PROVIDER_INTERMEDIARY') && (

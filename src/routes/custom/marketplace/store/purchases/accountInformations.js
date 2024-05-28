@@ -25,6 +25,7 @@ class AccountInformationModal extends Component {
         telephone: null,
         email: null,
         key: null,
+        number: null,
         referralCode: null,
         member: null
     }
@@ -45,18 +46,16 @@ class AccountInformationModal extends Component {
     }
 
     onSubmit = () => {
-        const { iban, agency, bic, referralCode, key, member } = this.state;
+        const { iban, agency, bic, referralCode, key, number, member } = this.state;
 
-        console.log(iban, agency, bic, referralCode, member);
-
-        if(!iban || !bic || !agency || !referralCode || !member) {
+        if(!iban || !bic || !agency || !referralCode || !member || !key || !number) {
             NotificationManager.error('Toutes les informations du formulaire sont requises');
             return;
         }
 
         let data = {
             iban, bic, agency_code: agency.code, 
-            referralCode, status: true,
+            referralCode, status: true, account_number: number, key,
             use_domiciliation_datas: true, agency_name: agency.label
         };
 
@@ -75,7 +74,7 @@ class AccountInformationModal extends Component {
     render() {
 
         const { onClose, show, title, authUser } = this.props;
-        const { iban, agency, agencies, bic, referralCode, member } = this.state;
+        const { iban, agency, agencies, bic, key, number } = this.state;
 
         return (
             <DialogComponent
@@ -127,6 +126,34 @@ class AccountInformationModal extends Component {
                             className="input-lg"
                             onChange={(e) => this.setState({ bic: e.target.value })}
                         />
+                    </FormGroup>                    
+                    <FormGroup className="has-wrapper">
+                        <InputLabel className="text-left" htmlFor="number">
+                            Numéro de compte
+                        </InputLabel>
+                        <InputStrap
+                            required
+                            type="text"
+                            id="number"
+                            name='number'
+                            value={number}
+                            className="input-lg"
+                            onChange={(e) => this.setState({ number: e.target.value })}
+                        />
+                    </FormGroup>                    
+                    <FormGroup className="has-wrapper">
+                        <InputLabel className="text-left" htmlFor="key">
+                            Clé
+                        </InputLabel>
+                        <InputStrap
+                            required
+                            type="text"
+                            id="key"
+                            name='key'
+                            value={key}
+                            className="input-lg"
+                            onChange={(e) => this.setState({ key: e.target.value })}
+                        />
                     </FormGroup>
 
                     <h2>Domiciliation</h2>
@@ -161,7 +188,7 @@ class AccountInformationModal extends Component {
 
                     <h2>Conseiller</h2>
 
-                    <UserSelect onChange={(membership, user) => {
+                    <UserSelect fromMyOrganisation={true} onChange={(membership, user) => {
                         this.setState({ referralCode: membership, member: user });
                     }}/>
                     

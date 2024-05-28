@@ -1290,3 +1290,18 @@ export const objToString = (obj) => {
     }
     return str+'}';
 }
+
+export const PAYMENT_METHODS = [
+    {
+        label: 'Règlement par cession d\'effets',
+        value: 'EFFECT_SESSION'
+    },
+    {
+        label: 'Règlement par compensation',
+        value: 'COMPENSATION'
+    }
+];
+
+export const getReglementMethodLabel = (value) => {
+    return PAYMENT_METHODS.find(d => d.value == value)?.label
+}

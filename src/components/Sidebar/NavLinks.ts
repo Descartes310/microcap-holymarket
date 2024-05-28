@@ -171,7 +171,7 @@ export default [
             "profiles": ['BROKER'],
          },
          {
-            "menu_title": "Agents",
+            "menu_title": "Gestionnaires",
             "new_item": false,
             "path": BROKER.AGENCY.LIST,
             "permissions": [

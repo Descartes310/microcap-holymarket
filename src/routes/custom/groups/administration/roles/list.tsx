@@ -86,7 +86,7 @@ const Roles = (props) => {
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{item.permissions.length} permission.s</h4>
+                                                            <h4 className="m-0 fw-bold text-dark">{item.permissionCount} permission.s</h4>
                                                         </div>
                                                     </div>
                                                 </td>

@@ -7,34 +7,21 @@ import { withRouter } from "react-router-dom";
 import { setRequestGlobalAction } from 'Actions';
 import React, { useState, useEffect } from 'react';
 import TextField from '@material-ui/core/TextField';
-import { getReferralTypeLabel } from 'Helpers/helpers';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { NotificationManager } from 'react-notifications';
 import UserAccountTypeService from 'Services/account-types';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { Form, FormGroup, Input as InputStrap } from 'reactstrap';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
+import { getReferralTypeLabel, PAYMENT_METHODS } from 'Helpers/helpers';
 
 const Create = (props) => {
-
-    const PAYMENT_METHODS = [
-        {
-            label: 'Règlement par cession d\'effets',
-            value: 'EFFECT_SESSION'
-        },
-        {
-            label: 'Règlement par compensation',
-            value: 'COMPENSATION'
-        }
-    ]
 
     const [name, setName] = useState(null);
     const [type, setType] = useState(null);
     const [types, setTypes] = useState([]);
     const [agents, setAgents] = useState([]);
-    const [member, setMember] = useState(null);
-    const [category, setCategory] = useState(null);
-    const [categories, setCategories] = useState([]);  
+    const [member, setMember] = useState(null); 
     const [prestations, setPrestations] = useState([]);
     const [membership, setMembership] = useState(null);
     const [paymentMethod, setPaymentMethod] = useState(null);
@@ -42,20 +29,19 @@ const Create = (props) => {
 
     useEffect(() => {
         getTypes();
-        getCategories();
         getPrestations();
         getPotentialAgents();
     }, []);
 
     const findUserByMembership = () => {
         props.setRequestGlobalAction(true);
-        UserService.findUserByReference(membership)
+        UserService.findUserByReference(membership, {from_group: true})
         .then(response => {
-            if(response.referralType === 'PERSON' || 
-                (props.authUser.referralTypes.includes('PROVIDER_INTERMEDIARY') && props.authUser.referralId === response.referralCode))
+            if(response.referralType === 'PERSON' || (props.authUser.referralTypes.includes('PROVIDER_INTERMEDIARY') && props.authUser.referralId === response.referralCode)) {
                 setMember(response);
-            else 
+            } else {
                 NotificationManager.error("Uniquement les personnes physiques sont autorisées");
+            }
         })
         .catch((err) => {
             console.log(err);
@@ -66,16 +52,9 @@ const Create = (props) => {
         })
     }
 
-    const getCategories = () => {
-        props.setRequestGlobalAction(true),
-        UserAccountTypeService.getAccountTypeCategories()
-        .then(response => setCategories(response))
-        .finally(() => props.setRequestGlobalAction(false))
-    }    
-    
     const getTypes = () => {
         props.setRequestGlobalAction(true),
-        UserAccountTypeService.getAccountTypes()
+        UserAccountTypeService.getAccountTypes({based_from_member: true})
         .then(response => setTypes(response))
         .finally(() => props.setRequestGlobalAction(false))
     }
@@ -216,32 +195,16 @@ const Create = (props) => {
 
                     <div className="col-md-12 col-sm-12 has-wrapper mb-30">
                         <InputLabel className="text-left">
-                            Catégorie du mandat
-                        </InputLabel>
-                        <Autocomplete
-                            id="combo-box-demo"
-                            options={categories}
-                            value={category}
-                            onChange={(__, item) => {
-                                setCategory(item);
-                            }}
-                            getOptionLabel={(option) => option.label}
-                            renderInput={(params) => <TextField {...params} variant="outlined" />}
-                        />
-                    </div>
-
-                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
-                        <InputLabel className="text-left">
                             Type du mandat
                         </InputLabel>
                         <Autocomplete
                             value={type}
+                            options={types}
                             id="combo-box-demo"
                             onChange={(__, item) => {
                                 setType(item);
                             }}
                             getOptionLabel={(option) => option.label}
-                            options={types.filter(t => t.userAccountTypeCategory.id === category?.id)}
                             renderInput={(params) => <TextField {...params} variant="outlined" />}
                         />
                     </div>

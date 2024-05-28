@@ -109,7 +109,7 @@ const Create = (props) => {
                     </FormGroup>
                     <div className="col-md-12 col-sm-12 has-wrapper mb-30">
                         <InputLabel className="text-left">
-                            Agent associé
+                            Gestionnaire associé
                         </InputLabel>
                         <Autocomplete
                             options={agencies}
@@ -123,8 +123,9 @@ const Create = (props) => {
                         />
                     </div>
                     <FormGroup className="has-wrapper">
+                        {/* Personnne en charge d'organiser l'activité et d'animé le point de service pour le compte du gestionnaire */}
                         <InputLabel className="text-left" htmlFor="reference">
-                            Référence du responsable
+                            Référence du coordonateur 
                         </InputLabel>
                         <InputStrap
                             required

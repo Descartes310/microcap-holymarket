@@ -5,6 +5,7 @@ import { withRouter } from "react-router-dom";
 import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
 import React, { useState, useEffect } from 'react';
+import { getReglementMethodLabel } from 'Helpers/helpers';
 
 const List = (props) => {
 
@@ -31,13 +32,13 @@ const List = (props) => {
                 list={parties}
                 loading={false}
                 onAddClick={() => goToCreate()}
-                itemsFoundText={n => `${n} points de services`}
+                itemsFoundText={n => `${n} agences`}
                 renderItem={list => (
                     <>
                         {list && list.length === 0 ? (
                             <div className="d-flex justify-content-center align-items-center py-50">
                                 <h4>
-                                    Aucun point trouvé
+                                    Aucune agence trouvée
                                 </h4>
                             </div>
                         ) : (
@@ -46,6 +47,7 @@ const List = (props) => {
                                     <thead>
                                         <tr>
                                             <th className="fw-bold">Nom commercial</th>
+                                            <th className="fw-bold">Méthode de règlement</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -55,6 +57,13 @@ const List = (props) => {
                                                     <div className="media">
                                                         <div className="media-body pt-10">
                                                             <h4 className="m-0 fw-bold text-dark">{item.commercialName}</h4>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="media">
+                                                        <div className="media-body pt-10">
+                                                            <h4 className="m-0 fw-bold text-dark">{getReglementMethodLabel(item.paymentMode)}</h4>
                                                         </div>
                                                     </div>
                                                 </td>

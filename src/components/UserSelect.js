@@ -21,7 +21,7 @@ class UserSelect extends Component {
 
     findUserByMembership = () => {
         this.props.setRequestGlobalAction(true);
-        UserService.findUserByReference(this.state.membership)
+        UserService.findUserByReference(this.state.membership, {from_group: this.props.fromMyOrganisation })
         .then(response => {
             this.setState({ member: response }, () => {
                 if(this.state.member != null) {

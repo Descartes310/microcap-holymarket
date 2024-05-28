@@ -25,19 +25,16 @@ const Create = (props) => {
     const [counters, setCounters] = useState([]);
     const [counter, setCounter] = useState(null);
     const [member, setMember] = useState(null);
-    const [category, setCategory] = useState(null);
-    const [categories, setCategories] = useState([]);  
     const [membership, setMembership] = useState(null);
 
     useEffect(() => {
         getTypes();
-        getCategories();
         getCounters();
     }, []);
 
     const findUserByMembership = () => {
         props.setRequestGlobalAction(true);
-        UserService.findUserByReference(membership)
+        UserService.findUserByReference(membership, {from_group: true})
         .then(response => {
             if(response.referralType === 'PERSON' || 
                 (props.authUser.referralTypes.includes('PROVIDER_INTERMEDIARY') && props.authUser.referralId === response.referralCode))
@@ -59,18 +56,11 @@ const Create = (props) => {
         BankService.getCounters()
         .then(response => setCounters(response))
         .finally(() => props.setRequestGlobalAction(false))
-    }
-
-    const getCategories = () => {
-        props.setRequestGlobalAction(true),
-        UserAccountTypeService.getAccountTypeCategories()
-        .then(response => setCategories(response))
-        .finally(() => props.setRequestGlobalAction(false))
-    }    
+    }  
     
     const getTypes = () => {
         props.setRequestGlobalAction(true),
-        UserAccountTypeService.getAccountTypes()
+        UserAccountTypeService.getAccountTypes({based_from_member: true})
         .then(response => setTypes(response))
         .finally(() => props.setRequestGlobalAction(false))
     }
@@ -185,22 +175,6 @@ const Create = (props) => {
 
                     <div className="col-md-12 col-sm-12 has-wrapper mb-30">
                         <InputLabel className="text-left">
-                            Catégorie d'accès
-                        </InputLabel>
-                        <Autocomplete
-                            id="combo-box-demo"
-                            options={categories}
-                            value={category}
-                            onChange={(__, item) => {
-                                setCategory(item);
-                            }}
-                            getOptionLabel={(option) => option.label}
-                            renderInput={(params) => <TextField {...params} variant="outlined" />}
-                        />
-                    </div>
-
-                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
-                        <InputLabel className="text-left">
                             Type d'accès
                         </InputLabel>
                         <Autocomplete
@@ -210,7 +184,7 @@ const Create = (props) => {
                                 setType(item);
                             }}
                             getOptionLabel={(option) => option.label}
-                            options={types.filter(t => t.userAccountTypeCategory.id === category?.id)}
+                            options={types}
                             renderInput={(params) => <TextField {...params} variant="outlined" />}
                         />
                     </div>

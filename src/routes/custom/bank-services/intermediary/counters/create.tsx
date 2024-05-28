@@ -7,26 +7,15 @@ import { withRouter } from "react-router-dom";
 import { setRequestGlobalAction } from 'Actions';
 import React, { useState, useEffect } from 'react';
 import TextField from '@material-ui/core/TextField';
-import { getReferralTypeLabel } from 'Helpers/helpers';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { NotificationManager } from 'react-notifications';
 import UserAccountTypeService from 'Services/account-types';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { Form, FormGroup, Input as InputStrap } from 'reactstrap';
+import { getReferralTypeLabel, PAYMENT_METHODS } from 'Helpers/helpers';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
 
 const Create = (props) => {
-
-    const PAYMENT_METHODS = [
-        {
-            label: 'Règlement par cession d\'effets',
-            value: 'EFFECT_SESSION'
-        },
-        {
-            label: 'Règlement par compensation',
-            value: 'COMPENSATION'
-        }
-    ]
 
     const [type, setType] = useState(null);
     const [types, setTypes] = useState([]);
@@ -36,8 +25,6 @@ const Create = (props) => {
     const [counters, setCounters] = useState([]);
     const [counter, setCounter] = useState(null);
     const [member, setMember] = useState(null);
-    const [category, setCategory] = useState(null);
-    const [categories, setCategories] = useState([]);  
     const [membership, setMembership] = useState(null);
     const [paymentMethod, setPaymentMethod] = useState(null); 
 
@@ -46,7 +33,6 @@ const Create = (props) => {
         if(props.authUser.referralTypes.includes('PROVIDER_INTERMEDIARY')) {
             getParties();
         }
-        getCategories();
     }, []);
 
     useEffect(() => {
@@ -91,23 +77,16 @@ const Create = (props) => {
         .finally(() => props.setRequestGlobalAction(false))
     }
 
-    const getCategories = () => {
-        props.setRequestGlobalAction(true),
-        UserAccountTypeService.getAccountTypeCategories()
-        .then(response => setCategories(response))
-        .finally(() => props.setRequestGlobalAction(false))
-    }    
-    
     const getTypes = () => {
         props.setRequestGlobalAction(true),
-        UserAccountTypeService.getAccountTypes()
+        UserAccountTypeService.getAccountTypes({based_from_member: true})
         .then(response => setTypes(response))
         .finally(() => props.setRequestGlobalAction(false))
     }
 
     const onSubmit = () => {
 
-        if(!member || !type || !paymentMethod || !name || ((!party || !counter) && props.authUser.referralTypes.includes('PROVIDER_INTERMEDIARY'))) {
+        if(!member || !type || !paymentMethod || !name || (!party && props.authUser.referralTypes.includes('PROVIDER_INTERMEDIARY'))) {
             NotificationManager.error("Les informations renseignées sont incompletes ou incorrectes");
             return;
         }
@@ -123,7 +102,7 @@ const Create = (props) => {
 
         if(props.authUser.referralTypes.includes('PROVIDER_INTERMEDIARY')) {
             data.party_reference = party.reference;
-            data.counter_reference = counter.reference
+            // data.counter_reference = counter.reference
         }
 
         BankService.createCounter(data).then(() => {
@@ -215,7 +194,7 @@ const Create = (props) => {
                                     renderInput={(params) => <TextField {...params} variant="outlined" />}
                                 />
                             </div>
-                            <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                            {/* <div className="col-md-12 col-sm-12 has-wrapper mb-30">
                                 <InputLabel className="text-left">
                                     Guichets potentiels
                                 </InputLabel>
@@ -229,7 +208,7 @@ const Create = (props) => {
                                     getOptionLabel={(option) => option.label}
                                     renderInput={(params) => <TextField {...params} variant="outlined" />}
                                 />
-                            </div>
+                            </div> */}
                         </>
                     )}
 
@@ -251,22 +230,6 @@ const Create = (props) => {
 
                     <div className="col-md-12 col-sm-12 has-wrapper mb-30">
                         <InputLabel className="text-left">
-                            Catégorie d'accès
-                        </InputLabel>
-                        <Autocomplete
-                            id="combo-box-demo"
-                            options={categories}
-                            value={category}
-                            onChange={(__, item) => {
-                                setCategory(item);
-                            }}
-                            getOptionLabel={(option) => option.label}
-                            renderInput={(params) => <TextField {...params} variant="outlined" />}
-                        />
-                    </div>
-
-                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
-                        <InputLabel className="text-left">
                             Type d'accès
                         </InputLabel>
                         <Autocomplete
@@ -276,7 +239,7 @@ const Create = (props) => {
                                 setType(item);
                             }}
                             getOptionLabel={(option) => option.label}
-                            options={types.filter(t => t.userAccountTypeCategory.id === category?.id)}
+                            options={types}
                             renderInput={(params) => <TextField {...params} variant="outlined" />}
                         />
                     </div>

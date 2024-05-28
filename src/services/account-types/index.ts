@@ -20,8 +20,8 @@ export default class UserAccountTypeService {
         return makeRequest('get', Routes.FIND_ACCOUNT_TYPE_CATEGORY(id));
     }
 
-    static getAccountTypes(): Promise<any> {
-        return makeRequest('get', Routes.GET_ACCOUNT_TYPES);
+    static getAccountTypes(data = null): Promise<any> {
+        return makeRequest('get', Routes.GET_ACCOUNT_TYPES, data);
     }
 
     static createAccountType(data: any): Promise<any> {

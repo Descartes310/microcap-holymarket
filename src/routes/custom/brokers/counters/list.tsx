@@ -51,7 +51,6 @@ const List = (props) => {
                                             <th className="fw-bold">Description</th>
                                             <th className="fw-bold">Responsable</th>
                                             <th className="fw-bold">Solde</th>
-                                            <th className="fw-bold">Agence</th>
                                             <th className="fw-bold">Actions</th>
                                         </tr>
                                     </thead>
@@ -75,7 +74,7 @@ const List = (props) => {
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <p className="m-0 text-dark">{item.userName}</p>
+                                                            <p className="m-0 text-dark">{item.agency.label}</p>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -83,13 +82,6 @@ const List = (props) => {
                                                     <div className="media">
                                                         <div className="media-body pt-10">
                                                             <p className="m-0 text-dark">{getPriceWithCurrency(item.balance)}</p>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div className="media">
-                                                        <div className="media-body pt-10">
-                                                            <p className="m-0 text-dark">{item.agency.label}</p>
                                                         </div>
                                                     </div>
                                                 </td>

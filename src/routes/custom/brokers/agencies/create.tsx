@@ -24,7 +24,7 @@ const Create = (props) => {
         if (!reference)
             return;
         props.setRequestGlobalAction(true),
-            UserService.findUserByReference(reference)
+            UserService.findUserByReference(reference, {from_group: true})
                 .then(response => setMember(response))
                 .catch(err => {
                     setMember(null);
@@ -59,7 +59,7 @@ const Create = (props) => {
     return (
         <>
             <PageTitleBar
-                title={"Création d'un agent"}
+                title={"Création d'un gestionnaire"}
             />
             <RctCollapsibleCard>
                 <Form onSubmit={onSubmit}>
@@ -93,7 +93,7 @@ const Create = (props) => {
                     </FormGroup>
                     <FormGroup className="has-wrapper">
                         <InputLabel className="text-left" htmlFor="reference">
-                            Référence du responsable
+                            Référence du gestionnaire
                         </InputLabel>
                         <InputStrap
                             required

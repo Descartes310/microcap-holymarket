@@ -5,6 +5,7 @@ import { withRouter } from "react-router-dom";
 import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
 import React, { useState, useEffect } from 'react';
+import {getReglementMethodLabel} from 'Helpers/helpers';
 
 const List = (props) => {
 
@@ -47,6 +48,7 @@ const List = (props) => {
                                         <tr>
                                             <th className="fw-bold">Désignation</th>
                                             <th className="fw-bold">Description</th>
+                                            <th className="fw-bold">Méthode de règlement</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -63,6 +65,13 @@ const List = (props) => {
                                                     <div className="media">
                                                         <div className="media-body pt-10">
                                                             <h4 className="m-0 fw-bold text-dark">{item.description}</h4>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="media">
+                                                        <div className="media-body pt-10">
+                                                            <h4 className="m-0 fw-bold text-dark">{getReglementMethodLabel(item.paymentMode)}</h4>
                                                         </div>
                                                     </div>
                                                 </td>
