@@ -434,3 +434,24 @@ export const territoriesTypes = () => {
         }
     ];
 }
+export const productSpecialTypes = () => {
+    return [
+        {
+            label: "Pas de type spécial", value: 'NONE'
+        }, {
+            label: "Djangui Plan", value: "CODEV"
+        }, {
+            label: "Deal Plan", value: "CODEV_DEAL_PLAN"
+        }, {
+            label: "Pass MicroCap", value: "PASS"
+        }, {
+            label: "Carnet transactionnel", value: "TRANSACTION_BOOK"
+        }, {
+            label: "Compte compartimenté", value: "SEGRAGATED_ACCOUNT"
+        }
+    ];
+}
+
+export const getProductSpecialTypeLabel = (value) => {
+    return productSpecialTypes().find(d => d.value == value)?.label
+}

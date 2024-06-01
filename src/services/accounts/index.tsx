@@ -97,4 +97,8 @@ export default class AccountService {
     static deleteSynchronisation(synchronisation: string, synchronised: string): Promise<any> {
         return makeRequest('delete', Routes.REMOVE_SYNCHRONISATION(synchronisation, synchronised));
     }
+
+    static getAccountActivationDetails(reference: string): Promise<any> {
+        return makeRequest('get', Routes.FIND_ACTIVATION_ACCOUNT_DETAILS(reference));
+    }
 }

@@ -24,6 +24,10 @@ export default class ProductService {
         return makeRequest('get', Routes.FIND_PRODUCT_MODEL(reference));
     }
 
+    static findProductModelAggregations(reference: any): Promise<any> {
+        return makeRequest('get', Routes.FIND_AGGREGATION_PRODUCT_MODELS(reference));
+    }
+
     static getProductModelAvailables(): Promise<any> {
         return makeRequest('get', Routes.GET_PRODUCT_MODEL_AVAILABLES);
     }

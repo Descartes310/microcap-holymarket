@@ -20,6 +20,7 @@ import { Form, FormGroup, Input as InputStrap } from 'reactstrap';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
 import { getIndirectSaleProcess, uneditableProductModelType } from 'Helpers/datas';
 import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
+import AccountVentilation from 'Components/Product/Ventilation/AccountVentilation';
 
 const fileTypes = ["JPG", "PNG", "GIF", "JPEG"];
 
@@ -35,6 +36,7 @@ const Update = (props) => {
     const [product, setProduct] = useState(null);
     const [userFiles, setUserFiles] = useState([]);
     const [updatable, setUpdatable] = useState(true);
+    const [aggregations, setAggregations] = useState([]);
     const [description, setDescription] = useState('');
     const [selectedPieces, setSelectedPieces] = useState([]);
     const [isIndirectSell, setIsIndirectSell] = useState(false);
@@ -60,6 +62,7 @@ const Update = (props) => {
             setRange(getProductRanges().find(pr => pr.value === response.range));
             setIsIndirectSell(response?.mirrorAccount || response?.account);
             setUpdatable(!uneditableProductModelType.includes(response.specialType));
+            getAggregations();
         })
         .finally(() => props.setRequestGlobalAction(false))
     }
@@ -80,6 +83,15 @@ const Update = (props) => {
                 .finally(() => props.setRequestGlobalAction(false))
     }
 
+    const getAggregations = () => {
+        props.setRequestGlobalAction(true);
+        ProductService.findProductModelAggregations(product.reference)
+            .then(response => setAggregations(response.map(a => {
+                return {id: a.id, label: a.label, percentage: 0};
+            })))
+            .finally(() => props.setRequestGlobalAction(false))
+    }
+
     const onSubmit = () => {
         if (
             !label ||
@@ -90,6 +102,11 @@ const Update = (props) => {
             !product
         ) {
             NotificationManager.error('Le formulaire est mal renseigné');
+            return;
+        }
+
+        if(['SEGRAGATED_ACCOUNT'].includes(product?.specialProduct) && aggregations.reduce((sum, item) => sum+item.percentage, 0) !== 100) {
+            NotificationManager.error('Ventilation incorrecte');
             return;
         }
 
@@ -127,6 +144,11 @@ const Update = (props) => {
             if(selectedPieces.length > 0) {
                 data.indirect_sale_pieces = selectedPieces.map(p => p.reference).join(',');
             }
+        }
+
+        if(['SEGRAGATED_ACCOUNT'].includes(product?.specialProduct) && aggregations.length > 0) {
+            data.aggregations = aggregations.map(a => a.id);
+            data.ventilations = aggregations.map(a => Number(a.percentage));
         }
 
         props.setRequestGlobalAction(true);
@@ -360,6 +382,27 @@ const Update = (props) => {
                                 </div>
                             </div>
                         )}
+
+
+                        { ['SEGRAGATED_ACCOUNT'].includes(product?.specialProduct) && aggregations.length > 0 && (
+                            <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                                <InputLabel className="text-left">
+                                    Configurer les compartiments
+                                </InputLabel>
+                                <AccountVentilation 
+                                    accounts={aggregations}
+                                    onSubmit={(item) => {
+                                        setAggregations(aggregations.map(aggregation => {
+                                            if(aggregation.id === item.id) {
+                                                return {...aggregation, percentage: item.percentage};
+                                            }
+                                            return aggregation;
+                                        }));
+                                    }}
+                                />
+                            </div>
+                        )}
+
                         <FormGroup>
                             <Button
                                 color="primary"

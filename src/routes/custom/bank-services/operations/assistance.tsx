@@ -4,6 +4,7 @@ import UnitService from 'Services/units';
 import BankService from 'Services/banks';
 import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
+import AccountService from 'Services/accounts';
 import { setRequestGlobalAction } from 'Actions';
 import React, { useEffect, useState } from 'react';
 import TextField from '@material-ui/core/TextField';
@@ -12,11 +13,14 @@ import { getReferralTypeLabel } from 'Helpers/helpers';
 import DepositTickets from './components/depositTickets';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { NotificationManager } from 'react-notifications';
+import Checkbox from "@material-ui/core/Checkbox/Checkbox";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import VerifyUserOTPModal from './components/verifyUserOTPModal';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { Form, FormGroup, Input as InputStrap } from 'reactstrap';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
+import AccountVentilation from 'Components/Product/Ventilation/AccountVentilation';
+import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
 
 const Create = (props) => {
 
@@ -35,6 +39,8 @@ const Create = (props) => {
     const [prestations, setPrestations] = useState([]);
     const [membership, setMembership] = useState(null);
     const [specificity, setSpecificity] = useState(null);
+    const [aggregations, setAggregations] = useState([]);
+    const [parametrizedOperation, setParametrizedOperation] = useState(false);
 
     useEffect(() => {
         getCurrencies();
@@ -42,12 +48,24 @@ const Create = (props) => {
 
     useEffect(() => {
         if(account) {
+            getAggregations();
             getPrestations(account.reference);
         } else {
             setPrestation(null);
             setPrestations([]);
+            setAggregations([]);
         }
     }, [account]);
+
+
+    const getAggregations = () => {
+        props.setRequestGlobalAction(true);
+        AccountService.getAccountActivationDetails(account.accountReference).then((response) => {
+            setAggregations(response?.accounts ? response.accounts : []);
+        }).finally(() => {
+            props.setRequestGlobalAction(false);
+        })
+    }
 
     const findUserByMembership = () => {
         props.setRequestGlobalAction(true);
@@ -356,6 +374,38 @@ const Create = (props) => {
                                     />
                                 </FormGroup>
                             ))}
+
+                            { aggregations?.length > 0 && (
+                                <FormGroup className="col-sm-12 has-wrapper">
+                                    <FormControlLabel control={
+                                        <Checkbox
+                                            color="primary"
+                                            checked={parametrizedOperation}
+                                            onChange={() => setParametrizedOperation(!parametrizedOperation)}
+                                        />
+                                    } label={'Effectuer une ventilation paramétrée'}
+                                    />
+                                </FormGroup>
+                            )}
+
+                            { aggregations?.length > 0 && parametrizedOperation && (
+                                <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                                    <InputLabel className="text-left">
+                                        Configurer la ventilation
+                                    </InputLabel>
+                                    <AccountVentilation 
+                                        accounts={aggregations}
+                                        onSubmit={(item) => {
+                                            setAggregations(aggregations.map(aggregation => {
+                                                if(aggregation.id === item.id) {
+                                                    return {...aggregation, percentage: item.percentage};
+                                                }
+                                                return aggregation;
+                                            }));
+                                        }}
+                                    />
+                                </div>
+                            )}
                         </>
                     }
 

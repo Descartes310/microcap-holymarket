@@ -17,6 +17,8 @@ import { Form, FormGroup, Input as InputStrap } from 'reactstrap';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
 import { getProductNatures, getProductRanges, getSellWay } from 'Helpers/helpers';
 import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
+import { productSpecialTypes } from 'Helpers/datas';
+import SegragatedAccount from 'Components/Product/SegragatedAccount';
 
 const fileTypes = ["JPG", "PNG", "GIF", "JPEG"];
 
@@ -26,7 +28,6 @@ const Create = (props) => {
     const [file, setFile] = useState(null);
     const [units, setUnits] = useState([]);
     const [label, setLabel] = useState('');
-    // const [lines, setLines] = useState(null);
     const [price, setPrice] = useState(null);
     const [range, setRange] = useState(null);
     const [nature, setNature] = useState(null);
@@ -143,7 +144,7 @@ const Create = (props) => {
 
         // if(lines) data.lines = lines;
 
-        if (isAccount || ['TRANSACTION_BOOK'].includes(specialType?.value)) {
+        if (isAccount || ['TRANSACTION_BOOK', 'SEGRAGATED_ACCOUNT'].includes(specialType?.value)) {
             
             if (!minAccountbalance || !maxAccountBalance || !accountUnit) {
                 NotificationManager.error('Les détails du compte sont invalides');
@@ -164,6 +165,9 @@ const Create = (props) => {
             if(specialType?.value == 'TRANSACTION_BOOK') {
                 data.isAggregation = true;
                 data.numberOfJournals = transactionalPageCount;
+                data.aggregationIds = aggregationProducts.map(ap => ap.id);
+            }
+            if(specialType?.value == 'SEGRAGATED_ACCOUNT') {
                 data.aggregationIds = aggregationProducts.map(ap => ap.id);
             }
         }
@@ -187,7 +191,7 @@ const Create = (props) => {
             data.sale_unit_reference = saleTypeUnit.reference;
         }
 
-        //console.log(data);
+        // console.log(data);
 
         props.setRequestGlobalAction(true);
         ProductService.createProductModel(data, { fileData: ['image'], multipart: true })
@@ -247,19 +251,7 @@ const Create = (props) => {
                                     setSpecialType(item);
                                 }}
                                 getOptionLabel={(option) => option.label}
-                                options={[
-                                    {
-                                        label: "Pas de type spécial", value: 'NONE'
-                                    }, {
-                                        label: "Djangui Plan", value: "CODEV"
-                                    }, {
-                                        label: "Deal Plan", value: "CODEV_DEAL_PLAN"
-                                    }, {
-                                        label: "Pass MicroCap", value: "PASS"
-                                    }, {
-                                        label: "Carnet transactionnel", value: "TRANSACTION_BOOK"
-                                    }
-                                ]}
+                                options={productSpecialTypes()}
                                 renderInput={(params) => <TextField {...params} variant="outlined" />}
                             />
                         </FormGroup>
@@ -296,24 +288,6 @@ const Create = (props) => {
                                 onChange={(e) => setDescription(e.target.value)}
                             />
                         </FormGroup>
-                        {/* {
-                            specialType?.value == 'CODEV_DEAL_PLAN' && (
-                                <FormGroup className={`col-md-6 col-sm-12 has-wrapper`}>
-                                    <InputLabel className="text-left" htmlFor="lines">
-                                        Nombre de ligne groupée par lot
-                                    </InputLabel>
-                                    <InputStrap
-                                        required
-                                        id="lines"
-                                        value={lines}
-                                        name='lines'
-                                        type="number"
-                                        className="input-lg"
-                                        onChange={(e) => setLines(e.target.value)}
-                                    />
-                                </FormGroup>
-                            )
-                        } */}
                         {
                             specialType?.value == 'TRANSACTION_BOOK' && (
                                 <>
@@ -524,13 +498,13 @@ const Create = (props) => {
                             <Checkbox
                                 color="primary"
                                 onChange={() => setIsAccount(!isAccount)}
-                                disabled={['TRANSACTION_BOOK'].includes(specialType?.value)}
-                                checked={isAccount || ['TRANSACTION_BOOK'].includes(specialType?.value)}
+                                disabled={['TRANSACTION_BOOK', 'SEGRAGATED_ACCOUNT'].includes(specialType?.value)}
+                                checked={isAccount || ['TRANSACTION_BOOK', 'SEGRAGATED_ACCOUNT'].includes(specialType?.value)}
                             />
                         } label={'Associer le produit a une unité de décompte'}
                         />
                     </FormGroup>
-                    {(isAccount || ['TRANSACTION_BOOK'].includes(specialType?.value)) && (
+                    {(isAccount || ['TRANSACTION_BOOK', 'SEGRAGATED_ACCOUNT'].includes(specialType?.value)) && (
                         <>
                             <div className="row">
                                 <div className="col-md-3 col-sm-12 has-wrapper mb-30">
@@ -595,14 +569,15 @@ const Create = (props) => {
                                 <FormControlLabel control={
                                     <Checkbox
                                         color="primary"
-                                        checked={isMirrorAccount}
                                         onChange={() => setIsMirrorAccount(!isMirrorAccount)}
+                                        disabled={['SEGRAGATED_ACCOUNT'].includes(specialType?.value)}
+                                        checked={isMirrorAccount || ['SEGRAGATED_ACCOUNT'].includes(specialType?.value)}
                                     />
                                 } label={'Marquer comme compte mirroir'}
                                 />
                             </FormGroup>
 
-                            { !['TRANSACTION_BOOK'].includes(specialType?.value) && (
+                            { !['TRANSACTION_BOOK', 'SEGRAGATED_ACCOUNT'].includes(specialType?.value) && (
                                 <div>
                                     <FormGroup className="col-sm-12 has-wrapper">
                                         <FormControlLabel control={
@@ -670,6 +645,21 @@ const Create = (props) => {
                             </div>
                         )
                     }
+
+                    { ['SEGRAGATED_ACCOUNT'].includes(specialType?.value) && (
+                        <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                            <InputLabel className="text-left">
+                                Sélectionnez les compartiments
+                            </InputLabel>
+                            <SegragatedAccount 
+                                accounts={products.filter(p => p.account)}
+                                onSubmit={(items) => {
+                                    setAggregationProducts(items)
+                                }}
+                            />
+                        </div>
+                    )}
+
                     <FormGroup>
                         <Button
                             color="primary"

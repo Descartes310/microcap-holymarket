@@ -8,6 +8,7 @@ export const ACTIVATE_ACCOUNT = (id) => `api/fundings/accounts/${id}/activate`;
 export const GET_ACCOUNTS_BY_SPECIALITY = 'api/fundings/accounts/by-speciality';
 export const GET_ACCOUNT_MOUVEMENTS = (id) => `api/fundings/accounts/${id}/mouvements`;
 export const FIND_ACCOUNT_BY_REFERENCE = (reference) => `api/fundings/accounts/reference/${reference}`;
+export const FIND_ACTIVATION_ACCOUNT_DETAILS = (reference) => `api/fundings/accounts/${reference}/details/activation`;
 
 export const GET_EXTERNAL_ACCOUNTS = 'api/fundings/accounts/externals';
 export const CREATE_EXTERNAL_ACCOUNTS = 'api/fundings/accounts/externals';

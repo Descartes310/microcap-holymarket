@@ -12,6 +12,7 @@ import { FileUploader } from "react-drag-drop-files";
 import { NotificationManager } from 'react-notifications';
 import DialogComponent from "Components/dialog/DialogComponent";
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
+import AccountVentilation from 'Components/Product/Ventilation/AccountVentilation';
 
 const fileTypes = ["PDF"];
 
@@ -19,7 +20,9 @@ class AccountAgreement extends Component {
 
     state = {
         file: null,
-        agreements: null
+        account: null,
+        aggregations: [],
+        agreements: null,
     }
   
     constructor(props) {
@@ -27,6 +30,7 @@ class AccountAgreement extends Component {
     }
 
     componentDidMount() {
+        this.getAccount();
         this.getAgreements();
     }
 
@@ -35,8 +39,16 @@ class AccountAgreement extends Component {
         AccountService.getAgreements(this.props.accountReference).then((response) => {
             this.setState({ agreements: response });
         }).catch((err) => {
-            console.log(err);
             this.props.onClose();
+        }).finally(() => {
+            this.props.setRequestGlobalAction(false);
+        })
+    }
+
+    getAccount() {
+        this.props.setRequestGlobalAction(true);
+        AccountService.getAccountActivationDetails(this.props.accountReference).then((response) => {
+            this.setState({ account: response, aggregations: response.accounts ? response.accounts : [] });
         }).finally(() => {
             this.props.setRequestGlobalAction(false);
         })
@@ -44,10 +56,29 @@ class AccountAgreement extends Component {
 
     setAgreement() {
         if(!this.state.file) {
+            NotificationManager.error('Ventilation incorrecte');
             return;
         }
+
+        if(this.state.account.type === 'SEGRAGATED_ACCOUNT' && this.state.aggregations?.length > 0 && this.state.aggregations?.reduce((sum, item) => sum+item.percentage, 0) !== 100) {
+            NotificationManager.error('Ventilation incorrecte');
+            return;
+        }
+
+        let data = {
+            agreement: this.state.file, 
+            notification_id: this.props.notification_id
+        };
+
+        if(this.state.account.type === 'SEGRAGATED_ACCOUNT' && this.state.aggregations.length > 0) {
+            data.aggregations = this.state.aggregations.map(a => a.id);
+            data.ventilations = this.state.aggregations.map(a => Number(a.percentage));
+        }
+
+        // console.log(data);
+
         this.props.setRequestGlobalAction(true);
-        AccountService.setAgreement(this.props.accountReference, {agreement: this.state.file, notification_id: this.props.notification_id}, { fileData: ['agreement'], multipart: true }).then((response) => {
+        AccountService.setAgreement(this.props.accountReference, data, { fileData: ['agreement'], multipart: true }).then((response) => {
             NotificationManager.success("La convention a été mis a jour avec succès");
             window.location.reload();
         }).catch((err) => {
@@ -79,7 +110,7 @@ class AccountAgreement extends Component {
     render() {
 
         const { onClose, show, title, isUserValidating } = this.props;
-        const { agreements } = this.state;
+        const { agreements, aggregations, account } = this.state;
 
         return (
             <DialogComponent
@@ -99,22 +130,42 @@ class AccountAgreement extends Component {
                         </div>
                     )}
                     { isUserValidating && (
-                        <FormGroup className="has-wrapper">
-                            <InputLabel className="text-left" htmlFor="title">
-                                Convention de compte <br />
-                                { agreements?.agreement && 
-                                    <span
-                                        style={{ cursor: 'pointer',  }} 
-                                        onClick={() => window.open(getFilePath(agreements?.agreement), 'blank')}>
-                                            Voir l'ancienne version
-                                    </span> 
-                                }
-                            </InputLabel>
-                            <FileUploader
-                                classes="mw-100"
-                                label="Sélectionner la convention"
-                                handleChange={(file) => { this.setState({ file })}} name="file" types={fileTypes} />
-                        </FormGroup>
+                        <div>
+                            <FormGroup className="has-wrapper">
+                                <InputLabel className="text-left" htmlFor="title">
+                                    Convention de compte <br />
+                                    { agreements?.agreement && 
+                                        <span
+                                            style={{ cursor: 'pointer',  }} 
+                                            onClick={() => window.open(getFilePath(agreements?.agreement), 'blank')}>
+                                                Voir l'ancienne version
+                                        </span> 
+                                    }
+                                </InputLabel>
+                                <FileUploader
+                                    classes="mw-100"
+                                    label="Sélectionner la convention"
+                                    handleChange={(file) => { this.setState({ file })}} name="file" types={fileTypes} />
+                            </FormGroup>
+                            { account?.type === 'SEGRAGATED_ACCOUNT' && aggregations?.length > 0 && (
+                                <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                                    <InputLabel className="text-left">
+                                        Configurer les compartiments
+                                    </InputLabel>
+                                    <AccountVentilation 
+                                        accounts={aggregations}
+                                        onSubmit={(item) => {
+                                            this.setState({ aggregations: aggregations.map(aggregation => {
+                                                if(aggregation.id === item.id) {
+                                                    return {...aggregation, percentage: item.percentage};
+                                                }
+                                                return aggregation;
+                                            })});
+                                        }}
+                                    />
+                                </div>
+                            )}
+                        </div>
                     )}
                     { !isUserValidating && (
                         <FormGroup className="has-wrapper">
