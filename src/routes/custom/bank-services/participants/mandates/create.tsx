@@ -17,35 +17,15 @@ import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard
 
 const Create = (props) => {
 
-    const [type, setType] = useState(null);
-    const [types, setTypes] = useState([]);
     const [member, setMember] = useState(null);
-    const [category, setCategory] = useState(null);
-    const [categories, setCategories] = useState([]);  
     const [prestations, setPrestations] = useState([]);
     const [membership, setMembership] = useState(null);
     const [commercialName, setCommercialName] = useState('');  
     const [selectedPrestations, setSelectedPrestations] = useState([]);
 
     useEffect(() => {
-        getTypes();
-        getCategories();
         getPrestations();
     }, []);
-
-    const getCategories = () => {
-        props.setRequestGlobalAction(true),
-        UserAccountTypeService.getAccountTypeCategories()
-        .then(response => setCategories(response))
-        .finally(() => props.setRequestGlobalAction(false))
-    }    
-    
-    const getTypes = () => {
-        props.setRequestGlobalAction(true),
-        UserAccountTypeService.getAccountTypes()
-        .then(response => setTypes(response))
-        .finally(() => props.setRequestGlobalAction(false))
-    }
 
     const getPrestations = () => {
         props.setRequestGlobalAction(true),
@@ -66,7 +46,6 @@ const Create = (props) => {
         let data = {
             commercialName: commercialName,
             referralCode: member.referralCode,
-            account_type_reference: type.reference,
             prestations: selectedPrestations.map(p => p.id),
 
         }
@@ -84,13 +63,13 @@ const Create = (props) => {
 
     const findUserByMembership = () => {
         props.setRequestGlobalAction(true);
-        UserService.findUserByReference(membership, {type: 'BROKER'})
+        UserService.findUserByReference(membership, {type: 'PROVIDER_INTERMEDIARY'})
         .then(response => {
             setMember(response);
         })
         .catch((err) => {
             console.log(err);
-            NotificationManager.error("L'utilisateur fourni n'est pas un broker");
+            NotificationManager.error("L'utilisateur fourni n'est pas un prestataire");
         })
         .finally(() => {
             props.setRequestGlobalAction(false);
@@ -171,38 +150,6 @@ const Create = (props) => {
                                 setSelectedPrestations(items);
                             }}
                             getOptionLabel={(option) => option.label}
-                            renderInput={(params) => <TextField {...params} variant="outlined" />}
-                        />
-                    </div>
-
-                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
-                        <InputLabel className="text-left">
-                            Catégorie du mandat
-                        </InputLabel>
-                        <Autocomplete
-                            id="combo-box-demo"
-                            options={categories}
-                            value={category}
-                            onChange={(__, item) => {
-                                setCategory(item);
-                            }}
-                            getOptionLabel={(option) => option.label}
-                            renderInput={(params) => <TextField {...params} variant="outlined" />}
-                        />
-                    </div>
-
-                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
-                        <InputLabel className="text-left">
-                            Type du mandat
-                        </InputLabel>
-                        <Autocomplete
-                            value={type}
-                            id="combo-box-demo"
-                            onChange={(__, item) => {
-                                setType(item);
-                            }}
-                            getOptionLabel={(option) => option.label}
-                            options={types.filter(t => t.userAccountTypeCategory.id === category?.id)}
                             renderInput={(params) => <TextField {...params} variant="outlined" />}
                         />
                     </div>

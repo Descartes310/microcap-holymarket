@@ -3,6 +3,7 @@ import { injectIntl } from "react-intl";
 import React, { Component } from 'react';
 import BankService from 'Services/banks';
 import { withRouter } from "react-router-dom";
+import CustomList from "Components/CustomList";
 import { setRequestGlobalAction } from 'Actions';
 import { RctCardContent } from 'Components/RctCard';
 import { NotificationManager } from 'react-notifications';
@@ -13,12 +14,26 @@ import { FormGroup, Button, Input as InputStrap  } from 'reactstrap';
 class CreatePrestationEffectModal extends Component {
   
     state = {
+        effects: [],
         label: null,
-        description: null
+        isCreation: false,
+        description: null,
     }
 
     constructor(props) {
         super(props);
+        this.getEffects();
+    }
+
+    getEffects = () => {
+        BankService.getEffects(this.props.prestation.id).then((effects) => {
+            this.setState({ effects });
+        }).catch((err) => {
+            this.setState({ effects: [] });
+            NotificationManager.error("Une erreur est survenue");
+        }).finally(() => {
+            this.props.setRequestGlobalAction(false);
+        })
     }
 
     onSubmit = () => {
@@ -36,10 +51,11 @@ class CreatePrestationEffectModal extends Component {
 
         BankService.createEffect(this.props.prestation.id, data).then(() => {
             NotificationManager.success("L'effet de commerce a été créé avec succès");
+            this.getEffects();
         }).catch((err) => {
             NotificationManager.error("Une erreur est survenu lors de l'effet de commerce");
         }).finally(() => {
-            this.props.onClose();
+            this.setState({ isCreation: false });
             this.props.setRequestGlobalAction(false);
         })
     }
@@ -47,9 +63,9 @@ class CreatePrestationEffectModal extends Component {
     render() {
 
         const { onClose, show, title } = this.props;
-        const { label, description } = this.state;
+        const { label, description, isCreation, effects } = this.state;
 
-        return (
+        return ( 
             <DialogComponent
                 show={show}
                 onClose={onClose}
@@ -60,6 +76,7 @@ class CreatePrestationEffectModal extends Component {
                     </h3>
                 )}
             >
+             { isCreation ? (
                 <RctCardContent>
                     <FormGroup className="has-wrapper">
                         <InputLabel className="text-left" htmlFor="label">
@@ -100,6 +117,56 @@ class CreatePrestationEffectModal extends Component {
                         </Button>
                     </FormGroup>
                 </RctCardContent>
+            ) : (
+                <CustomList
+                    loading={false}
+                    list={effects}
+                    itemsFoundText={n => `${n} effets trouvés`}
+                    onAddClick={() => this.setState({ isCreation: true })}
+                    renderItem={list => (
+                        <>
+                            {list && list.length === 0 ? (
+                                <div className="d-flex justify-content-center align-items-center py-50">
+                                    <h4>
+                                        Aucun effet trouvé
+                                    </h4>
+                                </div>
+                            ) : (
+                                <div className="table-responsive">
+                                    <table className="table table-hover table-middle mb-0">
+                                        <thead>
+                                            <tr>
+                                                <th className="fw-bold">Désignation</th>
+                                                <th className="fw-bold">Description</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {list && list.map((item, key) => (
+                                                <tr key={key} className="cursor-pointer">
+                                                    <td>
+                                                        <div className="media">
+                                                            <div className="media-body pt-10">
+                                                                <h4 className="m-0 fw-bold text-dark">{item.label}</h4>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div className="media">
+                                                            <div className="media-body pt-10">
+                                                                <p className="m-0 text-dark">{item.description}</p>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            )}
+                        </>
+                    )}
+                />
+            )}
             </DialogComponent>
         );
     }

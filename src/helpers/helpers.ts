@@ -1217,6 +1217,10 @@ export const contractTypes = () => {
             value: 'PARTNER'
         },
         {
+            label: "Prestataire",
+            value: 'PROVIDER'
+        },
+        {
             label: 'Actif',
             value: 'ASSET'
         }

@@ -61,7 +61,7 @@ const Create = (props) => {
             type: contractType.value
         };
 
-        if(contractType.value === 'PARTNER') {
+        if(contractType.value !== 'ASSET') {
             if(!type) {
                 NotificationManager.error('Veuillez renseigner les informations');
                 return;
@@ -136,7 +136,7 @@ const Create = (props) => {
                         />
                     </div>
 
-                    { contractType?.value == 'PARTNER' && (
+                    { contractType?.value && contractType?.value !== 'ASSET' && (
                         <>
                             <div className="col-md-12 col-sm-12 has-wrapper mb-30">
                                 <InputLabel className="text-left">

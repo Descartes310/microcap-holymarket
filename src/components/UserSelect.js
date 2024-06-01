@@ -21,7 +21,13 @@ class UserSelect extends Component {
 
     findUserByMembership = () => {
         this.props.setRequestGlobalAction(true);
-        UserService.findUserByReference(this.state.membership, {from_group: this.props.fromMyOrganisation })
+        let data = {
+            from_group: this.props.fromMyOrganisation
+        };
+        if(this.props.type) {
+            data.type = this.props.type;
+        }
+        UserService.findUserByReference(this.state.membership, data)
         .then(response => {
             this.setState({ member: response }, () => {
                 if(this.state.member != null) {
@@ -40,7 +46,7 @@ class UserSelect extends Component {
   
     render() {
 
-        const { onChange } = this.props;
+        const { label } = this.props;
         const { membership, member } = this.state;
 
         return (
@@ -48,7 +54,7 @@ class UserSelect extends Component {
                 <div className="d-flex">
                     <FormGroup className="col-sm-12 has-wrapper">
                         <InputLabel className="text-left" htmlFor="reference">
-                            Réference utilisateur
+                            {label ? label : 'Réference utilisateur'}
                         </InputLabel>
                         <InputGroup>
                             <InputStrap

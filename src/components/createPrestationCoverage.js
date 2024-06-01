@@ -3,6 +3,7 @@ import { injectIntl } from "react-intl";
 import React, { Component } from 'react';
 import BankService from 'Services/banks';
 import { withRouter } from "react-router-dom";
+import CustomList from "Components/CustomList";
 import { setRequestGlobalAction } from 'Actions';
 import { RctCardContent } from 'Components/RctCard';
 import TextField from '@material-ui/core/TextField';
@@ -19,9 +20,14 @@ class CreatePrestationCoverageModal extends Component {
     state = {
         label: null,
         coverage: null,
+        effect: null,
         coverages: [],
+        effects: [],
+        isCreation: false,
         mandatory: false,
-        description: null
+        description: null,
+        files: [],
+        addEffect: false
     }
 
     constructor(props) {
@@ -30,6 +36,8 @@ class CreatePrestationCoverageModal extends Component {
 
     componentDidMount() {
         this.getCoverages();
+        this.getEffects();
+        this.getFiles();
     }
 
     getCoverages = () => {
@@ -39,18 +47,40 @@ class CreatePrestationCoverageModal extends Component {
         .finally(() => this.props.setRequestGlobalAction(false))
     }
 
+    getEffects = () => {
+        this.props.setRequestGlobalAction(true),
+        BankService.getEffects(this.props.prestation.id)
+        .then(response => this.setState({ effects: response }))
+        .finally(() => this.props.setRequestGlobalAction(false))
+    }
+
+    getFiles = () => {
+        this.props.setRequestGlobalAction(true),
+        BankService.getCoverageToPrestations(this.props.prestation.id)
+        .then(response => this.setState({ files: response }))
+        .finally(() => this.props.setRequestGlobalAction(false))
+    }
+
     onSubmit = () => {
 
-        const { label, description, mandatory, coverage } = this.state;
+        const { addEffect, description, mandatory, coverage, effect } = this.state;
 
-        if(!coverage) {
+        if(!coverage && !effect) {
             NotificationManager.error("La couverture est obligatoire");
             return;
         }
 
         this.props.setRequestGlobalAction(true);
 
-        let data = {description, mandatory, coverageId: coverage.id};
+        let data = {description, mandatory};
+
+        if(addEffect && effect) {
+            data.coverageId = effect.id;
+            data.type = 'EFFECT';
+        } else {
+            data.coverageId = coverage.id;
+            data.type = 'COVERAGE';
+        }
 
         BankService.addCoverageToPrestation(this.props.prestation.id, data).then(() => {
             NotificationManager.success("La couverture a été ajoutée avec succès");
@@ -65,7 +95,7 @@ class CreatePrestationCoverageModal extends Component {
     render() {
 
         const { onClose, show, title } = this.props;
-        const { coverages, description, mandatory, coverage } = this.state;
+        const { coverages, description, mandatory, coverage, effects, effect, files, isCreation, addEffect } = this.state;
 
         return (
             <DialogComponent
@@ -78,22 +108,51 @@ class CreatePrestationCoverageModal extends Component {
                     </h3>
                 )}
             >
+                { isCreation ? (
                 <RctCardContent>
-                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
-                        <InputLabel className="text-left">
-                            Couverture
-                        </InputLabel>
-                        <Autocomplete
-                            id="combo-box-demo"
-                            options={coverages}
-                            value={coverage}
-                            onChange={(__, item) => {
-                                this.setState({ coverage: item });
-                            }}
-                            getOptionLabel={(option) => option.label}
-                            renderInput={(params) => <TextField {...params} variant="outlined" />}
+                    <FormGroup className="col-sm-12 has-wrapper">
+                        <FormControlLabel control={
+                            <Checkbox
+                                color="primary"
+                                checked={addEffect}
+                                onChange={() => this.setState({ addEffect: !addEffect })}
+                            />
+                        } label={'Ajouter un effet'}
                         />
-                    </div>
+                    </FormGroup>
+                    { !addEffect ? (
+                        <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                            <InputLabel className="text-left">
+                                Couverture
+                            </InputLabel>
+                            <Autocomplete
+                                id="combo-box-demo"
+                                options={coverages}
+                                value={coverage}
+                                onChange={(__, item) => {
+                                    this.setState({ coverage: item });
+                                }}
+                                getOptionLabel={(option) => option.label}
+                                renderInput={(params) => <TextField {...params} variant="outlined" />}
+                            />
+                        </div>  
+                    ) : (
+                        <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                            <InputLabel className="text-left">
+                                Effet
+                            </InputLabel>
+                            <Autocomplete
+                                id="combo-box-demo"
+                                options={effects}
+                                value={effect}
+                                onChange={(__, item) => {
+                                    this.setState({ effect: item });
+                                }}
+                                getOptionLabel={(option) => option.label}
+                                renderInput={(params) => <TextField {...params} variant="outlined" />}
+                            />
+                        </div>
+                    )}
                     <FormGroup className="has-wrapper">
                         <InputLabel className="text-left" htmlFor="description">
                             Description
@@ -115,7 +174,7 @@ class CreatePrestationCoverageModal extends Component {
                                 checked={mandatory}
                                 onChange={() => this.setState({ mandatory: !mandatory })}
                             />
-                        } label={'Couverture obligatoire'}
+                        } label={'Obligatoire'}
                         />
                     </FormGroup>
                     <FormGroup>
@@ -129,6 +188,64 @@ class CreatePrestationCoverageModal extends Component {
                         </Button>
                     </FormGroup>
                 </RctCardContent>
+            ) : (
+                <CustomList
+                    loading={false}
+                    list={files}
+                    itemsFoundText={n => `${n} couvertures trouvées`}
+                    onAddClick={() => this.setState({ isCreation: true })}
+                    renderItem={list => (
+                        <>
+                            {list && list.length === 0 ? (
+                                <div className="d-flex justify-content-center align-items-center py-50">
+                                    <h4>
+                                        Aucune couverture trouvée
+                                    </h4>
+                                </div>
+                            ) : (
+                                <div className="table-responsive">
+                                    <table className="table table-hover table-middle mb-0">
+                                        <thead>
+                                            <tr>
+                                                <th className="fw-bold">Désignation</th>
+                                                <th className="fw-bold">Description</th>
+                                                <th className="fw-bold">Obligatoire</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {list && list.map((item, key) => (
+                                                <tr key={key} className="cursor-pointer">
+                                                    <td>
+                                                        <div className="media">
+                                                            <div className="media-body pt-10">
+                                                                <h4 className="m-0 fw-bold text-dark">{item.label}</h4>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div className="media">
+                                                            <div className="media-body pt-10">
+                                                                <p className="m-0 text-dark">{item.description}</p>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div className="media">
+                                                            <div className="media-body pt-10">
+                                                                <p className="m-0 text-dark">{item.mandatory ? 'Oui' : 'Non'}</p>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            )}
+                        </>
+                    )}
+                />
+            )}
             </DialogComponent>
         );
     }

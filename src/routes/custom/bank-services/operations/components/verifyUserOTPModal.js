@@ -5,6 +5,7 @@ import BankService from 'Services/banks';
 import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
 import { setRequestGlobalAction } from 'Actions';
+import { NotificationManager } from 'react-notifications';
 import DialogComponent from "Components/dialog/DialogComponent";
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { Form, FormGroup, Input as InputStrap } from 'reactstrap';

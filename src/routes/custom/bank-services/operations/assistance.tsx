@@ -240,7 +240,7 @@ const Create = (props) => {
                                             onChange={(__, item) => {
                                                 setPrestation(item);
                                             }}
-                                            getOptionLabel={(option) => option.label}
+                                            getOptionLabel={(option) => option.prestation.label}
                                             renderInput={(params) => <TextField {...params} variant="outlined" />}
                                         />
                                     </div> 
@@ -268,7 +268,7 @@ const Create = (props) => {
                                 <InputStrap
                                     disabled
                                     type="text"
-                                    value={prestation.label}
+                                    value={prestation?.prestation.label}
                                     className="input-lg"
                                 />
                             </FormGroup>

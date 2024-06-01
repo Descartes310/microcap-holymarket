@@ -68,7 +68,7 @@ class Partnerships extends Component<any, any> {
                                             label={"Brokers"}
                                         />
                                         <Tab
-                                            label={"Complementaires"}
+                                            label={"Prestataires"}
                                         />
                                     </Tabs>
                                 </div>

@@ -119,7 +119,7 @@ const List = (props) => {
                         setShowCreateEffectBox(false);
                         setPrestation(null);
                     }}
-                    title={"Ajouter un effet"}
+                    title={"Gérer les effets"}
                 />
             )}
 
@@ -131,7 +131,7 @@ const List = (props) => {
                         setShowCreateDetailsBox(false);
                         setPrestation(null);
                     }}
-                    title={"Ajouter un détails"}
+                    title={"Gérer les détails"}
                 />
             )}
         </>

@@ -4,7 +4,7 @@ import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
 import React, { useState, useEffect } from 'react';
 import PartnershipService from 'Services/partnerships';
-import CreateCTOPartnershipModal from '../components/createCTOPartnership';
+import CreateProviderModal from '../components/CreateProvidership';
 
 const List = (props) => {
 
@@ -17,7 +17,7 @@ const List = (props) => {
 
     const getPartnerships = () => {
         props.setRequestGlobalAction(true);
-        PartnershipService.getPartnerships({ type: 'CTO' })
+        PartnershipService.getPartnerships({ type: 'PROVIDER' })
         .then((response) => {
             setPartners(response);
         })
@@ -85,13 +85,13 @@ const List = (props) => {
                 )}
             />
             { showPartnerShipModal && (
-                <CreateCTOPartnershipModal
-                    type={'CTO'}
+                <CreateProviderModal
+                    type={'PROVIDER'}
                     show={showPartnerShipModal}
                     onClose={() => {
                         setShowPartnerShipModal(false);
                     }}
-                    title={"Création d'un partenariat"}
+                    title={"Création d'un prestataire"}
                 />
             )}
         </>

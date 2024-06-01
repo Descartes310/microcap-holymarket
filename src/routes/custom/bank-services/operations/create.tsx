@@ -34,12 +34,13 @@ const Create = (props) => {
 
     const findOperation = () => {
         props.setRequestGlobalAction(true);
-        BankService.findOperationByBankAuth({auth_code: authCode, prestation_reference: prestation?.reference})
+        BankService.findOperationByBankAuth({auth_code: authCode, prestation_id: prestation?.id})
         .then(response => {
             setUser(response.user);
             setDetails(response.details);
             setOperation(response.operation);
-            findServiceOrder();
+            setServiceOrder(response);
+            setServiceOrderChecked(response.coverages.map(i => { return { id: i.value, label: i.label, checked: false }}));
         })
         .catch((err) => {
             console.log(err);
@@ -55,22 +56,6 @@ const Create = (props) => {
         BankService.getPrestations()
         .then(response => setPrestations(response))
         .finally(() => props.setRequestGlobalAction(false))
-    }
-
-    const findServiceOrder = () => {
-        props.setRequestGlobalAction(true);
-        BankService.findServiceOrderByBankAuth(authCode)
-        .then(response => {
-            setServiceOrder(response);
-            setServiceOrderChecked(response.details.map(i => { return { id: i.id, checked: i.complement?.toLowerCase() === 'true' }}))
-        })
-        .catch((err) => {
-            console.log(err)
-            NotificationManager.error("Aucun ordre de service trouvé");
-        })
-        .finally(() => {
-            props.setRequestGlobalAction(false);
-        })
     }
 
     const onSubmit = (otp) => {
@@ -213,7 +198,7 @@ const Create = (props) => {
                                 <div className='row'>
                                     <h2 style={{ marginBottom: 30 }}>Ordre de service</h2>
                                     {
-                                        serviceOrder.details.map((item, index) => (
+                                        serviceOrder.coverages.map((item, index) => (
                                             <FormGroup className="col-sm-12 has-wrapper">
                                                 <FormControlLabel control={
                                                     <Checkbox

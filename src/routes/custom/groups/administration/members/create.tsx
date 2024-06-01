@@ -74,17 +74,17 @@ const Create = (props) => {
     }
 
     const onSubmit = () => {
-        if(!reference)
-            return
-
-        props.setRequestGlobalAction(true);
+        if(!reference || !motivation || selectedRoles.length <= 0) {
+            return;
+        }
 
         let data: any = {
             userReference: reference,
             post_motivation_id: motivation.id,
             roleIds: selectedRoles.map(r => r.id)
         }
-
+            
+        props.setRequestGlobalAction(true);
         GroupService.addMemberToRole(data).then(() => {
             NotificationManager.success("Le membre a été créé avec succès");
             props.history.push(GROUP.ADMINISTRATION.MEMBER.LIST);

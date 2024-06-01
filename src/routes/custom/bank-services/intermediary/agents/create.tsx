@@ -4,6 +4,7 @@ import UserService from 'Services/users';
 import BankService from 'Services/banks';
 import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
+import UserSelect from 'Components/UserSelect';
 import { setRequestGlobalAction } from 'Actions';
 import React, { useState, useEffect } from 'react';
 import TextField from '@material-ui/core/TextField';
@@ -22,6 +23,8 @@ const Create = (props) => {
     const [types, setTypes] = useState([]);
     const [agents, setAgents] = useState([]);
     const [member, setMember] = useState(null); 
+    const [broker, setBroker] = useState(null);
+    const [brokerCode, setBrokerCode] = useState(null);
     const [prestations, setPrestations] = useState([]);
     const [membership, setMembership] = useState(null);
     const [paymentMethod, setPaymentMethod] = useState(null);
@@ -30,8 +33,13 @@ const Create = (props) => {
     useEffect(() => {
         getTypes();
         getPrestations();
-        getPotentialAgents();
     }, []);
+
+    useEffect(() => {
+        if(broker) {
+            getPotentialAgents();
+        }
+    }, [broker])
 
     const findUserByMembership = () => {
         props.setRequestGlobalAction(true);
@@ -68,7 +76,7 @@ const Create = (props) => {
 
     const getPotentialAgents = () => {
         props.setRequestGlobalAction(true),
-        BankService.getPotentialAgents()
+        BankService.getPotentialAgents({referralCode: brokerCode})
         .then(response => setAgents(response))
         .finally(() => props.setRequestGlobalAction(false))
     }
@@ -106,20 +114,28 @@ const Create = (props) => {
             <RctCollapsibleCard>
                 <Form onSubmit={onSubmit}>
                     <div className="col-md-12 col-sm-12 has-wrapper mb-30">
-                        <InputLabel className="text-left">
-                            Potentiels point de service
-                        </InputLabel>
-                        <Autocomplete
-                            id="combo-box-demo"
-                            options={agents}
-                            value={selectedAgent}
-                            onChange={(__, item) => {
-                                setSelectedAgent(item);
-                            }}
-                            getOptionLabel={(option) => option.label}
-                            renderInput={(params) => <TextField {...params} variant="outlined" />}
-                        />
+                        <UserSelect label={"Réference du Broker"} type='BROKER' fromMyOrganisation={false} onChange={(membership, user) => {
+                            setBrokerCode(membership);
+                            setBroker(user);
+                        }}/>
                     </div>
+                    {broker && (
+                        <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                            <InputLabel className="text-left">
+                                Potentiels point de service
+                            </InputLabel>
+                            <Autocomplete
+                                id="combo-box-demo"
+                                options={agents}
+                                value={selectedAgent}
+                                onChange={(__, item) => {
+                                    setSelectedAgent(item);
+                                }}
+                                getOptionLabel={(option) => option.label}
+                                renderInput={(params) => <TextField {...params} variant="outlined" />}
+                            />
+                        </div>
+                    )}
 
                     <FormGroup className="has-wrapper">
                         <InputLabel className="text-left" htmlFor="name">

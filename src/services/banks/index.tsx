@@ -28,8 +28,8 @@ export default class BankService {
         return makeRequest('get', Routes.GET_INTERMEDIATE_BANKS);
     }
 
-    static getPotentialAgents(): Promise<any> {
-        return makeRequest('get', Routes.GET_POTENTIAL_AGENT);
+    static getPotentialAgents(data): Promise<any> {
+        return makeRequest('get', Routes.GET_POTENTIAL_AGENT, data);
     }
 
     static createAgent(data: any): Promise<any> {
@@ -90,6 +90,10 @@ export default class BankService {
 
     static addCoverageToPrestation(id, data: any): Promise<any> {
         return makeRequest('post', Routes.ADD_COVERAGE_TO_PRESTATION(id), data);
+    }
+
+    static getCoverageToPrestations(id): Promise<any> {
+        return makeRequest('get', Routes.GET_COVERAGE_TO_PRESTATIONS(id));
     }
 
     static getPrestationDetails(prestationId: number): Promise<any> {

@@ -44,6 +44,7 @@ const List = (props) => {
                                 <table className="table table-hover table-middle mb-0">
                                     <thead>
                                         <tr>
+                                            <th className="fw-bold">Opérateur</th>
                                             <th className="fw-bold">Désignation</th>
                                             <th className="fw-bold">Description</th>
                                             <th className="fw-bold">Action</th>
@@ -52,6 +53,13 @@ const List = (props) => {
                                     <tbody>
                                         {list && list.map((item, key) => (
                                             <tr key={key} className="cursor-pointer">
+                                                <td>
+                                                    <div className="media">
+                                                        <div className="media-body pt-10">
+                                                            <h4 className="m-0 fw-bold text-dark">{item.bank}</h4>
+                                                        </div>
+                                                    </div>
+                                                </td>
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">

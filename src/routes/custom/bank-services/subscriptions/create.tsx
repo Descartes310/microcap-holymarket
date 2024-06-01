@@ -30,12 +30,12 @@ const Create = (props) => {
     const [selectedPrestations, setSelectedPrestations] = useState([]);
 
     useEffect(() => {
-        getPrestations();
         getBankCodes();
     }, []);
-
+    
     useEffect(() => {
         if(bankCode) {
+            getPrestations();
             getBankAgencies();
         } else {
             setAgencyCode(null);

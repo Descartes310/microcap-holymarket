@@ -33,17 +33,8 @@ jobs:
           push: true
           tags: ghcr.io/descartes310/microcap-app-prp:latest
 
-      - name: Set up SSH key
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
-          chmod 600 ~/.ssh/deploy_key
-          ssh-keyscan ${{ secrets.SSH_PRP_HOST }} >> ~/.ssh/known_hosts
-        env:
-          SSH_AUTH_SOCK: /dev/null  # Disable the SSH agent
-
       - name: Install sshpass
         run: sudo apt-get install sshpass
       - name: SSH into server and run docker-compose
         run: |
-            sshpass -p ${{ secrets.SSH_PRP_PASSWORD }} ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_PRP_HOST }} 'cd apps/microcap/frontend && docker compose pull && docker compose up -d'
+            sshpass -p ${{ secrets.SSH_PRP_PASSWORD }} ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_PRP_HOST }} 'docker login ghcr.io -u ${{ secrets.GH_USERNAME }} -p ${{ secrets.GHRC_TOKEN }} && cd apps/microcap/frontend && docker compose pull && docker compose up -d'
