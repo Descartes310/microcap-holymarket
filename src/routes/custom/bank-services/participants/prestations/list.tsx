@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { BANK } from 'Url/frontendUrl';
+import { BANK, joinUrlWithParamsId } from 'Url/frontendUrl';
 import BankService from 'Services/banks';
 import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
@@ -56,6 +56,7 @@ const List = (props) => {
                                             <th className="fw-bold">Description</th>
                                             <th className="fw-bold">Effet</th>
                                             <th className="fw-bold">Détails</th>
+                                            <th className="fw-bold">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -99,6 +100,18 @@ const List = (props) => {
                                                         className="text-white font-weight-bold"
                                                     >
                                                         Ajouter un détails
+                                                    </Button>
+                                                </td>
+                                                <td>
+                                                    <Button
+                                                        color="primary"
+                                                        variant="contained"
+                                                        onClick={() => {
+                                                            props.history.push(joinUrlWithParamsId(BANK.ADMIN.PRESTATION.UPDATE, item.reference))
+                                                        }}
+                                                        className="text-white font-weight-bold"
+                                                    >
+                                                        Editer
                                                     </Button>
                                                 </td>
                                             </tr>

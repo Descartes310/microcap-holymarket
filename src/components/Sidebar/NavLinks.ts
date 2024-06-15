@@ -101,6 +101,15 @@ export default [
             ],
             "profiles": ['GROUP'],
          },
+         {
+            "menu_title": "UUSD",
+            "new_item": false,
+            "path": NETWORK.COVERAGE.USSD,
+            "permissions": [
+               Permission.network.coverage.user.name,
+            ],
+            "profiles": ['GROUP'],
+         },
       ]
    },
    // {

@@ -139,4 +139,12 @@ export default class UserService {
         return makeRequest('get', Routes.FIND_PASS_FROM_ORDER(reference));
     }
 
+    static getUssdAuth(reference: string): Promise<any> {
+        return makeRequest('get', Routes.GET_USSD_AUTH, {reference});
+    }
+
+    static getUssdMenus(url: string): Promise<any> {
+        return makeRequest('get', url);
+    }
+
 }

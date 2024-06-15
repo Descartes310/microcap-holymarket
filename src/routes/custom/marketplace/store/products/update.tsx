@@ -391,6 +391,7 @@ const Update = (props) => {
                                 </InputLabel>
                                 <AccountVentilation 
                                     accounts={aggregations}
+                                    editable={true}
                                     onSubmit={(item) => {
                                         setAggregations(aggregations.map(aggregation => {
                                             if(aggregation.id === item.id) {

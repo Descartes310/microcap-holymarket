@@ -15,6 +15,7 @@ import VerifyUserOTPModal from './components/verifyUserOTPModal';
 import { Form, FormGroup, Input as InputStrap } from 'reactstrap';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
 import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
+import AccountVentilation from 'Components/Product/Ventilation/AccountVentilation';
 
 const Create = (props) => {
 
@@ -25,6 +26,7 @@ const Create = (props) => {
     const [showModal, setShowModal] = useState(false);
     const [prestation, setPrestation] = useState(null);
     const [prestations, setPrestations] = useState([]);
+    const [ventilations, setVentilations] = useState([]);
     const [serviceOrder, setServiceOrder] = useState(null);
     const [serviceOrderChecked, setServiceOrderChecked] = useState([]);
 
@@ -37,9 +39,10 @@ const Create = (props) => {
         BankService.findOperationByBankAuth({auth_code: authCode, prestation_id: prestation?.id})
         .then(response => {
             setUser(response.user);
+            setServiceOrder(response);
             setDetails(response.details);
             setOperation(response.operation);
-            setServiceOrder(response);
+            setVentilations(response.ventilations.map(i => { return { percentage: i.value, label: i.label }}));
             setServiceOrderChecked(response.coverages.map(i => { return { id: i.value, label: i.label, checked: false }}));
         })
         .catch((err) => {
@@ -166,7 +169,7 @@ const Create = (props) => {
                                     <InputStrap
                                         disabled
                                         className="input-lg"
-                                        value={operation.amount}
+                                        value={operation.amount+" "+operation.currency}
                                     />
                                 </FormGroup>
                                 <FormGroup className="col-md-6 col-sm-12 has-wrapper">
@@ -194,6 +197,17 @@ const Create = (props) => {
                                     ))
                                 }
                             </div>
+                            { ventilations?.length > 0 && (
+                                <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                                    <InputLabel className="text-left">
+                                        Ventilations de l'opération
+                                    </InputLabel>
+                                    <AccountVentilation 
+                                        editable={false}
+                                        accounts={ventilations}
+                                    />
+                                </div>
+                            )}
                             { serviceOrder && (
                                 <div className='row'>
                                     <h2 style={{ marginBottom: 30 }}>Ordre de service</h2>

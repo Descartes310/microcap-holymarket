@@ -1309,3 +1309,31 @@ export const PAYMENT_METHODS = [
 export const getReglementMethodLabel = (value) => {
     return PAYMENT_METHODS.find(d => d.value == value)?.label
 }
+
+export const prestationTypes = [
+    {
+        label: 'Versement programmé',
+        value: 'DEPOSIT_SCHEDULED',
+        cashin: true
+    }, {
+        label: 'Versement paramétré',
+        value: 'DEPOSIT_PARAMETERIZED',
+        cashin: true
+    }, {
+        label: 'Versement spontané',
+        value: 'DEPOSIT_SPOTANEOUS',
+        cashin: true
+    }, {
+        label: 'Retrait de dépannage',
+        value: 'WITHDRAW_BREAKDOWN',
+        cashin: false
+    }, {
+        label: 'Retrait Flash',
+        value: 'WITHDRAW_FLASH',
+        cashin: false
+    }
+];
+
+export const getPrestationTypeLabel = (value) => {
+    return prestationTypes.find(d => d.value == value)?.label
+}

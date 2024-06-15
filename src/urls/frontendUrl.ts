@@ -598,7 +598,8 @@ export const NETWORK = {
             SELF: '/network/coverage/users',
             LIST: '/network/coverage/users/list',
             DETAILS: '/network/coverage/users/:id/details',
-        }
+        },
+        USSD: '/network/coverage/ussd'
     }
 } as const;
 
@@ -661,6 +662,7 @@ export const BANK = {
             SELF: '/bank/admin/prestations',
             LIST: '/bank/admin/prestations/list',
             CREATE: '/bank/admin/prestations/create',
+            UPDATE: '/bank/admin/prestations/update/:id',
         },
         MANDATE: {
             SELF: '/bank/admin/mandate',

@@ -154,6 +154,7 @@ class AccountAgreement extends Component {
                                     </InputLabel>
                                     <AccountVentilation 
                                         accounts={aggregations}
+                                        editable={true}
                                         onSubmit={(item) => {
                                             this.setState({ aggregations: aggregations.map(aggregation => {
                                                 if(aggregation.id === item.id) {

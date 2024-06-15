@@ -5,6 +5,8 @@ export const CREATE_COVERAGE = 'api/cashmanagements/prestations/coverages';
 export const GET_EFFECTS = (id) => `api/cashmanagements/prestations/${id}/effects`;
 export const CREATE_EFFECT = (id) => `api/cashmanagements/prestations/${id}/effects`;
 export const GET_PRESTATION_DETAILS = (id) => `api/cashmanagements/prestations/${id}/details`;
+export const UPDATE_PRESTATION = (reference) => `api/cashmanagements/prestations/${reference}`;
+export const FIND_PRESTATION = (reference) => `api/cashmanagements/prestations/${reference}`;
 export const CREATE_PRESTATION_DETAILS = (id) => `api/cashmanagements/prestations/${id}/details`;
 export const ADD_COVERAGE_TO_PRESTATION = (id) => `api/cashmanagements/prestations/coverages/${id}`;
 export const GET_COVERAGE_TO_PRESTATIONS = (id) => `api/cashmanagements/prestations/coverages/${id}`;

@@ -20,7 +20,6 @@ import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { Form, FormGroup, Input as InputStrap } from 'reactstrap';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
 import AccountVentilation from 'Components/Product/Ventilation/AccountVentilation';
-import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
 
 const Create = (props) => {
 
@@ -127,6 +126,11 @@ const Create = (props) => {
             return;
         }
 
+        if(prestation?.prestation?.type  == 'DEPOSIT_PARAMETERIZED' && aggregations.reduce((sum, item) => sum+item.percentage, 0) !== 100) {
+            NotificationManager.error('Ventilation incorrecte');
+            return;
+        }
+
         let data: any = {
             amount,
             reference: membership,
@@ -139,6 +143,11 @@ const Create = (props) => {
 
         if(specificity?.value  == 'CODEV_DEPOSIT') {
             data.tickets = tickets.map(t => t.code);
+        }
+
+        if(prestation?.prestation?.type  == 'DEPOSIT_PARAMETERIZED' && aggregations.length > 0) {
+            data.aggregationIds = aggregations.map(ag => ag.id);
+            data.aggregationPercentages = aggregations.map(ag => ag.percentage);
         }
 
         props.setRequestGlobalAction(true);
@@ -291,7 +300,39 @@ const Create = (props) => {
                                 />
                             </FormGroup>
 
-                            { (prestation?.direction == 'CASH_IN') && (
+
+                            <FormGroup className="col-md-12 col-sm-12 has-wrapper">
+                                <InputLabel className="text-left" htmlFor="amount">
+                                    Montant
+                                </InputLabel>
+                                <InputStrap
+                                    required
+                                    type="number"
+                                    id="amount"
+                                    name='amount'
+                                    value={amount}
+                                    className="input-lg"
+                                    onChange={(e) => setAmount(e.target.value)}
+                                />
+                            </FormGroup>
+
+                            <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                                <InputLabel className="text-left">
+                                    Devise
+                                </InputLabel>
+                                <Autocomplete
+                                    id="combo-box-demo"
+                                    value={currency}
+                                    options={currencies}
+                                    onChange={(__, item) => {
+                                        setCurrency(item);
+                                    }}
+                                    getOptionLabel={(option) => option.label}
+                                    renderInput={(params) => <TextField {...params} variant="outlined" />}
+                                />
+                            </div>
+
+                            { (prestation?.prestation?.direction == 'CASH_IN') && (
                                 <div>
                                     <div className="col-md-12 col-sm-12 has-wrapper mb-30">
                                         <InputLabel className="text-left">
@@ -324,39 +365,27 @@ const Create = (props) => {
                                             </div>
                                         )
                                     }
+                                    { aggregations?.length > 0 && prestation?.prestation?.type == 'DEPOSIT_PARAMETERIZED' && (
+                                        <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                                            <InputLabel className="text-left">
+                                                Configurer la ventilation
+                                            </InputLabel>
+                                            <AccountVentilation 
+                                                accounts={aggregations}
+                                                editable={true}
+                                                onSubmit={(item) => {
+                                                    setAggregations(aggregations.map(aggregation => {
+                                                        if(aggregation.id === item.id) {
+                                                            return {...aggregation, percentage: item.percentage};
+                                                        }
+                                                        return aggregation;
+                                                    }));
+                                                }}
+                                            />
+                                        </div>
+                                    )}
                                 </div>
                             )}
-
-                            <FormGroup className="col-md-12 col-sm-12 has-wrapper">
-                                <InputLabel className="text-left" htmlFor="amount">
-                                    Montant
-                                </InputLabel>
-                                <InputStrap
-                                    required
-                                    type="number"
-                                    id="amount"
-                                    name='amount'
-                                    value={amount}
-                                    className="input-lg"
-                                    onChange={(e) => setAmount(e.target.value)}
-                                />
-                            </FormGroup>
-
-                            <div className="col-md-12 col-sm-12 has-wrapper mb-30">
-                                <InputLabel className="text-left">
-                                    Devise
-                                </InputLabel>
-                                <Autocomplete
-                                    id="combo-box-demo"
-                                    value={currency}
-                                    options={currencies}
-                                    onChange={(__, item) => {
-                                        setCurrency(item);
-                                    }}
-                                    getOptionLabel={(option) => option.label}
-                                    renderInput={(params) => <TextField {...params} variant="outlined" />}
-                                />
-                            </div> 
 
                             { prestation.details.map(prestationDetails => (
                                 <FormGroup className="col-md-12 col-sm-12 has-wrapper">
@@ -374,38 +403,6 @@ const Create = (props) => {
                                     />
                                 </FormGroup>
                             ))}
-
-                            { aggregations?.length > 0 && (
-                                <FormGroup className="col-sm-12 has-wrapper">
-                                    <FormControlLabel control={
-                                        <Checkbox
-                                            color="primary"
-                                            checked={parametrizedOperation}
-                                            onChange={() => setParametrizedOperation(!parametrizedOperation)}
-                                        />
-                                    } label={'Effectuer une ventilation paramétrée'}
-                                    />
-                                </FormGroup>
-                            )}
-
-                            { aggregations?.length > 0 && parametrizedOperation && (
-                                <div className="col-md-12 col-sm-12 has-wrapper mb-30">
-                                    <InputLabel className="text-left">
-                                        Configurer la ventilation
-                                    </InputLabel>
-                                    <AccountVentilation 
-                                        accounts={aggregations}
-                                        onSubmit={(item) => {
-                                            setAggregations(aggregations.map(aggregation => {
-                                                if(aggregation.id === item.id) {
-                                                    return {...aggregation, percentage: item.percentage};
-                                                }
-                                                return aggregation;
-                                            }));
-                                        }}
-                                    />
-                                </div>
-                            )}
                         </>
                     }
 

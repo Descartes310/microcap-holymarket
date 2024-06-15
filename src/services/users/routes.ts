@@ -35,3 +35,6 @@ export const ACTIVATE_PASS = (reference) => `api/socialnetworks/users/pass/${ref
 export const TRANSFER_PASS = (reference) => `api/socialnetworks/users/pass/${reference}/transfer`;
 export const FIND_PASS_FROM_ORDER = (reference) => `api/socialnetworks/users/pass/order/${reference}`;
 export const AUTHENTICATE = (reference) => `api/socialnetworks/users/self/${reference}/authenticate`;
+
+
+export const GET_USSD_AUTH = `ussd/authorizations`;

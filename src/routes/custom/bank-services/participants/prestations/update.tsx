@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { BANK } from 'Url/frontendUrl';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import BankService from 'Services/banks';
 import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
@@ -22,13 +22,33 @@ const DIRECTIONS = [
         value: 'CASH_OUT'
     }
 ]
-const Create = (props) => {
+const Update = (props) => {
 
     const [label, setLabel] = useState('');
     const [type, setType] = useState(null);
     const [direction, setDirection] = useState(null);
     const [description, setDescription] = useState('');
-
+    
+    useEffect(() => {
+        findPrestation();
+    }, [props.match.params.id]);
+    
+    const findPrestation = () => {
+        props.setRequestGlobalAction(true);
+        BankService.findPrestation(props.match.params.id).then((response) => {
+            setLabel(response.label);
+            setDescription(response.description);
+            setDirection(DIRECTIONS.find(d => response.direction === d.value));
+            setType(prestationTypes.find(pt => pt.value === response.type));
+        })
+        .catch((err) => {
+            console.log(err);
+            props.history.goBack();
+        })
+        .finally(() => {
+            props.setRequestGlobalAction(false);
+        })
+    }
 
     const onSubmit = () => {
         if(!label || !direction || !type) {
@@ -45,7 +65,7 @@ const Create = (props) => {
             direction: direction.value
         };
 
-        BankService.createPrestation(data).then(() => {
+        BankService.updatePrestation(props.match.params.id, data).then(() => {
             NotificationManager.success("La prestation a été créée avec succès");
             props.history.push(BANK.ADMIN.PRESTATION.LIST);
         }).catch((err) => {
@@ -60,7 +80,6 @@ const Create = (props) => {
         <>
             <RctCollapsibleCard>
                 <Form onSubmit={onSubmit}>
-
                     
                     <FormGroup className="has-wrapper">
                         <InputLabel className="text-left" htmlFor="label">
@@ -131,7 +150,7 @@ const Create = (props) => {
                             onClick={onSubmit}
                             className="text-white font-weight-bold"
                         >
-                            Ajouter
+                            Editer
                         </Button>
                     </FormGroup>
                 </Form>
@@ -140,4 +159,4 @@ const Create = (props) => {
     );
 };
 
-export default connect(() => { }, { setRequestGlobalAction })(withRouter(Create));
+export default connect(() => { }, { setRequestGlobalAction })(withRouter(Update));

@@ -16,6 +16,14 @@ export default class BankService {
         return makeRequest('post', Routes.CREATE_PRESTATION, data);
     }
 
+    static updatePrestation(reference: string, data: any): Promise<any> {
+        return makeRequest('put', Routes.UPDATE_PRESTATION(reference), data);
+    }
+
+    static findPrestation(reference: string): Promise<any> {
+        return makeRequest('get', Routes.FIND_PRESTATION(reference));
+    }
+
     static createMandate(data: any): Promise<any> {
         return makeRequest('post', Routes.CREATE_MANDATE, data);
     }

@@ -33,7 +33,9 @@ const AccountVentilation = (props) => {
                                         <tr>
                                             <th className="fw-bold">Désignation</th>
                                             <th className="fw-bold">Ventilation</th>
-                                            <th className="fw-bold">Action</th>
+                                            {props.editable && (
+                                                <th className="fw-bold">Action</th>
+                                            )}
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -53,19 +55,21 @@ const AccountVentilation = (props) => {
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td>
-                                                    <Button
-                                                        color="primary"
-                                                        variant="contained"
-                                                        onClick={() => {
-                                                            setSelectedAccount(item);
-                                                            setShowUpdateBox(true);
-                                                        }}
-                                                        className="text-white font-weight-bold"
-                                                    >
-                                                        Editer
-                                                    </Button>
-                                                </td>
+                                                {props.editable && (
+                                                    <td>
+                                                        <Button
+                                                            color="primary"
+                                                            variant="contained"
+                                                            onClick={() => {
+                                                                setSelectedAccount(item);
+                                                                setShowUpdateBox(true);
+                                                            }}
+                                                            className="text-white font-weight-bold"
+                                                        >
+                                                            Editer
+                                                        </Button>
+                                                    </td>
+                                                )}
                                             </tr>
                                         ))}
                                     </tbody>
