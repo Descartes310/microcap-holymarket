@@ -4,7 +4,7 @@ import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
 import React, { useState, useEffect } from 'react';
 import PartnershipService from 'Services/partnerships';
-import CreateProviderModal from '../components/CreateProvidership';
+import CreateProviderModal from '../components/createProvidership';
 
 const List = (props) => {
 
