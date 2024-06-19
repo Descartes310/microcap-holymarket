@@ -120,6 +120,7 @@ export const USER_ACCOUNT_TYPE = {
         CHAIN: '/user-account-types/types/:id/chains',
         UPDATE: `/user-account-types/types/:id/update`,
         CHAIN_CREATE: '/user-account-types/types/:id/chains/create',
+        CHAIN_UPDATE: '/user-account-types/types/:id/chains/:chainId',
     },
     CATEGORY: {
         SELF: '/user-account-types/categories',

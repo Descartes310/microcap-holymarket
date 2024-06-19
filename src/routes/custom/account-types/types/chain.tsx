@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 import { withRouter } from "react-router-dom";
+import Button from '@material-ui/core/Button';
 import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
 import React, { useState, useEffect } from 'react';
@@ -7,7 +8,7 @@ import { getChainEventTypeValue } from 'Helpers/datas';
 import { getReferralTypeLabel } from 'Helpers/helpers';
 import UserAccountTypeService from 'Services/account-types';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
-import { joinUrlWithParamsId, USER_ACCOUNT_TYPE } from 'Url/frontendUrl';
+import { joinUrlWithParams, joinUrlWithParamsId, USER_ACCOUNT_TYPE } from 'Url/frontendUrl';
 
 const List = (props) => {
 
@@ -26,6 +27,10 @@ const List = (props) => {
 
     const goToCreate = () => {
         props.history.push(joinUrlWithParamsId(USER_ACCOUNT_TYPE.TYPE.CHAIN_CREATE, props.match.params.id));
+    }
+
+    const goToUpdate = (id) => {
+        props.history.push(joinUrlWithParams(USER_ACCOUNT_TYPE.TYPE.CHAIN_UPDATE, [{ param: 'id', value: props.match.params.id }, { param: 'chainId', value: id }]));
     }
 
     return (
@@ -55,6 +60,7 @@ const List = (props) => {
                                             <th className="fw-bold">Type de compte destination</th>
                                             <th className="fw-bold">Cible</th>
                                             <th className="fw-bold">Evènement</th>
+                                            <th className="fw-bold">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -87,6 +93,16 @@ const List = (props) => {
                                                             <h4 className="m-0 text-dark">{getChainEventTypeValue(item.event).label}</h4>
                                                         </div>
                                                     </div>
+                                                </td>
+                                                <td>
+                                                    <Button
+                                                        color="primary"
+                                                        variant="contained"
+                                                        className="text-white font-weight-bold"
+                                                        onClick={() => goToUpdate(item.id)}
+                                                    >
+                                                        Editer
+                                                    </Button>
                                                 </td>
                                             </tr>
                                         ))}

@@ -59,4 +59,12 @@ export default class UserAccountTypeService {
     static createChain(id: number, data: any): Promise<any> {
         return makeRequest('post', Routes.CREATE_CHAIN(id), data);
     }
+
+    static updateChain(id: number, data: any): Promise<any> {
+        return makeRequest('post', Routes.UPDATE_CHAIN(id), data);
+    }
+
+    static findChain(id: number): Promise<any> {
+        return makeRequest('get', Routes.FIND_CHAIN(id));
+    }
 }
