@@ -42,7 +42,7 @@ export const communityTypes = [
         value: 'CONVENTIONATED_COMMUNITY'
     },
     {
-        name: 'Communauté non conventionnée',
+        name: 'Communauté d\'affinitée',
         value: 'UNCONVENTIONATED_COMMUNITY'
     },
     {

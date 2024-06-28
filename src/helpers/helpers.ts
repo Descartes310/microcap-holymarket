@@ -734,7 +734,7 @@ export const groupTypes = () => {
             value: 'CONVENTIONATED_COMMUNITY'
         },
         {
-            label: 'Communauté non conventionnée',
+            label: 'Communauté d\'affinitée',
             value: 'UNCONVENTIONATED_COMMUNITY'
         }
     ]
@@ -886,6 +886,10 @@ export const translatePermissionFolder = (path) => {
             return 'Menu';
         case 'EXTENSION':
             return 'Extensions';
+        case 'PROJECT_COMMUNITY':
+            return 'Communauté projet';
+        case 'ENDORSMENT':
+            return 'Cautionnement';
         default:
             return path;
     }
