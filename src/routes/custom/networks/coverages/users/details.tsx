@@ -9,9 +9,12 @@ import {setRequestGlobalAction} from 'Actions';
 import { userActionTypes } from "Helpers/helpers";
 import React, { useEffect, useState } from 'react';
 import TerritoryService from "Services/territories";
+import UserDocuments from '../components/userFiles';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import AuthenticateUser from '../components/authenticateUser';
+import UserDocumentsModal from '../components/userFilesModal';
+import MemberDocumentsModal from '../components/memberFilesModal';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import SendContactMessage from '../components/sendContactMessage';
 
@@ -20,12 +23,14 @@ const UserDetails = (props) => {
     const [user, setUser] = useState(null);
     const [action, setAction] = useState(null);
     const [countries, setCountries] = useState([]);
-    const [subscriptions, setSubscriptions] = useState([]);
+    // const [subscriptions, setSubscriptions] = useState([]);
     const [showMessageBox, setShowMessageBox] = useState(false);
+    const [showUserFileBox, setShowUserFileBox] = useState(false);
+    const [showMemberFileBox, setShowMemberFileBox] = useState(false);
     const [showAuthentificationBox, setShowAuthentificationBox] = useState(false);
 
     useEffect(() => {
-        getMineSubscriptions();
+        // getMineSubscriptions();
         getUser();
         _getCountries();
     }, []);
@@ -40,23 +45,23 @@ const UserDetails = (props) => {
         });
     };
 
-    const getMineSubscriptions = () => {
-        props.setRequestGlobalAction(true);
-        BankService.getMineSubscriptions().then((response: any) => {
-            setSubscriptions(response);
-        }).catch(() => {
-            setSubscriptions([]);
-        }).finally(() => {
-            props.setRequestGlobalAction(false);
-        });
-    }
+    // const getMineSubscriptions = () => {
+    //     props.setRequestGlobalAction(true);
+    //     BankService.getMineSubscriptions().then((response: any) => {
+    //         setSubscriptions(response);
+    //     }).catch(() => {
+    //         setSubscriptions([]);
+    //     }).finally(() => {
+    //         props.setRequestGlobalAction(false);
+    //     });
+    // }
 
     const getUser = () => {
         props.setRequestGlobalAction(true);
         UserService.userKYC(props.match.params.id).then((response: any) => {
             setUser(response);
         }).catch(() => {
-            setSubscriptions([]);
+            setUser(null);
         }).finally(() => {
             props.setRequestGlobalAction(false);
         });
@@ -68,7 +73,7 @@ const UserDetails = (props) => {
                 setShowMessageBox(true);
                 break;
             case 'AUTHENTICATE':
-                setShowAuthentificationBox(true);
+                setShowUserFileBox(true);
                 break;
         
             default:
@@ -361,6 +366,10 @@ const UserDetails = (props) => {
                         </tbody>
                     </table>
                 </div> */}
+
+                <h1 style={{ marginTop: '5%' }}>Dossier utilisateur</h1>
+                <UserDocuments reference={props.match.params.id} />
+                
             </div>
             { user && (
                 <SendContactMessage
@@ -371,7 +380,35 @@ const UserDetails = (props) => {
                     }}
                 />
             )}
-            { user && (
+            { user && showUserFileBox && (
+                <UserDocumentsModal
+                    user={user}
+                    show={showUserFileBox}
+                    reference={props.match.params.id}
+                    onClose={() => {
+                        setShowUserFileBox(false);
+                    }}
+                    onValidate={() => {
+                        setShowUserFileBox(false);
+                        setShowMemberFileBox(true);
+                    }}
+                />
+            )}
+            { user && showMemberFileBox && (
+                <MemberDocumentsModal
+                    user={user}
+                    show={showMemberFileBox}
+                    reference={props.match.params.id}
+                    onClose={() => {
+                        setShowMemberFileBox(false);
+                    }}
+                    onValidate={() => {
+                        setShowMemberFileBox(false);
+                        setShowAuthentificationBox(true);
+                    }}
+                />
+            )}
+            { user && showAuthentificationBox && (
                 <AuthenticateUser
                     user={user}
                     show={showAuthentificationBox}
