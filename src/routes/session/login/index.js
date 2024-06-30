@@ -28,7 +28,7 @@ const Signin = (props) => {
 
     const onSubmit = (data) => {
         props.loginUserWithLoginAndPassword(data).then(() => {
-            window.location = HOME;
+            // window.location = HOME;
         }).catch((err) => {
             NotificationManager.error("Les paramètres fournis sont incorrects");
             console.log(err);

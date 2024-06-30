@@ -37,7 +37,6 @@ export const loginUserWithLoginAndPassword = (data) => (dispatch) => {
     delete _data.login;
 
     const url = AUTH.LOGIN;
-
     return api
         .post(url, _data, config)
         .then((response) => {

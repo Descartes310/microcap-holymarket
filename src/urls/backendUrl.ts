@@ -3,7 +3,7 @@ import AppConfig from 'Constants/AppConfig';
 export const BASE = `${AppConfig.api.baseUrl}`;
 
 export const AUTH = {
-    LOGIN: 'oauth/token',
+    LOGIN: 'api/socialnetworks/users/self/login',
     KYC: 'auth/me'
 } as const;
 
