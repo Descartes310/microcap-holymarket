@@ -121,8 +121,9 @@ class CodevStep1 extends Component {
 
     }
 
+    
     render() {
-
+        
         const { onClose, show, product } = this.props;
         const { dates, selectedDate, subscriptionType, indivisions, indivision, showCreateIndivisionBox } = this.state;
 
@@ -166,7 +167,7 @@ class CodevStep1 extends Component {
                         <Autocomplete
                             id="combo-box-demo"
                             value={subscriptionType}
-                            options={subscriptionTypeEnum}
+                            options={subscriptionTypeEnum.filter(st => st.value === 'ALONE' || this.props.product?.specialProduct !== 'CODEV')}
                             onChange={(__, item) => {
                                 this.setState({ subscriptionType: item });
                             }}

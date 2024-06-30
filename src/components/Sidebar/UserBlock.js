@@ -113,7 +113,7 @@ class UserBlock extends Component {
 										<NavLink to={PROFILE.USER.PERSONAL} className="nav-link" activeClassName="active">
 											<i className="zmdi zmdi-account text-primary mr-3"></i>
 											<span>
-												Espace personnel
+												Espace utilisateur
 											</span>
 										</NavLink>
 									</li>

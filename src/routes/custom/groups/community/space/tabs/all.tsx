@@ -55,7 +55,13 @@ const All = (props) => {
         };
 
         GroupService.makeGroupRequest(data)
-            .then(() => getGroups())
+            .then(() => {
+                NotificationManager.success("La requête a bien été envoyée");
+                getGroups();
+            })
+            .catch(() => {
+                NotificationManager.error("Vous devez être authentifié au préalable");
+            })
             .finally(() => {
                 setGroup(null);
                 setShowRequestModal(false);
