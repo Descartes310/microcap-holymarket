@@ -462,7 +462,7 @@ export function getFilePath(file) {
         if (file.startsWith('http') && file.includes(':')) {
             return file;
         } else {
-            return `${AppConfig.api.baseUrl}/${file}`
+            return `${AppConfig.api.baseUrl}${file}`
         }
 }
 
