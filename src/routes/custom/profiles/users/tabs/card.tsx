@@ -7,17 +7,24 @@ import { withRouter } from "react-router-dom";
 import {setRequestGlobalAction} from 'Actions';
 import React, { useEffect, useState } from 'react';
 import TerritoryService from "Services/territories";
+import { getFilePath } from "Helpers/helpers";
+import { Button } from "@material-ui/core";
+import CreateFileModal from '../components/CreateFile';
 
 const Card = (props) => {
 
     const [user, setUser] = useState(null);
+    const [files, setFiles] = useState([]);
     const [countries, setCountries] = useState([]);
+    const [selectedFile, setSelectedFile] = useState(null);
     const [subscriptions, setSubscriptions] = useState([]);
+    const [showCreateFile, setShowCreateFile] = useState(false);
 
     useEffect(() => {
         getMineSubscriptions();
         getUser();
         _getCountries();
+        _getUserFiles();
     }, []);
 
     const _getCountries = () => {
@@ -27,6 +34,16 @@ const Card = (props) => {
         })
         .catch(error => {
             setCountries([]);
+        });
+    };
+
+    const _getUserFiles = () => {
+        UserService.getMyFiles()
+        .then(files => {
+            setFiles(files);
+        })
+        .catch((error) => {
+            setFiles([]);
         });
     };
 
@@ -315,7 +332,85 @@ const Card = (props) => {
                     </div>
                 ))
             } */}
-            
+
+            <h1 style={{ marginTop: '5%' }}>Dossier utilisateur</h1>
+
+            <div className="table-responsive mt-30">
+                <table className="table table-bordered table-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th className="fw-bold">Titre</th>
+                            <th className="fw-bold">Spéciment</th>
+                            <th className="fw-bold">Mon document</th>
+                            <th className="fw-bold">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        { files.map(file => (
+                            <tr>
+                                <td>
+                                    <div className="media">
+                                        <div className="media-body pt-10">
+                                            <h4 className="m-0 fw-bold text-dark">
+                                                {file.label}
+                                            </h4>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div className="media">
+                                        <div className="media-body pt-10">
+                                            { file.sample && (
+                                                <span onClick={() => window.open(getFilePath(file.sample), 'blank')} className="cursor-pointer text-black">
+                                                    Consulter spéciment
+                                                </span>
+                                            )}
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div className="media">
+                                        <div className="media-body pt-10">
+                                            { file.value && (
+                                                <span onClick={() => window.open(getFilePath(file.value), 'blank')} className="cursor-pointer text-black">
+                                                    Consulter mon document
+                                                </span>
+                                            )}
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div className="media">
+                                        <div className="media-body pt-10">
+                                            <Button
+                                                color="primary"
+                                                variant="contained"
+                                                className="text-white font-weight-bold"
+                                                onClick={() => {
+                                                    setSelectedFile(file);
+                                                    setShowCreateFile(true);
+                                                }}
+                                            >
+                                                Editer
+                                            </Button>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+            { showCreateFile && selectedFile && (
+                <CreateFileModal 
+                    show={showCreateFile} 
+                    onClose={() => {
+                        setShowCreateFile(false);
+                        _getUserFiles();
+                    }}
+                    file={selectedFile} 
+                />
+            )}
         </div>
     );
 }

@@ -37,7 +37,7 @@ export default [
       "new_item": false,
       "permissions": null,
       "child_routes": null,
-      "menu_title": "Espace personnel",
+      "menu_title": "Espace utilisateur",
       "menu_icon": "zmdi zmdi-flag",
       "path": PROFILE.USER.SELF
    },

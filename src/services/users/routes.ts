@@ -38,3 +38,7 @@ export const AUTHENTICATE = (reference) => `api/socialnetworks/users/self/${refe
 
 
 export const GET_USSD_AUTH = `ussd/authorizations`;
+
+
+export const CREATE_FILE= "api/socialnetworks/users/files";
+export const GET_FILES = "api/socialnetworks/users/files";

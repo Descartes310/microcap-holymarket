@@ -147,4 +147,12 @@ export default class UserService {
         return makeRequest('get', url);
     }
 
+    static getMyFiles(): Promise<any> {
+        return makeRequest('get', Routes.GET_FILES);
+    }
+
+    static createFile(data, config): Promise<any> {
+        return makeRequest('post', Routes.CREATE_FILE, data, config);
+    }
+
 }

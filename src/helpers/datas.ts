@@ -455,3 +455,5 @@ export const productSpecialTypes = () => {
 export const getProductSpecialTypeLabel = (value) => {
     return productSpecialTypes().find(d => d.value == value)?.label
 }
+
+export const imageFileTypes = ["JPG", "PNG", "GIF", "JPEG"];

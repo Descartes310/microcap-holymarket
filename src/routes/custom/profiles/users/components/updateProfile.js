@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 import UserService from 'Services/users';
+import GroupService from 'Services/groups';
 import { withRouter } from "react-router-dom";
 import TerritoryType from "Enums/Territories";
 import SettingService from 'Services/settings';
@@ -22,6 +23,8 @@ const UpdateProfile = (props) => {
     const [email, setEmail] = useState(user.email);
     const [countries, setCountries] = useState([]);
     const [name, setName] = useState(user.userName);
+    const [juridicForms, setJuridicForms] = useState([]);
+    const [juridicForm, setJuridicForm] = useState(null);
     const [nationality, setNationality] = useState(null);
     // const [telephone, setTelephone] = useState(user.telephone);
     const [residenceCountry, setResidenceCountry] = useState(null);
@@ -38,6 +41,7 @@ const UpdateProfile = (props) => {
     useEffect(() => {
         if(residenceCountry) {
             _getIdentificationType();
+            getJuridicForms();
         }
     }, [residenceCountry]);
 
@@ -68,6 +72,11 @@ const UpdateProfile = (props) => {
     const _getIdentificationType = () => {
         SettingService.getImmatriculationsByTerritory({territory: residenceCountry.reference, referral_type: user?.referralType})
         .then(response => setTypes(response))
+    }
+
+    const getJuridicForms = () => {
+        GroupService.getJuridicTypes({territory: residenceCountry.reference})
+        .then(response => setJuridicForms(response))
     }
 
     const checkFormValidity = () => {
@@ -150,34 +159,6 @@ const UpdateProfile = (props) => {
                         />
                     </FormGroup>
                 </div>
-                {/* <div className='row'>
-                    <FormGroup className="col-6 has-wrapper">
-                        <InputLabel className="text-left" htmlFor="telephone">
-                            Téléphone
-                        </InputLabel>
-                        <InputStrap
-                            id="telephone"
-                            type="text"
-                            name={'telephone'}
-                            className="input-lg"
-                            value={telephone}
-                            onChange={(e) => { setTelephone(e.target.value) }}
-                        />
-                    </FormGroup>
-                    <FormGroup className="col-6 has-wrapper">
-                        <InputLabel className="text-left" htmlFor="notifAddress">
-                            Adresse de notification
-                        </InputLabel>
-                        <InputStrap
-                            id="notifAddress"
-                            type="text"
-                            name='notifAddress'
-                            value={notificationAddress}
-                            className="input-lg"
-                            onChange={(e) => setNotificationAddress(e.target.value)}
-                        />
-                    </FormGroup>
-                </div> */}
                 <div className='row'>
                     { user.referralType != 'GROUP' && (
                         <div className="col-md-6 col-sm-12 has-wrapper mb-30">
@@ -256,6 +237,30 @@ const UpdateProfile = (props) => {
                         />
                     </div>
                 </div>
+                { user.referralType === 'GROUP' && (
+                    <div className="col-md-12 col-sm-12 has-wrapper mb-30 p-0">
+                        <InputLabel className="text-left">
+                            Forme juridique
+                        </InputLabel>
+                        <Autocomplete
+                            value={juridicForm}
+                            options={juridicForms}
+                            id="combo-box-demo"
+                            classes={{ paper: 'custom-input' }}
+                            getOptionLabel={(option) => option.code ? option.code : option.label}
+                            onChange={(__, item) => { setJuridicForm(item) }}
+                            renderTags={options => {
+                                return (options.map(option => option.label))
+                        
+                            }}
+                            renderOption={option => {
+                                return (option.label)
+                            }}
+                            renderInput={(params) => <TextField {...params} variant="outlined" />}
+                        />
+                    </div>
+                )}
+
                 <div className="col-md-12 col-sm-12 has-wrapper mb-30 p-0">
                     <InputLabel className="text-left">
                         Type d'immatriculation
