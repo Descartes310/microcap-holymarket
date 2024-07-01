@@ -53,9 +53,10 @@ const Create = (props) => {
         let data: any = {
             label: label,
             type: 'USER_ACCOUNT',
-            description: description,
             permissionIds: selectedPermissions.map(p => Number(p))
         }
+
+        if(description) data.description = description;
 
         RoleService.createRole(data).then(() => {
             NotificationManager.success("Le role a été créé avec succès");

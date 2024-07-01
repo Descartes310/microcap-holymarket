@@ -69,9 +69,9 @@ const Update = (props) => {
 
         let data: any = {
             label: label,
-            description: description,
             permissionIds: selectedPermissions.map(p => Number(p))
         }
+        if(description) data.description = description;
 
         RoleService.updateRole(props.match.params.id, data).then(() => {
             NotificationManager.success("Le role a été édité avec succès");
