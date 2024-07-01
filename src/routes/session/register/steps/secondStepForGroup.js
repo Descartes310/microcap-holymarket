@@ -94,7 +94,9 @@ const SecondStepForGroup = props => {
             delete data.startingValidityDate;
         }
 
-        //console.log(data);
+        if(residenceCountry) data.residenceCountry = residenceCountry;
+
+        // console.log(data);
         setData(data, true);
     };
 

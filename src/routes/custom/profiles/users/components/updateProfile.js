@@ -76,7 +76,10 @@ const UpdateProfile = (props) => {
 
     const getJuridicForms = () => {
         GroupService.getJuridicTypes({territory: residenceCountry.reference})
-        .then(response => setJuridicForms(response))
+        .then(response => {
+            setJuridicForms(response);
+            setJuridicForm(response.find(j => j.id === user.juridicForm))
+        })
     }
 
     const checkFormValidity = () => {
@@ -103,6 +106,7 @@ const UpdateProfile = (props) => {
             identification_start_date: immatriculationStartDate
         };
         if(nationality) data.nationality = nationality.id;
+        if(juridicForm) data.juridic_form = juridicForm.id;
         
         props.setRequestGlobalAction(true);
         UserService.updateProfile(data).then(() => {

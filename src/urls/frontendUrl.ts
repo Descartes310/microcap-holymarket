@@ -310,6 +310,7 @@ export const PROFILE = {
     ASSISTANCE: {
         SELF: "/profiles/assistance",
         USER: "/profiles/assistance/user",
+        CREATE_ACCOUNT: "/profiles/assistance/create-account",
     }
 }
 

@@ -59,108 +59,103 @@ const Assist = (props) => {
 
 
     return (
-        <>
-            <PageTitleBar
-                title={"Assistance"}
-            />
-            <RctCollapsibleCard>
-                <Form onSubmit={onSubmit}>
-                    <FormGroup className="has-wrapper">
-                        <InputLabel className="text-left" htmlFor="membership">
-                            Numéro utilisateur
-                        </InputLabel>
-                        <InputStrap
-                            required
-                            type="text"
-                            id="membership"
-                            name='membership'
-                            value={membership}
-                            className="input-lg"
-                            onChange={(e) => setMembership(e.target.value)}
-                        />
-                    </FormGroup>
+        <RctCollapsibleCard>
+            <Form onSubmit={onSubmit}>
+                <FormGroup className="has-wrapper">
+                    <InputLabel className="text-left" htmlFor="membership">
+                        Numéro utilisateur
+                    </InputLabel>
+                    <InputStrap
+                        required
+                        type="text"
+                        id="membership"
+                        name='membership'
+                        value={membership}
+                        className="input-lg"
+                        onChange={(e) => setMembership(e.target.value)}
+                    />
+                </FormGroup>
 
-                    {member && (
-                        <>
-                            <div className="row">
-                                <FormGroup className="col-md-4 col-sm-12 has-wrapper">
-                                    <InputStrap
-                                        disabled
-                                        className="input-lg"
-                                        value={member.userName}
-                                    />
-                                </FormGroup>
-                                <FormGroup className="col-md-4 col-sm-12 has-wrapper">
-                                    <InputStrap
-                                        disabled
-                                        className="input-lg"
-                                        value={member.email}
-                                    />
-                                </FormGroup>
-                                <FormGroup className="col-md-4 col-sm-12 has-wrapper">
-                                    <InputStrap
-                                        disabled
-                                        className="input-lg"
-                                        value={getReferralTypeLabel(member.referralType)}
-                                    />
-                                </FormGroup>
-                            </div>
-                            <div className="col-md-12 col-sm-12 has-wrapper mb-30">
-                                <InputLabel className="text-left">
-                                    Action à effectuer
-                                </InputLabel>
-                                <Autocomplete
-                                    id="combo-box-demo"
-                                    value={action}
-                                    options={getUserAssistanceTypes()}
-                                    onChange={(__, item) => {
-                                        setAction(item);
-                                    }}
-                                    getOptionLabel={(option) => option.label}
-                                    renderInput={(params) => <TextField {...params} variant="outlined" />}
+                {member && (
+                    <>
+                        <div className="row">
+                            <FormGroup className="col-md-4 col-sm-12 has-wrapper">
+                                <InputStrap
+                                    disabled
+                                    className="input-lg"
+                                    value={member.userName}
                                 />
-                            </div>
-                        </>
-                    )}
-                    <FormGroup>
-                        <Button
-                            color="primary"
-                            variant="contained"
-                            disabled={!membership}
-                            onClick={() => findUserByMembership()}
-                            className="text-white font-weight-bold mr-20 bg-blue"
-                        >
-                            Vérifier l'utilisateur
-                        </Button>
-                        {
-                            member && (
-                                <Button
-                                    color="primary"
-                                    variant="contained"
-                                    disabled={!member}
-                                    onClick={() => onSubmit()}
-                                    className="text-white font-weight-bold mr-20"
-                                >
-                                    Commencer l'assistance
-                                </Button>
-                            )
-                        }
-                    </FormGroup>
-                </Form>
-                { !member && action?.value == 'ACTIVATE_PROFILE'}
-                <ActivationBox
-                    member={member}
-                    show={showActivationBox}
-                    pdfURL={'http://www.africau.edu/images/default/sample.pdf'}
-                    onClose={() => {
-                        setShowActivationBox(false);
-                        setMember(null);
-                        setAction(null);
-                        setMembership(null);
-                    }} 
-                />
-            </RctCollapsibleCard>
-        </>
+                            </FormGroup>
+                            <FormGroup className="col-md-4 col-sm-12 has-wrapper">
+                                <InputStrap
+                                    disabled
+                                    className="input-lg"
+                                    value={member.email}
+                                />
+                            </FormGroup>
+                            <FormGroup className="col-md-4 col-sm-12 has-wrapper">
+                                <InputStrap
+                                    disabled
+                                    className="input-lg"
+                                    value={getReferralTypeLabel(member.referralType)}
+                                />
+                            </FormGroup>
+                        </div>
+                        <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                            <InputLabel className="text-left">
+                                Action à effectuer
+                            </InputLabel>
+                            <Autocomplete
+                                id="combo-box-demo"
+                                value={action}
+                                options={getUserAssistanceTypes()}
+                                onChange={(__, item) => {
+                                    setAction(item);
+                                }}
+                                getOptionLabel={(option) => option.label}
+                                renderInput={(params) => <TextField {...params} variant="outlined" />}
+                            />
+                        </div>
+                    </>
+                )}
+                <FormGroup>
+                    <Button
+                        color="primary"
+                        variant="contained"
+                        disabled={!membership}
+                        onClick={() => findUserByMembership()}
+                        className="text-white font-weight-bold mr-20 bg-blue"
+                    >
+                        Vérifier l'utilisateur
+                    </Button>
+                    {
+                        member && (
+                            <Button
+                                color="primary"
+                                variant="contained"
+                                disabled={!member}
+                                onClick={() => onSubmit()}
+                                className="text-white font-weight-bold mr-20"
+                            >
+                                Commencer l'assistance
+                            </Button>
+                        )
+                    }
+                </FormGroup>
+            </Form>
+            { !member && action?.value == 'ACTIVATE_PROFILE'}
+            <ActivationBox
+                member={member}
+                show={showActivationBox}
+                pdfURL={'http://www.africau.edu/images/default/sample.pdf'}
+                onClose={() => {
+                    setShowActivationBox(false);
+                    setMember(null);
+                    setAction(null);
+                    setMembership(null);
+                }} 
+            />
+        </RctCollapsibleCard>
     );
 };
 
