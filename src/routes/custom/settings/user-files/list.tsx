@@ -3,6 +3,7 @@ import Button from '@material-ui/core/Button';
 import { getFilePath } from 'Helpers/helpers';
 import { withRouter } from "react-router-dom";
 import CustomList from "Components/CustomList";
+import Switch from "@material-ui/core/Switch";
 import SettingService from 'Services/settings';
 import {setRequestGlobalAction} from 'Actions';
 import React, { useState, useEffect } from 'react';
@@ -21,6 +22,13 @@ const List = (props) => {
         props.setRequestGlobalAction(true),
         SettingService.getUserFileTypes()
         .then(response => setFiles(response))
+        .finally(() => props.setRequestGlobalAction(false))
+    }
+
+    const changeStatus = (item) => {
+        props.setRequestGlobalAction(true),
+        SettingService.updateUserFileTypes(item.reference)
+        .then(() => getUserFiles())
         .finally(() => props.setRequestGlobalAction(false))
     }
 
@@ -54,6 +62,7 @@ const List = (props) => {
                                             <th className="fw-bold">Désignation</th>
                                             <th className="fw-bold">Exemple</th>
                                             <th className="fw-bold">Description</th>
+                                            <th className="fw-bold">Dossier membre</th>
                                             <th className="fw-bold">Action</th>
                                         </tr>
                                     </thead>
@@ -84,6 +93,13 @@ const List = (props) => {
                                                             <h4 className="m-0 text-dark">{item.description}</h4>
                                                         </div>
                                                     </div>
+                                                </td>
+                                                <td>
+                                                    <Switch
+                                                        aria-label="Dossier membre"
+                                                        checked={item.type === 'MEMBER'}
+                                                        onChange={() => { changeStatus(item) }}
+                                                    />
                                                 </td>
                                                 <td>
                                                     <Button

@@ -23,7 +23,7 @@ const MemberDocumentsModal = (props) => {
             )}
         >
             <RctCardContent>
-                <UserDocuments reference={props.reference} />
+                <UserDocuments reference={props.reference} filters={{ type: 'MEMBER' }} />
                 <div className='d-flex justify-content-between mt-20'>
                     <Button
                         color="primary"

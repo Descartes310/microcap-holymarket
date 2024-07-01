@@ -8,6 +8,10 @@ export default class SettingService {
         return makeRequest('get', Routes.GET_USER_FILES);
     }
 
+    static updateUserFileTypes(reference): Promise<any> {
+        return makeRequest('put', Routes.UPDATE_USER_FILE_TYPE(reference));
+    }
+
     static createUserFileType(data, config): Promise<any> {
         return makeRequest('post', Routes.CREATE_USER_FILE, data, config);
     }

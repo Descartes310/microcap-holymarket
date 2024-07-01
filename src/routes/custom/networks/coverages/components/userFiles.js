@@ -16,7 +16,7 @@ const UserDocuments = (props) => {
 
     const getUserFiles = () => {
         props.setRequestGlobalAction(true);
-        UserService.getMyFilesByMember(props.reference).then((response) => {
+        UserService.getMyFilesByMember(props.reference, props.filters).then((response) => {
             setFiles(response);
         }).catch(() => {
             setFiles([]);
@@ -41,7 +41,7 @@ const UserDocuments = (props) => {
                             <th className="fw-bold">Titre</th>
                             <th className="fw-bold">Spéciment</th>
                             <th className="fw-bold">Document</th>
-                            <th className="fw-bold">Status</th>
+                            <th className="fw-bold">Vérifié</th>
                         </tr>
                     </thead>
                     <tbody>

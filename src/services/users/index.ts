@@ -151,8 +151,8 @@ export default class UserService {
         return makeRequest('get', Routes.GET_FILES);
     }
 
-    static getMyFilesByMember(reference: string): Promise<any> {
-        return makeRequest('get', Routes.GET_FILES_BY_MEMBER(reference));
+    static getMyFilesByMember(reference: string, data = null): Promise<any> {
+        return makeRequest('get', Routes.GET_FILES_BY_MEMBER(reference), data);
     }
 
     static createFile(data, config): Promise<any> {
