@@ -852,7 +852,7 @@ export const translatePermissionFolder = (path) => {
         case 'COMMUNITY':
             return 'Communauté';
         case 'ASSETS':
-            return 'Gestion des actifs';
+            return 'Actifs';
         case 'SUPERVISION':
             return 'Supervision';
         case 'PROJECT':
@@ -891,6 +891,8 @@ export const translatePermissionFolder = (path) => {
             return 'Communauté projet';
         case 'ENDORSMENT':
             return 'Cautionnement';
+        case 'SERVICES':
+            return 'Services';
         default:
             return path;
     }

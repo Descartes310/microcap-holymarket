@@ -52,7 +52,7 @@ const Create = (props) => {
     return (
         <>
             <PageTitleBar
-                title={"Test UUSD"}
+                title={"Test USSD"}
             />
             <RctCollapsibleCard>
                 <Form onSubmit={onSubmit}>

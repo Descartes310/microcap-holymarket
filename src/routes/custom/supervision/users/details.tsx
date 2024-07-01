@@ -14,6 +14,7 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import AuthenticateUser from '../components/authenticateUser';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import SendContactMessage from '../components/sendContactMessage';
+import UserDocuments from 'Routes/custom/networks/coverages/components/userFiles';
 
 const UserDetails = (props) => {
 
@@ -360,6 +361,7 @@ const UserDetails = (props) => {
                         </tbody>
                     </table>
                 </div> */}
+                <UserDocuments reference={props.match.params.id} />
             </div>
             { user && (
                 <SendContactMessage

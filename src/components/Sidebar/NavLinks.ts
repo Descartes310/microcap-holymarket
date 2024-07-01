@@ -102,7 +102,7 @@ export default [
             "profiles": ['GROUP'],
          },
          {
-            "menu_title": "UUSD",
+            "menu_title": "USSD",
             "new_item": false,
             "path": NETWORK.COVERAGE.USSD,
             "permissions": [
@@ -112,52 +112,52 @@ export default [
          },
       ]
    },
-   // {
-   //    "menu_title": "Supervision",
-   //    "menu_icon": "zmdi zmdi-case",
-   //    "new_item": false,
-   //    "permissions": [
-   //       Permission.supervision.member.name,
-   //       Permission.supervision.user.name,
-   //       Permission.supervision.partner.name,
-   //       Permission.supervision.project.name,
-   //    ],
-   //    "type_multi": true,
-   //    "child_routes": [
-   //       {
-   //          "menu_title": "Utilisateurs",
-   //          "new_item": false,
-   //          "path": SUPERVISION.USERS.LIST,
-   //          "permissions": [
-   //             Permission.supervision.user.name,
-   //          ],
-   //       },
-   //       {
-   //          "menu_title": "Partenaires",
-   //          "new_item": false,
-   //          "path": SUPERVISION.USERS.LIST,
-   //          "permissions": [
-   //             Permission.supervision.partner.name,
-   //          ],
-   //       },
-   //       {
-   //          "menu_title": "Membres",
-   //          "new_item": false,
-   //          "path": SUPERVISION.USERS.LIST,
-   //          "permissions": [
-   //             Permission.supervision.member.name,
-   //          ],
-   //       },
-   //       {
-   //          "menu_title": "Projets",
-   //          "new_item": false,
-   //          "path": SUPERVISION.USERS.LIST,
-   //          "permissions": [
-   //             Permission.supervision.project.name,
-   //          ],
-   //       }
-   //    ]
-   // },
+   {
+      "menu_title": "Supervision",
+      "menu_icon": "zmdi zmdi-case",
+      "new_item": false,
+      "permissions": [
+         Permission.supervision.member.name,
+         Permission.supervision.user.name,
+         Permission.supervision.partner.name,
+         Permission.supervision.project.name,
+      ],
+      "type_multi": true,
+      "child_routes": [
+         {
+            "menu_title": "Utilisateurs",
+            "new_item": false,
+            "path": SUPERVISION.USERS.LIST,
+            "permissions": [
+               Permission.supervision.user.name,
+            ],
+         },
+         {
+            "menu_title": "Partenaires",
+            "new_item": false,
+            "path": SUPERVISION.USERS.LIST,
+            "permissions": [
+               Permission.supervision.partner.name,
+            ],
+         },
+         {
+            "menu_title": "Membres",
+            "new_item": false,
+            "path": SUPERVISION.USERS.LIST,
+            "permissions": [
+               Permission.supervision.member.name,
+            ],
+         },
+         {
+            "menu_title": "Projets",
+            "new_item": false,
+            "path": SUPERVISION.USERS.LIST,
+            "permissions": [
+               Permission.supervision.project.name,
+            ],
+         }
+      ]
+   },
    {
       "menu_title": "Broker",
       "menu_icon": "zmdi zmdi-money",
