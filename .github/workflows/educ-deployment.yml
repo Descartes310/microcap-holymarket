@@ -1,0 +1,41 @@
+
+name: educ-app-deployment # workflow name
+
+on:
+  push:
+    branches: [ "educ" ]
+
+jobs:
+  build-and-deploy-deduc: #job name
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4 #pull et te positionne ton repo sur la machine d'exuction
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ secrets.GH_USERNAME }} #github
+          password: ${{ secrets.GHRC_TOKEN }} #token
+
+      - name: Build & Push Docker Image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./deployments/educ/Dockerfile
+          push: true
+          tags: ghcr.io/descartes310/microcap-app-educ:latest
+#          build-args: VITE_API_BASE_URL=${{ env.VITE_API_BASE_URL }}
+
+      - name: Install sshpass
+        run: sudo apt-get install sshpass
+      - name: SSH into server and run docker-compose
+        run: |
+            sshpass -p ${{ secrets.SSH_TEST_PASSWORD }} ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_TEST_HOST }} 'docker login ghcr.io -u ${{ secrets.GH_USERNAME }} -p ${{ secrets.GHRC_TOKEN }} && cd server/apps/microcap/educ/frontend && docker compose stop && docker compose pull && docker compose up -d'
