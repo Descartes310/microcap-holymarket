@@ -23,9 +23,9 @@ const Shop = (props) => {
 	}
 
 	return (
-		<div className="shop-wrapper">
-			<div className="ais-InstantSearch pt-25">
-				<div className="row">
+		<div>
+			<div className="pt-25 container">
+				<div className='row'>
 					{ productModels.map(product => (
 						<HitModel product={product} />
 					))}

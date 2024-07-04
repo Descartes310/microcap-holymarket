@@ -10,7 +10,7 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 
 const ShopTabContent = ({ match }) => {
     return (
-        <div className="vh-100">
+        <div>
             <Switch>
                 <Redirect exact from={`${match.url}/`} to={MARKETPLACE.SHOP.CLASSIC} />
                 <Route path={MARKETPLACE.SHOP.CLASSIC} component={ClassicSale} />
