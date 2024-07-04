@@ -1,5 +1,7 @@
 import React from 'react';
+import UserService from 'Services/users';
 import Card from '@material-ui/core/Card';
+import { setSession } from 'Helpers/tokens';
 import Button from '@material-ui/core/Button';
 import CardMedia from '@material-ui/core/CardMedia';
 import { withStyles } from '@material-ui/core/styles';
@@ -14,7 +16,16 @@ const styles = {
     },
 };
 
-const CommunityItemGrid = ({ classes = null, community, openDetails, authUser, onAskRequest }) => (
+const CommunityItemGrid = ({ classes = null, community, openDetails, authUser, onAskRequest }) => {
+
+    const enterInCommunitySpace = (reference: string) => {
+        UserService.changeUserAccessFromCommunity(reference)        
+        .then(response => {
+            setSession(response);
+            window.location.reload();
+        });
+    }
+    return (
     <Card className="rounded mb-30 col-md-3">
         <CardMedia
             onClick={() => openDetails()}
@@ -45,7 +56,7 @@ const CommunityItemGrid = ({ classes = null, community, openDetails, authUser, o
                             variant="contained"
                             className="text-white font-weight-bold"
                             style={{ marginRight: 10 }}
-                            //onClick={() => enterInCommunitySpace(community.id)}
+                            onClick={() => enterInCommunitySpace(community.groupReference)}
                         >
                             Se connecter
                         </Button>
@@ -54,6 +65,6 @@ const CommunityItemGrid = ({ classes = null, community, openDetails, authUser, o
             </div>
         </CardActions>
     </Card>
-);
+)};
 
 export default withStyles(styles)(CommunityItemGrid);

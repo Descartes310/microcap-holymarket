@@ -55,6 +55,9 @@ export default class UserService {
     static changeUserAccess(id: number): Promise<any> {
         return makeRequest('post', Routes.CHANGE_ACCESS(id), null);
     }
+    static changeUserAccessFromCommunity(reference: string): Promise<any> {
+        return makeRequest('post', Routes.CHANGE_ACCESS_FROM_COMMUNITY(reference), null);
+    }
 
     static createUserAccess(data: any): Promise<any> {
         return makeRequest('post', Routes.CREATE_ACCESS, data);

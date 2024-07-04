@@ -57,6 +57,7 @@ class Read extends Component {
                                             key={index}
                                             notification={notification}
                                             authUser={this.props.authUser}
+                                            tab="TREATED"
                                         />
                                     ))}
                                 </ListMaterial>

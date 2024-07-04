@@ -56,12 +56,12 @@ class AccountAgreement extends Component {
 
     setAgreement() {
         if(!this.state.file) {
-            NotificationManager.error('Ventilation incorrecte');
+            NotificationManager.error('Le fichier est obligatoire');
             return;
         }
 
         if(this.state.account.type === 'SEGRAGATED_ACCOUNT' && this.state.aggregations?.length > 0 && this.state.aggregations?.reduce((sum, item) => sum+item.percentage, 0) !== 100) {
-            NotificationManager.error('Ventilation incorrecte');
+            NotificationManager.error('La ventilation n\'est pas correcte');
             return;
         }
 

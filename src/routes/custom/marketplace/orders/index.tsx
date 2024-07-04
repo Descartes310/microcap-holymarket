@@ -139,7 +139,7 @@ const List = (props) => {
                                                 </td>
                                                 <td>
                                                     { 
-                                                        item.status !== 'PENDING' ?
+                                                        (item.status !== 'PENDING' && item.status !== 'REJECTED')  ?
                                                         <Button
                                                             color="primary"
                                                             variant="contained"
@@ -153,17 +153,19 @@ const List = (props) => {
                                                     }
                                                 </td>
                                                 <td>
-                                                    <Button
-                                                        color="primary"
-                                                        variant="contained"
-                                                        className="text-white font-weight-bold"
-                                                        onClick={() => {
-                                                            setOrder(item);
-                                                            setShowAddFileBox(true);
-                                                        }}
-                                                    >
-                                                        Dossiers
-                                                    </Button>
+                                                    { (item.status === 'PENDING') && (
+                                                        <Button
+                                                            color="primary"
+                                                            variant="contained"
+                                                            className="text-white font-weight-bold"
+                                                            onClick={() => {
+                                                                setOrder(item);
+                                                                setShowAddFileBox(true);
+                                                            }}
+                                                        >
+                                                            Dossiers
+                                                        </Button>
+                                                    )}
                                                 </td>
                                             </tr>
                                         ))}

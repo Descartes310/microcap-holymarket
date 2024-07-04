@@ -19,6 +19,7 @@ export const USER_ARTICLES = (reference) => `api/socialnetworks/users/self/blogs
 export const GET_USER_BY_REFERENCE = (ref) => `api/socialnetworks/users/self/reference/${ref}`;
 export const CHANGE_ACCESS_PASSWORD = (id) => `api/socialnetworks/users/access/${id}/password`;
 export const GET_USER_BY_MEMBERSHIP = (membership) => `api/socialnetworks/users/self/membership/${membership}`;
+export const CHANGE_ACCESS_FROM_COMMUNITY = (reference) => `api/socialnetworks/users/access/${reference}/change/community`;
 
 export const GET_INSTITUTIONS = "api/socialnetworks/users/institutions";
 export const CREATE_INSTITUTION = "api/socialnetworks/users/institutions";

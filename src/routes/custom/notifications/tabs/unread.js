@@ -111,6 +111,7 @@ class Unread extends Component {
                                     {notifications && notifications.map((notification, index) => (
                                         <Item
                                             key={index}
+                                            tab="UNREAD"
                                             notification={notification}
                                             authUser={this.props.authUser}
                                             reloadNotifications={this.getNotifications}

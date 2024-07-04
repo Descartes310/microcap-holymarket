@@ -522,7 +522,7 @@ export default [
    },
 
    {
-      "menu_title": "Gestion des actifs",
+      "menu_title": "Financement",
       "menu_icon": "zmdi zmdi-home",
       "new_item": false,
       "permissions": [

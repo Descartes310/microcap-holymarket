@@ -86,9 +86,11 @@ class Read extends Component {
                                     {notifications && notifications.map((notification, index) => (
                                         <Item
                                             key={index}
+                                            tab="READ"
                                             notification={notification}
                                             authUser={this.props.authUser}
                                             reloadNotifications={this.getNotifications}
+                                            setRequestGlobalAction={this.props.setRequestGlobalAction}
                                             onActivationClick={() => this.onActivationClick(notification)}
                                             onActivationPassClick={() => this.onActivationPassClick(notification)}
                                             onCodevInvitationClick={() => this.onCodevInvitationClick(notification)}
