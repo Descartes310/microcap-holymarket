@@ -1,6 +1,5 @@
 import { connect } from 'react-redux';
 import UserService from 'Services/users';
-import { PROFILE } from 'Url/frontendUrl';
 import { withRouter } from "react-router-dom";
 import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
@@ -14,9 +13,6 @@ const Institutions = (props) => {
 
     useEffect(() => {
         getAgencies();
-        if(!props.authUser.referralTypes.includes('OPERATOR')) {
-            props.history.push(PROFILE.USER.PERSONAL);
-        }
     }, []);
 
     const getAgencies = () => {

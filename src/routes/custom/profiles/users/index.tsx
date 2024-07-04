@@ -100,6 +100,7 @@ class Users extends Component<any, any> {
                                         <Tab
                                             icon={<i className="zmdi zmdi-account" />}
                                             label={"Mes Etablissements"}
+                                            disabled={!this.context.can(Permissions.accountType.agency.name, Permissions)}
                                         />
                                         
                                     </Tabs>

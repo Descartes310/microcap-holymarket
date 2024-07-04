@@ -32,6 +32,9 @@ export default class Permission extends BaseEnum {
         },
         blog: {
             "name": "USER_PROFILE_BLOG"
+        },
+        agency: {
+            "name": "USER_PROFILE_AGENCY"
         }
     };
 
