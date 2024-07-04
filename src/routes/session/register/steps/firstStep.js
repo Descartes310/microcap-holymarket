@@ -70,7 +70,7 @@ const FirstStep = props => {
                             checked={useMicrocapEmail}
                             onChange={() => setValue('useMicrocapEmail', !useMicrocapEmail)}
                         />
-                    } label={"Utiliser une adresse e-mail MicroCap"}
+                    } label={"Je n'ai pas d'adresse email"}
                     />}
                 />
             </FormControl>

@@ -23,7 +23,7 @@ class Users extends Component<any, any> {
             else if (url.includes(PROFILE.USER.ACCESS)) return 3;
             else if (url.includes(PROFILE.USER.CONTACT)) return 4;
             else if (url.includes(PROFILE.USER.BLOG)) return 5;
-            else if (url.includes(PROFILE.USER.INSTITUTION) && props.authUser.referralTypes.includes('OPERATOR')) return 6;
+            else if (url.includes(PROFILE.USER.INSTITUTION)) return 6;
             else return 0;
         })(window.location.pathname);
 
@@ -97,12 +97,11 @@ class Users extends Component<any, any> {
                                             label={"Fil d'actualité"}
                                             disabled={!this.context.can(Permissions.accountType.blog.name, Permissions)}
                                         />
-                                        { authUser.referralTypes.includes('OPERATOR') && (
-                                            <Tab
-                                                icon={<i className="zmdi zmdi-account" />}
-                                                label={"Mes Agences"}
-                                            />
-                                        )}
+                                        <Tab
+                                            icon={<i className="zmdi zmdi-account" />}
+                                            label={"Mes Etablissements"}
+                                        />
+                                        
                                     </Tabs>
                                 </div>
                             </div>
