@@ -256,6 +256,10 @@ export const getUserAssistanceTypes = () => {
         {
             label: 'Activation du profile',
             value: 'ACTIVATE_PROFILE'
+        },
+        {
+            label: 'Authentifier le profile',
+            value: 'AUTHENTICATE_PROFILE'
         }
     ];
 }

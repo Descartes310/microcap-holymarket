@@ -18,7 +18,7 @@ const AuthenticateUser = (props) => {
 
     const onSubmit = () => {
         props.setRequestGlobalAction(true);
-        UserService.authenticate(props.user?.referralId).then(() => {
+        UserService.authenticate(props.user?.referralId || props.user?.referralCode).then(() => {
             NotificationManager.success('Authentification réussie');
             props.onClose(true);
         }).catch((err) => {

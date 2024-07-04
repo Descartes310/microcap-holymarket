@@ -86,7 +86,6 @@ class Users extends Component<any, any> {
                                         <Tab
                                             icon={<i className="zmdi zmdi-account" />}
                                             label={"Mes accès"}
-                                            disabled={!this.context.can(Permissions.accountType.access.name, Permissions)}
                                         />
                                         <Tab
                                             icon={<i className="zmdi zmdi-account" />}

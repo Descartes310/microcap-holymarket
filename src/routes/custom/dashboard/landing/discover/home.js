@@ -108,7 +108,7 @@ const Home = () => {
                             <p data-aos="fade-left" className='mt-20 col-md-12 text-justify'>
                                 MicroCap invente le financement participatif par cautionnement mutuel. Un concept de mutualisation des risques 
                                 au sein d'une communauté d'entrepreneurs pour faciliter le financement de leurs projets d'entreprise surtout 
-                                pendant les phases difficiles et peu suivies par des investisseursclassiques : idéation, création, redressement, retournement.
+                                pendant les phases difficiles et peu suivies par des investisseurs classiques: idéation, création, redressement, retournement.
                                 <br /><br />
                                 Notre solution est basée sur un modèle contributif qui donne sa chance à toute personne capable de bonne volonté 
                                 et de sérieux, contrairement au modèle ultra sélectif basé sur l'analyse technique, moins inclusif mais malheureusement 

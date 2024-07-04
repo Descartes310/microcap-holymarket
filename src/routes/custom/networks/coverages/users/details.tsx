@@ -304,69 +304,6 @@ const UserDetails = (props) => {
                     </table>
                 </div>
 
-                {/* <h1 style={{ marginTop: '5%' }}>Informations bancaires</h1>
-
-                <div className="table-responsive mt-30">
-                    <table className="table table-bordered table-middle mb-0">
-                        <thead>
-                            <tr>
-                                <th className="fw-bold">QR code</th>
-                                <th className="fw-bold">Titre</th>
-                                <th className="fw-bold">Information</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            { subscriptions.map(subscription => (
-                                <>
-                                    <tr className="cursor-pointer">
-                                        <td rowSpan={2} className="text-center">
-                                            <QRCode size={200} value={JSON.stringify({iban: subscription.reference.split("_").pop(), fullname: user.userName})} />
-                                        </td>
-                                        <td>
-                                            <div className="media">
-                                                <div className="media-body pt-10">
-                                                    <h4 className="m-0 fw-bold text-dark">
-                                                        Proprietaire du compte
-                                                    </h4>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div className="media">
-                                                <div className="media-body pt-10">
-                                                    <h4 className="m-0 fw-bold text-dark">
-                                                        {user.userName}
-                                                    </h4>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div className="media">
-                                                <div className="media-body pt-10">
-                                                    <h4 className="m-0 fw-bold text-dark">
-                                                        IBAN du compte
-                                                    </h4>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div className="media">
-                                                <div className="media-body pt-10">
-                                                    <h4 className="m-0 fw-bold text-dark">
-                                                        {subscription.iban}
-                                                    </h4>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </>
-                            ))}
-                        </tbody>
-                    </table>
-                </div> */}
-
                 <h1 style={{ marginTop: '5%' }}>Dossier utilisateur</h1>
                 <UserDocuments reference={props.match.params.id} />
                 

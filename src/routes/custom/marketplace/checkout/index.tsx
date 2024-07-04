@@ -79,8 +79,11 @@ class Checkout extends Component<any, any> {
             this.props.onClearCart();
         })
         .catch((err) => {
-            console.log(err);
-            NotificationManager.error("La création de votre commande a échoué!");
+            if(err.response.status === 412 ) {
+                NotificationManager.error("Vous devez appartenir à une communauté au préalable");
+            } else {
+                NotificationManager.error("La création de votre commande a échoué!");
+            }
         })
         .finally(() => {
             this.props.setRequestGlobalAction(false);

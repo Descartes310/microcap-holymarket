@@ -6,21 +6,26 @@ import { setRequestGlobalAction } from 'Actions';
 import React, { useEffect, useState } from 'react';
 import TextField from '@material-ui/core/TextField';
 import { getReferralTypeLabel } from 'Helpers/helpers';
+import { getUserAssistanceTypes } from 'Helpers/datas';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { NotificationManager } from 'react-notifications';
-import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
+import ActivationBox from '../../notifications/ActivationBox';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { Form, FormGroup, Input as InputStrap } from 'reactstrap';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
-import { getUserAssistanceTypes } from 'Helpers/datas';
-import ActivationBox from '../../notifications/ActivationBox';
+import AuthenticateUser from 'Routes/custom/networks/coverages/components/authenticateUser';
+import UserDocumentsModal from 'Routes/custom/networks/coverages/components/userFilesModal';
+import MemberDocumentsModal from 'Routes/custom/networks/coverages/components/memberFilesModal';
 
 const Assist = (props) => {
 
     const [member, setMember] = useState(null);
     const [action, setAction] = useState(null);
     const [membership, setMembership] = useState(null);
+    const [showUserFileBox, setShowUserFileBox] = useState(false);
     const [showActivationBox, setShowActivationBox] = useState(false);
+    const [showMemberFileBox, setShowMemberFileBox] = useState(false);
+    const [showAuthentificationBox, setShowAuthentificationBox] = useState(false);
 
     const findUserByMembership = () => {
         props.setRequestGlobalAction(true);
@@ -43,9 +48,16 @@ const Assist = (props) => {
             return;
         }
 
+        console.log(action);
+
         switch (action.value) {
             case 'ACTIVATE_PROFILE':
                 activateProfile();
+                break;
+
+            case 'AUTHENTICATE_PROFILE':
+                console.log('Bonjour')
+                setShowUserFileBox(true);
                 break;
         
             default:
@@ -143,18 +155,60 @@ const Assist = (props) => {
                     }
                 </FormGroup>
             </Form>
-            { !member && action?.value == 'ACTIVATE_PROFILE'}
-            <ActivationBox
-                member={member}
-                show={showActivationBox}
-                pdfURL={'http://www.africau.edu/images/default/sample.pdf'}
-                onClose={() => {
-                    setShowActivationBox(false);
-                    setMember(null);
-                    setAction(null);
-                    setMembership(null);
-                }} 
-            />
+            { !member && action?.value == 'ACTIVATE_PROFILE' && (
+                <ActivationBox
+                    member={member}
+                    show={showActivationBox}
+                    pdfURL={'http://www.africau.edu/images/default/sample.pdf'}
+                    onClose={() => {
+                        setShowActivationBox(false);
+                        setMember(null);
+                        setAction(null);
+                        setMembership(null);
+                    }}
+                />
+            )}
+
+            { member && showUserFileBox && (
+                <UserDocumentsModal
+                    user={member}
+                    show={showUserFileBox}
+                    reference={member.referralCode}
+                    onClose={() => {
+                        setShowUserFileBox(false);
+                    }}
+                    onValidate={() => {
+                        setShowUserFileBox(false);
+                        setShowMemberFileBox(true);
+                    }}
+                />
+            )}
+            { member && showMemberFileBox && (
+                <MemberDocumentsModal
+                    user={member}
+                    show={showMemberFileBox}
+                    reference={member.referralCode}
+                    onClose={() => {
+                        setShowMemberFileBox(false);
+                    }}
+                    onValidate={() => {
+                        setShowMemberFileBox(false);
+                        setShowAuthentificationBox(true);
+                    }}
+                />
+            )}
+            { member && showAuthentificationBox && (
+                <AuthenticateUser
+                    user={member}
+                    show={showAuthentificationBox}
+                    onClose={(reload = false) => {
+                        setShowAuthentificationBox(false);
+                        if(reload) {
+                            window.location.reload();
+                        };
+                    }}
+                />
+            )}
         </RctCollapsibleCard>
     );
 };
