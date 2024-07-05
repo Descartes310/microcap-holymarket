@@ -37,10 +37,26 @@ const SaveBoosting = () => {
                         <tbody>
                               <tr>
                                  <td>
-                                    <p>ESH MUPECI</p>
+                                    <p>NDJANGUI DEAL</p>
                                  </td>
                                  <td>
-                                    <p>DAT MUPECI</p>
+                                    <p>CARNET DEAL</p>
+                                 </td>
+                              </tr>
+                              <tr>
+                                 <td>
+                                    <p>NDJANGUI SPOT</p>
+                                 </td>
+                                 <td>
+                                    <p>CARNET SPOT</p>
+                                 </td>
+                              </tr>
+                              <tr>
+                                 <td>
+                                    <p>NDJANGUI PREVOYANCE</p>
+                                 </td>
+                                 <td>
+                                    <p>CARNET PREVOYANCE</p>
                                  </td>
                               </tr>
                               <tr>
@@ -48,23 +64,7 @@ const SaveBoosting = () => {
                                     <p></p>
                                  </td>
                                  <td>
-                                    <p>SERHAB</p>
-                                 </td>
-                              </tr>
-                              <tr>
-                                 <td>
-                                    <p></p>
-                                 </td>
-                                 <td>
-                                    <p>PLAN REFLEQ</p>
-                                 </td>
-                              </tr>
-                              <tr>
-                                 <td>
-                                    <p></p>
-                                 </td>
-                                 <td>
-                                    <p>OPTION MICROCAP</p>
+                                    <p>CARNET ASSO</p>
                                  </td>
                               </tr>
                         </tbody>
