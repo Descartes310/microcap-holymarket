@@ -10,7 +10,8 @@ export default class CartItem {
         this.price = Number(item.price);
         this.customInfos = item.customInfos;
         this.description = item.description;
-        this.currency = item.currency ? item.currency : 'EUR';
+        let currenctCurrency = item?.details?.find(details => details.type === 'PRICE_CURRENCY')?.value;
+        this.currency = currenctCurrency ? currenctCurrency : item.currency ? item.currency : 'EUR';
         this.quantity = item.quantity ? Number(item.quantity) : 1;
     }
 

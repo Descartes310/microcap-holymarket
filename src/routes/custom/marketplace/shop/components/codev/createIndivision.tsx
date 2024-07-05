@@ -27,6 +27,7 @@ const Indivision = (props) => {
 
         if(amount >= depositAmount) {
             alert("Le montant du versement unitaire est incorrect");
+            return;
         }
 
         let data = {

@@ -81,7 +81,7 @@ class Hit extends Component {
 					this.setState({ showDetails: true });
 				}}>
 					<div className="d-flex justify-content-between">
-						<h2 className="text-danger">{getPriceWithCurrency(product.price, product.currency)}</h2>
+						<h2 className="text-danger">{getPriceWithCurrency(product.price, product?.details?.find(details => details.type === 'PRICE_CURRENCY')?.value)}</h2>
 					</div>
 					<h4 className="text-dark">{product.label}</h4>
 					<h4 style={{ color: '#ffb93a' }}>{product.seller}</h4>

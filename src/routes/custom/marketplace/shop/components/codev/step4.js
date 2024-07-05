@@ -37,7 +37,6 @@ class CodevStep4 extends Component {
         this.getAliases();
         this.getCodevDetails();
         this.getCodevConfigOptions();
-        console.log("DATAS => ", this.props.data);
     }
 
     getCodevDetails = () => {

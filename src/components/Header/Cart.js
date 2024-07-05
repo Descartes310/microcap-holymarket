@@ -48,7 +48,6 @@ class Carts extends Component {
 
 	render() {
 		const { cart, deleteItemFromCart } = this.props;
-
 		return (
 			<UncontrolledDropdown nav className="list-inline-item cart-dropdown">
 				<DropdownToggle nav className="p-0">
