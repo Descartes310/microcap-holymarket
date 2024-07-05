@@ -61,7 +61,7 @@ const SaveBoosting = () => {
                               </tr>
                               <tr>
                                  <td>
-                                    <p></p>
+                                    <p>NDJANGUI BUSINESS</p>
                                  </td>
                                  <td>
                                     <p>CARNET ASSO</p>
