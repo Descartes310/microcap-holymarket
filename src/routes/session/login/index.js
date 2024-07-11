@@ -134,7 +134,7 @@ const Signin = (props) => {
                                                 >
                                                     <IntlMessages id="auth.signin" />
                                                 </Button>
-                                                <Button
+                                                {/* <Button
                                                     size="large"
                                                     type="button"
                                                     variant="contained"
@@ -143,7 +143,16 @@ const Signin = (props) => {
                                                     style={{ backgroundColor: '#2f2e40a6' }}
                                                 >
                                                     MicroCap en 2 cliques
-                                                </Button>
+                                                </Button> */}
+                                                <div className="d-flex justify-content-end">
+                                                    <Link to={AUTH.REGISTER}>
+                                                        <InputLabel
+                                                            className="text-right text-primary text-decoration-underline-hover font-weight-bold mt-10"
+                                                        >
+                                                            Je n'ai pas encore de compte
+                                                        </InputLabel>
+                                                    </Link>
+                                                </div>
                                             </FormGroup>
                                         </Form>
                                         <p className="text-muted">

@@ -10,15 +10,13 @@ import Checkbox from "@material-ui/core/Checkbox";
 import InputComponent from "Components/InputComponent";
 import FormControl from "@material-ui/core/FormControl";
 import ErrorInputComponent from "Components/ErrorInputComponent";
-import InputLabel from "@material-ui/core/InputLabel/InputLabel";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { minMaxValidatorObject, passwordValidatorObject } from "Helpers/validator";
 
 const FirstStep = props => {
-    const { loading, setData, intl, defaultState } = props;
+    const { loading, nextStep, setData, intl, defaultState } = props;
 
     const [passwordType, setPasswordType] = useState('password');
-    const [passwordConfirmType, setPasswordConfirmType] = useState('password');
 
     const { register, errors, handleSubmit, watch, control, setValue } = useForm({
         defaultValues: !_.isEqual(defaultState, {}) ? defaultState : {
@@ -28,44 +26,21 @@ const FirstStep = props => {
     });
 
     const isOrganisation = watch('isOrganisation');
+    const useEmailAsLogin = watch('useEmailAsLogin');
     const useMicrocapEmail = watch('useMicrocapEmail');
-
     /**
      * On submit
      */
     const onSubmit = (data) => {
+        // Send data
         setData(data);
+        // Redirect to the next step
+        nextStep();
     };
-
     return (
         <Form onSubmit={handleSubmit(onSubmit)} className={"center-holder"}>
             <div className="row align-items-flex-end">
-
-                <FormControl fullWidth className='mb-20 pl-15'>
-                    <InputComponent
-                        isRequired
-                        className="mt-0"
-                        errors={errors}
-                        id="isOrganisation"
-                        control={control}
-                        name={'isOrganisation'}
-                        register={register}
-                        componentType="select"
-                        as={<FormControlLabel control={
-                            <Checkbox
-                                color="primary"
-                                checked={isOrganisation}
-                                onChange={() => setValue('isOrganisation', !isOrganisation)}
-                            />
-                        } label={"Je suis une personne morale"}
-                        />}
-                    />
-                </FormControl>
-
                 <FormGroup className="col-12 has-wrapper">
-                    <InputLabel className="text-left" htmlFor="userName">
-                        Votre nom complet
-                    </InputLabel>
                     <InputComponent
                         isRequired
                         id="userName"
@@ -74,28 +49,12 @@ const FirstStep = props => {
                         errors={errors}
                         register={register}
                         className="has-input input-lg"
+                        placeholder={"Nom d'utilisateur"}
                     />
                 </FormGroup>
             </div>
 
-            { !useMicrocapEmail && (
-                <FormGroup className="has-wrapper">
-                    <InputLabel className="text-left" htmlFor="email">
-                        Votre adresse email
-                    </InputLabel>
-                    <InputComponent
-                        isRequired
-                        id="email"
-                        type="email"
-                        name={'email'}
-                        errors={errors}
-                        register={register}
-                        className="has-input input-lg"
-                    />
-                </FormGroup>
-            )}
-
-            <FormControl fullWidth className='mb-20'>
+            <FormControl fullWidth>
                 <InputComponent
                     isRequired
                     className="mt-0"
@@ -111,15 +70,63 @@ const FirstStep = props => {
                             checked={useMicrocapEmail}
                             onChange={() => setValue('useMicrocapEmail', !useMicrocapEmail)}
                         />
-                    } label={"Je n'ai pas une adresse email"}
+                    } label={"Je n'ai pas d'adresse email"}
                     />}
                 />
             </FormControl>
 
+            { !useMicrocapEmail && (
+                <FormGroup className="has-wrapper">
+                    <InputComponent
+                        isRequired
+                        id="email"
+                        type="email"
+                        name={'email'}
+                        errors={errors}
+                        register={register}
+                        className="has-input input-lg"
+                        placeholder={"Email"}
+                    />
+                </FormGroup>
+            )}
+
+            <FormControl fullWidth>
+                <InputComponent
+                    isRequired
+                    className="mt-0"
+                    errors={errors}
+                    id="useEmailAsLogin"
+                    control={control}
+                    name={'useEmailAsLogin'}
+                    register={register}
+                    componentType="select"
+                    as={<FormControlLabel control={
+                        <Checkbox
+                            color="primary"
+                            checked={useEmailAsLogin}
+                            onChange={() => setValue('useEmailAsLogin', !useEmailAsLogin)}
+                        />
+                    } label={"Utiliser mon email comme login"}
+                    />}
+                />
+            </FormControl>
+            
+            { !useEmailAsLogin && (
+                <FormGroup className="has-wrapper">
+                    <InputComponent
+                        isRequired
+                        id="login"
+                        type="text"
+                        name={'login'}
+                        errors={errors}
+                        register={register}
+                        className="has-input input-lg"
+                        placeholder={"Login"}
+                    />
+                </FormGroup>
+            )}
+
             <FormGroup className="has-wrapper">
-                <InputLabel className="text-left" htmlFor="password">
-                    Votre mot de passe
-                </InputLabel>
                 <InputComponent
                     isRequired
                     id="password"
@@ -128,6 +135,7 @@ const FirstStep = props => {
                     type={passwordType}
                     register={register}
                     className="has-input input-lg"
+                    placeholder={intl.formatMessage({ id: "auth.password" })}
                     otherValidator={{ minLength: AppConfig.minPasswordLength }}
                 >
                     {errors.password?.type === 'minLength' && (
@@ -140,37 +148,53 @@ const FirstStep = props => {
             </FormGroup>
 
             <FormGroup className="has-wrapper">
-                <InputLabel className="text-left" htmlFor="password">
-                    Ressaisir le même mot de passe
-                </InputLabel>
                 <InputComponent
                     isRequired
-                    type={passwordConfirmType}
+                    type="Password"
                     errors={errors}
                     register={register}
                     id="passwordConfirmation"
                     name={'passwordConfirmation'}
                     className="has-input input-lg"
+                    placeholder={intl.formatMessage({ id: "auth.passwordConfirmation" })}
                     otherValidator={{ validate: value => value === watch('password') }}
                 >
                     {errors.passwordConfirmation && (
                         <ErrorInputComponent text={intl.formatMessage({ id: passwordValidatorObject.passwordConfirmation })} />
                     )}
                 </InputComponent>
-                <span onClick={() => setPasswordConfirmType(passwordConfirmType === 'password' ? 'text' : 'password')} className="has-icon">
-                    <i className={`zmdi zmdi-${passwordConfirmType === 'password' ? 'eye' : 'eye-off'}`}></i>
-                </span>
             </FormGroup>
+
+            <FormControl fullWidth>
+                <InputComponent
+                    isRequired
+                    className="mt-0"
+                    errors={errors}
+                    id="isOrganisation"
+                    control={control}
+                    name={'isOrganisation'}
+                    register={register}
+                    componentType="select"
+                    as={<FormControlLabel control={
+                        <Checkbox
+                            color="primary"
+                            checked={isOrganisation}
+                            onChange={() => setValue('isOrganisation', !isOrganisation)}
+                        />
+                    } label={"Créer un compte pour mon organisation"}
+                    />}
+                />
+            </FormControl>
 
             <FormGroup className="mb-15">
                 <Button
                     color="primary"
                     disabled={loading}
                     variant="contained"
-                    className="text-white font-weight-bold w-100"
+                    className="text-white font-weight-bold"
                     onClick={handleSubmit(onSubmit)}
                 >
-                    Créer mon compte
+                    <IntlMessages id="button.next" /> <i className="ti-arrow-right font-weight-bold ml-2"></i>
                 </Button>
             </FormGroup>
         </Form >

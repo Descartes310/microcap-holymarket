@@ -21,7 +21,7 @@ const TellUs = (props) => {
     const onSubmitSondage = (response, index) => {
         props.setRequestGlobalAction(true);
         createSondage({ response }).then(data => {
-            // props.history.push(joinUrlWithParamsId(SONDAGE_SECOND, index));
+            props.history.push(joinUrlWithParamsId(SONDAGE_SECOND, index));
             setResponse(index);
         }).finally(() => {
             props.setRequestGlobalAction(false)

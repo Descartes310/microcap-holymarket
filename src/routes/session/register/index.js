@@ -8,6 +8,7 @@ import QueueAnim from 'rc-queue-anim';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useQuery } from "Helpers/helpers";
+import { setSession } from 'Helpers/tokens';
 import AppConfig from 'Constants/AppConfig';
 import IntlMessages from 'Util/IntlMessages';
 import AppBar from '@material-ui/core/AppBar';
@@ -23,6 +24,7 @@ const Signup = (props) => {
 
    const query = useQuery(useLocation);
    const [user, setUser] = useState(null);
+   const [token, setToken] = useState(null);
    const [showSweetAlert, setShowSweetAlert] = useState(false);
    
    /**
@@ -50,8 +52,9 @@ const Signup = (props) => {
 
    const confirmSweetAlert = () => {
       setShowSweetAlert(false);
-      setUser(user);
-      props.history.push(AUTH.LOGIN);
+      setUser(null);
+      setToken(null);
+      window.location.href = AUTH.LOGIN;      
    }
 
    return (
@@ -83,11 +86,12 @@ const Signup = (props) => {
                   <div className="row align-items-center">
                      <div className="col-sm-7 col-md-7 col-lg-8">
                         <div className="session-body text-center p-0">
-                           <h1 className="p-20">Créer mon compte en 2 étapes</h1>
+                           <h1 className="p-20">Créer mon compte MicroCap</h1>
                            <div className="">
                               <RegisterSteps history={props.history} onSuccess={(response) => {
                                  setShowSweetAlert(true);
-                                 setUser(response);
+                                 setSession(response.token);
+                                 setUser(response.user);
                               }} />
                            </div>
                         </div>
