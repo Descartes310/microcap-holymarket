@@ -25,6 +25,10 @@ const Card = (props) => {
         getUser();
         _getCountries();
         _getUserFiles();
+        const hrefParam = new URLSearchParams(props.location.search).get("href");
+        if(hrefParam) {
+            window.location.href = `#${hrefParam}`;
+        }
     }, []);
 
     const _getCountries = () => {
@@ -333,7 +337,7 @@ const Card = (props) => {
                 ))
             } */}
 
-            <h1 style={{ marginTop: '5%' }}>Dossier utilisateur</h1>
+            <h1 style={{ marginTop: '5%' }} id="folder">Dossier utilisateur</h1>
 
             <div className="table-responsive mt-30">
                 <table className="table table-bordered table-middle mb-0">
@@ -391,7 +395,7 @@ const Card = (props) => {
                                                     setShowCreateFile(true);
                                                 }}
                                             >
-                                                Editer
+                                                Fournir la pièce
                                             </Button>
                                         </div>
                                     </div>
