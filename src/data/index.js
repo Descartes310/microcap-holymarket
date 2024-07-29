@@ -19,15 +19,15 @@ export const projects = {
 
 export const contactTypes = [
     {
-        name: 'Adresse email',
+        name: 'Mon adresse email',
         value: 'EMAIL'
     },
     {
-        name: 'Télephone mobile',
+        name: 'Mon numéro de téléphone',
         value: 'PHONE'
     },
     {
-        name: 'Adresse',
+        name: 'Mon adresse postale',
         value: 'ADDRESS'
     },
     // {

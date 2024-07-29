@@ -23,7 +23,7 @@ class ActivationBox extends Component {
             activeTab: 0,
             loading: false,
             codeToVerify: '',
-            hasAskCode: false,
+            hasAskCode: true,
             acceptCGU: false,
             numPages: 1,
             pageNumber: 1,
@@ -38,11 +38,18 @@ class ActivationBox extends Component {
             this.setState({
                 member: this.props.member,
                 membership: this.props.member.referralCode
-            })
+            });
+        }
+    }
+
+    componentDidMount() {
+        if(!(this.props.member && this.props.member.notificationAddress) && !(!this.props.member && this.props.authUser.notificationAddress)) {
+            this.setState({ showCreateContactBox: true });
         }
     }
 
     handleChange = (__, value) => {
+        console.log(value);
         this.setState({ activeTab: value });
     };
 
@@ -76,7 +83,7 @@ class ActivationBox extends Component {
         UserService.generateOTP(data)
             .then(() => {
                 NotificationManager.success("Un code de vérification vous a été envoyé. Veuillez saisir ce code dans ce formulaire");
-                this.setState({ activeTab: 1, hasAskCode: true });
+                this.setState({ activeTab: this.props.notification ? 2 : 1, hasAskCode: true });
             })
             .catch(() => {
                 NotificationManager.error("Aucune adresse de notification fournie.");
@@ -139,7 +146,6 @@ class ActivationBox extends Component {
     }
 
     render() {
-        // console.log(this.props.member, this.state.member, this.state.membership);
         const { authUser } = this.props;
         const { member, membership, hasAskCode, acceptCGU, showCreateContactBox } = this.state;
 
@@ -159,20 +165,21 @@ class ActivationBox extends Component {
                                 textColor="primary"
                             >
                                 <Tab label="Code d'activation" />
-                                <Tab label="Paramètres de l'accès"  disabled={!hasAskCode} />
-                                <Tab label="Activer l'accès" disabled={!member || !hasAskCode} />
+                                <Tab label="Paramètres de l'accès" disabled={!hasAskCode || this.props.notification} />
+                                <Tab label="Activer le" disabled={!member || !hasAskCode} />
                             </Tabs>
                         </div>
                     </AppBar>
                     <SwipeableViews
-                        index={this.state.activeTab}>
+                        index={this.state.activeTab}
+                    >
                         <div className="card mb-0 transaction-box">
-                            <TabContainer>
+                            <TabContainer >
                                 { ((this.props.member && this.props.member.notificationAddress) || (!this.props.member && authUser.notificationAddress)) ? (
                                     <div className="p-sm-20 pt-sm-30 p-10 pt-15 border-top">
                                         <div>
-                                            <p>Pour valider votre compte, un code de confirmation vous sera envoyé par le contact que vous avez enregistré.</p>
-                                            <p>Cliquez sur le boutton ci-dessous pouur débuter la procédure.</p>
+                                            <p>Pour valider votre compte, un code de vérification vous sera envoyé par le moyen que vous avez enregistré.</p>
+                                            <p>Cliquez sur le boutton ci-dessous pouur recevoir le code de vérification.</p>
                                         </div>
                                         <Button
                                             color="primary"
@@ -180,7 +187,7 @@ class ActivationBox extends Component {
                                             className="text-white mr-2"
                                             onClick={this.onAskCode}
                                         >
-                                            Envoyer le code de validation
+                                            Envoyer le code de vérification
                                         </Button>
                                     </div>
                                 ) : (
@@ -193,7 +200,9 @@ class ActivationBox extends Component {
                                             color="primary"
                                             disabled={this.state.loading}
                                             className="text-white mr-2"
-                                            onClick={() => this.setState({ showCreateContactBox: true })}
+                                            onClick={() => {
+                                                this.setState({ showCreateContactBox: true });
+                                            }}
                                         >
                                             Créer un nouveau contact
                                         </Button>
@@ -201,64 +210,57 @@ class ActivationBox extends Component {
                                 )}
                             </TabContainer>
                         </div>
-                        <div className="card mb-0 transaction-box">
-                            <TabContainer>
-                                <div className="p-sm-20 pt-sm-30 p-10 pt-15 border-top">
-                                    <FormGroup className="has-wrapper">
-                                        <InputLabel className="text-left" htmlFor="membership">
-                                            Numéro utilisateur
-                                        </InputLabel>
-                                        <Input
-                                            required
-                                            disabled
-                                            type="text"
-                                            id="membership"
-                                            name='membership'
-                                            value={membership}
-                                            className="input-lg"
-                                            onChange={(e) => this.setState({ membership: e.target.value })}
-                                        />
-                                    </FormGroup>
-                                    {member && (
-                                        <>
-                                            <FormGroup className="has-wrapper">
-                                                <Input
-                                                    disabled
-                                                    className="input-lg"
-                                                    value={member.userName}
-                                                />
-                                            </FormGroup>
-                                            <FormGroup className="has-wrapper">
-                                                <Input
-                                                    disabled
-                                                    className="input-lg"
-                                                    value={getReferralTypeLabel(member.referralType)}
-                                                />
-                                            </FormGroup>
-                                        </>
-                                    )}
-                                    <FormGroup>
-                                        {/* <Button
-                                            color="primary"
-                                            variant="contained"
-                                            disabled={!membership}
-                                            onClick={() => this.findUserByMembership()}
-                                            className="text-white font-weight-bold mr-20 bg-blue"
-                                        >
-                                            Vérifier l'utilisateur
-                                        </Button> */}
-                                        <Button
-                                            color="primary"
-                                            disabled={this.state.loading}
-                                            className="text-white mr-2"
-                                            onClick={() => this.setState({ activeTab: 2 })}
-                                        >
-                                            Continuer ma validation
-                                        </Button>
-                                    </FormGroup>
-                                </div>
-                            </TabContainer>
-                        </div>
+                        {this.props.member && (
+                            <div className="card mb-0 transaction-box">
+                                <TabContainer>
+                                    <div className="p-sm-20 pt-sm-30 p-10 pt-15 border-top">
+                                        <FormGroup className="has-wrapper">
+                                            <InputLabel className="text-left" htmlFor="membership">
+                                                Numéro utilisateur
+                                            </InputLabel>
+                                            <Input
+                                                required
+                                                disabled
+                                                type="text"
+                                                id="membership"
+                                                name='membership'
+                                                value={membership}
+                                                className="input-lg"
+                                                onChange={(e) => this.setState({ membership: e.target.value })}
+                                            />
+                                        </FormGroup>
+                                        {member && (
+                                            <>
+                                                <FormGroup className="has-wrapper">
+                                                    <Input
+                                                        disabled
+                                                        className="input-lg"
+                                                        value={member.userName}
+                                                    />
+                                                </FormGroup>
+                                                <FormGroup className="has-wrapper">
+                                                    <Input
+                                                        disabled
+                                                        className="input-lg"
+                                                        value={getReferralTypeLabel(member.referralType)}
+                                                    />
+                                                </FormGroup>
+                                            </>
+                                        )}
+                                        <FormGroup>
+                                            <Button
+                                                color="primary"
+                                                disabled={this.state.loading}
+                                                className="text-white mr-2"
+                                                onClick={() => this.setState({ activeTab: 2 })}
+                                            >
+                                                Continuer ma validation
+                                            </Button>
+                                        </FormGroup>
+                                    </div>
+                                </TabContainer>
+                            </div>
+                        )}
                         <div className="card mb-0 transaction-box">
                             <TabContainer>
                                 <div className="p-sm-20 pt-sm-30 p-10 pt-15 border-top">
@@ -323,9 +325,12 @@ class ActivationBox extends Component {
                     show={showCreateContactBox}
                     member={this.props.member ?? this.props.member }
                     setAsNotificatioAddress={true}
-                    onClose={() => {
+                    title={"Par quel moyen souhaitez-vous recevoir le code d'activation"}
+                    onClose={(reload = false) => {
                         this.setState({ showCreateContactBox: false });
-                        this.onAskCode()
+                        if(reload) {
+                            this.onAskCode();
+                        }
                     }} 
                 />
             </DialogComponent>

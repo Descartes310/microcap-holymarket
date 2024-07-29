@@ -47,6 +47,9 @@ class PersonRegister extends Component {
         if (!_data.useMicrocapEmail && !_data.email)
             return;
 
+        if (!_data.useMicrocapEmail && !_data.email)
+            return;
+
         delete _data.useMicrocapEmail;
 
         this.props.setRequestGlobalAction(true);
@@ -54,7 +57,7 @@ class PersonRegister extends Component {
         .then((response) => {
             this.props.onSuccess(response);
         }).catch(() => {
-            NotificationManager.error("Une erreur est survenue, veuillez reessayer plus tard.");
+            NotificationManager.error("Cette addresse email est déjà utilisée");
         }).finally(() => {
             this.props.setRequestGlobalAction(false);
         })

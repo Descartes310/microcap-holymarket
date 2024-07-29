@@ -23,7 +23,7 @@ class HomePage extends Component {
 							color="primary"
 							variant="contained"
 							onClick={() => {
-								history.push(NOTIFICATIONS.LIST);
+								history.push(`${NOTIFICATIONS.LIST}?action=activate`);
 							}}
 							className={"text-white font-weight-bold mt-20"}
 						>

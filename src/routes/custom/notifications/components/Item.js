@@ -37,18 +37,13 @@ class Item extends Component {
             onCodevInvitationClick, onCodevInvitationRequestClick, onActivationPassClick, onInitDealClick } = this.props;
         return (
             <ListItem className="row px-20 py-3 d-flex justify-content-between align-items-center">
-                <div className="d-flex">
-                    <div className="d-flex align-items-start">
-                        <div className="avatar-wrap mr-15">
-                            <span className={`badge badge-xs badge-success mr-10 mt-10 position-relative`}>&nbsp;</span>
-                        </div>
-                        <div className="comment-wrap">
-                            <h4 className="mb-2 font-weight-bold">{notification.title}</h4>
-                            <p className="mb-0">{notification.message}</p>
-                        </div>
+                <div className="d-flex col-sm-12 col-md-10">
+                    <div className="comment-wrap">
+                        <h4 className="mb-2 font-weight-bold">{notification.title}</h4>
+                        <p className="mb-0">{notification.message}</p>
                     </div>
                 </div>
-                <div className="comment-action d-flex justify-content-end">
+                <div className="comment-action d-flex justify-content-end col-sm-12 col-md-2">
                     { tab !== 'TREATED' && (
                         <UncontrolledDropdown direction='botton' isOpen={this.state.open} toggle={() => { this.setState({ open: !this.state.open }); }}>
                             <DropdownToggle

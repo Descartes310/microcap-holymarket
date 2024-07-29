@@ -24,13 +24,6 @@ const CreateContact = (props) => {
             return;
         }
 
-        if(type.value == 'PHONE') {
-            if(!(value+"").startsWith("+")) {
-                NotificationManager.error('Le téléphone est invalide');
-                return;
-            }
-        }
-
         props.setRequestGlobalAction(true);
 
         let data = {
@@ -47,27 +40,28 @@ const CreateContact = (props) => {
 
         UserService.createContact(data).then(() => {
             NotificationManager.success('Le contact a été enregistré');
+            onClose(true);
         })
         .catch((err) => {
             console.log(err);
             NotificationManager.error("Une erreur s'est produite");
+            onClose(false);
         })
         .finally(() => {
             setType(null);
             setValue(null);
             props.setRequestGlobalAction(false);
-            onClose(true);
         });
     }
     
     return (
         <DialogComponent
             show={show}
-            onClose={onClose}
+            onClose={() => onClose(false)}
             size="md"
             title={(
                 <h3 className="fw-bold">
-                    Créer un nouveau contact
+                    {props.title ? props.title : 'Créer un nouveau contact'}
                 </h3>
             )}
         >
@@ -86,25 +80,26 @@ const CreateContact = (props) => {
                         renderInput={(params) => <TextField {...params} variant="outlined" />}
                     />
                 </div>
-                <FormGroup className="has-wrapper">
-                    <InputLabel className="text-left" htmlFor="value">
-                        Valeur {type?.value == 'PHONE' && "(Veuillez préfixer le numéro par le code téléphonique. Exp: +237)" }
-                    </InputLabel>
-                    { (type?.value == 'PHONE' && value != null && (value+"").length > 0  && !(value+"").startsWith("+")) && (
-                        <InputLabel className="text-left" style={{ color: 'red' }}>
-                            Le préfixe du numéro de téléphone est obligatoire
+                { type && (
+                    <FormGroup className="has-wrapper">
+                        <InputLabel className="text-left" htmlFor="value">
+                            {
+                                type?.value === 'EMAIL' ? "Veuillez saisir votre adresse e-mail" : 
+                                type?.value === 'ADDRESS' ? "Veuillez saisir votre adresse" :
+                                "Veuillez saisir votre numéro de télephone" 
+                            }
                         </InputLabel>
-                    )}
-                    <InputStrap
-                        required
-                        id="value"
-                        type="text"
-                        name='value'
-                        value={value}
-                        className="input-lg"
-                        onChange={(e) => setValue(e.target.value)}
-                    />
-                </FormGroup>
+                        <InputStrap
+                            required
+                            id="value"
+                            type="text"
+                            name='value'
+                            value={value}
+                            className="input-lg"
+                            onChange={(e) => setValue(e.target.value)}
+                        />
+                    </FormGroup>
+                )}
                 <Button
                     color="primary"
                     disabled={!value || !type}

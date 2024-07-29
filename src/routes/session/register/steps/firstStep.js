@@ -1,14 +1,18 @@
 import _ from 'lodash';
-import React, { useState } from 'react';
 import { injectIntl } from 'react-intl';
 import { useForm } from "react-hook-form";
 import AppConfig from "Constants/AppConfig";
 import { Form, FormGroup } from "reactstrap";
-import IntlMessages from "Util/IntlMessages";
 import Button from "@material-ui/core/Button";
+import TerritoryType from "Enums/Territories";
 import Checkbox from "@material-ui/core/Checkbox";
+import React, { useState, useEffect } from 'react';
+import TextField from '@material-ui/core/TextField';
+import TerritoryService from "Services/territories";
+import IconButton from "@material-ui/core/IconButton";
 import InputComponent from "Components/InputComponent";
 import FormControl from "@material-ui/core/FormControl";
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import ErrorInputComponent from "Components/ErrorInputComponent";
 import InputLabel from "@material-ui/core/InputLabel/InputLabel";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
@@ -17,7 +21,9 @@ import { minMaxValidatorObject, passwordValidatorObject } from "Helpers/validato
 const FirstStep = props => {
     const { loading, setData, intl, defaultState } = props;
 
+    const [countries, setCountries] = useState([]);
     const [passwordType, setPasswordType] = useState('password');
+    const [residenceCountry, setResidenceCountry] = useState(null);
     const [passwordConfirmType, setPasswordConfirmType] = useState('password');
 
     const { register, errors, handleSubmit, watch, control, setValue } = useForm({
@@ -30,11 +36,29 @@ const FirstStep = props => {
     const isOrganisation = watch('isOrganisation');
     const useMicrocapEmail = watch('useMicrocapEmail');
 
+    useEffect(() => {
+        _getCountries();
+    }, []);
+
+    const _getCountries = () => {
+        TerritoryService.getTerritories(TerritoryType.COUNTRY)
+        .then(countries => {
+            setCountries(countries);
+        })
+        .catch(error => {
+            setCountries([]);
+            NotificationManager.error("An error occur " + error);
+        });
+    };
+
     /**
      * On submit
      */
     const onSubmit = (data) => {
-        setData(data);
+        if(!residenceCountry) {
+            return;
+        }
+        setData({...data, residenceCountry: residenceCountry.id});
     };
 
     return (
@@ -115,6 +139,44 @@ const FirstStep = props => {
                     />}
                 />
             </FormControl>
+
+            <div className="col-md-12 col-sm-12 has-wrapper mb-30 p-0">
+                <InputLabel className="text-left">
+                    Pays de résidence/d'implantation
+                </InputLabel>
+                <Autocomplete
+                    value={residenceCountry}
+                    options={countries}
+                    id="combo-box-demo"
+                    classes={{ paper: 'custom-input' }}
+                    getOptionLabel={(option) => option.label}
+                    onChange={(__, item) => { setResidenceCountry(item) }}
+                    renderTags={options => {
+                        return (
+                            options.map(option =>
+                                <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center'  }}>
+                                    <IconButton color="primary">
+                                        <img src={option.details.find(d => d.code === 'FLAG')?.value} style={{ width: 25, height: 15 }}/>
+                                    </IconButton>
+                                    {option.label}
+                                </div>
+                            )
+                        )
+                
+                    }}
+                    renderOption={option => {
+                        return (
+                            <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center'  }}>
+                                <IconButton color="primary">
+                                    <img src={option.details.find(d => d.code === 'FLAG')?.value} style={{ width: 25, height: 15 }} />
+                                </IconButton>
+                                {option.label}
+                            </div>
+                        );
+                    }}
+                    renderInput={(params) => <TextField {...params} variant="outlined" />}
+                />
+            </div>
 
             <FormGroup className="has-wrapper">
                 <InputLabel className="text-left" htmlFor="password">

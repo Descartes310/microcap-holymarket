@@ -17,6 +17,8 @@ import CodevInvitationBox from "Routes/custom/notifications/CodevInvitationBox";
 
 class Unread extends Component {
 
+    action = null;
+
     constructor(props) {
         super(props);
         this.state = {
@@ -33,13 +35,22 @@ class Unread extends Component {
     }
 
     componentDidMount() {
+        const actionParam = new URLSearchParams(this.props.location.search).get("action");
+        if(actionParam) {
+            this.action = actionParam;
+        }
         this.getNotifications();
     }
 
     getNotifications = () => {
         NotificationService.getNotifications(NotificationType.UNREAD, false)
-        .then(notifications => this.setState({notifications}))
-        .finally(() => {
+        .then(notifications => {
+            this.setState({ notifications });
+            const activationNotification = notifications.find(n => n.type === 'ACTIVATION');
+            if(activationNotification && this.action === 'activate') {
+                this.onActivationClick(activationNotification);
+            }
+        }).finally(() => {
            this.setState({ loading: false })
         });
      }
@@ -67,9 +78,6 @@ class Unread extends Component {
     };
 
     onFundingActivationClick = (notification) => {
-        let accountId = notification.details.find(nd => nd.type === "ACCOUNT_ID")?.value;
-        let orderId = notification.details.find(nd => nd.type === "ORDER_ID")?.value;
-        let notificationId = notification.id;
         this.setState({ showAccountActivationBox: true, notification })
     };    
     
