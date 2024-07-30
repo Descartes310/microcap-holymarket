@@ -35,6 +35,7 @@ class Currencies extends Component {
 	onChangeCurrency(cu) {
 		this.setState({ langDropdownOpen: false });
 		this.props.setCurrency(cu);
+		window.location.reload();
 	}	
 
 	render() {

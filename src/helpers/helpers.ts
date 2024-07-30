@@ -6,7 +6,6 @@ import moment from 'moment';
 import api from "Api/index";
 import store from '../store';
 import AppConfig from 'Constants/AppConfig';
-import TerritoryType from "Enums/Territories";
 import { NotificationManager } from 'react-notifications';
 import NavLinks, { MenuItem } from "Components/Sidebar/NavLinks";
 
@@ -448,11 +447,11 @@ export const addCurrency = (price: any = 0) => {
 };
 
 export const getDefaultCurrency = () => {
-    const currency = localStorage.getItem('currency');
+    const currency = JSON.parse(localStorage.getItem('currency'));
     if (currency) {
-        return currency;
+        return currency.code;
     } else {
-        return `EUR`;
+        return AppConfig.currency.code;
     }
 };
 

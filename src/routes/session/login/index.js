@@ -74,12 +74,7 @@ const Signin = (props) => {
                                 <div className="center-hor-ver session-body text-center">
                                     <div className="">
                                         <div className="session-head mb-10">
-                                            <h2 className="font-weight-bold">
-                                                <IntlMessages id="auth.login.title" values={{ name: AppConfig.brandName }} />
-                                            </h2>
-                                            <p className="mb-0">
-                                                <IntlMessages id="auth.login.subTitle" />
-                                            </p>
+                                            <h1 className="p-20">Se connecter a mon compte MicroCap</h1>
                                             {/* This text is just a work around to add the width of the form input */}
                                             <p className="mb-0 visibility-hidden">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad, adipisci, animi aperiam eligendi</p>
                                         </div>

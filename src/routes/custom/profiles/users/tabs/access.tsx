@@ -9,6 +9,7 @@ import ListRoles from '../components/listRoles';
 import React, { useState, useEffect } from 'react';
 import CreateAccessBox from '../components/createAccessBox';
 import ChangeAccessCredentials from 'Components/ChangeAccessCredentials';
+import { HOME } from "Url/frontendUrl";
 
 const Access = (props) => {
 
@@ -34,7 +35,7 @@ const Access = (props) => {
         UserService.changeUserAccess(id)
         .then(response => {
             setSession(response);
-            window.location.reload();
+            window.location.href = HOME;
         })
         .finally(() => props.setRequestGlobalAction(false))
     }

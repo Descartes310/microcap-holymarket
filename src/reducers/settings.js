@@ -19,7 +19,7 @@ import {
 
 // app config
 import AppConfig from 'Constants/AppConfig';
-import {getDefaultLanguage} from "Helpers/helpers";
+import { saveSettings } from 'Helpers/tokens';
 
 /**
  * initial app settings
@@ -75,7 +75,7 @@ const INIT_STATE = {
 	selectedSidebarImage: AppConfig.sidebarImage, // default sidebar background image
 	locale: AppConfig.locale,
 	languages: AppConfig.languages,
-	currency: AppConfig.currency,
+	currency: localStorage.getItem('currency').startsWith("{") ? JSON.parse(localStorage.getItem('currency')) || AppConfig.currency : AppConfig.currency,
 	agencyLayoutBgColors: [
 		{
 			id: 1,
@@ -155,7 +155,12 @@ export default (state = INIT_STATE, action) => {
 
 		// set currency
 		case SET_CURRENCY:
-			return { ...state, currency: action.payload };
+			if(action.payload.code) {
+				saveSettings(action.payload);
+				return { ...state, currency: action.payload };
+			} else {
+				return { ...state }
+			}
 
 		// set currencies
 		case SET_CURRENCIES_SUCCESS:

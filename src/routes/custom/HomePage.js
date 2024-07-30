@@ -3,7 +3,7 @@ import { injectIntl } from "react-intl";
 import React, { Component } from 'react';
 import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
-import { NOTIFICATIONS, PROFILE } from "Url/frontendUrl";
+import { NOTIFICATIONS, PROFILE, GROUP } from "Url/frontendUrl";
 
 class HomePage extends Component {
 
@@ -34,7 +34,7 @@ class HomePage extends Component {
 					!authUser?.authenticate ? 
 						<div>
 							<h1>
-								Vous devez renseigner votre chaque pièce de votre dossier et attendre d'être authentifier.
+								Vous devez renseigner votre dossier utilisateur et attendre d'être authentifier.
 								Veuillez cliquer sur le bouton ci-dessous pour commencer à renseigner vos pièces.</h1>
 							<Button
 								color="primary"
@@ -45,6 +45,22 @@ class HomePage extends Component {
 								className={"text-white font-weight-bold mt-20"}
 							>
 								Renseigner mon dossier
+							</Button>
+						</div>
+					: 
+					!authUser?.membershipNumber ? 
+						<div>
+							<h1>
+								Vous devez rejoindre une communauté pour obtenir un numéro d'adhésion.</h1>
+							<Button
+								color="primary"
+								variant="contained"
+								onClick={() => {
+									history.push(`${GROUP.COMMUNITY.SPACE.ALL}`);
+								}}
+								className={"text-white font-weight-bold mt-20"}
+							>
+								Rechercher une communauté
 							</Button>
 						</div>
 					:

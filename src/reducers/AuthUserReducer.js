@@ -8,7 +8,7 @@ import {
     CLEAR_AUTH_USER,
 } from 'Actions/types';
 import { saveSettings } from 'Helpers/tokens';
-import { setSyntheticTrailingComments } from 'typescript';
+import AppConfig from 'Constants/AppConfig';
 
 /**
  * initial state
@@ -26,7 +26,13 @@ export default (state = INIT_STATE, action) => {
             return { ...state, loading: true };
 
         case SET_AUTH_USER_SUCCESS:
-            saveSettings(action.payload.currency);
+            if(localStorage.getItem('currency')) {
+                if(!localStorage.getItem('currency').startsWith('{')) {
+                    saveSettings(AppConfig.currency);
+                }
+            } else {
+                saveSettings(AppConfig.currency);
+            }
             return { ...state, loading: false, data: action.payload };
 
         case SET_AUTH_USER_FAILURE:

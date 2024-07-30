@@ -1,4 +1,5 @@
 // import { encrypt, decrypt } from './crypto';
+import AppConfig from 'Constants/AppConfig';
 
 export const setSession = (token) => {
     if (!token.accessToken) {
@@ -30,8 +31,7 @@ export const saveAuthToken = (
 export const saveSettings = (
     currency
 ) => {
-
-    localStorage.setItem('currency', currency ? currency : 'EUR');
+    localStorage.setItem('currency', currency ? JSON.stringify(currency) : JSON.stringify(AppConfig.currency));
 };
 
 export const removeAuthToken = () => {

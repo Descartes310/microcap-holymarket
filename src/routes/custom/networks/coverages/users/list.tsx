@@ -87,7 +87,7 @@ const List = (props) => {
                                             <th className="fw-bold">Email</th>
                                             <th className="fw-bold">Numéro utilisateur</th>
                                             <th className="fw-bold">Compte activé</th>
-                                            <th className="fw-bold">Date activation</th>
+                                            <th className="fw-bold">Date de création</th>
                                             <th className="fw-bold">Status</th>
                                             <th className="fw-bold">Actions</th>
                                         </tr>
@@ -126,10 +126,10 @@ const List = (props) => {
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    { item.updatedAt != null && (
+                                                    { item.createdAt != null && (
                                                         <div className="media">
                                                             <div className="media-body pt-10">
-                                                                <TimeFromMoment time={item.updatedAt} />
+                                                                <TimeFromMoment time={item.createdAt} />
                                                             </div>
                                                         </div>
                                                     )}
