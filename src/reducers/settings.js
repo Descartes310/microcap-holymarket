@@ -75,7 +75,7 @@ const INIT_STATE = {
 	selectedSidebarImage: AppConfig.sidebarImage, // default sidebar background image
 	locale: AppConfig.locale,
 	languages: AppConfig.languages,
-	currency: localStorage.getItem('currency').startsWith("{") ? JSON.parse(localStorage.getItem('currency')) || AppConfig.currency : AppConfig.currency,
+	currency: localStorage.getItem('currency') ? localStorage.getItem('currency').startsWith("{") ? JSON.parse(localStorage.getItem('currency')) || AppConfig.currency : AppConfig.currency : AppConfig.currency,
 	agencyLayoutBgColors: [
 		{
 			id: 1,
