@@ -87,7 +87,7 @@ const Update = (props) => {
     return (
         <>
             <PageTitleBar
-                title={"Création de role"}
+                title={"Création de role"} onBackClick={() => props.history.push(USER_ACCOUNT_TYPE.ROLE.LIST)}
             />
             <RctCollapsibleCard>
                 <Form onSubmit={onSubmit}>

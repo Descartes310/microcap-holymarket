@@ -85,7 +85,7 @@ const Update = (props) => {
     return (
         <>
             <PageTitleBar
-                title={"Edition de catégorie"}
+                title={"Edition de catégorie"} onBackClick={() => props.history.push(USER_ACCOUNT_TYPE.CATEGORY.LIST)}
             />
             <RctCollapsibleCard>
                 <Form onSubmit={onSubmit}>

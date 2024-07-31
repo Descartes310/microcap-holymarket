@@ -64,7 +64,7 @@ const Create = (props) => {
     return (
         <>
             <PageTitleBar
-                title={"Création d'un lien"}
+                title={"Création d'un lien"} onBackClick={() => props.history.push(joinUrlWithParamsId(USER_ACCOUNT_TYPE.TYPE.CHAIN, props.match.params.id))}
             />
             <RctCollapsibleCard>
                 <Form onSubmit={onSubmit}>

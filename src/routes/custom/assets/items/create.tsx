@@ -89,7 +89,7 @@ const Create = (props) => {
     return (
         <>
             <PageTitleBar
-                title={"Création d'un actif"}
+                title={"Création d'un actif"} onBackClick={() => props.history.push(ASSETS.ITEM.LIST)}
             />
             <RctCollapsibleCard>
                 <Form onSubmit={onSubmit}>

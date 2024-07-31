@@ -69,7 +69,7 @@ const Create = (props) => {
     return (
         <>
             <PageTitleBar
-                title={"Création de catégorie"}
+                title={"Création de catégorie"} onBackClick={() => props.history.push(USER_ACCOUNT_TYPE.CATEGORY.LIST)}
             />
             <RctCollapsibleCard>
                 <Form onSubmit={onSubmit}>

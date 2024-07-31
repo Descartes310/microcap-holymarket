@@ -53,6 +53,7 @@ const Shop = (props) => {
                                     onChange={handleChange}
                                     scrollButtons="off"
                                     indicatorColor="primary"
+                                    variant="scrollable"
                                     centered
                                 >
                                     <Tab

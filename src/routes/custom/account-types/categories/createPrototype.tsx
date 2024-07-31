@@ -19,7 +19,7 @@ const Create = () => {
     return (
         <>
             <PageTitleBar
-                title={"Création de catégorie"}
+                title={"Création de catégorie"} onBackClick={() => {}}
             />
             <RctCollapsibleCard>
                 <Form onSubmit={onSubmit}>

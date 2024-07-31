@@ -36,7 +36,7 @@ const List = (props) => {
     return (
         <>
             <PageTitleBar
-                title={"Liste des liens"}
+                title={"Liste des liens"} onBackClick={() => props.history.push(USER_ACCOUNT_TYPE.TYPE.LIST)}
             />
             <CustomList
                 loading={false}

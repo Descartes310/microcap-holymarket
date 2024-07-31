@@ -81,6 +81,7 @@ class InvitationBox extends Component<any, any> {
                                     onChange={this.handleChange}
                                     indicatorColor="primary"
                                     scrollButtons="off"
+                                    variant="scrollable"
                                     centered
                                 >
                                     <Tab label="Invitation interne" />

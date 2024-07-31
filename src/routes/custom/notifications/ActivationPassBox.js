@@ -124,6 +124,7 @@ class ActivationPassBox extends Component {
                                 value={this.state.activeTab}
                                 onChange={this.handleChange}
                                 indicatorColor="primary"
+                                variant="scrollable"
                                 textColor="primary"
                             >
                                 <Tab label="Demander un code d'activation" />

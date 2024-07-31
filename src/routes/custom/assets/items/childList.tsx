@@ -98,7 +98,7 @@ const Assets = (props) => {
     return (
         <>
             <PageTitleBar
-                title={"Démembrements ("+(asset ? asset.label : parent ? parent.label : "-")+")"}
+                title={"Démembrements ("+(asset ? asset.label : parent ? parent.label : "-")+")"} onBackClick={() => props.history.push(ASSETS.ITEM.LIST)}
             />
             <CustomList
                 list={datas}

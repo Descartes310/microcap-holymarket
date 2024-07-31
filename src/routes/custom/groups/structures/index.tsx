@@ -52,6 +52,7 @@ class Structures extends Component<any, any> {
                                         onChange={this.handleChange}
                                         scrollButtons="off"
                                         indicatorColor="primary"
+                                        variant="scrollable"
                                         centered
                                     >
                                         <Tab

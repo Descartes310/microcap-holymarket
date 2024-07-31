@@ -79,7 +79,7 @@ const Update = (props) => {
     return (
         <>
             <PageTitleBar
-                title={"Edition d'un lien"}
+                title={"Edition d'un lien"} onBackClick={() => props.history.push(joinUrlWithParamsId(USER_ACCOUNT_TYPE.TYPE.CHAIN, props.match.params.id))}
             />
             <RctCollapsibleCard>
                 <Form onSubmit={onSubmit}>

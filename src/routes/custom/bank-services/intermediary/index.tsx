@@ -58,6 +58,7 @@ class Catalogues extends Component<any, any> {
                                         onChange={this.handleChange}
                                         scrollButtons="off"
                                         indicatorColor="primary"
+                                        variant="scrollable"
                                         centered
                                     >
                                         {/* { this.props.authUser.referralTypes.includes('PROVIDER_INTERMEDIARY') && (

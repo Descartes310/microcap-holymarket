@@ -73,7 +73,7 @@ const Create = (props) => {
     return (
         <>
             <PageTitleBar
-                title={"Création du type de compte"}
+                title={"Création du type de compte"} onBackClick={() => props.history.push(USER_ACCOUNT_TYPE.TYPE.LIST)}
             />
             <RctCollapsibleCard>
                 <Form onSubmit={onSubmit}>
