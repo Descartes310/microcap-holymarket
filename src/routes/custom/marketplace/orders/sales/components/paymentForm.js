@@ -40,7 +40,7 @@ class PaymentCard extends Component {
       return (
          <RctCard className="payment">
             <RctCardContent>
-               <h3 className="mb-40">Moyen de paiement ({order?.items?.reduce((sum, item) => sum + (item.unitPrice * item.quantity), 0)} {order?.items[0]?.currency})</h3>
+               <h3 className="mb-40">Moyen de paiement ({order?.items?.reduce((sum, item) => sum + (item.unitPrice * item.quantity), 0)-order.amountPaid} {order?.items[0]?.currency})</h3>
                <FormGroup tag="fieldset">
                   <FormGroup check className="mb-25">
                      <Label check>

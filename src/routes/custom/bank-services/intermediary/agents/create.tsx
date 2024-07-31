@@ -251,4 +251,10 @@ const Create = (props) => {
     );
 };
 
-export default connect(() => { }, { setRequestGlobalAction })(withRouter(Create));
+const mapStateToProps = ({ authUser }) => {
+    return {
+        authUser: authUser.data,
+    }
+};
+
+export default connect(mapStateToProps, { setRequestGlobalAction })(withRouter(Create));

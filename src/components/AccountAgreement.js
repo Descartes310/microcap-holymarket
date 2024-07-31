@@ -126,7 +126,7 @@ class AccountAgreement extends Component {
                 <RctCardContent>
                     { isUserValidating && (
                         <div>
-                            <p style={{ fontSize: 20, cursor: 'pointer', fontStyle: 'italic', color: 'blue' }} onClick={() => window.open(getFilePath(agreements?.agreementTemplate), 'blank')}>Téléhargez la convention ici</p>
+                            <p style={{ fontSize: 20, cursor: 'pointer', fontStyle: 'italic', color: 'blue' }} onClick={() => window.open(getFilePath(agreements?.agreementTemplate), 'blank')}>Téléchargez la convention ici</p>
                         </div>
                     )}
                     { isUserValidating && (
