@@ -1,10 +1,10 @@
 import { connect } from 'react-redux';
 import UserService from 'Services/users';
 import Switch from "@material-ui/core/Switch";
-import { getFilePath } from "Helpers/helpers";
 import { withRouter } from "react-router-dom";
 import { setRequestGlobalAction } from 'Actions';
 import React, { useState, useEffect } from 'react';
+import { getFilePath, getReferralTypeLabel } from "Helpers/helpers";
 
 const UserDocuments = (props) => {
 
@@ -39,6 +39,7 @@ const UserDocuments = (props) => {
                     <thead>
                         <tr>
                             <th className="fw-bold">Titre</th>
+                            <th className="fw-bold">Cible</th>
                             <th className="fw-bold">Spéciment</th>
                             <th className="fw-bold">Document</th>
                             <th className="fw-bold">Vérifié</th>
@@ -53,6 +54,13 @@ const UserDocuments = (props) => {
                                             <h4 className="m-0 fw-bold text-dark">
                                                 {file.label}
                                             </h4>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div className="media">
+                                        <div className="media-body pt-10">
+                                            <h4 className="m-0 text-dark">{getReferralTypeLabel(file.referralType)}</h4>
                                         </div>
                                     </div>
                                 </td>

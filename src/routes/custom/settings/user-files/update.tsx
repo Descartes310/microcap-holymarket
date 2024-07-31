@@ -4,10 +4,13 @@ import Button from '@material-ui/core/Button';
 import { getFilePath } from 'Helpers/helpers';
 import SettingService from 'Services/settings';
 import {setRequestGlobalAction} from 'Actions';
+import { referraTypes } from 'Helpers/helpers';
 import { GROUP, SETTING } from 'Url/frontendUrl';
 import React, { useEffect, useState } from 'react';
+import TextField from '@material-ui/core/TextField';
 import { FileUploader } from "react-drag-drop-files";
 import {NotificationManager} from 'react-notifications';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import {Form, FormGroup, Input as InputStrap} from 'reactstrap';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
@@ -19,6 +22,7 @@ const Update = (props) => {
     const [sample, setSample] = useState(null);
     const [userFile, setUserFile] = useState(null);
     const [description, setDescription] = useState('');
+    const [referralType, setReferralType] = useState(null);
 
     useEffect(() => {
         findUserFileType();
@@ -31,6 +35,7 @@ const Update = (props) => {
             setUserFile(response);
             setLabel(response.label);
             setDescription(response.description);
+            setReferralType(referraTypes().find(t => t.value == response.referralType));
         })
         .catch((err) => {
             console.log(err);
@@ -47,6 +52,7 @@ const Update = (props) => {
             label: label,
             sample: sample,
             description: description,
+            referralType: referralType.value
         }
 
         SettingService.updateUserFileType(props.match.params.id, data, { fileData: ['sample'], multipart: true }).then(() => {
@@ -81,6 +87,23 @@ const Update = (props) => {
                             onChange={(e) => setLabel(e.target.value)}
                         />
                     </FormGroup>
+
+                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                        <InputLabel className="text-left">
+                            Cible
+                        </InputLabel>
+                        <Autocomplete
+                            value={referralType}
+                            id="combo-box-demo"
+                            options={referraTypes()}
+                            onChange={(__, item) => {
+                                setReferralType(item);
+                            }}
+                            getOptionLabel={(option) => option.label}
+                            renderInput={(params) => <TextField {...params} variant="outlined" />}
+                        />
+                    </div>
+
                     <FormGroup className="has-wrapper">
                         <InputLabel className="text-left" htmlFor="label">
                             Description

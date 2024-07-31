@@ -5,8 +5,11 @@ import Button from '@material-ui/core/Button';
 import SettingService from 'Services/settings';
 import {setRequestGlobalAction} from 'Actions';
 import { GROUP, SETTING } from 'Url/frontendUrl';
+import { referraTypes } from 'Helpers/helpers';
+import TextField from '@material-ui/core/TextField';
 import { FileUploader } from "react-drag-drop-files";
 import {NotificationManager} from 'react-notifications';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import {Form, FormGroup, Input as InputStrap} from 'reactstrap';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
@@ -17,6 +20,7 @@ const Create = (props) => {
     const [label, setLabel] = useState('');
     const [sample, setSample] = useState(null);
     const [description, setDescription] = useState('');
+    const [referralType, setReferralType] = useState(null);
 
     const onSubmit = () => {
 
@@ -26,6 +30,7 @@ const Create = (props) => {
             label: label,
             sample: sample,
             description: description,
+            referralType: referralType.value
         }
 
         SettingService.createUserFileType(data, { fileData: ['sample'], multipart: true }).then(() => {
@@ -61,6 +66,23 @@ const Create = (props) => {
                             onChange={(e) => setLabel(e.target.value)}
                         />
                     </FormGroup>
+
+                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                        <InputLabel className="text-left">
+                            Cible
+                        </InputLabel>
+                        <Autocomplete
+                            value={referralType}
+                            id="combo-box-demo"
+                            options={referraTypes()}
+                            onChange={(__, item) => {
+                                setReferralType(item);
+                            }}
+                            getOptionLabel={(option) => option.label}
+                            renderInput={(params) => <TextField {...params} variant="outlined" />}
+                        />
+                    </div>
+
                     <FormGroup className="has-wrapper">
                         <InputLabel className="text-left" htmlFor="label">
                             Description
