@@ -116,6 +116,9 @@ export default class Permission extends BaseEnum {
         userFolder: {
             "name": "SETTING_USER_FOLDER"
         },
+        pageFlows: {
+            "name": "PAGE_FLOW_MANAGEMENT"
+        },
     };
 
     static marketplace = {

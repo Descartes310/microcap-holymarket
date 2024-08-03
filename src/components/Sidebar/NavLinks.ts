@@ -15,7 +15,8 @@ import {
    USER_ACCOUNT_TYPE,
    joinUrlWithParams,
    joinUrlWithParamsId,
-   ASSETS
+   ASSETS,
+   RESOURCES
 } from 'Url/frontendUrl';
 
 export type MenuItem = {
@@ -107,6 +108,27 @@ export default [
             "path": NETWORK.COVERAGE.USSD,
             "permissions": [
                Permission.network.coverage.user.name,
+            ],
+            "profiles": ['GROUP'],
+         },
+      ]
+   },
+   {
+      "menu_title": "Ressources",
+      "menu_icon": "zmdi zmdi-view-dashboard",
+      "new_item": false,
+      "permissions": [
+         Permission.setting.pageFlows.name,
+      ],
+      "profiles": ['GROUP'],
+      "type_multi": true,
+      "child_routes": [
+         {
+            "menu_title": "Flux plan Codev",
+            "new_item": false,
+            "path": RESOURCES.PAGE_FLOWS.LIST,
+            "permissions": [
+               Permission.setting.pageFlows.name,
             ],
             "profiles": ['GROUP'],
          },

@@ -605,6 +605,20 @@ export const NETWORK = {
     }
 } as const;
 
+export const RESOURCES = {
+    SELF: '/resources',
+    PAGE_FLOWS: {
+        SELF: '/resources/page-flows',
+        LIST: '/resources/page-flows/list',
+        CREATE: '/resources/page-flows/create',
+        UPDATE: '/resources/page-flows/:id/update',
+        CHILD: {
+            LIST: '/resources/page-flows/:id',
+            CREATE: '/resources/page-flows/:id/create'
+        },
+    }
+} as const;
+
 export const BROKER = {
     SELF: '/brokers',
     AGENCY: {

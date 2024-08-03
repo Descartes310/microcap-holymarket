@@ -18,6 +18,7 @@ import {
     AsyncNetworks,
     AsyncProjects,
     AsyncPrevision,
+    AsyncResources,
     AsyncSupervision,
     AsyncMarketplace,
     AsyncNotifications,
@@ -39,6 +40,7 @@ import {
     LANDING,
     PROJECT,
     NETWORK,
+    RESOURCES,
     SUPERVISION,
     MARKETPLACE,
     NOTIFICATIONS,
@@ -54,7 +56,6 @@ import { loginIntoStore } from "Actions/TokensActions";
 import { disableAppLoading } from "Actions/AppLoadingAction";
 
 const Dashboard = ({ onInitCart }) => {
-    const ability = useAbility(AbilityContext);
 
     useEffect(() => {
         onInitCart();
@@ -138,6 +139,12 @@ const Dashboard = ({ onInitCart }) => {
                         permissions={[]}
                         path={ASSETS.SELF}
                         component={AsyncAsset}
+                    />
+
+                    <CanRoute
+                        permissions={[]}
+                        path={RESOURCES.SELF}
+                        component={AsyncResources}
                     />
 
                     <Redirect to={HOME} />

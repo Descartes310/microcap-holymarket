@@ -27,7 +27,7 @@ const List = (props) => {
         })
         .catch(err => {
             console.log(err);
-            props.history.back();
+            props.history.goBack();
         })
         .finally(() => {
             props.setRequestGlobalAction(false);

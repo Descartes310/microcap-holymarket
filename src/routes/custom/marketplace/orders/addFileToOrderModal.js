@@ -44,7 +44,7 @@ class AddFileToOrderModal extends Component {
             })
             .catch(err => {
                 console.log(err);
-                this.props.history.back();
+                this.props.history.goBack();
             })
             .finally(() => this.props.setRequestGlobalAction(false))
     }

@@ -5,7 +5,7 @@ import Button from "@material-ui/core/Button";
 import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
 import React, { useState, useEffect } from 'react';
-import ConfirmBox from "Components/dialog/ConfirmBox"
+import ConfirmBox from "Components/dialog/ConfirmBox";
 import TimeFromMoment from "Components/TimeFromMoment";
 import { NotificationManager } from "react-notifications";
 import { GROUP, joinUrlWithParamsId } from 'Url/frontendUrl';
