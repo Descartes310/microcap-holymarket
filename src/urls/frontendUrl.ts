@@ -2,6 +2,7 @@ import { BASE } from "Url/backendUrl";
 
 export const ROOT = '/';
 export const HOME = '/home';
+export const LANDING_PAGE_FLOW = '/page-flows';
 
 export const LANDING = {
     SELF: '/landing',

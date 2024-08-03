@@ -3,7 +3,8 @@
  */
 import {
     AUTH,
-    LANDING
+    LANDING,
+    LANDING_PAGE_FLOW
 } from "../urls/frontendUrl";
 import {connect} from 'react-redux';
 import React, {Component} from 'react';
@@ -15,6 +16,7 @@ import AppSignIn from './../routes/session/login';
 import AppSignUp from './../routes/session/register';
 import {isUserIntoStoreValid} from "Helpers/helpers";
 import {NotificationContainer} from 'react-notifications';
+import LandingPageFlow from './../routes/session/pageFlows';
 import PermissionAlertBox from "Components/PermissionAlertBox";
 import RequestGlobalLoader from "Components/RequestGlobalLoader";
 import RctPageLoader from "Components/RctPageLoader/RctPageLoader";
@@ -84,6 +86,7 @@ class App extends Component {
                                         <Route path={AUTH.REGISTER} component={AppSignUp} />
                                         <Route path={AUTH.RESET_PASSWORD} component={ResetPassword} />
                                         <Route path={AUTH.FORGOT_PASSWORD} component={SendResetPasswordLink} />
+                                        <Route path={LANDING_PAGE_FLOW} component={LandingPageFlow} />
 
                                         <Redirect to={AUTH.LOGIN} />
                                     </Switch>

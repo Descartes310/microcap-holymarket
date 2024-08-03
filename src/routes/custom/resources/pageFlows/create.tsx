@@ -38,7 +38,7 @@ const formats = [
 
 const Create = (props) => {
 
-    const [link, setLink] = useState('');
+    const [link, setLink] = useState(null);
     const [label, setLabel] = useState('');
     const [description, setDescription] = useState('');
     const [hasLink, setHasLink] = useState<boolean>(false);
