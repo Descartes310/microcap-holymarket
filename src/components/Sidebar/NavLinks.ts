@@ -640,7 +640,7 @@ export default [
       ],
    },
    {
-      "menu_title": "Catalogue produits",
+      "menu_title": "Backstore",
       "menu_icon": "zmdi zmdi-store",
       "new_item": false,
       "permissions": [

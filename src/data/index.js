@@ -36,6 +36,17 @@ export const contactTypes = [
     // },
 ];
 
+export const institutionMemberTypes = [
+    {
+        name: 'Chef',
+        value: 'HEAD'
+    },
+    {
+        name: 'Conseiller',
+        value: 'ADVISOR'
+    }
+];
+
 export const communityTypes = [
     {
         name: 'Communauté conventionnée',

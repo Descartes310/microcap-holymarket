@@ -27,7 +27,8 @@ class AccountInformationModal extends Component {
         key: null,
         number: null,
         referralCode: null,
-        member: null
+        member: null,
+        members: []
     }
 
     constructor(props) {
@@ -36,6 +37,13 @@ class AccountInformationModal extends Component {
 
     componentDidMount() {
         this.getBankAgencies();
+    }
+
+    getMembers(id) {
+        this.props.setRequestGlobalAction(true),
+        UserService.getInstitutionMembers(id, {type: 'ADVISOR'})
+        .then(response => this.setState({ members: response }))
+        .finally(() => this.props.setRequestGlobalAction(false))
     }
 
     getBankAgencies () {
@@ -74,7 +82,7 @@ class AccountInformationModal extends Component {
     render() {
 
         const { onClose, show, title, authUser } = this.props;
-        const { iban, agency, agencies, bic, key, number } = this.state;
+        const { iban, agency, agencies, bic, key, number, member, members } = this.state;
 
         return (
             <DialogComponent
@@ -179,18 +187,30 @@ class AccountInformationModal extends Component {
                             options={agencies}
                             id="combo-box-demo"
                             onChange={(__, item) => {
-                                this.setState({ agency: item });
+                                this.setState({ agency: item }, () => {
+                                    this.getMembers(item.id);
+                                });
                             }}
                             getOptionLabel={(option) => option.code+" ("+option.label+")"}
                             renderInput={(params) => <TextField {...params} variant="outlined" />}
                         />
                     </FormGroup>
 
-                    <h2>Conseiller</h2>
-
-                    <UserSelect fromMyOrganisation={true} onChange={(membership, user) => {
-                        this.setState({ referralCode: membership, member: user });
-                    }}/>
+                    <FormGroup className="col-md-12 col-sm-12 has-wrapper">
+                        <InputLabel className="text-left">
+                            Conseiller
+                        </InputLabel>
+                        <Autocomplete
+                            value={member}
+                            options={members}
+                            id="combo-box-demo"
+                            onChange={(__, item) => {
+                                this.setState({ member: item, referralCode: item.referralCode });
+                            }}
+                            getOptionLabel={(option) => option.name}
+                            renderInput={(params) => <TextField {...params} variant="outlined" />}
+                        />
+                    </FormGroup>
                     
                     <FormGroup>
                         <Button

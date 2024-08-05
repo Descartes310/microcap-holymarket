@@ -24,6 +24,9 @@ export const CHANGE_ACCESS_FROM_COMMUNITY = (reference) => `api/socialnetworks/u
 export const GET_INSTITUTIONS = "api/socialnetworks/users/institutions";
 export const CREATE_INSTITUTION = "api/socialnetworks/users/institutions";
 export const GET_BANK_AGENCY_CODE = "api/socialnetworks/users/institutions/agency-code";
+export const CREATE_INSTITUTION_MEMBER = "api/socialnetworks/users/institutions/members";
+export const GET_INSTITUTION_MEMBERS = (id) => `api/socialnetworks/users/institutions/${id}/members`;
+export const UPDATE_INSTITUTION_MEMBER = (reference) => `api/socialnetworks/users/institutions/members/${reference}`;
 
 export const GET_CONTACTS = "api/socialnetworks/users/self/contacts";
 export const CREATE_CONTACT = "api/socialnetworks/users/self/contacts";

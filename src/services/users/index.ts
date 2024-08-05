@@ -165,4 +165,16 @@ export default class UserService {
         return makeRequest('put', Routes.VALIDATE_FILE(reference));
     }
 
+    static createInstitutionMember(data: any): Promise<any> {
+        return makeRequest('post', Routes.CREATE_INSTITUTION_MEMBER, data);
+    }
+
+    static updateInstitutionMember(reference: string, data: any): Promise<any> {
+        return makeRequest('put', Routes.UPDATE_INSTITUTION_MEMBER(reference), data);
+    }
+
+    static getInstitutionMembers(id: number, data: any): Promise<any> {
+        return makeRequest('get', Routes.GET_INSTITUTION_MEMBERS(id), data);
+    }
+
 }

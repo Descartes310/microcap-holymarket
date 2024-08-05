@@ -1,15 +1,19 @@
 import { connect } from 'react-redux';
 import UserService from 'Services/users';
+import { Button } from '@material-ui/core';
 import { withRouter } from "react-router-dom";
 import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
 import React, { useState, useEffect } from 'react';
 import CreateInstitution from 'Components/CreateInstitution';
+import ListInstitutionMembers from "../components/listInstitutionMembers";
 
 const Institutions = (props) => {
 
     const [agencies, setAgencies] = useState([]);
     const [showAddBox, setShowAddBox] = useState(false);
+    const [showListBox, setShowListBox] = useState(false);
+    const [selectedAgency, setSelectedAgency] = useState(null);
 
     useEffect(() => {
         getAgencies();
@@ -45,6 +49,7 @@ const Institutions = (props) => {
                                             <th className="fw-bold">Nom</th>
                                             <th className="fw-bold">Code</th>
                                             <th className="fw-bold">Description</th>
+                                            <th className="fw-bold">Membres</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -75,6 +80,19 @@ const Institutions = (props) => {
                                                         </div>
                                                     </div>
                                                 </td>
+                                                <td>
+                                                    <Button
+                                                        color="primary"
+                                                        variant="contained"
+                                                        className="text-white font-weight-bold"
+                                                        onClick={() => {
+                                                            setSelectedAgency(item);
+                                                            setShowListBox(true);
+                                                        }}
+                                                    >
+                                                        Membres
+                                                    </Button>
+                                                </td>
                                             </tr>
                                         ))}
                                     </tbody>
@@ -93,6 +111,16 @@ const Institutions = (props) => {
                 }}
                 title="Création d'une nouvelle agence"
             />
+
+            { showListBox && selectedAgency && (
+                <ListInstitutionMembers 
+                    show={showListBox}
+                    onClose={() => {
+                        setShowListBox(false);
+                    }}
+                    id={selectedAgency.id}
+                />
+            )}
         </>
     );
 }
