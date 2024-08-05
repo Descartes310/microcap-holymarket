@@ -67,7 +67,7 @@ const CreateInstitutionMember = (props) => {
             )}
         >
             <RctCardContent>
-                <UserSelect fromMyOrganisation={false} onChange={(_, user) => {
+                <UserSelect fromMyOrganisation={true} onChange={(_, user) => {
                         setMember(user);
                 }}/>
                 <div className="col-md-12 col-sm-12 has-wrapper mb-30 p-0">
