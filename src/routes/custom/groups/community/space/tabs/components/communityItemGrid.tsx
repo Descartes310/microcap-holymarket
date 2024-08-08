@@ -25,6 +25,7 @@ const CommunityItemGrid = ({ classes = null, community, openDetails, authUser, o
             window.location.reload();
         });
     }
+
     return (
     <Card className="rounded mb-30 col-md-3">
         <CardMedia
@@ -60,7 +61,7 @@ const CommunityItemGrid = ({ classes = null, community, openDetails, authUser, o
                         >
                             Se connecter
                         </Button>
-                    )                        
+                    )                    
                 }
             </div>
         </CardActions>

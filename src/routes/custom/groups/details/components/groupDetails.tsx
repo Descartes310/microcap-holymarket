@@ -1,5 +1,8 @@
 import { connect } from 'react-redux';
+import UserService from 'Services/users';
 import GroupService from 'Services/groups';
+import { setSession } from 'Helpers/tokens';
+import Button from '@material-ui/core/Button';
 import { getFilePath } from 'Helpers/helpers';
 import {setRequestGlobalAction} from 'Actions';
 import React, { useState, useEffect } from 'react';
@@ -26,6 +29,14 @@ const GroupDetails = ({ id, setRequestGlobalAction }: any) => {
         })
         .catch((err) => {
             console.log(err);
+        });
+    }
+
+    const enterInCommunitySpace = (reference: string) => {
+        UserService.changeUserAccessFromCommunity(reference)        
+        .then(response => {
+            setSession(response);
+            window.location.reload();
         });
     }
 
@@ -57,7 +68,19 @@ const GroupDetails = ({ id, setRequestGlobalAction }: any) => {
                     {/* <CardImg top width="100%" className="img-fluid ripple-effect" style={{ maxHeight: 250 }} src={image ? getFilePath(image) : DEFAULT_BANNER} alt={`Bannière du groupe`} /> */}
                     <CardBody>
                         <CardTitle>
-                            <h1 className='fw-bold mt-10' style={{ fontSize: '2.5rem' }}> { title ? title : group ? group.label : 'Titre du groupe' } </h1>
+                            <h1 className='fw-bold mt-10' style={{ fontSize: '2.5rem', width: 'fit-content' }}> { title ? title : group ? group.label : 'Titre du groupe' } </h1>
+                            
+                            { group?.status && (group?.status === "CONFIRMED" || group?.status === "ACCEPTED") && (
+                                <Button
+                                    color="primary"
+                                    variant="contained"
+                                    className="text-white font-weight-bold"
+                                    style={{ marginRight: 10, width: 'fit-content' }}
+                                    onClick={() => enterInCommunitySpace(group?.reference)}
+                                >
+                                    Se connecter
+                                </Button>
+                            )}
                         </CardTitle>
                         <CardBody>
                             <span dangerouslySetInnerHTML={{
