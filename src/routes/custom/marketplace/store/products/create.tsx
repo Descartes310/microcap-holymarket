@@ -148,7 +148,7 @@ const Create = (props) => {
             data.groupReference = group.groupReference;
 
         if (acceptManyPayment) {
-            if (maximumDaysToPay <= 0 || minimalPercentageForFirstPayment < 0) {
+            if (maximumDaysToPay < 0 || minimalPercentageForFirstPayment < 0) {
                 NotificationManager.error('Remplissez les informations de payements');
                 return;
             }

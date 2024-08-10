@@ -48,3 +48,6 @@ export const CREATE_PROJECT_SUBSCRIPTION = `api/projects/subscriptions`;
 
 export const CREATE_PROJECT_SETTINGS = `api/projects/settings`;
 export const GET_PROJECT_SETTINGS = `api/projects/settings`;
+
+export const GET_PROJECT_INVESTMENT = `api/projects/investments`;
+export const CREATE_PROJECT_INVESTMENT = `api/projects/investments`;

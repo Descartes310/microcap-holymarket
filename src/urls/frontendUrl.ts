@@ -243,6 +243,7 @@ export const GROUP = {
                 FINANCEMENT: {
                     SELF: "/groups/administration/projects/configurations/financements",
                     LIST: "/groups/administration/projects/configurations/financements/list",
+                    CREATE: "/groups/administration/projects/configurations/financements/create",
                     UPDATE: "/groups/administration/projects/configurations/financements/:id/update",
                 },
                 PRODUCT: {

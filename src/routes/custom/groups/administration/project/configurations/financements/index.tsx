@@ -1,6 +1,7 @@
 import React from 'react';
 import List from './list';
 import update from './update';
+import Create from './create';
 import {connect} from "react-redux";
 import {injectIntl} from "react-intl";
 import { GROUP } from 'Url/frontendUrl';
@@ -15,6 +16,7 @@ const Financement = (props) => {
                     <Redirect exact from={`${match.url}/`} to={GROUP.ADMINISTRATION.PROJECT.CONFIGURATION.FINANCEMENT.LIST} />
                     <Route path={GROUP.ADMINISTRATION.PROJECT.CONFIGURATION.FINANCEMENT.LIST} component={List} />
                     <Route path={GROUP.ADMINISTRATION.PROJECT.CONFIGURATION.FINANCEMENT.UPDATE} component={update} />
+                    <Route path={GROUP.ADMINISTRATION.PROJECT.CONFIGURATION.FINANCEMENT.CREATE} component={Create} />
                 </Switch>
             </>
         </div>

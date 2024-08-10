@@ -20,6 +20,10 @@ export default class ProductService {
         return makeRequest('get', Routes.GET_PRODUCT_MODELS, data);
     }
 
+    static getProductByModelCode(data: any): Promise<any> {
+        return makeRequest('get', Routes.GET_PRODUCT_BY_MODEL_CODE, data);
+    }
+
     static findProductModel(reference: any): Promise<any> {
         return makeRequest('get', Routes.FIND_PRODUCT_MODEL(reference));
     }
