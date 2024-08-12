@@ -16,10 +16,12 @@ import AssociatedCost from '../_components/AssociatedCost';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { Form, FormGroup, Input as InputStrap } from 'reactstrap';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
+import participants from 'Routes/custom/bank-services/participants';
 
 const Create = (props) => {
 
     const [label, setLabel] = useState('');
+    const [part, setPart] = useState(null);
     const [units, setUnits] = useState([]);
     const [dueDates, setDueDates] = useState([]);
     const [project, setProject] = useState(null);
@@ -28,7 +30,9 @@ const Create = (props) => {
     const [mainCost, setMainCost] = useState(null);
     const [vehicule, setVehicule] = useState(null);
     const [timeUnit, setTimeUnit] = useState(null);
+    const [startDate, setStartDate] = useState(null);
     const [amountUnit, setAmountUnit] = useState(null);
+    const [startRentDate, setStartRentDate] = useState(null);
     const [locativeValue, setLocativeValue] = useState(null);
     const [productDetails, setProductDetails] = useState(null);
     const [managementRate, setManagementRate] = useState(null);
@@ -85,14 +89,6 @@ const Create = (props) => {
         .finally(() => props.setRequestGlobalAction(false))
     }
 
-    const getParts = () => {
-        if(productDetails?.details) {
-            const lines = productDetails.details.find(d => d.type == 'EMIT_LINE_COUNT')?.value;
-            return Number(lines)
-        }
-        return 0;
-    }
-
     const getAmount = () => {
         return Number(Number(associatedCosts.reduce((amount, cost) => amount + cost.amount, 0)) + Number(mainCost));
     }
@@ -101,12 +97,24 @@ const Create = (props) => {
         return Number(Number(locativeValue) - (Number(locativeValue) * (Number(managementRate)/100)));
     }
 
+    const getRentCount = (endDate) => {
+        const oneDay = 24 * 60 * 60 * 1000;
+        if(endDate && startRentDate) {
+            const dayDiffs = (Math.round(Math.abs((new Date(endDate).getTime() - new Date(startRentDate).getTime()) / oneDay)));
+            return dayDiffs;
+        } else {
+            return 0;
+        }
+    }
+
+    // amount / montant ligne
     const getNdjanguiCount = () => {
         if(productDetails?.details) {
+            const lineCount = productDetails.details.find(d => d.type == 'EMIT_LINE_COUNT')?.value;
             const quotient = productDetails.details.find(d => d.type == 'QUOTIENT')?.value;
             const cycleTime = productDetails.details.find(d => d.type == 'CYCLE_TIME')?.value;
             const depositAmount = productDetails.details.find(d => d.type == 'DEPOSIT_AMOUNT')?.value;
-            if(quotient && cycleTime && depositAmount) {
+            if(lineCount && quotient && cycleTime && depositAmount) {
                 return Math.ceil(getAmount() / ((Number(depositAmount) * Number(cycleTime)) * (Number(quotient)/100)));
             }
         }
@@ -115,22 +123,24 @@ const Create = (props) => {
 
     const getMaximalSubscriptors = () => {
         if(productDetails?.details) {
-            return (getParts() * getNdjanguiCount()) / minimalSubscription;
+            return Math.ceil(part * getNdjanguiCount() / minimalSubscription);
         }
         return 0;
     }
 
     const onSubmit = () => {
 
-        if(!project || !label || !mainCost || !product || !timeUnit || !vehicule || !amountUnit || !locativeValue || !managementRate || !minimalSubscription || dueDates.length <= 0 || dueDates.some(obj => Object.values(obj).includes(null))) {
+        console.log(dueDates);
+
+        if(!project || !part || !startDate || !startRentDate || !label || !mainCost || !product || !timeUnit || !vehicule || !amountUnit || !locativeValue || !managementRate || !minimalSubscription || dueDates.length <= 0 || dueDates.some(obj => Object.values(obj).includes(null))) {
             NotificationManager.error("Le formulaire est mal renseigné");
             return;
         }
 
         let data: any = {
             dueDates: JSON.stringify(dueDates),
-            project_reference: project.reference,
-            label, mainCost, locative_value: locativeValue,
+            project_reference: project.reference, startDate,
+            label, mainCost, locative_value: locativeValue, part, startRentDate,
             product_reference: product.reference, deposit_period: timeUnit.value,
             group_reference: vehicule.referralCode, unit_reference: amountUnit.code,
             management_rate: managementRate, minimal_subscription: minimalSubscription,
@@ -155,20 +165,55 @@ const Create = (props) => {
         <>
             <RctCollapsibleCard>
                 <Form onSubmit={onSubmit}>
-                    <FormGroup className="has-wrapper">
-                        <InputLabel className="text-left" htmlFor="label">
-                            Désignation investissement
-                        </InputLabel>
-                        <InputStrap
-                            required
-                            id="label"
-                            type="text"
-                            name='label'
-                            className="input-lg"
-                            value={label}
-                            onChange={(e) => setLabel(e.target.value)}
-                        />
-                    </FormGroup>
+                    <div className='row'>
+                        <FormGroup className="has-wrapper col-sm-12 col-md-4">
+                            <InputLabel className="text-left" htmlFor="label">
+                                Désignation investissement
+                            </InputLabel>
+                            <InputStrap
+                                required
+                                id="label"
+                                type="text"
+                                name='label'
+                                className="input-lg"
+                                value={label}
+                                onChange={(e) => setLabel(e.target.value)}
+                            />
+                        </FormGroup>
+
+                        <FormGroup className="has-wrapper col-sm-12 col-md-4">
+                            <InputLabel className="text-left" htmlFor="startDate">
+                                Date de placement
+                            </InputLabel>
+                            <InputStrap
+                                required
+                                id="startDate"
+                                type="date"
+                                name='startDate'
+                                className="input-lg"
+                                value={startDate}
+                                onChange={(e) => setStartDate(e.target.value)}
+                            />
+                        </FormGroup>
+
+                        <FormGroup className="has-wrapper col-sm-12 col-md-4">
+                            <InputLabel className="text-left" htmlFor="startRentDate">
+                                Date de placement
+                            </InputLabel>
+                            <InputStrap
+                                required
+                                type="date"
+                                id="startRentDate"
+                                name='startRentDate'
+                                className="input-lg"
+                                value={startRentDate}
+                                onChange={(e) => {
+                                    setStartRentDate(e.target.value);
+                                    getRentCount(e.target.value)
+                                }}
+                            />
+                        </FormGroup>
+                    </div>
 
                     <h1 className='mb-30'>Chiffres clés</h1>
 
@@ -258,7 +303,7 @@ const Create = (props) => {
                     </FormGroup>
                     <FormGroup className="has-wrapper">
                         <InputLabel className="text-left" htmlFor="ndjanguiCount">
-                            Nombre de Ndjangui Business équivalent
+                            Nombre de ligne Ndjangui Business équivalent au montant de l'investissement
                         </InputLabel>
                         <InputStrap
                             type="number"
@@ -274,12 +319,12 @@ const Create = (props) => {
                             Nombre de part
                         </InputLabel>
                         <InputStrap
+                            value={part}
                             type="number"
-                            disabled={true}
                             id="partCount"
                             name='partCount'
                             className="input-lg"
-                            value={getParts()}
+                            onChange={(e) => setPart(e.target.value)}
                         />
                     </FormGroup>
 
@@ -386,7 +431,7 @@ const Create = (props) => {
                                 id="partRate"
                                 type="number"
                                 name='partRate'
-                                value={(getPeriodicAmount()/getParts()).toFixed(2)}
+                                value={(getPeriodicAmount()/part).toFixed(2)}
                                 className="input-lg"
                             />
                         </FormGroup>
@@ -399,7 +444,7 @@ const Create = (props) => {
                             <thead>
                                 <tr>
                                     <td rowSpan={2}>Echéance</td>
-                                    <td colSpan={2}>Exploitation</td>
+                                    <td colSpan={3}>Exploitation</td>
                                     <td rowSpan={2}>Valorisation investissement</td>
                                     <td colSpan={4}>Rénumération</td>
                                     <td rowSpan={2}>Actions</td>
@@ -407,6 +452,7 @@ const Create = (props) => {
                                 <tr>
                                     <td>Taux</td>
                                     <td>Valeur locative</td>
+                                    <td>Loyer échus</td>
                                     <td>Total loyer</td>
                                     <td>Part liquidative</td>
                                     <td>Total</td>
@@ -425,7 +471,7 @@ const Create = (props) => {
                                                 value={dueDate.date}
                                                 onChange={(e) => setDueDates(dueDates.map((dd, i) => {
                                                     if(i === index) {
-                                                        return {...dd, date: e.target.value};
+                                                        return {...dd, date: e.target.value, totalRent: (dueDate.rent * getRentCount(dueDate.date))/part};
                                                     }
                                                     return dd;
                                                 }))}
@@ -455,7 +501,22 @@ const Create = (props) => {
                                                 value={dueDate.rent}
                                                 onChange={(e) => setDueDates(dueDates.map((dd, i) => {
                                                     if(i === index) {
-                                                        return {...dd, rent: Number(e.target.value)};
+                                                        return {...dd, rent: Number(e.target.value), totalRent: (dueDate.rent * getRentCount(dueDate.date))/part, performance: (getAmount()/part)/(dueDate.pastRent * dueDate.rent)};
+                                                    }
+                                                    return dd;
+                                                }))}
+                                            />
+                                        </td>
+                                        <td>
+                                            <InputStrap
+                                                type="number"
+                                                className="input-lg"
+                                                id={`pastRent-${index}`}
+                                                name={`pastRent-${index}`}
+                                                value={dueDate.pastRent}
+                                                onChange={(e) => setDueDates(dueDates.map((dd, i) => {
+                                                    if(i === index) {
+                                                        return {...dd, pastRent: Number(e.target.value), performance: (getAmount()/part)/(dueDate.pastRent * dueDate.rent)};
                                                     }
                                                     return dd;
                                                 }))}
@@ -482,13 +543,8 @@ const Create = (props) => {
                                                 className="input-lg"
                                                 id={`totalRent-${index}`}
                                                 name={`totalRent-${index}`}
-                                                value={dueDate.totalRent}
-                                                onChange={(e) => setDueDates(dueDates.map((dd, i) => {
-                                                    if(i === index) {
-                                                        return {...dd, totalRent: Number(e.target.value)};
-                                                    }
-                                                    return dd;
-                                                }))}
+                                                value={(dueDate.rent * getRentCount(dueDate.date))/part}
+                                                disabled={true}
                                             />
                                         </td>
                                         <td>
@@ -524,16 +580,11 @@ const Create = (props) => {
                                         <td>
                                             <InputStrap
                                                 type="number"
+                                                disabled={true}
                                                 className="input-lg"
                                                 id={`performance-${index}`}
+                                                value={(getAmount()/part)/(dueDate.pastRent * dueDate.rent)}
                                                 name={`performance-${index}`}
-                                                value={dueDate.performance}
-                                                onChange={(e) => setDueDates(dueDates.map((dd, i) => {
-                                                    if(i === index) {
-                                                        return {...dd, performance: Number(e.target.value)};
-                                                    }
-                                                    return dd;
-                                                }))}
                                             />
                                         </td>
                                         <td>
@@ -551,7 +602,7 @@ const Create = (props) => {
                                     </tr>
                                 ))}
                                 <tr>
-                                    <td colSpan={9}>
+                                    <td colSpan={10}>
                                         <Button
                                             color="primary"
                                             variant="contained"
@@ -560,6 +611,7 @@ const Create = (props) => {
                                                     date: null,
                                                     rate: null,
                                                     rent: null,
+                                                    pastRent: null,
                                                     value: null,
                                                     totalRent: null,
                                                     part: null,

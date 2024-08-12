@@ -356,8 +356,8 @@ const Card = (props) => {
                                 <td>
                                     <div className="media">
                                         <div className="media-body pt-10">
-                                            <h4 className="m-0 fw-bold text-dark">
-                                                {file.label}
+                                            <h4 className={`m-0 fw-bold ${file.required ? 'text-danger' : 'text-dark'}`}>
+                                                {file.label} {file.required ? '(Obligatoire)' : '(optionnel)'}
                                             </h4>
                                         </div>
                                     </div>

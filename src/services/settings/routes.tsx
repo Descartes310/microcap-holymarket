@@ -4,6 +4,7 @@ export const GET_ALL_USER_FILES = 'api/settings/user-file-types/all';
 export const FIND_USER_TYPE = (id) => `api/settings/user-file-types/${id}`;
 export const UPDATE_USER_TYPE = (id) => `api/settings/user-file-types/${id}`;
 export const UPDATE_USER_FILE_TYPE = (id) => `api/settings/user-file-types/${id}/type`;
+export const REQUIRED_USER_FILE_TYPE = (id) => `api/settings/user-file-types/${id}/required`;
 
 export const CREATE_AGENT = 'api/settings/agents';
 export const GET_AGENTS = 'api/settings/agents/list';

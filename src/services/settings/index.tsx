@@ -16,6 +16,10 @@ export default class SettingService {
         return makeRequest('put', Routes.UPDATE_USER_FILE_TYPE(reference));
     }
 
+    static requiredUserFileTypes(reference): Promise<any> {
+        return makeRequest('put', Routes.REQUIRED_USER_FILE_TYPE(reference));
+    }
+
     static createUserFileType(data, config): Promise<any> {
         return makeRequest('post', Routes.CREATE_USER_FILE, data, config);
     }
@@ -88,7 +92,6 @@ export default class SettingService {
     static updateArticleStatus(id: number): Promise<any> {
         return makeRequest('put', Routes.UPDATE_ARTICLE_STATUS(id));
     }
-
 
     static createImmatriculation(data): Promise<any> {
         return makeRequest('post', Routes.CREATE_IMMATRICULATION, data);

@@ -97,7 +97,7 @@ const Create = (props) => {
 
     const getGroups = () => {
         props.setRequestGlobalAction(true),
-            GroupService.getCommunityDatas({ belongs: true })
+            GroupService.getCommunityDatas({ belongs: 'IN' })
                 .then(response => setGroups(response))
                 .finally(() => props.setRequestGlobalAction(false))
     }

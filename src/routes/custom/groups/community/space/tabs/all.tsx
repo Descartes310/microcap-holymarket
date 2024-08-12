@@ -30,7 +30,7 @@ const All = (props) => {
     }, []);
 
     const getGroups = () => {
-        let datas: any = {belongs: false}
+        let datas: any = {belongs: 'BOTH'}
         if(name) datas.name = name;
         if(groupType) datas.type = groupType.value;
         if(userReference) datas.user_reference = userReference;

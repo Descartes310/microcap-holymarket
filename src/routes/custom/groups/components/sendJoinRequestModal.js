@@ -26,6 +26,7 @@ class SendJoinRequestModal extends Component {
 
      componentDidMount() {
          this.getPosts();
+         console.log("Folders => ", this.props.group);
      }
 
      getPosts = () => {
