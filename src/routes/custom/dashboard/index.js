@@ -19,13 +19,13 @@ import {
     AsyncProjects,
     AsyncPrevision,
     AsyncResources,
+    AsyncPmeProject,
     AsyncSupervision,
     AsyncMarketplace,
     AsyncNotifications,
     AsyncUserAccountTypes,
 } from 'Components/AsyncComponent/AsyncComponent';
 
-import { useAbility } from "@casl/react";
 import {
     ROOT,
     ASSETS,
@@ -51,9 +51,9 @@ import { connect } from "react-redux";
 import CanRoute from "Components/CanRoute";
 import HomePage from "Routes/custom/HomePage";
 import { onInitCart } from "Actions/CartActions";
-import { AbilityContext } from "Permissions/Can";
 import { loginIntoStore } from "Actions/TokensActions";
 import { disableAppLoading } from "Actions/AppLoadingAction";
+import { PME_PROJECT } from '../../../urls/frontendUrl';
 
 const Dashboard = ({ onInitCart }) => {
 

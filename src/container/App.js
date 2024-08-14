@@ -4,7 +4,8 @@
 import {
     AUTH,
     LANDING,
-    LANDING_PAGE_FLOW
+    LANDING_PAGE_FLOW,
+    PME_PROJECT
 } from "../urls/frontendUrl";
 import {connect} from 'react-redux';
 import React, {Component} from 'react';
@@ -13,6 +14,7 @@ import {AbilityContext} from "Permissions/Can";
 import Dashboard from 'Routes/custom/dashboard';
 import RctThemeProvider from './RctThemeProvider';
 import AppSignIn from './../routes/session/login';
+import PmeProject from './../routes/session/100pme';
 import AppSignUp from './../routes/session/register';
 import {isUserIntoStoreValid} from "Helpers/helpers";
 import {NotificationContainer} from 'react-notifications';
@@ -21,9 +23,9 @@ import PermissionAlertBox from "Components/PermissionAlertBox";
 import RequestGlobalLoader from "Components/RequestGlobalLoader";
 import RctPageLoader from "Components/RctPageLoader/RctPageLoader";
 import {disableAppLoading, loginIntoStore, setAuthUser} from 'Actions';
-import {AsyncLanding,} from "Components/AsyncComponent/AsyncComponent";
 import ResetPassword from './../routes/session/forgot-password/ResetPassword';
 import {BrowserRouter as Router, Redirect, Route, Switch} from 'react-router-dom';
+import {AsyncLanding, AsyncPmeProject} from "Components/AsyncComponent/AsyncComponent";
 import SendResetPasswordLink from './../routes/session/forgot-password/SendResetPasswordLink';
 
 class App extends Component {
@@ -77,6 +79,7 @@ class App extends Component {
                                 {_isUserIntoStoreValid ? (
                                     <Switch>
                                         <Route path={LANDING.SELF} component={AsyncLanding} />
+                                        <Route path={PME_PROJECT.SELF} component={AsyncPmeProject} />
                                         <Route path={'/'} component={Dashboard} />
                                     </Switch>
                                 ) : (
@@ -87,6 +90,7 @@ class App extends Component {
                                         <Route path={AUTH.RESET_PASSWORD} component={ResetPassword} />
                                         <Route path={AUTH.FORGOT_PASSWORD} component={SendResetPasswordLink} />
                                         <Route path={LANDING_PAGE_FLOW} component={LandingPageFlow} />
+                                        <Route path={PME_PROJECT.SELF} component={AsyncPmeProject} />
 
                                         <Redirect to={AUTH.LOGIN} />
                                     </Switch>

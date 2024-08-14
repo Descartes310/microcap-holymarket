@@ -36,6 +36,16 @@ export const AUTH = {
     RESET_PASSWORD: '/reset-password',
 } as const;
 
+export const PME_PROJECT = {
+    SELF: '/100pme',
+    VOTE: '/100pme/vote',
+    LOGIN: '/100pme/login',
+    VOTE_RECAP: '/100pme/vote/recap',
+    VOTE_OPTION: '/100pme/vote/options/:id',
+    VOTE_OPTION_2: '/100pme/vote/options-end/:id',
+    VOTE_RESERVE_RECAP: '/100pme/vote/reserve/recap',
+}
+
 export const NOTIFICATIONS = {
     SELF: '/notifications',
     LIST: '/notifications/unread',

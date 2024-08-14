@@ -83,7 +83,7 @@ class ActivationBox extends Component {
         UserService.generateOTP(data)
             .then(() => {
                 NotificationManager.success("Un code de vérification vous a été envoyé. Veuillez saisir ce code dans ce formulaire");
-                this.setState({ activeTab: this.props.notification ? 2 : 1, hasAskCode: true });
+                this.setState({ activeTab: 2, hasAskCode: true });
             })
             .catch(() => {
                 NotificationManager.error("Aucune adresse de notification fournie.");
@@ -113,7 +113,7 @@ class ActivationBox extends Component {
         UserService.confirmOTP(this.state.codeToVerify, data)
         .then(() => {
             NotificationManager.success("Vous avez activaté le profile avec succès");
-            if(!this.props.member) {
+            if(!this.props.member && this.props.notification) {
                 setTimeout(() => {
                     this.logoutUser();
                 }, 2000);

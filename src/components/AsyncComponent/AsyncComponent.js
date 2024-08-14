@@ -134,6 +134,11 @@ export const AsyncResources = Loadable({
 	loading: () => <RctPageLoader />,
 });
 
+export const AsyncPmeProject = Loadable({
+	loader: () => import("Routes/session/100pme"),
+	loading: () => <RctPageLoader />,
+});
+
 export {
 	AsyncThemifyIconsComponent,
 	AsyncSimpleLineIconsComponent,
