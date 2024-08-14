@@ -25,13 +25,13 @@ const Vote = (props) => {
 
     useEffect(() => {
         if(country) {
-            getCities(country)
+            getCities(country);
         }
     }, [country]);
 
     const getCities = async (country) => {
         props.setRequestGlobalAction(true);
-        const url = `http://209.126.82.154:8090/country-datas/cities?country_code=${country?.value}&token=713f2fd9-6532-4a33-8122-0d4467c10cd5`;
+        const url = `${AppConfig.api.baseUrl}api/pme-votes/cities?country=${country?.value}`;
         try {
           const response = await fetch(url);
           const json = await response.json();
