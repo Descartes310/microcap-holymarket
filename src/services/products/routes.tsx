@@ -81,3 +81,12 @@ export const CREATE_CHILD_TICKETS = (reference) => `api/products/codevs/tickets/
 
 export const GET_CUSTOM_CARTS = 'api/products/custom-carts';
 export const CREATE_CUSTOM_CART = 'api/products/custom-carts';
+
+export const GET_DISCOUNTS = 'api/discounts';
+export const CREATE_DISCOUNT = 'api/discounts';
+export const FIND_DISCOUNT = (reference) => `api/discounts/${reference}`;
+export const UPDATE_DISCOUNT = (reference) => `api/discounts/${reference}`;
+export const DELETE_DISCOUNT = (reference) => `api/discounts/${reference}`;
+export const GET_DISCOUNT_PRODUCTS = (reference) => `api/discounts/${reference}/products`;
+export const CREATE_DISCOUNT_PRODUCT = (reference) => `api/discounts/${reference}/products`;
+export const DELETE_DISCOUNT_PRODUCT = (reference) => `api/discounts/${reference}/products`;

@@ -275,4 +275,36 @@ export default class ProductService {
     static createCustomCart(data: any): Promise<any> {
         return makeRequest('post', Routes.CREATE_CUSTOM_CART, data);
     }
+
+    static createDiscount(data: any): Promise<any> {
+        return makeRequest('post', Routes.CREATE_DISCOUNT, data);
+    }
+
+    static getDiscounts(): Promise<any> {
+        return makeRequest('get', Routes.GET_DISCOUNTS);
+    }
+
+    static findDiscount(reference: string): Promise<any> {
+        return makeRequest('get', Routes.FIND_DISCOUNT(reference));
+    }
+
+    static updateDiscount(reference: string, data: any): Promise<any> {
+        return makeRequest('put', Routes.UPDATE_DISCOUNT(reference), data);
+    }
+
+    static deleteDiscount(reference: string): Promise<any> {
+        return makeRequest('delete', Routes.DELETE_DISCOUNT(reference));
+    }
+
+    static getDiscountProducts(reference: string): Promise<any> {
+        return makeRequest('get', Routes.GET_DISCOUNT_PRODUCTS(reference));
+    }
+
+    static createDiscountProduct(reference: string, data: any): Promise<any> {
+        return makeRequest('post', Routes.CREATE_DISCOUNT_PRODUCT(reference), data);
+    }
+
+    static deleteDiscountProduct(reference: string, data: any): Promise<any> {
+        return makeRequest('delete', Routes.DELETE_DISCOUNT_PRODUCT(reference), data);
+    }
 }

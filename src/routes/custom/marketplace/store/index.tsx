@@ -3,6 +3,7 @@ import Orders from './orders';
 import Options from './options';
 import Tickets from './tickets';
 import Products from './products';
+import Discounts from './discounts';
 import Purchases from './purchases';
 import {connect} from "react-redux";
 import {injectIntl} from "react-intl";
@@ -21,6 +22,7 @@ const Store = (props) => {
                     <Route path={MARKETPLACE.STORE.PURCHASE.SELF} component={Purchases} />
                     <Route path={MARKETPLACE.STORE.OPTION.SELF} component={Options} />
                     <Route path={MARKETPLACE.STORE.TICKET.SELF} component={Tickets} />
+                    <Route path={MARKETPLACE.STORE.DISCOUNT.SELF} component={Discounts} />
                 </Switch>
             </>
         </div>
