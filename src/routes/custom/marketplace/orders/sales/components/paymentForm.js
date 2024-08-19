@@ -27,6 +27,14 @@ class PaymentCard extends Component {
       showSubscriptionCodeField: false,
    }
 
+   componentDidMount() {
+      if(this.props.order && this.props.order.discountCode) {
+         this.setState({ showDiscountField: true, discountCode: this.props.order.discountCode }, () => {
+            this.findDiscount();
+         })
+      }
+   }
+
    computePrice = () => {
       const { amount } = this.state;
       const currency =this.props.order?.items[0]?.currency;
@@ -85,7 +93,16 @@ class PaymentCard extends Component {
    }
 
    getAmountToPay = () => {
-      return this.props.order?.items?.reduce((sum, item) => sum + (item.unitPrice * item.quantity), 0)-this.props.order.amountPaid;
+      let baseAmount = this.props.order?.amount;
+      return baseAmount-this.props.order.amountPaid;
+   }
+
+   getDiscountedAmountToPay = () => {
+      let baseAmount = this.props.order?.amount;
+      if(this.state.discount) {
+         baseAmount = baseAmount - (baseAmount * this.state.discount.percentage/100);
+      }
+      return baseAmount-this.props.order.amountPaid;
    }
 
    render() {
@@ -94,7 +111,7 @@ class PaymentCard extends Component {
       return (
          <RctCard className="payment">
             <RctCardContent>
-               <h1 className="mb-40"><span style={discount?.percentage && { textDecoration: 'line-through', color: 'red' } }>{this.getAmountToPay()} {order?.items[0]?.currency}</span> { discount?.percentage && <>{(this.getAmountToPay() - (this.getAmountToPay() * discount.percentage/100))} {order?.items[0]?.currency}</>}</h1>
+               <h1 className="mb-40"><span style={discount?.percentage && { textDecoration: 'line-through', color: 'red' } }>{this.getAmountToPay()} {order?.items[0]?.currency}</span> { discount?.percentage && <>{this.getDiscountedAmountToPay()} {order?.items[0]?.currency}</>}</h1>
                <h3 className="mb-20">Moyen de paiement</h3>
                <FormGroup tag="fieldset">
                   <FormGroup check className="mb-25">
@@ -170,14 +187,14 @@ class PaymentCard extends Component {
                            checked={showSubscriptionCodeField}
                            onChange={(e) => this.setState({ showSubscriptionCodeField: e.target.checked })}
                         />
-                     } label={'J\'ai un code de souscription'}
+                     } label={'J\'ai un code de reservation'}
                      />
                   </FormGroup>
                   { showSubscriptionCodeField && (
                      <div className="d-flex">
                         <FormGroup className="col-sm-12 has-wrapper">
                            <InputLabel className="text-left" htmlFor="subscriptionCode">
-                              Code de souscription
+                              Code de reservation
                            </InputLabel>
                            <InputGroup>
                               <Input
