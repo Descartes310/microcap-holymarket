@@ -35,4 +35,12 @@ export default class OrderService {
     static approvedOrder(id: number, data: any): Promise<any> {
         return makeRequest('put', Routes.APPROVED_ORDER(id), data);
     }
+
+    static findDiscount(id: string, data: any): Promise<any> {
+        return makeRequest('get', Routes.FIND_DISCOUNT(id), data);
+    }
+
+    static findSubscription(id: string, data: any): Promise<any> {
+        return makeRequest('get', Routes.FIND_SUBSCRIPTION(id), data);
+    }
 }

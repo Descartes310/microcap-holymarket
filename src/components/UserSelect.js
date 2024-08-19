@@ -6,7 +6,7 @@ import { setRequestGlobalAction } from 'Actions';
 import { getReferralTypeLabel } from 'Helpers/helpers';
 import { NotificationManager } from 'react-notifications';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
-import { FormGroup, Label, Button, Input as InputStrap, InputGroup, InputGroupAddon  } from 'reactstrap';
+import { FormGroup, Button, Input as InputStrap, InputGroup, InputGroupAddon  } from 'reactstrap';
 
 class UserSelect extends Component {
 
@@ -74,7 +74,6 @@ class UserSelect extends Component {
                             </InputGroupAddon>
                         </InputGroup>
                     </FormGroup>
-                    
                 </div>
                 {member && (
                     <div className='row'>

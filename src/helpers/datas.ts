@@ -2,6 +2,8 @@ import { resourceLimits } from "worker_threads";
 
 export const ACCOUNT_PERIOD_LIMIT = 60;
 
+export const stripeZeroDecimalCurrencies = ["BIF", "CLP", "DJF", "GNF", "JPY", "KMF", "KRW", "MGA", "PYG", "RWF", "UGX", "VND", "VUV", "XAF", "XOF", "XPF", "HUF"];
+
 export const getChainEventTypes = () => {
     return [
         {

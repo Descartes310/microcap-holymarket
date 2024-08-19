@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { withRouter } from "react-router-dom";
 import PaymentForm from './components/paymentForm';
 import { RctCard, RctCardContent } from 'Components/RctCard';
-import { setRequestGlobalAction, onClearCart } from 'Actions';
+import { setRequestGlobalAction } from 'Actions';
 import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
 import OrderService from 'Services/orders';
 import { MARKETPLACE } from 'Url/frontendUrl';
@@ -40,11 +40,11 @@ class Payments extends Component<any, any> {
                 <RctCard customClasses="overflow-hidden">
                     <RctCardContent noPadding>
                         <div className="row no-gutters">
-                            <div className={['CONFIRMED', 'PAYING'].includes(order?.status) ? 'col-lg-9 col-md-8 col-sm-12' : 'col-lg-12 col-md-12 col-sm-12'} style={{ padding: 20 }}>
+                            <div className={['CONFIRMED', 'PAYING'].includes(order?.status) ? 'col-lg-8 col-md-8 col-sm-12' : 'col-lg-12 col-md-12 col-sm-12'} style={{ padding: 20 }}>
                                 <Sales />
                             </div>
                             { ['CONFIRMED', 'PAYING'].includes(order?.status) && (
-                                <div className={`col-lg-3 col-md-4 col-sm-12`} style={{ padding: 20 }}>
+                                <div className={`col-lg-4 col-md-4 col-sm-12`} style={{ padding: 20 }}>
                                     <PaymentForm order={order} />
                                 </div>
                             )}
