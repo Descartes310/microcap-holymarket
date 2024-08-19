@@ -6,6 +6,7 @@ import { injectIntl } from "react-intl";
 import AppConfig from 'Constants/AppConfig';
 import IntlMessages from "Util/IntlMessages";
 import AppBar from '@material-ui/core/AppBar';
+import { InputLabel } from '@material-ui/core';
 import { voteOptions } from './components/data';
 import Toolbar from '@material-ui/core/Toolbar';
 import { setRequestGlobalAction } from 'Actions';
@@ -13,15 +14,20 @@ import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { FormGroup, Label, Input, Button } from 'reactstrap';
 import {HOME, AUTH, LANDING, PME_PROJECT, joinUrlWithParamsId} from "Url/frontendUrl";
-import { InputLabel } from '@material-ui/core';
+
+const COUNTRIES = [{value: "CM", label: "Cameroun"}, {value: "FR", label: "France"}];
 
 const Vote = (props) => {
+    
+    const countryParam = new URLSearchParams(props.location.search).get("country");
+    const cityParam = new URLSearchParams(props.location.search).get("city");
 
     const [city, setCity] = useState(null);
     const [cities, setCities] = useState([]);
     const [option, setOption] = useState(null);
-    const [country, setCountry] = useState(null);
+    const [locality, setLocality] = useState(null);
     const [selectingCity, setSelectingCity] = useState(true);
+    const [country, setCountry] = useState(countryParam ? COUNTRIES.find(c => c.value === countryParam) : null);
 
     useEffect(() => {
         if(country) {
@@ -36,6 +42,9 @@ const Vote = (props) => {
           const response = await fetch(url);
           const json = await response.json();
           setCities(json);
+          if(cityParam) {
+            setCity(json.find(c => c.id == cityParam));
+          }
         } catch (error) {
           console.error(error);
           setCities([]);
@@ -95,10 +104,15 @@ const Vote = (props) => {
                                                     <Autocomplete
                                                         value={country}
                                                         id="combo-box-demo"
-                                                        onChange={(__, item) => {
-                                                            setCountry(item)
+                                                        onChange={(__, item: any) => {
+                                                            setCountry(item);
+                                                            if(item) {
+                                                                localStorage.setItem("PME_COUNTRY", item.value);
+                                                            } else {
+                                                                localStorage.removeItem("PME_COUNTRY");
+                                                            }
                                                         }}
-                                                        options={[{value: "CM", label: "Cameroun"}, {value: "FR", label: "France"}]}
+                                                        options={COUNTRIES}
                                                         getOptionLabel={(option) => option.label}
                                                         renderInput={(params) => <TextField {...params} variant="outlined" />}
                                                     />
@@ -123,10 +137,27 @@ const Vote = (props) => {
                                                         renderInput={(params) => <TextField {...params} variant="outlined" />}
                                                     />
                                                 </div>
+                                                <FormGroup className="has-wrapper">
+                                                    <InputLabel className="text-left" htmlFor="locality">
+                                                        Localité
+                                                    </InputLabel>
+                                                    <Input
+                                                        required
+                                                        id="locality"
+                                                        type="text"
+                                                        name='locality'
+                                                        className="input-lg"
+                                                        value={locality}
+                                                        onChange={(e) => {
+                                                            setLocality(e.target.value);
+                                                            localStorage.setItem("PME_LOCALITY", e.target.value);
+                                                        }}
+                                                    />
+                                                </FormGroup>
                                                 <FormGroup className="mb-25">
                                                     <Button
                                                         color="primary"
-                                                        disabled={!city}
+                                                        disabled={!city || !locality}
                                                         className="w-100 ml-0 mt-15 text-white"
                                                         onClick={() => {
                                                             setSelectingCity(false)

@@ -26,15 +26,19 @@ const VoteOptionReserve = (props) => {
     };
 
     const onSubmit = () => {
+        const locality = localStorage.getItem('PME_LOCALITY');
         const city = JSON.parse(localStorage.getItem('PME_CITY'));
+        const country = localStorage.getItem('PME_COUNTRY');
         const user = props.authUser;
 
-        if(option && city && user) {
+        if(option && city && user && locality && country) {
             props.setRequestGlobalAction(true);
-            SystemService.createVote({vote: option.value, city_id: city.id, city_name: city.name, referral_code: user.referralId})
+            SystemService.createVote({vote: option.value, city_id: city.id, city_name: city.name, referral_code: user.referralId, locality, country})
             .then((response) => {
                 props.history.push(`${PME_PROJECT.VOTE_RESERVE_RECAP}?city=${city.name}&code=${response.code}`);
+                localStorage.removeItem('PME_LOCALITY')
                 localStorage.removeItem('PME_CITY')
+                localStorage.removeItem('PME_COUNTRY')
             }).catch((err) => {
 
             }).finally(() => {

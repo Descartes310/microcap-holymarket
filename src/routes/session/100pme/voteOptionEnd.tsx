@@ -1,32 +1,35 @@
-import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import QueueAnim from 'rc-queue-anim';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { injectIntl } from "react-intl";
 import AppConfig from 'Constants/AppConfig';
 import IntlMessages from "Util/IntlMessages";
+import SystemService from 'Services/systems';
 import AppBar from '@material-ui/core/AppBar';
+import { FormGroup, Button } from 'reactstrap';
 import { voteOptions } from './components/data';
 import Toolbar from '@material-ui/core/Toolbar';
 import { setRequestGlobalAction } from 'Actions';
 import {HOME, AUTH, LANDING, PME_PROJECT} from "Url/frontendUrl";
-import { FormGroup, Label, Input, Button } from 'reactstrap';
-import SystemService from 'Services/systems';
 
 const VoteOptionEnd = (props) => {
 
     const option = voteOptions.find(vo => vo.id == props.match.params.id)
 
     const onSubmit = () => {
+        const locality = localStorage.getItem('PME_LOCALITY');
         const city = JSON.parse(localStorage.getItem('PME_CITY'));
+        const country = localStorage.getItem('PME_COUNTRY');
         const user = props.authUser;
 
-        if(option && city && user) {
+        if(option && city && user && locality && country) {
             props.setRequestGlobalAction(true);
-            SystemService.createVote({vote: option.value, city_id: city.id, city_name: city.name, referral_code: user.referralId})
+            SystemService.createVote({vote: option.value, city_id: city.id, city_name: city.name, referral_code: user.referralId, locality, country})
             .then((response) => {
                 props.history.push(PME_PROJECT.VOTE_RECAP);
                 localStorage.removeItem('PME_CITY')
+                localStorage.removeItem('PME_LOCALITY')
             }).catch((err) => {
                 console.log(err)
             }).finally(() => {

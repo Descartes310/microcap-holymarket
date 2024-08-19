@@ -33,6 +33,9 @@ const Auth = (props) => {
     const [showRegistration, setShowRegistration] = useState(false);
     const [showActivationBox, setShowActivationBox] = useState(false);
 
+    const countryParam = new URLSearchParams(props.location.search).get("country");
+    const cityParam = new URLSearchParams(props.location.search).get("city");
+
     const onSubmit = (data) => {
         if(showRegistration) {
             const _data = { ...data };
@@ -59,7 +62,13 @@ const Auth = (props) => {
             })
         } else {
             props.loginUserWithLoginAndPassword(data).then(() => {
-                props.history.push(PME_PROJECT.VOTE);
+
+                if(cityParam && countryParam) {
+                    props.history.push(`${PME_PROJECT.VOTE}?city=${cityParam}&country=${countryParam}`);
+                } else {
+                    props.history.push(`${PME_PROJECT.VOTE}`);
+                }
+                //props.history.push(PME_PROJECT.VOTE);
             }).catch((err) => {
                 NotificationManager.error("Les paramètres fournis sont incorrects");
                 console.log(err);
@@ -236,7 +245,11 @@ const Auth = (props) => {
                                         pdfURL={'http://www.africau.edu/images/default/sample.pdf'}
                                         onClose={() => {
                                             setShowActivationBox(false);
-                                            props.history.push(PME_PROJECT.VOTE);
+                                            if(cityParam && countryParam) {
+                                                props.history.push(`${PME_PROJECT.VOTE}?city=${cityParam}&country=${countryParam}`);
+                                            } else {
+                                                props.history.push(`${PME_PROJECT.VOTE}`);
+                                            }
                                         }}
                                     />
                                 )}
