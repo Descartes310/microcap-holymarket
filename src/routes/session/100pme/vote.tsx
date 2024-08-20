@@ -183,7 +183,12 @@ const Vote = (props) => {
                                                         disabled={!city || !locality}
                                                         className="w-100 ml-0 mt-15 text-white"
                                                         onClick={() => {
-                                                            setSelectingCity(false)
+                                                            if(products.length > 0) {
+                                                                props.history.push(joinUrlWithParamsId(PME_PROJECT.VOTE_PRODUCT, 1));
+                                                            } else {
+                                                                setSelectingCity(false);
+                                                            }
+
                                                         }}
                                                     >
                                                         Continuer
@@ -215,14 +220,10 @@ const Vote = (props) => {
                                                         disabled={!option}
                                                         className="w-100 ml-0 mt-15 text-white"
                                                         onClick={() => {
-                                                            if(products.length > 0) {
-                                                                props.history.push(joinUrlWithParamsId(PME_PROJECT.VOTE_PRODUCT, voteOptions.find(vo => vo.value === option).id));
+                                                            if(option === 'VOTE') {
+                                                                props.history.push(joinUrlWithParamsId(PME_PROJECT.VOTE_OPTION_2, voteOptions.find(vo => vo.value === option).id));
                                                             } else {
-                                                                if(option === 'VOTE') {
-                                                                    props.history.push(joinUrlWithParamsId(PME_PROJECT.VOTE_OPTION_2, voteOptions.find(vo => vo.value === option).id));
-                                                                } else {
-                                                                    props.history.push(joinUrlWithParamsId(PME_PROJECT.VOTE_OPTION, voteOptions.find(vo => vo.value === option).id));
-                                                                }
+                                                                props.history.push(joinUrlWithParamsId(PME_PROJECT.VOTE_OPTION, voteOptions.find(vo => vo.value === option).id));
                                                             }
                                                         }}
                                                     >

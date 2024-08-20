@@ -58,7 +58,7 @@ const Votes = (props) => {
                                             <th className="fw-bold">Ville</th>
                                             <th className="fw-bold">Localité</th>
                                             <th className="fw-bold">Nombre de voix</th>
-                                            <th className="fw-bold">Vote</th>
+                                            {/* <th className="fw-bold">Vote</th> */}
                                             <th className="fw-bold">Date</th>
                                         </tr>
                                     </thead>
@@ -107,13 +107,13 @@ const Votes = (props) => {
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td>
+                                                {/* <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
                                                             <h4 className="m-0 fw-bold text-dark">{voteOptions.find(vo => vo.value == item.vote)?.label}</h4>
                                                         </div>
                                                     </div>
-                                                </td>
+                                                </td> */}
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
