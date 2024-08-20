@@ -2,6 +2,7 @@ import React from 'react';
 import Units from './units';
 import Events from './events';
 import Agents from './agents';
+import PmeVote from './100pme';
 import Articles from './articles';
 import UserFiles from './user-files';
 import {connect} from "react-redux";
@@ -25,6 +26,7 @@ const Setting = (props) => {
                 <Route path={SETTING.USER_FILE.SELF} component={UserFiles} />
                 <Route path={SETTING.IMMATRICULATION.SELF} component={Immatriculations} />
                 <Route path={SETTING.MESSAGE_TEMPLATE.SELF} component={MessagesTemplates} />
+                <Route path={SETTING.PME_VOTE.SELF} component={PmeVote} />
             </Switch>
         </div>
     );

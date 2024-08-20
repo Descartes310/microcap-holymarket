@@ -44,6 +44,8 @@ export const PME_PROJECT = {
     VOTE_OPTION: '/100pme/vote/options/:id',
     VOTE_OPTION_2: '/100pme/vote/options-end/:id',
     VOTE_RESERVE_RECAP: '/100pme/vote/reserve/recap',
+    VOTE_PRODUCT: '/100pme/vote/options/:id/products',
+    VOTE_PRODUCT_END: '/100pme/vote/options/products/end',
 }
 
 export const NOTIFICATIONS = {
@@ -545,6 +547,12 @@ export const SETTING = {
         CREATE: "/settings/user-files/create",
         UPDATE: "/settings/user-files/:id/update",
     },
+    PME_VOTE: {
+        SELF: "/settings/pme-votes",
+        LIST: "/settings/pme-votes/list",
+        CREATE: "/settings/pme-votes/create",
+        UPDATE: "/settings/pme-votes/:id/update",
+    },
     AGENT: {
         SELF: "/settings/agents",
         LIST: "/settings/agents/list",
@@ -854,6 +862,10 @@ export const SUPERVISION = {
     PROJECTS: {
         SELF: '/supervision/projects',
         LIST: '/supervision/projects/list',
+    },
+    VOTES: {
+        SELF: '/supervision/votes',
+        LIST: '/supervision/votes/list',
     }
 }
 

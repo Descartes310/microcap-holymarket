@@ -10,7 +10,7 @@ import Tooltip from "@material-ui/core/Tooltip";
  * @constructor
  */
 const TimeFromMoment = ({time, showFullDate, style, format="LL"}) => {
-    const _time = moment(time);
+    const _time = time ? moment(time) : moment();
 
     return (
         <Tooltip id="tooltip-createdAt" title={_time.format('LLL')}>

@@ -14,6 +14,7 @@ import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { FormGroup, Label, Input, Button } from 'reactstrap';
 import {HOME, AUTH, LANDING, PME_PROJECT, joinUrlWithParamsId} from "Url/frontendUrl";
+import SystemService from 'Services/systems';
 
 const COUNTRIES = [{value: "CM", label: "Cameroun"}, {value: "FR", label: "France"}];
 
@@ -28,6 +29,24 @@ const Vote = (props) => {
     const [locality, setLocality] = useState(null);
     const [selectingCity, setSelectingCity] = useState(true);
     const [country, setCountry] = useState(countryParam ? COUNTRIES.find(c => c.value === countryParam) : null);
+    
+    const [products, setProducts] = useState([]);
+
+    useEffect(() => {
+        getProducts();
+    }, []);
+
+    const getProducts = () => {
+        props.setRequestGlobalAction(true);
+        SystemService.getProducts()
+        .then((response) => {
+            setProducts(response);
+        }).catch((err) => {
+            setProducts([]);
+        }).finally(() => {
+            props.setRequestGlobalAction(false);
+        })
+    }
 
     useEffect(() => {
         if(country) {
@@ -192,10 +211,14 @@ const Vote = (props) => {
                                                         disabled={!option}
                                                         className="w-100 ml-0 mt-15 text-white"
                                                         onClick={() => {
-                                                            if(option === 'VOTE') {
-                                                                props.history.push(joinUrlWithParamsId(PME_PROJECT.VOTE_OPTION_2, voteOptions.find(vo => vo.value === option).id));
+                                                            if(products.length > 0) {
+                                                                props.history.push(joinUrlWithParamsId(PME_PROJECT.VOTE_PRODUCT, voteOptions.find(vo => vo.value === option).id));
                                                             } else {
-                                                                props.history.push(joinUrlWithParamsId(PME_PROJECT.VOTE_OPTION, voteOptions.find(vo => vo.value === option).id));
+                                                                if(option === 'VOTE') {
+                                                                    props.history.push(joinUrlWithParamsId(PME_PROJECT.VOTE_OPTION_2, voteOptions.find(vo => vo.value === option).id));
+                                                                } else {
+                                                                    props.history.push(joinUrlWithParamsId(PME_PROJECT.VOTE_OPTION, voteOptions.find(vo => vo.value === option).id));
+                                                                }
                                                             }
                                                         }}
                                                     >

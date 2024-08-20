@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import QueueAnim from 'rc-queue-anim';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { injectIntl } from "react-intl";
 import AppConfig from 'Constants/AppConfig';
@@ -11,11 +11,33 @@ import { FormGroup, Button } from 'reactstrap';
 import { voteOptions } from './components/data';
 import Toolbar from '@material-ui/core/Toolbar';
 import { setRequestGlobalAction } from 'Actions';
+import TextField from '@material-ui/core/TextField';
+import {NotificationManager} from 'react-notifications';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import {HOME, AUTH, LANDING, PME_PROJECT} from "Url/frontendUrl";
+import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 
-const VoteOptionEnd = (props) => {
+const VoteOptionProducts = (props) => {
 
     const option = voteOptions.find(vo => vo.id == props.match.params.id)
+    const [product, setProduct] = useState(null);
+    const [products, setProducts] = useState([]);
+
+    useEffect(() => {
+        getProducts();
+    }, []);
+
+    const getProducts = () => {
+        props.setRequestGlobalAction(true);
+        SystemService.getProducts()
+        .then((response) => {
+            setProducts(response);
+        }).catch((err) => {
+            setProducts([]);
+        }).finally(() => {
+            props.setRequestGlobalAction(false);
+        })
+    }
 
     const onSubmit = () => {
         const locality = localStorage.getItem('PME_LOCALITY');
@@ -23,14 +45,13 @@ const VoteOptionEnd = (props) => {
         const country = localStorage.getItem('PME_COUNTRY');
         const user = props.authUser;
 
-        if(option && city && user && locality && country) {
+        if(option && city && user && locality && country && product) {
             props.setRequestGlobalAction(true);
-            SystemService.createVote({vote: option.value, city_id: city.id, city_name: city.name, referral_code: user.referralId, locality, country})
-            .then((response) => {
-                props.history.push(PME_PROJECT.VOTE_RECAP);
-                localStorage.removeItem('PME_CITY')
-                localStorage.removeItem('PME_LOCALITY')
-                localStorage.removeItem('PME_COUNTRY')
+            SystemService.createVote({vote: option.value, city_id: city.id, city_name: city.name, referral_code: user.referralId, locality, country, order_reference: product.reference})
+            .then(() => {
+                getProducts();
+                setProduct(null);
+                NotificationManager.success("Action effectuée");
             }).catch((err) => {
                 console.log(err)
             }).finally(() => {
@@ -77,13 +98,29 @@ const VoteOptionEnd = (props) => {
                             <div className="col-sm-12 col-md-12 col-lg-12">
                                 <div className="center-hor-ver session-body d-flex flex-column">
                                     <div className="session-head mb-10 text-center">
-                                        <h1 className="p-20">Dommage !</h1>
+                                        <h1 className="p-20">Terminer mon vote !</h1>
                                         {/* This text is just a work around to add the width of the form input */}
                                         <p className="mb-0 visibility-hidden">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad, adipisci, animi aperiam eligendi</p>
                                     </div>
-                                    <div className="row w-100 d-flex justify-content-around flex-column">
-                                        <p className='text-center text-black mb-10' style={{ fontSize: 16 }}>{option?.description}</p>
-                                        <FormGroup className="mb-25 row">
+                                    <div className="row w-100 d-flex justify-content-around flex-row">
+                                        <p className='text-center text-black mb-10' style={{ fontSize: 16 }}>Félicitation, vous disposez de {products.length} produits MicroCap pour cumuler des voix</p>
+                                        
+                                        <FormGroup className="col-md-12 col-sm-12 has-wrapper">
+                                            <InputLabel className="text-left">
+                                                Mes produits MicroCap
+                                            </InputLabel>
+                                            <Autocomplete
+                                                value={product}
+                                                options={products}
+                                                id="combo-box-demo"
+                                                onChange={(__, item) => {
+                                                    setProduct(item);
+                                                }}
+                                                getOptionLabel={(option) => `${option.label} (${option.value})`}
+                                                renderInput={(params) => <TextField {...params} variant="outlined" />}
+                                            />
+                                        </FormGroup>
+                                        <FormGroup className="col-md-12 col-sm-12 has-wrapper">
                                             <Button
                                                 color="primary"
                                                 disabled={!option}
@@ -92,7 +129,19 @@ const VoteOptionEnd = (props) => {
                                                     onSubmit();
                                                 }}
                                             >
-                                                Continuer
+                                                Utiliser
+                                            </Button>
+                                        </FormGroup>
+                                        <FormGroup className="mb-25 col-md-12 col-sm-12 has-wrapper">
+                                            <Button
+                                                color="primary"
+                                                disabled={!option}
+                                                className="w-100 ml-0 text-white"
+                                                onClick={() => {
+                                                    props.history.push(PME_PROJECT.VOTE_PRODUCT_END);
+                                                }}
+                                            >
+                                                Terminer
                                             </Button>
                                         </FormGroup>
                                     </div>
@@ -111,4 +160,4 @@ const mapStateToProps = ({ authUser }) => {
     return { authUser: authUser.data, }
 };
 
-export default connect(mapStateToProps, { setRequestGlobalAction })(injectIntl(VoteOptionEnd));
+export default connect(mapStateToProps, { setRequestGlobalAction })(injectIntl(VoteOptionProducts));

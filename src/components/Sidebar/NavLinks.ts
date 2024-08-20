@@ -155,6 +155,14 @@ export default [
             ],
          },
          {
+            "menu_title": "Votes",
+            "new_item": false,
+            "path": SUPERVISION.VOTES.LIST,
+            "permissions": [
+               Permission.supervision.user.name,
+            ],
+         },
+         {
             "menu_title": "Partenaires",
             "new_item": false,
             "path": SUPERVISION.USERS.LIST,
@@ -868,6 +876,14 @@ export default [
       ],
       "profiles": ['GROUP'],
       "child_routes": [
+         {
+            "menu_title": "100 PME vote",
+            "new_item": false,
+            "path": SETTING.PME_VOTE.LIST,
+            "permissions": [Permission.setting.unit.name],
+            "profiles": ['GROUP'],
+            "child_routes": null
+         },
          {
             "menu_title": "Unités",
             "new_item": false,

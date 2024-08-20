@@ -49,11 +49,11 @@ class PaymentCard extends Component {
          amount: this.state.amount
       }
 
-      if(this.state.discountCode) {
+      if(this.state.discountCode && this.state.showDiscountField) {
          data.discountCode = this.state.discountCode;
       }
 
-      if(this.state.subscriptionCode) {
+      if(this.state.subscriptionCode && this.state.showSubscriptionCodeField) {
          data.subscriptionCode = this.state.subscriptionCode;
       }
 
