@@ -34,6 +34,9 @@ const Vote = (props) => {
 
     useEffect(() => {
         getProducts();
+        if(countryParam) {
+            localStorage.setItem("PME_COUNTRY", countryParam);
+        }
     }, []);
 
     const getProducts = () => {
@@ -63,6 +66,7 @@ const Vote = (props) => {
           setCities(json);
           if(cityParam) {
             setCity(json.find(c => c.id == cityParam));
+            localStorage.setItem("PME_CITY", JSON.stringify(json.find(c => c.id == cityParam)));
           }
         } catch (error) {
           console.error(error);
