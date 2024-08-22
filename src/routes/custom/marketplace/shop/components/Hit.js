@@ -19,7 +19,7 @@ class Hit extends Component {
 		showCodevStep1: false,
 		showCodevStep2: false,
 		showCodevStep3: false,
-		showCodevStep4: false,
+		showCodevStep4: false
 	}
 
 	//Add Item to cart
@@ -71,7 +71,9 @@ class Hit extends Component {
 					<div className="overlay-content d-flex align-items-end">
 						{
 							!this.isItemExistInCart(product.id) && (
-								<a href="#" className="bg-primary text-center w-100 cart-link text-white py-2" onClick={(e) => this.onPressAddToCart(product, e)}>
+								<a href="#" className="bg-primary text-center w-100 cart-link text-white py-2" onClick={(e) => {
+									this.onPressAddToCart(product, e);
+								}}>
 									{loading ? <CircularProgress className="text-white" color="inherit" size={20} /> : 'Ajouter au panier'}
 								</a>
 							)}

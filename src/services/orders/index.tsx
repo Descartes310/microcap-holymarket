@@ -13,7 +13,7 @@ export default class OrderService {
     }
 
     static createOrder(data: any): Promise<any> {
-        return makeRequest('post', Routes.CREATE_ORDER, data);
+        return makeRequest('post', data.isPreOrder ? Routes.CREATE_PRE_ORDER : Routes.CREATE_ORDER, data);
     }
 
     static getPurchases(data: any = null): Promise<any> {
