@@ -1,40 +1,50 @@
-import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import QueueAnim from 'rc-queue-anim';
 import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
 import { injectIntl } from "react-intl";
+import AuthConfirm from "./authConfirm";
+import UserService from 'Services/users';
 import { useForm } from 'react-hook-form';
+import { useDispatch } from "react-redux";
 import AppConfig from 'Constants/AppConfig';
 import { setSession } from 'Helpers/tokens';
 import IntlMessages from "Util/IntlMessages";
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import { setAuthUser } from "Actions/AuthActions";
-import {HOME, AUTH, LANDING, PME_PROJECT} from "Url/frontendUrl";
+import { LOGIN_USER_SUCCESS } from 'Actions/types';
 import { FormGroup, Form, Button } from 'reactstrap';
 import InputLabel from "@material-ui/core/InputLabel";
 import InputComponent from "Components/InputComponent";
+import FormControl from "@material-ui/core/FormControl";
 import { NotificationManager } from "react-notifications";
 import Checkbox from "@material-ui/core/Checkbox/Checkbox";
-import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
-import UserService from 'Services/users';
-import ActivationBox from '../../custom/notifications/ActivationBox'
-import { LOGIN_USER_SUCCESS } from 'Actions/types';
-import { useDispatch } from "react-redux";
+import ErrorInputComponent from "Components/ErrorInputComponent";
+import {HOME, AUTH, LANDING, PME_PROJECT} from "Url/frontendUrl";
+import ActivationBox from '../../custom/notifications/ActivationBox';
 import { loginUserWithLoginAndPassword, setRequestGlobalAction } from 'Actions';
+import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
+import RegistrationSuccess from 'Routes/session/register/components/registrationSuccess';
 
 const Auth = (props) => {
 
     const { loading } = props;
     const dispatch = useDispatch();
     const [user, setUser] = useState(null);
-    const { register, errors, handleSubmit } = useForm();
+    const [showSweetAlert, setShowSweetAlert] = useState(false);
     const [passwordType, setPasswordType] = useState('password');
     const [showRegistration, setShowRegistration] = useState(false);
     const [showActivationBox, setShowActivationBox] = useState(false);
+    const [passwordConfirmType, setPasswordConfirmType] = useState('password');
+    const [showConfirmRegistration, setShowConfirmRegistration] = useState(false);
+    const { register, errors, handleSubmit, watch, setValue, control } = useForm();
 
-    const countryParam = new URLSearchParams(props.location.search).get("country");
     const cityParam = new URLSearchParams(props.location.search).get("city");
+    const countryParam = new URLSearchParams(props.location.search).get("country");
+
+    const isOrganisation = watch('isOrganisation');
+    const useMicrocapEmail = watch('useMicrocapEmail');
 
     const onSubmit = (data) => {
         if(showRegistration) {
@@ -43,17 +53,19 @@ const Auth = (props) => {
             _data.isOrganisation = false;
             _data.useEmailAsLogin = true;
 
+            _data.isOrganisation = _data.isOrganisation ? _data.isOrganisation : false;
+
+            if (useMicrocapEmail)
+                delete _data.email;
+
             props.setRequestGlobalAction(true);
             UserService.registerUser(_data)
             .then((response) => {
                 setSession(response.token);
-                setUser(response.user);
                 dispatch(setAuthUser());
                 dispatch({ type: LOGIN_USER_SUCCESS, payload: response.token });
-                setTimeout(() => {
-                    setShowActivationBox(true);
-                }, 1000)
-                
+                setUser(response.user);
+                setShowSweetAlert(true);
             }).catch((err) => {
                 console.log(err)
                 NotificationManager.error("Cette addresse email est déjà utilisée");
@@ -124,13 +136,39 @@ const Auth = (props) => {
                                                 <Checkbox
                                                     color="primary"
                                                     checked={showRegistration}
-                                                    onChange={() => setShowRegistration(!showRegistration)}
+                                                    onChange={() => {
+                                                        if(!showRegistration) {
+                                                            setShowConfirmRegistration(true);
+                                                        } else {
+                                                            setShowRegistration(false);
+                                                        }
+                                                    }}
                                                 />
                                             } label={'Je ne suis pas encore membre du réseau MicroCap'}
                                             />
                                         </FormGroup>
                                         { showRegistration ? (
                                             <Form onSubmit={handleSubmit(onSubmit)} className="col-sm-12 has-wrapper">
+                                                <FormControl fullWidth className='mb-20 pl-15'>
+                                                    <InputComponent
+                                                        isRequired
+                                                        className="mt-0"
+                                                        errors={errors}
+                                                        id="isOrganisation"
+                                                        control={control}
+                                                        name={'isOrganisation'}
+                                                        register={register}
+                                                        componentType="select"
+                                                        as={<FormControlLabel control={
+                                                            <Checkbox
+                                                                color="primary"
+                                                                checked={isOrganisation}
+                                                                onChange={() => setValue('isOrganisation', !isOrganisation)}
+                                                            />
+                                                        } label={"Je suis une personne morale"}
+                                                        />}
+                                                    />
+                                                </FormControl>
                                                 <FormGroup className="has-wrapper">
                                                     <InputLabel className="text-left" htmlFor="userName">
                                                         Votre nom
@@ -144,20 +182,44 @@ const Auth = (props) => {
                                                         className="has-input input-lg"
                                                     />
                                                 </FormGroup>
-                                                <FormGroup className="has-wrapper">
-                                                    <InputLabel className="text-left" htmlFor="email">
-                                                        Votre adresse email
-                                                    </InputLabel>
+                                                { !useMicrocapEmail && (
+                                                    <FormGroup className="has-wrapper">
+                                                        <InputLabel className="text-left" htmlFor="email">
+                                                            Votre adresse email
+                                                        </InputLabel>
+                                                        <InputComponent
+                                                            id="email"
+                                                            type="email"
+                                                            isRequired
+                                                            name={'email'}
+                                                            errors={errors}
+                                                            register={register}
+                                                            className="has-input input-lg"
+                                                        />
+                                                    </FormGroup>
+                                                )}
+
+                                                <FormControl fullWidth className='mb-20'>
                                                     <InputComponent
-                                                        id="email"
-                                                        type="email"
                                                         isRequired
-                                                        name={'email'}
+                                                        className="mt-0"
                                                         errors={errors}
+                                                        id="useMicrocapEmail"
+                                                        control={control}
+                                                        name={'useMicrocapEmail'}
                                                         register={register}
-                                                        className="has-input input-lg"
+                                                        componentType="select"
+                                                        as={<FormControlLabel control={
+                                                            <Checkbox
+                                                                color="primary"
+                                                                checked={useMicrocapEmail}
+                                                                onChange={() => setValue('useMicrocapEmail', !useMicrocapEmail)}
+                                                            />
+                                                        } label={"Je n'ai pas une adresse email"}
+                                                        />}
                                                     />
-                                                </FormGroup>
+                                                </FormControl>
+                                            
                                                 <FormGroup className="has-wrapper">
                                                     <InputLabel className="text-left" htmlFor="password">
                                                         Votre mot de passe
@@ -174,6 +236,28 @@ const Auth = (props) => {
                                                     </InputComponent>
                                                     <span onClick={() => setPasswordType(passwordType === 'password' ? 'text' : 'password')} className="has-icon">
                                                         <i className={`zmdi zmdi-${passwordType === 'password' ? 'eye' : 'eye-off'}`}></i>
+                                                    </span>
+                                                </FormGroup>
+                                                <FormGroup className="has-wrapper">
+                                                    <InputLabel className="text-left" htmlFor="password">
+                                                        Ressaisir le même mot de passe
+                                                    </InputLabel>
+                                                    <InputComponent
+                                                        isRequired
+                                                        type={passwordConfirmType}
+                                                        errors={errors}
+                                                        register={register}
+                                                        id="passwordConfirmation"
+                                                        name={'passwordConfirmation'}
+                                                        className="has-input input-lg"
+                                                        otherValidator={{ validate: value => value === watch('password') }}
+                                                    >
+                                                        {errors.passwordConfirmation && (
+                                                            <ErrorInputComponent text={"Les mots de passe doivent être les identiques"} />
+                                                        )}
+                                                    </InputComponent>
+                                                    <span onClick={() => setPasswordConfirmType(passwordConfirmType === 'password' ? 'text' : 'password')} className="has-icon">
+                                                        <i className={`zmdi zmdi-${passwordConfirmType === 'password' ? 'eye' : 'eye-off'}`}></i>
                                                     </span>
                                                 </FormGroup>
 
@@ -258,6 +342,30 @@ const Auth = (props) => {
                     </div>
                 </div>
             </div>
+            <AuthConfirm
+                show={showConfirmRegistration}
+                onClose={() => {
+                    setShowConfirmRegistration(false);
+                }}
+                onSuccess={() => {
+                    setShowRegistration(true);
+                    setShowConfirmRegistration(false);
+                }}
+                onCancel={() => {
+                    setShowRegistration(false);
+                    setShowConfirmRegistration(false);
+                }}
+            />
+            { showSweetAlert && user && (
+               <RegistrationSuccess
+                  show={showSweetAlert}
+                  onConfirm={() => {
+                    setShowSweetAlert(false);
+                    setShowActivationBox(true);
+                  }}
+                  user={user}
+               />
+            )}
         </QueueAnim>
     );
 };

@@ -103,24 +103,16 @@ const Signup = (props) => {
                </div>
             </div>
 
-            <SweetAlert
-               success
-               btnSize="sm"
-               show={showSweetAlert}
-               title="Votre compte a été crée !"
-               onConfirm={() => confirmSweetAlert()}
-            >
-               <div className='flex pl-10 text-left pt-5'>
-                  Votre compte utilisateur a bien été créé, voici quelques informations importantes:
-                  <ul className='ml-20 pt-10'>
-                     <li><b>Numéro utilisateur:</b> {user?.referralId}</li>
-                     <li><b>Login:</b> {user?.login}</li>
-                     <li><b>Mot de passe:</b> <i>Saisi pendant l'inscription</i></li>
-                  </ul>
-                  Veuillez les noter, elles vous seront utiles plus tard.<br />
-                  Cliquez sur le bouton ci-dessous pour vous connecter et valider votre compte.
-               </div>
-            </SweetAlert>
+            { showSweetAlert && user && (
+               <RegistrationSuccess
+                  show={showSweetAlert}
+                  onConfirm={() => {
+                     confirmSweetAlert();
+                  }}
+                  user={user}
+               />
+            )}
+
          </div>
       </QueueAnim>
    );

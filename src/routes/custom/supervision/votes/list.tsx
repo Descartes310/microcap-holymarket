@@ -6,7 +6,6 @@ import {setRequestGlobalAction} from 'Actions';
 import React, { useState, useEffect } from 'react';
 import TimeFromMoment from "Components/TimeFromMoment";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
-import { voteOptions } from 'Routes/session/100pme/components/data';
 
 const Votes = (props) => {
 

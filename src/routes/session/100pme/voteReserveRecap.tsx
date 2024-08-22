@@ -68,7 +68,7 @@ const VoteReserveRecap = (props) => {
                                                 color="primary"
                                                 className="w-100 ml-0 mt-15 text-white"
                                                 onClick={() => {
-                                                    props.history.push(MARKETPLACE.SHOP.FINANCIAL);
+                                                    window.location.href = MARKETPLACE.SHOP.FINANCIAL;
                                                 }}
                                             >
                                                 Continuer

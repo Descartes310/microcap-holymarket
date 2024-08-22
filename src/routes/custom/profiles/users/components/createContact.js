@@ -66,6 +66,7 @@ const CreateContact = (props) => {
             )}
         >
             <RctCardContent>
+                { props.setAsNotificatioAddress && <p>Le service MicroCap est 100% Digital, toutes vos notifications laissant des traces vous seront transmises à cette adresse. L'utilisation du code de vérification de chaque communication vaut signature et accusé de reception.</p>}
                 <div className="col-md-12 col-sm-12 has-wrapper mb-30 p-0">
                     <InputLabel className="text-left">
                         Type de contact

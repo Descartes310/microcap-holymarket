@@ -66,7 +66,7 @@ const VoteRecap = (props) => {
                                                 color="primary"
                                                 className="w-100 ml-0 mt-15 text-white"
                                                 onClick={() => {
-                                                    props.history.push(HOME)
+                                                    window.location.href = HOME;
                                                 }}
                                             >
                                                 Terminer
