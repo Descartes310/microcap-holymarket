@@ -100,7 +100,7 @@ class OrderForm extends Component<any, any> {
     }
 
     render() {
-        const { match } = this.props;
+        const { successMessage } = this.props;
         const { showSweetAlert } = this.state;
         return (
             <>
@@ -125,7 +125,7 @@ class OrderForm extends Component<any, any> {
                     success
                     btnSize="sm"
                     show={showSweetAlert}
-                    title="Votre commande a été enregistrée avec succès !"
+                    title={successMessage ? successMessage : "Votre commande a été enregistrée avec succès !"}
                     onConfirm={() => this.confirmSweetAlert()}
                 />
             </>

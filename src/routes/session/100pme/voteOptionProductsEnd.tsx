@@ -62,10 +62,10 @@ const VoteOptionProductsEnd = (props) => {
                                                 color="primary"
                                                 className="w-100 ml-0 mt-15 text-white"
                                                 onClick={() => {
-                                                    props.history.push(HOME);
                                                     localStorage.removeItem('PME_CITY')
                                                     localStorage.removeItem('PME_LOCALITY')
                                                     localStorage.removeItem('PME_COUNTRY')
+                                                    window.location.href = HOME;
                                                 }}
                                             >
                                                 Continuer

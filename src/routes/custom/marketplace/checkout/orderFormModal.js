@@ -22,6 +22,7 @@ class OrderModalForm extends Component {
                 <OrderForm 
                     onSuccess={onSuccess}
                     isPreOrder={isPreOrder}
+                    successMessage={"Votre reservation a été effectuée. Pour finaliser votre commande, vous devez vous connecter à votre espace utilisateur sur la plateforme MicroCap."}
                 />
             </DialogComponent>
         )

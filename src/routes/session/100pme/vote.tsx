@@ -5,16 +5,15 @@ import { Link } from 'react-router-dom';
 import { injectIntl } from "react-intl";
 import AppConfig from 'Constants/AppConfig';
 import IntlMessages from "Util/IntlMessages";
+import SystemService from 'Services/systems';
 import AppBar from '@material-ui/core/AppBar';
 import { InputLabel } from '@material-ui/core';
-import { voteOptions } from './components/data';
 import Toolbar from '@material-ui/core/Toolbar';
 import { setRequestGlobalAction } from 'Actions';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import { FormGroup, Label, Input, Button } from 'reactstrap';
+import { FormGroup, Input, Button } from 'reactstrap';
 import {HOME, AUTH, LANDING, PME_PROJECT, joinUrlWithParamsId} from "Url/frontendUrl";
-import SystemService from 'Services/systems';
 
 const COUNTRIES = [{value: "CM", label: "Cameroun"}, {value: "FR", label: "France"}];
 
@@ -25,9 +24,7 @@ const Vote = (props) => {
 
     const [city, setCity] = useState(null);
     const [cities, setCities] = useState([]);
-    const [option, setOption] = useState(null);
     const [locality, setLocality] = useState(null);
-    const [selectingCity, setSelectingCity] = useState(true);
     const [country, setCountry] = useState(countryParam ? COUNTRIES.find(c => c.value === countryParam) : null);
     
     const [products, setProducts] = useState([]);
@@ -117,121 +114,85 @@ const Vote = (props) => {
                                         {/* This text is just a work around to add the width of the form input */}
                                         <p className="mb-0 visibility-hidden">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad, adipisci, animi aperiam eligendi</p>
                                     </div>
-                                    <div className="row w-100 d-flex justify-content-around flex-column">
-                                        {selectingCity ? (
-                                            <div>
-                                                <div className="col-md-12 col-sm-12 has-wrapper mb-30">
-                                                    <InputLabel className="text-left">
-                                                        Pays
-                                                    </InputLabel>
-                                                    <Autocomplete
-                                                        value={country}
-                                                        id="combo-box-demo"
-                                                        onChange={(__, item: any) => {
-                                                            setCountry(item);
-                                                            if(item) {
-                                                                localStorage.setItem("PME_COUNTRY", item.value);
-                                                            } else {
-                                                                localStorage.removeItem("PME_COUNTRY");
-                                                            }
-                                                        }}
-                                                        options={COUNTRIES}
-                                                        getOptionLabel={(option) => option.label}
-                                                        renderInput={(params) => <TextField {...params} variant="outlined" />}
-                                                    />
-                                                </div>
-                                                <div className="col-md-12 col-sm-12 has-wrapper mb-30">
-                                                    <InputLabel className="text-left">
-                                                        Ma ville
-                                                    </InputLabel>
-                                                    <Autocomplete
-                                                        value={city}
-                                                        id="combo-box-demo"
-                                                        onChange={(__, item) => {
-                                                            setCity(item);
-                                                            if(item) {
-                                                                localStorage.setItem("PME_CITY", JSON.stringify(item));
-                                                            } else {
-                                                                localStorage.removeItem("PME_CITY");
-                                                            }
-                                                        }}
-                                                        options={cities}
-                                                        getOptionLabel={(option) => option.name}
-                                                        renderInput={(params) => <TextField {...params} variant="outlined" />}
-                                                    />
-                                                </div>
-                                                <FormGroup className="has-wrapper">
-                                                    <InputLabel className="text-left" htmlFor="locality">
-                                                        Localité
-                                                    </InputLabel>
-                                                    <Input
-                                                        required
-                                                        id="locality"
-                                                        type="text"
-                                                        name='locality'
-                                                        className="input-lg"
-                                                        value={locality}
-                                                        onChange={(e) => {
-                                                            setLocality(e.target.value);
-                                                            localStorage.setItem("PME_LOCALITY", e.target.value);
-                                                        }}
-                                                    />
-                                                </FormGroup>
-                                                <FormGroup className="mb-25">
-                                                    <Button
-                                                        color="primary"
-                                                        disabled={!city || !locality}
-                                                        className="w-100 ml-0 mt-15 text-white"
-                                                        onClick={() => {
-                                                            if(products.length > 0) {
-                                                                props.history.push(joinUrlWithParamsId(PME_PROJECT.VOTE_PRODUCT, 1));
-                                                            } else {
-                                                                setSelectingCity(false);
-                                                            }
+                                    <div className="row w-100 d-flex justify-content-around">
+                                        <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                                            <InputLabel className="text-left">
+                                                Pays
+                                            </InputLabel>
+                                            <Autocomplete
+                                                value={country}
+                                                id="combo-box-demo"
+                                                onChange={(__, item: any) => {
+                                                    setCountry(item);
+                                                    if(item) {
+                                                        localStorage.setItem("PME_COUNTRY", item.value);
+                                                    } else {
+                                                        localStorage.removeItem("PME_COUNTRY");
+                                                    }
+                                                }}
+                                                options={COUNTRIES}
+                                                getOptionLabel={(option) => option.label}
+                                                renderInput={(params) => <TextField {...params} variant="outlined" />}
+                                            />
+                                        </div>
+                                        <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                                            <InputLabel className="text-left">
+                                                Ma ville
+                                            </InputLabel>
+                                            <Autocomplete
+                                                value={city}
+                                                id="combo-box-demo"
+                                                onChange={(__, item) => {
+                                                    setCity(item);
+                                                    if(item) {
+                                                        localStorage.setItem("PME_CITY", JSON.stringify(item));
+                                                    } else {
+                                                        localStorage.removeItem("PME_CITY");
+                                                    }
+                                                }}
+                                                options={cities}
+                                                getOptionLabel={(option) => option.name}
+                                                renderInput={(params) => <TextField {...params} variant="outlined" />}
+                                            />
+                                        </div>
+                                        <FormGroup className="col-md-12 col-sm-12 has-wrapper mb-30">
+                                            <InputLabel className="text-left" htmlFor="locality">
+                                                Localité
+                                            </InputLabel>
+                                            <Input
+                                                required
+                                                id="locality"
+                                                type="text"
+                                                name='locality'
+                                                className="input-lg"
+                                                value={locality}
+                                                onChange={(e) => {
+                                                    if(e.target.value) {
+                                                        setLocality(e.target.value);
+                                                        localStorage.setItem("PME_LOCALITY", e.target.value);
+                                                    } else {
+                                                        localStorage.removeItem("PME_LOCALITY");
+                                                    }
+                                                }}
+                                            />
+                                        </FormGroup>
+                                        <FormGroup className="col-md-12 col-sm-12 mb-30">
+                                            <Button
+                                                color="primary"
+                                                disabled={!city}
+                                                className="w-100 ml-0 mt-15 text-white"
+                                                onClick={() => {
+                                                    if(products.length > 0) {
+                                                        props.history.push(joinUrlWithParamsId(PME_PROJECT.VOTE_PRODUCT, 1));
+                                                    } else {
+                                                        props.history.push(PME_PROJECT.VOTE_RECAP);
+                                                    }
 
-                                                        }}
-                                                    >
-                                                        Continuer
-                                                    </Button>
-                                                </FormGroup>
-                                            </div>
-                                        ) :
-                                        (    <div>
-                                                {voteOptions.map(vo => (
-                                                    <FormGroup check className="mb-25">
-                                                        <Label check>
-                                                            <Input
-                                                                type="radio"
-                                                                value={vo.value}
-                                                                name="vote-option"
-                                                                onChange={(e) => {
-                                                                    setOption(e.target.value);
-                                                                }}
-                                                            />
-                                                            <div className="ml-10">
-                                                                <p className="mb-5 text-black" style={{ fontSize: '1.1rem' }}>{vo.label}</p>
-                                                            </div>
-                                                        </Label>
-                                                    </FormGroup>
-                                                ))}
-                                                <FormGroup className="mb-25">
-                                                    <Button
-                                                        color="primary"
-                                                        disabled={!option}
-                                                        className="w-100 ml-0 mt-15 text-white"
-                                                        onClick={() => {
-                                                            if(option === 'VOTE') {
-                                                                props.history.push(joinUrlWithParamsId(PME_PROJECT.VOTE_OPTION_2, voteOptions.find(vo => vo.value === option).id));
-                                                            } else {
-                                                                props.history.push(joinUrlWithParamsId(PME_PROJECT.VOTE_OPTION, voteOptions.find(vo => vo.value === option).id));
-                                                            }
-                                                        }}
-                                                    >
-                                                        Continuer
-                                                    </Button>
-                                                </FormGroup>
-                                            </div>
-                                        )}
+                                                }}
+                                            >
+                                                Continuer
+                                            </Button>
+                                        </FormGroup>
                                     </div>
                                 </div>
                             </div>

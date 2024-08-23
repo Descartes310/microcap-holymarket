@@ -23,10 +23,10 @@ export const voteOptions = [
         label: "Je veux acheter pour faire louer",
         description: "Pour acheter pour faire louer, il faut reserver un Ndjangui Deal"
     },
-    {
-        id: 5,
-        value: "VOTE",
-        label: "Je veux juste voter",
-        description: "Vous ne souhaitez pas rejoindre le réseau de solidarité financière international MicroCap"
-    },
+    // {
+    //     id: 5,
+    //     value: "VOTE",
+    //     label: "Je veux juste voter",
+    //     description: "Vous ne souhaitez pas rejoindre le réseau de solidarité financière international MicroCap"
+    // },
 ]

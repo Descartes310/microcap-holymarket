@@ -5,14 +5,16 @@ import { Link } from 'react-router-dom';
 import { injectIntl } from "react-intl";
 import AppConfig from 'Constants/AppConfig';
 import IntlMessages from "Util/IntlMessages";
+import SystemService from 'Services/systems';
 import AppBar from '@material-ui/core/AppBar';
-import { voteOptions } from './components/data';
+import { FormGroup, Button } from 'reactstrap';
 import Toolbar from '@material-ui/core/Toolbar';
 import { setRequestGlobalAction } from 'Actions';
-import {HOME, AUTH, LANDING} from "Url/frontendUrl";
-import { FormGroup, Button } from 'reactstrap';
+import {HOME, AUTH, LANDING, PME_PROJECT} from "Url/frontendUrl";
 
 const VoteRecap = (props) => {
+
+    const city = JSON.parse(localStorage.getItem('PME_CITY'));
 
     const onUserSignUp = () => {
         props.history.push(AUTH.REGISTER);
@@ -21,6 +23,37 @@ const VoteRecap = (props) => {
     const onDiscoverClick = () => {
         props.history.push(LANDING.HOME);
     };
+
+    const onSubmit = () => {
+        const locality = localStorage.getItem('PME_LOCALITY');
+        const city = JSON.parse(localStorage.getItem('PME_CITY'));
+        const country = localStorage.getItem('PME_COUNTRY');
+        const user = props.authUser;
+
+        console.log(user, city, country);
+
+        if(city && user && country) {
+            props.setRequestGlobalAction(true);
+            let data: any = {
+                vote: 'VOTE', city_id: city.id, city_name: city.name, referral_code: user.referralId, country
+            };
+
+            if(locality) {
+                data.locality = locality;
+            }
+            SystemService.createVote(data)
+            .then(() => {
+                localStorage.removeItem('PME_CITY')
+                localStorage.removeItem('PME_LOCALITY')
+                localStorage.removeItem('PME_COUNTRY')
+                window.location.href = HOME;
+            }).catch((err) => {
+                console.log(err);
+            }).finally(() => {
+                props.setRequestGlobalAction(false);
+            })
+        }
+    }
 
     return (
         <QueueAnim type="bottom" duration={2000}>
@@ -57,29 +90,29 @@ const VoteRecap = (props) => {
                                         <p className="mb-0 visibility-hidden">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad, adipisci, animi aperiam eligendi</p>
                                     </div>
                                     <div className="row w-100 d-flex justify-content-around flex-column">
-                                        <p className='text-center text-black mb-10' style={{ fontSize: 16 }}>Vous n'êtes pas membre du réseau MicroCap</p>
-                                        <p className='text-center text-black mb-10' style={{ fontSize: 16 }}>Votre vote = 1 like</p>
+                                        <p className='text-center text-black mb-10' style={{ fontSize: 16 }}>Vous n'avez pas de produit</p>
+                                        <p className='text-center text-black mb-10' style={{ fontSize: 16 }}>Pour permettre a votre ville {city.name} de cumuler des voix, reserver un produit</p>
+                                        <p className='text-center text-black mb-10' style={{ fontSize: 16 }}>1 vote = 1 like</p>
                                         <p className='text-center text-black mb-10' style={{ fontSize: 16 }}>10 likes = 1 voix</p>
-                                        <p className='text-center text-black mb-10' style={{ fontSize: 16 }}>Merci de votre participation</p>
-                                        <FormGroup className="mb-25 row">
+                                        <FormGroup className="mb-25 row d-flex justify-content-around flex-column">
                                             <Button
                                                 color="primary"
-                                                className="w-100 ml-0 mt-15 text-white"
+                                                className="col-sm-12 col-md-5 ml-0 mt-15 text-white"
                                                 onClick={() => {
-                                                    window.location.href = HOME;
+                                                   onSubmit();
                                                 }}
                                             >
-                                                Terminer
+                                                Voter (pour un like)
                                             </Button>
-                                            {/* <Button
+                                            <Button
                                                 color="primary"
-                                                className="w-100 ml-0 mt-15 text-white"
+                                                className="col-sm-12 col-md-5 ml-0 mt-15 text-white"
                                                 onClick={() => {
-
+                                                    props.history.push(PME_PROJECT.VOTE_OPTION);
                                                 }}
                                             >
-                                                Voter et rejoindre MicroCap
-                                            </Button> */}
+                                                Reserver (pour un max de voix)
+                                            </Button>
                                         </FormGroup>
                                     </div>
                                 </div>
@@ -94,8 +127,8 @@ const VoteRecap = (props) => {
 };
 
 // map state to props
-const mapStateToProps = ({ requestGlobalLoader }) => {
-    return { loading: requestGlobalLoader }
+const mapStateToProps = ({ requestGlobalLoader, authUser }) => {
+    return { loading: requestGlobalLoader, authUser }
 };
 
 export default connect(mapStateToProps, { setRequestGlobalAction })(injectIntl(VoteRecap));

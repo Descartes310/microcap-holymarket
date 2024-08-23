@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import QueueAnim from 'rc-queue-anim';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { injectIntl } from "react-intl";
 import AppConfig from 'Constants/AppConfig';
@@ -8,14 +8,12 @@ import IntlMessages from "Util/IntlMessages";
 import AppBar from '@material-ui/core/AppBar';
 import { voteOptions } from './components/data';
 import Toolbar from '@material-ui/core/Toolbar';
-import { setRequestGlobalAction } from 'Actions';
-import {HOME, AUTH, LANDING, PME_PROJECT} from "Url/frontendUrl";
-import { FormGroup, Button } from 'reactstrap';
-import SystemService from 'Services/systems';
+import { FormGroup, Label, Input, Button } from 'reactstrap';
+import {HOME, AUTH, LANDING, PME_PROJECT, joinUrlWithParamsId} from "Url/frontendUrl";
 
-const VoteOptionReserve = (props) => {
+const VoteOptions = (props) => {
 
-    const option = voteOptions.find(vo => vo.id == props.match.params.id);
+    const [option, setOption] = useState(null);
 
     const onUserSignUp = () => {
         props.history.push(AUTH.REGISTER);
@@ -24,28 +22,6 @@ const VoteOptionReserve = (props) => {
     const onDiscoverClick = () => {
         props.history.push(LANDING.HOME);
     };
-
-    const onSubmit = () => {
-        const locality = localStorage.getItem('PME_LOCALITY');
-        const city = JSON.parse(localStorage.getItem('PME_CITY'));
-        const country = localStorage.getItem('PME_COUNTRY');
-        const user = props.authUser;
-
-        if(option && city && user && locality && country) {
-            props.setRequestGlobalAction(true);
-            SystemService.createVote({vote: option.value, city_id: city.id, city_name: city.name, referral_code: user.referralId, locality, country})
-            .then((response) => {
-                props.history.push(`${PME_PROJECT.VOTE_RESERVE_RECAP}?city=${city.name}&code=${response.code}`);
-                localStorage.removeItem('PME_LOCALITY')
-                localStorage.removeItem('PME_CITY')
-                localStorage.removeItem('PME_COUNTRY')
-            }).catch((err) => {
-
-            }).finally(() => {
-                props.setRequestGlobalAction(false);
-            })
-        }
-    }
 
     return (
         <QueueAnim type="bottom" duration={2000}>
@@ -77,47 +53,42 @@ const VoteOptionReserve = (props) => {
                             <div className="col-sm-12 col-md-12 col-lg-12">
                                 <div className="center-hor-ver session-body d-flex flex-column">
                                     <div className="session-head mb-10 text-center">
-                                        <h1 className="p-20">{option?.label}</h1>
+                                        <h1 className="p-20">Option de vote</h1>
                                         {/* This text is just a work around to add the width of the form input */}
                                         <p className="mb-0 visibility-hidden">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad, adipisci, animi aperiam eligendi</p>
                                     </div>
                                     <div className="row w-100 d-flex justify-content-around flex-column">
-                                        <p className='text-center text-black mb-10' style={{ fontSize: 16 }}>{option?.description}</p>
-                                        <FormGroup className="mb-25 row">
+                                        {voteOptions.map(vo => (
+                                            <FormGroup check className="mb-25">
+                                                <Label check>
+                                                    <Input
+                                                        type="radio"
+                                                        value={vo.value}
+                                                        name="vote-option"
+                                                        onChange={(e) => {
+                                                            setOption(e.target.value);
+                                                        }}
+                                                    />
+                                                    <div className="ml-10">
+                                                        <p className="mb-5 text-black" style={{ fontSize: '1.1rem' }}>{vo.label}</p>
+                                                    </div>
+                                                </Label>
+                                            </FormGroup>
+                                        ))}
+                                        <FormGroup className="mb-25">
                                             <Button
                                                 color="primary"
                                                 disabled={!option}
                                                 className="w-100 ml-0 mt-15 text-white"
                                                 onClick={() => {
-
+                                                    props.history.push(joinUrlWithParamsId(PME_PROJECT.VOTE_PRODUCT, voteOptions.find(vo => vo.value === option).id));
                                                 }}
                                             >
-                                                En savoir plus
-                                            </Button>
-                                            <Button
-                                                color="primary"
-                                                disabled={!option}
-                                                className="w-100 ml-0 mt-15 text-white"
-                                                onClick={() => {
-                                                    onSubmit();
-                                                }}
-                                            >
-                                                Reserver un Ndjangui Deal
-                                            </Button>
-                                            <Button
-                                                color="primary"
-                                                disabled={!option}
-                                                className="w-100 ml-0 mt-15 text-white"
-                                                onClick={() => {
-
-                                                }}
-                                            >
-                                                J'ai un code de réservation
+                                                Continuer
                                             </Button>
                                         </FormGroup>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                     </div>
@@ -127,8 +98,4 @@ const VoteOptionReserve = (props) => {
     );
 };
 
-const mapStateToProps = ({ authUser }) => {
-    return { authUser: authUser.data, }
-};
-
-export default connect(mapStateToProps, { setRequestGlobalAction })(VoteOptionReserve);
+export default connect(() => {}, {})(injectIntl(VoteOptions));

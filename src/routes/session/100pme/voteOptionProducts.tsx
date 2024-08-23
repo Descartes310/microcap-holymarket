@@ -33,7 +33,6 @@ const VoteOptionProducts = (props) => {
     const [myProduct, setMyProduct] = useState(null);
     const [productModel, setProductModel] = useState(null);
     const [productModels, setProductModels] = useState([]);
-    const [showMyProducts, setShowMyProducts] = useState(true);
     const [showOrderModal, setShowOrderModal] = useState(false);
 
     useEffect(() => {
@@ -85,9 +84,16 @@ const VoteOptionProducts = (props) => {
         const country = localStorage.getItem('PME_COUNTRY');
         const user = props.authUser;
 
-        if(option && city && user && locality && country && (myProduct || order)) {
+        if(option && city && user && country && (myProduct || order)) {
             props.setRequestGlobalAction(true);
-            SystemService.createVote({vote: option.value, city_id: city.id, city_name: city.name, referral_code: user.referralId, locality, country, order_reference: myProduct ? myProduct.reference : order.reference})
+            let data: any = {
+                vote: option.value, city_id: city.id, city_name: city.name, referral_code: user.referralId, country, order_reference: myProduct ? myProduct.reference : order.reference
+            }
+        
+            if(locality) {
+                data.locality = locality;
+            }
+            SystemService.createVote(data)
             .then(() => {
                 getMyProducts();
                 setMyProduct(null);
@@ -146,28 +152,15 @@ const VoteOptionProducts = (props) => {
                             <div className="col-sm-12 col-md-12 col-lg-12">
                                 <div className="center-hor-ver session-body d-flex flex-column">
                                     <div className="session-head mb-10 text-center">
-                                        <h1 className="p-20">Terminer mon vote !</h1>
+                                        <h1 className="p-20">Je vote !</h1>
                                         {/* This text is just a work around to add the width of the form input */}
                                         <p className="mb-0 visibility-hidden">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad, adipisci, animi aperiam eligendi</p>
                                     </div>
                                     <div className="row w-100 d-flex justify-content-around flex-row">
-                                        <p className='text-center text-black mb-10' style={{ fontSize: 16 }}>Félicitation, vous disposez de {myProducts.length} produits MicroCap pour cumuler des voix</p>
-                                        
-                                        <FormGroup className="col-sm-12 has-wrapper">
-                                            <FormControlLabel control={
-                                                <Checkbox
-                                                    color="primary"
-                                                    checked={showMyProducts}
-                                                    onChange={() => {
-                                                        setShowMyProducts(!showMyProducts);
-                                                    }}
-                                                />
-                                            } label={'Utiliser mes produits'}
-                                            />
-                                        </FormGroup>
 
-                                        { showMyProducts ? 
+                                        { myProducts.length > 0 ? 
                                             <>
+                                                <p className='text-center text-black mb-10' style={{ fontSize: 16 }}>Félicitation, vous disposez de {myProducts.length} produits MicroCap pour cumuler des voix</p>
                                                 <FormGroup className="col-md-12 col-sm-12 has-wrapper">
                                                     <InputLabel className="text-left">
                                                         Mes produits MicroCap
@@ -198,6 +191,7 @@ const VoteOptionProducts = (props) => {
                                             </>
                                         :
                                             <>
+                                                <p className='text-center text-black mb-10' style={{ fontSize: 16 }}>Reserver un produit MicroCap pour cumuler des voix</p>
                                                 <FormGroup className="col-md-12 col-sm-12 has-wrapper">
                                                     <InputLabel className="text-left">
                                                         Canal de vente
