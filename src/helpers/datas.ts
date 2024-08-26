@@ -54,14 +54,14 @@ export const getPaymentMethods = () => {
             value: 'DEPOSIT'
         },
         {
+            label: 'Carte bancaire',
+            enabled: true,
+            value: 'CREDIT_CARD'
+        },
+        {
             label: 'Virement bancaire',
             enabled: false,
             value: 'BANK_TRANSFER'
-        },
-        {
-            label: 'Carte bancaire',
-            enabled: false,
-            value: 'CREDIT_CARD'
         },
         {
             label: 'Prélèvement automatique sur le compte MicroCap',

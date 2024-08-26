@@ -9,8 +9,8 @@ import { getOrderStatusItem } from 'Helpers/helpers';
 import TimeFromMoment from 'Components/TimeFromMoment';
 import OrderDetails from '../../_components/orderDetails';
 import AccountAgreement from 'Components/AccountAgreement';
-import PaymentRequest from '../../_components/paymentRequest';
 import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
+import PaymentRequestModal from '../../_components/paymentRequestModal';
 import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 
 const List = (props) => {
@@ -184,7 +184,7 @@ const List = (props) => {
                         )}
 
                         { showPaymentRequest && selectedItem && (
-                            <PaymentRequest 
+                            <PaymentRequestModal
                                 show={showPaymentRequest}
                                 defaultType={selectedItem?.orderType}
                                 defaultReference={selectedItem?.reference}

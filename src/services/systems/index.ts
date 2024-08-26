@@ -27,6 +27,10 @@ export default class SystemService {
         return makeRequest('get', Routes.GET_PRODUCTS);
     }
 
+    static getProductModels(): Promise<any> {
+        return makeRequest('get', Routes.GET_PRODUCT_MODELS);
+    }
+
     static getVotes(): Promise<any> {
         return makeRequest('get', Routes.GET_VOTES);
     }

@@ -12,42 +12,41 @@ import ProductService from 'Services/products';
 import { voteOptions } from './components/data';
 import Toolbar from '@material-ui/core/Toolbar';
 import { setRequestGlobalAction } from 'Actions';
+import StripeCheckout from 'react-stripe-checkout';
 import React, { useEffect, useState } from 'react';
 import TextField from '@material-ui/core/TextField';
+import { getPriceWithCurrency } from 'Helpers/helpers';
 import {NotificationManager} from 'react-notifications';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import Checkbox from "@material-ui/core/Checkbox/Checkbox";
+import { stripeZeroDecimalCurrencies } from 'Helpers/datas'
 import {HOME, AUTH, LANDING, PME_PROJECT} from "Url/frontendUrl";
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
-import { getPriceWithCurrency, getSellWay } from 'Helpers/helpers';
 import OrderFormModal from 'Routes/custom/marketplace/checkout/orderFormModal'
-import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
+import PaymentRequestModal from 'Routes/custom/marketplace/_components/paymentRequestModal';
+import OrderService from 'Services/orders';
 
 const VoteOptionProducts = (props) => {
 
     const option = voteOptions.find(vo => vo.id == props.match.params.id)
     const [product, setProduct] = useState(null);
-    const [sellWay, setSellWay] = useState(null);
+    const [orderData, setOrderData] = useState(null);
     const [products, setProducts] = useState([]);
     const [myProducts, setMyProducts] = useState([]);
     const [myProduct, setMyProduct] = useState(null);
     const [productModel, setProductModel] = useState(null);
     const [productModels, setProductModels] = useState([]);
     const [showOrderModal, setShowOrderModal] = useState(false);
+    const [showPaymentModal, setShowPaymentModal] = useState(false);
+    const [paymentData, setPaymentData] = useState(null);
 
     useEffect(() => {
         getMyProducts();
+        getProductModels();;
     }, []);
 
 
     useEffect(() => {
-        if(sellWay) {
-            getProductModels();
-        }
-    }, [sellWay]);
-
-    useEffect(() => {
-        if(sellWay) {
+        if(productModel) {
             getProducts();
         }
     }, [productModel]);
@@ -73,7 +72,7 @@ const VoteOptionProducts = (props) => {
 
     const getProductModels = () => {
         props.setRequestGlobalAction(true);
-        ProductService.getShopProductModels({ type: sellWay.value })
+        SystemService.getProductModels()
         .then(response => setProductModels(response))
         .finally(() => props.setRequestGlobalAction(false))
     }
@@ -121,6 +120,46 @@ const VoteOptionProducts = (props) => {
 		}
 		props.onAddItemToCart({...cartItem});
 	}
+
+    useEffect(() => {
+        if(paymentData) {
+            document.getElementById('stripe-id').click();
+        }
+    }, [paymentData]);
+
+    const computePrice = () => {
+        const amount = paymentData ? paymentData.amount : 0;
+        const currency = paymentData ? paymentData.currency : 'EUR';
+        return stripeZeroDecimalCurrencies.includes(currency) ? amount : amount * 100;
+     }
+
+    const onStripeSubmit = (token) => {
+        props.setRequestGlobalAction(true);
+  
+        let data: any = {
+           stripeToken: token,
+           amount: paymentData.amount
+        }
+  
+        if(paymentData.discountCode) {
+           data.discountCode = paymentData.discountCode;
+        }
+  
+        if(paymentData.subscriptionCode) {
+           data.subscriptionCode = paymentData.subscriptionCode;
+        }
+  
+        OrderService.paySale(paymentData.id, data)
+           .then(() => {
+                NotificationManager.success('Opération réussie');
+                setPaymentData(false);
+            })
+           .finally(() => props.setRequestGlobalAction(false))
+     }
+
+    const onStripePayment = (token) => {
+        onStripeSubmit(token.id);
+    }
 
     return (
         <QueueAnim type="bottom" duration={2000}>
@@ -192,21 +231,6 @@ const VoteOptionProducts = (props) => {
                                         :
                                             <>
                                                 <p className='text-center text-black mb-10' style={{ fontSize: 16 }}>Reserver un produit MicroCap pour cumuler des voix</p>
-                                                <FormGroup className="col-md-12 col-sm-12 has-wrapper">
-                                                    <InputLabel className="text-left">
-                                                        Canal de vente
-                                                    </InputLabel>
-                                                    <Autocomplete
-                                                        value={sellWay}
-                                                        options={getSellWay()}
-                                                        id="combo-box-demo"
-                                                        onChange={(__, item) => {
-                                                            setSellWay(item);
-                                                        }}
-                                                        getOptionLabel={(option) => `${option.label}`}
-                                                        renderInput={(params) => <TextField {...params} variant="outlined" />}
-                                                    />
-                                                </FormGroup>
                                                 <FormGroup className="col-md-12 col-sm-12 has-wrapper">
                                                     <InputLabel className="text-left">
                                                         Produits MicroCap
@@ -283,13 +307,52 @@ const VoteOptionProducts = (props) => {
                     }}
                     onSuccess={(response) => {
                         onSubmit(response);
+                        setOrderData(response)
                         getProducts();
                         setShowOrderModal(false);
                         setProduct(null);
+                        setShowPaymentModal(true);
                     }}
                     isPreOrder={true}
                 />
             )}
+
+            { showPaymentModal && orderData && (
+                <PaymentRequestModal
+                    show={showPaymentModal}
+                    hideReference={true}
+                    defaultReference={orderData.reference}
+                    defaultType={orderData.orderType}
+                    sendStripeData={(data) => {
+                        setShowPaymentModal(false);
+                        setOrderData(null);
+                        setPaymentData(data);
+                    }}
+                    onClose={() => {
+                        setShowPaymentModal(false);
+                        setOrderData(null);
+                    }}
+                />
+            )}
+
+            <StripeCheckout
+                name={'MicroCap'}
+                token={onStripePayment}
+                amount={computePrice()}
+                currency={paymentData ? paymentData.currency : 'EUR'}
+                stripeKey={AppConfig.payments.stripe}
+                description={'Règlement de la facture'}
+                image={require('Assets/identity/logomicrocap.png')}
+            >
+                <Button
+                    color="primary"
+                    id="stripe-id"
+                    className="w-100 ml-0 mt-15 text-white"
+                    style={{ display: 'none' }}
+                >
+                    Payer
+                </Button>
+            </StripeCheckout>
         </QueueAnim>
     );
 };

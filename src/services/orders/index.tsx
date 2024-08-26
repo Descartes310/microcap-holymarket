@@ -19,6 +19,10 @@ export default class OrderService {
     static createOrder(data: any): Promise<any> {
         return makeRequest('post', data.isPreOrder ? Routes.CREATE_PRE_ORDER : Routes.CREATE_ORDER, data);
     }
+    
+    static initiatePayment(reference: string, data: any): Promise<any> {
+        return makeRequest('post', Routes.INITIATE_PAYMENT(reference), data);
+    }
 
     static getPurchases(data: any = null): Promise<any> {
         return makeRequest('get', Routes.GET_PURCHASES, data ? data : null);
