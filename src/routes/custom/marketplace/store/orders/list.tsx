@@ -1,20 +1,32 @@
 import { connect } from 'react-redux';
 import OrderService from 'Services/orders';
 import { withRouter } from "react-router-dom";
-import Button from '@material-ui/core/Button';
+import { getOrderTypes } from 'Helpers/datas';
 import CustomList from "Components/CustomList";
 import { setRequestGlobalAction } from 'Actions';
 import React, { useState, useEffect } from 'react';
 import { getOrderStatusItem } from 'Helpers/helpers';
 import TimeFromMoment from 'Components/TimeFromMoment';
+import OrderDetails from '../../_components/orderDetails';
 import AccountAgreement from 'Components/AccountAgreement';
+import PaymentRequest from '../../_components/paymentRequest';
 import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
+import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 
 const List = (props) => {
 
     const [purchases, setPurchases] = useState([]);
+    const [dropdownOpen, setDropdownOpen] = useState([]);
+    const [showDetails, setShowDetails] = useState(false);
     const [selectedItem, setSelectedItem] = useState(null);
+    const [showPaymentRequest, setShowPaymentRequest] = useState(false);
     const [showAccountAgreementBox, setShowAccountAgreementBox] = useState(false);
+
+    const onToggleButton = (key) => {
+        let currentArray = dropdownOpen;
+        currentArray[key] = !currentArray[key];
+        setDropdownOpen([...currentArray]);
+    }
 
     useEffect(() => {
         getPurchases();
@@ -29,17 +41,17 @@ const List = (props) => {
 
     return (
         <>
-            <PageTitleBar title={'Mes commandes reçues'} />
+            <PageTitleBar title={'Mes ventes'} />
             <CustomList
                 list={purchases}
                 loading={false}
-                itemsFoundText={n => `${n} commandes trouvées`}
+                itemsFoundText={n => `${n} ventes trouvées`}
                 renderItem={list => (
                     <>
                         {list && list.length === 0 ? (
                             <div className="d-flex justify-content-center align-items-center py-50">
                                 <h4>
-                                    Aucun commandes trouvées
+                                    Aucune vente trouvée
                                 </h4>
                             </div>
                         ) : (
@@ -52,7 +64,8 @@ const List = (props) => {
                                             <th className="fw-bold">Telephone</th>
                                             <th className="fw-bold">Date</th>
                                             <th className="fw-bold">Status</th>
-                                            <th className="fw-bold">Détails</th>
+                                            <th className="fw-bold">Type</th>
+                                            <th className="fw-bold">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -103,19 +116,50 @@ const List = (props) => {
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    { ((item.mirrorAccount || item.account) && item.externalReference)  && (
-                                                        <Button
-                                                            color="primary"
-                                                            variant="contained"
-                                                            className="text-white font-weight-bold"
-                                                            onClick={() => {
+                                                    <div className="media">
+                                                        <div className="media-body pt-10">
+                                                            <h4 className="m-0 fw-bold text-dark">{getOrderTypes().find(ot => ot.value == item.orderType)?.label}</h4>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <ButtonDropdown isOpen={dropdownOpen[key]} toggle={() => onToggleButton(key)} className="mr-3">
+                                                        <DropdownToggle caret color='primary' style={{ color: 'white', fontSize: '0.9rem' }}>
+                                                            Actions
+                                                        </DropdownToggle>
+                                                        <DropdownMenu>
+                                                            { item.status != 'PAID' && (
+                                                                <DropdownItem style={{ color: 'black' }}
+                                                                    onClick={() => {
+                                                                        setSelectedItem(item);
+                                                                        setShowAccountAgreementBox(false);
+                                                                        setShowDetails(false); 
+                                                                        setShowPaymentRequest(true);
+                                                                    }}
+                                                                >
+                                                                    Encaissement
+                                                                </DropdownItem>
+                                                            )}
+                                                            { ((item.mirrorAccount || item.account) && item.externalReference)  && (
+                                                                <DropdownItem style={{ color: 'black' }} onClick={() => {
+                                                                    setSelectedItem(item);
+                                                                    setShowDetails(false);
+                                                                    setShowPaymentRequest(false);
+                                                                    setShowAccountAgreementBox(true);
+                                                                }}>
+                                                                    Convention
+                                                                </DropdownItem>
+                                                            )}
+                                                            <DropdownItem style={{ color: 'black' }} onClick={() => {
                                                                 setSelectedItem(item);
-                                                                setShowAccountAgreementBox(true);
-                                                            }}
-                                                        >
-                                                            Convention
-                                                        </Button>
-                                                    )}
+                                                                setShowPaymentRequest(false);
+                                                                setShowAccountAgreementBox(false);
+                                                                setShowDetails(true);
+                                                            }}>
+                                                                Détails
+                                                            </DropdownItem>
+                                                        </DropdownMenu>
+                                                    </ButtonDropdown>
                                                 </td>
                                             </tr>
                                         ))}
@@ -129,6 +173,22 @@ const List = (props) => {
                                 title={'Convention de compte'}
                                 onClose={() => setShowAccountAgreementBox(false)}
                                 accountReference={selectedItem?.externalReference}
+                            />
+                        )}
+                        { showDetails && selectedItem && (
+                            <OrderDetails 
+                                show={showDetails}
+                                reference={selectedItem?.reference}
+                                onClose={() => setShowDetails(false)}
+                            />
+                        )}
+
+                        { showPaymentRequest && selectedItem && (
+                            <PaymentRequest 
+                                show={showPaymentRequest}
+                                defaultType={selectedItem?.orderType}
+                                defaultReference={selectedItem?.reference}
+                                onClose={() => setShowPaymentRequest(false)}
                             />
                         )}
                     </>

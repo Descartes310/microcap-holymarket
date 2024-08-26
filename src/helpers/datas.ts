@@ -29,6 +29,73 @@ export const getChainEventTypes = () => {
     ];
 }
 
+export const getOrderTypes = () => {
+    return [
+        {
+            label: 'Commande',
+            value: 'ORDER'
+        },
+        {
+            label: 'Pré-commande',
+            value: 'PRE_ORDER'
+        },
+        {
+            label: 'Bon de caisse',
+            value: 'BOND'
+        }
+    ];
+}
+
+export const getPaymentMethods = () => {
+    return [
+        {
+            label: 'Versements d\'espèces sur un compte bancaire',
+            enabled: true,
+            value: 'DEPOSIT'
+        },
+        {
+            label: 'Virement bancaire',
+            enabled: false,
+            value: 'BANK_TRANSFER'
+        },
+        {
+            label: 'Carte bancaire',
+            enabled: false,
+            value: 'CREDIT_CARD'
+        },
+        {
+            label: 'Prélèvement automatique sur le compte MicroCap',
+            enabled: false,
+            value: 'DIRECT_DEBIT'
+        },
+        {
+            label: 'Chèque',
+            enabled: false,
+            value: 'CHECK'
+        }
+    ];
+}
+
+export const getNotificationMethods = () => {
+    return [
+        {
+            label: 'Adresse e-mail de connexion',
+            enabled: true,
+            value: 'LOGIN_EMAIL'
+        },
+        {
+            label: 'Adresse de notification',
+            enabled: true,
+            value: 'ADDRESS'
+        },
+        {
+            label: 'Boite de notification espace personnel',
+            enabled: true,
+            value: 'PROFILE'
+        }
+    ];
+}
+
 export const getChainEventTypeValue = (value): any => {
     let type = getChainEventTypes().find(t => t.value === value);
     if (type)

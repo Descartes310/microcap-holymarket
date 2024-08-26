@@ -16,10 +16,13 @@ import { Form, FormGroup, Input as InputStrap } from 'reactstrap';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
 import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
 import AccountVentilation from 'Components/Product/Ventilation/AccountVentilation';
+import PaymentRequestSupport from 'Routes/custom/marketplace/_components/paymentRequestSupport';
 
 const Create = (props) => {
 
     const [user, setUser] = useState(null);
+    const [data, setData] = useState(null);
+    const [order, setOrder] = useState(null);
     const [details, setDetails] = useState([]);
     const [authCode, setAuthCode] = useState(null);
     const [operation, setOperation] = useState(null);
@@ -29,6 +32,7 @@ const Create = (props) => {
     const [ventilations, setVentilations] = useState([]);
     const [serviceOrder, setServiceOrder] = useState(null);
     const [serviceOrderChecked, setServiceOrderChecked] = useState([]);
+    const [showPaymentRequest, setShowPaymentRequest] = useState(false);
 
     useEffect(() => {
         getPrestations();
@@ -38,12 +42,18 @@ const Create = (props) => {
         props.setRequestGlobalAction(true);
         BankService.findOperationByBankAuth({auth_code: authCode, prestation_id: prestation?.id})
         .then(response => {
+            console.log("Je suis la reponse => ", response)
             setUser(response.user);
-            setServiceOrder(response);
-            setDetails(response.details);
             setOperation(response.operation);
-            setVentilations(response.ventilations.map(i => { return { percentage: i.value, label: i.label }}));
-            setServiceOrderChecked(response.coverages.map(i => { return { id: i.value, label: i.label, checked: false }}));
+            setServiceOrder(response);
+            if(response.operation.type == "SELLER_PAYMENT") {
+                setOrder(response.order);
+                setShowPaymentRequest(true);
+            } else {
+                setDetails(response.details);
+                setVentilations(response.ventilations.map(i => { return { percentage: i.value, label: i.label }}));
+                setServiceOrderChecked(response.coverages.map(i => { return { id: i.value, label: i.label, checked: false }}));
+            }
         })
         .catch((err) => {
             console.log(err);
@@ -67,7 +77,7 @@ const Create = (props) => {
             return;
         }
         props.setRequestGlobalAction(true);
-        BankService.confirmOperation(operation.reference, {otp: otp, so_item_ids: serviceOrderChecked.map(so => so.id), so_checked: serviceOrderChecked.map(so => so.checked)}).then(() => {
+        BankService.confirmOperation(operation.reference, operation.type == "SELLER_PAYMENT" ? {...data, otp}: {otp: otp, so_item_ids: serviceOrderChecked.map(so => so.id), so_checked: serviceOrderChecked.map(so => so.checked)}).then(() => {
             NotificationManager.success("L'opération a été validée avec sucès");
             setShowModal(false);
             props.history.push(BANK.OPERATION.ASSISTANCE);
@@ -139,7 +149,7 @@ const Create = (props) => {
                         />
                     </div> 
 
-                    {operation && (
+                    {operation && operation.type != "SELLER_PAYMENT" && (
                         <>
                             <div className="row">
                                 <FormGroup className="col-md-6 col-sm-12 has-wrapper">
@@ -245,7 +255,7 @@ const Create = (props) => {
                         <Button
                             color="primary"
                             variant="contained"
-                            disabled={!operation}
+                            disabled={!operation || operation?.type == "SELLER_PAYMENT"}
                             onClick={() => sendOTPCode()}
                             className="text-white font-weight-bold"
                         >
@@ -260,6 +270,18 @@ const Create = (props) => {
                     onClose={() => setShowModal(false)}
                     callback={(otp) => onSubmit(otp)}
                 />
+                { showPaymentRequest && order && (
+                    <PaymentRequestSupport
+                        order={order}
+                        show={showPaymentRequest}
+                        onValidate={(data) => {
+                            setData(data);
+                            setShowPaymentRequest(false);
+                            sendOTPCode();
+                        }}
+                        onClose={() => setShowPaymentRequest(false)}
+                    />
+                )}
             </RctCollapsibleCard>
         </>
     );

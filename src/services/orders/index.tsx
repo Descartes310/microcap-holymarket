@@ -12,6 +12,10 @@ export default class OrderService {
         return makeRequest('get', Routes.FIND_ORDER(id));
     }
 
+    static findOrderByReference(reference: string): Promise<any> {
+        return makeRequest('get', Routes.FIND_ORDER_BY_REFERENCE(reference));
+    }
+
     static createOrder(data: any): Promise<any> {
         return makeRequest('post', data.isPreOrder ? Routes.CREATE_PRE_ORDER : Routes.CREATE_ORDER, data);
     }
@@ -42,5 +46,9 @@ export default class OrderService {
 
     static findSubscription(id: string, data: any): Promise<any> {
         return makeRequest('get', Routes.FIND_SUBSCRIPTION(id), data);
+    }
+
+    static getFullDetails(id: string): Promise<any> {
+        return makeRequest('get', Routes.GET_FULL_DETAILS(id));
     }
 }

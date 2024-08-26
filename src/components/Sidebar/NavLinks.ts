@@ -689,7 +689,7 @@ export default [
             "child_routes": null
          },
          {
-            "menu_title": "Commandes reçus",
+            "menu_title": "Ventes",
             "new_item": false,
             "path": MARKETPLACE.STORE.ORDER.LIST,
             "permissions": [Permission.marketplace.store.product.name],
