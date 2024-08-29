@@ -36,14 +36,17 @@ const CreateAccount = (props) => {
 
     const onSubmit = () => {
 
-        if(!label || !iban || !bankCode || !agencyCode || !bic || !account) {
+        if(!label || !iban || !bankCode || !agencyCode || !bic) {
             return;
         }
 
         let data = {
             label, iban, bic, type: type.value, bankCode, agencyCode,
-            account_reference: account.reference
         };
+
+        if(account) {
+            data.account_reference = account.reference;
+        }
 
         props.setRequestGlobalAction(true);
 
@@ -113,7 +116,7 @@ const CreateAccount = (props) => {
                     <>
                         <div className="has-wrapper col-md-12 col-sm-12 mb-30 ">
                             <InputLabel className="text-left">
-                                Comptes
+                                Comptes (laissez vide pour en créer un)
                             </InputLabel>
                             <Autocomplete
                                 id="combo-box-demo"
