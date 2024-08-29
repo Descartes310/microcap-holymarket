@@ -42,7 +42,6 @@ const Create = (props) => {
         props.setRequestGlobalAction(true);
         BankService.findOperationByBankAuth({auth_code: authCode, prestation_id: prestation?.id})
         .then(response => {
-            console.log("Je suis la reponse => ", response)
             setUser(response.user);
             setOperation(response.operation);
             setServiceOrder(response);
@@ -50,9 +49,12 @@ const Create = (props) => {
                 setOrder(response.order);
                 setShowPaymentRequest(true);
             } else {
-                setDetails(response.details);
-                setVentilations(response.ventilations.map(i => { return { percentage: i.value, label: i.label }}));
-                setServiceOrderChecked(response.coverages.map(i => { return { id: i.value, label: i.label, checked: false }}));
+                if(response.details)
+                    setDetails(response.details);
+                if(response.ventilations)
+                    setVentilations(response.ventilations.map(i => { return { percentage: i.value, label: i.label }}));
+                if(response.coverages)
+                    setServiceOrderChecked(response.coverages.map(i => { return { id: i.value, label: i.label, checked: false }}));
             }
         })
         .catch((err) => {
@@ -189,7 +191,7 @@ const Create = (props) => {
                                     <InputStrap
                                         disabled
                                         className="input-lg"
-                                        value={operation.prestationName}
+                                        value={operation.prestationName ?? 'Autres prestations'}
                                     />
                                 </FormGroup>
                                 {
@@ -218,7 +220,7 @@ const Create = (props) => {
                                     />
                                 </div>
                             )}
-                            { serviceOrder && (
+                            { serviceOrder && serviceOrder.coverages && (
                                 <div className='row'>
                                     <h2 style={{ marginBottom: 30 }}>Ordre de service</h2>
                                     {

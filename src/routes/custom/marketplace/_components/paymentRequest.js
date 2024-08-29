@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 import OrderService from 'Services/orders';
 import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
+import AccountService from 'Services/accounts';
 import { setRequestGlobalAction } from 'Actions';
 import React, { useEffect, useState } from 'react';
 import TextField from '@material-ui/core/TextField';
@@ -15,19 +16,38 @@ import { getOrderTypes, getPaymentMethods, getNotificationMethods } from 'Helper
 
 const PaymentRequest = (props) => {
 
-    const {onError, defaultReference, defaultType, hideReference, onSendData} = props;
+    const {onError, defaultReference, defaultType, hideReference, onSendData, defaultPaymentMethod} = props;
 
     const [order, setOrder] = useState(null);
     const [amount, setAmount] = useState(null);
+    const [accounts, setAccounts] = useState([]);
+    const [account, setAccount] = useState(null);
     const [discount, setDiscount] = useState(null);
+    const [otherPhone, setOtherPhone] = useState(null);
+    const [otherEmail, setOtherEmail] = useState(null);
     const [discountCode, setDiscountCode] = useState(null);
-    const [paymentMethod, setPaymentMethod] = useState(null);
     const [subscriptionCode, setSubscriptionCode] = useState(null);
     const [showDiscountField, setShowDiscountField] = useState(false);
-    const [notificationMethod, setNotificationMethod] = useState(null);
     const [reference, setReference] = useState(defaultReference ?? null);
+    const [paymentMethod, setPaymentMethod] = useState(defaultPaymentMethod ?? null);
     const [showSubscriptionCodeField, setShowSubscriptionCodeField] = useState(false);
+    const [notificationMethod, setNotificationMethod] = useState(['LOGIN_EMAIL', 'ADDRESS']);
     const [type, setType] = useState(defaultType ? getOrderTypes().find(ot => ot.value == defaultType) : null);
+
+    useEffect(() => {
+        if(paymentMethod == 'DEPOSIT') {
+            getAccounts();
+        } else {
+            setAccounts([])
+        }
+    }, [paymentMethod]);
+
+    const getAccounts = () => {
+        props.setRequestGlobalAction(true),
+        AccountService.getExternalAccounts()
+        .then(response => setAccounts(response))
+        .finally(() => props.setRequestGlobalAction(false))
+    }
 
     useEffect(() => {
         if(defaultReference) {
@@ -114,13 +134,13 @@ const PaymentRequest = (props) => {
 
 
     const onSubmit = () => {
-        if(!paymentMethod || !notificationMethod || !amount || !order) {
+        if(!paymentMethod || !notificationMethod || !amount || !order || (paymentMethod == 'DEPOSIT' && !account)) {
             NotificationManager.error("Le formulaire est mal renseigné");
             return;
         }
 
         let data = {
-            paymentMethod, notificationMethod, amount, reference: order.reference,
+            paymentMethod, notificationMethod: notificationMethod.join(','), amount, reference: order.reference,
             currency: order?.items[0]?.currency, id: order.id
         }
 
@@ -132,12 +152,24 @@ const PaymentRequest = (props) => {
             data.subscriptionCode = subscriptionCode;
         }
 
+        if(paymentMethod == 'DEPOSIT') {
+            data.accountReference = account.reference
+        }
+
+        if(otherEmail) {
+            data.otherEmail = otherEmail
+        }
+
+        if(otherPhone) {
+            data.otherPhone = otherPhone
+        }
+
         onSendData(data);
 
     }
     
     return (
-        <>
+        <div>
 
             { order && (
                 <h1 className='mb-30'>
@@ -265,7 +297,7 @@ const PaymentRequest = (props) => {
                     value={amount}
                     className="input-lg"
                     onChange={(e) => setAmount(e.target.value)}
-                    disabled={!order || !order.product.acceptManyPayment}
+                    disabled={!order || !order.product.acceptManyPayment || getAmountToPay() <= 0}
                 />
             </FormGroup>
 
@@ -276,7 +308,7 @@ const PaymentRequest = (props) => {
                         <FormControlLabel control={
                             <Checkbox
                                 color="primary"
-                                disabled={!pm.enabled}
+                                disabled={!pm.enabled || defaultPaymentMethod != null}
                                 checked={paymentMethod == pm.value}
                                 onChange={() => {
                                     setPaymentMethod(pm.value);
@@ -287,6 +319,23 @@ const PaymentRequest = (props) => {
                     </FormGroup>
                 )}
             </div>
+            { paymentMethod == 'DEPOSIT' && (
+                <FormGroup className="col-md-12 col-sm-12 has-wrapper">
+                    <InputLabel className="text-left">
+                        Compte bancaire d'encaissement
+                    </InputLabel>
+                    <Autocomplete
+                        id="combo-box-demo"
+                        value={account}
+                        options={accounts}
+                        onChange={(__, item) => {
+                            setAccount(item);
+                        }}
+                        getOptionLabel={(option) => option.label}
+                        renderInput={(params) => <TextField {...params} variant="outlined" />}
+                    />
+                </FormGroup>
+            )}
 
             <h1 className='mb-20 mt-20'>Notifications</h1>
             <div className="row">
@@ -295,15 +344,45 @@ const PaymentRequest = (props) => {
                         <FormControlLabel control={
                             <Checkbox
                                 color="primary"
-                                checked={notificationMethod == nm.value}
+                                checked={notificationMethod.includes(nm.value)}
                                 onChange={() => {
-                                    setNotificationMethod(nm.value);
+                                    if(!notificationMethod.includes(nm.value)) {
+                                        setNotificationMethod([...notificationMethod, nm.value]);
+                                    } else {
+                                        setNotificationMethod([...notificationMethod.filter(n => n != nm.value)]);
+                                    }
                                 }}
                             />
                         } label={nm.label}
                         />
                     </FormGroup>
                 )}
+                <FormGroup className="col-md-6 col-sm-12 has-wrapper">
+                    <InputLabel className="text-left" htmlFor="otherEmail">
+                        Autre email (facultatif)
+                    </InputLabel>
+                    <InputStrap
+                        type="text"
+                        id="otherEmail"
+                        name='otherEmail'
+                        value={otherEmail}
+                        className="input-lg"
+                        onChange={(e) => setOtherEmail(e.target.value)}
+                    />
+                </FormGroup>
+                <FormGroup className="col-md-6 col-sm-12 has-wrapper">
+                    <InputLabel className="text-left" htmlFor="otherPhone">
+                        Autre téléphone (facultatif)
+                    </InputLabel>
+                    <InputStrap
+                        type="text"
+                        id="otherPhone"
+                        name='otherPhone'
+                        value={otherPhone}
+                        className="input-lg"
+                        onChange={(e) => setOtherPhone(e.target.value)}
+                    />
+                </FormGroup>
             </div>
             
             <div className="row mt-20">
@@ -316,7 +395,7 @@ const PaymentRequest = (props) => {
                     Envoyer
                 </Button>
             </div>
-        </>
+        </div>
     )
 }
 

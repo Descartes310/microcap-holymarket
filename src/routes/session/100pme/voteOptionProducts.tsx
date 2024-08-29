@@ -12,7 +12,7 @@ import ProductService from 'Services/products';
 import { voteOptions } from './components/data';
 import Toolbar from '@material-ui/core/Toolbar';
 import { setRequestGlobalAction } from 'Actions';
-import StripeCheckout from 'react-stripe-checkout';
+// import StripeCheckout from 'react-stripe-checkout';
 import React, { useEffect, useState } from 'react';
 import TextField from '@material-ui/core/TextField';
 import { getPriceWithCurrency } from 'Helpers/helpers';
@@ -72,7 +72,7 @@ const VoteOptionProducts = (props) => {
 
     const getProductModels = () => {
         props.setRequestGlobalAction(true);
-        SystemService.getProductModels()
+        SystemService.getProductModels({option: option.value})
         .then(response => setProductModels(response))
         .finally(() => props.setRequestGlobalAction(false))
     }
@@ -230,7 +230,8 @@ const VoteOptionProducts = (props) => {
                                             </>
                                         :
                                             <>
-                                                <p className='text-center text-black mb-10' style={{ fontSize: 16 }}>Reserver un produit MicroCap pour cumuler des voix</p>
+                                                <p className='text-center text-black mb-10 w-100' style={{ fontSize: 16 }}>Reserver un produit MicroCap pour cumuler des voix</p>
+                                                <p className='text-center text-black mb-10 w-100 mb-20' style={{ fontSize: 16 }}>{option.description}</p>
                                                 <FormGroup className="col-md-12 col-sm-12 has-wrapper">
                                                     <InputLabel className="text-left">
                                                         Produits MicroCap
@@ -248,7 +249,7 @@ const VoteOptionProducts = (props) => {
                                                 </FormGroup>
                                                 <FormGroup className="col-md-12 col-sm-12 has-wrapper">
                                                     <InputLabel className="text-left">
-                                                        Commercants
+                                                        Prestataire
                                                     </InputLabel>
                                                     <Autocomplete
                                                         value={product}
@@ -311,13 +312,13 @@ const VoteOptionProducts = (props) => {
                         getProducts();
                         setShowOrderModal(false);
                         setProduct(null);
-                        setShowPaymentModal(true);
+                        //setShowPaymentModal(true);
                     }}
                     isPreOrder={true}
                 />
             )}
 
-            { showPaymentModal && orderData && (
+            {/* { showPaymentModal && orderData && (
                 <PaymentRequestModal
                     show={showPaymentModal}
                     hideReference={true}
@@ -333,9 +334,9 @@ const VoteOptionProducts = (props) => {
                         setOrderData(null);
                     }}
                 />
-            )}
+            )} */}
 
-            <StripeCheckout
+            {/* <StripeCheckout
                 name={'MicroCap'}
                 token={onStripePayment}
                 amount={computePrice()}
@@ -352,7 +353,7 @@ const VoteOptionProducts = (props) => {
                 >
                     Payer
                 </Button>
-            </StripeCheckout>
+            </StripeCheckout> */}
         </QueueAnim>
     );
 };

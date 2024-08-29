@@ -13,6 +13,7 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import {Form, FormGroup, Input as InputStrap} from 'reactstrap';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
+import { voteOptions } from 'Routes/session/100pme/components/data';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
 
 const Update = (props) => {
@@ -20,6 +21,7 @@ const Update = (props) => {
     const [units, setUnits] = useState([]);
     const [unit, setUnit] = useState(null);
     const [value, setValue] = useState(null);
+    const [options, setOptions] = useState([]);
     const [products, setProducts] = useState([]);
     const [product, setProduct] = useState(null);
     const [typeUnits, setTypeUnits] = useState([]);
@@ -40,6 +42,7 @@ const Update = (props) => {
             setUnit(response.unit);
             setUnitType(response.unit.type);
             setValue(response.value);
+            setOptions(voteOptions.filter(o => response.options?.includes(o.value)))
         })
         .catch((err) => {
             console.log(err);
@@ -90,7 +93,7 @@ const Update = (props) => {
         let data: any = {
             product_reference: product.reference,
             unit_reference: unit.reference,
-            value
+            value, options: options.map(o => o.value).join(',')
         }
 
         SystemService.updateVoteConfig(props.match.params.id, data).then(() => {
@@ -172,6 +175,23 @@ const Update = (props) => {
                             className="input-lg"
                             value={value}
                             onChange={(e) => setValue(e.target.value)}
+                        />
+                    </FormGroup>
+
+                    <FormGroup className="col-md-12 col-sm-12 has-wrapper">
+                        <InputLabel className="text-left">
+                            Options de souscription
+                        </InputLabel>
+                        <Autocomplete
+                            multiple
+                            value={options}
+                            id="combo-box-demo"
+                            onChange={(__, items) => {
+                                setOptions(items);
+                            }}
+                            options={voteOptions}
+                            getOptionLabel={(option) => option.label}
+                            renderInput={(params) => <TextField {...params} variant="outlined" />}
                         />
                     </FormGroup>
 

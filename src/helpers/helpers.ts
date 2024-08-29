@@ -1343,3 +1343,16 @@ export const prestationTypes = [
 export const getPrestationTypeLabel = (value) => {
     return prestationTypes.find(d => d.value == value)?.label
 }
+
+export const DIRECTIONS = [
+    {
+        label: 'Encaissement',
+        value: 'CASH_IN'
+    },{
+        label: 'Décaissement',
+        value: 'CASH_OUT'
+    },{
+        label: 'Versement par un tier',
+        value: 'THIRD_PARTY_PAYMENT'
+    }
+]

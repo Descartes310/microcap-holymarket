@@ -13,6 +13,7 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import {Form, FormGroup, Input as InputStrap} from 'reactstrap';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
+import { voteOptions } from 'Routes/session/100pme/components/data';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
 
 const Create = (props) => {
@@ -20,6 +21,7 @@ const Create = (props) => {
     const [units, setUnits] = useState([]);
     const [unit, setUnit] = useState(null);
     const [value, setValue] = useState(null);
+    const [options, setOptions] = useState([]);
     const [products, setProducts] = useState([]);
     const [product, setProduct] = useState(null);
     const [typeUnits, setTypeUnits] = useState([]);
@@ -64,7 +66,7 @@ const Create = (props) => {
 
     const onSubmit = () => {
 
-        if(!product || !unit || !value) {
+        if(!product || !unit || !value || options.length <= 0) {
             return
         }
 
@@ -73,7 +75,7 @@ const Create = (props) => {
         let data: any = {
             product_reference: product.reference,
             unit_reference: unit.reference,
-            value
+            value, options: options.map(o => o.value).join(',')
         }
 
         SystemService.createVoteConfig(data).then(() => {
@@ -81,7 +83,7 @@ const Create = (props) => {
             props.history.push(SETTING.PME_VOTE.LIST);
         }).catch((err) => {
             console.log(err);
-            NotificationManager.error("Une erreur est survenu lors de la création de la configuration");
+            NotificationManager.error("Ce produit est déjà configuré");
         }).finally(() => {
             props.setRequestGlobalAction(false);
         })
@@ -155,6 +157,23 @@ const Create = (props) => {
                             className="input-lg"
                             value={value}
                             onChange={(e) => setValue(e.target.value)}
+                        />
+                    </FormGroup>
+
+                    <FormGroup className="col-md-12 col-sm-12 has-wrapper">
+                        <InputLabel className="text-left">
+                            Options de souscription
+                        </InputLabel>
+                        <Autocomplete
+                            multiple
+                            value={options}
+                            id="combo-box-demo"
+                            onChange={(__, items) => {
+                                setOptions(items);
+                            }}
+                            options={voteOptions}
+                            getOptionLabel={(option) => option.label}
+                            renderInput={(params) => <TextField {...params} variant="outlined" />}
                         />
                     </FormGroup>
 

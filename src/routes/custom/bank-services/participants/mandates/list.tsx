@@ -5,14 +5,17 @@ import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
 import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
+import AddPrestationModal from './addPrestation';
 import React, { useState, useEffect } from 'react';
 import CreateCreditModal from './creditCompensation';
 
 const List = (props) => {
 
     const [parties, setParties] = useState([]);
+    const [mandate, setMandate] = useState(null);
     const [referralCode, setReferralCode] = useState(null);
     const [showCreditBox, setShowCreditBox] = useState(false);
+    const [showAddPrestationBox, setShowAddPrestationBox] = useState(false);
 
     useEffect(() => {
         getParties();
@@ -53,7 +56,8 @@ const List = (props) => {
                                             <th className="fw-bold">Nom commercial</th>
                                             <th className="fw-bold">Solde d'exploitation</th>
                                             <th className="fw-bold">Solde de compensation</th>
-                                            <th className="fw-bold">Créditer</th>
+                                            {/* <th className="fw-bold">Créditer</th> */}
+                                            <th className="fw-bold">Prestations</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -80,7 +84,7 @@ const List = (props) => {
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td> 
+                                                {/* <td> 
                                                     { item.compensation && (
                                                         <Button
                                                             color="primary"
@@ -94,6 +98,19 @@ const List = (props) => {
                                                             Créditer le compte
                                                         </Button>
                                                     )}
+                                                </td> */}
+                                                <td>
+                                                    <Button
+                                                        color="primary"
+                                                        variant="contained"
+                                                        onClick={() => {
+                                                            setMandate(item);
+                                                            setShowAddPrestationBox(true);
+                                                        }}
+                                                        className="text-white font-weight-bold"
+                                                    >
+                                                        Prestations
+                                                    </Button>
                                                 </td>
                                             </tr>
                                         ))}
@@ -113,6 +130,16 @@ const List = (props) => {
                     }}
                     referralCode={referralCode}
                     title={"Création d'un nouveau crédit"}
+                />
+            )}
+            { showAddPrestationBox && mandate && (
+                <AddPrestationModal
+                    show={showAddPrestationBox}
+                    onClose={() => {
+                        setShowAddPrestationBox(false);
+                    }}
+                    mandateReference={mandate.reference}
+                    title={"Ajouter une prestation"}
                 />
             )}
         </>

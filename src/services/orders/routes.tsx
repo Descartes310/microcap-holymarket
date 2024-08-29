@@ -12,3 +12,4 @@ export const FIND_DISCOUNT = (id) => `api/orders/${id}/discounts`;
 export const FIND_SUBSCRIPTION = (id) => `api/orders/${id}/subscriptions`;
 export const FIND_ORDER_BY_REFERENCE = (id) => `api/orders/${id}/reference`;
 export const INITIATE_PAYMENT = (id) => `api/orders/${id}/initiate-payment`;
+export const SEND_PAYMENT_REQUEST = (id) => `api/orders/${id}/initiate-payment`;

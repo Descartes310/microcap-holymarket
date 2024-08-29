@@ -61,7 +61,7 @@ class PaymentCard extends Component {
       }
 
       if(this.state.paymentData.subscriptionCode) {
-         data.subscriptionCode = this.state.subscriptionCode;
+         data.subscriptionCode = this.state.paymentData.subscriptionCode;
       }
 
       OrderService.initiatePayment(this.state.paymentData.reference, data)

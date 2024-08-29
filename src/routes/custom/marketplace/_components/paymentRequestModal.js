@@ -11,17 +11,18 @@ import DialogComponent from "Components/dialog/DialogComponent";
 
 const PaymentRequestModal = (props) => {
 
-    const {show, onClose, defaultReference, defaultType, hideReference, sendStripeData} = props;
+    const {show, onClose, defaultReference, defaultType, hideReference, sendPaymentData} = props;
 
     const [paymentData, setPaymentData] = useState(null);
 
     useEffect(() => {
         if(paymentData) {
-            if(paymentData.paymentMethod == 'CREDIT_CARD') {
-                sendStripeData(paymentData);
-            } else {
-                initiatePayment();
-            }
+            sendPaymentData(paymentData)
+            // if(paymentData.paymentMethod == 'CREDIT_CARD') {
+            //     sendStripeData(paymentData);
+            // } else {
+            //     initiatePayment();
+            // }
         }
      }, [paymentData])
   

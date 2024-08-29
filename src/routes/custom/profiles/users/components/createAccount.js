@@ -1,11 +1,11 @@
 import { connect } from 'react-redux';
-import React, { useState } from 'react';
 import AccountService from 'Services/accounts';
 import { withRouter } from "react-router-dom";
 import { setRequestGlobalAction } from 'Actions';
+import React, { useState, useEffect } from 'react';
+import { RctCardContent } from 'Components/RctCard';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import { RctCardContent } from 'Components/RctCard';
 import { NotificationManager } from 'react-notifications';
 import DialogComponent from "Components/dialog/DialogComponent";
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
@@ -14,21 +14,35 @@ import { FormGroup, Input as InputStrap, Button } from 'reactstrap';
 const CreateAccount = (props) => {
 
     const {show, onClose} = props;
-    const [label, setLabel] = useState(null);
     const [bic, setBic] = useState(null);
     const [type, setType] = useState(null);
     const [iban, setIban] = useState(null);
+    const [label, setLabel] = useState(null);
+    const [account, setAccount] = useState(null);
+    const [accounts, setAccounts] = useState([]);
     const [bankCode, setBankCode] = useState(null);
     const [agencyCode, setAgencyCode] = useState(null);
 
+    useEffect(() => {
+        getAccounts();
+    }, []);
+
+    const getAccounts = () => {
+        props.setRequestGlobalAction(true),
+        AccountService.getExternalAccountPotentials()
+        .then(response => setAccounts(response))
+        .finally(() => props.setRequestGlobalAction(false))
+    }
+
     const onSubmit = () => {
 
-        if(!label || !iban || !bankCode || !agencyCode || !bic) {
+        if(!label || !iban || !bankCode || !agencyCode || !bic || !account) {
             return;
         }
 
         let data = {
-            label, iban, bic, type: type.value, bankCode, agencyCode
+            label, iban, bic, type: type.value, bankCode, agencyCode,
+            account_reference: account.reference
         };
 
         props.setRequestGlobalAction(true);
@@ -46,6 +60,9 @@ const CreateAccount = (props) => {
             setBic(null);
             setBankCode(null);
             setAgencyCode(null)
+            setLabel(null);
+            setAccount(null);
+            setAccounts([]);
             props.setRequestGlobalAction(false);
             onClose(true);
         });
@@ -94,6 +111,21 @@ const CreateAccount = (props) => {
                 </div>
                 {type && (
                     <>
+                        <div className="has-wrapper col-md-12 col-sm-12 mb-30 ">
+                            <InputLabel className="text-left">
+                                Comptes
+                            </InputLabel>
+                            <Autocomplete
+                                id="combo-box-demo"
+                                value={account}
+                                options={accounts}
+                                onChange={(__, item) => {
+                                    setAccount(item);
+                                }}
+                                getOptionLabel={(option) => option.label}
+                                renderInput={(params) => <TextField {...params} variant="outlined" />}
+                            />
+                        </div>
                         <FormGroup className="has-wrapper">
                             <InputLabel className="text-left" htmlFor="agencyCode">
                                 Code Agence

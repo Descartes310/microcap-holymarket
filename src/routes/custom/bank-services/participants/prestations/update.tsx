@@ -11,17 +11,8 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { Form, FormGroup, Input as InputStrap } from 'reactstrap';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
-import { prestationTypes } from 'Helpers/helpers';
+import { prestationTypes, DIRECTIONS } from 'Helpers/helpers';
 
-const DIRECTIONS = [
-    {
-        label: 'Encaissement',
-        value: 'CASH_IN'
-    },{
-        label: 'Décaissement',
-        value: 'CASH_OUT'
-    }
-]
 const Update = (props) => {
 
     const [label, setLabel] = useState('');
@@ -51,7 +42,7 @@ const Update = (props) => {
     }
 
     const onSubmit = () => {
-        if(!label || !direction || !type) {
+        if(!label || !direction || (!type && direction.value != 'THIRD_PARTY_PAYMENT')) {
             NotificationManager.error('Veuillez bien remplir le formulaire')
             return;
         }
@@ -60,10 +51,13 @@ const Update = (props) => {
 
         let data: any = {
             label: label,
-            type: type.value,
             description: description,
             direction: direction.value
         };
+
+        if(type) {
+            data.type = type.value;
+        }
 
         BankService.updatePrestation(props.match.params.id, data).then(() => {
             NotificationManager.success("La prestation a été créée avec succès");
@@ -127,21 +121,23 @@ const Update = (props) => {
                         />
                     </div>
 
-                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
-                        <InputLabel className="text-left">
-                            Type de prestation
-                        </InputLabel>
-                        <Autocomplete
-                            id="combo-box-demo"
-                            options={prestationTypes.filter(pt => direction && ((direction?.value == 'CASH_IN' && pt.cashin) || (direction?.value !== 'CASH_IN' && !pt.cashin)))}
-                            value={type}
-                            onChange={(__, item) => {
-                                setType(item);
-                            }}
-                            getOptionLabel={(option) => option.label}
-                            renderInput={(params) => <TextField {...params} variant="outlined" />}
-                        />
-                    </div>
+                    { direction?.value != 'THIRD_PARTY_PAYMENT' && (
+                        <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                            <InputLabel className="text-left">
+                                Type de prestation
+                            </InputLabel>
+                            <Autocomplete
+                                id="combo-box-demo"
+                                options={prestationTypes.filter(pt => direction && ((direction?.value == 'CASH_IN' && pt.cashin) || (direction?.value !== 'CASH_IN' && !pt.cashin)))}
+                                value={type}
+                                onChange={(__, item) => {
+                                    setType(item);
+                                }}
+                                getOptionLabel={(option) => option.label}
+                                renderInput={(params) => <TextField {...params} variant="outlined" />}
+                            />
+                        </div>
+                    )}
 
                     <FormGroup>
                         <Button

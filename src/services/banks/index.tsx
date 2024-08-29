@@ -303,4 +303,8 @@ export default class BankService {
     static validatePendingOperation(reference: string): Promise<any> {
         return makeRequest('post', Routes.VALIDATE_OPERATION(reference));
     }
+
+    static addPrestation(reference: string, data: any): Promise<any> {
+        return makeRequest('post', Routes.ADD_MANDATE_PRESTATION(reference), data);
+    }
 }

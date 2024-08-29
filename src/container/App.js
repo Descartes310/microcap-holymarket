@@ -5,6 +5,7 @@ import {
     AUTH,
     LANDING,
     LANDING_PAGE_FLOW,
+    PAYMENT,
     PME_PROJECT
 } from "../urls/frontendUrl";
 import {connect} from 'react-redux';
@@ -14,7 +15,7 @@ import {AbilityContext} from "Permissions/Can";
 import Dashboard from 'Routes/custom/dashboard';
 import RctThemeProvider from './RctThemeProvider';
 import AppSignIn from './../routes/session/login';
-import PmeProject from './../routes/session/100pme';
+import Payment from './../routes/session/payment';
 import AppSignUp from './../routes/session/register';
 import {isUserIntoStoreValid} from "Helpers/helpers";
 import {NotificationContainer} from 'react-notifications';
@@ -80,6 +81,7 @@ class App extends Component {
                                     <Switch>
                                         <Route path={LANDING.SELF} component={AsyncLanding} />
                                         <Route path={PME_PROJECT.SELF} component={AsyncPmeProject} />
+                                        <Route path={PAYMENT} component={Payment} />
                                         <Route path={'/'} component={Dashboard} />
                                     </Switch>
                                 ) : (
@@ -90,6 +92,7 @@ class App extends Component {
                                         <Route path={AUTH.RESET_PASSWORD} component={ResetPassword} />
                                         <Route path={AUTH.FORGOT_PASSWORD} component={SendResetPasswordLink} />
                                         <Route path={LANDING_PAGE_FLOW} component={LandingPageFlow} />
+                                        <Route path={PAYMENT} component={Payment} />
                                         <Route path={PME_PROJECT.SELF} component={AsyncPmeProject} />
 
                                         <Redirect to={AUTH.LOGIN} />

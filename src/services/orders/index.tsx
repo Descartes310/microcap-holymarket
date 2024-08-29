@@ -55,4 +55,8 @@ export default class OrderService {
     static getFullDetails(id: string): Promise<any> {
         return makeRequest('get', Routes.GET_FULL_DETAILS(id));
     }
+
+    static sendPaymentRequest(data: any): Promise<any> {
+        return makeRequest('post', Routes.SEND_PAYMENT_REQUEST, data);
+    }
 }

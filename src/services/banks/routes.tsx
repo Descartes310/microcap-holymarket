@@ -16,6 +16,7 @@ export const CREATE_MANDATE = 'api/cashmanagements/mandates';
 export const CREATE_AGENT = 'api/cashmanagements/mandates/agents';
 export const GET_FUND_ACCOUNTS = 'api/cashmanagements/mandates/funding-accounts';
 export const GET_POTENTIAL_AGENT = 'api/cashmanagements/mandates/potential-agents';
+export const ADD_MANDATE_PRESTATION = (reference) => `api/cashmanagements/mandates/${reference}`;
 
 export const GET_PARTIES = 'api/cashmanagements/parties';
 export const GET_CHILD = 'api/cashmanagements/parties/child';

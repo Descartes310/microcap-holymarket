@@ -1,12 +1,11 @@
 import { connect } from 'react-redux';
-import { PROFILE } from 'Url/frontendUrl';
 import { withRouter } from "react-router-dom";
 import CustomList from "Components/CustomList";
+import AccountService from 'Services/accounts';
 import {setRequestGlobalAction} from 'Actions';
 import React, { useState, useEffect } from 'react';
 import TimeFromMoment from 'Components/TimeFromMoment';
 import CreateAccount from '../components/createAccount';
-import AccountService from 'Services/accounts';
 
 const Accounts = (props) => {
 

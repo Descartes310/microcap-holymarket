@@ -7,6 +7,7 @@ import { setRequestGlobalAction } from 'Actions';
 import React, { useState, useEffect } from 'react';
 import { getOrderStatusItem } from 'Helpers/helpers';
 import TimeFromMoment from 'Components/TimeFromMoment';
+import {NotificationManager} from 'react-notifications';
 import OrderDetails from '../../_components/orderDetails';
 import AccountAgreement from 'Components/AccountAgreement';
 import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
@@ -36,6 +37,17 @@ const List = (props) => {
         props.setRequestGlobalAction(true);
         OrderService.getPurchases()
         .then(response => setPurchases(response))
+        .finally(() => props.setRequestGlobalAction(false))
+    }
+
+    const sendPaymentRequest = (paymentData: any) => {
+        props.setRequestGlobalAction(true)
+        OrderService.initiatePayment(paymentData.reference, paymentData)
+        .then(() => {
+             NotificationManager.success('Opération réussie');
+             setShowPaymentRequest(false);
+             setSelectedItem(null);
+         })
         .finally(() => props.setRequestGlobalAction(false))
     }
 
@@ -189,6 +201,9 @@ const List = (props) => {
                                 defaultType={selectedItem?.orderType}
                                 defaultReference={selectedItem?.reference}
                                 onClose={() => setShowPaymentRequest(false)}
+                                sendPaymentData={(paymentData) => {
+                                    sendPaymentRequest(paymentData)
+                                }}
                             />
                         )}
                     </>
