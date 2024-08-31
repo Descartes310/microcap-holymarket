@@ -1,14 +1,17 @@
 import { connect } from "react-redux";
 import React, { Component } from 'react';
 import UserService from "Services/users";
+import OrderService from "Services/orders";
 import IntlMessages from 'Util/IntlMessages';
 import TerritoryType from "Enums/Territories";
 import Button from '@material-ui/core/Button';
+import { setRequestGlobalAction } from 'Actions';
 import TerritoryService from 'Services/territories';
 import TextField from '@material-ui/core/TextField';
 import {NotificationManager} from 'react-notifications';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import { Form, FormGroup, Input, Label, Col } from 'reactstrap';
+import InputLabel from '@material-ui/core/InputLabel/InputLabel';
+import { Form, FormGroup, Input, Label, Col, InputGroup, InputGroupAddon } from 'reactstrap';
 
 class BillingForm extends Component<any, any> {
 
@@ -29,7 +32,12 @@ class BillingForm extends Component<any, any> {
          state: '',
       },
       countries: [],
-      showShippingAddress: false
+      discount: null,
+      showShippingAddress: false,
+      subscriptionCode: null,
+      discountCode: null,
+      showSubscriptionCodeField: false,
+      showDiscountField: false
    }
 
    componentDidMount(): void {
@@ -84,6 +92,38 @@ class BillingForm extends Component<any, any> {
             [key]: value
          }
       })
+   }
+
+   findDiscount = () => {
+      if(this.state.showDiscountField && this.state.discountCode) {
+         this.props.setRequestGlobalAction(true);
+         OrderService.findDiscount('0', {code: this.state.discountCode, productIds: this.props.productIds})
+         .then((discount) => {
+              NotificationManager.success("Le coupon est valide");
+              this.setState({ discount }, () => {
+               this.props.updateDiscount(discount);
+              });
+          })
+         .catch((err) => {
+            NotificationManager.error("Ce code est incorrect");
+            this.props.updateDiscount(null);
+         })
+         .finally(() => this.props.setRequestGlobalAction(false))
+      }
+   }
+
+   findSubscriptionCode = () => {
+      if(this.state.showSubscriptionCodeField && this.state.subscriptionCode) {
+         this.props.setRequestGlobalAction(true);
+         OrderService.findSubscription('0', {code: this.state.subscriptionCode, productIds: this.props.productIds})
+         .then(() => {
+            NotificationManager.success("Le code de souscription est valide");
+         })
+         .catch((err) => {
+            NotificationManager.error("Ce code est incorrect");
+         })
+         .finally(() => this.props.setRequestGlobalAction(false))
+      }
    }
 
    isFormValid() {
@@ -183,7 +223,7 @@ class BillingForm extends Component<any, any> {
                      />
                   </Col>
                </FormGroup>
-               <FormGroup row className="mb-0">
+               <FormGroup row className="mb-10">
                   <Col sm={12}>
                      <Label className="ml-4">
                         <Input type="checkbox" onChange={(e) => this.setState({ showShippingAddress: e.target.checked })}/>
@@ -246,6 +286,86 @@ class BillingForm extends Component<any, any> {
                      </FormGroup>
                   </>
                )}
+               <FormGroup row className="mb-0">
+                  <Col sm={12}>
+                     <Label className="ml-4">
+                        <Input 
+                           type="checkbox"
+                           checked={this.state.showDiscountField}
+                           onChange={(e) => this.setState({ showDiscountField: e.target.checked }, () => {
+                              if(!this.state.showDiscountField) {
+                                 this.props.updateDiscount(null);
+                              }
+                           })}
+                        />
+                        <p>J'ai un code de réduction</p>
+                     </Label>
+                  </Col>
+               </FormGroup>
+               { this.state.showDiscountField && (
+                  <div className="d-flex">
+                  <FormGroup className="col-sm-12 has-wrapper">
+                     <InputLabel className="text-left" htmlFor="discountCode">
+                           Code du coupon
+                     </InputLabel>
+                     <InputGroup>
+                        <Input
+                           type="text"
+                           id="discountCode"
+                           value={this.state.discountCode}
+                           name={'discountCode'}
+                           className="has-input input-lg custom-input"
+                           onChange={(e) => this.setState({ discountCode: e.target.value })}
+                        />
+                        <InputGroupAddon addonType="append">
+                           <Button color="primary" variant="contained" onClick={() => {
+                              this.findDiscount();
+                           }} >
+                              <span className='text-white'>Rechercher</span>
+                           </Button>
+                        </InputGroupAddon>
+                     </InputGroup>
+                  </FormGroup>
+                  </div> 
+               )}
+               <FormGroup row className="mb-0">
+                  <Col sm={12}>
+                     <Label className="ml-4">
+                        <Input 
+                           type="checkbox"
+                           checked={this.state.showSubscriptionCodeField}
+                           onChange={(e) => this.setState({ showSubscriptionCodeField: e.target.checked })}
+                        />
+                        <p>J'ai un code de reservation</p>
+                     </Label>
+                  </Col>
+               </FormGroup>
+               { this.state.showSubscriptionCodeField && (
+                  <div className="d-flex">
+                  <FormGroup className="col-sm-12 has-wrapper">
+                     <InputLabel className="text-left" htmlFor="subscriptionCode">
+                           Code de reservation
+                     </InputLabel>
+                     <InputGroup>
+                           <Input
+                              type="text"
+                              id="subscriptionCode"
+                              value={this.state.subscriptionCode}
+                              name={'subscriptionCode'}
+                              className="has-input input-lg custom-input"
+                              onChange={(e) => this.setState({ subscriptionCode: e.target.value })}
+                           />
+                           <InputGroupAddon addonType="append">
+                              <Button color="primary" variant="contained" onClick={() => {
+                                 this.findSubscriptionCode();
+                              }} >
+                                 <span className='text-white'>Vérifier</span>
+                              </Button>
+                           </InputGroupAddon>
+                     </InputGroup>
+                  </FormGroup>
+                  </div> 
+               )}
             </Form>
             <div className="d-flex justify-content-end">
                <Button
@@ -253,7 +373,7 @@ class BillingForm extends Component<any, any> {
                   variant="contained"
                   className='text-white'
                   disabled={!this.isFormValid()}
-                  onClick={() => this.props.onSubmit({billingInformation: this.state.billingInformation, shippingInformation: this.state.shippingInformation})}
+                  onClick={() => this.props.onSubmit({discountCode: this.state.discountCode, subscriptionCode: this.state.subscriptionCode, billingInformation: this.state.billingInformation, shippingInformation: this.state.shippingInformation})}
                >
                   Enregistrer ma commande
                </Button>
@@ -269,4 +389,4 @@ const mapStateToProps = ({ authUser }) => {
    }
 };
 
-export default connect(mapStateToProps, {})(BillingForm);
+export default connect(mapStateToProps, {setRequestGlobalAction})(BillingForm);

@@ -11,9 +11,9 @@ import { NotificationManager } from 'react-notifications';
 import Checkbox from "@material-ui/core/Checkbox/Checkbox";
 import DialogComponent from "Components/dialog/DialogComponent";
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
-import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
-import {FormGroup, Input as InputStrap, InputGroup, InputGroupAddon} from 'reactstrap';
 import { getOrderTypes, getPaymentMethods } from 'Helpers/datas';
+import {FormGroup, Input as InputStrap, InputGroup} from 'reactstrap';
+import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
 
 const PaymentRequestSupport = (props) => {
 
@@ -22,10 +22,8 @@ const PaymentRequestSupport = (props) => {
     const [amount, setAmount] = useState(null);
     const [discount, setDiscount] = useState(null);
     const [paymentMethod, setPaymentMethod] = useState('DEPOSIT');
-    const [subscriptionCode, setSubscriptionCode] = useState(null);
     const [reference, setReference] = useState(order ? order.reference : null);
     const [discountCode, setDiscountCode] = useState(order?.discountCode ?? null);
-    const [showSubscriptionCodeField, setShowSubscriptionCodeField] = useState(false);
     const [showDiscountField, setShowDiscountField] = useState(order?.discountCode != null);
     const [type, setType] = useState(order ? getOrderTypes().find(ot => ot.value == order.orderType) : null);
 
@@ -51,22 +49,9 @@ const PaymentRequestSupport = (props) => {
            OrderService.findDiscount(order.id, {code: discountCode})
            .then((discount) => {
                 NotificationManager.success("Le coupon est valide");
+                setShowDiscountField(true);
                 setDiscount(discount);
             })
-           .catch((err) => {
-              NotificationManager.error("Ce code est incorrect");
-           })
-           .finally(() => props.setRequestGlobalAction(false))
-        }
-     }
-  
-     const findSubscriptionCode = () => {
-        if(showSubscriptionCodeField && subscriptionCode) {
-           props.setRequestGlobalAction(true);
-           OrderService.findSubscription(order.id, {code: subscriptionCode})
-           .then(() => {
-              NotificationManager.success("Le code de souscription est valide");
-           })
            .catch((err) => {
               NotificationManager.error("Ce code est incorrect");
            })
@@ -91,14 +76,6 @@ const PaymentRequestSupport = (props) => {
     const onSubmit = () => {
         let data = {
             amount
-        }
-
-        if(discount && discountCode && showDiscountField) {
-            data.discountCode = discountCode
-        }
-
-        if(subscriptionCode && showSubscriptionCodeField) {
-            data.subscriptionCode = subscriptionCode
         }
 
         onValidate(data);
@@ -159,16 +136,6 @@ const PaymentRequestSupport = (props) => {
 
                 </div>
 
-                <FormGroup className="col-sm-12 has-wrapper">
-                     <FormControlLabel control={
-                        <Checkbox
-                           color="primary"
-                           checked={showDiscountField}
-                           onChange={(e) => setShowDiscountField(e.target.checked)}
-                        />
-                     } label={'J\'ai un coupon'}
-                     />
-                </FormGroup>
                 { showDiscountField && (
                     <div className="d-flex">
                     <FormGroup className="col-sm-12 has-wrapper">
@@ -179,54 +146,12 @@ const PaymentRequestSupport = (props) => {
                             <InputStrap
                                 type="text"
                                 id="discountCode"
+                                disabled={true}
                                 value={discountCode}
                                 name={'discountCode'}
                                 className="has-input input-lg custom-input"
                                 onChange={(e) => setDiscountCode(e.target.value)}
                             />
-                            <InputGroupAddon addonType="append">
-                                <Button color="primary" variant="contained" onClick={() => {
-                                    findDiscount();
-                                }} >
-                                    <span className='text-white'>Rechercher</span>
-                                </Button>
-                            </InputGroupAddon>
-                        </InputGroup>
-                    </FormGroup>
-                    </div> 
-                )}
-                <FormGroup className="col-sm-12 has-wrapper">
-                    <FormControlLabel control={
-                    <Checkbox
-                        color="primary"
-                        checked={showSubscriptionCodeField}
-                        onChange={(e) => setShowSubscriptionCodeField(e.target.checked)}
-                    />
-                    } label={'J\'ai un code de reservation'}
-                    />
-                </FormGroup>
-                { showSubscriptionCodeField && (
-                    <div className="d-flex">
-                    <FormGroup className="col-sm-12 has-wrapper">
-                        <InputLabel className="text-left" htmlFor="subscriptionCode">
-                            Code de reservation
-                        </InputLabel>
-                        <InputGroup>
-                            <InputStrap
-                                type="text"
-                                id="subscriptionCode"
-                                value={subscriptionCode}
-                                name={'subscriptionCode'}
-                                className="has-input input-lg custom-input"
-                                onChange={(e) => setSubscriptionCode(e.target.value)}
-                            />
-                            <InputGroupAddon addonType="append">
-                                <Button color="primary" variant="contained" onClick={() => {
-                                    findSubscriptionCode();
-                                }} >
-                                    <span className='text-white'>Vérifier</span>
-                                </Button>
-                            </InputGroupAddon>
                         </InputGroup>
                     </FormGroup>
                     </div> 

@@ -15,7 +15,8 @@ class OrderForm extends Component<any, any> {
 
     state = {
         showSweetAlert: false,
-        order: null
+        order: null,
+        discount: null
     }
 
     validateBillingForm = (informations) => {
@@ -73,6 +74,14 @@ class OrderForm extends Component<any, any> {
             )
         }
 
+        if(informations.discountCode) {
+            data.discountCode = informations.discountCode;
+        }
+
+        if(informations.subscriptionCode) {
+            data.subscriptionCode = informations.subscriptionCode;
+        }
+
         if(this.props.isPreOrder) {
             data.isPreOrder = true;
         }
@@ -110,11 +119,11 @@ class OrderForm extends Component<any, any> {
                         <div className="row no-gutters">
                             <div className="col-lg-8 col-md-12 col-sm-12">
                                 <RctCollapsibleCard>
-                                    <BillingForm onSubmit={this.validateBillingForm} />
+                                    <BillingForm updateDiscount={(d) => this.setState({ discount: d})} onSubmit={this.validateBillingForm} productIds={this.props.cart.items.map(product => product.id)} />
                                 </RctCollapsibleCard>
                             </div>
                             <div className="col-lg-4 col-md-12 col-sm-12">
-                                <CheckoutItem />
+                                <CheckoutItem discount={this.state.discount} />
                             </div>
                         </div>
                     </RctCardContent>

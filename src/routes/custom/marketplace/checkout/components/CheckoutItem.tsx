@@ -26,7 +26,7 @@ class CheckoutItem extends Component<any, any> {
       let totalPrice = 0;
       if (cart.count() === 0) return 0;
       totalPrice = cart.items.map(ci => getPrice(ci.price * ci.quantity, ci.currency)).reduce((sum, current) => sum + current);
-      return totalPrice.toFixed(2);
+      return Number(totalPrice.toFixed(2));
    }
 
    //Is Cart Empty
@@ -36,6 +36,19 @@ class CheckoutItem extends Component<any, any> {
          return true;
       }
    }
+
+   getAmountToPay = () => {
+      let baseAmount = this.getTotalPrice();
+      return baseAmount;
+   }
+
+  getDiscountedAmountToPay = () => {
+      let baseAmount = this.getTotalPrice();
+      if(this.props.discount) {
+         baseAmount = baseAmount - (baseAmount * this.props.discount.percentage/100);
+      }
+      return baseAmount;
+  }
 
    render() {
       const { cart } = this.props;
@@ -78,7 +91,7 @@ class CheckoutItem extends Component<any, any> {
             }
             <div className="border-top d-flex justify-content-between align-items-center py-4">
                <span className="font-weight-bold text-muted">Total</span>
-               <span className="font-weight-bold">{addCurrency(this.getTotalPrice())}</span>
+               <span className="font-weight-bold"><span style={this.props.discount?.percentage && { textDecoration: 'line-through', color: 'red' } }>{this.getAmountToPay()} {cart.items[0]?.currency}</span> { this.props.discount?.percentage && <>{this.getDiscountedAmountToPay()} {cart.items[0]?.currency}</>}</span>
             </div>
             <div className="d-flex justify-content-end align-items-center">
                {this.isCartEmpty() && (
