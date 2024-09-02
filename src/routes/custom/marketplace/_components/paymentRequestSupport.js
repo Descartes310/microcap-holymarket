@@ -181,9 +181,13 @@ const PaymentRequestSupport = (props) => {
                                 <Checkbox
                                     color="primary"
                                     disabled={true}
-                                    checked={paymentMethod == pm.value}
+                                    checked={paymentMethod.includes(pm.value)}
                                     onChange={() => {
-                                        setPaymentMethod(pm.value);
+                                        if(!paymentMethod.includes(pm.value)) {
+                                            setPaymentMethod([...paymentMethod, pm.value]);
+                                        } else {
+                                            setPaymentMethod([...paymentMethod.filter(n => n != pm.value)]);
+                                        }
                                     }}
                                 />
                             } label={pm.label}

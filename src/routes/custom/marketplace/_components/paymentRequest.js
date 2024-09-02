@@ -27,13 +27,13 @@ const PaymentRequest = (props) => {
     const [otherEmail, setOtherEmail] = useState(null);
     const [reference, setReference] = useState(defaultReference ?? null);
     const [discountCode, setDiscountCode] = useState(order?.discountCode ?? null);
-    const [paymentMethod, setPaymentMethod] = useState(defaultPaymentMethod ?? null);
     const [showDiscountField, setShowDiscountField] = useState(order?.discountCode != null);
     const [notificationMethod, setNotificationMethod] = useState(['LOGIN_EMAIL', 'ADDRESS']);
+    const [paymentMethod, setPaymentMethod] = useState(defaultPaymentMethod ? [defaultPaymentMethod] : []);
     const [type, setType] = useState(defaultType ? getOrderTypes().find(ot => ot.value == defaultType) : null);
 
     useEffect(() => {
-        if(paymentMethod == 'DEPOSIT') {
+        if(paymentMethod.includes('DEPOSIT')) {
             getAccounts();
         } else {
             setAccounts([])
@@ -118,13 +118,13 @@ const PaymentRequest = (props) => {
 
 
     const onSubmit = () => {
-        if(!paymentMethod || !notificationMethod || !amount || !order || (paymentMethod == 'DEPOSIT' && !account)) {
+        if(!paymentMethod || !notificationMethod || !amount || !order || (paymentMethod.includes('DEPOSIT') && !account)) {
             NotificationManager.error("Le formulaire est mal renseigné");
             return;
         }
 
         let data = {
-            paymentMethod, notificationMethod: notificationMethod.join(','), amount, reference: order.reference,
+            paymentMethod: paymentMethod.join(','), notificationMethod: notificationMethod.join(','), amount, reference: order.reference,
             currency: order?.items[0]?.currency, id: order.id
         }
 
@@ -132,11 +132,7 @@ const PaymentRequest = (props) => {
             data.discountCode = discount.code;
         }
 
-        if(showSubscriptionCodeField && subscriptionCode) {
-            data.subscriptionCode = subscriptionCode;
-        }
-
-        if(paymentMethod == 'DEPOSIT') {
+        if(paymentMethod.includes('DEPOSIT')) {
             data.accountReference = account.reference
         }
 
@@ -241,9 +237,13 @@ const PaymentRequest = (props) => {
                             <Checkbox
                                 color="primary"
                                 disabled={!pm.enabled || defaultPaymentMethod != null}
-                                checked={paymentMethod == pm.value}
+                                checked={paymentMethod.includes(pm.value)}
                                 onChange={() => {
-                                    setPaymentMethod(pm.value);
+                                    if(!paymentMethod.includes(pm.value)) {
+                                        setPaymentMethod([...paymentMethod, pm.value]);
+                                    } else {
+                                        setPaymentMethod([...paymentMethod.filter(n => n != pm.value)]);
+                                    }
                                 }}
                             />
                         } label={pm.label}
@@ -251,7 +251,7 @@ const PaymentRequest = (props) => {
                     </FormGroup>
                 )}
             </div>
-            { paymentMethod == 'DEPOSIT' && (
+            { paymentMethod.includes('DEPOSIT') && (
                 <FormGroup className="col-md-12 col-sm-12 has-wrapper">
                     <InputLabel className="text-left">
                         Compte bancaire d'encaissement
