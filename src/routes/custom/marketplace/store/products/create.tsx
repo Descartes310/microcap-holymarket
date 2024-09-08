@@ -46,6 +46,7 @@ const Create = (props) => {
     const [selectedProcesses, setSelectedProcesses] = useState([]);
     const [maximumDaysToPay, setMaximumDaysToPay] = useState(null);
     const [acceptManyPayment, setAcceptManyPayment] = useState(false);
+    const [minimumPaymentAmount, setMinimumPaymentAmount] = useState(null);
     const [minimalPercentageForFirstPayment, setMinimalPercentageForFirstPayment] = useState(null);
 
     useEffect(() => {
@@ -148,10 +149,11 @@ const Create = (props) => {
             data.groupReference = group.groupReference;
 
         if (acceptManyPayment) {
-            if (maximumDaysToPay < 0 || minimalPercentageForFirstPayment < 0) {
+            if (maximumDaysToPay < 0 || minimalPercentageForFirstPayment < 0 || minimumPaymentAmount < 0) {
                 NotificationManager.error('Remplissez les informations de payements');
                 return;
             }
+            data.minimumPaymentAmount = minimumPaymentAmount;
             data.numberMaxOfDaysForPayment = maximumDaysToPay;
             data.minimalPercentageForFirstPayment = minimalPercentageForFirstPayment;
         }
@@ -345,7 +347,7 @@ const Create = (props) => {
                             {acceptManyPayment && (
                                 <>
                                     <div className="row">
-                                        <div className="col-md-6 col-sm-12 has-wrapper mb-30">
+                                        <div className="col-md-4 col-sm-12 has-wrapper mb-30">
                                             <InputLabel className="text-left">
                                                 Nombre maximum de jour pour payer
                                             </InputLabel>
@@ -353,24 +355,38 @@ const Create = (props) => {
                                                 required
                                                 type="number"
                                                 className="input-lg"
-                                                id="minAccountBalance"
-                                                name='minAccountBalance'
+                                                id="maximumDaysToPay"
+                                                name='maximumDaysToPay'
                                                 value={maximumDaysToPay}
                                                 onChange={(e) => setMaximumDaysToPay(e.target.value)}
                                             />
                                         </div>
-                                        <div className="col-md-6 col-sm-12 has-wrapper mb-30">
+                                        <div className="col-md-4 col-sm-12 has-wrapper mb-30">
                                             <InputLabel className="text-left">
                                                 Pourcentage minimal du premier payement
                                             </InputLabel>
                                             <InputStrap
                                                 required
-                                                id="maxAccountBalance"
                                                 type="number"
-                                                name='maxAccountBalance'
                                                 className="input-lg"
+                                                id="minimalPercentageForFirstPayment"
+                                                name='minimalPercentageForFirstPayment'
                                                 value={minimalPercentageForFirstPayment}
                                                 onChange={(e) => setMinimalPercentageForFirstPayment(e.target.value)}
+                                            />
+                                        </div>
+                                        <div className="col-md-4 col-sm-12 has-wrapper mb-30">
+                                            <InputLabel className="text-left">
+                                                Montant minimal initial
+                                            </InputLabel>
+                                            <InputStrap
+                                                required
+                                                type="number"
+                                                className="input-lg"
+                                                id="minimumPaymentAmount"
+                                                name='minimumPaymentAmount'
+                                                value={minimumPaymentAmount}
+                                                onChange={(e) => setMinimumPaymentAmount(e.target.value)}
                                             />
                                         </div>
                                     </div>

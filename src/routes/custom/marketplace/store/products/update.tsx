@@ -9,7 +9,6 @@ import { setRequestGlobalAction } from 'Actions';
 import React, { useState, useEffect } from 'react';
 import { getProductRanges } from 'Helpers/helpers';
 import TextField from '@material-ui/core/TextField';
-import CommercialService from 'Services/commercials';
 import { FileUploader } from "react-drag-drop-files";
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { NotificationManager } from 'react-notifications';
@@ -36,13 +35,14 @@ const Update = (props) => {
     const [product, setProduct] = useState(null);
     const [userFiles, setUserFiles] = useState([]);
     const [updatable, setUpdatable] = useState(true);
-    const [aggregations, setAggregations] = useState([]);
     const [description, setDescription] = useState('');
+    const [aggregations, setAggregations] = useState([]);
     const [selectedPieces, setSelectedPieces] = useState([]);
     const [isIndirectSell, setIsIndirectSell] = useState(false);
     const [selectedProcesses, setSelectedProcesses] = useState([]);
     const [maximumDaysToPay, setMaximumDaysToPay] = useState(null);
     const [acceptManyPayment, setAcceptManyPayment] = useState(false);
+    const [minimumPaymentAmount, setMinimumPaymentAmount] = useState(null);
     const [minimalPercentageForFirstPayment, setMinimalPercentageForFirstPayment] = useState(null);
 
     useEffect(() => {
@@ -55,13 +55,21 @@ const Update = (props) => {
         props.setRequestGlobalAction(true);
         ProductService.findProduct(props.match.params.reference).then(response => {
             setProduct(response);
-            setLabel(response.label);
             setCode(response.code);
+            setLabel(response.label);
             setPrice(response.price);
             setDescription(response.description);
-            setRange(getProductRanges().find(pr => pr.value === response.range));
+            setAcceptManyPayment(response.acceptManyPayment);
+            setMinimumPaymentAmount(response.minimumPaymentAmount);
+            setMaximumDaysToPay(response.numberMaxOfDaysForPayment);
             setIsIndirectSell(response?.mirrorAccount || response?.account);
+            setRange(getProductRanges().find(pr => pr.value === response.range));
             setUpdatable(!uneditableProductModelType.includes(response.specialType));
+            setMinimalPercentageForFirstPayment(response.minimalPercentageForFirstPayment);
+            if(response.indirectSalePieces) {
+                setSelectedProcesses(getIndirectSaleProcess());
+                setSelectedPieces(response.pieces);
+            }
             getAggregations();
         })
         .finally(() => props.setRequestGlobalAction(false))
@@ -128,10 +136,11 @@ const Update = (props) => {
             data.groupReference = group.groupReference;
 
         if (acceptManyPayment) {
-            if (!maximumDaysToPay || !minimalPercentageForFirstPayment) {
+            if (!maximumDaysToPay || !minimalPercentageForFirstPayment || !minimumPaymentAmount) {
                 NotificationManager.error('Remplissez les informations de payements');
                 return;
             }
+            data.minimumPaymentAmount = minimumPaymentAmount;
             data.numberMaxOfDaysForPayment = maximumDaysToPay;
             data.minimalPercentageForFirstPayment = minimalPercentageForFirstPayment;
         }
@@ -290,7 +299,7 @@ const Update = (props) => {
                         {acceptManyPayment && (
                             <>
                                 <div className="row">
-                                    <div className="col-md-6 col-sm-12 has-wrapper mb-30">
+                                    <div className="col-md-4 col-sm-12 has-wrapper mb-30">
                                         <InputLabel className="text-left">
                                             Nombre maximum de jour pour payer
                                         </InputLabel>
@@ -298,24 +307,38 @@ const Update = (props) => {
                                             required
                                             type="number"
                                             className="input-lg"
-                                            id="minAccountBalance"
-                                            name='minAccountBalance'
+                                            id="maximumDaysToPay"
+                                            name='maximumDaysToPay'
                                             value={maximumDaysToPay}
                                             onChange={(e) => setMaximumDaysToPay(e.target.value)}
                                         />
                                     </div>
-                                    <div className="col-md-6 col-sm-12 has-wrapper mb-30">
+                                    <div className="col-md-4 col-sm-12 has-wrapper mb-30">
                                         <InputLabel className="text-left">
                                             Pourcentage minimal du premier payement
                                         </InputLabel>
                                         <InputStrap
                                             required
-                                            id="maxAccountBalance"
                                             type="number"
-                                            name='maxAccountBalance'
                                             className="input-lg"
+                                            id="minimalPercentageForFirstPayment"
+                                            name='minimalPercentageForFirstPayment'
                                             value={minimalPercentageForFirstPayment}
                                             onChange={(e) => setMinimalPercentageForFirstPayment(e.target.value)}
+                                        />
+                                    </div>
+                                    <div className="col-md-4 col-sm-12 has-wrapper mb-30">
+                                        <InputLabel className="text-left">
+                                            Montant minimal initial
+                                        </InputLabel>
+                                        <InputStrap
+                                            required
+                                            type="number"
+                                            className="input-lg"
+                                            id="minimumPaymentAmount"
+                                            name='minimumPaymentAmount'
+                                            value={minimumPaymentAmount}
+                                            onChange={(e) => setMinimumPaymentAmount(e.target.value)}
                                         />
                                     </div>
                                 </div>
