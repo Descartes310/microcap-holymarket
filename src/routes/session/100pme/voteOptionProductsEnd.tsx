@@ -1,4 +1,5 @@
 import React from 'react';
+import { logout } from 'Actions';
 import { connect } from 'react-redux';
 import QueueAnim from 'rc-queue-anim';
 import { Link } from 'react-router-dom';
@@ -56,7 +57,10 @@ const VoteOptionProductsEnd = (props) => {
                                         <p className="mb-0 visibility-hidden">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad, adipisci, animi aperiam eligendi</p>
                                     </div>
                                     <div className="row w-100 d-flex justify-content-around flex-column">
-                                        <p className='text-center text-black mb-10' style={{ fontSize: 16 }}>Vos votes ont rapportés des voix à la ville {JSON.parse(localStorage.getItem('PME_CITY'))?.name}. Merci de votre participations.</p>
+                                        <p className='text-center text-black mb-10' style={{ fontSize: 16 }}>Vos votes ont rapportés des voix/likes à la ville {JSON.parse(localStorage.getItem('PME_CITY'))?.name}. Merci de votre participations.</p>
+                                        <p className='text-center text-black mb-10' style={{ fontSize: 16 }}>Vous pouvez maintenant vous connecter sur votre espace MicroCap pour profiter de tous nos services. </p>
+                                        <p className='text-center text-black mb-10' style={{ fontSize: 16 }}>Votre login:  {props?.authUser?.email}</p>
+                                        <p className='text-center text-black mb-10' style={{ fontSize: 16 }}>Votre mot de passe: déjà communiqué </p>
                                         <FormGroup className="mb-25 row">
                                             <Button
                                                 color="primary"
@@ -65,7 +69,8 @@ const VoteOptionProductsEnd = (props) => {
                                                     localStorage.removeItem('PME_CITY')
                                                     localStorage.removeItem('PME_LOCALITY')
                                                     localStorage.removeItem('PME_COUNTRY')
-                                                    window.location.href = HOME;
+                                                    props.logout();
+                                                    props.history.push(AUTH.LOGIN);
                                                 }}
                                             >
                                                 Continuer
@@ -87,4 +92,4 @@ const mapStateToProps = ({ authUser }) => {
     return { authUser: authUser.data, }
 };
 
-export default connect(mapStateToProps, { setRequestGlobalAction })(injectIntl(VoteOptionProductsEnd));
+export default connect(mapStateToProps, { setRequestGlobalAction, logout })(injectIntl(VoteOptionProductsEnd));

@@ -25,7 +25,7 @@ const AuthConfirm = (props) => {
                 <p style={{ fontSize: 16 }}>
                     Pour participer au challenge 100 PME pour l'emploi proposé par MicroCap, vous devez
                     être inscrit sur la plateforme. Vos données sont exclusivement dédiées à votre identification,
-                    elle ne sont ni publiques ni partagées.
+                    elles ne sont ni publiques ni partagées.
                 </p>
                 <div className='d-flex justify-content-between mt-30'>
                     <Button

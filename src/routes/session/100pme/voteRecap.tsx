@@ -30,8 +30,6 @@ const VoteRecap = (props) => {
         const country = localStorage.getItem('PME_COUNTRY');
         const user = props.authUser;
 
-        console.log(user, city, country);
-
         if(city && user && country) {
             props.setRequestGlobalAction(true);
             let data: any = {
@@ -46,7 +44,7 @@ const VoteRecap = (props) => {
                 localStorage.removeItem('PME_CITY')
                 localStorage.removeItem('PME_LOCALITY')
                 localStorage.removeItem('PME_COUNTRY')
-                window.location.href = HOME;
+                props.history.push(PME_PROJECT.VOTE_PRODUCT_END);
             }).catch((err) => {
                 console.log(err);
             }).finally(() => {

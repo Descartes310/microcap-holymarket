@@ -53,11 +53,12 @@ const Auth = (props) => {
             _data.isOrganisation = false;
             _data.useEmailAsLogin = true;
 
-            _data.isOrganisation = _data.isOrganisation ? _data.isOrganisation : false;
-
+            _data.isOrganisation = data.isOrganisation ? data.isOrganisation : false;
+            
             if (useMicrocapEmail)
                 delete _data.email;
-
+            
+            
             props.setRequestGlobalAction(true);
             UserService.registerUser(_data)
             .then((response) => {
@@ -126,12 +127,12 @@ const Auth = (props) => {
                             <div className="col-sm-12 col-md-12 col-lg-12">
                                 <div className="center-hor-ver session-body d-flex flex-column">
                                     <div className="session-head mb-10 text-center">
-                                        <h1 className="p-20">M'authentifier</h1>
+                                        <h1 className="p-20">M'identifier</h1>
                                         {/* This text is just a work around to add the width of the form input */}
                                         <p className="mb-0 visibility-hidden">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad, adipisci, animi aperiam eligendi</p>
                                     </div>
                                     <div className="row w-100 d-flex flex-row">
-                                        <FormGroup className="col-sm-12 has-wrapper">
+                                        {/* <FormGroup className="col-sm-12 has-wrapper">
                                             <FormControlLabel control={
                                                 <Checkbox
                                                     color="primary"
@@ -146,7 +147,7 @@ const Auth = (props) => {
                                                 />
                                             } label={'Je ne suis pas encore membre du réseau MicroCap'}
                                             />
-                                        </FormGroup>
+                                        </FormGroup> */}
                                         { showRegistration ? (
                                             <Form onSubmit={handleSubmit(onSubmit)} className="col-sm-12 has-wrapper">
                                                 <FormControl fullWidth className='mb-20 pl-15'>
@@ -163,7 +164,7 @@ const Auth = (props) => {
                                                             <Checkbox
                                                                 color="primary"
                                                                 checked={isOrganisation}
-                                                                onChange={() => setValue('isOrganisation', !isOrganisation)}
+                                                                onChange={(e) => setValue('isOrganisation', e.target.checked)}
                                                             />
                                                         } label={"Je suis une personne morale"}
                                                         />}
@@ -270,7 +271,22 @@ const Auth = (props) => {
                                                         variant="contained"
                                                         className="btn-block text-white w-100"
                                                     >
-                                                        <IntlMessages id="auth.signin" />
+                                                        <IntlMessages id="auth.signup" />
+                                                    </Button>
+                                                    <Button
+                                                        size="large"
+                                                        color="primary"
+                                                        variant="contained"
+                                                        onClick={() => {
+                                                            if(!showRegistration) {
+                                                                setShowConfirmRegistration(true);
+                                                            } else {
+                                                                setShowRegistration(false);
+                                                            }
+                                                        }}
+                                                        className="btn-block text-white w-100"
+                                                    >
+                                                        <IntlMessages id="Je suis déjà membre du réseau MicroCap" />
                                                     </Button>
                                                 </FormGroup>
                                             </Form>
@@ -316,6 +332,21 @@ const Auth = (props) => {
                                                         className="btn-block text-white w-100"
                                                     >
                                                         <IntlMessages id="auth.signin" />
+                                                    </Button>
+                                                    <Button
+                                                        size="large"
+                                                        color="primary"
+                                                        variant="contained"    
+                                                        onClick={() => {
+                                                            if(!showRegistration) {
+                                                                setShowConfirmRegistration(true);
+                                                            } else {
+                                                                setShowRegistration(false);
+                                                            }
+                                                        }}
+                                                        className="btn-block text-white w-100"
+                                                    >
+                                                        <IntlMessages id="Je ne suis pas encore membre du réseau MicroCap" />
                                                     </Button>
                                                 </FormGroup>
                                             </Form>
