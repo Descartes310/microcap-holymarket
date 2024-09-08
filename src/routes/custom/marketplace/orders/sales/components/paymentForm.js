@@ -2,119 +2,93 @@ import { connect } from "react-redux";
 import { injectIntl } from "react-intl";
 import React, { Component } from 'react';
 import OrderService from "Services/orders";
-import AppConfig from 'Constants/AppConfig';
+import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
 import { setRequestGlobalAction } from 'Actions';
-import StripeCheckout from 'react-stripe-checkout';
-import { stripeZeroDecimalCurrencies } from 'Helpers/datas'
+import { NotificationManager } from 'react-notifications';
 import { RctCard, RctCardContent } from 'Components/RctCard';
-import PaymentRequest from "../../../_components/paymentRequest";
-import { Button } from 'reactstrap';
 
 class PaymentCard extends Component {
 
    state = {
-      amount: 0,
+      discount: null,
       paymentData: null,
       showStripeBox: false,
    }
 
-   stripeRef = React.createRef();
-
-   computePrice = () => {
-      const amount = this.state.paymentData ? this.state.paymentData.amount : 0;
-      const currency = this.state.paymentData ? this.state.paymentData.currency : 'EUR';
-      return stripeZeroDecimalCurrencies.includes(currency) ? amount : amount * 100;
+   componentDidMount() {
+      this.findDiscount();
    }
 
-   onSubmit = (token) => {
-      this.props.setRequestGlobalAction(true);
-
-      let data = {
-         stripeToken: token,
-         amount: this.state.paymentData.amount
-      }
-
-      if(this.state.paymentData.discountCode) {
-         data.discountCode = this.state.paymentData.discountCode;
-      }
-
-      if(this.state.paymentData.subscriptionCode) {
-         data.subscriptionCode = this.state.subscriptionCode;
-      }
-
-      OrderService.paySale(this.state.paymentData.id, data)
-         .then(() => window.location.reload())
+   findDiscount = () => {
+      if(this.props.order.discountCode) {
+         this.props.setRequestGlobalAction(true);
+         OrderService.findDiscount(this.props.order.id, {code: this.props.order.discountCode})
+         .then((discount) => {
+              NotificationManager.success("Le coupon est valide");
+              this.setState({ discount });
+          })
+         .catch((err) => {
+            NotificationManager.error("Ce code est incorrect");
+         })
          .finally(() => this.props.setRequestGlobalAction(false))
+      }
+  }
+
+   getAmountToPay = () => {
+      let baseAmount = this.props.order?.amount;
+      return baseAmount-this.props.order.amountPaid;
    }
+
+   getDiscountedAmountToPay = () => {
+      let baseAmount = this.props.order?.amount;
+      if(this.state.discount) {
+         baseAmount = baseAmount - (baseAmount * this.state.discount.percentage/100);
+      }
+      return baseAmount-this.props.order.amountPaid;
+  }
 
    initiatePayment = () => {
       this.props.setRequestGlobalAction(true);
 
-      let data = {
-         amount: this.state.paymentData.amount,
-         notification_method: this.state.paymentData.notificationMethod
-      }
-
-      if(this.state.paymentData.discountCode) {
-         data.discountCode = this.state.paymentData.discountCode;
-      }
-
-      if(this.state.paymentData.subscriptionCode) {
-         data.subscriptionCode = this.state.paymentData.subscriptionCode;
-      }
-
-      OrderService.initiatePayment(this.state.paymentData.reference, data)
+      OrderService.initiatePayment(this.props.order.reference, {})
          .then(() => window.location.reload())
          .finally(() => this.props.setRequestGlobalAction(false))
    }
 
-   onStripePayment = (token) => {
-      this.onSubmit(token.id);
-   }
-
    render() {
       const { order } = this.props;
-      const { paymentData } = this.state;
+      const { discount } = this.state;
       return (
          <RctCard className="payment">
             <RctCardContent>
-               <PaymentRequest
+               <div className="row mt-20">
+                  <h1 className='mb-30'>
+                     <span style={discount?.percentage && { textDecoration: 'line-through', color: 'red' } }>{this.getAmountToPay()} {order?.items[0]?.currency}</span> { discount?.percentage && <>{this.getDiscountedAmountToPay()} {order?.items[0]?.currency}</>}
+                  </h1>
+                  <Button
+                     color="primary"
+                     variant="contained"
+                     onClick={() => this.initiatePayment()}
+                     className="col-md-12 col-sm-12 text-white font-weight-bold mb-20"
+                  >
+                     Demande de paiement
+                  </Button>
+               </div>
+               {/* <PaymentRequest
                   hideReference={true}
                   defaultReference={order.reference}
                   defaultType={order.orderType}
                   onSendData={(paymentData) => {
                      this.setState({ paymentData }, () => {
-                        if(paymentData.paymentMethod == 'CREDIT_CARD') {
-                           document.getElementById('stripe-id').click()
-                        } else {
-                           this.initiatePayment();
-                        }
+                        this.initiatePayment();
                      })
                   }}
                   onError={() => {
                      onClose()
                   }}
-               />
+               /> */}
 
-               <StripeCheckout
-                  name={'MicroCap'}
-                  token={this.onStripePayment}
-                  amount={this.computePrice()}
-                  currency={paymentData ? paymentData.currency : 'EUR'}
-                  stripeKey={AppConfig.payments.stripe}
-                  description={'Règlement de la facture'}
-                  image={require('Assets/identity/logomicrocap.png')}
-               >
-                  <Button
-                     color="primary"
-                     id="stripe-id"
-                     className="w-100 ml-0 mt-15 text-white"
-                     style={{ display: 'none' }}
-                  >
-                     Payer
-                  </Button>
-               </StripeCheckout>
             </RctCardContent>
          </RctCard>
       );

@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import QueueAnim from 'rc-queue-anim';
 import { Link } from 'react-router-dom';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { injectIntl } from "react-intl";
 import AuthConfirm from "./authConfirm";
 import UserService from 'Services/users';
@@ -11,13 +11,18 @@ import AppConfig from 'Constants/AppConfig';
 import { setSession } from 'Helpers/tokens';
 import IntlMessages from "Util/IntlMessages";
 import AppBar from '@material-ui/core/AppBar';
+import TerritoryType from "Enums/Territories";
 import Toolbar from '@material-ui/core/Toolbar';
 import { setAuthUser } from "Actions/AuthActions";
 import { LOGIN_USER_SUCCESS } from 'Actions/types';
+import TerritoryService from "Services/territories";
+import TextField from '@material-ui/core/TextField';
 import { FormGroup, Form, Button } from 'reactstrap';
+import IconButton from "@material-ui/core/IconButton";
 import InputLabel from "@material-ui/core/InputLabel";
 import InputComponent from "Components/InputComponent";
 import FormControl from "@material-ui/core/FormControl";
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import { NotificationManager } from "react-notifications";
 import Checkbox from "@material-ui/core/Checkbox/Checkbox";
 import ErrorInputComponent from "Components/ErrorInputComponent";
@@ -32,8 +37,10 @@ const Auth = (props) => {
     const { loading } = props;
     const dispatch = useDispatch();
     const [user, setUser] = useState(null);
+    const [countries, setCountries] = useState([]);
     const [showSweetAlert, setShowSweetAlert] = useState(false);
     const [passwordType, setPasswordType] = useState('password');
+    const [residenceCountry, setResidenceCountry] = useState(null);
     const [showRegistration, setShowRegistration] = useState(false);
     const [showActivationBox, setShowActivationBox] = useState(false);
     const [passwordConfirmType, setPasswordConfirmType] = useState('password');
@@ -46,6 +53,21 @@ const Auth = (props) => {
     const isOrganisation = watch('isOrganisation');
     const useMicrocapEmail = watch('useMicrocapEmail');
 
+    useEffect(() => {
+        _getCountries();
+    }, []);
+
+    const _getCountries = () => {
+        TerritoryService.getTerritories(TerritoryType.COUNTRY)
+        .then(countries => {
+            setCountries(countries);
+        })
+        .catch(error => {
+            setCountries([]);
+            NotificationManager.error("An error occur " + error);
+        });
+    };
+
     const onSubmit = (data) => {
         if(showRegistration) {
             const _data = { ...data };
@@ -54,10 +76,12 @@ const Auth = (props) => {
             _data.useEmailAsLogin = true;
 
             _data.isOrganisation = data.isOrganisation ? data.isOrganisation : false;
+
+            if (residenceCountry)
+                _data.residenceCountry = residenceCountry.id;
             
             if (useMicrocapEmail)
                 delete _data.email;
-            
             
             props.setRequestGlobalAction(true);
             UserService.registerUser(_data)
@@ -220,6 +244,44 @@ const Auth = (props) => {
                                                         />}
                                                     />
                                                 </FormControl>
+
+                                                <div className="col-md-12 col-sm-12 has-wrapper mb-30 p-0">
+                                                    <InputLabel className="text-left">
+                                                        Pays de résidence
+                                                    </InputLabel>
+                                                    <Autocomplete
+                                                        value={residenceCountry}
+                                                        options={countries}
+                                                        id="combo-box-demo"
+                                                        classes={{ paper: 'custom-input' }}
+                                                        getOptionLabel={(option) => option.label}
+                                                        onChange={(__, item) => { setResidenceCountry(item) }}
+                                                        renderTags={options => {
+                                                            return (
+                                                                options.map(option =>
+                                                                    <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center'  }}>
+                                                                        <IconButton color="primary">
+                                                                            <img src={AppConfig.api.territory+option.details.find(d => d.code === 'FLAG')?.value} style={{ width: 25, height: 15 }}/>
+                                                                        </IconButton>
+                                                                        {option.label}
+                                                                    </div>
+                                                                )
+                                                            )
+                                                    
+                                                        }}
+                                                        renderOption={option => {
+                                                            return (
+                                                                <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center'  }}>
+                                                                    <IconButton color="primary">
+                                                                        <img src={AppConfig.api.territory+option.details.find(d => d.code === 'FLAG')?.value} style={{ width: 25, height: 15 }} />
+                                                                    </IconButton>
+                                                                    {option.label}
+                                                                </div>
+                                                            );
+                                                        }}
+                                                        renderInput={(params) => <TextField {...params} variant="outlined" />}
+                                                    />
+                                                </div>
                                             
                                                 <FormGroup className="has-wrapper">
                                                     <InputLabel className="text-left" htmlFor="password">

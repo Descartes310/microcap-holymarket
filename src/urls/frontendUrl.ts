@@ -488,6 +488,16 @@ export const MARKETPLACE = {
             UPDATE: "/marketplace/store/discounts/:id/update",
             PRODUCTS: "/marketplace/store/discounts/:id/products",
         },
+        PAYMENT: {
+            SELF: "/marketplace/store/payments",
+            LIST: "/marketplace/store/payments/list",
+            CONFIGURATION: {
+                SELF: "/marketplace/store/payments/configurations",
+                LIST: "/marketplace/store/payments/configurations/list",
+                CREATE: "/marketplace/store/payments/configurations/create",
+                UPDATE: "/marketplace/store/payments/configurations/:id/update",
+            }
+        },
         ORDER: {
             SELF: "/marketplace/store/orders",
             LIST: "/marketplace/store/orders/list",

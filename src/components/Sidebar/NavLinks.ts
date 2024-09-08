@@ -689,9 +689,9 @@ export default [
             "child_routes": null
          },
          {
-            "menu_title": "Ventes",
+            "menu_title": "Encaissements",
             "new_item": false,
-            "path": MARKETPLACE.STORE.ORDER.LIST,
+            "path": MARKETPLACE.STORE.PAYMENT.LIST,
             "permissions": [Permission.marketplace.store.product.name],
             "profiles": ['GROUP'],
             "child_routes": null

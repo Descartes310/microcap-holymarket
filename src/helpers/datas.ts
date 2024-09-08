@@ -96,6 +96,28 @@ export const getNotificationMethods = () => {
     ];
 }
 
+export const getPaymentConfigNatures = () => {
+    return [
+        {
+            label: 'Modèle',
+            value: 'MODEL'
+        },
+        {
+            label: 'Vente',
+            value: 'SALE'
+        }
+    ];
+}
+
+export const getPaymentConfigTypes = () => {
+    return [
+        {
+            label: 'Demande d\'encaissement',
+            value: 'PAYMENT'
+        }
+    ];
+}
+
 export const getChainEventTypeValue = (value): any => {
     let type = getChainEventTypes().find(t => t.value === value);
     if (type)
