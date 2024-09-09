@@ -53,7 +53,7 @@ const List = (props) => {
                                         <th className="fw-bold">Nature</th>
                                         <th className="fw-bold">Date de début</th>
                                         <th className="fw-bold">Date de fin</th>
-                                        {/* <th className="fw-bold">Actions</th> */}
+                                        <th className="fw-bold">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -94,7 +94,7 @@ const List = (props) => {
                                                     </div>
                                                 </div>
                                             </td>
-                                            {/* <td>
+                                            <td>
                                                 <Button
                                                     color="primary"
                                                     variant="contained"
@@ -103,7 +103,7 @@ const List = (props) => {
                                                 >
                                                     Editer
                                                 </Button>
-                                            </td> */}
+                                            </td>
                                         </tr>
                                     ))}
                                 </tbody>

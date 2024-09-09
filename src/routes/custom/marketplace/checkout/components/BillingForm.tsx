@@ -10,7 +10,11 @@ import TerritoryService from 'Services/territories';
 import TextField from '@material-ui/core/TextField';
 import {NotificationManager} from 'react-notifications';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import PaymentConfigService from "Services/paymentConfig";
+import Checkbox from "@material-ui/core/Checkbox/Checkbox";
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
+import { getNotificationMethods, getPaymentMethods } from "Helpers/datas";
+import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
 import { Form, FormGroup, Input, Label, Col, InputGroup, InputGroupAddon } from 'reactstrap';
 
 class BillingForm extends Component<any, any> {
@@ -37,12 +41,22 @@ class BillingForm extends Component<any, any> {
       subscriptionCode: null,
       discountCode: null,
       showSubscriptionCodeField: false,
-      showDiscountField: false
+      showDiscountField: false,
+      notificationMethods: [],
+      paymentMethods: [],
+      otherEmail: null,
+      otherPhone: null,
+      paymentConfig: null
+
    }
 
    componentDidMount(): void {
       this.getContacts();
       this.getCountries();
+      if(this.props.cart.count() > 0) {
+         console.log(this.props.cart);
+         this.findPaymentConfig();
+      }
    }
 
    getCountries = () => {
@@ -54,7 +68,22 @@ class BillingForm extends Component<any, any> {
           this.setState({ countries: [] });
           NotificationManager.error("An error occur " + error);
       });
-  };
+   };
+
+   findPaymentConfig = () => {
+      PaymentConfigService.findByProduct(this.props.cart.items[0].id)
+      .then(paymentConfig => {
+         this.setState({ 
+            paymentConfig,
+            paymentMethods: getPaymentMethods().filter(pm => paymentConfig.paymentMethods.includes(pm.value)).map(pm => pm.value),
+            notificationMethods: getNotificationMethods().filter(nm => paymentConfig.notificationMethods.includes(nm.value)).map(nm => nm.value)
+          });
+      })
+      .catch(error => {
+         this.setState({ paymentConfig: null });
+         NotificationManager.error("An error occur " + error);
+      });
+   };
 
    getContacts = () => {
       UserService.getContacts().then((contacts) => {
@@ -145,6 +174,8 @@ class BillingForm extends Component<any, any> {
    }
 
    render() {
+
+      const {paymentMethods, notificationMethods, otherEmail, otherPhone} = this.state;
 
       return (
          <div className="billing-form-warp py-4">
@@ -366,6 +397,77 @@ class BillingForm extends Component<any, any> {
                   </FormGroup>
                   </div> 
                )}
+               <h1 className='mb-20'>Mode de règlement</h1>
+               <div className="row">
+                  { getPaymentMethods().map(pm => 
+                     <FormGroup className="col-md-12 col-sm-12 has-wrapper mb-0">
+                           <FormControlLabel control={
+                              <Checkbox
+                                 color="primary"
+                                 disabled={true}
+                                 checked={paymentMethods.includes(pm.value)}
+                                 onChange={() => {
+                                       if(!paymentMethods.includes(pm.value)) {
+                                          this.setState({ paymentMethods: [...paymentMethods, pm.value] });
+                                       } else {
+                                          this.setState({ paymentMethods: [...paymentMethods.filter(n => n != pm.value)] });
+                                       }
+                                 }}
+                              />
+                           } label={pm.label}
+                           />
+                     </FormGroup>
+                  )}
+               </div>
+
+               <h1 className='mb-20 mt-20'>Notifications</h1>
+               <div className="row">
+                  { getNotificationMethods().map(nm => 
+                     <FormGroup className="col-md-12 col-sm-12 has-wrapper mb-0">
+                           <FormControlLabel control={
+                              <Checkbox
+                                 color="primary"
+                                 checked={notificationMethods.includes(nm.value)}
+                                 disabled={true}
+                                 onChange={() => {
+                                       if(!notificationMethods.includes(nm.value)) {
+                                          this.setState({ notificationMethods: [...notificationMethods, nm.value] });
+                                       } else {
+                                          this.setState({ notificationMethods: [...notificationMethods.filter(n => n != nm.value)] });
+                                       }
+                                 }}
+                              />
+                           } label={nm.label}
+                           />
+                     </FormGroup>
+                  )}
+                  <FormGroup className="col-md-6 col-sm-12 has-wrapper">
+                     <InputLabel className="text-left" htmlFor="otherEmail">
+                           Autre email (facultatif)
+                     </InputLabel>
+                     <Input
+                           type="text"
+                           id="otherEmail"
+                           name='otherEmail'
+                           value={otherEmail}
+                           className="input-lg"
+                           onChange={(e) => this.setState({ otherEmail: e.target.value })}
+                     />
+                  </FormGroup>
+                  <FormGroup className="col-md-6 col-sm-12 has-wrapper">
+                     <InputLabel className="text-left" htmlFor="otherPhone">
+                           Autre téléphone (facultatif)
+                     </InputLabel>
+                     <Input
+                           type="text"
+                           id="otherPhone"
+                           name='otherPhone'
+                           value={otherPhone}
+                           className="input-lg"
+                           onChange={(e) => this.setState({ otherPhone: e.target.value })}
+                     />
+                  </FormGroup>
+               </div>
             </Form>
             <div className="d-flex justify-content-end">
                <Button
@@ -383,9 +485,10 @@ class BillingForm extends Component<any, any> {
    }
 }
 
-const mapStateToProps = ({ authUser }) => {
+const mapStateToProps = ({ authUser, cart }) => {
    return {
-       authUser: authUser.data
+      authUser: authUser.data,
+      cart
    }
 };
 

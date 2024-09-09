@@ -534,7 +534,7 @@ export const productSpecialTypes = () => {
         {
             label: "Pas de type spécial", value: 'NONE'
         }, {
-            label: "Djangui Plan", value: "CODEV"
+            label: "Ndjangui Business", value: "CODEV"
         }, {
             label: "Deal Plan", value: "CODEV_DEAL_PLAN"
         }, {

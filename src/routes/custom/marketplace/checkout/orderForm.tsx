@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import OrderService from 'Services/orders';
 import { withRouter } from "react-router-dom";
+import { MARKETPLACE } from 'Url/frontendUrl';
 import BillingForm from './components/BillingForm';
 import SweetAlert from 'react-bootstrap-sweetalert';
 import CheckoutItem from './components/CheckoutItem';
@@ -9,14 +10,14 @@ import { NotificationManager } from 'react-notifications';
 import { RctCard, RctCardContent } from 'Components/RctCard';
 import { setRequestGlobalAction, onClearCart } from 'Actions';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
-import { MARKETPLACE } from 'Url/frontendUrl';
 
 class OrderForm extends Component<any, any> {
 
     state = {
         showSweetAlert: false,
         order: null,
-        discount: null
+        discount: null,
+        payments: []
     }
 
     validateBillingForm = (informations) => {
@@ -74,6 +75,10 @@ class OrderForm extends Component<any, any> {
             )
         }
 
+        if(this.state.payments.length > 0) {
+            data.complementary_payments = JSON.stringify(this.state.payments);
+        }
+
         if(informations.discountCode) {
             data.discountCode = informations.discountCode;
         }
@@ -123,7 +128,7 @@ class OrderForm extends Component<any, any> {
                                 </RctCollapsibleCard>
                             </div>
                             <div className="col-lg-4 col-md-12 col-sm-12">
-                                <CheckoutItem discount={this.state.discount} />
+                                <CheckoutItem discount={this.state.discount} updatePayments={(data) => { this.setState({ payments: data });}}/>
                             </div>
                         </div>
                     </RctCardContent>

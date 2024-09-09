@@ -61,7 +61,7 @@ const PaymentRequestSupport = (props) => {
 
     const getAmountToPay = () => {
         let baseAmount = order?.amount;
-        return baseAmount-order.amountPaid;
+        return baseAmount + order.complementaryPayment - order.amountPaid;
      }
   
     const getDiscountedAmountToPay = () => {
@@ -69,7 +69,7 @@ const PaymentRequestSupport = (props) => {
         if(discount) {
            baseAmount = baseAmount - (baseAmount * discount.percentage/100);
         }
-        return baseAmount-order.amountPaid;
+        return baseAmount + order.complementaryPayment - order.amountPaid;
      }
 
 

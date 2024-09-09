@@ -37,7 +37,7 @@ class PaymentCard extends Component {
 
    getAmountToPay = () => {
       let baseAmount = this.props.order?.amount;
-      return baseAmount-this.props.order.amountPaid;
+      return baseAmount + this.props.order.complementaryPayment - this.props.order.amountPaid;
    }
 
    getDiscountedAmountToPay = () => {
@@ -45,8 +45,8 @@ class PaymentCard extends Component {
       if(this.state.discount) {
          baseAmount = baseAmount - (baseAmount * this.state.discount.percentage/100);
       }
-      return baseAmount-this.props.order.amountPaid;
-  }
+      return baseAmount + this.props.order.complementaryPayment - this.props.order.amountPaid;
+   }
 
    initiatePayment = () => {
       this.props.setRequestGlobalAction(true);

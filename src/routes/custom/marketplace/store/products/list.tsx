@@ -7,9 +7,11 @@ import CustomList from "Components/CustomList";
 import Cotations from './components/cotations';
 import { setRequestGlobalAction } from 'Actions';
 import React, { useState, useEffect } from 'react';
+import {NotificationManager} from 'react-notifications';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import { joinUrlWithParams, MARKETPLACE } from 'Url/frontendUrl';
 import ProductDetailsButton from 'Components/ProductDetailsButton';
+import ProductPaymentIncorrect from '../components/productPaymentIncorrect';
 import { getProductRangeLabel, getPriceWithCurrency } from 'Helpers/helpers';
 
 const List = (props) => {
@@ -17,6 +19,7 @@ const List = (props) => {
     const [products, setProducts] = useState([]);
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [showCotationBox, setShowCotationBox] = useState(false);
+    const [showPaymentModal, setShowPaymentModal] = useState(false);
 
     useEffect(() => {
         getProducts();
@@ -33,6 +36,14 @@ const List = (props) => {
         props.setRequestGlobalAction(true),
         ProductService.changeProductStatus(product.id)
         .then(() => getProducts())
+        .catch((err) => {
+            setSelectedProduct(product);
+            if(err?.response?.status == 412) {
+                setShowPaymentModal(true);
+            } else {
+                NotificationManager.error("Une erreur est survenue, veuillez reéssayer plus tard.");
+            }
+        })
         .finally(() => props.setRequestGlobalAction(false))
     }
 
@@ -170,6 +181,14 @@ const List = (props) => {
                     product={selectedProduct}
                     show={showCotationBox && selectedProduct} 
                     onClose={() => { setShowCotationBox(false); }} 
+                />
+            )}
+            { selectedProduct && showPaymentModal && (
+                <ProductPaymentIncorrect
+                    product={selectedProduct}
+                    show={showPaymentModal && selectedProduct} 
+                    onClose={() => { setShowPaymentModal(false); }} 
+                    onSuccess={() => props.history.push(MARKETPLACE.STORE.PAYMENT.CONFIGURATION.LIST)} 
                 />
             )}
         </>

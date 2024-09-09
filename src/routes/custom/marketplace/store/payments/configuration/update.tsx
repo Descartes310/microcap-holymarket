@@ -22,14 +22,15 @@ const Update = (props) => {
 
     const {defaultPaymentMethod} = props;
 
-    const [label, setLabel] = useState(null);
     const [type, setType] = useState(null);
+    const [label, setLabel] = useState(null);
     const [orders, setOrders] = useState([]);
     const [nature, setNature] = useState(null);
     const [endDate, setEndDate] = useState(null);
     const [accounts, setAccounts] = useState([]);
     const [products, setProducts] = useState([]);
     const [account, setAccount] = useState(null);
+    const [oldConfig, setOldConfig] = useState(null);
     const [startDate, setStartDate] = useState(null);
     const [otherPhone, setOtherPhone] = useState(null);
     const [otherEmail, setOtherEmail] = useState(null);
@@ -56,7 +57,18 @@ const Update = (props) => {
         props.setRequestGlobalAction(true);
         PaymentConfigService.find(props.match.params.id)
             .then(response => {
-                console.log(response)
+                setOldConfig(response);
+                setLabel(response.label);
+                setEndDate(response.endDate);
+                setStartDate(response.startDate);
+                setOtherEmail(response.otherEmail);
+                setSelectedOrders(response.orders);
+                setSelectedProducts(response.products);
+                setOtherPhone(response.otherPhoneNumber);
+                setType(getPaymentConfigTypes().find(t => t.value == response.type));
+                setNature(getPaymentConfigNatures().find(t => t.value == response.nature));
+                setPaymentMethod(getPaymentMethods().filter(pm => response.paymentMethods.includes(pm.value)).map(pm => pm.value));
+                setNotificationMethod(getNotificationMethods().filter(nm => response.notificationMethods.includes(nm.value)).map(nm => nm.value));
             })
             .finally(() => props.setRequestGlobalAction(false))
     }
@@ -78,13 +90,17 @@ const Update = (props) => {
     const getAccounts = () => {
         props.setRequestGlobalAction(true),
         AccountService.getExternalAccounts()
-        .then(response => setAccounts(response))
+        .then(response => {
+            setAccounts(response);
+            if(oldConfig && oldConfig.accountReference) {
+                setAccount(response.find(a => a.reference == oldConfig.accountReference));
+            }
+        })
         .finally(() => props.setRequestGlobalAction(false))
     }
 
-
     const onSubmit = () => {
-        if(!paymentMethod || !notificationMethod || (paymentMethod.includes('DEPOSIT') && !account) || !label || !type || !nature || !startDate || !endDate || (selectedOrders.length <= 0 && selectedProducts.length <= 0)) {
+        if(!paymentMethod || !notificationMethod || (paymentMethod.includes('DEPOSIT') && !account) || !label || !type || !nature || !startDate || !endDate || (selectedOrders?.length <= 0 && selectedProducts?.length <= 0)) {
             NotificationManager.error("Le formulaire est mal renseigné");
             return;
         }
@@ -113,7 +129,7 @@ const Update = (props) => {
         }
 
         props.setRequestGlobalAction(true);
-        PaymentConfigService.create(data)
+        PaymentConfigService.update(props.match.params.id, data)
             .then(() => {
                 props.history.push(MARKETPLACE.STORE.PAYMENT.CONFIGURATION.LIST)
             })

@@ -3,13 +3,17 @@ import { Link } from 'react-router-dom';
 import React, { Component } from 'react';
 import Button from '@material-ui/core/Button';
 import { MARKETPLACE } from 'Url/frontendUrl';
+import IconButton from '@material-ui/core/IconButton';
 import { Scrollbars } from 'react-custom-scrollbars';
-import { getFilePath, getPrice, getPriceWithCurrency, addCurrency } from 'Helpers/helpers';
+import CreateComplementaryPaymentModal from './createComplementaryPayment';
+import { getFilePath, getPrice, getPriceWithCurrency } from 'Helpers/helpers';
 
 class CheckoutItem extends Component<any, any> {
 
    state = {
       success: false,
+      payments: [],
+      showComplementaryPaymentModal: false
    }
 
    onConfirm(key) {
@@ -52,6 +56,7 @@ class CheckoutItem extends Component<any, any> {
 
    render() {
       const { cart } = this.props;
+      const { showComplementaryPaymentModal, payments } = this.state;
       return (
          <div className="checkout-item-wrap p-4">
             <div className="border-bottom d-flex justify-content-between align-items-center p-3">
@@ -87,20 +92,65 @@ class CheckoutItem extends Component<any, any> {
                      ))}
                   </ul>
                </Scrollbars>
-            )
-            }
+            )}
             <div className="border-top d-flex justify-content-between align-items-center py-4">
                <span className="font-weight-bold text-muted">Total</span>
                <span className="font-weight-bold"><span style={this.props.discount?.percentage && { textDecoration: 'line-through', color: 'red' } }>{this.getAmountToPay()} {cart.items[0]?.currency}</span> { this.props.discount?.percentage && <>{this.getDiscountedAmountToPay()} {cart.items[0]?.currency}</>}</span>
             </div>
-            <div className="d-flex justify-content-end align-items-center">
+            {!this.isCartEmpty() && (
+               <div>
+                  <div className="border-top d-flex justify-content-between align-items-center py-4">
+                     <span className="font-weight-bold text-muted w-100">Encaissements complémentaires</span>
+                  </div>
+                  <ul className="list-unstyled dropdown-body">
+                     {payments.map((payment, key) => (
+                        <li className="d-flex justify-content-between mb-4" key={key}>
+                           <div className="w-70 d-flex align-items-center">
+                              <span className="fs-14 d-block text-truncate">{payment.label}</span>
+                           </div>
+                           <div className="w-20 d-flex align-items-center">
+                              <span className="fs-12 d-block text-right">{getPriceWithCurrency(payment.amount, cart.currency)}</span>
+                           </div>
+                           { payment.deletable && (
+                              <div className="w-10 d-flex align-items-center">
+                                 <IconButton onClick={() => this.setState({ payments: [...payments.filter(p => p != payment)] }, () => {
+                                    this.props.updatePayments([...payments.filter(p => p != payment)])
+                                 })}>
+                                    <i className="zmdi zmdi-close"></i>
+                                 </IconButton>
+                              </div>
+                           )}
+                        </li>
+                     ))}
+                  </ul>
+                  <div className="d-flex justify-content-end align-items-center mt-10">
+                     <Button variant="contained" color="secondary" className="text-white" onClick={() => {
+                        this.setState({ showComplementaryPaymentModal: true })
+                     }}>
+                        Ajouter +
+                     </Button>
+                  </div>
+               </div>
+            )}
+            <div className="d-flex justify-content-end align-items-center mt-30">
                {this.isCartEmpty() && (
-                  <Button variant="contained" color="secondary" component={Link} to={MARKETPLACE} className="text-white">
+                  <Button variant="contained" color="secondary" component={Link} to={MARKETPLACE.SHOP.SELF} className="text-white w-100">
                      MicroCap Store
                   </Button>
                )
                }
             </div>
+            { showComplementaryPaymentModal && (
+               <CreateComplementaryPaymentModal
+                  show={showComplementaryPaymentModal}
+                  onSubmit={(data) => {
+                     this.setState({ showComplementaryPaymentModal: false, payments: [...payments, data]}, () => {
+                        this.props.updatePayments([...payments, data])
+                     });
+                  }}
+                  onClose={() => this.setState({ showComplementaryPaymentModal: false})}
+               />
+            )}
          </div>
       )
    }
