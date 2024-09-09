@@ -31,8 +31,6 @@ const Create = (props) => {
     const [products, setProducts] = useState([]);
     const [account, setAccount] = useState(null);
     const [startDate, setStartDate] = useState(null);
-    const [otherPhone, setOtherPhone] = useState(null);
-    const [otherEmail, setOtherEmail] = useState(null);
     const [selectedOrders, setSelectedOrders] = useState([]);
     const [selectedProducts, setSelectedProducts] = useState([]);
     const [notificationMethod, setNotificationMethod] = useState(['LOGIN_EMAIL', 'ADDRESS']);
@@ -92,14 +90,6 @@ const Create = (props) => {
 
         if(paymentMethod.includes('DEPOSIT')) {
             data.accountReference = account.reference
-        }
-
-        if(otherEmail) {
-            data.otherEmail = otherEmail
-        }
-
-        if(otherPhone) {
-            data.otherPhone = otherPhone
         }
 
         props.setRequestGlobalAction(true);
@@ -294,32 +284,6 @@ const Create = (props) => {
                         />
                     </FormGroup>
                 )}
-                <FormGroup className="col-md-6 col-sm-12 has-wrapper">
-                    <InputLabel className="text-left" htmlFor="otherEmail">
-                        Autre email (facultatif)
-                    </InputLabel>
-                    <InputStrap
-                        type="text"
-                        id="otherEmail"
-                        name='otherEmail'
-                        value={otherEmail}
-                        className="input-lg"
-                        onChange={(e) => setOtherEmail(e.target.value)}
-                    />
-                </FormGroup>
-                <FormGroup className="col-md-6 col-sm-12 has-wrapper">
-                    <InputLabel className="text-left" htmlFor="otherPhone">
-                        Autre téléphone (facultatif)
-                    </InputLabel>
-                    <InputStrap
-                        type="text"
-                        id="otherPhone"
-                        name='otherPhone'
-                        value={otherPhone}
-                        className="input-lg"
-                        onChange={(e) => setOtherPhone(e.target.value)}
-                    />
-                </FormGroup>
             </div>
             
             <div className="row mt-20">

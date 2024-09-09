@@ -32,8 +32,6 @@ const Update = (props) => {
     const [account, setAccount] = useState(null);
     const [oldConfig, setOldConfig] = useState(null);
     const [startDate, setStartDate] = useState(null);
-    const [otherPhone, setOtherPhone] = useState(null);
-    const [otherEmail, setOtherEmail] = useState(null);
     const [selectedOrders, setSelectedOrders] = useState([]);
     const [selectedProducts, setSelectedProducts] = useState([]);
     const [notificationMethod, setNotificationMethod] = useState(['LOGIN_EMAIL', 'ADDRESS']);
@@ -61,10 +59,8 @@ const Update = (props) => {
                 setLabel(response.label);
                 setEndDate(response.endDate);
                 setStartDate(response.startDate);
-                setOtherEmail(response.otherEmail);
                 setSelectedOrders(response.orders);
                 setSelectedProducts(response.products);
-                setOtherPhone(response.otherPhoneNumber);
                 setType(getPaymentConfigTypes().find(t => t.value == response.type));
                 setNature(getPaymentConfigNatures().find(t => t.value == response.nature));
                 setPaymentMethod(getPaymentMethods().filter(pm => response.paymentMethods.includes(pm.value)).map(pm => pm.value));
@@ -118,14 +114,6 @@ const Update = (props) => {
 
         if(paymentMethod.includes('DEPOSIT')) {
             data.accountReference = account.reference
-        }
-
-        if(otherEmail) {
-            data.otherEmail = otherEmail
-        }
-
-        if(otherPhone) {
-            data.otherPhone = otherPhone
         }
 
         props.setRequestGlobalAction(true);
@@ -320,32 +308,6 @@ const Update = (props) => {
                         />
                     </FormGroup>
                 )}
-                <FormGroup className="col-md-6 col-sm-12 has-wrapper">
-                    <InputLabel className="text-left" htmlFor="otherEmail">
-                        Autre email (facultatif)
-                    </InputLabel>
-                    <InputStrap
-                        type="text"
-                        id="otherEmail"
-                        name='otherEmail'
-                        value={otherEmail}
-                        className="input-lg"
-                        onChange={(e) => setOtherEmail(e.target.value)}
-                    />
-                </FormGroup>
-                <FormGroup className="col-md-6 col-sm-12 has-wrapper">
-                    <InputLabel className="text-left" htmlFor="otherPhone">
-                        Autre téléphone (facultatif)
-                    </InputLabel>
-                    <InputStrap
-                        type="text"
-                        id="otherPhone"
-                        name='otherPhone'
-                        value={otherPhone}
-                        className="input-lg"
-                        onChange={(e) => setOtherPhone(e.target.value)}
-                    />
-                </FormGroup>
             </div>
             
             <div className="row mt-20">

@@ -87,6 +87,14 @@ class OrderForm extends Component<any, any> {
             data.subscriptionCode = informations.subscriptionCode;
         }
 
+        if(informations.otherPhone) {
+            data.otherPhone = informations.otherPhone;
+        }
+
+        if(informations.otherEmail) {
+            data.otherEmail = informations.otherEmail;
+        }
+
         if(this.props.isPreOrder) {
             data.isPreOrder = true;
         }

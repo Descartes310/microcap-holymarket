@@ -475,7 +475,7 @@ class BillingForm extends Component<any, any> {
                   variant="contained"
                   className='text-white'
                   disabled={!this.isFormValid()}
-                  onClick={() => this.props.onSubmit({discountCode: this.state.discountCode, subscriptionCode: this.state.subscriptionCode, billingInformation: this.state.billingInformation, shippingInformation: this.state.shippingInformation})}
+                  onClick={() => this.props.onSubmit({otherPhone: this.state.otherPhone, otherEmail: this.state.otherEmail, discountCode: this.state.discountCode, subscriptionCode: this.state.subscriptionCode, billingInformation: this.state.billingInformation, shippingInformation: this.state.shippingInformation})}
                >
                   Enregistrer ma commande
                </Button>

@@ -43,13 +43,13 @@ class CheckoutItem extends Component<any, any> {
 
    getAmountToPay = () => {
       let baseAmount = this.getTotalPrice();
-      return baseAmount;
+      return baseAmount + this.state.payments.map(p => Number(p.amount)).reduce((sum, current) => sum + current, 0);
    }
 
   getDiscountedAmountToPay = () => {
       let baseAmount = this.getTotalPrice();
       if(this.props.discount) {
-         baseAmount = baseAmount - (baseAmount * this.props.discount.percentage/100);
+         baseAmount = baseAmount +  + this.state.payments.map(p => Number(p.amount)).reduce((sum, current) => sum + current, 0) - (baseAmount * this.props.discount.percentage/100);
       }
       return baseAmount;
   }
@@ -95,7 +95,7 @@ class CheckoutItem extends Component<any, any> {
             )}
             <div className="border-top d-flex justify-content-between align-items-center py-4">
                <span className="font-weight-bold text-muted">Total</span>
-               <span className="font-weight-bold"><span style={this.props.discount?.percentage && { textDecoration: 'line-through', color: 'red' } }>{this.getAmountToPay()} {cart.items[0]?.currency}</span> { this.props.discount?.percentage && <>{this.getDiscountedAmountToPay()} {cart.items[0]?.currency}</>}</span>
+               <span className="font-weight-bold">{this.getTotalPrice()} {cart.items[0]?.currency}</span>
             </div>
             {!this.isCartEmpty() && (
                <div>
@@ -132,6 +132,10 @@ class CheckoutItem extends Component<any, any> {
                   </div>
                </div>
             )}
+            <div className="border-top d-flex justify-content-between align-items-center py-4 mt-30">
+               <span className="font-weight-bold text-muted">Total</span>
+               <span className="font-weight-bold"><span style={this.props.discount?.percentage && { textDecoration: 'line-through', color: 'red' } }>{this.getAmountToPay()} {cart.items[0]?.currency}</span> { this.props.discount?.percentage && <>{this.getDiscountedAmountToPay()} {cart.items[0]?.currency}</>}</span>
+            </div>
             <div className="d-flex justify-content-end align-items-center mt-30">
                {this.isCartEmpty() && (
                   <Button variant="contained" color="secondary" component={Link} to={MARKETPLACE.SHOP.SELF} className="text-white w-100">

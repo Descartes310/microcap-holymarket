@@ -127,7 +127,7 @@ const OrderDetails = (props) => {
                                     <td>
                                         <div className="media">
                                             <div className="media-body pt-10">
-                                                <h4 className="m-0 text-dark">{getPriceWithCurrency(order.core.amount, order.core.currency)}</h4>
+                                                <h4 className="m-0 text-dark">{getPriceWithCurrency(order.core.amount + order.core.complementaryPayment, order.core.currency)}</h4>
                                             </div>
                                         </div>
                                     </td>
@@ -159,7 +159,7 @@ const OrderDetails = (props) => {
                                     <td>
                                         <div className="media">
                                             <div className="media-body pt-10">
-                                                <h4 className="m-0 text-dark">{order.core.discountCode ? getPriceWithCurrency(order.core.amount - (order.core.amount * order.core.discountPercentage/100), order.core.currency) : getPriceWithCurrency(order.core.amount, order.core.currency)}</h4>
+                                                <h4 className="m-0 text-dark">{order.core.discountCode ? getPriceWithCurrency(order.core.amount + order.core.complementaryPayment - (order.core.amount * order.core.discountPercentage/100), order.core.currency) : getPriceWithCurrency(order.core.amount + order.core.complementaryPayment, order.core.currency)}</h4>
                                             </div>
                                         </div>
                                     </td>
