@@ -12,7 +12,7 @@ class CheckoutItem extends Component<any, any> {
 
    state = {
       success: false,
-      payments: [],
+      payments: this.props.payments ?? [],
       showComplementaryPaymentModal: false
    }
 
@@ -111,15 +111,16 @@ class CheckoutItem extends Component<any, any> {
                            <div className="w-20 d-flex align-items-center">
                               <span className="fs-12 d-block text-right">{getPriceWithCurrency(payment.amount, cart.currency)}</span>
                            </div>
-                           { payment.deletable && (
+                           
                               <div className="w-10 d-flex align-items-center">
-                                 <IconButton onClick={() => this.setState({ payments: [...payments.filter(p => p != payment)] }, () => {
-                                    this.props.updatePayments([...payments.filter(p => p != payment)])
-                                 })}>
-                                    <i className="zmdi zmdi-close"></i>
-                                 </IconButton>
+                                 { payment.deletable && (
+                                    <IconButton onClick={() => this.setState({ payments: [...payments.filter(p => p != payment)] }, () => {
+                                       this.props.updatePayments([...payments.filter(p => p != payment)])
+                                    })}>
+                                       <i className="zmdi zmdi-close"></i>
+                                    </IconButton>
+                                 )}
                               </div>
-                           )}
                         </li>
                      ))}
                   </ul>

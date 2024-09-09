@@ -54,8 +54,17 @@ class BillingForm extends Component<any, any> {
       this.getContacts();
       this.getCountries();
       if(this.props.cart.count() > 0) {
-         console.log(this.props.cart);
          this.findPaymentConfig();
+      }
+      if(this.props.subscriptionCode) {
+         this.setState({ subscriptionCode: this.props.subscriptionCode, showSubscriptionCodeField: true }, () => {
+            this.findSubscriptionCode()
+         })
+      }
+      if(this.props.discountCode) {
+         this.setState({ discountCode: this.props.discountCode, showDiscountField: true }, () => {
+            this.findDiscount()
+         })
       }
    }
 

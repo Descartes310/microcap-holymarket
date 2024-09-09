@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import QueueAnim from 'rc-queue-anim';
 import { Link } from 'react-router-dom';
 import { injectIntl } from "react-intl";
-import { onAddItemToCart } from 'Actions';
+import OrderService from 'Services/orders';
 import AppConfig from 'Constants/AppConfig';
 import IntlMessages from "Util/IntlMessages";
 import SystemService from 'Services/systems';
@@ -12,9 +12,9 @@ import ProductService from 'Services/products';
 import { voteOptions } from './components/data';
 import Toolbar from '@material-ui/core/Toolbar';
 import { setRequestGlobalAction } from 'Actions';
-// import StripeCheckout from 'react-stripe-checkout';
 import React, { useEffect, useState } from 'react';
 import TextField from '@material-ui/core/TextField';
+import { onAddItemToCart, onClearCart } from 'Actions';
 import { getPriceWithCurrency } from 'Helpers/helpers';
 import {NotificationManager} from 'react-notifications';
 import Autocomplete from '@material-ui/lab/Autocomplete';
@@ -22,22 +22,23 @@ import { stripeZeroDecimalCurrencies } from 'Helpers/datas'
 import {HOME, AUTH, LANDING, PME_PROJECT} from "Url/frontendUrl";
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import OrderFormModal from 'Routes/custom/marketplace/checkout/orderFormModal'
-import PaymentRequestModal from 'Routes/custom/marketplace/_components/paymentRequestModal';
-import OrderService from 'Services/orders';
+import CodevSubscriptionModal from 'Routes/custom/marketplace/_components/codevSubscriptionModal';
 
 const VoteOptionProducts = (props) => {
 
     const option = voteOptions.find(vo => vo.id == props.match.params.id)
     const [product, setProduct] = useState(null);
-    const [orderData, setOrderData] = useState(null);
     const [products, setProducts] = useState([]);
+    const [orderData, setOrderData] = useState(null);
     const [myProducts, setMyProducts] = useState([]);
     const [myProduct, setMyProduct] = useState(null);
+    const [codevData, setCodevData] = useState(null);
+    const [paymentData, setPaymentData] = useState(null);
     const [productModel, setProductModel] = useState(null);
     const [productModels, setProductModels] = useState([]);
     const [showOrderModal, setShowOrderModal] = useState(false);
     const [showPaymentModal, setShowPaymentModal] = useState(false);
-    const [paymentData, setPaymentData] = useState(null);
+    const [showSubscriptionModal, setShowSubscriptionModal] = useState(false);
 
     useEffect(() => {
         getMyProducts();
@@ -269,7 +270,12 @@ const VoteOptionProducts = (props) => {
                                                         className="w-100 ml-0 mt-15 text-white"
                                                         onClick={() => {
                                                             addToCart(product);
-                                                            setShowOrderModal(true);
+                                                            console.log(product);
+                                                            if(product.specialProduct == 'CODEV_DEAL_PLAN' || product.specialProduct == 'CODEV') {
+                                                                setShowSubscriptionModal(true);
+                                                            } else {
+                                                                setShowOrderModal(true);
+                                                            }
                                                         }}
                                                     >
                                                         Reserver
@@ -306,54 +312,38 @@ const VoteOptionProducts = (props) => {
                         setShowOrderModal(false);
                         setProduct(null);
                     }}
+                    codevData={codevData}
+                    product={product}
                     onSuccess={(response) => {
                         onSubmit(response);
                         setOrderData(response)
                         getProducts();
                         setShowOrderModal(false);
                         setProduct(null);
+                        props.onClearCart();
                         //setShowPaymentModal(true);
                     }}
                     isPreOrder={true}
                 />
             )}
 
-            {/* { showPaymentModal && orderData && (
-                <PaymentRequestModal
-                    show={showPaymentModal}
-                    hideReference={true}
-                    defaultReference={orderData.reference}
-                    defaultType={orderData.orderType}
-                    sendStripeData={(data) => {
-                        setShowPaymentModal(false);
-                        setOrderData(null);
-                        setPaymentData(data);
-                    }}
+            { showSubscriptionModal && product && (
+                <CodevSubscriptionModal
+                    show={showSubscriptionModal}
                     onClose={() => {
-                        setShowPaymentModal(false);
-                        setOrderData(null);
+                        setShowSubscriptionModal(false);
+                        setProduct(null);
+                        props.onClearCart();
                     }}
+                    onSendData={(data) => {
+                        setShowSubscriptionModal(false);
+                        setCodevData(data);
+                        setShowOrderModal(true);
+                    }}
+                    product={product}
                 />
-            )} */}
+            )}
 
-            {/* <StripeCheckout
-                name={'MicroCap'}
-                token={onStripePayment}
-                amount={computePrice()}
-                currency={paymentData ? paymentData.currency : 'EUR'}
-                stripeKey={AppConfig.payments.stripe}
-                description={'Règlement de la facture'}
-                image={require('Assets/identity/logomicrocap.png')}
-            >
-                <Button
-                    color="primary"
-                    id="stripe-id"
-                    className="w-100 ml-0 mt-15 text-white"
-                    style={{ display: 'none' }}
-                >
-                    Payer
-                </Button>
-            </StripeCheckout> */}
         </QueueAnim>
     );
 };
@@ -362,4 +352,4 @@ const mapStateToProps = ({ authUser }) => {
     return { authUser: authUser.data, }
 };
 
-export default connect(mapStateToProps, { setRequestGlobalAction, onAddItemToCart })(injectIntl(VoteOptionProducts));
+export default connect(mapStateToProps, { setRequestGlobalAction, onAddItemToCart, onClearCart })(injectIntl(VoteOptionProducts));

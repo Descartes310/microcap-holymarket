@@ -17,7 +17,7 @@ class OrderForm extends Component<any, any> {
         showSweetAlert: false,
         order: null,
         discount: null,
-        payments: []
+        payments: this.props.codevData ? [{label: 'Versement CODEV', amount: (Number(this.props.codevData.subscriptionCount)*Number(this.props.codevData.unitAmount) + Number(this.props.codevData.subscription)).toString(), editable: false}] : []
     }
 
     validateBillingForm = (informations) => {
@@ -122,7 +122,7 @@ class OrderForm extends Component<any, any> {
     }
 
     render() {
-        const { successMessage } = this.props;
+        const { successMessage, codevData } = this.props;
         const { showSweetAlert } = this.state;
         return (
             <>
@@ -132,11 +132,11 @@ class OrderForm extends Component<any, any> {
                         <div className="row no-gutters">
                             <div className="col-lg-8 col-md-12 col-sm-12">
                                 <RctCollapsibleCard>
-                                    <BillingForm updateDiscount={(d) => this.setState({ discount: d})} onSubmit={this.validateBillingForm} productIds={this.props.cart.items.map(product => product.id)} />
+                                    <BillingForm discountCode={codevData.discountCode ?? null} subscriptionCode={codevData.subscriptionCode ?? null} updateDiscount={(d) => this.setState({ discount: d})} onSubmit={this.validateBillingForm} productIds={this.props.cart.items.map(product => product.id)} />
                                 </RctCollapsibleCard>
                             </div>
                             <div className="col-lg-4 col-md-12 col-sm-12">
-                                <CheckoutItem discount={this.state.discount} updatePayments={(data) => { this.setState({ payments: data });}}/>
+                                <CheckoutItem discount={this.state.discount} updatePayments={(data) => { this.setState({ payments: data });}} payments={this.state.payments} />
                             </div>
                         </div>
                     </RctCardContent>
