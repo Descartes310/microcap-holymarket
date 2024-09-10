@@ -11,7 +11,7 @@ import DialogComponent from "Components/dialog/DialogComponent";
 
 const PaymentRequestModal = (props) => {
 
-    const {show, onClose, defaultReference, defaultType, hideReference, sendPaymentData} = props;
+    const {show, onClose, defaultReference, defaultType, hideReference, sendPaymentData, disabled} = props;
 
     const [paymentData, setPaymentData] = useState(null);
 
@@ -69,6 +69,7 @@ const PaymentRequestModal = (props) => {
                     onError={() => {
                         onClose();
                     }}
+                    disabled={disabled}
                     onSendData={(data) => {
                         setPaymentData(data);
                     }}

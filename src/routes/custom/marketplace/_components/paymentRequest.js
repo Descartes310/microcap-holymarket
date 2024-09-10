@@ -16,7 +16,7 @@ import { getOrderTypes, getPaymentMethods, getNotificationMethods } from 'Helper
 
 const PaymentRequest = (props) => {
 
-    const {onError, defaultReference, defaultType, hideReference, onSendData, defaultPaymentMethod} = props;
+    const {onError, defaultReference, defaultType, hideReference, onSendData, defaultPaymentMethod, disabled} = props;
 
     const [order, setOrder] = useState(null);
     const [amount, setAmount] = useState(null);
@@ -38,12 +38,18 @@ const PaymentRequest = (props) => {
         } else {
             setAccounts([])
         }
-    }, [paymentMethod]);
+    }, [paymentMethod, order]);
 
     const getAccounts = () => {
         props.setRequestGlobalAction(true),
         AccountService.getExternalAccounts()
-        .then(response => setAccounts(response))
+        .then(response => {
+            setAccounts(response);
+            console.log(order?.details.find(d => d.type == "MECHANT_ACCOUNT_REFERENCE")?.value);
+            if(order && order?.details.find(d => d.type == "MECHANT_ACCOUNT_REFERENCE")) {
+                setAccount(response.find(a => a.accountReference == order?.details.find(d => d.type == "MECHANT_ACCOUNT_REFERENCE")?.value));
+            }
+        })
         .finally(() => props.setRequestGlobalAction(false))
     }
 
@@ -54,18 +60,18 @@ const PaymentRequest = (props) => {
     }, [defaultReference])
 
     useEffect(() => {
-        if(order && discountCode) {
-            findDiscount();
+        if(order) {
+            if(discountCode) {
+                findDiscount();
+            } else {
+                setAmount(getDiscountedAmountToPay());
+            }
          }
     }, [order])
 
     useEffect(() => {
-        if(order && !order?.product.acceptManyPayment) {
-            if(discount) {
-                setAmount(getDiscountedAmountToPay())
-            } else {
-                setAmount(order.amount);
-            }
+        if(order) {
+            setAmount(getDiscountedAmountToPay())
          }
     }, [discount])
 
@@ -73,13 +79,18 @@ const PaymentRequest = (props) => {
         props.setRequestGlobalAction(true);
         OrderService.findOrderByReference(ref).then((response) => {
             if(response.discountCode) {
-                setDiscountCode(response.discountCode);
                 setShowDiscountField(true);
+                setDiscountCode(response.discountCode);
             }
             if(!response?.product.acceptManyPayment) {
                 setAmount(response.amount);
             }
-           setOrder(response);
+            console.log(response);
+            setNotificationMethod(response?.details.find(d => d.type == 'NOTICATION_METHODS')?.value?.split(",") ?? []);
+            setPaymentMethod(response?.details.find(d => d.type == 'PAYMENT_METHOD')?.value?.split(",") ?? []);
+            setOtherEmail(response?.details.find(d => d.type == 'OTHER_NOTIFICATION_EMAIL')?.value ?? null)
+            setOtherPhone(response?.details.find(d => d.type == 'OTHER_NOTIFICATION_PHONE')?.value ?? null)
+            setOrder(response);
         }).catch(() => {
             NotificationManager.error("Une erreur s'est produite");
             onError();
@@ -171,6 +182,7 @@ const PaymentRequest = (props) => {
                                 setType(item);
                             }}
                             getOptionLabel={(option) => option.label}
+                            disabled={disabled}
                             renderInput={(params) => <TextField {...params} variant="outlined" />}
                         />
                     </FormGroup>
@@ -186,6 +198,7 @@ const PaymentRequest = (props) => {
                             name='reference'
                             value={reference}
                             className="input-lg"
+                            disabled={disabled}
                             onChange={(e) => setReference(e.target.value)}
                         />
                     </FormGroup>
@@ -225,7 +238,7 @@ const PaymentRequest = (props) => {
                     value={amount}
                     className="input-lg"
                     onChange={(e) => setAmount(e.target.value)}
-                    disabled={!order || !order.product.acceptManyPayment || getAmountToPay() <= 0}
+                    disabled={!order || !order.product.acceptManyPayment || getAmountToPay() <= 0 || disabled}
                 />
             </FormGroup>
 
@@ -236,7 +249,7 @@ const PaymentRequest = (props) => {
                         <FormControlLabel control={
                             <Checkbox
                                 color="primary"
-                                disabled={!pm.enabled || defaultPaymentMethod != null}
+                                disabled={!pm.enabled || defaultPaymentMethod != null || disabled}
                                 checked={paymentMethod.includes(pm.value)}
                                 onChange={() => {
                                     if(!paymentMethod.includes(pm.value)) {
@@ -263,6 +276,7 @@ const PaymentRequest = (props) => {
                         onChange={(__, item) => {
                             setAccount(item);
                         }}
+                        disabled={disabled}
                         getOptionLabel={(option) => option.label}
                         renderInput={(params) => <TextField {...params} variant="outlined" />}
                     />
@@ -276,6 +290,7 @@ const PaymentRequest = (props) => {
                         <FormControlLabel control={
                             <Checkbox
                                 color="primary"
+                                disabled={disabled}
                                 checked={notificationMethod.includes(nm.value)}
                                 onChange={() => {
                                     if(!notificationMethod.includes(nm.value)) {
@@ -298,6 +313,7 @@ const PaymentRequest = (props) => {
                         id="otherEmail"
                         name='otherEmail'
                         value={otherEmail}
+                        disabled={disabled}
                         className="input-lg"
                         onChange={(e) => setOtherEmail(e.target.value)}
                     />
@@ -311,6 +327,7 @@ const PaymentRequest = (props) => {
                         id="otherPhone"
                         name='otherPhone'
                         value={otherPhone}
+                        disabled={disabled}
                         className="input-lg"
                         onChange={(e) => setOtherPhone(e.target.value)}
                     />

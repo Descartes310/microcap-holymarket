@@ -17,7 +17,7 @@ class OrderForm extends Component<any, any> {
         showSweetAlert: false,
         order: null,
         discount: null,
-        payments: this.props.codevData ? [{label: 'Versement CODEV', amount: (Number(this.props.codevData.subscriptionCount)*Number(this.props.codevData.unitAmount) + Number(this.props.codevData.subscription)).toString(), editable: false}] : []
+        payments: this.props.codevData ? [{label: 'Versement CODEV', amount: (Number(this.props.codevData.subscriptionCount)*Number(this.props.codevData.unitAmount)).toString(), editable: false}] : []
     }
 
     validateBillingForm = (informations) => {

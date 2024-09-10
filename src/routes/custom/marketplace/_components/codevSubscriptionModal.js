@@ -21,11 +21,6 @@ const CodevSubscriptionModal = (props) => {
     const [subscriptionCount, setSubscriptionCount] = useState(null);
     const [showSubscriptionCodeField, setShowSubscriptionCodeField] = useState(false);
     const [unitAmount, setUnitAmount] = useState(product?.details.find(d => d.type == 'DEPOSIT_AMOUNT')?.value);
-    const [subscription, setSubscription] = useState(product?.details.find(d => d.type == 'SUBSCRIPTION_FEES')?.value);
-
-    useEffect(() => {
-        console.log(product);
-    }, []);
 
     const findDiscount = () => {
         if(showDiscountField && discountCode) {
@@ -54,15 +49,23 @@ const CodevSubscriptionModal = (props) => {
            })
            .finally(() => props.setRequestGlobalAction(false))
         }
+    }
+  
+    const getDiscountedAmountToPay = () => {
+        let baseAmount = product?.price;
+        if(discount) {
+           baseAmount = baseAmount - (baseAmount * discount.percentage/100);
+        }
+        return baseAmount;
      }
 
     const onSubmit = () => {
-        if(!subscriptionCount || !unitAmount || !subscription) {
+        if(!subscriptionCount || !unitAmount) {
             NotificationManager.error("Le formulaire n'est pas bien renseigné");
             return;
         }
         let data = {
-            subscriptionCount, subscription, unitAmount
+            subscriptionCount, unitAmount
         }
         if(discount && discountCode) {
             data.discountCode = discountCode
@@ -173,7 +176,7 @@ const CodevSubscriptionModal = (props) => {
                     <div className="d-flex">
                         <FormGroup className="col-sm-12 has-wrapper">
                             <InputLabel className="text-left" htmlFor="subscriptionCode">
-                            Code de reservation
+                                Code de reservation
                             </InputLabel>
                             <InputGroup>
                                 <InputStrap
@@ -203,12 +206,11 @@ const CodevSubscriptionModal = (props) => {
                     <InputStrap
                         required
                         type="text"
+                        disabled={true}
                         id="subscription"
                         name='subscription'
-                        value={subscription}
+                        value={getDiscountedAmountToPay()}
                         className="input-lg"
-                        onChange={(e) => setSubscription(e.target.value)}
-                        disabled={product?.details.find(d => d.type == 'SUBSCRIPTION_FEES')?.value}
                     />
                 </FormGroup>
 
@@ -268,7 +270,7 @@ const CodevSubscriptionModal = (props) => {
                         disabled={true}
                         id="totalAmount"
                         name='totalAmount'
-                        value={Number(subscriptionCount)*Number(unitAmount) + product?.price}
+                        value={Number(subscriptionCount)*Number(unitAmount) + getDiscountedAmountToPay()}
                         className="input-lg"
                     />
                 </FormGroup>

@@ -1,4 +1,5 @@
 import React from 'react';
+import orders from './orders';
 import Options from './options';
 import Tickets from './tickets';
 import Payments from './payments';
@@ -18,6 +19,7 @@ const Store = (props) => {
                 <Switch>
                     <Redirect exact from={`${match.url}/`} to={MARKETPLACE.STORE.PRODUCT.SELF} />
                     <Route path={MARKETPLACE.STORE.PAYMENT.SELF} component={Payments} />
+                    <Route path={MARKETPLACE.STORE.ORDER.SELF} component={orders} />
                     <Route path={MARKETPLACE.STORE.PRODUCT.SELF} component={Products} />
                     <Route path={MARKETPLACE.STORE.PURCHASE.SELF} component={Purchases} />
                     <Route path={MARKETPLACE.STORE.OPTION.SELF} component={Options} />

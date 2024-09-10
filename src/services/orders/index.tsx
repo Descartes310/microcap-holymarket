@@ -32,6 +32,10 @@ export default class OrderService {
         return makeRequest('get', Routes.GET_SALES(id));
     }
 
+    static getAllSales(): Promise<any> {
+        return makeRequest('get', Routes.GET_ALL_SALES);
+    }
+
     static paySale(id, data: any): Promise<any> {
         return makeRequest('post', Routes.PAY_ORDER(id), data);
     }

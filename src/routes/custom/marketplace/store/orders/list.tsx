@@ -6,6 +6,7 @@ import CustomList from "Components/CustomList";
 import { setRequestGlobalAction } from 'Actions';
 import React, { useState, useEffect } from 'react';
 import { getOrderStatusItem } from 'Helpers/helpers';
+import ConfirmBox from "Components/dialog/ConfirmBox";
 import TimeFromMoment from 'Components/TimeFromMoment';
 import {NotificationManager} from 'react-notifications';
 import OrderDetails from '../../_components/orderDetails';
@@ -20,6 +21,7 @@ const List = (props) => {
     const [dropdownOpen, setDropdownOpen] = useState([]);
     const [showDetails, setShowDetails] = useState(false);
     const [selectedItem, setSelectedItem] = useState(null);
+    const [showConfirmBox, setShowConfirmBox] = useState(false);
     const [showPaymentRequest, setShowPaymentRequest] = useState(false);
     const [showAccountAgreementBox, setShowAccountAgreementBox] = useState(false);
 
@@ -40,9 +42,9 @@ const List = (props) => {
         .finally(() => props.setRequestGlobalAction(false))
     }
 
-    const sendPaymentRequest = (paymentData: any) => {
+    const sendPaymentRequest = (item: any) => {
         props.setRequestGlobalAction(true)
-        OrderService.initiatePayment(paymentData.reference, paymentData)
+        OrderService.initiatePayment(item.reference, {})
         .then(() => {
              NotificationManager.success('Opération réussie');
              setShowPaymentRequest(false);
@@ -147,6 +149,7 @@ const List = (props) => {
                                                                         setShowAccountAgreementBox(false);
                                                                         setShowDetails(false); 
                                                                         setShowPaymentRequest(true);
+                                                                        // setShowConfirmBox(true);
                                                                     }}
                                                                 >
                                                                     Encaissement
@@ -197,6 +200,7 @@ const List = (props) => {
 
                         { showPaymentRequest && selectedItem && (
                             <PaymentRequestModal
+                                disabled={true}
                                 show={showPaymentRequest}
                                 defaultType={selectedItem?.orderType}
                                 defaultReference={selectedItem?.reference}
@@ -206,6 +210,21 @@ const List = (props) => {
                                 }}
                             />
                         )}
+
+                        {/* { selectedItem && showConfirmBox && (
+                            <ConfirmBox
+                                show={showConfirmBox}
+                                rightButtonOnClick={() => {
+                                    setShowConfirmBox(false);
+                                    setShowPaymentRequest(true);
+                                }}
+                                leftButtonOnClick={() => {
+                                    setSelectedItem(null);
+                                    setShowConfirmBox(false);
+                                }}
+                                message={'Etes-vous sure de vouloir relancer la demande d\'encaissement ?'}
+                            />
+                        )} */}
                     </>
                 )}
             />

@@ -37,7 +37,6 @@ const VoteOptionProducts = (props) => {
     const [productModel, setProductModel] = useState(null);
     const [productModels, setProductModels] = useState([]);
     const [showOrderModal, setShowOrderModal] = useState(false);
-    const [showPaymentModal, setShowPaymentModal] = useState(false);
     const [showSubscriptionModal, setShowSubscriptionModal] = useState(false);
 
     useEffect(() => {
@@ -66,7 +65,7 @@ const VoteOptionProducts = (props) => {
 
     const getProducts = () => {
 		props.setRequestGlobalAction(true);
-		ProductService.getShopProducts({ model_reference: productModel.reference })
+		ProductService.getShopProducts({ model_reference: productModel.product.reference })
 			.then(response => setProducts(response))
 			.finally(() => props.setRequestGlobalAction(false))
 	}
@@ -244,7 +243,7 @@ const VoteOptionProducts = (props) => {
                                                         onChange={(__, item) => {
                                                             setProductModel(item);
                                                         }}
-                                                        getOptionLabel={(option) => `${option.label}`}
+                                                        getOptionLabel={(option) => `${option.product.label} (${option.value})`}
                                                         renderInput={(params) => <TextField {...params} variant="outlined" />}
                                                     />
                                                 </FormGroup>
@@ -270,7 +269,6 @@ const VoteOptionProducts = (props) => {
                                                         className="w-100 ml-0 mt-15 text-white"
                                                         onClick={() => {
                                                             addToCart(product);
-                                                            console.log(product);
                                                             if(product.specialProduct == 'CODEV_DEAL_PLAN' || product.specialProduct == 'CODEV') {
                                                                 setShowSubscriptionModal(true);
                                                             } else {

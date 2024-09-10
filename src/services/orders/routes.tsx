@@ -1,5 +1,6 @@
 export const GET_ORDERS = 'api/orders';
 export const CREATE_ORDER = 'api/orders';
+export const GET_ALL_SALES = 'api/orders/sales';
 export const GET_PURCHASES = 'api/orders/purchases';
 export const FIND_ORDER = (id) => `api/orders/${id}`;
 export const CREATE_PRE_ORDER = 'api/orders/pre-order';
