@@ -2,9 +2,12 @@ import { connect } from "react-redux";
 import { injectIntl } from "react-intl";
 import React, { Component } from 'react';
 import BankService from 'Services/banks';
+import UnitService from 'Services/units';
 import { withRouter } from "react-router-dom";
 import { setRequestGlobalAction } from 'Actions';
 import { RctCardContent } from 'Components/RctCard';
+import TextField from '@material-ui/core/TextField';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import { NotificationManager } from 'react-notifications';
 import DialogComponent from "Components/dialog/DialogComponent";
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
@@ -13,30 +16,55 @@ import { FormGroup, Button, Input as InputStrap  } from 'reactstrap';
 class CreateInjectionModal extends Component {
   
     state = {
-        amount: null
+        units: [],
+        amount: null,
+        mandates: [],
+        mandate: null,
+        currency: null
     }
 
     constructor(props) {
         super(props);
+        this.getMandates();
+        this.getUnits();
     }    
+
+    getMandates = () => {
+        this.props.setRequestGlobalAction(true),
+        BankService.getMandates()
+        .then(response => this.setState({ mandates: response }))
+        .finally(() => this.props.setRequestGlobalAction(false))
+    }
+
+    getUnits = () => {
+        this.props.setRequestGlobalAction(false);
+        UnitService.getUnits()
+        .then((response) => this.setState({ units: response }))
+        .catch((err) => {
+            console.log(err);
+        })
+        .finally(() => {
+            this.props.setRequestGlobalAction(false);
+        })
+    }
 
     onSubmit = () => {
 
-        const { amount } = this.state;
+        const { amount, mandate, currency } = this.state;
 
-        if(!amount) {
-            NotificationManager.error("Le montant est obligatoire");
+        if(!amount || !mandate || !currency) {
+            NotificationManager.error("Le formulaire est mal renseigné");
             return;
         }
 
         this.props.setRequestGlobalAction(true);
 
-        let data = {amount};
+        let data = {amount, party_reference: mandate.reference, currency: currency.code};
 
         BankService.createInjection(data).then(() => {
-            NotificationManager.success("L'injection a été ajoutée avec succès");
+            NotificationManager.success("L'injection a été demandée avec succès");
         }).catch((err) => {
-            NotificationManager.error("Une erreur est survenu lors de l'ajout de l'injection");
+            NotificationManager.error("Une erreur est survenu lors de la demande d'injection");
         }).finally(() => {
             this.props.onClose();
             this.props.setRequestGlobalAction(false);
@@ -71,6 +99,38 @@ class CreateInjectionModal extends Component {
                             value={this.state.amount}
                             className="input-lg"
                             onChange={(e) => this.setState({ amount: e.target.value })}
+                        />
+                    </FormGroup>
+
+                    <FormGroup className="col-md-12 col-sm-12 has-wrapper">
+                        <InputLabel className="text-left">
+                            Devise
+                        </InputLabel>
+                        <Autocomplete
+                            value={this.state.unit}
+                            id="combo-box-demo"
+                            onChange={(__, item) => {
+                                this.setState({ currency: item });
+                            }}
+                            getOptionLabel={(option) => option.label}
+                            options={this.state.units.filter(u => ['dévise', 'devise', 'devises', 'dévises'].includes(u.type.label.toLowerCase()))}
+                            renderInput={(params) => <TextField {...params} variant="outlined" />}
+                        />
+                    </FormGroup>
+
+                    <FormGroup className="col-md-12 col-sm-12 has-wrapper">
+                        <InputLabel className="text-left">
+                            Banques
+                        </InputLabel>
+                        <Autocomplete
+                            id="combo-box-demo"
+                            value={this.state.mandate}
+                            options={this.state.mandates}
+                            onChange={(__, item) => {
+                                this.setState({ mandate: item });
+                            }}
+                            getOptionLabel={(option) => option.label}
+                            renderInput={(params) => <TextField {...params} variant="outlined" />}
                         />
                     </FormGroup>
                     <FormGroup>

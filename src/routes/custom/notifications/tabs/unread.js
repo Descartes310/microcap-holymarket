@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 import React, { Component } from 'react';
-import AccountService from "Services/accounts";
+import BankService from "Services/banks";
 import ProductService from "Services/products";
 import { setRequestGlobalAction } from "Actions";
 import ConfirmBox from "Components/dialog/ConfirmBox";
@@ -26,9 +26,11 @@ class Unread extends Component {
             notifications: [],
             notification: null,
             showInitDealBox: false,
+            injectionResponse: false,
             showActivationBox: false,
             showActivationPassBox: false,
             showCodevInvitationBox: false,
+            showConfirmInjectionBox: false,
             showAccountActivationBox: false,
             showConfirmCodevInvitationBox: false
         }
@@ -69,12 +71,27 @@ class Unread extends Component {
         });
      }
 
+     responseToInjectionRequest = () => {
+        let injectionReference = this.state.notification.details.find(nd => nd.type === "INJECTION_REFERENCE")?.value;
+        BankService.approveInjection(injectionReference, {
+            approved: this.state.injectionResponse, notification_id: this.state.notification.id
+        })
+        .finally(() => {
+           this.setState({ loading: false, showConfirmInjectionBox: false, notification: null, injectionResponse: false });
+           this.getNotifications();
+        });
+     }
+
     onActivationClick = (notification) => {
         this.setState({ showActivationBox: true, notification })
     };
 
     onActivationPassClick = (notification) => {
         this.setState({ showActivationPassBox: true, notification })
+    };
+
+    onApproveInjection = (notification, status) => {
+        this.setState({ showConfirmInjectionBox: true, notification, injectionResponse: status })
     };
 
     onFundingActivationClick = (notification) => {
@@ -95,7 +112,7 @@ class Unread extends Component {
 
     render() {
         const { notifications, loading, showActivationBox, notification, showInitDealBox,
-            showCodevInvitationBox, showConfirmCodevInvitationBox, showAccountActivationBox } = this.state;
+            showCodevInvitationBox, showConfirmCodevInvitationBox, showAccountActivationBox, showConfirmInjectionBox } = this.state;
 
         if (loading) {
             return (<RctSectionLoader />);
@@ -129,6 +146,7 @@ class Unread extends Component {
                                             onActivationPassClick={() => this.onActivationPassClick(notification)}
                                             onCodevInvitationClick={() => this.onCodevInvitationClick(notification)}
                                             onFundingActivationClick={() => this.onFundingActivationClick(notification)}
+                                            onApproveInjection={(status) => this.onApproveInjection(notification, status)}
                                             onCodevInvitationRequestClick={() => this.onCodevInvitationRequestClick(notification)}
                                         />
                                     ))}
@@ -186,6 +204,17 @@ class Unread extends Component {
                         this.responseToInvitationRequest(false);
                     }}
                     message={"Souhaitez-vous approuver la demande d'invitation?"}
+                />
+
+                <ConfirmBox
+                    show={showConfirmInjectionBox}
+                    rightButtonOnClick={() => {
+                        this.responseToInjectionRequest();
+                    }}
+                    leftButtonOnClick={() => {
+                        this.setState({ loading: false, showConfirmInjectionBox: false, notification: null, injectionResponse: false });
+                    }}
+                    message={"Voulez vous continuer ?"}
                 />
             </div>
         );

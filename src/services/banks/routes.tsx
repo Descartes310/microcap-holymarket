@@ -12,6 +12,7 @@ export const ADD_COVERAGE_TO_PRESTATION = (id) => `api/cashmanagements/prestatio
 export const GET_COVERAGE_TO_PRESTATIONS = (id) => `api/cashmanagements/prestations/coverages/${id}`;
 export const GET_AVAILABLE_COVERAGES = (id) => `api/cashmanagements/prestations/coverages/${id}/availables`;
 
+export const GET_MANDATES = 'api/cashmanagements/mandates';
 export const CREATE_MANDATE = 'api/cashmanagements/mandates';
 export const CREATE_AGENT = 'api/cashmanagements/mandates/agents';
 export const GET_FUND_ACCOUNTS = 'api/cashmanagements/mandates/funding-accounts';
@@ -52,6 +53,7 @@ export const GET_INJECTIONS = 'api/cashmanagements/moneys/injections';
 export const CREATE_INJECTION = 'api/cashmanagements/moneys/injections';
 export const GET_EXTINCTIONS = 'api/cashmanagements/moneys/extinctions';
 export const CREATE_EXTINCTION = 'api/cashmanagements/moneys/extinctions';
+export const APPROVE_INJECTION = (reference) => `api/cashmanagements/moneys/injections/${reference}/approved`;
 
 export const GET_EXPLOITATION_CREDITS = 'api/cashmanagements/moneys/exploitation/credits';
 export const CREATE_EXPLOITATION_CREDIT = 'api/cashmanagements/moneys/exploitation/credits';

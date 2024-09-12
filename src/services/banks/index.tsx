@@ -28,6 +28,10 @@ export default class BankService {
         return makeRequest('post', Routes.CREATE_MANDATE, data);
     }
 
+    static getMandates(): Promise<any> {
+        return makeRequest('get', Routes.GET_MANDATES);
+    }
+
     static getIntermediateParty(): Promise<any> {
         return makeRequest('get', Routes.GET_INTERMEDIATE_PARTIES);
     }
@@ -146,6 +150,10 @@ export default class BankService {
 
     static createInjection(data: any): Promise<any> {
         return makeRequest('post', Routes.CREATE_INJECTION, data);
+    }
+
+    static approveInjection(reference: string, data: any): Promise<any> {
+        return makeRequest('post', Routes.APPROVE_INJECTION(reference), data);
     }
 
     static getInjections(): Promise<any> {
