@@ -1,16 +1,21 @@
 import { connect } from 'react-redux';
 import BankService from 'Services/banks';
 import CreateInjectionModal from './create';
+import Button from '@material-ui/core/Button';
+import { getFilePath } from 'Helpers/helpers';
 import { withRouter } from "react-router-dom";
 import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
+import ActivateInjectionModal from './activate';
 import React, { useState, useEffect } from 'react';
 import TimeFromMoment from "Components/TimeFromMoment";
 
 const List = (props) => {
 
     const [injections, setInjections] = useState([]);
+    const [selectedInjection, setSelectedInjection] = useState(null);
     const [showInjectionCreateBox, setShowInjectionCreateBox] = useState(false);
+    const [showInjectionActivateBox, setShowInjectionActivateBox] = useState(false);
 
     useEffect(() => {
         getInjections();
@@ -49,7 +54,9 @@ const List = (props) => {
                                         <tr>
                                             <th className="fw-bold">Numéro de série</th>
                                             <th className="fw-bold">Montant</th>
+                                            <th className="fw-bold">Justificatif</th>
                                             <th className="fw-bold">Date d'injection</th>
+                                            <th className="fw-bold">Provisionner</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -65,7 +72,14 @@ const List = (props) => {
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <p className="m-0 text-dark">{item.amount} $</p>
+                                                            <p className="m-0 text-dark">{item.amount} {item.currency}</p>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="media">
+                                                        <div className="media-body pt-10">
+                                                            {item.proof ? <p className="m-0 text-dark" onClick={() =>  window.open(getFilePath(item.proof), "_blank")}>Voir le justificatif</p> : <p>-</p>}
                                                         </div>
                                                     </div>
                                                 </td>
@@ -75,6 +89,21 @@ const List = (props) => {
                                                             <p className="m-0 text-dark"><TimeFromMoment time={item.createdAt} format='LLL' /></p>
                                                         </div>
                                                     </div>
+                                                </td>
+                                                <td>
+                                                    { item.status == 'APPROVED' && (
+                                                        <Button
+                                                            color="primary"
+                                                            variant="contained"
+                                                            onClick={() => {
+                                                                setSelectedInjection(item);
+                                                                setShowInjectionActivateBox(true);
+                                                            }}
+                                                            className="text-white font-weight-bold"
+                                                        >
+                                                            Positionner
+                                                        </Button>
+                                                    )}
                                                 </td>
                                             </tr>
                                         ))}
@@ -93,6 +122,18 @@ const List = (props) => {
                         getInjections();
                     }}
                     title={"Création d'un nouvelle injection"}
+                />
+            )}
+
+            { showInjectionActivateBox && selectedInjection && (
+                <ActivateInjectionModal
+                    show={showInjectionActivateBox}
+                    onClose={() => {
+                        setShowInjectionActivateBox(false);
+                        getInjections();
+                    }}
+                    injection={selectedInjection}
+                    title={"Positionner l'injection"}
                 />
             )}
         </>

@@ -3,6 +3,7 @@ import React from 'react';
 import Moneys from './moneys';
 import Clients from './clients';
 import Charges from './charges';
+import Accounts from './accounts';
 import Topic from './chequeTopics';
 import {connect} from "react-redux";
 import Parties from './participants';
@@ -24,6 +25,7 @@ const Bank = (props) => {
                 <Route path={BANK.MONEY.SELF} component={Moneys} />
                 <Route path={BANK.ADMIN.SELF} component={Parties} />
                 <Route path={BANK.CHARGE.SELF} component={Charges} />
+                <Route path={BANK.ACCOUNT.SELF} component={Accounts} />
                 <Route path={BANK.CLIENT.SELF} component={Clients} />
                 <Route path={BANK.CHEQUE_TOPIC.SELF} component={Topic} />
                 <Route path={BANK.PARTY.SELF} component={Intermediary} />

@@ -148,12 +148,16 @@ export default class BankService {
         return makeRequest('put', Routes.PURGE_OPERATIONS, data);
     }
 
-    static createInjection(data: any): Promise<any> {
-        return makeRequest('post', Routes.CREATE_INJECTION, data);
+    static createInjection(data: any, config: any): Promise<any> {
+        return makeRequest('post', Routes.CREATE_INJECTION, data, config);
     }
 
     static approveInjection(reference: string, data: any): Promise<any> {
         return makeRequest('post', Routes.APPROVE_INJECTION(reference), data);
+    }
+
+    static activateInjection(reference: string, data: any, config: any): Promise<any> {
+        return makeRequest('post', Routes.ACTIVATE_INJECTION(reference), data, config);
     }
 
     static getInjections(): Promise<any> {

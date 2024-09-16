@@ -411,7 +411,7 @@ export default [
             "menu_title": "Mes comptes",
             "new_item": false,
             "path": FUNDING.ACCOUNT.LIST,
-            "permissions": [Permission.microcap360.wallets.name],
+            "permissions": [Permission.microcap360.wallets.name, Permission.general.account],
             "profiles": null,
             "child_routes": null
          },
@@ -845,9 +845,9 @@ export default [
          {
             "menu_title": "Comptes",
             "new_item": false,
-            "path": FUNDING.ACCOUNT.LIST,
+            "path": BANK.ACCOUNT.LIST,
             "permissions": null,
-            "profiles": ['PROVIDER_INTERMEDIARY'],
+            "profiles": ['PROVIDER_INTERMEDIARY', 'OPERATOR'],
             "child_routes": null
          },
          {

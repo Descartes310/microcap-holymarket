@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
-import Tooltip from '@material-ui/core/Tooltip';
+import { getFilePath } from "Helpers/helpers";
 import ListItem from "@material-ui/core/ListItem";
-import Button from '@material-ui/core/Button';
 import NotificationType from "Enums/NotificationType";
 import NotificationService from "Services/notifications";
 import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
@@ -74,6 +73,11 @@ class Item extends Component {
                                 )}
                                 { (notification.type === NotificationType.INJECTION_REQUEST && notification.treatedAt == null) && (
                                     <>
+                                        {notification.details.find(nd => nd.type === "INJECTION_PROOF")?.value && (
+                                            <DropdownItem onClick={() => {
+                                                window.open(getFilePath(notification.details.find(nd => nd.type === "INJECTION_PROOF")?.value), "_blank")
+                                            }}>Justificatif</DropdownItem>
+                                        )}
                                         <DropdownItem onClick={() => onApproveInjection(true)}>Accepter</DropdownItem>
                                         <DropdownItem onClick={() => onApproveInjection(false)}>Refuser</DropdownItem>
                                     </>

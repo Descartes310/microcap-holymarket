@@ -54,6 +54,7 @@ export const CREATE_INJECTION = 'api/cashmanagements/moneys/injections';
 export const GET_EXTINCTIONS = 'api/cashmanagements/moneys/extinctions';
 export const CREATE_EXTINCTION = 'api/cashmanagements/moneys/extinctions';
 export const APPROVE_INJECTION = (reference) => `api/cashmanagements/moneys/injections/${reference}/approved`;
+export const ACTIVATE_INJECTION = (reference) => `api/cashmanagements/moneys/injections/${reference}/activate`;
 
 export const GET_EXPLOITATION_CREDITS = 'api/cashmanagements/moneys/exploitation/credits';
 export const CREATE_EXPLOITATION_CREDIT = 'api/cashmanagements/moneys/exploitation/credits';

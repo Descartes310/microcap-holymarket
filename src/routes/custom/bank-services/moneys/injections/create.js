@@ -7,6 +7,7 @@ import { withRouter } from "react-router-dom";
 import { setRequestGlobalAction } from 'Actions';
 import { RctCardContent } from 'Components/RctCard';
 import TextField from '@material-ui/core/TextField';
+import { FileUploader } from "react-drag-drop-files";
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { NotificationManager } from 'react-notifications';
 import DialogComponent from "Components/dialog/DialogComponent";
@@ -17,6 +18,7 @@ class CreateInjectionModal extends Component {
   
     state = {
         units: [],
+        proof: null,
         amount: null,
         mandates: [],
         mandate: null,
@@ -50,7 +52,7 @@ class CreateInjectionModal extends Component {
 
     onSubmit = () => {
 
-        const { amount, mandate, currency } = this.state;
+        const { amount, mandate, currency, proof } = this.state;
 
         if(!amount || !mandate || !currency) {
             NotificationManager.error("Le formulaire est mal renseigné");
@@ -59,9 +61,9 @@ class CreateInjectionModal extends Component {
 
         this.props.setRequestGlobalAction(true);
 
-        let data = {amount, party_reference: mandate.reference, currency: currency.code};
+        let data = {amount, party_reference: mandate.reference, currency: currency.code, proof};
 
-        BankService.createInjection(data).then(() => {
+        BankService.createInjection(data, { fileData: ['proof'], multipart: true }).then(() => {
             NotificationManager.success("L'injection a été demandée avec succès");
         }).catch((err) => {
             NotificationManager.error("Une erreur est survenu lors de la demande d'injection");
@@ -79,7 +81,7 @@ class CreateInjectionModal extends Component {
             <DialogComponent
                 show={show}
                 onClose={onClose}
-                size="sm"
+                size="md"
                 title={(
                     <h3 className="fw-bold">
                         {title}
@@ -132,6 +134,15 @@ class CreateInjectionModal extends Component {
                             getOptionLabel={(option) => option.label}
                             renderInput={(params) => <TextField {...params} variant="outlined" />}
                         />
+                    </FormGroup>
+                    <FormGroup className="has-wrapper">
+                        <InputLabel className="text-left" htmlFor="proof">
+                            Justificatif
+                        </InputLabel>
+                        <FileUploader
+                            classes="mw-100"
+                            label="Sélectionnez le justificatif"
+                            handleChange={(file) => { this.setState({ proof: file })}} name="file" types={["PDF", "JPG", "PNG"]} />
                     </FormGroup>
                     <FormGroup>
                         <Button

@@ -792,6 +792,11 @@ export const BANK = {
             CREATE: '/bank/clients/:id/cheque-books/create'
         }
     },
+    ACCOUNT: {
+        SELF: '/bank/accounts',
+        LIST: '/bank/accounts/list',
+        DETAILS: '/bank/accounts/:id/transactions',
+    },
     ORDERSERVICE: {
         SELF: '/bank/order-services',
         LIST: '/bank/order-services/list',
