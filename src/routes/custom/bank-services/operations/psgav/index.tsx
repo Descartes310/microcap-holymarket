@@ -10,13 +10,14 @@ import { withRouter } from "react-router-dom";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import { setRequestGlobalAction } from "Actions/RequestGlobalAction";
 
-class BankOperations extends Component<any, any> {
+class PSGAVOperations extends Component<any, any> {
     
     constructor(props: any) {
         super(props);
         const defaultState = (function (url) {
-            if (url.includes(BANK.OPERATION.BANK.LIQUIDATION)) return 0;
-            else if (url.includes(BANK.OPERATION.BANK.LIST)) return 1;
+            if (url.includes(BANK.OPERATION.PSGAV.LIST)) return 0;
+            else if (url.includes(BANK.OPERATION.PSGAV.DRAFT)) return 1;
+            else if (url.includes(BANK.OPERATION.PSGAV.LIQUIDATION)) return 2;
             else return 0;
         })(window.location.pathname);
 
@@ -30,8 +31,10 @@ class BankOperations extends Component<any, any> {
         this.setState({ activeTab: value });
         if (oldActivateTab !== value) {
             switch (value) {
-                case 0: return this.props.history.push(BANK.OPERATION.BANK.LIQUIDATION);
-                case 1: return this.props.history.push(BANK.OPERATION.BANK.LIST);
+                case 0: return this.props.history.push(BANK.OPERATION.PSGAV.LIST);
+                case 1: return this.props.history.push(BANK.OPERATION.PSGAV.DRAFT);
+                case 2: return this.props.history.push(BANK.OPERATION.PSGAV.LIQUIDATION);
+                default: return this.props.history.push(BANK.OPERATION.PSGAV.LIST);
             }
         }
     };
@@ -56,11 +59,15 @@ class BankOperations extends Component<any, any> {
                                     >
                                         <Tab
                                             icon={<i className="zmdi zmdi-home" />}
-                                            label={"Bordereau de liquidation"}
+                                            label={"Opérations"}
                                         />
                                         <Tab
                                             icon={<i className="zmdi zmdi-home" />}
-                                            label={"Toutes les opérations"}
+                                            label={"Brouillards de bordereau"}
+                                        />
+                                        <Tab
+                                            icon={<i className="zmdi zmdi-home" />}
+                                            label={"Bordereau de liquidation"}
                                         />
                                     </Tabs>
                                 </div>
@@ -79,4 +86,4 @@ const mapStateToProps = ({ authUser }) => {
     return { authUser: authUser.data, }
 };
 
-export default connect(mapStateToProps, { setRequestGlobalAction })(withRouter(BankOperations));
+export default connect(mapStateToProps, { setRequestGlobalAction })(withRouter(PSGAVOperations));

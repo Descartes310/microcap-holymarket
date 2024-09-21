@@ -10,9 +10,11 @@ import TextField from '@material-ui/core/TextField';
 import { FileUploader } from "react-drag-drop-files";
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { NotificationManager } from 'react-notifications';
+import Checkbox from "@material-ui/core/Checkbox/Checkbox";
 import DialogComponent from "Components/dialog/DialogComponent";
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { FormGroup, Button, Input as InputStrap  } from 'reactstrap';
+import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
 
 class CreateInjectionModal extends Component {
   
@@ -22,7 +24,8 @@ class CreateInjectionModal extends Component {
         amount: null,
         mandates: [],
         mandate: null,
-        currency: null
+        currency: null,
+        hasBankDeposit: true
     }
 
     constructor(props) {
@@ -52,7 +55,7 @@ class CreateInjectionModal extends Component {
 
     onSubmit = () => {
 
-        const { amount, mandate, currency, proof } = this.state;
+        const { amount, mandate, currency, proof, hasBankDeposit } = this.state;
 
         if(!amount || !mandate || !currency) {
             NotificationManager.error("Le formulaire est mal renseigné");
@@ -61,12 +64,12 @@ class CreateInjectionModal extends Component {
 
         this.props.setRequestGlobalAction(true);
 
-        let data = {amount, party_reference: mandate.reference, currency: currency.code, proof};
+        let data = {amount, party_reference: mandate.reference, currency: currency.code, proof, hasBankDeposit};
 
         BankService.createInjection(data, { fileData: ['proof'], multipart: true }).then(() => {
             NotificationManager.success("L'injection a été demandée avec succès");
         }).catch((err) => {
-            NotificationManager.error("Une erreur est survenu lors de la demande d'injection");
+            NotificationManager.error("Associé un IBAN au compte d'injection");
         }).finally(() => {
             this.props.onClose();
             this.props.setRequestGlobalAction(false);
@@ -133,6 +136,16 @@ class CreateInjectionModal extends Component {
                             }}
                             getOptionLabel={(option) => option.label}
                             renderInput={(params) => <TextField {...params} variant="outlined" />}
+                        />
+                    </FormGroup>
+                    <FormGroup className="col-sm-12 has-wrapper">
+                        <FormControlLabel control={
+                            <Checkbox
+                                color="primary"
+                                checked={this.state.hasBankDeposit}
+                                onChange={(e) => this.setState({ hasBankDeposit: e.target.checked })}
+                            />
+                        } label={"J'ai fais mon versement à la banque"}
                         />
                     </FormGroup>
                     <FormGroup className="has-wrapper">

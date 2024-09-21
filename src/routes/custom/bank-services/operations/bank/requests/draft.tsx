@@ -1,25 +1,19 @@
-import { Button } from 'reactstrap';
+import { Button } from "reactstrap";
 import { connect } from 'react-redux';
 import BankService from 'Services/banks';
 import { withRouter } from "react-router-dom";
 import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
 import React, { useState, useEffect } from 'react';
-import TextField from '@material-ui/core/TextField';
 import TimeFromMoment from "Components/TimeFromMoment";
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import BLOperationsModal from './components/BLOperations';
-import Checkbox from "@material-ui/core/Checkbox/Checkbox";
-import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
+import { getPriceWithCurrency } from "Helpers/helpers";
+import LiquidationModal from "./components/liquidOperationModal";
 
-const List = (props) => {
+const Draft = (props) => {
 
-    const [bl, setBl] = useState(null);
-    const [action, setAction] = useState(null);
     const [operations, setOperations] = useState([]);
-    const [checkerAll, setCheckAll] = useState('none');
-    const [showDetailsModal, setShowDetailsModal] = useState(false);
-    const [selectedOperations, setSelectedOperations] = useState([]);
+    const [showConfirmBox, setShowConfirmBox] = useState(false);
+    const [selectedOperation, setSelectedOperation] = useState(null);
 
     useEffect(() => {
         getOperations();
@@ -27,45 +21,25 @@ const List = (props) => {
 
     const getOperations = () => {
         props.setRequestGlobalAction(true),
-        BankService.getBLs()
-        .then(response => setOperations(response))
+        BankService.getOperationLiquidation()
+        .then(response => {
+            setOperations(response);
+        })
         .finally(() => props.setRequestGlobalAction(false))
     }
-
-    const onToggleOperation = (operationIds) => {
-        let newOperations = [...selectedOperations];
-
-        operationIds.forEach(opId => {
-            if (newOperations.includes(opId)) {
-                newOperations = newOperations.filter(u => u !== opId);
-            } else newOperations.push(opId);
-        });
-
-        setSelectedOperations(newOperations);
-    };
-
-    const onCheckerAll = () => {
-        if (checkerAll !== 'all') {
-            setCheckAll('all');
-            onToggleOperation([...operations.map(o => o.reference)]);
-        } else {
-            setCheckAll('none');
-            setSelectedOperations([]);
-        }
-    };
 
     return (
         <>
             <CustomList
                 loading={false}
                 list={operations}
-                itemsFoundText={n => `${n} BL trouvés`}
+                itemsFoundText={n => `${n} opérations trouvées`}
                 renderItem={list => (
                     <>
                         {list && list.length === 0 ? (
                             <div className="d-flex justify-content-center align-items-center py-50">
                                 <h4>
-                                    Aucun BL trouvés
+                                    Aucun opérations trouvés
                                 </h4>
                             </div>
                         ) : (
@@ -73,22 +47,9 @@ const List = (props) => {
                                 <table className="table table-hover table-middle mb-0">
                                     <thead>
                                         <tr>
-                                            <th className="w-5">
-                                                <FormControlLabel
-                                                    control={
-                                                        <Checkbox
-                                                            indeterminate={selectedOperations.length > 0 && selectedOperations.length < operations.length}
-                                                            checked={selectedOperations.length > 0}
-                                                            onChange={(e) => onCheckerAll()}
-                                                            value="all"
-                                                            color="primary"
-                                                        />
-                                                    }
-                                                    label="Tous"
-                                                />
-                                            </th>
-                                            <th className="fw-bold">Reference</th>
-                                            <th className="fw-bold">Numéro</th>
+                                            <th className="fw-bold">Client</th>
+                                            <th className="fw-bold">Montant</th>
+                                            <th className="fw-bold">Raison</th>
                                             <th className="fw-bold">Date</th>
                                             <th className="fw-bold">Actions</th>
                                         </tr>
@@ -99,30 +60,21 @@ const List = (props) => {
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <FormControlLabel
-                                                                control={
-                                                                    <Checkbox
-                                                                        checked={selectedOperations.includes(item.reference)}
-                                                                        onChange={() => onToggleOperation([item.reference])}
-                                                                        color="primary"
-                                                                    />
-                                                                }
-                                                                label=""
-                                                            />
+                                                            <h4 className="m-0 fw-bold text-dark">{item.clientName}</h4>
                                                         </div>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{item.reference}</h4>
+                                                            <h4 className="m-0 fw-bold text-dark">{getPriceWithCurrency(item.amount, item.currency)}</h4>
                                                         </div>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{item.number}</h4>
+                                                            <p>{item.reason}</p>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -130,7 +82,7 @@ const List = (props) => {
                                                     <div className="media">
                                                         <div className="media-body pt-10">
                                                             <h4 className="m-0 fw-bold text-dark">
-                                                                <TimeFromMoment time={item.createdAt} showFullDate />
+                                                                <TimeFromMoment time={item.emittedAt} showFullDate />
                                                             </h4>
                                                         </div>
                                                     </div>
@@ -138,13 +90,14 @@ const List = (props) => {
                                                 <td>
                                                     <Button
                                                         color="primary"
-                                                        className="text-white mr-2 ml-10"
+                                                        variant="contained"
                                                         onClick={() => {
-                                                            setBl(item);
-                                                            setShowDetailsModal(true);
+                                                            setSelectedOperation(item);
+                                                            setShowConfirmBox(true);
                                                         }}
+                                                        className="text-white font-weight-bold"
                                                     >
-                                                        Details
+                                                        Liquidation
                                                     </Button>
                                                 </td>
                                             </tr>
@@ -156,20 +109,20 @@ const List = (props) => {
                     </>
                 )}
             />
-            { showDetailsModal && bl && (
-                <BLOperationsModal
-                    show={showDetailsModal}
+            { showConfirmBox && selectedOperation && (
+                <LiquidationModal
+                    show={showConfirmBox}
                     onClose={() => {
-                        setBl(null);
-                        setShowDetailsModal(false);
+                        setSelectedOperation(null);
+                        setShowConfirmBox(false);
                         getOperations();
                     }}
-                    bl={bl}
-                    title={"Operations"}
+                    operation={selectedOperation.reference}
+                    title={"Liquider l'opération"}
                 />
             )}
         </>
     );
 }
 
-export default connect(() => {}, { setRequestGlobalAction })(withRouter(List));
+export default connect(() => {}, { setRequestGlobalAction })(withRouter(Draft));

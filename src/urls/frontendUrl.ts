@@ -740,9 +740,14 @@ export const BANK = {
         BANK: {
             SELF: '/bank/operations/bank',
             LIST: '/bank/operations/bank/list',
-            DRAFT: '/bank/operations/bank/slip/draft',
-            PENDING: '/bank/operations/bank/pending',
-            LIQUIDATION: '/bank/operations/bank/slip/liquidation',
+            DRAFT: '/bank/operations/bank/draft',
+            LIQUIDATION: '/bank/operations/bank/liquidation',
+        },
+        PSGAV: {
+            SELF: '/bank/operations/psgav',
+            LIST: '/bank/operations/psgav/list',
+            DRAFT: '/bank/operations/psgav/draft',
+            LIQUIDATION: '/bank/operations/psgav/liquidation',
         }
     },
     MONEY: {

@@ -107,7 +107,6 @@ const List = (props) => {
                                                 />
                                             </th>
                                             <th className="fw-bold">Client</th>
-                                            <th className="fw-bold">Compte</th>
                                             <th className="fw-bold">Montant</th>
                                             <th className="fw-bold">Raison</th>
                                             <th className="fw-bold">Date</th>
@@ -136,13 +135,6 @@ const List = (props) => {
                                                     <div className="media">
                                                         <div className="media-body pt-10">
                                                             <h4 className="m-0 fw-bold text-dark">{item.clientName}</h4>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div className="media">
-                                                        <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{item.clientAccountCode}</h4>
                                                         </div>
                                                     </div>
                                                 </td>

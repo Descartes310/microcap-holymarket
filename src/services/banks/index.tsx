@@ -160,6 +160,18 @@ export default class BankService {
         return makeRequest('post', Routes.ACTIVATE_INJECTION(reference), data, config);
     }
 
+    static getInjectionDocuments(reference: string): Promise<any> {
+        return makeRequest('get', Routes.GET_INJECTION_DOCUMENTS(reference));
+    }
+
+    static createInjectionDocument(reference: string, data: any, config: any): Promise<any> {
+        return makeRequest('post', Routes.CREATE_INJECTION_DOCUMENT(reference), data, config);
+    }
+
+    static deleteInjectionDocument(reference: string): Promise<any> {
+        return makeRequest('delete', Routes.DELETE_INJECTION_DOCUMENT(reference));
+    }
+
     static getInjections(): Promise<any> {
         return makeRequest('get', Routes.GET_INJECTIONS);
     }
@@ -276,8 +288,8 @@ export default class BankService {
         return makeRequest('post', Routes.ARCHIVE_SERVICE_ORDER(reference), {archive_reference: archivereference});
     }
 
-    static createBL(data): Promise<any> {
-        return makeRequest('post', Routes.CREATE_BL, data);
+    static createBL(reference, data): Promise<any> {
+        return makeRequest('post', Routes.CREATE_BL(reference), data);
     }
 
     static changeBLOperations(reference: string, data): Promise<any> {
@@ -292,12 +304,20 @@ export default class BankService {
         return makeRequest('post', Routes.VALIDATE_BL(reference));
     }
 
-    static liquidBL(reference: string, liquid: string): Promise<any> {
-        return makeRequest('post', Routes.LIQUID_BL(reference), {liquid});
+    static liquidBL(reference: string): Promise<any> {
+        return makeRequest('post', Routes.LIQUIDATION_BL(reference), {});
     }
 
     static getAvailableOP(): Promise<any> {
         return makeRequest('get', Routes.BL_OP_AVAILABLE);
+    }
+
+    static getOperationFog(): Promise<any> {
+        return makeRequest('get', Routes.GET_OPERATIONS_FOG);
+    }
+
+    static getOperationLiquidation(): Promise<any> {
+        return makeRequest('get', Routes.GET_OPERATIONS_LIQUIDATION);
     }
 
     static getBLs(status = true): Promise<any> {

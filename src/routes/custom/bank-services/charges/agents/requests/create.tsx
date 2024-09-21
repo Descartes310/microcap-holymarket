@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 import { BANK } from 'Url/frontendUrl';
 import BankService from 'Services/banks';
+import UnitService from 'Services/units';
 import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
 import { setRequestGlobalAction } from 'Actions';
@@ -18,7 +19,9 @@ const fileTypes = ["JPG", "PNG", "GIF", "JPEG", "PDF"];
 const Create = (props) => {
 
     const [file, setFile] = useState(null);
+    const [unit, setUnit] = useState(null);
     const [banks, setBanks] = useState([]);
+    const [units, setUnits] = useState([]);
     const [bank, setBank] = useState(null);
     const [amount, setAmount] = useState(null);
     const [paidAt, setPaidAt] = useState(null);
@@ -29,6 +32,7 @@ const Create = (props) => {
     useEffect(() => {
         getBanks();
         getCoverages();
+        getUnits();
     }, []);
 
     const getCoverages = () => {
@@ -36,6 +40,18 @@ const Create = (props) => {
         BankService.getCoverages()
         .then(response => setCoverages(response))
         .finally(() => props.setRequestGlobalAction(false))
+    }    
+    
+    const getUnits = () => {
+        props.setRequestGlobalAction(false);
+        UnitService.getUnits()
+        .then((response) => setUnits(response))
+        .catch((err) => {
+            console.log(err);
+        })
+        .finally(() => {
+            props.setRequestGlobalAction(false);
+        })
     }
 
     const getBanks = () => {
@@ -46,7 +62,7 @@ const Create = (props) => {
     }
 
     const onSubmit = () => {
-        if(!amount || !paidAt || !coverageReference || !bank || !file || !coverage) {
+        if(!amount || !paidAt || !coverageReference || !bank || !file || !coverage || !unit) {
             NotificationManager.error('Veuillez bien remplir le formulaire')
             return;
         }
@@ -58,6 +74,7 @@ const Create = (props) => {
             paidAt,
             proof: file,
             coverageReference,
+            currency: unit.code,
             codeBank: bank.value,
             coverageId: coverage.id
         };
@@ -91,6 +108,21 @@ const Create = (props) => {
                             className="input-lg"
                             value={amount}
                             onChange={(e) => setAmount(e.target.value)}
+                        />
+                    </FormGroup>
+                    <FormGroup className="col-md-12 col-sm-12 has-wrapper">
+                        <InputLabel className="text-left">
+                            Devise
+                        </InputLabel>
+                        <Autocomplete
+                            value={unit}
+                            id="combo-box-demo"
+                            onChange={(__, item) => {
+                                setUnit(item)
+                            }}
+                            getOptionLabel={(option) => option.label}
+                            options={units.filter(u => ['dévise', 'devise', 'devises', 'dévises'].includes(u.type.label.toLowerCase()))}
+                            renderInput={(params) => <TextField {...params} variant="outlined" />}
                         />
                     </FormGroup>
                     <div className="col-md-12 col-sm-12 has-wrapper mb-30">

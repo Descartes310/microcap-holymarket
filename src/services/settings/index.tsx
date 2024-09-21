@@ -121,7 +121,6 @@ export default class SettingService {
         return makeRequest('get', Routes.FIND_USER_TYPE(id));
     }
 
-
     static getMessageTemplates(): Promise<any> {
         return makeRequest('get', Routes.GET_MESSAGE_TEMPLATES);
     }
@@ -134,8 +133,11 @@ export default class SettingService {
         return makeRequest('post', Routes.CREATE_MESSAGE_TEMPLATE, data);
     }
 
-
     static updateMessageTemplate(reference: string, data: any): Promise<any> {
         return makeRequest('put', Routes.UPDATE_MESSAGE_TEMPLATE(reference), data);
+    }
+
+    static generateCode(data: any): Promise<any> {
+        return makeRequest('get', Routes.GENERATE_CODE, data);
     }
 }

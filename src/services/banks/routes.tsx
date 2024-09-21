@@ -55,6 +55,9 @@ export const GET_EXTINCTIONS = 'api/cashmanagements/moneys/extinctions';
 export const CREATE_EXTINCTION = 'api/cashmanagements/moneys/extinctions';
 export const APPROVE_INJECTION = (reference) => `api/cashmanagements/moneys/injections/${reference}/approved`;
 export const ACTIVATE_INJECTION = (reference) => `api/cashmanagements/moneys/injections/${reference}/activate`;
+export const CREATE_INJECTION_DOCUMENT = (reference) => `api/cashmanagements/moneys/injections/${reference}/documents`;
+export const GET_INJECTION_DOCUMENTS = (reference) => `api/cashmanagements/moneys/injections/${reference}/documents`;
+export const DELETE_INJECTION_DOCUMENT = (reference) => `api/cashmanagements/moneys/injections/documents/${reference}`;
 
 export const GET_EXPLOITATION_CREDITS = 'api/cashmanagements/moneys/exploitation/credits';
 export const CREATE_EXPLOITATION_CREDIT = 'api/cashmanagements/moneys/exploitation/credits';
@@ -84,13 +87,16 @@ export const GET_ORDER_SERVICE_ITEMS = 'api/cashmanagements/serviceorders/items'
 export const FIND_SERVICE_ORDER_BY_BANK_AUTH = (reference) => `api/cashmanagements/operations/find-order-service/by-bank-auth/${reference}`;
 
 
+export const GET_OPERATIONS_FOG = `api/cashmanagements/operations/bl`;
+export const GET_OPERATIONS_LIQUIDATION = `api/cashmanagements/operations/liquidations`;
+export const CREATE_BL = (reference) => `api/cashmanagements/operations/${reference}/os/bl`;
+export const LIQUIDATION_BL = (reference) => `api/cashmanagements/operations/${reference}/os/liquidation`;
 export const LIQUID_SERVICE_ORDER = (reference) => `api/cashmanagements/operations/${reference}/os/liquid`;
 export const ARCHIVE_SERVICE_ORDER = (reference) => `api/cashmanagements/operations/${reference}/os/archive`;
 export const LIQUIDOPMCM_SERVICE_ORDER = (reference) => `api/cashmanagements/operations/${reference}/os/liquidopmcm`;
 
 
 export const GET_BL = `api/documents/bl`;
-export const CREATE_BL = `api/documents/bl`;
 export const BL_OP_AVAILABLE = `api/documents/bl/operations/availables`;
 export const UPDATE_BL = (reference) => `api/documents/bl/${reference}/update`;
 export const LIQUID_BL = (reference) => `api/documents/bl/${reference}/liquid`;

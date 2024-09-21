@@ -789,7 +789,7 @@ export default [
          {
             "menu_title": "Opérations",
             "new_item": false,
-            "path": BANK.OPERATION.BANK.PENDING,
+            "path": BANK.OPERATION.BANK.LIQUIDATION,
             "permissions": null,
             "profiles": ['OPERATOR'],
             "child_routes": null
@@ -813,9 +813,9 @@ export default [
          {
             "menu_title": "Opérations",
             "new_item": false,
-            "path": BANK.OPERATION.LIST,
+            "path": BANK.OPERATION.PSGAV.LIST,
             "permissions": null,
-            "profiles": ['PROVIDER_AGENT', 'PROVIDER_INTERMEDIARY'],
+            "profiles": ['PROVIDER_INTERMEDIARY'],
             "child_routes": null
          },
          {
@@ -847,7 +847,7 @@ export default [
             "new_item": false,
             "path": BANK.ACCOUNT.LIST,
             "permissions": null,
-            "profiles": ['PROVIDER_INTERMEDIARY', 'OPERATOR'],
+            "profiles": ['PROVIDER_INTERMEDIARY', 'OPERATOR', 'PROVIDER_AGENT'],
             "child_routes": null
          },
          {

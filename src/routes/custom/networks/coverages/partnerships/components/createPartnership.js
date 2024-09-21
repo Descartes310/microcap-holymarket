@@ -2,6 +2,7 @@ import { connect } from "react-redux";
 import { injectIntl } from "react-intl";
 import React, { Component } from 'react';
 import UserService from 'Services/users';
+import SettingService from 'Services/settings';
 import { withRouter } from "react-router-dom";
 import ContractService from 'Services/contracts';
 import { setRequestGlobalAction } from 'Actions';
@@ -11,19 +12,23 @@ import PartnershipService from 'Services/partnerships';
 import { getReferralTypeLabel } from 'Helpers/helpers';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { NotificationManager } from 'react-notifications';
+import Checkbox from "@material-ui/core/Checkbox/Checkbox";
 import DialogComponent from "Components/dialog/DialogComponent";
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
-import { FormGroup, Label, Button, Input as InputStrap  } from 'reactstrap';
+import { FormGroup, Button, Input as InputStrap  } from 'reactstrap';
+import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
 
 class CreatePartnershipModal extends Component {
   
     state = {
         bic: null,
         member: null,
+        noBic: false,
         contracts: [],
         bankCode: null,
         contract: null,
         membership: null,
+        noBankCode: false,
         commercialName: null,
         immatriculation: null,
     }
@@ -41,6 +46,23 @@ class CreatePartnershipModal extends Component {
         ContractService.getAvailableContracts({type: 'PARTNER'})
         .then(response => {
             this.setState({ contracts: response });
+        })
+        .finally(() => {
+            this.props.setRequestGlobalAction(false);
+        })
+    }
+
+    generateCode = (code) => {
+        this.props.setRequestGlobalAction(true);
+        SettingService.generateCode({nature: code})
+        .then(response => {
+            if(code == 'BANK_CODE') {
+                this.setState({ bankCode: response });
+            } else {
+                if(code == 'BIC_CODE') {
+                    this.setState({ bic: response });
+                }
+            }
         })
         .finally(() => {
             this.props.setRequestGlobalAction(false);
@@ -102,8 +124,8 @@ class CreatePartnershipModal extends Component {
     render() {
 
         const { onClose, show, title } = this.props;
-        const { contracts, membership, member, contract, 
-            commercialName, immatriculation, bic, bankCode } = this.state;
+        const { contracts, membership, member, contract, noBic,
+            commercialName, immatriculation, bic, bankCode, noBankCode } = this.state;
 
         return (
             <DialogComponent
@@ -215,7 +237,24 @@ class CreatePartnershipModal extends Component {
                                         id="bic"
                                         name='bic'
                                         value={bic}
+                                        disabled={noBic}
                                         onChange={(e) => this.setState({ bic: e.target.value })}
+                                    />
+                                </FormGroup>
+                                <FormGroup className="col-md-12 col-sm-12 mb-20">
+                                    <FormControlLabel control={
+                                        <Checkbox
+                                            color="primary"
+                                            checked={noBic}
+                                            onChange={(e) => {
+                                                this.setState({ noBic: e.target.checked }, () => {
+                                                    if(this.state.noBic) {
+                                                        this.generateCode('BIC_CODE');
+                                                    }
+                                                })
+                                            }}
+                                        />
+                                    } label={"Je n'ai pas de code BIC"}
                                     />
                                 </FormGroup>
                                 <FormGroup className="has-wrapper">
@@ -225,11 +264,28 @@ class CreatePartnershipModal extends Component {
                                     <InputStrap
                                         required
                                         type="text"
-                                        className="input-lg"
                                         id="bankCode"
                                         name='bankCode'
                                         value={bankCode}
+                                        className="input-lg"
+                                        disabled={noBankCode}
                                         onChange={(e) => this.setState({ bankCode: e.target.value })}
+                                    />
+                                </FormGroup>
+                                <FormGroup className="col-md-12 col-sm-12 mb-20">
+                                    <FormControlLabel control={
+                                        <Checkbox
+                                            color="primary"
+                                            checked={noBankCode}
+                                            onChange={(e) => {
+                                                this.setState({ noBankCode: e.target.checked }, () => {
+                                                    if(this.state.noBankCode) {
+                                                        this.generateCode('BANK_CODE');
+                                                    }
+                                                })
+                                            }}
+                                        />
+                                    } label={"Je n'ai pas de code banque"}
                                     />
                                 </FormGroup>
                             </>

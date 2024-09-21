@@ -8,6 +8,7 @@ import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
 import ActivateInjectionModal from './activate';
 import React, { useState, useEffect } from 'react';
+import InjectionDocuments from './injectionDocument';
 import TimeFromMoment from "Components/TimeFromMoment";
 
 const List = (props) => {
@@ -16,6 +17,7 @@ const List = (props) => {
     const [selectedInjection, setSelectedInjection] = useState(null);
     const [showInjectionCreateBox, setShowInjectionCreateBox] = useState(false);
     const [showInjectionActivateBox, setShowInjectionActivateBox] = useState(false);
+    const [showInjectionDocumentBox, setShowInjectionDocumentBox] = useState(false);
 
     useEffect(() => {
         getInjections();
@@ -57,6 +59,7 @@ const List = (props) => {
                                             <th className="fw-bold">Justificatif</th>
                                             <th className="fw-bold">Date d'injection</th>
                                             <th className="fw-bold">Provisionner</th>
+                                            <th className="fw-bold">Documents</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -105,6 +108,19 @@ const List = (props) => {
                                                         </Button>
                                                     )}
                                                 </td>
+                                                <td>
+                                                    <Button
+                                                        color="primary"
+                                                        variant="contained"
+                                                        onClick={() => {
+                                                            setSelectedInjection(item);
+                                                            setShowInjectionDocumentBox(true);
+                                                        }}
+                                                        className="text-white font-weight-bold"
+                                                    >
+                                                        Documents
+                                                    </Button>
+                                                </td>
                                             </tr>
                                         ))}
                                     </tbody>
@@ -122,6 +138,17 @@ const List = (props) => {
                         getInjections();
                     }}
                     title={"Création d'un nouvelle injection"}
+                />
+            )}
+
+            { showInjectionDocumentBox && selectedInjection && (
+                <InjectionDocuments
+                    show={showInjectionDocumentBox}
+                    onClose={() => {
+                        setShowInjectionDocumentBox(false);
+                    }}
+                    injection={selectedInjection}
+                    title={"Arguments de l'injection"}
                 />
             )}
 

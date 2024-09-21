@@ -2,6 +2,7 @@ import List from './list';
 import React from 'react';
 import Create from './create';
 import AdminList from './bank';
+import PSGAVList from './psgav';
 import Cashdesk from './cashdesks';
 import {connect} from "react-redux";
 import Assitance from './assistance';
@@ -20,6 +21,7 @@ const BankOperation = (props) => {
                     <Route path={BANK.OPERATION.ASSISTANCE} component={Assitance} />
                     <Route path={BANK.OPERATION.LIST} component={List} />
                     <Route path={BANK.OPERATION.BANK.SELF} component={AdminList} />
+                    <Route path={BANK.OPERATION.PSGAV.SELF} component={PSGAVList} />
                     <Route path={BANK.OPERATION.CASHDESK.SELF} component={Cashdesk} />
                 </Switch>
             </>

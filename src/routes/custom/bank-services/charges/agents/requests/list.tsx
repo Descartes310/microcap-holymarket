@@ -61,7 +61,7 @@ const List = (props) => {
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{item.amount} EUR</h4>
+                                                            <h4 className="m-0 fw-bold text-dark">{item.amount} {item.currency}</h4>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -96,7 +96,7 @@ const List = (props) => {
                                                 <td>
                                                     <div className="media">
                                                          <div className="media-body pt-10 d-flex align-content-center align-items-center">
-                                                                <div className={`user-status-pending-circle rct-notify`} style={{ background: item.status == 'ACCEPTED' ? 'green' : 'orange' }} />
+                                                                <div className={`user-status-pending-circle rct-notify`} style={{ background: item.status == 'APPROVED' ? 'green' : item.status == 'REJECTED' ? 'red' : 'orange' }} />
                                                                 <h4 style={{ textAlign: 'start' }} className="m-0 fw-bold text-dark ml-15">{item.status}</h4>
                                                             </div>
                                                     </div>

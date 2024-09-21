@@ -1,10 +1,10 @@
 import { connect } from "react-redux";
 import { injectIntl } from "react-intl";
 import React, { Component } from 'react';
+import UnitService from 'Services/units';
 import UserService from 'Services/users';
 import OrderService from 'Services/orders';
 import { withRouter } from "react-router-dom";
-import UserSelect from 'Components/UserSelect';
 import { setRequestGlobalAction } from 'Actions';
 import TextField from '@material-ui/core/TextField';
 import { RctCardContent } from 'Components/RctCard';
@@ -18,6 +18,7 @@ class AccountInformationModal extends Component {
   
     state = {
         bic: null,
+        balance: null,
         iban: null,
         agencies: [],
         agency: null,
@@ -28,7 +29,9 @@ class AccountInformationModal extends Component {
         number: null,
         referralCode: null,
         member: null,
-        members: []
+        members: [],
+        units: [],
+        currency: [],
     }
 
     constructor(props) {
@@ -37,6 +40,19 @@ class AccountInformationModal extends Component {
 
     componentDidMount() {
         this.getBankAgencies();
+        this.getUnits();
+    }
+
+    getUnits = () => {
+        this.props.setRequestGlobalAction(false);
+        UnitService.getUnits()
+        .then((response) => this.setState({ units: response }))
+        .catch((err) => {
+            console.log(err);
+        })
+        .finally(() => {
+            this.props.setRequestGlobalAction(false);
+        })
     }
 
     getMembers(id) {
@@ -54,18 +70,24 @@ class AccountInformationModal extends Component {
     }
 
     onSubmit = () => {
-        const { iban, agency, bic, referralCode, key, number, member } = this.state;
+        const { iban, agency, bic, referralCode, key, number, member, balance, currency } = this.state;
 
-        if(!iban || !bic || !agency || !referralCode || !member || !key || !number) {
+        if(!iban || !bic || !agency || !referralCode || !member || !key || !number || !currency) {
             NotificationManager.error('Toutes les informations du formulaire sont requises');
             return;
         }
 
         let data = {
-            iban, bic, agency_code: agency.code, 
+            iban, bic, agency_code: agency.code, currency: currency.code,
             referralCode, status: true, account_number: number, key,
             use_domiciliation_datas: true, agency_name: agency.label
         };
+
+        if(!balance) {
+            data.balance = 0;
+        } else {
+            data.balance = balance;
+        }
 
         this.props.setRequestGlobalAction(true);
         OrderService.approvedOrder(this.props.order.id, data)
@@ -82,7 +104,7 @@ class AccountInformationModal extends Component {
     render() {
 
         const { onClose, show, title, authUser } = this.props;
-        const { iban, agency, agencies, bic, key, number, member, members } = this.state;
+        const { iban, agency, agencies, bic, key, number, member, members, currency, units, balance } = this.state;
 
         return (
             <DialogComponent
@@ -165,6 +187,35 @@ class AccountInformationModal extends Component {
                     </FormGroup>
 
                     <h2>Domiciliation</h2>
+                    <FormGroup className="has-wrapper">
+                        <InputLabel className="text-left" htmlFor="balance">
+                            Solde initial
+                        </InputLabel>
+                        <InputStrap
+                            required
+                            type="number"
+                            id="balance"
+                            name='balance'
+                            value={balance}
+                            className="input-lg"
+                            onChange={(e) => this.setState({ balance: e.target.value })}
+                        />
+                    </FormGroup>
+                    <FormGroup className="col-md-12 col-sm-12 has-wrapper">
+                        <InputLabel className="text-left">
+                            Devise
+                        </InputLabel>
+                        <Autocomplete
+                            value={currency}
+                            id="combo-box-demo"
+                            onChange={(__, item) => {
+                                this.setState({ currency: item });
+                            }}
+                            getOptionLabel={(option) => option.label}
+                            options={units.filter(u => ['dévise', 'devise', 'devises', 'dévises'].includes(u.type.label.toLowerCase()))}
+                            renderInput={(params) => <TextField {...params} variant="outlined" />}
+                        />
+                    </FormGroup>
                     <FormGroup className="has-wrapper mt-20">
                         <InputLabel className="text-left" htmlFor="bank">
                             Etablissement

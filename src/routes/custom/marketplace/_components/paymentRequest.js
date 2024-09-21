@@ -45,7 +45,6 @@ const PaymentRequest = (props) => {
         AccountService.getExternalAccounts()
         .then(response => {
             setAccounts(response);
-            console.log(order?.details.find(d => d.type == "MECHANT_ACCOUNT_REFERENCE")?.value);
             if(order && order?.details.find(d => d.type == "MECHANT_ACCOUNT_REFERENCE")) {
                 setAccount(response.find(a => a.accountReference == order?.details.find(d => d.type == "MECHANT_ACCOUNT_REFERENCE")?.value));
             }
@@ -85,9 +84,8 @@ const PaymentRequest = (props) => {
             if(!response?.product.acceptManyPayment) {
                 setAmount(response.amount);
             }
-            console.log(response);
             setNotificationMethod(response?.details.find(d => d.type == 'NOTICATION_METHODS')?.value?.split(",") ?? []);
-            setPaymentMethod(response?.details.find(d => d.type == 'PAYMENT_METHOD')?.value?.split(",") ?? []);
+            setPaymentMethod(defaultPaymentMethod == null ? response?.details.find(d => d.type == 'PAYMENT_METHOD')?.value?.split(",") ?? [] : [defaultPaymentMethod]);
             setOtherEmail(response?.details.find(d => d.type == 'OTHER_NOTIFICATION_EMAIL')?.value ?? null)
             setOtherPhone(response?.details.find(d => d.type == 'OTHER_NOTIFICATION_PHONE')?.value ?? null)
             setOrder(response);
