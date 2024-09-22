@@ -36,7 +36,7 @@ const List = (props) => {
             NotificationManager.success("L'opération a été effectuée");
         })
         .catch((err) => {
-            NotificationManager.error("Votre compte ne permet pas de créditer ce montant");
+            NotificationManager.error("Votre compte ne permet pas de traiter cette demande");
         })
         .finally(() => {
             props.setRequestGlobalAction(false);
@@ -64,10 +64,11 @@ const List = (props) => {
                                 <table className="table table-hover table-middle mb-0">
                                     <thead>
                                         <tr>
+                                            <th className="fw-bold">Nature</th>
                                             <th className="fw-bold">Montant</th>
                                             <th className="fw-bold">Banque</th>
-                                            <th className="fw-bold">Couverture</th>
-                                            <th className="fw-bold">Reference couv.</th>
+                                            {/* <th className="fw-bold">Couverture</th>
+                                            <th className="fw-bold">Reference couv.</th> */}
                                             <th className="fw-bold">Date</th>
                                             <th className="fw-bold">Status</th>
                                             <th className="fw-bold">Actions</th>
@@ -76,6 +77,13 @@ const List = (props) => {
                                     <tbody>
                                         {list && list.map((item, key) => (
                                             <tr key={key} className="cursor-pointer">
+                                                <td>
+                                                    <div className="media">
+                                                        <div className="media-body pt-10">
+                                                            <h4 className="m-0 fw-bold text-dark">{item.direction == 'CASH_IN' ? 'Recharge' : 'Décharge'}</h4>
+                                                        </div>
+                                                    </div>
+                                                </td>
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
@@ -90,7 +98,7 @@ const List = (props) => {
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td>
+                                                {/* <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
                                                             <h4 className="m-0 fw-bold text-dark">{item.typeCoverage?.label}</h4>
@@ -103,7 +111,7 @@ const List = (props) => {
                                                             <h4 className="m-0 fw-bold text-dark">{item.coverageReference}</h4>
                                                         </div>
                                                     </div>
-                                                </td>
+                                                </td> */}
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
@@ -125,7 +133,10 @@ const List = (props) => {
                                                             <Button
                                                                 color="primary"
                                                                 variant="contained"
-                                                                onClick={() => respond(item.id, true)}
+                                                                onClick={() => {
+                                                                    setSelectedRequest(item);
+                                                                    setShowConfirmBox(true);
+                                                                }}
                                                                 className="text-white font-weight-bold"
                                                             >
                                                                 Valider
@@ -133,7 +144,10 @@ const List = (props) => {
                                                             <Button
                                                                 color="primary"
                                                                 variant="contained"
-                                                                onClick={() => respond(item.id, false)}
+                                                                onClick={() => {
+                                                                    setSelectedRequest(item);
+                                                                    setShowRejectBox(true);
+                                                                }}
                                                                 className="text-white font-weight-bold ml-4"
                                                             >
                                                                 Rejeter
@@ -158,7 +172,7 @@ const List = (props) => {
                         setShowConfirmBox(false);
                         setSelectedRequest(null);
                     }}
-                    message={'Etes vous sure de valider cette recharge ?'}
+                    message={'Etes vous sure de valider cette demande ?'}
                 />
             )}
             { showRejectBox && selectedRequest && (
@@ -169,7 +183,7 @@ const List = (props) => {
                         setShowRejectBox(false);
                         setSelectedRequest(null);
                     }}
-                    message={'Etes vous sure de refuser cette recharge ?'}
+                    message={'Etes vous sure de refuser cette demande ?'}
                 />
             )}
         </>

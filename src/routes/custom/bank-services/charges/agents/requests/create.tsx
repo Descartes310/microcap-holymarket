@@ -6,6 +6,7 @@ import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
 import { setRequestGlobalAction } from 'Actions';
 import React, { useState, useEffect } from 'react';
+import { RECHARGE_NATURES } from 'Helpers/helpers';
 import TextField from '@material-ui/core/TextField';
 import { FileUploader } from "react-drag-drop-files";
 import {NotificationManager} from 'react-notifications';
@@ -27,20 +28,21 @@ const Create = (props) => {
     const [paidAt, setPaidAt] = useState(null);
     const [coverages, setCoverages] = useState([]);
     const [coverage, setCoverage] = useState(null);
+    const [direction, setDirection] = useState(null);
     const [coverageReference, setCoverageReference] = useState(null);    
 
     useEffect(() => {
         getBanks();
-        getCoverages();
+        //getCoverages();
         getUnits();
     }, []);
 
-    const getCoverages = () => {
-        props.setRequestGlobalAction(true),
-        BankService.getCoverages()
-        .then(response => setCoverages(response))
-        .finally(() => props.setRequestGlobalAction(false))
-    }    
+    // const getCoverages = () => {
+    //     props.setRequestGlobalAction(true),
+    //     BankService.getCoverages()
+    //     .then(response => setCoverages(response))
+    //     .finally(() => props.setRequestGlobalAction(false))
+    // }    
     
     const getUnits = () => {
         props.setRequestGlobalAction(false);
@@ -62,7 +64,7 @@ const Create = (props) => {
     }
 
     const onSubmit = () => {
-        if(!amount || !paidAt || !coverageReference || !bank || !file || !coverage || !unit) {
+        if(!amount || !paidAt || !bank || !file || !unit || !direction) {
             NotificationManager.error('Veuillez bien remplir le formulaire')
             return;
         }
@@ -73,16 +75,17 @@ const Create = (props) => {
             amount,
             paidAt,
             proof: file,
-            coverageReference,
+            // coverageReference,
             currency: unit.code,
-            codeBank: bank.value,
-            coverageId: coverage.id
+            // coverageId: coverage.id,
+            codeBank: bank.reference,
+            direction: direction.value
         };
 
         //console.log(data);
 
         BankService.createChargeRequest(data, { fileData: ['proof'], multipart: true }).then(() => {
-            NotificationManager.success("La demande de recharge a été créée avec succès");
+            NotificationManager.success("La demande a été créée avec succès");
             props.history.push(BANK.CHARGE.AGENT.REQUEST.LIST);
         }).catch((err) => {
             console.log(err);
@@ -98,7 +101,7 @@ const Create = (props) => {
                 <Form onSubmit={onSubmit}>
                     <FormGroup className="has-wrapper">
                         <InputLabel className="text-left" htmlFor="amount">
-                            Montant à recharger
+                            Montant
                         </InputLabel>
                         <InputStrap
                             required
@@ -127,6 +130,21 @@ const Create = (props) => {
                     </FormGroup>
                     <div className="col-md-12 col-sm-12 has-wrapper mb-30">
                         <InputLabel className="text-left">
+                            Nature de la demande
+                        </InputLabel>
+                        <Autocomplete
+                            id="combo-box-demo"
+                            options={RECHARGE_NATURES}
+                            value={direction}
+                            onChange={(__, item) => {
+                                setDirection(item);
+                            }}
+                            getOptionLabel={(option) => option.label}
+                            renderInput={(params) => <TextField {...params} variant="outlined" />}
+                        />
+                    </div>
+                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                        <InputLabel className="text-left">
                             Banque de paiement
                         </InputLabel>
                         <Autocomplete
@@ -136,11 +154,11 @@ const Create = (props) => {
                             onChange={(__, item) => {
                                 setBank(item);
                             }}
-                            getOptionLabel={(option) => option.value}
+                            getOptionLabel={(option) => option.label}
                             renderInput={(params) => <TextField {...params} variant="outlined" />}
                         />
                     </div>
-                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                    {/* <div className="col-md-12 col-sm-12 has-wrapper mb-30">
                         <InputLabel className="text-left">
                             Couverture
                         </InputLabel>
@@ -154,8 +172,8 @@ const Create = (props) => {
                             getOptionLabel={(option) => option.label}
                             renderInput={(params) => <TextField {...params} variant="outlined" />}
                         />
-                    </div>
-                    <FormGroup className="has-wrapper">
+                    </div> */}
+                    {/* <FormGroup className="has-wrapper">
                         <InputLabel className="text-left" htmlFor="reference">
                             Reference couverture
                         </InputLabel>
@@ -168,7 +186,7 @@ const Create = (props) => {
                             value={coverageReference}
                             onChange={(e) => setCoverageReference(e.target.value)}
                         />
-                    </FormGroup>
+                    </FormGroup> */}
                     <FormGroup className="has-wrapper">
                         <InputLabel className="text-left" htmlFor="paidAt">
                             Date de paiement

@@ -769,6 +769,7 @@ export const BANK = {
         SELF: '/bank/charges',
         AGENT: {
             SELF: '/bank/charges/agents',
+            DECHARGE: '/bank/charges/agents/decharges',
             REQUEST: {
                 SELF: '/bank/charges/agents/requests',
                 LIST: '/bank/charges/agents/requests/list',

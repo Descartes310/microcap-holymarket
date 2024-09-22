@@ -57,7 +57,7 @@ class ChargeRequest extends Component<any, any> {
                                     >
                                         <Tab
                                             icon={<i className="zmdi zmdi-home" />}
-                                            label={"Demande de recharge"}
+                                            label={"Demande de recharge/décharge"}
                                         />
                                         <Tab
                                             icon={<i className="zmdi zmdi-home" />}

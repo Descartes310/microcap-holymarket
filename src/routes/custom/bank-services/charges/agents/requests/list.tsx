@@ -47,10 +47,11 @@ const List = (props) => {
                                 <table className="table table-hover table-middle mb-0">
                                     <thead>
                                         <tr>
+                                            <th className="fw-bold">Nature</th>
                                             <th className="fw-bold">Montant</th>
                                             <th className="fw-bold">Banque</th>
-                                            <th className="fw-bold">Couverture</th>
-                                            <th className="fw-bold">Reference couv.</th>
+                                            {/* <th className="fw-bold">Couverture</th>
+                                            <th className="fw-bold">Reference couv.</th> */}
                                             <th className="fw-bold">Date</th>
                                             <th className="fw-bold">Status</th>
                                         </tr>
@@ -58,6 +59,13 @@ const List = (props) => {
                                     <tbody>
                                         {list && list.map((item, key) => (
                                             <tr key={key} className="cursor-pointer">
+                                                <td>
+                                                    <div className="media">
+                                                        <div className="media-body pt-10">
+                                                            <h4 className="m-0 fw-bold text-dark">{item.direction == 'CASH_IN' ? 'Recharge' : 'Décharge'}</h4>
+                                                        </div>
+                                                    </div>
+                                                </td>
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
@@ -72,7 +80,7 @@ const List = (props) => {
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td>
+                                                {/* <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
                                                             <h4 className="m-0 fw-bold text-dark">{item.typeCoverage?.label}</h4>
@@ -85,7 +93,7 @@ const List = (props) => {
                                                             <h4 className="m-0 fw-bold text-dark">{item.coverageReference}</h4>
                                                         </div>
                                                     </div>
-                                                </td>
+                                                </td> */}
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">

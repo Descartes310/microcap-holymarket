@@ -819,11 +819,19 @@ export default [
             "child_routes": null
          },
          {
+            "menu_title": "Opérations",
+            "new_item": false,
+            "path": BANK.OPERATION.LIST,
+            "permissions": null,
+            "profiles": ['PROVIDER_AGENT'],
+            "child_routes": null
+         },
+         {
             "menu_title": "Recharges",
             "new_item": false,
             "path": BANK.CHARGE.AGENT.SELF,
             "permissions": [Permission.general.charge.name],
-            "profiles": ['PROVIDER_AGENT'],
+            "profiles": ['PROVIDER_AGENT', 'PROVIDER_COUNTER'],
             "child_routes": null
          },
          {
@@ -847,7 +855,7 @@ export default [
             "new_item": false,
             "path": BANK.ACCOUNT.LIST,
             "permissions": null,
-            "profiles": ['PROVIDER_INTERMEDIARY', 'OPERATOR', 'PROVIDER_AGENT'],
+            "profiles": ['PROVIDER_INTERMEDIARY', 'OPERATOR', 'PROVIDER_AGENT', 'PROVIDER_COUNTER'],
             "child_routes": null
          },
          {

@@ -1356,3 +1356,13 @@ export const DIRECTIONS = [
         value: 'THIRD_PARTY_PAYMENT'
     }
 ]
+
+export const RECHARGE_NATURES = [
+    {
+        label: 'Demande de recharge',
+        value: 'CASH_IN'
+    },{
+        label: 'Demande de décharge',
+        value: 'CASH_OUT'
+    }
+]

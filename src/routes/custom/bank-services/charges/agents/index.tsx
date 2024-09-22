@@ -30,7 +30,7 @@ class ChargeRequest extends Component<any, any> {
         if (oldActivateTab !== value) {
             switch (value) {
                 case 0: return this.props.history.push(BANK.CHARGE.AGENT.REQUEST.SELF);
-                case 1: return this.props.history.push(BANK.CHARGE.AGENT.TRANSFER.SELF);
+                case 1: return this.props.history.push(BANK.CHARGE.AGENT.DECHARGE);
                 // case 2: return this.props.history.push(BANK.PARTY.COVERAGE.SELF);
                 // case 3: return this.props.history.push(BANK.PARTY.PRESTATION.SELF);
                 default: return this.props.history.push(BANK.CHARGE.AGENT.REQUEST.SELF);
@@ -59,11 +59,11 @@ class ChargeRequest extends Component<any, any> {
                                     >
                                         <Tab
                                             icon={<i className="zmdi zmdi-home" />}
-                                            label={"Demande de recharge"}
+                                            label={"Demande de recharge/decharge"}
                                         />
                                         <Tab
                                             icon={<i className="zmdi zmdi-home" />}
-                                            label={"Mouvement interne"}
+                                            label={"Demande en attente"}
                                         />
                                     </Tabs>
                                 </div>

@@ -1,22 +1,20 @@
+import { Button } from "reactstrap";
 import { connect } from 'react-redux';
 import BankService from 'Services/banks';
 import { withRouter } from "react-router-dom";
 import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
 import React, { useState, useEffect } from 'react';
+import ConfirmBox from "Components/dialog/ConfirmBox";
 import TimeFromMoment from "Components/TimeFromMoment";
 import { getPriceWithCurrency } from 'Helpers/helpers';
-import Checkbox from "@material-ui/core/Checkbox/Checkbox";
 import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
-import PurgeOperationModal from './components/purgeOperationModal';
-import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
 
 const List = (props) => {
 
     const [operations, setOperations] = useState([]);
-    const [checkerAll, setCheckAll] = useState('none');
-    const [showPurgeModal, setShowPurgeModal] = useState(false);
-    const [selectedOperations, setSelectedOperations] = useState([]);
+    const [showConfirmBox, setShowConfirmBox] = useState(false);
+    const [selectedOperation, setSelectedOperation] = useState(null);
 
     useEffect(() => {
         getOperations();
@@ -29,43 +27,25 @@ const List = (props) => {
         .finally(() => props.setRequestGlobalAction(false))
     }
 
-    const onToggleUser = (operationIds) => {
-        let newOperations = [...selectedOperations];
-        operationIds.forEach(userId => {
-            if (newOperations.includes(userId)) {
-                newOperations = newOperations.filter(u => u !== userId);
-            } else newOperations.push(userId);
-        });
-        setSelectedOperations(newOperations);
-    };
+    const purgeOperation = () => {
 
-    const onCheckerAll = () => {
-        if (checkerAll !== 'all') {
-            setCheckAll('all');
-            onToggleUser([...operations.map(o => o.id)]);
-        } else {
-            setCheckAll('none');
-            setSelectedOperations([]);
-        }
-    };
-
-    const purgeOperations = () => {
-
-        if(selectedOperations.length <= 0) {
+        if(!selectedOperation) {
             return;
         }
 
         let data = {
-            operationIds: selectedOperations
+            operationIds: [selectedOperation.id]
         }
 
         props.setRequestGlobalAction(true);
         BankService.purgeOperations(data).then(() => {
-            window.location.reload();
+            getOperations();
         }).catch((err) => {
             console.log(err);
         }).finally(() => {
             props.setRequestGlobalAction(false);
+            setSelectedOperation(null);
+            setShowConfirmBox(false)
         });
     }
 
@@ -75,9 +55,6 @@ const List = (props) => {
             <CustomList
                 loading={false}
                 list={operations}
-                addText="Purger la selection"
-                onAddClick={() => setShowPurgeModal(true)}
-                addingButton={selectedOperations.length <= 0}
                 itemsFoundText={n => `${n} opérations trouvées`}
                 renderItem={list => (
                     <>
@@ -92,45 +69,16 @@ const List = (props) => {
                                 <table className="table table-hover table-middle mb-0">
                                     <thead>
                                         <tr>
-                                            <th className="w-5">
-                                                <FormControlLabel
-                                                    control={
-                                                        <Checkbox
-                                                            indeterminate={selectedOperations.length > 0 && selectedOperations.length < operations.length}
-                                                            checked={selectedOperations.length > 0}
-                                                            onChange={(e) => onCheckerAll()}
-                                                            value="all"
-                                                            color="primary"
-                                                        />
-                                                    }
-                                                    label="Tous"
-                                                />
-                                            </th>
                                             <th className="fw-bold">Client</th>
                                             <th className="fw-bold">Montant</th>
                                             <th className="fw-bold">Raison</th>
                                             <th className="fw-bold">Date</th>
+                                            <th className="fw-bold">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {list && list.map((item, key) => (
                                             <tr key={key} className="cursor-pointer">
-                                                <td>
-                                                    <div className="media">
-                                                        <div className="media-body pt-10">
-                                                            <FormControlLabel
-                                                                control={
-                                                                    <Checkbox
-                                                                        checked={selectedOperations.includes(item.id)}
-                                                                        onChange={() => onToggleUser([item.id])}
-                                                                        color="primary"
-                                                                    />
-                                                                }
-                                                                label=""
-                                                            />
-                                                        </div>
-                                                    </div>
-                                                </td>
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
@@ -161,6 +109,18 @@ const List = (props) => {
                                                         </div>
                                                     </div>
                                                 </td>
+                                                <td>
+                                                    <Button
+                                                        color="primary"
+                                                        className="text-white mr-2 ml-10"
+                                                        onClick={() => {
+                                                            setSelectedOperation(item);
+                                                            setShowConfirmBox(true);
+                                                        }}
+                                                    >
+                                                        Purger
+                                                    </Button>
+                                                </td>
                                             </tr>
                                         ))}
                                     </tbody>
@@ -170,16 +130,17 @@ const List = (props) => {
                     </>
                 )}
             />
-            { showPurgeModal && selectedOperations.length > 0 && (
-                <PurgeOperationModal
-                    show={showPurgeModal}
-                    title={"Purger les opérations"}
-                    onClose={() => {
-                        setShowPurgeModal(false);
+
+            { showConfirmBox && selectedOperation && (
+                <ConfirmBox
+                    show={showConfirmBox}
+                    rightButtonOnClick={() => purgeOperation()}
+                    leftButtonOnClick={() => {
+                        setShowConfirmBox(false);
+                        setSelectedOperation(null);
                     }}
-                    purgeOperations={purgeOperations}
-                    operations={operations.filter(o => selectedOperations.includes(o.id))}
-                />  
+                    message={'Etes vous sure de vouloir purger l\'opération ?'}
+                />
             )}
         </>
     );
