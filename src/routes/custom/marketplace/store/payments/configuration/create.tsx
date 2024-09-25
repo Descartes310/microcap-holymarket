@@ -65,7 +65,7 @@ const Create = (props) => {
 
     const getAccounts = () => {
         props.setRequestGlobalAction(true),
-        AccountService.getExternalAccounts()
+        AccountService.getSubscriptionAccounts()
         .then(response => setAccounts(response))
         .finally(() => props.setRequestGlobalAction(false))
     }

@@ -12,6 +12,7 @@ export const FIND_ACTIVATION_ACCOUNT_DETAILS = (reference) => `api/fundings/acco
 
 export const GET_EXTERNAL_ACCOUNTS = 'api/fundings/accounts/externals';
 export const CREATE_EXTERNAL_ACCOUNTS = 'api/fundings/accounts/externals';
+export const GET_SUBSCRIPTION_ACCOUNTS = 'api/fundings/accounts/subscriptions';
 export const GET_EXTERNAL_ACCOUNT_POTENTIALS = 'api/fundings/accounts/externals/available';
 
 export const FIND_CONSOLIDATION_BY_REFERENCE = (reference) => `api/fundings/accounts/${reference}/consolidations`;

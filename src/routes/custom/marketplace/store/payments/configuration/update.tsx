@@ -85,7 +85,7 @@ const Update = (props) => {
 
     const getAccounts = () => {
         props.setRequestGlobalAction(true),
-        AccountService.getExternalAccounts()
+        AccountService.getSubscriptionAccounts()
         .then(response => {
             setAccounts(response);
             if(oldConfig && oldConfig.accountReference) {

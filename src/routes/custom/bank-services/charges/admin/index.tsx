@@ -14,8 +14,7 @@ class ChargeRequest extends Component<any, any> {
     constructor(props: any) {
         super(props);
         const defaultState = (function (url) {
-            if (url.includes(BANK.CHARGE.INTERMEDIARY.REQUEST.LIST)) return 0;
-            else if (url.includes(BANK.CHARGE.INTERMEDIARY.REQUEST.PENDING)) return 1;
+            if (url.includes(BANK.CHARGE.INTERMEDIARY.REQUEST.PENDING)) return 0;
             else return 0;
         })(window.location.pathname);
 
@@ -29,8 +28,7 @@ class ChargeRequest extends Component<any, any> {
         this.setState({ activeTab: value });
         if (oldActivateTab !== value) {
             switch (value) {
-                case 0: return this.props.history.push(BANK.CHARGE.INTERMEDIARY.REQUEST.LIST);
-                case 1: return this.props.history.push(BANK.CHARGE.INTERMEDIARY.REQUEST.PENDING);
+                case 0: return this.props.history.push(BANK.CHARGE.INTERMEDIARY.REQUEST.PENDING);
                 default: return this.props.history.push(BANK.CHARGE.INTERMEDIARY.REQUEST.LIST);
             }
         }
@@ -55,10 +53,6 @@ class ChargeRequest extends Component<any, any> {
                                         variant="scrollable"
                                         centered
                                     >
-                                        <Tab
-                                            icon={<i className="zmdi zmdi-home" />}
-                                            label={"Demande de recharge/décharge"}
-                                        />
                                         <Tab
                                             icon={<i className="zmdi zmdi-home" />}
                                             label={"Demande en attente"}

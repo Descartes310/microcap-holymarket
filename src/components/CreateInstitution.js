@@ -3,25 +3,39 @@ import { injectIntl } from "react-intl";
 import React, { Component } from 'react';
 import UserService from 'Services/users';
 import { withRouter } from "react-router-dom";
+import SettingService from 'Services/settings';
 import { setRequestGlobalAction } from 'Actions';
 import { RctCardContent } from 'Components/RctCard';
 import { FormGroup, Input, Button } from 'reactstrap';
 import {NotificationManager} from "react-notifications";
+import Checkbox from "@material-ui/core/Checkbox/Checkbox";
 import DialogComponent from "Components/dialog/DialogComponent";
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
+import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
 
 class CreateInstitution extends Component {
 
     state = {
-        label: null,
         code: null,
-        description: null
-     }
+        label: null,
+        description: null,
+        noAgencyCode: false
+    }
   
      constructor(props) {
         super(props);
-     }
+    }
 
+     generateCode = () => {
+        this.props.setRequestGlobalAction(true);
+        SettingService.generateCode({nature: 'AGENCY_CODE'})
+        .then(response => {
+            this.setState({ code: response });
+        })
+        .finally(() => {
+            this.props.setRequestGlobalAction(false);
+        })
+    }
 
     onSubmit = () => {
 
@@ -52,8 +66,8 @@ class CreateInstitution extends Component {
 
     render() {
 
-        const { onClose, show, access, title } = this.props;
-        const { label, code, description } = this.state;
+        const { onClose, show, title } = this.props;
+        const { label, code, description, noAgencyCode } = this.state;
 
         return (
             <DialogComponent
@@ -92,7 +106,24 @@ class CreateInstitution extends Component {
                             name='code'
                             value={code}
                             className="input-lg"
+                            disabled={noAgencyCode}
                             onChange={(e) => this.setState({ code: e.target.value })}
+                        />
+                    </FormGroup>
+                    <FormGroup className="col-md-12 col-sm-12 mb-20">
+                        <FormControlLabel control={
+                            <Checkbox
+                                color="primary"
+                                checked={noAgencyCode}
+                                onChange={(e) => {
+                                    this.setState({ noAgencyCode: e.target.checked }, () => {
+                                        if(this.state.noAgencyCode) {
+                                            this.generateCode();
+                                        }
+                                    })
+                                }}
+                            />
+                        } label={"Je n'ai pas de code agence"}
                         />
                     </FormGroup>
                     <FormGroup className="has-wrapper">

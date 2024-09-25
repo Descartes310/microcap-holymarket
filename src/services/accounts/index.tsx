@@ -53,6 +53,10 @@ export default class AccountService {
         return makeRequest('get', Routes.GET_EXTERNAL_ACCOUNTS);
     }
 
+    static getSubscriptionAccounts(): Promise<any> {
+        return makeRequest('get', Routes.GET_SUBSCRIPTION_ACCOUNTS);
+    }
+
     static getExternalAccountPotentials(): Promise<any> {
         return makeRequest('get', Routes.GET_EXTERNAL_ACCOUNT_POTENTIALS);
     }

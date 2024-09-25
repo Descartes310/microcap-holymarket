@@ -42,11 +42,11 @@ const PaymentRequest = (props) => {
 
     const getAccounts = () => {
         props.setRequestGlobalAction(true),
-        AccountService.getExternalAccounts()
+        AccountService.getSubscriptionAccounts()
         .then(response => {
             setAccounts(response);
             if(order && order?.details.find(d => d.type == "MECHANT_ACCOUNT_REFERENCE")) {
-                setAccount(response.find(a => a.accountReference == order?.details.find(d => d.type == "MECHANT_ACCOUNT_REFERENCE")?.value));
+                setAccount(response.find(a => a.reference == order?.details.find(d => d.type == "MECHANT_ACCOUNT_REFERENCE")?.value));
             }
         })
         .finally(() => props.setRequestGlobalAction(false))

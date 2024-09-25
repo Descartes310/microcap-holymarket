@@ -54,7 +54,15 @@ class CreatePartnershipModal extends Component {
 
     generateCode = (code) => {
         this.props.setRequestGlobalAction(true);
-        SettingService.generateCode({nature: code})
+        let data = {
+            nature: code
+        };
+
+        if(code == 'BIC_CODE') {
+            data.referral_code = this.state.membership
+        }
+
+        SettingService.generateCode(data)
         .then(response => {
             if(code == 'BANK_CODE') {
                 this.setState({ bankCode: response });
@@ -224,7 +232,7 @@ class CreatePartnershipModal extends Component {
                         />
                     </FormGroup>
                     {
-                        this.props.type.toLowerCase() === 'operator' && (
+                        this.props.type.toLowerCase() === 'operator' && member && (
                             <>
                                 <FormGroup className="has-wrapper">
                                     <InputLabel className="text-left" htmlFor="bic">
