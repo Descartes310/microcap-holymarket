@@ -7,7 +7,7 @@ import DialogComponent from "Components/dialog/DialogComponent";
 class OrderModalForm extends Component {
 
     render() {
-        const { show, onClose, isPreOrder, onSuccess, codevData } = this.props;
+        const { show, onClose, isPreOrder, onSuccess, codevData, customData } = this.props;
         return (
             <DialogComponent
                 show={show}
@@ -23,6 +23,7 @@ class OrderModalForm extends Component {
                     onSuccess={onSuccess}
                     isPreOrder={isPreOrder}
                     codevData={codevData}
+                    customData={customData}
                     successMessage={"Votre reservation a été effectuée. Pour finaliser votre commande, vous devez vous connecter à votre espace utilisateur sur la plateforme MicroCap."}
                 />
             </DialogComponent>

@@ -46,6 +46,7 @@ export const PME_PROJECT = {
     VOTE_RESERVE_RECAP: '/100pme/vote/reserve/recap',
     VOTE_PRODUCT: '/100pme/vote/options/:id/products',
     VOTE_PRODUCT_END: '/100pme/vote/options/products/end',
+    SUBSCRIBE_ACCOUNT: '/100pme/vote/options/:id/accounts',
 }
 
 export const NOTIFICATIONS = {

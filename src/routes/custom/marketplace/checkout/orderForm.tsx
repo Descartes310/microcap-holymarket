@@ -99,6 +99,10 @@ class OrderForm extends Component<any, any> {
             data.isPreOrder = true;
         }
 
+        if(this.props.customData?.isSubscription) {
+            data.isSubscription = true;
+        }
+
         this.props.setRequestGlobalAction(true);
         OrderService.createOrder(data).then((response) => {
             this.setState({ showSweetAlert: true, order: response });
