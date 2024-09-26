@@ -21,6 +21,7 @@ export const ADD_MANDATE_PRESTATION = (reference) => `api/cashmanagements/mandat
 
 export const GET_PARTIES = 'api/cashmanagements/parties';
 export const GET_CHILD = 'api/cashmanagements/parties/child';
+export const GET_BANKS = 'api/cashmanagements/parties/banks';
 export const GET_COUNTERS = 'api/cashmanagements/parties/counters';
 export const CREATE_COUNTER = 'api/cashmanagements/parties/counters';
 export const GET_CASHDESKS = 'api/cashmanagements/parties/cashdesks';

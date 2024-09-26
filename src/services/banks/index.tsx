@@ -339,4 +339,8 @@ export default class BankService {
     static addPrestation(reference: string, data: any): Promise<any> {
         return makeRequest('post', Routes.ADD_MANDATE_PRESTATION(reference), data);
     }
+
+    static getBanks(): Promise<any> {
+        return makeRequest('get', Routes.GET_BANKS);
+    }
 }
