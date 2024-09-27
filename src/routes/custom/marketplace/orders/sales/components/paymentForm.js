@@ -52,7 +52,13 @@ class PaymentCard extends Component {
       this.props.setRequestGlobalAction(true);
 
       OrderService.initiatePayment(this.props.order.reference, {})
-         .then(() => window.location.reload())
+         .then(() => {
+            NotificationManager.success("La demande de paiement a été envoyée");
+            window.location.reload();
+         })
+         .catch((err) => {
+            NotificationManager.error("Une erreur est survenue");
+         })
          .finally(() => this.props.setRequestGlobalAction(false))
    }
 

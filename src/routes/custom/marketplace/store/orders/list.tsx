@@ -45,10 +45,13 @@ const List = (props) => {
     const sendPaymentRequest = (item: any) => {
         props.setRequestGlobalAction(true)
         OrderService.initiatePayment(item.reference, {})
-        .then(() => {
-             NotificationManager.success('Opération réussie');
-             setShowPaymentRequest(false);
-             setSelectedItem(null);
+         .then(() => {
+            NotificationManager.success("La demande de paiement a été envoyée");
+            setShowPaymentRequest(false);
+            setSelectedItem(null);
+         })
+         .catch((err) => {
+            NotificationManager.error("Une erreur est survenue");
          })
         .finally(() => props.setRequestGlobalAction(false))
     }
