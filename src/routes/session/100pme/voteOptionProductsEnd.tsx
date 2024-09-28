@@ -69,6 +69,7 @@ const VoteOptionProductsEnd = (props) => {
                                                     localStorage.removeItem('PME_CITY')
                                                     localStorage.removeItem('PME_LOCALITY')
                                                     localStorage.removeItem('PME_COUNTRY')
+                                                    localStorage.removeItem('PME_MOTIVATION')
                                                     props.logout();
                                                     props.history.push(AUTH.LOGIN);
                                                 }}

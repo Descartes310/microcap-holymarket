@@ -103,6 +103,30 @@ class OrderForm extends Component<any, any> {
             data.isSubscription = true;
         }
 
+        if(this.props.customData?.vote) {
+            data.vote = this.props.customData?.vote;
+        }
+
+        if(this.props.customData?.city_id) {
+            data.city_id = this.props.customData?.city_id;
+        }
+
+        if(this.props.customData?.city_name) {
+            data.city_name = this.props.customData?.city_name;
+        }
+
+        if(this.props.customData?.country) {
+            data.vote_country = this.props.customData?.country;
+        }
+
+        if(this.props.customData?.locality) {
+            data.locality = this.props.customData?.locality;
+        }
+
+        if(this.props.customData?.motivation) {
+            data.motivation = this.props.customData?.motivation;
+        }
+
         this.props.setRequestGlobalAction(true);
         OrderService.createOrder(data).then((response) => {
             this.setState({ showSweetAlert: true, order: response });

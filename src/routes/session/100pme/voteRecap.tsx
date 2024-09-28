@@ -28,6 +28,7 @@ const VoteRecap = (props) => {
         const locality = localStorage.getItem('PME_LOCALITY');
         const city = JSON.parse(localStorage.getItem('PME_CITY'));
         const country = localStorage.getItem('PME_COUNTRY');
+        const motivation = localStorage.getItem('PME_MOTIVATION');
         const user = props.authUser;
 
         if(city && user && country) {
@@ -39,11 +40,15 @@ const VoteRecap = (props) => {
             if(locality) {
                 data.locality = locality;
             }
+            if(motivation) {
+                data.motivation = motivation;
+            }
             SystemService.createVote(data)
             .then(() => {
                 localStorage.removeItem('PME_CITY')
                 localStorage.removeItem('PME_LOCALITY')
                 localStorage.removeItem('PME_COUNTRY')
+                localStorage.removeItem('PME_MOTIVATION')
                 props.history.push(PME_PROJECT.VOTE_PRODUCT_END);
             }).catch((err) => {
                 console.log(err);

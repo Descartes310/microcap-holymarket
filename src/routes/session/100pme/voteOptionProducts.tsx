@@ -81,6 +81,7 @@ const VoteOptionProducts = (props) => {
         const locality = localStorage.getItem('PME_LOCALITY');
         const city = JSON.parse(localStorage.getItem('PME_CITY'));
         const country = localStorage.getItem('PME_COUNTRY');
+        const motivation = localStorage.getItem('PME_MOTIVATION');
         const user = props.authUser;
 
         if(option && city && user && country && (myProduct || order)) {
@@ -91,6 +92,9 @@ const VoteOptionProducts = (props) => {
         
             if(locality) {
                 data.locality = locality;
+            }
+            if(motivation) {
+                data.motivation = motivation;
             }
             SystemService.createVote(data)
             .then(() => {
@@ -325,7 +329,7 @@ const VoteOptionProducts = (props) => {
                     codevData={codevData}
                     product={product}
                     onSuccess={(response) => {
-                        onSubmit(response);
+                        //onSubmit(response);
                         setOrderData(response)
                         getProducts();
                         setShowOrderModal(false);
@@ -333,6 +337,7 @@ const VoteOptionProducts = (props) => {
                         props.onClearCart();
                         //setShowPaymentModal(true);
                     }}
+                    customData={{vote: option.value, city_id: JSON.parse(localStorage.getItem('PME_CITY'))?.id, city_name: JSON.parse(localStorage.getItem('PME_CITY'))?.name, country: localStorage.getItem('PME_COUNTRY'), locality: localStorage.getItem('PME_LOCALITY'), motivation: localStorage.getItem('PME_MOTIVATION')}}
                     isPreOrder={true}
                 />
             )}

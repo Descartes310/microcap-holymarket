@@ -25,6 +25,7 @@ const Vote = (props) => {
     const [city, setCity] = useState(null);
     const [cities, setCities] = useState([]);
     const [locality, setLocality] = useState(null);
+    const [motivation, setMotivation] = useState(null);
     const [country, setCountry] = useState(countryParam ? COUNTRIES.find(c => c.value === countryParam) : null);
     
     const [products, setProducts] = useState([]);
@@ -160,7 +161,6 @@ const Vote = (props) => {
                                                 Localité (facultatif)
                                             </InputLabel>
                                             <Input
-                                                required
                                                 id="locality"
                                                 type="text"
                                                 name='locality'
@@ -172,6 +172,27 @@ const Vote = (props) => {
                                                         localStorage.setItem("PME_LOCALITY", e.target.value);
                                                     } else {
                                                         localStorage.removeItem("PME_LOCALITY");
+                                                    }
+                                                }}
+                                            />
+                                        </FormGroup>
+                                        <FormGroup className="col-md-12 col-sm-12 has-wrapper mb-30">
+                                            <InputLabel className="text-left" htmlFor="motivation">
+                                                Motivation (facultatif)
+                                            </InputLabel>
+                                            <Input
+                                                required
+                                                id="motivation"
+                                                type="text"
+                                                name='motivation'
+                                                className="input-lg"
+                                                value={motivation}
+                                                onChange={(e) => {
+                                                    if(e.target.value) {
+                                                        setMotivation(e.target.value);
+                                                        localStorage.setItem("PME_MOTIVATION", e.target.value);
+                                                    } else {
+                                                        localStorage.removeItem("PME_MOTIVATION");
                                                     }
                                                 }}
                                             />
