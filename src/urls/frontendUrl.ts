@@ -62,6 +62,7 @@ export const FUNDING = {
         SELF: '/funding/accounts',
         LIST: '/funding/accounts/list',
         DETAILS: '/funding/accounts/:id/details',
+        JOURNALS: '/funding/accounts/:id/journals',
         CONSOLIDATIONS: '/funding/accounts/:id/consolidations',
         SYNCHRONISATIONS: '/funding/accounts/:id/synchronisations',
     },

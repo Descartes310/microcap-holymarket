@@ -101,12 +101,16 @@ export default class AccountService {
     static addSynchronisation(synchronisation: string, synchronised: string): Promise<any> {
         return makeRequest('post', Routes.ADD_SYNCHRONISATION(synchronisation, synchronised));
     }
-
+    
     static deleteSynchronisation(synchronisation: string, synchronised: string): Promise<any> {
         return makeRequest('delete', Routes.REMOVE_SYNCHRONISATION(synchronisation, synchronised));
     }
-
+    
     static getAccountActivationDetails(reference: string): Promise<any> {
         return makeRequest('get', Routes.FIND_ACTIVATION_ACCOUNT_DETAILS(reference));
+    }
+
+    static createJournal(reference: string, data: any): Promise<any> {
+        return makeRequest('post', Routes.CREATE_CARNET_JOURNAL(reference), data);
     }
 }

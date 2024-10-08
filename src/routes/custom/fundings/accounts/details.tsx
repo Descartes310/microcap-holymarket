@@ -233,7 +233,7 @@ const Details = (props) => {
                                                     onClick={() => setShowTicketBox(true)}
                                                     className="text-white font-weight-bold ml-10"
                                                 >
-                                                    Echéancier
+                                                    Provision
                                                 </Button>
                                             )}
                                         </div>
@@ -244,10 +244,10 @@ const Details = (props) => {
                                                     variant="contained"
                                                     className="text-white font-weight-bold"
                                                     onClick={() => {
-                                                        props.history.push(joinUrlWithParamsId(FUNDING.ACCOUNT.CONSOLIDATIONS, account?.id))
+                                                        props.history.push(joinUrlWithParamsId(FUNDING.ACCOUNT.JOURNALS, account?.id))
                                                     }}
                                                 >
-                                                    Consolidations
+                                                    Journaux
                                                 </Button>
                                             </div>
                                         )}

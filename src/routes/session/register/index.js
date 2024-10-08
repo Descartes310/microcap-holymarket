@@ -19,6 +19,7 @@ import SweetAlert from 'react-bootstrap-sweetalert';
 import { SessionSlider } from 'Components/Widgets';
 import { LANDING, AUTH, HOME } from "Url/frontendUrl";
 import { loginUserWithEmailAndPassword } from 'Actions';
+import RegistrationSuccess from 'Routes/session/register/components/registrationSuccess';
 
 const Signup = (props) => {
 

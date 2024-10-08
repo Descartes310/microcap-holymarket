@@ -26,3 +26,5 @@ export const REMOVE_SYNCHRONISATION = (reference1, reference2) => `api/fundings/
 export const SET_AGREEMENT = (reference) => `api/fundings/accounts/${reference}/agreements`;
 export const GET_AGREEMENTS = (reference) => `api/fundings/accounts/${reference}/agreements`;
 export const SET_AGREEMENT_TEMPLATE = (reference) => `api/fundings/accounts/${reference}/agreements/templates`;
+
+export const CREATE_CARNET_JOURNAL = (reference) => `api/fundings/accounts/${reference}/journal`;
