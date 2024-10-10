@@ -8,6 +8,7 @@ import {setRequestGlobalAction} from 'Actions';
 import React, { useState, useEffect } from 'react';
 import TextField from '@material-ui/core/TextField';
 import CreateOption from '../components/createOption';
+import ConfirmBox from "Components/dialog/ConfirmBox";
 import CreateDetails from '../components/createDetails';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { NotificationManager } from 'react-notifications';
@@ -40,6 +41,7 @@ const Configure = (props: any) => {
     const [depositAmount, setDepositAmount] = useState(null);
     const [advanceOption, setAdvanceOption] = useState(null);
     const [emitLineCount, setEmitLineCount] = useState(null);
+    const [showConfirmBox, setShowConfirmBox] = useState(false);
     const [showDetailsBox, setShowDetailsBox] = useState(false);
     const [startDepositDate, setStartDepositDate] = useState(null);
     const [availableCapital, setAvailableCapital] = useState(null);
@@ -158,6 +160,34 @@ const Configure = (props: any) => {
         props.setRequestGlobalAction(true);
         ProductService.updateProductDetails(data).then(() => {
             NotificationManager.success('Le product a été mis à jour avec succès !');
+            props.history.push(MARKETPLACE.STORE.PRODUCT.LIST);
+        }).catch((err) => {
+        }).finally(() => {
+            props.setRequestGlobalAction(false);
+        });
+    }
+
+    const generateProductTirages = () => {
+
+        if(!config || !depositPeriod || !cycleTime || !lineGroup || placements.length <= 0 || 
+            !subscriptionStartDate || !subscriptionEndDate || !startDepositDate || !subscriptionFees || 
+            !depositAmount || !minimumRate || tirageDates.length < 0 || !priceUnit || !quotient) {
+            NotificationManager.error('Le formulaire est mal rempli');
+            return;
+        }
+
+        if(subscriptionStartDate >= subscriptionEndDate) {
+            NotificationManager.error('Les dates ne sont pas correctement renseignées');
+            return;
+        }
+
+        let data: any = {
+            reference: props.match.params.reference
+        }
+
+        props.setRequestGlobalAction(true);
+        ProductService.generateProductTirages(data).then(() => {
+            NotificationManager.success('Les tirages ont été enregistrés avec succès !');
             props.history.push(MARKETPLACE.STORE.PRODUCT.LIST);
         }).catch((err) => {
         }).finally(() => {
@@ -509,14 +539,22 @@ const Configure = (props: any) => {
                         ))
                     }
 
-                    <FormGroup>
+                    <FormGroup className="d-flex justify-content-between">
+                        <Button
+                            color="primary"
+                            variant="contained"
+                            onClick={() => setShowConfirmBox(true)}
+                            className="text-white font-weight-bold"
+                        >
+                            Générer les tirages
+                        </Button>
                         <Button
                             color="primary"
                             variant="contained"
                             onClick={onSubmit}
                             className="text-white font-weight-bold"
                         >
-                            Valider
+                            Enregistrer
                         </Button>
                     </FormGroup>
                 </Form>
@@ -532,6 +570,16 @@ const Configure = (props: any) => {
                 title={"Ajout d'un nouvel élément"} 
                 onClose={() => { setShowDetailsBox(false); setDetailsType(null); getCodevDetails() }} 
             />
+            { showConfirmBox && (
+                <ConfirmBox
+                    show={showConfirmBox}
+                    rightButtonOnClick={() => generateProductTirages()}
+                    leftButtonOnClick={() => {
+                        setShowConfirmBox(false);
+                    }}
+                    message={'Etes vous sure de génerer les tirages ?'}
+                />
+            )}
         </>
     );
 };

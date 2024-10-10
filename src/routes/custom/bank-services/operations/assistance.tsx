@@ -313,6 +313,7 @@ const Create = (props) => {
                                     value={amount}
                                     className="input-lg"
                                     onChange={(e) => setAmount(e.target.value)}
+                                    disabled={specificity?.value  == 'CODEV_DEPOSIT'}
                                 />
                             </FormGroup>
 
@@ -328,6 +329,7 @@ const Create = (props) => {
                                         setCurrency(item);
                                     }}
                                     getOptionLabel={(option) => option.label}
+                                    disabled={specificity?.value  == 'CODEV_DEPOSIT'}
                                     renderInput={(params) => <TextField {...params} variant="outlined" />}
                                 />
                             </div>
@@ -359,7 +361,14 @@ const Create = (props) => {
                                                     referralCode={membership}
                                                     updateAmount={(selectedTickets) => {
                                                         setTickets(selectedTickets)
-                                                        setMinAmount(selectedTickets.reduce((amt, currentValue) => amt + currentValue.amount, 0))
+                                                        setMinAmount(selectedTickets.reduce((amt, currentValue) => amt + currentValue.amount, 0));
+                                                        if(selectedTickets && selectedTickets.length > 0) {
+                                                            setCurrency(currencies.find(c => c.code == selectedTickets[0].currency));
+                                                            setAmount(selectedTickets.reduce((amt, currentValue) => amt + currentValue.amount, 0))
+                                                        } else {
+                                                            setCurrency(null);
+                                                            setAmount(0);
+                                                        }
                                                     }}
                                                 />
                                             </div>

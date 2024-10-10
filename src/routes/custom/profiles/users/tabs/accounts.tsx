@@ -44,7 +44,9 @@ const Accounts = (props) => {
                                     <thead>
                                         <tr>
                                             <th className="fw-bold">Nom</th>
-                                            <th className="fw-bold">Valeur</th>
+                                            <th className="fw-bold">Numéro compte</th>
+                                            <th className="fw-bold">Clé</th>
+                                            <th className="fw-bold">IBAN</th>
                                             <th className="fw-bold">Date de création</th>
                                         </tr>
                                     </thead>
@@ -62,7 +64,25 @@ const Accounts = (props) => {
                                                     <div className="media">
                                                         <div className="media-body pt-10">
                                                             <h4 className="m-0 fw-bold text-dark">
-                                                                {item.value}
+                                                                {item.detailsList.find(d => d.type == 'ACCOUNT_NUMBER')?.value}
+                                                            </h4>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="media">
+                                                        <div className="media-body pt-10">
+                                                            <h4 className="m-0 fw-bold text-dark">
+                                                                {item.detailsList.find(d => d.type == 'KEY')?.value}
+                                                            </h4>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="media">
+                                                        <div className="media-body pt-10">
+                                                            <h4 className="m-0 fw-bold text-dark">
+                                                                {item.detailsList.find(d => d.type == 'IBAN')?.value}
                                                             </h4>
                                                         </div>
                                                     </div>

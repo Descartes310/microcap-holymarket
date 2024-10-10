@@ -10,10 +10,13 @@ import TimeFromMoment from 'Components/TimeFromMoment';
 import { getPriceWithCurrency } from 'Helpers/helpers';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { NotificationManager } from 'react-notifications';
+import Checkbox from "@material-ui/core/Checkbox/Checkbox";
 import { Form, FormGroup, Input as InputStrap } from 'reactstrap';
+import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
 
 const List = (props) => {
 
+    const [tickets, setTickets] = useState([]);
     const [endDate, setEndDate] = useState(null);
     const [startDate, setStartDate] = useState(null);
     const [bondNumber, setBondNumber] = useState(null);
@@ -23,7 +26,6 @@ const List = (props) => {
     useEffect(() => {
         if(selectedTickets.length > 0) {
             props.updateAmount(selectedTickets);
-            console.log(selectedTickets);
         }
     }, [selectedTickets])
 
@@ -41,7 +43,7 @@ const List = (props) => {
         ProductService.findTicketByCode(bondNumber)
         .then((response) => {
             if(selectedTickets.filter(st => st.id == response.id).length <= 0) {
-                setSelectedTickets([response, ...selectedTickets]);
+                setTickets([response, ...selectedTickets]);
             } else {
                 NotificationManager.warning("Le ticket est déjà sélectionné");
             }
@@ -59,7 +61,7 @@ const List = (props) => {
         props.setRequestGlobalAction(false);
         ProductService.findTicketByPeriod({referral_code: props.referralCode, start_date: startDate, end_date: endDate})
         .then((response) => {
-            setSelectedTickets([...response.filter(t => !selectedTickets.includes(t)), ...selectedTickets]);
+            setTickets([...response.filter(t => !selectedTickets.includes(t)), ...selectedTickets]);
         })
         .catch((err) => {
             NotificationManager.error("Le numéro du ticket est innexistant");
@@ -147,10 +149,10 @@ const List = (props) => {
                     </Button>
                 </FormGroup>
             </div>
-            { selectedTickets.length > 0 && (
+            { tickets.length > 0 && (
                 <CustomList
                     loading={false}
-                    list={selectedTickets}
+                    list={tickets}
                     renderItem={list => (
                         <>
                             {list && list.length === 0 ? (
@@ -164,17 +166,39 @@ const List = (props) => {
                                     <table className="table table-hover table-middle mb-0">
                                         <thead>
                                             <tr>
+                                                <th className="w-5">Sélectionner</th>
                                                 <th className="fw-bold">Propriétaire</th>
                                                 <th className="fw-bold">Code</th>
                                                 <th className="fw-bold">Montant</th>
                                                 <th className="fw-bold">Date d'échéance</th>
                                                 <th className="fw-bold">Status</th>
-                                                <th className="fw-bold">Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             {list && list.map((item, key) => (
                                                 <tr key={key} className="cursor-pointer">
+                                                    <td>
+                                                        <div className="media">
+                                                            <div className="media-body pt-10">
+                                                                <FormControlLabel
+                                                                    control={
+                                                                        <Checkbox
+                                                                            checked={selectedTickets.map(t => t.id).includes(item.id)}
+                                                                            onChange={() => {
+                                                                                if(selectedTickets.map(t => t.id).includes(item.id)) {
+                                                                                    setSelectedTickets([...selectedTickets.filter(t => t.id !== item.id)]);
+                                                                                } else {
+                                                                                    setSelectedTickets([...selectedTickets, item])
+                                                                                }
+                                                                            }}
+                                                                            color="primary"
+                                                                        />
+                                                                    }
+                                                                    label=""
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                    </td>
                                                     <td>
                                                         <div className="media">
                                                             <div className="media-body pt-10">
@@ -211,13 +235,6 @@ const List = (props) => {
                                                                 <h4 className="m-0 fw-bold text-dark">
                                                                     { item.status == 'USED' ? 'Reglé' : 'En attente' }
                                                                 </h4>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td onClick={() => deleteTicket(item)}>
-                                                        <div className="media">
-                                                            <div className="media-body pt-10">
-                                                                <h4 className="m-0 fw-bold" style={{ color: 'red' }}>Rétirer</h4>
                                                             </div>
                                                         </div>
                                                     </td>

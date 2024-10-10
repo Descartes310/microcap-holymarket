@@ -54,9 +54,7 @@ const List = (props) => {
                                     <thead>
                                         <tr>
                                             <th className="fw-bold">Nom commercial</th>
-                                            <th className="fw-bold">Solde d'exploitation</th>
-                                            <th className="fw-bold">Solde de compensation</th>
-                                            {/* <th className="fw-bold">Créditer</th> */}
+                                            <th className="fw-bold">Prestations</th>
                                             <th className="fw-bold">Prestations</th>
                                         </tr>
                                     </thead>
@@ -73,32 +71,10 @@ const List = (props) => {
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{ item.exploitationBalance ? item.exploitationBalance+' EUR' : '-' }</h4>
+                                                            <h4 className="m-0 fw-bold text-dark">{ item.prestations.join(", ")}</h4>
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td>
-                                                    <div className="media">
-                                                        <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{ item.compensation ? item.compensation.balance+' EUR' : '-' }</h4>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                {/* <td> 
-                                                    { item.compensation && (
-                                                        <Button
-                                                            color="primary"
-                                                            variant="contained"
-                                                            onClick={() => {
-                                                                setShowCreditBox(true);
-                                                                setReferralCode(item.referralCode);
-                                                            }}
-                                                            className="text-white font-weight-bold"
-                                                        >
-                                                            Créditer le compte
-                                                        </Button>
-                                                    )}
-                                                </td> */}
                                                 <td>
                                                     <Button
                                                         color="primary"
