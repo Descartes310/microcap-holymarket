@@ -416,6 +416,14 @@ export default [
             "child_routes": null
          },
          {
+            "menu_title": "Mes avoirs",
+            "new_item": false,
+            "path": FUNDING.BOND.LIST,
+            "permissions": [Permission.microcap360.wallets.name, Permission.general.account],
+            "profiles": null,
+            "child_routes": null
+         },
+         {
             "menu_title": "Mon Microcap",
             "new_item": false,
             "path": MIPRO.HOME.SELF,

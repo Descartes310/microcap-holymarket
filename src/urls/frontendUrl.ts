@@ -66,6 +66,10 @@ export const FUNDING = {
         CONSOLIDATIONS: '/funding/accounts/:id/consolidations',
         SYNCHRONISATIONS: '/funding/accounts/:id/synchronisations',
     },
+    BOND: {
+        SELF: '/funding/bonds',
+        LIST: '/funding/bonds/list',
+    },
     BOURSE: {
         SELF: '/funding/bourse',
         PROJECT: {

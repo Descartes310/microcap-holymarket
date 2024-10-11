@@ -50,4 +50,8 @@ export default class FundingService {
     static getDealsByAccount(data: any): Promise<any> {
         return makeRequest('get', Routes.GET_DEALS_BY_ACCOUNT, data);
     }
+
+    static getBonds(): Promise<any> {
+        return makeRequest('get', Routes.GET_BONDS);
+    }
 }

@@ -562,3 +562,7 @@ export const creditTicketTypes = () => {
         }
     ];
 }
+
+export const getCreditTicketTypeLabel = (value) => {
+    return creditTicketTypes().find(d => d.value == value)?.label
+}

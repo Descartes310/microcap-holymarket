@@ -1,5 +1,6 @@
 import React from 'react';
 import Deals from './deals';
+import Bonds from './bonds';
 import Bourses from './bourses';
 import Accounts from './accounts';
 import {connect} from "react-redux";
@@ -16,6 +17,7 @@ const Funding = (props) => {
                     <Redirect exact from={`${match.url}/`} to={FUNDING.ACCOUNT.SELF} />
                     <Route path={FUNDING.ACCOUNT.SELF} component={Accounts} />
                     <Route path={FUNDING.BOURSE.SELF} component={Bourses} />
+                    <Route path={FUNDING.BOND.SELF} component={Bonds} />
                     <Route path={FUNDING.BOURSE.DEALS.SELF} component={Deals} />
                 </Switch>
             </>
