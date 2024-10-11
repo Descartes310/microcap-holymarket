@@ -26,6 +26,7 @@ class Hit extends Component {
 	onPressAddToCart(cartItem, e) {
 		switch (this.props.model?.specialType) {
 			case 'CODEV':
+				console.log(cartItem);
 				this.setState({ showCodevStep1: true, product: cartItem });
 				break;
 			default:
@@ -35,6 +36,7 @@ class Hit extends Component {
 	}
 
 	addToCart = (cartItem, e = null) => {
+		console.log("Add to cart => "+cartItem)
 		if(e) e.preventDefault();
 		if(!cartItem.profileBuyable) {
 			alert("Votre profile ne vous donne pas accès à ce produit");

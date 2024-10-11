@@ -61,27 +61,7 @@ const VoteRecap = (props) => {
     return (
         <QueueAnim type="bottom" duration={2000}>
             <div className="rct-session-wrapper">
-                <AppBar position="static" className="session-header">
-                    <Toolbar>
-                        <div className="container">
-                            <div className="d-flex justify-content-between">
-                                <div className="session-logo">
-                                    <Link to={HOME}>
-                                        <img src={AppConfig.appLogo} alt="session-logo" className="img-fluid" width="110" height="35" />
-                                    </Link>
-                                </div>
-                                <div className="center-hor-ver" style={{ marginRight: '10%' }}>
-                                    <Button variant="contained" className="btn-light mr-2 p-10" onClick={onUserSignUp}>
-                                        <IntlMessages id="auth.signup" />
-                                    </Button>
-                                    <Button variant="contained" className="btn-primary mr-2 p-10" onClick={onDiscoverClick}>
-                                        Tout Microcap
-                                    </Button>
-                                </div>
-                            </div>
-                        </div>
-                    </Toolbar>
-                </AppBar>
+            <div className='mb-50'></div>
                 <div className="session-inner-wrapper">
                     <div className="container">
                         <div className="row">
@@ -97,10 +77,11 @@ const VoteRecap = (props) => {
                                         <p className='text-center text-black mb-10' style={{ fontSize: 16 }}>Pour permettre a votre ville {city.name} de cumuler des voix, reserver un produit</p>
                                         <p className='text-center text-black mb-10' style={{ fontSize: 16 }}>1 vote = 1 like</p>
                                         <p className='text-center text-black mb-10' style={{ fontSize: 16 }}>10 likes = 1 voix</p>
-                                        <FormGroup className="mb-25 row d-flex justify-content-around flex-column">
+                                        <FormGroup className="mb-25">
                                             <Button
+                                                size="large"
                                                 color="primary"
-                                                className="col-sm-12 col-md-5 ml-0 mt-15 text-white"
+                                                className="col-sm-12 col-md-12 ml-0 mt-15 text-white w-100"
                                                 onClick={() => {
                                                    onSubmit();
                                                 }}
@@ -108,8 +89,9 @@ const VoteRecap = (props) => {
                                                 Voter (pour un like)
                                             </Button>
                                             <Button
+                                                size="large"
                                                 color="primary"
-                                                className="col-sm-12 col-md-5 ml-0 mt-15 text-white"
+                                                className="col-sm-12 col-md-12 ml-0 mt-15 text-white w-100"
                                                 onClick={() => {
                                                     props.history.push(PME_PROJECT.VOTE_OPTION);
                                                 }}

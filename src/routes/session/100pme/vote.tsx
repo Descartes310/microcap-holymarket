@@ -84,27 +84,7 @@ const Vote = (props) => {
     return (
         <QueueAnim type="bottom" duration={2000}>
             <div className="rct-session-wrapper">
-                <AppBar position="static" className="session-header">
-                    <Toolbar>
-                        <div className="container">
-                            <div className="d-flex justify-content-between">
-                                <div className="session-logo">
-                                    <Link to={HOME}>
-                                        <img src={AppConfig.appLogo} alt="session-logo" className="img-fluid" width="110" height="35" />
-                                    </Link>
-                                </div>
-                                <div className="center-hor-ver" style={{ marginRight: '10%' }}>
-                                    <Button variant="contained" className="btn-light mr-2 p-10" onClick={onUserSignUp}>
-                                        <IntlMessages id="auth.signup" />
-                                    </Button>
-                                    <Button variant="contained" className="btn-primary mr-2 p-10" onClick={onDiscoverClick}>
-                                        Tout Microcap
-                                    </Button>
-                                </div>
-                            </div>
-                        </div>
-                    </Toolbar>
-                </AppBar>
+            <div className='mb-50'></div>
                 <div className="session-inner-wrapper">
                     <div className="container">
                         <div className="row">

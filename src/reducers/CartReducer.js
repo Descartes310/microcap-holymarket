@@ -12,12 +12,15 @@ import { oldCartItemChecked } from "Helpers/helpers";
 const INIT_STATE = {
 	items: [],
 };
+
 export default (state = INIT_STATE, action) => {
+	
+	const oldItems = JSON.parse(localStorage.getItem('cartItems'));
+
 	const obj = {
-		data: {},
+		data: {...oldItems},
 		authId: action.authId,
 	};
-	const oldItems = JSON.parse(localStorage.getItem('cartItems'));
 
 	//if (oldCartItemChecked(oldItems)) {
 	obj.data = oldItems ? oldItems : [];

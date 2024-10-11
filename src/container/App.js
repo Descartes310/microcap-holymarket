@@ -10,6 +10,8 @@ import {
 } from "../urls/frontendUrl";
 import {connect} from 'react-redux';
 import React, {Component} from 'react';
+import { setCurrencies } from 'Actions';
+import UnitService from "Services/units";
 import {getAuthToken} from "Helpers/tokens";
 import {AbilityContext} from "Permissions/Can";
 import Dashboard from 'Routes/custom/dashboard';
@@ -34,9 +36,17 @@ class App extends Component {
 
     componentDidMount() {
         this.isNewUser();
+        this.getCurrencies();
         // Pass true to skip error manager
         // Because this is a silent request
     }
+
+    getCurrencies() {
+        UnitService.getCurrencies()
+        .then((response) => {
+			this.props.setCurrencies(response);
+		})
+	}
 
     /**
      * Check whether the current user is a new or not
@@ -111,4 +121,4 @@ const mapStateToProps = ({ authUser, tokens, appLoading }) => {
     return { tokens, authUser, appLoading };
 };
 
-export default connect(mapStateToProps, {setAuthUser, disableAppLoading, loginIntoStore})(App);
+export default connect(mapStateToProps, {setAuthUser, disableAppLoading, loginIntoStore, setCurrencies})(App);

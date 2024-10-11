@@ -124,34 +124,14 @@ const Auth = (props) => {
     return (
         <QueueAnim type="bottom" duration={2000}>
             <div className="rct-session-wrapper">
-                <AppBar position="static" className="session-header">
-                    <Toolbar>
-                        <div className="container">
-                            <div className="d-flex justify-content-between">
-                                <div className="session-logo">
-                                    <Link to={HOME}>
-                                        <img src={AppConfig.appLogo} alt="session-logo" className="img-fluid" width="110" height="35" />
-                                    </Link>
-                                </div>
-                                <div className="center-hor-ver" style={{ marginRight: '10%' }}>
-                                    <Button variant="contained" className="btn-light mr-2 p-10" onClick={onUserSignUp}>
-                                        <IntlMessages id="auth.signup" />
-                                    </Button>
-                                    <Button variant="contained" className="btn-primary mr-2 p-10" onClick={onDiscoverClick}>
-                                        Tout Microcap
-                                    </Button>
-                                </div>
-                            </div>
-                        </div>
-                    </Toolbar>
-                </AppBar>
+                <div className='mb-50'></div>
                 <div className="session-inner-wrapper">
                     <div className="container">
                         <div className="row">
                             <div className="col-sm-12 col-md-12 col-lg-12">
                                 <div className="center-hor-ver session-body d-flex flex-column">
                                     <div className="session-head mb-10 text-center">
-                                        <h1 className="p-20">M'identifier</h1>
+                                        <h1 className="p-20">{showRegistration ? `Créer mon compte` : `Me connecter`}</h1>
                                         {/* This text is just a work around to add the width of the form input */}
                                         <p className="mb-0 visibility-hidden">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad, adipisci, animi aperiam eligendi</p>
                                     </div>
@@ -333,11 +313,11 @@ const Auth = (props) => {
                                                         variant="contained"
                                                         className="btn-block text-white w-100"
                                                     >
-                                                        <IntlMessages id="auth.signup" />
+                                                        Créer mon compte
                                                     </Button>
                                                     <Button
                                                         size="large"
-                                                        color="primary"
+                                                        color="secondary"
                                                         variant="contained"
                                                         onClick={() => {
                                                             if(!showRegistration) {
@@ -348,7 +328,7 @@ const Auth = (props) => {
                                                         }}
                                                         className="btn-block text-white w-100"
                                                     >
-                                                        <IntlMessages id="Je suis déjà membre du réseau MicroCap" />
+                                                        Retourner à la connexion
                                                     </Button>
                                                 </FormGroup>
                                             </Form>
@@ -393,11 +373,11 @@ const Auth = (props) => {
                                                         variant="contained"
                                                         className="btn-block text-white w-100"
                                                     >
-                                                        <IntlMessages id="auth.signin" />
+                                                        Me connecter
                                                     </Button>
                                                     <Button
                                                         size="large"
-                                                        color="primary"
+                                                        color="secondary"
                                                         variant="contained"    
                                                         onClick={() => {
                                                             if(!showRegistration) {
@@ -408,7 +388,7 @@ const Auth = (props) => {
                                                         }}
                                                         className="btn-block text-white w-100"
                                                     >
-                                                        <IntlMessages id="Je ne suis pas encore membre du réseau MicroCap" />
+                                                        Créer mon compte sur MicroCap
                                                     </Button>
                                                 </FormGroup>
                                             </Form>

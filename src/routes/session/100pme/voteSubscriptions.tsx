@@ -74,27 +74,7 @@ const VoteSubscriptions = (props) => {
     return (
         <QueueAnim type="bottom" duration={2000}>
             <div className="rct-session-wrapper">
-                <AppBar position="static" className="session-header">
-                    <Toolbar>
-                        <div className="container">
-                            <div className="d-flex justify-content-between">
-                                <div className="session-logo">
-                                    <Link to={HOME}>
-                                        <img src={AppConfig.appLogo} alt="session-logo" className="img-fluid" width="110" height="35" />
-                                    </Link>
-                                </div>
-                                <div className="center-hor-ver" style={{ marginRight: '10%' }}>
-                                    <Button variant="contained" className="btn-light mr-2 p-10" onClick={onUserSignUp}>
-                                        <IntlMessages id="auth.signup" />
-                                    </Button>
-                                    <Button variant="contained" className="btn-primary mr-2 p-10" onClick={onDiscoverClick}>
-                                        Tout Microcap
-                                    </Button>
-                                </div>
-                            </div>
-                        </div>
-                    </Toolbar>
-                </AppBar>
+            <div className='mb-50'></div>
                 <div className="session-inner-wrapper">
                     <div className="container">
                         <div className="row">
@@ -134,7 +114,7 @@ const VoteSubscriptions = (props) => {
                                                 onChange={(__, item) => {
                                                     setProduct(item);
                                                 }}
-                                                getOptionLabel={(option) => `${option.seller} (${getPriceWithCurrency(option.price, option?.details?.find(details => details.type === 'PRICE_CURRENCY')?.value)})`}
+                                                getOptionLabel={(option) => `${option.seller} (${getPriceWithCurrency(option.price, option.currency)})`}
                                                 renderInput={(params) => <TextField {...params} variant="outlined" />}
                                             />
                                         </FormGroup>
@@ -188,6 +168,7 @@ const VoteSubscriptions = (props) => {
                         setShowOrderModal(false);
                         setProduct(null);
                         props.onClearCart();
+                        props.history.push(joinUrlWithParamsId(PME_PROJECT.VOTE_PRODUCT, option.id));
                     }}
                     isPreOrder={true}
                 />

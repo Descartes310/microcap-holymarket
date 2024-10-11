@@ -88,7 +88,7 @@ const Create = (props) => {
     }
 
     const getUnits = () => {
-        props.setRequestGlobalAction(false);
+        props.setRequestGlobalAction(true);
         UnitService.getUnits()
             .then((response) => setUnits(response))
             .catch((err) => {

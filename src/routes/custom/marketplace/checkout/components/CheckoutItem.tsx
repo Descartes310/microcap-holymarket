@@ -6,7 +6,7 @@ import { MARKETPLACE } from 'Url/frontendUrl';
 import IconButton from '@material-ui/core/IconButton';
 import { Scrollbars } from 'react-custom-scrollbars';
 import CreateComplementaryPaymentModal from './createComplementaryPayment';
-import { getFilePath, getPrice, getPriceWithCurrency } from 'Helpers/helpers';
+import { getFilePath, getPrice, getPriceWithCurrency, addCurrency } from 'Helpers/helpers';
 
 class CheckoutItem extends Component<any, any> {
 
@@ -43,13 +43,13 @@ class CheckoutItem extends Component<any, any> {
 
    getAmountToPay = () => {
       let baseAmount = this.getTotalPrice();
-      return baseAmount + this.state.payments.map(p => Number(p.amount)).reduce((sum, current) => sum + current, 0);
+      return baseAmount + getPrice(this.state.payments.map(p => Number(p.amount)).reduce((sum, current) => sum + current, 0), this.props.cart.items[0]?.currency);
    }
 
   getDiscountedAmountToPay = () => {
       let baseAmount = this.getTotalPrice();
       if(this.props.discount) {
-         baseAmount = baseAmount +  + this.state.payments.map(p => Number(p.amount)).reduce((sum, current) => sum + current, 0) - (baseAmount * this.props.discount.percentage/100);
+         baseAmount = this.getAmountToPay() - (baseAmount * this.props.discount.percentage/100);
       }
       return baseAmount;
   }
@@ -95,7 +95,7 @@ class CheckoutItem extends Component<any, any> {
             )}
             <div className="border-top d-flex justify-content-between align-items-center py-4">
                <span className="font-weight-bold text-muted">Total</span>
-               <span className="font-weight-bold">{this.getTotalPrice()} {cart.items[0]?.currency}</span>
+               <span className="font-weight-bold">{addCurrency(this.getTotalPrice())}</span>
             </div>
             {!this.isCartEmpty() && (
                <div>
@@ -109,7 +109,7 @@ class CheckoutItem extends Component<any, any> {
                               <span className="fs-14 d-block text-truncate">{payment.label}</span>
                            </div>
                            <div className="w-20 d-flex align-items-center">
-                              <span className="fs-12 d-block text-right">{getPriceWithCurrency(payment.amount, cart.currency)}</span>
+                              <span className="fs-12 d-block text-right">{getPriceWithCurrency(payment.amount, cart.items[0]?.currency)}</span>
                            </div>
                            
                               <div className="w-10 d-flex align-items-center">
@@ -135,7 +135,7 @@ class CheckoutItem extends Component<any, any> {
             )}
             <div className="border-top d-flex justify-content-between align-items-center py-4 mt-30">
                <span className="font-weight-bold text-muted">Total</span>
-               <span className="font-weight-bold"><span style={this.props.discount?.percentage && { textDecoration: 'line-through', color: 'red' } }>{this.getAmountToPay()} {cart.items[0]?.currency}</span> { this.props.discount?.percentage && <>{this.getDiscountedAmountToPay()} {cart.items[0]?.currency}</>}</span>
+               <span className="font-weight-bold"><span style={this.props.discount?.percentage && { textDecoration: 'line-through', color: 'red' } }>{addCurrency(this.getAmountToPay())}</span> { this.props.discount?.percentage && <>{addCurrency(this.getDiscountedAmountToPay())}</>}</span>
             </div>
             <div className="d-flex justify-content-end align-items-center mt-30">
                {this.isCartEmpty() && (
@@ -148,6 +148,7 @@ class CheckoutItem extends Component<any, any> {
             { showComplementaryPaymentModal && (
                <CreateComplementaryPaymentModal
                   show={showComplementaryPaymentModal}
+                  currencyCode={cart.items[0]?.currency}
                   onSubmit={(data) => {
                      this.setState({ showComplementaryPaymentModal: false, payments: [...payments, data]}, () => {
                         this.props.updatePayments([...payments, data])
