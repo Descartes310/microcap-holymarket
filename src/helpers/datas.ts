@@ -552,3 +552,13 @@ export const getProductSpecialTypeLabel = (value) => {
 }
 
 export const imageFileTypes = ["JPG", "PNG", "GIF", "JPEG"];
+
+export const creditTicketTypes = () => {
+    return [
+        {
+            label: "Bond d'achat", value: 'PAYMENT'
+        }, {
+            label: "Bond de caisse", value: "CODEV"
+        }
+    ];
+}

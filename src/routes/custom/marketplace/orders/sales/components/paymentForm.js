@@ -5,6 +5,7 @@ import OrderService from "Services/orders";
 import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
 import { setRequestGlobalAction } from 'Actions';
+import { getPriceWithCurrency } from 'Helpers/helpers';
 import { NotificationManager } from 'react-notifications';
 import { RctCard, RctCardContent } from 'Components/RctCard';
 
@@ -70,7 +71,7 @@ class PaymentCard extends Component {
             <RctCardContent>
                <div className="row mt-20">
                   <h1 className='mb-30'>
-                     <span style={discount?.percentage && { textDecoration: 'line-through', color: 'red' } }>{this.getAmountToPay()} {order?.items[0]?.currency}</span> { discount?.percentage && <>{this.getDiscountedAmountToPay()} {order?.items[0]?.currency}</>}
+                     <span style={discount?.percentage && { textDecoration: 'line-through', color: 'red' } }>{ getPriceWithCurrency(this.getAmountToPay(), order?.items[0]?.currency)}</span> { discount?.percentage && <>{getPriceWithCurrency(this.getDiscountedAmountToPay(), order?.items[0]?.currency)}</>}
                   </h1>
                   <Button
                      color="primary"

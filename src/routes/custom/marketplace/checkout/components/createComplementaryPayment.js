@@ -4,6 +4,7 @@ import UnitService from 'Services/units';
 import React, { Component } from 'react';
 import { withRouter } from "react-router-dom";
 import { setRequestGlobalAction } from 'Actions';
+import { creditTicketTypes } from 'Helpers/datas';
 import TextField from '@material-ui/core/TextField';
 import { RctCardContent } from 'Components/RctCard';
 import Autocomplete from '@material-ui/lab/Autocomplete';
@@ -15,6 +16,7 @@ import { FormGroup, Button, Input as InputStrap  } from 'reactstrap';
 class CreateComplementaryPaymentModal extends Component {
   
     state = {
+        type: null,
         label: null,
         amount: null,
         currency: null,
@@ -42,21 +44,21 @@ class CreateComplementaryPaymentModal extends Component {
 
     onSubmit = () => {
 
-        const { amount, label } = this.state;
+        const { amount, label, type } = this.state;
 
-        if(!amount || !label) {
+        if(!amount || !label || !type) {
             NotificationManager.error("La désignation et le montant sont obligatoires");
             return;
         }
 
-        let data = {label, amount, deletable: true};
+        let data = {label, amount, deletable: true, type: type.value};
         this.props.onSubmit(data);
     }
 
     render() {
 
         const { onClose, show } = this.props;
-        const { amount, label, currencies, currency } = this.state;
+        const { amount, label, currencies, currency, type } = this.state;
 
         //console.log(currencies, currency, this.props.currencyCode, currencies.find(u => u.code == this.props.currencyCode));
 
@@ -84,6 +86,21 @@ class CreateComplementaryPaymentModal extends Component {
                             className="input-lg"
                             type={"text"}
                             onChange={(e) => this.setState({ label: e.target.value })}
+                        />
+                    </FormGroup>
+                    <FormGroup className="has-wrapper">
+                        <InputLabel className="text-left">
+                            Type de versement
+                        </InputLabel>
+                        <Autocomplete
+                            value={type}
+                            id="combo-box-demo"
+                            onChange={(__, item) => {
+                                this.setState({ type: item });
+                            }}
+                            getOptionLabel={(option) => option.label}
+                            options={creditTicketTypes()}
+                            renderInput={(params) => <TextField {...params} variant="outlined" />}
                         />
                     </FormGroup>
                     <FormGroup className="has-wrapper">
