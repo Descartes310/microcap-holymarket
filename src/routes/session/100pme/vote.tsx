@@ -160,7 +160,28 @@ const Vote = (props) => {
                                             <InputLabel className="text-left" htmlFor="motivation">
                                                 Motivation (facultatif)
                                             </InputLabel>
-                                            <Input
+                                            <Autocomplete
+                                                value={city}
+                                                id="combo-box-demo"
+                                                onChange={(__, item) => {
+                                                    if(item) {
+                                                        setMotivation(item);
+                                                        localStorage.setItem("PME_MOTIVATION", item);
+                                                    } else {
+                                                        localStorage.removeItem("PME_MOTIVATION");
+                                                    }
+                                                }}
+                                                options={[
+                                                    "Trouver un emploie",
+                                                    "Investir",
+                                                    "Soutenir le developpement",
+                                                    "Signaler une terre d'opportunité",
+                                                    "Proposer un projet"
+                                                ]}
+                                                getOptionLabel={(option) => option}
+                                                renderInput={(params) => <TextField {...params} variant="outlined" />}
+                                            />
+                                            {/* <Input
                                                 required
                                                 id="motivation"
                                                 type="text"
@@ -175,7 +196,7 @@ const Vote = (props) => {
                                                         localStorage.removeItem("PME_MOTIVATION");
                                                     }
                                                 }}
-                                            />
+                                            /> */}
                                         </FormGroup>
                                         <FormGroup className="col-md-12 col-sm-12 mb-30">
                                             <Button

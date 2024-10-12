@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import React, { Component } from 'react';
+import { deleteItemFromCart } from "Actions";
 import Button from '@material-ui/core/Button';
 import { MARKETPLACE } from 'Url/frontendUrl';
 import IconButton from '@material-ui/core/IconButton';
@@ -71,22 +72,27 @@ class CheckoutItem extends Component<any, any> {
             ) : (
                <Scrollbars className="rct-scroll" autoHeight autoHeightMin={100} autoHeightMax={450} autoHide>
                   <ul className="list-unstyled dropdown-body">
-                     {cart.items.map((cart, key) => (
+                     {cart.items.map((cartItem, key) => (
                         <li className="d-flex justify-content-between p-3" key={key}>
                            <div className="media overflow-hidden w-75">
                               <div className="mr-15">
-                                 <img src={cart.image ? getFilePath(cart.image) : require('Assets/img/product.png')} alt="products" className="media-object" width="63" height="63" />
+                                 <img src={cartItem.image ? getFilePath(cartItem.image) : require('Assets/img/product.png')} alt="products" className="media-object" width="63" height="63" />
                               </div>
                               <div className="media-body text-truncate">
-                                 <span className="fs-14 d-block text-truncate">{cart.label}</span>
-                                 <span className="fs-12 d-block text-muted text-truncate">{cart.description}</span>
+                                 <span className="fs-14 d-block text-truncate">{cartItem.label}</span>
+                                 <span className="fs-12 d-block text-muted text-truncate">{cartItem.description}</span>
                               </div>
                            </div>
                            <div className="w-10">
-                              <span className="text-muted fs-12 d-block mb-10">{cart.quantity}</span>
+                              <span className="text-muted fs-12 d-block mb-10">{cartItem.quantity}</span>
                            </div>
                            <div className="w-15">
-                              <span className="text-muted fs-12 d-block mb-10">{getPriceWithCurrency(cart.price, cart.currency)}</span>
+                              <span className="text-muted fs-12 d-block mb-10">{getPriceWithCurrency(cartItem.price, cartItem.currency)}</span>
+                           </div>
+                           <div className="w-5">
+                              <IconButton onClick={() => this.props.deleteItemFromCart(cartItem)}>
+                                 <i className="zmdi zmdi-close"></i>
+                              </IconButton>
                            </div>
                         </li>
                      ))}
@@ -166,4 +172,4 @@ const mapStateToProps = ({ cart }) => {
    return { cart };
 }
 
-export default connect(mapStateToProps)(CheckoutItem);
+export default connect(mapStateToProps, {deleteItemFromCart})(CheckoutItem);
