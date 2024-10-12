@@ -161,7 +161,7 @@ const Vote = (props) => {
                                                 Motivation (facultatif)
                                             </InputLabel>
                                             <Autocomplete
-                                                value={city}
+                                                value={motivation}
                                                 id="combo-box-demo"
                                                 onChange={(__, item) => {
                                                     if(item) {

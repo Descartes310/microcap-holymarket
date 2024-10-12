@@ -76,7 +76,7 @@ class CreateComplementaryPaymentModal extends Component {
                 <RctCardContent>
                     <FormGroup className="has-wrapper">
                         <InputLabel className="text-left" htmlFor="label">
-                            Désignation
+                            Libellé du versement
                         </InputLabel>
                         <InputStrap
                             required

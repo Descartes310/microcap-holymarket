@@ -15,13 +15,17 @@ import { setRequestGlobalAction } from 'Actions';
 import React, { useEffect, useState } from 'react';
 import TextField from '@material-ui/core/TextField';
 import { onAddItemToCart, onClearCart } from 'Actions';
+import InputComponent from "Components/InputComponent";
 import { getPriceWithCurrency } from 'Helpers/helpers';
+import FormControl from "@material-ui/core/FormControl";
 import {NotificationManager} from 'react-notifications';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { stripeZeroDecimalCurrencies } from 'Helpers/datas'
-import {HOME, AUTH, LANDING, PME_PROJECT, joinUrlWithParamsId} from "Url/frontendUrl";
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import OrderFormModal from 'Routes/custom/marketplace/checkout/orderFormModal'
+import {HOME, AUTH, LANDING, PME_PROJECT, joinUrlWithParamsId} from "Url/frontendUrl";
+import Checkbox from "@material-ui/core/Checkbox/Checkbox";
+import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
 import CodevSubscriptionModal from 'Routes/custom/marketplace/_components/codevSubscriptionModal';
 
 const VoteOptionProducts = (props) => {
@@ -37,6 +41,7 @@ const VoteOptionProducts = (props) => {
     const [productModel, setProductModel] = useState(null);
     const [productModels, setProductModels] = useState([]);
     const [showOrderModal, setShowOrderModal] = useState(false);
+    const [wantToSubscribe, setWantToSubscribe] = useState(false);
     const [showSubscriptionModal, setShowSubscriptionModal] = useState(false);
 
     useEffect(() => {
@@ -246,6 +251,17 @@ const VoteOptionProducts = (props) => {
                                                         renderInput={(params) => <TextField {...params} variant="outlined" />}
                                                     />
                                                 </FormGroup>
+                                                <FormGroup className="col-sm-12 has-wrapper">
+                                                    <FormControlLabel control={
+                                                        <Checkbox
+                                                            color="primary"
+                                                            checked={wantToSubscribe}
+                                                            onChange={() => setWantToSubscribe(!wantToSubscribe)}
+                                                        />
+                                                    } label={'Je veux souscrire au service de guichet MicroCap pour effectuer des retraits et versements en espèces'}
+                                                    />
+                                                </FormGroup>
+                                                { wantToSubscribe && <p className='text-center text-black mb-10 w-100' style={{ fontSize: 16 }}>Les souscriptions au service de guichet avancé de banque vous permettent de faire des retraits, versements et paiements marchants auprès des guichet MicroCap</p> }
                                                 <FormGroup className="col-md-12 col-sm-12 has-wrapper">
                                                     <Button
                                                         color="primary"
@@ -266,7 +282,7 @@ const VoteOptionProducts = (props) => {
                                             </>
                                         }
                                         
-                                        <FormGroup className="mb-25 col-md-12 col-sm-12 has-wrapper">
+                                        {/* <FormGroup className="mb-25 col-md-12 col-sm-12 has-wrapper">
                                             <Button
                                                 color="primary"
                                                 disabled={!option}
@@ -277,7 +293,7 @@ const VoteOptionProducts = (props) => {
                                             >
                                                 Guichet
                                             </Button>
-                                        </FormGroup>
+                                        </FormGroup> */}
                                         <FormGroup className="mb-25 col-md-12 col-sm-12 has-wrapper">
                                             <Button
                                                 color="primary"
@@ -314,10 +330,11 @@ const VoteOptionProducts = (props) => {
                         getProducts();
                         setShowOrderModal(false);
                         setProduct(null);
+                        setWantToSubscribe(false);
                         props.onClearCart();
                         //setShowPaymentModal(true);
                     }}
-                    customData={{vote: option.value, city_id: JSON.parse(localStorage.getItem('PME_CITY'))?.id, city_name: JSON.parse(localStorage.getItem('PME_CITY'))?.name, country: localStorage.getItem('PME_COUNTRY'), locality: localStorage.getItem('PME_LOCALITY'), motivation: localStorage.getItem('PME_MOTIVATION')}}
+                    customData={{isSubscription: wantToSubscribe, vote: option.value, city_id: JSON.parse(localStorage.getItem('PME_CITY'))?.id, city_name: JSON.parse(localStorage.getItem('PME_CITY'))?.name, country: localStorage.getItem('PME_COUNTRY'), locality: localStorage.getItem('PME_LOCALITY'), motivation: localStorage.getItem('PME_MOTIVATION')}}
                     isPreOrder={true}
                 />
             )}
