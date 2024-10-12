@@ -10,6 +10,7 @@ import ActivateInjectionModal from './activate';
 import React, { useState, useEffect } from 'react';
 import InjectionDocuments from './injectionDocument';
 import TimeFromMoment from "Components/TimeFromMoment";
+import { getPriceWithCurrency } from 'Helpers/helpers';
 
 const List = (props) => {
 
@@ -75,7 +76,7 @@ const List = (props) => {
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <p className="m-0 text-dark">{item.amount} {item.currency}</p>
+                                                            <p className="m-0 text-dark">{getPriceWithCurrency(item.amount, item.currency)}</p>
                                                         </div>
                                                     </div>
                                                 </td>

@@ -7,6 +7,7 @@ import {setRequestGlobalAction} from 'Actions';
 import React, { useState, useEffect } from 'react';
 import ConfirmBox from "Components/dialog/ConfirmBox";
 import TimeFromMoment from 'Components/TimeFromMoment';
+import { getPriceWithCurrency } from 'Helpers/helpers';
 import {NotificationManager} from 'react-notifications';
 
 
@@ -87,7 +88,7 @@ const List = (props) => {
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{item.amount} {item.currency}</h4>
+                                                            <h4 className="m-0 fw-bold text-dark">{ getPriceWithCurrency(item.amount, item.currency) }</h4>
                                                         </div>
                                                     </div>
                                                 </td>
