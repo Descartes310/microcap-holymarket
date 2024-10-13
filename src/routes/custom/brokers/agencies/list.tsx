@@ -27,19 +27,19 @@ const List = (props) => {
     return (
         <>
             <PageTitleBar
-                title={"Liste des gestionnaires"}
+                title={"Liste des agences"}
             />
             <CustomList
                 list={agencies}
                 loading={false}
-                itemsFoundText={n => `${n} gestionnaires trouvés`}
+                itemsFoundText={n => `${n} agences trouvées`}
                 onAddClick={() => props.history.push(BROKER.AGENCY.CREATE)}
                 renderItem={list => (
                     <>
                         {list && list.length === 0 ? (
                             <div className="d-flex justify-content-center align-items-center py-50">
                                 <h4>
-                                    Aucun gestionnaire trouvé
+                                    Aucune agence trouvée
                                 </h4>
                             </div>
                         ) : (
@@ -50,7 +50,6 @@ const List = (props) => {
                                             <th className="fw-bold">Désignation</th>
                                             <th className="fw-bold">Description</th>
                                             <th className="fw-bold">Responsable</th>
-                                            <th className="fw-bold">Solde</th>
                                             <th className="fw-bold">Actions</th>
                                         </tr>
                                     </thead>
@@ -79,21 +78,7 @@ const List = (props) => {
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <div className="media">
-                                                        <div className="media-body pt-10">
-                                                            <p className="m-0 text-dark">{getPriceWithCurrency(item.balance)}</p>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <Button
-                                                        color="primary"
-                                                        variant="contained"
-                                                        className="text-white font-weight-bold"
-                                                        onClick={() => props.history.push(joinUrlWithParamsId(FUNDING.ACCOUNT.DETAILS, item.accountReference.split('_').pop()))}
-                                                    >
-                                                        Détails
-                                                    </Button>
+                                                    
                                                 </td>
                                             </tr>
                                         ))}

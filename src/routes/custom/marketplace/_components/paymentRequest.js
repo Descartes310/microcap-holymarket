@@ -82,7 +82,7 @@ const PaymentRequest = (props) => {
                 setDiscountCode(response.discountCode);
             }
             if(!response?.product.acceptManyPayment) {
-                setAmount(response.amount);
+                setAmount(response.amount + response.complementaryPayment - response.amountPaid);
             }
             setNotificationMethod(response?.details.find(d => d.type == 'NOTICATION_METHODS')?.value?.split(",") ?? []);
             setPaymentMethod(defaultPaymentMethod == null ? response?.details.find(d => d.type == 'PAYMENT_METHOD')?.value?.split(",") ?? [] : [defaultPaymentMethod]);

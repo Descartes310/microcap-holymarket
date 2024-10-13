@@ -14,14 +14,6 @@ import {HOME, AUTH, LANDING} from "Url/frontendUrl";
 
 const VoteOptionProductsEnd = (props) => {
 
-    const onUserSignUp = () => {
-        props.history.push(AUTH.REGISTER);
-    };
-
-    const onDiscoverClick = () => {
-        props.history.push(LANDING.HOME);
-    };
-
     return (
         <QueueAnim type="bottom" duration={2000}>
             <div className="rct-session-wrapper">
@@ -32,12 +24,12 @@ const VoteOptionProductsEnd = (props) => {
                             <div className="col-sm-12 col-md-12 col-lg-12">
                                 <div className="center-hor-ver session-body d-flex flex-column">
                                     <div className="session-head mb-10 text-center">
-                                        <h1 className="p-20">Merci de votre parcipation !</h1>
+                                        <h1 className="p-20">Merci de votre participation !</h1>
                                         {/* This text is just a work around to add the width of the form input */}
                                         <p className="mb-0 visibility-hidden">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad, adipisci, animi aperiam eligendi</p>
                                     </div>
                                     <div className="row w-100 d-flex justify-content-around flex-column">
-                                        <p className='text-center text-black mb-10' style={{ fontSize: 16 }}>Vos votes ont rapportés des voix/likes à la ville {JSON.parse(localStorage.getItem('PME_CITY'))?.name}. Merci de votre participations.</p>
+                                        <p className='text-center text-black mb-10' style={{ fontSize: 16 }}>Vos votes ont rapportés des voix ou likes à la ville {JSON.parse(localStorage.getItem('PME_CITY'))?.name}. Merci de votre participations.</p>
                                         <p className='text-center text-black mb-10' style={{ fontSize: 16 }}>Vous pouvez maintenant vous connecter sur votre espace MicroCap pour profiter de tous nos services. </p>
                                         <p className='text-center text-black mb-10' style={{ fontSize: 16 }}>Votre login:  {props?.authUser?.email}</p>
                                         <p className='text-center text-black mb-10' style={{ fontSize: 16 }}>Votre mot de passe: déjà communiqué </p>

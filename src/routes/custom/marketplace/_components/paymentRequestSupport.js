@@ -38,7 +38,7 @@ const PaymentRequestSupport = (props) => {
             if(discount) {
                 setAmount(getDiscountedAmountToPay())
             } else {
-                setAmount(order.amount);
+                setAmount(getAmountToPay());
             }
          }
     }, [discount])

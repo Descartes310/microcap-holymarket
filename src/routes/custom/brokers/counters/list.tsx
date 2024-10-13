@@ -50,7 +50,6 @@ const List = (props) => {
                                             <th className="fw-bold">Désignation</th>
                                             <th className="fw-bold">Description</th>
                                             <th className="fw-bold">Responsable</th>
-                                            <th className="fw-bold">Solde</th>
                                             <th className="fw-bold">Actions</th>
                                         </tr>
                                     </thead>
@@ -79,21 +78,6 @@ const List = (props) => {
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <div className="media">
-                                                        <div className="media-body pt-10">
-                                                            <p className="m-0 text-dark">{getPriceWithCurrency(item.balance)}</p>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <Button
-                                                        color="primary"
-                                                        variant="contained"
-                                                        className="text-white font-weight-bold"
-                                                        onClick={() => props.history.push(joinUrlWithParamsId(FUNDING.ACCOUNT.DETAILS, item.accountReference.split('_').pop()))}
-                                                    >
-                                                        Détails
-                                                    </Button>
                                                 </td>
                                             </tr>
                                         ))}
