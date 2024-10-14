@@ -233,7 +233,7 @@ const Details = (props) => {
                                                     onClick={() => setShowTicketBox(true)}
                                                     className="text-white font-weight-bold ml-10"
                                                 >
-                                                    Provision
+                                                    Echéancier
                                                 </Button>
                                             )}
                                         </div>

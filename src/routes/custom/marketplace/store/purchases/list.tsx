@@ -6,17 +6,18 @@ import CustomList from "Components/CustomList";
 import { setRequestGlobalAction } from 'Actions';
 import React, { useState, useEffect } from 'react';
 import { getOrderStatusItem } from 'Helpers/helpers';
+import ConfirmBox from "Components/dialog/ConfirmBox";
 import TimeFromMoment from 'Components/TimeFromMoment'
 import IconButton from '@material-ui/core/IconButton';
-import AccountInformationModal from './accountInformations';
 import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
 import { MARKETPLACE, joinUrlWithParamsId } from 'Url/frontendUrl';
 
 const List = (props) => {
 
     const [purchases, setPurchases] = useState([]);
-    const [selectedOrder, setSelectedOrder] = useState(null);
-    const [showAccountInfoModal, setShowAccountInfoModal] = useState(false);
+    const [purchase, setPurchase] = useState(null);
+    const [showAcceptPurchase, setShowAcceptPurchase] = useState(false);
+    const [showRejectPurchase, setShowRejectPurchase] = useState(false);
 
     useEffect(() => {
         getPurchases();
@@ -30,15 +31,10 @@ const List = (props) => {
     }
 
     const approvedOrder = (order, status) => {
-        setSelectedOrder(order);
-        if(order.mirrorAccount && status) {
-            setShowAccountInfoModal(true);
-        } else {
-            props.setRequestGlobalAction(true);
-            OrderService.approvedOrder(order.id, { status })
-            .then(() => getPurchases())
-            .finally(() => props.setRequestGlobalAction(false))
-        }
+        props.setRequestGlobalAction(true);
+        OrderService.approvedOrder(order.id, { status })
+        .then(() => getPurchases())
+        .finally(() => props.setRequestGlobalAction(false))
     }
 
     return (
@@ -128,10 +124,16 @@ const List = (props) => {
                                                     </Button>
                                                 </td>
                                                 <td>
-                                                <IconButton className="text-success" aria-label="Accepter" onClick={() => approvedOrder(item, true)}>
+                                                <IconButton className="text-success" aria-label="Accepter" onClick={() => {
+                                                    setPurchase(item);
+                                                    setShowAcceptPurchase(true);
+                                                }}>
                                                     <i className="zmdi zmdi-check"></i>
                                                 </IconButton>
-                                                <IconButton className="text-danger" aria-label="Refuser" onClick={() => approvedOrder(item, false)}>
+                                                <IconButton className="text-danger" aria-label="Refuser" onClick={() => {
+                                                    setPurchase(item);
+                                                    setShowRejectPurchase(true);
+                                                }}>
                                                     <i className="zmdi zmdi-delete"></i>
                                                 </IconButton>
                                                 </td>
@@ -144,14 +146,32 @@ const List = (props) => {
                     </>
                 )}
             />
-            { showAccountInfoModal && (
-                <AccountInformationModal
-                    order={selectedOrder}
-                    show={showAccountInfoModal}
-                    onClose={() => {
-                        setShowAccountInfoModal(false);
+            { purchase && showAcceptPurchase && (
+                <ConfirmBox
+                    show={showAcceptPurchase}
+                    rightButtonOnClick={() => {
+                        setShowAcceptPurchase(false);
+                        approvedOrder(purchase, true);
                     }}
-                    title={"Informations du compte"}
+                    leftButtonOnClick={() => {
+                        setPurchase(null);
+                        setShowAcceptPurchase(false);
+                    }}
+                    message={'Etes-vous sure de vouloir accepter cette demande d\'achat ?'}
+                />
+            )}
+            { purchase && showRejectPurchase && (
+                <ConfirmBox
+                    show={showRejectPurchase}
+                    rightButtonOnClick={() => {
+                        setShowRejectPurchase(false);
+                        approvedOrder(purchase, false);
+                    }}
+                    leftButtonOnClick={() => {
+                        setPurchase(null);
+                        setShowRejectPurchase(false);
+                    }}
+                    message={'Etes-vous sure de vouloir rejetter cette demande d\'achat ?'}
                 />
             )}
         </>

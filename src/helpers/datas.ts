@@ -298,7 +298,7 @@ export const getProductDetails = () => {
             value: 'PRICE_CURRENCY'
         },
         {
-            label: 'Quotation',
+            label: 'Quotité disponible',
             value: 'QUOTIENT'
         }
     ];

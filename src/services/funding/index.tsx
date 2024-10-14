@@ -54,4 +54,8 @@ export default class FundingService {
     static getBonds(): Promise<any> {
         return makeRequest('get', Routes.GET_BONDS);
     }
+
+    static activateAccount(reference: string, data: any): Promise<any> {
+        return makeRequest('post', Routes.ACTIVATE_ACCOUNT(reference), data);
+    }
 }

@@ -109,7 +109,7 @@ const Create = (props) => {
                     </FormGroup>
                     <div className="col-md-12 col-sm-12 has-wrapper mb-30">
                         <InputLabel className="text-left">
-                            Gestionnaire associé
+                            Agence associée
                         </InputLabel>
                         <Autocomplete
                             options={agencies}

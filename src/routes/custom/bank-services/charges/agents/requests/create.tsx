@@ -1,3 +1,4 @@
+import moment from 'moment';
 import { connect } from 'react-redux';
 import { BANK } from 'Url/frontendUrl';
 import BankService from 'Services/banks';
@@ -25,11 +26,8 @@ const Create = (props) => {
     const [units, setUnits] = useState([]);
     const [bank, setBank] = useState(null);
     const [amount, setAmount] = useState(null);
-    const [paidAt, setPaidAt] = useState(null);
-    const [coverages, setCoverages] = useState([]);
-    const [coverage, setCoverage] = useState(null);
-    const [direction, setDirection] = useState(null);
-    const [coverageReference, setCoverageReference] = useState(null);    
+    const [paidAt, setPaidAt] = useState(moment().format("YYYY-MM-DD"));
+    const [direction, setDirection] = useState(null);  
 
     useEffect(() => {
         getBanks();

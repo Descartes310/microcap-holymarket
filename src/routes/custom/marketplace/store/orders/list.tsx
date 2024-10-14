@@ -6,14 +6,15 @@ import CustomList from "Components/CustomList";
 import { setRequestGlobalAction } from 'Actions';
 import React, { useState, useEffect } from 'react';
 import { getOrderStatusItem } from 'Helpers/helpers';
-import ConfirmBox from "Components/dialog/ConfirmBox";
 import TimeFromMoment from 'Components/TimeFromMoment';
 import {NotificationManager} from 'react-notifications';
 import OrderDetails from '../../_components/orderDetails';
 import AccountAgreement from 'Components/AccountAgreement';
 import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
 import PaymentRequestModal from '../../_components/paymentRequestModal';
+import AccountInformationModal from '../components/accountInformations';
 import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+import FundingService from 'Services/funding';
 
 const List = (props) => {
 
@@ -23,6 +24,7 @@ const List = (props) => {
     const [selectedItem, setSelectedItem] = useState(null);
     const [showConfirmBox, setShowConfirmBox] = useState(false);
     const [showPaymentRequest, setShowPaymentRequest] = useState(false);
+    const [showAccountInfoModal, setShowAccountInfoModal] = useState(false);
     const [showAccountAgreementBox, setShowAccountAgreementBox] = useState(false);
 
     const onToggleButton = (key) => {
@@ -54,6 +56,30 @@ const List = (props) => {
             NotificationManager.error("Une erreur est survenue");
          })
         .finally(() => props.setRequestGlobalAction(false))
+    }
+
+    const activateAccount = (externalReference) => {
+
+        let data = {
+            use_domiciliation_datas: false
+        };
+
+        props.setRequestGlobalAction(true);
+        FundingService.activateAccount(externalReference, data)
+        .then(() => {
+            NotificationManager.success('Opération déroulée avec succès');
+            window.location.reload();
+        })
+        .catch(err => {
+            if(err?.response?.status == 409) {
+                NotificationManager.error('Ce numéro de compte existe déjà');
+            } else {
+                NotificationManager.error('Ce compte n\'est pas prêt pour activation');
+            }
+        })
+        .finally(() => {
+            props.setRequestGlobalAction(false);
+        });
     }
 
     return (
@@ -158,7 +184,7 @@ const List = (props) => {
                                                                     Encaissement
                                                                 </DropdownItem>
                                                             )}
-                                                            { ((item.mirrorAccount || item.account) && item.externalReference)  && (
+                                                            { ((item.mirrorAccount || item.account) && item.externalReference && !item.accountActivated) && (
                                                                 <DropdownItem style={{ color: 'black' }} onClick={() => {
                                                                     setSelectedItem(item);
                                                                     setShowDetails(false);
@@ -166,6 +192,21 @@ const List = (props) => {
                                                                     setShowAccountAgreementBox(true);
                                                                 }}>
                                                                     Convention
+                                                                </DropdownItem>
+                                                            )}
+                                                            { ((item.mirrorAccount || item.account) && item.externalReference && !item.accountActivated && item.agreementSent) && (
+                                                                <DropdownItem style={{ color: 'black' }} onClick={() => {
+                                                                    setShowDetails(false);
+                                                                    setShowPaymentRequest(false);
+                                                                    setShowAccountAgreementBox(false);
+                                                                    if(item.mirrorAccount) {
+                                                                        setSelectedItem(item);
+                                                                        setShowAccountInfoModal(true);
+                                                                    } else {
+                                                                        activateAccount(item.externalReference);
+                                                                    }
+                                                                }}>
+                                                                    { item.mirrorAccount ? 'Configurer et activer' : 'Activer le compte' }
                                                                 </DropdownItem>
                                                             )}
                                                             <DropdownItem style={{ color: 'black' }} onClick={() => {
@@ -211,6 +252,16 @@ const List = (props) => {
                                 sendPaymentData={(paymentData) => {
                                     sendPaymentRequest(paymentData)
                                 }}
+                            />
+                        )}
+                        { showAccountInfoModal && (
+                            <AccountInformationModal
+                                order={selectedItem}
+                                show={showAccountInfoModal}
+                                onClose={() => {
+                                    setShowAccountInfoModal(false);
+                                }}
+                                title={"Informations du compte"}
                             />
                         )}
 

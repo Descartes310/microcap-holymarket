@@ -3,7 +3,7 @@ import { injectIntl } from "react-intl";
 import React, { Component } from 'react';
 import UnitService from 'Services/units';
 import UserService from 'Services/users';
-import OrderService from 'Services/orders';
+import FundingService from 'Services/funding';
 import { withRouter } from "react-router-dom";
 import { setRequestGlobalAction } from 'Actions';
 import TextField from '@material-ui/core/TextField';
@@ -90,10 +90,19 @@ class AccountInformationModal extends Component {
         }
 
         this.props.setRequestGlobalAction(true);
-        OrderService.approvedOrder(this.props.order.id, data)
+        FundingService.activateAccount(this.props.order.externalReference, data)
         .then(() => {
             NotificationManager.success('Opération déroulée avec succès');
             window.location.reload();
+        })
+        .catch(err => {
+            if(err?.response?.status == 409) {
+                NotificationManager.error('Ce numéro de compte existe déjà');
+            } else if(err?.response?.status == 404) {
+                NotificationManager.error('Ce compte n\'est pas prêt pour activation');
+            } else {
+                NotificationManager.error('Le formulaire n\'est pas bien renseigné');
+            }
         })
         .finally(() => {
             this.props.setRequestGlobalAction(false);
