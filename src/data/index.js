@@ -26,10 +26,10 @@ export const contactTypes = [
         name: 'Mon numéro de téléphone',
         value: 'PHONE'
     },
-    {
-        name: 'Mon adresse postale',
-        value: 'ADDRESS'
-    },
+    // {
+    //     name: 'Mon adresse postale',
+    //     value: 'ADDRESS'
+    // },
     // {
     //     name: 'Adresse de notification',
     //     value: 'NOTIFICATION_ADDRESS'

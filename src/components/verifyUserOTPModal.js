@@ -2,6 +2,7 @@ import { connect } from "react-redux";
 import { injectIntl } from "react-intl";
 import React, { Component } from 'react';
 import BankService from 'Services/banks';
+import UserService from 'Services/users';
 import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
 import { setRequestGlobalAction } from 'Actions';
@@ -43,6 +44,24 @@ class verifyUserOTPModal extends Component {
         } else {
             if(this.props.type == "CONFIRM_OPERATION") {
                 this.props.callback(this.state.otp);
+            } else {
+                if(!this.props.type || !this.state.otp) {
+                    NotificationManager.error("Le formulaire n'est pas correctement renseigné");
+                    return;
+                }
+    
+                let data = {
+                    otp: this.state.otp, type: this.props.type
+                };
+    
+                this.props.setRequestGlobalAction(true);
+                UserService.findAuthOTP(data).then(() => {
+                    this.props.callback(this.state.otp);
+                }).catch(err => {
+                    NotificationManager.error("Code incorrect");
+                }).finally(() => {
+                    this.props.setRequestGlobalAction(false);
+                });
             }
         }
     }

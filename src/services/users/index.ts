@@ -177,4 +177,12 @@ export default class UserService {
         return makeRequest('get', Routes.GET_INSTITUTION_MEMBERS(id), data);
     }
 
+    static sendAuthOTP(data: any): Promise<any> {
+        return makeRequest('post', Routes.SEND_OTP, data);
+    }
+
+    static findAuthOTP(data: any): Promise<any> {
+        return makeRequest('get', Routes.FIND_OTP, data);
+    }
+
 }

@@ -10,6 +10,7 @@ import { getUserAssistanceTypes } from 'Helpers/datas';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { NotificationManager } from 'react-notifications';
 import ActivationBox from '../../notifications/ActivationBox';
+import VerifyUserOTPModal from 'Components/verifyUserOTPModal';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { Form, FormGroup, Input as InputStrap } from 'reactstrap';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
@@ -19,9 +20,11 @@ import MemberDocumentsModal from 'Routes/custom/networks/coverages/components/me
 
 const Assist = (props) => {
 
+    const [otp, setOtp] = useState(null);
     const [member, setMember] = useState(null);
     const [action, setAction] = useState(null);
     const [membership, setMembership] = useState(null);
+    const [showOTPModal, setShowOTPModal] = useState(false);
     const [showUserFileBox, setShowUserFileBox] = useState(false);
     const [showActivationBox, setShowActivationBox] = useState(false);
     const [showMemberFileBox, setShowMemberFileBox] = useState(false);
@@ -42,13 +45,39 @@ const Assist = (props) => {
         })
     }
 
-    const onSubmit = () => {
+    const sendOtp = () => {
         if(!member || !action) {
             NotificationManager.error("Le formulaire n'est pas correctement renseigné");
             return;
         }
+        props.setRequestGlobalAction(true);
+        UserService.sendAuthOTP({targetReference: member.referralCode, type: action.value})
+        .then(response => {
+            setShowOTPModal(true);
+        })
+        .catch((err) => {
+            console.log(err);
+            NotificationManager.error("L'envoi du code de vérification a échoué");
+        })
+        .finally(() => {
+            props.setRequestGlobalAction(false);
+        })
+    }
 
-        console.log(action);
+    useEffect(() => {
+        if(otp) {
+            console.log("Je suis ici");
+            onSubmit();
+        }
+    }, [otp])
+
+    const onSubmit = () => {
+
+        console.log("Je suis ici 2 => ", action.value);
+        if(!member || !action) {
+            NotificationManager.error("Le formulaire n'est pas correctement renseigné");
+            return;
+        }
 
         switch (action.value) {
             case 'ACTIVATE_PROFILE':
@@ -56,7 +85,7 @@ const Assist = (props) => {
                 break;
 
             case 'AUTHENTICATE_PROFILE':
-                console.log('Bonjour')
+                console.log("authentifier");
                 setShowUserFileBox(true);
                 break;
         
@@ -66,6 +95,7 @@ const Assist = (props) => {
     }
 
     const activateProfile = () => {
+        console.log("activate");
         setShowActivationBox(true);
     }
 
@@ -146,7 +176,7 @@ const Assist = (props) => {
                                 color="primary"
                                 variant="contained"
                                 disabled={!member}
-                                onClick={() => onSubmit()}
+                                onClick={() => sendOtp()}
                                 className="text-white font-weight-bold mr-20"
                             >
                                 Commencer l'assistance
@@ -155,7 +185,7 @@ const Assist = (props) => {
                     }
                 </FormGroup>
             </Form>
-            { !member && action?.value == 'ACTIVATE_PROFILE' && (
+            { member && action?.value == 'ACTIVATE_PROFILE' && (
                 <ActivationBox
                     member={member}
                     show={showActivationBox}
@@ -207,6 +237,20 @@ const Assist = (props) => {
                             window.location.reload();
                         };
                     }}
+                />
+            )}
+
+            { showOTPModal && action &&(
+                <VerifyUserOTPModal 
+                    show={showOTPModal}
+                    type={action.value}
+                    targetReference={member.referralCode}
+                    title={'Entrer le code de validation'}
+                    callback={(otp) => {
+                        setShowOTPModal(false);
+                        setOtp(otp);
+                    }}
+                    onClose={() => setShowOTPModal(false)}
                 />
             )}
         </RctCollapsibleCard>
