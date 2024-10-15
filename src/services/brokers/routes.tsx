@@ -1,10 +1,14 @@
 export const GET_AGENCIES = 'api/brokers/agencies';
 export const CREATE_AGENCY = 'api/brokers/agencies';
 export const GET_AGENCIES_BY_BROKER = 'api/brokers/agencies/find-by-broker';
+export const UPDATE_AGENCY = (reference) => `api/brokers/agencies/${reference}`;
+export const FIND_AGENCY = (reference) => `api/brokers/agencies/${reference}`;
 
 export const GET_COUNTERS = 'api/brokers/counters';
 export const CREATE_COUNTER = 'api/brokers/counters';
 export const GET_COUNTERS_BY_AGENCY = 'api/brokers/counters/agencies';
+export const UPDATE_COUNTER = (reference) => `api/brokers/counters/${reference}`;
+export const FIND_COUNTER = (reference) => `api/brokers/counters/${reference}`;
 export const GET_COUNTERS_BY_AGENCY_WITHOUT_CTO = 'api/brokers/counters/agencies/without-cto';
 
 export const GET_CASHDESKS = 'api/brokers/cashdesks';

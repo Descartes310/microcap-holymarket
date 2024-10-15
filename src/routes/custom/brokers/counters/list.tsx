@@ -7,7 +7,7 @@ import {setRequestGlobalAction} from 'Actions';
 import React, { useState, useEffect } from 'react';
 import { getPriceWithCurrency } from 'Helpers/helpers';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
-import { BROKER, FUNDING, joinUrlWithParamsId } from 'Url/frontendUrl';
+import { BROKER, FUNDING, joinUrlWithParams, joinUrlWithParamsId } from 'Url/frontendUrl';
 
 const List = (props) => {
 
@@ -22,6 +22,10 @@ const List = (props) => {
         BrokerService.getCounters()
         .then(response => setCounters(response))
         .finally(() => props.setRequestGlobalAction(false))
+    }
+    
+    const updateItem = (item) => {
+        props.history.push(joinUrlWithParams(BROKER.COUNTER.UPDATE, [{param: 'id', value: item.reference}]));
     }
 
     return (
@@ -78,6 +82,16 @@ const List = (props) => {
                                                     </div>
                                                 </td>
                                                 <td>
+                                                    <Button
+                                                        color="primary"
+                                                        variant="contained"
+                                                        onClick={() => {
+                                                            updateItem(item);
+                                                        }}
+                                                        className="text-white font-weight-bold mr-3"
+                                                    >
+                                                        Edition
+                                                    </Button>
                                                 </td>
                                             </tr>
                                         ))}

@@ -84,6 +84,7 @@ const List = (props) => {
                                     <thead>
                                         <tr>
                                             <th className="fw-bold">Nom</th>
+                                            <th className="fw-bold">Type</th>
                                             <th className="fw-bold">Email</th>
                                             <th className="fw-bold">Numéro utilisateur</th>
                                             <th className="fw-bold">Compte activé</th>
@@ -99,6 +100,13 @@ const List = (props) => {
                                                     <div className="media">
                                                         <div className="media-body pt-10">
                                                             <h4 className="m-0 fw-bold text-dark">{item.userName}</h4>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="media">
+                                                        <div className="media-body pt-10">
+                                                            <h4 className="m-0 fw-bold text-dark">{item.type}</h4>
                                                         </div>
                                                     </div>
                                                 </td>

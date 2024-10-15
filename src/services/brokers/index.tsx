@@ -20,8 +20,24 @@ export default class BrokerService {
         return makeRequest('post', Routes.CREATE_AGENCY, data);
     }
 
+    static updateAgency(reference: string, data: any): Promise<any> {
+        return makeRequest('put', Routes.UPDATE_AGENCY(reference), data);
+    }
+
+    static findAgency(reference: string): Promise<any> {
+        return makeRequest('get', Routes.FIND_AGENCY(reference));
+    }
+
     static createCounter(data: any): Promise<any> {
         return makeRequest('post', Routes.CREATE_COUNTER, data);
+    }
+    
+    static updateCounter(reference: string, data: any): Promise<any> {
+        return makeRequest('put', Routes.UPDATE_COUNTER(reference), data);
+    }
+
+    static findCounter(reference: string): Promise<any> {
+        return makeRequest('get', Routes.FIND_COUNTER(reference));
     }
 
     static createCashdesk(data: any): Promise<any> {

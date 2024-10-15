@@ -1,6 +1,7 @@
 import React from 'react';
 import List from './list';
 import Create from './create';
+import Update from './update';
 import {connect} from "react-redux";
 import {injectIntl} from "react-intl";
 import { BROKER } from 'Url/frontendUrl';
@@ -15,6 +16,7 @@ const Counter = (props) => {
                     <Redirect exact from={`${match.url}/`} to={BROKER.COUNTER.LIST} />
                     <Route path={BROKER.COUNTER.LIST} component={List} />
                     <Route path={BROKER.COUNTER.CREATE} component={Create} />
+                    <Route path={BROKER.COUNTER.UPDATE} component={Update} />
                 </Switch>
             </>
         </div>

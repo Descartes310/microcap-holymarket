@@ -668,11 +668,13 @@ export const BROKER = {
         SELF: '/brokers/agencies',
         LIST: '/brokers/agencies/list',
         CREATE: '/brokers/agencies/create',
+        UPDATE: '/brokers/agencies/update/:id',
     },
     COUNTER: {
         SELF: '/brokers/counters',
         LIST: '/brokers/counters/list',
         CREATE: '/brokers/counters/create',
+        UPDATE: '/brokers/counters/update/:id',
     },
     CASHDESK: {
         SELF: '/brokers/cashdesks',
