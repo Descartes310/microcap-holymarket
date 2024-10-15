@@ -33,7 +33,7 @@ const Personal = (props) => {
 
     const getContacts = () => {
         UserService.getContacts().then((response) => {
-            setContacts(response.filter(c => c.type !== 'NOTIFICATION_ADDRESS'))
+            setContacts(response)
             setAlias(response.filter(c => c.type === 'ALIAS'));
         });
     }
