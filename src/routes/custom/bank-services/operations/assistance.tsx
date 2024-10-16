@@ -8,12 +8,12 @@ import AccountService from 'Services/accounts';
 import { setRequestGlobalAction } from 'Actions';
 import React, { useEffect, useState } from 'react';
 import TextField from '@material-ui/core/TextField';
+import SweetAlert from 'react-bootstrap-sweetalert';
 import { getSpecificOperations } from 'Helpers/datas';
 import { getReferralTypeLabel } from 'Helpers/helpers';
 import DepositTickets from './components/depositTickets';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { NotificationManager } from 'react-notifications';
-import Checkbox from "@material-ui/core/Checkbox/Checkbox";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import VerifyUserOTPModal from 'Components/verifyUserOTPModal';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
@@ -32,6 +32,7 @@ const Create = (props) => {
     const [account, setAccount] = useState(null);
     const [currency, setCurrency] = useState(null);
     const [currencies, setCurrencies] = useState([]);
+    const [showAlert, setShowAlert] = useState(false);
     const [minAmount, setMinAmount] = useState(null);
     const [showModal, setShowModal] = useState(false);
     const [prestation, setPrestation] = useState(null);
@@ -153,9 +154,7 @@ const Create = (props) => {
         props.setRequestGlobalAction(true);
         BankService.createOperation(data).then(() => {
             NotificationManager.success("L'opération a été créée avec succès!");
-            setTimeout(() => {
-                window.location.reload();
-            }, 2000);
+            setShowAlert(true);
         }).catch(err => {
             console.log(err);
         }).finally(() => {
@@ -467,6 +466,15 @@ const Create = (props) => {
                     title={'Entrer le code de validation'}
                     callback={(otp) => checkOTP()}
                     onClose={() => setShowModal(false)}
+                />
+                <SweetAlert
+                    success
+                    btnSize="sm"
+                    show={showAlert}
+                    title={"L'opération a été initiée avec succès"}
+                    onConfirm={() => {
+                        window.location.reload();
+                    }}
                 />
             </RctCollapsibleCard>
         </>

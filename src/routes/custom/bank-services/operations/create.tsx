@@ -1,10 +1,11 @@
 import { connect } from 'react-redux';
 import { BANK } from 'Url/frontendUrl';
-import React, { useEffect, useState } from 'react';
 import BankService from 'Services/banks';
 import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
 import { setRequestGlobalAction } from 'Actions';
+import React, { useEffect, useState } from 'react';
+import SweetAlert from 'react-bootstrap-sweetalert';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { NotificationManager } from 'react-notifications';
@@ -27,6 +28,7 @@ const Create = (props) => {
     const [authCode, setAuthCode] = useState(null);
     const [operation, setOperation] = useState(null);
     const [showModal, setShowModal] = useState(false);
+    const [showAlert, setShowAlert] = useState(false);
     const [prestation, setPrestation] = useState(null);
     const [prestations, setPrestations] = useState([]);
     const [ventilations, setVentilations] = useState([]);
@@ -82,7 +84,7 @@ const Create = (props) => {
         BankService.confirmOperation(operation.reference, operation.type == "SELLER_PAYMENT" ? {...data, otp}: {otp: otp, so_item_ids: serviceOrderChecked.map(so => so.id), so_checked: serviceOrderChecked.map(so => so.checked)}).then(() => {
             NotificationManager.success("L'opération a été validée avec sucès");
             setShowModal(false);
-            props.history.push(BANK.OPERATION.ASSISTANCE);
+            setShowAlert(true);
         }).catch(err => {
             console.log(err);
             NotificationManager.error("Une erreur est survenue");
@@ -284,6 +286,15 @@ const Create = (props) => {
                         onClose={() => setShowPaymentRequest(false)}
                     />
                 )}
+                <SweetAlert
+                    success
+                    btnSize="sm"
+                    show={showAlert}
+                    title={"L'opération a été éffectuée avec succès"}
+                    onConfirm={() => {
+                        props.history.push(BANK.OPERATION.ASSISTANCE);
+                    }}
+                />
             </RctCollapsibleCard>
         </>
     );

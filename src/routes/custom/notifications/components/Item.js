@@ -82,6 +82,13 @@ class Item extends Component {
                                         <DropdownItem onClick={() => onApproveInjection(false)}>Refuser</DropdownItem>
                                     </>
                                 )}
+                                { (notification.type === NotificationType.OPERATION_RECEIPT && notification.treatedAt == null) && (
+                                    notification.details.find(nd => nd.type === "OPERATION_RECEIPT")?.value && (
+                                        <DropdownItem onClick={() => {
+                                            window.open(getFilePath(notification.details.find(nd => nd.type === "OPERATION_RECEIPT")?.value), "_blank")
+                                        }}>Télécharger</DropdownItem>
+                                    )
+                                )}
                                 { !this.ESCAPE_STATUSES.includes(notification.type) && (
                                     notification.status === NotificationType.UNREAD ? 
                                         <DropdownItem onClick={() => this.markAsRead()}>Marquer comme lue</DropdownItem>:
