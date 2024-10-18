@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { PROFILE } from 'Url/frontendUrl';
 import { withRouter } from "react-router-dom";
 import { setRequestGlobalAction } from 'Actions';
@@ -18,11 +18,17 @@ const CreateAccount = (props) => {
         window.location.href = PROFILE.ASSISTANCE.CREATE_ACCOUNT;
      }
 
+     useEffect(() => {
+        if(user) {
+            setShowSweetAlert(true);
+        }
+     }, [user])
+
     return (
         <RctCollapsibleCard>
             <RegisterSteps history={props.history} onSuccess={(response) => {
-                setShowSweetAlert(true);
-                setUser(response);
+                setUser(response?.user);
+                console.log(response.user);
             }} />
             <SweetAlert
                success
