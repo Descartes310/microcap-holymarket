@@ -10,6 +10,7 @@ import { setRequestGlobalAction } from 'Actions';
 import React, { useEffect, useState } from 'react';
 import CreateContact from '../components/createContact';
 import UpdateContact from '../components/updateContact';
+import { NotificationManager } from 'react-notifications';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import ConfirmContactCode from '../components/confirmContactCode';
 import { FormGroup, Input as InputStrap, Form } from 'reactstrap';
@@ -42,6 +43,7 @@ const Personal = (props) => {
         props.setRequestGlobalAction(true),
         UserService.setContactAsNotification(contact.id)
         .then(() => getContacts())
+        .catch(err => NotificationManager.error("Le contact doit être vérifié au préalable"))
         .finally(() => props.setRequestGlobalAction(false))
     }
 

@@ -24,6 +24,11 @@ const CreateContact = (props) => {
             return;
         }
 
+        if(['WHATSAPP', 'PHONE'].includes(type.value) && !value.startsWith('+')) {
+            NotificationManager.error("Le numéro doit contenir le code pays (+237 par exemple)")
+            return;
+        }
+
         props.setRequestGlobalAction(true);
 
         let data = {

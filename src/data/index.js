@@ -26,10 +26,10 @@ export const contactTypes = [
         name: 'Mon numéro de téléphone',
         value: 'PHONE'
     },
-    // {
-    //     name: 'Mon adresse postale',
-    //     value: 'ADDRESS'
-    // },
+    {
+        name: 'Numéro Whatsapp',
+        value: 'WHATSAPP'
+    },
     // {
     //     name: 'Adresse de notification',
     //     value: 'NOTIFICATION_ADDRESS'
@@ -73,6 +73,9 @@ export const getContactTypeLabel = (type) => {
             break;
         case 'PHONE':
             typeLabel = 'Télephone mobile'
+            break;
+        case 'WHATSAPP':
+            typeLabel = 'Numéro Whatsapp'
             break;
         case 'ADDRESS':
             typeLabel = 'Adresse'

@@ -20,12 +20,17 @@ const UpdateContact = (props) => {
 
     const onSubmit = () => {
 
-        props.setRequestGlobalAction(true);
-
+        
         let data = {
             value, type: type.value
         };
-
+        
+        if(['WHATSAPP', 'PHONE'].includes(type.value) && !value.startsWith('+')) {
+            NotificationManager.error("Le numéro doit contenir le code pays (+237 par exemple)")
+            return;
+        }
+        
+        props.setRequestGlobalAction(true);
         UserService.updateContact(props.contact.id, data).then(() => {
             NotificationManager.success('Le contact a été édité');
         })
