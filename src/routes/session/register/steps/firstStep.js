@@ -2,9 +2,9 @@ import _ from 'lodash';
 import { injectIntl } from 'react-intl';
 import { useForm } from "react-hook-form";
 import AppConfig from "Constants/AppConfig";
-import { Form, FormGroup } from "reactstrap";
 import Button from "@material-ui/core/Button";
 import TerritoryType from "Enums/Territories";
+import { contactTypes } from '../../../../data';
 import Checkbox from "@material-ui/core/Checkbox";
 import React, { useState, useEffect } from 'react';
 import TextField from '@material-ui/core/TextField';
@@ -13,14 +13,18 @@ import IconButton from "@material-ui/core/IconButton";
 import InputComponent from "Components/InputComponent";
 import FormControl from "@material-ui/core/FormControl";
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import { NotificationManager } from 'react-notifications';
 import ErrorInputComponent from "Components/ErrorInputComponent";
 import InputLabel from "@material-ui/core/InputLabel/InputLabel";
+import { Form, FormGroup, Input as InputStrap } from "reactstrap";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { minMaxValidatorObject, passwordValidatorObject } from "Helpers/validator";
 
 const FirstStep = props => {
-    const { loading, setData, intl, defaultState } = props;
+    const { loading, setData, intl, defaultState, isAssistance } = props;
 
+    const [type, setType] = useState(null);
+    const [contact, setContact] = useState(null);
     const [countries, setCountries] = useState([]);
     const [passwordType, setPasswordType] = useState('password');
     const [residenceCountry, setResidenceCountry] = useState(null);
@@ -58,7 +62,19 @@ const FirstStep = props => {
         if(!residenceCountry) {
             return;
         }
-        setData({...data, residenceCountry: residenceCountry.id});
+        if(isAssistance) {
+            if(!type || !contact) {
+                NotificationManager.error("Veuillez bien remplir le formulaire");
+                return;
+            }
+            if(['WHATSAPP', 'PHONE'].includes(type.value) && !contact.startsWith('+')) {
+                NotificationManager.error("Le numéro doit contenir le code pays (+237 par exemple)")
+                return;
+            }
+            setData({...data, residenceCountry: residenceCountry.id, type: type.value, contact});
+        } else {
+            setData({...data, residenceCountry: residenceCountry.id});
+        }
     };
 
     return (
@@ -178,51 +194,92 @@ const FirstStep = props => {
                 />
             </div>
 
-            <FormGroup className="has-wrapper">
-                <InputLabel className="text-left" htmlFor="password">
-                    Votre mot de passe
-                </InputLabel>
-                <InputComponent
-                    isRequired
-                    id="password"
-                    errors={errors}
-                    name={'password'}
-                    type={passwordType}
-                    register={register}
-                    className="has-input input-lg"
-                    otherValidator={{ minLength: AppConfig.minPasswordLength }}
-                >
-                    {errors.password?.type === 'minLength' && (
-                        <ErrorInputComponent text={intl.formatMessage({ id: minMaxValidatorObject.minMessage }, { min: AppConfig.minPasswordLength })} />
+            { isAssistance ? (
+                <>
+                    <div className="col-md-12 col-sm-12 has-wrapper mb-30 p-0">
+                        <InputLabel className="text-left">
+                            Type de contact
+                        </InputLabel>
+                        <Autocomplete
+                            value={type}
+                            options={contactTypes}
+                            id="combo-box-demo"
+                            classes={{ paper: 'custom-input' }}
+                            getOptionLabel={(option) => option.name}
+                            onChange={(__, item) => { setType(item) }}
+                            renderInput={(params) => <TextField {...params} variant="outlined" />}
+                        />
+                    </div>
+                    { type && (
+                        <FormGroup className="has-wrapper">
+                            <InputLabel className="text-left" htmlFor="value">
+                                {
+                                    type?.value === 'EMAIL' ? "Veuillez saisir votre adresse e-mail" : 
+                                    type?.value === 'ADDRESS' ? "Veuillez saisir votre adresse" :
+                                    "Veuillez saisir votre numéro de télephone" 
+                                }
+                            </InputLabel>
+                            <InputStrap
+                                required
+                                id="value"
+                                type="text"
+                                name='value'
+                                value={contact}
+                                className="input-lg"
+                                onChange={(e) => setContact(e.target.value)}
+                            />
+                        </FormGroup>
                     )}
-                </InputComponent>
-                <span onClick={() => setPasswordType(passwordType === 'password' ? 'text' : 'password')} className="has-icon">
-                    <i className={`zmdi zmdi-${passwordType === 'password' ? 'eye' : 'eye-off'}`}></i>
-                </span>
-            </FormGroup>
+                </>
+            ) : (
+                <>
+                    <FormGroup className="has-wrapper">
+                        <InputLabel className="text-left" htmlFor="password">
+                            Votre mot de passe
+                        </InputLabel>
+                        <InputComponent
+                            isRequired
+                            id="password"
+                            errors={errors}
+                            name={'password'}
+                            type={passwordType}
+                            register={register}
+                            className="has-input input-lg"
+                            otherValidator={{ minLength: AppConfig.minPasswordLength }}
+                        >
+                            {errors.password?.type === 'minLength' && (
+                                <ErrorInputComponent text={intl.formatMessage({ id: minMaxValidatorObject.minMessage }, { min: AppConfig.minPasswordLength })} />
+                            )}
+                        </InputComponent>
+                        <span onClick={() => setPasswordType(passwordType === 'password' ? 'text' : 'password')} className="has-icon">
+                            <i className={`zmdi zmdi-${passwordType === 'password' ? 'eye' : 'eye-off'}`}></i>
+                        </span>
+                    </FormGroup>
 
-            <FormGroup className="has-wrapper">
-                <InputLabel className="text-left" htmlFor="password">
-                    Ressaisir le même mot de passe
-                </InputLabel>
-                <InputComponent
-                    isRequired
-                    type={passwordConfirmType}
-                    errors={errors}
-                    register={register}
-                    id="passwordConfirmation"
-                    name={'passwordConfirmation'}
-                    className="has-input input-lg"
-                    otherValidator={{ validate: value => value === watch('password') }}
-                >
-                    {errors.passwordConfirmation && (
-                        <ErrorInputComponent text={intl.formatMessage({ id: passwordValidatorObject.passwordConfirmation })} />
-                    )}
-                </InputComponent>
-                <span onClick={() => setPasswordConfirmType(passwordConfirmType === 'password' ? 'text' : 'password')} className="has-icon">
-                    <i className={`zmdi zmdi-${passwordConfirmType === 'password' ? 'eye' : 'eye-off'}`}></i>
-                </span>
-            </FormGroup>
+                    <FormGroup className="has-wrapper">
+                        <InputLabel className="text-left" htmlFor="password">
+                            Ressaisir le même mot de passe
+                        </InputLabel>
+                        <InputComponent
+                            isRequired
+                            type={passwordConfirmType}
+                            errors={errors}
+                            register={register}
+                            id="passwordConfirmation"
+                            name={'passwordConfirmation'}
+                            className="has-input input-lg"
+                            otherValidator={{ validate: value => value === watch('password') }}
+                        >
+                            {errors.passwordConfirmation && (
+                                <ErrorInputComponent text={intl.formatMessage({ id: passwordValidatorObject.passwordConfirmation })} />
+                            )}
+                        </InputComponent>
+                        <span onClick={() => setPasswordConfirmType(passwordConfirmType === 'password' ? 'text' : 'password')} className="has-icon">
+                            <i className={`zmdi zmdi-${passwordConfirmType === 'password' ? 'eye' : 'eye-off'}`}></i>
+                        </span>
+                    </FormGroup>
+                </>
+            )}
 
             <FormGroup className="mb-15">
                 <Button

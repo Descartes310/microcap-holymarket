@@ -150,7 +150,11 @@ const Assist = (props) => {
                             <Autocomplete
                                 id="combo-box-demo"
                                 value={action}
-                                options={getUserAssistanceTypes()}
+                                options={
+                                    getUserAssistanceTypes()
+                                    .filter(a => (!member.active && a.value == 'ACTIVATE_PROFILE') || a.value !== 'ACTIVATE_PROFILE')
+                                    .filter(a => (!member.authenticated && a.value == 'AUTHENTICATE_PROFILE') || a.value !== 'AUTHENTICATE_PROFILE')
+                                }
                                 onChange={(__, item) => {
                                     setAction(item);
                                 }}

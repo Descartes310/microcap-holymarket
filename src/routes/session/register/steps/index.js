@@ -50,6 +50,10 @@ class PersonRegister extends Component {
         if (!_data.useMicrocapEmail && !_data.email)
             return;
 
+        if (this.props.isAssistance) {
+            delete _data.password;
+        }
+
         delete _data.useMicrocapEmail;
 
         this.props.setRequestGlobalAction(true);
@@ -65,13 +69,14 @@ class PersonRegister extends Component {
 
     render() {
 
-        const { loading, history } = this.props;
+        const { loading, history, isAssistance } = this.props;
 
         return (
             <FirstStep
                 history={history}
                 loading={loading}
                 setData={this.onSubmit}
+                isAssistance={isAssistance}
                 defaultState={this.state.data}
             />
         );

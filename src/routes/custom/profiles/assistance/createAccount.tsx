@@ -26,7 +26,7 @@ const CreateAccount = (props) => {
 
     return (
         <RctCollapsibleCard>
-            <RegisterSteps history={props.history} onSuccess={(response) => {
+            <RegisterSteps history={props.history} isAssistance={true} onSuccess={(response) => {
                 setUser(response?.user);
             }} />
             <SweetAlert
