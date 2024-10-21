@@ -351,6 +351,18 @@ export const getUserAssistanceTypes = () => {
         {
             label: 'Authentifier le profile',
             value: 'AUTHENTICATE_PROFILE'
+        },
+        // {
+        //     label: 'Reserver un produit',
+        //     value: 'BOOK_ORDER'
+        // },
+        {
+            label: 'Effectuer une commande',
+            value: 'PLACE_ORDER'
+        },
+        {
+            label: 'Payement d\'une commande',
+            value: 'PAY_ORDER'
         }
     ];
 }

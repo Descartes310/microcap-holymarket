@@ -99,6 +99,10 @@ class OrderForm extends Component<any, any> {
             data.isPreOrder = true;
         }
 
+        if(this.props.customData?.referralCode) {
+            data.referral_code = this.props.customData?.referralCode;
+        }
+
         if(this.props.customData?.isSubscription) {
             data.isSubscription = true;
         }
