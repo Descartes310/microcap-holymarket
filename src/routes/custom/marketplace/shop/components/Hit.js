@@ -1,25 +1,30 @@
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
-import { onAddItemToCart } from 'Actions';
 import { RctCard } from 'Components/RctCard';
 import ProductDetails from './ProductDetails';
 import CodevStep1 from '../components/codev/step1';
 import CodevStep2 from '../components/codev/step2';
 import CodevStep3 from '../components/codev/step3';
 import CodevStep4 from '../components/codev/step4';
+import { onAddItemToCart, onClearCart } from 'Actions';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import OrderFormModal from 'Routes/custom/marketplace/checkout/orderFormModal';
 import { textTruncate, getFilePath, getPriceWithCurrency } from "Helpers/helpers";
+import CodevSubscriptionModal from 'Routes/custom/marketplace/_components/codevSubscriptionModal';
 
 class Hit extends Component {
 	state = {
 		data: {},
 		product: null,
 		loading: false,
+		codevData: null,
 		showDetails: false,
 		showCodevStep1: false,
 		showCodevStep2: false,
 		showCodevStep3: false,
-		showCodevStep4: false
+		showOrderModal: false,
+		showCodevStep4: false,
+		showSubscriptionModal: false,
 	}
 
 	//Add Item to cart
@@ -36,7 +41,6 @@ class Hit extends Component {
 	}
 
 	addToCart = (cartItem, e = null) => {
-		console.log("Add to cart => "+cartItem)
 		if(e) e.preventDefault();
 		if(!cartItem.profileBuyable) {
 			alert("Votre profile ne vous donne pas accès à ce produit");
@@ -61,9 +65,10 @@ class Hit extends Component {
 	}
 
 	render() {
-		const { product } = this.props;
-		const { loading, showDetails, showCodevStep1, 
-			showCodevStep2, showCodevStep3, showCodevStep4, data } = this.state;
+
+		const { product, onClearCart } = this.props;
+		const { loading, showDetails, showCodevStep1, showCodevStep2, showCodevStep3, showCodevStep4, data, showOrderModal, showSubscriptionModal, codevData } = this.state;
+
 		return (
 			<RctCard colClasses="d-flex col-md-3 col-sm-6 mb-0 flex-column justify-content-between overflow-hidden">
 				<div className="overlay-wrap overflow-hidden">
@@ -74,9 +79,10 @@ class Hit extends Component {
 						{
 							!this.isItemExistInCart(product.id) && (
 								<a href="#" className="bg-primary text-center w-100 cart-link text-white py-2" onClick={(e) => {
-									this.onPressAddToCart(product, e);
+									this.setState({ showDetails: true });
+									//
 								}}>
-									{loading ? <CircularProgress className="text-white" color="inherit" size={20} /> : 'Ajouter au panier'}
+									{loading ? <CircularProgress className="text-white" color="inherit" size={20} /> : 'Consulter les détails'}
 								</a>
 							)}
 					</div>
@@ -99,6 +105,19 @@ class Hit extends Component {
 						show={showDetails}
 						title={product.label}
 						onClose={() => this.setState({ showDetails: false })}
+						onAddToCart={(e) => {
+							this.onPressAddToCart(product, e);
+							this.setState({ showDetails: false });
+						}}
+						onReserve={(e) => {
+							onClearCart();
+							this.onPressAddToCart(product, e);
+							if(product.specialProduct == 'CODEV_DEAL_PLAN' || product.specialProduct == 'CODEV') {
+								this.setState({ showSubscriptionModal: true });
+							} else {
+								this.setState({ showOrderModal: true });
+							}
+						}}
 					/>
 				)}
 				{ showCodevStep1 && (
@@ -168,6 +187,36 @@ class Hit extends Component {
 						}}
 					/>
 				)}
+				{ showOrderModal && (
+					<OrderFormModal
+						show={showOrderModal}
+						onClose={() => {
+							this.setState({ showOrderModal: false, showSubscriptionModal: false, showCodevStep1: false, showCodevStep2: false, showCodevStep3: false , showCodevStep4: false });
+						}}
+						codevData={codevData}
+						product={product}
+						onSuccess={() => {
+							onClearCart();
+							this.setState({ showOrderModal: false, showSubscriptionModal: false, showCodevStep1: false, showCodevStep2: false, showCodevStep3: false , showCodevStep4: false });
+						}}
+						customData={{}}
+						isPreOrder={true}
+					/>
+				)}
+
+				{ showSubscriptionModal && (
+					<CodevSubscriptionModal
+						show={showSubscriptionModal}
+						onClose={() => {
+							this.setState({ showSubscriptionModal: false });
+							onClearCart();
+						}}
+						onSendData={(data) => {
+							this.setState({ showSubscriptionModal: false, codevData: data, showOrderModal: true });
+						}}
+						product={product}
+					/>
+				)}
 			</RctCard>
 		)
 	}
@@ -177,4 +226,4 @@ const mapStateToProps = ({ cart }) => {
 	return { cart };
 }
 
-export default connect(mapStateToProps, { onAddItemToCart })(Hit);
+export default connect(mapStateToProps, { onAddItemToCart, onClearCart })(Hit);

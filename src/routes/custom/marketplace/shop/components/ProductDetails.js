@@ -3,6 +3,7 @@ import moment from 'moment';
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import { withRouter } from "react-router-dom";
+import Button from '@material-ui/core/Button';
 import ProductService from 'Services/products';
 import { setRequestGlobalAction } from 'Actions';
 import PrintDetails from './codev/printDetails';
@@ -70,8 +71,8 @@ class ProductDetails extends Component {
 
     render() {
 
-        const { onClose, show, title } = this.props;
         const { product, placements, options } = this.state;
+        const { onClose, show, title, onAddToCart, onReserve } = this.props;
 
         return (
             <DialogComponent
@@ -85,6 +86,18 @@ class ProductDetails extends Component {
                 )}
             >
                 <RctCardContent>
+                    <div className="row d-flex justify-content-between align-items-center mt-10 mb-20 pl-10 pr-10">
+                        <Button variant="contained" color="secondary" className="text-white col-md-5" onClick={() => {
+                            onAddToCart()
+                        }}>
+                            Ajouter au panier
+                        </Button>
+                        <Button variant="contained" color="secondary" className="text-white col-md-5" onClick={() => {
+                            onReserve()
+                        }}>
+                            Reserver le produit
+                        </Button>
+                    </div>
                     <table className='table table-striped table-bordered'>
                         <thead>
                             <th>Nom du détails</th>
