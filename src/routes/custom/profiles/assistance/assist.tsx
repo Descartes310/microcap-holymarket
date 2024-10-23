@@ -1,12 +1,18 @@
 import { connect } from 'react-redux';
 import UserService from 'Services/users';
+import BankService from 'Services/banks';
+import UnitService from 'Services/units';
+import OrderService from 'Services/orders';
 import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
 import ProductService from 'Services/products';
+import AccountService from 'Services/accounts';
 import React, { useEffect, useState } from 'react';
+import SweetAlert from 'react-bootstrap-sweetalert';
 import TextField from '@material-ui/core/TextField';
-import { getUserAssistanceTypes } from 'Helpers/datas';
+import { getSpecificOperations, getUserAssistanceTypes } from 'Helpers/datas';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import DepositTickets from 'Components/DepositTickets';
 import { NotificationManager } from 'react-notifications';
 import ActivationBox from '../../notifications/ActivationBox';
 import VerifyUserOTPModal from 'Components/verifyUserOTPModal';
@@ -16,11 +22,11 @@ import { getPriceWithCurrency, getReferralTypeLabel } from 'Helpers/helpers';
 import { setRequestGlobalAction, onAddItemToCart, onClearCart } from 'Actions';
 import OrderFormModal from 'Routes/custom/marketplace/checkout/orderFormModal';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
+import AccountVentilation from 'Components/Product/Ventilation/AccountVentilation';
 import AuthenticateUser from 'Routes/custom/networks/coverages/components/authenticateUser';
 import UserDocumentsModal from 'Routes/custom/networks/coverages/components/userFilesModal';
 import MemberDocumentsModal from 'Routes/custom/networks/coverages/components/memberFilesModal';
 import CodevSubscriptionModal from 'Routes/custom/marketplace/_components/codevSubscriptionModal';
-import OrderService from 'Services/orders';
 
 const Assist = (props) => {
 
@@ -42,6 +48,25 @@ const Assist = (props) => {
     const [showMemberFileBox, setShowMemberFileBox] = useState(false);
     const [showSubscriptionModal, setShowSubscriptionModal] = useState(false);
     const [showAuthentificationBox, setShowAuthentificationBox] = useState(false);
+
+    const [step, setStep] = useState(1);
+    const [amount, setAmount] = useState(null);
+    const [details, setDetails] = useState([]);
+    const [tickets, setTickets] = useState([]);
+    const [accounts, setAccounts] = useState([]);
+    const [account, setAccount] = useState(null);
+    const [currency, setCurrency] = useState(null);
+    const [currencies, setCurrencies] = useState([]);
+    const [showAlert, setShowAlert] = useState(false);
+    const [minAmount, setMinAmount] = useState(null);
+    const [showModal, setShowModal] = useState(false);
+    const [prestation, setPrestation] = useState(null);
+    const [prestations, setPrestations] = useState([]);
+    const [aggregations, setAggregations] = useState([]);
+
+    useEffect(() => {
+        getCurrencies();
+    }, []);
 
     const findUserByMembership = () => {
         props.setRequestGlobalAction(true);
@@ -67,6 +92,9 @@ const Assist = (props) => {
                     break;
                 case 'PAY_ORDER':
                     getOrders();
+                    break;
+                case 'INITIATE_OPERATION':
+                    getAccounts(member.referralCode);
                     break;
                 default:
                     break;
@@ -148,6 +176,104 @@ const Assist = (props) => {
 		props.onAddItemToCart({...cartItem});
 	}
 
+    useEffect(() => {
+        if(account) {
+            getAggregations();
+            getPrestations(account.reference);
+        } else {
+            setPrestation(null);
+            setPrestations([]);
+            setAggregations([]);
+        }
+    }, [account]);
+
+    const getAggregations = () => {
+        props.setRequestGlobalAction(true);
+        AccountService.getAccountActivationDetails(account.accountReference).then((response) => {
+            setAggregations(response?.accounts ? response.accounts : []);
+        }).finally(() => {
+            props.setRequestGlobalAction(false);
+        })
+    }
+
+    const getCurrencies = () => {
+        props.setRequestGlobalAction(false);
+        UnitService.getCurrencies()
+        .then((response) => setCurrencies(response))
+        .catch((err) => {
+            console.log(err);
+        })
+        .finally(() => {
+            props.setRequestGlobalAction(false);
+        })
+    }
+
+    const getPrestations = (reference: string) => {
+        props.setRequestGlobalAction(true);
+        BankService.getDomiciliationPrestations(reference)
+        .then(response => setPrestations(response))
+        .finally(() => props.setRequestGlobalAction(false))
+    }
+
+    const getAccounts = (reference: string) => {
+        props.setRequestGlobalAction(true);
+        BankService.getUserAccounts(reference)
+        .then(response => setAccounts(response))
+        .finally(() => props.setRequestGlobalAction(false))
+    }
+
+    const onChangeDetails = (value, index) => {
+        let remainingDetails = details.filter(d => d.id !== index);
+        let newDetails = {id: index, value};
+        setDetails([...remainingDetails, newDetails]);
+    }
+
+    const askForBankAuthorization = () => {
+        if(!member || !account || !prestation || !currency) {
+            NotificationManager.error("Le formulaire n'est pas correctement renseigné");
+            return;
+        }
+
+        if(prestation?.prestation?.type  == 'DEPOSIT_SCHEDULED' && amount < minAmount) {
+            NotificationManager.warning("Le montant minimum pour les tickets de "+minAmount+" "+currency.code);
+            return;
+        }
+
+        if(prestation?.prestation?.type  == 'DEPOSIT_PARAMETERIZED' && aggregations.reduce((sum, item) => sum+item.percentage, 0) !== 100) {
+            NotificationManager.error('Ventilation incorrecte');
+            return;
+        }
+
+        let data: any = {
+            amount,
+            reference: membership,
+            accountId: account.id,
+            currency: currency.code,
+            prestationId: prestation.id,
+            detailsValues: details.map(d => d.value),
+            detailsIds: details.map(d => d.id.split('-')[1]),
+        };
+
+        if(prestation?.prestation?.type  == 'DEPOSIT_SCHEDULED') {
+            data.tickets = tickets.map(t => t.code);
+        }
+
+        if(prestation?.prestation?.type  == 'DEPOSIT_PARAMETERIZED' && aggregations.length > 0) {
+            data.aggregationIds = aggregations.map(ag => ag.id);
+            data.aggregationPercentages = aggregations.map(ag => ag.percentage);
+        }
+
+        props.setRequestGlobalAction(true);
+        BankService.createOperation(data).then(() => {
+            NotificationManager.success("L'opération a été créée avec succès!");
+            setShowAlert(true);
+        }).catch(err => {
+            console.log(err);
+        }).finally(() => {
+            props.setRequestGlobalAction(false);
+        })
+    }
+
     const onSubmit = () => {
 
         if(!member || !action) {
@@ -176,6 +302,10 @@ const Assist = (props) => {
 
             case 'PAY_ORDER':
                 initiatePayment()
+                break;
+
+            case 'INITIATE_OPERATION':
+                askForBankAuthorization()
                 break;
         
             default:
@@ -306,6 +436,135 @@ const Assist = (props) => {
                             renderInput={(params) => <TextField {...params} variant="outlined" />}
                         />
                     </FormGroup>
+                )}
+                { action?.value == 'INITIATE_OPERATION' && (
+                    <div>
+                        <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                            <InputLabel className="text-left">
+                                Compte
+                            </InputLabel>
+                            <Autocomplete
+                                id="combo-box-demo"
+                                value={account}
+                                options={accounts}
+                                onChange={(__, item) => {
+                                    setAccount(item);
+                                }}
+                                getOptionLabel={(option) => option.iban}
+                                renderInput={(params) => <TextField {...params} variant="outlined" />}
+                            />
+                        </div> 
+                        <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                            <InputLabel className="text-left">
+                                Prestation
+                            </InputLabel>
+                            <Autocomplete
+                                id="combo-box-demo"
+                                value={prestation}
+                                options={prestations}
+                                onChange={(__, item) => {
+                                    setPrestation(item);
+                                }}
+                                getOptionLabel={(option) => option.prestation.label}
+                                renderInput={(params) => <TextField {...params} variant="outlined" />}
+                            />
+                        </div>
+                        
+                        <FormGroup className="col-md-12 col-sm-12 has-wrapper">
+                            <InputLabel className="text-left" htmlFor="amount">
+                                Montant
+                            </InputLabel>
+                            <InputStrap
+                                required
+                                type="number"
+                                id="amount"
+                                name='amount'
+                                value={amount}
+                                className="input-lg"
+                                onChange={(e) => setAmount(e.target.value)}
+                                disabled={prestation?.prestation?.type  == 'DEPOSIT_SCHEDULED'}
+                            />
+                        </FormGroup>
+
+                        <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                            <InputLabel className="text-left">
+                                Devise
+                            </InputLabel>
+                            <Autocomplete
+                                id="combo-box-demo"
+                                value={currency}
+                                options={currencies}
+                                onChange={(__, item) => {
+                                    setCurrency(item);
+                                }}
+                                getOptionLabel={(option) => option.label}
+                                disabled={prestation?.prestation?.type  == 'DEPOSIT_SCHEDULED'}
+                                renderInput={(params) => <TextField {...params} variant="outlined" />}
+                            />
+                        </div>
+
+                        { (prestation && prestation?.prestation?.direction == 'CASH_IN') && (
+                            <div>
+                                { prestation?.prestation?.type  == 'DEPOSIT_SCHEDULED' && (
+                                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                                        <InputLabel className="text-left">
+                                            Bonds de versement
+                                        </InputLabel>
+                                        <DepositTickets 
+                                            referralCode={membership}
+                                            updateAmount={(selectedTickets) => {
+                                                setTickets(selectedTickets)
+                                                setMinAmount(selectedTickets.reduce((amt, currentValue) => amt + currentValue.amount, 0));
+                                                if(selectedTickets && selectedTickets.length > 0) {
+                                                    setCurrency(currencies.find(c => c.code == selectedTickets[0].currency));
+                                                    setAmount(selectedTickets.reduce((amt, currentValue) => amt + currentValue.amount, 0))
+                                                } else {
+                                                    setCurrency(null);
+                                                    setAmount(0);
+                                                }
+                                            }}
+                                        />
+                                    </div>
+                                )}
+                                { aggregations?.length > 0 && prestation?.prestation?.type == 'DEPOSIT_PARAMETERIZED' && (
+                                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                                        <InputLabel className="text-left">
+                                            Configurer la ventilation
+                                        </InputLabel>
+                                        <AccountVentilation 
+                                            accounts={aggregations}
+                                            editable={true}
+                                            onSubmit={(item) => {
+                                                setAggregations(aggregations.map(aggregation => {
+                                                    if(aggregation.id === item.id) {
+                                                        return {...aggregation, percentage: item.percentage};
+                                                    }
+                                                    return aggregation;
+                                                }));
+                                            }}
+                                        />
+                                    </div>
+                                )}
+                            </div>
+                        )}
+
+                        { prestation && prestation.details.map(prestationDetails => (
+                            <FormGroup className="col-md-12 col-sm-12 has-wrapper">
+                                <InputLabel className="text-left" htmlFor={'details-'+prestationDetails.id}>
+                                    {prestationDetails.label}
+                                </InputLabel>
+                                <InputStrap
+                                    type="text"
+                                    required={false}
+                                    className="input-lg"
+                                    id={'details-'+prestationDetails.id}
+                                    name={'details-'+prestationDetails.id}
+                                    value={details.find(d => d.id === 'details-'+prestationDetails.id)?.value}
+                                    onChange={(e) => onChangeDetails(e.target.value, 'details-'+prestationDetails.id)}
+                                />
+                            </FormGroup>
+                        ))}
+                    </div>
                 )}
                 <FormGroup>
                     <Button
@@ -438,6 +697,17 @@ const Assist = (props) => {
                         setShowOrderModal(true);
                     }}
                     product={product}
+                />
+            )}
+            { showAlert && (
+                <SweetAlert
+                    success
+                    btnSize="sm"
+                    show={showAlert}
+                    title={"L'opération a été initiée avec succès"}
+                    onConfirm={() => {
+                        window.location.reload();
+                    }}
                 />
             )}
         </RctCollapsibleCard>

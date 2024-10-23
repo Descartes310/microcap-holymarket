@@ -83,7 +83,7 @@ class verifyUserOTPModal extends Component {
                 <Form onSubmit={this.onSubmit}>
                     <FormGroup className="col-md-12 col-sm-12 has-wrapper">
                         <InputLabel className="text-left" htmlFor="otp">
-                            Code OTP
+                            Code de vérification reçu
                         </InputLabel>
                         <InputStrap
                             type="text"

@@ -11,7 +11,7 @@ import { getPriceWithCurrency } from 'Helpers/helpers';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { NotificationManager } from 'react-notifications';
 import Checkbox from "@material-ui/core/Checkbox/Checkbox";
-import { Form, FormGroup, Input as InputStrap } from 'reactstrap';
+import { FormGroup, Input as InputStrap } from 'reactstrap';
 import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
 
 const List = (props) => {
@@ -70,10 +70,6 @@ const List = (props) => {
         .finally(() => {
             props.setRequestGlobalAction(false);
         })
-    }
-
-    const deleteTicket = (item) => {
-        setSelectedTickets(selectedTickets.filter(t => t.id != item.id));
     }
 
     return (

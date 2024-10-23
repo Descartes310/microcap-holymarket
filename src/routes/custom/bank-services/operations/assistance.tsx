@@ -11,7 +11,7 @@ import TextField from '@material-ui/core/TextField';
 import SweetAlert from 'react-bootstrap-sweetalert';
 import { getSpecificOperations } from 'Helpers/datas';
 import { getReferralTypeLabel } from 'Helpers/helpers';
-import DepositTickets from './components/depositTickets';
+import DepositTickets from 'Components/DepositTickets';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { NotificationManager } from 'react-notifications';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
@@ -40,7 +40,23 @@ const Create = (props) => {
     const [membership, setMembership] = useState(null);
     const [specificity, setSpecificity] = useState(null);
     const [aggregations, setAggregations] = useState([]);
-    const [parametrizedOperation, setParametrizedOperation] = useState(false);
+
+    const findUserByMembership = () => {
+        props.setRequestGlobalAction(true);
+        UserService.findUserByReference(membership)
+        .then(response => {
+            setMember(response);
+            //getPrestations(membership);
+            getAccounts(membership);
+        })
+        .catch((err) => {
+            console.log(err);
+            NotificationManager.error("Ce numéro utilisateur est inexistant");
+        })
+        .finally(() => {
+            props.setRequestGlobalAction(false);
+        })
+    }
 
     useEffect(() => {
         getCurrencies();
@@ -57,29 +73,11 @@ const Create = (props) => {
         }
     }, [account]);
 
-
     const getAggregations = () => {
         props.setRequestGlobalAction(true);
         AccountService.getAccountActivationDetails(account.accountReference).then((response) => {
             setAggregations(response?.accounts ? response.accounts : []);
         }).finally(() => {
-            props.setRequestGlobalAction(false);
-        })
-    }
-
-    const findUserByMembership = () => {
-        props.setRequestGlobalAction(true);
-        UserService.findUserByReference(membership)
-        .then(response => {
-            setMember(response);
-            //getPrestations(membership);
-            getAccounts(membership);
-        })
-        .catch((err) => {
-            console.log(err);
-            NotificationManager.error("Ce numéro utilisateur est inexistant");
-        })
-        .finally(() => {
             props.setRequestGlobalAction(false);
         })
     }

@@ -778,14 +778,14 @@ export default [
             "profiles": ['PROVIDER_COUNTER'],
             "child_routes": null
          },
-         {
-            "menu_title": "Assistance",
-            "new_item": false,
-            "path": BANK.OPERATION.ASSISTANCE,
-            "permissions": null,
-            "profiles": ['PROVIDER_COUNTER'],
-            "child_routes": null
-         },
+         // {
+         //    "menu_title": "Assistance",
+         //    "new_item": false,
+         //    "path": BANK.OPERATION.ASSISTANCE,
+         //    "permissions": null,
+         //    "profiles": ['PROVIDER_COUNTER'],
+         //    "child_routes": null
+         // },
          {
             "menu_title": "Opérations",
             "new_item": false,
