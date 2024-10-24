@@ -114,14 +114,6 @@ const VoteOptionProducts = (props) => {
         }
     }
 
-    const onUserSignUp = () => {
-        props.history.push(AUTH.REGISTER);
-    };
-
-    const onDiscoverClick = () => {
-        props.history.push(LANDING.HOME);
-    };
-
     const addToCart = (cartItem) => {
 		if(!cartItem.profileBuyable) {
 			alert("Votre profile ne vous donne pas accès à ce produit");

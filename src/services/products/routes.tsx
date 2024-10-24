@@ -91,3 +91,11 @@ export const DELETE_DISCOUNT = (reference) => `api/discounts/${reference}`;
 export const GET_DISCOUNT_PRODUCTS = (reference) => `api/discounts/${reference}/products`;
 export const CREATE_DISCOUNT_PRODUCT = (reference) => `api/discounts/${reference}/products`;
 export const DELETE_DISCOUNT_PRODUCT = (reference) => `api/discounts/${reference}/products`;
+
+export const GET_BOOKINGS = 'api/bookings';
+export const CREATE_BOOKING = 'api/bookings';
+export const FIND_BOOKING = (reference) => `api/bookings/${reference}`;
+export const UPDATE_BOOKING = (reference) => `api/bookings/${reference}`;
+export const DELETE_BOOKING = (reference) => `api/bookings/${reference}`;
+export const FIND_BOOKING_BY_CODE = (code) => `api/bookings/code/${code}`;
+export const SHARE_BOOKING = (reference) => `api/bookings/${reference}/share`;

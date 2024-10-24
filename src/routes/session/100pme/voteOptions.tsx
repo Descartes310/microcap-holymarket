@@ -15,14 +15,6 @@ const VoteOptions = (props) => {
 
     const [option, setOption] = useState(null);
 
-    const onUserSignUp = () => {
-        props.history.push(AUTH.REGISTER);
-    };
-
-    const onDiscoverClick = () => {
-        props.history.push(LANDING.HOME);
-    };
-
     return (
         <QueueAnim type="bottom" duration={2000}>
             <div className="rct-session-wrapper">

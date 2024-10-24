@@ -5,9 +5,9 @@ import { withRouter } from "react-router-dom";
 import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
 import React, { useState, useEffect } from 'react';
+import InvitationBox from "Components/InvitationBox";
 import TimeFromMoment from "Components/TimeFromMoment";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
-import InvitationBox from "Routes/custom/groups//details/invitationBox";
 
 const Members = (props) => {
 

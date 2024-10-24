@@ -8,7 +8,7 @@ import React, { useState, useEffect } from 'react';
 import ConfirmBox from "Components/dialog/ConfirmBox";
 import { NotificationManager } from 'react-notifications';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
-import { NETWORK, RESOURCES, joinUrlWithParamsId } from 'Url/frontendUrl';
+import { RESOURCES, joinUrlWithParamsId } from 'Url/frontendUrl';
 
 const List = (props) => {
 

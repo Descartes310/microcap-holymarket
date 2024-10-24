@@ -494,6 +494,12 @@ export const MARKETPLACE = {
             UPDATE: "/marketplace/store/discounts/:id/update",
             PRODUCTS: "/marketplace/store/discounts/:id/products",
         },
+        BOOKING: {
+            SELF: "/marketplace/store/bookings",
+            LIST: "/marketplace/store/bookings/list",
+            CREATE: "/marketplace/store/bookings/create",
+            UPDATE: "/marketplace/store/bookings/:id/update",
+        },
         PAYMENT: {
             SELF: "/marketplace/store/payments",
             LIST: "/marketplace/store/payments/list",

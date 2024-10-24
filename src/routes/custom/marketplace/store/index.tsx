@@ -3,6 +3,7 @@ import orders from './orders';
 import Options from './options';
 import Tickets from './tickets';
 import Payments from './payments';
+import Bookings from './bookings';
 import Products from './products';
 import Discounts from './discounts';
 import Purchases from './purchases';
@@ -25,6 +26,7 @@ const Store = (props) => {
                     <Route path={MARKETPLACE.STORE.OPTION.SELF} component={Options} />
                     <Route path={MARKETPLACE.STORE.TICKET.SELF} component={Tickets} />
                     <Route path={MARKETPLACE.STORE.DISCOUNT.SELF} component={Discounts} />
+                    <Route path={MARKETPLACE.STORE.BOOKING.SELF} component={Bookings} />
                 </Switch>
             </>
         </div>

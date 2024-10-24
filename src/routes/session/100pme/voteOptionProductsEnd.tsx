@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { logout } from 'Actions';
 import { connect } from 'react-redux';
 import QueueAnim from 'rc-queue-anim';
@@ -11,8 +11,11 @@ import { FormGroup, Button } from 'reactstrap';
 import Toolbar from '@material-ui/core/Toolbar';
 import { setRequestGlobalAction } from 'Actions';
 import {HOME, AUTH, LANDING} from "Url/frontendUrl";
+import InvitationBox from 'Components/InvitationBox';
 
 const VoteOptionProductsEnd = (props) => {
+
+    const [showInvitation, setShowInvitationBox] = useState(false);
 
     return (
         <QueueAnim type="bottom" duration={2000}>
@@ -38,6 +41,15 @@ const VoteOptionProductsEnd = (props) => {
                                                 color="primary"
                                                 className="w-100 ml-0 mt-15 text-white"
                                                 onClick={() => {
+                                                    setShowInvitationBox(true);
+                                                }}
+                                            >
+                                                Parrainer un proche
+                                            </Button>
+                                            <Button
+                                                color="primary"
+                                                className="w-100 ml-0 mt-15 text-white"
+                                                onClick={() => {
                                                     localStorage.removeItem('PME_CITY')
                                                     localStorage.removeItem('PME_LOCALITY')
                                                     localStorage.removeItem('PME_COUNTRY')
@@ -46,7 +58,7 @@ const VoteOptionProductsEnd = (props) => {
                                                     props.history.push(AUTH.LOGIN);
                                                 }}
                                             >
-                                                Continuer
+                                                Terminer
                                             </Button>
                                         </FormGroup>
                                     </div>
@@ -57,6 +69,12 @@ const VoteOptionProductsEnd = (props) => {
                     </div>
                 </div>
             </div>
+            { showInvitation && (
+                <InvitationBox
+                    show={showInvitation}
+                    onClose={() => setShowInvitationBox(false)}
+                />
+            )}
         </QueueAnim>
     );
 };

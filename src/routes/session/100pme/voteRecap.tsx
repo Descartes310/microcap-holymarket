@@ -16,14 +16,6 @@ const VoteRecap = (props) => {
 
     const city = JSON.parse(localStorage.getItem('PME_CITY'));
 
-    const onUserSignUp = () => {
-        props.history.push(AUTH.REGISTER);
-    };
-
-    const onDiscoverClick = () => {
-        props.history.push(LANDING.HOME);
-    };
-
     const onSubmit = () => {
         const locality = localStorage.getItem('PME_LOCALITY');
         const city = JSON.parse(localStorage.getItem('PME_CITY'));

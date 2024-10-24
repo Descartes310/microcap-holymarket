@@ -311,4 +311,33 @@ export default class ProductService {
     static deleteDiscountProduct(reference: string, data: any): Promise<any> {
         return makeRequest('delete', Routes.DELETE_DISCOUNT_PRODUCT(reference), data);
     }
+
+
+    static createBooking(data: any): Promise<any> {
+        return makeRequest('post', Routes.CREATE_BOOKING, data);
+    }
+
+    static getBookings(): Promise<any> {
+        return makeRequest('get', Routes.GET_BOOKINGS);
+    }
+
+    static findBooking(reference: string): Promise<any> {
+        return makeRequest('get', Routes.FIND_BOOKING(reference));
+    }
+
+    static findBookingByCode(code: string, data: any): Promise<any> {
+        return makeRequest('get', Routes.FIND_BOOKING_BY_CODE(code), data);
+    }
+
+    static updateBooking(reference: string, data: any): Promise<any> {
+        return makeRequest('put', Routes.UPDATE_BOOKING(reference), data);
+    }
+
+    static deleteBooking(reference: string): Promise<any> {
+        return makeRequest('delete', Routes.DELETE_BOOKING(reference));
+    }
+
+    static shareBooking(reference: string, data: any): Promise<any> {
+        return makeRequest('post', Routes.SHARE_BOOKING(reference), data);
+    }
 }

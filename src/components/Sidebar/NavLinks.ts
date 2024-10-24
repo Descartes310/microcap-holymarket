@@ -384,6 +384,14 @@ export default [
             "profiles": null,
             "child_routes": null
          },
+         {
+            "menu_title": "Code reservations",
+            "new_item": false,
+            "path": MARKETPLACE.STORE.BOOKING.LIST,
+            "permissions": [Permission.accountType.assistance.name],
+            "profiles": ['GROUP'],
+            "child_routes": null
+         },
       ],
    },
 
@@ -681,6 +689,14 @@ export default [
             "child_routes": null
          },
          {
+            "menu_title": "Code reservations",
+            "new_item": false,
+            "path": MARKETPLACE.STORE.BOOKING.LIST,
+            "permissions": [Permission.marketplace.store.product.name],
+            "profiles": ['GROUP'],
+            "child_routes": null
+         },
+         {
             "menu_title": "Options produit",
             "new_item": false,
             "path": MARKETPLACE.STORE.OPTION.ITEM.LIST,
@@ -904,6 +920,14 @@ export default [
             "menu_title": "100 PME vote",
             "new_item": false,
             "path": SETTING.PME_VOTE.LIST,
+            "permissions": [Permission.setting.unit.name],
+            "profiles": ['GROUP'],
+            "child_routes": null
+         },
+         {
+            "menu_title": "Code reservations",
+            "new_item": false,
+            "path": MARKETPLACE.STORE.BOOKING.LIST,
             "permissions": [Permission.setting.unit.name],
             "profiles": ['GROUP'],
             "child_routes": null

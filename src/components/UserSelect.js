@@ -22,7 +22,7 @@ class UserSelect extends Component {
     findUserByMembership = () => {
         this.props.setRequestGlobalAction(true);
         let data = {
-            from_group: this.props.fromMyOrganisation
+            from_group: this.props.fromMyOrganisation ?? false
         };
         if(this.props.type) {
             data.type = this.props.type;

@@ -582,3 +582,45 @@ export const creditTicketTypes = () => {
 export const getCreditTicketTypeLabel = (value) => {
     return creditTicketTypes().find(d => d.value == value)?.label
 }
+
+export const bookingNatures = () => {
+    return [
+        {
+            label: "Challenge 100 PME", value: 'PME_VOTE'
+        },
+        {
+            label: "MicroCap Store", value: 'MARKETPLACE'
+        },
+        {
+            label: "Parrainage", value: 'INVITATION'
+        }
+    ];
+}
+
+export const getBookingNatureLabel = (value) => {
+    return bookingNatures().find(d => d.value == value)?.label
+}
+
+export const invitationObjects = () => {
+    return [
+        {
+            label: "Rejoindre un projet", value: 'PROJECT'
+        },
+        {
+            label: "Rejoindre le réseau", value: 'NETWORK'
+        },
+        {
+            label: "Rejoindre une communauté", value: 'COMMUNITY'
+        },
+        {
+            label: "Souscrire à un produit", value: 'PRODUCT'
+        },
+        {
+            label: "Rejoindre le challenge 100 PME", value: 'PME_VOTE'
+        }
+    ];
+}
+
+export const getInvitationObjectLabel = (value) => {
+    return invitationObjects().find(d => d.value == value)?.label
+}

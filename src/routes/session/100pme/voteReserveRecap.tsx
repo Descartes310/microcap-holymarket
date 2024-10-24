@@ -16,14 +16,6 @@ const VoteReserveRecap = (props) => {
     const city = new URLSearchParams(props.location.search).get("city");
     const code = new URLSearchParams(props.location.search).get("code");
 
-    const onUserSignUp = () => {
-        props.history.push(AUTH.REGISTER);
-    };
-
-    const onDiscoverClick = () => {
-        props.history.push(LANDING.HOME);
-    };
-
     return (
         <QueueAnim type="bottom" duration={2000}>
             <div className="rct-session-wrapper">

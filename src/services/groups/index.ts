@@ -61,11 +61,7 @@ export default class GroupService {
     }
 
     static sendExternalGroupInvitation(data): Promise<any> {
-        if(!data.reference)
-            delete data.reference;
-        if(!data.email)
-            delete data.email;
-        return makeRequest('get', Routes.SEND_EXTERNAL_GROUP_INVITATION, data);
+        return makeRequest('post', Routes.SEND_EXTERNAL_GROUP_INVITATION, data);
     }
 
     static getCommunityDatas(data): Promise<any> {

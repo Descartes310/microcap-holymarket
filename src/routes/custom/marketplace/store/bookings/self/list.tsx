@@ -1,3 +1,4 @@
+import ShareBooking from './share';
 import { connect } from 'react-redux';
 import { withRouter } from "react-router-dom";
 import Button from "@material-ui/core/Button";
@@ -11,18 +12,19 @@ import { joinUrlWithParamsId, MARKETPLACE } from 'Url/frontendUrl';
 
 const List = (props) => {
 
-    const [discounts, setDiscounts] = useState([]);
-    const [discount, setDiscount] = useState(null);
+    const [bookings, setBookings] = useState([]);
+    const [booking, setBooking] = useState(null);
+    const [showShareBox, setShowShareBox] = useState(false);
     const [showConfirmBox, setShowConfirmBox] = useState(false);
 
     useEffect(() => {
-        getDiscounts();
+        getBookings();
     }, []);
 
-    const getDiscounts = () => {
+    const getBookings = () => {
         props.setRequestGlobalAction(true);
-        ProductService.getDiscounts()
-            .then((response) => setDiscounts(response))
+        ProductService.getBookings()
+            .then((response) => setBookings(response))
             .catch((err) => {
                 console.log(err);
             })
@@ -31,11 +33,11 @@ const List = (props) => {
             })
     }
 
-    const deleteDiscount = (reference) => {
+    const deleteBooking = (reference) => {
         props.setRequestGlobalAction(true),
-        ProductService.deleteDiscount(reference)
+        ProductService.deleteBooking(reference)
             .then(() => {
-                getDiscounts();
+                getBookings();
                 setShowConfirmBox(false);
             })
             .finally(() => props.setRequestGlobalAction(false))
@@ -43,16 +45,16 @@ const List = (props) => {
 
     return (
         <CustomList
-            list={discounts}
+            list={bookings}
             loading={false}
-            itemsFoundText={n => `${n} coupons trouvés`}
-            onAddClick={() => props.history.push(MARKETPLACE.STORE.DISCOUNT.CREATE)}
+            itemsFoundText={n => `${n} codes trouvés`}
+            onAddClick={() => props.history.push(MARKETPLACE.STORE.BOOKING.CREATE)}
             renderItem={list => (
                 <>
                     {list && list.length === 0 ? (
                         <div className="d-flex justify-content-center align-items-center py-50">
                             <h4>
-                                Aucun coupon trouvé
+                                Aucun code trouvé
                             </h4>
                         </div>
                     ) : (
@@ -62,11 +64,12 @@ const List = (props) => {
                                     <tr>
                                         <th className="fw-bold">Désignation</th>
                                         <th className="fw-bold">Code</th>
-                                        <th className="fw-bold">Réduction</th>
+                                        <th className="fw-bold">Limite d'utilisation</th>
                                         <th className="fw-bold">Date de début</th>
                                         <th className="fw-bold">Date de fin</th>
-                                        <th className="fw-bold">Produits</th>
+                                        <th className="fw-bold">Propriétaire</th>
                                         <th className="fw-bold">Actions</th>
+                                        <th className="fw-bold">Supprimer</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -89,7 +92,7 @@ const List = (props) => {
                                             <td>
                                                 <div className="media">
                                                     <div className="media-body pt-10">
-                                                        <p className="m-0 text-dark">{item.percentage} %</p>
+                                                        <p className="m-0 fw-bold text-dark">{item.useLimit}</p>
                                                     </div>
                                                 </div>
                                             </td>
@@ -108,29 +111,43 @@ const List = (props) => {
                                                 </div>
                                             </td>
                                             <td>
-                                                <Button
-                                                    color="primary"
-                                                    variant="contained"
-                                                    onClick={() => props.history.push(joinUrlWithParamsId(MARKETPLACE.STORE.DISCOUNT.PRODUCTS, item.reference))}
-                                                    className="text-white font-weight-bold mr-3"
-                                                >
-                                                    Produits
-                                                </Button>
+                                                <div className="media">
+                                                    <div className="media-body pt-10">
+                                                        <p className="m-0 fw-bold text-dark">{item.referralCode}</p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                { !item.parentReference && (
+                                                    <Button
+                                                        color="primary"
+                                                        variant="contained"
+                                                        onClick={() => props.history.push(joinUrlWithParamsId(MARKETPLACE.STORE.BOOKING.UPDATE, item.reference))}
+                                                        className="text-white font-weight-bold mr-3"
+                                                    >
+                                                        Editer
+                                                    </Button>
+                                                )}
+                                                { !item.usable && (
+                                                    <Button
+                                                        color="primary"
+                                                        variant="contained"
+                                                        onClick={() => {
+                                                            setBooking(item);
+                                                            setShowShareBox(true);
+                                                        }}
+                                                        className="text-white font-weight-bold mr-3"
+                                                    >
+                                                        Partager
+                                                    </Button>
+                                                )}
                                             </td>
                                             <td>
                                                 <Button
                                                     color="primary"
                                                     variant="contained"
-                                                    onClick={() => props.history.push(joinUrlWithParamsId(MARKETPLACE.STORE.DISCOUNT.UPDATE, item.reference))}
-                                                    className="text-white font-weight-bold mr-3"
-                                                >
-                                                    Editer
-                                                </Button>
-                                                <Button
-                                                    color="primary"
-                                                    variant="contained"
                                                     onClick={() => {
-                                                        setDiscount(item);
+                                                        setBooking(item);
                                                         setShowConfirmBox(true);
                                                     }}
                                                     className="btn-danger text-white font-weight-bold mr-3"
@@ -144,16 +161,27 @@ const List = (props) => {
                             </table>
                         </div>
                     )}
-                    { discount && showConfirmBox && (
+                    { booking && showConfirmBox && (
                         <ConfirmBox
                             show={showConfirmBox}
                             rightButtonOnClick={() => {
-                                deleteDiscount(discount.reference);
+                                deleteBooking(booking.reference);
                             }}
                             leftButtonOnClick={() => {
                                 setShowConfirmBox(false)
                             }}
-                            message={'Etes vous sure de vouloir supprimer ce code de réduction ?'}
+                            message={'Etes vous sure de vouloir supprimer ce code de reservation ?'}
+                        />
+                    )}
+                    { booking && showShareBox && (
+                        <ShareBooking
+                            booking={booking}
+                            show={showShareBox}
+                            title={'Partager '+booking.label}
+                            onClose={() => {
+                                setShowShareBox(false);
+                                getBookings();
+                            }}
                         />
                     )}
                 </>

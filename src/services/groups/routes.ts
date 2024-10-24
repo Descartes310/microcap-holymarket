@@ -19,7 +19,7 @@ export const ADD_FILE_TO_MEMBER = (id) => `api/socialnetworks/groups/members/${i
 export const GET_COMMUNITY_DATAS = `api/socialnetworks/groups/self`;
 export const UPDATE_GROUP_DETAILS = `api/socialnetworks/groups/self/details`;
 export const GET_GROUP_DETAILS = (ref) => `api/socialnetworks/groups/self/${ref}/details`;
-export const SEND_EXTERNAL_GROUP_INVITATION = `api/socialnetworks/groups/self/invitations`;
+export const SEND_EXTERNAL_GROUP_INVITATION = `api/socialnetworks/users/self/invitations`;
 export const CREATE_UNCONVENTIONATED_GROUP = `api/socialnetworks/groups/self/unconventionated`;
 
 export const SEND_GROUP_REQUEST = "api/socialnetworks/groups/members/requests";
