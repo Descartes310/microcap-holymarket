@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 import OrderService from 'Services/orders';
 import { withRouter } from "react-router-dom";
+import FundingService from 'Services/funding';
 import { getOrderTypes } from 'Helpers/datas';
 import CustomList from "Components/CustomList";
 import { setRequestGlobalAction } from 'Actions';
@@ -14,7 +15,6 @@ import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
 import PaymentRequestModal from '../../_components/paymentRequestModal';
 import AccountInformationModal from '../components/accountInformations';
 import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
-import FundingService from 'Services/funding';
 
 const List = (props) => {
 
@@ -22,7 +22,6 @@ const List = (props) => {
     const [dropdownOpen, setDropdownOpen] = useState([]);
     const [showDetails, setShowDetails] = useState(false);
     const [selectedItem, setSelectedItem] = useState(null);
-    const [showConfirmBox, setShowConfirmBox] = useState(false);
     const [showPaymentRequest, setShowPaymentRequest] = useState(false);
     const [showAccountInfoModal, setShowAccountInfoModal] = useState(false);
     const [showAccountAgreementBox, setShowAccountAgreementBox] = useState(false);

@@ -21,6 +21,7 @@ import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard
 import { getIndirectSaleProcess, uneditableProductModelType } from 'Helpers/datas';
 import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
 import AccountVentilation from 'Components/Product/Ventilation/AccountVentilation';
+import UnitService from 'Services/units';
 
 const fileTypes = ["JPG", "PNG", "GIF", "JPEG"];
 
@@ -29,6 +30,7 @@ const Create = (props) => {
     const [code, setCode] = useState('');
     const [file, setFile] = useState(null);
     const [label, setLabel] = useState('');
+    const [units, setUnits] = useState([]);
     const [price, setPrice] = useState(null);
     const [range, setRange] = useState(null);
     const [group, setGroup] = useState(null);
@@ -36,6 +38,7 @@ const Create = (props) => {
     const [products, setProducts] = useState([]);
     const [product, setProduct] = useState(null);
     const [userFiles, setUserFiles] = useState([]);
+    const [priceUnit, setPriceUnit] = useState(null);
     const [updatable, setUpdatable] = useState(true);
     const [description, setDescription] = useState('');
     const [aggregations, setAggregations] = useState([]);
@@ -53,6 +56,7 @@ const Create = (props) => {
         getGroups();
         getProducts();
         getUserFiles();
+        getUnits();
         getCommercialOffers();
     }, []);
 
@@ -76,6 +80,18 @@ const Create = (props) => {
         ProductService.getProductModelAvailables()
             .then(response => setProducts(response))
             .finally(() => props.setRequestGlobalAction(false))
+    }
+
+    const getUnits = () => {
+        props.setRequestGlobalAction(true);
+        UnitService.getUnits()
+        .then((response) => setUnits(response))
+        .catch((err) => {
+            console.log(err);
+        })
+        .finally(() => {
+            props.setRequestGlobalAction(false);
+        })
     }
 
     const getAggregations = () => {
@@ -115,6 +131,7 @@ const Create = (props) => {
             !label ||
             !code ||
             !price ||
+            !priceUnit ||
             !range ||
             !product ||
             !commercialOffer
@@ -130,7 +147,7 @@ const Create = (props) => {
 
         let data: any = {
             label, code, description, price, range: range.value,
-            acceptManyPayment: acceptManyPayment,
+            acceptManyPayment: acceptManyPayment, currency: priceUnit.code,
             productModelId: product.id, commercialOfferId: commercialOffer.id
         }
 
@@ -291,7 +308,22 @@ const Create = (props) => {
                                         onChange={(e) => setPrice(e.target.value)}
                                     />
                                 </FormGroup>
-                                <div className={`col-md-${range?.value !== 'COMMUNITY' ? '6' : '3'} col-sm-12 has-wrapper mb-30`}>
+                                <FormGroup className="col-md-6 col-sm-12 has-wrapper">
+                                    <InputLabel className="text-left">
+                                        Devise
+                                    </InputLabel>
+                                    <Autocomplete
+                                        value={priceUnit}
+                                        id="combo-box-demo"
+                                        onChange={(__, item) => {
+                                            setPriceUnit(item);
+                                        }}
+                                        getOptionLabel={(option) => option.label}
+                                        options={units.filter(u => ['dévise', 'devise', 'devises', 'dévises'].includes(u.type.label.toLowerCase()))}
+                                        renderInput={(params) => <TextField {...params} variant="outlined" />}
+                                    />
+                                </FormGroup>
+                                <div className={`col-md-${range?.value !== 'COMMUNITY' ? '12' : '6'} col-sm-12 has-wrapper mb-30`}>
                                     <InputLabel className="text-left">
                                         Portée du produit
                                     </InputLabel>
@@ -307,7 +339,7 @@ const Create = (props) => {
                                     />
                                 </div>
                                 {range?.value === 'COMMUNITY' && (
-                                    <div className="col-md-3 col-sm-12 has-wrapper mb-30">
+                                    <div className="col-md-6 col-sm-12 has-wrapper mb-30">
                                         <InputLabel className="text-left">
                                             Communauté cible
                                         </InputLabel>

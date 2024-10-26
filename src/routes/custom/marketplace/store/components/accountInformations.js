@@ -65,7 +65,11 @@ class AccountInformationModal extends Component {
     getBankAgencies () {
         this.props.setRequestGlobalAction(true);
         UserService.getInstitutions({type: 'BANK_AGENCY'})
-        .then(response => this.setState({ agencies: response }))
+        .then(response => this.setState({ agencies: response, agency: response.find(a => a.id == this.props.order?.bankAgencyId) }, () => {
+            if(this.state.agency) {
+                this.getMembers(this.state.agency.id);
+            }
+        }))
         .finally(() => this.props.setRequestGlobalAction(false))
     }
 
@@ -247,8 +251,10 @@ class AccountInformationModal extends Component {
                             options={agencies}
                             id="combo-box-demo"
                             onChange={(__, item) => {
-                                this.setState({ agency: item }, () => {
-                                    this.getMembers(item.id);
+                                this.setState({ agency: item, members: item ? this.state.members : [] }, () => {
+                                    if(item) {
+                                        this.getMembers(item.id);
+                                    }
                                 });
                             }}
                             getOptionLabel={(option) => option.code+" ("+option.label+")"}

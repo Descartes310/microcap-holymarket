@@ -20,6 +20,8 @@ import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard
 import { getIndirectSaleProcess, uneditableProductModelType } from 'Helpers/datas';
 import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
 import AccountVentilation from 'Components/Product/Ventilation/AccountVentilation';
+import UnitService from 'Services/units';
+import { setCurrency } from 'Actions/AppSettingsActions';
 
 const fileTypes = ["JPG", "PNG", "GIF", "JPEG"];
 
@@ -28,12 +30,14 @@ const Update = (props) => {
     const [code, setCode] = useState('');
     const [file, setFile] = useState(null);
     const [label, setLabel] = useState('');
+    const [units, setUnits] = useState([]);
     const [price, setPrice] = useState(null);
     const [range, setRange] = useState(null);
     const [group, setGroup] = useState(null);
     const [groups, setGroups] = useState([]);
     const [product, setProduct] = useState(null);
     const [userFiles, setUserFiles] = useState([]);
+    const [priceUnit, setPriceUnit] = useState(null);
     const [updatable, setUpdatable] = useState(true);
     const [description, setDescription] = useState('');
     const [aggregations, setAggregations] = useState([]);
@@ -50,6 +54,13 @@ const Update = (props) => {
         getGroups();
         getUserFiles();
     }, []);
+
+    useEffect(() => {
+        if(product) {
+            getAggregations();
+            getUnits();
+        }
+    }, [product])
 
     const findProduct = () => {
         props.setRequestGlobalAction(true);
@@ -70,7 +81,6 @@ const Update = (props) => {
                 setSelectedProcesses(getIndirectSaleProcess());
                 setSelectedPieces(response.pieces);
             }
-            getAggregations();
         })
         .finally(() => props.setRequestGlobalAction(false))
     }
@@ -82,6 +92,21 @@ const Update = (props) => {
             setUserFiles(response);
         })
         .finally(() => props.setRequestGlobalAction(false))
+    }
+
+    const getUnits = () => {
+        props.setRequestGlobalAction(true);
+        UnitService.getUnits()
+        .then((response) => {
+            setUnits(response);
+            setPriceUnit(response.find(c => c.code == product.currency))
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+        .finally(() => {
+            props.setRequestGlobalAction(false);
+        })
     }
 
     const getGroups = () => {
@@ -105,6 +130,7 @@ const Update = (props) => {
             !label ||
             !code ||
             !price ||
+            !priceUnit ||
             !range ||
             !description ||
             !product
@@ -120,7 +146,7 @@ const Update = (props) => {
 
         let data: any = {
             label, code, description, price, range: range.value,
-            acceptManyPayment: acceptManyPayment,
+            acceptManyPayment: acceptManyPayment, currency: priceUnit.code
         }
 
         data.indirectSell = isIndirectSell || product?.mirrorAccount || product?.account
@@ -243,7 +269,22 @@ const Update = (props) => {
                                     onChange={(e) => setPrice(e.target.value)}
                                 />
                             </FormGroup>
-                            <div className={`col-md-${range?.value !== 'COMMUNITY' ? '6' : '3'} col-sm-12 has-wrapper mb-30`}>
+                            <FormGroup className="col-md-6 col-sm-12 has-wrapper">
+                                <InputLabel className="text-left">
+                                    Devise
+                                </InputLabel>
+                                <Autocomplete
+                                    value={priceUnit}
+                                    id="combo-box-demo"
+                                    onChange={(__, item) => {
+                                        setPriceUnit(item);
+                                    }}
+                                    getOptionLabel={(option) => option.label}
+                                    options={units.filter(u => ['dévise', 'devise', 'devises', 'dévises'].includes(u.type.label.toLowerCase()))}
+                                    renderInput={(params) => <TextField {...params} variant="outlined" />}
+                                />
+                            </FormGroup>
+                            <div className={`col-md-${range?.value !== 'COMMUNITY' ? '12' : '6'} col-sm-12 has-wrapper mb-30`}>
                                 <InputLabel className="text-left">
                                     Portée du produit
                                 </InputLabel>
@@ -259,7 +300,7 @@ const Update = (props) => {
                                 />
                             </div>
                             {range?.value === 'COMMUNITY' && (
-                                <div className="col-md-3 col-sm-12 has-wrapper mb-30">
+                                <div className="col-md-6 col-sm-12 has-wrapper mb-30">
                                     <InputLabel className="text-left">
                                         Communauté cible
                                     </InputLabel>

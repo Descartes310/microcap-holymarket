@@ -103,8 +103,7 @@ class InvitationBox extends Component<any, any> {
         GroupService.sendExternalGroupInvitation(data)
             .then(() => {
                 NotificationManager.success("L'invitation a été envoyée avec succès");
-                this.props.onClose();
-                this.setState({ member: null, type: null, value: null, message: null, reference: null, booking: null, reservationCode: null});
+                this.setState({ member: null, type: null, value: null, message: '', reference: null, booking: null, reservationCode: null, object: null, hasCode: false});
             })
             .catch(err => {
                 NotificationManager.error("Reference incorrecte");
@@ -156,9 +155,9 @@ class InvitationBox extends Component<any, any> {
                                 <FormGroup className="has-wrapper">
                                     <InputLabel className="text-left" htmlFor="value">
                                         {
-                                            type?.value === 'EMAIL' ? "Veuillez saisir votre adresse e-mail" : 
-                                            type?.value === 'ADDRESS' ? "Veuillez saisir votre adresse" :
-                                            "Veuillez saisir votre numéro de télephone" 
+                                            type?.value === 'EMAIL' ? "Veuillez saisir l'adresse e-mail" : 
+                                            type?.value === 'ADDRESS' ? "Veuillez saisir l'adresse" :
+                                            "Veuillez saisir le numéro de télephone" 
                                         }
                                     </InputLabel>
                                     <InputStrap
@@ -236,11 +235,20 @@ class InvitationBox extends Component<any, any> {
                         </FormGroup>
                     )}
                     <FormGroup>
+
+                        <Button
+                            color="danger"
+                            variant="contained"
+                            onClick={() => this.props.onClose()}
+                            className="text-white font-weight-bold"
+                        >
+                            Terminer
+                        </Button>
                         <Button
                             color="primary"
                             variant="contained"
                             onClick={() => this.onSubmit()}
-                            className="text-white font-weight-bold"
+                            className="text-white font-weight-bold ml-5"
                         >
                             Envoyer l'invitation
                         </Button>

@@ -10,7 +10,7 @@ import AccountService from 'Services/accounts';
 import React, { useEffect, useState } from 'react';
 import SweetAlert from 'react-bootstrap-sweetalert';
 import TextField from '@material-ui/core/TextField';
-import { getSpecificOperations, getUserAssistanceTypes } from 'Helpers/datas';
+import { getUserAssistanceTypes } from 'Helpers/datas';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import DepositTickets from 'Components/DepositTickets';
 import { NotificationManager } from 'react-notifications';
@@ -23,6 +23,7 @@ import { setRequestGlobalAction, onAddItemToCart, onClearCart } from 'Actions';
 import OrderFormModal from 'Routes/custom/marketplace/checkout/orderFormModal';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
 import AccountVentilation from 'Components/Product/Ventilation/AccountVentilation';
+import AddFileToOrderModal from 'Routes/custom/marketplace/orders/addFileToOrderModal';
 import AuthenticateUser from 'Routes/custom/networks/coverages/components/authenticateUser';
 import UserDocumentsModal from 'Routes/custom/networks/coverages/components/userFilesModal';
 import MemberDocumentsModal from 'Routes/custom/networks/coverages/components/memberFilesModal';
@@ -46,6 +47,7 @@ const Assist = (props) => {
     const [showUserFileBox, setShowUserFileBox] = useState(false);
     const [showActivationBox, setShowActivationBox] = useState(false);
     const [showMemberFileBox, setShowMemberFileBox] = useState(false);
+    const [showOrderFolderModal, setShowOrderFolderModal] = useState(false);
     const [showSubscriptionModal, setShowSubscriptionModal] = useState(false);
     const [showAuthentificationBox, setShowAuthentificationBox] = useState(false);
 
@@ -91,6 +93,7 @@ const Assist = (props) => {
                     getProductModels();
                     break;
                 case 'PAY_ORDER':
+                case 'ORDER_FOLDER':
                     getOrders();
                     break;
                 case 'INITIATE_OPERATION':
@@ -307,6 +310,10 @@ const Assist = (props) => {
             case 'INITIATE_OPERATION':
                 askForBankAuthorization()
                 break;
+
+            case 'ORDER_FOLDER':
+                setShowOrderFolderModal(true);
+                break;
         
             default:
                 break;
@@ -314,7 +321,6 @@ const Assist = (props) => {
     }
 
     const activateProfile = () => {
-        console.log("activate");
         setShowActivationBox(true);
     }
 
@@ -420,7 +426,7 @@ const Assist = (props) => {
                         </FormGroup>
                     </>
                 )}
-                { action?.value == 'PAY_ORDER' && (
+                { (action?.value == 'PAY_ORDER' || action?.value == 'ORDER_FOLDER') && (
                     <FormGroup className="col-md-12 col-sm-12 has-wrapper">
                         <InputLabel className="text-left">
                             Mes commandes
@@ -706,6 +712,18 @@ const Assist = (props) => {
                     show={showAlert}
                     title={"L'opération a été initiée avec succès"}
                     onConfirm={() => {
+                        window.location.reload();
+                    }}
+                />
+            )}
+
+
+            { (order && action?.value == 'ORDER_FOLDER' && showOrderFolderModal) && (
+                <AddFileToOrderModal
+                    order={order}
+                    title={'Renseigner le dossier commande'} 
+                    show={showOrderFolderModal && action?.value == 'ORDER_FOLDER' }
+                    onClose={() => {
                         window.location.reload();
                     }}
                 />

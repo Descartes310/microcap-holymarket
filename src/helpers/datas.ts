@@ -352,16 +352,16 @@ export const getUserAssistanceTypes = () => {
             label: 'Authentifier le profile',
             value: 'AUTHENTICATE_PROFILE'
         },
-        // {
-        //     label: 'Reserver un produit',
-        //     value: 'BOOK_ORDER'
-        // },
         {
             label: 'Effectuer une commande',
             value: 'PLACE_ORDER'
         },
         {
-            label: 'Payement d\'une commande',
+            label: 'Fournir le dossier d\'une commande',
+            value: 'ORDER_FOLDER'
+        },
+        {
+            label: 'Demande de paiement d\'une commande',
             value: 'PAY_ORDER'
         },
         {

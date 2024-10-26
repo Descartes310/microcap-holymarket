@@ -6,6 +6,7 @@ import CustomList from "Components/CustomList";
 import { setRequestGlobalAction } from 'Actions';
 import React, { useState, useEffect } from 'react';
 import { getGroupTypeLabel } from 'Helpers/helpers';
+import InvitationBox from 'Components/InvitationBox';
 import ConfirmBox from "Components/dialog/ConfirmBox";
 import TimeFromMoment from "Components/TimeFromMoment";
 import { NotificationManager } from "react-notifications";
@@ -17,9 +18,10 @@ const Request = (props) => {
     const [members, setMembers] = useState([]);
     const [status, setStatus] = useState(false);
     const [groupMember, setGroupMember] = useState(null);
-    const [showAddFileBox, setShowAddFileBox] = useState(false);
     const [selectedMember, setSelectedMember] = useState(null);
+    const [showAddFileBox, setShowAddFileBox] = useState(false);
     const [showConfirmBox, setShowConfirmBox] = useState(false);
+    const [showInvitation, setShowInvitationBox] = useState(false);
 
     useEffect(() => {
         getMembers();
@@ -57,6 +59,10 @@ const Request = (props) => {
                 loading={false}
                 list={members}
                 itemsFoundText={n => `${n} requête.s trouvé.s`}
+                onAddClick={() => {
+                    setShowInvitationBox(true);
+                }}
+                addText="Parrainer un proche"
                 renderItem={list => (
                     <>
                         {list && list.length === 0 ? (
@@ -219,6 +225,12 @@ const Request = (props) => {
                         setShowAddFileBox(false);
                         getMembers();
                     }}
+                />
+            )}
+            { showInvitation && (
+                <InvitationBox
+                    show={showInvitation}
+                    onClose={() => setShowInvitationBox(false)}
                 />
             )}
         </>

@@ -197,7 +197,8 @@ class Hit extends Component {
 						product={product}
 						onSuccess={() => {
 							onClearCart();
-							this.setState({ showOrderModal: false, showSubscriptionModal: false, showCodevStep1: false, showCodevStep2: false, showCodevStep3: false , showCodevStep4: false });
+							this.setState({ showOrderModal: false, showSubscriptionModal: false, showCodevStep1: false, showCodevStep2: false, showCodevStep3: false , showCodevStep4: false, showDetails: false });
+
 						}}
 						customData={{}}
 						isPreOrder={true}

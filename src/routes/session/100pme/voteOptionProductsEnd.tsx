@@ -1,16 +1,11 @@
-import React, { useState } from 'react';
 import { logout } from 'Actions';
 import { connect } from 'react-redux';
 import QueueAnim from 'rc-queue-anim';
-import { Link } from 'react-router-dom';
+import { AUTH } from "Url/frontendUrl";
+import React, { useState } from 'react';
 import { injectIntl } from "react-intl";
-import AppConfig from 'Constants/AppConfig';
-import IntlMessages from "Util/IntlMessages";
-import AppBar from '@material-ui/core/AppBar';
 import { FormGroup, Button } from 'reactstrap';
-import Toolbar from '@material-ui/core/Toolbar';
 import { setRequestGlobalAction } from 'Actions';
-import {HOME, AUTH, LANDING} from "Url/frontendUrl";
 import InvitationBox from 'Components/InvitationBox';
 
 const VoteOptionProductsEnd = (props) => {

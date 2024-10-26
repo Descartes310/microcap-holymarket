@@ -5,6 +5,7 @@ import { withRouter } from "react-router-dom";
 import { MARKETPLACE } from 'Url/frontendUrl';
 import BillingForm from './components/BillingForm';
 import SweetAlert from 'react-bootstrap-sweetalert';
+import InvitationBox from 'Components/InvitationBox';
 import CheckoutItem from './components/CheckoutItem';
 import { NotificationManager } from 'react-notifications';
 import { RctCard, RctCardContent } from 'Components/RctCard';
@@ -14,9 +15,10 @@ import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard
 class OrderForm extends Component<any, any> {
 
     state = {
-        showSweetAlert: false,
         order: null,
         discount: null,
+        showSweetAlert: true,
+        showInvitation: false,
         payments: this.props.codevData ? [{label: 'Versement CODEV', amount: (Number(this.props.codevData.subscriptionCount)*Number(this.props.codevData.unitAmount)).toString(), editable: false}] : []
     }
 
@@ -145,7 +147,7 @@ class OrderForm extends Component<any, any> {
     }
 
     confirmSweetAlert = () => {
-        this.setState({ showSweetAlert: false })
+        this.setState({ showSweetAlert: false });
         if(this.props.onSuccess) {
             this.props.onSuccess(this.state.order);
         } else {
@@ -155,7 +157,7 @@ class OrderForm extends Component<any, any> {
 
     render() {
         const { successMessage, codevData } = this.props;
-        const { showSweetAlert } = this.state;
+        const { showSweetAlert, showInvitation } = this.state;
         return (
             <>
 
@@ -178,10 +180,27 @@ class OrderForm extends Component<any, any> {
                 <SweetAlert
                     success
                     btnSize="sm"
+                    showConfirm
+                    showCancel
+                    confirmBtnText="Parrainer un proche"
+                    cancelBtnText="Terminer"
                     show={showSweetAlert}
                     title={successMessage ? successMessage : "Votre commande a été enregistrée avec succès !"}
-                    onConfirm={() => this.confirmSweetAlert()}
+                    onConfirm={() => {
+                        this.setState({ showSweetAlert: false, showInvitation: true });
+                    }}
+                    onCancel={() => this.confirmSweetAlert()}
                 />
+
+                { showInvitation && (
+                    <InvitationBox
+                        show={showInvitation}
+                        onClose={() => {
+                            this.setState({ showInvitation: false });
+                            this.confirmSweetAlert();
+                        }}
+                    />
+                )}
             </>
         )
     }

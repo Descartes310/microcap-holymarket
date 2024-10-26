@@ -1,6 +1,7 @@
 import { connect } from "react-redux";
 import { injectIntl } from "react-intl";
 import React, { Component } from 'react';
+import UserService from 'Services/users';
 import OrderService from 'Services/orders';
 import { withRouter } from "react-router-dom";
 import { getFilePath } from 'Helpers/helpers';
@@ -20,6 +21,8 @@ class AddFileToOrderModal extends Component {
     state = {
         file: null,
         order: null,
+        agencies: [],
+        agency: null,
         userFiles: [],
         userFile: null,
         uploadedFile: null,
@@ -34,19 +37,29 @@ class AddFileToOrderModal extends Component {
         this.findOrder();
      }
 
+    getBankAgencies () {
+        this.props.setRequestGlobalAction(true);
+        UserService.getInstitutions({type: 'BANK_AGENCY', order_reference: this.state.order.reference})
+        .then(response => this.setState({ agencies: response, agency: response.find(a => a.id == this.state.order.bankAgencyId) }))
+        .finally(() => this.props.setRequestGlobalAction(false))
+    }
+
      findOrder = () => {
         this.props.setRequestGlobalAction(true),
         OrderService.findOrder(this.props.order.id)
-            .then(response => {
-                this.setState({ order: response }, () => {
-                    this.getUserFiles();
-                });
-            })
-            .catch(err => {
-                console.log(err);
-                this.props.history.goBack();
-            })
-            .finally(() => this.props.setRequestGlobalAction(false))
+        .then(response => {
+            this.setState({ order: response }, () => {
+                this.getUserFiles();
+                if(this.state.order.mirrorAccount) {
+                    this.getBankAgencies()
+                }
+            });
+        })
+        .catch((err) => {
+            NotificationManager.error("Une erreur est survenue, veuillez réessayer plus tard");
+            this.props.onClose();
+        })
+        .finally(() => this.props.setRequestGlobalAction(false))
     }
 
     getUserFiles = () => {
@@ -68,7 +81,7 @@ class AddFileToOrderModal extends Component {
     }
 
     onSubmit = () => {
-        if(!this.state.userFile || !this.state.file) {
+        if(!this.state.userFile || !this.state.file || !this.state.agency) {
             NotificationManager.error("Veuillez renseigner les informations");
             return;
         }
@@ -76,13 +89,18 @@ class AddFileToOrderModal extends Component {
         this.props.setRequestGlobalAction(true);
         
         let data = {
-            file: this.state.file, 
+            file: this.state.file,
+            agencyId: this.state.agency.id,
             fileReference: this.state.userFile.reference
         };
 
         OrderService.addFileToOrder(this.state.order.id, data, { fileData: ['file'], multipart: true })
-        .finally(() => {
-            this.props.onClose();
+        .then(() => {
+            this.setState({ file: null, userFile: null })
+            NotificationManager.success("Cette pièce a été envoyée avec succès");
+        }).catch(() => {
+            NotificationManager.error("Une erreur est survenue, la taille maximum de fichier autorisée est 1MB");
+        }).finally(() => {
             this.props.setRequestGlobalAction(false);
         })
     }
@@ -90,7 +108,7 @@ class AddFileToOrderModal extends Component {
     render() {
 
         const { onClose, show, title } = this.props;
-        const { orderUserFiles, userFile, uploadedFile } = this.state;
+        const { orderUserFiles, userFile, uploadedFile, agencies, agency, order } = this.state;
 
         return (
             <DialogComponent
@@ -145,6 +163,24 @@ class AddFileToOrderModal extends Component {
                         </FormGroup>
                     )}
 
+                    { order?.mirrorAccount && (
+                        <FormGroup className="col-md-12 col-sm-12 has-wrapper">
+                            <InputLabel className="text-left">
+                                Domiciliation
+                            </InputLabel>
+                            <Autocomplete
+                                value={agency}
+                                options={agencies}
+                                id="combo-box-demo"
+                                onChange={(__, item) => {
+                                    this.setState({ agency: item });
+                                }}
+                                getOptionLabel={(option) => option.label+" ("+option.code+")"}
+                                renderInput={(params) => <TextField {...params} variant="outlined" />}
+                            />
+                        </FormGroup>
+                    )}
+
                     <FormGroup>
                         <Button
                             color="primary"
@@ -152,7 +188,7 @@ class AddFileToOrderModal extends Component {
                             onClick={() => this.onSubmit()}
                             className="text-white font-weight-bold"
                         >
-                            Téléverser
+                            Enregistrer
                         </Button>
                     </FormGroup>
                 </RctCardContent>
