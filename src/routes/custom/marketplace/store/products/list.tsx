@@ -176,7 +176,7 @@ const List = (props) => {
                     </>
                 )}
             />
-            { selectedProduct && (
+            { (selectedProduct && showCotationBox) && (
                 <Cotations
                     product={selectedProduct}
                     show={showCotationBox && selectedProduct} 

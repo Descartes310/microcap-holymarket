@@ -44,10 +44,15 @@ const Update = (props) => {
     const [addPersonalItemModal, setAddPersonalItemModal] = useState(false);
 
     useEffect(() => {
-        getUnits();
         getProject();
         getProjectItems();
     }, []);
+
+    useEffect(() => {
+        if(project) {
+            getUnits();
+        }
+    }, [project])
 
     const getProject = () => {
         props.setRequestGlobalAction(true)
@@ -84,7 +89,7 @@ const Update = (props) => {
         UnitService.getUnits()
             .then((response) => {
                 setUnits(response);
-                setUnit(response[0]);
+                setUnit(response.find(c => c.code == project.currency));
             })
             .catch((err) => {
                 console.log(err);

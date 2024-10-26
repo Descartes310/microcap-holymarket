@@ -99,7 +99,11 @@ const Cotation = (props) => {
     return (
         <DialogComponent
             show={show}
-            onClose={onClose}
+            onClose={() => {
+                setAddCotation(false);
+                setUpdateCotation(false);
+                onClose();
+            }}
             size="md"
             title={(
                 <h3 className="fw-bold">
