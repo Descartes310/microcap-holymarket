@@ -1,9 +1,11 @@
 import React from 'react';
 import List from './list';
+import Models from './models';
 import Create from './create';
 import Update from './update';
 import {connect} from "react-redux";
 import {injectIntl} from "react-intl";
+import ModelItems from './modelItems';
 import { SETTING } from 'Url/frontendUrl';
 import {withRouter, Switch, Redirect, Route} from "react-router-dom";
 
@@ -17,6 +19,8 @@ const UserFiles = (props) => {
                     <Route path={SETTING.USER_FILE.LIST} component={List} />
                     <Route path={SETTING.USER_FILE.CREATE} component={Create} />
                     <Route path={SETTING.USER_FILE.UPDATE} component={Update} />
+                    <Route path={SETTING.USER_FILE.MODELS} component={Models} />
+                    <Route path={SETTING.USER_FILE.MODEL_ITEMS} component={ModelItems} />
                 </Switch>
             </>
         </div>

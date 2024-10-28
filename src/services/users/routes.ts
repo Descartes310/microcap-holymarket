@@ -48,6 +48,8 @@ export const CREATE_FILE= "api/socialnetworks/users/files";
 export const GET_FILES = "api/socialnetworks/users/files";
 export const GET_FILES_BY_MEMBER = (reference) => `api/socialnetworks/users/files/${reference}`;
 export const VALIDATE_FILE = (reference) => `api/socialnetworks/users/files/${reference}/validate`;
+export const CREATE_FILE_TRANSCRIPTION = (reference) => `api/socialnetworks/users/files/${reference}/transcriptions`;
+export const GET_FILE_TRANSCRIPTIONS = (reference) => `api/socialnetworks/users/files/${reference}/transcriptions`;
 
 export const SEND_OTP = `api/socialnetworks/users/self/otp/send`;
 export const FIND_OTP = `api/socialnetworks/users/self/otp/find`;

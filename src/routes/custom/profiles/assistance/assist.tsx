@@ -378,7 +378,7 @@ const Assist = (props) => {
                                 options={
                                     getUserAssistanceTypes()
                                     .filter(a => (!member.active && a.value == 'ACTIVATE_PROFILE') || a.value !== 'ACTIVATE_PROFILE')
-                                    .filter(a => (!member.authenticated && a.value == 'AUTHENTICATE_PROFILE') || a.value !== 'AUTHENTICATE_PROFILE')
+                                    // .filter(a => (!member.authenticated && a.value == 'AUTHENTICATE_PROFILE') || a.value !== 'AUTHENTICATE_PROFILE')
                                     .filter(a => (member.active && a.value == 'BOOK_ORDER') || a)
                                     .filter(a => (member.active && a.value == 'PLACE_ORDER') || a)
                                     .filter(a => (member.active && a.value == 'PAY_ORDER') || a)

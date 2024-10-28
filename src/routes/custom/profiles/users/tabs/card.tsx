@@ -5,11 +5,12 @@ import BankService from "Services/banks";
 import { Button } from "@material-ui/core";
 import TerritoryType from "Enums/Territories";
 import { withRouter } from "react-router-dom";
+import { getFilePath } from "Helpers/helpers";
 import {setRequestGlobalAction} from 'Actions';
 import React, { useEffect, useState } from 'react';
 import TerritoryService from "Services/territories";
 import CreateFileModal from '../components/CreateFile';
-import { getFilePath, getReferralTypeLabel } from "Helpers/helpers";
+import TranscriptionBox from '../components/TranscriptFile';
 
 const Card = (props) => {
 
@@ -19,6 +20,7 @@ const Card = (props) => {
     const [selectedFile, setSelectedFile] = useState(null);
     const [subscriptions, setSubscriptions] = useState([]);
     const [showCreateFile, setShowCreateFile] = useState(false);
+    const [showTranscriptionBox, setShowTranscriptionBox] = useState(false);
 
     useEffect(() => {
         getMineSubscriptions();
@@ -344,9 +346,9 @@ const Card = (props) => {
                     <thead>
                         <tr>
                             <th className="fw-bold">Titre</th>
-                            <th className="fw-bold">Cible</th>
                             <th className="fw-bold">Spéciment</th>
                             <th className="fw-bold">Mon document</th>
+                            <th className="fw-bold">Status</th>
                             <th className="fw-bold">Actions</th>
                         </tr>
                     </thead>
@@ -359,13 +361,6 @@ const Card = (props) => {
                                             <h4 className={`m-0 fw-bold ${file.required ? 'text-danger' : 'text-dark'}`}>
                                                 {file.label} {file.required ? '(Obligatoire)' : '(optionnel)'}
                                             </h4>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div className="media">
-                                        <div className="media-body pt-10">
-                                            <h4 className="m-0 text-dark">{getReferralTypeLabel(file.referralType)}</h4>
                                         </div>
                                     </div>
                                 </td>
@@ -385,9 +380,19 @@ const Card = (props) => {
                                         <div className="media-body pt-10">
                                             { file.value && (
                                                 <span onClick={() => window.open(getFilePath(file.value), 'blank')} className="cursor-pointer text-black">
-                                                    Consulter mon document
+                                                    Consulter le document
                                                 </span>
                                             )}
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div className="media">
+                                        <div className="user-status-pending d-flex flex-row align-items-center" style={{ position: 'relative' }}>
+                                            <div className={`user-status-pending-circle rct-notify mr-10`} style={{
+                                                background: file.status ? 'green' : 'red'
+                                            }} />
+                                            {file.status ? 'Vérifié' : 'Non vérifié'}
                                         </div>
                                     </div>
                                 </td>
@@ -405,6 +410,19 @@ const Card = (props) => {
                                             >
                                                 Fournir la pièce
                                             </Button>
+                                            { file.value && (
+                                                <Button
+                                                    color="primary"
+                                                    variant="contained"
+                                                    className="text-white font-weight-bold ml-10"
+                                                    onClick={() => {
+                                                        setSelectedFile(file);
+                                                        setShowTranscriptionBox(true);
+                                                    }}
+                                                >
+                                                    Transcrire
+                                                </Button>
+                                            )}
                                         </div>
                                     </div>
                                 </td>
@@ -418,6 +436,17 @@ const Card = (props) => {
                     show={showCreateFile} 
                     onClose={() => {
                         setShowCreateFile(false);
+                        _getUserFiles();
+                    }}
+                    file={selectedFile} 
+                />
+            )}
+            { showTranscriptionBox && selectedFile && (
+                <TranscriptionBox 
+                    show={showTranscriptionBox} 
+                    onClose={() => {
+                        setShowTranscriptionBox(false);
+                        setSelectedFile(null);
                         _getUserFiles();
                     }}
                     file={selectedFile} 

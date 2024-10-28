@@ -2,63 +2,65 @@ import { connect } from 'react-redux';
 import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
 import CustomList from "Components/CustomList";
-import Switch from "@material-ui/core/Switch";
 import SettingService from 'Services/settings';
 import {setRequestGlobalAction} from 'Actions';
 import React, { useState, useEffect } from 'react';
-import { joinUrlWithParamsId, SETTING } from 'Url/frontendUrl';
+import CreateFileModelItem from './createModelItem';
+import ConfirmBox from "Components/dialog/ConfirmBox";
+import { NotificationManager } from "react-notifications";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
-import { getFilePath, getReferralTypeLabel } from 'Helpers/helpers';
 
 const List = (props) => {
 
     const [files, setFiles] = useState([]);
+    const [modelItem, setModelItem] = useState(null);
+    const [showCreateBox, setShowCreateBox] = useState(false);
+    const [showConfirmBox, setShowConfirmBox] = useState(false);
 
     useEffect(() => {
-        getUserFiles();
+        getFileModelItems();
     }, []);
 
-    const getUserFiles = () => {
+    const getFileModelItems = () => {
         props.setRequestGlobalAction(true),
-        SettingService.getAllUserFileTypes()
+        SettingService.getFileItems(props.match.params.id)
         .then(response => setFiles(response))
         .finally(() => props.setRequestGlobalAction(false))
     }
 
-    const changeStatus = (item) => {
+    const deleteItem = () => {
         props.setRequestGlobalAction(true),
-        SettingService.updateUserFileTypes(item.reference)
-        .then(() => getUserFiles())
+        SettingService.deleteFileItem(modelItem.reference)
+        .then(() => {
+            setShowConfirmBox(false);
+            setModelItem(null)
+            NotificationManager.success("La suppression a été effectuée avec succès");
+            getFileModelItems();
+        })
+        .catch(() => {
+            NotificationManager.error("Une erreur est survenue, veuillez reessayer plus tard")
+        })
         .finally(() => props.setRequestGlobalAction(false))
-    }
-
-    const changeRequired = (item) => {
-        props.setRequestGlobalAction(true),
-        SettingService.requiredUserFileTypes(item.reference)
-        .then(() => getUserFiles())
-        .finally(() => props.setRequestGlobalAction(false))
-    }
-
-    const goToCreate = () => {
-        props.history.push(SETTING.USER_FILE.CREATE);
     }
 
     return (
         <>
             <PageTitleBar
-                title={"Liste des dossiers utilisateurs"}
+                title={"Liste des données"}
             />
             <CustomList
                 loading={false}
                 list={files}
-                itemsFoundText={n => `${n} dossier.s trouvée.s`}
-                onAddClick={() => goToCreate()}
+                itemsFoundText={n => `${n} donnée.s trouvée.s`}
+                onAddClick={() => {
+                    setShowCreateBox(true);
+                }}
                 renderItem={list => (
                     <>
                         {list && list.length === 0 ? (
                             <div className="d-flex justify-content-center align-items-center py-50">
                                 <h4>
-                                    Aucun dossier.s trouvées
+                                    Aucun donnée.s trouvées
                                 </h4>
                             </div>
                         ) : (
@@ -67,10 +69,8 @@ const List = (props) => {
                                     <thead>
                                         <tr>
                                             <th className="fw-bold">Désignation</th>
-                                            <th className="fw-bold">Cible</th>
-                                            <th className="fw-bold">Exemple</th>
-                                            <th className="fw-bold">Dossier membre</th>
-                                            <th className="fw-bold">Dossier obligatoire</th>
+                                            <th className="fw-bold">Unique</th>
+                                            <th className="fw-bold">Type</th>
                                             <th className="fw-bold">Action</th>
                                         </tr>
                                     </thead>
@@ -87,51 +87,39 @@ const List = (props) => {
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <h4 className="m-0 text-dark">{getReferralTypeLabel(item.referralType)}</h4>
+                                                            <h4 className="m-0 fw-bold text-dark">{item.unique ? 'Oui' : 'Non'}</h4>
                                                         </div>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            { item.sample && (
-                                                                <span onClick={() => window.open(getFilePath(item.sample), 'blank')}>
-                                                                    Consulter l'exemple
-                                                                </span>
-                                                            )}
+                                                            <h4 className="m-0 fw-bold text-dark">{item.type}</h4>
                                                         </div>
                                                     </div>
-                                                </td>
-                                                <td>
-                                                    <Switch
-                                                        aria-label="Dossier membre"
-                                                        checked={item.type === 'MEMBER'}
-                                                        onChange={() => { changeStatus(item) }}
-                                                    />
-                                                </td>
-                                                <td>
-                                                    <Switch
-                                                        checked={item.required}
-                                                        aria-label="Dossier obligatoire"
-                                                        onChange={() => { changeRequired(item) }}
-                                                    />
                                                 </td>
                                                 <td>
                                                     <Button
                                                         color="primary"
                                                         variant="contained"
                                                         className="text-white font-weight-bold"
-                                                        onClick={() => props.history.push(joinUrlWithParamsId(SETTING.USER_FILE.UPDATE, item.reference))}
+                                                        onClick={() => {
+                                                            setModelItem(item);
+                                                            setShowCreateBox(true);
+                                                        }}
                                                     >
                                                         Editer
                                                     </Button>
                                                     <Button
-                                                        color="primary"
+                                                        color="secondary"
                                                         variant="contained"
                                                         className="text-white font-weight-bold ml-10"
-                                                        onClick={() => props.history.push(joinUrlWithParamsId(SETTING.USER_FILE.MODELS, item.reference))}
+                                                        onClick={() => {
+                                                            setModelItem(item);
+                                                            setShowConfirmBox(true);
+                                                        }}
                                                     >
-                                                        Transcriptions
+                                                        Supprimer
                                                     </Button>
                                                 </td>
                                             </tr>
@@ -143,6 +131,29 @@ const List = (props) => {
                     </>
                 )}
             />
+            {showCreateBox && (
+                <CreateFileModelItem
+                    show={showCreateBox}
+                    reference={props.match.params.id}
+                    onClose={() => {
+                        setShowCreateBox(false);
+                        setModelItem(null);
+                        getFileModelItems();
+                    }}
+                    item={modelItem}
+                />
+            )}
+            { modelItem && showConfirmBox && (
+                <ConfirmBox
+                    show={showConfirmBox}
+                    rightButtonOnClick={() => deleteItem()}
+                    leftButtonOnClick={() => {
+                        setModelItem(null);
+                        setShowConfirmBox(false);
+                    }}
+                    message={'Etes vous sure de vouloir supprimer cette donnée ?'}
+                />
+            )}
         </>
     );
 }

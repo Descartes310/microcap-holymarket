@@ -185,4 +185,12 @@ export default class UserService {
         return makeRequest('get', Routes.FIND_OTP, data);
     }
 
+    static getFileTranscription(reference: string): Promise<any> {
+        return makeRequest('get', Routes.GET_FILE_TRANSCRIPTIONS(reference));
+    }
+
+    static createFileTranscription(reference: string, data: any): Promise<any> {
+        return makeRequest('post', Routes.CREATE_FILE_TRANSCRIPTION(reference), data);
+    }
+
 }

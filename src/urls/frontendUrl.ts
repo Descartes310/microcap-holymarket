@@ -574,6 +574,8 @@ export const SETTING = {
         LIST: "/settings/user-files/list",
         CREATE: "/settings/user-files/create",
         UPDATE: "/settings/user-files/:id/update",
+        MODELS: "/settings/user-files/:id/models",
+        MODEL_ITEMS: "/settings/user-files/models/:id/items",
     },
     PME_VOTE: {
         SELF: "/settings/pme-votes",

@@ -24,6 +24,38 @@ export default class SettingService {
         return makeRequest('post', Routes.CREATE_USER_FILE, data, config);
     }
 
+    static createFileTranscriptionModel(reference, data): Promise<any> {
+        return makeRequest('post', Routes.CREATE_FILE_MODEL(reference), data);
+    }
+
+    static createFileTranscriptionItem(reference, data): Promise<any> {
+        return makeRequest('post', Routes.CREATE_FILE_MODEL_ITEM(reference), data);
+    }
+
+    static getFileModels(reference: string): Promise<any> {
+        return makeRequest('get', Routes.GET_FILE_MODELS(reference));
+    }
+
+    static getFileItems(reference: string): Promise<any> {
+        return makeRequest('get', Routes.GET_FILE_MODEL_ITEMS(reference));
+    }
+
+    static updateFileTranscriptionModel(reference, data): Promise<any> {
+        return makeRequest('put', Routes.UPDATE_FILE_MODEL(reference), data);
+    }
+
+    static updateFileTranscriptionItem(reference, data): Promise<any> {
+        return makeRequest('put', Routes.UPDATE_FILE_MODEL_ITEM(reference), data);
+    }
+
+    static deleteFileModel(reference: string): Promise<any> {
+        return makeRequest('delete', Routes.DELETE_FILE_MODEL(reference));
+    }
+
+    static deleteFileItem(reference: string): Promise<any> {
+        return makeRequest('delete', Routes.DELETE_FILE_MODEL_ITEM(reference));
+    }
+
     static getAgents(datas): Promise<any> {
         return makeRequest('get', Routes.GET_AGENTS, datas);
     }

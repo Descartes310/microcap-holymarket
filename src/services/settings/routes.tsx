@@ -6,6 +6,19 @@ export const UPDATE_USER_TYPE = (id) => `api/settings/user-file-types/${id}`;
 export const UPDATE_USER_FILE_TYPE = (id) => `api/settings/user-file-types/${id}/type`;
 export const REQUIRED_USER_FILE_TYPE = (id) => `api/settings/user-file-types/${id}/required`;
 
+
+export const GET_FILE_MODELS = (reference) => `api/settings/user-file-types/${reference}/models`;
+export const CREATE_FILE_MODEL = (reference) => `api/settings/user-file-types/${reference}/transcriptions/models`;
+export const UPDATE_FILE_MODEL = (reference) => `api/settings/user-file-types/transcriptions/models/${reference}`;
+export const DELETE_FILE_MODEL = (reference) => `api/settings/user-file-types/transcriptions/models/${reference}`;
+
+export const GET_FILE_MODEL_ITEMS = (reference) => `api/settings/user-file-types/transcriptions/models/${reference}/items`;
+export const CREATE_FILE_MODEL_ITEM = (reference) => `api/settings/user-file-types/transcriptions/models/${reference}/items`;
+export const UPDATE_FILE_MODEL_ITEM = (reference) => `api/settings/user-file-types/transcriptions/models/items/${reference}`;
+export const DELETE_FILE_MODEL_ITEM = (reference) => `api/settings/user-file-types/transcriptions/models/items/${reference}`;
+
+
+
 export const CREATE_AGENT = 'api/settings/agents';
 export const GET_AGENTS = 'api/settings/agents/list';
 export const UPDATE_AGENT = (id) => `api/settings/agents/${id}`;
