@@ -143,6 +143,9 @@ export default class Permission extends BaseEnum {
             product: {
                 "name": "MARKETPLACE_PRODUCT_PRIVILEGE"
             },
+            distributions: {
+                "name": "MARKETPLACE_DISTRIBUTION_PRIVILEGE"
+            },
             order: {
                 "name": "MARKETPLACE_PRODUCT_ORDER_PRIVILEGE"
             },

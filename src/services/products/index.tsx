@@ -340,4 +340,16 @@ export default class ProductService {
     static shareBooking(reference: string, data: any): Promise<any> {
         return makeRequest('post', Routes.SHARE_BOOKING(reference), data);
     }
+
+    static createProductDistribution(data: any): Promise<any> {
+        return makeRequest('post', Routes.CREATE_DISTRIBUTION, data);
+    }
+
+    static getProductDistributionReceived(data: any): Promise<any> {
+        return makeRequest('get', Routes.GET_MY_DISTRIBUTIONS, data);
+    }
+
+    static getProductDistributions(data: any): Promise<any> {
+        return makeRequest('get', Routes.GET_DISTRIBUTIONS, data);
+    }
 }

@@ -487,6 +487,12 @@ export const MARKETPLACE = {
             UPDATE: "/marketplace/store/products/:reference/update",
             CONFIGURE: "/marketplace/store/products/:reference/configure",
         },
+        DISTRIBUTION: {
+            SELF: "/marketplace/store/distributions",
+            LIST: "/marketplace/store/distributions/list",
+            CREATE: "/marketplace/store/distributions/create",
+            RECEIVED: "/marketplace/store/distributions/received",
+        },
         DISCOUNT: {
             SELF: "/marketplace/store/discounts",
             LIST: "/marketplace/store/discounts/list",

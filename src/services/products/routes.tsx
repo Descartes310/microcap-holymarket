@@ -99,3 +99,7 @@ export const UPDATE_BOOKING = (reference) => `api/bookings/${reference}`;
 export const DELETE_BOOKING = (reference) => `api/bookings/${reference}`;
 export const FIND_BOOKING_BY_CODE = (code) => `api/bookings/code/${code}`;
 export const SHARE_BOOKING = (reference) => `api/bookings/${reference}/share`;
+
+export const GET_DISTRIBUTIONS = 'api/distributions';
+export const CREATE_DISTRIBUTION = 'api/distributions';
+export const GET_MY_DISTRIBUTIONS = 'api/distributions/mines';

@@ -9,6 +9,7 @@ import Discounts from './discounts';
 import Purchases from './purchases';
 import {connect} from "react-redux";
 import {injectIntl} from "react-intl";
+import Distributions from './distributions';
 import { MARKETPLACE } from 'Url/frontendUrl';
 import {withRouter, Switch, Redirect, Route} from "react-router-dom";
 
@@ -27,6 +28,7 @@ const Store = (props) => {
                     <Route path={MARKETPLACE.STORE.TICKET.SELF} component={Tickets} />
                     <Route path={MARKETPLACE.STORE.DISCOUNT.SELF} component={Discounts} />
                     <Route path={MARKETPLACE.STORE.BOOKING.SELF} component={Bookings} />
+                    <Route path={MARKETPLACE.STORE.DISTRIBUTION.SELF} component={Distributions} />
                 </Switch>
             </>
         </div>

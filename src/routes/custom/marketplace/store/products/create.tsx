@@ -70,6 +70,7 @@ const Create = (props) => {
             if(product?.account) {
                 setIsIndirectSell(true);
             }
+            setPriceUnit(units?.find(c => c.code == product.currency));
             setUpdatable(!uneditableProductModelType.includes(product.specialType));
             getAggregations();
         }

@@ -681,6 +681,14 @@ export default [
             "child_routes": null
          },
          {
+            "menu_title": "Distributions",
+            "new_item": false,
+            "path": MARKETPLACE.STORE.DISTRIBUTION.RECEIVED,
+            "permissions": [Permission.marketplace.store.distributions.name],
+            "profiles": ['GROUP'],
+            "child_routes": null
+         },
+         {
             "menu_title": "Coupons",
             "new_item": false,
             "path": MARKETPLACE.STORE.DISCOUNT.LIST,

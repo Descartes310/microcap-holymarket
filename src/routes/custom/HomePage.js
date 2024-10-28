@@ -48,7 +48,7 @@ class HomePage extends Component {
 							</Button>
 						</div>
 					: 
-					!authUser?.membershipNumber ? 
+					(!authUser?.membershipNumber && !authUser.referralTypes.includes('PROJECT'))  ? 
 						<div>
 							<h1>
 								Vous devez rejoindre une communauté pour obtenir un numéro d'adhésion.</h1>
