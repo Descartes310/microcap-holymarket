@@ -4,8 +4,8 @@ import { makeRequest } from 'Helpers/helpers';
 
 export default class SettingService {
 
-    static getUserFileTypes(): Promise<any> {
-        return makeRequest('get', Routes.GET_USER_FILES);
+    static getUserFileTypes(data = {}): Promise<any> {
+        return makeRequest('get', Routes.GET_USER_FILES, data);
     }
 
     static getAllUserFileTypes(): Promise<any> {

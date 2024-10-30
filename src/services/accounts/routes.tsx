@@ -28,3 +28,5 @@ export const GET_AGREEMENTS = (reference) => `api/fundings/accounts/${reference}
 export const SET_AGREEMENT_TEMPLATE = (reference) => `api/fundings/accounts/${reference}/agreements/templates`;
 
 export const CREATE_CARNET_JOURNAL = (reference) => `api/fundings/accounts/${reference}/journal`;
+
+export const FIND_ACCOUNT_BY_NUMBER_AND_KEY = (number, key) => `api/fundings/accounts/search/${number}/key/${key}`;

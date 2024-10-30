@@ -284,16 +284,40 @@ export default class ProductService {
         return makeRequest('post', Routes.CREATE_DISCOUNT, data);
     }
 
+    static createDiscountModel(data: any): Promise<any> {
+        return makeRequest('post', Routes.CREATE_DISCOUNT_MODEL, data);
+    }
+
     static getDiscounts(): Promise<any> {
         return makeRequest('get', Routes.GET_DISCOUNTS);
+    }
+
+    static getDiscountModels(): Promise<any> {
+        return makeRequest('get', Routes.GET_DISCOUNT_MODELS);
+    }
+
+    static getDiscountRequests(): Promise<any> {
+        return makeRequest('get', Routes.GET_DISCOUNT_REQUESTS);
     }
 
     static findDiscount(reference: string): Promise<any> {
         return makeRequest('get', Routes.FIND_DISCOUNT(reference));
     }
 
+    static getDiscountMembers(reference: string): Promise<any> {
+        return makeRequest('get', Routes.GET_DISCOUNT_MODEL_MEMBERS(reference));
+    }
+
     static updateDiscount(reference: string, data: any): Promise<any> {
         return makeRequest('put', Routes.UPDATE_DISCOUNT(reference), data);
+    }
+
+    static approvedDiscount(reference: string, data: any): Promise<any> {
+        return makeRequest('put', Routes.APPROVED_DISCOUNT(reference), data);
+    }
+
+    static shareDiscountModel(reference: string, data: any): Promise<any> {
+        return makeRequest('post', Routes.SHARE_DISCOUNT_MODEL(reference), data);
     }
 
     static deleteDiscount(reference: string): Promise<any> {
@@ -310,6 +334,18 @@ export default class ProductService {
 
     static deleteDiscountProduct(reference: string, data: any): Promise<any> {
         return makeRequest('delete', Routes.DELETE_DISCOUNT_PRODUCT(reference), data);
+    }
+
+    static getDiscountModelProducts(reference: string): Promise<any> {
+        return makeRequest('get', Routes.GET_DISCOUNT_MODEL_PRODUCTS(reference));
+    }
+
+    static createDiscountModelProduct(reference: string, data: any): Promise<any> {
+        return makeRequest('post', Routes.CREATE_DISCOUNT_MODEL_PRODUCT(reference), data);
+    }
+
+    static deleteDiscountModelProduct(reference: string, data: any): Promise<any> {
+        return makeRequest('delete', Routes.DELETE_DISCOUNT_MODEL_PRODUCT(reference), data);
     }
 
 

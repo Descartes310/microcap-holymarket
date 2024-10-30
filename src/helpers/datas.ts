@@ -628,3 +628,24 @@ export const invitationObjects = () => {
 export const getInvitationObjectLabel = (value) => {
     return invitationObjects().find(d => d.value == value)?.label
 }
+
+export const bookingAdvantages = () => {
+    return [
+        {
+            label: "Code promo", 
+            value: 'DISCOUNT'
+        },
+        {
+            label: "Bon de caisse", 
+            value: 'PAYOUT_BOND'
+        },
+        {
+            label: "Bond d'achat", 
+            value: 'SHOP_BOND'
+        }
+    ];
+}
+
+export const getBookingAdvantageLabel = (value) => {
+    return bookingAdvantages().find(d => d.value == value)?.label
+}

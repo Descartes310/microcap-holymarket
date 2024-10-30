@@ -110,6 +110,10 @@ export default class AccountService {
         return makeRequest('get', Routes.FIND_ACTIVATION_ACCOUNT_DETAILS(reference));
     }
 
+    static getAccountByNumberAndKey(number: string, key: number, data: any): Promise<any> {
+        return makeRequest('get', Routes.FIND_ACCOUNT_BY_NUMBER_AND_KEY(number, key), data);
+    }
+
     static createJournal(reference: string, data: any): Promise<any> {
         return makeRequest('post', Routes.CREATE_CARNET_JOURNAL(reference), data);
     }

@@ -2,6 +2,7 @@ import { connect } from "react-redux";
 import { injectIntl } from "react-intl";
 import React, { Component } from 'react';
 import UserService from 'Services/users';
+import { PROFILE } from 'Url/frontendUrl';
 import OrderService from 'Services/orders';
 import { withRouter } from "react-router-dom";
 import { getFilePath } from 'Helpers/helpers';
@@ -10,7 +11,6 @@ import { FormGroup, Button } from 'reactstrap';
 import { setRequestGlobalAction } from 'Actions';
 import TextField from '@material-ui/core/TextField';
 import { RctCardContent } from 'Components/RctCard';
-import { FileUploader } from "react-drag-drop-files";
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { NotificationManager } from "react-notifications";
 import DialogComponent from "Components/dialog/DialogComponent";
@@ -19,13 +19,13 @@ import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 class AddFileToOrderModal extends Component {
 
     state = {
+        files: [],
         file: null,
         order: null,
         agencies: [],
         agency: null,
         userFiles: [],
         userFile: null,
-        uploadedFile: null,
         orderUserFiles: [],
      }
   
@@ -49,6 +49,7 @@ class AddFileToOrderModal extends Component {
         OrderService.findOrder(this.props.order.id)
         .then(response => {
             this.setState({ order: response }, () => {
+                this.getUserFileTypes();
                 this.getUserFiles();
                 if(this.state.order.mirrorAccount) {
                     this.getBankAgencies()
@@ -63,6 +64,16 @@ class AddFileToOrderModal extends Component {
     }
 
     getUserFiles = () => {
+        UserService.getMyFiles({referral_code: this.state.order.referralCode})
+        .then(files => {
+            this.setState({ files });
+        })
+        .catch((error) => {
+            this.setState({ files: [] });
+        });
+    };
+
+    getUserFileTypes = () => {
         this.props.setRequestGlobalAction(true);
         SettingService.getUserFileTypes()
         .then(response => {
@@ -71,30 +82,27 @@ class AddFileToOrderModal extends Component {
         .finally(() => this.props.setRequestGlobalAction(false))
     }
 
-    findUploadedFile = () => {
-        let uploadedFile = this.state.order.details.find(d => d.type === 'PIECE' && d.label === this.state.userFile.reference);
-        if(uploadedFile) {
-            this.setState({ uploadedFile});
-        } else {
-            this.setState({ uploadedFile: null });
-        }
-    }
-
     onSubmit = () => {
-        if(!this.state.userFile || !this.state.file || !this.state.agency) {
+        if(!this.state.agency) {
             NotificationManager.error("Veuillez renseigner les informations");
+            return;
+        }
+
+        const verifiedPieces = this.state.files.filter(f => f.value != null && f.status).map(f => f.source);
+        const pieceNotVerified = this.state.orderUserFiles.find(file => !verifiedPieces.includes(file.reference));
+
+        if(pieceNotVerified) {
+            NotificationManager.error("Votre dossier n'est pas complet");
             return;
         }
 
         this.props.setRequestGlobalAction(true);
         
         let data = {
-            file: this.state.file,
-            agencyId: this.state.agency.id,
-            fileReference: this.state.userFile.reference
+            agencyId: this.state.agency.id
         };
 
-        OrderService.addFileToOrder(this.state.order.id, data, { fileData: ['file'], multipart: true })
+        OrderService.addFileToOrder(this.state.order.id, data, {})
         .then(() => {
             this.setState({ file: null, userFile: null })
             NotificationManager.success("Cette pièce a été envoyée avec succès");
@@ -108,7 +116,7 @@ class AddFileToOrderModal extends Component {
     render() {
 
         const { onClose, show, title } = this.props;
-        const { orderUserFiles, userFile, uploadedFile, agencies, agency, order } = this.state;
+        const { orderUserFiles, files, agencies, agency, order } = this.state;
 
         return (
             <DialogComponent
@@ -122,46 +130,78 @@ class AddFileToOrderModal extends Component {
                 )}
             >
                 <RctCardContent>
-                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
-                        <InputLabel className="text-left">
-                            Séléctionnez le fichier à renseigner
-                        </InputLabel>
-                        <Autocomplete
-                            id="combo-box-demo"
-                            value={userFile}
-                            options={orderUserFiles}
-                            onChange={(__, item) => {
-                                this.setState({ userFile: item }, () => {
-                                    this.findUploadedFile();
-                                });                                    
-                            }}
-                            getOptionLabel={(option) => option.label}
-                            renderInput={(params) => <TextField {...params} variant="outlined" />}
-                        />
+                    <h2>Note d'information:</h2>
+                    <ul className="pl-30">
+                        <li>Si vous avez des pièces manquantes, renseignez-les dans votre <a href={`${PROFILE.USER.CARD}#folder`}>dossier utilisateur ici</a></li>    
+                        <li>Si vous avez des pièces non vérifiée, rapprochez vous d'un guichet MicroCap pour leur vérification</li>    
+                    </ul>
+                    <div className="table-responsive mt-30 mb-30">
+                        <table className="table table-bordered table-middle mb-0">
+                            <thead>
+                                <tr>
+                                    <th className="fw-bold">Titre</th>
+                                    <th className="fw-bold">Spéciment</th>
+                                    <th className="fw-bold">Mon document</th>
+                                    <th className="fw-bold">Status</th>
+                                    <th className="fw-bold">Décision</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                { orderUserFiles.map(file => (
+                                    <tr>
+                                        <td>
+                                            <div className="media">
+                                                <div className="media-body pt-10">
+                                                    <h4 className={`m-0 fw-bold`}>
+                                                        {file.label}
+                                                    </h4>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div className="media">
+                                                <div className="media-body pt-10">
+                                                    { file.sample && (
+                                                        <span onClick={() => window.open(getFilePath(file.sample), 'blank')} className="cursor-pointer text-black">
+                                                            Consulter spéciment
+                                                        </span>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div className="media">
+                                                <div className="media-body pt-10">
+                                                    { files.find(f => f.source == file.reference)?.value && (
+                                                        <span onClick={() => window.open(getFilePath(files.find(f => f.source == file.reference).value), 'blank')} className="cursor-pointer text-black">
+                                                            Consulter le document
+                                                        </span>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div className="media">
+                                                <div className="media-body pt-10">
+                                                    {files.find(f => f.source == file.reference)?.status ? 'Vérifié' : 'Non vérifié'}
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div className="media">
+                                                <div className="user-status-pending d-flex flex-row align-items-center" style={{ position: 'relative' }}>
+                                                    <div className={`user-status-pending-circle rct-notify mr-10`} style={{
+                                                        background: files.find(f => f.source == file.reference)?.status ? 'green' : 'red'
+                                                    }} />
+                                                    {files.find(f => f.source == file.reference)?.status ? 'Eligible' : 'Non éligible'}
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
                     </div>
-
-                    { userFile &&  uploadedFile &&(
-                        <div className="mb-30">
-                            <p style={{ fontSize: '1.07em'}}>
-                                Vous avez déjà renseigné cette pièce:
-                            </p>
-                            <span className="cursor-pointer" style={{ color: '#008000c4', fontStyle: 'italic'}} onClick={() => window.open(getFilePath(uploadedFile.value), 'blank')}>Consulter la pièce versée</span>
-                        </div>
-                    )}
-
-                    { userFile && (
-                        <FormGroup className="has-wrapper">
-                            <InputLabel className="text-left">
-                                Verser le fichier ici
-                            </InputLabel>
-                            <FileUploader
-                                classes="mw-100"
-                                label="Sélectionner le dossier demandé ici"
-                                handleChange={(item) => {
-                                    this.setState({ file: item });
-                                }} name="file" />
-                        </FormGroup>
-                    )}
 
                     { order?.mirrorAccount && (
                         <FormGroup className="col-md-12 col-sm-12 has-wrapper">
@@ -188,7 +228,7 @@ class AddFileToOrderModal extends Component {
                             onClick={() => this.onSubmit()}
                             className="text-white font-weight-bold"
                         >
-                            Enregistrer
+                            Envoyer les pièces et enregistrer
                         </Button>
                     </FormGroup>
                 </RctCardContent>

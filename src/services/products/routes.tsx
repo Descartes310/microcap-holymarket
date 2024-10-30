@@ -85,12 +85,21 @@ export const CREATE_CUSTOM_CART = 'api/products/custom-carts';
 
 export const GET_DISCOUNTS = 'api/discounts';
 export const CREATE_DISCOUNT = 'api/discounts';
+export const GET_DISCOUNT_MODELS = 'api/discounts/models';
+export const CREATE_DISCOUNT_MODEL = 'api/discounts/models';
+export const GET_DISCOUNT_REQUESTS = 'api/discounts/requests';
 export const FIND_DISCOUNT = (reference) => `api/discounts/${reference}`;
 export const UPDATE_DISCOUNT = (reference) => `api/discounts/${reference}`;
 export const DELETE_DISCOUNT = (reference) => `api/discounts/${reference}`;
+export const APPROVED_DISCOUNT = (reference) => `api/discounts/${reference}/approved`;
 export const GET_DISCOUNT_PRODUCTS = (reference) => `api/discounts/${reference}/products`;
 export const CREATE_DISCOUNT_PRODUCT = (reference) => `api/discounts/${reference}/products`;
 export const DELETE_DISCOUNT_PRODUCT = (reference) => `api/discounts/${reference}/products`;
+export const SHARE_DISCOUNT_MODEL = (reference) => `api/discounts/models/${reference}/share`;
+export const GET_DISCOUNT_MODEL_MEMBERS = (reference) => `api/discounts/models/${reference}/members`;
+export const GET_DISCOUNT_MODEL_PRODUCTS = (reference) => `api/discounts/models/${reference}/products`;
+export const CREATE_DISCOUNT_MODEL_PRODUCT = (reference) => `api/discounts/models/${reference}/products`;
+export const DELETE_DISCOUNT_MODEL_PRODUCT = (reference) => `api/discounts/models/${reference}/products`;
 
 export const GET_BOOKINGS = 'api/bookings';
 export const CREATE_BOOKING = 'api/bookings';

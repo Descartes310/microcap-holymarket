@@ -478,6 +478,15 @@ export const MARKETPLACE = {
             CREATE: "/marketplace/models/packages/create",
         }
     },
+    DISCOUNT_MODELS: {
+        SELF: "/marketplace/discounts-models",
+        LIST: "/marketplace/discounts-models/list",
+        CREATE: "/marketplace/discounts-models/create",
+        UPDATE: "/marketplace/discounts-models/:id/update",
+        REQUEST: "/marketplace/discounts-models/list/pending",
+        PRODUCTS: "/marketplace/discounts-models/:id/products",
+        MEMBERS: "/marketplace/discounts-models/:id/members",
+    },
     STORE: {
         SELF: "/marketplace/store",
         PRODUCT: {

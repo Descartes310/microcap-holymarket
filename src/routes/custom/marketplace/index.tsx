@@ -14,6 +14,7 @@ import Products from './administration/models';
 import Catalogs from './administration/catalogs';
 import Categories from './administration/categories';
 import Commercial from './administration/commercials';
+import DiscountModels from './administration/discountModels';
 import {withRouter, Switch, Redirect, Route} from "react-router-dom";
 
 const Marketplace = (props) => {
@@ -30,11 +31,12 @@ const Marketplace = (props) => {
                     <Route path={MARKETPLACE.ORDERS} component={Orders} />
                     <Route path={MARKETPLACE.STORE.SELF} component={Store} />
                     <Route path={MARKETPLACE.CHECKOUT} component={Checkout} />
+                    <Route path={MARKETPLACE.MARKET.SELF} component={Market} />
                     <Route path={MARKETPLACE.MODEL.SELF} component={Products} />
                     <Route path={MARKETPLACE.CATAlOG.SELF} component={Catalogs} />
                     <Route path={MARKETPLACE.CATEGORY.SELF} component={Categories} />
                     <Route path={MARKETPLACE.COMMERCIAL.SELF} component={Commercial} />
-                    <Route path={MARKETPLACE.MARKET.SELF} component={Market} />
+                    <Route path={MARKETPLACE.DISCOUNT_MODELS.SELF} component={DiscountModels} />
                 </Switch>
             </>
         </div>
