@@ -1,5 +1,7 @@
 import React from 'react';
 import List from './self/list';
+import Create from './self/create';
+import Update from './self/update';
 import {connect} from "react-redux";
 import {injectIntl} from "react-intl";
 import { MARKETPLACE } from 'Url/frontendUrl';
@@ -11,8 +13,10 @@ const Bookings = (props) => {
         <div>
             <>
                 <Switch>
-                    <Redirect exact from={`${match.url}/`} to={MARKETPLACE.STORE.BOOKING.LIST} />
-                    <Route path={MARKETPLACE.STORE.BOOKING.LIST} component={List} />
+                    <Redirect exact from={`${match.url}/`} to={MARKETPLACE.BOOKING.LIST} />
+                    <Route path={MARKETPLACE.BOOKING.UPDATE} component={Update} />
+                    <Route path={MARKETPLACE.BOOKING.CREATE} component={Create} />
+                    <Route path={MARKETPLACE.BOOKING.LIST} component={List} />
                 </Switch>
             </>
         </div>

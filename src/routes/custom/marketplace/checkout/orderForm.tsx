@@ -17,7 +17,7 @@ class OrderForm extends Component<any, any> {
     state = {
         order: null,
         discount: null,
-        showSweetAlert: true,
+        showSweetAlert: false,
         showInvitation: false,
         payments: this.props.codevData ? [{label: 'Versement CODEV', amount: (Number(this.props.codevData.subscriptionCount)*Number(this.props.codevData.unitAmount)).toString(), editable: false}] : []
     }
@@ -166,7 +166,7 @@ class OrderForm extends Component<any, any> {
                         <div className="row no-gutters">
                             <div className="col-lg-8 col-md-12 col-sm-12">
                                 <RctCollapsibleCard>
-                                    <BillingForm discountCode={codevData?.discountCode ?? null} subscriptionCode={codevData?.subscriptionCode ?? null} updateDiscount={(d) => this.setState({ discount: d})} onSubmit={this.validateBillingForm} productIds={this.props.cart.items.map(product => product.id)} />
+                                    <BillingForm referralCode={this.props.customData?.referralCode} discountCode={codevData?.discountCode ?? null} subscriptionCode={codevData?.subscriptionCode ?? null} updateDiscount={(d) => this.setState({ discount: d})} onSubmit={this.validateBillingForm} productIds={this.props.cart.items.map(product => product.id)} />
                                 </RctCollapsibleCard>
                             </div>
                             <div className="col-lg-4 col-md-12 col-sm-12">

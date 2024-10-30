@@ -487,6 +487,12 @@ export const MARKETPLACE = {
         PRODUCTS: "/marketplace/discounts-models/:id/products",
         MEMBERS: "/marketplace/discounts-models/:id/members",
     },
+    BOOKING: {
+        SELF: "/marketplace/bookings",
+        LIST: "/marketplace/bookings/list",
+        CREATE: "/marketplace/bookings/create",
+        UPDATE: "/marketplace/bookings/:id/update",
+    },
     STORE: {
         SELF: "/marketplace/store",
         PRODUCT: {
@@ -512,8 +518,6 @@ export const MARKETPLACE = {
         BOOKING: {
             SELF: "/marketplace/store/bookings",
             LIST: "/marketplace/store/bookings/list",
-            CREATE: "/marketplace/store/bookings/create",
-            UPDATE: "/marketplace/store/bookings/:id/update",
         },
         PAYMENT: {
             SELF: "/marketplace/store/payments",

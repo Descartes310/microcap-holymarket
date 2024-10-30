@@ -111,7 +111,7 @@ class Hit extends Component {
 						}}
 						onReserve={(e) => {
 							onClearCart();
-							this.onPressAddToCart(product, e);
+							this.addToCart(product, e);
 							if(product.specialProduct == 'CODEV_DEAL_PLAN' || product.specialProduct == 'CODEV') {
 								this.setState({ showSubscriptionModal: true });
 							} else {
@@ -192,6 +192,7 @@ class Hit extends Component {
 						show={showOrderModal}
 						onClose={() => {
 							this.setState({ showOrderModal: false, showSubscriptionModal: false, showCodevStep1: false, showCodevStep2: false, showCodevStep3: false , showCodevStep4: false });
+							onClearCart();
 						}}
 						codevData={codevData}
 						product={product}

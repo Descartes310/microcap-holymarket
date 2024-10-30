@@ -16,6 +16,7 @@ import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { getNotificationMethods, getPaymentMethods } from "Helpers/datas";
 import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
 import { Form, FormGroup, Input, Label, Col, InputGroup, InputGroupAddon } from 'reactstrap';
+import ProductService from "Services/products";
 
 class BillingForm extends Component<any, any> {
 
@@ -46,8 +47,8 @@ class BillingForm extends Component<any, any> {
       paymentMethods: [],
       otherEmail: null,
       otherPhone: null,
-      paymentConfig: null
-
+      paymentConfig: null,
+      booking: null
    }
 
    componentDidMount(): void {
@@ -139,7 +140,7 @@ class BillingForm extends Component<any, any> {
          .then((discount) => {
               NotificationManager.success("Le coupon est valide");
               this.setState({ discount }, () => {
-               this.props.updateDiscount(discount);
+                  this.props.updateDiscount(discount);
               });
           })
          .catch((err) => {
@@ -151,14 +152,29 @@ class BillingForm extends Component<any, any> {
    }
 
    findSubscriptionCode = () => {
-      if(this.state.showSubscriptionCodeField && this.state.subscriptionCode) {
+      if (this.state.showSubscriptionCodeField && this.state.subscriptionCode) {
          this.props.setRequestGlobalAction(true);
-         OrderService.findSubscription('0', {code: this.state.subscriptionCode, productIds: this.props.productIds})
-         .then(() => {
-            NotificationManager.success("Le code de souscription est valide");
+         let data: any = {
+            nature: 'INVITATION', 
+            productIds: this.props.productIds
+         }
+         if(this.props.referralCode) {
+            data.referralCode = this.props.referralCode;
+         }
+         ProductService.findBookingByCode(this.state.subscriptionCode, data)
+         .then(response => {
+            this.setState({ booking: response });
+            if(response.discount) {
+               NotificationManager.success("Le coupon est valide");
+               this.setState({ discount: response.discount, showDiscountField: true, discountCode: response.discount.code }, () => {
+                     this.props.updateDiscount(response.discount);
+               });
+            }
+            NotificationManager.success("Le code de reservation est valide");
          })
-         .catch((err) => {
-            NotificationManager.error("Ce code est incorrect");
+         .catch(err => {
+            this.setState({ booking: null });
+            NotificationManager.error("Le code de reservation est incorrect");
          })
          .finally(() => this.props.setRequestGlobalAction(false))
       }

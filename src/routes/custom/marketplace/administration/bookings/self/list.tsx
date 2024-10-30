@@ -7,13 +7,16 @@ import { setRequestGlobalAction } from 'Actions';
 import React, { useEffect, useState } from 'react';
 import ConfirmBox from "Components/dialog/ConfirmBox";
 import TimeFromMoment from "Components/TimeFromMoment";
+import BookingGifts from '../../../_components/bookingGifts';
 import ShareBooking from '../../../_components/shareBooking';
 import BookingMembers from '../../../_components/bookingMembers';
+import { joinUrlWithParamsId, MARKETPLACE } from 'Url/frontendUrl';
 
 const List = (props) => {
 
     const [bookings, setBookings] = useState([]);
     const [booking, setBooking] = useState(null);
+    const [showGiftBox, setShowGiftBox] = useState(false);
     const [showShareBox, setShowShareBox] = useState(false);
     const [showMemberBox, setShowMemberBox] = useState(false);
     const [showConfirmBox, setShowConfirmBox] = useState(false);
@@ -24,7 +27,7 @@ const List = (props) => {
 
     const getBookings = () => {
         props.setRequestGlobalAction(true);
-        ProductService.getBookings({isModel: false})
+        ProductService.getBookings({isModel: true})
             .then((response) => setBookings(response))
             .catch((err) => {
                 console.log(err);
@@ -49,6 +52,7 @@ const List = (props) => {
             list={bookings}
             loading={false}
             itemsFoundText={n => `${n} codes trouvés`}
+            onAddClick={() => props.history.push(MARKETPLACE.BOOKING.CREATE)}
             renderItem={list => (
                 <>
                     {list && list.length === 0 ? (
@@ -67,7 +71,6 @@ const List = (props) => {
                                         <th className="fw-bold">Limite d'utilisation</th>
                                         <th className="fw-bold">Date de début</th>
                                         <th className="fw-bold">Date de fin</th>
-                                        <th className="fw-bold">Propriétaire</th>
                                         <th className="fw-bold">Actions</th>
                                         {/* <th className="fw-bold">Supprimer</th> */}
                                     </tr>
@@ -111,38 +114,53 @@ const List = (props) => {
                                                 </div>
                                             </td>
                                             <td>
-                                                <div className="media">
-                                                    <div className="media-body pt-10">
-                                                        <p className="m-0 fw-bold text-dark">{item.referralCode}</p>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                { !item.usable && (
+                                                { !item.parentReference && (
                                                     <>
-                                                        {/* <Button
+                                                        <Button
                                                             color="primary"
                                                             variant="contained"
-                                                            onClick={() => {
-                                                                setBooking(item);
-                                                                setShowShareBox(true);
-                                                            }}
+                                                            onClick={() => props.history.push(joinUrlWithParamsId(MARKETPLACE.BOOKING.UPDATE, item.reference))}
                                                             className="text-white font-weight-bold mr-3"
                                                         >
-                                                            Partager
-                                                        </Button> */}
+                                                            Editer
+                                                        </Button>
                                                         <Button
                                                             color="primary"
                                                             variant="contained"
                                                             onClick={() => {
-                                                                setBooking(item);
                                                                 setShowMemberBox(true);
+                                                                setBooking(item);
                                                             }}
                                                             className="text-white font-weight-bold mr-3"
                                                         >
-                                                            Utilisateurs
+                                                            Distributeurs
+                                                        </Button>
+
+                                                        <Button
+                                                            color="primary"
+                                                            variant="contained"
+                                                            onClick={() => {
+                                                                setShowGiftBox(true);
+                                                                setBooking(item);
+                                                            }}
+                                                            className="text-white font-weight-bold mr-3"
+                                                        >
+                                                            Avantages
                                                         </Button>
                                                     </>
+                                                )}
+                                                { !item.usable && (
+                                                    <Button
+                                                        color="primary"
+                                                        variant="contained"
+                                                        onClick={() => {
+                                                            setBooking(item);
+                                                            setShowShareBox(true);
+                                                        }}
+                                                        className="text-white font-weight-bold mr-3"
+                                                    >
+                                                        Partager
+                                                    </Button>
                                                 )}
                                             </td>
                                             {/* <td>
@@ -176,7 +194,7 @@ const List = (props) => {
                             message={'Etes vous sure de vouloir supprimer ce code de reservation ?'}
                         />
                     )}
-                    {/* { booking && showShareBox && (
+                    { booking && showShareBox && (
                         <ShareBooking
                             booking={booking}
                             show={showShareBox}
@@ -187,7 +205,7 @@ const List = (props) => {
                                 getBookings();
                             }}
                         />
-                    )} */}
+                    )}
 
                     { booking && showMemberBox && (
                         <BookingMembers
@@ -195,6 +213,16 @@ const List = (props) => {
                             show={showMemberBox}
                             onClose={() => {
                                 setShowMemberBox(false);
+                                setBooking(null);
+                            }}
+                        />
+                    )}
+                    { booking && showGiftBox && (
+                        <BookingGifts
+                            booking={booking}
+                            show={showGiftBox}
+                            onClose={() => {
+                                setShowGiftBox(false);
                                 setBooking(null);
                             }}
                         />

@@ -14,21 +14,24 @@ import Checkbox from "@material-ui/core/Checkbox/Checkbox";
 import { FormGroup, Input, Button, Alert } from "reactstrap";
 import InputLabel from "@material-ui/core/InputLabel/InputLabel";
 import CreateContact from '../profiles/users/components/createContact';
+import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
 
 class ActivationBox extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
+            numPages: 1,
             activeTab: 0,
+            pageNumber: 1,
             loading: false,
             codeToVerify: '',
+            bookingCode: null,
             hasAskCode: true,
             acceptCGU: false,
-            numPages: 1,
-            pageNumber: 1,
-            showCreateContactBox: false,
+            hasBookingCode: false,
             member: props.authUser,
+            showCreateContactBox: false,
             membership: props.authUser.referralId
         }
     }
@@ -110,6 +113,10 @@ class ActivationBox extends Component {
             data.notificationId = this.props.notification.id;
         }
 
+        if(this.state.hasBookingCode && this.state.bookingCode) {
+            data.bookingCode = this.state.bookingCode;
+        }
+
         UserService.confirmOTP(this.state.codeToVerify, data)
         .then(() => {
             NotificationManager.success("Vous avez activaté le profile avec succès");
@@ -147,7 +154,7 @@ class ActivationBox extends Component {
 
     render() {
         const { authUser } = this.props;
-        const { member, membership, hasAskCode, acceptCGU, showCreateContactBox } = this.state;
+        const { member, membership, hasAskCode, acceptCGU, showCreateContactBox, hasBookingCode } = this.state;
 
         return (
             <DialogComponent
@@ -293,6 +300,35 @@ class ActivationBox extends Component {
                                                 onChange={event => this.setState({ codeToVerify: event.target.value })}
                                             />
                                         </FormGroup>
+                                        <FormGroup className="col-sm-12 has-wrapper">
+                                            <FormControlLabel control={
+                                                <Checkbox
+                                                    color="primary"
+                                                    checked={hasBookingCode}
+                                                    onChange={() => this.setState({ hasBookingCode: !hasBookingCode })}
+                                                />
+                                            } label={'J\'ai un code de parrainage'}
+                                            />
+                                        </FormGroup>
+                                        { hasBookingCode && (
+                                            <>
+                                                <div className="col-sm-12 mt-20">
+                                                    <InputLabel className="text-left" htmlFor="bookingCode">
+                                                        Entrer le code de parrainage reçu
+                                                    </InputLabel>
+                                                </div>
+                                                <FormGroup className="col-sm-12 has-wrapper">
+                                                    <Input
+                                                        required
+                                                        id="bookingCode"
+                                                        name={'bookingCode'}
+                                                        value={this.state.bookingCode}
+                                                        className="has-input input-lg border"
+                                                        onChange={event => this.setState({ bookingCode: event.target.value })}
+                                                    />
+                                                </FormGroup>
+                                            </>
+                                        )}
                                         <div>
                                             <Checkbox
                                                 color="primary"

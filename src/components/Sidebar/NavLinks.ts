@@ -635,7 +635,7 @@ export default [
          {
             "menu_title": "Séries de reservation",
             "new_item": false,
-            "path": MARKETPLACE.STORE.BOOKING.LIST,
+            "path": MARKETPLACE.BOOKING.LIST,
             "permissions": [Permission.marketplace.admin.model.name],
             "profiles": ['GROUP'],
             "child_routes": null

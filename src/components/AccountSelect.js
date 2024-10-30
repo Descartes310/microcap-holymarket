@@ -6,6 +6,7 @@ import { setRequestGlobalAction } from 'Actions';
 import { NotificationManager } from 'react-notifications';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { FormGroup, Button, Input as InputStrap, InputGroup, InputGroupAddon  } from 'reactstrap';
+import { number } from 'prop-types';
 
 class AccountSelect extends Component {
 
@@ -19,7 +20,15 @@ class AccountSelect extends Component {
         super(props);
     }
 
-    findUserByMembership = () => {
+    componentDidMount() {
+        if(this.props.accountNumber && this.props.accountKey) {
+            this.setState({ number: this.props.accountNumber, key:  this.props.accountKey}, () => {
+                this.findAccountByNumberAndKey();
+            })
+        }
+    }
+
+    findAccountByNumberAndKey = () => {
         this.props.setRequestGlobalAction(true);
         let data = {is_subscritpion: this.props.isSubscritpion ?? false, is_payment: this.props.isPayment ?? false};
         AccountService.getAccountByNumberAndKey(this.state.number, this.state.key, data)
@@ -75,7 +84,7 @@ class AccountSelect extends Component {
                             />
                             <InputGroupAddon addonType="append">
                                 <Button color="primary" variant="contained" onClick={() => {
-                                    this.findUserByMembership();
+                                    this.findAccountByNumberAndKey();
                                 }} >
                                     <span className='text-white'>Rechercher</span>
                                 </Button>
@@ -83,31 +92,17 @@ class AccountSelect extends Component {
                         </InputGroup>
                     </FormGroup>
                 </div>
-                {/* {member && (
+                {account && (
                     <div className='row'>
-                        <FormGroup className="has-wrapper col-md-4 col-sm-12">
+                        <FormGroup className="has-wrapper col-md-12 col-sm-12">
                             <InputStrap
                                 disabled
                                 className="input-lg"
-                                value={member.userName}
-                            />
-                        </FormGroup>
-                        <FormGroup className="has-wrapper col-md-4 col-sm-12">
-                            <InputStrap
-                                disabled
-                                className="input-lg"
-                                value={member.email}
-                            />
-                        </FormGroup>
-                        <FormGroup className="has-wrapper col-md-4 col-sm-12">
-                            <InputStrap
-                                disabled
-                                className="input-lg"
-                                value={getReferralTypeLabel(member.referralType)}
+                                value={account.label}
                             />
                         </FormGroup>
                     </div>
-                )} */}
+                )}
             </div>
         );
     }

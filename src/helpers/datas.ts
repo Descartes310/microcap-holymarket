@@ -649,3 +649,24 @@ export const bookingAdvantages = () => {
 export const getBookingAdvantageLabel = (value) => {
     return bookingAdvantages().find(d => d.value == value)?.label
 }
+
+export const bookingAdvantageTargets = () => {
+    return [
+        {
+            label: "Parrain", 
+            value: 'GODFATHER'
+        },
+        {
+            label: "Filleul", 
+            value: 'GODSON'
+        },
+        {
+            label: "Tout le monde", 
+            value: 'USER'
+        }
+    ];
+}
+
+export const getBookingAdvantageTargetLabel = (value) => {
+    return bookingAdvantageTargets().find(d => d.value == value)?.label
+}

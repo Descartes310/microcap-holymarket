@@ -1,49 +1,26 @@
 import { connect } from "react-redux";
 import { injectIntl } from "react-intl";
 import React, { Component } from 'react';
-import {Form, FormGroup} from 'reactstrap';
 import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
 import ProductService from 'Services/products';
 import UserSelect from 'Components/UserSelect';
 import { setRequestGlobalAction } from 'Actions';
-import TextField from '@material-ui/core/TextField';
-import Autocomplete from '@material-ui/lab/Autocomplete';
 import { NotificationManager } from 'react-notifications';
-import Checkbox from "@material-ui/core/Checkbox/Checkbox";
+import {Form, FormGroup, Input as InputStrap} from 'reactstrap';
 import DialogComponent from "Components/dialog/DialogComponent";
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
-import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
 
 class ShareBooking extends Component {
 
     state = {
         member: null,
-        discounts: [],
-        discount: null,
-        hasDiscount: false
+        useLimit: null,
+        hasDiscount: false,
     }
 
     constructor(props) {
         super(props);
-    }
-
-    componentDidMount() {
-        if(this.props.booking.nature == 'MARKETPLACE' && this.props.booking.parentReference != null) {
-            this.getDiscounts();
-        }
-    }
-
-    getDiscounts = () => {
-        this.props.setRequestGlobalAction(true);
-        ProductService.getDiscounts()
-        .then((response) => this.setState({discounts: response}))
-        .catch((err) => {
-            console.log(err);
-        })
-        .finally(() => {
-            this.props.setRequestGlobalAction(false);
-        })
     }
 
     onSubmit = () => {
@@ -56,20 +33,24 @@ class ShareBooking extends Component {
             referral_code: this.state.member.referralCode
         };
 
+        if(this.state.useLimit && this.state.useLimit > 0) {
+            data.useLimit = this.state.useLimit;
+        }
+
         this.props.setRequestGlobalAction(true);
         ProductService.shareBooking(this.props.booking.reference, data).then(() => {
             NotificationManager.success("Le code de reservation a bien été envoyé");
             this.props.onClose();
         }).catch(err => {
-            NotificationManager.error("Code incorrect");
+            NotificationManager.error("Veuillez respecter la limite d'utilisation");
         }).finally(() => {
             this.props.setRequestGlobalAction(false);
         });
     }
 
     render() {
+        const { useLimit } = this.state;
         const { onClose, show, title } = this.props;
-        const { hasDiscount, discounts, discount } = this.state;
 
         return (
             <DialogComponent
@@ -86,30 +67,19 @@ class ShareBooking extends Component {
                     <UserSelect label={'Numéro utilisateur'} onChange={(_, user) => {
                         this.setState({ member: user });
                     }}/>
-                    <FormGroup className="col-sm-12 has-wrapper">
-                        <FormControlLabel control={
-                            <Checkbox
-                                color="primary"
-                                checked={hasDiscount}
-                                onChange={() => this.setState({ hasDiscount: !hasDiscount })}
-                            />
-                        } label={'Associer un coupon de réduction'}
-                        />
-                    </FormGroup>
-                    { hasDiscount && (
+                    { !this.props.uniqueUsage && (
                         <FormGroup className="col-md-12 col-sm-12 has-wrapper">
-                            <InputLabel className="text-left">
-                                Coupon de réduction
+                            <InputLabel className="text-left" htmlFor="useLimit">
+                                Nombre d'utilisation maximal
                             </InputLabel>
-                            <Autocomplete
-                                id="combo-box-demo"
-                                value={discount}
-                                options={discounts}
-                                onChange={(__, item) => {
-                                    this.setState({ discount: item });
-                                }}
-                                getOptionLabel={(option) => `${option.label} - ${option.percentage}%`}
-                                renderInput={(params) => <TextField {...params} variant="outlined" />}
+                            <InputStrap
+                                required
+                                id="useLimit"
+                                type="number"
+                                name='useLimit'
+                                className="input-lg"
+                                value={useLimit}
+                                onChange={(e) => this.setState({ useLimit: e.target.value })}
                             />
                         </FormGroup>
                     )}

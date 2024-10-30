@@ -108,6 +108,10 @@ export const UPDATE_BOOKING = (reference) => `api/bookings/${reference}`;
 export const DELETE_BOOKING = (reference) => `api/bookings/${reference}`;
 export const FIND_BOOKING_BY_CODE = (code) => `api/bookings/code/${code}`;
 export const SHARE_BOOKING = (reference) => `api/bookings/${reference}/share`;
+export const GET_BOOKING_MEMBERS = (reference) => `api/bookings/${reference}/members`;
+export const GET_BOOKING_GIFTS = (reference) => `api/bookings/${reference}/gifts`;
+export const CREATE_BOOKING_GIFT = (reference) => `api/bookings/${reference}/gifts`;
+export const DELETE_BOOKING_GIFT = (reference) => `api/bookings/${reference}/gifts`;
 
 export const GET_DISTRIBUTIONS = 'api/distributions';
 export const CREATE_DISTRIBUTION = 'api/distributions';

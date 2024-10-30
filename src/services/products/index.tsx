@@ -353,8 +353,12 @@ export default class ProductService {
         return makeRequest('post', Routes.CREATE_BOOKING, data);
     }
 
-    static getBookings(): Promise<any> {
-        return makeRequest('get', Routes.GET_BOOKINGS);
+    static getBookings(data = {}): Promise<any> {
+        return makeRequest('get', Routes.GET_BOOKINGS, data);
+    }
+
+    static getBookingMembers(reference: string): Promise<any> {
+        return makeRequest('get', Routes.GET_BOOKING_MEMBERS(reference));
     }
 
     static findBooking(reference: string): Promise<any> {
@@ -387,5 +391,17 @@ export default class ProductService {
 
     static getProductDistributions(data: any): Promise<any> {
         return makeRequest('get', Routes.GET_DISTRIBUTIONS, data);
+    }
+
+    static createBookingGift(reference: string, data: any): Promise<any> {
+        return makeRequest('post', Routes.CREATE_BOOKING_GIFT(reference), data);
+    }
+
+    static getBookingGifts(reference: string): Promise<any> {
+        return makeRequest('get', Routes.GET_BOOKING_GIFTS(reference));
+    }
+
+    static deleteBookingGift(reference: string): Promise<any> {
+        return makeRequest('delete', Routes.DELETE_BOOKING_GIFT(reference));
     }
 }

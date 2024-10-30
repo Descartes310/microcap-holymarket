@@ -2,18 +2,16 @@ import { connect } from 'react-redux';
 import { withRouter } from "react-router-dom";
 import Button from '@material-ui/core/Button';
 import { MARKETPLACE } from 'Url/frontendUrl';
-import ProductService from 'Services/products';
 import { bookingNatures } from 'Helpers/datas';
+import ProductService from 'Services/products';
 import { setRequestGlobalAction } from 'Actions';
 import React, { useEffect, useState } from 'react';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { NotificationManager } from 'react-notifications';
-import Checkbox from "@material-ui/core/Checkbox/Checkbox";
-import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import {Form, FormGroup, Input as InputStrap} from 'reactstrap';
+import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
-import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
 
 const Update = (props) => {
 
@@ -22,22 +20,12 @@ const Update = (props) => {
     const [nature, setNature] = useState(null);
     const [booking, setBooking] = useState(null);
     const [endDate, setEndDate] = useState(null);
-    const [discounts, setDiscounts] = useState([]);
-    const [discount, setDiscount] = useState(null);
     const [useLimit, setUseLimit] = useState(null);
     const [startDate, setStartDate] = useState(null);
-    const [hasDiscount, setHasDiscount] = useState(false);
 
     useEffect(() => {
         findDiscount();
-        getDiscounts();
     }, [])
-
-    useEffect(() => {
-        if(booking && discounts.length > 0 && booking.discountReference) {
-            setDiscount(discounts.find(d => d.reference == booking.discountReference));
-        }
-    }, [booking, discounts])
 
     const findDiscount = () => {
         ProductService.findBooking(props.match.params.id).then((response) => {
@@ -47,7 +35,6 @@ const Update = (props) => {
             setEndDate(response.endDate);
             setUseLimit(response.useLimit);
             setStartDate(response.startDate);
-            setHasDiscount(response.discountReference != null);
             setNature(bookingNatures().find(bn => response.nature == bn.value));
         }).catch((err) => {
             console.log(err);
@@ -56,22 +43,9 @@ const Update = (props) => {
         })
     }
 
-    const getDiscounts = () => {
-        props.setRequestGlobalAction(true);
-        ProductService.getDiscounts()
-            .then((response) => {
-                setDiscounts(response);
-            })
-            .catch((err) => {
-                console.log(err);
-            })
-            .finally(() => {
-                props.setRequestGlobalAction(false);
-        })
-    }
-
     const onSubmit = () => {
-        if(!label || !code || !startDate || !endDate || !useLimit || (hasDiscount && !discount) || !nature) {
+
+        if(!label || !code || !startDate || !endDate || !useLimit || !nature) {
             NotificationManager.error('Le formulaire n\'est pas bien renseigné');
             return;
         }
@@ -79,10 +53,6 @@ const Update = (props) => {
         var data: any = {
             startDate, endDate, code,
             label, useLimit, nature: nature.value,
-        }
-
-        if(discount && hasDiscount) {
-            data.discountReference = discount.reference;
         }
 
         props.setRequestGlobalAction(true);
@@ -189,33 +159,6 @@ const Update = (props) => {
                             onChange={(e) => setEndDate(e.target.value)}
                         />
                     </FormGroup>
-                    {/* <FormGroup className="col-sm-12 has-wrapper">
-                        <FormControlLabel control={
-                            <Checkbox
-                                color="primary"
-                                checked={hasDiscount}
-                                onChange={() => setHasDiscount(!hasDiscount)}
-                            />
-                        } label={'Associer un coupon de réduction'}
-                        />
-                    </FormGroup>
-                    { hasDiscount && (
-                        <FormGroup className="col-md-12 col-sm-12 has-wrapper">
-                            <InputLabel className="text-left">
-                                Coupon de réduction
-                            </InputLabel>
-                            <Autocomplete
-                                id="combo-box-demo"
-                                value={discount}
-                                options={discounts}
-                                onChange={(__, item) => {
-                                    setDiscount(item);
-                                }}
-                                getOptionLabel={(option) => `${option.label} - ${option.percentage}%`}
-                                renderInput={(params) => <TextField {...params} variant="outlined" />}
-                            />
-                        </FormGroup>
-                    )} */}
                     <FormGroup>
                         <Button
                             color="primary"

@@ -15,41 +15,8 @@ const CodevSubscriptionModal = (props) => {
     const {onSendData, product, show, onClose} = props;
 
     const [discount, setDiscount] = useState(null);
-    const [discountCode, setDiscountCode] = useState(null);
-    const [subscriptionCode, setSubscriptionCode] = useState(null);
-    const [showDiscountField, setShowDiscountField] = useState(null);
     const [subscriptionCount, setSubscriptionCount] = useState(null);
-    const [showSubscriptionCodeField, setShowSubscriptionCodeField] = useState(false);
     const [unitAmount, setUnitAmount] = useState(product?.details.find(d => d.type == 'DEPOSIT_AMOUNT')?.value);
-
-    const findDiscount = () => {
-        if(showDiscountField && discountCode) {
-           props.setRequestGlobalAction(true);
-           OrderService.findDiscount('0', {code: discountCode, productIds: [product?.id]})
-           .then((discount) => {
-                NotificationManager.success("Le coupon est valide");
-                setDiscount(discount);
-            })
-           .catch((err) => {
-              NotificationManager.error("Ce code est incorrect");
-           })
-           .finally(() => props.setRequestGlobalAction(false))
-        }
-    }
-
-    const findSubscriptionCode = () => {
-        if(showSubscriptionCodeField && subscriptionCode) {
-           props.setRequestGlobalAction(true);
-           OrderService.findSubscription('0', {code: subscriptionCode, productIds: [product?.id]})
-           .then(() => {
-              NotificationManager.success("Le code de souscription est valide");
-           })
-           .catch((err) => {
-              NotificationManager.error("Ce code est incorrect");
-           })
-           .finally(() => props.setRequestGlobalAction(false))
-        }
-    }
   
     const getDiscountedAmountToPay = () => {
         let baseAmount = product?.price;
@@ -66,12 +33,6 @@ const CodevSubscriptionModal = (props) => {
         }
         let data = {
             subscriptionCount, unitAmount
-        }
-        if(discount && discountCode) {
-            data.discountCode = discountCode
-        }
-        if(subscriptionCode) {
-            data.subscriptionCode = subscriptionCode
         }
         onSendData(data);
     }
@@ -121,83 +82,6 @@ const CodevSubscriptionModal = (props) => {
                         value={product?.price}
                     />
                 </FormGroup>
-
-                <FormGroup row className="mb-0">
-                    <Col sm={12}>
-                        <Label className="ml-4">
-                            <InputStrap
-                                type="checkbox"
-                                checked={showDiscountField}
-                                onChange={(e) => setShowDiscountField(e.target.value)}
-                            />
-                            <p>J'ai un code de réduction</p>
-                        </Label>
-                    </Col>
-                </FormGroup>
-                { showDiscountField && (
-                    <div className="d-flex">
-                        <FormGroup className="col-sm-12 has-wrapper">
-                            <InputLabel className="text-left" htmlFor="discountCode">
-                                Code du coupon
-                            </InputLabel>
-                            <InputGroup>
-                                <InputStrap
-                                    type="text"
-                                    id="discountCode"
-                                    value={discountCode}
-                                    name={'discountCode'}
-                                    className="has-input input-lg custom-input"
-                                    onChange={(e) => setDiscountCode(e.target.value)}
-                                />
-                                <InputGroupAddon addonType="append">
-                                    <Button color="primary" variant="contained" onClick={() => {
-                                        findDiscount();
-                                    }} >
-                                        <span className='text-white'>Rechercher</span>
-                                    </Button>
-                                </InputGroupAddon>
-                            </InputGroup>
-                        </FormGroup>
-                    </div> 
-                )}
-                <FormGroup row className="mb-0">
-                    <Col sm={12}>
-                        <Label className="ml-4">
-                            <InputStrap 
-                                type="checkbox"
-                                checked={showSubscriptionCodeField}
-                                onChange={(e) => setShowSubscriptionCodeField(e.target.checked)}
-                            />
-                            <p>J'ai un code de reservation</p>
-                        </Label>
-                    </Col>
-                </FormGroup>
-                { showSubscriptionCodeField && (
-                    <div className="d-flex">
-                        <FormGroup className="col-sm-12 has-wrapper">
-                            <InputLabel className="text-left" htmlFor="subscriptionCode">
-                                Code de reservation
-                            </InputLabel>
-                            <InputGroup>
-                                <InputStrap
-                                    type="text"
-                                    id="subscriptionCode"
-                                    value={subscriptionCode}
-                                    name={'subscriptionCode'}
-                                    className="has-input input-lg custom-input"
-                                    onChange={(e) => setSubscriptionCode(e.target.value)}
-                                />
-                                <InputGroupAddon addonType="append">
-                                    <Button color="primary" variant="contained" onClick={() => {
-                                        findSubscriptionCode();
-                                    }} >
-                                        <span className='text-white'>Vérifier</span>
-                                    </Button>
-                                </InputGroupAddon>
-                            </InputGroup>
-                        </FormGroup>
-                    </div> 
-                )}
 
                 <FormGroup className="has-wrapper">
                     <InputLabel className="text-left" htmlFor="subscription">

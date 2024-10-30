@@ -16,6 +16,7 @@ import Categories from './administration/categories';
 import Commercial from './administration/commercials';
 import DiscountModels from './administration/discountModels';
 import {withRouter, Switch, Redirect, Route} from "react-router-dom";
+import bookings from './administration/bookings';
 
 const Marketplace = (props) => {
     const { match } = props;
@@ -37,6 +38,7 @@ const Marketplace = (props) => {
                     <Route path={MARKETPLACE.CATEGORY.SELF} component={Categories} />
                     <Route path={MARKETPLACE.COMMERCIAL.SELF} component={Commercial} />
                     <Route path={MARKETPLACE.DISCOUNT_MODELS.SELF} component={DiscountModels} />
+                    <Route path={MARKETPLACE.BOOKING.SELF} component={bookings} />
                 </Switch>
             </>
         </div>
