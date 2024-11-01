@@ -49,7 +49,7 @@ const SendContactMessage = (props) => {
 
     const getContacts = () => {
         UserService.getContacts({referral_code: props.user?.referralId}).then((response) => {
-            setContacts(response.filter(c => c.type === 'EMAIL' || c.type === 'PHONE'))
+            setContacts(response.filter(c => c.type !== 'ADDRESS' && c.type !== 'ALIAS' ))
         });
     }
 
@@ -102,7 +102,7 @@ const SendContactMessage = (props) => {
                         onChange={(__, item) => {
                             setContact(item);
                         }}
-                        getOptionLabel={(option) => option.value}
+                        getOptionLabel={(option) => option.oldType+": "+option.value}
                         renderInput={(params) => <TextField {...params} variant="outlined" />}
                     />
                 </div>

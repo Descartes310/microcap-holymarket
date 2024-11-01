@@ -412,9 +412,10 @@ export const MARKETPLACE = {
     SELF: "/marketplace",
     CART: "/marketplace/cart",
     ORDERS: "/marketplace/orders",
-    SHOP_PRODUCTS: "/marketplace/shop/:reference/products",
     CHECKOUT: "/marketplace/checkout",
     SALES: "/marketplace/orders/:id/sales",
+    SUB_ORDERS: "/marketplace/orders/:id/orders",
+    SHOP_PRODUCTS: "/marketplace/shop/:reference/products",
     SHOP: {
         SELF: "/marketplace/shop",
         PRIVATE: "/marketplace/shop/private",

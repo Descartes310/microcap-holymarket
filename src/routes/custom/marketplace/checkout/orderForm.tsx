@@ -62,12 +62,10 @@ class OrderForm extends Component<any, any> {
                                 details.unit_amount = item.customInfos.indivision.unitAmount;
                                 details.distribution = item.customInfos.indivision.distribution;
                                 details.denomination = item.customInfos.indivision.denomination;
-                                details.tirage_ref = item.customInfos.selectedDate.reference;
                             }
-                        } else {
-                            details.tirage_ref = item.customInfos.selectedDate.reference;
                         }
-
+                        
+                        details.tirage_ref = item.customInfos.selectedDate.reference;
                         details.product_ref = item.customInfos.productReference;
                         details.subscription_type = item.customInfos.subscriptionType.value;
                     }

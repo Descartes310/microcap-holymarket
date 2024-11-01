@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 import PassDetails from './PassDetails';
+import SetSellerModal from './SetSeller';
 import OrderService from 'Services/orders';
 import { withRouter } from "react-router-dom";
 import Button from '@material-ui/core/Button';
@@ -9,10 +10,8 @@ import { setRequestGlobalAction } from 'Actions';
 import React, { useState, useEffect } from 'react';
 import { getOrderStatusItem } from 'Helpers/helpers';
 import TimeFromMoment from 'Components/TimeFromMoment';
-import AddFileToOrderModal from './addFileToOrderModal';
 import { NotificationManager } from "react-notifications";
 import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
-import { joinUrlWithParamsId, MARKETPLACE } from 'Url/frontendUrl';
 import CodevStep1 from 'Routes/custom/marketplace/shop/components/codev/step1';
 import CodevStep2 from 'Routes/custom/marketplace/shop/components/codev/step2';
 import CodevStep3 from 'Routes/custom/marketplace/shop/components/codev/step3';
@@ -25,7 +24,7 @@ const List = (props) => {
     const [product, setProduct] = useState(null);
     const [codevData, setCodevData] = useState(null);
     const [showPassBox, setShowPassBox] = useState(false);
-    const [showAddFileBox, setShowAddFileBox] = useState(false);
+    const [showSellerBox, setShowSellerBox] = useState(false);
     const [showCodevStep1, setShowCodevStep1] = useState(false);
     const [showCodevStep2, setShowCodevStep2] = useState(false);
     const [showCodevStep3, setShowCodevStep3] = useState(false);
@@ -42,6 +41,13 @@ const List = (props) => {
         }
     }, [order]);
 
+    const getOrders = () => {
+        props.setRequestGlobalAction(true),
+            OrderService.getSubOrders(props.match.params.id)
+                .then(response => setOrders(response))
+                .finally(() => props.setRequestGlobalAction(false))
+    }
+
     const getProduct = () => {
         props.setRequestGlobalAction(true),
         OrderService.getOrderProduct(order.reference)
@@ -52,14 +58,6 @@ const List = (props) => {
             })
             .finally(() => props.setRequestGlobalAction(false))
     }
-
-    const getOrders = () => {
-        props.setRequestGlobalAction(true),
-            OrderService.getOrders()
-                .then(response => setOrders(response))
-                .finally(() => props.setRequestGlobalAction(false))
-    }
-
 
     const configureProduct = (formData) => {
     
@@ -97,7 +95,7 @@ const List = (props) => {
 
     return (
         <>
-            <PageTitleBar title={'Mes commandes'} />
+            <PageTitleBar title={'Sous commande'} />
             <CustomList
                 list={orders}
                 loading={false}
@@ -122,8 +120,7 @@ const List = (props) => {
                                             <th className="fw-bold">Status</th>
                                             <th className="fw-bold">Payé ?</th>
                                             <th className="fw-bold">Détails</th>
-                                            <th className="fw-bold">Paiements</th>
-                                            <th className="fw-bold">Dossiers</th>
+                                            <th className="fw-bold">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -197,20 +194,6 @@ const List = (props) => {
                                                             Souscripteurs
                                                         </Button>
                                                     )}
-
-                                                    {item.hasSeller && item.status === 'PENDING' && item.type == 'CODEV' && (
-                                                        <Button
-                                                            color="primary"
-                                                            variant="contained"
-                                                            className="text-white font-weight-bold"
-                                                            onClick={() => {
-                                                                setOrder(item);
-                                                                setShowCodevStep1(true);
-                                                            }}
-                                                        >
-                                                            Configurations
-                                                        </Button>
-                                                    )}
                                                     {item.paymentStatus == 'PAID' && ['CONFIRMED', 'DELIVERED'].includes(item.status) && item?.type == "PASS" && (
                                                         <Button
                                                             color="primary"
@@ -224,44 +207,32 @@ const List = (props) => {
                                                             Pass
                                                         </Button>
                                                     )}
-                                                    { item.hasSubAccount && (
-                                                        <Button
-                                                            color="primary"
-                                                            variant="contained"
-                                                            className="text-white font-weight-bold"
-                                                            onClick={() => props.history.push(joinUrlWithParamsId(MARKETPLACE.SUB_ORDERS, item.reference))}
-                                                        >
-                                                            Produits
-                                                        </Button>
-                                                    )}
                                                 </td>
                                                 <td>
-                                                    { 
-                                                        (item.status !== 'REJECTED')  ?
-                                                        <Button
-                                                            color="primary"
-                                                            variant="contained"
-                                                            className="text-white font-weight-bold"
-                                                            onClick={() => props.history.push(joinUrlWithParamsId(MARKETPLACE.SALES, item.id))}
-                                                        >
-                                                            Payements
-                                                        </Button>
-                                                        : 
-                                                        <p>En attente...</p>
-                                                    }
-                                                </td>
-                                                <td>
-                                                    { (item.paymentStatus === 'PAID') && (
+                                                    {!item.hasSeller && item.paymentStatus === 'PAID' && (
                                                         <Button
                                                             color="primary"
                                                             variant="contained"
                                                             className="text-white font-weight-bold"
                                                             onClick={() => {
                                                                 setOrder(item);
-                                                                setShowAddFileBox(true);
+                                                                setShowSellerBox(true);
                                                             }}
                                                         >
-                                                            Dossiers
+                                                            Commercant
+                                                        </Button>
+                                                    )}
+                                                    {item.hasSeller && item.status === 'PENDING' && item.type == 'CODEV' && (
+                                                        <Button
+                                                            color="primary"
+                                                            variant="contained"
+                                                            className="text-white font-weight-bold"
+                                                            onClick={() => {
+                                                                setOrder(item);
+                                                                setShowCodevStep1(true);
+                                                            }}
+                                                        >
+                                                            Configurations
                                                         </Button>
                                                     )}
                                                 </td>
@@ -298,20 +269,19 @@ const List = (props) => {
                 />
             )}
 
-            { (order && showAddFileBox) && (
-                <AddFileToOrderModal
+            { (order && showSellerBox) && (
+                <SetSellerModal
                     order={order}
-                    title={'Renseigner le dossier commande'} 
-                    show={showAddFileBox && order}
+                    show={showSellerBox}
                     onClose={() => {
                         setOrder(null);
-                        setShowAddFileBox(false);
+                        setShowSellerBox(false);
                         getOrders();
                     }}
                 />
             )}
 
-{ showCodevStep1 && product && (
+            { showCodevStep1 && product && (
                 <CodevStep1 
                     product={product}
                     show={showCodevStep1}
@@ -378,6 +348,7 @@ const List = (props) => {
                     }}
                 />
             )}
+
         </>
     );
 }

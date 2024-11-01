@@ -59,7 +59,7 @@ const Create = (props) => {
     const getOrders = () => {
         props.setRequestGlobalAction(true);
         OrderService.getPurchases()
-        .then(response => setOrders(response.filter(o => o.status != 'PAID')))
+        .then(response => setOrders(response.filter(o => o.paymentStatus != 'PAID')))
         .finally(() => props.setRequestGlobalAction(false))
     }
 

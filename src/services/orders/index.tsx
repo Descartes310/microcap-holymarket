@@ -8,6 +8,10 @@ export default class OrderService {
         return makeRequest('get', Routes.GET_ORDERS, data ? data : null);
     }
 
+    static getSubOrders(reference: string, data = {}): Promise<any> {
+        return makeRequest('get', Routes.GET_SUB_ORDERS(reference), data ? data : null);
+    }
+
     static findOrder(id: number): Promise<any> {
         return makeRequest('get', Routes.FIND_ORDER(id));
     }
@@ -62,5 +66,21 @@ export default class OrderService {
 
     static sendPaymentRequest(data: any): Promise<any> {
         return makeRequest('post', Routes.SEND_PAYMENT_REQUEST, data);
+    }
+
+    static getOrderProduct(reference: string): Promise<any> {
+        return makeRequest('get', Routes.GET_ORDER_PRODUCT(reference));
+    }
+
+    static getOrderSellers(reference: string): Promise<any> {
+        return makeRequest('get', Routes.GET_ORDER_SELLERS(reference));
+    }
+
+    static setOrderSeller(reference: string, data: any): Promise<any> {
+        return makeRequest('post', Routes.SET_ORDER_SELLER(reference), data);
+    }
+
+    static configureOrderCodev(reference: string, data: any): Promise<any> {
+        return makeRequest('post', Routes.CONFIGURE_ORDER_CODEV(reference), data);
     }
 }

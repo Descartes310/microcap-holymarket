@@ -106,6 +106,7 @@ const List = (props) => {
                                             <th className="fw-bold">Telephone</th>
                                             <th className="fw-bold">Date</th>
                                             <th className="fw-bold">Status</th>
+                                            <th className="fw-bold">Payé ?</th>
                                             <th className="fw-bold">Type</th>
                                             <th className="fw-bold">Actions</th>
                                         </tr>
@@ -159,6 +160,16 @@ const List = (props) => {
                                                 </td>
                                                 <td>
                                                     <div className="media">
+                                                        <div className="user-status-pending d-flex flex-row align-items-center" style={{ position: 'relative' }}>
+                                                            <div className={`user-status-pending-circle rct-notify mr-10`} style={{
+                                                                background: item?.paymentStatus == 'PAID' ? 'green' : item?.paymentStatus == 'PAYING' ? 'orange' : 'red'
+                                                            }} />
+                                                            {item?.paymentStatus == 'PAID' ? 'Payé' : item?.paymentStatus == 'PAYING' ? 'En cours' : 'Non payé'}
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="media">
                                                         <div className="media-body pt-10">
                                                             <h4 className="m-0 fw-bold text-dark">{getOrderTypes().find(ot => ot.value == item.orderType)?.label}</h4>
                                                         </div>
@@ -170,7 +181,7 @@ const List = (props) => {
                                                             Actions
                                                         </DropdownToggle>
                                                         <DropdownMenu>
-                                                            { item.status != 'PAID' && (
+                                                            { item.paymentStatus != 'PAID' && (
                                                                 <DropdownItem style={{ color: 'black' }}
                                                                     onClick={() => {
                                                                         setSelectedItem(item);

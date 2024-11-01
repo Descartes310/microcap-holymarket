@@ -6,9 +6,10 @@ import CustomList from "Components/CustomList";
 import { setRequestGlobalAction } from 'Actions';
 import React, { useState, useEffect } from 'react';
 import { getOrderStatusItem } from 'Helpers/helpers';
-import ConfirmBox from "Components/dialog/ConfirmBox";
-import TimeFromMoment from 'Components/TimeFromMoment'
 import IconButton from '@material-ui/core/IconButton';
+import ConfirmBox from "Components/dialog/ConfirmBox";
+import TimeFromMoment from 'Components/TimeFromMoment';
+import { NotificationManager } from 'react-notifications';
 import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
 import { MARKETPLACE, joinUrlWithParamsId } from 'Url/frontendUrl';
 
@@ -33,7 +34,17 @@ const List = (props) => {
     const approvedOrder = (order, status) => {
         props.setRequestGlobalAction(true);
         OrderService.approvedOrder(order.id, { status })
-        .then(() => getPurchases())
+        .then(() => {
+            NotificationManager.success('La commande a été traitée avec succès');
+            getPurchases();
+        })
+        .catch(err => {
+            if(err?.response?.status == 412) {
+                NotificationManager.error('La commande n\'est pas encore configuré');
+            } else {
+                NotificationManager.error('Une erreur est survenue, veuillez reessayer');
+            }
+        })
         .finally(() => props.setRequestGlobalAction(false))
     }
 
@@ -62,6 +73,7 @@ const List = (props) => {
                                             <th className="fw-bold">Telephone</th>
                                             <th className="fw-bold">Date</th>
                                             <th className="fw-bold">Status</th>
+                                            <th className="fw-bold">Payé ?</th>
                                             <th className="fw-bold">Dossier</th>
                                             <th className="fw-bold">Action</th>
                                         </tr>
@@ -111,6 +123,16 @@ const List = (props) => {
                                                             </span>
                                                             : '-'
                                                         }
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="media">
+                                                        <div className="user-status-pending d-flex flex-row align-items-center" style={{ position: 'relative' }}>
+                                                            <div className={`user-status-pending-circle rct-notify mr-10`} style={{
+                                                                background: item?.paymentStatus == 'PAID' ? 'green' : item?.paymentStatus == 'PAYING' ? 'orange' : 'red'
+                                                            }} />
+                                                            {item?.paymentStatus == 'PAID' ? 'Payé' : item?.paymentStatus == 'PAYING' ? 'En cours' : 'Non payé'}
+                                                        </div>
                                                     </div>
                                                 </td>
                                                 <td>

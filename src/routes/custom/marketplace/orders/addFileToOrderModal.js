@@ -83,7 +83,7 @@ class AddFileToOrderModal extends Component {
     }
 
     onSubmit = () => {
-        if(!this.state.agency) {
+        if(!this.state.agency && this.state.order?.mirrorAccount) {
             NotificationManager.error("Veuillez renseigner les informations");
             return;
         }
@@ -98,14 +98,17 @@ class AddFileToOrderModal extends Component {
 
         this.props.setRequestGlobalAction(true);
         
-        let data = {
-            agencyId: this.state.agency.id
-        };
+        let data = {};
+
+        if(this.state.order?.mirrorAccount) {
+            data.agencyId = this.state.agency.id;
+        }
 
         OrderService.addFileToOrder(this.state.order.id, data, {})
         .then(() => {
             this.setState({ file: null, userFile: null })
             NotificationManager.success("Cette pièce a été envoyée avec succès");
+            this.props.onClose()
         }).catch(() => {
             NotificationManager.error("Une erreur est survenue, la taille maximum de fichier autorisée est 1MB");
         }).finally(() => {

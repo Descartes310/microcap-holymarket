@@ -13,4 +13,10 @@ export const FIND_DISCOUNT = (id) => `api/orders/${id}/discounts`;
 export const FIND_SUBSCRIPTION = (id) => `api/orders/${id}/subscriptions`;
 export const FIND_ORDER_BY_REFERENCE = (id) => `api/orders/${id}/reference`;
 export const INITIATE_PAYMENT = (id) => `api/orders/${id}/initiate-payment`;
+export const GET_SUB_ORDERS = (reference) => `api/orders/${reference}/orders`;
 export const SEND_PAYMENT_REQUEST = (id) => `api/orders/${id}/initiate-payment`;
+
+export const GET_ORDER_SELLERS = (reference) => `api/orders/${reference}/sellers`;
+export const SET_ORDER_SELLER = (reference) => `api/orders/${reference}/sellers`;
+export const GET_ORDER_PRODUCT = (reference) => `api/orders/${reference}/product`;
+export const CONFIGURE_ORDER_CODEV = (reference) => `api/orders/${reference}/codev`;

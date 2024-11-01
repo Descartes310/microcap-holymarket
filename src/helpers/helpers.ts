@@ -1021,7 +1021,7 @@ export const getOrderStatus = () => {
             value: 'PENDING'
         },
         {
-            color: '#59eb76',
+            color: '#1c9b35',
             label: 'Confirmée',
             value: 'CONFIRMED'
         },
