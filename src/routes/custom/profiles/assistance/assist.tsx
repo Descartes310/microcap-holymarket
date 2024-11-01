@@ -18,6 +18,7 @@ import ActivationBox from '../../notifications/ActivationBox';
 import VerifyUserOTPModal from 'Components/verifyUserOTPModal';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { Form, FormGroup, Input as InputStrap } from 'reactstrap';
+import OrdersModal from 'Routes/custom/marketplace/_components/ordersModal';
 import { getPriceWithCurrency, getReferralTypeLabel } from 'Helpers/helpers';
 import { setRequestGlobalAction, onAddItemToCart, onClearCart } from 'Actions';
 import OrderFormModal from 'Routes/custom/marketplace/checkout/orderFormModal';
@@ -50,6 +51,7 @@ const Assist = (props) => {
     const [showOrderFolderModal, setShowOrderFolderModal] = useState(false);
     const [showSubscriptionModal, setShowSubscriptionModal] = useState(false);
     const [showAuthentificationBox, setShowAuthentificationBox] = useState(false);
+    const [showOrderManagementModal, setShowOrderManagementModal] = useState(false);
 
     const [step, setStep] = useState(1);
     const [amount, setAmount] = useState(null);
@@ -94,6 +96,7 @@ const Assist = (props) => {
                     break;
                 case 'PAY_ORDER':
                 case 'ORDER_FOLDER':
+                case 'MANAGE_ORDER':
                     getOrders();
                     break;
                 case 'INITIATE_OPERATION':
@@ -314,6 +317,10 @@ const Assist = (props) => {
             case 'ORDER_FOLDER':
                 setShowOrderFolderModal(true);
                 break;
+
+            case 'MANAGE_ORDER':
+                setShowOrderManagementModal(true);
+                break;
         
             default:
                 break;
@@ -426,7 +433,7 @@ const Assist = (props) => {
                         </FormGroup>
                     </>
                 )}
-                { (action?.value == 'PAY_ORDER' || action?.value == 'ORDER_FOLDER') && (
+                { (action?.value == 'PAY_ORDER' || action?.value == 'ORDER_FOLDER' || action?.value == 'MANAGE_ORDER') && (
                     <FormGroup className="col-md-12 col-sm-12 has-wrapper">
                         <InputLabel className="text-left">
                             Mes commandes
@@ -590,7 +597,6 @@ const Assist = (props) => {
                                 disabled={!member}
                                 onClick={() => {
                                     sendOtp();
-                                    // onSubmit();
                                 }}
                                 className="text-white font-weight-bold mr-20"
                             >
@@ -724,6 +730,17 @@ const Assist = (props) => {
                     title={'Renseigner le dossier commande'} 
                     show={showOrderFolderModal && action?.value == 'ORDER_FOLDER' }
                     onClose={() => {
+                        window.location.reload();
+                    }}
+                />
+            )}
+            { (order && action?.value == 'MANAGE_ORDER' && showOrderManagementModal) && (
+                <OrdersModal
+                    order={order}
+                    title={'Gestion de ma commande'} 
+                    show={showOrderManagementModal && action?.value == 'MANAGE_ORDER' }
+                    onClose={() => {
+                        setShowOrderManagementModal(false);
                         window.location.reload();
                     }}
                 />

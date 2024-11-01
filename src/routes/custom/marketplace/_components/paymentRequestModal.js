@@ -1,12 +1,10 @@
 import { useEffect } from 'react';
 import React, {useState} from 'react';
 import { connect } from 'react-redux';
-import OrderService from "Services/orders";
 import { withRouter } from "react-router-dom";
 import PaymentRequest from "./paymentRequest";
 import { setRequestGlobalAction } from 'Actions';
 import { RctCardContent } from 'Components/RctCard';
-import {NotificationManager} from 'react-notifications';
 import DialogComponent from "Components/dialog/DialogComponent";
 
 const PaymentRequestModal = (props) => {
@@ -18,37 +16,8 @@ const PaymentRequestModal = (props) => {
     useEffect(() => {
         if(paymentData) {
             sendPaymentData(paymentData)
-            // if(paymentData.paymentMethod == 'CREDIT_CARD') {
-            //     sendStripeData(paymentData);
-            // } else {
-            //     initiatePayment();
-            // }
         }
      }, [paymentData])
-  
-    const initiatePayment = () => {
-        props.setRequestGlobalAction(true);
-  
-        let data = {
-           amount: paymentData.amount,
-           notification_method: paymentData.notificationMethod
-        }
-  
-        if(paymentData.discountCode) {
-           data.discountCode = paymentData.discountCode;
-        }
-  
-        if(paymentData.subscriptionCode) {
-           data.subscriptionCode = subscriptionCode;
-        }
-  
-        OrderService.initiatePayment(paymentData.reference, data)
-           .then(() => {
-                NotificationManager.success('Opération réussie');
-                onClose();
-            })
-           .finally(() => props.setRequestGlobalAction(false))
-    }
     
     return (
         <DialogComponent

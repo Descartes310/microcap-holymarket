@@ -181,7 +181,7 @@ const List = (props) => {
                                                             Actions
                                                         </DropdownToggle>
                                                         <DropdownMenu>
-                                                            { item.paymentStatus != 'PAID' && (
+                                                            { item.paymentStatus != 'PAID' && !item.subOrder && (
                                                                 <DropdownItem style={{ color: 'black' }}
                                                                     onClick={() => {
                                                                         setSelectedItem(item);

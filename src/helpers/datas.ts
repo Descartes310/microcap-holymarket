@@ -365,6 +365,10 @@ export const getUserAssistanceTypes = () => {
             value: 'PAY_ORDER'
         },
         {
+            label: 'Gérer une commande',
+            value: 'MANAGE_ORDER'
+        },
+        {
             label: 'Demande d\'autorisation bancaire',
             value: 'INITIATE_OPERATION'
         },

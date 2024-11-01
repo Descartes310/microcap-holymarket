@@ -56,7 +56,11 @@ class CodevStep4 extends Component {
     }
 
     getAliases = () => {
-        UserService.getContacts().then((contacts) => {
+        let data = {};
+        if(this.props.referralCode) {
+            data.referralCode = this.props.referralCode
+        }
+        UserService.getContacts(data).then((contacts) => {
             this.setState({ aliases: contacts.filter(c => c.type === 'ALIAS') });
         });
     }
