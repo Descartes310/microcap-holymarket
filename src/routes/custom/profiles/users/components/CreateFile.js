@@ -14,7 +14,7 @@ import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 
 const CreateFileModal = (props) => {
 
-    const {show, onClose} = props;
+    const {show, onClose, referralCode} = props;
     const [file, setFile] = useState(null);
 
     const onSubmit = () => {
@@ -27,6 +27,10 @@ const CreateFileModal = (props) => {
 
         let data = {
             file, source_reference: props.file.source
+        }
+
+        if(referralCode) {
+            data.referralCode = referralCode
         }
 
         UserService.createFile(data, { fileData: ['file'], multipart: true }).then(() => {

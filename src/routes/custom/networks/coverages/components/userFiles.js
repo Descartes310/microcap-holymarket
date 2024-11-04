@@ -7,6 +7,7 @@ import { withRouter } from "react-router-dom";
 import { setRequestGlobalAction } from 'Actions';
 import React, { useState, useEffect } from 'react';
 import ConfirmBox from "Components/dialog/ConfirmBox";
+import CreateFileModal from 'Routes/custom/profiles/users/components/CreateFile';
 import TranscriptionBox from 'Routes/custom/profiles/users/components/TranscriptFile';
 
 const UserDocuments = (props) => {
@@ -14,6 +15,7 @@ const UserDocuments = (props) => {
     const [files, setFiles] = useState([]);
     const [selectedFile, setSelectedFile] = useState(null);
     const [showConfirmBox, setShowConfirmBox] = useState(false);
+    const [showCreateFile, setShowCreateFile] = useState(false);
     const [showTranscriptionBox, setShowTranscriptionBox] = useState(false);
 
     useEffect(() => {
@@ -59,6 +61,7 @@ const UserDocuments = (props) => {
                             <th className="fw-bold">Document</th>
                             <th className="fw-bold">Status</th>
                             <th className="fw-bold">Vérifier</th>
+                            <th className="fw-bold">Verser</th>
                             <th className="fw-bold">Transcrire</th>
                         </tr>
                     </thead>
@@ -114,6 +117,19 @@ const UserDocuments = (props) => {
                                     />
                                 </td>
                                 <td>
+                                    <Button
+                                        color="primary"
+                                        variant="contained"
+                                        className="text-white font-weight-bold"
+                                        onClick={() => {
+                                            setSelectedFile(file);
+                                            setShowCreateFile(true);
+                                        }}
+                                    >
+                                        Fournir la pièce
+                                    </Button>
+                                </td>
+                                <td>
                                     { file.value && (
                                         <Button
                                             color="primary"
@@ -148,7 +164,18 @@ const UserDocuments = (props) => {
                             onClose={() => {
                                 setShowTranscriptionBox(false);
                                 setSelectedFile(null);
-                                _getUserFiles();
+                                getUserFiles();
+                            }}
+                            file={selectedFile} 
+                        />
+                    )}
+                    { showCreateFile && selectedFile && (
+                        <CreateFileModal 
+                            show={showCreateFile}
+                            referralCode={props.reference}
+                            onClose={() => {
+                                setShowCreateFile(false);
+                                getUserFiles();
                             }}
                             file={selectedFile} 
                         />

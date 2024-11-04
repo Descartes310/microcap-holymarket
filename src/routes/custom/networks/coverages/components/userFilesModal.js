@@ -15,7 +15,7 @@ const UserDocumentsModal = (props) => {
         <DialogComponent
             show={show}
             onClose={onClose}
-            size="md"
+            size="lg"
             title={(
                 <h3 className="fw-bold">
                     Dossier utilisateur: {props.user?.userName}

@@ -164,7 +164,7 @@ const UpdateProfile = (props) => {
                     </FormGroup>
                 </div>
                 <div className='row'>
-                    { user.referralType != 'GROUP' && (
+                    {/* { user.referralType != 'GROUP' && (
                         <div className="col-md-6 col-sm-12 has-wrapper mb-30">
                             <InputLabel className="text-left">
                                 Pays d'implantation
@@ -202,8 +202,8 @@ const UpdateProfile = (props) => {
                                 renderInput={(params) => <TextField {...params} variant="outlined" />}
                             />
                         </div>
-                    )}
-                    <div className={`col-md-${user.referralType == 'GROUP' ? '12' : '6'} col-sm-12 has-wrapper mb-30`}>
+                    )} */}
+                    <div className={`col-md-12 col-sm-12 has-wrapper mb-30`}>
                         <InputLabel className="text-left">
                             { user.referralType == 'GROUP' ? "Pays de d'implantation" : "Pays de résidence"}
                         </InputLabel>
