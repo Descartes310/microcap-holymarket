@@ -13,8 +13,7 @@ class ProductDetailsButton extends Component {
 
     state = {
         show: false,
-        product: null,
-        showPrintDetails: false
+        product: null
     }
 
     constructor(props) {

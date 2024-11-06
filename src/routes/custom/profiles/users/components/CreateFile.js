@@ -9,13 +9,17 @@ import { imageFileTypes } from 'Helpers/datas';
 import { RctCardContent } from 'Components/RctCard';
 import { FileUploader } from "react-drag-drop-files";
 import { NotificationManager } from 'react-notifications';
+import Checkbox from "@material-ui/core/Checkbox/Checkbox";
 import DialogComponent from "Components/dialog/DialogComponent";
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
+import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
 
 const CreateFileModal = (props) => {
 
-    const {show, onClose, referralCode} = props;
     const [file, setFile] = useState(null);
+    const [page, setPage] = useState(0);
+    const {show, onClose, referralCode} = props;
+    const [hasManyPages, setHasManyPages] = useState(false);
 
     const onSubmit = () => {
 
@@ -26,7 +30,8 @@ const CreateFileModal = (props) => {
         props.setRequestGlobalAction(true);
 
         let data = {
-            file, source_reference: props.file.source
+            file, source_reference: props.file.source,
+            erase: page <= 0
         }
 
         if(referralCode) {
@@ -35,19 +40,28 @@ const CreateFileModal = (props) => {
 
         UserService.createFile(data, { fileData: ['file'], multipart: true }).then(() => {
             NotificationManager.success("La pièce a bien été ajoutée");
+            setFile(null);
+            if(hasManyPages) {
+                setPage(page+1);
+            } else {
+                props.onClose();
+            }
         }).catch((err) => {
             console.log(err);
             NotificationManager.error("Une erreur est survenue");
         }).finally(() => {
             props.setRequestGlobalAction(false);
-            props.onClose();
         })
     }
 
     return (
         <DialogComponent
             show={show}
-            onClose={onClose}
+            onClose={() => {
+                setPage(0);
+                setHasManyPages(false);
+                onClose();
+            }}
             size="md"
             title={(
                 <h3 className="fw-bold">
@@ -57,9 +71,19 @@ const CreateFileModal = (props) => {
         >
             <RctCardContent>
                 <Form onSubmit={onSubmit}>
+                    <FormGroup className="col-sm-12 has-wrapper">
+                        <FormControlLabel control={
+                            <Checkbox
+                                color="primary"
+                                checked={hasManyPages}
+                                onChange={() => setHasManyPages(!hasManyPages)}
+                            />
+                        } label={'Le document a plusieurs pages'}
+                        />
+                    </FormGroup>
                     <FormGroup className="has-wrapper">
                         <InputLabel className="text-left" htmlFor="label">
-                            {props.file?.label}
+                            {props.file?.label} {hasManyPages ? '(Importez une page après l\'autre)' : ''}
                         </InputLabel>
                         <FileUploader
                             classes="mw-100"

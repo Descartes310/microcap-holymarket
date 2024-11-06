@@ -51,7 +51,7 @@ const Create = (props) => {
     
     const getProducts = () => {
         props.setRequestGlobalAction(true);
-        ProductService.getProducts()
+        ProductService.getProducts({show_distributions: true})
             .then(response => setProducts(response))
             .finally(() => props.setRequestGlobalAction(false))
     }
@@ -199,7 +199,7 @@ const Create = (props) => {
                     }}
                     options={products}
                     value={selectedProducts}
-                    getOptionLabel={(option) => option.label}
+                    getOptionLabel={(option) => `${option.label} (${option.code})`}
                     renderInput={(params) => <TextField {...params} variant="outlined" />}
                 />
             </div>

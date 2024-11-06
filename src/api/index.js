@@ -6,7 +6,7 @@ import { objectToFormData, toCamelCase, toSnakeCase } from "Helpers/helpers";
 const customAxios =
    axios.create({
       baseURL: AppConfig.api.baseUrl,
-      timeout: 15000
+      timeout: 60000
    });
 
 customAxios.interceptors.request.use(

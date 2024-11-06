@@ -1,15 +1,21 @@
 import { connect } from 'react-redux';
+import Button from "@material-ui/core/Button";
 import { withRouter } from "react-router-dom";
+import Switch from "@material-ui/core/Switch";
 import ProductService from 'Services/products';
 import CustomList from "Components/CustomList";
 import { setRequestGlobalAction } from 'Actions';
 import React, { useEffect, useState } from 'react';
 import TimeFromMoment from 'Components/TimeFromMoment';
 import { getPriceWithCurrency } from 'Helpers/helpers';
+import {NotificationManager} from 'react-notifications';
+import UpdateDistributionPrice from '../../components/UpdateDistributionPrice';
 
 const List = (props) => {
 
-    const [distributions, setDistributions] = useState(null);
+    const [distribution, setDistribution] = useState(null);
+    const [distributions, setDistributions] = useState([]);
+    const [showPriceUpdate, setShowPriceUpdate] = useState(false);
 
     useEffect(() => {
         getDistributions();
@@ -22,6 +28,18 @@ const List = (props) => {
         .finally(() => props.setRequestGlobalAction(false))
     }
 
+    const changeStatus = (distribution) => {
+        props.setRequestGlobalAction(true),
+        ProductService.updateProductDistributionStatus(distribution.reference, {})
+        .then(() => {
+            getDistributions();
+            setDistribution(null)
+        })
+        .catch((err) => {
+            NotificationManager.error("Une erreur est survenue, veuillez reéssayer plus tard.");
+        })
+        .finally(() => props.setRequestGlobalAction(false))
+    }
 
     return (
         <>
@@ -45,7 +63,9 @@ const List = (props) => {
                                             <th className="fw-bold">Produit</th>
                                             <th className="fw-bold">Commercant</th>
                                             <th className="fw-bold">Prix</th>
+                                            <th className="fw-bold">Disponible</th>
                                             <th className="fw-bold">Date de création</th>
+                                            <th className="fw-bold">Prix</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -73,7 +93,27 @@ const List = (props) => {
                                                     </div>
                                                 </td>
                                                 <td>
+                                                    <Switch
+                                                        aria-label="Par défaut"
+                                                        checked={item.status}
+                                                        onChange={() => { changeStatus(item) }}
+                                                    />
+                                                </td>
+                                                <td>
                                                     <TimeFromMoment time={item.createdAt} showFullDate />
+                                                </td>
+                                                <td>
+                                                    <Button
+                                                        color="primary"
+                                                        variant="contained"
+                                                        onClick={() => {
+                                                            setDistribution(item);
+                                                            setShowPriceUpdate(true);
+                                                        }}
+                                                        className="text-white font-weight-bold mr-3"
+                                                    >
+                                                        Prix
+                                                    </Button>
                                                 </td>
                                             </tr>
                                         ))}
@@ -84,6 +124,16 @@ const List = (props) => {
                     </>
                 )}
             />
+            { showPriceUpdate && distribution && (
+                <UpdateDistributionPrice
+                    show={showPriceUpdate}
+                    distribution={distribution}
+                    onClose={() => {
+                        setShowPriceUpdate(false);
+                        getDistributions();
+                    }}
+                />
+            )}
         </>
     );
 }

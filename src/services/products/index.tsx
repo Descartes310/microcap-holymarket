@@ -56,8 +56,8 @@ export default class ProductService {
         return makeRequest('post', Routes.TIRAGE_PRODUCT_DETAILS, data);
     }
 
-    static getProducts(): Promise<any> {
-        return makeRequest('get', Routes.GET_PRODUCTS);
+    static getProducts(data: any = {}): Promise<any> {
+        return makeRequest('get', Routes.GET_PRODUCTS, data);
     }
 
     static getShopProducts(data): Promise<any> {
@@ -391,6 +391,14 @@ export default class ProductService {
 
     static getProductDistributions(data: any): Promise<any> {
         return makeRequest('get', Routes.GET_DISTRIBUTIONS, data);
+    }
+
+    static updateProductDistributionPrice(reference: string, data: any): Promise<any> {
+        return makeRequest('put', Routes.UPDATE_DISTRIBUTION_PRICE(reference), data);
+    }
+
+    static updateProductDistributionStatus(reference: string, data: any): Promise<any> {
+        return makeRequest('put', Routes.UPDATE_DISTRIBUTION_STATUS(reference), data);
     }
 
     static createBookingGift(reference: string, data: any): Promise<any> {

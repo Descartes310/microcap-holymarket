@@ -1026,6 +1026,11 @@ export const getOrderStatus = () => {
             value: 'CONFIRMED'
         },
         {
+            color: '#1c9b35',
+            label: 'pré-confirmée',
+            value: 'PRECONFIRMED'
+        },
+        {
             color: '#59c6eb',
             label: 'Payement...',
             value: 'PAYING'
@@ -1044,6 +1049,11 @@ export const getOrderStatus = () => {
             color: '#FF6464',
             label: 'Rejetée',
             value: 'REJECTED'
+        },
+        {
+            color: '#FF6464',
+            label: 'Rejetée',
+            value: 'PREREJECTED'
         }
     ]
 };

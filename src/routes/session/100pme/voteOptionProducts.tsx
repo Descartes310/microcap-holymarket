@@ -1,30 +1,23 @@
 import { connect } from 'react-redux';
 import QueueAnim from 'rc-queue-anim';
-import { Link } from 'react-router-dom';
 import { injectIntl } from "react-intl";
 import OrderService from 'Services/orders';
-import AppConfig from 'Constants/AppConfig';
-import IntlMessages from "Util/IntlMessages";
+import {PME_PROJECT} from "Url/frontendUrl";
 import SystemService from 'Services/systems';
-import AppBar from '@material-ui/core/AppBar';
 import { FormGroup, Button } from 'reactstrap';
 import ProductService from 'Services/products';
 import { voteOptions } from './components/data';
-import Toolbar from '@material-ui/core/Toolbar';
 import { setRequestGlobalAction } from 'Actions';
 import React, { useEffect, useState } from 'react';
 import TextField from '@material-ui/core/TextField';
 import { onAddItemToCart, onClearCart } from 'Actions';
-import InputComponent from "Components/InputComponent";
 import { getPriceWithCurrency } from 'Helpers/helpers';
-import FormControl from "@material-ui/core/FormControl";
 import {NotificationManager} from 'react-notifications';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { stripeZeroDecimalCurrencies } from 'Helpers/datas'
-import InputLabel from '@material-ui/core/InputLabel/InputLabel';
-import OrderFormModal from 'Routes/custom/marketplace/checkout/orderFormModal'
-import {HOME, AUTH, LANDING, PME_PROJECT, joinUrlWithParamsId} from "Url/frontendUrl";
 import Checkbox from "@material-ui/core/Checkbox/Checkbox";
+import InputLabel from '@material-ui/core/InputLabel/InputLabel';
+import OrderFormModal from 'Routes/custom/marketplace/checkout/orderFormModal';
 import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
 import CodevSubscriptionModal from 'Routes/custom/marketplace/_components/codevSubscriptionModal';
 

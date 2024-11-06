@@ -26,7 +26,7 @@ const List = (props) => {
 
     const getPurchases = () => {
         props.setRequestGlobalAction(true);
-        OrderService.getPurchases({ status: ['PENDING'] })
+        OrderService.getPurchases({ status: ['PENDING', 'PRECONFIRMED'], request: true })
         .then(response => setPurchases(response))
         .finally(() => props.setRequestGlobalAction(false));
     }

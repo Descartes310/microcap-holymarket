@@ -15,8 +15,7 @@ class BondDetails extends Component {
     state = {
         order: null,
         participants: [],
-        showParticipants: false,
-        showPrintDetails: false
+        showParticipants: false
     }
 
     constructor(props) {
