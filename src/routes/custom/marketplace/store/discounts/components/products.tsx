@@ -31,7 +31,7 @@ const List = (props) => {
 
     const getProducts = () => {
         props.setRequestGlobalAction(true);
-        ProductService.getProducts()
+        ProductService.getProducts({show_distributions: true})
             .then(response => setProducts(response))
             .finally(() => props.setRequestGlobalAction(false))
     }
