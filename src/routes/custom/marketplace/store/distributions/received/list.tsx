@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 import Button from "@material-ui/core/Button";
 import { withRouter } from "react-router-dom";
 import Switch from "@material-ui/core/Switch";
+import { MARKETPLACE } from 'Url/frontendUrl';
 import ProductService from 'Services/products';
 import CustomList from "Components/CustomList";
 import { setRequestGlobalAction } from 'Actions';
@@ -9,6 +10,7 @@ import React, { useEffect, useState } from 'react';
 import TimeFromMoment from 'Components/TimeFromMoment';
 import { getPriceWithCurrency } from 'Helpers/helpers';
 import {NotificationManager} from 'react-notifications';
+import ProductPaymentIncorrect from '../../components/productPaymentIncorrect';
 import UpdateDistributionPrice from '../../components/UpdateDistributionPrice';
 
 const List = (props) => {
@@ -16,6 +18,7 @@ const List = (props) => {
     const [distribution, setDistribution] = useState(null);
     const [distributions, setDistributions] = useState([]);
     const [showPriceUpdate, setShowPriceUpdate] = useState(false);
+    const [showPaymentModal, setShowPaymentModal] = useState(false);
 
     useEffect(() => {
         getDistributions();
@@ -36,7 +39,12 @@ const List = (props) => {
             setDistribution(null)
         })
         .catch((err) => {
-            NotificationManager.error("Une erreur est survenue, veuillez reéssayer plus tard.");
+            setDistribution(distribution);    
+            if(err?.response?.status == 412) {
+                setShowPaymentModal(true);
+            } else {
+                NotificationManager.error("Une erreur est survenue, veuillez reéssayer plus tard.");
+            }
         })
         .finally(() => props.setRequestGlobalAction(false))
     }
@@ -132,6 +140,15 @@ const List = (props) => {
                         setShowPriceUpdate(false);
                         getDistributions();
                     }}
+                />
+            )}
+
+            { distribution && showPaymentModal && (
+                <ProductPaymentIncorrect
+                    product={distribution}
+                    show={showPaymentModal && distribution} 
+                    onClose={() => { setShowPaymentModal(false); }} 
+                    onSuccess={() => props.history.push(MARKETPLACE.STORE.PAYMENT.CONFIGURATION.LIST)} 
                 />
             )}
         </>

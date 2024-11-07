@@ -115,7 +115,11 @@ class MainApp extends Component<Props> {
 	}
 
 	isUserAllowed = (): boolean => {
-		const menu = this.findCurrentMenu(this.props.sidebarMenus); 
+		const menu = this.findCurrentMenu(this.props.sidebarMenus);
+		if(menu) {
+			console.log("1 => ", this.props.user, menu) 
+			console.log("2 => ", isMenuAllowed(this.props.user, menu))
+		}
 		return menu ? isMenuAllowed(this.props.user, menu) : true;
 	}
 
