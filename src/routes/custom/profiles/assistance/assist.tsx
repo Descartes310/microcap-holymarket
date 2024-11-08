@@ -293,7 +293,6 @@ const Assist = (props) => {
                 break;
 
             case 'AUTHENTICATE_PROFILE':
-                console.log("authentifier");
                 setShowMemberFileBox(true);
                 break;
 

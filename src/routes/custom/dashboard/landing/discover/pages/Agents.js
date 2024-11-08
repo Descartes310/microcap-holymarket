@@ -65,19 +65,21 @@ const Agents = () => {
                                         <h4>{agent.name}, <span>{agent.post}</span></h4>
                                         <p>{agent.about}</p>
                                     </div>
-                                    <div>
-                                        <Button
-                                            color="primary"
-                                            variant="contained"
-                                            onClick={() => {
-                                                setSelectedAgent(agent);
-                                                setShowPaymentBox(true);
-                                            }}
-                                            className="text-white font-weight-bold"
-                                        >
-                                            Encaissement
-                                        </Button>
-                                    </div>
+                                    { agent.referralCode && (
+                                        <div>
+                                            <Button
+                                                color="primary"
+                                                variant="contained"
+                                                onClick={() => {
+                                                    setSelectedAgent(agent);
+                                                    setShowPaymentBox(true);
+                                                }}
+                                                className="text-white font-weight-bold"
+                                            >
+                                                Encaissement
+                                            </Button>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                         ))}
