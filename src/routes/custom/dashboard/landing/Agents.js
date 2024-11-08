@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
 import { connect } from "react-redux";
 import { injectIntl } from "react-intl";
 import { DISCOVER } from "Url/frontendUrl";
-import { RctCard, RctCardContent } from 'Components/RctCard';
-import { HashLink } from 'react-router-hash-link';
 import { Tooltip } from '@material-ui/core';
 import { getFilePath } from "Helpers/helpers";
+import { HashLink } from 'react-router-hash-link';
+import React, { useState, useEffect } from 'react';
+import { RctCard, RctCardContent } from 'Components/RctCard';
 import DiscoverMenu from "Routes/custom/dashboard/landing/discover/components/DiscoverMenu";
 
 const Agents = (props) => {

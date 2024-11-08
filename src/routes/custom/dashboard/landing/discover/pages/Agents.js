@@ -1,13 +1,18 @@
 import { DISCOVER } from "Url/frontendUrl";
+import Button from '@material-ui/core/Button';
 import { getFilePath } from "Helpers/helpers";
 import SettingService from 'Services/settings';
 import { HashLink } from 'react-router-hash-link';
 import React, { useState, useEffect } from 'react';
 import DiscoverLayout from "Routes/custom/dashboard/landing/discover/DiscoverLayout";
 import TitleHeader from "Routes/custom/dashboard/landing/discover/components/TitleHeader";
+import AgentPaymentRequestModal from "Routes/custom/marketplace/_components/agentPaymentRequestModal";
 
 const Agents = () => {
+
     const [data, setData] = useState([]);
+    const [selectedAgent, setSelectedAgent] = useState(null);
+    const [showPaymentBox, setShowPaymentBox] = useState(false);
 
     document.body.style.overflow = "auto";
 
@@ -60,6 +65,19 @@ const Agents = () => {
                                         <h4>{agent.name}, <span>{agent.post}</span></h4>
                                         <p>{agent.about}</p>
                                     </div>
+                                    <div>
+                                        <Button
+                                            color="primary"
+                                            variant="contained"
+                                            onClick={() => {
+                                                setSelectedAgent(agent);
+                                                setShowPaymentBox(true);
+                                            }}
+                                            className="text-white font-weight-bold"
+                                        >
+                                            Encaissement
+                                        </Button>
+                                    </div>
                                 </div>
                             </div>
                         ))}
@@ -73,6 +91,15 @@ const Agents = () => {
                     </p>
                 </div>
             </div>
+            { showPaymentBox && (
+                <AgentPaymentRequestModal
+                    show={showPaymentBox}
+                    onClose={() => {
+                        setShowPaymentBox(false);
+                        setSelectedAgent(null);
+                    }}
+                />
+            )}
         </DiscoverLayout>
     );
 };

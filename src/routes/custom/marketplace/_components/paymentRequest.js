@@ -16,7 +16,7 @@ import { getOrderTypes, getPaymentMethods, getNotificationMethods } from 'Helper
 
 const PaymentRequest = (props) => {
 
-    const {onError, defaultReference, defaultType, hideReference, onSendData, defaultPaymentMethod, disabled} = props;
+    const {onError, defaultReference, defaultType, hideReference, onSendData, defaultPaymentMethod, disabled, singlePaymentMethod} = props;
 
     const [order, setOrder] = useState(null);
     const [amount, setAmount] = useState(null);
@@ -250,8 +250,12 @@ const PaymentRequest = (props) => {
                                 disabled={!pm.enabled || defaultPaymentMethod != null || disabled}
                                 checked={paymentMethod.includes(pm.value)}
                                 onChange={() => {
-                                    if(!paymentMethod.includes(pm.value)) {
-                                        setPaymentMethod([...paymentMethod, pm.value]);
+                                    if(!paymentMethod.includes(pm.value)) {                                        console.log(singlePaymentMethod);
+                                        if(singlePaymentMethod) {
+                                            setPaymentMethod([pm.value]);
+                                        } else {
+                                            setPaymentMethod([...paymentMethod, pm.value]);
+                                        }
                                     } else {
                                         setPaymentMethod([...paymentMethod.filter(n => n != pm.value)]);
                                     }

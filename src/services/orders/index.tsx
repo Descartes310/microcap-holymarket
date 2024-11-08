@@ -44,6 +44,14 @@ export default class OrderService {
         return makeRequest('post', Routes.PAY_ORDER(id), data);
     }
 
+    static paySaleByTransfer(id, data: any, config): Promise<any> {
+        return makeRequest('post', Routes.PAY_ORDER_BY_TRANSFER(id), data, config);
+    }
+
+    static approveSale(id, data: any): Promise<any> {
+        return makeRequest('post', Routes.APPROVE_PAYMENT(id), data);
+    }
+
     static addFileToOrder(id: number, data: any, config: any): Promise<any> {
         return makeRequest('put', Routes.ADD_FILE_TO_ORDER(id), data, config);
     }

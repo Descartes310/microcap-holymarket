@@ -73,7 +73,7 @@ const UserDetails = (props) => {
                 setShowMessageBox(true);
                 break;
             case 'AUTHENTICATE':
-                setShowUserFileBox(true);
+                setShowMemberFileBox(true);
                 break;
         
             default:
@@ -317,7 +317,7 @@ const UserDetails = (props) => {
                     }}
                 />
             )}
-            { user && showUserFileBox && (
+            {/* { user && showUserFileBox && (
                 <UserDocumentsModal
                     user={user}
                     show={showUserFileBox}
@@ -330,7 +330,7 @@ const UserDetails = (props) => {
                         setShowMemberFileBox(true);
                     }}
                 />
-            )}
+            )} */}
             { user && showMemberFileBox && (
                 <MemberDocumentsModal
                     user={user}

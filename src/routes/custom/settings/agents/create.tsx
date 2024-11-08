@@ -5,6 +5,7 @@ import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
 import TerritoryType from "Enums/Territories";
 import SettingService from 'Services/settings';
+import UserSelect from 'Components/UserSelect';
 import { setRequestGlobalAction } from 'Actions';
 import MenuItem from "@material-ui/core/MenuItem";
 import React, { useEffect, useState } from 'react';
@@ -14,10 +15,12 @@ import { FileUploader } from "react-drag-drop-files";
 import Select from "@material-ui/core/Select/Select";
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { NotificationManager } from 'react-notifications';
+import Checkbox from "@material-ui/core/Checkbox/Checkbox";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { Form, FormGroup, Input as InputStrap } from 'reactstrap';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
+import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
 
 const fileTypes = ["JPG", "PNG", "GIF", "JPEG"];
 const TYPES = [
@@ -35,10 +38,12 @@ const Create = (props) => {
     const [about, setAbout] = useState('');
     const [type, setType] = useState(null);
     const [file, setFile] = useState(null);
+    const [member, setMember] = useState(null);
     const [address, setAddress] = useState('');
     const [country, setCountry] = useState(null);
     const [telephone, setTelephone] = useState('');
     const [countries, setCountries] = useState([]);
+    const [hasReferralCode, setHasReferralCode] = useState(false);
 
     useEffect(() => {
         _getCountries();
@@ -60,8 +65,19 @@ const Create = (props) => {
             datas.avatar = file;
         }
 
-        if(type)
+        if(type) {
             datas.nature = type;
+        }
+
+        if(hasReferralCode && !member) {
+            NotificationManager.error('Veuillez renseigner toutes les informations');
+            return;
+        }
+
+        if(hasReferralCode && member) {
+            datas.isSeller = hasReferralCode;
+            datas.referralCode = member.referralCode;
+        }
 
         props.setRequestGlobalAction(true);
         
@@ -232,6 +248,23 @@ const Create = (props) => {
                             renderInput={(params) => <TextField {...params} variant="outlined" />}
                         />
                     </FormGroup>
+
+                    <FormGroup className="col-sm-12 has-wrapper">
+                        <FormControlLabel control={
+                            <Checkbox
+                                color="primary"
+                                checked={hasReferralCode}
+                                onChange={() => setHasReferralCode(!hasReferralCode)}
+                            />
+                        } label={'Associer à un distributeur'}
+                        />
+                    </FormGroup>
+
+                    { hasReferralCode && (
+                        <UserSelect label={'Numéro utilisateur'} onChange={(_, member) => {
+                            setMember(member)
+                        }}/>
+                    )}
 
                     <FormGroup>
                         <Button

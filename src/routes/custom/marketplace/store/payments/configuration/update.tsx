@@ -32,6 +32,9 @@ const Update = (props) => {
     const [account, setAccount] = useState(null);
     const [oldConfig, setOldConfig] = useState(null);
     const [startDate, setStartDate] = useState(null);
+    const [accountIBAN, setAccountIBAN] = useState(null);
+    const [accountName, setAccountName] = useState(null);
+    const [transferLabel, setTransferLabel] = useState(null);
     const [selectedOrders, setSelectedOrders] = useState([]);
     const [selectedProducts, setSelectedProducts] = useState([]);
     const [notificationMethod, setNotificationMethod] = useState(['LOGIN_EMAIL', 'ADDRESS']);
@@ -60,7 +63,10 @@ const Update = (props) => {
                 setEndDate(response.endDate);
                 setStartDate(response.startDate);
                 setSelectedOrders(response.orders);
+                setAccountIBAN(response.accountIban);
+                setAccountName(response.accountName);
                 setSelectedProducts(response.products);
+                setTransferLabel(response.transferDescription);
                 setType(getPaymentConfigTypes().find(t => t.value == response.type));
                 setNature(getPaymentConfigNatures().find(t => t.value == response.nature));
                 setPaymentMethod(getPaymentMethods().filter(pm => response.paymentMethods.includes(pm.value)).map(pm => pm.value));
@@ -96,7 +102,7 @@ const Update = (props) => {
     }
 
     const onSubmit = () => {
-        if(!paymentMethod || !notificationMethod || (paymentMethod.includes('DEPOSIT') && !account) || !label || !type || !nature || !startDate || !endDate || (selectedOrders?.length <= 0 && selectedProducts?.length <= 0)) {
+        if(!paymentMethod || !notificationMethod || (paymentMethod.includes('DEPOSIT') && !account) || (paymentMethod.includes('BANK_TRANSFER') && (!accountIBAN || !accountName)) || !label || !type || !nature || !startDate || !endDate || (selectedOrders?.length <= 0 && selectedProducts?.length <= 0)) {
             NotificationManager.error("Le formulaire est mal renseigné");
             return;
         }
@@ -114,6 +120,12 @@ const Update = (props) => {
 
         if(paymentMethod.includes('DEPOSIT')) {
             data.accountReference = account.reference
+        }
+
+        if(paymentMethod.includes('BANK_TRANSFER')) {
+            data.account_iban = accountIBAN
+            data.account_name = accountName
+            data.transfer_description = transferLabel
         }
 
         props.setRequestGlobalAction(true);
@@ -270,6 +282,52 @@ const Update = (props) => {
                     </FormGroup>
                 )}
             </div>
+            { paymentMethod.includes('BANK_TRANSFER') && (
+                <div className="row has-wrapper">
+                    <FormGroup className="col-md-4 col-sm-12">
+                        <InputLabel className="text-left" htmlFor="accountIBAN">
+                            IBAN du compte pour virement
+                        </InputLabel>
+                        <InputStrap
+                            required
+                            id="accountIBAN"
+                            type="text"
+                            name='accountIBAN'
+                            value={accountIBAN}
+                            className="input-lg"
+                            onChange={(e) => setAccountIBAN(e.target.value)}
+                        />
+                    </FormGroup>
+                    <FormGroup className="col-md-4 col-sm-12">
+                        <InputLabel className="text-left" htmlFor="accountName">
+                            Nom du compte pour virement
+                        </InputLabel>
+                        <InputStrap
+                            required
+                            id="accountName"
+                            type="text"
+                            name='accountName'
+                            value={accountName}
+                            className="input-lg"
+                            onChange={(e) => setAccountName(e.target.value)}
+                        />
+                    </FormGroup>
+                    <FormGroup className="col-md-4 col-sm-12">
+                        <InputLabel className="text-left" htmlFor="transferLabel">
+                            Raison du virement
+                        </InputLabel>
+                        <InputStrap
+                            required
+                            id="transferLabel"
+                            type="text"
+                            name='transferLabel'
+                            value={transferLabel}
+                            className="input-lg"
+                            onChange={(e) => setTransferLabel(e.target.value)}
+                        />
+                    </FormGroup>
+                </div>
+            )}
             { paymentMethod.includes('DEPOSIT') && (
                 <FormGroup className="col-md-12 col-sm-12 has-wrapper">
                     <InputLabel className="text-left">

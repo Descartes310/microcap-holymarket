@@ -294,7 +294,7 @@ const Assist = (props) => {
 
             case 'AUTHENTICATE_PROFILE':
                 console.log("authentifier");
-                setShowUserFileBox(true);
+                setShowMemberFileBox(true);
                 break;
 
             case 'PLACE_ORDER':
@@ -620,7 +620,7 @@ const Assist = (props) => {
                 />
             )}
 
-            { member && showUserFileBox && (
+            {/* { member && showUserFileBox && (
                 <UserDocumentsModal
                     user={member}
                     show={showUserFileBox}
@@ -633,7 +633,7 @@ const Assist = (props) => {
                         setShowMemberFileBox(true);
                     }}
                 />
-            )}
+            )} */}
             { member && showMemberFileBox && (
                 <MemberDocumentsModal
                     user={member}

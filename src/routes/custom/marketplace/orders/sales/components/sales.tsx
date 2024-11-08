@@ -42,6 +42,7 @@ const Sales = (props) => {
                            <tr>
                               <th className="fw-bold">#Reference</th>
                               <th className="fw-bold">Montant</th>
+                              <th className="fw-bold">Status</th>
                               <th className="fw-bold">Date</th>
                            </tr>
                         </thead>
@@ -52,7 +53,7 @@ const Sales = (props) => {
                                     <div className="media">
                                        <div className="media-body pt-10">
                                           <h4 className="m-0 fw-bold text-dark">
-                                             #{item.paymentReference.split('_').pop()}
+                                             #{item.reference}
                                           </h4>
                                        </div>
                                     </div>
@@ -63,6 +64,16 @@ const Sales = (props) => {
                                           <h4 className="m-0 fw-bold text-dark">
                                              {getPriceWithCurrency(item.amount, item.currency)}
                                           </h4>
+                                       </div>
+                                    </div>
+                                 </td>
+                                 <td>
+                                    <div className="media">
+                                       <div className="user-status-pending d-flex flex-row align-items-center" style={{ position: 'relative' }}>
+                                          <div className={`user-status-pending-circle rct-notify mr-10`} style={{
+                                                background: item?.status == 'APPROVED' ? 'green' : item?.status == 'PENDING' ? 'orange' : 'red'
+                                          }} />
+                                          {item?.status == 'APPROVED' ? 'Validé' : item?.status == 'PENDING' ? 'En attente' : 'Rejeté'}
                                        </div>
                                     </div>
                                  </td>

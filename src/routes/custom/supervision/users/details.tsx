@@ -15,6 +15,7 @@ import AuthenticateUser from '../components/authenticateUser';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import SendContactMessage from '../components/sendContactMessage';
 import UserDocuments from 'Routes/custom/networks/coverages/components/userFiles';
+import MemberDocumentsModal from 'Routes/custom/networks/coverages/components/memberFilesModal';
 
 const UserDetails = (props) => {
 
@@ -23,6 +24,7 @@ const UserDetails = (props) => {
     const [countries, setCountries] = useState([]);
     const [subscriptions, setSubscriptions] = useState([]);
     const [showMessageBox, setShowMessageBox] = useState(false);
+    const [showMemberFileBox, setShowMemberFileBox] = useState(false);
     const [showAuthentificationBox, setShowAuthentificationBox] = useState(false);
 
     useEffect(() => {
@@ -69,7 +71,7 @@ const UserDetails = (props) => {
                 setShowMessageBox(true);
                 break;
             case 'AUTHENTICATE':
-                setShowAuthentificationBox(true);
+                setShowMemberFileBox(true);
                 break;
         
             default:
@@ -369,6 +371,20 @@ const UserDetails = (props) => {
                     show={showMessageBox}
                     onClose={() => {
                         setShowMessageBox(false);
+                    }}
+                />
+            )}
+            { user && showMemberFileBox && (
+                <MemberDocumentsModal
+                    user={user}
+                    show={showMemberFileBox}
+                    reference={user.referralCode}
+                    onClose={() => {
+                        setShowMemberFileBox(false);
+                    }}
+                    onValidate={() => {
+                        setShowMemberFileBox(false);
+                        setShowAuthentificationBox(true);
                     }}
                 />
             )}

@@ -1,4 +1,5 @@
 import { connect } from "react-redux";
+import { FormGroup } from 'reactstrap';
 import { injectIntl } from "react-intl";
 import React, { Component } from 'react';
 import OrderService from "Services/orders";
@@ -6,8 +7,11 @@ import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
 import { setRequestGlobalAction } from 'Actions';
 import { getPriceWithCurrency } from 'Helpers/helpers';
+import OrderPaymentProofModal from './OrderPaymentProof';
 import { NotificationManager } from 'react-notifications';
+import Checkbox from "@material-ui/core/Checkbox/Checkbox";
 import { RctCard, RctCardContent } from 'Components/RctCard';
+import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
 
 class PaymentCard extends Component {
 
@@ -15,6 +19,8 @@ class PaymentCard extends Component {
       discount: null,
       paymentData: null,
       showStripeBox: false,
+      showTransferBox: false,
+      isBankTransfer: false
    }
 
    componentDidMount() {
@@ -65,7 +71,7 @@ class PaymentCard extends Component {
 
    render() {
       const { order } = this.props;
-      const { discount } = this.state;
+      const { discount, isBankTransfer, showTransferBox } = this.state;
       return (
          <RctCard className="payment">
             <RctCardContent>
@@ -81,6 +87,28 @@ class PaymentCard extends Component {
                   >
                      Demande de paiement
                   </Button>
+                  <FormGroup className="col-sm-12 has-wrapper">
+                     <FormControlLabel control={
+                           <Checkbox
+                              color="primary"
+                              checked={isBankTransfer}
+                              onChange={() => this.setState({ isBankTransfer: !isBankTransfer })}
+                           />
+                     } label={'J\'ai fais un virement bancaire'}
+                     />
+                  </FormGroup>
+                  { isBankTransfer && (
+                     <Button
+                        color="primary"
+                        variant="contained"
+                        onClick={() => {
+                           this.setState({ showTransferBox: true })
+                        }}
+                        className="col-md-12 col-sm-12 text-white font-weight-bold mb-20"
+                     >
+                        Envoyer la preuve
+                     </Button>
+                  )}
                </div>
                {/* <PaymentRequest
                   hideReference={true}
@@ -95,7 +123,16 @@ class PaymentCard extends Component {
                      onClose()
                   }}
                /> */}
-
+               {}
+               <OrderPaymentProofModal
+                  show={showTransferBox}
+                  onClose={() => {
+                     this.setState({ showTransferBox: false, isBankTransfer: false });
+                  }}
+                  order={this.props.order}
+                  amount={this.getDiscountedAmountToPay()}
+                  currency={order?.items[0]?.currency}
+               />
             </RctCardContent>
          </RctCard>
       );

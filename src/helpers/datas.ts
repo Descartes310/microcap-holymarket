@@ -60,7 +60,7 @@ export const getPaymentMethods = () => {
         },
         {
             label: 'Virement bancaire',
-            enabled: false,
+            enabled: true,
             value: 'BANK_TRANSFER'
         },
         {

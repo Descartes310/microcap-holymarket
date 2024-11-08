@@ -1,33 +1,16 @@
 import React from 'react';
-import Slider from "react-slick";
 import { connect } from "react-redux";
 import { injectIntl } from "react-intl";
 import { Link } from "react-router-dom";
+import "slick-carousel/slick/slick.css";
+import { LANDING } from "Url/frontendUrl";
 import Button from "@material-ui/core/Button";
-import slide21 from 'Assets/img/slide21.jpg';
-import slide23 from 'Assets/img/slide23.jpg';
+import "slick-carousel/slick/slick-theme.css";
 import { HashLink } from 'react-router-hash-link';
 import { RctCard, RctCardContent } from 'Components/RctCard';
 import { Card, CardImg, CardText, CardBody, CardFooter } from 'reactstrap';
 import DiscoverLayout from "Routes/custom/dashboard/landing/discover/DiscoverLayout";
 import DiscoverVideo from "Routes/custom/dashboard/landing/discover/components/DiscoverVideo";
-import { PIONIERS, SOLIDARITY, MONEY_MANAGEMENT, GETIN, PASS_DETAILS, AGENTS } from "Url/frontendUrl";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-
-const settings = {
-    dots: false,
-    infinite: true,
-    speed: 700,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    arrows: false,
-    autoplay: true,
-    swipe: true,
-    touchMove: true,
-    swipeToSlide: true,
-    draggable: true
-};
 
 const Discover = (props) => {
     return (
@@ -41,7 +24,7 @@ const Discover = (props) => {
                         </h2>
                         <p data-aos="fade-left" className="text-center">Etendre votre réseau de love money au -delà du cercle familial et amical,</p>
                         <p data-aos="fade-left" className="text-center">réinventer une solidarité utile et promouvoir une finance inclusive</p>
-                        <p data-aos="fade-left" className="text-center"><HashLink to={`${GETIN}`}>Adhérer au réseau Microcap</HashLink></p>
+                        <p data-aos="fade-left" className="text-center"><HashLink to={`${LANDING.GETIN}`}>Adhérer au réseau Microcap</HashLink></p>
                     </div>
                     <div className="row">
                         <div className="col-xs-12 col-sm-12 col-md-4 mb-30" data-aos="fade-down" data-aos-duration="300">
@@ -55,7 +38,7 @@ const Discover = (props) => {
                                     </CardText>
                                 </CardBody>
                                 <CardFooter className="border-0 center-hor-ver">
-                                    <Link to={GETIN}>
+                                    <Link to={LANDING.GETIN}>
                                         <Button variant="contained" className="btn-primary mr-2">
                                             Réseau Microcap
                                         </Button>
@@ -74,7 +57,7 @@ const Discover = (props) => {
                                     </CardText>
                                 </CardBody>
                                 <CardFooter className="border-0 center-hor-ver">
-                                    <Link to={SOLIDARITY}>
+                                    <Link to={LANDING.SOLIDARITY}>
                                         <Button variant="contained" className="btn-primary mr-2">
                                             Nos projets solidaires
                                         </Button>
@@ -92,7 +75,7 @@ const Discover = (props) => {
                                     </CardText>
                                 </CardBody>
                                 <CardFooter className="border-0 center-hor-ver">
-                                    <Link to={MONEY_MANAGEMENT}>
+                                    <Link to={LANDING.MONEY_MANAGEMENT}>
                                         <Button variant="contained" className="btn-primary mr-2">
                                             Education financière
                                         </Button>
@@ -348,7 +331,7 @@ const Discover = (props) => {
                             <div className="visibRight col-xl-4 offset-xl-1 col-lg-4 order-2 wow fadeInRight">
                                 <div className="title-block lite" data-aos="fade-down">
                                     <h4>booster votre abonnement grâce à nos </h4> <h3>Options en <br /> Séries <br /> Limitées</h3>
-                                    <Link to={PASS_DETAILS}>
+                                    <Link to={LANDING.PASS_DETAILS}>
                                         <button className="MuiButtonBase-root btn-discovery mr-2 mt-4"
                                             tabIndex="0" type="button">
                                             <span className="MuiButton-label fw-bold">
@@ -403,7 +386,7 @@ const Discover = (props) => {
                                 </p>
                             </div>
                             <div className="d-flex align-items-center justify-content-center mb-50" style={{ position: "relative" }}>
-                                <Link to={PIONIERS}>
+                                <Link to={LANDING.PIONIERS}>
                                     <button
                                         className="MuiButtonBase-root mr-2 mt-30 btn-discovery"
                                         tabIndex="0"
@@ -436,7 +419,7 @@ const Discover = (props) => {
                             </div>
 
                             <div className="d-flex align-items-center justify-content-center mb-50" style={{ position: "relative" }}>
-                                <Link to={AGENTS}>
+                                <Link to={LANDING.AGENTS}>
                                     <button className="MuiButtonBase-root btn-discovery mr-2"
                                         tabIndex="0" type="button">
                                         <span className="MuiButton-label">

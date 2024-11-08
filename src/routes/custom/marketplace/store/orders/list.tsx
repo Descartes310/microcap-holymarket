@@ -45,7 +45,7 @@ const List = (props) => {
 
     const sendPaymentRequest = (item: any) => {
         props.setRequestGlobalAction(true)
-        OrderService.initiatePayment(item.reference, {})
+        OrderService.initiatePayment(item.reference, item)
          .then(() => {
             NotificationManager.success("La demande de paiement a été envoyée");
             setShowPaymentRequest(false);
