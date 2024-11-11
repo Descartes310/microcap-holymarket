@@ -56,7 +56,7 @@ const Indivision = (props) => {
                     Une indivision autorise plusieurs personnes à faire les versements sur un même compte/plan d'épargne
                 </div>
                 <div className="col-md-12 col-sm-12 has-wrapper mb-30 mt-20">
-                    <h4 className='mb-40'>Montant périodique: {getPriceWithCurrency(props?.data.product?.details.find(d => d.type == 'DEPOSIT_AMOUNT')?.value, props?.data.product?.details.find(d => d.type == 'PRICE_CURRENCY')?.value)}</h4>
+                    <h4 className='mb-40'>Montant périodique: {props?.data.product?.details.find(d => d.type == 'DEPOSIT_AMOUNT')?.value}  {props?.data.product?.details.find(d => d.type == 'PRICE_CURRENCY')?.value}</h4>
                     <div className='row'>
                         <FormGroup className="col-md-12 col-sm-12 has-wrapper">
                             <InputLabel className="text-left" htmlFor="amount">

@@ -40,10 +40,10 @@ class Payments extends Component<any, any> {
                 <RctCard customClasses="overflow-hidden">
                     <RctCardContent noPadding>
                         <div className="row no-gutters">
-                            <div className={['NONE', 'PENDING'].includes(order?.paymentStatus) ? 'col-lg-8 col-md-8 col-sm-12' : 'col-lg-12 col-md-12 col-sm-12'} style={{ padding: 20 }}>
+                            <div className={['NONE', 'PENDING', 'PAYING'].includes(order?.paymentStatus) ? 'col-lg-8 col-md-8 col-sm-12' : 'col-lg-12 col-md-12 col-sm-12'} style={{ padding: 20 }}>
                                 <Sales />
                             </div>
-                            { ['NONE', 'PENDING'].includes(order?.paymentStatus) && (
+                            { ['NONE', 'PENDING', 'PAYING'].includes(order?.paymentStatus) && (
                                 <div className={`col-lg-4 col-md-4 col-sm-12`} style={{ padding: 20 }}>
                                     <PaymentForm order={order} />
                                 </div>

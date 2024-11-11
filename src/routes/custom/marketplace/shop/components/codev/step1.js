@@ -168,7 +168,7 @@ class CodevStep1 extends Component {
                             id="combo-box-demo"
                             value={subscriptionType}
                             // options={subscriptionTypeEnum.filter(st => st.value === 'ALONE' || this.props.product?.specialProduct !== 'CODEV')}
-                            options={subscriptionTypeEnum.filter(st => st.value === 'ALONE' || this.props.product?.code !== 'NDBU')}
+                            options={this.props.product?.code !== 'NDBU' ? [] : subscriptionTypeEnum}
                             onChange={(__, item) => {
                                 this.setState({ subscriptionType: item });
                             }}

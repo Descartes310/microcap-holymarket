@@ -31,7 +31,6 @@ class Hit extends Component {
 	onPressAddToCart(cartItem, e) {
 		switch (this.props.model?.specialType) {
 			case 'CODEV':
-				console.log(cartItem);
 				this.setState({ showCodevStep1: true, product: cartItem });
 				break;
 			default:
