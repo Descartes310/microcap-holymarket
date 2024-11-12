@@ -32,9 +32,9 @@ const List = (props) => {
             <CustomList
                 list={datas}
                 loading={false}
-                addText="Nouvelle offre"
+                // addText="Nouvelle offre"
                 itemsFoundText={n => `${n} offres trouvées`}
-                onAddClick={() => props.history.push(FUNDING.BOURSE.OFFER.CREATE_MINE)}
+                // onAddClick={() => props.history.push(FUNDING.BOURSE.OFFER.CREATE_MINE)}
                 renderItem={list => (
                     <>
                         {list && list.length === 0 ? (

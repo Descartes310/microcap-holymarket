@@ -536,7 +536,8 @@ export default [
       "permissions": [
          Permission.bourse.projects.name,
          Permission.bourse.request.name,
-         Permission.bourse.offer.name
+         Permission.bourse.offer.name,
+         Permission.assets.all.name,
       ],
       "profiles": null,
       "child_routes": [
@@ -544,15 +545,21 @@ export default [
             "menu_title": "Projets",
             "new_item": false,
             "path": FUNDING.BOURSE.PROJECT.LIST,
-            "permissions": [Permission.bourse.projects.name],
+            "permissions": [
+               Permission.bourse.projects.name,
+               Permission.assets.all.name,
+            ],
             "profiles": null,
             "child_routes": null
          },
          {
-            "menu_title": "Demandes",
+            "menu_title": "Deals",
             "new_item": false,
-            "path": FUNDING.BOURSE.REQUEST.LIST,
-            "permissions": [Permission.bourse.request.name],
+            "path": FUNDING.BOURSE.DEALS.SENT,
+            "permissions": [
+               Permission.bourse.request.name,
+               Permission.assets.all.name,
+            ],
             "profiles": null,
             "child_routes": null
          },
@@ -560,7 +567,10 @@ export default [
             "menu_title": "Offres",
             "new_item": false,
             "path": FUNDING.BOURSE.OFFER.MINE,
-            "permissions": [Permission.bourse.offer.name],
+            "permissions": [
+               Permission.bourse.offer.name,
+               Permission.assets.all.name,
+               ],
             "profiles": null,
             "child_routes": null
          }

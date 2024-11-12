@@ -40,7 +40,7 @@ const OrderPaymentProofModal = (props) => {
                 NotificationManager.success("Le payment a bien été traité");
                 setFile(null);
                 setAmount(null);
-                props.onClose();
+                props.onClose(true);
             }).catch((err) => {
                 console.log(err);
                 NotificationManager.error("Une erreur est survenue");
@@ -63,7 +63,7 @@ const OrderPaymentProofModal = (props) => {
                 NotificationManager.success("La preuve a bien été envoyé");
                 setFile(null);
                 setAmount(null);
-                props.onClose();
+                props.onClose(true);
             }).catch((err) => {
                 console.log(err);
                 NotificationManager.error("Une erreur est survenue");
@@ -77,7 +77,7 @@ const OrderPaymentProofModal = (props) => {
         <DialogComponent
             show={show}
             onClose={() => {
-                onClose();
+                onClose(false);
             }}
             size="md"
             title={(

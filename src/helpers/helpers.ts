@@ -615,7 +615,7 @@ export const parseDate = (str) => {
     return new Date(mdy[0], mdy[1] - 1, mdy[2]);
 }
 
-export const datediff = (first, second, time = 1) => {
+export const dateDiff = (first, second, time = 1) => {
     let start = parseDate(first);
     let end = parseDate(second);
     let result = 0;
@@ -646,6 +646,9 @@ export const datediff = (first, second, time = 1) => {
                 break;
             case 180:
                 start.setMonth(start.getMonth() + 6);
+                break;
+            case 365:
+                start.setMonth(start.getMonth() + 12);
                 break;
             default:
                 start.setDate(start.getDate() + 1);

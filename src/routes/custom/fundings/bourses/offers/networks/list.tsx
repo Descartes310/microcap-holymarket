@@ -41,7 +41,7 @@ const List = (props) => {
                 loading={false}
                 addText="Nouvelle proposition"
                 itemsFoundText={n => `${n} offres trouvées`}
-                onAddClick={() => props.history.push(FUNDING.BOURSE.OFFER.CREATE_MINE)}
+                // onAddClick={() => props.history.push(FUNDING.BOURSE.OFFER.CREATE_MINE)}
                 renderItem={list => (
                     <>
                         {list && list.length === 0 ? (

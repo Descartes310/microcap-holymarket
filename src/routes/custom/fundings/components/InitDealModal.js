@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
-import AccountService from 'Services/accounts';
+import UnitService from 'Services/units';
+import { dateDiff } from 'Helpers/helpers';
 import FundingService from 'Services/funding';
 import { withRouter } from "react-router-dom";
 import ProjectService from 'Services/projects';
@@ -16,18 +17,21 @@ import DialogComponent from "Components/dialog/DialogComponent";
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { FormGroup, Input as InputStrap, Button } from 'reactstrap';
 import { initDealMethods, getTimeUnits, getFundingOfferInterventionTypes } from 'Helpers/datas';
+import { isNull } from 'util';
 
 class InitDealModal extends Component {
 
     state = {
         deal: null,
+        amount: null,
         line: null,
         codevs: [],
         offer: null,
+        label: null,
         codev: null,
         tickets: [],
-        // accounts: [],
-        // account: null,
+        currencies: [],
+        currency: null,
         endDate: null,
         startDate: null,
         initMethod: null,
@@ -71,9 +75,11 @@ class InitDealModal extends Component {
 
         if(this.props.deal) {
             this.findDeal();
+        } else {
+            this.getUnits();
         }
 
-        this.getProjects();
+        // this.getProjects();
     }
 
     getProjects = () => {
@@ -84,14 +90,23 @@ class InitDealModal extends Component {
         .finally(() => this.props.setRequestGlobalAction(false))
     }
 
-    // getAccounts = () => {
-    //     this.props.setRequestGlobalAction(true),
-    //     AccountService.getAccountBySpeciality({special_product: this.state.interventionType?.value})
-    //     .then(response => {
-    //         this.setState({ accounts: response, account: null });
-    //     })
-    //     .finally(() => this.props.setRequestGlobalAction(false))
-    // }
+    computePeriod = () => {
+        if(this.state.periodStartDate && this.state.periodEndDate && this.state.periodicity) {
+            this.setState({ length: dateDiff(this.state.periodStartDate, this.state.periodEndDate, this.state.periodicity.days) })
+        }
+    }
+
+    getUnits = () => {
+        this.props.setRequestGlobalAction(true);
+        UnitService.getUnits()
+        .then((response) => this.setState({ currencies: response, currency: this.state.deal ? response.find(c => c.code == this.state.deal?.currency) : null }))
+        .catch((err) => {
+            console.log(err);
+        })
+        .finally(() => {
+            this.props.setRequestGlobalAction(false);
+        })
+    }
 
     getProducts = () => {
         this.props.setRequestGlobalAction(true);
@@ -173,22 +188,26 @@ class InitDealModal extends Component {
         FundingService.findDeal(this.props.deal?.reference)
         .then(response => {
             this.setState({
-                deal: response, 
+                deal: response,
                 offer: response?.offer,
+                amount: response?.amount,
                 senderName: response?.sender,
+                label: response?.offer?.label,
                 receiverName: response?.receiver,
                 selectedTickets: response?.tickets,
                 interventionType: getFundingOfferInterventionTypes().find(init => init.value == response.intervention),
                 compensations: response?.counterParts?.filter(c => c.fixPart).map(cp => { return {...cp, length: cp.duration }}),
                 natureCompensations: response?.counterParts?.filter(c => !c.fixPart).map(cp => { return {...cp, length: cp.duration }}),
                 initMethod: response?.intervention == 'CPT' ? initDealMethods().find(init => init.value == 'PERIOD') : initDealMethods().find(init => init.value == 'TICKETS')
-            });
+            }, () => this.getUnits());
         })
         .finally(() => this.props.setRequestGlobalAction(false))
     }
 
     addNewCompensations = () => {
         const {periodStartDate, periodEndDate, periodicity, length, fixPart, variablePart} = this.state;
+
+        //console.log(periodStartDate, periodEndDate, periodicity, length, fixPart, variablePart);
 
         if(!periodStartDate || !periodEndDate || !periodicity || !length || !fixPart || !variablePart) {
             NotificationManager.error("Remplissez toutes les informations");
@@ -205,12 +224,8 @@ class InitDealModal extends Component {
         }
 
         this.setState({ 
-            length: null,
-            fixPart: null,
-            periodicity: null,
-            variablePart: null,
-            periodEndDate: null,
-            periodStartDate: null,
+            fixPart: '',
+            variablePart: '',
             compensations: [compensation, ...this.state.compensations],
         });
     }
@@ -257,14 +272,14 @@ class InitDealModal extends Component {
 
     onSubmit = () => {
 
-        const {initMethod, compensations, natureCompensations, selectedTickets, startDate, endDate, interventionType} = this.state;
+        const {amount, currency, initMethod, compensations, natureCompensations, selectedTickets, startDate, endDate, interventionType} = this.state;
 
-        if(compensations.length <= 0 && natureCompensations.length <= 0) {
+        if(!amount || !currency || (compensations.length <= 0 && natureCompensations.length <= 0)) {
             NotificationManager.error("Remplissez toutes les informations 1");
             return;
         }
 
-        let datas = {};
+        let datas = {currency: currency.code, amount};
 
         if(this.state.offer) {
             datas.offer_reference = this.state.offer.reference;
@@ -300,6 +315,10 @@ class InitDealModal extends Component {
             datas.init_method = 'TICKETS';
         }
 
+        if(this.state.label) {
+            datas.label = this.state.label;
+        }
+
         if(this.props.notification) {
             datas.notification_id = this.props.notification;
         }
@@ -332,7 +351,7 @@ class InitDealModal extends Component {
             this.props.onClose();
         })
         .catch(err => {
-            NotificationManager.error("Une erreure est survenue");
+            NotificationManager.error("Une erreur est survenue");
         })
         .finally(() => this.props.setRequestGlobalAction(false))
 
@@ -341,9 +360,9 @@ class InitDealModal extends Component {
     render() {
 
         const { onClose, show, deal, dealType } = this.props;
-        const { initMethod, codevs, codev, tickets, selectedTickets, startDate, endDate,
-        periodStartDate, periodEndDate, periodicity, length, fixPart, variablePart, senderName, account,
-        naturePeriodStartDate, naturePeriodEndDate, naturePeriodicity, natureLength, line, receiverName, accounts,
+        const { initMethod, codevs, codev, tickets, selectedTickets, startDate, endDate, label, amount,
+        periodStartDate, periodEndDate, periodicity, length, fixPart, variablePart, senderName, currency,
+        naturePeriodStartDate, naturePeriodEndDate, naturePeriodicity, natureLength, line, receiverName, currencies,
         source, offer, product, unit, compensations, natureCompensations, projects, products, interventionType } = this.state;
 
         const natureOfferEnabled = (this.props.dealType == 'NDJANGUI' || deal?.type == 'NDJANGUI');
@@ -362,50 +381,75 @@ class InitDealModal extends Component {
                 <RctCardContent>
                     <div>
                         <p>Objet: { natureOfferEnabled ? `Ndjangui ${line?.reference}` : `Offre de cautionnement ${offer?.reference}`}</p>
-                        <p>Souscripteur: {senderName}</p>
+                        { senderName && (<p>Souscripteur: {senderName}</p> )}
                         <p>Beneficiaire: {receiverName}</p>
 
-                        {/* { !deal && ( */}
-                            <>
-                                <div className="col-md-12 col-sm-12 has-wrapper mb-30">
-                                    <InputLabel className="text-left">
-                                        Mode d'intervention
-                                    </InputLabel>
-                                    <Autocomplete
-                                        value={interventionType}
-                                        id="combo-box-demo"
-                                        onChange={(__, item) => {
-                                            this.setState({ interventionType: item });
-                                            // if(item) {
-                                            //     this.setState({ interventionType: item }, () => {
-                                            //         this.getAccounts();
-                                            //     });
-                                            // } else {
-                                            //     this.setState({ account: null, accounts: [] });
-                                            // }
-                                        }}
-                                        getOptionLabel={(option) => option.label}
-                                        options={getFundingOfferInterventionTypes()}
-                                        renderInput={(params) => <TextField {...params} variant="outlined" />}
-                                    />
-                                </div>
-                                {/* <div className="col-md-12 col-sm-12 has-wrapper mb-30">
-                                    <InputLabel className="text-left">
-                                        Compte payeur
-                                    </InputLabel>
-                                    <Autocomplete
-                                        value={account}
-                                        id="combo-box-demo"
-                                        onChange={(__, item) => {
-                                            this.setState({ account: item });
-                                        }}
-                                        options={[...accounts, {label: 'Non disponible', id: null}]}
-                                        getOptionLabel={(option) => option.label}
-                                        renderInput={(params) => <TextField {...params} variant="outlined" />}
-                                    />
-                                </div> */}
-                            </>
-                        {/* )} */}
+                        
+                        {/* <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                            <InputLabel className="text-left">
+                                Mode d'intervention
+                            </InputLabel>
+                            <Autocomplete
+                                value={interventionType}
+                                id="combo-box-demo"
+                                onChange={(__, item) => {
+                                    this.setState({ interventionType: item });
+                                }}
+                                getOptionLabel={(option) => option.label}
+                                options={getFundingOfferInterventionTypes()}
+                                renderInput={(params) => <TextField {...params} variant="outlined" />}
+                            />
+                        </div> */}
+
+                        <FormGroup className="has-wrapper mr-20" style={{ flex: 1 }}>
+                            <InputLabel className="text-left">
+                                Désignation
+                            </InputLabel>
+                            <InputStrap
+                                type="texte"
+                                id="label"
+                                name='label'
+                                value={label}
+                                className="input-lg"
+                                placeholder="Désignation"
+                                onChange={(e) => this.setState({ label: e.target.value })}
+                            />
+                        </FormGroup>
+
+                        <div className='row'>
+                            <FormGroup className="col-md-6 col-sm-12 has-wrapper mb-30">
+                                <InputLabel className="text-left">
+                                    Total à verser
+                                </InputLabel>
+                                <InputStrap
+                                    type="number"
+                                    id="amount"
+                                    name='amount'
+                                    value={amount}
+                                    className="input-lg"
+                                    placeholder="Total à verser"
+                                    onChange={(e) => this.setState({ amount: e.target.value })}
+                                />
+                            </FormGroup>
+
+                            <FormGroup className="col-md-6 col-sm-12 has-wrapper">
+                                <InputLabel className="text-left">
+                                    Devise
+                                </InputLabel>
+                                <Autocomplete
+                                    value={currency}
+                                    id="combo-box-demo"
+                                    onChange={(__, item) => {
+                                        this.setState({ currency: item });
+                                    }}
+                                    disabled={deal}
+                                    getOptionLabel={(option) => option.label}
+                                    options={currencies.filter(u => ['dévise', 'devise', 'devises', 'dévises'].includes(u.type.label.toLowerCase()))}
+                                    renderInput={(params) => <TextField {...params} variant="outlined" />}
+                                />
+                            </FormGroup>
+                        </div>
+                        
                         {!deal && dealType !== 'NDJANGUI' && (
                             <>
                                 <div className="col-md-12 col-sm-12 has-wrapper mb-30">
@@ -523,7 +567,7 @@ class InitDealModal extends Component {
                                         onChange={(__, items) => {
                                             this.setState({ selectedTickets: items });
                                         }}
-                                        getOptionLabel={(option) => `Code: ${option.code}, Montant: ${getPriceWithCurrency(option.amount, option.currency)}, Date d'échéance: ${option.date}`}
+                                        getOptionLabel={(option) => `Code: ${option.code}, Montant: ${option.amount} ${option.currency}, Date d'échéance: ${option.date}`}
                                         renderInput={(params) => <TextField {...params} variant="outlined" />}
                                     />
                                 </div>
@@ -535,7 +579,7 @@ class InitDealModal extends Component {
                                         type="text"
                                         disabled={true}
                                         className="input-lg"
-                                        value={getPriceWithCurrency(selectedTickets.reduce((amount, ticket) => amount + Number(ticket.amount), 0), selectedTickets[0]?.currency)}
+                                        value={`${selectedTickets.reduce((amount, ticket) => amount + Number(ticket.amount), 0)} ${line?.tickets[0]?.currency}`}
                                     />
                                 </FormGroup>
                             </div>
@@ -553,7 +597,7 @@ class InitDealModal extends Component {
                                     name='periodStartDate'
                                     value={periodStartDate}
                                     placeholder="Date de début"
-                                    onChange={(e) => this.setState({ periodStartDate: e.target.value })}
+                                    onChange={(e) => this.setState({ periodStartDate: e.target.value }, () => this.computePeriod())}
                                 />
                             </FormGroup>
                             <FormGroup className="has-wrapper mr-20" style={{ flex: 1 }}>
@@ -567,7 +611,7 @@ class InitDealModal extends Component {
                                     value={periodEndDate}
                                     className="input-lg"
                                     placeholder="Date de fin"
-                                    onChange={(e) => this.setState({ periodEndDate: e.target.value })}
+                                    onChange={(e) => this.setState({ periodEndDate: e.target.value }, () => this.computePeriod())}
                                 />
                             </FormGroup>
                         </div>
@@ -581,7 +625,7 @@ class InitDealModal extends Component {
                                     value={periodicity}
                                     options={getTimeUnits()}
                                     onChange={(__, item) => {
-                                        this.setState({ periodicity: item });
+                                        this.setState({ periodicity: item }, () => this.computePeriod());
                                     }}
                                     getOptionLabel={(option) => option.label}
                                     renderInput={(params) => <TextField {...params} variant="outlined" />}
@@ -597,7 +641,7 @@ class InitDealModal extends Component {
                                     name='length'
                                     value={length}
                                     className="input-lg"
-                                    onChange={(e) => this.setState({ length: e.target.value })}
+                                    disabled={true}
                                 />
                             </FormGroup>
                         </div>
@@ -617,7 +661,7 @@ class InitDealModal extends Component {
                             </FormGroup>
                             <FormGroup className="has-wrapper mr-20" style={{ flex: 1 }}>
                                 <InputLabel className="text-left">
-                                    Taux part variable
+                                    Taux part variable (%)
                                 </InputLabel>
                                 <InputStrap
                                     type="number"
@@ -663,7 +707,7 @@ class InitDealModal extends Component {
                                                             <th className="fw-bold">Fin</th>
                                                             <th className="fw-bold">Périodicité</th>
                                                             <th className="fw-bold">Durée</th>
-                                                            <th className="fw-bold">Fix</th>
+                                                            <th className="fw-bold">Part Fixe</th>
                                                             <th className="fw-bold">Taux variable</th>
                                                             <th className="fw-bold">Action</th>
                                                         </tr>
@@ -709,7 +753,7 @@ class InitDealModal extends Component {
                                                                 <td>
                                                                     <div className="media">
                                                                         <div className="media-body pt-10">
-                                                                            <h4 className="m-0 fw-bold text-dark">{item.variablePart}</h4>
+                                                                            <h4 className="m-0 fw-bold text-dark">{item.variablePart} %</h4>
                                                                         </div>
                                                                     </div>
                                                                 </td>
@@ -731,254 +775,258 @@ class InitDealModal extends Component {
                             />
                         )}
 
-                        <h2 className='mb-20'>Contrepartie en nature</h2>
-                        <div className='d-flex direction-column align-items-stretch' style={{ flex: 1 }}>
-                            <FormGroup className="has-wrapper mr-20" style={{ flex: 1 }}>
-                                <InputLabel className="text-left">
-                                    Date début période
-                                </InputLabel>
-                                <InputStrap
-                                    type="date"
-                                    className="input-lg"
-                                    id="naturePeriodStartDate"
-                                    name='naturePeriodStartDate'
-                                    value={naturePeriodStartDate}
-                                    disabled={natureOfferEnabled}
-                                    onChange={(e) => this.setState({ naturePeriodStartDate: e.target.value })}
-                                />
-                            </FormGroup>
-                            <FormGroup className="has-wrapper mr-20" style={{ flex: 1 }}>
-                                <InputLabel className="text-left">
-                                    Date fin période
-                                </InputLabel>
-                                <InputStrap
-                                    type="date"
-                                    className="input-lg"
-                                    id="naturePeriodEndDate"
-                                    name='naturePeriodEndDate'
-                                    value={naturePeriodEndDate}
-                                    disabled={natureOfferEnabled}
-                                    onChange={(e) => this.setState({ naturePeriodEndDate: e.target.value })}
-                                />
-                            </FormGroup>
-                        </div>
-                        <div className='d-flex direction-column align-items-stretch' style={{ flex: 1 }}>
-                            <FormGroup className="has-wrapper mr-20" style={{ flex: 1 }}>
-                                <InputLabel className="text-left">
-                                    Périodicité
-                                </InputLabel>
-                                <Autocomplete
-                                    id="combo-box-demo"
-                                    value={naturePeriodicity}
-                                    options={getTimeUnits()}
-                                    disabled={natureOfferEnabled}
-                                    onChange={(__, item) => {
-                                        this.setState({ naturePeriodicity: item });
-                                    }}
-                                    getOptionLabel={(option) => option.label}
-                                    renderInput={(params) => <TextField {...params} variant="outlined" />}
-                                />
-                            </FormGroup>
-                            <FormGroup className="has-wrapper mr-20" style={{ flex: 1 }}>
-                                <InputLabel className="text-left">
-                                    Durée
-                                </InputLabel>
-                                <InputStrap
-                                    type="number"
-                                    id="natureLength"
-                                    name='natureLength'
-                                    value={natureLength}
-                                    className="input-lg"
-                                    disabled={natureOfferEnabled}
-                                    onChange={(e) => this.setState({ natureLength: e.target.value })}
-                                />
-                            </FormGroup>
-                        </div>
-                        <div className='d-flex direction-column align-items-stretch' style={{ flex: 1 }}>
-                            <FormGroup className="has-wrapper mr-20" style={{ flex: 1 }}>
-                                <InputLabel className="text-left">
-                                    Source
-                                </InputLabel>
-                                <Autocomplete
-                                    id="combo-box-demo"
-                                    value={source}
-                                    options={projects}
-                                    disabled={natureOfferEnabled}
-                                    onChange={(__, item) => {
-                                        this.setState({ source: item }, () => {
-                                            if(item) {
-                                                this.getProducts();
-                                            } else {
-                                                this.setState({ products: [], product: null })
-                                            }
-                                        });
-                                    }}
-                                    getOptionLabel={(option) => option.label}
-                                    renderInput={(params) => <TextField {...params} variant="outlined" />}
-                                />
-                            </FormGroup>
-                            <FormGroup className="has-wrapper mr-20" style={{ flex: 1 }}>
-                                <InputLabel className="text-left">
-                                    Offre
-                                </InputLabel>
-                                <InputStrap
-                                    type="number"
-                                    id="offer"
-                                    name='offer'
-                                    value={offer}
-                                    className="input-lg"
-                                    disabled={natureOfferEnabled}
-                                    onChange={(e) => this.setState({ offer: e.target.value })}
-                                />
-                            </FormGroup>
-                        </div>
-                        <div className='d-flex direction-column  align-items-end' style={{ flex: 1 }}>
-                            <FormGroup className="has-wrapper mr-20" style={{ flex: 1 }}>
-                                <InputLabel className="text-left">
-                                    Produit
-                                </InputLabel>
-                                <Autocomplete
-                                    id="combo-box-demo"
-                                    value={product}
-                                    options={products}
-                                    disabled={natureOfferEnabled}
-                                    onChange={(__, item) => {
-                                        this.setState({ product: item, unit: item?.currency });
-                                    }}
-                                    getOptionLabel={(option) => option.label}
-                                    renderInput={(params) => <TextField {...params} variant="outlined" />}
-                                />
-                            </FormGroup>
-                            <FormGroup className="has-wrapper mr-20" style={{ flex: 1 }}>
-                                <InputLabel className="text-left">
-                                    Unité
-                                </InputLabel>
-                                <InputStrap
-                                    id="unit"
-                                    name='unit'
-                                    type="text"
-                                    value={unit}
-                                    disabled={true}
-                                    className="input-lg"
-                                />
-                            </FormGroup>
-                            <FormGroup className="has-wrapper mr-20" style={{ flex: 1 }}>
-                                <Button
-                                    color="primary"
-                                    variant="contained"
-                                    disabled={natureOfferEnabled}
-                                    onClick={() => {
-                                        this.addNewNatureCompensations();
-                                    }}
-                                    className="text-white font-weight-bold w-100"
-                                >
-                                    Ajouter
-                                </Button>
-                            </FormGroup>
-                        </div>
-                        { (natureCompensations.length > 0 && !natureOfferEnabled) && (
-                            <CustomList
-                                loading={false}
-                                list={natureCompensations}
-                                renderItem={list => (
-                                    <>
-                                        {list && list.length === 0 ? (
-                                            <div className="d-flex justify-content-center align-items-center py-50">
-                                                <h4>
-                                                    Aucune compensation trouvée
-                                                </h4>
-                                            </div>
-                                        ) : (
-                                            <div className="table-responsive">
-                                                <table className="table table-hover table-middle mb-0">
-                                                    <thead>
-                                                        <tr>
-                                                            <th className="fw-bold">Début</th>
-                                                            <th className="fw-bold">Fin</th>
-                                                            <th className="fw-bold">Périodicité</th>
-                                                            <th className="fw-bold">Durée</th>
-                                                            <th className="fw-bold">source</th>
-                                                            <th className="fw-bold">Offre</th>
-                                                            <th className="fw-bold">Produit</th>
-                                                            <th className="fw-bold">Unité</th>
-                                                            <th className="fw-bold">Action</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        {list && list.map((item, key) => (
-                                                            <tr key={key} className="cursor-pointer">
-                                                                <td>
-                                                                    <div className="media">
-                                                                        <div className="media-body pt-10">
-                                                                            <h4 className="m-0 fw-bold text-dark">{item.startDate}</h4>
-                                                                        </div>
-                                                                    </div>
-                                                                </td>
-                                                                <td>
-                                                                    <div className="media">
-                                                                        <div className="media-body pt-10">
-                                                                            <h4 className="m-0 fw-bold text-dark">{item.endDate}</h4>
-                                                                        </div>
-                                                                    </div>
-                                                                </td>
-                                                                <td>
-                                                                    <div className="media">
-                                                                        <div className="media-body pt-10">
-                                                                            <h4 className="m-0 fw-bold text-dark">{getTimeUnits().find(t => t.value == item.periodicity).label}</h4>
-                                                                        </div>
-                                                                    </div>
-                                                                </td>
-                                                                <td>
-                                                                    <div className="media">
-                                                                        <div className="media-body pt-10">
-                                                                            <h4 className="m-0 fw-bold text-dark">{item.length}</h4>
-                                                                        </div>
-                                                                    </div>
-                                                                </td>
-                                                                <td>
-                                                                    <div className="media">
-                                                                        <div className="media-body pt-10">
-                                                                            <h4 className="m-0 fw-bold text-dark">{item.source?.label}</h4>
-                                                                        </div>
-                                                                    </div>
-                                                                </td>
-                                                                <td>
-                                                                    <div className="media">
-                                                                        <div className="media-body pt-10">
-                                                                            <h4 className="m-0 fw-bold text-dark">{item.offer}</h4>
-                                                                        </div>
-                                                                    </div>
-                                                                </td>
-                                                                <td>
-                                                                    <div className="media">
-                                                                        <div className="media-body pt-10">
-                                                                            <h4 className="m-0 fw-bold text-dark">{item.product?.label}</h4>
-                                                                        </div>
-                                                                    </div>
-                                                                </td>
-                                                                <td>
-                                                                    <div className="media">
-                                                                        <div className="media-body pt-10">
-                                                                            <h4 className="m-0 fw-bold text-dark">{item.unit}</h4>
-                                                                        </div>
-                                                                    </div>
-                                                                </td>
-                                                                <td onClick={() => this.deleteNatureCompensation(item)}>
-                                                                    <div className="media">
-                                                                        <div className="media-body pt-10">
-                                                                            <h4 className="m-0 fw-bold" style={{ color: 'red' }}>Rétirer</h4>
-                                                                        </div>
-                                                                    </div>
-                                                                </td>
-                                                            </tr>
-                                                        ))}
-                                                    </tbody>
-                                                </table>
-                                            </div>
+                        { !natureOfferEnabled && (
+                            <>
+                                <h2 className='mb-20'>Contrepartie en nature</h2>
+                                <div className='d-flex direction-column align-items-stretch' style={{ flex: 1 }}>
+                                    <FormGroup className="has-wrapper mr-20" style={{ flex: 1 }}>
+                                        <InputLabel className="text-left">
+                                            Date début période
+                                        </InputLabel>
+                                        <InputStrap
+                                            type="date"
+                                            className="input-lg"
+                                            id="naturePeriodStartDate"
+                                            name='naturePeriodStartDate'
+                                            value={naturePeriodStartDate}
+                                            disabled={natureOfferEnabled}
+                                            onChange={(e) => this.setState({ naturePeriodStartDate: e.target.value })}
+                                        />
+                                    </FormGroup>
+                                    <FormGroup className="has-wrapper mr-20" style={{ flex: 1 }}>
+                                        <InputLabel className="text-left">
+                                            Date fin période
+                                        </InputLabel>
+                                        <InputStrap
+                                            type="date"
+                                            className="input-lg"
+                                            id="naturePeriodEndDate"
+                                            name='naturePeriodEndDate'
+                                            value={naturePeriodEndDate}
+                                            disabled={natureOfferEnabled}
+                                            onChange={(e) => this.setState({ naturePeriodEndDate: e.target.value })}
+                                        />
+                                    </FormGroup>
+                                </div>
+                                <div className='d-flex direction-column align-items-stretch' style={{ flex: 1 }}>
+                                    <FormGroup className="has-wrapper mr-20" style={{ flex: 1 }}>
+                                        <InputLabel className="text-left">
+                                            Périodicité
+                                        </InputLabel>
+                                        <Autocomplete
+                                            id="combo-box-demo"
+                                            value={naturePeriodicity}
+                                            options={getTimeUnits()}
+                                            disabled={natureOfferEnabled}
+                                            onChange={(__, item) => {
+                                                this.setState({ naturePeriodicity: item });
+                                            }}
+                                            getOptionLabel={(option) => option.label}
+                                            renderInput={(params) => <TextField {...params} variant="outlined" />}
+                                        />
+                                    </FormGroup>
+                                    <FormGroup className="has-wrapper mr-20" style={{ flex: 1 }}>
+                                        <InputLabel className="text-left">
+                                            Durée
+                                        </InputLabel>
+                                        <InputStrap
+                                            type="number"
+                                            id="natureLength"
+                                            name='natureLength'
+                                            value={natureLength}
+                                            className="input-lg"
+                                            disabled={natureOfferEnabled}
+                                            onChange={(e) => this.setState({ natureLength: e.target.value })}
+                                        />
+                                    </FormGroup>
+                                </div>
+                                <div className='d-flex direction-column align-items-stretch' style={{ flex: 1 }}>
+                                    <FormGroup className="has-wrapper mr-20" style={{ flex: 1 }}>
+                                        <InputLabel className="text-left">
+                                            Source
+                                        </InputLabel>
+                                        <Autocomplete
+                                            id="combo-box-demo"
+                                            value={source}
+                                            options={projects}
+                                            disabled={natureOfferEnabled}
+                                            onChange={(__, item) => {
+                                                this.setState({ source: item }, () => {
+                                                    if(item) {
+                                                        this.getProducts();
+                                                    } else {
+                                                        this.setState({ products: [], product: null })
+                                                    }
+                                                });
+                                            }}
+                                            getOptionLabel={(option) => option.label}
+                                            renderInput={(params) => <TextField {...params} variant="outlined" />}
+                                        />
+                                    </FormGroup>
+                                    <FormGroup className="has-wrapper mr-20" style={{ flex: 1 }}>
+                                        <InputLabel className="text-left">
+                                            Offre
+                                        </InputLabel>
+                                        <InputStrap
+                                            type="number"
+                                            id="offer"
+                                            name='offer'
+                                            value={offer}
+                                            className="input-lg"
+                                            disabled={natureOfferEnabled}
+                                            onChange={(e) => this.setState({ offer: e.target.value })}
+                                        />
+                                    </FormGroup>
+                                </div>
+                                <div className='d-flex direction-column  align-items-end' style={{ flex: 1 }}>
+                                    <FormGroup className="has-wrapper mr-20" style={{ flex: 1 }}>
+                                        <InputLabel className="text-left">
+                                            Produit
+                                        </InputLabel>
+                                        <Autocomplete
+                                            id="combo-box-demo"
+                                            value={product}
+                                            options={products}
+                                            disabled={natureOfferEnabled}
+                                            onChange={(__, item) => {
+                                                this.setState({ product: item, unit: item?.currency });
+                                            }}
+                                            getOptionLabel={(option) => option.label}
+                                            renderInput={(params) => <TextField {...params} variant="outlined" />}
+                                        />
+                                    </FormGroup>
+                                    <FormGroup className="has-wrapper mr-20" style={{ flex: 1 }}>
+                                        <InputLabel className="text-left">
+                                            Unité
+                                        </InputLabel>
+                                        <InputStrap
+                                            id="unit"
+                                            name='unit'
+                                            type="text"
+                                            value={unit}
+                                            disabled={true}
+                                            className="input-lg"
+                                        />
+                                    </FormGroup>
+                                    <FormGroup className="has-wrapper mr-20" style={{ flex: 1 }}>
+                                        <Button
+                                            color="primary"
+                                            variant="contained"
+                                            disabled={natureOfferEnabled}
+                                            onClick={() => {
+                                                this.addNewNatureCompensations();
+                                            }}
+                                            className="text-white font-weight-bold w-100"
+                                        >
+                                            Ajouter
+                                        </Button>
+                                    </FormGroup>
+                                </div>
+                                { (natureCompensations.length > 0 && !natureOfferEnabled) && (
+                                    <CustomList
+                                        loading={false}
+                                        list={natureCompensations}
+                                        renderItem={list => (
+                                            <>
+                                                {list && list.length === 0 ? (
+                                                    <div className="d-flex justify-content-center align-items-center py-50">
+                                                        <h4>
+                                                            Aucune compensation trouvée
+                                                        </h4>
+                                                    </div>
+                                                ) : (
+                                                    <div className="table-responsive">
+                                                        <table className="table table-hover table-middle mb-0">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th className="fw-bold">Début</th>
+                                                                    <th className="fw-bold">Fin</th>
+                                                                    <th className="fw-bold">Périodicité</th>
+                                                                    <th className="fw-bold">Durée</th>
+                                                                    <th className="fw-bold">source</th>
+                                                                    <th className="fw-bold">Offre</th>
+                                                                    <th className="fw-bold">Produit</th>
+                                                                    <th className="fw-bold">Unité</th>
+                                                                    <th className="fw-bold">Action</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                {list && list.map((item, key) => (
+                                                                    <tr key={key} className="cursor-pointer">
+                                                                        <td>
+                                                                            <div className="media">
+                                                                                <div className="media-body pt-10">
+                                                                                    <h4 className="m-0 fw-bold text-dark">{item.startDate}</h4>
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td>
+                                                                            <div className="media">
+                                                                                <div className="media-body pt-10">
+                                                                                    <h4 className="m-0 fw-bold text-dark">{item.endDate}</h4>
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td>
+                                                                            <div className="media">
+                                                                                <div className="media-body pt-10">
+                                                                                    <h4 className="m-0 fw-bold text-dark">{getTimeUnits().find(t => t.value == item.periodicity).label}</h4>
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td>
+                                                                            <div className="media">
+                                                                                <div className="media-body pt-10">
+                                                                                    <h4 className="m-0 fw-bold text-dark">{item.length}</h4>
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td>
+                                                                            <div className="media">
+                                                                                <div className="media-body pt-10">
+                                                                                    <h4 className="m-0 fw-bold text-dark">{item.source?.label}</h4>
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td>
+                                                                            <div className="media">
+                                                                                <div className="media-body pt-10">
+                                                                                    <h4 className="m-0 fw-bold text-dark">{item.offer}</h4>
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td>
+                                                                            <div className="media">
+                                                                                <div className="media-body pt-10">
+                                                                                    <h4 className="m-0 fw-bold text-dark">{item.product?.label}</h4>
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td>
+                                                                            <div className="media">
+                                                                                <div className="media-body pt-10">
+                                                                                    <h4 className="m-0 fw-bold text-dark">{item.unit}</h4>
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td onClick={() => this.deleteNatureCompensation(item)}>
+                                                                            <div className="media">
+                                                                                <div className="media-body pt-10">
+                                                                                    <h4 className="m-0 fw-bold" style={{ color: 'red' }}>Rétirer</h4>
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                ))}
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                )}
+                                            </>
                                         )}
-                                    </>
+                                    />
                                 )}
-                            />
+                            </>
                         )}
                         <FormGroup className="has-wrapper mr-20" style={{ flex: 1 }}>
                             <Button

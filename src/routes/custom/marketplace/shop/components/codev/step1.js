@@ -5,6 +5,7 @@ import { convertDate } from 'Helpers/helpers';
 import { withRouter } from "react-router-dom";
 import Button from '@material-ui/core/Button';
 import ProductService from 'Services/products';
+import ProjectService from 'Services/projects';
 import Indivision from './createIndivision.tsx';
 import { setRequestGlobalAction } from 'Actions';
 import { RctCardContent } from 'Components/RctCard';
@@ -23,7 +24,19 @@ const subscriptionTypeEnum = [
     {
         label: 'Indivision',
         value: 'INDIVISION'
-    }
+    },
+    {
+        label: 'Multi-deals',
+        value: 'DEALS'
+    },
+    {
+        label: 'Multi-spots',
+        value: 'SPOTS'
+    },
+    // {
+    //     label: 'Joint',
+    //     value: 'JOINT'
+    // }
 ];
 
 class CodevStep1 extends Component {
@@ -33,14 +46,17 @@ class CodevStep1 extends Component {
         plan: null,
         alias: null,
         aliases: [],
+        projects: [],
+        project: null,
         product: null,
         drawDate: null,
         cessible: false,
         indivision: null,
         editable: false,
-        selectedLine: null,
         advanceType: null,
         advanceValue: null,
+        selectedLine: null,
+        distribution: null,
         selectedDate: null,
         subscriptionType: null,
         showCreateIndivisionBox: false,
@@ -77,6 +93,7 @@ class CodevStep1 extends Component {
             } else {
                 this.setState({ product: response }, () => this.findTirageDates());
                 this.findIndivisions();
+                this.getProjects();
             }
         })
         .finally(() => this.props.setRequestGlobalAction(false))
@@ -91,15 +108,32 @@ class CodevStep1 extends Component {
         .finally(() => this.props.setRequestGlobalAction(false))
     }
 
+    getProjects = () => {
+        this.props.setRequestGlobalAction(true);
+        let data = {};
+        if(this.props.referralCode) {
+            data.referralCode = this.props.referralCode;
+        }
+        ProjectService.getProjects(data).then(response => {
+            this.setState({ projects: response });
+        })
+        .finally(() => this.props.setRequestGlobalAction(false))
+    }
+
     onValidate = async () => {
-        const { product, selectedDate, subscriptionType, indivision } = this.state;
+        const { product, selectedDate, subscriptionType, indivision, project, distribution } = this.state;
 
         if(subscriptionType.value === 'INDIVISION' && indivision.id === 0) {
             this.setState({ showCreateIndivisionBox: true });
             return;
         }
 
-        if (!product || (!selectedDate && subscriptionType.value === 'ALONE')) {
+        if (!product || (['ALONE', 'DEALS', 'SPOTS'].includes(subscriptionType.value) && !selectedDate )) {
+            NotificationManager.error('Le formulaire est mal renseigné');
+            return;
+        }
+
+        if (!product || (['DEALS', 'SPOTS'].includes(subscriptionType.value) && (!selectedDate || !project || !distribution) )) {
             NotificationManager.error('Le formulaire est mal renseigné');
             return;
         }
@@ -112,7 +146,12 @@ class CodevStep1 extends Component {
             productReference: product.reference
         }
 
-        if(subscriptionType.value == 'ALONE') {
+        if (['DEALS', 'SPOTS'].includes(subscriptionType.value) && selectedDate && project && distribution) {
+            data.projectReference = project.reference;
+            data.distribution = distribution.value;
+        }
+
+        if(['ALONE', 'DEALS', 'SPOTS'].includes(subscriptionType.value)) {
             this.props.onSubmit(data);
         } else {
             data.indivision = indivision;
@@ -121,11 +160,11 @@ class CodevStep1 extends Component {
 
     }
 
-    
     render() {
         
         const { onClose, show, product } = this.props;
-        const { dates, selectedDate, subscriptionType, indivisions, indivision, showCreateIndivisionBox } = this.state;
+        const { dates, selectedDate, subscriptionType, indivisions, indivision, 
+            showCreateIndivisionBox, distribution, projects, project } = this.state;
 
         return (
             showCreateIndivisionBox
@@ -167,7 +206,6 @@ class CodevStep1 extends Component {
                         <Autocomplete
                             id="combo-box-demo"
                             value={subscriptionType}
-                            // options={subscriptionTypeEnum.filter(st => st.value === 'ALONE' || this.props.product?.specialProduct !== 'CODEV')}
                             options={this.props.product?.code !== 'NDBU' ? [] : subscriptionTypeEnum}
                             onChange={(__, item) => {
                                 this.setState({ subscriptionType: item });
@@ -178,7 +216,7 @@ class CodevStep1 extends Component {
                     </FormGroup>
                     {
                         subscriptionType != null && (
-                        subscriptionType.value == 'ALONE' ?
+                         ['ALONE', 'DEALS', 'SPOTS'].includes(subscriptionType.value) ?
                     
                         <FormGroup className="col-md-12 col-sm-12 has-wrapper mb-30 mt-20">
                             <InputLabel className="text-left" htmlFor="startDate">
@@ -229,6 +267,43 @@ class CodevStep1 extends Component {
                                     />
                                 </FormGroup>
                             )}
+                        </>
+                    )}
+                    { subscriptionType != null && ['DEALS', 'SPOTS'].includes(subscriptionType.value) && (
+                        <>
+                            <FormGroup className="col-md-12 col-sm-12 has-wrapper mb-30 mt-20">
+                                <InputLabel className="text-left" htmlFor="startDate">
+                                    Projets
+                                </InputLabel>
+                                <Autocomplete
+                                    options={projects}
+                                    value={project}
+                                    id="combo-box-demo"
+                                    onChange={(__, item) => {
+                                        this.setState({ project: item });
+                                    }}
+                                    getOptionLabel={(option) => option.label}
+                                    renderInput={(params) => <TextField {...params} variant="outlined" />}
+                                />
+                            </FormGroup>
+                            <FormGroup className="col-md-12 col-sm-12 has-wrapper">
+                                <InputLabel className="text-left">
+                                    Mode de distribution
+                                </InputLabel>
+                                <Autocomplete
+                                    value={distribution}
+                                    id="combo-box-demo"
+                                    onChange={(__, item) => {
+                                        this.setState({ distribution: item });
+                                    }}
+                                    getOptionLabel={(option) => option.label}
+                                    options={[
+                                        {label: 'Libre', value: 'PUBLIC'},
+                                        {label: 'Privée', value: 'PRIVATE'}
+                                    ]}
+                                    renderInput={(params) => <TextField {...params} variant="outlined" />}
+                                />
+                            </FormGroup>
                         </>
                     )}
                     <FormGroup className="float-right mb-20">

@@ -126,8 +126,11 @@ class PaymentCard extends Component {
                {}
                <OrderPaymentProofModal
                   show={showTransferBox}
-                  onClose={() => {
+                  onClose={(reload) => {
                      this.setState({ showTransferBox: false, isBankTransfer: false });
+                     if(reload) {
+                        window.location.reload();
+                     }
                   }}
                   order={this.props.order}
                   amount={this.getDiscountedAmountToPay()}

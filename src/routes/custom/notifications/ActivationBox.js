@@ -52,7 +52,6 @@ class ActivationBox extends Component {
     }
 
     handleChange = (__, value) => {
-        console.log(value);
         this.setState({ activeTab: value });
     };
 

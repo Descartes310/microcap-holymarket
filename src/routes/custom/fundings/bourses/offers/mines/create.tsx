@@ -26,6 +26,7 @@ const Create = (props) => {
     const [affected, setAffected] = useState(false);
     const [currencies, setCurrencies] = useState([]);
     const [negociable, setNegociable] = useState(false);
+    const [description, setDescription] = useState(null);
 
     useEffect(() => {
         getCurrencies();
@@ -174,6 +175,20 @@ const Create = (props) => {
                 </FormGroup>
 
 
+                <FormGroup className="has-wrapper">
+                    <InputLabel className="text-left" htmlFor="description">
+                        Description
+                    </InputLabel>
+                    <InputStrap
+                        required
+                        id="description"
+                        type="text"
+                        name='description'
+                        value={description}
+                        className="input-lg"
+                        onChange={(e) => setDescription(e.target.value)}
+                    />
+                </FormGroup>
 
                 <FormGroup className="has-wrapper">
                     <InputLabel className="text-left" htmlFor="amount">

@@ -190,7 +190,7 @@ const List = (props) => {
                                                                 setShowParticipants(true);
                                                             }}
                                                         >
-                                                            Souscripteurs
+                                                            Souscriptions
                                                         </Button>
                                                     )}
                                                     {item.paymentStatus == 'PAID' && ['CONFIRMED', 'DELIVERED'].includes(item.status) && item?.type == "PASS" && (
@@ -253,7 +253,10 @@ const List = (props) => {
                         setOrder(null);
                         setShowParticipants(false);
                     }}
+                    referralCode={order.referralCode}
                     codevLine={order?.details?.find(d => d.type == "CODEV_LINE_REF")?.value}
+                    type={order?.details?.find(d => d.type == "CODEV_SUBSCRIPTION_TYPE")?.value}
+                    isPrivate={order?.details?.find(d => d.type == "CODEV_INDIVISION_DISTRIBUTION")?.value == 'PRIVATE'}
                 />
             )}
 

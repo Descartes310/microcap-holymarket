@@ -64,6 +64,14 @@ class OrderForm extends Component<any, any> {
                                 details.denomination = item.customInfos.indivision.denomination;
                             }
                         }
+
+                        if(item.customInfos.projectReference != null) {
+                            details.project_reference = item.customInfos.projectReference;
+                        }
+
+                        if(item.customInfos.distribution != null) {
+                            details.distribution = item.customInfos.distribution;
+                        }
                         
                         details.tirage_ref = item.customInfos.selectedDate.reference;
                         details.product_ref = item.customInfos.productReference;

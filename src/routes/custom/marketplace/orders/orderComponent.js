@@ -178,7 +178,7 @@ const OrderComponent = (props) => {
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    {item.paymentStatus == 'PAID' && ['CONFIRMED', 'DELIVERED'].includes(item.status) && item?.details?.find(d => d.type == "CODEV_INDIVISION_DISTRIBUTION")?.value == "PRIVATE" && (
+                                                    {item.paymentStatus == 'PAID' && ['CONFIRMED', 'DELIVERED'].includes(item.status) && item?.type == 'CODEV' && item?.details?.find(d => d.type == "CODEV_SUBSCRIPTION_TYPE")?.value != "ALONE" && (
                                                         <Button
                                                             color="primary"
                                                             variant="contained"
@@ -188,7 +188,7 @@ const OrderComponent = (props) => {
                                                                 setShowParticipants(true);
                                                             }}
                                                         >
-                                                            Souscripteurs
+                                                            Souscriptions
                                                         </Button>
                                                     )}
 
@@ -277,7 +277,10 @@ const OrderComponent = (props) => {
                         setOrder(null);
                         setShowParticipants(false);
                     }}
+                    referralCode={order.referralCode}
                     codevLine={order?.details?.find(d => d.type == "CODEV_LINE_REF")?.value}
+                    type={order?.details?.find(d => d.type == "CODEV_SUBSCRIPTION_TYPE")?.value}
+                    isPrivate={order?.details?.find(d => d.type == "CODEV_INDIVISION_DISTRIBUTION")?.value == 'PRIVATE'}
                 />
             )}
 
@@ -305,10 +308,11 @@ const OrderComponent = (props) => {
                 />
             )}
 
-{ showCodevStep1 && product && (
+            { showCodevStep1 && product && order && (
                 <CodevStep1 
                     product={product}
                     show={showCodevStep1}
+                    referralCode={order.referralCode}
                     onClose={() => setShowCodevStep1(false)}
                     onSubmit={(data) => {
                         if(data?.subscriptionType.value == 'INDIVISION') {
@@ -332,6 +336,7 @@ const OrderComponent = (props) => {
                     data={codevData}
                     product={product}
                     show={showCodevStep2}
+                    referralCode={order.referralCode}
                     onClose={() => setShowCodevStep2(false)}						
                     onSubmit={(data) => {
                         setCodevData(data);
@@ -347,6 +352,7 @@ const OrderComponent = (props) => {
                     data={codevData}
                     product={product}
                     show={showCodevStep3}
+                    referralCode={order.referralCode}
                     onClose={() => setShowCodevStep3(false)}
                     onSubmit={(data) => {
                         setCodevData(data);
@@ -362,6 +368,7 @@ const OrderComponent = (props) => {
                     data={codevData}
                     product={product}
                     show={showCodevStep4}
+                    referralCode={order.referralCode}
                     onClose={() => setShowCodevStep4(false)}
                     onSubmit={(data) => {
                         configureProduct(data);

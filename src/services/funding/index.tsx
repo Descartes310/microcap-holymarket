@@ -23,6 +23,10 @@ export default class FundingService {
         return makeRequest('post', Routes.CREATE_PROPOSITION, data);
     }
 
+    static inviteCodevSubscriber(reference: string, data: any): Promise<any> {
+        return makeRequest('post', Routes.INVITE_CODEV_SUBSCRIBER(reference), data);
+    }
+
     static getPropositions(data): Promise<any> {
         return makeRequest('get', Routes.GET_PROPOSITIONS, data);
     }

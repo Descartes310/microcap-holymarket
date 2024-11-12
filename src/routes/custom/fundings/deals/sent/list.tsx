@@ -28,7 +28,7 @@ const List = (props) => {
     }
 
     return (
-            <>
+        <>
             <CustomList
                 list={datas}
                 loading={false}

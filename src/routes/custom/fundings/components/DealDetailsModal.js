@@ -35,14 +35,14 @@ class DealDetailsModal extends Component {
         this.findDeal();
     }
 
-    getAccounts = () => {
-        this.props.setRequestGlobalAction(true),
-        AccountService.getAccountBySpeciality({special_product: this.state.interventionType?.value})
-        .then(response => {
-            this.setState({ accounts: response, account: null });
-        })
-        .finally(() => this.props.setRequestGlobalAction(false))
-    }
+    // getAccounts = () => {
+    //     this.props.setRequestGlobalAction(true),
+    //     AccountService.getAccountBySpeciality({special_product: this.state.interventionType?.value})
+    //     .then(response => {
+    //         this.setState({ accounts: response, account: null });
+    //     })
+    //     .finally(() => this.props.setRequestGlobalAction(false))
+    // }
 
     findDeal = () => {
         this.props.setRequestGlobalAction(true);
@@ -53,8 +53,6 @@ class DealDetailsModal extends Component {
                 compensations: response?.counterParts?.filter(c => c.fixPart),
                 natureCompensations: response?.counterParts?.filter(c => !c.fixPart),
                 interventionType: getFundingOfferInterventionTypes().find(i => i.value == response?.intervention)
-            }, () => {
-                this.getAccounts();
             });
         })
         .finally(() => this.props.setRequestGlobalAction(false))
@@ -95,7 +93,7 @@ class DealDetailsModal extends Component {
 
     render() {
 
-        const { onClose, show, isSender } = this.props;
+        const { onClose, show, isSender, isBlocked } = this.props;
         const { deal, compensations, natureCompensations, interventionType, showConfirmBox, editAccount, account, accounts } = this.state;
 
         return (
@@ -118,9 +116,9 @@ class DealDetailsModal extends Component {
                         <p>Objet: {deal?.type == 'NDJANGUI' ? `Ndjangui ` : `Offre de cautionnement `} {deal?.offer?.reference}</p>
                         <p>Souscripteur: {deal?.sender}</p>
                         <p>Beneficiaire: {deal?.receiver}</p>
-                        <p>Mode d'intervention: {interventionType?.label}</p>
+                        {/* <p>Mode d'intervention: {interventionType?.label}</p> */}
 
-                        <p>Domiciliation: {isSender ? deal?.account : deal?.receptorAccount} &nbsp;
+                        {/* <p>Domiciliation: {isSender ? deal?.account : deal?.receptorAccount} &nbsp;
                             <span 
                                 onClick={() => { this.setState({ editAccount: !editAccount }) }}
                                 style={{ fontStyle: 'italic', color: 'blue', cursor: 'pointer' }}
@@ -151,7 +149,7 @@ class DealDetailsModal extends Component {
                                     </InputGroupAddon>
                                 </InputGroup>
                             </div>
-                        )}
+                        )} */}
 
                         { deal?.tickets?.length > 0 && (
                             <h2 className='mb-20'>Versements</h2>
@@ -193,7 +191,7 @@ class DealDetailsModal extends Component {
                                                                 <td>
                                                                     <div className="media">
                                                                         <div className="media-body pt-10">
-                                                                            <h4 className="m-0 fw-bold text-dark">{getPriceWithCurrency(item.amount, item.currency)}</h4>
+                                                                            <h4 className="m-0 fw-bold text-dark">{item.amount} {item.currency}</h4>
                                                                         </div>
                                                                     </div>
                                                                 </td>
@@ -249,7 +247,7 @@ class DealDetailsModal extends Component {
                                                                 <th className="fw-bold">Fin</th>
                                                                 <th className="fw-bold">Périodicité</th>
                                                                 <th className="fw-bold">Durée</th>
-                                                                <th className="fw-bold">Fix</th>
+                                                                <th className="fw-bold">Part fixe</th>
                                                                 <th className="fw-bold">Taux variable</th>
                                                             </tr>
                                                         </thead>
@@ -401,30 +399,32 @@ class DealDetailsModal extends Component {
                                 />
                             </>
                         )}
-                        <FormGroup className="has-wrapper mr-20" style={{ flex: 1 }}>
-                            <Button
-                                color="primary"
-                                variant="contained"
-                                onClick={() => {
-                                    this.setState({ showConfirmBox: true });
-                                }}
-                                disabled={deal?.status != 'PENDING'}
-                                className="text-white font-weight-bold"
-                            >
-                                Accepter
-                            </Button>
-                            <Button
-                                color="primary"
-                                variant="contained"
-                                onClick={() => {
-                                    this.props.negociate();
-                                }}
-                                disabled={deal?.status != 'PENDING'}
-                                className="text-white font-weight-bold ml-20"
-                            >
-                                Négocier
-                            </Button>
-                        </FormGroup>
+                        { !isBlocked && (
+                            <FormGroup className="has-wrapper mr-20" style={{ flex: 1 }}>
+                                <Button
+                                    color="primary"
+                                    variant="contained"
+                                    onClick={() => {
+                                        this.setState({ showConfirmBox: true });
+                                    }}
+                                    disabled={deal?.status != 'PENDING'}
+                                    className="text-white font-weight-bold"
+                                >
+                                    Accepter
+                                </Button>
+                                <Button
+                                    color="primary"
+                                    variant="contained"
+                                    onClick={() => {
+                                        this.props.negociate();
+                                    }}
+                                    disabled={deal?.status != 'PENDING'}
+                                    className="text-white font-weight-bold ml-20"
+                                >
+                                    Négocier
+                                </Button>
+                            </FormGroup>
+                        )}
                     </div>
                 </RctCardContent>
                 <ConfirmBox

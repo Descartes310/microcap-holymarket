@@ -91,8 +91,11 @@ class BondDetails extends Component {
                 <CodevParticipants
                     show={showParticipants}
                     participants={participants}
+                    referralCode={order.referralCode}
                     onClose={() => this.setState({ showParticipants: false })}
                     codevLine={order?.details?.find(d => d.type == "CODEV_LINE_REF")?.value}
+                    type={order?.details?.find(d => d.type == "CODEV_SUBSCRIPTION_TYPE")?.value}
+                    isPrivate={order?.details?.find(d => d.type == "CODEV_INDIVISION_DISTRIBUTION")?.value == 'PRIVATE'}
                 />
             </DialogComponent>
         );
