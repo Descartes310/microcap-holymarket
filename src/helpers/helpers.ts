@@ -456,13 +456,18 @@ export const getDefaultCurrency = () => {
 };
 
 export function getFilePath(file) {
-    file = file.startsWith('/') ? file.split('/')[1] : file;
-    if (file)
-        if (file.startsWith('http') && file.includes(':')) {
-            return file;
-        } else {
-            return `${AppConfig.api.baseUrl}${file}`
+    if(file == null) {
+        return null;//'https://static.vecteezy.com/system/resources/previews/008/695/917/non_2x/no-image-available-icon-simple-two-colors-template-for-no-image-or-picture-coming-soon-and-placeholder-illustration-isolated-on-white-background-vector.jpg'
+    } else {
+        file = file.startsWith('/') ? file.split('/')[1] : file;
+        if (file) {
+            if (file.startsWith('http') && file.includes(':')) {
+                return file;
+            } else {
+                return `${AppConfig.api.baseUrl}${file}`
+            }
         }
+    }
 }
 
 export const copyToClipboard = (text) => {
