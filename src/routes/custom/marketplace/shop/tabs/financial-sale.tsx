@@ -1,11 +1,9 @@
 import { connect } from 'react-redux';
-import Filters from '../components/Filters';
 import HitModel from '../components/HitModel';
 import ProductService from 'Services/products';
 import { withRouter } from "react-router-dom";
 import { setRequestGlobalAction } from 'Actions';
 import React, { useState, useEffect } from 'react';
-import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
 
 const Shop = (props) => {
 
