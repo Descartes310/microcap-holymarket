@@ -12,12 +12,11 @@ class UpdateComplexTableModal extends Component {
     }
 
     componentDidMount() {
-
     }
 
     render() {
 
-        const { onClose, show, title, tables, projectId } = this.props;
+        const { onClose, show, title, tables, projectId, project } = this.props;
 
         return (
             <DialogComponent
@@ -33,7 +32,14 @@ class UpdateComplexTableModal extends Component {
                 <RctCardContent>
                     {
                         tables.map((table, index) => (
-                            <UpdateComplexTable key={index} projectId={projectId} id={table.id} editMode={true} showOptionsMenu={true} />
+                            <UpdateComplexTable
+                                key={index}
+                                id={table.id}
+                                editMode={true}
+                                project={project}
+                                projectId={projectId}
+                                showOptionsMenu={true}
+                            />
                         ))
                     }
                 </RctCardContent>

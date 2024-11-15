@@ -1,44 +1,65 @@
 import { connect } from 'react-redux';
-import { GROUP } from 'Url/frontendUrl';
-import Button from '@material-ui/core/Button';
+import { PROJECT } from 'Url/frontendUrl';
 import { withRouter } from "react-router-dom";
 import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
 import ProjectService from 'Services/projects';
-import AddProduct from '../_components/addProduct';
 import React, { useEffect, useState } from 'react';
+import TimeFromMoment from "Components/TimeFromMoment";
 import { getPriceWithCurrency } from 'Helpers/helpers';
 
 const List = (props) => {
 
-    const [products, setProducts] = useState([]);
-    const [showCreateProduct, setShowCreateProduct] = useState(false);
+    const [project, setProject] = useState(null);
+    const [investments, setInvestments] = useState([]);
 
     useEffect(() => {
-        getProducts();
-    }, []);
+        getProject();
+    }, [])
 
-    const getProducts = () => {
-        props.setRequestGlobalAction(true);
-        ProjectService.getProducts().then(response => {
-            setProducts(response);
+    const getProject = () => {
+        props.setRequestGlobalAction(false);
+        ProjectService.getGroupProjects()
+        .then((response) => setProject(response[0]))
+        .catch((err) => {
+            console.log(err);
         })
+        .finally(() => {
+            props.setRequestGlobalAction(false);
+        })
+    }
+
+    useEffect(() => {
+        if(project) {
+            getProjectInvestments();
+        }
+    }, [project])
+
+    const getProjectInvestments = () => {
+        props.setRequestGlobalAction(true);
+        ProjectService.getProjectInvestments({ reference: project.reference })
+        .then(response => setInvestments(response))
         .finally(() => props.setRequestGlobalAction(false))
+    }
+
+
+    const goToCreate = () => {
+        props.history.push(PROJECT.MINE.FUNDING.CREATE);
     }
 
     return (
         <>
             <CustomList
-                list={products}
+                list={investments}
                 loading={false}
-                itemsFoundText={n => `${n} produits trouvés`}
-                onAddClick={() => setShowCreateProduct(true)}
+                itemsFoundText={n => `${n} investissements trouvés`}
+                onAddClick={() => goToCreate()}
                 renderItem={list => (
                     <>
                         {list && list.length === 0 ? (
                             <div className="d-flex justify-content-center align-items-center py-50">
                                 <h4>
-                                    Aucun produit trouvé
+                                    Aucun investissement trouvé
                                 </h4>
                             </div>
                         ) : (
@@ -47,9 +68,9 @@ const List = (props) => {
                                     <thead>
                                         <tr>
                                             <th className="fw-bold">Désignation</th>
-                                            <th className="fw-bold">Prix</th>
-                                            <th className="fw-bold">Description</th>
-                                            <th className="fw-bold">Actions</th>
+                                            <th className="fw-bold">Montant de l'investissement</th>
+                                            <th className="fw-bold">Date de création</th>
+                                            {/* <th className="fw-bold">Actions</th> */}
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -65,18 +86,18 @@ const List = (props) => {
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <p className="m-0 text-dark">{getPriceWithCurrency(item.price, item.currency)}</p>
+                                                            <p className="m-0 text-dark">{getPriceWithCurrency(item.totalCost, item.currency)}</p>
                                                         </div>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <p className="m-0 text-dark">{item.description}</p>
+                                                            <TimeFromMoment time={item.createdAt} showFullDate />
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td>
+                                                {/* <td>
                                                     <Button
                                                         color="primary"
                                                         variant="contained"
@@ -87,7 +108,7 @@ const List = (props) => {
                                                     >
                                                         Editer
                                                     </Button>
-                                                </td>
+                                                </td> */}
                                             </tr>
                                         ))}
                                     </tbody>
@@ -96,13 +117,6 @@ const List = (props) => {
                         )}
                     </>
                 )}
-            />
-            <AddProduct
-                show={showCreateProduct}
-                onClose={() => {
-                    setShowCreateProduct(false);
-                    getProducts();
-                }}
             />
         </>
     );

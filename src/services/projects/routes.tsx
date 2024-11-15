@@ -29,6 +29,7 @@ export const GET_PROJECT_INITIALIZATION_ITEMS = (id) => `api/projects/initializa
 export const GET_TABLE_DATAS = 'api/projects/tables/values';
 export const CREATE_TABLE_DATAS = 'api/projects/tables/values';
 export const GET_TABLE_STRUCTURE = (id) => `api/projects/tables/structures/${id}`;
+export const UPDATE_DATA_TABLE_INVESTMENT = (id) => `api/projects/tables/values/${id}`;
 
 export const GET_ATTRIBUTES = 'api/projects/attributes';
 export const CREATE_ATTRIBUTE = 'api/projects/attributes';

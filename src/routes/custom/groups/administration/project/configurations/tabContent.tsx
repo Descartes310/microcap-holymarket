@@ -16,7 +16,7 @@ const ProjectConfig = (props) => {
                 <Redirect exact from={`${match.url}/`} to={GROUP.ADMINISTRATION.PROJECT.CONFIGURATION.ATTRIBUTE.SELF} />
                 <Route path={GROUP.ADMINISTRATION.PROJECT.CONFIGURATION.ATTRIBUTE.SELF} component={Attributes} />
                 <Route path={GROUP.ADMINISTRATION.PROJECT.CONFIGURATION.PRODUCT.SELF} component={products} />
-                <Route path={GROUP.ADMINISTRATION.PROJECT.CONFIGURATION.FINANCEMENT.SELF} component={financements} />
+                {/* <Route path={GROUP.ADMINISTRATION.PROJECT.CONFIGURATION.FINANCEMENT.SELF} component={financements} /> */}
                 <Route path={GROUP.ADMINISTRATION.PROJECT.CONFIGURATION.SETTING.SELF} component={settings} />
             </Switch>
         </div>

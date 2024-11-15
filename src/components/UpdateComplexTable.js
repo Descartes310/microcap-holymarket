@@ -16,6 +16,7 @@ class UpdateComplexTable extends Component {
     state = {
         rows: [],
         datas: [],
+        cell: null,
         columns: [],
         flatRows: [],
         subColumns: [],
@@ -112,7 +113,7 @@ class UpdateComplexTable extends Component {
     render() {
 
         const { showOptionsMenu } = this.props;
-        const { columns, subColumns, datas, showMenuModal } = this.state;
+        const { columns, subColumns, datas, showMenuModal, cell } = this.state;
 
         return (
             <RctCollapsibleCard>
@@ -231,16 +232,18 @@ class UpdateComplexTable extends Component {
                                                                                     onChange={(e) => this.updateRowValue(row, subcolumn, index+1, e.target.value)}
                                                                                     value={datas.find(d => d.row.id === row.id && d.column.id === subcolumn.id && d.position === (index+1))?.value }
                                                                                 />
-                                                                                <Button
-                                                                                    color="primary"
-                                                                                    variant="contained"
-                                                                                    onClick={() => {
-                                                                                        this.setState({ showMenuModal: true });
-                                                                                    }}
-                                                                                    className="text-white font-weight-bold"
-                                                                                >
-                                                                                    Options
-                                                                                </Button>
+                                                                                { this.props.project && (
+                                                                                    <Button
+                                                                                        color="primary"
+                                                                                        variant="contained"
+                                                                                        onClick={() => {
+                                                                                            this.setState({ showMenuModal: true, cell: datas.find(d => d.row.id === row.id && d.column.id === subcolumn.id && d.position === (index+1)) });
+                                                                                        }}
+                                                                                        className="text-white font-weight-bold"
+                                                                                    >
+                                                                                        Options
+                                                                                    </Button>
+                                                                                )}
                                                                             </div>
 
                                                                     : 
@@ -296,7 +299,17 @@ class UpdateComplexTable extends Component {
                         </Button>
                     </FormGroup>
                 )}
-                <ComplexTableMenu show={showMenuModal} onClose={() => { this.setState({ showMenuModal: false }) }} />
+                { showMenuModal && this.props.project && cell && (
+                    <ComplexTableMenu 
+                        show={showMenuModal}
+                        onClose={() => { 
+                            this.setState({ showMenuModal: false, cell: null });
+                            this.getDataValues();
+                        }}
+                        project={this.props.project}
+                        cell={cell}
+                    />
+                )}
             </RctCollapsibleCard >
         );
     }

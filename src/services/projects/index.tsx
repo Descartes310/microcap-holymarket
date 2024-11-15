@@ -163,4 +163,8 @@ export default class ProjectService {
     static createInvestment(data: any): Promise<any> {
         return makeRequest('post', Routes.CREATE_PROJECT_INVESTMENT, data);
     }
+
+    static updateDataTableInvestment(id: number, data: any): Promise<any> {
+        return makeRequest('post', Routes.UPDATE_DATA_TABLE_INVESTMENT(id), data);
+    }
 }

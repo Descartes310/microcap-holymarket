@@ -1,6 +1,7 @@
 import React from 'react';
 import Items from './items';
 import Folders from './folders';
+import Fundings from './fundings';
 import {connect} from "react-redux";
 import {injectIntl} from "react-intl";
 import { PROJECT } from 'Url/frontendUrl';
@@ -14,6 +15,7 @@ const Mines = (props) => {
                 <Switch>
                     <Redirect exact from={`${match.url}/`} to={PROJECT.MINE.FOLDER.SELF} />
                     <Route path={PROJECT.MINE.FOLDER.SELF} component={Folders} />
+                    <Route path={PROJECT.MINE.FUNDING.SELF} component={Fundings} />
                     <Route path={PROJECT.MINE.ITEM.SELF} component={Items} />
                 </Switch>
             </>

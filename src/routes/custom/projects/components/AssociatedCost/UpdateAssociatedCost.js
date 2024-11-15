@@ -12,6 +12,7 @@ const UpdateAssociatedCost = (props) => {
 
     const [label, setLabel] = useState(props.item?.label);
     const [amount, setAmount] = useState(props.item?.amount);
+    const [quantity, setQuantity] = useState(props.item?.quantity);
 
     const {show, onClose} = props;
 
@@ -30,7 +31,7 @@ const UpdateAssociatedCost = (props) => {
                 <Form onSubmit={props.onSubmit}>
                     <FormGroup className="has-wrapper">
                         <InputLabel className="text-left" htmlFor="label">
-                            Désignation
+                            Poste
                         </InputLabel>
                         <InputStrap
                             required
@@ -56,15 +57,30 @@ const UpdateAssociatedCost = (props) => {
                             onChange={(e) => setAmount(Number(e.target.value))}
                         />
                     </FormGroup>
+                    <FormGroup className="has-wrapper">
+                        <InputLabel className="text-left" htmlFor="quantity">
+                            Quantité
+                        </InputLabel>
+                        <InputStrap
+                            required
+                            id="quantity"
+                            type="number"
+                            name='quantity'
+                            className="input-lg"
+                            value={quantity}
+                            onChange={(e) => setQuantity(Number(e.target.value))}
+                        />
+                    </FormGroup>
                     <FormGroup>
                         <Button
                             color="primary"
                             variant="contained"
                             className="text-white font-weight-bold"
                             onClick={() => {
-                                props.onSubmit({...props.item, amount, label});
+                                props.onSubmit({...props.item, amount, label, quantity});
                                 setAmount(null);
                                 setLabel(null);
+                                setQuantity(null);
                                 props.onClose();
                             }}
                         >

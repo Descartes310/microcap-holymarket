@@ -14,10 +14,10 @@ class Catalogues extends Component<any, any> {
     constructor(props: any) {
         super(props);
         const defaultState = (function (url) {
-            if (url.includes(GROUP.ADMINISTRATION.PROJECT.CONFIGURATION.FINANCEMENT.SELF)) return 0;
-            else if (url.includes(GROUP.ADMINISTRATION.PROJECT.CONFIGURATION.ATTRIBUTE.SELF)) return 1;
-            else if (url.includes(GROUP.ADMINISTRATION.PROJECT.CONFIGURATION.PRODUCT.SELF)) return 2;
-            else if (url.includes(GROUP.ADMINISTRATION.PROJECT.CONFIGURATION.SETTING.SELF)) return 3;
+            if (url.includes(GROUP.ADMINISTRATION.PROJECT.CONFIGURATION.ATTRIBUTE.SELF)) return 0;
+            // else if (url.includes(GROUP.ADMINISTRATION.PROJECT.CONFIGURATION.ATTRIBUTE.SELF)) return 1;
+            else if (url.includes(GROUP.ADMINISTRATION.PROJECT.CONFIGURATION.PRODUCT.SELF)) return 1;
+            else if (url.includes(GROUP.ADMINISTRATION.PROJECT.CONFIGURATION.SETTING.SELF)) return 2;
             else return 0;
         })(window.location.pathname);
 
@@ -31,10 +31,10 @@ class Catalogues extends Component<any, any> {
         this.setState({ activeTab: value });
         if (oldActivateTab !== value) {
             switch (value) {
-                case 0: return this.props.history.push(GROUP.ADMINISTRATION.PROJECT.CONFIGURATION.FINANCEMENT.SELF);
-                case 1: return this.props.history.push(GROUP.ADMINISTRATION.PROJECT.CONFIGURATION.ATTRIBUTE.SELF);
-                case 2: return this.props.history.push(GROUP.ADMINISTRATION.PROJECT.CONFIGURATION.PRODUCT.SELF);
-                case 3: return this.props.history.push(GROUP.ADMINISTRATION.PROJECT.CONFIGURATION.SETTING.SELF);
+                // case 0: return this.props.history.push(GROUP.ADMINISTRATION.PROJECT.CONFIGURATION.FINANCEMENT.SELF);
+                case 0: return this.props.history.push(GROUP.ADMINISTRATION.PROJECT.CONFIGURATION.ATTRIBUTE.SELF);
+                case 1: return this.props.history.push(GROUP.ADMINISTRATION.PROJECT.CONFIGURATION.PRODUCT.SELF);
+                case 2: return this.props.history.push(GROUP.ADMINISTRATION.PROJECT.CONFIGURATION.SETTING.SELF);
                 default: return this.props.history.push(GROUP.ADMINISTRATION.PROJECT.CONFIGURATION.ATTRIBUTE.SELF);
             }
         }
@@ -59,10 +59,10 @@ class Catalogues extends Component<any, any> {
                                         variant="scrollable"
                                         centered
                                     >
-                                        <Tab
+                                        {/* <Tab
                                             icon={<i className="zmdi zmdi-home" />}
                                             label={"Investissements"}
-                                        />
+                                        /> */}
                                         <Tab
                                             icon={<i className="zmdi zmdi-home" />}
                                             label={"Attributs"}

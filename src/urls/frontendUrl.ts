@@ -385,6 +385,12 @@ export const PROJECT = {
             CREATE: "/projects/mines/folders/create",
             UPDATE: "/projects/mines/folders/:id/update",
         },
+        FUNDING: {
+            SELF: "/projects/mines/fundings",
+            LIST: "/projects/mines/fundings/list",
+            CREATE: "/projects/mines/fundings/create",
+            UPDATE: "/projects/mines/fundings/:id/update",
+        },
         ITEM: {
             SELF: "/projects/mines/items",
             LIST: "/projects/mines/items/list",

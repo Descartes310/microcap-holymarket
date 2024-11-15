@@ -16,6 +16,7 @@ import TimeFromMoment from "Components/TimeFromMoment";
 import InviteParticipantModal from "./InviteParticipant";
 import DialogComponent from "Components/dialog/DialogComponent";
 import InitDealModal from 'Routes/custom/fundings/components/InitDealModal';
+import InitSpotModal from 'Routes/custom/fundings/components/InitSpotModal';
 import DealDetailsModal from 'Routes/custom/fundings/components/DealDetailsModal';
 
 class CodevParticipants extends Component {
@@ -31,6 +32,7 @@ class CodevParticipants extends Component {
         activeTab: 0,
         participants: [],
         showInitDeal: false,
+        showInitSpot: false,
         showDealDetails: false,
         showSearchMember: false,
         showInviteMemberModal: false
@@ -80,7 +82,7 @@ class CodevParticipants extends Component {
     render() {
 
         const { onClose, show, type, isPrivate } = this.props;
-        const { showInviteMemberModal, participants, showInitDeal, member, activeTab, deals, deal, showDealDetails } = this.state;
+        const { showInviteMemberModal, participants, showInitDeal, member, activeTab, deals, deal, showDealDetails, showInitSpot } = this.state;
 
         return (
             <DialogComponent
@@ -106,7 +108,7 @@ class CodevParticipants extends Component {
                             { type == 'DEALS' && (
                                 <Tab label="Deals" />
                             )}
-                            { type == 'SPOTS' && (
+                            { type == 'DEALS' && (
                                 <Tab label="Spots" />
                             )}
                             { type == 'INDIVISION' && (
@@ -277,10 +279,95 @@ class CodevParticipants extends Component {
                             </TabContainer>
                         </div>
                     )}
-                    { type == 'SPOTS' && (
+                    { type == 'DEALS' && (
                         <div className="card mb-0 transaction-box">
                             <TabContainer>
                                 <div className="p-sm-20 pt-sm-30 p-10 pt-15 border-top">
+                                    <CustomList
+                                        list={deals}
+                                        loading={false}
+                                        itemsFoundText={n => `${n} spots trouvés`}
+                                        onAddClick={() => this.setState({ showInitSpot: true })}
+                                        renderItem={list => (
+                                            <>
+                                                {list && list.length === 0 ? (
+                                                    <div className="d-flex justify-content-center align-items-center py-50">
+                                                        <h4>
+                                                            Aucun spot trouvé
+                                                        </h4>
+                                                    </div>
+                                                ) : (
+                                                    <div className="table-responsive">
+                                                        <table className="table table-hover table-middle mb-0">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th className="fw-bold">Désignation</th>
+                                                                    <th className="fw-bold">Montant</th>
+                                                                    <th className="fw-bold">Souscripteur</th>
+                                                                    <th className="fw-bold">Bénéficiaire</th>
+                                                                    <th className="fw-bold">Date de création</th>
+                                                                    <th className="fw-bold">Action</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                {list && list.map((item, key) => (
+                                                                    <tr key={key} className="cursor-pointer">
+                                                                        <td>
+                                                                            <div className="media">
+                                                                                <div className="media-body pt-10">
+                                                                                    <p className="m-0 text-dark">{item?.offer?.label}</p>
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td>
+                                                                            <div className="media">
+                                                                                <div className="media-body pt-10">
+                                                                                    <p className="m-0 text-dark">{getPriceWithCurrency(item?.amount, item?.currency)}</p>
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td>
+                                                                            <div className="media">
+                                                                                <div className="media-body pt-10">
+                                                                                    <p className="m-0 text-dark">{item?.sender}</p>
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td>
+                                                                            <div className="media">
+                                                                                <div className="media-body pt-10">
+                                                                                    <p className="m-0 text-dark">{item?.receiver}</p>
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td>
+                                                                            <div className="media">
+                                                                                <div className="media-body pt-10">
+                                                                                    <TimeFromMoment time={item.createdAt} showFullDate />
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td>
+                                                                            <Button
+                                                                                color="primary"
+                                                                                variant="contained"
+                                                                                className="text-white font-weight-bold"
+                                                                                onClick={() => {
+                                                                                    this.setState({ deal: item, showDealDetails: true });
+                                                                                }}
+                                                                            >
+                                                                                Détails
+                                                                            </Button>
+                                                                        </td>
+                                                                    </tr>
+                                                                ))}
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                )}
+                                            </>
+                                        )}
+                                    />
                                 </div>
                             </TabContainer>
                         </div>
@@ -300,6 +387,19 @@ class CodevParticipants extends Component {
                         show={showInitDeal}
                         onClose={() => {
                             this.setState({ showSearchMember: false, member: null, showInitDeal: false });
+                            this.getDeals();
+                        }}
+                        dealType='NDJANGUI'
+                        subscriber={member}
+                        lineReference={this.props.codevLine}
+                    />
+                )}
+
+                {showInitSpot && (
+                    <InitSpotModal 
+                        show={showInitSpot}
+                        onClose={() => {
+                            this.setState({ showSearchMember: false, member: null, showInitSpot: false });
                             this.getDeals();
                         }}
                         dealType='NDJANGUI'

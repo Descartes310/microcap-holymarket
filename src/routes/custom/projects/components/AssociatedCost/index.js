@@ -1,9 +1,9 @@
 import { connect } from 'react-redux';
+import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
 import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
-import React, { useState, useEffect } from 'react';
 import UpdateAssociatedCost from './UpdateAssociatedCost';
 
 
@@ -35,8 +35,10 @@ const AssociatedCost = (props) => {
                                 <table className="table table-hover table-middle mb-0">
                                     <thead>
                                         <tr>
-                                            <th className="fw-bold">Désignation</th>
-                                            <th className="fw-bold">Montant</th>
+                                            <th className="fw-bold">Poste</th>
+                                            <th className="fw-bold">Coût</th>
+                                            <th className="fw-bold">Quantité</th>
+                                            <th className="fw-bold">Coût total</th>
                                             {props.editable && (
                                                 <th className="fw-bold">Action</th>
                                             )}
@@ -56,6 +58,20 @@ const AssociatedCost = (props) => {
                                                     <div className="media">
                                                         <div className="media-body pt-10">
                                                             <h4 className="m-0 fw-bold text-dark">{item.amount}</h4>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="media">
+                                                        <div className="media-body pt-10">
+                                                            <h4 className="m-0 fw-bold text-dark">{item.quantity}</h4>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="media">
+                                                        <div className="media-body pt-10">
+                                                            <h4 className="m-0 fw-bold text-dark">{item.quantity * item.amount}</h4>
                                                         </div>
                                                     </div>
                                                 </td>

@@ -12,11 +12,10 @@ import React, { useEffect, useState } from 'react';
 import TextField from '@material-ui/core/TextField';
 import {NotificationManager} from 'react-notifications';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import AssociatedCost from '../_components/AssociatedCost';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { Form, FormGroup, Input as InputStrap } from 'reactstrap';
+import AssociatedCost from 'Routes/custom/projects/components/AssociatedCost';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
-import participants from 'Routes/custom/bank-services/participants';
 
 const Create = (props) => {
 

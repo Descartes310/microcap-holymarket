@@ -250,6 +250,15 @@ const Update = (props) => {
                     </div>
                     <div className='mb-40'>
                         <h2 className='font-weight-bold'>
+                            Investissements projet
+                        </h2>
+                        <a href={PROJECT.MINE.FUNDING.LIST}>
+                            Cliquez ici pour voir les investissements
+                        </a>
+                    </div>
+
+                    <div className='mb-40'>
+                        <h2 className='font-weight-bold'>
                             Ouvrages du projet
                         </h2>
                         <span>
@@ -343,7 +352,7 @@ const Update = (props) => {
                     setAddPersonalItemModal(false);
                 }}
             />
-            { (showUpdateTableModal && project) && (
+            { showUpdateTableModal && project && (
                 <UpdateComplexTableModal 
                     show={showUpdateTableModal}
                     title={'Edition ouvrage personnalisé'}
@@ -351,6 +360,7 @@ const Update = (props) => {
                         setShowUpdateTableModal(false);
                     }}
                     projectId={project?.id}
+                    project={project}
                     tables={project?.tables ? project?.tables : []}
                 />
             )}
