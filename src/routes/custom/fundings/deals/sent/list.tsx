@@ -22,7 +22,7 @@ const List = (props) => {
 
     const getDatas = () => {
         props.setRequestGlobalAction(true),
-        FundingService.getDeals({received: false})
+        FundingService.getDeals({received: false, free: false})
         .then(response => setDatas(response))
         .finally(() => props.setRequestGlobalAction(false))
     }
@@ -120,6 +120,7 @@ const List = (props) => {
                         setShowInitDeal(true);
                     }}
                     isSender={true}
+                    isBlocked={true}
                 />
             )}
 
@@ -131,6 +132,7 @@ const List = (props) => {
                         setShowInitDeal(false);
                     }}
                     deal={deal}
+                    dealType={deal.type}
                 />
             )}
         </>

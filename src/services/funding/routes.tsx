@@ -9,6 +9,9 @@ export const FIND_PROPOSITION = (reference) => `api/fundings/funding-offers/prop
 export const INVITE_CODEV_SUBSCRIBER = (reference) => `api/fundings/funding-offers/deals/${reference}/invite`;
 
 export const GET_DEALS = 'api/fundings/funding-offers/deals';
+export const GET_OFFERS = 'api/fundings/funding-offers/offers';
+export const GET_REQUESTS = 'api/fundings/funding-offers/requests';
+
 export const GET_DEALS_BY_ACCOUNT = 'api/fundings/funding-offers/deals/by-account';
 export const FIND_DEAL = (reference) => `api/fundings/funding-offers/deals/${reference}`;
 export const VALIDATE_DEAL = (reference) => `api/fundings/funding-offers/deals/${reference}/validate`;

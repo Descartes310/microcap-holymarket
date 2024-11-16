@@ -6,8 +6,8 @@ import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
 import React, { useEffect, useState } from 'react';
 import TimeFromMoment from 'Components/TimeFromMoment';
-import InitDealModal from '../../components/InitDealModal';
-import DealDetailsModal from '../../components/DealDetailsModal';
+import InitDealModal from 'Routes/custom/fundings/components/InitDealModal';
+import DealDetailsModal from 'Routes/custom/fundings/components/DealDetailsModal';
 
 const List = (props) => {
 
@@ -22,11 +22,10 @@ const List = (props) => {
 
     const getDatas = () => {
         props.setRequestGlobalAction(true),
-        FundingService.getDeals({received: true, free: false})
+        FundingService.getRequests({mine: false})
         .then(response => setDatas(response))
         .finally(() => props.setRequestGlobalAction(false))
     }
-
     return (
             <>
             <CustomList
@@ -120,10 +119,9 @@ const List = (props) => {
                         setShowInitDeal(true);
                     }}
                     isSender={false}
-                    isBlocked={true}
                 />
-            )}
-
+            )}            
+            
             {deal && showInitDeal && (
                 <InitDealModal 
                     show={showInitDeal}

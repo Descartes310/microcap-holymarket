@@ -1,5 +1,6 @@
 import React from 'react';
 import Offers from './offers';
+import Requests from './requests';
 import {connect} from "react-redux";
 import {injectIntl} from "react-intl";
 import { FUNDING } from 'Url/frontendUrl';
@@ -13,6 +14,7 @@ const Bourse = (props) => {
                 <Switch>
                     <Redirect exact from={`${match.url}/`} to={FUNDING.BOURSE.OFFER.SELF} />
                     <Route path={FUNDING.BOURSE.OFFER.SELF} component={Offers} />
+                    <Route path={FUNDING.BOURSE.REQUEST.SELF} component={Requests} />
                 </Switch>
             </>
         </div>

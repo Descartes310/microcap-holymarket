@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
-import { getTimeUnits } from 'Helpers/datas';
+import { getTimeUnits, getTimeUnitByValue } from 'Helpers/datas';
 import FundingService from 'Services/funding';
 import { withRouter } from "react-router-dom";
 import CustomList from "Components/CustomList";
@@ -23,6 +23,7 @@ class DealDetailsModal extends Component {
         deal: null,
         accounts: [],
         account: null,
+        acceptDeal: true,
         compensations: [],
         editAccount: false,
         showConfirmBox: false,
@@ -35,38 +36,43 @@ class DealDetailsModal extends Component {
         this.findDeal();
     }
 
-    // getAccounts = () => {
-    //     this.props.setRequestGlobalAction(true),
-    //     AccountService.getAccountBySpeciality({special_product: this.state.interventionType?.value})
-    //     .then(response => {
-    //         this.setState({ accounts: response, account: null });
-    //     })
-    //     .finally(() => this.props.setRequestGlobalAction(false))
-    // }
-
     findDeal = () => {
         this.props.setRequestGlobalAction(true);
         FundingService.findDeal(this.props.reference)
         .then(response => {
             this.setState({
                 deal: response,
-                compensations: response?.counterParts?.filter(c => c.fixPart),
-                natureCompensations: response?.counterParts?.filter(c => !c.fixPart),
-                interventionType: getFundingOfferInterventionTypes().find(i => i.value == response?.intervention)
+                compensations: response?.counterParts?.filter(c => c.fixPart) ?? [],
+                natureCompensations: response?.counterParts?.filter(c => !c.fixPart) ?? [],
+                interventionType: getFundingOfferInterventionTypes().find(i => i.value == response?.intervention) ?? null
             });
         })
         .finally(() => this.props.setRequestGlobalAction(false))
     }
 
     validateDeal = () => {
+
+        console.log(this.state.acceptDeal, this.state.deal, this.state.deal?.type, this.state.deal?.tickets);
+        
+        if(this.state.acceptDeal && this.state.deal && this.state.deal?.type == 'DEAL') {
+            if(this.state.deal?.tickets <= 0) {
+                NotificationManager.error("Selectionnez les tickets");
+                return;
+            }
+        }
+
         this.props.setRequestGlobalAction(true);
-        FundingService.validateDeal(this.props.reference)
-        .then(response => {
-            this.props.onClose()
+        FundingService.validateDeal(this.props.reference, {status: this.state.acceptDeal})
+        .then(() => {
+            NotificationManager.success('Opération terminée avec succès');
+            this.props.onClose();
         })
         .catch((err) => {
-            NotificationManager.error('Une erreur est survenue');
-            this.setState({ showConfirmBox: false });
+            if(err?.response?.status == 403) {
+                NotificationManager.error("Vous ne pouvez pas accepter votre propre proposition");
+            } else {
+                NotificationManager.error('Une erreur est survenue');
+            }
         })
         .finally(() => this.props.setRequestGlobalAction(false))
     }
@@ -94,7 +100,7 @@ class DealDetailsModal extends Component {
     render() {
 
         const { onClose, show, isSender, isBlocked } = this.props;
-        const { deal, compensations, natureCompensations, interventionType, showConfirmBox, editAccount, account, accounts } = this.state;
+        const { deal, compensations, natureCompensations, interventionType, showConfirmBox, acceptDeal } = this.state;
 
         return (
             <DialogComponent
@@ -116,43 +122,342 @@ class DealDetailsModal extends Component {
                         <p>Objet: {deal?.type == 'NDJANGUI' ? `Ndjangui ` : `Offre de cautionnement `} {deal?.offer?.reference}</p>
                         <p>Souscripteur: {deal?.sender}</p>
                         <p>Beneficiaire: {deal?.receiver}</p>
-                        {/* <p>Mode d'intervention: {interventionType?.label}</p> */}
 
-                        {/* <p>Domiciliation: {isSender ? deal?.account : deal?.receptorAccount} &nbsp;
-                            <span 
-                                onClick={() => { this.setState({ editAccount: !editAccount }) }}
-                                style={{ fontStyle: 'italic', color: 'blue', cursor: 'pointer' }}
-                            >
-                                Modifier
-                            </span>
-                        </p>
+                        <h2 className='mb-20'>Détails</h2>
+                        <div className="table-responsive">
+                            <table className="table table-hover table-middle mb-0">
+                                <thead>
+                                    <tr>
+                                        <th className="fw-bold">Détails</th>
+                                        <th className="fw-bold">Valeur</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    { deal?.offer?.label && (
+                                        <tr className="cursor-pointer">
+                                            <td>
+                                                <div className="media">
+                                                    <div className="media-body pt-10">
+                                                        <h4 className="m-0 fw-bold text-dark">Désignation</h4>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div className="media">
+                                                    <div className="media-body pt-10">
+                                                        <h4 className="m-0 text-dark">{deal?.offer?.label}</h4>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    )}
+                                    { deal?.amount && (
+                                        <tr className="cursor-pointer">
+                                            <td>
+                                                <div className="media">
+                                                    <div className="media-body pt-10">
+                                                        <h4 className="m-0 fw-bold text-dark">Montant demandé</h4>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div className="media">
+                                                    <div className="media-body pt-10">
+                                                        <h4 className="m-0 text-dark">{getPriceWithCurrency(deal?.amount, deal?.currency)}</h4>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    )}
+                                    { deal?.lastProposition.rate && (
+                                        <tr className="cursor-pointer">
+                                            <td>
+                                                <div className="media">
+                                                    <div className="media-body pt-10">
+                                                        <h4 className="m-0 fw-bold text-dark">Taux de placement</h4>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div className="media">
+                                                    <div className="media-body pt-10">
+                                                        <h4 className="m-0 text-dark">{deal?.lastProposition.rate} %</h4>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    )}
+                                    { deal?.lastProposition?.startDate && (
+                                        <tr className="cursor-pointer">
+                                            <td>
+                                                <div className="media">
+                                                    <div className="media-body pt-10">
+                                                        <h4 className="m-0 fw-bold text-dark">Date de début</h4>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div className="media">
+                                                    <div className="media-body pt-10">
+                                                        <h4 className="m-0 text-dark">{<TimeFromMoment time={deal?.lastProposition?.startDate} showFullDate />}</h4>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    )}
 
-                        { editAccount && (
-                            <div className="col-md-12 col-sm-12 has-wrapper mb-30">
-                                <InputGroup className='w-100'>
-                                    <Autocomplete
-                                        value={account}
-                                        options={accounts}
-                                        id="combo-box-demo"
-                                        onChange={(__, item) => {
-                                            this.setState({ account: item });
-                                        }}
-                                        getOptionLabel={(option) => option.label}
-                                        renderInput={(params) => <TextField {...params} variant="outlined" />}
-                                    />
-                                    <InputGroupAddon addonType="append">
-                                        <Button color="primary" variant="contained" onClick={() => {
-                                            this.changeAccount();
-                                        }} >
-                                            <span className='text-white'>Enregistrer</span>
-                                        </Button>
-                                    </InputGroupAddon>
-                                </InputGroup>
-                            </div>
-                        )} */}
+                                    { deal?.lastProposition?.endDate && (
+                                        <tr className="cursor-pointer">
+                                            <td>
+                                                <div className="media">
+                                                    <div className="media-body pt-10">
+                                                        <h4 className="m-0 fw-bold text-dark">Date de fin</h4>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div className="media">
+                                                    <div className="media-body pt-10">
+                                                        <h4 className="m-0 text-dark">{<TimeFromMoment time={deal?.lastProposition?.endDate} showFullDate />}</h4>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    )}
+
+                                    { deal?.lastProposition?.endSubscriptionDate && (
+                                        <tr className="cursor-pointer">
+                                            <td>
+                                                <div className="media">
+                                                    <div className="media-body pt-10">
+                                                        <h4 className="m-0 fw-bold text-dark">Date de cloture des souscriptions</h4>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div className="media">
+                                                    <div className="media-body pt-10">
+                                                        <h4 className="m-0 text-dark">{<TimeFromMoment time={deal?.lastProposition?.endSubscriptionDate} showFullDate />}</h4>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    )}
+
+                                    { deal?.lastProposition?.managementAmount && (
+                                        <tr className="cursor-pointer">
+                                            <td>
+                                                <div className="media">
+                                                    <div className="media-body pt-10">
+                                                        <h4 className="m-0 fw-bold text-dark">Frais de gestion par période</h4>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div className="media">
+                                                    <div className="media-body pt-10">
+                                                        <h4 className="m-0 text-dark">{getPriceWithCurrency(deal?.lastProposition.managementAmount, deal?.currency)}</h4>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    )}
+
+                                    { deal?.lastProposition?.managementRate && (
+                                        <tr className="cursor-pointer">
+                                            <td>
+                                                <div className="media">
+                                                    <div className="media-body pt-10">
+                                                        <h4 className="m-0 fw-bold text-dark">Taux de gestion par période de loyer</h4>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div className="media">
+                                                    <div className="media-body pt-10">
+                                                        <h4 className="m-0 text-dark">{deal?.lastProposition.managementRate} %</h4>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    )}
+
+                                    { deal?.lastProposition?.numberOfPart && (
+                                        <tr className="cursor-pointer">
+                                            <td>
+                                                <div className="media">
+                                                    <div className="media-body pt-10">
+                                                        <h4 className="m-0 fw-bold text-dark">Nombre de part du spot</h4>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div className="media">
+                                                    <div className="media-body pt-10">
+                                                        <h4 className="m-0 text-dark">{deal?.lastProposition.numberOfPart}</h4>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    )}
+
+                                    { deal?.lastProposition?.paymentStartDate && (
+                                        <tr className="cursor-pointer">
+                                            <td>
+                                                <div className="media">
+                                                    <div className="media-body pt-10">
+                                                        <h4 className="m-0 fw-bold text-dark">Date de premier loyer</h4>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div className="media">
+                                                    <div className="media-body pt-10">
+                                                        <h4 className="m-0 text-dark">{<TimeFromMoment time={deal?.lastProposition?.paymentStartDate} showFullDate />}</h4>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    )}
+
+                                    { deal?.lastProposition?.periodicityLength && (
+                                        <tr className="cursor-pointer">
+                                            <td>
+                                                <div className="media">
+                                                    <div className="media-body pt-10">
+                                                        <h4 className="m-0 fw-bold text-dark">Durée du spot (nombre de période)</h4>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div className="media">
+                                                    <div className="media-body pt-10">
+                                                        <h4 className="m-0 text-dark">{deal?.lastProposition.periodicityLength}</h4>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    )}
+
+                                    { deal?.lastProposition?.periodicity && (
+                                        <tr className="cursor-pointer">
+                                            <td>
+                                                <div className="media">
+                                                    <div className="media-body pt-10">
+                                                        <h4 className="m-0 fw-bold text-dark">Périodicité</h4>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div className="media">
+                                                    <div className="media-body pt-10">
+                                                        <h4 className="m-0 text-dark">{getTimeUnitByValue(deal?.lastProposition?.periodicity)?.label}</h4>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    )}
+
+                                    { deal?.lastProposition?.prime && (
+                                        <tr className="cursor-pointer">
+                                            <td>
+                                                <div className="media">
+                                                    <div className="media-body pt-10">
+                                                        <h4 className="m-0 fw-bold text-dark">Prime de liquidation anticipée</h4>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div className="media">
+                                                    <div className="media-body pt-10">
+                                                        <h4 className="m-0 text-dark">{getPriceWithCurrency(deal?.lastProposition.prime, deal?.currency)}</h4>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    )}
+
+                                    { deal?.lastProposition?.rate && (
+                                        <tr className="cursor-pointer">
+                                            <td>
+                                                <div className="media">
+                                                    <div className="media-body pt-10">
+                                                        <h4 className="m-0 fw-bold text-dark">Taux de placement</h4>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div className="media">
+                                                    <div className="media-body pt-10">
+                                                        <h4 className="m-0 text-dark">{deal?.lastProposition.rate} %</h4>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    )}
+
+                                    { deal?.lastProposition?.rent && (
+                                        <tr className="cursor-pointer">
+                                            <td>
+                                                <div className="media">
+                                                    <div className="media-body pt-10">
+                                                        <h4 className="m-0 fw-bold text-dark">Loyer</h4>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div className="media">
+                                                    <div className="media-body pt-10">
+                                                        <h4 className="m-0 text-dark">{getPriceWithCurrency(deal?.lastProposition.rent, deal?.currency)}</h4>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    )}
+
+                                    { deal?.amount && (
+                                        <tr className="cursor-pointer">
+                                            <td>
+                                                <div className="media">
+                                                    <div className="media-body pt-10">
+                                                        <h4 className="m-0 fw-bold text-dark">Status</h4>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div className="media">
+                                                    <div className="media-body pt-10">
+                                                        <h4 className="m-0 text-dark">{deal?.status == 'PENDING' ? 'En attente' : deal?.status == 'APPROVED' ? 'Approuvé' : 'Refusé'}</h4>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    )}
+
+                                    { deal?.amount && (
+                                        <tr className="cursor-pointer">
+                                            <td>
+                                                <div className="media">
+                                                    <div className="media-body pt-10">
+                                                        <h4 className="m-0 fw-bold text-dark">Date d'expiration</h4>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div className="media">
+                                                    <div className="media-body pt-10">
+                                                        <h4 className="m-0 text-dark"><TimeFromMoment time={deal?.expirationDate} showFullDate /></h4>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    )}
+                                </tbody>
+                            </table>
+                        </div>
 
                         { deal?.tickets?.length > 0 && (
-                            <h2 className='mb-20'>Versements</h2>
+                            <h2 className='mb-20 mt-20'>Versements</h2>
                         )}
 
                         { deal?.tickets?.length > 0 && (
@@ -224,9 +529,9 @@ class DealDetailsModal extends Component {
                             />
                         )}
 
-                        { compensations.length > 0 && (
+                        { compensations?.length > 0 && (
                             <>
-                                <h2 className='mb-20'>Contrepartie en numeraire</h2>
+                                <h2 className='mb-20 mt-20'>Contrepartie en numeraire</h2>
                                 <CustomList
                                     loading={false}
                                     list={compensations}
@@ -308,9 +613,9 @@ class DealDetailsModal extends Component {
                             </>
                         )}
 
-                        { natureCompensations.length > 0 && (
+                        { natureCompensations?.length > 0 && (
                             <>
-                                <h2 className='mb-20'>Contrepartie en nature</h2>
+                                <h2 className='mb-20 mt-20'>Contrepartie en nature</h2>
                                 <CustomList
                                     loading={false}
                                     list={natureCompensations}
@@ -399,13 +704,38 @@ class DealDetailsModal extends Component {
                                 />
                             </>
                         )}
-                        { !isBlocked && (
+                        { (!isBlocked && deal?.status == 'PENDING') && (
+                            deal?.type == 'SPOT' ?
+                            <FormGroup className="has-wrapper mr-20" style={{ flex: 1 }}>
+                                {/* <Button
+                                    color="primary"
+                                    variant="contained"
+                                    onClick={() => {
+                                        this.setState({ showConfirmBox: true, acceptDeal: false });
+                                    }}
+                                    disabled={deal?.status != 'PENDING'}
+                                    className="text-white font-weight-bold"
+                                >
+                                    Refuser
+                                </Button> */}
+                                <Button
+                                    color="primary"
+                                    variant="contained"
+                                    onClick={() => {
+                                        this.setState({ showConfirmBox: true, acceptDeal: true });
+                                    }}
+                                    disabled={deal?.status != 'PENDING'}
+                                    className="text-white font-weight-bold ml-30"
+                                >
+                                    Accepter
+                                </Button>
+                            </FormGroup> :
                             <FormGroup className="has-wrapper mr-20" style={{ flex: 1 }}>
                                 <Button
                                     color="primary"
                                     variant="contained"
                                     onClick={() => {
-                                        this.setState({ showConfirmBox: true });
+                                        this.setState({ showConfirmBox: true, acceptDeal: true });
                                     }}
                                     disabled={deal?.status != 'PENDING'}
                                     className="text-white font-weight-bold"
@@ -433,7 +763,7 @@ class DealDetailsModal extends Component {
                     leftButtonOnClick={() => {
                         this.setState({ showConfirmBox: false });
                     }}
-                    message={'Etes vous sure de vouloir approuver ce deal ?'}
+                    message={acceptDeal ? 'Etes vous sure de vouloir approuver ce deal ?' : 'Etes vous sure de vouloir refuser ce deal ?'}
                 />
             </DialogComponent>
         );

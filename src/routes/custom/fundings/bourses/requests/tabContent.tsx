@@ -6,14 +6,14 @@ import Networks from './networks/list';
 import { FUNDING } from 'Url/frontendUrl';
 import {withRouter, Switch, Redirect, Route} from "react-router-dom";
 
-const BourseOffer = (props) => {
+const BourseRequest = (props) => {
     const { match } = props;
     return (
         <div>
             <Switch>
-                <Redirect exact from={`${match.url}/`} to={FUNDING.BOURSE.OFFER.MINE} />
-                <Route path={FUNDING.BOURSE.OFFER.MINE} component={Mines} />
-                <Route path={FUNDING.BOURSE.OFFER.LIST} component={Networks} />
+                <Redirect exact from={`${match.url}/`} to={FUNDING.BOURSE.REQUEST.MINE} />
+                <Route path={FUNDING.BOURSE.REQUEST.MINE} component={Mines} />
+                <Route path={FUNDING.BOURSE.REQUEST.LIST} component={Networks} />
             </Switch>
         </div>
     );
@@ -23,4 +23,4 @@ const mapStateToProps = ({ requestGlobalLoader }) => {
     return { requestGlobalLoader }
 };
 
-export default connect(mapStateToProps, {})(withRouter(injectIntl(BourseOffer)));
+export default connect(mapStateToProps, {})(withRouter(injectIntl(BourseRequest)));

@@ -78,6 +78,7 @@ export const FUNDING = {
         },
         REQUEST: {
             SELF: '/funding/bourse/requests',
+            MINE: '/funding/bourse/requests/mine',
             LIST: '/funding/bourse/requests/list',
         },
         OFFER: {

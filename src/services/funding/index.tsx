@@ -38,13 +38,21 @@ export default class FundingService {
     static getDeals(data): Promise<any> {
         return makeRequest('get', Routes.GET_DEALS, data);
     }
+
+    static getOffers(data): Promise<any> {
+        return makeRequest('get', Routes.GET_OFFERS, data);
+    }
+
+    static getRequests(data): Promise<any> {
+        return makeRequest('get', Routes.GET_REQUESTS, data);
+    }
     
     static findDeal(reference): Promise<any> {
         return makeRequest('get', Routes.FIND_DEAL(reference));
     }
     
-    static validateDeal(reference): Promise<any> {
-        return makeRequest('put', Routes.VALIDATE_DEAL(reference));
+    static validateDeal(reference, data): Promise<any> {
+        return makeRequest('put', Routes.VALIDATE_DEAL(reference), data);
     }
     
     static changeAccountDeal(reference, data: any): Promise<any> {

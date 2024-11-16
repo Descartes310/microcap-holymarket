@@ -557,7 +557,18 @@ export default [
             "new_item": false,
             "path": FUNDING.BOURSE.DEALS.SENT,
             "permissions": [
-               Permission.bourse.request.name,
+               Permission.bourse.offer.name,
+               Permission.assets.all.name,
+            ],
+            "profiles": null,
+            "child_routes": null
+         },
+         {
+            "menu_title": "Demandes",
+            "new_item": false,
+            "path": FUNDING.BOURSE.REQUEST.MINE,
+            "permissions": [
+               Permission.bourse.offer.name,
                Permission.assets.all.name,
             ],
             "profiles": null,
@@ -570,7 +581,7 @@ export default [
             "permissions": [
                Permission.bourse.offer.name,
                Permission.assets.all.name,
-               ],
+            ],
             "profiles": null,
             "child_routes": null
          }

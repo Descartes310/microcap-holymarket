@@ -15,8 +15,8 @@ class Deals extends Component<any, any> {
     constructor(props: any) {
         super(props);
         const defaultState = (function (url) {
-            if (url.includes(FUNDING.BOURSE.OFFER.MINE)) return 0;
-            else if (url.includes(FUNDING.BOURSE.OFFER.LIST)) return 1;
+            if (url.includes(FUNDING.BOURSE.REQUEST.MINE)) return 0;
+            else if (url.includes(FUNDING.BOURSE.REQUEST.LIST)) return 1;
             else return 0;
         })(window.location.pathname);
 
@@ -30,9 +30,9 @@ class Deals extends Component<any, any> {
         this.setState({ activeTab: value });
         if (oldActivateTab !== value) {
             switch (value) {
-                case 0: return this.props.history.push(FUNDING.BOURSE.OFFER.MINE);
-                case 1: return this.props.history.push(FUNDING.BOURSE.OFFER.LIST);
-                default: return this.props.history.push(FUNDING.BOURSE.OFFER.MINE);
+                case 0: return this.props.history.push(FUNDING.BOURSE.REQUEST.MINE);
+                case 1: return this.props.history.push(FUNDING.BOURSE.REQUEST.LIST);
+                default: return this.props.history.push(FUNDING.BOURSE.REQUEST.MINE);
             }
         }
     };
@@ -42,7 +42,7 @@ class Deals extends Component<any, any> {
 
         return (
             <div>
-                <PageTitleBar title={"Liste des offres"} match={this.props.match} />
+                <PageTitleBar title={"Liste des demandes"} match={this.props.match} />
                 <RctCard>
                     <div className="rct-tabs">
                         <AppBar position="static">
@@ -58,11 +58,11 @@ class Deals extends Component<any, any> {
                                     >
                                         <Tab
                                             icon={<i className="zmdi zmdi-home" />}
-                                            label={"Mes offres"}
+                                            label={"Mes demande"}
                                         />
                                         <Tab
                                             icon={<i className="zmdi zmdi-home" />}
-                                            label={"Offres disponibles"}
+                                            label={"Demandes disponibles"}
                                         />
                                     </Tabs>
                                 </div>

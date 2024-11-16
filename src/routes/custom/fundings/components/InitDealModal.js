@@ -63,9 +63,9 @@ class InitDealModal extends Component {
 
     constructor(props) {
         super(props);
-        this.findMyCodevs();
+        // this.findMyCodevs();
 
-        if((this.props.dealType == 'NDJANGUI' && this.props.lineReference) || this.props.deal?.type == 'NDJANGUI') {
+        if((['NDJANGUI', 'DEAL'].includes(this.props.dealType) && this.props.lineReference) || ['NDJANGUI', 'DEAL'].includes(this.props.deal?.type)) {
             this.findLine();
         } else {
             if(this.props.reference) {
@@ -310,6 +310,13 @@ class InitDealModal extends Component {
             }
         }
 
+        if(this.props.deal && this.props.deal?.type == 'DEAL') {
+            if(selectedTickets.length <= 0) {
+                NotificationManager.error("Selectionnez les tickets");
+                return;
+            }
+        }
+
         if(this.state.line && selectedTickets.length > 0) {
             datas.tickets = selectedTickets.map(t => t.reference);
             datas.init_method = 'TICKETS';
@@ -412,6 +419,7 @@ class InitDealModal extends Component {
                                 value={label}
                                 className="input-lg"
                                 placeholder="Désignation"
+                                disabled={deal}
                                 onChange={(e) => this.setState({ label: e.target.value })}
                             />
                         </FormGroup>
@@ -428,6 +436,7 @@ class InitDealModal extends Component {
                                     value={amount}
                                     className="input-lg"
                                     placeholder="Total à verser"
+                                    disabled={deal}
                                     onChange={(e) => this.setState({ amount: e.target.value })}
                                 />
                             </FormGroup>
@@ -775,7 +784,7 @@ class InitDealModal extends Component {
                             />
                         )}
 
-                        { !natureOfferEnabled && (
+                        {/* { !natureOfferEnabled && (
                             <>
                                 <h2 className='mb-20'>Contrepartie en nature</h2>
                                 <div className='d-flex direction-column align-items-stretch' style={{ flex: 1 }}>
@@ -1027,7 +1036,7 @@ class InitDealModal extends Component {
                                     />
                                 )}
                             </>
-                        )}
+                        )} */}
                         <FormGroup className="has-wrapper mr-20" style={{ flex: 1 }}>
                             <Button
                                 color="primary"

@@ -27,6 +27,7 @@ class CodevParticipants extends Component {
 
     state = {
         deals: [],
+        spots: [],
         deal: null,
         member: null,
         activeTab: 0,
@@ -43,13 +44,24 @@ class CodevParticipants extends Component {
         if(this.props.type == 'DEALS') {
             this.getDeals();
         }
+        // if(this.props.type == 'DEALS') {
+            this.getSpots();
+        // }
     }
 
     getDeals = () => {
         this.props.setRequestGlobalAction(true),
-        FundingService.getDeals({received: true, referral_code: this.props.referralCode, entity_reference: this.props.codevLine})
+        FundingService.getDeals({type: 'DEAL', received: true, referral_code: this.props.referralCode, entity_reference: this.props.codevLine})
         .then(response => this.setState({ deals: response }))
         .catch(() => this.setState({ deals: [] }))
+        .finally(() => this.props.setRequestGlobalAction(false))
+    }
+
+    getSpots = () => {
+        this.props.setRequestGlobalAction(true),
+        FundingService.getDeals({type: 'SPOT', received: true, referral_code: this.props.referralCode, entity_reference: this.props.codevLine})
+        .then(response => this.setState({ spots: response }))
+        .catch(() => this.setState({ spots: [] }))
         .finally(() => this.props.setRequestGlobalAction(false))
     }
 
@@ -81,8 +93,8 @@ class CodevParticipants extends Component {
 
     render() {
 
-        const { onClose, show, type, isPrivate } = this.props;
-        const { showInviteMemberModal, participants, showInitDeal, member, activeTab, deals, deal, showDealDetails, showInitSpot } = this.state;
+        const { onClose, show, type } = this.props;
+        const { showInviteMemberModal, participants, showInitDeal, member, activeTab, deals, deal, spots, showDealDetails, showInitSpot } = this.state;
 
         return (
             <DialogComponent
@@ -108,7 +120,7 @@ class CodevParticipants extends Component {
                             { type == 'DEALS' && (
                                 <Tab label="Deals" />
                             )}
-                            { type == 'DEALS' && (
+                            { type == 'SPOTS' && (
                                 <Tab label="Spots" />
                             )}
                             { type == 'INDIVISION' && (
@@ -126,7 +138,6 @@ class CodevParticipants extends Component {
                                 <CustomList
                                     loading={false}
                                     list={participants}
-                                    addingButton={!isPrivate}
                                     itemsFoundText={n => `${n} type.s trouvé.s`}
                                     onAddClick={() => this.setState({ showInviteMemberModal: true })}
                                     renderItem={list => (
@@ -279,12 +290,12 @@ class CodevParticipants extends Component {
                             </TabContainer>
                         </div>
                     )}
-                    { type == 'DEALS' && (
+                    { type == 'SPOTS' && (
                         <div className="card mb-0 transaction-box">
                             <TabContainer>
                                 <div className="p-sm-20 pt-sm-30 p-10 pt-15 border-top">
                                     <CustomList
-                                        list={deals}
+                                        list={spots}
                                         loading={false}
                                         itemsFoundText={n => `${n} spots trouvés`}
                                         onAddClick={() => this.setState({ showInitSpot: true })}
@@ -404,6 +415,7 @@ class CodevParticipants extends Component {
                         }}
                         dealType='NDJANGUI'
                         subscriber={member}
+                        order={this.props.order}
                         lineReference={this.props.codevLine}
                     />
                 )}
@@ -417,6 +429,7 @@ class CodevParticipants extends Component {
                             this.getParticipants();
                         }}
                         lineReference={this.props.codevLine}
+                        type={this.props.type}
                     />
                 )}
 

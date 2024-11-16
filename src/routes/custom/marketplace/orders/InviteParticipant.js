@@ -31,7 +31,7 @@ class InviteParticipantModal extends Component {
 
      getDeals = () => {
         this.props.setRequestGlobalAction(true),
-        FundingService.getDeals({received: true, free: true, referral_code: this.props.referralCode, entity_reference: this.props.lineReference})
+        FundingService.getDeals({type: this.props.type, received: true, free: true, referral_code: this.props.referralCode, entity_reference: this.props.lineReference})
         .then(response => this.setState({ deals: response }))
         .catch(() => this.setState({ deals: [] }))
         .finally(() => this.props.setRequestGlobalAction(false))
