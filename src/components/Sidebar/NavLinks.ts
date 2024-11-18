@@ -161,6 +161,13 @@ export default [
             "permissions": [
                Permission.supervision.user.name,
             ],
+         },         {
+            "menu_title": "Opérations",
+            "new_item": false,
+            "path": SUPERVISION.OPERATIONS.LIST,
+            "permissions": [
+               Permission.supervision.user.name,
+            ],
          },
          {
             "menu_title": "Partenaires",

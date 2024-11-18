@@ -387,6 +387,23 @@ export const getUserAssistanceTypeValue = (value): any => {
         return value;
 }
 
+export const getOldAssistanceTypes = () => {
+    return [
+        {
+            label: 'Régulariser une opération',
+            value: 'INITIATE_OPERATION'
+        }
+    ];
+}
+
+export const getOldAssistanceTypeValue = (value): any => {
+    let type = getOldAssistanceTypes().find(t => t.value === value);
+    if (type)
+        return type.value;
+    else
+        return value;
+}
+
 export const uneditableProductModelType = [
     "CPMCM"
 ];

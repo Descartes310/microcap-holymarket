@@ -72,7 +72,8 @@ const List = (props) => {
                                             <th className="fw-bold">Client</th>
                                             <th className="fw-bold">Montant</th>
                                             <th className="fw-bold">Raison</th>
-                                            <th className="fw-bold">Date</th>
+                                            <th className="fw-bold">Date de valeur</th>
+                                            <th className="fw-bold">Date d'enregistrement</th>
                                             <th className="fw-bold">Actions</th>
                                         </tr>
                                     </thead>
@@ -104,6 +105,15 @@ const List = (props) => {
                                                     <div className="media">
                                                         <div className="media-body pt-10">
                                                             <h4 className="m-0 fw-bold text-dark">
+                                                                <TimeFromMoment time={item.valueDate} showFullDate />
+                                                            </h4>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="media">
+                                                        <div className="media-body pt-10">
+                                                            <h4 className="m-0 fw-bold text-dark">
                                                                 <TimeFromMoment time={item.emittedAt} showFullDate />
                                                             </h4>
                                                         </div>
@@ -112,6 +122,7 @@ const List = (props) => {
                                                 <td>
                                                     <Button
                                                         color="primary"
+                                                        disabled={!item.validated}
                                                         className="text-white mr-2 ml-10"
                                                         onClick={() => {
                                                             setSelectedOperation(item);

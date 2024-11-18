@@ -332,6 +332,7 @@ export const PROFILE = {
         SELF: "/profiles/assistance",
         USER: "/profiles/assistance/user",
         CREATE_ACCOUNT: "/profiles/assistance/create-account",
+        OLD_OPERATION: "/profiles/assistance/regularisations",
     }
 }
 
@@ -930,6 +931,10 @@ export const SUPERVISION = {
     VOTES: {
         SELF: '/supervision/votes',
         LIST: '/supervision/votes/list',
+    },
+    OPERATIONS: {
+        SELF: '/supervision/operations',
+        LIST: '/supervision/operations/list',
     }
 }
 

@@ -144,6 +144,7 @@ const Draft = (props) => {
                                                     <Button
                                                         color="primary"
                                                         variant="contained"
+                                                        disabled={!item.validated}
                                                         onClick={() => {
                                                             setSelectedOperation(item);
                                                             setShowConfirmBox(true);

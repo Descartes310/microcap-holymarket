@@ -7,8 +7,8 @@ import {setRequestGlobalAction} from 'Actions';
 import React, { useState, useEffect } from 'react';
 import ConfirmBox from "Components/dialog/ConfirmBox";
 import TimeFromMoment from "Components/TimeFromMoment";
-import { getPriceWithCurrency } from "Helpers/helpers";
-import { NotificationManager } from 'react-notifications';
+import { getPriceWithCurrency } from 'Helpers/helpers';
+import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
 
 const List = (props) => {
 
@@ -22,35 +22,32 @@ const List = (props) => {
 
     const getOperations = () => {
         props.setRequestGlobalAction(true),
-        BankService.getAvailableOP()
-        .then(response => {
-            setOperations(response);
-        })
+        BankService.getAntidatedOperations()
+        .then(response => setOperations(response))
         .finally(() => props.setRequestGlobalAction(false))
     }
 
-    const brouillardBL = () => {
+    const validateOperation = () => {
+
         if(!selectedOperation) {
-            return
+            return;
         }
-        props.setRequestGlobalAction(true),
-        BankService.createBL(selectedOperation.reference, {status: true})
-        .then(() => {
-            NotificationManager.success("La création du brouillard a réussie.")
+
+        props.setRequestGlobalAction(true);
+        BankService.validateAntidatedOperations(selectedOperation.reference).then(() => {
             getOperations();
-        })
-        .catch((err) => {
+        }).catch((err) => {
             console.log(err);
-            NotificationManager.error("Une erreur s'est produite lors de la création du brouillard.")
-        })
-        .finally(() => {
-            setShowConfirmBox(false);
-            props.setRequestGlobalAction(false)
+        }).finally(() => {
+            props.setRequestGlobalAction(false);
+            setSelectedOperation(null);
+            setShowConfirmBox(false)
         });
     }
 
     return (
         <>
+            <PageTitleBar title={'Supervisions d\'opérations'} />
             <CustomList
                 loading={false}
                 list={operations}
@@ -71,7 +68,8 @@ const List = (props) => {
                                             <th className="fw-bold">Client</th>
                                             <th className="fw-bold">Montant</th>
                                             <th className="fw-bold">Raison</th>
-                                            <th className="fw-bold">Date</th>
+                                            <th className="fw-bold">Date de valeur</th>
+                                            <th className="fw-bold">Date d'enregistrement</th>
                                             <th className="fw-bold">Actions</th>
                                         </tr>
                                     </thead>
@@ -103,6 +101,15 @@ const List = (props) => {
                                                     <div className="media">
                                                         <div className="media-body pt-10">
                                                             <h4 className="m-0 fw-bold text-dark">
+                                                                <TimeFromMoment time={item.valueDate} showFullDate />
+                                                            </h4>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="media">
+                                                        <div className="media-body pt-10">
+                                                            <h4 className="m-0 fw-bold text-dark">
                                                                 <TimeFromMoment time={item.emittedAt} showFullDate />
                                                             </h4>
                                                         </div>
@@ -111,15 +118,13 @@ const List = (props) => {
                                                 <td>
                                                     <Button
                                                         color="primary"
-                                                        variant="contained"
-                                                        disabled={!item.validated}
+                                                        className="text-white mr-2 ml-10"
                                                         onClick={() => {
                                                             setSelectedOperation(item);
                                                             setShowConfirmBox(true);
                                                         }}
-                                                        className="text-white font-weight-bold"
                                                     >
-                                                        Brouillard
+                                                        valider
                                                     </Button>
                                                 </td>
                                             </tr>
@@ -131,15 +136,16 @@ const List = (props) => {
                     </>
                 )}
             />
+
             { showConfirmBox && selectedOperation && (
                 <ConfirmBox
                     show={showConfirmBox}
-                    rightButtonOnClick={() => brouillardBL()}
+                    rightButtonOnClick={() => validateOperation()}
                     leftButtonOnClick={() => {
                         setShowConfirmBox(false);
                         setSelectedOperation(null);
                     }}
-                    message={'Etes vous sure de créer le brouillard ?'}
+                    message={'Etes vous sure de vouloir valider l\'opération ?'}
                 />
             )}
         </>

@@ -144,8 +144,15 @@ export default class BankService {
         return makeRequest('get', Routes.GET_OPERATIONS);
     }
 
+    static getAntidatedOperations(): Promise<any> {
+        return makeRequest('get', Routes.GET_ANDTIDATED_OPERATIONS);
+    }
+
     static purgeOperations(data: any): Promise<any> {
         return makeRequest('put', Routes.PURGE_OPERATIONS, data);
+    }
+    static validateAntidatedOperations(reference: string, data = {}): Promise<any> {
+        return makeRequest('put', Routes.VALIDATE_ANTIDATED_OPERATION(reference), data);
     }
 
     static createInjection(data: any, config: any): Promise<any> {
