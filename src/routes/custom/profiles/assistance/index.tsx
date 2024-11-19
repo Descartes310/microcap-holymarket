@@ -68,7 +68,7 @@ class UserAssistance extends Component<any, any> {
                                         />
                                         <Tab
                                             icon={<i className="zmdi zmdi-account" />}
-                                            label={"Anti-datage"}
+                                            label={"Régularisations"}
                                         />
                                     </Tabs>
                                 </div>

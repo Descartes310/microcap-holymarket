@@ -44,14 +44,14 @@ const ConfirmContactCode = (props) => {
             size="md"
             title={(
                 <h3 className="fw-bold">
-                    Confirmation du contact
+                    Vérification du contact
                 </h3>
             )}
         >
             <RctCardContent>
                 <FormGroup className="has-wrapper">
                     <InputLabel className="text-left" htmlFor="code">
-                        Code de confirmation
+                        Code de vérification
                     </InputLabel>
                     <InputStrap
                         required
