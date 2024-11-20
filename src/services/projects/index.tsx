@@ -16,6 +16,10 @@ export default class ProjectService {
         return makeRequest('get', Routes.GET_PROJECT(id));
     }
 
+    static getProjectByReference(reference: string): Promise<any> {
+        return makeRequest('get', Routes.GET_PROJECT_BY_REFERENCE(reference));
+    }
+
     static createProject(data: any, config: any): Promise<any> {
         return makeRequest('post', Routes.CREATE_POST, data, config);
     }

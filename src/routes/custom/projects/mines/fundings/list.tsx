@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { PROJECT } from 'Url/frontendUrl';
+import { PROJECT, joinUrlWithParamsId } from 'Url/frontendUrl';
 import { withRouter } from "react-router-dom";
 import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
@@ -7,6 +7,7 @@ import ProjectService from 'Services/projects';
 import React, { useEffect, useState } from 'react';
 import TimeFromMoment from "Components/TimeFromMoment";
 import { getPriceWithCurrency } from 'Helpers/helpers';
+import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 
 const List = (props) => {
 
@@ -19,8 +20,8 @@ const List = (props) => {
 
     const getProject = () => {
         props.setRequestGlobalAction(false);
-        ProjectService.getGroupProjects()
-        .then((response) => setProject(response[0]))
+        ProjectService.getProjectByReference(props.match.params.id)
+        .then((response) => setProject(response))
         .catch((err) => {
             console.log(err);
         })
@@ -44,11 +45,14 @@ const List = (props) => {
 
 
     const goToCreate = () => {
-        props.history.push(PROJECT.MINE.FUNDING.CREATE);
+        props.history.push(joinUrlWithParamsId(PROJECT.MINE.FUNDING.CREATE, project?.reference));
     }
 
     return (
-        <>
+        <>            
+            <PageTitleBar
+                title={"Liste des investissements"}
+            />
             <CustomList
                 list={investments}
                 loading={false}
@@ -97,18 +101,6 @@ const List = (props) => {
                                                         </div>
                                                     </div>
                                                 </td>
-                                                {/* <td>
-                                                    <Button
-                                                        color="primary"
-                                                        variant="contained"
-                                                        className="text-white font-weight-bold"
-                                                        onClick={() => {
-                                                            
-                                                        }}
-                                                    >
-                                                        Editer
-                                                    </Button>
-                                                </td> */}
                                             </tr>
                                         ))}
                                     </tbody>

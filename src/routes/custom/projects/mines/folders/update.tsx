@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import UnitService from 'Services/units';
-import { PROJECT } from 'Url/frontendUrl';
+import { PROJECT, joinUrlWithParamsId } from 'Url/frontendUrl';
 import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
 import ProjectService from 'Services/projects';
@@ -252,7 +252,7 @@ const Update = (props) => {
                         <h2 className='font-weight-bold'>
                             Investissements projet
                         </h2>
-                        <a href={PROJECT.MINE.FUNDING.LIST}>
+                        <a href={joinUrlWithParamsId(PROJECT.MINE.FUNDING.LIST, project?.reference)}>
                             Cliquez ici pour voir les investissements
                         </a>
                     </div>

@@ -389,8 +389,8 @@ export const PROJECT = {
         },
         FUNDING: {
             SELF: "/projects/mines/fundings",
-            LIST: "/projects/mines/fundings/list",
-            CREATE: "/projects/mines/fundings/create",
+            LIST: "/projects/mines/fundings/:id/list",
+            CREATE: "/projects/mines/fundings/:id/create",
             UPDATE: "/projects/mines/fundings/:id/update",
         },
         ITEM: {

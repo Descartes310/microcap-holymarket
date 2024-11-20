@@ -1,7 +1,7 @@
 import moment from "moment";
 import { connect } from 'react-redux';
 import UnitService from 'Services/units';
-import { PROJECT } from 'Url/frontendUrl';
+import { PROJECT, joinUrlWithParamsId } from 'Url/frontendUrl';
 import { getTimeUnits } from 'Helpers/datas';
 import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
@@ -51,8 +51,8 @@ const Create = (props) => {
     }
     const getProject = () => {
         props.setRequestGlobalAction(false);
-        ProjectService.getGroupProjects()
-        .then((response) => setProject(response[0]))
+        ProjectService.getProjectByReference(props.match.params.id)
+        .then((response) => setProject(response))
         .catch((err) => {
             console.log(err);
         })
@@ -81,7 +81,19 @@ const Create = (props) => {
 
     const onSubmit = () => {
 
-        if(!project || !startDate || !label || !mainCost || !periodicity || !currency || associatedCosts.length <= 0 || !periodicity || !periodCount || !targetAmount || !targetRate || !periodicRent) {
+        console.log("project => ", project);
+        console.log("startDate => ", startDate);
+        console.log("label => ", label);
+        console.log("mainCost => ", mainCost);
+        console.log("periodicity => ", periodicity);
+        console.log("currency => ", currency);
+        console.log("associatedCosts => ", associatedCosts.length);
+        console.log("periodCount => ", periodCount);
+        console.log("targetAmount => ", targetAmount);
+        console.log("targetRate => ", targetRate);
+        console.log("periodicRent => ", periodicRent);
+
+        if(!project || !startDate || !label || !mainCost || !periodicity || !currency || associatedCosts.length <= 0 || !periodCount || !targetAmount || !targetRate || !periodicRent) {
             NotificationManager.error("Le formulaire est mal renseigné");
             return;
         }
@@ -93,13 +105,11 @@ const Create = (props) => {
             targetAmount, targetRate, periodicRent
         }
 
-        console.log(data);
-
         props.setRequestGlobalAction(true);
         ProjectService.createInvestment(data)
         .then(() => {
             NotificationManager.success('L\' investissement a été créé avec succès');
-            props.history.push(PROJECT.MINE.FUNDING.LIST);
+            props.history.push(joinUrlWithParamsId(PROJECT.MINE.FUNDING.LIST, project?.reference));
         }).catch((error) => {
             console.log(error);
             NotificationManager.error('Une erreur est survenue lors de l\'investissement');

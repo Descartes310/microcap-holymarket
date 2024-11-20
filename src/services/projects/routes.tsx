@@ -4,6 +4,7 @@ export const GET_ALL_PROJECTS = 'api/projects/all';
 export const GET_PROJECT = (id) => `api/projects/${id}`;
 export const GET_PROJECTS_BY_GROUP = 'api/projects/groups';
 export const UPDATE_PROJECT = (id) => `api/projects/${id}`;
+export const GET_PROJECT_BY_REFERENCE = (reference) => `api/projects/reference/${reference}`;
 
 export const GET_PROJECT_POSTS = 'api/projects/posts';
 export const CREATE_PROJECT_POST = 'api/projects/posts';
