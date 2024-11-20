@@ -19,7 +19,6 @@ class UserAssistance extends Component<any, any> {
         const defaultState = (function (url) {
             if (url.includes(PROFILE.ASSISTANCE.USER)) return 0;
             else if (url.includes(PROFILE.ASSISTANCE.CREATE_ACCOUNT)) return 1;
-            else if (url.includes(PROFILE.ASSISTANCE.OLD_OPERATION)) return 2;
             else return 0;
         })(window.location.pathname);
 
@@ -35,7 +34,6 @@ class UserAssistance extends Component<any, any> {
             switch (value) {
                 case 0: return this.props.history.push(PROFILE.ASSISTANCE.USER);
                 case 1: return this.props.history.push(PROFILE.ASSISTANCE.CREATE_ACCOUNT);
-                case 2: return this.props.history.push(PROFILE.ASSISTANCE.OLD_OPERATION);
                 default: return this.props.history.push(PROFILE.ASSISTANCE.USER);
             }
         }
@@ -65,10 +63,6 @@ class UserAssistance extends Component<any, any> {
                                         <Tab
                                             icon={<i className="zmdi zmdi-account" />}
                                             label={"Création compte"}
-                                        />
-                                        <Tab
-                                            icon={<i className="zmdi zmdi-account" />}
-                                            label={"Régularisations"}
                                         />
                                     </Tabs>
                                 </div>

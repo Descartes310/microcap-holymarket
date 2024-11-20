@@ -11,20 +11,16 @@ import React, { useEffect, useState } from 'react';
 import SweetAlert from 'react-bootstrap-sweetalert';
 import TextField from '@material-ui/core/TextField';
 import { getOldAssistanceTypes } from 'Helpers/datas';
+import { getReferralTypeLabel } from 'Helpers/helpers';
 import DepositTickets from 'Components/DepositTickets';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { NotificationManager } from 'react-notifications';
 import VerifyUserOTPModal from 'Components/verifyUserOTPModal';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { Form, FormGroup, Input as InputStrap } from 'reactstrap';
-import OrdersModal from 'Routes/custom/marketplace/_components/ordersModal';
-import { getPriceWithCurrency, getReferralTypeLabel } from 'Helpers/helpers';
 import { setRequestGlobalAction, onAddItemToCart, onClearCart } from 'Actions';
-import OrderFormModal from 'Routes/custom/marketplace/checkout/orderFormModal';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
 import AccountVentilation from 'Components/Product/Ventilation/AccountVentilation';
-import AddFileToOrderModal from 'Routes/custom/marketplace/orders/addFileToOrderModal';
-import CodevSubscriptionModal from 'Routes/custom/marketplace/_components/codevSubscriptionModal';
 
 const RegularisationAssist = (props) => {
 

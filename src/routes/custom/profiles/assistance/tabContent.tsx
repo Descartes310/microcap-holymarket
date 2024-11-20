@@ -3,7 +3,6 @@ import Assist from './assist';
 import { connect } from "react-redux";
 import Creation from './createAccount';
 import { PROFILE } from "Url/frontendUrl";
-import OldOperation from './regularisationAssistance';
 import { Redirect, Route, Switch, withRouter } from 'react-router-dom';
 
 const TabContent = ({ match }) => {
@@ -13,7 +12,6 @@ const TabContent = ({ match }) => {
                 <Redirect exact from={`${match.url}/`} to={PROFILE.ASSISTANCE.USER} />
                 <Route path={PROFILE.ASSISTANCE.USER} component={Assist} />
                 <Route path={PROFILE.ASSISTANCE.CREATE_ACCOUNT} component={Creation} />
-                <Route path={PROFILE.ASSISTANCE.OLD_OPERATION} component={OldOperation} />
             </Switch>
         </div>
     )

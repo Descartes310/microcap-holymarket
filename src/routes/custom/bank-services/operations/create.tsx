@@ -1,15 +1,21 @@
 import { connect } from 'react-redux';
 import { BANK } from 'Url/frontendUrl';
+import Tab from '@material-ui/core/Tab';
 import BankService from 'Services/banks';
+import Tabs from '@material-ui/core/Tabs';
+import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
 import { setRequestGlobalAction } from 'Actions';
 import React, { useEffect, useState } from 'react';
+import SwipeableViews from "react-swipeable-views";
+import TabContainer from "Components/TabContainer";
 import SweetAlert from 'react-bootstrap-sweetalert';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { NotificationManager } from 'react-notifications';
 import Checkbox from "@material-ui/core/Checkbox/Checkbox";
+import RegularisationAssist from './regularisationAssistance';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import VerifyUserOTPModal from 'Components/verifyUserOTPModal';
@@ -25,6 +31,7 @@ const Create = (props) => {
     const [data, setData] = useState(null);
     const [order, setOrder] = useState(null);
     const [details, setDetails] = useState([]);
+    const [activeTab, setActiveTab] = useState(0);
     const [authCode, setAuthCode] = useState(null);
     const [operation, setOperation] = useState(null);
     const [showModal, setShowModal] = useState(false);
@@ -116,157 +123,192 @@ const Create = (props) => {
         setServiceOrderChecked([...items]);
     }
 
+    const handleChange = (__, value) => {
+        setActiveTab(value)
+    };
+
     return (
         <>
             <PageTitleBar
                 title={"Créer une opération"}
             />
             <RctCollapsibleCard>
-                <Form onSubmit={onSubmit}>
-                    <FormGroup className="has-wrapper">
-                        <InputLabel className="text-left" htmlFor="authCode">
-                            Code autorisation de la banque
-                        </InputLabel>
-                        <InputStrap
-                            required
-                            type="text"
-                            id="authCode"
-                            name='authCode'
-                            value={authCode}
-                            className="input-lg"
-                            onChange={(e) => setAuthCode(e.target.value)}
-                        />
-                    </FormGroup>
-                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
-                        <InputLabel className="text-left">
-                            Prestation
-                        </InputLabel>
-                        <Autocomplete
-                            id="combo-box-demo"
-                            value={prestation}
-                            options={prestations}
-                            onChange={(__, item) => {
-                                setPrestation(item);
-                            }}
-                            getOptionLabel={(option) => option.label}
-                            renderInput={(params) => <TextField {...params} variant="outlined" />}
-                        />
-                    </div> 
+                <AppBar position="static" color="default">
+                    <div className="d-flex align-items-center">
+                        <Tabs
+                            value={activeTab}
+                            onChange={handleChange}
+                            indicatorColor="primary"
+                            variant="scrollable"
+                            textColor="primary"
+                        >
+                            <Tab label="Opération" />
+                            <Tab label="Régularisation" />
+                        </Tabs>
+                    </div>
+                </AppBar>
+                <SwipeableViews
+                    index={activeTab}
+                >
+                    <div className="card mb-0 transaction-box">
+                        <TabContainer>
+                            <div className="p-sm-20 pt-sm-30 p-10 pt-15 border-top">
+                                <Form onSubmit={onSubmit}>
+                                    <FormGroup className="has-wrapper">
+                                        <InputLabel className="text-left" htmlFor="authCode">
+                                            Code autorisation de la banque
+                                        </InputLabel>
+                                        <InputStrap
+                                            required
+                                            type="text"
+                                            id="authCode"
+                                            name='authCode'
+                                            value={authCode}
+                                            className="input-lg"
+                                            onChange={(e) => setAuthCode(e.target.value)}
+                                        />
+                                    </FormGroup>
+                                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                                        <InputLabel className="text-left">
+                                            Prestation
+                                        </InputLabel>
+                                        <Autocomplete
+                                            id="combo-box-demo"
+                                            value={prestation}
+                                            options={prestations}
+                                            onChange={(__, item) => {
+                                                setPrestation(item);
+                                            }}
+                                            getOptionLabel={(option) => option.label}
+                                            renderInput={(params) => <TextField {...params} variant="outlined" />}
+                                        />
+                                    </div> 
 
-                    {operation && operation.type != "SELLER_PAYMENT" && (
-                        <>
-                            <div className="row">
-                                <FormGroup className="col-md-6 col-sm-12 has-wrapper">
-                                    <InputLabel className="text-left">
-                                        Nom complet
-                                    </InputLabel>
-                                    <InputStrap
-                                        disabled
-                                        className="input-lg"
-                                        value={user.userName}
-                                    />
-                                </FormGroup>
-                                <FormGroup className="col-md-6 col-sm-12 has-wrapper">
-                                    <InputLabel className="text-left">
-                                        Adresse e-mail
-                                    </InputLabel>
-                                    <InputStrap
-                                        disabled
-                                        className="input-lg"
-                                        value={user.email}
-                                    />
-                                </FormGroup>
-                                <FormGroup className="col-md-6 col-sm-12 has-wrapper">
-                                    <InputLabel className="text-left">
-                                        Montant
-                                    </InputLabel>
-                                    <InputStrap
-                                        disabled
-                                        className="input-lg"
-                                        value={operation.amount+" "+operation.currency}
-                                    />
-                                </FormGroup>
-                                <FormGroup className="col-md-6 col-sm-12 has-wrapper">
-                                    <InputLabel className="text-left">
-                                        Prestation
-                                    </InputLabel>
-                                    <InputStrap
-                                        disabled
-                                        className="input-lg"
-                                        value={operation.prestationName ?? 'Autres prestations'}
-                                    />
-                                </FormGroup>
-                                {
-                                    details.map(d => (
-                                        <FormGroup className="col-md-6 col-sm-12 has-wrapper">
-                                            <InputLabel className="text-left">
-                                                {d.label}
-                                            </InputLabel>
-                                            <InputStrap
-                                                disabled
-                                                value={d.value}
-                                                className="input-lg"
-                                            />
-                                        </FormGroup>
-                                    ))
-                                }
-                            </div>
-                            { ventilations?.length > 0 && (
-                                <div className="col-md-12 col-sm-12 has-wrapper mb-30">
-                                    <InputLabel className="text-left">
-                                        Ventilations de l'opération
-                                    </InputLabel>
-                                    <AccountVentilation 
-                                        editable={false}
-                                        accounts={ventilations}
-                                    />
-                                </div>
-                            )}
-                            { serviceOrder && serviceOrder.coverages && (
-                                <div className='row'>
-                                    <h2 style={{ marginBottom: 30 }}>Ordre de service</h2>
-                                    {
-                                        serviceOrder.coverages.map((item, index) => (
-                                            <FormGroup className="col-sm-12 has-wrapper">
-                                                <FormControlLabel control={
-                                                    <Checkbox
-                                                        color="primary"
-                                                        checked={serviceOrderChecked.find(so => so.id === item.id)?.checked}
-                                                        onChange={(e) => onChecked(index, e.target.checked)}
+                                    {operation && operation.type != "SELLER_PAYMENT" && (
+                                        <>
+                                            <div className="row">
+                                                <FormGroup className="col-md-6 col-sm-12 has-wrapper">
+                                                    <InputLabel className="text-left">
+                                                        Nom complet
+                                                    </InputLabel>
+                                                    <InputStrap
+                                                        disabled
+                                                        className="input-lg"
+                                                        value={user.userName}
                                                     />
-                                                } label={item.label}
-                                                />
-                                            </FormGroup>
-                                        ))
-                                    }
-                                </div>
-                            )}
-                        </>
-                    )}
+                                                </FormGroup>
+                                                <FormGroup className="col-md-6 col-sm-12 has-wrapper">
+                                                    <InputLabel className="text-left">
+                                                        Adresse e-mail
+                                                    </InputLabel>
+                                                    <InputStrap
+                                                        disabled
+                                                        className="input-lg"
+                                                        value={user.email}
+                                                    />
+                                                </FormGroup>
+                                                <FormGroup className="col-md-6 col-sm-12 has-wrapper">
+                                                    <InputLabel className="text-left">
+                                                        Montant
+                                                    </InputLabel>
+                                                    <InputStrap
+                                                        disabled
+                                                        className="input-lg"
+                                                        value={operation.amount+" "+operation.currency}
+                                                    />
+                                                </FormGroup>
+                                                <FormGroup className="col-md-6 col-sm-12 has-wrapper">
+                                                    <InputLabel className="text-left">
+                                                        Prestation
+                                                    </InputLabel>
+                                                    <InputStrap
+                                                        disabled
+                                                        className="input-lg"
+                                                        value={operation.prestationName ?? 'Autres prestations'}
+                                                    />
+                                                </FormGroup>
+                                                {
+                                                    details.map(d => (
+                                                        <FormGroup className="col-md-6 col-sm-12 has-wrapper">
+                                                            <InputLabel className="text-left">
+                                                                {d.label}
+                                                            </InputLabel>
+                                                            <InputStrap
+                                                                disabled
+                                                                value={d.value}
+                                                                className="input-lg"
+                                                            />
+                                                        </FormGroup>
+                                                    ))
+                                                }
+                                            </div>
+                                            { ventilations?.length > 0 && (
+                                                <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                                                    <InputLabel className="text-left">
+                                                        Ventilations de l'opération
+                                                    </InputLabel>
+                                                    <AccountVentilation 
+                                                        editable={false}
+                                                        accounts={ventilations}
+                                                    />
+                                                </div>
+                                            )}
+                                            { serviceOrder && serviceOrder.coverages && (
+                                                <div className='row'>
+                                                    <h2 style={{ marginBottom: 30 }}>Ordre de service</h2>
+                                                    {
+                                                        serviceOrder.coverages.map((item, index) => (
+                                                            <FormGroup className="col-sm-12 has-wrapper">
+                                                                <FormControlLabel control={
+                                                                    <Checkbox
+                                                                        color="primary"
+                                                                        checked={serviceOrderChecked.find(so => so.id === item.id)?.checked}
+                                                                        onChange={(e) => onChecked(index, e.target.checked)}
+                                                                    />
+                                                                } label={item.label}
+                                                                />
+                                                            </FormGroup>
+                                                        ))
+                                                    }
+                                                </div>
+                                            )}
+                                        </>
+                                    )}
 
-                    <>
-                        <Button
-                            color="primary"
-                            variant="contained"
-                            disabled={!authCode}
-                            onClick={() => {
-                                findOperation();
-                            }}
-                            className="text-white font-weight-bold mr-20 bg-blue"
-                        >
-                            Chercher l'opération
-                        </Button>
-                        <Button
-                            color="primary"
-                            variant="contained"
-                            disabled={!operation || operation?.type == "SELLER_PAYMENT"}
-                            onClick={() => sendOTPCode()}
-                            className="text-white font-weight-bold"
-                        >
-                            Enregister l'opération
-                        </Button>
-                    </>
-                </Form>
+                                    <>
+                                        <Button
+                                            color="primary"
+                                            variant="contained"
+                                            disabled={!authCode}
+                                            onClick={() => {
+                                                findOperation();
+                                            }}
+                                            className="text-white font-weight-bold mr-20 bg-blue"
+                                        >
+                                            Chercher l'opération
+                                        </Button>
+                                        <Button
+                                            color="primary"
+                                            variant="contained"
+                                            disabled={!operation || operation?.type == "SELLER_PAYMENT"}
+                                            onClick={() => sendOTPCode()}
+                                            className="text-white font-weight-bold"
+                                        >
+                                            Enregister l'opération
+                                        </Button>
+                                    </>
+                                </Form>
+                            </div>
+                        </TabContainer>
+                    </div>
+                    <div className="card mb-0 transaction-box">
+                        <TabContainer>
+                            <div className="p-sm-20 pt-sm-30 p-10 pt-15 border-top">
+                                <RegularisationAssist />
+                            </div>
+                        </TabContainer>
+                    </div>
+                </SwipeableViews>
                 <VerifyUserOTPModal 
                     show={showModal}
                     type="CONFIRM_OPERATION"
@@ -292,7 +334,7 @@ const Create = (props) => {
                     show={showAlert}
                     title={"L'opération a été éffectuée avec succès"}
                     onConfirm={() => {
-                        props.history.push(BANK.OPERATION.ASSISTANCE);
+                        window.location.reload();
                     }}
                 />
             </RctCollapsibleCard>
