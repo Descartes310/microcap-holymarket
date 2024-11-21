@@ -6,14 +6,16 @@ import FundingService from "Services/funding";
 import CustomList from "Components/CustomList";
 import { setRequestGlobalAction } from 'Actions';
 import { RctCardContent } from 'Components/RctCard';
-import { getPriceWithCurrency } from 'Helpers/helpers';
 import TimeFromMoment from 'Components/TimeFromMoment';
 import DialogComponent from "Components/dialog/DialogComponent";
+import DealDetailsModal from 'Routes/custom/fundings/components/DealDetailsModal';
 
 class AccountDeals extends Component {
 
     state = {
-        deals: []
+        deals: [],
+        deal: null,
+        showDealDetails: false
     }
 
     constructor(props) {
@@ -39,7 +41,7 @@ class AccountDeals extends Component {
     render() {
 
         const { onClose, show, title } = this.props;
-        const { deals } = this.state;
+        const { deals, deal, showDealDetails } = this.state;
 
         return (
             <DialogComponent
@@ -114,8 +116,7 @@ class AccountDeals extends Component {
                                                                 variant="contained"
                                                                 className="text-white font-weight-bold"
                                                                 onClick={() => {
-                                                                    setDeal(item);
-                                                                    setShowDealDetails(true);
+                                                                    this.setState({ deal: item, showDealDetails: true });
                                                                 }}
                                                             >
                                                                 Détails
@@ -130,6 +131,20 @@ class AccountDeals extends Component {
                             </>
                         )}
                     />
+                    {deal && (
+                        <DealDetailsModal
+                            show={showDealDetails}
+                            onClose={() => {
+                                this.setState({ showDealDetails: false, deal: null });
+                            }}
+                            reference={deal?.reference}
+                            negociate={() => {
+                                this.setState({ showDealDetails: false, deal: null });
+                            }}
+                            isSender={false}
+                            isBlocked={true}
+                        />
+                    )}
                 </RctCardContent>
             </DialogComponent>
         );

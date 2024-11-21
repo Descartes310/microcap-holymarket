@@ -431,7 +431,7 @@ class InitSpotModal extends Component {
                                         type="text"
                                         disabled={true}
                                         className="input-lg"
-                                        value={`${selectedTickets.reduce((amount, ticket) => amount + Number(ticket.amount), 0)} ${line?.tickets[0]?.currency}`}
+                                        value={selectedTickets ? `${selectedTickets.reduce((amount, ticket) => amount + Number(ticket.amount), 0)} ${line?.tickets[0]?.currency}` : null}
                                     />
                                 </FormGroup>
                             </div>

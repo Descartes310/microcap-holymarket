@@ -522,7 +522,7 @@ class InitDealModal extends Component {
                                                 type="text"
                                                 disabled={true}
                                                 className="input-lg"
-                                                value={getPriceWithCurrency(selectedTickets.reduce((amount, ticket) => amount + Number(ticket.amount), 0), selectedTickets[0]?.currency)}
+                                                value={getPriceWithCurrency(selectedTickets ? selectedTickets.reduce((amount, ticket) => amount + Number(ticket.amount), 0) : 0, selectedTickets ? selectedTickets[0]?.currency : 'EUR')}
                                             />
                                         </FormGroup>
                                     </div>
@@ -588,7 +588,7 @@ class InitDealModal extends Component {
                                         type="text"
                                         disabled={true}
                                         className="input-lg"
-                                        value={`${selectedTickets.reduce((amount, ticket) => amount + Number(ticket.amount), 0)} ${line?.tickets[0]?.currency}`}
+                                        value={selectedTickets ? `${selectedTickets.reduce((amount, ticket) => amount + Number(ticket.amount), 0)} ${line?.tickets[0]?.currency}` : null}
                                     />
                                 </FormGroup>
                             </div>

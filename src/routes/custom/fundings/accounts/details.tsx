@@ -216,7 +216,7 @@ const Details = (props) => {
                                             >
                                                 Synchronisations
                                             </Button> */}
-                                            { account?.hasPrevision && !account?.consolidation &&  (
+                                            { account?.hasDeals &&  (
                                                 <Button
                                                     color="primary"
                                                     variant="contained"
