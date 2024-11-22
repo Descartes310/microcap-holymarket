@@ -81,18 +81,6 @@ const Create = (props) => {
 
     const onSubmit = () => {
 
-        console.log("project => ", project);
-        console.log("startDate => ", startDate);
-        console.log("label => ", label);
-        console.log("mainCost => ", mainCost);
-        console.log("periodicity => ", periodicity);
-        console.log("currency => ", currency);
-        console.log("associatedCosts => ", associatedCosts.length);
-        console.log("periodCount => ", periodCount);
-        console.log("targetAmount => ", targetAmount);
-        console.log("targetRate => ", targetRate);
-        console.log("periodicRent => ", periodicRent);
-
         if(!project || !startDate || !label || !mainCost || !periodicity || !currency || associatedCosts.length <= 0 || !periodCount || !targetAmount || !targetRate || !periodicRent) {
             NotificationManager.error("Le formulaire est mal renseigné");
             return;
@@ -114,6 +102,35 @@ const Create = (props) => {
             console.log(error);
             NotificationManager.error('Une erreur est survenue lors de l\'investissement');
         }).finally(() => props.setRequestGlobalAction(false))
+    }
+
+    useEffect(() => {
+        getGlobalRate();
+        getPeriodicRate();
+    }, [targetAmount, periodCount])
+
+    const getGlobalRate = () => {
+        if(targetAmount) {
+            setTargetRate((targetAmount / getAmount())/100);
+        } else {
+            setTargetRate(0);
+        }
+    }
+
+    const getFutureCapital = () => {
+        if(targetAmount) {
+            return targetAmount + getAmount();
+        } else {
+            return 0;
+        }
+    }
+
+    const getPeriodicRate = () => {
+        if(periodCount) {
+            setPeriodicRent(Math.pow(getFutureCapital()/getAmount(), 1/periodCount) - 1);
+        } else {
+            setPeriodicRent(0);
+        }
     }
 
     return (
@@ -283,12 +300,12 @@ const Create = (props) => {
                             </InputLabel>
                             <InputStrap
                                 required
-                                id="targetRate"
                                 type="number"
+                                id="targetRate"
+                                disabled={true}
                                 name='targetRate'
-                                className="input-lg"
                                 value={targetRate}
-                                onChange={(e) => setTargetRate(e.target.value)}
+                                className="input-lg"
                             />
                         </FormGroup>
                         <FormGroup className="has-wrapper col-sm-12 col-md-4">
@@ -297,12 +314,12 @@ const Create = (props) => {
                             </InputLabel>
                             <InputStrap
                                 required
-                                id="periodicRent"
                                 type="number"
+                                disabled={true}
+                                id="periodicRent"
                                 name='periodicRent'
                                 className="input-lg"
                                 value={periodicRent}
-                                onChange={(e) => setPeriodicRent(e.target.value)}
                             />
                         </FormGroup>
                     </div>
