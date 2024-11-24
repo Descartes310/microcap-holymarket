@@ -1,17 +1,21 @@
 import { connect } from 'react-redux';
+import CreateSubscription from './create';
+import DetailsSubscription from './details';
+import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
 import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
 import ProjectService from 'Services/projects';
-import React, { useState, useEffect } from 'react';
-import { getPriceWithCurrency } from 'Helpers/helpers';
-import { joinUrlWithParamsId, PROJECT } from 'Url/frontendUrl';
-import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
+import React, { useEffect, useState } from 'react';
+import TimeFromMoment from "Components/TimeFromMoment";
 
-const List = (props) => {    
-    
+const List = (props) => {
+
     const [subscriptions, setSubscriptions] = useState([]);
-
+    const [subscription, setSubscription] = useState(null);
+    const [showCreateSubscription, setShowCreateSubscription] = useState(false);    
+    const [showDetailsSubscription, setShowDetailsSubscription] = useState(false);    
+    
     useEffect(() => {
         getProjectSubscriptions();
     }, []);
@@ -26,20 +30,19 @@ const List = (props) => {
 
     return (
         <>
-            <PageTitleBar
-                title={"Mes souscriptions"}
-            />
             <CustomList
                 list={subscriptions}
                 loading={false}
-                itemsFoundText={n => `${n} projets trouvés`}
-                onAddClick={() => props.history.push(PROJECT.SUBSCRIPTION.CREATE)}
+                itemsFoundText={n => `${n} souscriptions trouvées`}
+                onAddClick={() => {
+                    setShowCreateSubscription(true);
+                }}
                 renderItem={list => (
                     <>
                         {list && list.length === 0 ? (
                             <div className="d-flex justify-content-center align-items-center py-50">
                                 <h4>
-                                    Aucun projets trouvés
+                                    Aucune souscription trouvée
                                 </h4>
                             </div>
                         ) : (
@@ -47,11 +50,10 @@ const List = (props) => {
                                 <table className="table table-hover table-middle mb-0">
                                     <thead>
                                         <tr>
-                                            <th className="fw-bold">Désignation</th>
-                                            <th className="fw-bold">Valeur nominale</th>
-                                            <th className="fw-bold">Projet</th>
-                                            <th className="fw-bold">Support option</th>
-                                            <th className="fw-bold">Quantité</th>
+                                            <th className="fw-bold">Intitulé</th>
+                                            <th className="fw-bold">Date de création</th>
+                                            <th className="fw-bold">Status</th>
+                                            <th className="fw-bold">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -67,31 +69,29 @@ const List = (props) => {
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <p className="m-0 text-dark">{getPriceWithCurrency(item.nominalAmount, item.currency)}</p>
+                                                            <h4 className="m-0 fw-bold text-dark"><TimeFromMoment time={item.createdAt} /></h4>
                                                         </div>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{item?.project?.label}</h4>
-                                                        </div>
-                                                    </div>
-                                                </td>
-
-                                                <td>
-                                                    <div className="media">
-                                                        <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{item?.supportType?.label}</h4>
+                                                            <h4 className="m-0 fw-bold text-dark">En attente</h4>
                                                         </div>
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <div className="media">
-                                                        <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{item?.quantity}</h4>
-                                                        </div>
-                                                    </div>
+                                                    <Button
+                                                        color="primary"
+                                                        variant="contained"
+                                                        className="text-white font-weight-bold"
+                                                        onClick={() => {
+                                                            setSubscription(item);
+                                                            setShowDetailsSubscription(true);
+                                                        }}
+                                                    >
+                                                        Détails
+                                                    </Button>
                                                 </td>
                                             </tr>
                                         ))}
@@ -102,6 +102,23 @@ const List = (props) => {
                     </>
                 )}
             />
+            { showCreateSubscription && (
+                <CreateSubscription
+                    show={showCreateSubscription}
+                    onClose={() => {
+                        setShowCreateSubscription(false);
+                    }}
+                />
+            )}
+            { showDetailsSubscription && subscription && (
+                <DetailsSubscription
+                    show={showDetailsSubscription}
+                    onClose={() => {
+                        setShowDetailsSubscription(false);
+                    }}
+                    subscription={subscription}
+                />
+            )}
         </>
     );
 }

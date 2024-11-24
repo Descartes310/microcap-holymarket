@@ -6,6 +6,7 @@ import { GROUP } from 'Url/frontendUrl';
 import configurations from './configurations';
 import financialStructures from './financial-structures';
 import {withRouter, Switch, Redirect, Route} from "react-router-dom";
+import subscriptions from './subscriptions';
 
 const Project = (props) => {
     const { match } = props;
@@ -17,6 +18,7 @@ const Project = (props) => {
                     <Route path={GROUP.ADMINISTRATION.PROJECT.LIST} component={List} />
                     <Route path={GROUP.ADMINISTRATION.PROJECT.CONFIGURATION.SELF} component={configurations} />
                     <Route path={GROUP.ADMINISTRATION.PROJECT.FINANCIAL_STRUCTURE.SELF} component={financialStructures} />
+                    <Route path={GROUP.ADMINISTRATION.PROJECT.SUBSCRIPTIONS.SELF} component={subscriptions} />
                 </Switch>
             </>
         </div>

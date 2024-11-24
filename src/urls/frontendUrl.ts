@@ -281,6 +281,10 @@ export const GROUP = {
                 CREATE: "/groups/administration/projects/financial-structures/create",
                 CAMPAIGN_LIST: "/groups/administration/projects/financial-structures/:id/list",
                 CAMPAIGN_CREATE: "/groups/administration/projects/financial-structures/:id/create",
+            },
+            SUBSCRIPTIONS: {
+                SELF: "/groups/administration/projects/subscriptions",
+                LIST: "/groups/administration/projects/subscriptions/list",
             }
         },
         ARTICLE: {

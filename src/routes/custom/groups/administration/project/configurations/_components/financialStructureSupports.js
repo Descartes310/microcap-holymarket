@@ -1,25 +1,28 @@
 import { connect } from 'react-redux';
-import { GROUP } from 'Url/frontendUrl';
 import GroupService from 'Services/groups';
-import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
+import Button from '@material-ui/core/Button';
 import UnitSelect from 'Components/UnitSelect';
+import CustomList from "Components/CustomList";
 import { setRequestGlobalAction } from 'Actions';
-import React, { useEffect, useState } from 'react';
-import TextField from '@material-ui/core/TextField';
+import React, { useState, useEffect } from 'react';
 import { getPriceWithCurrency } from 'Helpers/helpers';
+import TextField from '@material-ui/core/TextField';
 import {NotificationManager} from 'react-notifications';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import Checkbox from "@material-ui/core/Checkbox/Checkbox";
-import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
+import DialogComponent from "Components/dialog/DialogComponent";
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { Form, FormGroup, Input as InputStrap } from 'reactstrap';
-import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
 import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
 
-const Create = (props) => {
+const FinancialStructureSupports = (props) => {
 
-    const [label, setLabel] = useState('');
+    const {show, onClose, financialStructure} = props;
+    
+    const [datas, setDatas] = useState([]);
+    const [isCreation, setIsCreation] = useState(false);    
+    
     const [types, setTypes] = useState([]);
     const [type, setType] = useState(null);
     const [isin, setIsin] = useState(false);
@@ -31,8 +34,8 @@ const Create = (props) => {
     const [quantity, setQuantity] = useState(null);
     const [categories, setCategories] = useState([]);
 
-
     useEffect(() => {
+        getDatas();
         getCategories();
     }, [])
 
@@ -77,9 +80,16 @@ const Create = (props) => {
         .finally(() => props.setRequestGlobalAction(false))
     }
 
+    const getDatas = () => {
+		props.setRequestGlobalAction(true);
+		GroupService.getFinancialStructureSupports(financialStructure.reference)
+		.then(response => setDatas(response))
+		.finally(() => props.setRequestGlobalAction(false))
+	}
+
     const onSubmit = () => {
 
-        if(!support || !type || !quantity || !amount || !label || !currency) {
+        if(!support || !type || !quantity || !amount || !currency) {
             NotificationManager.error('Veuillez bien remplir le formulaire')
             return;
         }
@@ -87,7 +97,7 @@ const Create = (props) => {
         props.setRequestGlobalAction(true);
 
         let data = {
-            isin, label, 
+            isin, 
             emission: quantity,
             nominal_amount: amount,
             currency: currency?.code,
@@ -95,9 +105,10 @@ const Create = (props) => {
             support_type_reference: support?.reference
         }
 
-        GroupService.createFinancialStructure(data).then(() => {
+        GroupService.createFinancialStructureSupport(financialStructure.reference, data).then(() => {
             NotificationManager.success("L'item a été créé avec succès");
-            props.history.push(GROUP.ADMINISTRATION.PROJECT.FINANCIAL_STRUCTURE.LIST);
+            setIsCreation(false);
+            getDatas();
         }).catch((err) => {
             console.log(err);
             NotificationManager.error("Une erreur est survenu lors de l'item");
@@ -105,30 +116,85 @@ const Create = (props) => {
             props.setRequestGlobalAction(false);
         })
     }
-
+    
     return (
-        <>
-
-            <PageTitleBar
-                title={"Structures financieres"}
-            />
-            <RctCollapsibleCard>
+        <DialogComponent
+            show={show}
+            onClose={onClose}
+            size="lg"
+            title={(
+                <h3 className="fw-bold">
+                    Supports
+                </h3>
+            )}
+        >
+            { !isCreation ? (
+                <CustomList
+                    list={datas}
+                    loading={false}
+                    itemsFoundText={n => `${n} élements trouvés`}
+                    onAddClick={() => setIsCreation(true)}
+                    renderItem={list => (
+                        <>
+                            {list && list.length === 0 ? (
+                                <div className="d-flex justify-content-center align-items-center py-50">
+                                    <h4>
+                                        Aucun élement trouvé
+                                    </h4>
+                                </div>
+                            ) : (
+                                <div className="table-responsive">
+                                    <table className="table table-hover table-middle mb-0">
+                                        <thead>
+                                            <tr>
+                                                <th className="fw-bold">Support</th>
+                                                <th className="fw-bold">Emission</th>
+                                                <th className="fw-bold">Valeur</th>
+                                                <th className="fw-bold">Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {list && list.map((item, key) => (
+                                                <tr key={key} className="cursor-pointer">
+                                                    <td>
+                                                        <div className="media">
+                                                            <div className="media-body pt-10">
+                                                                <h4 className="m-0 fw-bold text-dark">{item?.supportType?.label}</h4>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div className="media">
+                                                            <div className="media-body pt-10">
+                                                                <h4 className="m-0 fw-bold text-dark">{item?.quantity}</h4>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div className="media">
+                                                            <div className="media-body pt-10">
+                                                                <h4 className="m-0 fw-bold text-dark">{getPriceWithCurrency(item.nominalAmount, item.currency)}</h4>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div className="media">
+                                                            <div className="media-body pt-10">
+                                                                <h4 className="m-0 fw-bold text-dark">{getPriceWithCurrency(item.nominalAmount * item.quantity, item.currency)}</h4>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            )}
+                        </>
+                    )}
+                />
+            ) : (
                 <Form onSubmit={onSubmit}>
-                    <FormGroup className="col-md-12 col-sm-12 has-wrapper">
-                        <InputLabel className="text-left" htmlFor="label">
-                            Intitulé
-                        </InputLabel>
-                        <InputStrap
-                            required
-                            id="label"
-                            type="text"
-                            name='label'
-                            className="input-lg"
-                            value={label}
-                            onChange={(e) => setLabel(e.target.value)}
-                        />
-                    </FormGroup>
-
                     <div className='row'>
                         <FormGroup className="col-md-6 col-sm-12 has-wrapper mb-30">
                             <InputLabel className="text-left">
@@ -248,9 +314,9 @@ const Create = (props) => {
                         </Button>
                     </FormGroup>
                 </Form>
-            </RctCollapsibleCard>
-        </>
-    );
-};
+            )}
+        </DialogComponent>
+    )
+}
 
-export default connect(() => { }, { setRequestGlobalAction })(withRouter(Create));
+export default connect(() => {}, { setRequestGlobalAction })(withRouter(FinancialStructureSupports));

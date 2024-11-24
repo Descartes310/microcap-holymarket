@@ -23,10 +23,9 @@ const CreateFundingOption = (props) => {
     const [type, setType] = useState(null);
     const [isin, setIsin] = useState(false);
     const [amount, setAmount] = useState(null);
-    const [market, setMarket] = useState(null);
-    const [category, setCategory] = useState([]);
     const [supports, setSupports] = useState([]);
     const [support, setSupport] = useState(null);
+    const [category, setCategory] = useState(null);
     const [currency, setCurrency] = useState(null);
     const [quantity, setQuantity] = useState(null);
     const [categories, setCategories] = useState([]);
@@ -63,7 +62,7 @@ const CreateFundingOption = (props) => {
     }
 
     const getTypes = () => {
-        props.setRequestGlobalAction(true),
+        props.setRequestGlobalAction(true);
         GroupService.getOptionTypeByCategory(category?.reference)
         .then(response => setTypes(response))
         .finally(() => props.setRequestGlobalAction(false))

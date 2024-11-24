@@ -256,12 +256,36 @@ export default class GroupService {
         return makeRequest('get', Routes.GET_FINANCIAL_STRUCTURES);
     }
 
+    static changeFinancialStructureStatus(reference: string): Promise<any> {
+        return makeRequest('put', Routes.CHANGE_FINANCIAL_STRUCTURE_STATUS(reference));
+    }
+
+    static changeFinancialStructureFinancable(reference: string): Promise<any> {
+        return makeRequest('put', Routes.CHANGE_FINANCIAL_STRUCTURE_FINANCABLE(reference));
+    }
+
+    static getFinancialStructureSupports(reference: string): Promise<any> {
+        return makeRequest('get', Routes.GET_FINANCIAL_STRUCTURE_SUPPORTS(reference));
+    }
+
+    static getActiveFinancialStructureSupports(): Promise<any> {
+        return makeRequest('get', Routes.GET_FINANCIAL_STRUCTURE_ACTIVE_SUPPORTS);
+    }
+
+    static createFinancialStructureSupport(reference: string, data): Promise<any> {
+        return makeRequest('post', Routes.CREATE_FINANCIAL_STRUCTURE_SUPPORT(reference), data);
+    }
+
     static createCampaign(data): Promise<any> {
         return makeRequest('post', Routes.CREATE_CAMPAIGN, data);
     }
 
     static getCampaigns(data): Promise<any> {
         return makeRequest('get', Routes.GET_CAMPAIGNS, data);
+    }
+
+    static changeCampaignStatus(reference: string): Promise<any> {
+        return makeRequest('post', Routes.CHANGE_CAMPAIGN_STATUS(reference), {});
     }
     
 }

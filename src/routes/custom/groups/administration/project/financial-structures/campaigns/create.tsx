@@ -1,18 +1,15 @@
 import { connect } from 'react-redux';
-import { GROUP, joinUrlWithParamsId } from 'Url/frontendUrl';
+import React, { useState } from 'react';
+import GroupService from 'Services/groups';
 import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
-import ProjectService from 'Services/projects';
 import { setRequestGlobalAction } from 'Actions';
-import React, { useEffect, useState } from 'react';
-import TextField from '@material-ui/core/TextField';
 import {NotificationManager} from 'react-notifications';
-import Autocomplete from '@material-ui/lab/Autocomplete';
+import { GROUP, joinUrlWithParamsId } from 'Url/frontendUrl';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { Form, FormGroup, Input as InputStrap } from 'reactstrap';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
-import GroupService from 'Services/groups';
 
 const Create = (props) => {
 
@@ -48,7 +45,8 @@ const Create = (props) => {
         <>
 
             <PageTitleBar
-                title={"Campagnes"}
+                title={"Création d'une campagne"}
+                onBackClick={() => props.history.push(joinUrlWithParamsId(GROUP.ADMINISTRATION.PROJECT.FINANCIAL_STRUCTURE.CAMPAIGN_LIST, props.match.params.id))}
             />
             <RctCollapsibleCard>
                 <Form onSubmit={onSubmit}>

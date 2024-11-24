@@ -46,6 +46,7 @@ export const CREATE_PRODUCT = `api/projects/products`;
 
 export const GET_PROJECT_SUBSCRIPTIONS = `api/projects/subscriptions`;
 export const CREATE_PROJECT_SUBSCRIPTION = `api/projects/subscriptions`;
+export const GET_PROJECT_SUBSCRIPTION_SUPPORTS = (reference) => `api/projects/subscriptions/${reference}`;
 
 
 export const CREATE_PROJECT_SETTINGS = `api/projects/settings`;

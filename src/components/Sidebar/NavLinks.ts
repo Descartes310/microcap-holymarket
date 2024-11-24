@@ -500,10 +500,10 @@ export default [
          {
             "menu_title": "Mes souscriptions",
             "new_item": false,
-            "path": PROJECT.SUBSCRIPTION.LIST,
-            "permissions": [Permission.project.project.name],
-            "profiles": null,
-            "child_routes": null
+            "path": GROUP.ADMINISTRATION.PROJECT.SUBSCRIPTIONS.LIST,
+            "permissions": [Permission.project.project.name, Permission.microcap360.ideas.name],
+            "child_routes": null,
+            "profiles": ['PROJECT']
          },
          {
             "menu_title": "Créations personnelles",

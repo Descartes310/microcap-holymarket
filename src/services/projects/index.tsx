@@ -140,8 +140,8 @@ export default class ProjectService {
         return makeRequest('post', Routes.CREATE_PRODUCT, data);
     }
 
-    static getProjectSubscriptions(): Promise<any> {
-        return makeRequest('get', Routes.GET_PROJECT_SUBSCRIPTIONS);
+    static getProjectSubscriptions(data = {}): Promise<any> {
+        return makeRequest('get', Routes.GET_PROJECT_SUBSCRIPTIONS, data);
     }
 
     static getAllProjects(): Promise<any> {
@@ -162,6 +162,10 @@ export default class ProjectService {
 
     static getProjectInvestments(data: any): Promise<any> {
         return makeRequest('get', Routes.GET_PROJECT_INVESTMENT, data);
+    }
+
+    static getProjectSubscriptionSupports(reference: string, data: any = {}): Promise<any> {
+        return makeRequest('get', Routes.GET_PROJECT_SUBSCRIPTION_SUPPORTS(reference), data);
     }
 
     static createInvestment(data: any): Promise<any> {

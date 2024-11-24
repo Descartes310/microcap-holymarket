@@ -76,7 +76,14 @@ export const GET_FUNDING_OPTION_BY_GROUP_TYPE = (reference) => `api/socialnetwor
 
 export const GET_FINANCIAL_STRUCTURES = `api/socialnetworks/groups/types/financial-structures`;
 export const CREATE_FINANCIAL_STRUCTURES = `api/socialnetworks/groups/types/financial-structures`;
+export const CHANGE_FINANCIAL_STRUCTURE_STATUS = (reference) => `api/socialnetworks/groups/types/financial-structures/${reference}/status`;
+export const CHANGE_FINANCIAL_STRUCTURE_FINANCABLE = (reference) => `api/socialnetworks/groups/types/financial-structures/${reference}/financable`;
+export const GET_FINANCIAL_STRUCTURE_ACTIVE_SUPPORTS = `api/socialnetworks/groups/types/financial-structures/active/supports`;
 
 export const GET_CAMPAIGNS = `api/socialnetworks/groups/structures/campaigns`;
 export const CREATE_CAMPAIGN = `api/socialnetworks/groups/structures/campaigns`;
+export const CHANGE_CAMPAIGN_STATUS = (reference) => `api/socialnetworks/groups/structures/campaigns/${reference}`;
+
+export const GET_FINANCIAL_STRUCTURE_SUPPORTS = (reference) => `api/socialnetworks/groups/types/financial-structures/${reference}/supports`;
+export const CREATE_FINANCIAL_STRUCTURE_SUPPORT = (reference) => `api/socialnetworks/groups/types/financial-structures/${reference}/supports`;
 

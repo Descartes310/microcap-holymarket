@@ -1066,6 +1066,21 @@ export const getOrderStatus = () => {
     ]
 };
 
+export const getGeneralStatus = () => {
+    return [
+        {
+            label: 'En attente',
+            value: 'PENDING'
+        },{
+            label: 'En cours',
+            value: 'ONGOING'
+        },{
+            label: 'Terminé',
+            value: 'CLOSED'
+        },
+    ]
+};
+
 export const getOrderStatusItem = (value) => {
     let status = getOrderStatus().find(rt => rt.value === value);
     if (status)
