@@ -17,7 +17,8 @@ export const CHANGE_PRODUCT_STATUS = (id) => `api/products/${id}/status`;
 export const FIND_PRODUCT = (reference) => `api/products/find/${reference}`;
 
 export const UPDATE_PRODUCT_DETAILS = 'api/products/details';
-export const TIRAGE_PRODUCT_DETAILS = 'api/products/details/tirages';
+export const UPDATE_PRODUCT_MODEL_DETAILS = 'api/products/models/details';
+export const TIRAGE_PRODUCT_DETAILS = 'api/products/models/details/tirages';
 export const CREATE_CODEV_PRODUCT_MODEL = 'api/products/codevs';
 export const CODEV_PARTICIPANTS = 'api/products/codevs/participants';
 export const CODEV_INVITE_PARTICIPANT = 'api/products/codevs/subscribers/invite';

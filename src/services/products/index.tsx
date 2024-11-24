@@ -52,6 +52,10 @@ export default class ProductService {
         return makeRequest('post', Routes.UPDATE_PRODUCT_DETAILS, data);
     }
 
+    static updateProductModelDetails(data: any): Promise<any> {
+        return makeRequest('post', Routes.UPDATE_PRODUCT_MODEL_DETAILS, data);
+    }
+
     static generateProductTirages(data: any): Promise<any> {
         return makeRequest('post', Routes.TIRAGE_PRODUCT_DETAILS, data);
     }

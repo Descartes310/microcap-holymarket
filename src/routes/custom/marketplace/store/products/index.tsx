@@ -2,7 +2,6 @@ import React from 'react';
 import List from './list';
 import Create from './create';
 import Update from './update';
-import Configure from './configure';
 import {connect} from "react-redux";
 import {injectIntl} from "react-intl";
 import { MARKETPLACE } from 'Url/frontendUrl';
@@ -18,7 +17,6 @@ const Product = (props) => {
                     <Route path={MARKETPLACE.STORE.PRODUCT.LIST} component={List} />
                     <Route path={MARKETPLACE.STORE.PRODUCT.CREATE} component={Create} />
                     <Route path={MARKETPLACE.STORE.PRODUCT.UPDATE} component={Update} />
-                    <Route path={MARKETPLACE.STORE.PRODUCT.CONFIGURE} component={Configure} />
                 </Switch>
             </>
         </div>

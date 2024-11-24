@@ -47,10 +47,6 @@ const List = (props) => {
         .finally(() => props.setRequestGlobalAction(false))
     }
 
-    const configureProduct = (item) => {
-        props.history.push(joinUrlWithParams(MARKETPLACE.STORE.PRODUCT.CONFIGURE, [{param: 'reference', value: item.reference}]));
-    }
-
     const updateProduct = (item) => {
         props.history.push(joinUrlWithParams(MARKETPLACE.STORE.PRODUCT.UPDATE, [{param: 'reference', value: item.reference}]));
     }
@@ -84,7 +80,6 @@ const List = (props) => {
                                             <th className="fw-bold">Portée</th>
                                             <th className="fw-bold">Disponible</th>
                                             <th className="fw-bold">Détails</th>
-                                            <th className="fw-bold">Configuration</th>
                                             <th className="fw-bold">Cotation</th>
                                             <th className="fw-bold">Edition</th>
                                         </tr>
@@ -129,18 +124,6 @@ const List = (props) => {
                                                 </td>
                                                 <td>
                                                     <ProductDetailsButton reference={item.reference} />
-                                                </td>
-                                                <td>
-                                                    { item.specialProduct == 'CODEV' && (
-                                                        <Button
-                                                            color="primary"
-                                                            variant="contained"
-                                                            onClick={() => configureProduct(item)}
-                                                            className="text-white font-weight-bold mr-3"
-                                                        >
-                                                            Configurations
-                                                        </Button>
-                                                    )}
                                                 </td>
                                                 <td>
                                                     <Button

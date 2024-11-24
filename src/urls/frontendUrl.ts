@@ -484,6 +484,7 @@ export const MARKETPLACE = {
             SELF: "/marketplace/models/products",
             LIST: "/marketplace/models/products/list",
             CREATE: "/marketplace/models/products/create",
+            CONFIGURE: "/marketplace/models/products/:reference/configure",
         },
         PACKAGE: {
             SELF: "/marketplace/models/packages",
@@ -513,7 +514,6 @@ export const MARKETPLACE = {
             LIST: "/marketplace/store/products/list",
             CREATE: "/marketplace/store/products/create",
             UPDATE: "/marketplace/store/products/:reference/update",
-            CONFIGURE: "/marketplace/store/products/:reference/configure",
         },
         DISTRIBUTION: {
             SELF: "/marketplace/store/distributions",
