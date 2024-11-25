@@ -597,8 +597,8 @@ const Assist = (props) => {
                                 variant="contained"
                                 disabled={!member}
                                 onClick={() => {
-                                    // sendOtp();
-                                    onSubmit();
+                                    sendOtp();
+                                    // onSubmit();
                                 }}
                                 className="text-white font-weight-bold mr-20"
                             >
