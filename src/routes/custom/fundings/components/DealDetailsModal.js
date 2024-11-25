@@ -51,8 +51,6 @@ class DealDetailsModal extends Component {
     }
 
     validateDeal = () => {
-
-        console.log(this.state.acceptDeal, this.state.deal, this.state.deal?.type, this.state.deal?.tickets);
         
         if(this.state.acceptDeal && this.state.deal && this.state.deal?.type == 'DEAL') {
             if(this.state.deal?.tickets <= 0) {
@@ -106,7 +104,7 @@ class DealDetailsModal extends Component {
             <DialogComponent
                 show={show}
                 onClose={onClose}
-                size="md"
+                size="lg"
                 title={(
                     <h3 className="fw-bold">
                         Détails deal
@@ -119,7 +117,7 @@ class DealDetailsModal extends Component {
 
                         <h2 className='mb-20'>Contexte</h2>
 
-                        <p>Objet: {deal?.type == 'NDJANGUI' ? `Ndjangui ` : `Offre de cautionnement `} {deal?.offer?.reference}</p>
+                        <p>Objet: {deal?.type == 'DEAL' ? `Ndjangui Deal ` : deal?.type == 'SPOT' ? 'Ndjangui Spot ' : `Offre de cautionnement `}</p>
                         <p>Souscripteur: {deal?.sender}</p>
                         <p>Beneficiaire: {deal?.receiver}</p>
 

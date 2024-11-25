@@ -51,7 +51,7 @@ class CodevParticipants extends Component {
 
     getDeals = () => {
         this.props.setRequestGlobalAction(true),
-        FundingService.getDeals({free: true, type: 'DEAL', received: true, referral_code: this.props.referralCode, entity_reference: this.props.codevLine})
+        FundingService.getDeals({free: true, type: 'DEAL', received: true, referral_code: this.props.referralCode, entity_reference: this.props.order?.externalReference})
         .then(response => this.setState({ deals: response }))
         .catch(() => this.setState({ deals: [] }))
         .finally(() => this.props.setRequestGlobalAction(false))
@@ -59,7 +59,7 @@ class CodevParticipants extends Component {
 
     getSpots = () => {
         this.props.setRequestGlobalAction(true),
-        FundingService.getDeals({free: true, type: 'SPOT', received: true, referral_code: this.props.referralCode, entity_reference: this.props.codevLine})
+        FundingService.getDeals({free: true, type: 'SPOT', received: true, referral_code: this.props.referralCode, entity_reference: this.props.order?.externalReference})
         .then(response => this.setState({ spots: response }))
         .catch(() => this.setState({ spots: [] }))
         .finally(() => this.props.setRequestGlobalAction(false))
@@ -67,7 +67,7 @@ class CodevParticipants extends Component {
 
     inviteSubscriber = (member) => {
         this.props.setRequestGlobalAction(true);
-        ProductService.inviteCodevSubscriber({referral_code: member.referralCode, line_reference: this.props.codevLine})
+        ProductService.inviteCodevSubscriber({referral_code: member.referralCode, account_reference: this.props.order?.externalReference})
         .then(() => {
             this.props.onClose();
         })
@@ -82,7 +82,7 @@ class CodevParticipants extends Component {
 
     getParticipants = () => {
         this.props.setRequestGlobalAction(true);
-        ProductService.getParticipantsByOrderRef({reference: this.props.codevLine})
+        ProductService.getParticipantsByOrderRef({reference: this.props.order?.externalReference})
         .then(response => this.setState({participants: response}))
         .finally(() => this.props.setRequestGlobalAction(false))
     }
@@ -92,7 +92,6 @@ class CodevParticipants extends Component {
     };
 
     render() {
-
         const { onClose, show, type } = this.props;
         const { showInviteMemberModal, participants, showInitDeal, member, activeTab, deals, deal, spots, showDealDetails, showInitSpot } = this.state;
 
@@ -233,7 +232,7 @@ class CodevParticipants extends Component {
                                                                         <td>
                                                                             <div className="media">
                                                                                 <div className="media-body pt-10">
-                                                                                    <p className="m-0 text-dark">{item?.offer?.label}</p>
+                                                                                    <p className="m-0 text-dark">{item?.label}</p>
                                                                                 </div>
                                                                             </div>
                                                                         </td>
@@ -326,7 +325,7 @@ class CodevParticipants extends Component {
                                                                         <td>
                                                                             <div className="media">
                                                                                 <div className="media-body pt-10">
-                                                                                    <p className="m-0 text-dark">{item?.offer?.label}</p>
+                                                                                    <p className="m-0 text-dark">{item?.label}</p>
                                                                                 </div>
                                                                             </div>
                                                                         </td>
@@ -402,7 +401,7 @@ class CodevParticipants extends Component {
                         }}
                         dealType='NDJANGUI'
                         subscriber={member}
-                        lineReference={this.props.codevLine}
+                        accountReference={this.props.order?.externalReference}
                     />
                 )}
 
@@ -416,7 +415,7 @@ class CodevParticipants extends Component {
                         dealType='NDJANGUI'
                         subscriber={member}
                         order={this.props.order}
-                        lineReference={this.props.codevLine}
+                        accountReference={this.props.order?.externalReference}
                     />
                 )}
 
@@ -428,7 +427,7 @@ class CodevParticipants extends Component {
                             this.setState({ showInviteMemberModal: false });
                             this.getParticipants();
                         }}
-                        lineReference={this.props.codevLine}
+                        accountReference={this.props.order?.externalReference}
                         type={this.props.type}
                     />
                 )}

@@ -5,8 +5,10 @@ import FundingService from 'Services/funding';
 import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
 import React, { useEffect, useState } from 'react';
+import { getPriceWithCurrency } from 'Helpers/helpers';
 import TimeFromMoment from 'Components/TimeFromMoment';
 import InitDealModal from 'Routes/custom/fundings/components/InitDealModal';
+import DealChildModal from 'Routes/custom/fundings/components/DealChildModal';
 import DealDetailsModal from 'Routes/custom/fundings/components/DealDetailsModal';
 
 const List = (props) => {
@@ -14,6 +16,7 @@ const List = (props) => {
     const [datas, setDatas] = useState([]);
     const [deal, setDeal] = useState(null);
     const [showInitDeal, setShowInitDeal] = useState(false);
+    const [showDealChild, setShowDealChild] = useState(false);
     const [showDealDetails, setShowDealDetails] = useState(false);
 
     useEffect(() => {
@@ -47,6 +50,7 @@ const List = (props) => {
                                     <thead>
                                         <tr>
                                             <th className="fw-bold">Désignation</th>
+                                            <th className="fw-bold">Montant</th>
                                             <th className="fw-bold">Souscripteur</th>
                                             <th className="fw-bold">Destinataire</th>
                                             <th className="fw-bold">Date de création</th>
@@ -59,7 +63,14 @@ const List = (props) => {
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <p className="m-0 text-dark">{item?.offer?.label}</p>
+                                                            <p className="m-0 text-dark">{item?.label}</p>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="media">
+                                                        <div className="media-body pt-10">
+                                                            <p className="m-0 text-dark">{getPriceWithCurrency(item?.amount, item?.currency)}</p>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -91,7 +102,7 @@ const List = (props) => {
                                                         className="text-white font-weight-bold"
                                                         onClick={() => {
                                                             setDeal(item);
-                                                            setShowDealDetails(true);
+                                                            setShowDealChild(true);
                                                         }}
                                                     >
                                                         Détails
@@ -107,7 +118,17 @@ const List = (props) => {
                 )}
             />
 
-            {deal && (
+            {deal && showDealChild && (
+                <DealChildModal
+                    show={showDealChild}
+                    onClose={() => {
+                        setDeal(null);
+                        setShowDealChild(false);
+                    }}
+                    dealReference={deal?.reference}
+                />
+            )}
+            {deal && showDealDetails && (
                 <DealDetailsModal
                     show={showDealDetails}
                     onClose={() => {

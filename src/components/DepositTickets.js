@@ -59,7 +59,7 @@ const List = (props) => {
 
     const findTicketByCode = () => {
         props.setRequestGlobalAction(false);
-        ProductService.findTicketByCode(bondNumber)
+        ProductService.findTicketByCode(bondNumber, {available: props.available ? true : false})
         .then((response) => {
             if(selectedTickets.filter(st => st.id == response.id).length <= 0) {
                 setTickets([response, ...selectedTickets]);
@@ -91,6 +91,7 @@ const List = (props) => {
         if(startDate) {
             data.start_date = startDate;
         }
+        data.available = props.available ? true : false;
         if(endDate) {
             data.end_date = endDate;
         }
@@ -105,23 +106,6 @@ const List = (props) => {
             props.setRequestGlobalAction(false);
         })
     }
-
-    console.log(props.account);
-
-    // const findTicketByPeriod = () => {
-    //     props.setRequestGlobalAction(false);
-    //     ProductService.findTicketByPeriod({referral_code: props.referralCode, start_date: startDate, end_date: endDate})
-    //     .then((response) => {
-    //         setTickets([...response.filter(t => !selectedTickets.includes(t)), ...selectedTickets]);
-    //     })
-    //     .catch((err) => {
-    //         NotificationManager.error("Le numéro du ticket est innexistant");
-    //         console.log(err);
-    //     })
-    //     .finally(() => {
-    //         props.setRequestGlobalAction(false);
-    //     })
-    // }
 
     return (
         <div>
@@ -225,7 +209,7 @@ const List = (props) => {
                                         <thead>
                                             <tr>
                                                 <th className="w-5">Sélectionner</th>
-                                                <th className="fw-bold">Propriétaire</th>
+                                                {/* <th className="fw-bold">Propriétaire</th> */}
                                                 <th className="fw-bold">Code</th>
                                                 <th className="fw-bold">Montant</th>
                                                 <th className="fw-bold">Date d'échéance</th>
@@ -257,13 +241,13 @@ const List = (props) => {
                                                             </div>
                                                         </div>
                                                     </td>
-                                                    <td>
+                                                    {/* <td>
                                                         <div className="media">
                                                             <div className="media-body pt-10">
                                                                 <h4 className="m-0 fw-bold text-dark">{item.user?.userName}</h4>
                                                             </div>
                                                         </div>
-                                                    </td>
+                                                    </td> */}
                                                     <td>
                                                         <div className="media">
                                                             <div className="media-body pt-10">

@@ -286,7 +286,6 @@ const OrderComponent = (props) => {
                         setShowParticipants(false);
                     }}
                     referralCode={order.referralCode}
-                    codevLine={order?.details?.find(d => d.type == "CODEV_LINE_REF")?.value}
                     type={order?.details?.find(d => d.type == "CODEV_SUBSCRIPTION_TYPE")?.value}
                     isPrivate={order?.details?.find(d => d.type == "CODEV_INDIVISION_DISTRIBUTION")?.value == 'PRIVATE'}
                 />

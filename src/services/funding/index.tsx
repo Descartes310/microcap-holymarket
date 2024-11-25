@@ -38,6 +38,9 @@ export default class FundingService {
     static getDeals(data): Promise<any> {
         return makeRequest('get', Routes.GET_DEALS, data);
     }
+    static getDealChild(reference): Promise<any> {
+        return makeRequest('get', Routes.GET_CHILD_DEAL(reference));
+    }
 
     static getOffers(data): Promise<any> {
         return makeRequest('get', Routes.GET_OFFERS, data);

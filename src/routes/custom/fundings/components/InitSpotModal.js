@@ -180,8 +180,8 @@ class InitSpotModal extends Component {
         if(this.state.offer) {
             datas.offer_reference = this.state.offer.reference;
         } else {
-            if(this.state.line) {
-                datas.line_reference = this.state.line.reference;
+            if(this.props.accountReference) {
+                datas.account_reference = this.props.accountReference;
                 if(this.props.subscriber) {
                     datas.subscriber_reference = this.props.subscriber?.referralCode;
                 }
@@ -245,7 +245,7 @@ class InitSpotModal extends Component {
             <DialogComponent
                 show={show}
                 onClose={onClose}
-                size="md"
+                size="lg"
                 title={(
                     <h3 className="fw-bold">
                         Proposition de spot
@@ -254,7 +254,7 @@ class InitSpotModal extends Component {
             >
                 <RctCardContent>
                     <div>
-                        <p>Objet: { natureOfferEnabled ? `Ndjangui ${line?.reference}` : `Offre de cautionnement ${offer?.reference}`}</p>
+                        <p>Objet: { natureOfferEnabled ? `Ndjangui spots` : `Offre de cautionnement`}</p>
                         { senderName && (<p>Souscripteur: {senderName}</p> )}
                         <p>Beneficiaire: {receiverName}</p>
 

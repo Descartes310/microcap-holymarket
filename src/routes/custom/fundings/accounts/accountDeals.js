@@ -85,7 +85,7 @@ class AccountDeals extends Component {
                                                         <td>
                                                             <div className="media">
                                                                 <div className="media-body pt-10">
-                                                                    <p className="m-0 text-dark">{item?.offer?.label}</p>
+                                                                    <p className="m-0 text-dark">{item?.label}</p>
                                                                 </div>
                                                             </div>
                                                         </td>

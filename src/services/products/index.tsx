@@ -256,8 +256,8 @@ export default class ProductService {
         return makeRequest('get', Routes.GET_COTATIONS(reference));
     }
 
-    static findTicketByCode(code: string): Promise<any> {
-        return makeRequest('get', Routes.FIND_TICKET_BY_CODE, {code});
+    static findTicketByCode(code: string, data = {}): Promise<any> {
+        return makeRequest('get', Routes.FIND_TICKET_BY_CODE, {...data, code});
     }
 
     static findTicketByPeriod(data: any): Promise<any> {

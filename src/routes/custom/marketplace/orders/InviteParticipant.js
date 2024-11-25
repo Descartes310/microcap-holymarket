@@ -46,7 +46,7 @@ class InviteParticipantModal extends Component {
         }
 
         this.props.setRequestGlobalAction(true);
-        FundingService.inviteCodevSubscriber(deal.reference, {codev_line_reference: this.props.lineReference, referral_code: member.referralCode})
+        FundingService.inviteCodevSubscriber(deal.reference, {account_reference: this.props.accountReference, referral_code: member.referralCode})
         .then(() => {
             NotificationManager.success("L'invitation a été envoyée");
             this.props.onClose();

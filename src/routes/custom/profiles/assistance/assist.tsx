@@ -10,9 +10,9 @@ import AccountService from 'Services/accounts';
 import React, { useEffect, useState } from 'react';
 import SweetAlert from 'react-bootstrap-sweetalert';
 import TextField from '@material-ui/core/TextField';
+import DepositTickets from 'Components/DepositTickets';
 import { getUserAssistanceTypes } from 'Helpers/datas';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import DepositTickets from 'Components/DepositTickets';
 import { NotificationManager } from 'react-notifications';
 import ActivationBox from '../../notifications/ActivationBox';
 import VerifyUserOTPModal from 'Components/verifyUserOTPModal';
@@ -525,6 +525,7 @@ const Assist = (props) => {
                                         <DepositTickets 
                                             referralCode={membership}
                                             account={account}
+                                            available={true}
                                             updateAmount={(selectedTickets) => {
                                                 setTickets(selectedTickets)
                                                 setMinAmount(selectedTickets.reduce((amt, currentValue) => amt + currentValue.amount, 0));

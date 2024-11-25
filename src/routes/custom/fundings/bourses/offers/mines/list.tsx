@@ -6,6 +6,7 @@ import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
 import React, { useEffect, useState } from 'react';
 import TimeFromMoment from 'Components/TimeFromMoment';
+import { getPriceWithCurrency } from 'Helpers/helpers';
 import InitDealModal from 'Routes/custom/fundings/components/InitDealModal';
 import DealDetailsModal from 'Routes/custom/fundings/components/DealDetailsModal';
 
@@ -47,6 +48,7 @@ const List = (props) => {
                                     <thead>
                                         <tr>
                                             <th className="fw-bold">Désignation</th>
+                                            <th className="fw-bold">Montant</th>
                                             <th className="fw-bold">Souscripteur</th>
                                             <th className="fw-bold">Destinataire</th>
                                             <th className="fw-bold">Date de création</th>
@@ -59,7 +61,14 @@ const List = (props) => {
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <p className="m-0 text-dark">{item?.offer?.label}</p>
+                                                            <p className="m-0 text-dark">{item?.label}</p>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="media">
+                                                        <div className="media-body pt-10">
+                                                            <p className="m-0 text-dark">{getPriceWithCurrency(item?.amount, item?.currency)}</p>
                                                         </div>
                                                     </div>
                                                 </td>
