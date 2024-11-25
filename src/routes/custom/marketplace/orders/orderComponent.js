@@ -59,11 +59,19 @@ const OrderComponent = (props) => {
     const configureProduct = (formData) => {
     
         let data = {};
-        data.tirageReference = formData.selectedDate.reference;
+
+        data.lineCount = formData.lineCount;
+        data.tirageArray = JSON.stringify(formData.tirages);
         data.subscriptionType = formData.subscriptionType.value;
                     
         if(formData.alias != null)
             data.alias = formData.alias.value;
+
+        if(formData.projectReference != null)
+            data.projectReference = formData.projectReference;
+
+        if(formData.distribution != null)
+            data.distribution = formData.distribution;
             
         if(formData.indivision) {
             if(formData.tickets) {

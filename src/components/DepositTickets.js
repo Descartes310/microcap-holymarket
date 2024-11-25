@@ -16,6 +16,8 @@ import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabe
 
 const List = (props) => {
 
+    const [line, setLine] = useState(null);
+    const [lines, setLines] = useState([]);
     const [tickets, setTickets] = useState([]);
     const [endDate, setEndDate] = useState(null);
     const [startDate, setStartDate] = useState(null);
@@ -24,10 +26,27 @@ const List = (props) => {
     const [method, setMethod] = useState({label: "Rechercher par numéro de bond", value: "NUMBER"});
 
     useEffect(() => {
+        getLines();
+    }, []);
+
+    useEffect(() => {
         if(selectedTickets.length > 0) {
             props.updateAmount(selectedTickets);
         }
     }, [selectedTickets])
+
+    const getLines = () => {
+        props.setRequestGlobalAction(true);
+        ProductService.getLineByAccount({account_reference: props.account?.accountReference}).then(response => {
+            setLines(response)
+        }).catch((err) => {
+            console.log(err);
+            setLines([])
+        })
+        .finally(() => {
+            props.setRequestGlobalAction(false);
+        })
+    }
 
     const searchTickets = () => {
         if(method?.value == 'NUMBER') {
@@ -58,19 +77,51 @@ const List = (props) => {
     }
 
     const findTicketByPeriod = () => {
-        props.setRequestGlobalAction(false);
-        ProductService.findTicketByPeriod({referral_code: props.referralCode, start_date: startDate, end_date: endDate})
-        .then((response) => {
+        if(!line || !props.account) {
+            NotificationManager.error('Selectionnez une ligne');
+            return;
+        }
+        props.setRequestGlobalAction(true);
+        
+        let data = {
+            line_reference: line.reference,
+            account_reference: props.account?.accountReference
+        }
+
+        if(startDate) {
+            data.start_date = startDate;
+        }
+        if(endDate) {
+            data.end_date = endDate;
+        }
+        ProductService.getTickets(data).then(response => {
+            // this.setState({tickets: response});
             setTickets([...response.filter(t => !selectedTickets.includes(t)), ...selectedTickets]);
-        })
-        .catch((err) => {
-            NotificationManager.error("Le numéro du ticket est innexistant");
+        }).catch((err) => {
             console.log(err);
+            NotificationManager.error("Une erreur est survenue");
         })
         .finally(() => {
             props.setRequestGlobalAction(false);
         })
     }
+
+    console.log(props.account);
+
+    // const findTicketByPeriod = () => {
+    //     props.setRequestGlobalAction(false);
+    //     ProductService.findTicketByPeriod({referral_code: props.referralCode, start_date: startDate, end_date: endDate})
+    //     .then((response) => {
+    //         setTickets([...response.filter(t => !selectedTickets.includes(t)), ...selectedTickets]);
+    //     })
+    //     .catch((err) => {
+    //         NotificationManager.error("Le numéro du ticket est innexistant");
+    //         console.log(err);
+    //     })
+    //     .finally(() => {
+    //         props.setRequestGlobalAction(false);
+    //     })
+    // }
 
     return (
         <div>
@@ -105,33 +156,44 @@ const List = (props) => {
                         />
                     </FormGroup>
                 )}
-                {
-                    method?.value == 'PERIOD' && (
-                        <div className='d-flex direction-column align-items-stretch' style={{ flex: 1 }}>
-                            <FormGroup className="has-wrapper mr-20" style={{ flex: 1 }}>
-                                <InputStrap
-                                    type="date"
-                                    id="startDate"
-                                    name='startDate'
-                                    value={startDate}
-                                    className="input-lg"
-                                    placeholder="Date de début"
-                                    onChange={(e) => setStartDate(e.target.value)}
-                                />
-                            </FormGroup>
-                            <FormGroup className="has-wrapper mr-20" style={{ flex: 1 }}>
-                                <InputStrap
-                                    type="date"
-                                    id="endDate"
-                                    name='endDate'
-                                    value={endDate}
-                                    className="input-lg"
-                                    placeholder="Date de fin"
-                                    onChange={(e) => setEndDate(e.target.value)}
-                                />
-                            </FormGroup>
+                { method?.value == 'PERIOD' && (
+                    <React.Fragment>
+                        <div className="has-wrapper mr-20" style={{ flex: 1 }}>
+                            <Autocomplete
+                                id="combo-box-demo"
+                                value={line}
+                                options={lines}
+                                onChange={(__, item) => {
+                                    setLine(item);
+                                }}
+                                getOptionLabel={(option) => `Date de tirage: ${option.date}`}
+                                renderInput={(params) => <TextField {...params} variant="outlined" />}
+                            />
                         </div>
-                    )}
+                        <FormGroup className="has-wrapper mr-20" style={{ flex: 1 }}>
+                            <InputStrap
+                                type="date"
+                                id="startDate"
+                                name='startDate'
+                                value={startDate}
+                                className="input-lg"
+                                placeholder="Date de début"
+                                onChange={(e) => setStartDate(e.target.value)}
+                            />
+                        </FormGroup>
+                        <FormGroup className="has-wrapper mr-20" style={{ flex: 1 }}>
+                            <InputStrap
+                                type="date"
+                                id="endDate"
+                                name='endDate'
+                                value={endDate}
+                                className="input-lg"
+                                placeholder="Date de fin"
+                                onChange={(e) => setEndDate(e.target.value)}
+                            />
+                        </FormGroup>
+                    </React.Fragment>
+                )}
                 <FormGroup className="has-wrapper">
                     <Button
                         color="primary"

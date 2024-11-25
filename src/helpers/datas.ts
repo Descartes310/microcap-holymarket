@@ -302,6 +302,18 @@ export const getProductDetails = () => {
         {
             label: 'Quotité disponible',
             value: 'QUOTIENT'
+        },
+        {
+            label: 'Frais de souscription d\'une ligne',
+            value: 'LINE_FEES'
+        },
+        {
+            label: 'Frais de gestion d\'une ligne',
+            value: 'LINE_MANAGEMENT_FEES'
+        },
+        {
+            label: 'Frais de démembrement d\'un bond',
+            value: 'TICKET_DEMOUNTING_FEES'
         }
     ];
     

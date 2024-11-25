@@ -4,7 +4,6 @@ import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
 import { setRequestGlobalAction } from 'Actions';
 import { RctCardContent } from 'Components/RctCard';
-import { getPriceWithCurrency } from 'Helpers/helpers';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { InputLabel, TextField } from '@material-ui/core';
 import { FormGroup, Input as InputStrap } from 'reactstrap';

@@ -11,14 +11,10 @@ import { getPriceWithCurrency } from "Helpers/helpers";
 import DialogComponent from "Components/dialog/DialogComponent";
 import { getProductDetailsByName, getTimeUnitByValue } from "Helpers/datas";
 
-const TO_AVOID = ['ADVANCE_OPTION'];
-
 class ProductDetails extends Component {
 
     state = {
-        options: [],
-        product: null,
-        placements: [],
+        product: null
     }
 
     constructor(props) {
@@ -29,24 +25,6 @@ class ProductDetails extends Component {
         if(this.props.product) {
             this.findProduct();
         }
-        this.getCodevDetails();
-        this.getCodevConfigOptions();
-    }
-
-    getCodevDetails = () => {
-        this.props.setRequestGlobalAction(true);
-        ProductService.getCodevDetails({types: ['PLACEMENT']}).then(response => {
-            this.setState({ placements: response });
-        })
-        .finally(() => this.props.setRequestGlobalAction(false))
-    }
-
-    getCodevConfigOptions = () => {
-        this.props.setRequestGlobalAction(true);
-        ProductService.getCodevConfigOptions({product_reference: this.props.product.reference}).then(response => {
-            this.setState({ options: response.map(co => { return {...co, label: co.option.label}}) });
-        })
-        .finally(() => this.props.setRequestGlobalAction(false))
     }
 
     findProduct = () => {
@@ -58,7 +36,7 @@ class ProductDetails extends Component {
 
     render() {
 
-        const { product, placements, options } = this.state;
+        const { product } = this.state;
         const { onClose, show, title, onAddToCart, onReserve } = this.props;
 
         return (
@@ -107,15 +85,11 @@ class ProductDetails extends Component {
                                 <td>Vendeur</td>
                                 <td>{product?.seller}</td>
                             </tr>
-                            {product?.specialProduct == 'CODEV' && product?.details.filter(d => !TO_AVOID.includes(d.type)).map(details => (
+                            {product?.specialProduct == 'CODEV' && product?.details.map(details => (
                                 <tr>
                                     <td>{getProductDetailsByName(details.type)?.label}</td>
                                     { details.type == 'DEPOSITPERIOD' ?
                                         <td>{getTimeUnitByValue(details.value)?.label}</td> :
-                                        details.type == 'PLACEMENT' ?
-                                        <td>{placements.filter(p => details.value.split(',').includes(p.reference)).map(p => p.value).join(', ')}</td> :
-                                        details.type == 'OPTION' ?
-                                        <td>{options.filter(t => details.value.split(',').includes(t.reference)).map(p => p.label).join(', ')}</td> :
                                         details.type == 'START_DATE' ?
                                         <td>{moment(details.value).format('DD/MM/YYYY')}</td> :
                                         details.type == 'END_DATE' ?

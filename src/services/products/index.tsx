@@ -232,6 +232,22 @@ export default class ProductService {
         return makeRequest('get', Routes.GET_TICKET_BY_ACCOUNT, data);
     }
 
+    static getTickets(data: any): Promise<any> {
+        return makeRequest('get', Routes.GET_TICKETS, data);
+    }
+    
+    static getLineByAccount(data: any): Promise<any> {
+        return makeRequest('get', Routes.GET_LINE_BY_ACCOUNT, data);
+    }
+
+    static changeTicketExigibility(data: any): Promise<any> {
+        return makeRequest('post', Routes.CHANGE_TICKET_EXIGIBILITY, data);
+    }
+
+    static changeTicketGroup(data: any): Promise<any> {
+        return makeRequest('post', Routes.CHANGE_TICKET_GROUP, data);
+    }
+
     static updateCotation(reference: string, data: any): Promise<any> {
         return makeRequest('post', Routes.UPDATE_COTATION(reference), data);
     }

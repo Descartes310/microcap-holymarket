@@ -4,8 +4,8 @@ import { makeRequest } from 'Helpers/helpers';
 
 export default class ProjectService {
 
-    static getProjects(): Promise<any> {
-        return makeRequest('get', Routes.GET_PROJECTS);
+    static getProjects(data: any = {}): Promise<any> {
+        return makeRequest('get', Routes.GET_PROJECTS, data);
     }
 
     static getGroupProjects(): Promise<any> {

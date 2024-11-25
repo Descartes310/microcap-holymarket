@@ -94,7 +94,7 @@ class CodevStep4 extends Component {
             <DialogComponent
                 show={show}
                 onClose={onClose}
-                size="md"
+                size="lg"
                 title={(
                     <h3 className="fw-bold">
                         Récapitulatif de la commande

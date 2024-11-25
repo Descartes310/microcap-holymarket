@@ -73,7 +73,8 @@ class OrderForm extends Component<any, any> {
                             details.distribution = item.customInfos.distribution;
                         }
                         
-                        details.tirage_ref = item.customInfos.selectedDate.reference;
+                        details.tirages = item.customInfos.tirages;
+                        details.lineCount = item.customInfos.lineCount;
                         details.product_ref = item.customInfos.productReference;
                         details.subscription_type = item.customInfos.subscriptionType.value;
                     }

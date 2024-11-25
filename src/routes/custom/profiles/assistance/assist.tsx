@@ -524,6 +524,7 @@ const Assist = (props) => {
                                         </InputLabel>
                                         <DepositTickets 
                                             referralCode={membership}
+                                            account={account}
                                             updateAmount={(selectedTickets) => {
                                                 setTickets(selectedTickets)
                                                 setMinAmount(selectedTickets.reduce((amt, currentValue) => amt + currentValue.amount, 0));
@@ -595,7 +596,8 @@ const Assist = (props) => {
                                 variant="contained"
                                 disabled={!member}
                                 onClick={() => {
-                                    sendOtp();
+                                    // sendOtp();
+                                    onSubmit();
                                 }}
                                 className="text-white font-weight-bold mr-20"
                             >

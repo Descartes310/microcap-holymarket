@@ -49,7 +49,7 @@ class CodevStep2 extends Component {
                     <DialogComponent
                         show={show}
                         onClose={onClose}
-                        size="md"
+                        size="lg"
                         title={(
                             <h3 className="fw-bold">
                                 Indivisions

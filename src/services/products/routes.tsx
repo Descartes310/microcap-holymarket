@@ -49,6 +49,10 @@ export const GET_INDIVISION_BY_PRODUCT = 'api/products/codevs/indivisions/availa
 export const CREATE_INDIVIVIONS = 'api/products/codevs/indivision';
 export const CREATE_SUBSCRIBER = 'api/products/codevs/subscribers';
 export const GET_TICKET_BY_ACCOUNT = 'api/products/codevs/tickets-by-account';
+export const GET_TICKETS = 'api/products/codevs/tickets';
+export const GET_LINE_BY_ACCOUNT = 'api/products/codevs/lines-by-account';
+export const CHANGE_TICKET_EXIGIBILITY = 'api/products/codevs/tickets/exigibility';
+export const CHANGE_TICKET_GROUP = 'api/products/codevs/tickets/group';
 
 export const GET_CONFIG_OPTIONS = 'api/products/codev/config_options';
 export const CREATE_CONFIG_OPTION = 'api/products/codev/config_options';
