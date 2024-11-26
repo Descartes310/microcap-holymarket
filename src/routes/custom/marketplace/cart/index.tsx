@@ -36,7 +36,8 @@ import { Link } from 'react-router-dom';
 	}
  
     render() {
-       const { cart, deleteItemFromCart } = this.props;console.log(cart.items);
+       const { cart, deleteItemFromCart } = this.props;
+       console.log(cart.items);
        return (
           <div className="cart-wrapper">
              <PageTitleBar title={'Mon panier'} />

@@ -19,7 +19,6 @@ export const FIND_PRODUCT = (reference) => `api/products/find/${reference}`;
 export const UPDATE_PRODUCT_DETAILS = 'api/products/details';
 export const UPDATE_PRODUCT_MODEL_DETAILS = 'api/products/models/details';
 export const TIRAGE_PRODUCT_DETAILS = 'api/products/models/details/tirages';
-export const CREATE_CODEV_PRODUCT_MODEL = 'api/products/codevs';
 export const CODEV_PARTICIPANTS = 'api/products/codevs/participants';
 export const CODEV_INVITE_PARTICIPANT = 'api/products/codevs/subscribers/invite';
 export const CODEV_INVITE_PARTICIPANT_RESPONSE = 'api/products/codevs/subscribers/invite/response';
@@ -68,9 +67,7 @@ export const DELETE_INDIVISION_BOOKING = 'api/products/codevs/indivisions/free';
 export const CREATE_LINE_BOOKING = 'api/products/codevs/lines/book';
 export const CREATE_INDIVISION_BOOKING = 'api/products/codevs/indivisions/book';
 
-
 export const GET_LINE_GLOBAL_INFO = 'api/products/codevs/line/global';
-export const GET_LINE_SUPPORTS = 'api/products/codevs/line/supports';
 
 export const FIND_MY_CODEVS = 'api/products/codevs/mines';
 export const FIND_MY_TICKETS = 'api/products/codevs/tickets/mines';

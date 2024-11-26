@@ -11,7 +11,7 @@ import DialogComponent from "Components/dialog/DialogComponent";
 
 const Indivision = (props) => {
 
-    const { show, onClose } = props;
+    const { show, onClose, data } = props;
     const [amount, setAmount] = useState(null);
     const [distribution, setDistribution] = useState(null);
     const [denomination, setDenomination] = useState(null);
@@ -100,7 +100,7 @@ const Indivision = (props) => {
                                 }}
                                 getOptionLabel={(option) => option.label}
                                 options={[
-                                    // {label: 'Libre', value: 'PUBLIC'}, 
+                                    {label: 'Libre', value: 'PUBLIC'}, 
                                     {label: 'Privée', value: 'PRIVATE'}
                                 ]}
                                 renderInput={(params) => <TextField {...params} variant="outlined" />}

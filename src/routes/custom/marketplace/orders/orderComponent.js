@@ -186,7 +186,7 @@ const OrderComponent = (props) => {
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    {item.paymentStatus == 'PAID' && ['CONFIRMED', 'DELIVERED'].includes(item.status) && item?.type == 'CODEV' && item?.details?.find(d => d.type == "CODEV_SUBSCRIPTION_TYPE")?.value != "ALONE" && (
+                                                    {item.paymentStatus == 'PAID' && ['CONFIRMED', 'DELIVERED'].includes(item.status) && item?.type == 'CODEV' && item?.details?.find(d => d.type == "CODEV_SUBSCRIPTION_TYPE")?.value != "INDIVIDUAL" && (
                                                         <Button
                                                             color="primary"
                                                             variant="contained"

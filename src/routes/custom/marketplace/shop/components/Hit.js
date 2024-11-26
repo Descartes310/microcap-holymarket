@@ -3,8 +3,6 @@ import React, { Component } from 'react';
 import { RctCard } from 'Components/RctCard';
 import ProductDetails from './ProductDetails';
 import CodevStep1 from '../components/codev/step1';
-import CodevStep2 from '../components/codev/step2';
-import CodevStep3 from '../components/codev/step3';
 import CodevStep4 from '../components/codev/step4';
 import { onAddItemToCart, onClearCart } from 'Actions';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -111,11 +109,7 @@ class Hit extends Component {
 						onReserve={(e) => {
 							onClearCart();
 							this.addToCart(product, e);
-							if(product.specialProduct == 'CODEV_DEAL_PLAN' || product.specialProduct == 'CODEV') {
-								this.setState({ showSubscriptionModal: true });
-							} else {
-								this.setState({ showOrderModal: true });
-							}
+							this.setState({ showOrderModal: true });
 						}}
 					/>
 				)}
@@ -128,48 +122,16 @@ class Hit extends Component {
 							if(data?.subscriptionType.value == 'INDIVISION') {
 								this.setState({ 
 									data: data,
-									showCodevStep1: false, 
-									showCodevStep2: false, 
-									showCodevStep3: data.indivision.reference ? true : false,
-									showCodevStep4: data.indivision.reference ? false : true 
+									showCodevStep1: false,
+									showCodevStep4: true 
 								});
 							} else {
 								this.setState({ 
 									data: data,
 									showCodevStep1: false, 
-									showCodevStep2: false, 
-									showCodevStep3: false,
 									showCodevStep4: true
 								});
 							}
-						}}
-					/>
-				)}
-				{ showCodevStep2 && (
-					<CodevStep2 
-						data={data}
-						product={product}
-						show={showCodevStep2}
-						onClose={() => this.setState({ showCodevStep2: false })}						
-						onSubmit={(data) => {
-							this.setState({ 
-								data: data,
-								showCodevStep1: false, 
-								showCodevStep2: false, 
-								showCodevStep3: data.newIndivision,
-								showCodevStep4: data.newIndivision,
-							})
-						}}
-					/>
-				)}
-				{ showCodevStep3 && (
-					<CodevStep3 
-						data={data}
-						product={product}
-						show={showCodevStep3}
-						onClose={() => this.setState({ showCodevStep3: false })}
-						onSubmit={(data) => {
-							this.setState({ data: data, showCodevStep1: false, showCodevStep2: false, showCodevStep3: false, showCodevStep4: true });
 						}}
 					/>
 				)}

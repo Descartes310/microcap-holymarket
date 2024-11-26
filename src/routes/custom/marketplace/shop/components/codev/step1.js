@@ -20,12 +20,12 @@ import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 const subscriptionTypeEnum = [
     {
         label: 'Individuelle',
-        value: 'ALONE'
+        value: 'INDIVIDUAL'
     },
-    // {
-    //     label: 'Indivision',
-    //     value: 'INDIVISION'
-    // },
+    {
+        label: 'Indivision',
+        value: 'INDIVISION'
+    },
     {
         label: 'Multi-deals',
         value: 'DEALS'
@@ -80,10 +80,10 @@ class CodevStep1 extends Component {
 
     findIndivisions = () => {
         this.props.setRequestGlobalAction(true);
-        ProductService.getIndivisionsByProduct({reference: this.props.product.reference})
+        ProductService.getIndivisionsByProduct({})
         .then(response => {
             this.setState({ indivisions: [...this.state.indivisions, ...response
-                .map(i => { return {...i, name: 'Date: '+convertDate(i.date, 'DD MMMM YYYY')+', Dénomination: '+i.denomination+', Montant: '+getPriceWithCurrency(i.amount, this.props.product?.details.find(d => d.type == 'PRICE_CURRENCY')?.value)}})] });
+                .map(i => { return {...i, name: 'Date: '+convertDate(i.date, 'DD MMMM YYYY')+', Dénomination: '+i.label+', Montant périodique: '+getPriceWithCurrency(i.amount, this.props.product?.details.find(d => d.type == 'PRICE_CURRENCY')?.value)}})] });
         })
         .finally(() => this.props.setRequestGlobalAction(false))
     }
@@ -133,12 +133,12 @@ class CodevStep1 extends Component {
             return;
         }
 
-        if (!product || (['ALONE', 'DEALS', 'SPOTS'].includes(subscriptionType.value) && lineCount < 1)) {
+        if (!product || (['INDIVIDUAL', 'DEALS', 'SPOTS'].includes(subscriptionType.value) && lineCount < 1)) {
             NotificationManager.error('Le formulaire est mal renseigné');
             return;
         }
 
-        if (tirages.reduce((sum, item) => sum + item.line, 0) != lineCount) {
+        if (indivision == null && tirages.reduce((sum, item) => sum + item.line, 0) != lineCount) {
             NotificationManager.error('Les lignes ne sont pas correctes');
             return;
         }
@@ -162,7 +162,7 @@ class CodevStep1 extends Component {
             data.distribution = distribution.value;
         }
 
-        if(['ALONE', 'DEALS', 'SPOTS'].includes(subscriptionType.value)) {
+        if(['INDIVIDUAL', 'DEALS', 'SPOTS'].includes(subscriptionType.value)) {
             this.props.onSubmit(data);
         } else {
             data.indivision = indivision;
@@ -192,7 +192,7 @@ class CodevStep1 extends Component {
                     this.setState({ showCreateIndivisionBox: false });
                 }}
                 onValidate={(line) => {
-                    this.setState({ indivision: line }, () => {
+                    this.setState({ indivision: line, lineCount: 1, tirages: [{date: selectedDate.date, line: 1}]}, () => {
                         this.onValidate()
                     });  
                 }}
@@ -236,8 +236,6 @@ class CodevStep1 extends Component {
                                     value={project}
                                     id="combo-box-demo"
                                     onChange={(__, item) => {
-                                        console.log(this.state.product, item.amountSubscribed, Number(this.state.product.details.find(d => d.type == 'DEPOSIT_AMOUNT')?.value), Number(this.state.product.details.find(d => d.type == 'CYCLE_TIME')?.value))
-                                        console.log(Math.ceil(item.amountSubscribed / (Number(this.state.product.details.find(d => d.type == 'DEPOSIT_AMOUNT')?.value) * Number(this.state.product.details.find(d => d.type == 'CYCLE_TIME')?.value))))
                                         this.setState({ project: item, lineCount: Math.ceil(item.amountSubscribed / (Number(this.state.product.details.find(d => d.type == 'DEPOSIT_AMOUNT')?.value) * Number(this.state.product.details.find(d => d.type == 'CYCLE_TIME')?.value))) });
                                     }}
                                     getOptionLabel={(option) => option.label}
@@ -248,7 +246,7 @@ class CodevStep1 extends Component {
 
                     {
                         subscriptionType != null && (
-                            (['ALONE'].includes(subscriptionType.value) || (['DEALS', 'SPOTS'].includes(subscriptionType.value) && project)) ?
+                            (['INDIVIDUAL'].includes(subscriptionType.value) || (['DEALS', 'SPOTS'].includes(subscriptionType.value) && project)) ?
                         <>
                             <FormGroup className="col-md-12 col-sm-12 has-wrapper">
                                 <InputLabel className="text-left" htmlFor="lineCount">
@@ -264,21 +262,6 @@ class CodevStep1 extends Component {
                                     onChange={(e) => this.setState({ lineCount: Math.ceil(e.target.value) })}
                                 />
                             </FormGroup>
-                            {/* <FormGroup className="col-md-12 col-sm-12 has-wrapper mb-30 mt-20">
-                                <InputLabel className="text-left" htmlFor="startDate">
-                                    Date du tirage
-                                </InputLabel>
-                                <Autocomplete
-                                    options={dates}
-                                    value={selectedDate}
-                                    id="combo-box-demo"
-                                    onChange={(__, item) => {
-                                        this.setState({ selectedDate: item });
-                                    }}
-                                    getOptionLabel={(option) => `${convertDate(option.date, 'DD MMMM YYYY')} (${option.lineCount - option.lineBooked} / ${option.lineCount} lignes disponibles)`}
-                                    renderInput={(params) => <TextField {...params} variant="outlined" />}
-                                />
-                            </FormGroup> */}
                             <CustomList
                                 list={tirages}
                                 loading={false}

@@ -56,8 +56,8 @@ class OrderForm extends Component<any, any> {
                             details.alias = item.customInfos.alias.value;
                             
                         if(item.customInfos.indivision) {
-                            if(item.customInfos.tickets) {
-                                details.tickets = item.customInfos.tickets.join(',');
+                            if(item.customInfos.indivision.reference) {
+                                details.line_ref = item.customInfos.indivision.reference;
                             } else {
                                 details.unit_amount = item.customInfos.indivision.unitAmount;
                                 details.distribution = item.customInfos.indivision.distribution;
@@ -69,12 +69,16 @@ class OrderForm extends Component<any, any> {
                             details.project_reference = item.customInfos.projectReference;
                         }
 
-                        if(item.customInfos.distribution != null) {
+                        if(item.customInfos.distribution != null && details.distribution == null) {
                             details.distribution = item.customInfos.distribution;
                         }
                         
-                        details.tirages = item.customInfos.tirages;
-                        details.lineCount = item.customInfos.lineCount;
+                        if(item.customInfos.tirages && item.customInfos.tirages.length > 0) {
+                            details.tirages = item.customInfos.tirages;
+                        }
+                        if(item.customInfos.lineCount) {
+                            details.lineCount = item.customInfos.lineCount;
+                        }
                         details.product_ref = item.customInfos.productReference;
                         details.subscription_type = item.customInfos.subscriptionType.value;
                     }

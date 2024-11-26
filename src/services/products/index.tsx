@@ -44,10 +44,6 @@ export default class ProductService {
         return makeRequest('post', Routes.UPDATE_PRODUCT(reference), data, config);
     }
 
-    static createCodevProduct(data: any): Promise<any> {
-        return makeRequest('post', Routes.CREATE_CODEV_PRODUCT_MODEL, data);
-    }
-
     static updateProductDetails(data: any): Promise<any> {
         return makeRequest('post', Routes.UPDATE_PRODUCT_DETAILS, data);
     }
@@ -218,10 +214,6 @@ export default class ProductService {
 
     static getLineGlobalInfo(data: any): Promise<any> {
         return makeRequest('get', Routes.GET_LINE_GLOBAL_INFO, data);
-    }
-
-    static getLineSupports(data: any): Promise<any> {
-        return makeRequest('get', Routes.GET_LINE_SUPPORTS, data);
     }
     
     static createSubscriber(data: any): Promise<any> {
