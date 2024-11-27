@@ -196,7 +196,7 @@ class CodevParticipants extends Component {
                             </div>
                         </TabContainer>
                     </div>
-                    { type == 'DEALS' && (
+                    { type == 'DEALS' ? (
                         <div className="card mb-0 transaction-box">
                             <TabContainer>
                                 <div className="p-sm-20 pt-sm-30 p-10 pt-15 border-top">
@@ -288,8 +288,7 @@ class CodevParticipants extends Component {
                                 </div>
                             </TabContainer>
                         </div>
-                    )}
-                    { type == 'SPOTS' && (
+                    ) : type == 'SPOTS' ? (
                         <div className="card mb-0 transaction-box">
                             <TabContainer>
                                 <div className="p-sm-20 pt-sm-30 p-10 pt-15 border-top">
@@ -381,8 +380,7 @@ class CodevParticipants extends Component {
                                 </div>
                             </TabContainer>
                         </div>
-                    )}
-                    { type == 'INDIVISION' && (
+                    ) : type == 'INDIVISION' && (
                         <div className="card mb-0 transaction-box">
                             <TabContainer>
                                 <div className="p-sm-20 pt-sm-30 p-10 pt-15 border-top">
@@ -410,7 +408,7 @@ class CodevParticipants extends Component {
                         show={showInitSpot}
                         onClose={() => {
                             this.setState({ showSearchMember: false, member: null, showInitSpot: false });
-                            this.getDeals();
+                            this.getSpots();
                         }}
                         dealType='NDJANGUI'
                         subscriber={member}

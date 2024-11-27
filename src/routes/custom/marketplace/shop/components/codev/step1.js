@@ -33,11 +33,7 @@ const subscriptionTypeEnum = [
     {
         label: 'Multi-spots',
         value: 'SPOTS'
-    },
-    // {
-    //     label: 'Joint',
-    //     value: 'JOINT'
-    // }
+    }
 ];
 
 class CodevStep1 extends Component {
@@ -52,13 +48,16 @@ class CodevStep1 extends Component {
         project: null,
         product: null,
         drawDate: null,
+        investments: [],
         cessible: false,
         lineCount: null,
         editable: false,
+        investment: null,
         indivision: null,
         advanceType: null,
         advanceValue: null,
         selectedLine: null,
+        maxLineCount: null,
         distribution: null,
         selectedDate: null,
         currentTirage: null,
@@ -125,25 +124,36 @@ class CodevStep1 extends Component {
         .finally(() => this.props.setRequestGlobalAction(false))
     }
 
+    getProjectInvestments = () => {
+        this.props.setRequestGlobalAction(true);
+        ProjectService.getProjectInvestments({ reference: this.state.project.reference })
+        .then(response => this.setState({ investments: response, investment: null }))
+        .catch(() => {
+            this.setState({ investments: [], investment: null })
+        })
+        .finally(() => this.props.setRequestGlobalAction(false))
+    }
+
     onValidate = async () => {
-        const { product, subscriptionType, indivision, project, distribution, lineCount, tirages } = this.state;
+        const { product, subscriptionType, indivision, project, distribution, lineCount, tirages, maxLineCount, investment } = this.state;
 
         if(subscriptionType.value === 'INDIVISION' && indivision.id === 0) {
             this.setState({ showCreateIndivisionBox: true });
             return;
         }
 
-        if (!product || (['INDIVIDUAL', 'DEALS', 'SPOTS'].includes(subscriptionType.value) && lineCount < 1)) {
+        if (!product || (['INDIVIDUAL', 'DEALS', 'SPOTS'].includes(subscriptionType.value) && lineCount < 1) || (subscriptionType.value == 'SPOTS' && !investment)) {
             NotificationManager.error('Le formulaire est mal renseigné');
             return;
         }
 
-        if (indivision == null && tirages.reduce((sum, item) => sum + item.line, 0) != lineCount) {
+        console.log(lineCount, maxLineCount)
+        if (indivision == null && (tirages.reduce((sum, item) => sum + item.line, 0) != lineCount || lineCount > maxLineCount)) {
             NotificationManager.error('Les lignes ne sont pas correctes');
             return;
         }
 
-        if (!product || (['DEALS', 'SPOTS'].includes(subscriptionType.value) && (!project || !distribution) )) {
+        if (!product || (['DEALS', 'SPOTS'].includes(subscriptionType.value) && (!project || !distribution || !investment) )) {
             NotificationManager.error('Le formulaire est mal renseigné');
             return;
         }
@@ -162,6 +172,10 @@ class CodevStep1 extends Component {
             data.distribution = distribution.value;
         }
 
+        if (['SPOTS'].includes(subscriptionType.value) && investment) {
+            data.projectInvestment = investment.reference;
+        }
+
         if(['INDIVIDUAL', 'DEALS', 'SPOTS'].includes(subscriptionType.value)) {
             this.props.onSubmit(data);
         } else {
@@ -174,8 +188,8 @@ class CodevStep1 extends Component {
     render() {
         
         const { onClose, show, product } = this.props;
-        const { dates, selectedDate, subscriptionType, indivisions, indivision, tirages,
-            showCreateIndivisionBox, distribution, projects, project, lineCount, currentTirage, lineCountWanted } = this.state;
+        const { dates, selectedDate, subscriptionType, indivisions, indivision, tirages, investment, investments,
+            showCreateIndivisionBox, distribution, projects, project, lineCount, currentTirage, lineCountWanted, maxLineCount } = this.state;
 
         return (
             showCreateIndivisionBox
@@ -219,29 +233,51 @@ class CodevStep1 extends Component {
                             value={subscriptionType}
                             options={this.state.product?.modelCode !== 'NDBU' ? [] : subscriptionTypeEnum}
                             onChange={(__, item) => {
-                                this.setState({ subscriptionType: item });
+                                this.setState({ subscriptionType: item, project: null, investment: null, investments: [], lineCount: null, lineCountWanted: null, tirages: [] });
                             }}
                             getOptionLabel={(option) => option.label}
                             renderInput={(params) => <TextField {...params} variant="outlined" />}
                         />
                     </FormGroup>
-                    {
-                        subscriptionType != null && ['DEALS', 'SPOTS'].includes(subscriptionType.value) && (
+                    { subscriptionType != null && ['DEALS', 'SPOTS'].includes(subscriptionType.value) && (
                          <FormGroup className="col-md-12 col-sm-12 has-wrapper mb-30 mt-20">
-                                <InputLabel className="text-left" htmlFor="startDate">
-                                    Projets
-                                </InputLabel>
-                                <Autocomplete
-                                    options={projects}
-                                    value={project}
-                                    id="combo-box-demo"
-                                    onChange={(__, item) => {
-                                        this.setState({ project: item, lineCount: Math.ceil(item.amountSubscribed / (Number(this.state.product.details.find(d => d.type == 'DEPOSIT_AMOUNT')?.value) * Number(this.state.product.details.find(d => d.type == 'CYCLE_TIME')?.value))) });
-                                    }}
-                                    getOptionLabel={(option) => option.label}
-                                    renderInput={(params) => <TextField {...params} variant="outlined" />}
-                                />
-                            </FormGroup>
+                            <InputLabel className="text-left" htmlFor="startDate">
+                                Projets
+                            </InputLabel>
+                            <Autocomplete
+                                options={projects}
+                                value={project}
+                                id="combo-box-demo"
+                                onChange={(__, item) => {
+                                    const maxLine = Math.ceil(item.amountSubscribed / (Number(this.state.product.details.find(d => d.type == 'DEPOSIT_AMOUNT')?.value) * Number(this.state.product.details.find(d => d.type == 'CYCLE_TIME')?.value)));
+                                    this.setState({ project: item, lineCount: subscriptionType?.value == 'DEALS' ? maxLine : null, maxLineCount: subscriptionType?.value == 'DEALS' ? maxLine : null }, () => {
+                                        if(subscriptionType?.value == 'SPOTS') {
+                                            this.getProjectInvestments();
+                                        }
+                                    });
+                                }}
+                                getOptionLabel={(option) => option.label}
+                                renderInput={(params) => <TextField {...params} variant="outlined" />}
+                            />
+                        </FormGroup>
+                    )}
+                    { subscriptionType != null && ['SPOTS'].includes(subscriptionType.value) && (
+                        <FormGroup className="col-md-12 col-sm-12 has-wrapper mb-30 mt-20">
+                            <InputLabel className="text-left" htmlFor="startDate">
+                                Fiche d'investissement
+                            </InputLabel>
+                            <Autocomplete
+                                options={investments}
+                                value={investment}
+                                id="combo-box-demo"
+                                onChange={(__, item) => {
+                                    const maxLine = Math.ceil(item.totalCost / (Number(this.state.product.details.find(d => d.type == 'DEPOSIT_AMOUNT')?.value) * Number(this.state.product.details.find(d => d.type == 'CYCLE_TIME')?.value)));
+                                    this.setState({ investment: item, lineCount: subscriptionType?.value == 'SPOTS' ? maxLine : null, maxLineCount: subscriptionType?.value == 'SPOTS' ? maxLine : null });
+                                }}
+                                getOptionLabel={(option) => option.label}
+                                renderInput={(params) => <TextField {...params} variant="outlined" />}
+                            />
+                        </FormGroup>
                     )}
 
                     {
@@ -250,7 +286,7 @@ class CodevStep1 extends Component {
                         <>
                             <FormGroup className="col-md-12 col-sm-12 has-wrapper">
                                 <InputLabel className="text-left" htmlFor="lineCount">
-                                    Nombre de ligne souhaité
+                                    Nombre de ligne souhaité {['DEALS', 'SPOTS'].includes(subscriptionType.value) && `(Nombre de ligne maximal = ${maxLineCount})` }
                                 </InputLabel>
                                 <InputStrap
                                     required

@@ -217,10 +217,8 @@ class InitSpotModal extends Component {
         }
 
         this.props.setRequestGlobalAction(true);
-        console.log(datas);
         FundingService.createProposition(datas)
         .then(response => {
-            console.log(response);
             NotificationManager.success("La proposition a bien été enregistré");
             this.props.onClose();
         })

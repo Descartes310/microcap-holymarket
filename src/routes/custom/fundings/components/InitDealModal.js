@@ -235,10 +235,6 @@ class InitDealModal extends Component {
             datas.interventionType = interventionType?.value
         }
 
-        // if(account?.id) {
-        //     datas.account_reference = account?.reference;
-        // }
-
         this.props.setRequestGlobalAction(true);
         FundingService.createProposition(datas)
         .then(response => {

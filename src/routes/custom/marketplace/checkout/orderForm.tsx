@@ -79,6 +79,10 @@ class OrderForm extends Component<any, any> {
                         if(item.customInfos.lineCount) {
                             details.lineCount = item.customInfos.lineCount;
                         }
+
+                        if(item.customInfos.projectInvestment) {
+                            details.project_investment = item.customInfos.projectInvestment;
+                        }
                         details.product_ref = item.customInfos.productReference;
                         details.subscription_type = item.customInfos.subscriptionType.value;
                     }
@@ -143,6 +147,8 @@ class OrderForm extends Component<any, any> {
         if(this.props.customData?.motivation) {
             data.motivation = this.props.customData?.motivation;
         }
+
+        // console.log(data);
 
         this.props.setRequestGlobalAction(true);
         OrderService.createOrder(data).then((response) => {
