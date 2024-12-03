@@ -15,8 +15,9 @@ class Investments extends Component<any, any> {
     constructor(props: any) {
         super(props);
         const defaultState = (function (url) {
-            if (url.includes(FUNDING.INVESTMENT.POLITIC.SELF)) return 0;
-            else if (url.includes(FUNDING.INVESTMENT.STRATEGY.SELF)) return 1;
+            if (url.includes(FUNDING.INVESTMENT.PROGRAM.SELF)) return 0;
+            else if (url.includes(FUNDING.INVESTMENT.POLITIC.SELF)) return 1;
+            else if (url.includes(FUNDING.INVESTMENT.STRATEGY.SELF)) return 2;
             else return 0;
         })(window.location.pathname);
 
@@ -30,9 +31,10 @@ class Investments extends Component<any, any> {
         this.setState({ activeTab: value });
         if (oldActivateTab !== value) {
             switch (value) {
-                case 0: return this.props.history.push(FUNDING.INVESTMENT.POLITIC.SELF);
-                case 1: return this.props.history.push(FUNDING.INVESTMENT.STRATEGY.SELF);
-                default: return this.props.history.push(FUNDING.INVESTMENT.POLITIC.SELF);
+                case 0: return this.props.history.push(FUNDING.INVESTMENT.PROGRAM.SELF);
+                case 1: return this.props.history.push(FUNDING.INVESTMENT.POLITIC.SELF);
+                case 2: return this.props.history.push(FUNDING.INVESTMENT.STRATEGY.SELF);
+                default: return this.props.history.push(FUNDING.INVESTMENT.PROGRAM.SELF);
             }
         }
     };
@@ -56,6 +58,10 @@ class Investments extends Component<any, any> {
                                         variant="scrollable"
                                         centered
                                     >
+                                        <Tab
+                                            icon={<i className="zmdi zmdi-home" />}
+                                            label={"Programme"}
+                                        />
                                         <Tab
                                             icon={<i className="zmdi zmdi-home" />}
                                             label={"Politique"}

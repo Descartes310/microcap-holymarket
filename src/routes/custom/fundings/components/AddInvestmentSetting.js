@@ -24,7 +24,7 @@ const AddInvestmentSetting = (props) => {
             size="md"
             title={(
                 <h3 className="fw-bold">
-                    Editer un coût associé
+                    Ajouter un paramètre
                 </h3>
             )}
         >

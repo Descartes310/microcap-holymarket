@@ -30,10 +30,10 @@ class UnitSelect extends Component {
     render() {
 
         const { unit, units } = this.state;
-        const { label, onChange, isCurrency } = this.props;
+        const { label, onChange, isCurrency, className } = this.props;
 
         return (
-            <FormGroup className="col-md-6 col-sm-12 has-wrapper">
+            <FormGroup className={className ?? "col-md-6 col-sm-12 has-wrapper"}>
                 <InputLabel className="text-left">
                     {label}
                 </InputLabel>

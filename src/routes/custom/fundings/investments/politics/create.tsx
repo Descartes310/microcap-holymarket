@@ -94,17 +94,20 @@ const Create = (props) => {
                             onChange={(e) => setDescription(e.target.value)}
                         />
                     </FormGroup>
+                    <InputLabel className="text-left">
+                        Liste des paramètres
+                    </InputLabel>
                     <CustomList
                         list={values}
                         loading={false}
-                        itemsFoundText={n => `${n} valeur trouvée`}
+                        itemsFoundText={n => `${n} paramètre trouvé`}
                         onAddClick={() => setShowAddValueBox(true)}
                         renderItem={list => (
                             <>
                                 {list && list.length === 0 ? (
                                     <div className="d-flex justify-content-center align-items-center py-50">
                                         <h4>
-                                            Aucune valeur trouvée
+                                            Aucune paramètre trouvé
                                         </h4>
                                     </div>
                                 ) : (

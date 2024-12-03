@@ -16,6 +16,10 @@ export default class ProductService {
         return makeRequest('post', Routes.CREATE_PRODUCT_MODEL, data, config);
     }
 
+    static getProductModelDetails(reference: string): Promise<any> {
+        return makeRequest('get', Routes.GET_PRODUCT_MODEL_DETAILS(reference));
+    }
+
     static getProductModels(data: any): Promise<any> {
         return makeRequest('get', Routes.GET_PRODUCT_MODELS, data);
     }

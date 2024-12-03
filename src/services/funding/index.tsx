@@ -89,4 +89,12 @@ export default class FundingService {
     static createFundingStrategy(data: any): Promise<any> {
         return makeRequest('post', Routes.CREATE_STRATEGY, data);
     }
+
+    static getFundingPrograms(): Promise<any> {
+        return makeRequest('get', Routes.GET_PROGRAMS);
+    }
+
+    static createFundingProgram(data: any): Promise<any> {
+        return makeRequest('post', Routes.CREATE_PROGRAM, data);
+    }
 }

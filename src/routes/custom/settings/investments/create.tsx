@@ -50,7 +50,7 @@ const Create = (props) => {
     return (
         <>
             <PageTitleBar
-                title={"Création d'une idée"}
+                title={"Création d'un paramètre d'investissement"}
             />
             <RctCollapsibleCard>
                 <Form onSubmit={onSubmit}>

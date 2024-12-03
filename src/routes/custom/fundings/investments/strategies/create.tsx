@@ -124,17 +124,20 @@ const Create = (props) => {
                             renderInput={(params) => <TextField {...params} variant="outlined" />}
                         />
                     </div>
+                    <InputLabel className="text-left">
+                        Liste des paramètres
+                    </InputLabel>
                     <CustomList
                         list={values}
                         loading={false}
-                        itemsFoundText={n => `${n} valeur trouvée`}
+                        itemsFoundText={n => `${n} paramètres trouvé`}
                         onAddClick={() => setShowAddValueBox(true)}
                         renderItem={list => (
                             <>
                                 {list && list.length === 0 ? (
                                     <div className="d-flex justify-content-center align-items-center py-50">
                                         <h4>
-                                            Aucune valeur trouvée
+                                            Aucune paramètres trouvé
                                         </h4>
                                     </div>
                                 ) : (

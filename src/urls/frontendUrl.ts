@@ -77,6 +77,11 @@ export const FUNDING = {
             SELF: '/funding/investments/politics',
             LIST: '/funding/investments/politics/list',
             CREATE: '/funding/investments/politics/create',
+        },
+        PROGRAM: {
+            SELF: '/funding/investments/programs',
+            LIST: '/funding/investments/programs/list',
+            CREATE: '/funding/investments/programs/create',
         }
     },
     BOND: {

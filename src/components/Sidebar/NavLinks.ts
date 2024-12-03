@@ -537,7 +537,7 @@ export default [
       ],
    },
    {
-      "path": FUNDING.INVESTMENT.POLITIC.LIST,
+      "path": FUNDING.INVESTMENT.PROGRAM.LIST,
       "menu_title": "Programme d'investissement",
       "menu_icon": "zmdi zmdi-assignment-o",
       "new_item": false,
