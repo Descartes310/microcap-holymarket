@@ -1,71 +1,50 @@
 import { connect } from 'react-redux';
-import { PROJECT } from 'Url/frontendUrl';
+import React, { useState } from 'react';
+import { SETTING } from 'Url/frontendUrl';
 import { withRouter } from "react-router-dom";
 import Button from '@material-ui/core/Button';
-import ProjectService from 'Services/projects';
-import { getInputTypes } from 'Helpers/helpers';
+import SettingService from 'Services/settings';
 import { setRequestGlobalAction } from 'Actions';
-import React, { useState, useEffect } from 'react';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { NotificationManager } from 'react-notifications';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { Form, FormGroup, Input as InputStrap } from 'reactstrap';
+import { getInputTypes, getInvestmentPerimeterTypes } from 'Helpers/helpers';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
 
 const Create = (props) => {
 
     const [label, setLabel] = useState('');
     const [type, setType] = useState(null);
-    const [parent, setParent] = useState(null);
-    const [description, setDescription] = useState('');
-    const [projectItems, setProjectItems] = useState([]);
-
-    useEffect(() => {
-        getProjectItems();
-    }, []);
-
-    const getProjectItems = () => {
-        props.setRequestGlobalAction(true);
-        ProjectService.getProjectMyItems()
-            .then((response) => setProjectItems(response))
-            .catch((err) => {
-                console.log(err);
-            })
-            .finally(() => {
-                props.setRequestGlobalAction(false);
-            })
-    }
+    const [perimeter, setPerimeter] = useState(null);
 
     const onSubmit = () => {
-        if (!label || !type)
+        if (!label || !type || !perimeter) {
+            NotificationManager.error('Le formulaire est mal renseigné')
             return;
+        }
 
         var data: any = {
             label: label,
-            type: 'SIMPLE',
-            ownerType: 'PERSONNAL',
-            inputType: type.value,
-            description: description
+            form_input_type: type.value,
+            perimeter: perimeter.value,
         }
-
-        if (parent)
-            data.parentId = parent.id;
 
         props.setRequestGlobalAction(true);
 
-        ProjectService.createProjectItem(data).then(() => {
-            NotificationManager.success('Ouvrage  créé avec succès');
-            props.history.push(PROJECT.MINE.ITEM.LIST);
+        SettingService.createInvestmentSetting(data).then(() => {
+            NotificationManager.success('Paramètre créé avec succès');
+            props.history.push(SETTING.INVESTMENT.LIST);
         })
-            .catch((err) => {
-                console.log(err);
-                NotificationManager.error('Une erreur est survenues lors de la création de ouvrage');
-            })
-            .finally(() => {
-                props.setRequestGlobalAction(false);
-            })
+        .catch((err) => {
+            console.log(err);
+            NotificationManager.error('Une erreur est survenues lors du paramètre');
+        })
+        .finally(() => {
+            props.setRequestGlobalAction(false);
+        })
     }
 
     return (
@@ -89,20 +68,6 @@ const Create = (props) => {
                             onChange={(e) => setLabel(e.target.value)}
                         />
                     </FormGroup>
-                    <FormGroup className="has-wrapper">
-                        <InputLabel className="text-left" htmlFor="description">
-                            Description
-                        </InputLabel>
-                        <InputStrap
-                            required
-                            id="description"
-                            type="text"
-                            name='description'
-                            className="input-lg"
-                            value={description}
-                            onChange={(e) => setDescription(e.target.value)}
-                        />
-                    </FormGroup>
                     <div className="col-md-12 col-sm-12 has-wrapper mb-30">
                         <InputLabel className="text-left">
                             Type de donnée
@@ -120,14 +85,14 @@ const Create = (props) => {
                     </div>
                     <div className="col-md-12 col-sm-12 has-wrapper mb-30">
                         <InputLabel className="text-left">
-                            Ouvrage parent
+                            Périmètre
                         </InputLabel>
                         <Autocomplete
-                            value={parent}
-                            options={projectItems}
+                            value={perimeter}
                             id="combo-box-demo"
+                            options={getInvestmentPerimeterTypes()}
                             onChange={(__, item) => {
-                                setParent(item);
+                                setPerimeter(item);
                             }}
                             getOptionLabel={(option) => option.label}
                             renderInput={(params) => <TextField {...params} variant="outlined" />}

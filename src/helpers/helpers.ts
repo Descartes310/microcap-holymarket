@@ -1125,6 +1125,26 @@ export const getInputTypeLabel = (value) => {
         return "";
 }
 
+export const getInvestmentPerimeterTypes = () => {
+    return [
+        {
+            label: 'Politique',
+            value: 'POLITIC'
+        }, {
+            label: 'Stratégie',
+            value: 'STRATEGY'
+        }
+    ]
+}
+
+export const getInvestmentPerimeterTypeLabel = (value) => {
+    let type = getInvestmentPerimeterTypes().find(rt => rt.value === value);
+    if (type)
+        return type.label;
+    else
+        return "";
+}
+
 export const getInitializationTypes = () => {
     return [
         {

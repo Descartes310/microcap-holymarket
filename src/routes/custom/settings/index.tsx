@@ -7,6 +7,7 @@ import Articles from './articles';
 import UserFiles from './user-files';
 import {connect} from "react-redux";
 import {injectIntl} from "react-intl";
+import Investments from './investments';
 import { SETTING } from 'Url/frontendUrl';
 import Immatriculations from './immatriculations';
 import MessagesTemplates from './messagesTemplates';
@@ -27,6 +28,7 @@ const Setting = (props) => {
                 <Route path={SETTING.IMMATRICULATION.SELF} component={Immatriculations} />
                 <Route path={SETTING.MESSAGE_TEMPLATE.SELF} component={MessagesTemplates} />
                 <Route path={SETTING.PME_VOTE.SELF} component={PmeVote} />
+                <Route path={SETTING.INVESTMENT.SELF} component={Investments} />
             </Switch>
         </div>
     );

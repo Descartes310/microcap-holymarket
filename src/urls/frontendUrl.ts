@@ -66,6 +66,19 @@ export const FUNDING = {
         CONSOLIDATIONS: '/funding/accounts/:id/consolidations',
         SYNCHRONISATIONS: '/funding/accounts/:id/synchronisations',
     },
+    INVESTMENT: {
+        SELF: '/funding/investments',
+        STRATEGY: {
+            SELF: '/funding/investments/strategies',
+            LIST: '/funding/investments/strategies/list',
+            CREATE: '/funding/investments/strategies/create',
+        },
+        POLITIC: {
+            SELF: '/funding/investments/politics',
+            LIST: '/funding/investments/politics/list',
+            CREATE: '/funding/investments/politics/create',
+        }
+    },
     BOND: {
         SELF: '/funding/bonds',
         LIST: '/funding/bonds/list',
@@ -602,6 +615,11 @@ export const SETTING = {
         UPDATE: "/settings/user-files/:id/update",
         MODELS: "/settings/user-files/:id/models",
         MODEL_ITEMS: "/settings/user-files/models/:id/items",
+    },
+    INVESTMENT: {
+        SELF: "/settings/investments",
+        LIST: "/settings/investments/list",
+        CREATE: "/settings/investments/create",
     },
     PME_VOTE: {
         SELF: "/settings/pme-votes",

@@ -20,5 +20,10 @@ export const CHANGE_ACCOUNT_DEAL = (reference) => `api/fundings/funding-offers/d
 
 
 export const GET_BONDS = 'api/fundings/bonds';
-
 export const ACTIVATE_ACCOUNT = (reference) => `api/fundings/accounts/${reference}/activate`;
+
+
+export const GET_POLITICS = 'api/products/codevs/investments/politics';
+export const GET_STRATEGIES = 'api/products/codevs/investments/strategies';
+export const CREATE_POLITIC = 'api/products/codevs/investments/politics';
+export const CREATE_STRATEGY = 'api/products/codevs/investments/strategies';

@@ -172,4 +172,12 @@ export default class SettingService {
     static generateCode(data: any): Promise<any> {
         return makeRequest('get', Routes.GENERATE_CODE, data);
     }
+
+    static getInvestmentSettings(data = {}): Promise<any> {
+        return makeRequest('get', Routes.GET_INVESTMENT_SETTINGS, data);
+    }
+
+    static createInvestmentSetting(data: any): Promise<any> {
+        return makeRequest('post', Routes.CREATE_INVESTMENT_SETTING, data);
+    }
 }

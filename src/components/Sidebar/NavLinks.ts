@@ -537,6 +537,22 @@ export default [
       ],
    },
    {
+      "path": FUNDING.INVESTMENT.POLITIC.LIST,
+      "menu_title": "Programme d'investissement",
+      "menu_icon": "zmdi zmdi-assignment-o",
+      "new_item": false,
+      "child_routes": null,
+      "profiles": null,
+   },
+   {
+      "path": MARKETPLACE.ORDERS,
+      "menu_title": "Big deals",
+      "menu_icon": "zmdi zmdi-assignment-o",
+      "new_item": false,
+      "child_routes": null,
+      "profiles": null,
+   },
+   {
       "menu_title": "Bourse de financement",
       "menu_icon": "zmdi zmdi-home",
       "new_item": false,
@@ -808,6 +824,24 @@ export default [
       "permissions": [Permission.marketplace.shop.name],
    },
    {
+      "path": MARKETPLACE.ORDERS,
+      "menu_title": "Programme d'investissement",
+      "menu_icon": "zmdi zmdi-assignment-o",
+      "new_item": false,
+      "child_routes": null,
+      "profiles": null,
+      "permissions": [Permission.marketplace.shop.name],
+   },
+   {
+      "path": MARKETPLACE.ORDERS,
+      "menu_title": "Big deals",
+      "menu_icon": "zmdi zmdi-assignment-o",
+      "new_item": false,
+      "child_routes": null,
+      "profiles": null,
+      "permissions": [Permission.marketplace.shop.name],
+   },
+   {
       "menu_title": "Services bancaires",
       "menu_icon": "zmdi zmdi-balance",
       "new_item": false,
@@ -991,7 +1025,16 @@ export default [
             "permissions": [Permission.setting.messageModel.name],
             "profiles": ['GROUP'],
             "child_routes": null
-         },         {
+         },  
+         {
+            "menu_title": "Param. d'invest.",
+            "new_item": false,
+            "path": SETTING.INVESTMENT.LIST,
+            "permissions": [Permission.setting.unit.name],
+            "profiles": ['GROUP'],
+            "child_routes": null
+         },         
+         {
             "menu_title": "Immatriculations",
             "new_item": false,
             "path": SETTING.IMMATRICULATION.LIST,

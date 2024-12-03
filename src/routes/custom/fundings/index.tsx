@@ -5,6 +5,7 @@ import Bourses from './bourses';
 import Accounts from './accounts';
 import {connect} from "react-redux";
 import {injectIntl} from "react-intl";
+import Investments from './investments';
 import { FUNDING } from 'Url/frontendUrl';
 import {withRouter, Switch, Redirect, Route} from "react-router-dom";
 
@@ -18,6 +19,7 @@ const Funding = (props) => {
                     <Route path={FUNDING.ACCOUNT.SELF} component={Accounts} />
                     <Route path={FUNDING.BOURSE.SELF} component={Bourses} />
                     <Route path={FUNDING.BOND.SELF} component={Bonds} />
+                    <Route path={FUNDING.INVESTMENT.SELF} component={Investments} />
                     <Route path={FUNDING.BOURSE.DEALS.SELF} component={Deals} />
                 </Switch>
             </>
