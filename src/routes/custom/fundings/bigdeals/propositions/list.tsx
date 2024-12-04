@@ -5,16 +5,17 @@ import FundingService from 'Services/funding';
 import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
 import React, { useEffect, useState } from 'react';
-import { getPriceWithCurrency } from 'Helpers/helpers';
 import TimeFromMoment from 'Components/TimeFromMoment';
-import InitDealModal from 'Routes/custom/fundings/components/InitDealModal';
-import DealDetailsModal from 'Routes/custom/fundings/components/DealDetailsModal';
+import InitBigDealModal from '../../components/InitBigDealModal';
+import DealDetailsModal from '../../components/DealDetailsModal';
+import DealChildModal from 'Routes/custom/fundings/components/DealChildModal';
 
 const List = (props) => {
 
     const [datas, setDatas] = useState([]);
     const [deal, setDeal] = useState(null);
     const [showInitDeal, setShowInitDeal] = useState(false);
+    const [showDealChild, setShowDealChild] = useState(false);
     const [showDealDetails, setShowDealDetails] = useState(false);
 
     useEffect(() => {
@@ -23,16 +24,18 @@ const List = (props) => {
 
     const getDatas = () => {
         props.setRequestGlobalAction(true),
-        FundingService.getRequests({mine: false, types: ['DEAL', 'SPOT']})
+        FundingService.getRequests({mine: true, received: false, type: 'BIGDEAL'})
         .then(response => setDatas(response))
         .finally(() => props.setRequestGlobalAction(false))
     }
+
     return (
-            <>
+        <>
             <CustomList
                 list={datas}
                 loading={false}
                 itemsFoundText={n => `${n} deals trouvés`}
+                onAddClick={() => setShowInitDeal(true)}
                 renderItem={list => (
                     <>
                         {list && list.length === 0 ? (
@@ -47,7 +50,6 @@ const List = (props) => {
                                     <thead>
                                         <tr>
                                             <th className="fw-bold">Désignation</th>
-                                            <th className="fw-bold">Montant</th>
                                             <th className="fw-bold">Souscripteur</th>
                                             <th className="fw-bold">Destinataire</th>
                                             <th className="fw-bold">Date de création</th>
@@ -61,13 +63,6 @@ const List = (props) => {
                                                     <div className="media">
                                                         <div className="media-body pt-10">
                                                             <p className="m-0 text-dark">{item?.label}</p>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div className="media">
-                                                        <div className="media-body pt-10">
-                                                            <p className="m-0 text-dark">{getPriceWithCurrency(item?.amount, item?.currency)}</p>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -99,7 +94,7 @@ const List = (props) => {
                                                         className="text-white font-weight-bold"
                                                         onClick={() => {
                                                             setDeal(item);
-                                                            setShowDealDetails(true);
+                                                            setShowDealChild(true);
                                                         }}
                                                     >
                                                         Détails
@@ -127,19 +122,31 @@ const List = (props) => {
                         setShowDealDetails(false);
                         setShowInitDeal(true);
                     }}
-                    isSender={false}
+                    isSender={true}
+                    isBlocked={true}
                 />
-            )}            
-            
-            {deal && showInitDeal && (
-                <InitDealModal 
+            )}
+
+            {deal && showDealChild && (
+                <DealChildModal
+                    show={showDealChild}
+                    onClose={() => {
+                        setDeal(null);
+                        setShowDealChild(false);
+                    }}
+                    dealReference={deal?.reference}
+                />
+            )}
+
+            {showInitDeal && (
+                <InitBigDealModal 
                     show={showInitDeal}
                     onClose={() => {
                         setDeal(null);
                         setShowInitDeal(false);
                     }}
                     deal={deal}
-                    dealType={deal.type}
+                    dealType={'BIGDEAL'}
                 />
             )}
         </>

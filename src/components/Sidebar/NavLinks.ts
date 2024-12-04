@@ -545,7 +545,7 @@ export default [
       "profiles": null,
    },
    {
-      "path": MARKETPLACE.ORDERS,
+      "path": FUNDING.BIGDEAL.SENT,
       "menu_title": "Big deals",
       "menu_icon": "zmdi zmdi-assignment-o",
       "new_item": false,
@@ -817,24 +817,6 @@ export default [
    {
       "path": MARKETPLACE.ORDERS,
       "menu_title": "Mes commandes",
-      "menu_icon": "zmdi zmdi-assignment-o",
-      "new_item": false,
-      "child_routes": null,
-      "profiles": null,
-      "permissions": [Permission.marketplace.shop.name],
-   },
-   {
-      "path": MARKETPLACE.ORDERS,
-      "menu_title": "Programme d'investissement",
-      "menu_icon": "zmdi zmdi-assignment-o",
-      "new_item": false,
-      "child_routes": null,
-      "profiles": null,
-      "permissions": [Permission.marketplace.shop.name],
-   },
-   {
-      "path": MARKETPLACE.ORDERS,
-      "menu_title": "Big deals",
       "menu_icon": "zmdi zmdi-assignment-o",
       "new_item": false,
       "child_routes": null,

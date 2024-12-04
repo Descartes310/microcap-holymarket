@@ -95,7 +95,7 @@ class InitDealModal extends Component {
                 offer: response?.offer,
                 amount: response?.amount,
                 senderName: response?.sender,
-                label: response?.offer?.label,
+                label: response?.label,
                 receiverName: response?.receiver,
                 selectedTickets: response?.tickets,
                 interventionType: getFundingOfferInterventionTypes().find(init => init.value == response.intervention),

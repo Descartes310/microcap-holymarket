@@ -88,6 +88,12 @@ export const FUNDING = {
         SELF: '/funding/bonds',
         LIST: '/funding/bonds/list',
     },
+    BIGDEAL: {
+        SELF: '/funding/big-deals',
+        SENT: '/funding/big-deals/sent',
+        OFFER: '/funding/big-deals/offers',
+        RECEIVED: '/funding/big-deals/received',
+    },
     BOURSE: {
         SELF: '/funding/bourse',
         PROJECT: {

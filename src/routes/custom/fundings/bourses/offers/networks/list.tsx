@@ -23,7 +23,7 @@ const List = (props) => {
 
     const getDatas = () => {
         props.setRequestGlobalAction(true),
-        FundingService.getOffers({mine: false})
+        FundingService.getOffers({mine: false, types: ['DEAL', 'SPOT']})
         .then(response => setDatas(response))
         .finally(() => props.setRequestGlobalAction(false))
     }

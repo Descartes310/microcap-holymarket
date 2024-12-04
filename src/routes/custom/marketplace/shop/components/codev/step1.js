@@ -33,6 +33,10 @@ const subscriptionTypeEnum = [
     {
         label: 'Multi-spots',
         value: 'SPOTS'
+    },
+    {
+        label: 'Big deal',
+        value: 'BIGDEAL'
     }
 ];
 
@@ -142,13 +146,12 @@ class CodevStep1 extends Component {
             return;
         }
 
-        if (!product || (['INDIVIDUAL', 'DEALS', 'SPOTS'].includes(subscriptionType.value) && lineCount < 1) || (subscriptionType.value == 'SPOTS' && !investment)) {
+        if (!product || (['INDIVIDUAL', 'DEALS', 'SPOTS', 'BIGDEAL'].includes(subscriptionType.value) && lineCount < 1) || (subscriptionType.value == 'SPOTS' && !investment)) {
             NotificationManager.error('Le formulaire est mal renseigné');
             return;
         }
 
-        console.log(lineCount, maxLineCount)
-        if (indivision == null && (tirages.reduce((sum, item) => sum + item.line, 0) != lineCount || lineCount > maxLineCount)) {
+        if ((indivision == null && tirages.reduce((sum, item) => sum + item.line, 0) != lineCount) || (['DEALS', 'SPOTS'].includes(subscriptionType.value) && lineCount > maxLineCount)) {
             NotificationManager.error('Les lignes ne sont pas correctes');
             return;
         }
@@ -176,7 +179,7 @@ class CodevStep1 extends Component {
             data.projectInvestment = investment.reference;
         }
 
-        if(['INDIVIDUAL', 'DEALS', 'SPOTS'].includes(subscriptionType.value)) {
+        if(['INDIVIDUAL', 'DEALS', 'SPOTS', 'BIGDEAL'].includes(subscriptionType.value)) {
             this.props.onSubmit(data);
         } else {
             data.indivision = indivision;
@@ -282,7 +285,7 @@ class CodevStep1 extends Component {
 
                     {
                         subscriptionType != null && (
-                            (['INDIVIDUAL'].includes(subscriptionType.value) || (['DEALS', 'SPOTS'].includes(subscriptionType.value) && project)) ?
+                            (['INDIVIDUAL', 'BIGDEAL'].includes(subscriptionType.value) || (['DEALS', 'SPOTS'].includes(subscriptionType.value) && project)) ?
                         <>
                             <FormGroup className="col-md-12 col-sm-12 has-wrapper">
                                 <InputLabel className="text-left" htmlFor="lineCount">

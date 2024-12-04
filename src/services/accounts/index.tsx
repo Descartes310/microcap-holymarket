@@ -6,6 +6,10 @@ export default class AccountService {
     static getAccounts(): Promise<any> {
         return makeRequest('get', Routes.GET_ACCOUNTS);
     }
+    
+    static getBigDealAccounts(): Promise<any> {
+        return makeRequest('get', Routes.GET_BIGDEAL_ACCOUNTS);
+    }
 
     static creditAccount(id, data: any): Promise<any> {
         return makeRequest('post', Routes.CREDIT_ACCOUNT(id), data);

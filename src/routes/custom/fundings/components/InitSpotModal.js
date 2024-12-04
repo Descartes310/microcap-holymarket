@@ -151,7 +151,7 @@ class InitSpotModal extends Component {
                 offer: response?.offer,
                 amount: response?.amount,
                 senderName: response?.sender,
-                label: response?.offer?.label,
+                label: response?.label,
                 receiverName: response?.receiver,
                 selectedTickets: response?.tickets ?? [],
                 initMethod: response?.intervention == 'CPT' ? initDealMethods().find(init => init.value == 'PERIOD') : initDealMethods().find(init => init.value == 'TICKETS')
@@ -232,10 +232,10 @@ class InitSpotModal extends Component {
 
     render() {
 
-        const { onClose, show, deal, dealType } = this.props;
+        const { onClose, show, deal } = this.props;
         const { rate, rent, selectedTickets, periodicityLength, numberOfPart, label, amount,
             managementRate, managementAmount, periodicity, paymentStartDate, prime, senderName, currency,
-        line, receiverName, currencies, offer, benefitByPeriod, investment, investments, endSubscriptionDate } = this.state;
+        line, receiverName, currencies, benefitByPeriod, investment, investments, endSubscriptionDate } = this.state;
 
         const natureOfferEnabled = (this.props.dealType == 'NDJANGUI' || deal?.type == 'NDJANGUI');
 

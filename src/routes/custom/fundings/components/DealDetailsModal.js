@@ -117,7 +117,7 @@ class DealDetailsModal extends Component {
 
                         <h2 className='mb-20'>Contexte</h2>
 
-                        <p>Objet: {deal?.type == 'DEAL' ? `Ndjangui Deal ` : deal?.type == 'SPOT' ? 'Ndjangui Spot ' : `Offre de cautionnement `}</p>
+                        <p>Objet: {deal?.type == 'DEAL' ? `Ndjangui Deal ` : deal?.type == 'SPOT' ? 'Ndjangui Spot ' : deal?.type == 'BIGDEAL' ? 'Ndjangui Big Deal' : `Offre de cautionnement `}</p>
                         <p>Souscripteur: {deal?.sender}</p>
                         <p>Beneficiaire: {deal?.receiver}</p>
 
@@ -703,31 +703,20 @@ class DealDetailsModal extends Component {
                             </>
                         )}
                         { (!isBlocked && deal?.status == 'PENDING') && (
-                            deal?.type == 'SPOT' ?
-                            <FormGroup className="has-wrapper mr-20" style={{ flex: 1 }}>
-                                {/* <Button
-                                    color="primary"
-                                    variant="contained"
-                                    onClick={() => {
-                                        this.setState({ showConfirmBox: true, acceptDeal: false });
-                                    }}
-                                    disabled={deal?.status != 'PENDING'}
-                                    className="text-white font-weight-bold"
-                                >
-                                    Refuser
-                                </Button> */}
-                                <Button
-                                    color="primary"
-                                    variant="contained"
-                                    onClick={() => {
-                                        this.setState({ showConfirmBox: true, acceptDeal: true });
-                                    }}
-                                    disabled={deal?.status != 'PENDING'}
-                                    className="text-white font-weight-bold ml-30"
-                                >
-                                    Accepter
-                                </Button>
-                            </FormGroup> :
+                            // deal?.type == 'SPOT' ?
+                            // <FormGroup className="has-wrapper mr-20" style={{ flex: 1 }}>
+                            //     <Button
+                            //         color="primary"
+                            //         variant="contained"
+                            //         onClick={() => {
+                            //             this.setState({ showConfirmBox: true, acceptDeal: true });
+                            //         }}
+                            //         disabled={deal?.status != 'PENDING'}
+                            //         className="text-white font-weight-bold ml-30"
+                            //     >
+                            //         Accepter
+                            //     </Button>
+                            // </FormGroup> :
                             <FormGroup className="has-wrapper mr-20" style={{ flex: 1 }}>
                                 <Button
                                     color="primary"
