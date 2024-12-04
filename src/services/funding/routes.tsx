@@ -29,3 +29,7 @@ export const GET_PROGRAMS = 'api/products/codevs/investments/programs';
 export const CREATE_POLITIC = 'api/products/codevs/investments/politics';
 export const CREATE_STRATEGY = 'api/products/codevs/investments/strategies';
 export const CREATE_PROGRAM = 'api/products/codevs/investments/programs';
+
+export const GET_PLACEMENTS = 'api/investments/placements';
+export const CREATE_PLACEMENT = 'api/investments/placements';
+export const GET_PLACEMENT_DEALS = 'api/investments/placements/deals/availables';

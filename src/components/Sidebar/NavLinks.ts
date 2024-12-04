@@ -537,6 +537,14 @@ export default [
       ],
    },
    {
+      "path": FUNDING.PLACEMENT.ITEM.LIST,
+      "menu_title": "Placement",
+      "menu_icon": "zmdi zmdi-assignment-o",
+      "new_item": false,
+      "child_routes": null,
+      "profiles": null,
+   },
+   {
       "path": FUNDING.INVESTMENT.PROGRAM.LIST,
       "menu_title": "Programme d'investissement",
       "menu_icon": "zmdi zmdi-assignment-o",

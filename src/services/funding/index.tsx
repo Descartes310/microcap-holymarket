@@ -93,8 +93,20 @@ export default class FundingService {
     static getFundingPrograms(): Promise<any> {
         return makeRequest('get', Routes.GET_PROGRAMS);
     }
-
+    
     static createFundingProgram(data: any): Promise<any> {
         return makeRequest('post', Routes.CREATE_PROGRAM, data);
+    }
+
+    static getPlacementAvailableDeals(data: any): Promise<any> {
+        return makeRequest('get', Routes.GET_PLACEMENT_DEALS, data);
+    }
+
+    static createPlacement(data: any): Promise<any> {
+        return makeRequest('post', Routes.CREATE_PLACEMENT, data);
+    }
+
+    static getPlacements(): Promise<any> {
+        return makeRequest('get', Routes.GET_PLACEMENTS);
     }
 }

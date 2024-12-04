@@ -488,31 +488,31 @@ export const translateTerritoryDetailsType = (value) => {
 export const projectTypes = () => {
     return [
         {
-            label: "Project de création",
+            label: "Projet de création",
             value: 'CREATION'
         },
         {
-            label: "Project de developpement",
+            label: "Projet de développement",
             value: 'DEVELOPMENT'
         },
         {
-            label: "Project de restructuration",
+            label: "Projet de restructuration",
             value: 'RESTRUCTURATION'
         },
         {
-            label: "Project de retournement",
+            label: "Projet de retournement",
             value: 'TURNAROUND'
         },
         {
-            label: "Project de redressement",
+            label: "Projet de redressement",
             value: 'ADJUSTMENT'
         },
         {
-            label: "Project de amiable",
+            label: "Projet de amiable",
             value: 'VOLUNTARY_LIQUIDATION'
         },
         {
-            label: "Project de judiciaire",
+            label: "Projet de judiciaire",
             value: 'JUDICIAL_LIQUIDATION'
         }
     ];

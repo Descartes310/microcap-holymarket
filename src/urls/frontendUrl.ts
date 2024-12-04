@@ -66,6 +66,24 @@ export const FUNDING = {
         CONSOLIDATIONS: '/funding/accounts/:id/consolidations',
         SYNCHRONISATIONS: '/funding/accounts/:id/synchronisations',
     },
+    PLACEMENT: {
+        SELF: '/funding/placements',
+        ITEM: {
+            SELF: '/funding/placements/items',
+            LIST: '/funding/placements/items/list',
+            CREATE: '/funding/placements/items/create/:id',
+        },
+        STRATEGY: {
+            SELF: '/funding/placements/strategies',
+            LIST: '/funding/placements/strategies/list',
+            CREATE: '/funding/placements/strategies/create',
+        },
+        OPORTUNIY: {
+            SELF: '/funding/placements/oportunities',
+            LIST: '/funding/placements/oportunities/list'
+        }
+
+    },
     INVESTMENT: {
         SELF: '/funding/investments',
         STRATEGY: {
