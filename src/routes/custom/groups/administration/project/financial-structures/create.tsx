@@ -16,12 +16,14 @@ import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { Form, FormGroup, Input as InputStrap } from 'reactstrap';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
 import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
+import ProjectService from 'Services/projects';
 
 const Create = (props) => {
 
     const [label, setLabel] = useState('');
     const [types, setTypes] = useState([]);
     const [type, setType] = useState(null);
+    const [project, setProject] = useState(null);
     const [isin, setIsin] = useState(false);
     const [amount, setAmount] = useState(null);
     const [supports, setSupports] = useState([]);
@@ -34,6 +36,7 @@ const Create = (props) => {
 
     useEffect(() => {
         getCategories();
+        getProject();
     }, [])
 
     useEffect(() => {
@@ -77,9 +80,21 @@ const Create = (props) => {
         .finally(() => props.setRequestGlobalAction(false))
     }
 
+    const getProject = () => {
+        props.setRequestGlobalAction(false);
+        ProjectService.getGroupProjects()
+        .then((response) => setProject(response[0]))
+        .catch((err) => {
+            console.log(err);
+        })
+        .finally(() => {
+            props.setRequestGlobalAction(false);
+        })
+    }
+
     const onSubmit = () => {
 
-        if(!support || !type || !quantity || !amount || !label || !currency) {
+        if(!support || !type || !quantity || !amount || !label || !currency || !project) {
             NotificationManager.error('Veuillez bien remplir le formulaire')
             return;
         }
@@ -91,6 +106,7 @@ const Create = (props) => {
             emission: quantity,
             nominal_amount: amount,
             currency: currency?.code,
+            project_reference: project.reference,
             option_type_reference: type?.reference,
             support_type_reference: support?.reference
         }
