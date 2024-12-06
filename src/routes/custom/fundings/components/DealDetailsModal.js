@@ -455,7 +455,7 @@ class DealDetailsModal extends Component {
                         </div>
 
                         { deal?.tickets?.length > 0 && (
-                            <h2 className='mb-20 mt-20'>Versements</h2>
+                            <h2 className='mb-20 mt-20'>Versements ({deal?.tickets?.length}/{deal.lastProposition.ticketReferences.split(",").length})</h2>
                         )}
 
                         { deal?.tickets?.length > 0 && (
@@ -703,20 +703,6 @@ class DealDetailsModal extends Component {
                             </>
                         )}
                         { (!isBlocked && deal?.status == 'PENDING') && (
-                            // deal?.type == 'SPOT' ?
-                            // <FormGroup className="has-wrapper mr-20" style={{ flex: 1 }}>
-                            //     <Button
-                            //         color="primary"
-                            //         variant="contained"
-                            //         onClick={() => {
-                            //             this.setState({ showConfirmBox: true, acceptDeal: true });
-                            //         }}
-                            //         disabled={deal?.status != 'PENDING'}
-                            //         className="text-white font-weight-bold ml-30"
-                            //     >
-                            //         Accepter
-                            //     </Button>
-                            // </FormGroup> :
                             <FormGroup className="has-wrapper mr-20" style={{ flex: 1 }}>
                                 <Button
                                     color="primary"

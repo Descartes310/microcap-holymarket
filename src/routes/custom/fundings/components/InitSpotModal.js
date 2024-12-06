@@ -24,11 +24,9 @@ class InitSpotModal extends Component {
         offer: null,
         label: null,
         codev: null,
-        tickets: [],
         currencies: [],
         currency: null,
         initMethod: null,
-        selectedTickets: [],
         investments: [],
         investment: null,
         periodicity: null,
@@ -90,34 +88,12 @@ class InitSpotModal extends Component {
         })
     }
 
-    findTickets = () => {
-        
-        if(!this.state.codev) {
-            this.setState({ tickets: [], selectedTickets: [] })
-            return;
-        }
-
-        this.props.setRequestGlobalAction(false);
-        ProductService.findTicketsFromProduct({ product_reference: this.state.codev?.reference })
-        .then((response) => {
-            this.setState({ tickets: response, selectedTickets: [] });
-        })
-        .catch((err) => {
-            NotificationManager.error("Le numéro du ticket est innexistant");
-            console.log(err);
-        })
-        .finally(() => {
-            this.props.setRequestGlobalAction(false);
-        })
-    }
-
     findOffer = () => {
         this.props.setRequestGlobalAction(true);
         FundingService.findFundingOffer(this.props.reference)
         .then(response => {
             this.setState({
                 offer: response, 
-                initMethod: response?.intervention == 'CPT' ? initDealMethods().find(init => init.value == 'PERIOD') : initDealMethods().find(init => init.value == 'TICKETS'),
                 senderName: response?.sender,
                 receiverName: response?.receiver
             });
@@ -127,7 +103,7 @@ class InitSpotModal extends Component {
 
     findLine = () => {
         this.props.setRequestGlobalAction(true);
-        ProductService.getLineGlobalInfo({line_reference: this.props.lineReference ? this.props.lineReference : this.props.deal?.entityReference, withTickets: true})
+        ProductService.getLineGlobalInfo({line_reference: this.props.lineReference ? this.props.lineReference : this.props.deal?.entityReference, withTickets: false})
         .then(response => {
             this.setState({
                 line: response
@@ -153,8 +129,6 @@ class InitSpotModal extends Component {
                 senderName: response?.sender,
                 label: response?.label,
                 receiverName: response?.receiver,
-                selectedTickets: response?.tickets ?? [],
-                initMethod: response?.intervention == 'CPT' ? initDealMethods().find(init => init.value == 'PERIOD') : initDealMethods().find(init => init.value == 'TICKETS')
             }, () => this.getUnits());
         })
         .finally(() => this.props.setRequestGlobalAction(false))
@@ -163,7 +137,7 @@ class InitSpotModal extends Component {
     onSubmit = () => {
 
         const {label, amount, currency, investment, endSubscriptionDate, rate, rent, periodicity, periodicityLength,
-            numberOfPart, managementAmount, managementRate, benefitByPeriod, paymentStartDate, prime, selectedTickets
+            numberOfPart, managementAmount, managementRate, benefitByPeriod, paymentStartDate, prime
         } = this.state;
 
         if(!label || !amount || !currency || !investment || !endSubscriptionDate || !rate || !rent || !periodicity || !periodicityLength || !numberOfPart
@@ -192,22 +166,6 @@ class InitSpotModal extends Component {
             }
         }
 
-        if(!this.props.deal && this.props.dealType !== 'NDJANGUI') {
-            if(selectedTickets.length <= 0) {
-                NotificationManager.error("Remplissez toutes les informations 2");
-                return;
-            }
-            datas.init_method = initMethod?.value;
-            if(initMethod?.value == 'TICKETS') {
-                datas.tickets = selectedTickets.map(t => t.reference);
-            }
-        }
-
-        if(this.state.line && selectedTickets.length > 0) {
-            datas.tickets = selectedTickets.map(t => t.reference);
-            datas.init_method = 'TICKETS';
-        }
-
         if(this.props.notification) {
             datas.notification_id = this.props.notification;
         }
@@ -218,7 +176,7 @@ class InitSpotModal extends Component {
 
         this.props.setRequestGlobalAction(true);
         FundingService.createProposition(datas)
-        .then(response => {
+        .then(() => {
             NotificationManager.success("La proposition a bien été enregistré");
             this.props.onClose();
         })
@@ -233,7 +191,7 @@ class InitSpotModal extends Component {
     render() {
 
         const { onClose, show, deal } = this.props;
-        const { rate, rent, selectedTickets, periodicityLength, numberOfPart, label, amount,
+        const { rate, rent, periodicityLength, numberOfPart, label, amount,
             managementRate, managementAmount, periodicity, paymentStartDate, prime, senderName, currency,
         line, receiverName, currencies, benefitByPeriod, investment, investments, endSubscriptionDate } = this.state;
 
@@ -403,37 +361,6 @@ class InitSpotModal extends Component {
                             </FormGroup>
                         </div>
                         
-                        { line?.tickets.length > 0 && deal && (
-                            <div>
-                                <div className="col-md-12 col-sm-12 has-wrapper">
-                                    <InputLabel className="text-left">
-                                        Tickets
-                                    </InputLabel>
-                                    <Autocomplete
-                                        multiple
-                                        options={line?.tickets}
-                                        id="combo-box-demo"
-                                        value={selectedTickets}
-                                        onChange={(__, items) => {
-                                            this.setState({ selectedTickets: items });
-                                        }}
-                                        getOptionLabel={(option) => `Code: ${option.code}, Montant: ${option.amount} ${option.currency}, Date d'échéance: ${option.date}`}
-                                        renderInput={(params) => <TextField {...params} variant="outlined" />}
-                                    />
-                                </div>
-                                <FormGroup className="col-md-12 col-sm-12 has-wrapper mr-20 mt-20">
-                                    <InputLabel className="text-left">
-                                        Montant
-                                    </InputLabel>
-                                    <InputStrap
-                                        type="text"
-                                        disabled={true}
-                                        className="input-lg"
-                                        value={selectedTickets ? `${selectedTickets.reduce((amount, ticket) => amount + Number(ticket.amount), 0)} ${line?.tickets[0]?.currency}` : null}
-                                    />
-                                </FormGroup>
-                            </div>
-                        )}
                         <h2 className='mb-20'>Valeur d'une part du spot</h2>
                         <div className='d-flex direction-column align-items-stretch' style={{ flex: 1 }}>
                             <FormGroup className="col-md-6 col-sm-12 has-wrapper mb-30">

@@ -188,7 +188,7 @@ export default [
          {
             "menu_title": "Projets",
             "new_item": false,
-            "path": SUPERVISION.USERS.LIST,
+            "path": SUPERVISION.PROJECTS.LIST,
             "permissions": [
                Permission.supervision.project.name,
             ],

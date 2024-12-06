@@ -8,14 +8,12 @@ import CustomList from "Components/CustomList";
 import { setRequestGlobalAction } from 'Actions';
 import { RctCardContent } from 'Components/RctCard';
 import TextField from '@material-ui/core/TextField';
-import DepositTickets from 'Components/DepositTickets';
-import { getPriceWithCurrency } from 'Helpers/helpers';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { NotificationManager } from 'react-notifications';
 import DialogComponent from "Components/dialog/DialogComponent";
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { FormGroup, Input as InputStrap, Button } from 'reactstrap';
-import { initDealMethods, getTimeUnits, getFundingOfferInterventionTypes } from 'Helpers/datas';
+import { getTimeUnits, getFundingOfferInterventionTypes } from 'Helpers/datas';
 
 class InitDealModal extends Component {
 
@@ -27,13 +25,11 @@ class InitDealModal extends Component {
         offer: null,
         label: null,
         codev: null,
-        tickets: [],
         currencies: [],
         currency: null,
         endDate: null,
         startDate: null,
         initMethod: null,
-        selectedTickets: [],
         periodStartDate: null,
         periodEndDate: null,
         periodicity: null,
@@ -97,11 +93,9 @@ class InitDealModal extends Component {
                 senderName: response?.sender,
                 label: response?.label,
                 receiverName: response?.receiver,
-                selectedTickets: response?.tickets,
                 interventionType: getFundingOfferInterventionTypes().find(init => init.value == response.intervention),
                 compensations: response?.counterParts?.filter(c => c.fixPart).map(cp => { return {...cp, length: cp.duration }}),
                 natureCompensations: response?.counterParts?.filter(c => !c.fixPart).map(cp => { return {...cp, length: cp.duration }}),
-                initMethod: response?.intervention == 'CPT' ? initDealMethods().find(init => init.value == 'PERIOD') : initDealMethods().find(init => init.value == 'TICKETS')
             }, () => this.getUnits());
         })
         .finally(() => this.props.setRequestGlobalAction(false))
@@ -109,8 +103,6 @@ class InitDealModal extends Component {
 
     addNewCompensations = () => {
         const {periodStartDate, periodEndDate, periodicity, length, fixPart, variablePart} = this.state;
-
-        //console.log(periodStartDate, periodEndDate, periodicity, length, fixPart, variablePart);
 
         if(!periodStartDate || !periodEndDate || !periodicity || !length || !fixPart || !variablePart) {
             NotificationManager.error("Remplissez toutes les informations");
@@ -175,7 +167,7 @@ class InitDealModal extends Component {
 
     onSubmit = () => {
 
-        const {amount, currency, compensations, natureCompensations, selectedTickets, interventionType} = this.state;
+        const {amount, currency, compensations, natureCompensations, interventionType} = this.state;
 
         if(!amount || !currency || (compensations.length <= 0 && natureCompensations.length <= 0)) {
             NotificationManager.error("Remplissez toutes les informations 1");
@@ -197,18 +189,6 @@ class InitDealModal extends Component {
                 NotificationManager.error("Remplissez toutes les informations 1.5");
                 return;
             }
-        }
-
-        if(this.props.deal && this.props.deal?.type == 'DEAL') {
-            if(selectedTickets.length <= 0) {
-                NotificationManager.error("Selectionnez les tickets");
-                return;
-            }
-        }
-
-        if(selectedTickets.length > 0) {
-            datas.tickets = selectedTickets.map(t => t.reference);
-            datas.init_method = 'TICKETS';
         }
 
         if(this.state.label) {
@@ -252,9 +232,8 @@ class InitDealModal extends Component {
     render() {
 
         const { onClose, show, deal } = this.props;
-        const { selectedTickets, label, amount,
-            periodStartDate, periodEndDate, periodicity, length, fixPart, variablePart, senderName, currency,
-            line, receiverName, currencies, compensations } = this.state;
+        const { label, amount,
+            periodStartDate, periodEndDate, periodicity, length, fixPart, variablePart, senderName, currency, receiverName, currencies, compensations } = this.state;
             
         const isDeal = (deal?.type == 'NDJANGUI' || deal?.type == 'DEAL');
 
@@ -325,33 +304,6 @@ class InitDealModal extends Component {
                             </FormGroup>
                         </div>
                         
-                        { deal && ['NDJANGUI', 'DEAL'].includes(deal.type) && (
-                            <div>
-                                <div className="col-md-12 col-sm-12 has-wrapper mb-30">
-                                    <InputLabel className="text-left">
-                                        Bonds de versement
-                                    </InputLabel>
-                                    <DepositTickets
-                                        available={true}
-                                        account={{accountReference: deal.entityReference}}
-                                        updateAmount={(selectedTickets) => {
-                                            this.setState({ selectedTickets });
-                                        }}
-                                    />
-                                </div>
-                                <FormGroup className="col-md-12 col-sm-12 has-wrapper mr-20 mt-20">
-                                    <InputLabel className="text-left">
-                                        Montant
-                                    </InputLabel>
-                                    <InputStrap
-                                        type="text"
-                                        disabled={true}
-                                        className="input-lg"
-                                        value={selectedTickets ? getPriceWithCurrency(selectedTickets.reduce((amount, ticket) => amount + Number(ticket.amount), 0), selectedTickets[0]?.currency) : null}
-                                    />
-                                </FormGroup>
-                            </div>
-                        )}
                         <h2 className='mb-20'>Contrepartie en numeraire</h2>
                         <div className='d-flex direction-column align-items-stretch' style={{ flex: 1 }}>
                             <FormGroup className="has-wrapper mr-20" style={{ flex: 1 }}>

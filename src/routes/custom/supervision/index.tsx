@@ -1,6 +1,7 @@
 import React from 'react';
 import Users from './users';
 import Votes from './votes';
+import Projects from './projects';
 import {connect} from "react-redux";
 import {injectIntl} from "react-intl";
 import Operations from './operations';
@@ -17,6 +18,7 @@ const Supervisions = (props) => {
                     <Route path={SUPERVISION.USERS.SELF} component={Users} />
                     <Route path={SUPERVISION.VOTES.SELF} component={Votes} />
                     <Route path={SUPERVISION.OPERATIONS.SELF} component={Operations} />
+                    <Route path={SUPERVISION.PROJECTS.SELF} component={Projects} />
                 </Switch>
             </>
         </div>
