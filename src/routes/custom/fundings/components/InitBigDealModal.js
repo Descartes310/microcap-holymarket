@@ -62,7 +62,7 @@ class InitBigDealModal extends Component {
     getUnits = () => {
         this.props.setRequestGlobalAction(true);
         UnitService.getUnits()
-        .then((response) => this.setState({ currencies: response, currency: this.props.deal ? response.find(c => c.code == this.props.deal?.currency) : null }))
+        .then((response) => this.setState({ currencies: response, currency: this.state.deal ? response.find(c => c.code == this.state.deal?.currency) : null }))
         .catch((err) => {
             console.log(err);
         })

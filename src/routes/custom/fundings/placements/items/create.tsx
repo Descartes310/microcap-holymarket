@@ -5,18 +5,19 @@ import { withRouter } from "react-router-dom";
 import FundingService from 'Services/funding';
 import ProjectService from 'Services/projects';
 import CustomList from "Components/CustomList";
+import AccountService from 'Services/accounts';
 import { setRequestGlobalAction } from 'Actions';
 import React, { useState, useEffect } from 'react';
 import TextField from '@material-ui/core/TextField';
-import Autocomplete from '@material-ui/lab/Autocomplete';
 import TimeFromMoment from 'Components/TimeFromMoment';
 import { getPriceWithCurrency } from 'Helpers/helpers';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import { NotificationManager } from 'react-notifications';
+import ConfigurePlacementModal from './configurePlacement';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { Form, FormGroup, Input as InputStrap } from 'reactstrap';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
 import DealDetailsModal from 'Routes/custom/fundings/components/DealDetailsModal';
-import AccountService from 'Services/accounts';
 
 const Create = (props) => {
 
@@ -28,6 +29,7 @@ const Create = (props) => {
     const [accounts, setAccounts] = useState([]);
     const [selectedDeals, setSelectedDeals] = useState([]);
     const [showDealDetails, setShowDealDetails] = useState(false);    
+    const [showConfigurePlacement, setShowConfigurePlacement] = useState(false);    
 
     useEffect(() => {
         getProject();
@@ -82,10 +84,9 @@ const Create = (props) => {
             label,
             account_reference: account.reference,
             project_reference: project?.reference,
-            deal_references: selectedDeals.map(d => d.reference)
+            amounts: selectedDeals.map(d => d.amount),
+            deal_references: selectedDeals.map(d => d.deal.reference)
         }
-
-        console.log(data);
         
         props.setRequestGlobalAction(true);
         FundingService.createPlacement(data).then(() => {
@@ -133,7 +134,7 @@ const Create = (props) => {
                     </FormGroup>
                     <div className="col-md-12 col-sm-12 has-wrapper mb-30">
                         <InputLabel className="text-left">
-                            Compte 
+                            Compte de domiciliation
                         </InputLabel>
                         <Autocomplete
                             value={account}
@@ -150,7 +151,7 @@ const Create = (props) => {
                         Deals et Spots disponibles
                     </InputLabel>
                     <CustomList
-                        list={deals.filter(d => !selectedDeals.includes(d))}
+                        list={deals.filter(d => !selectedDeals.map(d => d.deal).includes(d))}
                         loading={false}
                         itemsFoundText={n => `${n} éléments trouvés`}
                         renderItem={list => (
@@ -221,10 +222,11 @@ const Create = (props) => {
                                                                 variant="contained"
                                                                 className="text-white font-weight-bold ml-5"
                                                                 onClick={() => {
-                                                                    setSelectedDeals([...selectedDeals, item]); 
+                                                                    setShowConfigurePlacement(true);
+                                                                    setDeal(item);
                                                                 }}
                                                             >
-                                                                Convertir
+                                                                Ajouter
                                                             </Button>
                                                         </td>
                                                     </tr>
@@ -259,6 +261,7 @@ const Create = (props) => {
                                                     <th className="fw-bold">Type</th>
                                                     <th className="fw-bold">Désignation</th>
                                                     <th className="fw-bold">Montant</th>
+                                                    <th className="fw-bold">Total</th>
                                                     <th className="fw-bold">Date de création</th>
                                                     <th className="fw-bold">Action</th>
                                                 </tr>
@@ -269,14 +272,14 @@ const Create = (props) => {
                                                         <td>
                                                             <div className="media">
                                                                 <div className="media-body pt-10">
-                                                                    <p className="m-0 text-dark">{item?.type}</p>
+                                                                    <p className="m-0 text-dark">{item.deal.type}</p>
                                                                 </div>
                                                             </div>
                                                         </td>
                                                         <td>
                                                             <div className="media">
                                                                 <div className="media-body pt-10">
-                                                                    <p className="m-0 text-dark">{item?.label}</p>
+                                                                    <p className="m-0 text-dark">{item.deal?.label}</p>
                                                                 </div>
                                                             </div>
                                                         </td>
@@ -290,7 +293,14 @@ const Create = (props) => {
                                                         <td>
                                                             <div className="media">
                                                                 <div className="media-body pt-10">
-                                                                    <TimeFromMoment time={item.createdAt} showFullDate />
+                                                                    <p className="m-0 text-dark">{getPriceWithCurrency(item.deal?.amount, item.deal?.currency)}</p>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div className="media">
+                                                                <div className="media-body pt-10">
+                                                                    <TimeFromMoment time={item.deal.createdAt} showFullDate />
                                                                 </div>
                                                             </div>
                                                         </td>
@@ -300,7 +310,7 @@ const Create = (props) => {
                                                                 variant="contained"
                                                                 className="text-white font-weight-bold"
                                                                 onClick={() => {
-                                                                    setDeal(item);
+                                                                    setDeal(item.deal);
                                                                     setShowDealDetails(true);
                                                                 }}
                                                             >
@@ -310,7 +320,7 @@ const Create = (props) => {
                                                                 color="primary"
                                                                 variant="contained"
                                                                 onClick={() => {
-                                                                    setSelectedDeals([...selectedDeals.filter(d => d.id != item.id)])
+                                                                    setSelectedDeals([...selectedDeals.filter(d => d.deal.id != item.deal.id)])
                                                                 }}
                                                                 className="btn-danger text-white font-weight-bold ml-3"
                                                             >
@@ -334,12 +344,12 @@ const Create = (props) => {
                             onClick={onSubmit}
                             className="text-white font-weight-bold"
                         >
-                            Ajouter
+                            Convertir
                         </Button>
                     </FormGroup>
                 </Form>
             </RctCollapsibleCard>
-            {deal && (
+            {(deal && showDealDetails) && (
                 <DealDetailsModal
                     show={showDealDetails}
                     onClose={() => {
@@ -353,7 +363,22 @@ const Create = (props) => {
                     isBlocked={true}
                     isSender={false}
                 />
-            )}   
+            )}
+            {(deal && showConfigurePlacement) && (
+                <ConfigurePlacementModal
+                    show={showConfigurePlacement}
+                    onClose={() => {
+                        setDeal(null);
+                        setShowConfigurePlacement(false);
+                    }}
+                    deal={deal}
+                    validate={(item) => {
+                        setSelectedDeals([...selectedDeals, item]);
+                        setDeal(null);
+                        setShowConfigurePlacement(false);
+                    }}
+                />
+            )}
         </>
     );
 };

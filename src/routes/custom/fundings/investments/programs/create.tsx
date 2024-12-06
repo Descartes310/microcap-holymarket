@@ -65,7 +65,7 @@ const Create = (props) => {
         }
 
         var data: any = {
-            currency,
+            currency: currency.code,
             label, strategy_reference: strategy.reference,
             model_reference: product.reference, amount, minimalSubscription
         }
