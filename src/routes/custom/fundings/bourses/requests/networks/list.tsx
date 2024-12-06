@@ -8,6 +8,7 @@ import React, { useEffect, useState } from 'react';
 import { getPriceWithCurrency } from 'Helpers/helpers';
 import TimeFromMoment from 'Components/TimeFromMoment';
 import InitDealModal from 'Routes/custom/fundings/components/InitDealModal';
+import InitSpotModal from 'Routes/custom/fundings/components/InitSpotModal';
 import DealDetailsModal from 'Routes/custom/fundings/components/DealDetailsModal';
 
 const List = (props) => {
@@ -140,16 +141,30 @@ const List = (props) => {
             )}            
             
             {deal && showInitDeal && (
-                <InitDealModal 
-                    show={showInitDeal}
-                    onClose={() => {
-                        setDeal(null);
-                        setShowInitDeal(false);
-                        getDatas();
-                    }}
-                    deal={deal}
-                    dealType={deal.type}
-                />
+                <>
+                    { deal.type == 'DEAL' ?
+                        <InitDealModal 
+                            show={showInitDeal}
+                            onClose={() => {
+                                setDeal(null);
+                                setShowInitDeal(false);
+                                getDatas();
+                            }}
+                            deal={deal}
+                            dealType={deal.type}
+                        /> : 
+                        <InitSpotModal 
+                            show={showInitDeal}
+                            onClose={() => {
+                                setDeal(null);
+                                setShowInitDeal(false);
+                                getDatas();
+                            }}
+                            deal={deal}
+                            dealType={deal.type}
+                        />
+                    }
+                </>
             )}
         </>
     );

@@ -129,6 +129,19 @@ class InitSpotModal extends Component {
                 senderName: response?.sender,
                 label: response?.label,
                 receiverName: response?.receiver,
+                
+                rate: response?.lastProposition?.rate,
+                rent: response?.lastProposition?.rent,
+                endSubscriptionDate: response?.lastProposition?.endSubscriptionDate,
+                periodicity: getTimeUnits().find(p => p.value == response?.lastProposition?.periodicity),
+                periodicityLength: response?.lastProposition?.periodicityLength,
+                numberOfPart: response?.lastProposition?.numberOfPart,
+                managementRate: response?.lastProposition?.numberOfPart,
+                managementAmount: response?.lastProposition?.managementAmount,
+                paymentStartDate: response?.lastProposition?.paymentStartDate,
+                benefitByPeriod: response?.lastProposition?.benefitByPeriod,
+                prime: response?.lastProposition?.prime,
+
             }, () => this.getUnits());
         })
         .finally(() => this.props.setRequestGlobalAction(false))

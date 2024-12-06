@@ -10,6 +10,7 @@ import { getPriceWithCurrency } from 'Helpers/helpers';
 import TimeFromMoment from "Components/TimeFromMoment";
 import DialogComponent from "Components/dialog/DialogComponent";
 import InitDealModal from 'Routes/custom/fundings/components/InitDealModal';
+import InitSpotModal from 'Routes/custom/fundings/components/InitSpotModal';
 import DealDetailsModal from 'Routes/custom/fundings/components/DealDetailsModal';
 
 class DealChildModal extends Component {
@@ -152,7 +153,7 @@ class DealChildModal extends Component {
                                 isSender={true}
                             />
                         )}
-                        {deal && showInitDeal && (
+                        {/* {deal && showInitDeal && (
                             <InitDealModal 
                                 show={showInitDeal}
                                 onClose={() => {
@@ -161,7 +162,30 @@ class DealChildModal extends Component {
                                 deal={deal}
                                 dealType={deal.type}
                             />
+                        )} */}
+                        {deal && showInitDeal && (
+                            <>
+                                { deal.type == 'DEAL' ?
+                                    <InitDealModal 
+                                        show={showInitDeal}
+                                        onClose={() => {
+                                            this.setState({deal: null, showInitDeal: false});
+                                        }}
+                                        deal={deal}
+                                        dealType={deal.type}
+                                    /> : 
+                                    <InitSpotModal 
+                                        show={showInitDeal}
+                                        onClose={() => {
+                                            this.setState({deal: null, showInitDeal: false});
+                                        }}
+                                        deal={deal}
+                                        dealType={deal.type}
+                                    />
+                                }
+                            </>
                         )}
+                        
                     </div>
                 </RctCardContent>
             </DialogComponent>
