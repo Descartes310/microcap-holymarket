@@ -61,7 +61,7 @@ class CodevStep1 extends Component {
         advanceType: null,
         advanceValue: null,
         selectedLine: null,
-        maxLineCount: null,
+        maxLineCount: this.props.maxLineCount ?? null,
         distribution: null,
         selectedDate: null,
         currentTirage: null,
@@ -146,8 +146,13 @@ class CodevStep1 extends Component {
             return;
         }
 
+        if(subscriptionType.value === 'SPOTS' && !investment) {
+            NotificationManager.error('Les lignes ne sont pas correctes 0');
+            return;
+        }
+
         if (!product || (['INDIVIDUAL', 'DEALS', 'SPOTS', 'BIGDEAL'].includes(subscriptionType.value) && lineCount < 1) || (subscriptionType.value == 'SPOTS' && !investment)) {
-            NotificationManager.error('Le formulaire est mal renseigné');
+            NotificationManager.error('Le formulaire est mal renseigné 1');
             return;
         }
 
@@ -156,8 +161,8 @@ class CodevStep1 extends Component {
             return;
         }
 
-        if (!product || (['DEALS', 'SPOTS'].includes(subscriptionType.value) && (!project || !distribution || !investment) )) {
-            NotificationManager.error('Le formulaire est mal renseigné');
+        if (!product || (['DEALS', 'SPOTS'].includes(subscriptionType.value) && (!project || !distribution) )) {
+            NotificationManager.error('Le formulaire est mal renseigné 2');
             return;
         }
 
@@ -167,7 +172,8 @@ class CodevStep1 extends Component {
             type: 'CODEV',
             subscriptionType, 
             productReference: product.reference,
-            tirages: tirages.map(t => { return {date: t.date, line: t.line}})
+            tirages: tirages.map(t => { return {date: t.date, line: t.line}}),
+            linePrice: this.state.product.details.find(d => d.type == 'LINE_FEES')?.value ?? 0
         }
 
         if (['DEALS', 'SPOTS'].includes(subscriptionType.value) && project && distribution) {
@@ -298,7 +304,7 @@ class CodevStep1 extends Component {
                                     name='lineCount'
                                     value={lineCount}
                                     className="input-lg"
-                                    onChange={(e) => this.setState({ lineCount: Math.ceil(e.target.value) })}
+                                    onChange={(e) => this.setState({ lineCount: this.props.maxLineCount && this.props.maxLineCount < Math.ceil(e.target.value) ? this.props.maxLineCount : Math.ceil(e.target.value) })}
                                 />
                             </FormGroup>
                             <CustomList

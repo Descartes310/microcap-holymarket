@@ -71,9 +71,9 @@ class Sidebar extends Component {
 						</div>
 						<div className="rct-sidebar-wrap">
 							<Scrollbars
+								autoHide={false}
+								width={500}
 								className="rct-scroll"
-								autoHide
-								autoHideDuration={100}
 								style={{ height: 'calc(100vh - 60px)' }}
 							>
 								<UserBlock />

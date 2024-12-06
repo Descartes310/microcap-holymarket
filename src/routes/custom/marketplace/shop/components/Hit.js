@@ -44,9 +44,19 @@ class Hit extends Component {
 			return;
 		}
 		this.setState({ loading: true });
-		if(this.state.data)
+		let lineCount = 1;
+		let linePrice = 0;
+		let lineAmount = 0;
+		if(this.state.data) {
 			cartItem.customInfos = this.state.data;
-		this.props.onAddItemToCart({...cartItem, source: this.props.source});
+			if(this.state.data.linePrice && this.state.data.lineCount) {
+				lineCount = Number(this.state.data.lineCount);
+				linePrice = Number(this.state.data.linePrice);
+				lineAmount = linePrice * (Math.max(lineCount-1, 0));
+			}
+		}
+		console.log(linePrice, lineCount, lineAmount);
+		this.props.onAddItemToCart({...cartItem, price: (cartItem.price + lineAmount), source: this.props.source, lineAmount});
 		this.setState({ loading: false, product: null, data: null });
 	}
 
@@ -143,6 +153,7 @@ class Hit extends Component {
 						onClose={() => this.setState({ showCodevStep4: false })}
 						onSubmit={(data) => {
 							this.setState({ data: data, showCodevStep1: false, showCodevStep2: false, showCodevStep3: false , showCodevStep4: false }, () => {
+								// console.log(data);
 								this.addToCart(this.state.product);
 							});
 						}}

@@ -60,13 +60,21 @@ const List = (props) => {
     }
 
     const configureProduct = (formData) => {
-    
+
         let data = {};
-        data.tirageReference = formData.selectedDate.reference;
+
+        data.lineCount = formData.lineCount;
+        data.tirageArray = JSON.stringify(formData.tirages);
         data.subscriptionType = formData.subscriptionType.value;
                     
         if(formData.alias != null)
             data.alias = formData.alias.value;
+
+        if(formData.projectReference != null)
+            data.projectReference = formData.projectReference;
+
+        if(formData.distribution != null)
+            data.distribution = formData.distribution;
             
         if(formData.indivision) {
             if(formData.tickets) {
@@ -128,7 +136,7 @@ const List = (props) => {
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">#{item.reference.split('_').pop().toUpperCase()}</h4>
+                                                            <h4 className="m-0 fw-bold text-dark">{item.reference.split('_').pop().toUpperCase()}</h4>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -287,6 +295,7 @@ const List = (props) => {
                     product={product}
                     show={showCodevStep1}
                     onClose={() => setShowCodevStep1(false)}
+                    maxLineCount={1}
                     onSubmit={(data) => {
                         if(data?.subscriptionType.value == 'INDIVISION') {
                             setCodevData(data);
