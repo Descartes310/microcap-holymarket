@@ -2,7 +2,7 @@ import moment from "moment";
 import { connect } from 'react-redux';
 import UnitService from 'Services/units';
 import { PROJECT, joinUrlWithParamsId } from 'Url/frontendUrl';
-import { getTimeUnits } from 'Helpers/datas';
+import { NDJANGUI_BUSINESS_NOMINAL_AMOUNT, getTimeUnits } from 'Helpers/datas';
 import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
 import ProjectService from 'Services/projects';
@@ -62,7 +62,7 @@ const Create = (props) => {
     }
 
     const getAmount = () => {
-        return Number(Number(associatedCosts.reduce((amount, cost) => amount + (cost.amount * cost.quantity), 0)) + Number(mainCost));
+        return Number(Number(associatedCosts.reduce((amount, cost) => amount + (cost.amount * cost.quantity), 0)) + Number(mainCost) + Number(targetAmount));
     }
 
     const getAmortizations = () => {
@@ -106,28 +106,23 @@ const Create = (props) => {
 
     useEffect(() => {
         getGlobalRate();
+    }, [targetAmount, periodCount, mainCost, associatedCosts])
+
+    useEffect(() => {
         getPeriodicRate();
-    }, [targetAmount, periodCount])
+    }, [targetRate, periodCount])
 
     const getGlobalRate = () => {
-        if(targetAmount) {
-            setTargetRate((targetAmount / getAmount())/100);
+        if(targetAmount && mainCost && associatedCosts) {
+            setTargetRate((Number(targetAmount) / (Number(mainCost) + Number(associatedCosts.reduce((a, cost) => a + (cost.amount * cost.quantity), 0))))*100);
         } else {
             setTargetRate(0);
         }
     }
 
-    const getFutureCapital = () => {
-        if(targetAmount) {
-            return targetAmount + getAmount();
-        } else {
-            return 0;
-        }
-    }
-
     const getPeriodicRate = () => {
-        if(periodCount) {
-            setPeriodicRent(Math.pow(getFutureCapital()/getAmount(), 1/periodCount) - 1);
+        if(periodCount && targetRate) {
+            setPeriodicRent((Math.pow((1+(targetRate/100)), 1/periodCount) - 1)*100);
         } else {
             setPeriodicRent(0);
         }
@@ -229,20 +224,6 @@ const Create = (props) => {
                         />
                     </div>
 
-                    <FormGroup className="has-wrapper col-sm-12 col-md-12">
-                        <InputLabel className="text-left" htmlFor="totalCost">
-                            Coût total de l'investissement
-                        </InputLabel>
-                        <InputStrap
-                            disabled={true}
-                            id="totalCost"
-                            type="number"
-                            name='totalCost'
-                            className="input-lg"
-                            value={getAmount()}
-                        />
-                    </FormGroup>
-
                     <h1 className='mb-30'>Amortissement de l'investissement</h1>
 
                     <div className='row'>
@@ -304,7 +285,7 @@ const Create = (props) => {
                                 id="targetRate"
                                 disabled={true}
                                 name='targetRate'
-                                value={targetRate}
+                                value={Number(targetRate).toFixed(2)}
                                 className="input-lg"
                             />
                         </FormGroup>
@@ -319,10 +300,38 @@ const Create = (props) => {
                                 id="periodicRent"
                                 name='periodicRent'
                                 className="input-lg"
-                                value={periodicRent}
+                                value={Number(periodicRent).toFixed(2)}
                             />
                         </FormGroup>
                     </div>
+
+                    <FormGroup className="has-wrapper col-sm-12 col-md-12">
+                        <InputLabel className="text-left" htmlFor="totalCost">
+                            Coût total de l'investissement
+                        </InputLabel>
+                        <InputStrap
+                            disabled={true}
+                            id="totalCost"
+                            type="number"
+                            name='totalCost'
+                            className="input-lg"
+                            value={getAmount()}
+                        />
+                    </FormGroup>
+
+                    <FormGroup className="has-wrapper col-sm-12 col-md-12">
+                        <InputLabel className="text-left" htmlFor="totalCost">
+                            Nombre de ligne Ndjangui multi-spot équivalent
+                        </InputLabel>
+                        <InputStrap
+                            disabled={true}
+                            id="totalCost"
+                            type="number"
+                            name='totalCost'
+                            className="input-lg"
+                            value={Math.ceil(getAmount()/NDJANGUI_BUSINESS_NOMINAL_AMOUNT)}
+                        />
+                    </FormGroup>
 
                     <div className="col-md-12 col-sm-12 has-wrapper mb-30">
                         <InputLabel className="text-left">
@@ -346,9 +355,9 @@ const Create = (props) => {
                                                 <thead>
                                                     <tr>
                                                         <th className="fw-bold">Date</th>
-                                                        <th className="fw-bold">Montant</th>
-                                                        <th className="fw-bold">Coût</th>
                                                         <th className="fw-bold">Amortissement</th>
+                                                        <th className="fw-bold">Coût</th>
+                                                        <th className="fw-bold">Loyer</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>

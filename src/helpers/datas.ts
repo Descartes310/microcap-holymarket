@@ -2,7 +2,7 @@ import { resourceLimits } from "worker_threads";
 
 export const ACCOUNT_PERIOD_LIMIT = 60;
 
-export const NDJANGUI_BUSINESS_NOMINAL_AMOUNT = 285000;
+export const NDJANGUI_BUSINESS_NOMINAL_AMOUNT = 285120;
 
 export const stripeZeroDecimalCurrencies = ["BIF", "CLP", "DJF", "GNF", "JPY", "KMF", "KRW", "MGA", "PYG", "RWF", "UGX", "VND", "VUV", "XAF", "XOF", "XPF", "HUF"];
 

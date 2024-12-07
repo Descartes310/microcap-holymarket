@@ -16,6 +16,7 @@ import { NotificationManager } from 'react-notifications';
 import { FormGroup, Input as InputStrap } from 'reactstrap';
 import DialogComponent from "Components/dialog/DialogComponent";
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
+import { NDJANGUI_BUSINESS_NOMINAL_AMOUNT } from 'Helpers/datas';
 
 const subscriptionTypeEnum = [
     {
@@ -280,7 +281,7 @@ class CodevStep1 extends Component {
                                 value={investment}
                                 id="combo-box-demo"
                                 onChange={(__, item) => {
-                                    const maxLine = Math.ceil(item.totalCost / (Number(this.state.product.details.find(d => d.type == 'DEPOSIT_AMOUNT')?.value) * Number(this.state.product.details.find(d => d.type == 'CYCLE_TIME')?.value)));
+                                    const maxLine = Math.ceil(item.totalCost / NDJANGUI_BUSINESS_NOMINAL_AMOUNT);
                                     this.setState({ investment: item, lineCount: subscriptionType?.value == 'SPOTS' ? maxLine : null, maxLineCount: subscriptionType?.value == 'SPOTS' ? maxLine : null });
                                 }}
                                 getOptionLabel={(option) => option.label}
