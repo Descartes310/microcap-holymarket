@@ -152,22 +152,44 @@ export const getTimeUnits = () => {
         {
             label: 'Jour',
             value: 'DAY',
-            days: 1
+            days: 1,
+            gap: 360
         },
         {
             label: 'Semaine',
             value: 'WEEK',
-            days: 7
+            days: 7,
+            gap: 52
+        },
+        {
+            label: 'Quizaine',
+            value: 'BIWEEK',
+            days: 14,
+            gap: 24
         },
         {
             label: 'Mois',
             value: 'MONTH',
-            days: 30
+            days: 30,
+            gap: 12
+        },
+        {
+            label: 'Trimestre',
+            value: 'TRIMESTER',
+            days: 90,
+            gap: 4
+        },
+        {
+            label: 'Semestre',
+            value: 'SEMESTER',
+            days: 180,
+            gap: 2
         },
         {
             label: 'Année',
             value: 'YEAR',
-            days: 365
+            days: 360,
+            gap: 1
         }
     ];
 }

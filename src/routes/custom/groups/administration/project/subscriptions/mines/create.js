@@ -61,7 +61,7 @@ const CreateSubscription = (props) => {
         props.setRequestGlobalAction(true);
         ProjectService.createProjectSubscription(data).then(() => {
             NotificationManager.success("La souscription a été créée avec succès");
-            onClose(0)
+            window.location.reload();
         }).catch((err) => {
             console.log(err);
             NotificationManager.error("Une erreur est survenue, veuillez reessayer plus tard.");
@@ -118,8 +118,9 @@ const CreateSubscription = (props) => {
                                                 <th className="fw-bold">Valeur nominale</th>
                                                 <th className="fw-bold">Disponibilité</th>
                                                 <th className="fw-bold">Souscription</th>
+                                                <th className="fw-bold">Apport personnel</th>
+                                                <th className="fw-bold">Apport à financer</th>
                                                 <th className="fw-bold">Montant</th>
-                                                <th className="fw-bold">Ndjanguis</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -153,7 +154,7 @@ const CreateSubscription = (props) => {
                                                             </div>
                                                         </div>
                                                     </td>
-                                                    <td className='d-flex align-items-center'>
+                                                    <td>
                                                         <InputStrap
                                                             required
                                                             id="amount"
@@ -172,21 +173,55 @@ const CreateSubscription = (props) => {
                                                         />
                                                     </td>
                                                     <td>
+                                                        <InputStrap
+                                                            required
+                                                            type="number"
+                                                            id="personnalAmount"
+                                                            name='personnalAmount'
+                                                            className="input-sm"
+                                                            value={item.personalAmount}
+                                                            onChange={(e) => {
+                                                                setAmounts(amounts.map(obj => {
+                                                                    if (obj.support.reference === item.support.reference) {
+                                                                        return { ...obj, personalAmount: Number(e.target.value), financableAmount: Number(item.subscription * item.support.nominalAmount) - Number(e.target.value) };
+                                                                    }
+                                                                    return obj;
+                                                                }))
+                                                            }}
+                                                        />
+                                                    </td>
+                                                    <td>
                                                         <div className="media">
                                                             <div className="media-body pt-10">
-                                                                <p className="m-0 text-dark">{getPriceWithCurrency(item.subscription * item.support.nominalAmount, item.support.currency)}</p>
+                                                                <p className="m-0 text-dark">{getPriceWithCurrency(item.financableAmount, item.support.currency)}</p>
                                                             </div>
                                                         </div>
                                                     </td>
                                                     <td>
                                                         <div className="media">
                                                             <div className="media-body pt-10">
-                                                                <p className="m-0 text-dark">{Math.ceil((item.subscription * item.support.nominalAmount)/NDJANGUI_BUSINESS_NOMINAL_AMOUNT)}</p>
+                                                                <p className="m-0 text-dark">{getPriceWithCurrency(item.subscription * item.support.nominalAmount, item.support.currency)}</p>
                                                             </div>
                                                         </div>
                                                     </td>
                                                 </tr>
                                             ))}
+                                            <tr className="cursor-pointer">
+                                                <td colSpan={7}>
+                                                    <div className="media">
+                                                        <div className="media-body pt-10">
+                                                            <h4 className="m-0 fw-bold text-dark">Ndjanguis équivalents</h4>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="media">
+                                                        <div className="media-body pt-10">
+                                                            <h4 className="m-0 fw-bold text-dark">{Math.ceil(amounts.reduce((sum, itm) => sum + itm.financableAmount, 0)/NDJANGUI_BUSINESS_NOMINAL_AMOUNT)}</h4>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
                                         </tbody>
                                     </table>
                                 </div>

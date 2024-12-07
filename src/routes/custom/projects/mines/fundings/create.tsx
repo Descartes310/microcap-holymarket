@@ -1,8 +1,6 @@
 import moment from "moment";
 import { connect } from 'react-redux';
 import UnitService from 'Services/units';
-import { PROJECT, joinUrlWithParamsId } from 'Url/frontendUrl';
-import { NDJANGUI_BUSINESS_NOMINAL_AMOUNT, getTimeUnits } from 'Helpers/datas';
 import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
 import ProjectService from 'Services/projects';
@@ -13,23 +11,26 @@ import TextField from '@material-ui/core/TextField';
 import {NotificationManager} from 'react-notifications';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import AssociatedCost from '../../components/AssociatedCost';
+import { PROJECT, joinUrlWithParamsId } from 'Url/frontendUrl';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { Form, FormGroup, Input as InputStrap } from 'reactstrap';
+import { NDJANGUI_BUSINESS_NOMINAL_AMOUNT, getTimeUnits } from 'Helpers/datas';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
+import { getPriceWithCurrency } from "Helpers/helpers";
 
 const Create = (props) => {
 
     const [label, setLabel] = useState('');
     const [units, setUnits] = useState([]);
+    const [rent, setRent] = useState(null);
     const [project, setProject] = useState(null);
     const [mainCost, setMainCost] = useState(null);
     const [currency, setCurrency] = useState(null);
     const [startDate, setStartDate] = useState(null);
-    const [targetRate, setTargetRate] = useState(null);
     const [periodCount, setPeriodCount] = useState(null);
     const [periodicity, setPeriodicity] = useState(null);
-    const [targetAmount, setTargetAmount] = useState(null);
+    const [rateOfReturn, setRateOfReturn] = useState(null);
     const [periodicRent, setPeriodicRent] = useState(null);
     const [associatedCosts, setAssociatedCosts] = useState([]);
 
@@ -62,7 +63,7 @@ const Create = (props) => {
     }
 
     const getAmount = () => {
-        return Number(Number(associatedCosts.reduce((amount, cost) => amount + (cost.amount * cost.quantity), 0)) + Number(mainCost) + Number(targetAmount));
+        return Number(Number(associatedCosts.reduce((amount, cost) => amount + (cost.amount * cost.quantity), 0)) + Number(mainCost));
     }
 
     const getAmortizations = () => {
@@ -81,7 +82,7 @@ const Create = (props) => {
 
     const onSubmit = () => {
 
-        if(!project || !startDate || !label || !mainCost || !periodicity || !currency || associatedCosts.length <= 0 || !periodCount || !targetAmount || !targetRate || !periodicRent) {
+        if(!project || !startDate || !label || !mainCost || !periodicity || !currency || associatedCosts.length <= 0 || !periodCount || !rateOfReturn || !periodicRent) {
             NotificationManager.error("Le formulaire est mal renseigné");
             return;
         }
@@ -90,7 +91,7 @@ const Create = (props) => {
             project_reference: project.reference, startDate,
             label, mainCost, associated_costs: JSON.stringify(associatedCosts),
             deposit_period: periodicity.value, currency: currency.code, periodCount,
-            targetAmount, targetRate, periodicRent
+            rateOfReturn, periodicRent
         }
 
         props.setRequestGlobalAction(true);
@@ -105,26 +106,62 @@ const Create = (props) => {
     }
 
     useEffect(() => {
-        getGlobalRate();
-    }, [targetAmount, periodCount, mainCost, associatedCosts])
+        getPeriodicRate();
+    }, [rateOfReturn, periodicity])
 
     useEffect(() => {
-        getPeriodicRate();
-    }, [targetRate, periodCount])
+        getRent();
+    }, [mainCost, associatedCosts, rateOfReturn, periodCount, periodicity])
 
-    const getGlobalRate = () => {
-        if(targetAmount && mainCost && associatedCosts) {
-            setTargetRate((Number(targetAmount) / (Number(mainCost) + Number(associatedCosts.reduce((a, cost) => a + (cost.amount * cost.quantity), 0))))*100);
+    const getBrutAmount = () => {
+        if(mainCost && associatedCosts) {
+            return (Number(mainCost) + Number(associatedCosts.reduce((a, cost) => a + (cost.amount * cost.quantity), 0)));
         } else {
-            setTargetRate(0);
+            return 0
         }
     }
 
     const getPeriodicRate = () => {
-        if(periodCount && targetRate) {
-            setPeriodicRent((Math.pow((1+(targetRate/100)), 1/periodCount) - 1)*100);
+        if(rateOfReturn && periodicity) {
+            setPeriodicRent(rateOfReturn/periodicity.gap);
         } else {
             setPeriodicRent(0);
+        }
+    }
+
+    const getRent = () => {
+        if(mainCost && associatedCosts && rateOfReturn && periodCount && periodicity) {
+            setRent((getBrutAmount() * (Number(periodicRent)/100)) / (1-Math.pow(1+(Number(periodicRent)/100), (-1 * Number(periodCount)) )));
+        } else {
+            setRent(0);
+        }
+    }
+
+    const getInitialCapital = (rank) => {
+        if(rank == 1) {
+            return getAmount();
+        } else {
+            return getRemaningCapital(rank - 1)
+        }
+    }
+
+    const getCost = (rank) => {
+        return getInitialCapital(rank) * (periodicRent/100);
+    }
+
+    const getRepaidCapital = (rank) => {
+        return rent - getCost(rank);
+    }
+
+    const getRemaningCapital = (rank) => {
+       return rent * (1- Math.pow(1+(periodicRent/100), (-1 * (periodCount - rank))))/(periodicRent/100);
+    }
+
+    const getCumulatedCost = (rank) => {
+        if(rank == 1) {
+            return getCost(rank);
+        } else {
+            return getCumulatedCost(rank-1) + getCost(rank);
         }
     }
 
@@ -224,10 +261,24 @@ const Create = (props) => {
                         />
                     </div>
 
+                    <FormGroup className="has-wrapper col-sm-12 col-md-12">
+                        <InputLabel className="text-left" htmlFor="totalCost">
+                            Coût de l'investissement
+                        </InputLabel>
+                        <InputStrap
+                            disabled={true}
+                            id="totalCost"
+                            type="number"
+                            name='totalCost'
+                            className="input-lg"
+                            value={getAmount()}
+                        />
+                    </FormGroup>
+
                     <h1 className='mb-30'>Amortissement de l'investissement</h1>
 
                     <div className='row'>
-                        <FormGroup className="col-md-6 col-sm-12 has-wrapper">
+                        <FormGroup className="col-md-4 col-sm-12 has-wrapper">
                             <InputLabel className="text-left">
                                 Périodicité d'amortissement
                             </InputLabel>
@@ -242,7 +293,7 @@ const Create = (props) => {
                                 renderInput={(params) => <TextField {...params} variant="outlined" />}
                             />
                         </FormGroup>
-                        <FormGroup className="has-wrapper col-sm-12 col-md-6">
+                        <FormGroup className="has-wrapper col-sm-12 col-md-4">
                             <InputLabel className="text-left" htmlFor="periodCount">
                                 Durée de l'amortissement (en nbre de période)
                             </InputLabel>
@@ -256,42 +307,41 @@ const Create = (props) => {
                                 onChange={(e) => setPeriodCount(e.target.value)}
                             />
                         </FormGroup>
+                        <FormGroup className="has-wrapper col-sm-12 col-md-4">
+                            <InputLabel className="text-left" htmlFor="periodYearCount">
+                                Durée en nombre d'année
+                            </InputLabel>
+                            <InputStrap
+                                disabled={true}
+                                type="number"
+                                id="periodYearCount"
+                                name='periodYearCount'
+                                className="input-lg"
+                                value={(periodicity && periodCount) ? (periodCount * periodicity.days)/360 : 0}
+                            />
+                        </FormGroup>
                     </div>
 
                     <h1 className='mb-30'>Financement de l'investissement</h1>
 
                     <div className='row'>
                         <FormGroup className="has-wrapper col-sm-12 col-md-4">
-                            <InputLabel className="text-left" htmlFor="targetAmount">
-                                Coût cible du financement
+                            <InputLabel className="text-left" htmlFor="rateOfReturn">
+                                Taux de rendement (par année en %)
                             </InputLabel>
                             <InputStrap
                                 required
-                                id="targetAmount"
+                                id="rateOfReturn"
                                 type="number"
-                                name='targetAmount'
+                                name='rateOfReturn'
                                 className="input-lg"
-                                value={targetAmount}
-                                onChange={(e) => setTargetAmount(e.target.value)}
-                            />
-                        </FormGroup>
-                        <FormGroup className="has-wrapper col-sm-12 col-md-4">
-                            <InputLabel className="text-left" htmlFor="targetRate">
-                                Rendement (%)
-                            </InputLabel>
-                            <InputStrap
-                                required
-                                type="number"
-                                id="targetRate"
-                                disabled={true}
-                                name='targetRate'
-                                value={Number(targetRate).toFixed(2)}
-                                className="input-lg"
+                                value={rateOfReturn}
+                                onChange={(e) => setRateOfReturn(e.target.value)}
                             />
                         </FormGroup>
                         <FormGroup className="has-wrapper col-sm-12 col-md-4">
                             <InputLabel className="text-left" htmlFor="periodicRent">
-                                Taux de rendement périodique équivalent (%)
+                                Taux périodique
                             </InputLabel>
                             <InputStrap
                                 required
@@ -303,21 +353,21 @@ const Create = (props) => {
                                 value={Number(periodicRent).toFixed(2)}
                             />
                         </FormGroup>
+                        <FormGroup className="has-wrapper col-sm-12 col-md-4">
+                            <InputLabel className="text-left" htmlFor="rent">
+                                Loyer
+                            </InputLabel>
+                            <InputStrap
+                                required
+                                id="rent"
+                                name='rent'
+                                type="number"
+                                disabled={true}
+                                className="input-lg"
+                                value={Number(rent).toFixed(2)}
+                            />
+                        </FormGroup>
                     </div>
-
-                    <FormGroup className="has-wrapper col-sm-12 col-md-12">
-                        <InputLabel className="text-left" htmlFor="totalCost">
-                            Coût total de l'investissement
-                        </InputLabel>
-                        <InputStrap
-                            disabled={true}
-                            id="totalCost"
-                            type="number"
-                            name='totalCost'
-                            className="input-lg"
-                            value={getAmount()}
-                        />
-                    </FormGroup>
 
                     <FormGroup className="has-wrapper col-sm-12 col-md-12">
                         <InputLabel className="text-left" htmlFor="totalCost">
@@ -354,15 +404,84 @@ const Create = (props) => {
                                             <table className="table table-hover table-middle mb-0">
                                                 <thead>
                                                     <tr>
-                                                        <th className="fw-bold">Date</th>
-                                                        <th className="fw-bold">Amortissement</th>
-                                                        <th className="fw-bold">Coût</th>
+                                                        <th className="fw-bold">Rang</th>
+                                                        <th className="fw-bold">Echéance</th>
+                                                        <th className="fw-bold">Capital initial</th>
                                                         <th className="fw-bold">Loyer</th>
+                                                        <th className="fw-bold">Coût</th>
+                                                        <th className="fw-bold">Capital remboursé</th>
+                                                        <th className="fw-bold">Capital restant</th>
+                                                        <th className="fw-bold">Coût cumulé</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
+                                                    <tr className="cursor-pointer">
+                                                        <td>
+                                                            <div className="media">
+                                                                <div className="media-body pt-10">
+                                                                    <h4 className="m-0 fw-bold text-dark">{0}</h4>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div className="media">
+                                                                <div className="media-body pt-10">
+                                                                    <h4 className="m-0 fw-bold text-dark">-</h4>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div className="media">
+                                                                <div className="media-body pt-10">
+                                                                    <h4 className="m-0 fw-bold text-dark">-</h4>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div className="media">
+                                                                <div className="media-body pt-10">
+                                                                    <h4 className="m-0 fw-bold text-dark">-</h4>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div className="media">
+                                                                <div className="media-body pt-10">
+                                                                    <h4 className="m-0 fw-bold text-dark">-</h4>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div className="media">
+                                                                <div className="media-body pt-10">
+                                                                    <h4 className="m-0 fw-bold text-dark">-</h4>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div className="media">
+                                                                <div className="media-body pt-10">
+                                                                    <h4 className="m-0 fw-bold text-dark">{getPriceWithCurrency(getAmount(), currency?.code)}</h4>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div className="media">
+                                                                <div className="media-body pt-10">
+                                                                    <h4 className="m-0 fw-bold text-dark">-</h4>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
                                                     {list && list.map((item, key) => (
                                                         <tr key={key} className="cursor-pointer">
+                                                            <td>
+                                                                <div className="media">
+                                                                    <div className="media-body pt-10">
+                                                                        <h4 className="m-0 fw-bold text-dark">{key+1}</h4>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
                                                             <td>
                                                                 <div className="media">
                                                                     <div className="media-body pt-10">
@@ -373,21 +492,42 @@ const Create = (props) => {
                                                             <td>
                                                                 <div className="media">
                                                                     <div className="media-body pt-10">
-                                                                        
+                                                                        {getInitialCapital(key+1).toFixed(2)} {currency?.code}
                                                                     </div>
                                                                 </div>
                                                             </td>
                                                             <td>
                                                                 <div className="media">
                                                                     <div className="media-body pt-10">
-                                                                        
+                                                                        {rent.toFixed(2)} {currency.code}
                                                                     </div>
                                                                 </div>
                                                             </td>
                                                             <td>
                                                                 <div className="media">
                                                                     <div className="media-body pt-10">
-                                                                        
+                                                                        {getCost(key+1).toFixed(2)} {currency.code}
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div className="media">
+                                                                    <div className="media-body pt-10">
+                                                                        {getRepaidCapital(key+1).toFixed(2)} {currency.code}
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div className="media">
+                                                                    <div className="media-body pt-10">
+                                                                        {getRemaningCapital(key+1).toFixed(2)} {currency?.code}
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div className="media">
+                                                                    <div className="media-body pt-10">
+                                                                        {getCumulatedCost(key+1).toFixed(2)} {currency.code}
                                                                     </div>
                                                                 </div>
                                                             </td>

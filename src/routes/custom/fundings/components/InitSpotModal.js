@@ -73,7 +73,10 @@ class InitSpotModal extends Component {
         ProductService.getLineGlobalInfo({account_reference: this.props.accountReference ?? this.props.deal.entityReference, withTickets: false})
         .then(response => {
             this.setState({
-                line: response
+                line: response,
+                rate: response?.investment?.rateOfReturn,
+                periodicity: response?.investment?.periodUnit ? getTimeUnits().find(t => t.value == response?.investment?.periodUnit) : null,
+                periodicityLength: response?.investment?.periodCount,
             });
             if(!this.props.deal) {
                 this.setState({
@@ -83,6 +86,15 @@ class InitSpotModal extends Component {
             }
         })
         .finally(() => this.props.setRequestGlobalAction(false))
+    }
+
+    getRent = () => {
+        if(this.state.amount && this.state.periodicity && this.state.periodicityLength && this.state.rate) {
+            const periodicRent = this.state.rate/this.state.periodicity.gap
+            this.setState({rent: ((this.state.amount * (Number(periodicRent)/100)) / (1-Math.pow(1+(Number(periodicRent)/100), (-1 * Number(this.state.periodicityLength)) ))) });
+        } else {
+            return this.setState({rent: 0 });
+        }
     }
 
     findDeal = () => {
@@ -175,9 +187,7 @@ class InitSpotModal extends Component {
         const { onClose, show, deal } = this.props;
         const { rate, rent, periodicityLength, numberOfPart, label, amount,
             managementRate, managementAmount, periodicity, paymentStartDate, prime, senderName, currency,
-        line, receiverName, currencies, benefitByPeriod, investment, investments, endSubscriptionDate } = this.state;
-
-        const natureOfferEnabled = (this.props.dealType == 'NDJANGUI' || deal?.type == 'NDJANGUI');
+        line, receiverName, currencies, benefitByPeriod, investment, endSubscriptionDate } = this.state;
 
         return (
             <DialogComponent
@@ -192,7 +202,7 @@ class InitSpotModal extends Component {
             >
                 <RctCardContent>
                     <div>
-                        <p>Objet: { natureOfferEnabled ? `Ndjangui spots` : `Offre de cautionnement`}</p>
+                        <p>Objet: Ndjangui spots</p>
                         { senderName && (<p>Souscripteur: {senderName}</p> )}
                         <p>Beneficiaire: {receiverName}</p>
 
@@ -316,7 +326,7 @@ class InitSpotModal extends Component {
                                     value={amount}
                                     className="input-lg"
                                     placeholder="Montant du spot"
-                                    onChange={(e) => this.setState({ amount: e.target.value })}
+                                    onChange={(e) => this.setState({ amount: e.target.value }, () => this.getRent())}
                                 />
                             </FormGroup>
 
@@ -348,10 +358,9 @@ class InitSpotModal extends Component {
                                     id="rate"
                                     name='rate'
                                     value={rate}
-                                    disabled={deal}
+                                    disabled={true}
                                     className="input-lg"
                                     placeholder="Taux de placement"
-                                    onChange={(e) => this.setState({ rate: e.target.value })}
                                 />
                             </FormGroup>
 
@@ -360,14 +369,13 @@ class InitSpotModal extends Component {
                                     Loyer
                                 </InputLabel>
                                 <InputStrap
-                                    type="number"
                                     id="rent"
                                     name='rent'
-                                    value={rent}
-                                    disabled={deal}
-                                    className="input-lg"
+                                    type="number"
+                                    disabled={true}
                                     placeholder="Loyer"
-                                    onChange={(e) => this.setState({ rent: e.target.value })}
+                                    className="input-lg"
+                                    value={rent ? Number(rent).toFixed(2) : null}
                                 />
                             </FormGroup>
                         </div>
@@ -380,10 +388,10 @@ class InitSpotModal extends Component {
                                 <Autocomplete
                                     id="combo-box-demo"
                                     value={periodicity}
-                                    disabled={deal}
+                                    disabled={line?.investment || deal}
                                     options={getTimeUnits()}
                                     onChange={(__, item) => {
-                                        this.setState({ periodicity: item });
+                                        this.setState({ periodicity: item }, () => this.getRent());
                                     }}
                                     getOptionLabel={(option) => option.label}
                                     renderInput={(params) => <TextField {...params} variant="outlined" />}
@@ -396,13 +404,13 @@ class InitSpotModal extends Component {
                                 </InputLabel>
                                 <InputStrap
                                     type="number"
-                                    disabled={deal}
+                                    className="input-lg"
                                     id="periodicityLength"
                                     name='periodicityLength'
                                     value={periodicityLength}
-                                    className="input-lg"
                                     placeholder="Durée du spot"
-                                    onChange={(e) => this.setState({ periodicityLength: e.target.value })}
+                                    disabled={line?.investment || deal}
+                                    onChange={(e) => this.setState({ periodicityLength: e.target.value }, () => this.getRent())}
                                 />
                             </FormGroup>
                         </div>

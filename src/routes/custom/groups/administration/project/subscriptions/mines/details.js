@@ -80,8 +80,9 @@ const DetailsSubscription = (props) => {
                                             <th className="fw-bold">Support</th>
                                             <th className="fw-bold">Valeur nominale</th>
                                             <th className="fw-bold">Souscription</th>
+                                            <th className="fw-bold">Apport personnel</th>
+                                            <th className="fw-bold">Apport à financer</th>
                                             <th className="fw-bold">Montant</th>
-                                            <th className="fw-bold">Ndjanguis</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -111,19 +112,42 @@ const DetailsSubscription = (props) => {
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <p className="m-0 text-dark">{getPriceWithCurrency(item.quantity * item.financialStructureSupport.nominalAmount, item.financialStructureSupport.currency)}</p>
+                                                            <h4 className="m-0 fw-bold text-dark">{getPriceWithCurrency(item.personalAmount, item.financialStructureSupport.currency)}</h4>
                                                         </div>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <p className="m-0 text-dark">{Math.ceil((item.quantity * item.financialStructureSupport.nominalAmount)/NDJANGUI_BUSINESS_NOMINAL_AMOUNT)}</p>
+                                                            <h4 className="m-0 fw-bold text-dark">{getPriceWithCurrency(item.financableAmount, item.financialStructureSupport.currency)}</h4>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="media">
+                                                        <div className="media-body pt-10">
+                                                            <p className="m-0 text-dark">{getPriceWithCurrency(item.quantity * item.financialStructureSupport.nominalAmount, item.financialStructureSupport.currency)}</p>
                                                         </div>
                                                     </div>
                                                 </td>
                                             </tr>
                                         ))}
+                                        <tr className="cursor-pointer">
+                                            <td colSpan={5}>
+                                                <div className="media">
+                                                    <div className="media-body pt-10">
+                                                        <h4 className="m-0 fw-bold text-dark">Ndjanguis équivalents</h4>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div className="media">
+                                                    <div className="media-body pt-10">
+                                                        <h4 className="m-0 fw-bold text-dark">{Math.ceil(supports.reduce((sum, itm) => sum + itm.financableAmount, 0)/NDJANGUI_BUSINESS_NOMINAL_AMOUNT)}</h4>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
