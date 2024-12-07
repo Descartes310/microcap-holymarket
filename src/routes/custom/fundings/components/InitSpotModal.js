@@ -1,17 +1,18 @@
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import UnitService from 'Services/units';
+import { getTimeUnits } from 'Helpers/datas';
 import FundingService from 'Services/funding';
 import { withRouter } from "react-router-dom";
 import ProductService from 'Services/products';
-import ProjectService from 'Services/projects';
 import { setRequestGlobalAction } from 'Actions';
 import { RctCardContent } from 'Components/RctCard';
 import TextField from '@material-ui/core/TextField';
+import { getPriceWithCurrency } from 'Helpers/helpers';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { NotificationManager } from 'react-notifications';
-import { initDealMethods, getTimeUnits } from 'Helpers/datas';
 import DialogComponent from "Components/dialog/DialogComponent";
+import { NDJANGUI_BUSINESS_NOMINAL_AMOUNT } from 'Helpers/datas';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { FormGroup, Input as InputStrap, Button } from 'reactstrap';
 
@@ -27,7 +28,6 @@ class InitSpotModal extends Component {
         currencies: [],
         currency: null,
         initMethod: null,
-        investments: [],
         investment: null,
         periodicity: null,
         endSubscriptionDate: null,
@@ -48,27 +48,13 @@ class InitSpotModal extends Component {
     constructor(props) {
         super(props);
 
-        if((this.props.dealType == 'NDJANGUI' && this.props.lineReference) || this.props.deal?.type == 'NDJANGUI') {
-            this.findLine();
-        } else {
-            if(this.props.reference) {
-                this.findOffer();
-            }
-        }
-
         if(this.props.deal) {
             this.findDeal();
         } else {
             this.getUnits();
         }
+        this.findLine()
     }
-
-    // getProjectInvestments = (reference) => {
-    //     this.props.setRequestGlobalAction(true);
-    //     ProjectService.getProjectInvestments({ reference: reference })
-    //     .then(response => this.setState({ investments: response }))
-    //     .finally(() => this.props.setRequestGlobalAction(false))
-    // }
 
     getUnits = () => {
         this.props.setRequestGlobalAction(true);
@@ -82,22 +68,9 @@ class InitSpotModal extends Component {
         })
     }
 
-    findOffer = () => {
-        this.props.setRequestGlobalAction(true);
-        FundingService.findFundingOffer(this.props.reference)
-        .then(response => {
-            this.setState({
-                offer: response, 
-                senderName: response?.sender,
-                receiverName: response?.receiver
-            });
-        })
-        .finally(() => this.props.setRequestGlobalAction(false))
-    }
-
     findLine = () => {
         this.props.setRequestGlobalAction(true);
-        ProductService.getLineGlobalInfo({line_reference: this.props.lineReference ? this.props.lineReference : this.props.deal?.entityReference, withTickets: false})
+        ProductService.getLineGlobalInfo({account_reference: this.props.accountReference ?? this.props.deal.entityReference, withTickets: false})
         .then(response => {
             this.setState({
                 line: response
@@ -143,7 +116,7 @@ class InitSpotModal extends Component {
 
     onSubmit = () => {
 
-        const {label, amount, currency, investment, endSubscriptionDate, rate, rent, periodicity, periodicityLength,
+        const {label, amount, currency, endSubscriptionDate, rate, rent, periodicity, periodicityLength,
             numberOfPart, managementAmount, managementRate, benefitByPeriod, paymentStartDate, prime
         } = this.state;
 
@@ -239,38 +212,65 @@ class InitSpotModal extends Component {
                         </FormGroup>
 
                         <div className='row'>
-                            {/* <FormGroup className="col-md-6 col-sm-12 has-wrapper">
+                            <FormGroup className="col-md-4 col-sm-12 has-wrapper">
                                 <InputLabel className="text-left">
                                     Placement
                                 </InputLabel>
-                                <Autocomplete
-                                    value={investment}
-                                    id="combo-box-demo"
-                                    onChange={(__, item) => {
-                                        this.setState({ investment: item });
-                                    }}
-                                    disabled={deal}
-                                    getOptionLabel={(option) => option.label}
-                                    options={investments}
-                                    renderInput={(params) => <TextField {...params} variant="outlined" />}
+                                <InputStrap
+                                    type="text"
+                                    disabled={true}
+                                    id="investment"
+                                    name='investment'
+                                    className="input-lg"
+                                    placeholder="Placement"
+                                    value={investment ? investment.label : line?.investment ? line?.investment?.label : 'Non défini'}
                                 />
-                            </FormGroup> */}
-                            <FormGroup className="col-md-12 col-sm-12 has-wrapper mb-30">
+                            </FormGroup>
+                            <FormGroup className="col-md-4 col-sm-12 has-wrapper">
                                 <InputLabel className="text-left">
-                                    Date de cloture des souscriptions
+                                    Montant total
                                 </InputLabel>
                                 <InputStrap
-                                    type="date"
-                                    disabled={deal}
+                                    type="text"
+                                    disabled={true}
+                                    id="investment"
+                                    name='investment'
+                                    className="input-lg"
+                                    placeholder="Placement"
+                                    value={investment ? getPriceWithCurrency(investment.totalCost, investment.currency) : line?.investment ? getPriceWithCurrency(line?.investment?.totalCost, line?.investment?.currency) : 'Non défini'}
+                                />
+                            </FormGroup>
+                            <FormGroup className="col-md-4 col-sm-12 has-wrapper">
+                                <InputLabel className="text-left">
+                                    Nombre de Ndjangui du multi-spot
+                                </InputLabel>
+                                <InputStrap
+                                    type="text"
+                                    disabled={true}
+                                    className="input-lg"
                                     id="endSubscriptionDate"
                                     name='endSubscriptionDate'
-                                    value={endSubscriptionDate}
-                                    className="input-lg"
-                                    placeholder="Montant du spot"
-                                    onChange={(e) => this.setState({ endSubscriptionDate: e.target.value })}
+                                    placeholder="Nombre de Ndjangui"
+                                    value={line ? line?.line+'/'+(Math.ceil(line?.investment.totalCost/NDJANGUI_BUSINESS_NOMINAL_AMOUNT)) : 'Non défini'}
                                 />
                             </FormGroup>
                         </div>
+
+                        <FormGroup className="col-md-12 col-sm-12 has-wrapper mb-30">
+                            <InputLabel className="text-left">
+                                Date de cloture des souscriptions
+                            </InputLabel>
+                            <InputStrap
+                                type="date"
+                                disabled={deal}
+                                id="endSubscriptionDate"
+                                name='endSubscriptionDate'
+                                value={endSubscriptionDate}
+                                className="input-lg"
+                                placeholder="Montant du spot"
+                                onChange={(e) => this.setState({ endSubscriptionDate: e.target.value })}
+                            />
+                        </FormGroup>
 
                         <div className='row'>
                             <FormGroup className="col-md-6 col-sm-12 has-wrapper mb-30">
