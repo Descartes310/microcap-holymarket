@@ -91,7 +91,7 @@ class InviteParticipantModal extends Component {
                                 onChange={(__, item) => {
                                     this.setState({ deal: item });
                                 }}
-                                getOptionLabel={(option) => option?.offer?.label}
+                                getOptionLabel={(option) => option?.label}
                                 renderInput={(params) => <TextField {...params} variant="outlined" />}
                             />
                         </FormGroup>
