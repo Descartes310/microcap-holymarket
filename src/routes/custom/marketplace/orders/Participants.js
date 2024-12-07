@@ -51,7 +51,7 @@ class CodevParticipants extends Component {
 
     getDeals = () => {
         this.props.setRequestGlobalAction(true),
-        FundingService.getDeals({free: true, type: 'DEAL', received: true, referral_code: this.props.referralCode, entity_reference: this.props.order?.externalReference})
+        FundingService.getDeals({free: true, type: 'DEAL', all: true, received: true, referral_code: this.props.referralCode, entity_reference: this.props.order?.externalReference})
         .then(response => this.setState({ deals: response }))
         .catch(() => this.setState({ deals: [] }))
         .finally(() => this.props.setRequestGlobalAction(false))
@@ -59,7 +59,7 @@ class CodevParticipants extends Component {
 
     getSpots = () => {
         this.props.setRequestGlobalAction(true),
-        FundingService.getDeals({free: true, type: 'SPOT', received: true, referral_code: this.props.referralCode, entity_reference: this.props.order?.externalReference})
+        FundingService.getDeals({free: true, type: 'SPOT', all: true, received: true, referral_code: this.props.referralCode, entity_reference: this.props.order?.externalReference})
         .then(response => this.setState({ spots: response }))
         .catch(() => this.setState({ spots: [] }))
         .finally(() => this.props.setRequestGlobalAction(false))
