@@ -61,20 +61,14 @@ class InitSpotModal extends Component {
         } else {
             this.getUnits();
         }
-
-        if(this.props.order?.details?.find(d => d.type == "PROJECT_REFERENCE")?.value) {
-            this.getProjectInvestments(this.props.order?.details?.find(d => d.type == "PROJECT_REFERENCE")?.value)
-        }
-
-        // this.getProjects();
     }
 
-    getProjectInvestments = (reference) => {
-        this.props.setRequestGlobalAction(true);
-        ProjectService.getProjectInvestments({ reference: reference })
-        .then(response => this.setState({ investments: response }))
-        .finally(() => this.props.setRequestGlobalAction(false))
-    }
+    // getProjectInvestments = (reference) => {
+    //     this.props.setRequestGlobalAction(true);
+    //     ProjectService.getProjectInvestments({ reference: reference })
+    //     .then(response => this.setState({ investments: response }))
+    //     .finally(() => this.props.setRequestGlobalAction(false))
+    // }
 
     getUnits = () => {
         this.props.setRequestGlobalAction(true);
@@ -153,14 +147,14 @@ class InitSpotModal extends Component {
             numberOfPart, managementAmount, managementRate, benefitByPeriod, paymentStartDate, prime
         } = this.state;
 
-        if(!label || !amount || !currency || !investment || !endSubscriptionDate || !rate || !rent || !periodicity || !periodicityLength || !numberOfPart
+        if(!label || !amount || !currency || !endSubscriptionDate || !rate || !rent || !periodicity || !periodicityLength || !numberOfPart
             || !managementAmount || !managementRate || !benefitByPeriod || !paymentStartDate || !prime
         ) {
             NotificationManager.error("Remplissez toutes les informations 1");
             return;
         }
 
-        let datas = {label, currency: currency.code, amount, investmentReference: investment.reference, endSubscriptionDate, rate, rent, periodicity: periodicity.value,
+        let datas = {label, currency: currency.code, amount, endSubscriptionDate, rate, rent, periodicity: periodicity.value,
             periodicityLength, numberOfPart, managementAmount, managementRate, benefitByPeriod, paymentStartDate, prime, type: 'SPOT'
         };
 
@@ -245,7 +239,7 @@ class InitSpotModal extends Component {
                         </FormGroup>
 
                         <div className='row'>
-                            <FormGroup className="col-md-6 col-sm-12 has-wrapper">
+                            {/* <FormGroup className="col-md-6 col-sm-12 has-wrapper">
                                 <InputLabel className="text-left">
                                     Placement
                                 </InputLabel>
@@ -260,13 +254,14 @@ class InitSpotModal extends Component {
                                     options={investments}
                                     renderInput={(params) => <TextField {...params} variant="outlined" />}
                                 />
-                            </FormGroup>
-                            <FormGroup className="col-md-6 col-sm-12 has-wrapper mb-30">
+                            </FormGroup> */}
+                            <FormGroup className="col-md-12 col-sm-12 has-wrapper mb-30">
                                 <InputLabel className="text-left">
                                     Date de cloture des souscriptions
                                 </InputLabel>
                                 <InputStrap
                                     type="date"
+                                    disabled={deal}
                                     id="endSubscriptionDate"
                                     name='endSubscriptionDate'
                                     value={endSubscriptionDate}
