@@ -107,7 +107,7 @@ class DealDetailsModal extends Component {
                 size="lg"
                 title={(
                     <h3 className="fw-bold">
-                        Détails deal
+                        Détails {deal?.type == 'DEAL' ? `Ndjangui Deal ` : deal?.type == 'SPOT' ? 'Ndjangui Spot ' : deal?.type == 'BIGDEAL' ? 'Ndjangui Big Deal' : `Offre de cautionnement `}
                     </h3>
                 )}
             >

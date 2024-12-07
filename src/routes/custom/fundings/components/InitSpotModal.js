@@ -129,7 +129,7 @@ class InitSpotModal extends Component {
                 senderName: response?.sender,
                 label: response?.label,
                 receiverName: response?.receiver,
-                
+                investment: response?.projectInvestment,
                 rate: response?.lastProposition?.rate,
                 rent: response?.lastProposition?.rent,
                 endSubscriptionDate: response?.lastProposition?.endSubscriptionDate,
@@ -164,18 +164,20 @@ class InitSpotModal extends Component {
             periodicityLength, numberOfPart, managementAmount, managementRate, benefitByPeriod, paymentStartDate, prime, type: 'SPOT'
         };
 
-        if(this.state.offer) {
-            datas.offer_reference = this.state.offer.reference;
-        } else {
-            if(this.props.accountReference) {
-                datas.account_reference = this.props.accountReference;
-                if(this.props.subscriber) {
-                    datas.subscriber_reference = this.props.subscriber?.referralCode;
-                }
-                datas.init_method = 'TICKETS';
+        if(!this.props.deal) {
+            if(this.state.offer) {
+                datas.offer_reference = this.state.offer.reference;
             } else {
-                NotificationManager.error("Remplissez toutes les informations 1.5");
-                return;
+                if(this.props.accountReference) {
+                    datas.account_reference = this.props.accountReference;
+                    if(this.props.subscriber) {
+                        datas.subscriber_reference = this.props.subscriber?.referralCode;
+                    }
+                    datas.init_method = 'TICKETS';
+                } else {
+                    NotificationManager.error("Remplissez toutes les informations 1.5");
+                    return;
+                }
             }
         }
 
@@ -319,6 +321,7 @@ class InitSpotModal extends Component {
                                     id="rate"
                                     name='rate'
                                     value={rate}
+                                    disabled={deal}
                                     className="input-lg"
                                     placeholder="Taux de placement"
                                     onChange={(e) => this.setState({ rate: e.target.value })}
@@ -334,6 +337,7 @@ class InitSpotModal extends Component {
                                     id="rent"
                                     name='rent'
                                     value={rent}
+                                    disabled={deal}
                                     className="input-lg"
                                     placeholder="Loyer"
                                     onChange={(e) => this.setState({ rent: e.target.value })}
@@ -349,6 +353,7 @@ class InitSpotModal extends Component {
                                 <Autocomplete
                                     id="combo-box-demo"
                                     value={periodicity}
+                                    disabled={deal}
                                     options={getTimeUnits()}
                                     onChange={(__, item) => {
                                         this.setState({ periodicity: item });
@@ -364,6 +369,7 @@ class InitSpotModal extends Component {
                                 </InputLabel>
                                 <InputStrap
                                     type="number"
+                                    disabled={deal}
                                     id="periodicityLength"
                                     name='periodicityLength'
                                     value={periodicityLength}
@@ -382,6 +388,7 @@ class InitSpotModal extends Component {
                                 </InputLabel>
                                 <InputStrap
                                     type="number"
+                                    disabled={deal}
                                     id="numberOfPart"
                                     name='numberOfPart'
                                     value={numberOfPart}
@@ -396,6 +403,7 @@ class InitSpotModal extends Component {
                                 </InputLabel>
                                 <InputStrap
                                     type="number"
+                                    disabled={deal}
                                     id="managementRate"
                                     name='managementRate'
                                     value={managementRate}
@@ -412,6 +420,7 @@ class InitSpotModal extends Component {
                                 </InputLabel>
                                 <InputStrap
                                     type="number"
+                                    disabled={deal}
                                     id="managementAmount"
                                     name='managementAmount'
                                     value={managementAmount}
@@ -426,6 +435,7 @@ class InitSpotModal extends Component {
                                 </InputLabel>
                                 <InputStrap
                                     type="number"
+                                    disabled={deal}
                                     id="benefitByPeriod"
                                     name='benefitByPeriod'
                                     value={benefitByPeriod}
@@ -443,6 +453,7 @@ class InitSpotModal extends Component {
                                 </InputLabel>
                                 <InputStrap
                                     type="date"
+                                    disabled={deal}
                                     id="paymentStartDate"
                                     name='paymentStartDate'
                                     value={paymentStartDate}
@@ -459,6 +470,7 @@ class InitSpotModal extends Component {
                                     type="number"
                                     id="prime"
                                     name='prime'
+                                    disabled={deal}
                                     value={prime}
                                     className="input-lg"
                                     placeholder="Prime de liquidation anticipée"
