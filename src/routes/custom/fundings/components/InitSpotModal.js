@@ -248,10 +248,42 @@ class InitSpotModal extends Component {
                                     type="text"
                                     disabled={true}
                                     className="input-lg"
-                                    id="endSubscriptionDate"
-                                    name='endSubscriptionDate'
+                                    id="ndjanguiCount"
+                                    name='ndjanguiCount'
                                     placeholder="Nombre de Ndjangui"
                                     value={line ? line?.line+'/'+(Math.ceil(line?.investment.totalCost/NDJANGUI_BUSINESS_NOMINAL_AMOUNT)) : 'Non défini'}
+                                />
+                            </FormGroup>
+                        </div>
+
+                        <div className='row'>
+                            <FormGroup className="col-md-6 col-sm-12 has-wrapper">
+                                <InputLabel className="text-left">
+                                    Montant de spot disponible
+                                </InputLabel>
+                                <InputStrap
+                                    type="text"
+                                    disabled={true}
+                                    className="input-lg"
+                                    id="emittedAmount"
+                                    name='emittedAmount'
+                                    placeholder="Montant de spot déjà émis"
+                                    value={line ? getPriceWithCurrency(Math.max(line.amountTotal-line.amountEmitted, 0), line?.currency) : 'Non défini'}
+                                />
+                            </FormGroup>
+
+                            <FormGroup className="col-md-6 col-sm-12 has-wrapper">
+                                <InputLabel className="text-left">
+                                    Montant de spot déjà émis
+                                </InputLabel>
+                                <InputStrap
+                                    type="text"
+                                    disabled={true}
+                                    className="input-lg"
+                                    id="emittedAmount"
+                                    name='emittedAmount'
+                                    placeholder="Montant de spot déjà émis"
+                                    value={line ? getPriceWithCurrency(line?.amountEmitted, line?.currency) : 'Non défini'}
                                 />
                             </FormGroup>
                         </div>
