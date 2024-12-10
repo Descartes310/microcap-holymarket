@@ -59,7 +59,7 @@ const Update = (props) => {
 
         ProductService.updateBooking(props.match.params.id, data).then(() => {
             NotificationManager.success('Le coupon a été édité avec succès');
-            props.history.push(MARKETPLACE.STORE.BOOKING.LIST);
+            props.history.push(MARKETPLACE.BOOKING.LIST);
         })
         .catch((err) => {
             console.log(err);

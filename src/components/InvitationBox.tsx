@@ -58,7 +58,7 @@ class InvitationBox extends Component<any, any> {
             return;
         }
         this.props.setRequestGlobalAction(true);
-        ProductService.findBookingByCode(this.state.reservationCode, {nature: 'INVITATION', usable: false})
+        ProductService.findBookingByCode(this.state.reservationCode, {natures: ['INVITATION'], usable: false})
         .then(response => {
             this.setState({ booking: response });
             NotificationManager.success("Le code de reservation est correct");

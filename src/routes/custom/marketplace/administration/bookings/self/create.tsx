@@ -37,7 +37,7 @@ const Create = (props) => {
 
         ProductService.createBooking(data).then(() => {
             NotificationManager.success('Le code a été créé avec succès');
-            props.history.push(MARKETPLACE.STORE.BOOKING.LIST);
+            props.history.push(MARKETPLACE.BOOKING.LIST);
         })
         .catch((err) => {
             console.log(err);

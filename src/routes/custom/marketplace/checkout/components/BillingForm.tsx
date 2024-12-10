@@ -155,7 +155,7 @@ class BillingForm extends Component<any, any> {
       if (this.state.showSubscriptionCodeField && this.state.subscriptionCode) {
          this.props.setRequestGlobalAction(true);
          let data: any = {
-            nature: 'INVITATION', 
+            natures: ['MARKETPLACE', 'INVITATION'], 
             productIds: this.props.productIds
          }
          if(this.props.referralCode) {

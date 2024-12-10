@@ -120,7 +120,7 @@ const List = (props) => {
                                             <td>
                                                 { !item.usable && (
                                                     <>
-                                                        {/* <Button
+                                                        <Button
                                                             color="primary"
                                                             variant="contained"
                                                             onClick={() => {
@@ -130,7 +130,7 @@ const List = (props) => {
                                                             className="text-white font-weight-bold mr-3"
                                                         >
                                                             Partager
-                                                        </Button> */}
+                                                        </Button>
                                                         <Button
                                                             color="primary"
                                                             variant="contained"
@@ -176,7 +176,7 @@ const List = (props) => {
                             message={'Etes vous sure de vouloir supprimer ce code de reservation ?'}
                         />
                     )}
-                    {/* { booking && showShareBox && (
+                    { booking && showShareBox && (
                         <ShareBooking
                             booking={booking}
                             show={showShareBox}
@@ -187,7 +187,7 @@ const List = (props) => {
                                 getBookings();
                             }}
                         />
-                    )} */}
+                    )}
 
                     { booking && showMemberBox && (
                         <BookingMembers
