@@ -281,6 +281,18 @@ export default class Permission extends BaseEnum {
         }
     };
 
+    static funding = {
+        placements: {
+            "name": "FUNDING_PLACEMENT_PRIVILEGE"
+        },
+        bigdeals: {
+            "name": "FUNDING_BIGDEAL_PRIVILEGE"
+        },
+        investments: {
+            "name": "FUNDING_INVESTMENT_PRIVILEGE"
+        }
+    };
+
     static supervision = {
         user: {
             "name": "SUPERVISION_USER"

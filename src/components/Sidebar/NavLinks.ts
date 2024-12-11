@@ -538,19 +538,25 @@ export default [
    },
    {
       "path": FUNDING.PLACEMENT.ITEM.LIST,
-      "menu_title": "Placement",
+      "menu_title": "Placements",
       "menu_icon": "zmdi zmdi-assignment-o",
       "new_item": false,
       "child_routes": null,
       "profiles": null,
+      "permissions": [
+         Permission.funding.placements.name,
+      ]
    },
    {
       "path": FUNDING.INVESTMENT.PROGRAM.LIST,
-      "menu_title": "Programme d'investissement",
+      "menu_title": "Programmes d'investissement",
       "menu_icon": "zmdi zmdi-assignment-o",
       "new_item": false,
       "child_routes": null,
       "profiles": null,
+      "permissions": [
+         Permission.funding.investments.name,
+      ]
    },
    {
       "path": FUNDING.BIGDEAL.SENT,
@@ -559,6 +565,9 @@ export default [
       "new_item": false,
       "child_routes": null,
       "profiles": null,
+      "permissions": [
+         Permission.funding.bigdeals.name,
+      ]
    },
    {
       "menu_title": "Bourse de financement",

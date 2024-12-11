@@ -382,35 +382,43 @@ export const getUserAssistanceTypes = () => {
     return [
         {
             label: 'Activation du profile',
-            value: 'ACTIVATE_PROFILE'
+            value: 'ACTIVATE_PROFILE',
+            permission: 'ASSIST_ACTIVATE_PROFILE_PRIVILEGE'
         },
         {
             label: 'Authentifier le profile',
-            value: 'AUTHENTICATE_PROFILE'
+            value: 'AUTHENTICATE_PROFILE',
+            permission: 'ASSIST_AUTHENTICATE_PROFILE_PRIVILEGE'
         },
         {
             label: 'Effectuer une commande',
-            value: 'PLACE_ORDER'
+            value: 'PLACE_ORDER',
+            permission: 'ASSIST_PLACE_ORDER_PRIVILEGE'
         },
         {
             label: 'Fournir le dossier d\'une commande',
-            value: 'ORDER_FOLDER'
+            value: 'ORDER_FOLDER',
+            permission: 'ASSIST_ORDER_FOLDER_PRIVILEGE'
         },
         {
             label: 'Demande de paiement d\'une commande',
-            value: 'PAY_ORDER'
+            value: 'PAY_ORDER',
+            permission: 'ASSIST_PAY_ORDER_PRIVILEGE'
         },
         {
             label: 'Gérer une commande',
-            value: 'MANAGE_ORDER'
+            value: 'MANAGE_ORDER',
+            permission: 'ASSIST_MANAGE_ORDER_PRIVILEGE'
         },
         {
             label: 'Demande d\'autorisation bancaire',
-            value: 'INITIATE_OPERATION'
+            value: 'INITIATE_OPERATION',
+            permission: 'ASSIST_INITIATE_OPERATION_PRIVILEGE'
         },
         {
             label: 'Editer le dossier utilisateur',
-            value: 'UPDATE_USER_FOLDER'
+            value: 'UPDATE_USER_FOLDER',
+            permission: 'ASSIST_UPDATE_USER_FOLDER_PRIVILEGE'
         }
     ];
 }

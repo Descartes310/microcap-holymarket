@@ -19,15 +19,14 @@ import VerifyUserOTPModal from 'Components/verifyUserOTPModal';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { Form, FormGroup, Input as InputStrap } from 'reactstrap';
 import OrdersModal from 'Routes/custom/marketplace/_components/ordersModal';
-import { getPriceWithCurrency, getReferralTypeLabel } from 'Helpers/helpers';
 import { setRequestGlobalAction, onAddItemToCart, onClearCart } from 'Actions';
 import OrderFormModal from 'Routes/custom/marketplace/checkout/orderFormModal';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
 import AccountVentilation from 'Components/Product/Ventilation/AccountVentilation';
 import AddFileToOrderModal from 'Routes/custom/marketplace/orders/addFileToOrderModal';
 import AuthenticateUser from 'Routes/custom/networks/coverages/components/authenticateUser';
-import UserDocumentsModal from 'Routes/custom/networks/coverages/components/userFilesModal';
 import MemberDocumentsModal from 'Routes/custom/networks/coverages/components/memberFilesModal';
+import { getPriceWithCurrency, getReferralTypeLabel, getUserPermissions } from 'Helpers/helpers';
 import CodevSubscriptionModal from 'Routes/custom/marketplace/_components/codevSubscriptionModal';
 
 const Assist = (props) => {
@@ -45,7 +44,6 @@ const Assist = (props) => {
     const [productModels, setProductModels] = useState([]);
     const [showOTPModal, setShowOTPModal] = useState(false);
     const [showOrderModal, setShowOrderModal] = useState(false);
-    const [showUserFileBox, setShowUserFileBox] = useState(false);
     const [showActivationBox, setShowActivationBox] = useState(false);
     const [showMemberFileBox, setShowMemberFileBox] = useState(false);
     const [showOrderFolderModal, setShowOrderFolderModal] = useState(false);
@@ -53,7 +51,6 @@ const Assist = (props) => {
     const [showAuthentificationBox, setShowAuthentificationBox] = useState(false);
     const [showOrderManagementModal, setShowOrderManagementModal] = useState(false);
 
-    const [step, setStep] = useState(1);
     const [amount, setAmount] = useState(null);
     const [details, setDetails] = useState([]);
     const [tickets, setTickets] = useState([]);
@@ -61,9 +58,8 @@ const Assist = (props) => {
     const [account, setAccount] = useState(null);
     const [currency, setCurrency] = useState(null);
     const [currencies, setCurrencies] = useState([]);
-    const [showAlert, setShowAlert] = useState(false);
     const [minAmount, setMinAmount] = useState(null);
-    const [showModal, setShowModal] = useState(false);
+    const [showAlert, setShowAlert] = useState(false);
     const [prestation, setPrestation] = useState(null);
     const [prestations, setPrestations] = useState([]);
     const [aggregations, setAggregations] = useState([]);
@@ -383,6 +379,7 @@ const Assist = (props) => {
                                 value={action}
                                 options={
                                     getUserAssistanceTypes()
+                                    .filter(a => getUserPermissions(props.authUser).includes(a.permission))
                                     .filter(a => (!member.active && a.value == 'ACTIVATE_PROFILE') || a.value !== 'ACTIVATE_PROFILE')
                                     // .filter(a => (!member.authenticated && a.value == 'AUTHENTICATE_PROFILE') || a.value !== 'AUTHENTICATE_PROFILE')
                                     .filter(a => (member.active && a.value == 'BOOK_ORDER') || a)
@@ -751,4 +748,9 @@ const Assist = (props) => {
     );
 };
 
-export default connect(() => { }, { setRequestGlobalAction, onAddItemToCart, onClearCart })(withRouter(Assist));
+const mapStateToProps = ({ authUser }) => {
+    return { authUser: authUser.data, }
+};
+
+
+export default connect(mapStateToProps, { setRequestGlobalAction, onAddItemToCart, onClearCart })(withRouter(Assist));

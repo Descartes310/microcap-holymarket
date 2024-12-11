@@ -664,6 +664,15 @@ export const dateDiff = (first, second, time = 1) => {
     return result;
 }
 
+export const getUserPermissions = (authUser: any): string[] => {
+    const profile = authUser?.userAccount;
+    if (profile) {
+        return profile.permissions.map(p => p.name);
+    } else {
+        return [];
+    }
+}
+
 
 export const isMenuAllowed = (authUser: any, menu: MenuItem): boolean => {
     const profile = authUser?.userAccount;
