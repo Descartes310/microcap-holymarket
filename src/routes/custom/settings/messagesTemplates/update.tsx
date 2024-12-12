@@ -85,6 +85,13 @@ const Update = (props) => {
                             onChange={(e) => setLabel(e.target.value)}
                         />
                     </FormGroup>
+                    <p>Notes importantes: utilisez les variables ci-dessous pour personnaliser le message</p>
+                    <ul className='ml-20'>
+                        <li><b>$name$</b>: nom de l'utilisateur</li>
+                        <li><b>$contact$</b>: adresse de contact</li>
+                        <li><b>$number$</b>: numéro de l'utilisateur</li>
+                        <li><b>$email$</b>: email de l'utilisateur</li>
+                    </ul>
                     <FormGroup className="has-wrapper">
                         <InputLabel className="text-left" htmlFor="content">
                             Contenu
