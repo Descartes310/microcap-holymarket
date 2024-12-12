@@ -395,7 +395,7 @@ export default [
             "menu_title": "Code reservations",
             "new_item": false,
             "path": MARKETPLACE.STORE.BOOKING.LIST,
-            "permissions": [Permission.accountType.assistance.name, Permission.marketplace.store.product.name],
+            "permissions": [Permission.accountType.assistance.name],
             "profiles": ['GROUP'],
             "child_routes": null
          },
