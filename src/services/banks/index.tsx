@@ -124,8 +124,8 @@ export default class BankService {
         return makeRequest('get', Routes.GET_DOMICILIATION_PRESTATIONS, {reference});
     }
 
-    static getUserAccounts(reference: string): Promise<any> {
-        return makeRequest('get', Routes.GET_USER_DOMICILIATIONS, {reference});
+    static getUserAccounts(reference: string, data = {}): Promise<any> {
+        return makeRequest('get', Routes.GET_USER_DOMICILIATIONS, {reference, ...data});
     }
 
     static createOperation(data: any): Promise<any> {

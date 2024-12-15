@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
 import CustomList from "Components/CustomList";
 import AccountService from 'Services/accounts';
@@ -6,6 +7,7 @@ import {setRequestGlobalAction} from 'Actions';
 import React, { useState, useEffect } from 'react';
 import TimeFromMoment from 'Components/TimeFromMoment';
 import CreateAccount from '../components/createAccount';
+import { FUNDING, joinUrlWithParamsId } from 'Url/frontendUrl';
 
 const Accounts = (props) => {
 
@@ -48,6 +50,7 @@ const Accounts = (props) => {
                                             <th className="fw-bold">Clé</th>
                                             <th className="fw-bold">IBAN</th>
                                             <th className="fw-bold">Date de création</th>
+                                            <th className="fw-bold">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -95,6 +98,18 @@ const Accounts = (props) => {
                                                             </h4>
                                                         </div>
                                                     </div>
+                                                </td>
+                                                <td>
+                                                    { item.accountReference && (
+                                                        <Button
+                                                            color="primary"
+                                                            variant="contained"
+                                                            className="text-white font-weight-bold"
+                                                            onClick={() => props.history.push(joinUrlWithParamsId(FUNDING.ACCOUNT.DETAILS, item.accountReference))}
+                                                        >
+                                                            Détails
+                                                        </Button>
+                                                    )}
                                                 </td>
                                             </tr>
                                         ))}

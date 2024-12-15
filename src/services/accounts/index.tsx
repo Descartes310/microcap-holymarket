@@ -28,7 +28,7 @@ export default class AccountService {
         if(!regExp.test(id)) {
             return makeRequest('get', Routes.FIND_ACCOUNT(id));
         } else {
-            return makeRequest('get', Routes.FIND_ACCOUNT_BY_REFERENCE('fdg_acc_'+id));
+            return makeRequest('get', id.startsWith('fdg_acc_') ? Routes.FIND_ACCOUNT_BY_REFERENCE(id) : Routes.FIND_ACCOUNT_BY_REFERENCE('fdg_acc_'+id));
         }
     }
 

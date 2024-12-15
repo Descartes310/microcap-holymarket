@@ -211,7 +211,7 @@ const RegularisationAssist = (props) => {
 
     const getAccounts = (reference: string) => {
         props.setRequestGlobalAction(true);
-        BankService.getUserAccounts(reference)
+        BankService.getUserAccounts(reference, {all: true})
         .then(response => setAccounts(response))
         .finally(() => props.setRequestGlobalAction(false))
     }
@@ -241,7 +241,7 @@ const RegularisationAssist = (props) => {
         let data: any = {
             amount, date, reason,
             reference: membership,
-            accountId: account.id,
+            accountId: account.reference,
             currency: currency.code,
             prestationId: prestation.id,
             detailsValues: details.map(d => d.value),
@@ -261,6 +261,7 @@ const RegularisationAssist = (props) => {
         BankService.createOperation(data).then(() => {
             NotificationManager.success("L'opération a été créée avec succès!");
             setShowAlert(true);
+            window.location.reload();
         }).catch(err => {
             console.log(err);
         }).finally(() => {

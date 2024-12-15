@@ -327,7 +327,7 @@ const Details = (props) => {
                                                                 <td>
                                                                     <div className="media">
                                                                         <div className="media-body">
-                                                                            <h4 className="m-0 text-dark"><TimeFromMoment time={mouvement.createdAt} showFullDate /></h4>
+                                                                            <h4 className="m-0 text-dark"><TimeFromMoment time={mouvement.valueDate ? mouvement.valueDate : mouvement.createdAt} showFullDate /></h4>
                                                                         </div>
                                                                     </div>
                                                                 </td>
@@ -387,7 +387,7 @@ const Details = (props) => {
                                                                 <td>
                                                                     <div className="media">
                                                                         <div className="media-body">
-                                                                            <h4 className="m-0 text-dark"><TimeFromMoment time={mouvement.createdAt} showFullDate /></h4>
+                                                                            <h4 className="m-0 text-dark"><TimeFromMoment time={mouvement.valueDate ? mouvement.valueDate : mouvement.createdAt} showFullDate /></h4>
                                                                         </div>
                                                                     </div>
                                                                 </td>

@@ -249,7 +249,7 @@ const Assist = (props) => {
         let data: any = {
             amount,
             reference: membership,
-            accountId: account.id,
+            accountId: account.reference,
             currency: currency.code,
             prestationId: prestation.id,
             detailsValues: details.map(d => d.value),
