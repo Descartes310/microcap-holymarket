@@ -10,8 +10,9 @@ import AccountService from 'Services/accounts';
 import React, { useEffect, useState } from 'react';
 import SweetAlert from 'react-bootstrap-sweetalert';
 import TextField from '@material-ui/core/TextField';
+import { getOldAssistanceTypes } from 'Helpers/datas';
+import { getReferralTypeLabel } from 'Helpers/helpers';
 import DepositTickets from 'Components/DepositTickets';
-import { getUserAssistanceTypes } from 'Helpers/datas';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { NotificationManager } from 'react-notifications';
 import VerifyUserOTPModal from 'Components/verifyUserOTPModal';
@@ -20,24 +21,28 @@ import { Form, FormGroup, Input as InputStrap } from 'reactstrap';
 import { setRequestGlobalAction, onAddItemToCart, onClearCart } from 'Actions';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
 import AccountVentilation from 'Components/Product/Ventilation/AccountVentilation';
-import { getPriceWithCurrency, getReferralTypeLabel, getUserPermissions } from 'Helpers/helpers';
 
-const regularisationAssistance = (props) => {
+const RegularisationAssist = (props) => {
 
     const [otp, setOtp] = useState(null);
+    const [date, setDate] = useState(null);
     const [order, setOrder] = useState(null);
     const [orders, setOrders] = useState([]);
+    const [reason, setReason] = useState(null);
     const [member, setMember] = useState(null);
     const [action, setAction] = useState(null);
     const [product, setProduct] = useState(null);
     const [products, setProducts] = useState([]);
+    const [codevData, setCodevData] = useState(null);
     const [membership, setMembership] = useState(null);
     const [productModel, setProductModel] = useState(null);
     const [productModels, setProductModels] = useState([]);
     const [showOTPModal, setShowOTPModal] = useState(false);
-    
-    const [date, setDate] = useState(null);
-    const [reason, setReason] = useState(null);
+    const [showOrderModal, setShowOrderModal] = useState(false);
+    const [showOrderFolderModal, setShowOrderFolderModal] = useState(false);
+    const [showSubscriptionModal, setShowSubscriptionModal] = useState(false);
+    const [showOrderManagementModal, setShowOrderManagementModal] = useState(false);
+
     const [amount, setAmount] = useState(null);
     const [details, setDetails] = useState([]);
     const [tickets, setTickets] = useState([]);
@@ -45,8 +50,8 @@ const regularisationAssistance = (props) => {
     const [account, setAccount] = useState(null);
     const [currency, setCurrency] = useState(null);
     const [currencies, setCurrencies] = useState([]);
-    const [minAmount, setMinAmount] = useState(null);
     const [showAlert, setShowAlert] = useState(false);
+    const [minAmount, setMinAmount] = useState(null);
     const [prestation, setPrestation] = useState(null);
     const [prestations, setPrestations] = useState([]);
     const [aggregations, setAggregations] = useState([]);
@@ -73,7 +78,13 @@ const regularisationAssistance = (props) => {
     useEffect(() => {
         if(action) {
             switch (action.value) {
+                case 'PLACE_ORDER':
+                case 'BOOK_ORDER':
+                    getProductModels();
+                    break;
                 case 'PAY_ORDER':
+                case 'ORDER_FOLDER':
+                case 'MANAGE_ORDER':
                     getOrders();
                     break;
                 case 'INITIATE_OPERATION':
@@ -123,6 +134,13 @@ const regularisationAssistance = (props) => {
 			.finally(() => props.setRequestGlobalAction(false))
 	}
 
+    const getProductModels = () => {
+		props.setRequestGlobalAction(true);
+		ProductService.getShopProductModels({})
+			.then(response => setProductModels(response))
+			.finally(() => props.setRequestGlobalAction(false))
+    }
+
     const getOrders = () => {
         props.setRequestGlobalAction(true);
         OrderService.getOrders({referral_code: member.referralCode})
@@ -131,14 +149,9 @@ const regularisationAssistance = (props) => {
     }
 
     const initiatePayment = () => {
-        if(!order || !date || !reason) {
-            NotificationManager.error("Le formulaire n'est pas correctement renseigné");
-            return;
-        }
         props.setRequestGlobalAction(true);
-        setShowOTPModal(false);
 
-        OrderService.initiatePayment(order.reference, {date, reason})
+        OrderService.initiatePayment(order.reference, {})
            .then(() => {
               NotificationManager.success("La demande de paiement a été envoyée");
               window.location.reload();
@@ -147,7 +160,15 @@ const regularisationAssistance = (props) => {
               NotificationManager.error("Une erreur est survenue");
            })
            .finally(() => props.setRequestGlobalAction(false))
-    }
+     }
+
+    const addToCart = (cartItem) => {
+		if(!cartItem.profileBuyable) {
+			alert("Votre profile ne vous donne pas accès à ce produit");
+			return;
+		}
+		props.onAddItemToCart({...cartItem});
+	}
 
     useEffect(() => {
         if(account) {
@@ -237,10 +258,9 @@ const regularisationAssistance = (props) => {
         }
 
         props.setRequestGlobalAction(true);
-        setShowOTPModal(false);
-
         BankService.createOperation(data).then(() => {
             NotificationManager.success("L'opération a été créée avec succès!");
+            setShowAlert(true);
             window.location.reload();
         }).catch(err => {
             console.log(err);
@@ -251,17 +271,12 @@ const regularisationAssistance = (props) => {
 
     const onSubmit = () => {
 
-        if(!member || !action || !date || !reason) {
+        if(!member || !action) {
             NotificationManager.error("Le formulaire n'est pas correctement renseigné");
             return;
         }
 
         switch (action.value) {
-
-            case 'PAY_ORDER':
-                initiatePayment()
-                break;
-
             case 'INITIATE_OPERATION':
                 askForBankAuthorization()
                 break;
@@ -270,7 +285,6 @@ const regularisationAssistance = (props) => {
                 break;
         }
     }
-
 
     return (
         <RctCollapsibleCard>
@@ -323,8 +337,7 @@ const regularisationAssistance = (props) => {
                                 id="combo-box-demo"
                                 value={action}
                                 options={
-                                    getUserAssistanceTypes()
-                                    .filter(a => getUserPermissions(props.authUser).includes(a.permission) && a.regularizable)
+                                    getOldAssistanceTypes()
                                 }
                                 onChange={(__, item) => {
                                     setAction(item);
@@ -366,57 +379,6 @@ const regularisationAssistance = (props) => {
                             </FormGroup>
                         </div>
                     </>
-                )}
-                { (action?.value == 'PLACE_ORDER' || action?.value == 'BOOK_ORDER') && (
-                    <>
-                        <FormGroup className="col-md-12 col-sm-12 has-wrapper">
-                            <InputLabel className="text-left">
-                                Produits MicroCap
-                            </InputLabel>
-                            <Autocomplete
-                                value={productModel}
-                                options={productModels}
-                                id="combo-box-demo"
-                                onChange={(__, item) => {
-                                    setProductModel(item);
-                                }}
-                                getOptionLabel={(option) => `${option.label}`}
-                                renderInput={(params) => <TextField {...params} variant="outlined" />}
-                            />
-                        </FormGroup>
-                        <FormGroup className="col-md-12 col-sm-12 has-wrapper">
-                            <InputLabel className="text-left">
-                                Prestataire
-                            </InputLabel>
-                            <Autocomplete
-                                value={product}
-                                options={products}
-                                id="combo-box-demo"
-                                onChange={(__, item) => {
-                                    setProduct(item);
-                                }}
-                                getOptionLabel={(option) => `${option.seller} (${getPriceWithCurrency(option.price, option.currency)})`}
-                                renderInput={(params) => <TextField {...params} variant="outlined" />}
-                            />
-                        </FormGroup>
-                    </>
-                )}
-                { (action?.value == 'PAY_ORDER') && (
-                    <FormGroup className="col-md-12 col-sm-12 has-wrapper">
-                        <InputLabel className="text-left">
-                            Mes commandes
-                        </InputLabel>
-                        <Autocomplete
-                            value={order}
-                            options={orders.filter(o => o.paymentStatus !== 'PAID')}
-                            id="combo-box-demo"
-                            onChange={(__, item) => {
-                                setOrder(item);
-                            }}
-                            getOptionLabel={(option) => `${option.label} ${getPriceWithCurrency(option.amount, option.currency)}`}
-                            renderInput={(params) => <TextField {...params} variant="outlined" />}
-                        />
-                    </FormGroup>
                 )}
                 { action?.value == 'INITIATE_OPERATION' && (
                     <div>
@@ -492,9 +454,8 @@ const regularisationAssistance = (props) => {
                                             Bonds de versement
                                         </InputLabel>
                                         <DepositTickets 
-                                            referralCode={membership}
                                             account={account}
-                                            available={true}
+                                            referralCode={membership}
                                             updateAmount={(selectedTickets) => {
                                                 setTickets(selectedTickets)
                                                 setMinAmount(selectedTickets.reduce((amt, currentValue) => amt + currentValue.amount, 0));
@@ -567,7 +528,6 @@ const regularisationAssistance = (props) => {
                                 disabled={!member}
                                 onClick={() => {
                                     sendOtp();
-                                    // onSubmit();
                                 }}
                                 className="text-white font-weight-bold mr-20"
                             >
@@ -603,13 +563,9 @@ const regularisationAssistance = (props) => {
                     }}
                 />
             )}
+
         </RctCollapsibleCard>
     );
 };
 
-const mapStateToProps = ({ authUser }) => {
-    return { authUser: authUser.data, }
-};
-
-
-export default connect(mapStateToProps, { setRequestGlobalAction, onAddItemToCart, onClearCart })(withRouter(regularisationAssistance));
+export default connect(() => { }, { setRequestGlobalAction, onAddItemToCart, onClearCart })(withRouter(RegularisationAssist));

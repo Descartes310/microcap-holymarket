@@ -383,42 +383,50 @@ export const getUserAssistanceTypes = () => {
         {
             label: 'Activation du profile',
             value: 'ACTIVATE_PROFILE',
-            permission: 'ASSIST_ACTIVATE_PROFILE_PRIVILEGE'
+            permission: 'ASSIST_ACTIVATE_PROFILE_PRIVILEGE',
+            regularizable: false
         },
         {
             label: 'Authentifier le profile',
             value: 'AUTHENTICATE_PROFILE',
-            permission: 'ASSIST_AUTHENTICATE_PROFILE_PRIVILEGE'
+            permission: 'ASSIST_AUTHENTICATE_PROFILE_PRIVILEGE',
+            regularizable: false
         },
         {
             label: 'Effectuer une commande',
             value: 'PLACE_ORDER',
-            permission: 'ASSIST_PLACE_ORDER_PRIVILEGE'
+            permission: 'ASSIST_PLACE_ORDER_PRIVILEGE',
+            regularizable: false
         },
         {
             label: 'Fournir le dossier d\'une commande',
             value: 'ORDER_FOLDER',
-            permission: 'ASSIST_ORDER_FOLDER_PRIVILEGE'
+            permission: 'ASSIST_ORDER_FOLDER_PRIVILEGE',
+            regularizable: false
         },
         {
             label: 'Demande de paiement d\'une commande',
             value: 'PAY_ORDER',
-            permission: 'ASSIST_PAY_ORDER_PRIVILEGE'
+            permission: 'ASSIST_PAY_ORDER_PRIVILEGE',
+            regularizable: true
         },
         {
             label: 'Gérer une commande',
             value: 'MANAGE_ORDER',
-            permission: 'ASSIST_MANAGE_ORDER_PRIVILEGE'
+            permission: 'ASSIST_MANAGE_ORDER_PRIVILEGE',
+            regularizable: false
         },
         {
             label: 'Demande d\'autorisation bancaire',
             value: 'INITIATE_OPERATION',
-            permission: 'ASSIST_INITIATE_OPERATION_PRIVILEGE'
+            permission: 'ASSIST_INITIATE_OPERATION_PRIVILEGE',
+            regularizable: true
         },
         {
             label: 'Editer le dossier utilisateur',
             value: 'UPDATE_USER_FOLDER',
-            permission: 'ASSIST_UPDATE_USER_FOLDER_PRIVILEGE'
+            permission: 'ASSIST_UPDATE_USER_FOLDER_PRIVILEGE',
+            regularizable: false
         }
     ];
 }
