@@ -139,6 +139,11 @@ export const AsyncPmeProject = Loadable({
 	loading: () => <RctPageLoader />,
 });
 
+export const AsyncBroadcast = Loadable({
+	loader: () => import("Routes/custom/broadcasts"),
+	loading: () => <RctPageLoader />,
+});
+
 export {
 	AsyncThemifyIconsComponent,
 	AsyncSimpleLineIconsComponent,

@@ -7,6 +7,7 @@ import Contact from './tabs/contacts';
 import Personal from './tabs/personal';
 import accounts from './tabs/accounts';
 import { PROFILE } from "Url/frontendUrl";
+import broadcasts from './tabs/broadcasts';
 import Institutions from './tabs/institution';
 import { Redirect, Route, Switch, withRouter } from 'react-router-dom';
 
@@ -20,6 +21,7 @@ const TabContent = ({ match }) => {
                 <Route path={PROFILE.USER.CONTACT} component={Contact} />
                 <Route path={PROFILE.USER.PERSONAL} component={Personal} />
                 <Route path={PROFILE.USER.ACCOUNTS} component={accounts} />
+                <Route path={PROFILE.USER.BROADCAST} component={broadcasts} />
                 <Route path={PROFILE.USER.INSTITUTION} component={Institutions} />
                 <Route path={PROFILE.USER.BLOG} component={Blogs} />
             </Switch>

@@ -266,6 +266,12 @@ export default class Permission extends BaseEnum {
         },
         ideas: {
             "name": "PERSONNAL_CREATION_ACCESS"
+        },
+        broadcast: {
+            "name": "BROADCAST"
+        },   
+        broadcastAccess: {
+            "name": "BROADCAST_ACCESS"
         }
     };
 

@@ -23,7 +23,8 @@ class Users extends Component<any, any> {
             else if (url.includes(PROFILE.USER.ACCESS)) return 3;
             else if (url.includes(PROFILE.USER.CONTACT)) return 4;
             else if (url.includes(PROFILE.USER.BLOG)) return 5;
-            else if (url.includes(PROFILE.USER.INSTITUTION)) return 6;
+            else if (url.includes(PROFILE.USER.BROADCAST)) return 6;
+            else if (url.includes(PROFILE.USER.INSTITUTION)) return 7;
             else return 0;
         })(window.location.pathname);
 
@@ -43,7 +44,8 @@ class Users extends Component<any, any> {
                 case 3: return this.props.history.push(PROFILE.USER.ACCESS);
                 case 4: return this.props.history.push(PROFILE.USER.CONTACT);
                 case 5: return this.props.history.push(PROFILE.USER.BLOG);
-                case 6: return this.props.history.push(PROFILE.USER.INSTITUTION);
+                case 6: return this.props.history.push(PROFILE.USER.BROADCAST);
+                case 7: return this.props.history.push(PROFILE.USER.INSTITUTION);
                 default: return this.props.history.push(PROFILE.USER.PERSONAL);
             }
         }
@@ -96,6 +98,11 @@ class Users extends Component<any, any> {
                                             icon={<i className="zmdi zmdi-account" />}
                                             label={"Fil d'actualité"}
                                             disabled={!this.context.can(Permissions.accountType.blog.name, Permissions)}
+                                        />
+                                        <Tab
+                                            icon={<i className="zmdi zmdi-comment-outline" />}
+                                            label={"Diffusions"}
+                                            disabled={!this.context.can(Permissions.microcap360.broadcastAccess.name, Permissions)}
                                         />
                                         <Tab
                                             icon={<i className="zmdi zmdi-account" />}

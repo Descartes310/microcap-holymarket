@@ -19,7 +19,7 @@ import {
     AsyncProjects,
     AsyncPrevision,
     AsyncResources,
-    AsyncPmeProject,
+    AsyncBroadcast,
     AsyncSupervision,
     AsyncMarketplace,
     AsyncNotifications,
@@ -53,7 +53,7 @@ import HomePage from "Routes/custom/HomePage";
 import { onInitCart } from "Actions/CartActions";
 import { loginIntoStore } from "Actions/TokensActions";
 import { disableAppLoading } from "Actions/AppLoadingAction";
-import { PME_PROJECT } from '../../../urls/frontendUrl';
+import { BROADCAST, PME_PROJECT } from '../../../urls/frontendUrl';
 
 const Dashboard = ({ onInitCart }) => {
 
@@ -145,6 +145,12 @@ const Dashboard = ({ onInitCart }) => {
                         permissions={[]}
                         path={RESOURCES.SELF}
                         component={AsyncResources}
+                    />
+
+                    <CanRoute
+                        permissions={[]}
+                        path={BROADCAST.SELF}
+                        component={AsyncBroadcast}
                     />
 
                     <Redirect to={HOME} />

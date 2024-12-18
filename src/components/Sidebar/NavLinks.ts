@@ -16,7 +16,8 @@ import {
    joinUrlWithParams,
    joinUrlWithParamsId,
    ASSETS,
-   RESOURCES
+   RESOURCES,
+   BROADCAST
 } from 'Url/frontendUrl';
 
 export type MenuItem = {
@@ -447,6 +448,15 @@ export default [
             "child_routes": null
          },
       ],
+   },
+   {
+      "path": BROADCAST.MINE.LIST,
+      "menu_title": "Liste de diffusions",
+      "menu_icon": "zmdi zmdi-comment-outline",
+      "new_item": false,
+      "child_routes": null,
+      "profiles": null,
+      "permissions": [Permission.microcap360.broadcast.name]
    },
    {
       "menu_title": "Projets",

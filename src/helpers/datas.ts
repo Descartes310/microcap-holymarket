@@ -743,3 +743,25 @@ export const bookingAdvantageTargets = () => {
 export const getBookingAdvantageTargetLabel = (value) => {
     return bookingAdvantageTargets().find(d => d.value == value)?.label
 }
+
+
+export const broadcastTypes = () => {
+    return [
+        {
+            label: "Diffusion", 
+            value: 'MESSAGE'
+        },
+        // {
+        //     label: "Système", 
+        //     value: 'SYSTEM'
+        // },
+        // {
+        //     label: "Organisation", 
+        //     value: 'ORGANIZATION'
+        // }
+    ];
+}
+
+export const getBroadcastTypesLabel = (value) => {
+    return broadcastTypes().find(d => d.value == value)?.label
+}

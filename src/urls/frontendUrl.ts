@@ -137,6 +137,21 @@ export const FUNDING = {
     }
 } as const;
 
+export const BROADCAST = {
+    SELF: '/broadcasts',
+    MINE: {
+        SELF: '/broadcasts/mines',
+        LIST: '/broadcasts/mines/list',
+        CREATE: '/broadcasts/mines/create',
+        UPDATE: '/broadcasts/mines/:id/update',
+        MEMBERS: '/broadcasts/mines/:id/members'
+    },
+    ALL: {
+        SELF: '/broadcasts/members',
+        LIST: '/broadcasts/members/list'
+    }
+} as const;
+
 export const ASSETS = {
     SELF: '/assets',
     ITEM: {
@@ -372,6 +387,7 @@ export const PROFILE = {
         PERSONAL: "/profiles/users/personal",
         INSTITUTION: "/profiles/users/institutions",
         ACCOUNTS: "/profiles/users/account",
+        BROADCAST: "/profiles/users/broadcasts",
         BLOG: "/profiles/users/blog",
     },
     ASSISTANCE: {
