@@ -193,4 +193,8 @@ export default class UserService {
         return makeRequest('post', Routes.CREATE_FILE_TRANSCRIPTION(reference), data);
     }
 
+    static askForFileAuthentification(reference: string): Promise<any> {
+        return makeRequest('post', Routes.ASK_FILE_AUTHENTIFICATION(reference), {});
+    }
+
 }

@@ -2,25 +2,37 @@ import QRCode from "react-qr-code";
 import { connect } from 'react-redux';
 import UserService from "Services/users";
 import BankService from "Services/banks";
-import { Button } from "@material-ui/core";
+import Button from '@material-ui/core/Button';
 import TerritoryType from "Enums/Territories";
 import { withRouter } from "react-router-dom";
 import { getFilePath } from "Helpers/helpers";
 import {setRequestGlobalAction} from 'Actions';
 import React, { useEffect, useState } from 'react';
 import TerritoryService from "Services/territories";
+import ConfirmBox from "Components/dialog/ConfirmBox";
 import CreateFileModal from '../components/CreateFile';
+import { NotificationManager } from 'react-notifications';
 import TranscriptionBox from '../components/TranscriptFile';
+import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 
 const Card = (props) => {
 
     const [user, setUser] = useState(null);
     const [files, setFiles] = useState([]);
     const [countries, setCountries] = useState([]);
+    const [dropdownOpen, setDropdownOpen] = useState([]);
     const [selectedFile, setSelectedFile] = useState(null);
     const [subscriptions, setSubscriptions] = useState([]);
     const [showCreateFile, setShowCreateFile] = useState(false);
+    const [showConfirmAuthBox, setShowConfirmAuthBox] = useState(false);
     const [showTranscriptionBox, setShowTranscriptionBox] = useState(false);
+
+
+    const onToggleButton = (key) => {
+        let currentArray = dropdownOpen;
+        currentArray[key] = !currentArray[key];
+        setDropdownOpen([...currentArray]);
+    }
 
     useEffect(() => {
         getMineSubscriptions();
@@ -73,6 +85,25 @@ const Card = (props) => {
         }).finally(() => {
             props.setRequestGlobalAction(false);
         });
+    }
+
+    const askForFileAuthentification = () => {
+        if(!selectedFile) {
+            NotificationManager.error("Veuillez bien remplir le formulaire");
+            return
+        }
+
+        props.setRequestGlobalAction(true);
+        UserService.askForFileAuthentification(selectedFile.reference)
+        .then(() => {
+            NotificationManager.success("La demande a été envoyée avec succès");
+            setSelectedFile(null);
+            setShowConfirmAuthBox(false);
+        })
+        .catch(() => {
+            NotificationManager.error("Une erreur est survenue, veuillez reessayer plus tard");
+        })
+        .finally(() => props.setRequestGlobalAction(false))
     }
 
     return (
@@ -339,7 +370,19 @@ const Card = (props) => {
                 ))
             } */}
 
-            <h1 style={{ marginTop: '5%' }} id="folder">Dossier utilisateur</h1>
+            <div className="row justify-content-between align-items-end">
+                <h1 style={{ marginTop: '5%' }} id="folder">Dossier utilisateur</h1>
+                {/* <Button
+                    color="primary"
+                    variant="contained"
+                    className="text-white font-weight-bold"
+                    style={{height: 'fit-content'}}
+                    onClick={() => {
+                    }}
+                >
+                    Demander à authentificer mon compte
+                </Button> */}
+            </div>
 
             <div className="table-responsive mt-30">
                 <table className="table table-bordered table-middle mb-0">
@@ -353,7 +396,7 @@ const Card = (props) => {
                         </tr>
                     </thead>
                     <tbody>
-                        { files.map(file => (
+                        { files.map((file, key) => (
                             <tr>
                                 <td>
                                     <div className="media">
@@ -397,34 +440,37 @@ const Card = (props) => {
                                     </div>
                                 </td>
                                 <td>
-                                    <div className="media">
-                                        <div className="media-body pt-10">
-                                            <Button
-                                                color="primary"
-                                                variant="contained"
-                                                className="text-white font-weight-bold"
+                                    <ButtonDropdown isOpen={dropdownOpen[key]} toggle={() => onToggleButton(key)} className="mr-3">
+                                        <DropdownToggle caret color='primary' style={{ color: 'white', fontSize: '0.9rem' }}>
+                                            Actions
+                                        </DropdownToggle>
+                                        <DropdownMenu>
+                                            <DropdownItem style={{ color: 'black' }}
                                                 onClick={() => {
                                                     setSelectedFile(file);
                                                     setShowCreateFile(true);
                                                 }}
                                             >
                                                 Fournir la pièce
-                                            </Button>
-                                            { file.value && (
-                                                <Button
-                                                    color="primary"
-                                                    variant="contained"
-                                                    className="text-white font-weight-bold ml-10"
-                                                    onClick={() => {
+                                            </DropdownItem>
+                                            <DropdownItem style={{ color: 'black' }} onClick={() => {
+                                                    setSelectedFile(file);
+                                                    setShowTranscriptionBox(true);
+                                                }}
+                                            >
+                                                Transcrire
+                                            </DropdownItem>
+                                            { (file.value && !file.status)&& (
+                                                <DropdownItem style={{ color: 'black' }} onClick={() => {
                                                         setSelectedFile(file);
-                                                        setShowTranscriptionBox(true);
-                                                    }}
-                                                >
-                                                    Transcrire
-                                                </Button>
+                                                        setShowConfirmAuthBox(true);
+                                                }}>
+                                                    Demander l'authentification
+                                                </DropdownItem>
                                             )}
-                                        </div>
-                                    </div>
+                                        </DropdownMenu>
+                                    </ButtonDropdown>
+                                    
                                 </td>
                             </tr>
                         ))}
@@ -450,6 +496,18 @@ const Card = (props) => {
                         _getUserFiles();
                     }}
                     file={selectedFile} 
+                />
+            )}
+
+            { showConfirmAuthBox && selectedFile && (
+                <ConfirmBox
+                    show={showConfirmAuthBox}
+                    rightButtonOnClick={() => askForFileAuthentification()}
+                    leftButtonOnClick={() => {
+                        setShowConfirmAuthBox(false);
+                        setSelectedFile(null);
+                    }}
+                    message={'Etes vous sure de vouloir demander l\'authentification ?'}
                 />
             )}
         </div>

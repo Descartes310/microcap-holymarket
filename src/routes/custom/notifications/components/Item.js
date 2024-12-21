@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
 import { getFilePath } from "Helpers/helpers";
+import { withRouter } from "react-router-dom";
 import ListItem from "@material-ui/core/ListItem";
 import NotificationType from "Enums/NotificationType";
 import NotificationService from "Services/notifications";
+import { joinUrlWithParamsId, SUPERVISION } from 'Url/frontendUrl';
 import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 
 class Item extends Component {
@@ -71,6 +73,9 @@ class Item extends Component {
                                 { (notification.type === NotificationType.DEDICATED_GRANT_OFFER && notification.treatedAt == null) && (
                                     <DropdownItem onClick={() => onInitDealClick()}>Initier un deal</DropdownItem>
                                 )}
+                                { (notification.type === NotificationType.FILE_AUTHENTIFICATION && notification.treatedAt == null) && (
+                                    <DropdownItem onClick={() => this.props.history.push(joinUrlWithParamsId(SUPERVISION.USERS.DETAILS, notification.details.find(nd => nd.type === "USER_REFERENCE")?.value))}>Consulter la pièce</DropdownItem>
+                                )}
                                 { (notification.type === NotificationType.INJECTION_REQUEST && notification.treatedAt == null) && (
                                     <>
                                         {notification.details.find(nd => nd.type === "INJECTION_PROOF")?.value && (
@@ -103,4 +108,4 @@ class Item extends Component {
     }
 }
 
-export default Item;
+export default withRouter(Item);
