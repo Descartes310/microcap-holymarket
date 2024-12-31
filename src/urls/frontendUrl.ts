@@ -296,6 +296,7 @@ export const GROUP = {
             SELF: '/groups/administration/members',
             LIST: '/groups/administration/members/list',
             CREATE: '/groups/administration/members/create',
+            UPDATE: '/groups/administration/members/:id/update',
             FOLDER: '/groups/administration/members/:id/folders'
         },
         REQUEST: {
@@ -359,6 +360,7 @@ export const GROUP = {
             SELF: '/groups/administration/posts',
             LIST: '/groups/administration/posts/list',
             CREATE: '/groups/administration/posts/create',
+            UPDATE: '/groups/administration/posts/:id/update',
             MOTIVATION: {
                 LIST: '/groups/administration/posts/:id/motivations/list',
                 CREATE: '/groups/administration/posts/:id/motivations/create',

@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
-import { GROUP } from 'Url/frontendUrl';
+import { GROUP, joinUrlWithParamsId } from 'Url/frontendUrl';
 import GroupService from 'Services/groups';
+import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
 import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
@@ -51,6 +52,7 @@ const Members = (props) => {
                                     <thead>
                                         <tr>
                                             <th className="fw-bold">Nom du membre</th>
+                                            <th className="fw-bold">Poste</th>
                                             <th className="fw-bold">Email</th>
                                             <th className="fw-bold">Status</th>
                                             <th className="fw-bold">Date d'ajout</th>
@@ -64,6 +66,13 @@ const Members = (props) => {
                                                     <div className="media">
                                                         <div className="media-body pt-10">
                                                             <h4 className="m-0 fw-bold text-dark">{item.userName}</h4>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="media">
+                                                        <div className="media-body pt-10">
+                                                            <h4 className="m-0 fw-bold text-dark">{item.groupPostMotivation?.groupPost.label}</h4>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -91,11 +100,14 @@ const Members = (props) => {
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <div className="media">
-                                                        <div className="media-body pt-10">
-                                                            <h4 className="m-0 text-dark">-</h4>
-                                                        </div>
-                                                    </div>
+                                                    <Button
+                                                        color="primary"
+                                                        variant="contained"
+                                                        className="text-white font-weight-bold"
+                                                        onClick={() => props.history.push(joinUrlWithParamsId(GROUP.ADMINISTRATION.MEMBER.UPDATE, item.reference))}
+                                                    >
+                                                        Editer
+                                                    </Button>
                                                 </td>
                                             </tr>
                                         ))}

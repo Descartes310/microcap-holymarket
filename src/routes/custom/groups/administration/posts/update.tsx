@@ -14,21 +14,43 @@ import {Form, FormGroup, Input as InputStrap} from 'reactstrap';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
 
-const Create = (props) => {
+const Update = (props) => {
 
     const [roles, setRoles] = useState([]);
     const [role, setRole] = useState(null);
     const [label, setLabel] = useState('');
+    const [groupPost, setGroupPost] = useState(null);
     const [description, setDescription] = useState('');
 
     useEffect(() => {
         getRoles();
+        findGroupPost();
     }, []);
+
+    useEffect(() => {
+        if(roles.length > 0 && groupPost != null) {
+            setRole(roles.find(r => r.label == groupPost.roleName));
+        }
+    }, [roles, groupPost]);
 
     const getRoles = () => {
         props.setRequestGlobalAction(true),
         RoleService.getRoles({type: 'GROUP_MEMBER'})
         .then(response => setRoles(response))
+        .finally(() => props.setRequestGlobalAction(false))
+    }
+
+    const findGroupPost = () => {
+        props.setRequestGlobalAction(true),
+        GroupService.findGroupPost(props.match.params.id)
+        .then(response => {
+            setGroupPost(response);
+            setLabel(response.label);
+            setDescription(response.description);
+        }).catch(() => {
+            NotificationManager.error("Poste introuvable");
+            props.history.push(GROUP.ADMINISTRATION.POST.LIST)
+        })
         .finally(() => props.setRequestGlobalAction(false))
     }
 
@@ -50,12 +72,12 @@ const Create = (props) => {
             data.description = description;
         }
 
-        GroupService.createGroupPost(data).then(() => {
-            NotificationManager.success("Le poste a été créé avec succès");
+        GroupService.updateGroupPost(props.match.params.id, data).then(() => {
+            NotificationManager.success("Le poste a été édité avec succès");
             props.history.push(GROUP.ADMINISTRATION.POST.LIST);
         }).catch((err) => {
             console.log(err);
-            NotificationManager.error("Une erreur est survenu lors de la création du poste");
+            NotificationManager.error("Une erreur est survenu lors de l'édition du poste");
         }).finally(() => {
             props.setRequestGlobalAction(false);
         })
@@ -65,7 +87,7 @@ const Create = (props) => {
     return (
         <>
             <PageTitleBar
-                title={"Création de poste"}
+                title={"Edition de poste"}
             />
             <RctCollapsibleCard>
                 <Form onSubmit={onSubmit}>
@@ -121,7 +143,7 @@ const Create = (props) => {
                             onClick={onSubmit}
                             className="text-white font-weight-bold"
                         >
-                            Ajouter
+                            Enregistrer
                         </Button>
                     </FormGroup>
                 </Form>
@@ -130,4 +152,4 @@ const Create = (props) => {
     );
 };
 
-export default connect(() => {}, { setRequestGlobalAction })(withRouter(Create));
+export default connect(() => {}, { setRequestGlobalAction })(withRouter(Update));

@@ -36,8 +36,12 @@ export default class GroupService {
         return makeRequest('get', Routes.FIND_GROUP_TYPE(reference));
     }
 
-    static addMemberToRole(data: any): Promise<any> {
+    static addMemberToGroup(data: any): Promise<any> {
         return makeRequest('post', Routes.ADD_MEMBER_TO_GROUP, data);
+    }
+
+    static updateMemberGroup(reference: string, data: any): Promise<any> {
+        return makeRequest('put', Routes.UPDATE_MEMBER_GROUP(reference), data);
     }
 
     static getGroupMembers(data: any = {}): Promise<any> {
@@ -88,6 +92,14 @@ export default class GroupService {
         return makeRequest('post', Routes.CREATE_GROUP_POST, data);
     }
 
+    static updateGroupPost(reference, data): Promise<any> {
+        return makeRequest('put', Routes.UPDATE_GROUP_POST(reference), data);
+    }
+
+    static findGroupPost(reference): Promise<any> {
+        return makeRequest('get', Routes.FIND_GROUP_POST(reference));
+    }
+
     static createGroupPostMotivation(data): Promise<any> {
         return makeRequest('post', Routes.CREATE_GROUP_POST_MOTIVATION, data);
     }
@@ -98,6 +110,10 @@ export default class GroupService {
 
     static findGroupMember(id: number): Promise<any> {
         return makeRequest('get', Routes.FIND_GROUP_MEMBER(id));
+    }
+
+    static findGroupMemberByReference(reference: string): Promise<any> {
+        return makeRequest('get', Routes.FIND_GROUP_MEMBER_BY_REFERENCE(reference));
     }
 
     static getBlogTopics(isParent = false): Promise<any> {

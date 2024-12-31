@@ -14,7 +14,9 @@ export const FIND_GROUP_TYPE = (reference) => `api/socialnetworks/groups/types/f
 export const GET_GROUP_MEMBERS = 'api/socialnetworks/groups/members';
 export const ADD_MEMBER_TO_GROUP = 'api/socialnetworks/groups/members';
 export const FIND_GROUP_MEMBER = (id) => `api/socialnetworks/groups/members/${id}`;
+export const UPDATE_MEMBER_GROUP = (id) => `api/socialnetworks/groups/members/${id}`;
 export const ADD_FILE_TO_MEMBER = (id) => `api/socialnetworks/groups/members/${id}/files`;
+export const FIND_GROUP_MEMBER_BY_REFERENCE = (id) => `api/socialnetworks/groups/members/find/${id}`;
 
 export const GET_COMMUNITY_DATAS = `api/socialnetworks/groups/self`;
 export const UPDATE_GROUP_DETAILS = `api/socialnetworks/groups/self/details`;
@@ -27,6 +29,8 @@ export const RESPOND_REQUEST_FROM_GROUP = (id) => `api/socialnetworks/groups/mem
 
 export const GET_GROUP_POSTS = "api/socialnetworks/groups/posts";
 export const CREATE_GROUP_POST = "api/socialnetworks/groups/posts";
+export const FIND_GROUP_POST = (id) => `api/socialnetworks/groups/posts/${id}`;
+export const UPDATE_GROUP_POST = (id) => `api/socialnetworks/groups/posts/${id}`;
 export const GET_GROUP_POST_MOTIVATIONS = `api/socialnetworks/groups/posts/motivations`;
 export const CREATE_GROUP_POST_MOTIVATION = `api/socialnetworks/groups/posts/motivations`;
 

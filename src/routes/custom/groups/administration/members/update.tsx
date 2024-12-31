@@ -16,24 +16,44 @@ import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { Form, FormGroup, Input as InputStrap } from 'reactstrap';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
 
-const Create = (props) => {
+const Update = (props) => {
 
     const [posts, setPosts] = useState([]);
     const [post, setPost] = useState(null);
-    const [member, setMember] = useState(null);
-    const [reference, setReference] = useState('');
     const [motivations, setMotivations] = useState([]);
     const [motivation, setMotivation] = useState(null);
+    const [groupMember, setGroupMember] = useState(null);
 
     useEffect(() => {
         getPosts();
+        getGroupMember();
     }, []);
 
     useEffect(() => {
         setMotivations([]);
-        if(post)
+        if(post) {
             getPostMotivations(post.id);
+        }
     }, [post]);
+
+    useEffect(() => {
+        if(posts.length > 0 && groupMember != null) {
+            setPost(posts.find(p => p.id === groupMember.groupPostMotivation.groupPost.id));
+        }
+    }, [posts, groupMember]);
+
+    const getGroupMember = () => {
+        props.setRequestGlobalAction(true),
+        GroupService.findGroupMemberByReference(props.match.params.id)
+            .then(response => {
+                setGroupMember(response);
+            })
+            .catch(err => {
+                console.log(err);
+                props.history.goBack();
+            })
+            .finally(() => props.setRequestGlobalAction(false))
+    }
 
     const getPosts = () => {
         props.setRequestGlobalAction(true),
@@ -45,40 +65,30 @@ const Create = (props) => {
     const getPostMotivations = (id) => {
         props.setRequestGlobalAction(true);
         GroupService.getGroupPostMotivations(id)
-        .then(response => setMotivations(response))
+        .then(response => {
+            setMotivations(response);
+            if(groupMember != null) {
+                setMotivation(response.find(m => m.id === groupMember.groupPostMotivation.id));
+            }
+        })
         .finally(() => props.setRequestGlobalAction(false))
     }
 
-    const findUserByReference = () => {
-        if (!reference)
-            return;
-        props.setRequestGlobalAction(true),
-            UserService.findUserByReference(reference)
-                .then(response => setMember(response))
-                .catch(err => {
-                    setMember(null);
-                    console.log(err);
-                    NotificationManager.error("Reference incorrecte");
-                })
-                .finally(() => props.setRequestGlobalAction(false))
-    }
-
     const onSubmit = () => {
-        if(!reference || !motivation) {
+        if(!groupMember || !motivation) {
             return;
         }
 
         let data: any = {
-            userReference: reference,
             post_motivation_id: motivation.id,
         }
             
         props.setRequestGlobalAction(true);
-        GroupService.addMemberToGroup(data).then(() => {
-            NotificationManager.success("Le membre a été créé avec succès");
+        GroupService.updateMemberGroup(props.match.params.id, data).then(() => {
+            NotificationManager.success("Le membre a été édité avec succès");
             props.history.push(GROUP.ADMINISTRATION.MEMBER.LIST);
         }).catch((err) => {
-            NotificationManager.error("Vous devez être authentifié");
+            NotificationManager.error("Une erreur est survenue");
         }).finally(() => {
             props.setRequestGlobalAction(false);
         })
@@ -87,68 +97,10 @@ const Create = (props) => {
     return (
         <>
             <PageTitleBar
-                title={"Ajout de membre"}
+                title={"Edition de membre"}
             />
             <RctCollapsibleCard>
                 <Form onSubmit={onSubmit}>
-                    <FormGroup className="has-wrapper">
-                        <InputLabel className="text-left" htmlFor="reference">
-                            Reference utilisateur
-                        </InputLabel>
-                        <InputStrap
-                            required
-                            id="reference"
-                            type="text"
-                            name='reference'
-                            className="input-lg"
-                            value={reference}
-                            onChange={(e) => setReference(e.target.value)}
-                        />
-                    </FormGroup>
-
-                    {member && (
-                        <>
-                            <FormGroup className="has-wrapper">
-                                <InputStrap
-                                    disabled
-                                    className="input-lg"
-                                    value={member.userName}
-                                />
-                            </FormGroup>
-                            <FormGroup className="has-wrapper">
-                                <InputStrap
-                                    disabled
-                                    className="input-lg"
-                                    value={member.email}
-                                />
-                            </FormGroup>
-                            <FormGroup className="has-wrapper">
-                                <InputStrap
-                                    disabled
-                                    className="input-lg"
-                                    value={getReferralTypeLabel(member.referralType)}
-                                />
-                            </FormGroup>
-                        </>
-                    )}
-
-                    {/* <div className="col-md-12 col-sm-12 has-wrapper mb-30">
-                        <InputLabel className="text-left">
-                            Roles du membre
-                        </InputLabel>
-                        <Autocomplete
-                            multiple
-                            options={roles}
-                            id="combo-box-demo"
-                            value={selectedRoles}
-                            onChange={(__, items) => {
-                                setSelectedRoles(items);
-                            }}
-                            getOptionLabel={(option) => option.label}
-                            renderInput={(params) => <TextField {...params} variant="outlined" />}
-                        />
-                    </div> */}
-
                     <div className="col-md-12 col-sm-12 has-wrapper mb-30">
                         <InputLabel className="text-left">
                             Poste du membre
@@ -185,15 +137,6 @@ const Create = (props) => {
                         <Button
                             color="primary"
                             variant="contained"
-                            disabled={!reference}
-                            onClick={() => findUserByReference()}
-                            className="text-white font-weight-bold mr-20 bg-blue"
-                        >
-                            Vérifier l'utilisateur
-                        </Button>
-                        <Button
-                            color="primary"
-                            variant="contained"
                             onClick={onSubmit}
                             className="text-white font-weight-bold"
                         >
@@ -210,4 +153,4 @@ const mapStateToProps = ({ authUser }) => {
     return { authUser: authUser.data }
 };
 
-export default connect(mapStateToProps, { setRequestGlobalAction })(withRouter(Create));
+export default connect(mapStateToProps, { setRequestGlobalAction })(withRouter(Update));

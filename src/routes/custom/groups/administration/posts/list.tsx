@@ -51,7 +51,8 @@ const List = (props) => {
                                     <thead>
                                         <tr>
                                             <th className="fw-bold">Désignation</th>
-                                            <th className="fw-bold">Description</th>
+                                            <th className="fw-bold">Désignation</th>
+                                            <th className="fw-bold">Role</th>
                                             <th className="fw-bold">Actions</th>
                                         </tr>
                                     </thead>
@@ -73,10 +74,26 @@ const List = (props) => {
                                                     </div>
                                                 </td>
                                                 <td>
+                                                    <div className="media">
+                                                        <div className="media-body pt-10">
+                                                            <h4 className="m-0 text-dark">{item.roleName}</h4>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
                                                     <Button
                                                         color="primary"
                                                         variant="contained"
                                                         className="text-white font-weight-bold"
+                                                        onClick={() => props.history.push(joinUrlWithParamsId(GROUP.ADMINISTRATION.POST.UPDATE, item.reference))}
+                                                    >
+                                                        Editer
+                                                    </Button>
+
+                                                    <Button
+                                                        color="primary"
+                                                        variant="contained"
+                                                        className="text-white font-weight-bold ml-5"
                                                         onClick={() => props.history.push(joinUrlWithParamsId(GROUP.ADMINISTRATION.POST.MOTIVATION.LIST, item.id))}
                                                     >
                                                         Motivations

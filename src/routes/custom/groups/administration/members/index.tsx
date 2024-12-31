@@ -1,6 +1,7 @@
 import React from 'react';
 import List from './list';
 import Create from './create';
+import Update from './update';
 import Folder from './folder';
 import {connect} from "react-redux";
 import {injectIntl} from "react-intl";
@@ -16,6 +17,7 @@ const GroupAdministrationMember = (props) => {
                     <Redirect exact from={`${match.url}/`} to={GROUP.ADMINISTRATION.MEMBER.LIST} />
                     <Route path={GROUP.ADMINISTRATION.MEMBER.LIST} component={List} />
                     <Route path={GROUP.ADMINISTRATION.MEMBER.CREATE} component={Create} />
+                    <Route path={GROUP.ADMINISTRATION.MEMBER.UPDATE} component={Update} />
                     <Route path={GROUP.ADMINISTRATION.MEMBER.FOLDER} component={Folder} />
                 </Switch>
             </>
