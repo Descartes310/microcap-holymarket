@@ -3,6 +3,8 @@ import Assist from './assist';
 import { connect } from "react-redux";
 import Creation from './createAccount';
 import { PROFILE } from "Url/frontendUrl";
+import CanRoute from "Components/CanRoute";
+import Permission from 'Enums/Permissions';
 import { Redirect, Route, Switch, withRouter } from 'react-router-dom';
 
 const TabContent = ({ match }) => {
@@ -11,7 +13,7 @@ const TabContent = ({ match }) => {
             <Switch>
                 <Redirect exact from={`${match.url}/`} to={PROFILE.ASSISTANCE.USER} />
                 <Route path={PROFILE.ASSISTANCE.USER} component={Assist} />
-                <Route path={PROFILE.ASSISTANCE.CREATE_ACCOUNT} component={Creation} />
+                <CanRoute permissions={[Permission.general.assist.createAccount.name]} path={PROFILE.ASSISTANCE.CREATE_ACCOUNT} component={Creation} />
             </Switch>
         </div>
     )

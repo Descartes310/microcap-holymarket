@@ -787,7 +787,7 @@ export default [
             "menu_title": "Code reservations",
             "new_item": false,
             "path": MARKETPLACE.STORE.BOOKING.LIST,
-            "permissions": [Permission.accountType.assistance.name, Permission.marketplace.store.product.name],
+            "permissions": [Permission.marketplace.store.product.name],
             "profiles": ['GROUP'],
             "child_routes": null
          },
@@ -885,23 +885,15 @@ export default [
             "menu_title": "Souscription",
             "new_item": false,
             "path": BANK.SUBSCRIPTION.SELF,
-            "permissions": null,
             "profiles": ['PROVIDER_COUNTER'],
-            "child_routes": null
+            "child_routes": null,
+            "permissions": [Permission.bank.counter.subscription.name],
          },
-         // {
-         //    "menu_title": "Assistance",
-         //    "new_item": false,
-         //    "path": BANK.OPERATION.ASSISTANCE,
-         //    "permissions": null,
-         //    "profiles": ['PROVIDER_COUNTER'],
-         //    "child_routes": null
-         // },
          {
             "menu_title": "Opérations",
             "new_item": false,
             "path": BANK.OPERATION.CREATE,
-            "permissions": null,
+            "permissions": [Permission.general.operation.name],
             "profiles": ['PROVIDER_COUNTER'],
             "child_routes": null
          },
@@ -909,7 +901,7 @@ export default [
             "menu_title": "Opérations",
             "new_item": false,
             "path": BANK.OPERATION.BANK.LIQUIDATION,
-            "permissions": null,
+            "permissions": [Permission.general.operation.name],
             "profiles": ['OPERATOR'],
             "child_routes": null
          },
@@ -917,7 +909,7 @@ export default [
             "menu_title": "Opérations",
             "new_item": false,
             "path": BANK.OPERATION.CASHDESK.LIST,
-            "permissions": null,
+            "permissions": [Permission.general.operation.name],
             "profiles": ['PROVIDER_CASHDESK'],
             "child_routes": null
          },
@@ -933,7 +925,7 @@ export default [
             "menu_title": "Opérations",
             "new_item": false,
             "path": BANK.OPERATION.PSGAV.LIST,
-            "permissions": null,
+            "permissions": [Permission.general.operation.name],
             "profiles": ['PROVIDER_INTERMEDIARY'],
             "child_routes": null
          },
@@ -941,7 +933,7 @@ export default [
             "menu_title": "Opérations",
             "new_item": false,
             "path": BANK.OPERATION.LIST,
-            "permissions": null,
+            "permissions": [Permission.general.operation.name],
             "profiles": ['PROVIDER_AGENT'],
             "child_routes": null
          },
@@ -957,7 +949,7 @@ export default [
             "menu_title": "Recharges",
             "new_item": false,
             "path": BANK.CHARGE.INTERMEDIARY.REQUEST.SELF,
-            "permissions": null,
+            "permissions": [Permission.general.charge.name],
             "profiles": ['PROVIDER_INTERMEDIARY'],
             "child_routes": null
          },

@@ -38,7 +38,7 @@ const Update = (props) => {
 
     useEffect(() => {
         if(posts.length > 0 && groupMember != null) {
-            setPost(posts.find(p => p.id === groupMember.groupPostMotivation.groupPost.id));
+            setPost(posts.find(p => p.id === groupMember.groupPostMotivation?.groupPost?.id));
         }
     }, [posts, groupMember]);
 
@@ -88,7 +88,7 @@ const Update = (props) => {
             NotificationManager.success("Le membre a été édité avec succès");
             props.history.push(GROUP.ADMINISTRATION.MEMBER.LIST);
         }).catch((err) => {
-            NotificationManager.error("Une erreur est survenue");
+            NotificationManager.error("Le poste n'a pas de rôle associé");
         }).finally(() => {
             props.setRequestGlobalAction(false);
         })

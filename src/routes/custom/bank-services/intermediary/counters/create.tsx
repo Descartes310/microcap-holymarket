@@ -4,6 +4,7 @@ import UserService from 'Services/users';
 import BankService from 'Services/banks';
 import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
+import UserSelect from 'Components/UserSelect';
 import { setRequestGlobalAction } from 'Actions';
 import React, { useState, useEffect } from 'react';
 import TextField from '@material-ui/core/TextField';
@@ -22,8 +23,6 @@ const Create = (props) => {
     const [name, setName] = useState(null);
     const [party, setParty] = useState(null);
     const [parties, setParties] = useState([]);
-    const [counters, setCounters] = useState([]);
-    const [counter, setCounter] = useState(null);
     const [member, setMember] = useState(null);
     const [membership, setMembership] = useState(null);
     const [paymentMethod, setPaymentMethod] = useState(null); 
@@ -34,41 +33,6 @@ const Create = (props) => {
             getParties();
         }
     }, []);
-
-    useEffect(() => {
-        if(party) {
-            getAgentCounters();
-        } else {
-            setCounter(null);
-            setCounters([]);
-        }
-    }, [party])
-
-    const findUserByMembership = () => {
-        props.setRequestGlobalAction(true);
-        UserService.findUserByReference(membership)
-        .then(response => {
-            if(response.referralType === 'PERSON' || 
-                (props.authUser.referralTypes.includes('PROVIDER_INTERMEDIARY') && props.authUser.referralId === response.referralCode))
-                setMember(response);
-            else 
-                NotificationManager.error("Uniquement les personnes physiques sont autorisées");
-        })
-        .catch((err) => {
-            console.log(err);
-            NotificationManager.error("Ce numéro utilisateur est inexistant");
-        })
-        .finally(() => {
-            props.setRequestGlobalAction(false);
-        })
-    }
-
-    const getAgentCounters = () => {
-        props.setRequestGlobalAction(true),
-        BankService.getAgentCounters({party_reference: party.reference})
-        .then(response => setCounters(response))
-        .finally(() => props.setRequestGlobalAction(false))
-    }
 
     const getParties = () => {
         props.setRequestGlobalAction(true),
@@ -120,47 +84,10 @@ const Create = (props) => {
         <>
             <RctCollapsibleCard>
                 <Form onSubmit={onSubmit}>
-                    
-                    <FormGroup className="has-wrapper">
-                        <InputLabel className="text-left" htmlFor="membership">
-                            Numéro utilisateur
-                        </InputLabel>
-                        <InputStrap
-                            required
-                            type="text"
-                            id="membership"
-                            name='membership'
-                            value={membership}
-                            className="input-lg"
-                            onChange={(e) => setMembership(e.target.value)}
-                        />
-                    </FormGroup>
-
-                    {member && (
-                        <div className="row">
-                            <FormGroup className="col-md-4 col-sm-12 has-wrapper">
-                                <InputStrap
-                                    disabled
-                                    className="input-lg"
-                                    value={member.userName}
-                                />
-                            </FormGroup>
-                            <FormGroup className="col-md-4 col-sm-12 has-wrapper">
-                                <InputStrap
-                                    disabled
-                                    className="input-lg"
-                                    value={member.email}
-                                />
-                            </FormGroup>
-                            <FormGroup className="col-md-4 col-sm-12 has-wrapper">
-                                <InputStrap
-                                    disabled
-                                    className="input-lg"
-                                    value={getReferralTypeLabel(member.referralType)}
-                                />
-                            </FormGroup>
-                        </div>
-                    )}
+                    <UserSelect isSelect={true} label={'Sélectionner un utilisateur'} onChange={(_, user) => {
+                        setMember(user);
+                        setMembership(user.referralId)
+                    }}/>
 
                     <FormGroup className="has-wrapper">
                         <InputLabel className="text-left" htmlFor="name">
@@ -245,15 +172,6 @@ const Create = (props) => {
                     </div>
 
                     <FormGroup>
-                        <Button
-                            color="primary"
-                            variant="contained"
-                            disabled={!membership}
-                            onClick={() => findUserByMembership()}
-                            className="text-white font-weight-bold mr-20 bg-blue"
-                        >
-                            Vérifier l'utilisateur
-                        </Button>
                         <Button
                             color="primary"
                             variant="contained"

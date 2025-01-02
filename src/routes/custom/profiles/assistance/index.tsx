@@ -63,6 +63,7 @@ class UserAssistance extends Component<any, any> {
                                         <Tab
                                             icon={<i className="zmdi zmdi-account" />}
                                             label={"Création compte"}
+                                            disabled={!this.context.can(Permissions.general.assist.createAccount.name, Permissions)}
                                         />
                                     </Tabs>
                                 </div>

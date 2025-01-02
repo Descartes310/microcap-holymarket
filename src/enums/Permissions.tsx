@@ -337,13 +337,18 @@ export default class Permission extends BaseEnum {
             "name": "COUNTER_MANAGEMENT"
         },
         operation: {
-            "name": "OPERATION_MANAGEMENT"
+            "name": "MANAGE_OPERATION"
         },
         charge: {
             "name": "CHARGE_MANAGEMENT"
         },
         account: {
             "name": "ACCOUNT_MANAGEMENT"
+        },
+        assist: {
+            createAccount: {
+                "name": "ASSIST_CREATE_USER_PRIVILEGE"
+            }
         }
     }
 

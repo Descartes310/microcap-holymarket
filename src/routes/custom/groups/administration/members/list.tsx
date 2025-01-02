@@ -53,7 +53,6 @@ const Members = (props) => {
                                         <tr>
                                             <th className="fw-bold">Nom du membre</th>
                                             <th className="fw-bold">Poste</th>
-                                            <th className="fw-bold">Email</th>
                                             <th className="fw-bold">Status</th>
                                             <th className="fw-bold">Date d'ajout</th>
                                             <th className="fw-bold">Action</th>
@@ -73,13 +72,6 @@ const Members = (props) => {
                                                     <div className="media">
                                                         <div className="media-body pt-10">
                                                             <h4 className="m-0 fw-bold text-dark">{item.groupPostMotivation?.groupPost.label}</h4>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div className="media">
-                                                        <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{item.email}</h4>
                                                         </div>
                                                     </div>
                                                 </td>
