@@ -197,4 +197,16 @@ export default class UserService {
         return makeRequest('post', Routes.ASK_FILE_AUTHENTIFICATION(reference), {});
     }
 
+    static createAccessProcuration(data: any): Promise<any> {
+        return makeRequest('post', Routes.CREATE_PROCURATION_ACCESS, data);
+    }
+
+    static getAccessProcurations(): Promise<any> {
+        return makeRequest('get', Routes.GET_PROCURATION_ACCESS);
+    }
+
+    static deleteAccessProcurations(reference: string): Promise<any> {
+        return makeRequest('delete', Routes.DELETE_PROCURATION_ACCESS(reference));
+    }
+
 }

@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 import RoleService from 'Services/roles';
+import UserService from 'Services/users';
 import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
 import CheckboxTree from 'react-checkbox-tree';
@@ -16,7 +17,9 @@ import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 const CreateRole = (props) => {
 
     const [label, setLabel] = useState('');
+    const [login, setLogin] = useState('');
     const [nodes, setNodes] = useState([]);
+    const [password, setPassword] = useState('');
     const [expanded, setExpanded] = useState([]);
     const [description, setDescription] = useState('');
     const [selectedPermissions, setSelectedPermissions] = useState([]);
@@ -36,19 +39,20 @@ const CreateRole = (props) => {
 
     const onSubmit = () => {
 
-        if(!label || selectedPermissions.length <= 0)
-            return
+        if(!label || selectedPermissions.length <= 0 || !login || !password) {
+            NotificationManager.error('Le formulaire est mal renseigné');
+            return;
+        }
 
         props.setRequestGlobalAction(true);
 
         let data = {
-            label: label,
-            type: 'ACCESS',
+            label, login, password,
             description: description,
             permissionIds: selectedPermissions.map(p => Number(p))
         }
 
-        RoleService.createRole(data).then(() => {
+        UserService.createAccessProcuration(data).then(() => {
             NotificationManager.success("Le role a été créé avec succès");
         }).catch((err) => {
             console.log(err);
@@ -98,6 +102,34 @@ const CreateRole = (props) => {
                             className="input-lg"
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
+                        />
+                    </FormGroup>
+                    <FormGroup className="has-wrapper">
+                        <InputLabel className="text-left" htmlFor="login">
+                            Login
+                        </InputLabel>
+                        <InputStrap
+                            required
+                            id="login"
+                            type="text"
+                            name='login'
+                            value={login}
+                            className="input-lg"
+                            onChange={(e) => setLogin(e.target.value)}
+                        />
+                    </FormGroup>
+                    <FormGroup className="has-wrapper">
+                        <InputLabel className="text-left" htmlFor="password">
+                            Mot de passe
+                        </InputLabel>
+                        <InputStrap
+                            required
+                            type="text"
+                            id="password"
+                            name='password'
+                            value={password}
+                            className="input-lg"
+                            onChange={(e) => setPassword(e.target.value)}
                         />
                     </FormGroup>
 

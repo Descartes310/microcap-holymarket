@@ -11,13 +11,16 @@ export const RESET_PASSWORD = "api/socialnetworks/users/access/reset-password";
 export const GET_BLOG_SETTINGS = `api/socialnetworks/users/self/blogs/settings`;
 export const UPDATE_BLOG_SETTINGS = `api/socialnetworks/users/self/blogs/settings`;
 export const CHANGE_ACCESS = (id) => `api/socialnetworks/users/access/${id}/change`;
+export const GET_PROCURATION_ACCESS = `api/socialnetworks/users/access/procurations`;
 export const USER_KYC = (reference) => `api/socialnetworks/users/self/${reference}/all`;
 export const RESET_PASSWORD_LINK = "api/socialnetworks/users/access/send-password-link";
 export const CHANGE_ACCESS_LOGIN = (id) => `api/socialnetworks/users/access/${id}/login`;
+export const CREATE_PROCURATION_ACCESS = `api/socialnetworks/users/access/procurations`;
 export const ACTIVATE_OR_BLOCK_ACCESS = "api/socialnetworks/users/access/activate-or-block";
 export const USER_ARTICLES = (reference) => `api/socialnetworks/users/self/blogs/${reference}`;
 export const GET_USER_BY_REFERENCE = (ref) => `api/socialnetworks/users/self/reference/${ref}`;
 export const CHANGE_ACCESS_PASSWORD = (id) => `api/socialnetworks/users/access/${id}/password`;
+export const DELETE_PROCURATION_ACCESS = (id) => `api/socialnetworks/users/access/procurations/${id}`;
 export const GET_USER_BY_MEMBERSHIP = (membership) => `api/socialnetworks/users/self/membership/${membership}`;
 export const CHANGE_ACCESS_FROM_COMMUNITY = (reference) => `api/socialnetworks/users/access/${reference}/change/community`;
 
