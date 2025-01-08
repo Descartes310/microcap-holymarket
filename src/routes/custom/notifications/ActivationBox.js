@@ -118,7 +118,7 @@ class ActivationBox extends Component {
 
         UserService.confirmOTP(this.state.codeToVerify, data)
         .then(() => {
-            NotificationManager.success("Vous avez activaté le profile avec succès");
+            NotificationManager.success("Vous avez activé le profile avec succès");
             if(!this.props.member && this.props.notification) {
                 setTimeout(() => {
                     this.logoutUser();
