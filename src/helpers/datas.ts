@@ -439,6 +439,55 @@ export const getUserAssistanceTypeValue = (value): any => {
         return value;
 }
 
+export const getLogTypes = () => {
+    return [
+        {
+            label: 'Activation du profile',
+            value: 'ACTIVATE_PROFILE'
+        },
+        {
+            label: 'Authentifier le profile',
+            value: 'AUTHENTICATE_PROFILE'
+        },
+        {
+            label: 'Effectuer une commande',
+            value: 'PLACE_ORDER'
+        },
+        {
+            label: 'Fournir le dossier d\'une commande',
+            value: 'ORDER_FOLDER'
+        },
+        {
+            label: 'Demande de paiement d\'une commande',
+            value: 'PAY_ORDER'
+        },
+        {
+            label: 'Gérer une commande',
+            value: 'MANAGE_ORDER'
+        },
+        {
+            label: 'Demande d\'autorisation bancaire',
+            value: 'INITIATE_OPERATION'
+        },
+        {
+            label: 'Traitement d\'autorisation bancaire',
+            value: 'VALIDATE_OPERATION'
+        },
+        {
+            label: 'Editer le dossier utilisateur',
+            value: 'UPDATE_USER_FOLDER'
+        }
+    ];
+}
+
+export const getLogTypeLabel = (value): any => {
+    let type = getLogTypes().find(t => t.value === value);
+    if (type)
+        return type.label;
+    else
+        return value;
+}
+
 export const getOldAssistanceTypes = () => {
     return [
         {

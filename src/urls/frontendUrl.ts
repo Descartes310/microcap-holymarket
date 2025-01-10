@@ -1004,6 +1004,7 @@ export const SUPERVISION = {
     OPERATIONS: {
         SELF: '/supervision/operations',
         LIST: '/supervision/operations/list',
+        PENDING: '/supervision/operations/pending',
     }
 }
 

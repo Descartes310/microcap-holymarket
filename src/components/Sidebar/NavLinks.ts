@@ -165,7 +165,7 @@ export default [
          },         {
             "menu_title": "Opérations",
             "new_item": false,
-            "path": SUPERVISION.OPERATIONS.LIST,
+            "path": SUPERVISION.OPERATIONS.PENDING,
             "permissions": [
                Permission.supervision.user.name,
             ],

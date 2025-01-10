@@ -35,4 +35,8 @@ export default class SystemService {
         return makeRequest('get', Routes.GET_VOTES);
     }
 
+    static getOperationLogs(): Promise<any> {
+        return makeRequest('get', Routes.GET_LOGS);
+    }
+
 }
