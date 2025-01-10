@@ -52,6 +52,7 @@ const Members = (props) => {
                                     <thead>
                                         <tr>
                                             <th className="fw-bold">Nom du membre</th>
+                                            <th className="fw-bold">Référence</th>
                                             <th className="fw-bold">Poste</th>
                                             <th className="fw-bold">Status</th>
                                             <th className="fw-bold">Date d'ajout</th>
@@ -65,6 +66,13 @@ const Members = (props) => {
                                                     <div className="media">
                                                         <div className="media-body pt-10">
                                                             <h4 className="m-0 fw-bold text-dark">{item.userName}</h4>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="media">
+                                                        <div className="media-body pt-10">
+                                                            <h4 className="m-0 fw-bold text-dark">{item.referralId}</h4>
                                                         </div>
                                                     </div>
                                                 </td>
