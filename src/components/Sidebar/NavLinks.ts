@@ -142,6 +142,7 @@ export default [
       "permissions": [
          Permission.supervision.member.name,
          Permission.supervision.user.name,
+         Permission.supervision.operation.name,
          Permission.supervision.partner.name,
          Permission.supervision.project.name,
       ],
@@ -167,7 +168,7 @@ export default [
             "new_item": false,
             "path": SUPERVISION.OPERATIONS.PENDING,
             "permissions": [
-               Permission.supervision.user.name,
+               Permission.supervision.operation.name,
             ],
          },
          {
@@ -893,7 +894,7 @@ export default [
             "menu_title": "Opérations",
             "new_item": false,
             "path": BANK.OPERATION.CREATE,
-            "permissions": [Permission.general.operation.name],
+            "permissions": [Permission.general.confirmOperation.name],
             "profiles": ['PROVIDER_COUNTER'],
             "child_routes": null
          },
@@ -909,7 +910,7 @@ export default [
             "menu_title": "Opérations",
             "new_item": false,
             "path": BANK.OPERATION.CASHDESK.LIST,
-            "permissions": [Permission.general.operation.name],
+            "permissions": [Permission.general.confirmOperation.name],
             "profiles": ['PROVIDER_CASHDESK'],
             "child_routes": null
          },

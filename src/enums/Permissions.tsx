@@ -312,6 +312,9 @@ export default class Permission extends BaseEnum {
         project: {
             "name": "SUPERVISION_PROJECT"
         },
+        operation: {
+            "name": "SUPERVISION_OPERATION"
+        },
     };
 
     static assets = {
@@ -341,6 +344,9 @@ export default class Permission extends BaseEnum {
         },
         charge: {
             "name": "CHARGE_MANAGEMENT"
+        },
+        confirmOperation: {
+            "name": "CONFIRM_OPERATION_PRIVILEGE"
         },
         account: {
             "name": "ACCOUNT_MANAGEMENT"

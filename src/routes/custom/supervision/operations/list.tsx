@@ -33,15 +33,28 @@ const List = (props) => {
         }
 
         props.setRequestGlobalAction(true);
-        BankService.validateAntidatedOperations(selectedOperation.reference).then(() => {
-            getOperations();
-        }).catch((err) => {
-            console.log(err);
-        }).finally(() => {
-            props.setRequestGlobalAction(false);
-            setSelectedOperation(null);
-            setShowConfirmBox(false)
-        });
+        
+        if(selectedOperation.validationStatus === 'PENDING') {
+            BankService.validateCounterOperation(selectedOperation.reference).then(() => {
+                getOperations();
+            }).catch((err) => {
+                console.log(err);
+            }).finally(() => {
+                props.setRequestGlobalAction(false);
+                setSelectedOperation(null);
+                setShowConfirmBox(false)
+            });
+        } else {
+            BankService.validateAgencyOperation(selectedOperation.reference).then(() => {
+                getOperations();
+            }).catch((err) => {
+                console.log(err);
+            }).finally(() => {
+                props.setRequestGlobalAction(false);
+                setSelectedOperation(null);
+                setShowConfirmBox(false)
+            });
+        }
     }
 
     return (

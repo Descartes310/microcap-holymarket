@@ -476,6 +476,14 @@ export const getLogTypes = () => {
         {
             label: 'Editer le dossier utilisateur',
             value: 'UPDATE_USER_FOLDER'
+        },
+        {
+            label: 'Validation guichet',
+            value: 'COUNTER_VALIDATION_OPERATION'
+        },
+        {
+            label: 'Validation agence',
+            value: 'AGENCY_VALIDATION_OPERATION'
         }
     ];
 }

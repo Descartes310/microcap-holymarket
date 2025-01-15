@@ -46,6 +46,8 @@ export const CONFIRM_PERMISSION = 'api/cashmanagements/operations/permission';
 export const GET_PENDING_OPERATIONS = 'api/cashmanagements/operations/pending';
 export const GET_ANDTIDATED_OPERATIONS = 'api/cashmanagements/operations/antidated';
 export const LIQUID_OPERATION = (id) => `api/cashmanagements/operations/${id}/liquid`;
+export const VALIDATE_COUNTER_OPERATION = (id) => `api/cashmanagements/operations/validation/${id}/counter`;
+export const VALIDATE_AGENCY_OPERATION = (id) => `api/cashmanagements/operations/validation/${id}/agency`;
 export const SEND_CONFIRM_OPERATION_OTP = (reference) => `api/sequences/operations/${reference}/otp`;
 export const CONFIRM_OPERATION = (reference) => `api/cashmanagements/operations/${reference}/confirm`;
 export const FIND_OPERATION_BY_BANK_AUTH = 'api/cashmanagements/operations/find-by-bank-authorization';

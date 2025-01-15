@@ -148,6 +148,14 @@ export default class BankService {
         return makeRequest('get', Routes.GET_ANDTIDATED_OPERATIONS);
     }
 
+    static validateCounterOperation(reference: string): Promise<any> {
+        return makeRequest('put', Routes.VALIDATE_COUNTER_OPERATION(reference));
+    }
+
+    static validateAgencyOperation(reference: string): Promise<any> {
+        return makeRequest('put', Routes.VALIDATE_AGENCY_OPERATION(reference));
+    }
+
     static purgeOperations(data: any): Promise<any> {
         return makeRequest('put', Routes.PURGE_OPERATIONS, data);
     }

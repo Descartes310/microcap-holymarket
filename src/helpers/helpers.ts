@@ -781,7 +781,8 @@ export const getNodeFromPermissions = (permissions: any) => {
             permission.folders.split('/').reduce((r, name, i, a) => {
                 if (!r[name]) {
                     r[name] = { result: [] };
-                    r.result.push({ value: permission.id + '' + name, children: r[name].result, label: translatePermissionFolder(name) })
+                    // r.result.push({ value: permission.id + '' + name, children: r[name].result, label: translatePermissionFolder(name) })
+                    r.result.push({ value: Math.floor(Math.random() * 100000) + '' + name, children: r[name].result, label: translatePermissionFolder(name) })
                 }
                 if (i === (a.length - 1))
                     r[name].result.push({ value: permission.id, label: permission.label });
@@ -909,6 +910,8 @@ export const translatePermissionFolder = (path) => {
             return 'Cautionnement';
         case 'SERVICES':
             return 'Services';
+        case 'OPERATIONS':
+            return 'Opérations';
         default:
             return path;
     }
