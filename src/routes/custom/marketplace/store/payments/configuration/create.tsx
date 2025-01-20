@@ -30,6 +30,7 @@ const Create = (props) => {
     const [accounts, setAccounts] = useState([]);
     const [products, setProducts] = useState([]);
     const [account, setAccount] = useState(null);
+    const [stripeKey, setStripeKey] = useState(null);
     const [startDate, setStartDate] = useState(null);
     const [accountIBAN, setAccountIBAN] = useState(null);
     const [accountName, setAccountName] = useState(null);
@@ -93,6 +94,14 @@ const Create = (props) => {
 
         if(paymentMethod.includes('DEPOSIT')) {
             data.accountReference = account.reference
+        }
+
+        if(paymentMethod.includes('CREDIT_CARD')) {
+            if(!stripeKey) {
+                NotificationManager.error("La clé secrète Stripe est obligatoire");
+                return;
+            }
+            data.stripeKey = stripeKey
         }
 
         if(paymentMethod.includes('BANK_TRANSFER')) {
@@ -255,6 +264,24 @@ const Create = (props) => {
                     </FormGroup>
                 )}
             </div>
+            { paymentMethod.includes('CREDIT_CARD') && (
+                <div className="row has-wrapper">
+                    <FormGroup className="col-md-12 col-sm-12">
+                        <InputLabel className="text-left" htmlFor="stripeKey">
+                            Clé secrète du compte Stripe
+                        </InputLabel>
+                        <InputStrap
+                            required
+                            type="text"
+                            id="stripeKey"
+                            name='stripeKey'
+                            value={stripeKey}
+                            className="input-lg"
+                            onChange={(e) => setStripeKey(e.target.value)}
+                        />
+                    </FormGroup>
+                </div>
+            )}
             { paymentMethod.includes('BANK_TRANSFER') && (
                 <div className="row has-wrapper">
                     <FormGroup className="col-md-4 col-sm-12">

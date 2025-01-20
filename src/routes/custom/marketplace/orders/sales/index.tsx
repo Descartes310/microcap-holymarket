@@ -35,7 +35,7 @@ class Payments extends Component<any, any> {
         const { match } = this.props;
         return (
             <>
-                <PageTitleBar title={'Mes paiements'} match={match} />
+                <PageTitleBar title={'Mes paiements'} match={match} onBackClick={() => {this.props.history.push(MARKETPLACE.ORDERS)}} />
 
                 <RctCard customClasses="overflow-hidden">
                     <RctCardContent noPadding>

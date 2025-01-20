@@ -32,6 +32,7 @@ const Update = (props) => {
     const [account, setAccount] = useState(null);
     const [oldConfig, setOldConfig] = useState(null);
     const [startDate, setStartDate] = useState(null);
+    const [stripeKey, setStripeKey] = useState(null);
     const [accountIBAN, setAccountIBAN] = useState(null);
     const [accountName, setAccountName] = useState(null);
     const [transferLabel, setTransferLabel] = useState(null);
@@ -118,6 +119,14 @@ const Update = (props) => {
             data.references = selectedOrders.map(o => o.reference).join(',')
         }
 
+        if(paymentMethod.includes('CREDIT_CARD')) {
+            if(!stripeKey) {
+                NotificationManager.error("La clé secrète Stripe est obligatoire");
+                return;
+            }
+            data.stripeKey = stripeKey
+        }
+        
         if(paymentMethod.includes('DEPOSIT')) {
             data.accountReference = account.reference
         }
@@ -282,6 +291,24 @@ const Update = (props) => {
                     </FormGroup>
                 )}
             </div>
+            { paymentMethod.includes('CREDIT_CARD') && (
+                <div className="row has-wrapper">
+                    <FormGroup className="col-md-12 col-sm-12">
+                        <InputLabel className="text-left" htmlFor="stripeKey">
+                            Clé secrète du compte Stripe
+                        </InputLabel>
+                        <InputStrap
+                            required
+                            type="text"
+                            id="stripeKey"
+                            name='stripeKey'
+                            value={stripeKey}
+                            className="input-lg"
+                            onChange={(e) => setStripeKey(e.target.value)}
+                        />
+                    </FormGroup>
+                </div>
+            )}
             { paymentMethod.includes('BANK_TRANSFER') && (
                 <div className="row has-wrapper">
                     <FormGroup className="col-md-4 col-sm-12">
