@@ -145,6 +145,8 @@ export default [
          Permission.supervision.operation.name,
          Permission.supervision.partner.name,
          Permission.supervision.project.name,
+         Permission.general.operationCounterValidation.name,
+         Permission.general.operationAgencyValidation.name,
       ],
       "type_multi": true,
       "child_routes": [
@@ -169,6 +171,8 @@ export default [
             "path": SUPERVISION.OPERATIONS.PENDING,
             "permissions": [
                Permission.supervision.operation.name,
+               Permission.general.operationCounterValidation.name,
+               Permission.general.operationAgencyValidation.name,
             ],
          },
          {

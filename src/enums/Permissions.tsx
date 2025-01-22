@@ -348,6 +348,12 @@ export default class Permission extends BaseEnum {
         confirmOperation: {
             "name": "CONFIRM_OPERATION_PRIVILEGE"
         },
+        operationAgencyValidation: {
+            "name": "OPERATION_AGENCY_VALIDATION_PRIVILEGE"
+        },
+        operationCounterValidation: {
+            "name": "OPERATION_COUNTER_VALIDATION_PRIVILEGE"
+        },
         account: {
             "name": "ACCOUNT_MANAGEMENT"
         },
