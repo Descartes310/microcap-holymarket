@@ -850,10 +850,14 @@ export const translatePermissionFolder = (path) => {
             return 'Agent';
         case 'INTERMEDIARY':
             return 'Intermédiaire bancaire';
+        case 'INTERMEDIATION':
+            return 'Intermédiation';
         case 'BANK':
             return 'Banque';
         case 'COUNTER':
             return 'Guichet';
+        case 'CASHDESK':
+            return 'Caisse';
         case 'BOURSE':
             return 'Bourse de financement';
         case 'MARKETS':

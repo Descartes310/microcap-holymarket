@@ -37,12 +37,15 @@ const Create = (props) => {
     const [transferLabel, setTransferLabel] = useState(null);
     const [selectedOrders, setSelectedOrders] = useState([]);
     const [selectedProducts, setSelectedProducts] = useState([]);
+    const [externalAccounts, setExternalAccounts] = useState([]);
+    const [externalAccount, setExternalAccount] = useState(null);
     const [notificationMethod, setNotificationMethod] = useState(['LOGIN_EMAIL', 'ADDRESS']);
     const [paymentMethod, setPaymentMethod] = useState(defaultPaymentMethod ? [defaultPaymentMethod] : []);
 
     useEffect(() => {
         getOrders();
         getProducts();
+        getExternalAccounts();
     }, []);
 
     useEffect(() => {
@@ -58,6 +61,13 @@ const Create = (props) => {
         ProductService.getProducts({show_distributions: true})
             .then(response => setProducts(response))
             .finally(() => props.setRequestGlobalAction(false))
+    }
+
+    const getExternalAccounts = () => {
+        props.setRequestGlobalAction(true),
+        AccountService.getExternalAccounts()
+        .then(response => setExternalAccounts(response.map(a => { return {...a, iban: a.detailsList.find(d => d.type === 'IBAN')?.value}})))
+        .finally(() => props.setRequestGlobalAction(false))
     }
 
     const getOrders = () => {
@@ -76,7 +86,7 @@ const Create = (props) => {
 
 
     const onSubmit = () => {
-        if(!paymentMethod || !notificationMethod || (paymentMethod.includes('DEPOSIT') && !account) || (paymentMethod.includes('BANK_TRANSFER') && (!accountIBAN || !accountName)) || !label || !type || !nature || !startDate || !endDate || (selectedOrders.length <= 0 && selectedProducts.length <= 0)) {
+        if(!paymentMethod || !notificationMethod || (paymentMethod.includes('DEPOSIT') && !account) || (paymentMethod.includes('BANK_TRANSFER') && !accountName) || !label || !type || !nature || !startDate || !endDate || (selectedOrders.length <= 0 && selectedProducts.length <= 0)) {
             NotificationManager.error("Le formulaire est mal renseigné");
             return;
         }
@@ -105,7 +115,11 @@ const Create = (props) => {
         }
 
         if(paymentMethod.includes('BANK_TRANSFER')) {
-            data.account_iban = accountIBAN
+            if(!externalAccount) {
+                NotificationManager.error("L'IBAN est obligatoire");
+                return;
+            }
+            data.account_iban = externalAccount.iban
             data.account_name = accountName
             data.transfer_description = transferLabel
         }
@@ -284,18 +298,19 @@ const Create = (props) => {
             )}
             { paymentMethod.includes('BANK_TRANSFER') && (
                 <div className="row has-wrapper">
-                    <FormGroup className="col-md-4 col-sm-12">
-                        <InputLabel className="text-left" htmlFor="accountIBAN">
+                    <FormGroup className="col-md-4 col-sm-12 has-wrapper">
+                        <InputLabel className="text-left">
                             IBAN du compte pour virement
                         </InputLabel>
-                        <InputStrap
-                            required
-                            id="accountIBAN"
-                            type="text"
-                            name='accountIBAN'
-                            value={accountIBAN}
-                            className="input-lg"
-                            onChange={(e) => setAccountIBAN(e.target.value)}
+                        <Autocomplete
+                            id="combo-box-demo"
+                            value={externalAccount}
+                            options={externalAccounts}
+                            onChange={(__, item) => {
+                                setExternalAccount(item);
+                            }}
+                            getOptionLabel={(option) => option.iban}
+                            renderInput={(params) => <TextField {...params} variant="outlined" />}
                         />
                     </FormGroup>
                     <FormGroup className="col-md-4 col-sm-12">
@@ -314,7 +329,7 @@ const Create = (props) => {
                     </FormGroup>
                     <FormGroup className="col-md-4 col-sm-12">
                         <InputLabel className="text-left" htmlFor="transferLabel">
-                            Raison du virement
+                            Raison du virement (saisissez #number pour personaliser avec le numéro de commande)
                         </InputLabel>
                         <InputStrap
                             required
