@@ -27,6 +27,10 @@ const List = (props) => {
         props.history.push(joinUrlWithParams(MARKETPLACE.MODEL.PRODUCT.CONFIGURE, [{param: 'reference', value: item.reference}]));
     }
 
+    const updateProduct = (item) => {
+        props.history.push(joinUrlWithParams(MARKETPLACE.MODEL.PRODUCT.UPDATE, [{param: 'reference', value: item.reference}]));
+    }
+
     return (
         <CustomList
             list={products}
@@ -52,6 +56,7 @@ const List = (props) => {
                                         <th className="fw-bold">Nature</th>
                                         <th className="fw-bold">Portée</th>
                                         <th className="fw-bold">Catégorie</th>
+                                        <th className="fw-bold">Edition</th>
                                         <th className="fw-bold">Configuration</th>
                                     </tr>
                                 </thead>
@@ -99,6 +104,16 @@ const List = (props) => {
                                                         <h4 className="m-0 fw-bold text-dark">{item.categoryProduct.label}</h4>
                                                     </div>
                                                 </div>
+                                            </td>
+                                            <td>
+                                                <Button
+                                                    color="primary"
+                                                    variant="contained"
+                                                    onClick={() => updateProduct(item)}
+                                                    className="text-white font-weight-bold mr-3"
+                                                >
+                                                    Editer
+                                                </Button>
                                             </td>
                                             <td>
                                                 { item.specialType === 'CODEV' && (

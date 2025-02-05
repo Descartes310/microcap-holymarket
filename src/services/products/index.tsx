@@ -16,6 +16,10 @@ export default class ProductService {
         return makeRequest('post', Routes.CREATE_PRODUCT_MODEL, data, config);
     }
 
+    static updateProductModel(reference: string, data: any, config: any): Promise<any> {
+        return makeRequest('put', Routes.UPDATE_PRODUCT_MODEL(reference), data, config);
+    }
+
     static getProductModelDetails(reference: string): Promise<any> {
         return makeRequest('get', Routes.GET_PRODUCT_MODEL_DETAILS(reference));
     }
@@ -30,6 +34,10 @@ export default class ProductService {
 
     static findProductModel(reference: any): Promise<any> {
         return makeRequest('get', Routes.FIND_PRODUCT_MODEL(reference));
+    }
+
+    static findDetailedProductModel(reference: any): Promise<any> {
+        return makeRequest('get', Routes.FIND_DETAILED_PRODUCT_MODEL(reference));
     }
 
     static findProductModelAggregations(reference: any): Promise<any> {

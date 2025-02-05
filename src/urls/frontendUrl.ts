@@ -544,6 +544,7 @@ export const MARKETPLACE = {
             SELF: "/marketplace/models/products",
             LIST: "/marketplace/models/products/list",
             CREATE: "/marketplace/models/products/create",
+            UPDATE: "/marketplace/models/products/:reference/update",
             CONFIGURE: "/marketplace/models/products/:reference/configure",
         },
         PACKAGE: {

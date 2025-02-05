@@ -22,7 +22,7 @@ import SegragatedAccount from 'Components/Product/SegragatedAccount';
 
 const fileTypes = ["JPG", "PNG", "GIF", "JPEG"];
 
-const Create = (props) => {
+const Update = (props) => {
 
     const [code, setCode] = useState('');
     const [file, setFile] = useState(null);
@@ -44,11 +44,12 @@ const Create = (props) => {
     const [specialType, setSpecialType] = useState(null);
     const [accountUnit, setAccountUnit] = useState(null);
     const [saleTypeUnit, setSaleTypeUnit] = useState(null);
+    const [journalAccount, setJournalAccount] = useState(null);
     const [maximumByUser, setMaximumByUser] = useState(null);
+    const [sellerProfiles, setSellerProfiles] = useState([]);
     const [isAggregation, setIsAggregation] = useState(false);
     const [accountTypeUnit, setAccountTypeUnit] = useState(null);
     const [selectedProfiles, setSelectedProfiles] = useState([]);
-    const [sellerProfiles, setSellerProfiles] = useState([]);
     const [userAccountType, setUserAccountType] = useState(null);
     const [isMirrorAccount, setIsMirrorAccount] = useState(false);
     const [minAccountbalance, setMinAccountBalance] = useState(null);
@@ -65,6 +66,46 @@ const Create = (props) => {
         getTypeUnits();
         getCategories();
     }, []);
+
+    useEffect(() => {
+        if(units.length > 0 && profiles.length > 0 && categories.length > 0 && products.length > 0) {
+            findProductModel();
+        }
+    }, [units, profiles, categories, products]);
+
+    const findProductModel = () => {
+        props.setRequestGlobalAction(true);
+        ProductService.findDetailedProductModel(props.match.params.reference).then(response => {
+            setLabel(response.label);
+            setCode(response.code);
+            setSpecialType(productSpecialTypes().find(st => st.value == response.specialType));
+            setUserAccountType(profiles.find(p => p.reference == response.userAccountTypeReference));
+            setDescription(response.description);
+            setTransactionalPageCount(response.numberOfJournals);
+            setPrice(response.price);
+            setPriceUnit(units.find(u => u.reference == response.priceUnitReference));
+            setMaximumByUser(response.maximumByUser);
+            setSaleUnit(units.find(u => u.code == response.currency));
+            setSaleTypeUnit(units.find(u => u.code == response.currency).type);
+            setCategory(categories.find(c => c.id == response.categoryProduct.id));
+            setSellWay(getSellWay().find(s => s.value == response.sellWay));
+            setNature(getProductNatures().find(p => p.value == response.nature));
+            setRange(getProductRanges().find(r => r.value == response.range));
+            setIsAccount(response.account);
+            setAccountUnit(units.find(u => u.reference == response.accountUnitReference));
+            setAccountTypeUnit(units.find(u => u.reference == response.accountUnitReference).type);
+            setMaxAccountBalance(response.maxBalance);
+            setMinAccountBalance(response.minBalance);
+            setIsMirrorAccount(response.mirrorAccount);
+            setSelectedProfiles(profiles.filter(p => response.buyerProfiles.includes(p.reference)));
+            setSellerProfiles(profiles.filter(p => response.sellerProfiles.includes(p.reference)));
+            setAggregationProducts(products.filter(p => response.aggregations.includes(p.reference)));
+            setJournalAccount(response.aggregations.length > 0 ? products.filter(p => response.aggregations.includes(p.reference))[0] : null);
+            setHasComplementaryProducts(response.associations.length > 0)
+            setAssociatedProducts(products.filter(p => response.associations.includes(p.reference)));
+        })
+        .finally(() => props.setRequestGlobalAction(false))
+    }
 
     const getCategories = () => {
         props.setRequestGlobalAction(true);
@@ -116,7 +157,6 @@ const Create = (props) => {
         if (
             !label ||
             !code ||
-            !file ||
             !price ||
             !range ||
             !nature ||
@@ -135,8 +175,12 @@ const Create = (props) => {
         let data: any = {
             label, code, price, description, maximumByUser, sellWay: sellWay.value,
             priceUnitReference: priceUnit.reference, categoryId: category.id,
-            image: file, nature: nature.value, range: range.value, type: 'PRODUCT',
+            nature: nature.value, range: range.value, type: 'PRODUCT',
             profiles: selectedProfiles.map(sp => sp.reference), seller_profiles: sellerProfiles.map(sp => sp.reference)
+        }
+
+        if(file) {
+            data.image = file;
         }
 
         if (specialType?.value == 'PASS' && !userAccountType) {
@@ -148,7 +192,7 @@ const Create = (props) => {
 
         if (isAccount || ['TRANSACTION_BOOK', 'SEGRAGATED_ACCOUNT'].includes(specialType?.value)) {
             
-            if (!minAccountbalance || !maxAccountBalance || !accountUnit) {
+            if (minAccountbalance == null || maxAccountBalance == null || !accountUnit) {
                 NotificationManager.error('Les détails du compte sont invalides');
                 return;
             }
@@ -165,9 +209,13 @@ const Create = (props) => {
                 data.userAccountTypeReference = userAccountType.reference
             }
             if(specialType?.value == 'TRANSACTION_BOOK') {
+                if(journalAccount == null) {
+                    NotificationManager.error('Le formulaire est mal renseigné');
+                    return;
+                }
                 data.isAggregation = true;
                 data.numberOfJournals = transactionalPageCount;
-                data.aggregationIds = aggregationProducts.map(ap => ap.id);
+                data.aggregationIds = journalAccount.id;
             }
             if(specialType?.value == 'SEGRAGATED_ACCOUNT') {
                 data.aggregationIds = aggregationProducts.map(ap => ap.id);
@@ -196,14 +244,14 @@ const Create = (props) => {
         // console.log(data);
 
         props.setRequestGlobalAction(true);
-        ProductService.createProductModel(data, { fileData: ['image'], multipart: true })
+        ProductService.updateProductModel(props.match.params.reference, data, { fileData: ['image'], multipart: true })
         .then(() => {
-            NotificationManager.success('Le modèle a été crée avec succès !');
+            NotificationManager.success('Le modèle a été édité avec succès !');
             props.history.push(MARKETPLACE.MODEL.PRODUCT.LIST);
         })
         .catch(err => {
             console.log(err);
-            NotificationManager.error('Une erreur est survenu lors de la création du modèle !');
+            NotificationManager.error('Une erreur est survenu lors de l\'édition du modèle !');
         }).finally(() => {
             props.setRequestGlobalAction(false);
         });
@@ -313,10 +361,10 @@ const Create = (props) => {
                                         </InputLabel>
                                         <Autocomplete
                                             id="combo-box-demo"
-                                            value={aggregationProducts[0]}
+                                            value={journalAccount}
                                             options={products.filter(p => p.account)}
                                             onChange={(__, item) => {
-                                                setAggregationProducts([item]);
+                                                setJournalAccount(item);
                                             }}
                                             getOptionLabel={(option) => option.label}
                                             renderInput={(params) => <TextField {...params} variant="outlined" />}
@@ -546,6 +594,7 @@ const Create = (props) => {
                                     </InputLabel>
                                     <Autocomplete
                                         id="combo-box-demo"
+                                        value={accountUnit}
                                         onChange={(__, item) => {
                                             setAccountUnit(item);
                                         }}
@@ -685,7 +734,7 @@ const Create = (props) => {
                             onClick={onSubmit}
                             className="text-white font-weight-bold"
                         >
-                            Ajouter
+                            Enregistrer
                         </Button>
                     </FormGroup>
                 </Form>
@@ -694,4 +743,4 @@ const Create = (props) => {
     );
 };
 
-export default connect(() => { }, { setRequestGlobalAction })(withRouter(Create));
+export default connect(() => { }, { setRequestGlobalAction })(withRouter(Update));
