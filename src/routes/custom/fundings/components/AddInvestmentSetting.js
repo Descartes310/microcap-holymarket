@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import ReactQuill from 'react-quill';
 import React, { useState } from 'react';
 import { withRouter } from "react-router-dom";
 import Button from '@material-ui/core/Button';
@@ -9,6 +10,28 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import {Form, FormGroup, Input as InputStrap} from 'reactstrap';
 import DialogComponent from "Components/dialog/DialogComponent";
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
+
+const modules = {
+    toolbar: [
+        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+        [{ 'font': [] }],
+        ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+        [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
+        ['link', 'image'],
+        ['clean'],
+        [{ 'align': [] }],
+        ['code-block']
+    ],
+};
+
+const formats = [
+    'header',
+    'font',
+    'bold', 'italic', 'underline', 'strike', 'blockquote',
+    'list', 'bullet', 'indent',
+    'align',
+    'code-block'
+];
 
 const AddInvestmentSetting = (props) => {
 
@@ -49,15 +72,19 @@ const AddInvestmentSetting = (props) => {
                         <InputLabel className="text-left" htmlFor="value">
                             Valeur
                         </InputLabel>
-                        <InputStrap
-                            required
-                            id="value"
-                            name='value'
-                            value={value}
-                            className="input-lg"
-                            type={item ? item.formInputType.toLowerCase() : "text"}
-                            onChange={(e) => setValue(e.target.value)}
-                        />
+                        { item && item.formInputType.toLowerCase() == 'textarea' ? 
+                            <ReactQuill value={value} modules={modules} onChange={(e) => setValue(e)} formats={formats} /> 
+                            : 
+                            <InputStrap
+                                required
+                                id="value"
+                                name='value'
+                                value={value}
+                                className="input-lg"
+                                type={item ? item.formInputType.toLowerCase() : "text"}
+                                onChange={(e) => setValue(e.target.value)}
+                            />
+                        }
                     </FormGroup>
                     <FormGroup>
                         <Button
