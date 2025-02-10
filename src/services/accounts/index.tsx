@@ -6,6 +6,22 @@ export default class AccountService {
     static getAccounts(): Promise<any> {
         return makeRequest('get', Routes.GET_ACCOUNTS);
     }
+
+    static getAccountProfiles(): Promise<any> {
+        return makeRequest('get', Routes.GET_ACCOUNT_PROFILES);
+    }
+
+    static getAllAccountProfiles(reference: string): Promise<any> {
+        return makeRequest('get', Routes.GET_ACCOUNT_ALL_PROFILES, {reference});
+    }
+
+    static createAccountProfile(data: any): Promise<any> {
+        return makeRequest('post', Routes.GET_ACCOUNT_PROFILES, data);
+    }
+
+    static deleteAccountProfile(reference: string): Promise<any> {
+        return makeRequest('delete', Routes.GET_ACCOUNT_PROFILES, {reference});
+    }
     
     static getBigDealAccounts(): Promise<any> {
         return makeRequest('get', Routes.GET_BIGDEAL_ACCOUNTS);

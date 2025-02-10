@@ -3,6 +3,7 @@ import { withRouter } from "react-router-dom";
 import Button from '@material-ui/core/Button';
 import AccountService from 'Services/accounts';
 import CustomList from "Components/CustomList";
+import AccountProfile from './accountProfile';
 import { setRequestGlobalAction } from 'Actions';
 import React, { useState, useEffect } from 'react';
 import { getPriceWithCurrency } from 'Helpers/helpers';
@@ -12,6 +13,8 @@ import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
 const List = (props) => {
 
     const [accounts, setAccounts] = useState([]);
+    const [showProfiles, setShowProfiles] = useState(false);
+    const [selectedAccount, setSelectedAccount] = useState(null);
 
     useEffect(() => {
         getAccounts();
@@ -19,7 +22,7 @@ const List = (props) => {
 
     const getAccounts = () => {
         props.setRequestGlobalAction(true),
-        AccountService.getAccounts()
+        AccountService.getAccountProfiles()
                 .then(response => setAccounts(response))
                 .finally(() => props.setRequestGlobalAction(false))
     }
@@ -49,6 +52,7 @@ const List = (props) => {
                                             <th className="fw-bold">Type de compte</th>
                                             <th className="fw-bold">Solde</th>
                                             <th className="fw-bold">Détails</th>
+                                            <th className="fw-bold">Profile</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -92,6 +96,21 @@ const List = (props) => {
                                                         Détails
                                                     </Button>
                                                 </td>
+                                                <td>
+                                                    { item.owner && (
+                                                        <Button
+                                                            color="primary"
+                                                            variant="contained"
+                                                            className="text-white font-weight-bold"
+                                                            onClick={() => {
+                                                                setSelectedAccount(item);
+                                                                setShowProfiles(true);
+                                                            }}
+                                                        >
+                                                            Profile
+                                                        </Button>
+                                                    )}
+                                                </td>
                                             </tr>
                                         ))}
                                     </tbody>
@@ -101,6 +120,17 @@ const List = (props) => {
                     </>
                 )}
             />
+            { showProfiles && selectedAccount && (
+                <AccountProfile
+                    reference={selectedAccount.reference}
+                    show={showProfiles && selectedAccount}
+                    title='Liste des profiles'
+                    onClose={() => {
+                        setShowProfiles(false);
+                        setSelectedAccount(null);
+                    }}
+                />
+            )}
         </>
     );
 }
