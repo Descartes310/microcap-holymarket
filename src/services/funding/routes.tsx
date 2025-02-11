@@ -24,9 +24,11 @@ export const ACTIVATE_ACCOUNT = (reference) => `api/fundings/accounts/${referenc
 
 
 export const GET_POLITICS = 'api/products/codevs/investments/politics';
+export const GET_PROSPECTUS = 'api/products/codevs/investments/prospectus';
 export const GET_STRATEGIES = 'api/products/codevs/investments/strategies';
 export const GET_PROGRAMS = 'api/products/codevs/investments/programs';
 export const CREATE_POLITIC = 'api/products/codevs/investments/politics';
+export const CREATE_PROSPECTUS = 'api/products/codevs/investments/prospectus';
 export const CREATE_STRATEGY = 'api/products/codevs/investments/strategies';
 export const CREATE_PROGRAM = 'api/products/codevs/investments/programs';
 

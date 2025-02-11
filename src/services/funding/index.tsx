@@ -82,6 +82,14 @@ export default class FundingService {
         return makeRequest('post', Routes.CREATE_POLITIC, data);
     }
 
+    static getFundingProspectus(): Promise<any> {
+        return makeRequest('get', Routes.GET_PROSPECTUS);
+    }
+
+    static createFundingProspectus(data: any): Promise<any> {
+        return makeRequest('post', Routes.CREATE_PROSPECTUS, data);
+    }
+
     static getFundingStrategies(): Promise<any> {
         return makeRequest('get', Routes.GET_STRATEGIES);
     }

@@ -15,9 +15,10 @@ class Investments extends Component<any, any> {
     constructor(props: any) {
         super(props);
         const defaultState = (function (url) {
-            if (url.includes(FUNDING.INVESTMENT.PROGRAM.SELF)) return 0;
-            else if (url.includes(FUNDING.INVESTMENT.POLITIC.SELF)) return 1;
-            else if (url.includes(FUNDING.INVESTMENT.STRATEGY.SELF)) return 2;
+            if (url.includes(FUNDING.INVESTMENT.PROSPECTUS.SELF)) return 0;
+            else if (url.includes(FUNDING.INVESTMENT.PROGRAM.SELF)) return 1;
+            else if (url.includes(FUNDING.INVESTMENT.POLITIC.SELF)) return 2;
+            else if (url.includes(FUNDING.INVESTMENT.STRATEGY.SELF)) return 3;
             else return 0;
         })(window.location.pathname);
 
@@ -31,10 +32,11 @@ class Investments extends Component<any, any> {
         this.setState({ activeTab: value });
         if (oldActivateTab !== value) {
             switch (value) {
-                case 0: return this.props.history.push(FUNDING.INVESTMENT.PROGRAM.SELF);
-                case 1: return this.props.history.push(FUNDING.INVESTMENT.POLITIC.SELF);
-                case 2: return this.props.history.push(FUNDING.INVESTMENT.STRATEGY.SELF);
-                default: return this.props.history.push(FUNDING.INVESTMENT.PROGRAM.SELF);
+                case 0: return this.props.history.push(FUNDING.INVESTMENT.PROSPECTUS.SELF);
+                case 1: return this.props.history.push(FUNDING.INVESTMENT.PROGRAM.SELF);
+                case 2: return this.props.history.push(FUNDING.INVESTMENT.POLITIC.SELF);
+                case 3: return this.props.history.push(FUNDING.INVESTMENT.STRATEGY.SELF);
+                default: return this.props.history.push(FUNDING.INVESTMENT.PROSPECTUS.SELF);
             }
         }
     };
@@ -58,6 +60,10 @@ class Investments extends Component<any, any> {
                                         variant="scrollable"
                                         centered
                                     >
+                                        <Tab
+                                            icon={<i className="zmdi zmdi-home" />}
+                                            label={"Prospectus"}
+                                        />
                                         <Tab
                                             icon={<i className="zmdi zmdi-home" />}
                                             label={"Programme"}
