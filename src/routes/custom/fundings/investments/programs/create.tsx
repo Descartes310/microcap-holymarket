@@ -4,6 +4,7 @@ import { withRouter } from "react-router-dom";
 import Button from '@material-ui/core/Button';
 import FundingService from 'Services/funding';
 import ProductService from 'Services/products';
+import CustomList from "Components/CustomList";
 import UnitSelect from 'Components/UnitSelect';
 import { setRequestGlobalAction } from 'Actions';
 import React, { useEffect, useState } from 'react';
@@ -12,11 +13,13 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import { NotificationManager } from 'react-notifications';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { Form, FormGroup, Input as InputStrap } from 'reactstrap';
+import AddProgramInvestment from '../../components/AddProgramInvestment';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
 
 const Create = (props) => {
 
     const [label, setLabel] = useState('');
+    const [values, setValues] = useState([]);
     const [details, setDetails] = useState([]);
     const [amount, setAmount] = useState(null);
     const [products, setProducts] = useState([]);
@@ -24,6 +27,7 @@ const Create = (props) => {
     const [currency, setCurrency] = useState(null);
     const [strategy, setStrategy] = useState(null);
     const [strategies, setStrategies] = useState([]);
+    const [showAddValueBox, setShowAddValueBox] = useState(false);
     const [minimalSubscription, setMinimalSubscription] = useState(null);
 
     useEffect(() => {
@@ -59,7 +63,7 @@ const Create = (props) => {
     }
 
     const onSubmit = () => {
-        if (!label || !minimalSubscription || !strategy || !product || !amount || !currency) {
+        if (!label || !minimalSubscription || !strategy || !product || !amount || !currency || values.length <= 0) {
             NotificationManager.error('Le formulaire est mal renseigné')
             return;
         }
@@ -67,7 +71,8 @@ const Create = (props) => {
         var data: any = {
             currency: currency.code,
             label, strategy_reference: strategy.reference,
-            model_reference: product.reference, amount, minimalSubscription
+            model_reference: product.reference, amount, minimalSubscription,
+            values: JSON.stringify(values)
         }
 
         props.setRequestGlobalAction(true);
@@ -148,7 +153,7 @@ const Create = (props) => {
                     </div>                  
                     <div className="col-md-12 col-sm-12 has-wrapper mb-30">
                         <InputLabel className="text-left">
-                            Modèle de Ndjangui
+                            Plan CODEV
                         </InputLabel>
                         <Autocomplete
                             value={product}
@@ -188,7 +193,87 @@ const Create = (props) => {
                             getOptionLabel={(option) => option.label}
                             renderInput={(params) => <TextField {...params} variant="outlined" />}
                         />
-                    </div>  
+                    </div>
+                    <InputLabel className="text-left">
+                        Liste des investissements
+                    </InputLabel>
+                    <CustomList
+                        list={values}
+                        loading={false}
+                        itemsFoundText={n => `${n} paramètre trouvé`}
+                        onAddClick={() => setShowAddValueBox(true)}
+                        renderItem={list => (
+                            <>
+                                {list && list.length === 0 ? (
+                                    <div className="d-flex justify-content-center align-items-center py-50">
+                                        <h4>
+                                            Aucune paramètre trouvé
+                                        </h4>
+                                    </div>
+                                ) : (
+                                    <div className="table-responsive">
+                                        <table className="table table-hover table-middle mb-0">
+                                            <thead>
+                                                <tr>
+                                                    <th className="fw-bold">Intitulé</th>
+                                                    <th className="fw-bold">Coût</th>
+                                                    <th className="fw-bold">Durée</th>
+                                                    <th className="fw-bold">Option sortie</th>
+                                                    <th className="fw-bold">Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {list && list.map((item, key) => (
+                                                    <tr key={key} className="cursor-pointer">
+                                                        <td>
+                                                            <div className="media">
+                                                                <div className="media-body pt-10">
+                                                                    <p className="m-0 text-dark">{item?.label}</p>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div className="media">
+                                                                <div className="media-body pt-10">
+                                                                    <p className="m-0 text-dark">{item?.amount} {item?.currency}</p>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div className="media">
+                                                                <div className="media-body pt-10">
+                                                                    <p className="m-0 text-dark">{item?.period}</p>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div className="media">
+                                                                <div className="media-body pt-10">
+                                                                    <p className="m-0 text-dark">{item?.exit}</p>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <Button
+                                                                color="primary"
+                                                                variant="contained"
+                                                                onClick={() => {
+                                                                    setValues([...values.filter(v => v.label != item.label && v.period != item.period)])
+                                                                }}
+                                                                className="btn-danger text-white font-weight-bold mr-3"
+                                                            >
+                                                                Supprimer
+                                                            </Button>
+                                                        </td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                )}
+                            </>
+                        )}
+                    />
                     <FormGroup>
                         <Button
                             color="primary"
@@ -201,6 +286,16 @@ const Create = (props) => {
                     </FormGroup>
                 </Form>
             </RctCollapsibleCard>
+            { showAddValueBox && (
+                <AddProgramInvestment
+                    show={showAddValueBox}
+                    onClose={() => setShowAddValueBox(!showAddValueBox)}
+                    onSubmit={(item) => {
+                        setValues([...values, item]);
+                        setShowAddValueBox(false)
+                    }}
+                />
+            )}
         </>
     );
 };
