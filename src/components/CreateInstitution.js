@@ -4,10 +4,13 @@ import React, { Component } from 'react';
 import UserService from 'Services/users';
 import { withRouter } from "react-router-dom";
 import SettingService from 'Services/settings';
+import { institutionTypes } from 'Helpers/datas';
 import { setRequestGlobalAction } from 'Actions';
+import TextField from '@material-ui/core/TextField';
 import { RctCardContent } from 'Components/RctCard';
 import { FormGroup, Input, Button } from 'reactstrap';
 import {NotificationManager} from "react-notifications";
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import Checkbox from "@material-ui/core/Checkbox/Checkbox";
 import DialogComponent from "Components/dialog/DialogComponent";
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
@@ -16,6 +19,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabe
 class CreateInstitution extends Component {
 
     state = {
+        type: null,
         code: null,
         label: null,
         description: null,
@@ -39,7 +43,7 @@ class CreateInstitution extends Component {
 
     onSubmit = () => {
 
-        const { label, code, description } = this.state;
+        const { label, code, description, type } = this.state;
 
         if(!label || !code) {
             NotificationManager.error("Le formulaire est mal rempli");
@@ -49,7 +53,7 @@ class CreateInstitution extends Component {
         this.props.setRequestGlobalAction(true);
 
         let datas = {
-            label, code, description, type: this.props.type
+            label, code, description, institution_type: type.value
         };
          
         UserService.createInstitution(datas).then(() => {
@@ -67,7 +71,7 @@ class CreateInstitution extends Component {
     render() {
 
         const { onClose, show, title } = this.props;
-        const { label, code, description, noAgencyCode } = this.state;
+        const { label, code, description, noAgencyCode, type } = this.state;
 
         return (
             <DialogComponent
@@ -110,22 +114,39 @@ class CreateInstitution extends Component {
                             onChange={(e) => this.setState({ code: e.target.value })}
                         />
                     </FormGroup>
-                    <FormGroup className="col-md-12 col-sm-12 mb-20">
-                        <FormControlLabel control={
-                            <Checkbox
-                                color="primary"
-                                checked={noAgencyCode}
-                                onChange={(e) => {
-                                    this.setState({ noAgencyCode: e.target.checked }, () => {
-                                        if(this.state.noAgencyCode) {
-                                            this.generateCode();
-                                        }
-                                    })
-                                }}
-                            />
-                        } label={"Je n'ai pas de code agence"}
+                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                        <InputLabel className="text-left">
+                            Type d'agence
+                        </InputLabel>
+                        <Autocomplete
+                            value={type}
+                            id="combo-box-demo"
+                            onChange={(__, item) => {
+                                this.setState({ type: item });
+                            }}
+                            options={institutionTypes()}
+                            getOptionLabel={(option) => option.label}
+                            renderInput={(params) => <TextField {...params} variant="outlined" />}
                         />
-                    </FormGroup>
+                    </div>
+                    { type && type.value === 'BANK_AGENCY' && (
+                        <FormGroup className="col-md-12 col-sm-12 mb-20">
+                            <FormControlLabel control={
+                                <Checkbox
+                                    color="primary"
+                                    checked={noAgencyCode}
+                                    onChange={(e) => {
+                                        this.setState({ noAgencyCode: e.target.checked }, () => {
+                                            if(this.state.noAgencyCode) {
+                                                this.generateCode();
+                                            }
+                                        })
+                                    }}
+                                />
+                            } label={"Je n'ai pas de code agence"}
+                            />
+                        </FormGroup>
+                    )}
                     <FormGroup className="has-wrapper">
                         <InputLabel className="text-left" htmlFor="description">
                             Description

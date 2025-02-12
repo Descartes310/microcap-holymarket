@@ -801,7 +801,6 @@ export const getBookingAdvantageTargetLabel = (value) => {
     return bookingAdvantageTargets().find(d => d.value == value)?.label
 }
 
-
 export const broadcastTypes = () => {
     return [
         {
@@ -821,4 +820,54 @@ export const broadcastTypes = () => {
 
 export const getBroadcastTypesLabel = (value) => {
     return broadcastTypes().find(d => d.value == value)?.label
+}
+
+export const institutionTypes = () => {
+    return [
+        {
+            label: "Agence bancaire", 
+            value: 'BANK_AGENCY'
+        },
+        {
+            label: "Agence de voyage", 
+            value: 'TRAVEL_AGENCY'
+        },
+        {
+            label: "Site logistique", 
+            value: 'LOGISTIC_SITE'
+        },
+        {
+            label: "Bureaux", 
+            value: 'OFFICE'
+        },
+        {
+            label: "Siège social", 
+            value: 'HEAD_OFFICE'
+        },
+        {
+            label: "Usine", 
+            value: 'FACTORY'
+        },
+        {
+            label: "Point de vente", 
+            value: 'SALE_POINT'
+        },
+        {
+            label: "Point de livraison", 
+            value: 'DELIVERY_POINT'
+        },
+        {
+            label: "Domiciliation administrative", 
+            value: 'ADMINISTRATIVE_DOMICILIATION'
+        },
+        {
+            label: "Domiciliation commerciale", 
+            value: 'COMMERCIAL_DOMINICILIATION'
+        },
+
+    ];
+}
+
+export const getInstitutionTypesLabel = (value) => {
+    return institutionTypes().find(d => d.value == value)?.label
 }

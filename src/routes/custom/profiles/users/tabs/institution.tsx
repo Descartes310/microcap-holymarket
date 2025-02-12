@@ -5,6 +5,7 @@ import { withRouter } from "react-router-dom";
 import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
 import React, { useState, useEffect } from 'react';
+import { getInstitutionTypesLabel } from 'Helpers/datas';
 import CreateInstitution from 'Components/CreateInstitution';
 import ListInstitutionMembers from "../components/listInstitutionMembers";
 
@@ -21,7 +22,7 @@ const Institutions = (props) => {
 
     const getAgencies = () => {
         props.setRequestGlobalAction(true),
-        UserService.getInstitutions({type: 'BANK_AGENCY'})
+        UserService.getInstitutions({})
         .then(response => setAgencies(response))
         .finally(() => props.setRequestGlobalAction(false))
     }
@@ -48,6 +49,7 @@ const Institutions = (props) => {
                                         <tr>
                                             <th className="fw-bold">Nom</th>
                                             <th className="fw-bold">Code</th>
+                                            <th className="fw-bold">Type d'agence</th>
                                             <th className="fw-bold">Description</th>
                                             <th className="fw-bold">Membres</th>
                                         </tr>
@@ -67,6 +69,15 @@ const Institutions = (props) => {
                                                         <div className="media-body pt-10">
                                                             <h4 className="m-0 fw-bold text-dark">
                                                                 {item.code}
+                                                            </h4>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="media">
+                                                        <div className="media-body pt-10">
+                                                            <h4 className="m-0 fw-bold text-dark">
+                                                                {getInstitutionTypesLabel(item.type)}
                                                             </h4>
                                                         </div>
                                                     </div>
