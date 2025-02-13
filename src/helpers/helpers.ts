@@ -677,8 +677,13 @@ export const getUserPermissions = (authUser: any): string[] => {
 export const isMenuAllowed = (authUser: any, menu: MenuItem): boolean => {
     const profile = authUser?.userAccount;
     
-    if(!authUser.active)
+    if(!authUser.active) {
         return false;
+    }
+
+    if(menu.hiddenProfiles && menu.hiddenProfiles.filter(mpName => authUser.referralTypes.includes(mpName)).length > 0) {
+        return false;
+    }
 
     if (profile) {
         /**

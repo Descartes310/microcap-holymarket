@@ -1,6 +1,5 @@
 import { connect } from 'react-redux';
 import { getStatusLabel } from 'Data';
-import CreateSubscription from './create';
 import DetailsSubscription from './details';
 import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
@@ -13,8 +12,7 @@ import TimeFromMoment from "Components/TimeFromMoment";
 const List = (props) => {
 
     const [subscriptions, setSubscriptions] = useState([]);
-    const [subscription, setSubscription] = useState(null);
-    const [showCreateSubscription, setShowCreateSubscription] = useState(false);    
+    const [subscription, setSubscription] = useState(null); 
     const [showDetailsSubscription, setShowDetailsSubscription] = useState(false);    
     
     useEffect(() => {
@@ -23,7 +21,7 @@ const List = (props) => {
 
     const getProjectSubscriptions = () => {
         props.setRequestGlobalAction(true);
-        ProjectService.getProjectSubscriptions().then(response => {
+        ProjectService.getProjectSubscriptions({status: 'APPROVED'}).then(response => {
             setSubscriptions(response);
         })
         .finally(() => props.setRequestGlobalAction(false));
@@ -35,9 +33,6 @@ const List = (props) => {
                 list={subscriptions}
                 loading={false}
                 itemsFoundText={n => `${n} souscriptions trouvées`}
-                onAddClick={() => {
-                    setShowCreateSubscription(true);
-                }}
                 renderItem={list => (
                     <>
                         {list && list.length === 0 ? (
@@ -76,11 +71,8 @@ const List = (props) => {
                                                 </td>
                                                 <td>
                                                     <div className="media">
-                                                        <div className="user-status-pending d-flex flex-row align-items-center" style={{ position: 'relative' }}>
-                                                            <div className={`user-status-pending-circle rct-notify mr-10`} style={{
-                                                                    background: item?.status == 'APPROVED' ? 'green' : item?.status == 'PENDING' ? 'orange' : 'red'
-                                                            }} />
-                                                            {getStatusLabel(item.status)}
+                                                        <div className="media-body pt-10">
+                                                            <h4 className="m-0 fw-bold text-dark">{getStatusLabel(item.status)}</h4>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -106,14 +98,6 @@ const List = (props) => {
                     </>
                 )}
             />
-            { showCreateSubscription && (
-                <CreateSubscription
-                    show={showCreateSubscription}
-                    onClose={() => {
-                        setShowCreateSubscription(false);
-                    }}
-                />
-            )}
             { showDetailsSubscription && subscription && (
                 <DetailsSubscription
                     show={showDetailsSubscription}

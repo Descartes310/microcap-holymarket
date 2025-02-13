@@ -284,8 +284,8 @@ export default class GroupService {
         return makeRequest('get', Routes.GET_FINANCIAL_STRUCTURE_SUPPORTS(reference));
     }
 
-    static getActiveFinancialStructureSupports(): Promise<any> {
-        return makeRequest('get', Routes.GET_FINANCIAL_STRUCTURE_ACTIVE_SUPPORTS);
+    static getActiveFinancialStructureSupports(projectReference: string): Promise<any> {
+        return makeRequest('get', Routes.GET_FINANCIAL_STRUCTURE_ACTIVE_SUPPORTS, {projectReference});
     }
 
     static createFinancialStructureSupport(reference: string, data): Promise<any> {

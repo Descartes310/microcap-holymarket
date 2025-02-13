@@ -30,6 +30,7 @@ export type MenuItem = {
    type_multi?: boolean;
    child_routes?: MenuItem[];
    profiles: string[] | null; // null means no need profile to access
+   hiddenProfiles: string[] | null; // null means no need profile to access
    permissions: string[] | null; // null for no permissions need to access
    permissions_and?: boolean   // if true, then the user must have all the listed permissions
 }
@@ -464,6 +465,42 @@ export default [
       "permissions": [Permission.microcap360.broadcast.name]
    },
    {
+      "menu_title": "Contribution",
+      "menu_icon": "zmdi zmdi-home",
+      "new_item": false,
+      "path": GROUP.ADMINISTRATION.PROJECT.LIST,
+      "permissions": [Permission.group.admin.setting.name],
+      "profiles": ['PROJECT'],
+      "child_routes": null,
+   },
+   {
+      "menu_title": "Souscriptions",
+      "menu_icon": "zmdi zmdi-home",
+      "new_item": false,
+      "path": GROUP.ADMINISTRATION.PROJECT.SUBSCRIPTIONS.LIST,
+      "permissions": null,//[Permission.group.admin.setting.name, ],
+      "profiles": ['PROJECT'],
+      "child_routes": null,
+   },
+   {
+      "menu_title": "Structure financiere",
+      "menu_icon": "zmdi zmdi-home",
+      "new_item": false,
+      "path": GROUP.ADMINISTRATION.PROJECT.FINANCIAL_STRUCTURE.LIST,
+      "permissions": [Permission.group.admin.setting.name],
+      "profiles": ['PROJECT'],
+      "child_routes": null,
+   },
+   {
+      "menu_title": "Config. projet",
+      "menu_icon": "zmdi zmdi-home",
+      "new_item": false,
+      "path": GROUP.ADMINISTRATION.PROJECT.CONFIGURATION.ATTRIBUTE.SELF,
+      "permissions": [Permission.group.admin.setting.name],
+      "profiles": ['PROJECT'],
+      "child_routes": null,
+   },
+   {
       "menu_title": "Projets",
       "menu_icon": "zmdi zmdi-home",
       "new_item": false,
@@ -474,11 +511,9 @@ export default [
          Permission.project.admin.item.name,
          Permission.project.admin.initialization.name,
          Permission.project.admin.post.name,
-         Permission.group.admin.project.name,
-         Permission.group.admin.project.name,
-         Permission.group.admin.project.name
       ],
       "profiles": null,
+      "hiddenProfiles": ['PROJECT'],
       "child_routes": [
          {
             "menu_title": "Ouvrages",
@@ -486,6 +521,7 @@ export default [
             "path": PROJECT.ITEM.SIMPLE.LIST,
             "permissions": [Permission.project.admin.item.name],
             "profiles": null,
+            "hiddenProfiles": ['PROJECT'],
             "child_routes": null
          }, 
          {
@@ -494,6 +530,7 @@ export default [
             "path": joinUrlWithParams(PROJECT.INITIALIZATION.LIST, [{param: 'type', value: 'ideas'}]),
             "permissions": [Permission.project.admin.initialization.name],
             "profiles": null,
+            "hiddenProfiles": ['PROJECT'],
             "child_routes": null
          }, 
          {
@@ -502,6 +539,7 @@ export default [
             "path": PROJECT.POST.LIST,
             "permissions": [Permission.project.admin.post.name],
             "profiles": null,
+            "hiddenProfiles": ['PROJECT'],
             "child_routes": null
          },
          {
@@ -510,44 +548,26 @@ export default [
             "path": PROJECT.MINE.FOLDER.LIST,
             "permissions": [Permission.project.project.name],
             "profiles": null,
+            "hiddenProfiles": ['PROJECT'],
             "child_routes": null
          },
          {
             "menu_title": "Mes souscriptions",
             "new_item": false,
-            "path": GROUP.ADMINISTRATION.PROJECT.SUBSCRIPTIONS.LIST,
-            "permissions": [Permission.project.project.name, Permission.microcap360.ideas.name],
+            "path": PROJECT.SUBSCRIPTION.LIST,
+            "permissions": [Permission.project.project.name],
             "child_routes": null,
-            "profiles": ['PROJECT']
+            "hiddenProfiles": ['PROJECT'],
+            "profiles": null
          },
          {
-            "menu_title": "Créations personnelles",
+            "menu_title": "Mes créations",
             "new_item": false,
             "path": PROJECT.MINE.ITEM.LIST,
             "permissions": [Permission.microcap360.ideas.name],
             "profiles": null,
+            "hiddenProfiles": ['PROJECT'],
             "child_routes": null
-         },
-         {
-            "menu_title": "Editer",
-            "new_item": false,
-            "path": GROUP.ADMINISTRATION.PROJECT.LIST,
-            "permissions": [Permission.group.admin.project.name, Permission.microcap360.ideas.name],
-            "profiles": ['PROJECT'],
-         },
-         {
-            "menu_title": "Structure financiere",
-            "new_item": false,
-            "path": GROUP.ADMINISTRATION.PROJECT.FINANCIAL_STRUCTURE.LIST,
-            "permissions": [Permission.project.financialStructure.name, Permission.microcap360.ideas.name],
-            "profiles": ['PROJECT'],
-         },
-         {
-            "menu_title": "Configurations",
-            "new_item": false,
-            "path": GROUP.ADMINISTRATION.PROJECT.CONFIGURATION.ATTRIBUTE.SELF,
-            "permissions": [Permission.group.admin.project.name, Permission.microcap360.ideas.name],
-            "profiles": ['PROJECT'],
          }
       ],
    },

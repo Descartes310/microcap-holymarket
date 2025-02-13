@@ -41,7 +41,11 @@ const JoinRequest = (props) => {
         })
         .catch(err => {
             console.log(err);
-            NotificationManager.error("Une erreur s'est produite, veuillez contacter l'assistance");
+            if(err?.response?.status == 412) {
+                NotificationManager.error("Pas de role par défaut configuré");
+            } else {
+                NotificationManager.error("Une erreur s'est produite, veuillez contacter l'assistance");
+            }
         })
         .finally(() => {
             props.setRequestGlobalAction(false);

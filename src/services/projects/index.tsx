@@ -144,6 +144,14 @@ export default class ProjectService {
         return makeRequest('get', Routes.GET_PROJECT_SUBSCRIPTIONS, data);
     }
 
+    static getAllProjectSubscriptions(data = {}): Promise<any> {
+        return makeRequest('get', Routes.GET_ALL_PROJECT_SUBSCRIPTIONS, data);
+    }
+
+    static getValidateProjectSubscription(reference: string, data): Promise<any> {
+        return makeRequest('put', Routes.VALIDATE_PROJECT_SUBSCRIPTION(reference), data);
+    }
+
     static getAllProjects(): Promise<any> {
         return makeRequest('get', Routes.GET_ALL_PROJECTS);
     }

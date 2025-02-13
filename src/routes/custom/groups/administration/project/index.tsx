@@ -3,10 +3,10 @@ import List from './folders/list';
 import {connect} from "react-redux";
 import {injectIntl} from "react-intl";
 import { GROUP } from 'Url/frontendUrl';
+import subscriptions from './subscriptions';
 import configurations from './configurations';
 import financialStructures from './financial-structures';
 import {withRouter, Switch, Redirect, Route} from "react-router-dom";
-import subscriptions from './subscriptions';
 
 const Project = (props) => {
     const { match } = props;

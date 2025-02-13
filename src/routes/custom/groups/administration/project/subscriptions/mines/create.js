@@ -19,12 +19,26 @@ const CreateSubscription = (props) => {
     
     const [label, setLabel] = useState(null);
     const [amounts, setAmounts] = useState([]);
+    const [projects, setProjects] = useState([]);
     const [project, setProject] = useState(null);
 
     useEffect(() => {
-        getSupports();
         getProject();
-    }, [])
+    }, []);
+    
+    useEffect(() => {
+        if(project) {
+            getSupports();
+        }
+    }, [project]);
+
+    // const getProjects = () => {
+    //     props.setRequestGlobalAction(true);
+    //     ProjectService.getProjects().then(response => {
+    //         setProjects(response);
+    //     })
+    //     .finally(() => props.setRequestGlobalAction(false))
+    // }
 
     const getProject = () => {
         props.setRequestGlobalAction(true);
@@ -39,7 +53,7 @@ const CreateSubscription = (props) => {
 
     const getSupports = () => {
 		props.setRequestGlobalAction(true);
-		GroupService.getActiveFinancialStructureSupports()
+		GroupService.getActiveFinancialStructureSupports(project.reference)
 		.then(response => {
             setAmounts(response.map(s => { return {support: s, subscription: 0, personalAmount: 0, financableAmount: 0}}));
         })
@@ -47,7 +61,7 @@ const CreateSubscription = (props) => {
 	}
 
     const onSubmit = () => {
-        if(!project || amounts.reduce((subscriptions, item) => subscriptions + item.subscription, 0) <= 0) {
+        if(!label || !project || amounts.reduce((subscriptions, item) => subscriptions + item.subscription, 0) <= 0) {
             NotificationManager.error('Veuillez bien remplir le formulaire')
             return;
         }
@@ -96,6 +110,21 @@ const CreateSubscription = (props) => {
                         onChange={(e) => setLabel(e.target.value)}
                     />
                 </FormGroup>
+                {/* <FormGroup className="col-md-12 col-sm-12 has-wrapper">
+                    <InputLabel className="text-left">
+                        Mes projets
+                    </InputLabel>
+                    <Autocomplete
+                        value={project}
+                        id="combo-box-demo"
+                        onChange={(__, item) => {
+                            setProject(item);
+                        }}
+                        getOptionLabel={(option) => option.label}
+                        options={projects}
+                        renderInput={(params) => <TextField {...params} variant="outlined" />}
+                    />
+                </FormGroup> */}
                 <CustomList
                     list={amounts}
                     loading={false}

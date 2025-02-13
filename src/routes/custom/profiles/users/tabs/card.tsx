@@ -27,7 +27,6 @@ const Card = (props) => {
     const [showConfirmAuthBox, setShowConfirmAuthBox] = useState(false);
     const [showTranscriptionBox, setShowTranscriptionBox] = useState(false);
 
-
     const onToggleButton = (key) => {
         let currentArray = dropdownOpen;
         currentArray[key] = !currentArray[key];

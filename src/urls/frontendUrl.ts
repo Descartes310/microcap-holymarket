@@ -348,6 +348,7 @@ export const GROUP = {
             SUBSCRIPTIONS: {
                 SELF: "/groups/administration/projects/subscriptions",
                 LIST: "/groups/administration/projects/subscriptions/list",
+                ADMINISTRATION: "/groups/administration/projects/subscriptions/administration",
             }
         },
         ARTICLE: {

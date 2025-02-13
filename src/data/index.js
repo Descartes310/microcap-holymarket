@@ -101,6 +101,9 @@ export const getStatusLabel = (type) => {
         case 'APPROVED':
             statusLabel = 'Approuvé'
             break;
+        case 'REJECTED':
+            statusLabel = 'Rejetté'
+            break;
         default:
             break;
     }

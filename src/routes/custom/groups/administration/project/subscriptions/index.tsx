@@ -4,18 +4,21 @@ import React, { Component } from 'react';
 import Tab from '@material-ui/core/Tab';
 import { GROUP } from "Url/frontendUrl";
 import Tabs from '@material-ui/core/Tabs';
+import Permissions from "Enums/Permissions";
 import { RctCard } from 'Components/RctCard';
 import AppBar from '@material-ui/core/AppBar';
 import { withRouter } from "react-router-dom";
+import { AbilityContext } from "Permissions/Can";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import { setRequestGlobalAction } from "Actions/RequestGlobalAction";
 
 class Subscriptions extends Component<any, any> {
+    static contextType = AbilityContext;
     constructor(props: any) {
         super(props);
         const defaultState = (function (url) {
             if (url.includes(GROUP.ADMINISTRATION.PROJECT.SUBSCRIPTIONS.LIST)) return 0;
-            else if (url.includes(GROUP.ADMINISTRATION.PROJECT.SUBSCRIPTIONS.LIST)) return 1;
+            else if (url.includes(GROUP.ADMINISTRATION.PROJECT.SUBSCRIPTIONS.ADMINISTRATION)) return 1;
             else return 0;
         })(window.location.pathname);
 
@@ -30,7 +33,7 @@ class Subscriptions extends Component<any, any> {
         if (oldActivateTab !== value) {
             switch (value) {
                 case 0: return this.props.history.push(GROUP.ADMINISTRATION.PROJECT.SUBSCRIPTIONS.LIST);
-                case 1: return this.props.history.push(GROUP.ADMINISTRATION.PROJECT.SUBSCRIPTIONS.LIST);
+                case 1: return this.props.history.push(GROUP.ADMINISTRATION.PROJECT.SUBSCRIPTIONS.ADMINISTRATION);
                 default: return this.props.history.push(GROUP.ADMINISTRATION.PROJECT.SUBSCRIPTIONS.LIST);
             }
         }
@@ -59,10 +62,12 @@ class Subscriptions extends Component<any, any> {
                                             icon={<i className="zmdi zmdi-home" />}
                                             label={"Mes souscriptions"}
                                         />
-                                        <Tab
-                                            icon={<i className="zmdi zmdi-home" />}
-                                            label={"Administration"}
-                                        />
+                                        { this.context.can(Permissions.group.admin.setting.name, Permissions) && (
+                                            <Tab
+                                                icon={<i className="zmdi zmdi-home" />}
+                                                label={"Administration"}
+                                            />
+                                        )}
                                     </Tabs>
                                 </div>
                             </div>
