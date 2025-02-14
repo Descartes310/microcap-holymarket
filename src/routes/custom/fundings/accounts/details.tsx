@@ -19,6 +19,7 @@ import { FUNDING, joinUrlWithParamsId } from 'Url/frontendUrl';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { getPriceWithCurrency, convertDate } from 'Helpers/helpers';
+import CodevParticipants from "Routes/custom/marketplace/orders/Participants";
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
 
 const Details = (props) => {
@@ -31,6 +32,7 @@ const Details = (props) => {
     const [showDealBox, setShowDealBox] = useState(false);
     const [showTicketBox, setShowTicketBox] = useState(false);
     const [selectedTicket, setSelectedTicket] = useState(null);
+    const [showParticipants, setShowParticipants] = useState(false);
     previousDate.setDate(previousDate.getDate() - ACCOUNT_PERIOD_LIMIT);
     const [showChildTicketBox, setShowChildTicketBox] = useState(false);
     const [showDebitAccountBox, setShowDebitAccountBox] = useState(false);
@@ -182,40 +184,9 @@ const Details = (props) => {
                                                 { getDetails(['ADVISOR_EMAIL']) && <p>Adresse email: {getDetails(['ADVISOR_EMAIL'])}</p> }
                                             </>
                                         )}
-                                        {/* <h3>{account?.userName}</h3> */}
                                     </div>
                                     <div className='d-flex flex-column align-items-end' style={{ flex: 1 }}>
-                                        {/* <div>
-                                            <h3>Solde</h3>
-                                            <h1 className='fw-bold mt-10' style={{ fontSize: '2.5rem' }}>{getPriceWithCurrency(account?.balance, account?.currencyCode)}</h1>
-                                        </div> */}
                                         <div>
-                                            {/* <Button
-                                                color="primary"
-                                                variant="contained"
-                                                className="text-white font-weight-bold"
-                                                onClick={() => setShowCreditAccountBox(true)}
-                                            >
-                                                Encaisser
-                                            </Button>
-                                            <Button
-                                                color="primary"
-                                                variant="contained"
-                                                className="text-white font-weight-bold ml-10"
-                                                onClick={() => setShowDebitAccountBox(true)}
-                                            >
-                                                Décaisser
-                                            </Button> */}
-                                            {/* <Button
-                                                color="primary"
-                                                variant="contained"
-                                                className="text-white font-weight-bold"
-                                                onClick={() => {
-                                                    props.history.push(joinUrlWithParamsId(FUNDING.ACCOUNT.SYNCHRONISATIONS, account?.id))
-                                                }}
-                                            >
-                                                Synchronisations
-                                            </Button> */}
                                             { account?.hasDeals &&  (
                                                 <Button
                                                     color="primary"
@@ -234,6 +205,17 @@ const Details = (props) => {
                                                     className="text-white font-weight-bold ml-10"
                                                 >
                                                     Echéancier
+                                                </Button>
+                                            )}
+
+                                            { account?.distributable && (
+                                                <Button
+                                                    color="primary"
+                                                    variant="contained"
+                                                    onClick={() => setShowParticipants(true)}
+                                                    className="text-white font-weight-bold ml-10"
+                                                >
+                                                    Distributions
                                                 </Button>
                                             )}
                                         </div>
@@ -468,6 +450,18 @@ const Details = (props) => {
                         show={showCreateChildTicketBox}
                         title='Versement complementaire'
                         onClose={() => setShowCreateChildTicketBox(false)}
+                    />
+                )}
+                { account  && showParticipants && (
+                    <CodevParticipants
+                        order={account.order}
+                        show={showParticipants}
+                        onClose={() => {
+                            setShowParticipants(false);
+                        }}
+                        referralCode={account.referralCode}
+                        type={account.codevSubscriptionType}
+                        isPrivate={account.codevDistribution == 'PRIVATE'}
                     />
                 )}
             </RctCollapsibleCard>
