@@ -45,6 +45,7 @@ export const UPDATE_ARTICLE_STATUS = (id) => `api/socialnetworks/groups/articles
 export const UPDATE_BLOG_TOPIC = (id) => `api/socialnetworks/groups/articles/topics/${id}/update`;
 
 export const GET_FUNDING_OPTIONS = `api/socialnetworks/groups/types/funding-options`;
+export const DELETE_FUNDING_OPTIONS = `api/socialnetworks/groups/types/funding-options`;
 export const CREATE_FUNDING_OPTIONS = `api/socialnetworks/groups/types/funding-options`;
 export const GET_GROUP_FUNDING_OPTIONS = (reference) => `api/socialnetworks/groups/types/${reference}/funding-options`;
 

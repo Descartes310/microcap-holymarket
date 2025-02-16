@@ -87,6 +87,7 @@ export const CREATE_CHILD_TICKETS = (reference) => `api/products/codevs/tickets/
 
 export const GET_CUSTOM_CARTS = 'api/products/custom-carts';
 export const CREATE_CUSTOM_CART = 'api/products/custom-carts';
+export const DELETE_CUSTOM_CARTS = 'api/products/custom-carts';
 
 export const GET_DISCOUNTS = 'api/discounts';
 export const CREATE_DISCOUNT = 'api/discounts';

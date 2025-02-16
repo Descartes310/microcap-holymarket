@@ -871,3 +871,50 @@ export const institutionTypes = () => {
 export const getInstitutionTypesLabel = (value) => {
     return institutionTypes().find(d => d.value == value)?.label
 }
+
+
+export const projectDistributionRules = () => {
+    return [
+        {
+            label: "Prorata des deals projet", 
+            value: 'PROJECT'
+        },
+        {
+            label: "Prorata des deals caution", 
+            value: 'CAUTION'
+        }
+    ];
+}
+
+export const getProjectDistributionRuleLabel = (value) => {
+    return projectDistributionRules().find(d => d.value == value)?.label
+}
+
+export const bonificationBases = () => {
+    return [
+        {
+            label: "EBE", 
+            value: 'EBE'
+        },
+        {
+            label: "Résultat net", 
+            value: 'NET_RESULT'
+        },
+        {
+            label: "Dividende recu", 
+            value: 'RECEIVED_DIVIDEND'
+        },
+        {
+            label: "Dividende distribué", 
+            value: 'DISTRIBUTED_DIVIDEND'
+        },
+        {
+            label: "Salaire", 
+            value: 'SALARY'
+        }
+    ];
+}
+
+export const getBonificationBaseLabel = (value) => {
+    return bonificationBases().find(d => d.value == value)?.label
+}

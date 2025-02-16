@@ -18,7 +18,6 @@ const CreateFundingOption = (props) => {
 
     const {show, onClose, structure} = props;
     
-    const [label, setLabel] = useState('');
     const [types, setTypes] = useState([]);
     const [type, setType] = useState(null);
     const [isin, setIsin] = useState(false);
@@ -76,7 +75,7 @@ const CreateFundingOption = (props) => {
     }
 
     const onSubmit = () => {        
-        if(!support || !type || !quantity || !amount || !label || !currency) {
+        if(!support || !type || !quantity || !amount || !currency) {
             NotificationManager.error('Veuillez bien remplir le formulaire')
             return;
         }
@@ -84,7 +83,7 @@ const CreateFundingOption = (props) => {
         props.setRequestGlobalAction(true);
 
         let data = {
-            isin, label, 
+            isin, 
             emission: quantity,
             nominal_amount: amount,
             currency: currency?.code,
@@ -181,7 +180,7 @@ const CreateFundingOption = (props) => {
                 </FormGroup>
 
                 <div className="row">
-                    <FormGroup className="col-md-6 col-sm-12 has-wrapper">
+                    <FormGroup className="col-md-4 col-sm-12 has-wrapper">
                         <InputLabel className="text-left" htmlFor="amount">
                             Valeur nominale
                         </InputLabel>
@@ -195,11 +194,8 @@ const CreateFundingOption = (props) => {
                             onChange={(e) => setAmount(e.target.value)}
                         />
                     </FormGroup>
-                    <UnitSelect label="Devise" isCurrency={true} onChange={(c) => setCurrency(c)} />
-                </div>
-
-                <div className="row">
-                    <FormGroup className="col-md-6 col-sm-12 has-wrapper">
+                    <UnitSelect className="col-md-4 col-sm-12 has-wrapper" label="Devise" isCurrency={true} onChange={(c) => setCurrency(c)} />
+                    <FormGroup className="col-md-4 col-sm-12 has-wrapper">
                         <InputLabel className="text-left" htmlFor="quantity">
                             Emission
                         </InputLabel>
@@ -211,21 +207,6 @@ const CreateFundingOption = (props) => {
                             value={quantity}
                             className="input-lg"
                             onChange={(e) => setQuantity(e.target.value)}
-                        />
-                    </FormGroup>
-
-                    <FormGroup className="col-md-6 col-sm-12 has-wrapper">
-                        <InputLabel className="text-left" htmlFor="label">
-                            Désignation
-                        </InputLabel>
-                        <InputStrap
-                            required
-                            id="label"
-                            type="text"
-                            name='label'
-                            className="input-lg"
-                            value={label}
-                            onChange={(e) => setLabel(e.target.value)}
                         />
                     </FormGroup>
                 </div>

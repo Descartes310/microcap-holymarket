@@ -296,8 +296,12 @@ export default class ProductService {
         return makeRequest('post', Routes.CREATE_CHILD_TICKETS(reference), data);
     }
 
-    static getCustomCarts(): Promise<any> {
-        return makeRequest('get', Routes.GET_CUSTOM_CARTS);
+    static getCustomCarts(projectReference: string): Promise<any> {
+        return makeRequest('get', Routes.GET_CUSTOM_CARTS, {projectReference});
+    }
+
+    static deleteCustomCarts(id: number): Promise<any> {
+        return makeRequest('delete', Routes.DELETE_CUSTOM_CARTS, {id});
     }
 
     static createCustomCart(data: any): Promise<any> {

@@ -183,4 +183,16 @@ export default class ProjectService {
     static updateDataTableInvestment(id: number, data: any): Promise<any> {
         return makeRequest('post', Routes.UPDATE_DATA_TABLE_INVESTMENT(id), data);
     }
+
+    static getProjectRules(data: any): Promise<any> {
+        return makeRequest('get', Routes.GET_PROJECT_RULES, data);
+    }
+
+    static createProjectRule(data: any): Promise<any> {
+        return makeRequest('post', Routes.CREATE_PROJECT_RULES, data);
+    }
+
+    static deleteProjectRule(reference: string): Promise<any> {
+        return makeRequest('delete', Routes.DELETE_PROJECT_RULES, {reference});
+    }
 }

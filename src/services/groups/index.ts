@@ -164,6 +164,10 @@ export default class GroupService {
         return makeRequest('get', Routes.GET_FUNDING_OPTIONS);
     }
 
+    static deleteFundingOptions(reference: string): Promise<any> {
+        return makeRequest('delete', Routes.DELETE_FUNDING_OPTIONS, {reference});
+    }
+
     static createFundingOption(data): Promise<any> {
         return makeRequest('post', Routes.CREATE_FUNDING_OPTIONS, data);
     }

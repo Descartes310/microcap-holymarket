@@ -14,9 +14,9 @@ import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 
 const CustomCart = (props) => {
 
-    const {show, onClose} = props;
+    const {show, onClose, project} = props;
     
-    const [label, setLabel] = useState('');
+    //const [label, setLabel] = useState('');
     const [market, setMarket] = useState(null);
     const [markets, setMarkets] = useState([]);
     const [products, setProducts] = useState([]);
@@ -47,7 +47,7 @@ const CustomCart = (props) => {
 	}
 
     const onSubmit = () => {        
-        if(selectedProducts.length <= 0 || !market || !label) {
+        if(selectedProducts.length <= 0 || !market) {
             NotificationManager.error('Veuillez bien remplir le formulaire')
             return;
         }
@@ -55,8 +55,8 @@ const CustomCart = (props) => {
         props.setRequestGlobalAction(true);
 
         let data = {
-            label,
             market_reference: market.reference,
+            project_reference: project.reference,
             product_references: selectedProducts.map(p => p.reference)
         }
 
@@ -67,12 +67,12 @@ const CustomCart = (props) => {
             console.log(err);
             NotificationManager.error("Une erreur est survenu lors de l'item");
         }).finally(() => {
-            setLabel('');
             setMarket(null);
             setProducts([]);
             setSelectedProducts([]);
             props.setRequestGlobalAction(false);
         })
+        
     }
     
     return (
@@ -87,21 +87,6 @@ const CustomCart = (props) => {
             )}
         >
             <Form onSubmit={onSubmit}>
-
-                <FormGroup className="has-wrapper">
-                    <InputLabel className="text-left" htmlFor="label">
-                        Label
-                    </InputLabel>
-                    <InputStrap
-                        required
-                        id="label"
-                        type="text"
-                        name='label'
-                        className="input-lg"
-                        value={label}
-                        onChange={(e) => setLabel(e.target.value)}
-                    />
-                </FormGroup>
 
                 <FormGroup className="col-md-12 col-sm-12 has-wrapper mb-30">
                     <InputLabel className="text-left">

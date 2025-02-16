@@ -168,23 +168,6 @@ const Create = (props) => {
         }
     }
 
-    const checkProjectItemsValidity = () => {
-        let initItems = initializationItems.filter(ii => ii.complexType !== 'TABLE');
-        for (let index = 0; index < initItems.length; index++) {
-            const initItem = initItems[index];
-            const occurences = projectItems.filter(pi => pi.item === initItem && pi.value != null);
-            if(occurences.length > initItem.maximumOccurence) {
-                NotificationManager.error('Les informations du projet ne sont pas correctement renseignées');
-                return false;
-            }
-            if(occurences.length === 0 && initItem.mandatory) {
-                NotificationManager.error('Les informations du projet ne sont pas correctement renseignées');
-                return false;
-            }
-        }
-        return true;
-    }
-
     const getOccurence = (item) => {
         const occurences = projectItems.filter(ii => ii.item === item && item.inputType !== 'COMPLEX');
         return occurences.length;

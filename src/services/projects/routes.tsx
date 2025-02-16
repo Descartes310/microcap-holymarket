@@ -56,3 +56,7 @@ export const GET_PROJECT_SETTINGS = `api/projects/settings`;
 
 export const GET_PROJECT_INVESTMENT = `api/projects/investments`;
 export const CREATE_PROJECT_INVESTMENT = `api/projects/investments`;
+
+export const GET_PROJECT_RULES = `api/projects/rules`;
+export const CREATE_PROJECT_RULES = `api/projects/rules`;
+export const DELETE_PROJECT_RULES = `api/projects/rules`;
