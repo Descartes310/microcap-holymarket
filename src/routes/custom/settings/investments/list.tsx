@@ -1,10 +1,11 @@
 import { connect } from 'react-redux';
-import { SETTING } from 'Url/frontendUrl';
 import { withRouter } from "react-router-dom";
+import Button from '@material-ui/core/Button';
 import CustomList from "Components/CustomList";
 import SettingService from 'Services/settings';
 import { setRequestGlobalAction } from 'Actions';
 import React, { useEffect, useState } from 'react';
+import { SETTING, joinUrlWithParamsId } from 'Url/frontendUrl';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import { getInputTypeLabel, getInvestmentPerimeterTypeLabel } from 'Helpers/helpers';
 
@@ -54,6 +55,7 @@ const List = (props) => {
                                             <th className="fw-bold">Désignation</th>
                                             <th className="fw-bold">Type de donnée</th>
                                             <th className="fw-bold">Périmètre</th>
+                                            <th className="fw-bold">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -79,6 +81,16 @@ const List = (props) => {
                                                             <p className="m-0 text-dark">{getInvestmentPerimeterTypeLabel(item.perimeter)}</p>
                                                         </div>
                                                     </div>
+                                                </td>
+                                                <td>
+                                                    <Button
+                                                        color="primary"
+                                                        variant="contained"
+                                                        className="text-white font-weight-bold"
+                                                        onClick={() => props.history.push(joinUrlWithParamsId(SETTING.INVESTMENT.UPDATE, item.reference))}
+                                                    >
+                                                        Editer
+                                                    </Button>
                                                 </td>
                                             </tr>
                                         ))}

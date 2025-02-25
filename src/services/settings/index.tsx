@@ -180,4 +180,12 @@ export default class SettingService {
     static createInvestmentSetting(data: any): Promise<any> {
         return makeRequest('post', Routes.CREATE_INVESTMENT_SETTING, data);
     }
+
+    static updateInvestmentSetting(reference: string, data: any): Promise<any> {
+        return makeRequest('put', Routes.UPDATE_INVESTMENT_SETTING(reference), data);
+    }
+
+    static findInvestmentSetting(reference: string): Promise<any> {
+        return makeRequest('get', Routes.FIND_INVESTMENT_SETTING(reference));
+    }
 }

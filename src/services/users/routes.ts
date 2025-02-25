@@ -38,6 +38,7 @@ export const CONFIRM_CONTACT_CODE = `api/socialnetworks/users/self/contacts/conf
 export const SEND_CONTACT_CODE = (id) => `api/socialnetworks/users/self/contacts/${id}/send-code`;
 export const SET_AS_NOTIFICATION = (id) => `api/socialnetworks/users/self/contacts/${id}/notification`;
 
+export const GET_ACTIVE_PASS = `api/socialnetworks/users/pass/active`;
 export const ACTIVATE_PASS = (reference) => `api/socialnetworks/users/pass/${reference}/active`;
 export const TRANSFER_PASS = (reference) => `api/socialnetworks/users/pass/${reference}/transfer`;
 export const FIND_PASS_FROM_ORDER = (reference) => `api/socialnetworks/users/pass/order/${reference}`;

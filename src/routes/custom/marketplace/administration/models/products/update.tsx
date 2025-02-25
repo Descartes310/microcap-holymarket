@@ -7,6 +7,7 @@ import ProductService from 'Services/products';
 import { setRequestGlobalAction } from 'Actions';
 import React, { useState, useEffect } from 'react';
 import TextField from '@material-ui/core/TextField';
+import { productSpecialTypes } from 'Helpers/datas';
 import { FileUploader } from "react-drag-drop-files";
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { NotificationManager } from 'react-notifications';
@@ -14,11 +15,10 @@ import Checkbox from "@material-ui/core/Checkbox/Checkbox";
 import UserAccountTypeService from 'Services/account-types';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { Form, FormGroup, Input as InputStrap } from 'reactstrap';
+import SegragatedAccount from 'Components/Product/SegragatedAccount';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
 import { getProductNatures, getProductRanges, getSellWay } from 'Helpers/helpers';
 import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
-import { productSpecialTypes } from 'Helpers/datas';
-import SegragatedAccount from 'Components/Product/SegragatedAccount';
 
 const fileTypes = ["JPG", "PNG", "GIF", "JPEG"];
 

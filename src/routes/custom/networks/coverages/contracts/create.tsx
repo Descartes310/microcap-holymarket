@@ -2,39 +2,59 @@ import { connect } from 'react-redux';
 import { NETWORK } from 'Url/frontendUrl';
 import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
+import UserSelect from 'Components/UserSelect';
+import { contractTypes } from 'Helpers/helpers';
 import ContractService from 'Services/contracts';
 import { setRequestGlobalAction } from 'Actions';
 import React, { useEffect, useState } from 'react';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { NotificationManager } from 'react-notifications';
+import Checkbox from "@material-ui/core/Checkbox/Checkbox";
+import UserAccountTypeService from 'Services/account-types';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { Form, FormGroup, Input as InputStrap } from 'reactstrap';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
-import UserAccountTypeService from 'Services/account-types';
-import { contractTypes } from 'Helpers/helpers';
+import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
+import UserService from 'Services/users';
 
 const Create = (props) => {
 
     const [label, setLabel] = useState('');
     const [types, setTypes] = useState([]);
     const [type, setType] = useState(null);
+    const [pass, setPass] = useState(null);
+    const [passes, setPasses] = useState([]);
     const [number, setNumber] = useState('');
+    const [member, setMember] = useState(null);
+    const [hasPass, setHasPass] = useState(false);
     const [category, setCategory] = useState(null);
     const [categories, setCategories] = useState([]);
     const [contractType, setContractType] = useState(null);
-
 
     useEffect(() => {
         getTypes();
         getCategories();
     }, []);
 
+    useEffect(() => {
+        if(member) {
+            getActivePass();
+        }
+    }, [member])
+
     const getCategories = () => {
         props.setRequestGlobalAction(true),
         UserAccountTypeService.getAccountTypeCategories()
         .then(response => setCategories(response))
+        .finally(() => props.setRequestGlobalAction(false))
+    }  
+
+    const getActivePass = () => {
+        props.setRequestGlobalAction(true),
+        UserService.getActivePass(member.referralCode)
+        .then(response => setPasses(response))
         .finally(() => props.setRequestGlobalAction(false))
     }    
     
@@ -55,11 +75,20 @@ const Create = (props) => {
             return;
         }
 
+        if(hasPass && !pass) {
+            NotificationManager.error('Veuillez sélectionner un pass');
+            return;
+        }
+
         let data: any = {
             label, 
             number,
             type: contractType.value
         };
+
+        if(hasPass && pass) {
+            data.passReference = pass.reference;
+        }
 
         if(contractType.value !== 'ASSET') {
             if(!type) {
@@ -82,7 +111,6 @@ const Create = (props) => {
             props.setRequestGlobalAction(false);
         })
     }
-
 
     return (
         <>
@@ -122,7 +150,7 @@ const Create = (props) => {
 
                     <div className="col-md-12 col-sm-12 has-wrapper mb-30">
                         <InputLabel className="text-left">
-                            Nature de contract
+                            Cible du contract
                         </InputLabel>
                         <Autocomplete
                             id="combo-box-demo"
@@ -169,6 +197,41 @@ const Create = (props) => {
                                     renderInput={(params) => <TextField {...params} variant="outlined" />}
                                 />
                             </div>
+
+                            <FormGroup className="col-sm-12 has-wrapper">
+                                <FormControlLabel control={
+                                    <Checkbox
+                                        color="primary"
+                                        checked={hasPass}
+                                        onChange={() => setHasPass(!hasPass)}
+                                    />
+                                } label={'Associer un pass'}
+                                />
+                            </FormGroup>
+                            { hasPass && (
+                                <>
+                                    <UserSelect label={'Numéro utilisateur'} onChange={(_, user) => {
+                                        setMember(user);
+                                    }} />
+                                    { member && (
+                                        <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                                            <InputLabel className="text-left">
+                                                Liste des passes
+                                            </InputLabel>
+                                            <Autocomplete
+                                                value={pass}
+                                                id="combo-box-demo"
+                                                onChange={(__, item) => {
+                                                    setPass(item);
+                                                }}
+                                                options={passes}
+                                                getOptionLabel={(option) => option.label}
+                                                renderInput={(params) => <TextField {...params} variant="outlined" />}
+                                            />
+                                        </div>
+                                    )}
+                                </>
+                            )}
                         </>
                     )}
 

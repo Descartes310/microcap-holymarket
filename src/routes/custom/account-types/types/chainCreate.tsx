@@ -16,10 +16,13 @@ import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { joinUrlWithParamsId, USER_ACCOUNT_TYPE } from 'Url/frontendUrl';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
 import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
+import ProductService from 'Services/products';
 
 const Create = (props) => {
 
     const [event, setEvent] = useState(null);
+    const [products, setProducts] = useState([]);
+    const [product, setProduct] = useState(null);
     const [accountType, setAccountType] = useState(null);
     const [accountTypes, setAccountTypes] = useState([]);
     const [referralType, setReferralType] = useState(null);
@@ -27,6 +30,7 @@ const Create = (props) => {
 
     useEffect(() => {
         getTypes();
+        getProducts();
     }, []);
 
     const getTypes = () => {
@@ -36,16 +40,34 @@ const Create = (props) => {
         .finally(() => setRequestGlobalAction(false))
     }
 
+    const getProducts = () => {
+        props.setRequestGlobalAction(true);
+        ProductService.getProductModels({types: ['PRODUCT'], nature: 'PASS'})
+            .then(response => setProducts(response))
+            .finally(() => props.setRequestGlobalAction(false))
+    }
+
     const onSubmit = () => {
 
-        if(!accountType || !event || !referralType)
-            return
+        if(!accountType || !event || !referralType) {
+            NotificationManager.error("Le formulaire est mal renseigné");
+            return;
+        }
+
+        if(event.value == 'PASS' && !product) {
+            NotificationManager.error("Le pass est obligatoire");
+            return;
+        }
 
         let data: any = {
             event: event.value,
             nextId: accountType.id,
             referralType: referralType.value,
             createAccess
+        }
+
+        if(product) {
+            data.product_model_reference = product.reference;
         }
         
         props.setRequestGlobalAction(true);
@@ -64,7 +86,7 @@ const Create = (props) => {
     return (
         <>
             <PageTitleBar
-                title={"Création d'un lien"} onBackClick={() => props.history.push(joinUrlWithParamsId(USER_ACCOUNT_TYPE.TYPE.CHAIN, props.match.params.id))}
+                title={"Création d'une chaine"} onBackClick={() => props.history.push(joinUrlWithParamsId(USER_ACCOUNT_TYPE.TYPE.CHAIN, props.match.params.id))}
             />
             <RctCollapsibleCard>
                 <Form onSubmit={onSubmit}>
@@ -98,6 +120,24 @@ const Create = (props) => {
                             renderInput={(params) => <TextField {...params} variant="outlined" />}
                         />
                     </div>
+                    
+                    {event && event.value == 'PASS' && (
+                        <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                            <InputLabel className="text-left">
+                                Pass
+                            </InputLabel>
+                            <Autocomplete
+                                value={product}
+                                id="combo-box-demo"
+                                options={products}
+                                onChange={(__, item) => {
+                                    setProduct(item);
+                                }}
+                                getOptionLabel={(option) => option.label}
+                                renderInput={(params) => <TextField {...params} variant="outlined" />}
+                            />
+                        </div>
+                    )}
 
                     <div className="col-md-12 col-sm-12 has-wrapper mb-30">
                         <InputLabel className="text-left">

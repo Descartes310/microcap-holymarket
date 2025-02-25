@@ -121,6 +121,9 @@ export default class UserService {
     static activatePass(reference: string): Promise<any> {
         return makeRequest('put', Routes.ACTIVATE_PASS(reference));
     }
+    static getActivePass(referralCode: string): Promise<any> {
+        return makeRequest('get', Routes.GET_ACTIVE_PASS, {referralCode});
+    }
 
     static authenticate(reference: string): Promise<any> {
         return makeRequest('post', Routes.AUTHENTICATE(reference));

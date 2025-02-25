@@ -15,4 +15,12 @@ export default class ContractService {
     static createContract(data: any): Promise<any> {
         return makeRequest('post', `${Routes.CREATE_CONTRACT}`, data);
     }
+
+    static getUserContracts(data: any): Promise<any> {
+        return makeRequest('get', `${Routes.GET_CURRENT_CONTRACT}`, data);
+    }
+
+    static getActivableContracts(data: any): Promise<any> {
+        return makeRequest('get', Routes.GET_ACTIVABLE_CONTRACTS, data);
+    }
 }

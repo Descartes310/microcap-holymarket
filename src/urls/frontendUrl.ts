@@ -674,6 +674,7 @@ export const SETTING = {
         SELF: "/settings/investments",
         LIST: "/settings/investments/list",
         CREATE: "/settings/investments/create",
+        UPDATE: "/settings/investments/update/:id",
     },
     PME_VOTE: {
         SELF: "/settings/pme-votes",

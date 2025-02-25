@@ -3,8 +3,8 @@ import List from './list';
 import { connect } from "react-redux";
 import { injectIntl } from "react-intl";
 import { NETWORK } from 'Url/frontendUrl';
+import details from 'Routes/custom/supervision/users/details';
 import { withRouter, Switch, Redirect, Route } from "react-router-dom";
-import details from './details';
 
 const Users = (props) => {
     const { match } = props;

@@ -55,6 +55,8 @@ const List = (props) => {
                                         <tr>
                                             <th className="fw-bold">Désignation</th>
                                             <th className="fw-bold">Numéro</th>
+                                            <th className="fw-bold">Pass</th>
+                                            <th className="fw-bold">Status</th>
                                             <th className="fw-bold">Type</th>
                                         </tr>
                                     </thead>
@@ -72,6 +74,20 @@ const List = (props) => {
                                                     <div className="media">
                                                         <div className="media-body pt-10">
                                                             <h4 className="m-0 fw-bold text-dark">{item.number}</h4>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="media">
+                                                        <div className="media-body pt-10">
+                                                            <h4 className="m-0 fw-bold text-dark">{item?.pass?.label}</h4>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="media">
+                                                        <div className="media-body pt-10">
+                                                            <h4 className={`m-0 fw-bold ${item.beneficiaryReference ? 'text-danger' : 'text-success'}`}>{item.beneficiaryReference ? 'Utilisé' : 'Disponible'}</h4>
                                                         </div>
                                                     </div>
                                                 </td>

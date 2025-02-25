@@ -55,3 +55,5 @@ export const UPDATE_MESSAGE_TEMPLATE = (reference) => `api/messages/templates/${
 
 export const CREATE_INVESTMENT_SETTING = 'api/products/codevs/investments/settings/items';
 export const GET_INVESTMENT_SETTINGS = 'api/products/codevs/investments/settings/items';
+export const FIND_INVESTMENT_SETTING = (reference) => `api/products/codevs/investments/settings/items/${reference}`;
+export const UPDATE_INVESTMENT_SETTING = (reference) => `api/products/codevs/investments/settings/items/${reference}`;

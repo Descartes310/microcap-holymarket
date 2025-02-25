@@ -1,6 +1,7 @@
 import React from 'react';
 import List from './list';
 import Create from './create';
+import Update from './update';
 import {connect} from "react-redux";
 import {injectIntl} from "react-intl";
 import { SETTING } from 'Url/frontendUrl';
@@ -14,6 +15,7 @@ const InvestmentItems = (props) => {
                 <Switch>
                     <Redirect exact from={`${match.url}/`} to={SETTING.INVESTMENT.LIST} />
                     <Route path={SETTING.INVESTMENT.LIST} component={List} />
+                    <Route path={SETTING.INVESTMENT.UPDATE} component={Update} />
                     <Route path={SETTING.INVESTMENT.CREATE} component={Create} />
                 </Switch>
             </>

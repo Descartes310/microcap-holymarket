@@ -17,9 +17,7 @@ import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 const CreateRole = (props) => {
 
     const [label, setLabel] = useState('');
-    const [login, setLogin] = useState('');
     const [nodes, setNodes] = useState([]);
-    const [password, setPassword] = useState('');
     const [expanded, setExpanded] = useState([]);
     const [description, setDescription] = useState('');
     const [selectedPermissions, setSelectedPermissions] = useState([]);
@@ -39,7 +37,7 @@ const CreateRole = (props) => {
 
     const onSubmit = () => {
 
-        if(!label || selectedPermissions.length <= 0 || !login || !password) {
+        if(!label || selectedPermissions.length <= 0) {
             NotificationManager.error('Le formulaire est mal renseigné');
             return;
         }
@@ -47,7 +45,7 @@ const CreateRole = (props) => {
         props.setRequestGlobalAction(true);
 
         let data = {
-            label, login, password,
+            label,
             description: description,
             permissionIds: selectedPermissions.map(p => Number(p))
         }
@@ -102,34 +100,6 @@ const CreateRole = (props) => {
                             className="input-lg"
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
-                        />
-                    </FormGroup>
-                    <FormGroup className="has-wrapper">
-                        <InputLabel className="text-left" htmlFor="login">
-                            Login
-                        </InputLabel>
-                        <InputStrap
-                            required
-                            id="login"
-                            type="text"
-                            name='login'
-                            value={login}
-                            className="input-lg"
-                            onChange={(e) => setLogin(e.target.value)}
-                        />
-                    </FormGroup>
-                    <FormGroup className="has-wrapper">
-                        <InputLabel className="text-left" htmlFor="password">
-                            Mot de passe
-                        </InputLabel>
-                        <InputStrap
-                            required
-                            type="text"
-                            id="password"
-                            name='password'
-                            value={password}
-                            className="input-lg"
-                            onChange={(e) => setPassword(e.target.value)}
                         />
                     </FormGroup>
 

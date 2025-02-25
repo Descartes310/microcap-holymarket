@@ -16,20 +16,31 @@ import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { joinUrlWithParamsId, USER_ACCOUNT_TYPE } from 'Url/frontendUrl';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
 import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
+import ProductService from 'Services/products';
 
 const Update = (props) => {
 
     const [event, setEvent] = useState(null);
     const [chain, setChain] = useState(null);
+    const [products, setProducts] = useState([]);
+    const [product, setProduct] = useState(null);
     const [accountType, setAccountType] = useState(null);
     const [accountTypes, setAccountTypes] = useState([]);
     const [referralType, setReferralType] = useState(null);
     const [createAccess, setCreateAccess] = useState(false);
+    const [productReference, setProductReference] = useState(null);
 
     useEffect(() => {
         getTypes();
         findChain();
+        getProducts();
     }, []);
+
+    useEffect(() => {
+        if(products.length > 0 && productReference) {
+            setProduct(products.find(p => p.reference == productReference));
+        }
+    }, [products, productReference]);
 
     const findChain = () => {
         setRequestGlobalAction(true),
@@ -38,10 +49,18 @@ const Update = (props) => {
             setChain(response);
             setAccountType(response.next);
             setCreateAccess(response.createAccess);
+            setProductReference(response.productModelReference);
             setEvent(getChainEventTypes().find(e => e.value === response.event));
             setReferralType(referraTypes().find(e => e.value === response.referralType));
         })
         .finally(() => setRequestGlobalAction(false))
+    }
+
+    const getProducts = () => {
+        props.setRequestGlobalAction(true);
+        ProductService.getProductModels({types: ['PRODUCT'], nature: 'PASS'})
+            .then(response => setProducts(response))
+            .finally(() => props.setRequestGlobalAction(false))
     }
 
     const getTypes = () => {
@@ -53,14 +72,25 @@ const Update = (props) => {
 
     const onSubmit = () => {
 
-        if(!accountType || !event || !referralType)
-            return
+        if(!accountType || !event || !referralType) {
+            NotificationManager.error("Le formulaire est mal renseigné");
+            return;
+        }
+
+        if(event.value == 'PASS' && !product) {
+            NotificationManager.error("Le pass est obligatoire");
+            return;
+        }
 
         let data: any = {
             event: event.value,
             nextId: accountType.id,
             referralType: referralType.value,
             createAccess
+        }
+
+        if(product) {
+            data.product_model_reference = product.reference;
         }
         
         props.setRequestGlobalAction(true);
@@ -79,7 +109,7 @@ const Update = (props) => {
     return (
         <>
             <PageTitleBar
-                title={"Edition d'un lien"} onBackClick={() => props.history.push(joinUrlWithParamsId(USER_ACCOUNT_TYPE.TYPE.CHAIN, props.match.params.id))}
+                title={"Edition d'une chaine"} onBackClick={() => props.history.push(joinUrlWithParamsId(USER_ACCOUNT_TYPE.TYPE.CHAIN, props.match.params.id))}
             />
             <RctCollapsibleCard>
                 <Form onSubmit={onSubmit}>
@@ -113,6 +143,24 @@ const Update = (props) => {
                             renderInput={(params) => <TextField {...params} variant="outlined" />}
                         />
                     </div>
+                    
+                    {event && event.value == 'PASS' && (
+                        <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                            <InputLabel className="text-left">
+                                Pass
+                            </InputLabel>
+                            <Autocomplete
+                                value={product}
+                                id="combo-box-demo"
+                                options={products}
+                                onChange={(__, item) => {
+                                    setProduct(item);
+                                }}
+                                getOptionLabel={(option) => option.label}
+                                renderInput={(params) => <TextField {...params} variant="outlined" />}
+                            />
+                        </div>
+                    )}
 
                     <div className="col-md-12 col-sm-12 has-wrapper mb-30">
                         <InputLabel className="text-left">

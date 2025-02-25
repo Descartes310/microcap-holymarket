@@ -96,6 +96,15 @@ export default [
             "profiles": ['GROUP'],
          },
          {
+            "menu_title": "Prestataires",
+            "new_item": false,
+            "path": NETWORK.COVERAGE.PARTNERSHIP.COMPLEMENTARY,
+            "permissions": [
+               Permission.network.coverage.partner.name,
+            ],
+            "profiles": ['GROUP'],
+         },
+         {
             "menu_title": "Utilisateurs",
             "new_item": false,
             "path": NETWORK.COVERAGE.USERS.LIST,

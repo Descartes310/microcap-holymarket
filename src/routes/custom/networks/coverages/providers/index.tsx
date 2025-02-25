@@ -14,9 +14,7 @@ class Partnerships extends Component<any, any> {
     constructor(props: any) {
         super(props);
         const defaultState = (function (url) {
-            if (url.includes(NETWORK.COVERAGE.PARTNERSHIP.COMMUNITY)) return 0;
-            else if (url.includes(NETWORK.COVERAGE.PARTNERSHIP.OPERATOR)) return 1;
-            else if (url.includes(NETWORK.COVERAGE.PARTNERSHIP.BROKER)) return 2;
+            if (url.includes(NETWORK.COVERAGE.PARTNERSHIP.COMPLEMENTARY)) return 0;
             else return 0;
         })(window.location.pathname);
 
@@ -30,10 +28,8 @@ class Partnerships extends Component<any, any> {
         this.setState({ activeTab: value });
         if (oldActivateTab !== value) {
             switch (value) {
-                case 0: return this.props.history.push(NETWORK.COVERAGE.PARTNERSHIP.COMMUNITY);
-                case 1: return this.props.history.push(NETWORK.COVERAGE.PARTNERSHIP.OPERATOR);
-                case 2: return this.props.history.push(NETWORK.COVERAGE.PARTNERSHIP.BROKER);
-                default: return this.props.history.push(NETWORK.COVERAGE.PARTNERSHIP.COMMUNITY);
+                case 0: return this.props.history.push(NETWORK.COVERAGE.PARTNERSHIP.COMPLEMENTARY);
+                default: return this.props.history.push(NETWORK.COVERAGE.PARTNERSHIP.COMPLEMENTARY);
             }
         }
     };
@@ -43,7 +39,7 @@ class Partnerships extends Component<any, any> {
 
         return (
             <div>
-                <PageTitleBar title={"Partenariats"} match={this.props.match} />
+                <PageTitleBar title={"Prestataires"} match={this.props.match} />
                 <RctCard>
                     <div className="rct-tabs">
                         <AppBar position="static">
@@ -58,13 +54,7 @@ class Partnerships extends Component<any, any> {
                                         centered
                                     >
                                         <Tab
-                                            label={"Communautés"}
-                                        />
-                                        <Tab
-                                            label={"Opérateurs"}
-                                        />
-                                        <Tab
-                                            label={"Brokers"}
+                                            label={"Prestataires"}
                                         />
                                     </Tabs>
                                 </div>

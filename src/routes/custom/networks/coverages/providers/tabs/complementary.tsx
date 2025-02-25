@@ -31,14 +31,14 @@ const List = (props) => {
             <CustomList
                 list={partners}
                 loading={false}
-                itemsFoundText={n => `${n} opérateurs trouvées`}
+                itemsFoundText={n => `${n} prestataires trouvés`}
                 onAddClick={() => setShowPartnerShipModal(true)}
                 renderItem={list => (
                     <>
                         {list && list.length === 0 ? (
                             <div className="d-flex justify-content-center align-items-center py-50">
                                 <h4>
-                                    Aucunes opérateurs trouvées
+                                    Aucunes prestataires trouvés
                                 </h4>
                             </div>
                         ) : (
