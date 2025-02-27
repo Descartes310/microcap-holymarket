@@ -31,6 +31,7 @@ const List = (props) => {
     const [maxBase, setMaxBase] = useState(null);
     const [minRate, setMinRate] = useState(null);
     const [maxRate, setMaxRate] = useState(null);
+    const [currency, setCurrency] = useState(null);
     const [prevision, setPrevision] = useState(null);
     const [periodicity, setPeriodicy] = useState(null);
     const [customCarts, setCustomCarts] = useState([]);
@@ -100,6 +101,14 @@ const List = (props) => {
             setMaxBase(response.find(t => t.type == 'MAXIMUM_FIXED_BASE')?.value ?? null);
             setMinRate(response.find(t => t.type == 'MINIMUM_RATE')?.value ?? null);
             setMaxRate(response.find(t => t.type == 'MAXIMUM_RATE')?.value ?? null)
+            setPrevision(response.find(t => t.type == 'PREVISION')?.value ?? null)
+            setBonificationMinRate(response.find(t => t.type == 'BONIFICATION_MIN_RATE')?.value ?? null)
+            setBonificationMaxRate(response.find(t => t.type == 'BONIFICATION_MAX_RATE')?.value ?? null)
+            setDotationMinRate(response.find(t => t.type == 'DOTATION_MIN_RATE')?.value ?? null)
+            setDotationMaxRate(response.find(t => t.type == 'DOTATION_MAX_RATE')?.value ?? null)
+            setPeriodicy(getTimeUnits().find(t => t.value == response.find(t => t.type == 'PERIODICITY')?.value) ?? null)
+            setBonificationBase(bonificationBases().find(bb => bb.value == response.find(t => t.type == 'BONIFICATION_BASE')?.value) ?? null)
+            setDistribution(projectDistributionRules().find(pd => pd.value == response.find(t => t.type == 'DISTRIBUTION')?.value) ?? null)
         })
         .finally(() => props.setRequestGlobalAction(false))
     }
@@ -130,7 +139,7 @@ const List = (props) => {
 
     const getOptions = () => {
         props.setRequestGlobalAction(true);
-        GroupService.getFundingOptions().then(response => {
+        GroupService.getFinancialStructures().then(response => {
             setOptions(response);
         })
         .finally(() => props.setRequestGlobalAction(false))
@@ -138,21 +147,25 @@ const List = (props) => {
 
     const deleteOptions = (reference) => {
         props.setRequestGlobalAction(true);
-        GroupService.deleteFundingOptions(reference).then(response => {
+        GroupService.deleteFinancialStructure({reference}).then(() => {
             getOptions();
         })
         .finally(() => props.setRequestGlobalAction(false))
     }
 
     const onSubmit = () => {        
-        if(!minBase || !maxBase || !minRate || !maxRate) {
+        if(!minBase || !maxBase || !minRate || !maxRate || !currency || !distribution || !bonificationBase || !bonificationMinRate || !bonificationMaxRate ||
+            !prevision || !dotationMinRate || !dotationMaxRate || !periodicity
+        ) {
             NotificationManager.error('Veuillez bien remplir le formulaire')
             return;
         }
 
         let data = {
-            minBase, maxBase,
-            minRate, maxRate,
+            minBase, maxBase, bonificationBase: bonificationBase.value,
+            minRate, maxRate, bonificationMinRate, bonificationMaxRate,
+            currency: currency.code, distribution: distribution.value,
+            prevision, dotationMinRate, dotationMaxRate, periodicity: periodicity.value
         }
                 
         props.setRequestGlobalAction(true);
@@ -354,7 +367,7 @@ const List = (props) => {
                             renderInput={(params) => <TextField {...params} variant="outlined" />}
                         />
                     </FormGroup>
-                    <UnitSelect className="col-md-6 col-sm-12 has-wrapper" label="Devise" isCurrency={true} onChange={(c) => setMaxRate(c)} />
+                    <UnitSelect className="col-md-6 col-sm-12 has-wrapper" label="Devise" isCurrency={true} initialValue={details?.find(t => t.type == 'CURRENCY')?.value} onChange={(c) => setCurrency(c)} />
                 </div>
                 <div className='row'>
                     <FormGroup className="col-md-12 col-sm-12 has-wrapper">
@@ -367,8 +380,8 @@ const List = (props) => {
                             id="prevision"
                             name='prevision'
                             className="input-lg"
-                            value={dotationMinRate}
-                            onChange={(e) => setDotationMinRate(e.target.value)}
+                            // value={dotationMinRate}
+                            // onChange={(e) => setDotationMinRate(e.target.value)}
                         />
                     </FormGroup>
                 </div>
@@ -476,35 +489,37 @@ const List = (props) => {
                                                     <td>
                                                         <div className="media">
                                                             <div className="media-body pt-10">
-                                                                <h4 className="m-0 fw-bold text-dark">{item.supportType.label}</h4>
+                                                                <h4 className="m-0 fw-bold text-dark">{item.label}</h4>
                                                             </div>
                                                         </div>
                                                     </td>
                                                     <td>
                                                         <div className="media">
                                                             <div className="media-body pt-10">
-                                                                <h4 className="m-0 fw-bold text-dark">{getPriceWithCurrency(item.nominalAmount, item.currency)}</h4>
+                                                                <h4 className="m-0 fw-bold text-dark">{getPriceWithCurrency(item?.financialStructureSupport.nominalAmount, item?.financialStructureSupport.currency)}</h4>
                                                             </div>
                                                         </div>
                                                     </td>
                                                     <td>
                                                         <div className="media">
                                                             <div className="media-body pt-10">
-                                                                <h4 className="m-0 fw-bold text-dark">{item.quantity}</h4>
+                                                                <h4 className="m-0 fw-bold text-dark">{item?.financialStructureSupport.quantity}</h4>
                                                             </div>
                                                         </div>
                                                     </td>
                                                     <td>
-                                                        <Button
-                                                            color="primary"
-                                                            variant="contained"
-                                                            onClick={() => {
-                                                                deleteOptions(item.reference)
-                                                            }}
-                                                            className="text-white font-weight-bold mr-3"
-                                                        >
-                                                            Supprimer
-                                                        </Button>
+                                                        { item.deletable && (
+                                                            <Button
+                                                                color="primary"
+                                                                variant="contained"
+                                                                onClick={() => {
+                                                                    deleteOptions(item.reference)
+                                                                }}
+                                                                className="text-white font-weight-bold mr-3"
+                                                            >
+                                                                Supprimer
+                                                            </Button>
+                                                        )}
                                                     </td>
                                                 </tr>
                                             ))}

@@ -21,11 +21,20 @@ class UnitSelect extends Component {
 
      getUnits = () => {
         UnitService.getUnits()
-        .then((response) => this.setState({ units: response, unit: null }))
-        .catch((err) => {
+        .then((response) => {
+            this.setState({ units: response });
+        }).catch((err) => {
             console.log(err);
         });
     }
+
+    componentDidUpdate(prevProps) {
+        if (prevProps.initialValue !== this.props.initialValue && this.state.units.length > 0 && this.props.initialValue) {
+            this.setState({ unit: this.state.units.find(u => u.code == this.props.initialValue)}, () => {
+            this.props.onChange(this.state.unit);
+            })
+        }
+      }
   
     render() {
 

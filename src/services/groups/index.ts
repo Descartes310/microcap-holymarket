@@ -276,6 +276,10 @@ export default class GroupService {
         return makeRequest('get', Routes.GET_FINANCIAL_STRUCTURES);
     }
 
+    static deleteFinancialStructure(data: any): Promise<any> {
+        return makeRequest('delete', Routes.DELETE_FINANCIAL_STRUCTURES, data);
+    }
+
     static changeFinancialStructureStatus(reference: string): Promise<any> {
         return makeRequest('put', Routes.CHANGE_FINANCIAL_STRUCTURE_STATUS(reference));
     }

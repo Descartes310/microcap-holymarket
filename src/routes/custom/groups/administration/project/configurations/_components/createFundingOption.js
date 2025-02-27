@@ -20,6 +20,7 @@ const CreateFundingOption = (props) => {
     
     const [types, setTypes] = useState([]);
     const [type, setType] = useState(null);
+    const [label, setLabel] = useState(null);
     const [isin, setIsin] = useState(false);
     const [amount, setAmount] = useState(null);
     const [supports, setSupports] = useState([]);
@@ -75,7 +76,7 @@ const CreateFundingOption = (props) => {
     }
 
     const onSubmit = () => {        
-        if(!support || !type || !quantity || !amount || !currency) {
+        if(!support || !type || !quantity || !amount || !currency || !label) {
             NotificationManager.error('Veuillez bien remplir le formulaire')
             return;
         }
@@ -83,7 +84,7 @@ const CreateFundingOption = (props) => {
         props.setRequestGlobalAction(true);
 
         let data = {
-            isin, 
+            isin, label,
             emission: quantity,
             nominal_amount: amount,
             currency: currency?.code,
@@ -95,14 +96,13 @@ const CreateFundingOption = (props) => {
             data.structure_reference = structure?.reference;
         }
 
-        GroupService.createFundingOption(data).then(() => {
+        GroupService.createFinancialStructure(data).then(() => {
             NotificationManager.success("L'item a été créé avec succès");
             onClose();
         }).catch((err) => {
             console.log(err);
             NotificationManager.error("Une erreur est survenu lors de l'item");
         }).finally(() => {
-            resetForm(); 
             props.setRequestGlobalAction(false);
         })
     }
@@ -131,6 +131,20 @@ const CreateFundingOption = (props) => {
         >
             <Form onSubmit={onSubmit}>
 
+                <FormGroup className="col-md-12 col-sm-12 has-wrapper">
+                    <InputLabel className="text-left" htmlFor="label">
+                        Désignation
+                    </InputLabel>
+                    <InputStrap
+                        required
+                        id="label"
+                        type="text"
+                        name='label'
+                        value={label}
+                        className="input-lg"
+                        onChange={(e) => setLabel(e.target.value)}
+                    />
+                </FormGroup>
                 <FormGroup className="col-md-12 col-sm-12 has-wrapper mb-30">
                     <InputLabel className="text-left">
                         Catégorie d'option de financement
