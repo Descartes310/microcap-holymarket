@@ -44,7 +44,7 @@ class PropositionDetailsModal extends Component {
 
     render() {
 
-        const { onClose, show, reference } = this.props;
+        const { onClose, show } = this.props;
         const { proposition, compensations, natureCompensations } = this.state;
 
         return (

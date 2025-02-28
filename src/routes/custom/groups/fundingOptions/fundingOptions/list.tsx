@@ -1,14 +1,10 @@
 import { connect } from 'react-redux';
+import { GROUP } from 'Url/frontendUrl';
 import GroupService from 'Services/groups';
-import { Switch } from '@material-ui/core';
-import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
 import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
 import React, { useState, useEffect } from 'react';
-import { NotificationManager } from "react-notifications";
-import { GROUP, joinUrlWithParamsId } from 'Url/frontendUrl';
-import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 
 const List = (props) => {
 

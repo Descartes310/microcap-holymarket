@@ -18,9 +18,11 @@ import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard
 
 const Configure = (props: any) => {
     
+    const [dat, setDat] = useState(null);
     const [units, setUnits] = useState([]);
     const [quotient, setQuotient] = useState(null);
     const [lineFees, setLineFees] = useState(null);
+    const [lineRate, setLineRate] = useState(null);
     const [priceUnit, setPriceUnit] = useState(null);
     const [lineGroup, setLineGroup] = useState(null);
     const [cycleTime, setCycleTime] = useState(null);
@@ -33,10 +35,11 @@ const Configure = (props: any) => {
     const [showConfirmBox, setShowConfirmBox] = useState(false);
     const [startDepositDate, setStartDepositDate] = useState(null);
     const [availableCapital, setAvailableCapital] = useState(null);
-    // const [subscriptionFees, setSubscriptionFees] = useState(null);
+    const [remunerationRate, setRemunerationRate] = useState(null);
     const [lineManagementFees, setLineManagementFees] = useState(null);
-    const [ticketDemountingFees, setTicketDemountingFees] = useState(null);
     const [subscriptionEndDate, setSubscriptionEndDate] = useState(null);
+    const [ticketDemountingFees, setTicketDemountingFees] = useState(null);
+    // const [capitalManagementRate, setCapitalManagementRate] = useState(null);
     const [subscriptionStartDate, setSubscriptionStartDate] = useState(null);
 
     useEffect(() => {
@@ -95,8 +98,8 @@ const Configure = (props: any) => {
     const onSubmit = () => {
 
         if(!depositPeriod || !cycleTime || !lineGroup || !lineFees || !lineManagementFees || !ticketDemountingFees ||
-            !subscriptionStartDate || !subscriptionEndDate || !startDepositDate || 
-            !depositAmount || !minimumRate || !priceUnit || !quotient) {
+            !subscriptionStartDate || !subscriptionEndDate || !startDepositDate || !depositAmount || !minimumRate ||
+            !priceUnit || !quotient || !dat || !lineRate || !remunerationRate) {
             NotificationManager.error('Le formulaire est mal rempli');
             return;
         }
@@ -110,7 +113,10 @@ const Configure = (props: any) => {
             reference: props.match.params.reference,
             productType: productType.value.toString(),
             depositPeriod: depositPeriod.value.toString(), 
-            // subscriptionFees: subscriptionFees.toString(),
+            dat: dat.toString(),
+            lineRate: lineRate.toString(),
+            // capitalManagementRate: capitalManagementRate.toString(),
+            remunerationRate: remunerationRate.toString(),
             lineFees: lineFees.toString(),
             lineManagementFees: lineManagementFees.toString(),
             ticketDemountingFees: ticketDemountingFees.toString(),
@@ -142,8 +148,8 @@ const Configure = (props: any) => {
     const generateProductTirages = () => {
 
         if(!depositPeriod || !cycleTime || !lineGroup || !lineFees || !lineManagementFees || !ticketDemountingFees ||
-            !subscriptionStartDate || !subscriptionEndDate || !startDepositDate || 
-            !depositAmount || !minimumRate || !priceUnit || !quotient) {
+            !subscriptionStartDate || !subscriptionEndDate || !startDepositDate || !depositAmount || !minimumRate || 
+            !priceUnit || !quotient || !dat || !lineRate || !remunerationRate) {
             NotificationManager.error('Le formulaire est mal rempli');
             return;
         }
@@ -185,8 +191,11 @@ const Configure = (props: any) => {
             setEmitLineCount(response.details.find(d => d.type == 'EMIT_LINE_COUNT')?.value);
             setSubscriptionStartDate(response.details.find(d => d.type == 'START_DATE')?.value);
             setAvailableCapital(response.details.find(d => d.type == 'AVAILABLE_CAPITAL')?.value);
-            // setSubscriptionFees(response.details.find(d => d.type == 'SUBSCRIPTION_FEES')?.value);
             setStartDepositDate(response.details.find(d => d.type == 'START_DEPOSIT_DATE')?.value);
+            setDat(response.details.find(d => d.type == 'DAT_RATE')?.value);
+            setLineRate(response.details.find(d => d.type == 'LINE_RATE')?.value);
+            setRemunerationRate(response.details.find(d => d.type == 'REMUNERATION_RATE')?.value);
+            // setCapitalManagementRate(response.details.find(d => d.type == 'CAPITAL_MANAGEMENT_RATE')?.value);
             setPriceUnit(units.find(t => t.code == response.details.find(d => d.type == 'PRICE_CURRENCY')?.value));
             setDepositPeriod(getConvertableTimeUnits().find(t => t.value == response.details.find(d => d.type == 'DEPOSIT_PERIOD')?.value));
         })
@@ -370,20 +379,6 @@ const Configure = (props: any) => {
                     </div>
 
                     <div className="row">
-                        {/* <FormGroup className="col-md-6 col-sm-12 has-wrapper">
-                            <InputLabel className="text-left" htmlFor="subscriptionFees">
-                                Frais de souscription
-                            </InputLabel>
-                            <InputStrap
-                                required
-                                type="number"
-                                className="input-lg"
-                                id="subscriptionFees"
-                                name='subscriptionFees'
-                                value={subscriptionFees}
-                                onChange={(e) => setSubscriptionFees(e.target.value)}
-                            />
-                        </FormGroup> */}
                         <FormGroup className="col-md-6 col-sm-12 has-wrapper">
                             <InputLabel className="text-left" htmlFor="depositAmount">
                                 Montant périodique
@@ -458,6 +453,67 @@ const Configure = (props: any) => {
                                 onChange={(e) => setQuotient(e.target.value)}
                             />
                         </div>
+                    </div>
+
+                    <div className="row">
+                        <FormGroup className="col-md-6 col-sm-12 has-wrapper">
+                            <InputLabel className="text-left" htmlFor="dat">
+                                Taux du DAT MicroCap
+                            </InputLabel>
+                            <InputStrap
+                                required
+                                id="dat"
+                                name='dat'
+                                value={dat}
+                                type="number"
+                                className="input-lg"
+                                onChange={(e) => setDat(e.target.value)}
+                            />
+                        </FormGroup>
+                        <FormGroup className="col-md-6 col-sm-12 has-wrapper">
+                            <InputLabel className="text-left" htmlFor="remunerationRate">
+                                Taux de rémunération d'un Ndjangui
+                            </InputLabel>
+                            <InputStrap
+                                required
+                                type="number"
+                                className="input-lg"
+                                id="remunerationRate"
+                                name='remunerationRate'
+                                value={remunerationRate}
+                                onChange={(e) => setRemunerationRate(e.target.value)}
+                            />
+                        </FormGroup>
+                    </div>
+                    <div className="row">
+                        <FormGroup className="col-md-12 col-sm-12 has-wrapper">
+                            <InputLabel className="text-left" htmlFor="lineRate">
+                                Taux d'intérêt de la ligne de placement
+                            </InputLabel>
+                            <InputStrap
+                                required
+                                type="number"
+                                id="lineRate"
+                                name='lineRate'
+                                value={lineRate}
+                                className="input-lg"
+                                onChange={(e) => setLineRate(e.target.value)}
+                            />
+                        </FormGroup>
+                        {/* <FormGroup className="col-md-6 col-sm-12 has-wrapper">
+                            <InputLabel className="text-left" htmlFor="capitalManagementRate">
+                                Frais de gestion des fonds
+                            </InputLabel>
+                            <InputStrap
+                                required
+                                type="number"
+                                className="input-lg"
+                                id="capitalManagementRate"
+                                name='capitalManagementRate'
+                                value={capitalManagementRate}
+                                onChange={(e) => setCapitalManagementRate(e.target.value)}
+                            />
+                        </FormGroup> */}
                     </div>
 
                     <FormGroup className="d-flex justify-content-between">

@@ -28,13 +28,18 @@ class UnitSelect extends Component {
         });
     }
 
-    componentDidUpdate(prevProps) {
-        if (prevProps.initialValue !== this.props.initialValue && this.state.units.length > 0 && this.props.initialValue) {
-            this.setState({ unit: this.state.units.find(u => u.code == this.props.initialValue)}, () => {
-            this.props.onChange(this.state.unit);
-            })
+    componentDidUpdate(prevProps, prevState) {
+        if (prevProps.initialValue !== this.props.initialValue || prevState.units !== this.state.units) {
+            if (this.props.initialValue && this.state.units.length > 0) {
+                const matchedUnit = this.state.units.find(u => u.code === this.props.initialValue);
+                if (matchedUnit) {
+                    this.setState({ unit: matchedUnit }, () => {
+                        this.props.onChange(this.state.unit);
+                    });
+                }
+            }
         }
-      }
+    }
   
     render() {
 

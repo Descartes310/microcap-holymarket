@@ -60,3 +60,7 @@ export const CREATE_PROJECT_INVESTMENT = `api/projects/investments`;
 export const GET_PROJECT_RULES = `api/projects/rules`;
 export const CREATE_PROJECT_RULES = `api/projects/rules`;
 export const DELETE_PROJECT_RULES = `api/projects/rules`;
+
+export const GET_PROJECT_PREVISIONS = `api/projects/previsions`;
+export const CREATE_PROJECT_PREVISIONS = `api/projects/previsions`;
+export const DELETE_PROJECT_PREVISIONS = `api/projects/previsions`;

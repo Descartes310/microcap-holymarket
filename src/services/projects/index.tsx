@@ -195,4 +195,16 @@ export default class ProjectService {
     static deleteProjectRule(reference: string): Promise<any> {
         return makeRequest('delete', Routes.DELETE_PROJECT_RULES, {reference});
     }
+
+    static getProjectPrevisions(data: any): Promise<any> {
+        return makeRequest('get', Routes.GET_PROJECT_PREVISIONS, data);
+    }
+
+    static createProjectPrevision(data: any): Promise<any> {
+        return makeRequest('post', Routes.CREATE_PROJECT_PREVISIONS, data);
+    }
+
+    static deleteProjectPrevision(reference: string): Promise<any> {
+        return makeRequest('delete', Routes.DELETE_PROJECT_PREVISIONS, {reference});
+    }
 }

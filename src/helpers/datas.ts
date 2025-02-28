@@ -336,7 +336,23 @@ export const getProductDetails = () => {
         {
             label: 'Frais de démembrement d\'un bond',
             value: 'TICKET_DEMOUNTING_FEES'
-        }
+        },
+        {
+            label: 'Taux du DAT MicroCap',
+            value: 'DAT_RATE'
+        },
+        {
+            label: 'Taux de rémunération d\'un Ndjangui',
+            value: 'LINE_RATE'
+        },
+        {
+            label: 'Taux d\'intérêt de la ligne de placement',
+            value: 'REMUNERATION_RATE'
+        },
+        {
+            label: 'Frais de gestion des fonds',
+            value: 'CAPITAL_MANAGEMENT_RATE'
+        },
     ];
     
 }

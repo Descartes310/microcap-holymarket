@@ -27,7 +27,6 @@ const CreateFundingOption = (props) => {
     const [support, setSupport] = useState(null);
     const [category, setCategory] = useState(null);
     const [currency, setCurrency] = useState(null);
-    const [quantity, setQuantity] = useState(null);
     const [categories, setCategories] = useState([]);
 
     useEffect(() => {
@@ -76,7 +75,7 @@ const CreateFundingOption = (props) => {
     }
 
     const onSubmit = () => {        
-        if(!support || !type || !quantity || !amount || !currency || !label) {
+        if(!support || !type || !amount || !currency || !label) {
             NotificationManager.error('Veuillez bien remplir le formulaire')
             return;
         }
@@ -85,7 +84,6 @@ const CreateFundingOption = (props) => {
 
         let data = {
             isin, label,
-            emission: quantity,
             nominal_amount: amount,
             currency: currency?.code,
             option_type_reference: type?.reference,
@@ -96,13 +94,14 @@ const CreateFundingOption = (props) => {
             data.structure_reference = structure?.reference;
         }
 
-        GroupService.createFinancialStructure(data).then(() => {
+        GroupService.createFundingOption(data).then(() => {
             NotificationManager.success("L'item a été créé avec succès");
             onClose();
         }).catch((err) => {
             console.log(err);
             NotificationManager.error("Une erreur est survenu lors de l'item");
         }).finally(() => {
+            resetForm(); 
             props.setRequestGlobalAction(false);
         })
     }
@@ -114,7 +113,6 @@ const CreateFundingOption = (props) => {
         setSupports([]);
         setSupport(null);
         setAmount(null);
-        setQuantity(null);
         setIsin(false)
     }
     
@@ -125,7 +123,7 @@ const CreateFundingOption = (props) => {
             size="md"
             title={(
                 <h3 className="fw-bold">
-                    Initialisation d'une structure financiere
+                    Initialisation d'une option de financement
                 </h3>
             )}
         >
@@ -194,7 +192,7 @@ const CreateFundingOption = (props) => {
                 </FormGroup>
 
                 <div className="row">
-                    <FormGroup className="col-md-4 col-sm-12 has-wrapper">
+                    <FormGroup className="col-md-6 col-sm-12 has-wrapper">
                         <InputLabel className="text-left" htmlFor="amount">
                             Valeur nominale
                         </InputLabel>
@@ -208,21 +206,7 @@ const CreateFundingOption = (props) => {
                             onChange={(e) => setAmount(e.target.value)}
                         />
                     </FormGroup>
-                    <UnitSelect className="col-md-4 col-sm-12 has-wrapper" label="Devise" isCurrency={true} onChange={(c) => setCurrency(c)} />
-                    <FormGroup className="col-md-4 col-sm-12 has-wrapper">
-                        <InputLabel className="text-left" htmlFor="quantity">
-                            Emission
-                        </InputLabel>
-                        <InputStrap
-                            required
-                            id="quantity"
-                            type="number"
-                            name='quantity'
-                            value={quantity}
-                            className="input-lg"
-                            onChange={(e) => setQuantity(e.target.value)}
-                        />
-                    </FormGroup>
+                    <UnitSelect className="col-md-6 col-sm-12 has-wrapper" label="Devise" isCurrency={true} onChange={(c) => setCurrency(c)} />
                 </div>
 
                 <FormGroup className="col-sm-12 has-wrapper">

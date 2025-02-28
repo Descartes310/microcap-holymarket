@@ -7,6 +7,7 @@ import {setRequestGlobalAction} from 'Actions';
 import ProjectService from 'Services/projects';
 import ProductService from 'Services/products';
 import UnitSelect from 'Components/UnitSelect';
+import AccountService from 'Services/accounts';
 import CustomCart from '../_components/customCart';
 import React, { useEffect, useState } from 'react';
 import CreateRule from '../_components/createRule';
@@ -16,14 +17,23 @@ import { getPriceWithCurrency } from 'Helpers/helpers';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { NotificationManager } from 'react-notifications';
 import { FormGroup, Input as InputStrap } from 'reactstrap';
+import CreatePrevision from '../_components/createPrevision';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import CreateFundingOption from '../_components/createFundingOption';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
-import { projectDistributionRules, bonificationBases, getTimeUnits, getTimeUnitByValue } from 'Helpers/datas';
+import { projectDistributionRules, bonificationBases, getTimeUnits, getTimeUnitByValue, getBonificationBaseLabel } from 'Helpers/datas';
 
 const List = (props) => {
 
     const [rules, setRules] = useState([]);
+    const [codevs, setCodevs] = useState([]);
+    const [codev, setCodev] = useState(null);
+    
+    const [dat, setDat] = useState(null);
+    const [lineRate, setLineRate] = useState(null);
+    const [remunerationRate, setRemunerationRate] = useState(null);
+    const [capitalManagementRate, setCapitalManagementRate] = useState(null);
+
     const [details, setDetails] = useState([]);
     const [options, setOptions] = useState([]);
     const [project, setProject] = useState(null);
@@ -32,6 +42,7 @@ const List = (props) => {
     const [minRate, setMinRate] = useState(null);
     const [maxRate, setMaxRate] = useState(null);
     const [currency, setCurrency] = useState(null);
+    const [previsions, setPrevisions] = useState([]);
     const [prevision, setPrevision] = useState(null);
     const [periodicity, setPeriodicy] = useState(null);
     const [customCarts, setCustomCarts] = useState([]);
@@ -43,20 +54,41 @@ const List = (props) => {
     const [showCreateProduct, setShowCreateProduct] = useState(false);
     const [bonificationMaxRate, setBonificationMaxRate] = useState(null);
     const [bonificationMinRate, setBonificationMinRate] = useState(null);
+    const [showCreatePrevision, setShowCreatePrevision] = useState(false);
     const [showCreateFundingOption, setShowCreateFundingOption] = useState(false);
 
     useEffect(() => {
         getOptions();
         getProjectDetails();
         getProject();
+        getAccounts();
     }, []);
 
     useEffect(() => {
         if(project) {
             getCustomCarts();
             getRules();
+            getPrevisions();
         }
     }, [project]);
+
+    useEffect(() => {
+        if(codev) {
+            findProductModel();
+        }
+    }, [codev]);
+
+    useEffect(() => {
+        if(codevs.length > 0 && details) {
+            setCodev(codevs.find(c => c.reference == details.find(t => t.type == 'CODEV')?.value));
+        }
+    }, [codevs, details]);
+
+    useEffect(() => {
+        if(previsions.length > 0 && details) {
+            setBonificationBase(previsions.find(p => p.reference == details.find(t => t.type == 'BONIFICATION_BASE')?.value))
+        }
+    }, [previsions, details]);
 
     useEffect(() => {
         if(prevision && bonificationMinRate) {
@@ -93,6 +125,34 @@ const List = (props) => {
         })
     }
 
+    const getPrevisions = () => {
+        props.setRequestGlobalAction(false);
+        ProjectService.getProjectPrevisions({})
+        .then((response) => setPrevisions(response))
+        .catch((err) => {
+            console.log(err);
+        })
+        .finally(() => {
+            props.setRequestGlobalAction(false);
+        })
+    }
+
+    useEffect(() => {
+        if(dat && lineRate) {
+            setCapitalManagementRate((lineRate - dat).toFixed(2));
+        }
+    }, [dat, lineRate])
+
+    const findProductModel = () => {
+        props.setRequestGlobalAction(true);
+        ProductService.findProductModel(codev.modelReference).then(response => {
+            setDat(response.details.find(d => d.type == 'DAT_RATE')?.value);
+            setLineRate(response.details.find(d => d.type == 'LINE_RATE')?.value);
+            setRemunerationRate(response.details.find(d => d.type == 'REMUNERATION_RATE')?.value);
+        })
+        .finally(() => props.setRequestGlobalAction(false))
+    }
+
     const getProjectDetails = () => {
         props.setRequestGlobalAction(true);
         ProjectService.getProjectSetting({}).then(response => {
@@ -107,7 +167,6 @@ const List = (props) => {
             setDotationMinRate(response.find(t => t.type == 'DOTATION_MIN_RATE')?.value ?? null)
             setDotationMaxRate(response.find(t => t.type == 'DOTATION_MAX_RATE')?.value ?? null)
             setPeriodicy(getTimeUnits().find(t => t.value == response.find(t => t.type == 'PERIODICITY')?.value) ?? null)
-            setBonificationBase(bonificationBases().find(bb => bb.value == response.find(t => t.type == 'BONIFICATION_BASE')?.value) ?? null)
             setDistribution(projectDistributionRules().find(pd => pd.value == response.find(t => t.type == 'DISTRIBUTION')?.value) ?? null)
         })
         .finally(() => props.setRequestGlobalAction(false))
@@ -121,10 +180,25 @@ const List = (props) => {
         .finally(() => props.setRequestGlobalAction(false))
     }
 
+    const getAccounts = () => {
+        props.setRequestGlobalAction(true),
+        AccountService.getAccountBySpeciality({special_product: 'CODEV'})
+        .then(response => setCodevs(response.filter(c => c.modelReference)))
+        .finally(() => props.setRequestGlobalAction(false))
+    }
+
     const deleteCustomCarts = (reference) => {
         props.setRequestGlobalAction(true);
         ProductService.deleteCustomCarts(reference).then(() => {
             getCustomCarts();
+        })
+        .finally(() => props.setRequestGlobalAction(false))
+    }
+
+    const deletePrevision = (reference) => {
+        props.setRequestGlobalAction(true);
+        ProjectService.deleteProjectPrevision(reference).then(() => {
+            getPrevisions();
         })
         .finally(() => props.setRequestGlobalAction(false))
     }
@@ -139,7 +213,7 @@ const List = (props) => {
 
     const getOptions = () => {
         props.setRequestGlobalAction(true);
-        GroupService.getFinancialStructures().then(response => {
+        GroupService.getFundingOptions().then(response => {
             setOptions(response);
         })
         .finally(() => props.setRequestGlobalAction(false))
@@ -147,7 +221,7 @@ const List = (props) => {
 
     const deleteOptions = (reference) => {
         props.setRequestGlobalAction(true);
-        GroupService.deleteFinancialStructure({reference}).then(() => {
+        GroupService.deleteFundingOptions(reference).then(response => {
             getOptions();
         })
         .finally(() => props.setRequestGlobalAction(false))
@@ -155,17 +229,18 @@ const List = (props) => {
 
     const onSubmit = () => {        
         if(!minBase || !maxBase || !minRate || !maxRate || !currency || !distribution || !bonificationBase || !bonificationMinRate || !bonificationMaxRate ||
-            !prevision || !dotationMinRate || !dotationMaxRate || !periodicity
+            !prevision || !dotationMinRate || !dotationMaxRate || !periodicity || !codev
         ) {
             NotificationManager.error('Veuillez bien remplir le formulaire')
             return;
         }
 
         let data = {
-            minBase, maxBase, bonificationBase: bonificationBase.value,
+            minBase, maxBase, bonificationBase: bonificationBase.reference,
             minRate, maxRate, bonificationMinRate, bonificationMaxRate,
             currency: currency.code, distribution: distribution.value,
-            prevision, dotationMinRate, dotationMaxRate, periodicity: periodicity.value
+            prevision, dotationMinRate, dotationMaxRate, periodicity: periodicity.value,
+            account_reference: codev.reference
         }
                 
         props.setRequestGlobalAction(true);
@@ -182,7 +257,82 @@ const List = (props) => {
     return (
         <div>
             <RctCollapsibleCard>
-                <h1 className='mb-20'>Contre partie en numeraire des deals</h1>
+            <h1 className='mb-20'>Plan CODEV</h1>
+                <div className="row">
+                    <div className="col-md-12 col-sm-12 has-wrapper">
+                        <InputLabel className="text-left">
+                            Mes plans codevs
+                        </InputLabel>
+                        <Autocomplete
+                            value={codev}
+                            options={codevs}
+                            id="combo-box-demo"
+                            onChange={(__, item) => {
+                                setCodev(item)
+                            }}
+                            getOptionLabel={(option) => option.label}
+                            renderInput={(params) => <TextField {...params} variant="outlined" />}
+                        />
+                    </div>
+                </div>
+                <div className="row mt-20">
+                    <FormGroup className="col-md-6 col-sm-12 has-wrapper">
+                        <InputLabel className="text-left" htmlFor="dat">
+                            Taux du DAT MicroCap
+                        </InputLabel>
+                        <InputStrap
+                            disabled
+                            id="dat"
+                            name='dat'
+                            value={dat}
+                            type="number"
+                            className="input-lg"
+                        />
+                    </FormGroup>
+                    <FormGroup className="col-md-6 col-sm-12 has-wrapper">
+                        <InputLabel className="text-left" htmlFor="remunerationRate">
+                            Taux de rémunération d'un Ndjangui
+                        </InputLabel>
+                        <InputStrap
+                            disabled
+                            type="number"
+                            className="input-lg"
+                            id="remunerationRate"
+                            name='remunerationRate'
+                            value={remunerationRate}
+                        />
+                    </FormGroup>
+                </div>
+                <div className="row">
+                    <FormGroup className="col-md-6 col-sm-12 has-wrapper">
+                        <InputLabel className="text-left" htmlFor="lineRate">
+                            Taux d'intérêt de la ligne de placement
+                        </InputLabel>
+                        <InputStrap
+                            disabled
+                            type="number"
+                            id="lineRate"
+                            name='lineRate'
+                            value={lineRate}
+                            className="input-lg"
+                        />
+                    </FormGroup>
+                    <FormGroup className="col-md-6 col-sm-12 has-wrapper">
+                        <InputLabel className="text-left" htmlFor="capitalManagementRate">
+                            Frais de gestion des fonds
+                        </InputLabel>
+                        <InputStrap
+                            disabled
+                            type="number"
+                            className="input-lg"
+                            id="capitalManagementRate"
+                            name='capitalManagementRate'
+                            value={capitalManagementRate}
+                        />
+                    </FormGroup>
+                </div>
+                
+                <h1 className='mb-20 mt-20'>Contre partie en numeraire des deals</h1>
                 <div className="row">
                     <FormGroup className="col-md-6 col-sm-12 has-wrapper">
                         <InputLabel className="text-left" htmlFor="minBase">
@@ -243,6 +393,76 @@ const List = (props) => {
                         />
                     </FormGroup>
                 </div>
+                <h1 className='mb-20 mt-20'>Prévisions projet</h1>
+                <CustomList
+                    list={previsions}
+                    loading={false}
+                    itemsFoundText={n => `${n} previsions trouvées`}
+                    onAddClick={() => setShowCreatePrevision(true)}
+                    renderItem={list => (
+                        <>
+                            {list && list.length === 0 ? (
+                                <div className="d-flex justify-content-center align-items-center py-50">
+                                    <h4>
+                                        Aucune prevision trouvée
+                                    </h4>
+                                </div>
+                            ) : (
+                                <div className="table-responsive">
+                                    <table className="table table-hover table-middle mb-0">
+                                        <thead>
+                                            <tr>
+                                                <th className="fw-bold">Année d'exercice</th>
+                                                <th className="fw-bold">Base</th>
+                                                <th className="fw-bold">Valeur</th>
+                                                <th className="fw-bold">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {list && list.map((item, key) => (
+                                                <tr key={key} className="cursor-pointer">
+                                                    <td>
+                                                        <div className="media">
+                                                            <div className="media-body pt-10">
+                                                                <h4 className="m-0 fw-bold text-dark">{item.year}</h4>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div className="media">
+                                                            <div className="media-body pt-10">
+                                                                <h4 className="m-0 fw-bold text-dark">{getBonificationBaseLabel(item.base)}</h4>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div className="media">
+                                                            <div className="media-body pt-10">
+                                                                <h4 className="m-0 fw-bold text-dark">{item.value}</h4>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <Button
+                                                            color="primary"
+                                                            variant="contained"
+                                                            onClick={() => {
+                                                                deletePrevision(item.reference);
+                                                            }}
+                                                            className="text-white font-weight-bold mr-3"
+                                                        >
+                                                            Supprimer
+                                                        </Button>
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            )}
+                        </>
+                    )}
+                />
                 <h1 className='mb-20 mt-20'>Bonification</h1>
                 <div className='row'>
                     <FormGroup className="col-md-4 col-sm-12 has-wrapper">
@@ -270,8 +490,8 @@ const List = (props) => {
                             onChange={(__, item) => {
                                 setBonificationBase(item);
                             }}
-                            getOptionLabel={(option) => option.label}
-                            options={bonificationBases()}
+                            getOptionLabel={(option) => `Année: ${option.year}, Base: ${getBonificationBaseLabel(option.base)}, Valeur: ${option.value}`}
+                            options={previsions}
                             renderInput={(params) => <TextField {...params} variant="outlined" />}
                         />
                     </FormGroup>
@@ -405,8 +625,8 @@ const List = (props) => {
                                         <thead>
                                             <tr>
                                                 <th className="fw-bold">Désignation</th>
-                                                <th className="fw-bold">Prix</th>
                                                 <th className="fw-bold">Marché</th>
+                                                <th className="fw-bold">Prix</th>
                                                 <th className="fw-bold">Actions</th>
                                             </tr>
                                         </thead>
@@ -456,7 +676,7 @@ const List = (props) => {
                     )}
                 />
 
-                <h1 className='mb-20 mt-20'>Structure financiere</h1>
+                <h1 className='mb-20 mt-20'>Options de financement</h1>
                 <CustomList
                     list={options}
                     loading={false}
@@ -477,14 +697,14 @@ const List = (props) => {
                                     <table className="table table-hover table-middle mb-0">
                                         <thead>
                                             <tr>
+                                                <th className="fw-bold">Désignation</th>
                                                 <th className="fw-bold">Support</th>
                                                 <th className="fw-bold">Valeur</th>
-                                                <th className="fw-bold">Estimation</th>
                                                 <th className="fw-bold">Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {list && list.map((item, key) => (
+                                        {list && list.map((item, key) => (
                                                 <tr key={key} className="cursor-pointer">
                                                     <td>
                                                         <div className="media">
@@ -496,30 +716,28 @@ const List = (props) => {
                                                     <td>
                                                         <div className="media">
                                                             <div className="media-body pt-10">
-                                                                <h4 className="m-0 fw-bold text-dark">{getPriceWithCurrency(item?.financialStructureSupport.nominalAmount, item?.financialStructureSupport.currency)}</h4>
+                                                                <h4 className="m-0 fw-bold text-dark">{item.supportType.label}</h4>
                                                             </div>
                                                         </div>
                                                     </td>
                                                     <td>
                                                         <div className="media">
                                                             <div className="media-body pt-10">
-                                                                <h4 className="m-0 fw-bold text-dark">{item?.financialStructureSupport.quantity}</h4>
+                                                                <h4 className="m-0 fw-bold text-dark">{getPriceWithCurrency(item.nominalAmount, item.currency)}</h4>
                                                             </div>
                                                         </div>
                                                     </td>
                                                     <td>
-                                                        { item.deletable && (
-                                                            <Button
-                                                                color="primary"
-                                                                variant="contained"
-                                                                onClick={() => {
-                                                                    deleteOptions(item.reference)
-                                                                }}
-                                                                className="text-white font-weight-bold mr-3"
-                                                            >
-                                                                Supprimer
-                                                            </Button>
-                                                        )}
+                                                        <Button
+                                                            color="primary"
+                                                            variant="contained"
+                                                            onClick={() => {
+                                                                deleteOptions(item.reference)
+                                                            }}
+                                                            className="text-white font-weight-bold mr-3"
+                                                        >
+                                                            Supprimer
+                                                        </Button>
                                                     </td>
                                                 </tr>
                                             ))}
@@ -625,6 +843,7 @@ const List = (props) => {
                     show={showCreateProduct}
                     onClose={() => {
                         setShowCreateProduct(false);
+                        getCustomCarts();
                     }}
                     project={project}
                 />
@@ -632,8 +851,16 @@ const List = (props) => {
                 <CreateFundingOption
                     show={showCreateFundingOption}
                     onClose={() => {
-                        getOptions();
                         setShowCreateFundingOption(false);
+                        getOptions();
+                    }}
+                />
+
+                <CreatePrevision
+                    show={showCreatePrevision}
+                    onClose={() => {
+                        setShowCreatePrevision(false);
+                        getPrevisions();
                     }}
                 />
 
@@ -641,8 +868,8 @@ const List = (props) => {
                     show={showCreateRule}
                     project={project}
                     onClose={() => {
-                        getRules();
                         setShowCreateRule(false);
+                        getRules();
                     }}
                 />
             </RctCollapsibleCard>
