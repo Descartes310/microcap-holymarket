@@ -19,7 +19,7 @@ import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
 import CreateRule from 'Routes/custom/groups/administration/project/configurations/_components/createRule';
 import CustomCart from 'Routes/custom/groups/administration/project/configurations/_components/customCart';
-import { projectDistributionRules, getTimeUnits, getTimeUnitByValue, getBonificationBaseLabel } from 'Helpers/datas';
+import { projectDistributionRules, getTimeUnits, getTimeUnitByValue, getBonificationBaseLabel, bonificationBases } from 'Helpers/datas';
 import CreatePrevision from 'Routes/custom/groups/administration/project/configurations/_components/createPrevision';
 import CreateFundingOption from 'Routes/custom/groups/administration/project/configurations/_components/createFundingOption';
 
@@ -35,8 +35,9 @@ const Create = (props) => {
 
     const [details, setDetails] = useState([]);
     const [options, setOptions] = useState([]);
-    const [project, setProject] = useState(null);
     const [minBase, setMinBase] = useState(null);
+    const [minYear, setMinYear] = useState(null);
+    const [maxYear, setMaxYear] = useState(null);
     const [maxBase, setMaxBase] = useState(null);
     const [minRate, setMinRate] = useState(null);
     const [maxRate, setMaxRate] = useState(null);
@@ -57,9 +58,7 @@ const Create = (props) => {
     const [showCreateFundingOption, setShowCreateFundingOption] = useState(false);
 
     useEffect(() => {
-        getOptions();
         findAccount();
-        getProjectDetails();
     }, []);
 
     useEffect(() => {
@@ -68,14 +67,27 @@ const Create = (props) => {
             getRules();
             getPrevisions();
             findProductModel();
+            getOptions();
+            getProjectDetails();
         }
     }, [account]);
 
     useEffect(() => {
         if(previsions.length > 0 && details) {
-            setBonificationBase(previsions.find(p => p.reference == details.find(t => t.type == 'BONIFICATION_BASE')?.value))
+            let year = previsions.find(p => p.reference == details.find(t => t.type == 'BONIFICATION_BASE')?.value);
+            setBonificationBase(year)
+            setMinYear(year)
+            setMaxYear(year)
         }
     }, [previsions, details]);
+
+    useEffect(() => {
+        if(minYear && maxYear && bonificationBase) {
+            setPrevision(previsions.filter(bb => bb.year >= minYear.year && bb.year <= maxYear.year).reduce((sum, item) => sum + item.value, 0));
+        } else {
+            setPrevision(0);
+        }
+    }, [minYear, maxYear, bonificationBase])
 
     useEffect(() => {
         if(prevision && bonificationMinRate) {
@@ -102,7 +114,7 @@ const Create = (props) => {
 
     const getRules = () => {
         props.setRequestGlobalAction(false);
-        ProjectService.getProjectRules({project_reference: account.reference})
+        ProjectService.getProjectRules({type: 'BIGDEAL', reference: account.reference})
         .then((response) => setRules(response))
         .catch((err) => {
             console.log(err);
@@ -142,7 +154,7 @@ const Create = (props) => {
 
     const getProjectDetails = () => {
         props.setRequestGlobalAction(true);
-        ProjectService.getProjectSetting({}).then(response => {
+        ProjectService.getSettingDetails({project_reference: account.reference, type: 'BIGDEAL'}).then(response => {
             setDetails(response);
             setMinBase(response.find(t => t.type == 'MINIMUM_FIXED_BASE')?.value ?? null);
             setMaxBase(response.find(t => t.type == 'MAXIMUM_FIXED_BASE')?.value ?? null);
@@ -193,7 +205,7 @@ const Create = (props) => {
 
     const getOptions = () => {
         props.setRequestGlobalAction(true);
-        GroupService.getFundingOptions().then(response => {
+        GroupService.getFundingOptions({reference: account.reference, type: 'BIGDEAL'}).then(response => {
             setOptions(response);
         })
         .finally(() => props.setRequestGlobalAction(false))
@@ -216,6 +228,7 @@ const Create = (props) => {
         }
 
         let data = {
+            type: 'BIGDEAL', project_reference: account.reference,
             minBase, maxBase, bonificationBase: bonificationBase.reference,
             minRate, maxRate, bonificationMinRate, bonificationMaxRate,
             currency: currency.code, distribution: distribution.value,
@@ -224,7 +237,7 @@ const Create = (props) => {
         }
                 
         props.setRequestGlobalAction(true);
-        ProjectService.createProjectSetting(data).then(() => {
+        ProjectService.createSettingDetails(data).then(() => {
             NotificationManager.success("L'item a été créé avec succès");
         }).catch((err) => {
             console.log(err);
@@ -428,6 +441,38 @@ const Create = (props) => {
                 />
                 <h1 className='mb-20 mt-20'>Bonification</h1>
                 <div className='row'>
+                    <FormGroup className="col-md-6 col-sm-12 has-wrapper">
+                        <InputLabel className="text-left">
+                            Début d'exercice
+                        </InputLabel>
+                        <Autocomplete
+                            value={minYear}
+                            id="combo-box-demo"
+                            onChange={(__, item) => {
+                                setMinYear(item);
+                            }}
+                            getOptionLabel={(option) => option.year+""}
+                            options={previsions}
+                            renderInput={(params) => <TextField {...params} variant="outlined" />}
+                        />
+                    </FormGroup>
+                    <FormGroup className="col-md-6 col-sm-12 has-wrapper">
+                        <InputLabel className="text-left">
+                            Fin d'exercice
+                        </InputLabel>
+                        <Autocomplete
+                            value={maxYear}
+                            id="combo-box-demo"
+                            onChange={(__, item) => {
+                                setMaxYear(item);
+                            }}
+                            getOptionLabel={(option) => option.year+""}
+                            options={previsions}
+                            renderInput={(params) => <TextField {...params} variant="outlined" />}
+                        />
+                    </FormGroup>
+                </div>
+                <div className='row'>
                     <FormGroup className="col-md-4 col-sm-12 has-wrapper">
                         <InputLabel className="text-left">
                             Règle de distribution
@@ -453,8 +498,8 @@ const Create = (props) => {
                             onChange={(__, item) => {
                                 setBonificationBase(item);
                             }}
-                            getOptionLabel={(option) => `Année: ${option.year}, Base: ${getBonificationBaseLabel(option.base)}, Valeur: ${option.value}`}
-                            options={previsions}
+                            getOptionLabel={(option) => `Base: ${getBonificationBaseLabel(option.base)}, Valeur: ${option.value}`}
+                            options={minYear && maxYear ? previsions : []}
                             renderInput={(params) => <TextField {...params} variant="outlined" />}
                         />
                     </FormGroup>
@@ -463,7 +508,7 @@ const Create = (props) => {
                             Prevision de la base
                         </InputLabel>
                         <InputStrap
-                            required
+                            disabled
                             type="number"
                             id="prevision"
                             name='prevision'
@@ -819,6 +864,7 @@ const Create = (props) => {
                         setShowCreateFundingOption(false);
                         getOptions();
                     }}
+                    project={account}
                 />
 
                 <CreatePrevision

@@ -164,8 +164,16 @@ export default class ProjectService {
         return makeRequest('post', Routes.CREATE_PROJECT_SETTINGS, data);
     }
 
+    static createSettingDetails(data: any): Promise<any> {
+        return makeRequest('post', Routes.CREATE_SETTING_DETAILS, data);
+    }
+
     static getProjectSetting(data: any): Promise<any> {
         return makeRequest('get', Routes.GET_PROJECT_SETTINGS, data);
+    }
+
+    static getSettingDetails(data: any): Promise<any> {
+        return makeRequest('get', Routes.GET_SETTING_DETAILS, data);
     }
 
     static getProjectInvestments(data: any): Promise<any> {

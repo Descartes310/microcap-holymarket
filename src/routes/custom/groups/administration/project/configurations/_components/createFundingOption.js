@@ -87,11 +87,16 @@ const CreateFundingOption = (props) => {
             nominal_amount: amount,
             currency: currency?.code,
             option_type_reference: type?.reference,
-            support_type_reference: support?.reference
+            support_type_reference: support?.reference, 
+            type: props.type ?? 'PROJECT'
         }
 
         if(structure) {
             data.structure_reference = structure?.reference;
+        }
+
+        if(props.project) {
+            data.item_reference = props.project.reference
         }
 
         GroupService.createFundingOption(data).then(() => {

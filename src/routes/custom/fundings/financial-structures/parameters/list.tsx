@@ -28,7 +28,6 @@ const List = (props) => {
             list={datas}
             loading={false}
             itemsFoundText={n => `${n} bigdeals trouvés`}
-            onAddClick={() => props.history.push(FUNDING.FINANCIAL_STRUCTURES.PARAM.CREATE)}
             renderItem={list => (
                 <>
                     {list && list.length === 0 ? (

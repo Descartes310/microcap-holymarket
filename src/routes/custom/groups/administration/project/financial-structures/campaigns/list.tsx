@@ -56,7 +56,6 @@ const List = (props) => {
         <>
             <PageTitleBar
                 title={"Campagnes de financement"}
-                onBackClick={() => props.history.push(GROUP.ADMINISTRATION.PROJECT.FINANCIAL_STRUCTURE.LIST)}
             />
             <CustomList
                 list={datas}

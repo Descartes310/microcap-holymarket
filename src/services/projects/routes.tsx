@@ -54,6 +54,9 @@ export const VALIDATE_PROJECT_SUBSCRIPTION = (reference) => `api/projects/subscr
 export const CREATE_PROJECT_SETTINGS = `api/projects/settings`;
 export const GET_PROJECT_SETTINGS = `api/projects/settings`;
 
+export const CREATE_SETTING_DETAILS = `api/projects/settings/details`;
+export const GET_SETTING_DETAILS = `api/projects/settings/details`;
+
 export const GET_PROJECT_INVESTMENT = `api/projects/investments`;
 export const CREATE_PROJECT_INVESTMENT = `api/projects/investments`;
 

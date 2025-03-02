@@ -1,10 +1,9 @@
 import { connect } from 'react-redux';
-import { GROUP } from 'Url/frontendUrl';
+import { FUNDING, GROUP, joinUrlWithParamsId } from 'Url/frontendUrl';
 import GroupService from 'Services/groups';
 import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
 import UnitSelect from 'Components/UnitSelect';
-import ProjectService from 'Services/projects';
 import { setRequestGlobalAction } from 'Actions';
 import React, { useEffect, useState } from 'react';
 import TextField from '@material-ui/core/TextField';
@@ -22,56 +21,59 @@ const Create = (props) => {
     const [option, setOption] = useState(null);
     const [options, setOptions] = useState([]);
     const [amount, setAmount] = useState(null);
-    const [project, setProject] = useState(null);
     const [currency, setCurrency] = useState(null);
     const [quantity, setQuantity] = useState(null);
 
-
     useEffect(() => {
         getOptions();
-        getProject();
     }, []);
 
     const getOptions = () => {
         props.setRequestGlobalAction(true);
-        GroupService.getFundingOptions().then(response => {
+        let data: any = {
+            type: new URLSearchParams(props.location.search).get("type") ?? 'PROJECT'
+        }
+        let reference = new URLSearchParams(props.location.search).get("reference");
+        if(reference) {
+            data.reference = reference;
+        }
+        GroupService.getFundingOptions(data).then(response => {
             setOptions(response);
         })
         .finally(() => props.setRequestGlobalAction(false))
     }
 
-    const getProject = () => {
-        props.setRequestGlobalAction(false);
-        ProjectService.getGroupProjects()
-        .then((response) => setProject(response[0]))
-        .catch((err) => {
-            console.log(err);
-        })
-        .finally(() => {
-            props.setRequestGlobalAction(false);
-        })
-    }
-
     const onSubmit = () => {
 
-        if(!option || !quantity || !label || !project) {
+        if(!option || !quantity || !label) {
             NotificationManager.error('Veuillez bien remplir le formulaire')
             return;
         }
 
         props.setRequestGlobalAction(true);
 
-        let data = {
+        let data: any = {
             label, 
             emission: quantity,
             nominal_amount: amount,
-            project_reference: project.reference,
             funding_option_reference: option.reference,
+            type: new URLSearchParams(props.location.search).get("type") ?? 'PROJECT',
+        }
+
+        let reference = new URLSearchParams(props.location.search).get("reference");
+        if(reference) {
+            data.reference = reference;
         }
 
         GroupService.createFinancialStructure(data).then(() => {
             NotificationManager.success("L'item a été créé avec succès");
-            props.history.push(GROUP.ADMINISTRATION.PROJECT.FINANCIAL_STRUCTURE.LIST);
+            let type = new URLSearchParams(props.location.search).get("type") ?? 'PROJECT'
+            let reference = new URLSearchParams(props.location.search).get("reference");
+            if(type == 'BIGDEAL' && reference) {
+                props.history.push(joinUrlWithParamsId(FUNDING.FINANCIAL_STRUCTURES.ITEM.STRUCTURES, reference))
+            } else {
+                props.history.push(GROUP.ADMINISTRATION.PROJECT.FINANCIAL_STRUCTURE.LIST);
+            }
         }).catch((err) => {
             console.log(err);
             NotificationManager.error("Une erreur est survenu lors de l'item");

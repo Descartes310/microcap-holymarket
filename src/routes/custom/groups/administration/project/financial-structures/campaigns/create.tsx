@@ -46,7 +46,7 @@ const Create = (props) => {
 
             <PageTitleBar
                 title={"Création d'une campagne"}
-                onBackClick={() => props.history.push(joinUrlWithParamsId(GROUP.ADMINISTRATION.PROJECT.FINANCIAL_STRUCTURE.CAMPAIGN_LIST, props.match.params.id))}
+                // onBackClick={() => props.history.push(joinUrlWithParamsId(GROUP.ADMINISTRATION.PROJECT.FINANCIAL_STRUCTURE.CAMPAIGN_LIST, props.match.params.id))}
             />
             <RctCollapsibleCard>
                 <Form onSubmit={onSubmit}>

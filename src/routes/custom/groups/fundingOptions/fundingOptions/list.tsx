@@ -16,7 +16,7 @@ const List = (props) => {
 
     const getDatas = () => {
         props.setRequestGlobalAction(true),
-        GroupService.getFundingOptions()
+        GroupService.getFundingOptions({})
         .then(response => setDatas(response))
         .finally(() => props.setRequestGlobalAction(false))
     }

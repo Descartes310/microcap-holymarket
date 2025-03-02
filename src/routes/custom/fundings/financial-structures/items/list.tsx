@@ -1,11 +1,12 @@
 import { connect } from 'react-redux';
-import { FUNDING } from 'Url/frontendUrl';
 import { withRouter } from "react-router-dom";
-import FundingService from 'Services/funding';
+import AccounService from 'Services/accounts';
 import CustomList from "Components/CustomList";
+import Button from '@material-ui/core/Button';
 import {setRequestGlobalAction} from 'Actions';
 import React, { useEffect, useState } from 'react';
 import TimeFromMoment from 'Components/TimeFromMoment';
+import { FUNDING, joinUrlWithParamsId } from 'Url/frontendUrl';
 
 const List = (props) => {
 
@@ -17,7 +18,7 @@ const List = (props) => {
 
     const getDatas = () => {
         props.setRequestGlobalAction(true),
-        FundingService.getFundingProspectus()
+        AccounService.getBigDealAccounts()
         .then(response => setDatas(response))
         .finally(() => props.setRequestGlobalAction(false))
     }
@@ -26,14 +27,13 @@ const List = (props) => {
         <CustomList
             list={datas}
             loading={false}
-            itemsFoundText={n => `${n} prospectus trouvée`}
-            onAddClick={() => props.history.push(FUNDING.INVESTMENT.PROSPECTUS.CREATE)}
+            itemsFoundText={n => `${n} bigdeals trouvés`}
             renderItem={list => (
                 <>
                     {list && list.length === 0 ? (
                         <div className="d-flex justify-content-center align-items-center py-50">
                             <h4>
-                                Aucune prospectus trouvé
+                                Aucun bigdeal trouvé
                             </h4>
                         </div>
                     ) : (
@@ -42,8 +42,9 @@ const List = (props) => {
                                 <thead>
                                     <tr>
                                         <th className="fw-bold">Intitulé</th>
-                                        <th className="fw-bold">Description</th>
+                                        <th className="fw-bold">Lignes</th>
                                         <th className="fw-bold">Date de création</th>
+                                        <th className="fw-bold">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -59,7 +60,7 @@ const List = (props) => {
                                             <td>
                                                 <div className="media">
                                                     <div className="media-body pt-10">
-                                                        <p className="m-0 text-dark">{item?.description}</p>
+                                                        <p className="m-0 text-dark">{item?.lineTotal} ligne.s</p>
                                                     </div>
                                                 </div>
                                             </td>
@@ -69,6 +70,18 @@ const List = (props) => {
                                                         <TimeFromMoment time={item.createdAt} showFullDate />
                                                     </div>
                                                 </div>
+                                            </td>
+                                            <td>
+                                                <Button
+                                                    color="primary"
+                                                    variant="contained"
+                                                    className="text-white font-weight-bold"
+                                                    onClick={() => {
+                                                        props.history.push(joinUrlWithParamsId(FUNDING.FINANCIAL_STRUCTURES.ITEM.STRUCTURES, item.reference))
+                                                    }}
+                                                >
+                                                    Struct. financières
+                                                </Button>
                                             </td>
                                         </tr>
                                     ))}

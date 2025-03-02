@@ -20,7 +20,7 @@ import CreatePrevision from '../_components/createPrevision';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import CreateFundingOption from '../_components/createFundingOption';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
-import { projectDistributionRules, bonificationBases, getTimeUnits, getTimeUnitByValue, getBonificationBaseLabel } from 'Helpers/datas';
+import { projectDistributionRules, getTimeUnits, getTimeUnitByValue, getBonificationBaseLabel } from 'Helpers/datas';
 
 const List = (props) => {
 
@@ -36,6 +36,8 @@ const List = (props) => {
     const [details, setDetails] = useState([]);
     const [options, setOptions] = useState([]);
     const [project, setProject] = useState(null);
+    const [minYear, setMinYear] = useState(null);
+    const [maxYear, setMaxYear] = useState(null);
     const [minBase, setMinBase] = useState(null);
     const [maxBase, setMaxBase] = useState(null);
     const [minRate, setMinRate] = useState(null);
@@ -85,9 +87,20 @@ const List = (props) => {
 
     useEffect(() => {
         if(previsions.length > 0 && details) {
-            setBonificationBase(previsions.find(p => p.reference == details.find(t => t.type == 'BONIFICATION_BASE')?.value))
+            let year = previsions.find(p => p.reference == details.find(t => t.type == 'BONIFICATION_BASE')?.value);
+            setBonificationBase(year)
+            setMinYear(year)
+            setMaxYear(year)
         }
     }, [previsions, details]);
+
+    useEffect(() => {
+        if(minYear && maxYear && bonificationBase) {
+            setPrevision(previsions.filter(bb => bb.year >= minYear.year && bb.year <= maxYear.year).reduce((sum, item) => sum + item.value, 0));
+        } else {
+            setPrevision(0);
+        }
+    }, [minYear, maxYear, bonificationBase])
 
     useEffect(() => {
         if(prevision && bonificationMinRate) {
@@ -114,7 +127,7 @@ const List = (props) => {
 
     const getRules = () => {
         props.setRequestGlobalAction(false);
-        ProjectService.getProjectRules({project_reference: project.reference})
+        ProjectService.getProjectRules({reference: project.reference})
         .then((response) => setRules(response))
         .catch((err) => {
             console.log(err);
@@ -212,7 +225,7 @@ const List = (props) => {
 
     const getOptions = () => {
         props.setRequestGlobalAction(true);
-        GroupService.getFundingOptions().then(response => {
+        GroupService.getFundingOptions({}).then(response => {
             setOptions(response);
         })
         .finally(() => props.setRequestGlobalAction(false))
@@ -462,7 +475,38 @@ const List = (props) => {
                         </>
                     )}
                 />
-                <h1 className='mb-20 mt-20'>Bonification</h1>
+                <h1 className='mb-20 mt-20'>Bonification</h1><div className='row'>
+                    <FormGroup className="col-md-6 col-sm-12 has-wrapper">
+                        <InputLabel className="text-left">
+                            Début d'exercice
+                        </InputLabel>
+                        <Autocomplete
+                            value={minYear}
+                            id="combo-box-demo"
+                            onChange={(__, item) => {
+                                setMinYear(item);
+                            }}
+                            getOptionLabel={(option) => option.year+""}
+                            options={previsions}
+                            renderInput={(params) => <TextField {...params} variant="outlined" />}
+                        />
+                    </FormGroup>
+                    <FormGroup className="col-md-6 col-sm-12 has-wrapper">
+                        <InputLabel className="text-left">
+                            Fin d'exercice
+                        </InputLabel>
+                        <Autocomplete
+                            value={maxYear}
+                            id="combo-box-demo"
+                            onChange={(__, item) => {
+                                setMaxYear(item);
+                            }}
+                            getOptionLabel={(option) => option.year+""}
+                            options={previsions}
+                            renderInput={(params) => <TextField {...params} variant="outlined" />}
+                        />
+                    </FormGroup>
+                </div>
                 <div className='row'>
                     <FormGroup className="col-md-4 col-sm-12 has-wrapper">
                         <InputLabel className="text-left">
@@ -479,6 +523,7 @@ const List = (props) => {
                             renderInput={(params) => <TextField {...params} variant="outlined" />}
                         />
                     </FormGroup>
+                    
                     <FormGroup className="col-md-4 col-sm-12 has-wrapper">
                         <InputLabel className="text-left">
                             Base
@@ -489,8 +534,8 @@ const List = (props) => {
                             onChange={(__, item) => {
                                 setBonificationBase(item);
                             }}
-                            getOptionLabel={(option) => `Année: ${option.year}, Base: ${getBonificationBaseLabel(option.base)}, Valeur: ${option.value}`}
-                            options={previsions}
+                            getOptionLabel={(option) => `Base: ${getBonificationBaseLabel(option.base)}, Valeur: ${option.value}`}
+                            options={minYear && maxYear ? previsions : []}
                             renderInput={(params) => <TextField {...params} variant="outlined" />}
                         />
                     </FormGroup>
@@ -499,7 +544,7 @@ const List = (props) => {
                             Prevision de la base
                         </InputLabel>
                         <InputStrap
-                            required
+                            disabled
                             type="number"
                             id="prevision"
                             name='prevision'
@@ -853,6 +898,7 @@ const List = (props) => {
                         setShowCreateFundingOption(false);
                         getOptions();
                     }}
+                    project={project}
                 />
 
                 <CreatePrevision

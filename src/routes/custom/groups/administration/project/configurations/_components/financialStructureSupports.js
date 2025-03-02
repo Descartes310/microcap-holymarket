@@ -36,7 +36,7 @@ const FinancialStructureSupports = (props) => {
 
     const getOptions = () => {
         props.setRequestGlobalAction(true);
-        GroupService.getFundingOptions().then(response => {
+        GroupService.getFundingOptions({financial_structure_reference: financialStructure.reference}).then(response => {
             setOptions(response);
         })
         .finally(() => props.setRequestGlobalAction(false))

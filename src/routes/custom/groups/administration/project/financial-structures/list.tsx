@@ -31,7 +31,11 @@ const List = (props) => {
 
     const getFinancialStructures = () => {
         props.setRequestGlobalAction(true);
-        GroupService.getFinancialStructures().then(response => {
+        let data: any = {type: props.type ?? 'PROJECT'};
+        if(props.reference) {
+            data.reference = props.reference;
+        }
+        GroupService.getFinancialStructures(data).then(response => {
             setDatas(response);
         })
         .finally(() => props.setRequestGlobalAction(false))
@@ -63,14 +67,16 @@ const List = (props) => {
     
     return (
         <>
-            <PageTitleBar
-                title={"Structures financieres"}
-            />
+            { props.type !== 'BIGDEAL' && (
+                <PageTitleBar
+                    title={"Structures financieres"}
+                />
+            )}
             <CustomList
                 list={datas}
                 loading={false}
                 itemsFoundText={n => `${n} élements trouvés`}
-                onAddClick={() => props.history.push(GROUP.ADMINISTRATION.PROJECT.FINANCIAL_STRUCTURE.CREATE)}
+                onAddClick={() => props.history.push(`${GROUP.ADMINISTRATION.PROJECT.FINANCIAL_STRUCTURE.CREATE}?type=${props.type ?? 'BIGDEAL'}${props.reference ? '&reference='+props.reference : ''}`)}
                 renderItem={list => (
                     <>
                         {list && list.length === 0 ? (
@@ -87,7 +93,6 @@ const List = (props) => {
                                             <th className="fw-bold">Intitulé</th>
                                             <th className="fw-bold">Status</th>
                                             <th className="fw-bold">Financable</th>
-                                            <th className="fw-bold">Campagnes</th>
                                             <th className="fw-bold">Actions</th>
                                         </tr>
                                     </thead>
@@ -116,18 +121,6 @@ const List = (props) => {
                                                     />
                                                 </td>
                                                 <td>
-                                                    <Button
-                                                        color="primary"
-                                                        variant="contained"
-                                                        className="text-white font-weight-bold"
-                                                        onClick={() => {
-                                                            props.history.push(joinUrlWithParamsId(GROUP.ADMINISTRATION.PROJECT.FINANCIAL_STRUCTURE.CAMPAIGN_LIST, item.reference))
-                                                        }}
-                                                    >
-                                                        Campagnes
-                                                    </Button>
-                                                </td>
-                                                <td>
                                                     <ButtonDropdown isOpen={dropdownOpen[key]} toggle={() => onToggleButton(key)} className="mr-3">
                                                         <DropdownToggle caret color='primary' style={{ color: 'white', fontSize: '0.9rem' }}>
                                                             Actions
@@ -135,11 +128,24 @@ const List = (props) => {
                                                         <DropdownMenu>
                                                             <DropdownItem style={{ color: 'black' }}
                                                                 onClick={() => {
+                                                                    props.history.push(joinUrlWithParamsId(GROUP.ADMINISTRATION.PROJECT.FINANCIAL_STRUCTURE.CAMPAIGN_LIST, item.reference))
+                                                                }}
+                                                            >
+                                                                Campagnes
+                                                            </DropdownItem>
+                                                            <DropdownItem style={{ color: 'black' }}
+                                                                onClick={() => {
                                                                     setFinancialStructure(item);
                                                                     setShowSuppors(true);
                                                                 }}
                                                             >
                                                                 Supports
+                                                            </DropdownItem>
+                                                            <DropdownItem style={{ color: 'black' }}
+                                                                onClick={() => {
+                                                                }}
+                                                            >
+                                                                Détails
                                                             </DropdownItem>
                                                         </DropdownMenu>
                                                     </ButtonDropdown>

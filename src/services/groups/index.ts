@@ -160,8 +160,8 @@ export default class GroupService {
         return makeRequest('put', Routes.CHANGE_CATEGORY_TO_JURIDIC(reference));
     }
 
-    static getFundingOptions(): Promise<any> {
-        return makeRequest('get', Routes.GET_FUNDING_OPTIONS);
+    static getFundingOptions(data): Promise<any> {
+        return makeRequest('get', Routes.GET_FUNDING_OPTIONS, data);
     }
 
     static deleteFundingOptions(reference: string): Promise<any> {
@@ -272,8 +272,8 @@ export default class GroupService {
         return makeRequest('post', Routes.CREATE_FINANCIAL_STRUCTURES, data);
     }
 
-    static getFinancialStructures(): Promise<any> {
-        return makeRequest('get', Routes.GET_FINANCIAL_STRUCTURES);
+    static getFinancialStructures(data): Promise<any> {
+        return makeRequest('get', Routes.GET_FINANCIAL_STRUCTURES, data);
     }
 
     static deleteFinancialStructure(data: any): Promise<any> {

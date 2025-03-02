@@ -72,7 +72,7 @@ const CreatePrevision = (props) => {
                         required
                         id="year"
                         name='year'
-                        type="text"
+                        type="number"
                         value={year}
                         className="input-lg"
                         onChange={(e) => setYear(e.target.value)}

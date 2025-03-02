@@ -39,7 +39,8 @@ const CreateRule = (props) => {
         props.setRequestGlobalAction(true);
 
         let data = {
-            project_reference: project.reference, 
+            type: props.type ?? 'PROJECT',
+            item_reference: project.reference, 
             label, periodicity: periodicity.value,
             startDate, endDate, duration, fixPart, variablePart,
             dotation, basePrevision, rate, base, effectiveRate,
