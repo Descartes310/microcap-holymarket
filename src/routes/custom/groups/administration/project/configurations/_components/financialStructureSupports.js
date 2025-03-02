@@ -10,11 +10,9 @@ import { getPriceWithCurrency } from 'Helpers/helpers';
 import TextField from '@material-ui/core/TextField';
 import {NotificationManager} from 'react-notifications';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import Checkbox from "@material-ui/core/Checkbox/Checkbox";
 import DialogComponent from "Components/dialog/DialogComponent";
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { Form, FormGroup, Input as InputStrap } from 'reactstrap';
-import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
 
 const FinancialStructureSupports = (props) => {
 
@@ -23,60 +21,24 @@ const FinancialStructureSupports = (props) => {
     const [datas, setDatas] = useState([]);
     const [isCreation, setIsCreation] = useState(false);    
     
-    const [types, setTypes] = useState([]);
-    const [type, setType] = useState(null);
-    const [isin, setIsin] = useState(false);
     const [amount, setAmount] = useState(null);
-    const [supports, setSupports] = useState([]);
-    const [support, setSupport] = useState(null);
-    const [category, setCategory] = useState(null);
     const [currency, setCurrency] = useState(null);
     const [quantity, setQuantity] = useState(null);
-    const [categories, setCategories] = useState([]);
+
+    const [option, setOption] = useState(null);
+    const [options, setOptions] = useState([]);
+    const [label, setLabel] = useState(props.financialStructure?.label);
 
     useEffect(() => {
         getDatas();
-        getCategories();
+        getOptions();
     }, [])
 
-    useEffect(() => {
-        if(category) {
-            getTypes();
-        } else {
-            setTypes([]);
-            setType(null);
-            setSupports([]);
-            setSupport(null);
-        }
-    }, [category]);
-
-    useEffect(() => {
-        if(type) {
-            getSupports();
-        } else {
-            setSupports([]);
-            setSupport(null);
-        }
-    }, [type]);
-
-    const getCategories = () => {
-        props.setRequestGlobalAction(true),
-        GroupService.getFundingOptionCategories()
-        .then(response => setCategories(response))
-        .finally(() => props.setRequestGlobalAction(false))
-    }
-
-    const getTypes = () => {
+    const getOptions = () => {
         props.setRequestGlobalAction(true);
-        GroupService.getOptionTypeByCategory(category?.reference)
-        .then(response => setTypes(response))
-        .finally(() => props.setRequestGlobalAction(false))
-    }
-
-    const getSupports = () => {
-        props.setRequestGlobalAction(true),
-        GroupService.getOptionTypesSupport(type?.reference)
-        .then(response => setSupports(response))
+        GroupService.getFundingOptions().then(response => {
+            setOptions(response);
+        })
         .finally(() => props.setRequestGlobalAction(false))
     }
 
@@ -89,7 +51,7 @@ const FinancialStructureSupports = (props) => {
 
     const onSubmit = () => {
 
-        if(!support || !type || !quantity || !amount || !currency) {
+        if(!option || !quantity || !label) {
             NotificationManager.error('Veuillez bien remplir le formulaire')
             return;
         }
@@ -97,12 +59,10 @@ const FinancialStructureSupports = (props) => {
         props.setRequestGlobalAction(true);
 
         let data = {
-            isin, 
+            label, 
             emission: quantity,
             nominal_amount: amount,
-            currency: currency?.code,
-            option_type_reference: type?.reference,
-            support_type_reference: support?.reference
+            funding_option_reference: option.reference,
         }
 
         GroupService.createFinancialStructureSupport(financialStructure.reference, data).then(() => {
@@ -195,68 +155,35 @@ const FinancialStructureSupports = (props) => {
                 />
             ) : (
                 <Form onSubmit={onSubmit}>
-                    <div className='row'>
-                        <FormGroup className="col-md-6 col-sm-12 has-wrapper mb-30">
-                            <InputLabel className="text-left">
-                                Catégorie d'option de financement
-                            </InputLabel>
-                            <Autocomplete
-                                id="combo-box-demo"
-                                value={category}
-                                options={categories}
-                                onChange={(__, item) => {
-                                    setCategory(item);
-                                }}
-                                getOptionLabel={(option) => option.label}
-                                renderInput={(params) => <TextField {...params} variant="outlined" />}
-                            />
-                        </FormGroup>
-
-                        <FormGroup className="col-md-6 col-sm-12 has-wrapper mb-30">
-                            <InputLabel className="text-left">
-                                Type d'option de financement autorisé
-                            </InputLabel>
-                            <Autocomplete
-                                id="combo-box-demo"
-                                value={type}
-                                options={types}
-                                onChange={(__, item) => {
-                                    setType(item);
-                                }}
-                                getOptionLabel={(option) => option.label}
-                                renderInput={(params) => <TextField {...params} variant="outlined" />}
-                            />
-                        </FormGroup>
-                    </div>
+                    <FormGroup className="col-md-12 col-sm-12 has-wrapper">
+                        <InputLabel className="text-left" htmlFor="label">
+                            Intitulé
+                        </InputLabel>
+                        <InputStrap
+                            required
+                            id="label"
+                            type="text"
+                            name='label'
+                            value={label}
+                            className="input-lg"
+                            onChange={(e) => setLabel(e.target.value)}
+                        />
+                    </FormGroup>
 
                     <div className='row'>
-                        <FormGroup className="col-md-6 col-sm-12 has-wrapper mb-30">
+                        <FormGroup className="col-md-12 col-sm-12 has-wrapper mb-30">
                             <InputLabel className="text-left">
-                                Type de support
+                                Option de financement
                             </InputLabel>
                             <Autocomplete
                                 id="combo-box-demo"
-                                value={support}
-                                options={supports}
+                                value={option}
+                                options={options}
                                 onChange={(__, item) => {
-                                    setSupport(item);
+                                    setOption(item);
                                 }}
                                 getOptionLabel={(option) => option.label}
                                 renderInput={(params) => <TextField {...params} variant="outlined" />}
-                            />
-                        </FormGroup>
-                        <FormGroup className="col-md-6 col-sm-12 has-wrapper">
-                            <InputLabel className="text-left" htmlFor="quantity">
-                                Emission (nombre de support à emettre)
-                            </InputLabel>
-                            <InputStrap
-                                required
-                                id="quantity"
-                                type="number"
-                                name='quantity'
-                                value={quantity}
-                                className="input-lg"
-                                onChange={(e) => setQuantity(e.target.value)}
                             />
                         </FormGroup>
                     </div>
@@ -264,7 +191,7 @@ const FinancialStructureSupports = (props) => {
                     <div className="row">
                         <FormGroup className="col-md-6 col-sm-12 has-wrapper">
                             <InputLabel className="text-left" htmlFor="amount">
-                                Valeur nominale
+                                Valeur faciale
                             </InputLabel>
                             <InputStrap
                                 required
@@ -278,30 +205,49 @@ const FinancialStructureSupports = (props) => {
                         </FormGroup>
                         <UnitSelect label="Devise" isCurrency={true} onChange={(c) => setCurrency(c)} />
                     </div>
-                    <FormGroup className="col-md-12 col-sm-12 has-wrapper">
-                        <InputLabel className="text-left" htmlFor="total">
-                            Montant total
-                        </InputLabel>
-                        <InputStrap
-                            id="total"
-                            type="text"
-                            name='total'
-                            disabled={true}
-                            className="input-lg"
-                            value={(amount && quantity && currency) ? getPriceWithCurrency(amount * quantity, currency.code) : '0'}
-                        />
-                    </FormGroup>
 
-                    <FormGroup className="col-sm-12 has-wrapper">
-                        <FormControlLabel control={
-                            <Checkbox
-                                color="primary"
-                                checked={isin}
-                                onChange={() => setIsin(!isin)}
+                    <div className='row'>
+                        <FormGroup className="col-md-4 col-sm-12 has-wrapper">
+                            <InputLabel className="text-left" htmlFor="quantity">
+                                Emission (nombre de support à emettre)
+                            </InputLabel>
+                            <InputStrap
+                                required
+                                id="quantity"
+                                type="number"
+                                name='quantity'
+                                value={quantity}
+                                className="input-lg"
+                                onChange={(e) => setQuantity(e.target.value)}
                             />
-                        } label={'ISIN MicroCap'}
-                        />
-                    </FormGroup>
+                        </FormGroup>
+                        <FormGroup className="col-md-4 col-sm-12 has-wrapper">
+                            <InputLabel className="text-left" htmlFor="emissionPrime">
+                                Prime d'émission
+                            </InputLabel>
+                            <InputStrap
+                                type="text"
+                                disabled={true}
+                                id="emissionPrime"
+                                name="emissionPrime"
+                                className="input-lg"
+                                value={(amount && option && currency) ? getPriceWithCurrency(Math.max(0, amount - option.nominalAmount), currency.code) : '0'}
+                            />
+                        </FormGroup>
+                        <FormGroup className="col-md-4 col-sm-12 has-wrapper">
+                            <InputLabel className="text-left" htmlFor="total">
+                                Montant total
+                            </InputLabel>
+                            <InputStrap
+                                id="total"
+                                name="total"
+                                type="text"
+                                disabled={true}
+                                className="input-lg"
+                                value={(amount && option && currency && quantity) ? getPriceWithCurrency(Math.max(0, amount - option.nominalAmount) * quantity, currency.code) : '0'}
+                            />
+                        </FormGroup>
+                    </div>
 
                     <FormGroup>
                         <Button

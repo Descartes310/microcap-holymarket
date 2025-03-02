@@ -55,7 +55,7 @@ const Sales = (props) => {
                                             <div className="media">
                                                 <div className="media-body pt-10">
                                                     <h4 className="m-0 fw-bold text-dark">
-                                                        #{item.paymentReference.split('_').pop()}
+                                                        #{item?.paymentReference?.split('_').pop()}
                                                     </h4>
                                                 </div>
                                             </div>

@@ -9,6 +9,7 @@ import Placements from './placements';
 import {injectIntl} from "react-intl";
 import Investments from './investments';
 import { FUNDING } from 'Url/frontendUrl';
+import FinancialStructures from './financial-structures';
 import {withRouter, Switch, Redirect, Route} from "react-router-dom";
 
 const Funding = (props) => {
@@ -25,6 +26,7 @@ const Funding = (props) => {
                     <Route path={FUNDING.BOURSE.DEALS.SELF} component={Deals} />
                     <Route path={FUNDING.BIGDEAL.SELF} component={BigDeals} />
                     <Route path={FUNDING.PLACEMENT.SELF} component={Placements} />
+                    <Route path={FUNDING.FINANCIAL_STRUCTURES.SELF} component={FinancialStructures} />
                 </Switch>
             </>
         </div>

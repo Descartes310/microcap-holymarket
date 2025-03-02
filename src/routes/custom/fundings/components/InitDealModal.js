@@ -381,7 +381,7 @@ class InitDealModal extends Component {
                             </FormGroup>
                             <FormGroup className="has-wrapper mr-20" style={{ flex: 1 }}>
                                 <InputLabel className="text-left">
-                                    Taux part variable (%)
+                                    Taux part variable (En %)
                                 </InputLabel>
                                 <InputStrap
                                     type="number"

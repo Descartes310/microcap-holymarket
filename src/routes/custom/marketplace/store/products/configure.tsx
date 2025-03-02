@@ -415,7 +415,7 @@ const Configure = (props: any) => {
                         </FormGroup>
                         <FormGroup className="col-md-3 col-sm-12 has-wrapper">
                             <InputLabel className="text-left" htmlFor="minimumRate">
-                                Taux de rémunération minimal garantie (%)
+                                Taux de rémunération minimal garantie (En %)
                             </InputLabel>
                             <InputStrap
                                 required

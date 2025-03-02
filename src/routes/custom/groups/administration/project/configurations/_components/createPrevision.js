@@ -22,7 +22,7 @@ const CreatePrevision = (props) => {
 
     const onSubmit = () => {     
 
-        if(!year || !base || !value) {
+        if(!year || !base || !value || (props?.type == 'BIGDEAL' && !props.project)) {
             NotificationManager.error('Veuillez bien remplir le formulaire')
             return;
         }
@@ -30,7 +30,11 @@ const CreatePrevision = (props) => {
         props.setRequestGlobalAction(true);
 
         let data = {
-            year, value, base: base.value
+            year, value, base: base.value, type: props.type ?? 'PROJECT'
+        }
+
+        if(props.project) {
+            data.reference = props.project.reference
         }
 
         ProjectService.createProjectPrevision(data).then(() => {
@@ -55,7 +59,7 @@ const CreatePrevision = (props) => {
             size="md"
             title={(
                 <h3 className="fw-bold">
-                    Créer une prevision projet
+                    Créer une prevision
                 </h3>
             )}
         >

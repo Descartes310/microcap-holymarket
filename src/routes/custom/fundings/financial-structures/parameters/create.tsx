@@ -7,26 +7,26 @@ import {setRequestGlobalAction} from 'Actions';
 import ProjectService from 'Services/projects';
 import ProductService from 'Services/products';
 import UnitSelect from 'Components/UnitSelect';
-import CustomCart from '../_components/customCart';
+import AccountService from 'Services/accounts';
 import React, { useEffect, useState } from 'react';
-import CreateRule from '../_components/createRule';
 import TextField from '@material-ui/core/TextField';
 import TimeFromMoment from 'Components/TimeFromMoment';
 import { getPriceWithCurrency } from 'Helpers/helpers';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { NotificationManager } from 'react-notifications';
 import { FormGroup, Input as InputStrap } from 'reactstrap';
-import CreatePrevision from '../_components/createPrevision';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
-import CreateFundingOption from '../_components/createFundingOption';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
-import { projectDistributionRules, bonificationBases, getTimeUnits, getTimeUnitByValue, getBonificationBaseLabel } from 'Helpers/datas';
+import CreateRule from 'Routes/custom/groups/administration/project/configurations/_components/createRule';
+import CustomCart from 'Routes/custom/groups/administration/project/configurations/_components/customCart';
+import { projectDistributionRules, getTimeUnits, getTimeUnitByValue, getBonificationBaseLabel } from 'Helpers/datas';
+import CreatePrevision from 'Routes/custom/groups/administration/project/configurations/_components/createPrevision';
+import CreateFundingOption from 'Routes/custom/groups/administration/project/configurations/_components/createFundingOption';
 
-const List = (props) => {
+const Create = (props) => {
 
     const [rules, setRules] = useState([]);
-    const [codevs, setCodevs] = useState([]);
-    const [codev, setCodev] = useState(null);
+    const [account, setAccount] = useState(null);
     
     const [dat, setDat] = useState(null);
     const [lineRate, setLineRate] = useState(null);
@@ -58,30 +58,18 @@ const List = (props) => {
 
     useEffect(() => {
         getOptions();
+        findAccount();
         getProjectDetails();
-        getProject();
-        getProducts();
     }, []);
 
     useEffect(() => {
-        if(project) {
+        if(account) {
             getCustomCarts();
             getRules();
             getPrevisions();
-        }
-    }, [project]);
-
-    useEffect(() => {
-        if(codev) {
             findProductModel();
         }
-    }, [codev]);
-
-    useEffect(() => {
-        if(codevs.length > 0 && details) {
-            setCodev(codevs.find(c => c.reference == details.find(t => t.type == 'CODEV')?.value));
-        }
-    }, [codevs, details]);
+    }, [account]);
 
     useEffect(() => {
         if(previsions.length > 0 && details) {
@@ -100,11 +88,11 @@ const List = (props) => {
 
     }, [prevision, bonificationMaxRate, bonificationMinRate])
 
-    const getProject = () => {
-        props.setRequestGlobalAction(false);
-        ProjectService.getGroupProjects()
-        .then((response) => setProject(response[0]))
-        .catch((err) => {
+    const findAccount = () => {
+        props.setRequestGlobalAction(true);
+        AccountService.getAccount(props.match.params.id).then(response => {
+            setAccount(response);
+        }).catch((err) => {
             console.log(err);
         })
         .finally(() => {
@@ -114,7 +102,7 @@ const List = (props) => {
 
     const getRules = () => {
         props.setRequestGlobalAction(false);
-        ProjectService.getProjectRules({project_reference: project.reference})
+        ProjectService.getProjectRules({project_reference: account.reference})
         .then((response) => setRules(response))
         .catch((err) => {
             console.log(err);
@@ -126,7 +114,7 @@ const List = (props) => {
 
     const getPrevisions = () => {
         props.setRequestGlobalAction(false);
-        ProjectService.getProjectPrevisions({})
+        ProjectService.getProjectPrevisions({type: 'BIGDEAL', reference: account.reference})
         .then((response) => setPrevisions(response))
         .catch((err) => {
             console.log(err);
@@ -144,7 +132,7 @@ const List = (props) => {
 
     const findProductModel = () => {
         props.setRequestGlobalAction(true);
-        ProductService.findProductModel(codev.reference).then(response => {
+        ProductService.findProductModel(account.modelReference).then(response => {
             setDat(response.details.find(d => d.type == 'DAT_RATE')?.value);
             setLineRate(response.details.find(d => d.type == 'LINE_RATE')?.value);
             setRemunerationRate(response.details.find(d => d.type == 'REMUNERATION_RATE')?.value);
@@ -173,17 +161,10 @@ const List = (props) => {
 
     const getCustomCarts = () => {
         props.setRequestGlobalAction(true);
-        ProductService.getCustomCarts(project.reference).then(response => {
+        ProductService.getCustomCarts(account.reference).then(response => {
             setCustomCarts(response);
         })
         .finally(() => props.setRequestGlobalAction(false))
-    }
-
-    const getProducts = () => {
-        props.setRequestGlobalAction(true);
-        ProductService.getProductModels({ types: ['PRODUCT'], nature: 'CODEV' })
-            .then(response => setCodevs(response))
-            .finally(() => props.setRequestGlobalAction(false))
     }
 
     const deleteCustomCarts = (reference) => {
@@ -228,7 +209,7 @@ const List = (props) => {
 
     const onSubmit = () => {        
         if(!minBase || !maxBase || !minRate || !maxRate || !currency || !distribution || !bonificationBase || !bonificationMinRate || !bonificationMaxRate ||
-            !prevision || !dotationMinRate || !dotationMaxRate || !periodicity || !codev
+            !prevision || !dotationMinRate || !dotationMaxRate || !periodicity || !account
         ) {
             NotificationManager.error('Veuillez bien remplir le formulaire')
             return;
@@ -239,7 +220,7 @@ const List = (props) => {
             minRate, maxRate, bonificationMinRate, bonificationMaxRate,
             currency: currency.code, distribution: distribution.value,
             prevision, dotationMinRate, dotationMaxRate, periodicity: periodicity.value,
-            codev_reference: codev.reference
+            codev_reference: account.reference
         }
                 
         props.setRequestGlobalAction(true);
@@ -257,23 +238,6 @@ const List = (props) => {
         <div>
             <RctCollapsibleCard>
             <h1 className='mb-20'>Rappel des paramètres du plan</h1>
-                <div className="row">
-                    <div className="col-md-12 col-sm-12 has-wrapper">
-                        <InputLabel className="text-left">
-                            Plans disponibles
-                        </InputLabel>
-                        <Autocomplete
-                            value={codev}
-                            options={codevs}
-                            id="combo-box-demo"
-                            onChange={(__, item) => {
-                                setCodev(item)
-                            }}
-                            getOptionLabel={(option) => option.label}
-                            renderInput={(params) => <TextField {...params} variant="outlined" />}
-                        />
-                    </div>
-                </div>
                 <div className="row mt-20">
                     <FormGroup className="col-md-6 col-sm-12 has-wrapper">
                         <InputLabel className="text-left" htmlFor="dat">
@@ -392,7 +356,7 @@ const List = (props) => {
                         />
                     </FormGroup>
                 </div>
-                <h1 className='mb-20 mt-20'>Prévisions projet</h1>
+                <h1 className='mb-20 mt-20'>Performances activités</h1>
                 <CustomList
                     list={previsions}
                     loading={false}
@@ -844,11 +808,13 @@ const List = (props) => {
                         setShowCreateProduct(false);
                         getCustomCarts();
                     }}
-                    project={project}
+                    type='BIGDEAL'
+                    project={account}
                 />
 
                 <CreateFundingOption
                     show={showCreateFundingOption}
+                    type='BIGDEAL'
                     onClose={() => {
                         setShowCreateFundingOption(false);
                         getOptions();
@@ -857,6 +823,8 @@ const List = (props) => {
 
                 <CreatePrevision
                     show={showCreatePrevision}
+                    type='BIGDEAL'
+                    project={account}
                     onClose={() => {
                         setShowCreatePrevision(false);
                         getPrevisions();
@@ -865,7 +833,8 @@ const List = (props) => {
 
                 <CreateRule
                     show={showCreateRule}
-                    project={project}
+                    project={account}
+                    type='BIGDEAL'
                     onClose={() => {
                         setShowCreateRule(false);
                         getRules();
@@ -876,4 +845,4 @@ const List = (props) => {
     );
 }
 
-export default connect(() => {}, { setRequestGlobalAction })(withRouter(List));
+export default connect(() => {}, { setRequestGlobalAction })(withRouter(Create));

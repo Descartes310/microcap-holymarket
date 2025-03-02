@@ -592,15 +592,31 @@ export default [
       ]
    },
    {
-      "path": FUNDING.INVESTMENT.PROSPECTUS.LIST,
-      "menu_title": "Programmes d'investissement",
-      "menu_icon": "zmdi zmdi-assignment-o",
+      "menu_title": "Big Deals",
+      "menu_icon": "zmdi zmdi-home",
       "new_item": false,
-      "child_routes": null,
-      "profiles": null,
       "permissions": [
-         Permission.funding.investments.name,
-      ]
+         Permission.funding.investments.name
+      ],
+      "profiles": null,
+      "child_routes": [
+         {
+            "menu_title": "Investissements",
+            "new_item": false,
+            "path": FUNDING.INVESTMENT.PROSPECTUS.LIST,
+            "permissions": [Permission.funding.investments.name],
+            "profiles": null,
+            "child_routes": null
+         },
+         {
+            "menu_title": "Structures fincancières",
+            "new_item": false,
+            "path": FUNDING.FINANCIAL_STRUCTURES.ITEM.LIST,
+            "permissions": [Permission.funding.investments.name],
+            "profiles": null,
+            "child_routes": null
+         }
+      ],
    },
    {
       "path": FUNDING.BIGDEAL.SENT,

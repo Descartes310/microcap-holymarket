@@ -341,7 +341,7 @@ const Create = (props) => {
                         </FormGroup>
                         <FormGroup className="has-wrapper col-sm-12 col-md-4">
                             <InputLabel className="text-left" htmlFor="periodicRent">
-                                Taux périodique
+                                Taux périodique (En %)
                             </InputLabel>
                             <InputStrap
                                 required

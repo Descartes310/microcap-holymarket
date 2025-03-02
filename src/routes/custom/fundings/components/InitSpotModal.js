@@ -351,7 +351,7 @@ class InitSpotModal extends Component {
                         <div className='row'>
                             <FormGroup className="col-md-6 col-sm-12 has-wrapper mb-30">
                                 <InputLabel className="text-left">
-                                    Taux de placement (%)
+                                    Taux de placement (En %)
                                 </InputLabel>
                                 <InputStrap
                                     type="number"
@@ -434,7 +434,7 @@ class InitSpotModal extends Component {
                             </FormGroup>
                             <FormGroup className="col-md-6 col-sm-12 has-wrapper mb-30">
                                 <InputLabel className="text-left">
-                                    Taux de gestion par période de loyer (%)
+                                    Taux de gestion par période de loyer (En %)
                                 </InputLabel>
                                 <InputStrap
                                     type="number"

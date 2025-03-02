@@ -368,7 +368,7 @@ export const getDateDiff = (startDate, endDate, days) => {
 
 export const productOptionDetails = [
     {
-        label: 'Quotité disponible sur avance (%)',
+        label: 'Quotité disponible sur avance (En %)',
         value: 'QUOTIENT_AVAILABLE',
         inputType: 'number'
     },
@@ -383,7 +383,7 @@ export const productOptionDetails = [
         inputType: 'text'
     },
     {
-        label: 'Intérêt sur avance (en %)',
+        label: 'Intérêt sur avance  (En %)',
         value: 'ADVANCE_INTEREST',
         inputType: 'number'
     },

@@ -216,7 +216,7 @@ const Create = (props) => {
                             <thead>
                                 <tr>
                                     <th>Prévision</th>
-                                    <th>Pourcentage (%)</th>
+                                    <th>Pourcentage (En %)</th>
                                     <th>Montant</th>
                                 </tr>
                             </thead>

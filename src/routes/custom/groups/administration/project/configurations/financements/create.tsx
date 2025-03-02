@@ -394,7 +394,7 @@ const Create = (props) => {
                     <div className='row'>
                         <FormGroup className="has-wrapper col-sm-12 col-md-4">
                             <InputLabel className="text-left" htmlFor="managementRate">
-                                Taux de gestion
+                                Taux de gestion (En %)
                             </InputLabel>
                             <InputStrap
                                 required

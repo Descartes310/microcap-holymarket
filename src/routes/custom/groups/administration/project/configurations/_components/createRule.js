@@ -255,7 +255,7 @@ const CreateRule = (props) => {
                 <div className='row'>
                     <FormGroup className="has-wrapper col-sm-12 col-md-6">
                         <InputLabel className="text-left" htmlFor="rate">
-                            Taux
+                            Taux (En %)
                         </InputLabel>
                         <InputStrap
                             required
@@ -288,7 +288,7 @@ const CreateRule = (props) => {
                 </div>
                 <FormGroup className="has-wrapper col-sm-12 col-md-12">
                     <InputLabel className="text-left" htmlFor="effectiveRate">
-                        Taux effectif
+                        Taux effectif (En %)
                     </InputLabel>
                     <InputStrap
                         required

@@ -56,8 +56,12 @@ const CustomCart = (props) => {
 
         let data = {
             market_reference: market.reference,
-            project_reference: project.reference,
+            item_reference: project.reference,
             product_references: selectedProducts.map(p => p.reference)
+        }
+
+        if(props.type) {
+            data.type = props.type
         }
 
         ProductService.createCustomCart(data).then(() => {

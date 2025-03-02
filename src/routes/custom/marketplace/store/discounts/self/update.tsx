@@ -94,7 +94,7 @@ const Update = (props) => {
                     </FormGroup>
                     <FormGroup className="has-wrapper">
                         <InputLabel className="text-left" htmlFor="percentage">
-                            Réduction (en %)
+                            Réduction  (En %)
                         </InputLabel>
                         <InputStrap
                             required

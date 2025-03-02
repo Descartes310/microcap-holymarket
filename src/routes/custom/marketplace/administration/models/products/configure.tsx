@@ -395,7 +395,7 @@ const Configure = (props: any) => {
                         </FormGroup>
                         <FormGroup className="col-md-6 col-sm-12 has-wrapper">
                             <InputLabel className="text-left" htmlFor="minimumRate">
-                                Taux de rémunération minimal garantie (%)
+                                Taux de rémunération minimal garantie (En %)
                             </InputLabel>
                             <InputStrap
                                 required
@@ -458,7 +458,7 @@ const Configure = (props: any) => {
                     <div className="row">
                         <FormGroup className="col-md-6 col-sm-12 has-wrapper">
                             <InputLabel className="text-left" htmlFor="dat">
-                                Taux du DAT MicroCap
+                                Taux du DAT MicroCap (En %)
                             </InputLabel>
                             <InputStrap
                                 required
@@ -472,7 +472,7 @@ const Configure = (props: any) => {
                         </FormGroup>
                         <FormGroup className="col-md-6 col-sm-12 has-wrapper">
                             <InputLabel className="text-left" htmlFor="remunerationRate">
-                                Taux de rémunération d'un Ndjangui
+                                Taux de rémunération d'un Ndjangui (En %)
                             </InputLabel>
                             <InputStrap
                                 required
@@ -488,7 +488,7 @@ const Configure = (props: any) => {
                     <div className="row">
                         <FormGroup className="col-md-12 col-sm-12 has-wrapper">
                             <InputLabel className="text-left" htmlFor="lineRate">
-                                Taux d'intérêt de la ligne de placement
+                                Taux d'intérêt de la ligne de placement (En %)
                             </InputLabel>
                             <InputStrap
                                 required

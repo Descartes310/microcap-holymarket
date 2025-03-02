@@ -107,6 +107,19 @@ export const FUNDING = {
             CREATE: '/funding/investments/programs/create',
         }
     },
+    FINANCIAL_STRUCTURES: {
+        SELF: '/funding/financial-structures',
+        ITEM: {
+            SELF: '/funding/financial-structures/items',
+            LIST: '/funding/financial-structures/items/list',
+            CREATE: '/funding/financial-structures/items/create',
+        },
+        PARAM: {
+            SELF: '/funding/financial-structures/params',
+            LIST: '/funding/financial-structures/params/list',
+            CREATE: '/funding/financial-structures/params/:id/create',
+        },
+    },
     BOND: {
         SELF: '/funding/bonds',
         LIST: '/funding/bonds/list',

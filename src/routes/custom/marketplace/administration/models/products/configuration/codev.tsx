@@ -80,7 +80,7 @@ const Codev = (props) => {
                 </FormGroup>
                 <FormGroup className="col-md-6 col-sm-12 has-wrapper">
                     <InputLabel className="text-left" htmlFor="minimumRate">
-                        Taux minimal grarantie
+                        Taux minimal grarantie (En %)
                     </InputLabel>
                     <InputStrap
                         required
