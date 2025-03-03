@@ -2,12 +2,12 @@ import { connect } from 'react-redux';
 import GroupService from 'Services/groups';
 import { withRouter } from "react-router-dom";
 import Button from '@material-ui/core/Button';
+import Switch from "@material-ui/core/Switch";
 import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
 import ProjectService from 'Services/projects';
 import ProductService from 'Services/products';
 import UnitSelect from 'Components/UnitSelect';
-import AccountService from 'Services/accounts';
 import React, { useEffect, useState } from 'react';
 import TextField from '@material-ui/core/TextField';
 import TimeFromMoment from 'Components/TimeFromMoment';
@@ -22,6 +22,7 @@ import CustomCart from 'Routes/custom/groups/administration/project/configuratio
 import { projectDistributionRules, getTimeUnits, getTimeUnitByValue, getBonificationBaseLabel, bonificationBases } from 'Helpers/datas';
 import CreatePrevision from 'Routes/custom/groups/administration/project/configurations/_components/createPrevision';
 import CreateFundingOption from 'Routes/custom/groups/administration/project/configurations/_components/createFundingOption';
+import FundingService from 'Services/funding';
 
 const Create = (props) => {
 
@@ -33,6 +34,8 @@ const Create = (props) => {
     const [remunerationRate, setRemunerationRate] = useState(null);
     const [capitalManagementRate, setCapitalManagementRate] = useState(null);
 
+    const [codevs, setCodevs] = useState([]);
+    const [codev, setCodev] = useState(null);
     const [details, setDetails] = useState([]);
     const [options, setOptions] = useState([]);
     const [minBase, setMinBase] = useState(null);
@@ -59,6 +62,7 @@ const Create = (props) => {
 
     useEffect(() => {
         findAccount();
+        getProducts();
     }, []);
 
     useEffect(() => {
@@ -66,11 +70,22 @@ const Create = (props) => {
             getCustomCarts();
             getRules();
             getPrevisions();
-            findProductModel();
             getOptions();
             getProjectDetails();
         }
     }, [account]);
+
+    useEffect(() => {
+        if(codevs.length > 0 && details) {
+            setCodev(codevs.find(c => c.reference == details.find(t => t.type == 'CODEV')?.value));
+        }
+    }, [codevs, details]);
+
+    useEffect(() => {
+        if(codev) {
+            findProductModel();
+        }
+    }, [codev]);
 
     useEffect(() => {
         if(previsions.length > 0 && details) {
@@ -100,16 +115,20 @@ const Create = (props) => {
 
     }, [prevision, bonificationMaxRate, bonificationMinRate])
 
+    const getProducts = () => {
+        props.setRequestGlobalAction(true);
+        ProductService.getProductModels({ types: ['PRODUCT'], nature: 'CODEV' })
+            .then(response => setCodevs(response))
+            .finally(() => props.setRequestGlobalAction(false))
+    }
+
     const findAccount = () => {
         props.setRequestGlobalAction(true);
-        AccountService.getAccount(props.match.params.id).then(response => {
-            setAccount(response);
-        }).catch((err) => {
-            console.log(err);
+        FundingService.findDeal(props.match.params.id)
+        .then(response => {
+            setAccount(response)
         })
-        .finally(() => {
-            props.setRequestGlobalAction(false);
-        })
+        .finally(() => props.setRequestGlobalAction(false))
     }
 
     const getRules = () => {
@@ -144,7 +163,7 @@ const Create = (props) => {
 
     const findProductModel = () => {
         props.setRequestGlobalAction(true);
-        ProductService.findProductModel(account.modelReference).then(response => {
+        ProductService.findProductModel(codev.reference).then(response => {
             setDat(response.details.find(d => d.type == 'DAT_RATE')?.value);
             setLineRate(response.details.find(d => d.type == 'LINE_RATE')?.value);
             setRemunerationRate(response.details.find(d => d.type == 'REMUNERATION_RATE')?.value);
@@ -203,6 +222,14 @@ const Create = (props) => {
         .finally(() => props.setRequestGlobalAction(false))
     }
 
+    const activeRule = (reference) => {
+        props.setRequestGlobalAction(true);
+        ProjectService.activeProjectRule(reference, {type: 'BIGDEAL', project_reference: account.reference}).then(() => {
+            getRules();
+        })
+        .finally(() => props.setRequestGlobalAction(false))
+    }
+
     const getOptions = () => {
         props.setRequestGlobalAction(true);
         GroupService.getFundingOptions({reference: account.reference, type: 'BIGDEAL'}).then(response => {
@@ -221,9 +248,14 @@ const Create = (props) => {
 
     const onSubmit = () => {        
         if(!minBase || !maxBase || !minRate || !maxRate || !currency || !distribution || !bonificationBase || !bonificationMinRate || !bonificationMaxRate ||
-            !prevision || !dotationMinRate || !dotationMaxRate || !periodicity || !account
+            !prevision || !dotationMinRate || !dotationMaxRate || !periodicity || !account || !codev
         ) {
             NotificationManager.error('Veuillez bien remplir le formulaire')
+            return;
+        }
+
+        if(rules.length <= 0 || rules.filter(r => r.active).length <= 0) {
+            NotificationManager.error('Vérifiez les règles');
             return;
         }
 
@@ -233,7 +265,7 @@ const Create = (props) => {
             minRate, maxRate, bonificationMinRate, bonificationMaxRate,
             currency: currency.code, distribution: distribution.value,
             prevision, dotationMinRate, dotationMaxRate, periodicity: periodicity.value,
-            codev_reference: account.reference
+            codev_reference: codev.reference
         }
                 
         props.setRequestGlobalAction(true);
@@ -251,6 +283,23 @@ const Create = (props) => {
         <div>
             <RctCollapsibleCard>
             <h1 className='mb-20'>Rappel des paramètres du plan</h1>
+                <div className="row">
+                    <div className="col-md-12 col-sm-12 has-wrapper">
+                        <InputLabel className="text-left">
+                            Plans disponibles
+                        </InputLabel>
+                        <Autocomplete
+                            value={codev}
+                            options={codevs}
+                            id="combo-box-demo"
+                            onChange={(__, item) => {
+                                setCodev(item)
+                            }}
+                            getOptionLabel={(option) => option.label}
+                            renderInput={(params) => <TextField {...params} variant="outlined" />}
+                        />
+                    </div>
+                </div>
                 <div className="row mt-20">
                     <FormGroup className="col-md-6 col-sm-12 has-wrapper">
                         <InputLabel className="text-left" htmlFor="dat">
@@ -780,6 +829,7 @@ const Create = (props) => {
                                                 <th className="fw-bold">Périodicité</th>
                                                 <th className="fw-bold">Date de début</th>
                                                 <th className="fw-bold">Date de fin</th>
+                                                <th className="fw-bold">Status</th>
                                                 <th className="fw-bold">Actions</th>
                                             </tr>
                                         </thead>
@@ -813,6 +863,13 @@ const Create = (props) => {
                                                             <h4 className="m-0 fw-bold text-dark"><TimeFromMoment time={item.endDate} showFullDate /></h4>
                                                             </div>
                                                         </div>
+                                                    </td>
+                                                    <td>
+                                                        <Switch
+                                                            aria-label="Actif"
+                                                            checked={item.active}
+                                                            onChange={() => activeRule(item.reference) }
+                                                        />
                                                     </td>
                                                     <td>
                                                         <Button

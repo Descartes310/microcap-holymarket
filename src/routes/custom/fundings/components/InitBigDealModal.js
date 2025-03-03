@@ -199,7 +199,7 @@ class InitBigDealModal extends Component {
                 size="lg"
                 title={(
                     <h3 className="fw-bold">
-                        Proposition de deal
+                        Proposition de big deal
                     </h3>
                 )}
             >

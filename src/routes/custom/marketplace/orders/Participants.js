@@ -17,6 +17,7 @@ import InviteParticipantModal from "./InviteParticipant";
 import DialogComponent from "Components/dialog/DialogComponent";
 import InitDealModal from 'Routes/custom/fundings/components/InitDealModal';
 import InitSpotModal from 'Routes/custom/fundings/components/InitSpotModal';
+import InitBigDealModal from 'Routes/custom/fundings/components/InitBigDealModal';
 import DealDetailsModal from 'Routes/custom/fundings/components/DealDetailsModal';
 
 class CodevParticipants extends Component {
@@ -28,12 +29,14 @@ class CodevParticipants extends Component {
     state = {
         deals: [],
         spots: [],
+        bigdeals: [],
         deal: null,
         member: null,
         activeTab: 0,
         participants: [],
         showInitDeal: false,
         showInitSpot: false,
+        showInitBigdeal: false,
         showDealDetails: false,
         showSearchMember: false,
         showInviteMemberModal: false
@@ -46,6 +49,9 @@ class CodevParticipants extends Component {
         }
         if(this.props.type == 'SPOTS') {
             this.getSpots();
+        }
+        if(this.props.type == 'BIGDEAL') {
+            this.getBigDeals();
         }
     }
 
@@ -61,6 +67,14 @@ class CodevParticipants extends Component {
         this.props.setRequestGlobalAction(true),
         FundingService.getDeals({free: true, type: 'SPOT', all: true, received: true, referral_code: this.props.referralCode, entity_reference: this.props.order?.externalReference})
         .then(response => this.setState({ spots: response }))
+        .catch(() => this.setState({ spots: [] }))
+        .finally(() => this.props.setRequestGlobalAction(false))
+    }
+
+    getBigDeals = () => {
+        this.props.setRequestGlobalAction(true),
+        FundingService.getDeals({free: true, type: 'BIGDEAL', all: true, received: true, referral_code: this.props.referralCode, entity_reference: this.props.order?.externalReference})
+        .then(response => this.setState({ bigdeals: response }))
         .catch(() => this.setState({ spots: [] }))
         .finally(() => this.props.setRequestGlobalAction(false))
     }
@@ -93,7 +107,7 @@ class CodevParticipants extends Component {
 
     render() {
         const { onClose, show, type } = this.props;
-        const { showInviteMemberModal, participants, showInitDeal, member, activeTab, deals, deal, spots, showDealDetails, showInitSpot } = this.state;
+        const { showInviteMemberModal, participants, showInitDeal, member, activeTab, deals, deal, spots, bigdeals, showDealDetails, showInitSpot, showInitBigdeal } = this.state;
 
         return (
             <DialogComponent
@@ -121,6 +135,9 @@ class CodevParticipants extends Component {
                             )}
                             { type == 'SPOTS' && (
                                 <Tab label="Spots" />
+                            )}
+                            { type == 'BIGDEAL' && (
+                                <Tab label="Big deals" />
                             )}
                             { type == 'INDIVISION' && (
                                 <Tab label="Indivisions" />
@@ -380,7 +397,99 @@ class CodevParticipants extends Component {
                                 </div>
                             </TabContainer>
                         </div>
-                    ) : type == 'INDIVISION' && (
+                    ) : type == 'BIGDEAL' ? (
+                        <div className="card mb-0 transaction-box">
+                            <TabContainer>
+                                <div className="p-sm-20 pt-sm-30 p-10 pt-15 border-top">
+                                    <CustomList
+                                        list={bigdeals}
+                                        loading={false}
+                                        itemsFoundText={n => `${n} bigdeals trouvés`}
+                                        onAddClick={() => this.setState({ showInitBigdeal: true })}
+                                        renderItem={list => (
+                                            <>
+                                                {list && list.length === 0 ? (
+                                                    <div className="d-flex justify-content-center align-items-center py-50">
+                                                        <h4>
+                                                            Aucun bigdeal trouvé
+                                                        </h4>
+                                                    </div>
+                                                ) : (
+                                                    <div className="table-responsive">
+                                                        <table className="table table-hover table-middle mb-0">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th className="fw-bold">Désignation</th>
+                                                                    <th className="fw-bold">Montant</th>
+                                                                    <th className="fw-bold">Souscripteur</th>
+                                                                    <th className="fw-bold">Bénéficiaire</th>
+                                                                    <th className="fw-bold">Date de création</th>
+                                                                    <th className="fw-bold">Action</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                {list && list.map((item, key) => (
+                                                                    <tr key={key} className="cursor-pointer">
+                                                                        <td>
+                                                                            <div className="media">
+                                                                                <div className="media-body pt-10">
+                                                                                    <p className="m-0 text-dark">{item?.label}</p>
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td>
+                                                                            <div className="media">
+                                                                                <div className="media-body pt-10">
+                                                                                    <p className="m-0 text-dark">{getPriceWithCurrency(item?.amount, item?.currency)}</p>
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td>
+                                                                            <div className="media">
+                                                                                <div className="media-body pt-10">
+                                                                                    <p className="m-0 text-dark">{item?.sender}</p>
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td>
+                                                                            <div className="media">
+                                                                                <div className="media-body pt-10">
+                                                                                    <p className="m-0 text-dark">{item?.receiver}</p>
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td>
+                                                                            <div className="media">
+                                                                                <div className="media-body pt-10">
+                                                                                    <TimeFromMoment time={item.createdAt} showFullDate />
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td>
+                                                                            <Button
+                                                                                color="primary"
+                                                                                variant="contained"
+                                                                                className="text-white font-weight-bold"
+                                                                                onClick={() => {
+                                                                                    this.setState({ deal: item, showDealDetails: true });
+                                                                                }}
+                                                                            >
+                                                                                Détails
+                                                                            </Button>
+                                                                        </td>
+                                                                    </tr>
+                                                                ))}
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                )}
+                                            </>
+                                        )}
+                                    />
+                                </div>
+                            </TabContainer>
+                        </div>
+                        ) : type == 'INDIVISION' && (
                         <div className="card mb-0 transaction-box">
                             <TabContainer>
                                 <div className="p-sm-20 pt-sm-30 p-10 pt-15 border-top">
@@ -396,6 +505,19 @@ class CodevParticipants extends Component {
                         onClose={() => {
                             this.setState({ showSearchMember: false, member: null, showInitDeal: false });
                             this.getDeals();
+                        }}
+                        dealType='NDJANGUI'
+                        subscriber={member}
+                        accountReference={this.props.order?.externalReference}
+                    />
+                )}
+
+                {showInitBigdeal && (
+                    <InitBigDealModal 
+                        show={showInitBigdeal}
+                        onClose={() => {
+                            this.setState({ showSearchMember: false, member: null, showInitBigdeal: false });
+                            this.getBigDeals();
                         }}
                         dealType='NDJANGUI'
                         subscriber={member}

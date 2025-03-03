@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 import GroupService from 'Services/groups';
 import { withRouter } from "react-router-dom";
 import Button from '@material-ui/core/Button';
+import Switch from "@material-ui/core/Switch";
 import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
 import ProjectService from 'Services/projects';
@@ -223,6 +224,14 @@ const List = (props) => {
         .finally(() => props.setRequestGlobalAction(false))
     }
 
+    const activeRule = (reference) => {
+        props.setRequestGlobalAction(true);
+        ProjectService.activeProjectRule(reference, {project_reference: project.reference}).then(() => {
+            getRules();
+        })
+        .finally(() => props.setRequestGlobalAction(false))
+    }
+
     const getOptions = () => {
         props.setRequestGlobalAction(true);
         GroupService.getFundingOptions({}).then(response => {
@@ -244,6 +253,11 @@ const List = (props) => {
             !prevision || !dotationMinRate || !dotationMaxRate || !periodicity || !codev
         ) {
             NotificationManager.error('Veuillez bien remplir le formulaire')
+            return;
+        }
+
+        if(rules.length <= 0 || rules.filter(r => r.active).length <= 0) {
+            NotificationManager.error('Vérifiez les règles');
             return;
         }
 
@@ -816,6 +830,7 @@ const List = (props) => {
                                                 <th className="fw-bold">Périodicité</th>
                                                 <th className="fw-bold">Date de début</th>
                                                 <th className="fw-bold">Date de fin</th>
+                                                <th className="fw-bold">Status</th>
                                                 <th className="fw-bold">Actions</th>
                                             </tr>
                                         </thead>
@@ -849,6 +864,13 @@ const List = (props) => {
                                                             <h4 className="m-0 fw-bold text-dark"><TimeFromMoment time={item.endDate} showFullDate /></h4>
                                                             </div>
                                                         </div>
+                                                    </td>
+                                                    <td>
+                                                        <Switch
+                                                            aria-label="Actif"
+                                                            checked={item.active}
+                                                            onChange={() => activeRule(item.reference) }
+                                                        />
                                                     </td>
                                                     <td>
                                                         <Button

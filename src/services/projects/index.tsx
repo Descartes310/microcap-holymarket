@@ -200,6 +200,10 @@ export default class ProjectService {
         return makeRequest('post', Routes.CREATE_PROJECT_RULES, data);
     }
 
+    static activeProjectRule(reference, data: any): Promise<any> {
+        return makeRequest('put', Routes.ACTIVE_PROJECT_RULE(reference), data);
+    }
+
     static deleteProjectRule(reference: string): Promise<any> {
         return makeRequest('delete', Routes.DELETE_PROJECT_RULES, {reference});
     }
