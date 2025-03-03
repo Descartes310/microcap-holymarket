@@ -1,12 +1,13 @@
 import { connect } from 'react-redux';
 import { withRouter } from "react-router-dom";
-import AccounService from 'Services/accounts';
+import FundingService from 'Services/funding';
 import CustomList from "Components/CustomList";
 import Button from '@material-ui/core/Button';
 import {setRequestGlobalAction} from 'Actions';
 import React, { useEffect, useState } from 'react';
 import TimeFromMoment from 'Components/TimeFromMoment';
 import { FUNDING, joinUrlWithParamsId } from 'Url/frontendUrl';
+import { getPriceWithCurrency } from 'Helpers/helpers';
 
 const List = (props) => {
 
@@ -18,7 +19,7 @@ const List = (props) => {
 
     const getDatas = () => {
         props.setRequestGlobalAction(true),
-        AccounService.getBigDealAccounts()
+        FundingService.getRequests({mine: true, received: false, type: 'BIGDEAL'})
         .then(response => setDatas(response))
         .finally(() => props.setRequestGlobalAction(false))
     }
@@ -42,7 +43,7 @@ const List = (props) => {
                                 <thead>
                                     <tr>
                                         <th className="fw-bold">Intitulé</th>
-                                        <th className="fw-bold">Lignes</th>
+                                        <th className="fw-bold">Montant</th>
                                         <th className="fw-bold">Date de création</th>
                                         <th className="fw-bold">Actions</th>
                                     </tr>
@@ -60,7 +61,7 @@ const List = (props) => {
                                             <td>
                                                 <div className="media">
                                                     <div className="media-body pt-10">
-                                                        <p className="m-0 text-dark">{item?.lineTotal} ligne.s</p>
+                                                        <p className="m-0 text-dark">{getPriceWithCurrency(item?.amount, item?.currency)}</p>
                                                     </div>
                                                 </div>
                                             </td>
