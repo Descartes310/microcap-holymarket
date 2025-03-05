@@ -6,6 +6,8 @@ import FundingService from 'Services/funding';
 import CustomList from "Components/CustomList";
 import { setRequestGlobalAction } from 'Actions';
 import React, { useEffect, useState } from 'react';
+import TextField from '@material-ui/core/TextField';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import { NotificationManager } from 'react-notifications';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { Form, FormGroup, Input as InputStrap } from 'reactstrap';
@@ -15,21 +17,32 @@ import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard
 const Create = (props) => {
 
     const [label, setLabel] = useState('');
+    const [deals, setDeals] = useState([]);
+    const [deal, setDeal] = useState(null);
     const [values, setValues] = useState([]);
     const [description, setDescription] = useState('');
     const [showAddValueBox, setShowAddValueBox] = useState(false);
 
     useEffect(() => {
+        getDeals()
     }, []);
 
+    const getDeals = () => {
+        props.setRequestGlobalAction(true),
+        FundingService.getRequests({mine: true, received: false, type: 'BIGDEAL'})
+        .then(response => setDeals(response))
+        .finally(() => props.setRequestGlobalAction(false))
+    }
+
     const onSubmit = () => {
-        if (!label || !description || values.length <= 0) {
+        if (!label || !description || values.length <= 0 || !deal) {
             NotificationManager.error('Le formulaire est mal renseigné')
             return;
         }
 
         var data: any = {
-            label, description, values: JSON.stringify(values)
+            label, description, values: JSON.stringify(values),
+            item_reference: deal.reference, item_type: 'BIGDEAL'
         }
 
         props.setRequestGlobalAction(true);
@@ -77,6 +90,21 @@ const Create = (props) => {
                             className="input-lg"
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
+                        />
+                    </FormGroup>
+                    <FormGroup className="col-md-12 col-sm-12 has-wrapper">
+                        <InputLabel className="text-left">
+                            Big deal
+                        </InputLabel>
+                        <Autocomplete
+                            value={deal}
+                            id="combo-box-demo"
+                            onChange={(__, item) => {
+                                setDeal(item);
+                            }}
+                            getOptionLabel={(option) => option.label}
+                            options={deals}
+                            renderInput={(params) => <TextField {...params} variant="outlined" />}
                         />
                     </FormGroup>
                     <InputLabel className="text-left">

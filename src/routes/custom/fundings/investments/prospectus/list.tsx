@@ -1,11 +1,13 @@
 import { connect } from 'react-redux';
 import { FUNDING } from 'Url/frontendUrl';
 import { withRouter } from "react-router-dom";
+import Switch from "@material-ui/core/Switch";
 import FundingService from 'Services/funding';
 import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
 import React, { useEffect, useState } from 'react';
 import TimeFromMoment from 'Components/TimeFromMoment';
+import { NotificationManager } from 'react-notifications';
 
 const List = (props) => {
 
@@ -19,6 +21,18 @@ const List = (props) => {
         props.setRequestGlobalAction(true),
         FundingService.getFundingProspectus()
         .then(response => setDatas(response))
+        .finally(() => props.setRequestGlobalAction(false))
+    }
+
+    const changeStatus = (item) => {
+        props.setRequestGlobalAction(true),
+        FundingService.activeFundingProspectus(item.reference)
+        .then(() => {
+            getDatas();
+        })
+        .catch((err) => {
+            NotificationManager.error("Une erreur est survenue, veuillez reéssayer plus tard.");
+        })
         .finally(() => props.setRequestGlobalAction(false))
     }
 
@@ -42,7 +56,9 @@ const List = (props) => {
                                 <thead>
                                     <tr>
                                         <th className="fw-bold">Intitulé</th>
+                                        <th className="fw-bold">Bigdeal</th>
                                         <th className="fw-bold">Description</th>
+                                        <th className="fw-bold">Status</th>
                                         <th className="fw-bold">Date de création</th>
                                     </tr>
                                 </thead>
@@ -59,9 +75,23 @@ const List = (props) => {
                                             <td>
                                                 <div className="media">
                                                     <div className="media-body pt-10">
+                                                        <p className="m-0 text-dark">{item?.itemName}</p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div className="media">
+                                                    <div className="media-body pt-10">
                                                         <p className="m-0 text-dark">{item?.description}</p>
                                                     </div>
                                                 </div>
+                                            </td>
+                                            <td>
+                                                <Switch
+                                                    aria-label="Par défaut"
+                                                    checked={item.active}
+                                                    onChange={() => { changeStatus(item) }}
+                                                />
                                             </td>
                                             <td>
                                                 <div className="media">

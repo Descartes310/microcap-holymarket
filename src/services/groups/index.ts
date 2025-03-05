@@ -284,6 +284,14 @@ export default class GroupService {
         return makeRequest('put', Routes.CHANGE_FINANCIAL_STRUCTURE_STATUS(reference));
     }
 
+    static changeFinancialStructureLock(reference: string): Promise<any> {
+        return makeRequest('put', Routes.CHANGE_FINANCIAL_STRUCTURE_LOCK(reference));
+    }
+
+    static changeFinancialStructureProgression(reference: string, data: any): Promise<any> {
+        return makeRequest('put', Routes.CHANGE_FINANCIAL_STRUCTURE_PROGRESSION(reference), data);
+    }
+
     static changeFinancialStructureFinancable(reference: string): Promise<any> {
         return makeRequest('put', Routes.CHANGE_FINANCIAL_STRUCTURE_FINANCABLE(reference));
     }

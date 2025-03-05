@@ -19,7 +19,9 @@ const FinancialStructureSupports = (props) => {
     const {show, onClose, financialStructure} = props;
     
     const [datas, setDatas] = useState([]);
-    const [isCreation, setIsCreation] = useState(false);    
+    const [isCreation, setIsCreation] = useState(false);
+
+    const [lockable, setLockable] = useState(false);
     
     const [amount, setAmount] = useState(null);
     const [currency, setCurrency] = useState(null);
@@ -45,9 +47,36 @@ const FinancialStructureSupports = (props) => {
     const getDatas = () => {
 		props.setRequestGlobalAction(true);
 		GroupService.getFinancialStructureSupports(financialStructure.reference)
-		.then(response => setDatas(response))
+		.then(response => {
+            setDatas(response);
+            setLockable(response.filter(r => r.subscriptionRate && Number(r.subscriptionRate) >= 100).length == response.length)
+        })
 		.finally(() => props.setRequestGlobalAction(false))
 	}
+
+    const changeProgression = (item) => {
+        props.setRequestGlobalAction(true),
+        GroupService.changeFinancialStructureProgression(item.reference)
+        .then(() => {
+            window.location.reload()
+        })
+        .catch((err) => {
+            NotificationManager.error("Une erreur est survenue, veuillez reéssayer plus tard.");
+        })
+        .finally(() => props.setRequestGlobalAction(false))
+    }
+
+    const changeLock = (item) => {
+        props.setRequestGlobalAction(true),
+        GroupService.changeFinancialStructureLock(item.reference)
+        .then(() => {
+            window.location.reload()
+        })
+        .catch((err) => {
+            NotificationManager.error("Une erreur est survenue, veuillez reéssayer plus tard.");
+        })
+        .finally(() => props.setRequestGlobalAction(false))
+    }
 
     const onSubmit = () => {
 
@@ -84,75 +113,153 @@ const FinancialStructureSupports = (props) => {
             size="lg"
             title={(
                 <h3 className="fw-bold">
-                    Supports
+                    Détails de la structure financière
                 </h3>
             )}
         >
             { !isCreation ? (
-                <CustomList
-                    list={datas}
-                    loading={false}
-                    itemsFoundText={n => `${n} élements trouvés`}
-                    onAddClick={() => setIsCreation(true)}
-                    renderItem={list => (
-                        <>
-                            {list && list.length === 0 ? (
-                                <div className="d-flex justify-content-center align-items-center py-50">
-                                    <h4>
-                                        Aucun élement trouvé
-                                    </h4>
-                                </div>
-                            ) : (
-                                <div className="table-responsive">
-                                    <table className="table table-hover table-middle mb-0">
-                                        <thead>
-                                            <tr>
-                                                <th className="fw-bold">Support</th>
-                                                <th className="fw-bold">Emission</th>
-                                                <th className="fw-bold">Valeur</th>
-                                                <th className="fw-bold">Total</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {list && list.map((item, key) => (
-                                                <tr key={key} className="cursor-pointer">
-                                                    <td>
-                                                        <div className="media">
-                                                            <div className="media-body pt-10">
-                                                                <h4 className="m-0 fw-bold text-dark">{item?.supportType?.label}</h4>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div className="media">
-                                                            <div className="media-body pt-10">
-                                                                <h4 className="m-0 fw-bold text-dark">{item?.quantity}</h4>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div className="media">
-                                                            <div className="media-body pt-10">
-                                                                <h4 className="m-0 fw-bold text-dark">{getPriceWithCurrency(item.nominalAmount, item.currency)}</h4>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div className="media">
-                                                            <div className="media-body pt-10">
-                                                                <h4 className="m-0 fw-bold text-dark">{getPriceWithCurrency(item.nominalAmount * item.quantity, item.currency)}</h4>
-                                                            </div>
-                                                        </div>
-                                                    </td>
+                <>
+                    <CustomList
+                        list={datas}
+                        loading={false}
+                        addingButton={props.financialStructure.lock}
+                        itemsFoundText={n => `${n} élements trouvés`}
+                        onAddClick={() => setIsCreation(true)}
+                        renderItem={list => (
+                            <>
+                                {list && list.length === 0 ? (
+                                    <div className="d-flex justify-content-center align-items-center py-50">
+                                        <h4>
+                                            Aucun élement trouvé
+                                        </h4>
+                                    </div>
+                                ) : (
+                                    <div className="table-responsive">
+                                        <table className="table table-hover table-middle mb-0">
+                                            <thead>
+                                                <tr>
+                                                    <th className="fw-bold">Support</th>
+                                                    <th className="fw-bold">Emission</th>
+                                                    <th className="fw-bold">Valeur</th>
+                                                    <th className="fw-bold">Total</th>
+                                                    <th className="fw-bold">Souscriptions</th>
+                                                    <th className="fw-bold">Taux de Souscriptions (%)</th>
                                                 </tr>
-                                            ))}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            )}
-                        </>
-                    )}
-                />
+                                            </thead>
+                                            <tbody>
+                                                {list && list.map((item, key) => (
+                                                    <tr key={key} className="cursor-pointer">
+                                                        <td>
+                                                            <div className="media">
+                                                                <div className="media-body pt-10">
+                                                                    <h4 className="m-0 fw-bold text-dark">{item?.supportType?.label}</h4>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div className="media">
+                                                                <div className="media-body pt-10">
+                                                                    <h4 className="m-0 fw-bold text-dark">{item?.quantity}</h4>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div className="media">
+                                                                <div className="media-body pt-10">
+                                                                    <h4 className="m-0 fw-bold text-dark">{getPriceWithCurrency(item.nominalAmount, item.currency)}</h4>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div className="media">
+                                                                <div className="media-body pt-10">
+                                                                    <h4 className="m-0 fw-bold text-dark">{getPriceWithCurrency(item.nominalAmount * item.quantity, item.currency)}</h4>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div className="media">
+                                                                <div className="media-body pt-10">
+                                                                    <h4 className="m-0 fw-bold text-dark">{item.subscriptions}</h4>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div className="media">
+                                                                <div className="media-body pt-10">
+                                                                    <h4 className="m-0 fw-bold text-dark">{item.subscriptionRate} %</h4>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                )}
+                            </>
+                        )}
+                    />
+                    <div className='row d-flex' style={{ justifyContent: 'space-evenly' }}>
+                        <Button
+                            color="primary"
+                            variant="contained"
+                            onClick={() => changeLock(props.financialStructure)}
+                            disabled={!lockable}
+                            className="text-white font-weight-bold"
+                        >
+                            Vérouiller la structure
+                        </Button>
+                        { props.financialStructure.progression === 'NONE' && (
+                            <Button
+                                color="primary"
+                                variant="contained"
+                            onClick={() => changeProgression(props.financialStructure)}
+                                className="text-white font-weight-bold"
+                            >
+                                Soumettre
+                            </Button>
+                        )}
+                        { props.financialStructure.progression === 'PENDING' && (
+                            <Button
+                                color="primary"
+                                variant="contained"
+                            onClick={() => changeProgression(props.financialStructure)}
+                                className="text-white font-weight-bold"
+                            >
+                                Vérifier
+                            </Button>
+                        )}
+                        { props.financialStructure.progression === 'VERIFIED' && (
+                            <Button
+                                color="primary"
+                                variant="contained"
+                            onClick={() => changeProgression(props.financialStructure)}
+                                className="text-white font-weight-bold"
+                            >
+                                Approuver
+                            </Button>
+                        )}
+                        { props.financialStructure.progression === 'APPROVED' && (
+                            <Button
+                                color="primary"
+                                variant="contained"
+                            onClick={() => changeProgression(props.financialStructure)}
+                                className="text-white font-weight-bold"
+                            >
+                                Confirmer
+                            </Button>
+                        )}
+                        <Button
+                            color="primary"
+                            variant="contained"
+                            onClick={() => {}}
+                            className="text-white font-weight-bold"
+                        >
+                            Fermer
+                        </Button>
+                    </div>
+                </>
             ) : (
                 <Form onSubmit={onSubmit}>
                     <FormGroup className="col-md-12 col-sm-12 has-wrapper">

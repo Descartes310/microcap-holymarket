@@ -83,6 +83,8 @@ export const GET_FINANCIAL_STRUCTURES = `api/socialnetworks/groups/types/financi
 export const CREATE_FINANCIAL_STRUCTURES = `api/socialnetworks/groups/types/financial-structures`;
 export const DELETE_FINANCIAL_STRUCTURES = `api/socialnetworks/groups/types/financial-structures`;
 export const CHANGE_FINANCIAL_STRUCTURE_STATUS = (reference) => `api/socialnetworks/groups/types/financial-structures/${reference}/status`;
+export const CHANGE_FINANCIAL_STRUCTURE_LOCK = (reference) => `api/socialnetworks/groups/types/financial-structures/${reference}/lock`;
+export const CHANGE_FINANCIAL_STRUCTURE_PROGRESSION = (reference) => `api/socialnetworks/groups/types/financial-structures/${reference}/progression`;
 export const CHANGE_FINANCIAL_STRUCTURE_FINANCABLE = (reference) => `api/socialnetworks/groups/types/financial-structures/${reference}/financable`;
 export const GET_FINANCIAL_STRUCTURE_ACTIVE_SUPPORTS = `api/socialnetworks/groups/types/financial-structures/active/supports`;
 

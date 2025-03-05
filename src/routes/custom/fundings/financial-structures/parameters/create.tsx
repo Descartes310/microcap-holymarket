@@ -3,6 +3,7 @@ import GroupService from 'Services/groups';
 import { withRouter } from "react-router-dom";
 import Button from '@material-ui/core/Button';
 import Switch from "@material-ui/core/Switch";
+import FundingService from 'Services/funding';
 import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
 import ProjectService from 'Services/projects';
@@ -19,10 +20,9 @@ import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
 import CreateRule from 'Routes/custom/groups/administration/project/configurations/_components/createRule';
 import CustomCart from 'Routes/custom/groups/administration/project/configurations/_components/customCart';
-import { projectDistributionRules, getTimeUnits, getTimeUnitByValue, getBonificationBaseLabel, bonificationBases } from 'Helpers/datas';
+import { projectDistributionRules, getTimeUnits, getTimeUnitByValue, getBonificationBaseLabel } from 'Helpers/datas';
 import CreatePrevision from 'Routes/custom/groups/administration/project/configurations/_components/createPrevision';
 import CreateFundingOption from 'Routes/custom/groups/administration/project/configurations/_components/createFundingOption';
-import FundingService from 'Services/funding';
 
 const Create = (props) => {
 

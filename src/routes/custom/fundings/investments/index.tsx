@@ -46,7 +46,7 @@ class Investments extends Component<any, any> {
 
         return (
             <div>
-                <PageTitleBar title={"Programmes d'investissements"} match={this.props.match} />
+                <PageTitleBar title={"Prospectus"} match={this.props.match} />
                 <RctCard>
                     <div className="rct-tabs">
                         <AppBar position="static">

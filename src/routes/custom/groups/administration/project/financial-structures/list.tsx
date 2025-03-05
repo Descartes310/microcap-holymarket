@@ -1,7 +1,6 @@
 import { connect } from 'react-redux';
 import GroupService from 'Services/groups';
 import { withRouter } from "react-router-dom";
-import Button from '@material-ui/core/Button';
 import Switch from "@material-ui/core/Switch";
 import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
@@ -67,7 +66,7 @@ const List = (props) => {
     
     return (
         <>
-            { props.type !== 'BIGDEAL' && (
+            { props.type === 'PROJECT' && (
                 <PageTitleBar
                     title={"Structures financieres"}
                 />
@@ -76,7 +75,7 @@ const List = (props) => {
                 list={datas}
                 loading={false}
                 itemsFoundText={n => `${n} élements trouvés`}
-                onAddClick={() => props.history.push(`${GROUP.ADMINISTRATION.PROJECT.FINANCIAL_STRUCTURE.CREATE}?type=${props.type ?? 'BIGDEAL'}${props.reference ? '&reference='+props.reference : ''}`)}
+                onAddClick={() => props.history.push(`${GROUP.ADMINISTRATION.PROJECT.FINANCIAL_STRUCTURE.CREATE}?type=${props.type ?? 'PROJECT'}${props.reference ? '&reference='+props.reference : ''}`)}
                 renderItem={list => (
                     <>
                         {list && list.length === 0 ? (
@@ -126,13 +125,15 @@ const List = (props) => {
                                                             Actions
                                                         </DropdownToggle>
                                                         <DropdownMenu>
-                                                            <DropdownItem style={{ color: 'black' }}
-                                                                onClick={() => {
-                                                                    props.history.push(joinUrlWithParamsId(GROUP.ADMINISTRATION.PROJECT.FINANCIAL_STRUCTURE.CAMPAIGN_LIST, item.reference))
-                                                                }}
-                                                            >
-                                                                Campagnes
-                                                            </DropdownItem>
+                                                            { item.progression === 'CONFIRMED' && (
+                                                                <DropdownItem style={{ color: 'black' }}
+                                                                    onClick={() => {
+                                                                        props.history.push(joinUrlWithParamsId(GROUP.ADMINISTRATION.PROJECT.FINANCIAL_STRUCTURE.CAMPAIGN_LIST, item.reference))
+                                                                    }}
+                                                                >
+                                                                    Campagnes
+                                                                </DropdownItem>
+                                                            )}
                                                             <DropdownItem style={{ color: 'black' }}
                                                                 onClick={() => {
                                                                     setFinancialStructure(item);

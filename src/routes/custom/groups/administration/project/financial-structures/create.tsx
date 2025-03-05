@@ -14,26 +14,65 @@ import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { Form, FormGroup, Input as InputStrap } from 'reactstrap';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
+import FundingService from 'Services/funding';
 
 const Create = (props) => {
 
     const [label, setLabel] = useState('');
+    const [deals, setDeals] = useState([]);
+    const [deal, setDeal] = useState(null);
     const [option, setOption] = useState(null);
     const [options, setOptions] = useState([]);
     const [amount, setAmount] = useState(null);
     const [currency, setCurrency] = useState(null);
     const [quantity, setQuantity] = useState(null);
+    const [prospectus, setProspectus] = useState(null);
+    const [itemReference] = useState(new URLSearchParams(props.location.search).get("reference"))
+    const [itemType] = useState(new URLSearchParams(props.location.search).get("type") ?? 'PROJECT')
 
     useEffect(() => {
-        getOptions();
+        if(itemType === 'MEMBER') {
+            getDeals();
+        } else {
+            getOptions();
+        }
     }, []);
+
+    useEffect(() => {
+        if(deal) {
+            getActiveProspectus();
+            getOptions();
+        }
+    }, [deal]);
+
+    const getDeals = () => {
+        props.setRequestGlobalAction(true),
+        FundingService.getRequests({mine: true, received: false, type: 'BIGDEAL'})
+        .then(response => setDeals(response))
+        .finally(() => props.setRequestGlobalAction(false))
+    }
+
+    const getActiveProspectus = () => {
+        props.setRequestGlobalAction(true);
+        let data: any = {
+            type: itemType
+        }
+        let reference = deal.reference;
+        if(reference) {
+            data.reference = reference;
+        }
+        FundingService.getActiveProspectus(data).then(response => {
+            setProspectus(response);
+        })
+        .finally(() => props.setRequestGlobalAction(false))
+    }    
 
     const getOptions = () => {
         props.setRequestGlobalAction(true);
         let data: any = {
-            type: new URLSearchParams(props.location.search).get("type") ?? 'PROJECT'
+            type: deal ? 'BIGDEAL' : itemType
         }
-        let reference = new URLSearchParams(props.location.search).get("reference");
+        let reference = deal ? deal.reference : itemReference;
         if(reference) {
             data.reference = reference;
         }
@@ -50,27 +89,35 @@ const Create = (props) => {
             return;
         }
 
+        if(itemType === 'BIGDEAL' && prospectus == null) {
+            NotificationManager.error('Pas de prospectus actif')
+            return;
+        }
+
         props.setRequestGlobalAction(true);
 
         let data: any = {
             label, 
+            type: itemType,
             emission: quantity,
             nominal_amount: amount,
             funding_option_reference: option.reference,
-            type: new URLSearchParams(props.location.search).get("type") ?? 'PROJECT',
         }
 
-        let reference = new URLSearchParams(props.location.search).get("reference");
+        let reference = itemReference;
         if(reference) {
             data.reference = reference;
+        }
+        if(prospectus) {
+            data.prospectus_reference = prospectus.reference;
         }
 
         GroupService.createFinancialStructure(data).then(() => {
             NotificationManager.success("L'item a été créé avec succès");
-            let type = new URLSearchParams(props.location.search).get("type") ?? 'PROJECT'
-            let reference = new URLSearchParams(props.location.search).get("reference");
-            if(type == 'BIGDEAL' && reference) {
-                props.history.push(joinUrlWithParamsId(FUNDING.FINANCIAL_STRUCTURES.ITEM.STRUCTURES, reference))
+            let type = itemType
+            let reference = itemReference;
+            if(type == 'MEMBER' && reference) {
+                props.history.push(FUNDING.FINANCIAL_STRUCTURES.ITEM.LIST)
             } else {
                 props.history.push(GROUP.ADMINISTRATION.PROJECT.FINANCIAL_STRUCTURE.LIST);
             }
@@ -105,6 +152,26 @@ const Create = (props) => {
                         />
                     </FormGroup>
 
+                    { itemType === 'MEMBER' && (
+                        <div className='row'>
+                            <FormGroup className="col-md-12 col-sm-12 has-wrapper mb-30">
+                                <InputLabel className="text-left">
+                                    Big deals
+                                </InputLabel>
+                                <Autocomplete
+                                    id="combo-box-demo"
+                                    value={deal}
+                                    options={deals}
+                                    onChange={(__, item) => {
+                                        setDeal(item);
+                                    }}
+                                    getOptionLabel={(option) => option.label}
+                                    renderInput={(params) => <TextField {...params} variant="outlined" />}
+                                />
+                            </FormGroup>
+                        </div>
+                    )}
+
                     <div className='row'>
                         <FormGroup className="col-md-12 col-sm-12 has-wrapper mb-30">
                             <InputLabel className="text-left">
@@ -117,11 +184,30 @@ const Create = (props) => {
                                 onChange={(__, item) => {
                                     setOption(item);
                                 }}
+                                disabled={itemType !== 'PROJECT' && !deal}
                                 getOptionLabel={(option) => option.label}
                                 renderInput={(params) => <TextField {...params} variant="outlined" />}
                             />
                         </FormGroup>
                     </div>
+
+                    { itemType === 'MEMBER' && (
+                        <>
+                            <FormGroup className="col-md-12 col-sm-12 has-wrapper">
+                                <InputLabel className="text-left" htmlFor="prospectus">
+                                    Prospectus
+                                </InputLabel>
+                                <InputStrap
+                                    disabled
+                                    id="prospectus"
+                                    type="text"
+                                    name='prospectus'
+                                    className="input-lg"
+                                    value={prospectus?.label}
+                                />
+                            </FormGroup>
+                        </>
+                    )}
 
                     <div className="row">
                         <FormGroup className="col-md-6 col-sm-12 has-wrapper">

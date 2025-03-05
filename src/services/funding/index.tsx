@@ -90,6 +90,10 @@ export default class FundingService {
         return makeRequest('post', Routes.CREATE_PROSPECTUS, data);
     }
 
+    static activeFundingProspectus(reference: string): Promise<any> {
+        return makeRequest('put', Routes.ACTIVE_PROSPECTUS(reference), {});
+    }
+
     static getFundingStrategies(): Promise<any> {
         return makeRequest('get', Routes.GET_STRATEGIES);
     }
@@ -100,6 +104,10 @@ export default class FundingService {
 
     static getFundingPrograms(): Promise<any> {
         return makeRequest('get', Routes.GET_PROGRAMS);
+    }
+
+    static getActiveProspectus(data: any): Promise<any> {
+        return makeRequest('get', Routes.GET_ACTIVE_PROSPECTUS, data);
     }
     
     static createFundingProgram(data: any): Promise<any> {
