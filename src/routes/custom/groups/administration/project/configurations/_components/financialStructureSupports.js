@@ -187,7 +187,7 @@ const FinancialStructureSupports = (props) => {
                                                         <td>
                                                             <div className="media">
                                                                 <div className="media-body pt-10">
-                                                                    <h4 className="m-0 fw-bold text-dark">{item.subscriptionRate} %</h4>
+                                                                    <h4 className="m-0 fw-bold text-dark">{item.subscriptionRate ? item.subscriptionRate.toFixed(2) : 0.00} %</h4>
                                                                 </div>
                                                             </div>
                                                         </td>
