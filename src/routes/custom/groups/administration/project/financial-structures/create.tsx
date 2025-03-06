@@ -1,9 +1,9 @@
 import { connect } from 'react-redux';
-import { FUNDING, GROUP, joinUrlWithParamsId } from 'Url/frontendUrl';
 import GroupService from 'Services/groups';
 import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
 import UnitSelect from 'Components/UnitSelect';
+import { FUNDING, GROUP } from 'Url/frontendUrl';
 import { setRequestGlobalAction } from 'Actions';
 import React, { useEffect, useState } from 'react';
 import TextField from '@material-ui/core/TextField';
@@ -32,7 +32,8 @@ const Create = (props) => {
 
     useEffect(() => {
         if(itemType === 'MEMBER') {
-            getDeals();
+            //getDeals();
+            getActiveProspectus();
         } else {
             getOptions();
         }
@@ -40,29 +41,29 @@ const Create = (props) => {
 
     useEffect(() => {
         if(deal) {
-            getActiveProspectus();
             getOptions();
         }
     }, [deal]);
 
-    const getDeals = () => {
-        props.setRequestGlobalAction(true),
-        FundingService.getRequests({mine: true, received: false, type: 'BIGDEAL'})
-        .then(response => setDeals(response))
-        .finally(() => props.setRequestGlobalAction(false))
-    }
+    // const getDeals = () => {
+    //     props.setRequestGlobalAction(true),
+    //     FundingService.getRequests({mine: true, received: false, type: 'BIGDEAL'})
+    //     .then(response => setDeals(response))
+    //     .finally(() => props.setRequestGlobalAction(false))
+    // }
 
     const getActiveProspectus = () => {
         props.setRequestGlobalAction(true);
         let data: any = {
             type: itemType
         }
-        let reference = deal.reference;
+        let reference = itemReference;
         if(reference) {
             data.reference = reference;
         }
         FundingService.getActiveProspectus(data).then(response => {
             setProspectus(response);
+            setDeal(response?.deal);
         })
         .finally(() => props.setRequestGlobalAction(false))
     }    
@@ -101,6 +102,7 @@ const Create = (props) => {
             type: itemType,
             emission: quantity,
             nominal_amount: amount,
+            currency: currency.code,
             funding_option_reference: option.reference,
         }
 
@@ -152,7 +154,7 @@ const Create = (props) => {
                         />
                     </FormGroup>
 
-                    { itemType === 'MEMBER' && (
+                    {/* { itemType === 'MEMBER' && (
                         <div className='row'>
                             <FormGroup className="col-md-12 col-sm-12 has-wrapper mb-30">
                                 <InputLabel className="text-left">
@@ -170,7 +172,7 @@ const Create = (props) => {
                                 />
                             </FormGroup>
                         </div>
-                    )}
+                    )} */}
 
                     <div className='row'>
                         <FormGroup className="col-md-12 col-sm-12 has-wrapper mb-30">

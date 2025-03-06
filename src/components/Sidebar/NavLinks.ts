@@ -618,17 +618,17 @@ export default [
          }
       ],
    },
-   {
-      "path": FUNDING.BIGDEAL.SENT,
-      "menu_title": "Big deals",
-      "menu_icon": "zmdi zmdi-assignment-o",
-      "new_item": false,
-      "child_routes": null,
-      "profiles": null,
-      "permissions": [
-         Permission.funding.bigdeals.name,
-      ]
-   },
+   // {
+   //    "path": FUNDING.BIGDEAL.SENT,
+   //    "menu_title": "Big deals",
+   //    "menu_icon": "zmdi zmdi-assignment-o",
+   //    "new_item": false,
+   //    "child_routes": null,
+   //    "profiles": null,
+   //    "permissions": [
+   //       Permission.funding.bigdeals.name,
+   //    ]
+   // },
    {
       "menu_title": "Bourse de financement",
       "menu_icon": "zmdi zmdi-home",

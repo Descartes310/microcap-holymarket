@@ -49,7 +49,7 @@ const FinancialStructureSupports = (props) => {
 		GroupService.getFinancialStructureSupports(financialStructure.reference)
 		.then(response => {
             setDatas(response);
-            setLockable(response.filter(r => r.subscriptionRate && Number(r.subscriptionRate) >= 100).length == response.length)
+            setLockable(response.filter(r => r.subscriptionRate && Number(r.subscriptionRate) >= 100).length == response.length || response.type !== 'PROJECT')
         })
 		.finally(() => props.setRequestGlobalAction(false))
 	}
@@ -214,7 +214,8 @@ const FinancialStructureSupports = (props) => {
                             <Button
                                 color="primary"
                                 variant="contained"
-                            onClick={() => changeProgression(props.financialStructure)}
+                                disabled={!props.financialStructure.lock}
+                                onClick={() => changeProgression(props.financialStructure)}
                                 className="text-white font-weight-bold"
                             >
                                 Soumettre

@@ -14,6 +14,7 @@ import TabContainer from "Components/TabContainer";
 import { getPriceWithCurrency } from "Helpers/helpers";
 import TimeFromMoment from "Components/TimeFromMoment";
 import InviteParticipantModal from "./InviteParticipant";
+import { FUNDING, joinUrlWithParamsId } from 'Url/frontendUrl';
 import DialogComponent from "Components/dialog/DialogComponent";
 import InitDealModal from 'Routes/custom/fundings/components/InitDealModal';
 import InitSpotModal from 'Routes/custom/fundings/components/InitSpotModal';
@@ -475,6 +476,16 @@ class CodevParticipants extends Component {
                                                                                 }}
                                                                             >
                                                                                 Détails
+                                                                            </Button>
+                                                                            <Button
+                                                                                color="primary"
+                                                                                variant="contained"
+                                                                                className="text-white font-weight-bold ml-5"
+                                                                                onClick={() => {
+                                                                                    this.props.history.push(joinUrlWithParamsId(FUNDING.FINANCIAL_STRUCTURES.PARAM.CREATE, item.reference))
+                                                                                }}
+                                                                            >
+                                                                                Paramètres
                                                                             </Button>
                                                                         </td>
                                                                     </tr>

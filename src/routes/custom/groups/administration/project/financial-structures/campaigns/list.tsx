@@ -4,7 +4,7 @@ import { withRouter } from "react-router-dom";
 import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
 import React, { useState, useEffect } from 'react';
-import { getGeneralStatus } from 'Helpers/helpers';
+import { getGeneralStatus, getPriceWithCurrency } from 'Helpers/helpers';
 import ConfirmBox from "Components/dialog/ConfirmBox";
 import {NotificationManager} from 'react-notifications';
 import { GROUP, joinUrlWithParamsId } from 'Url/frontendUrl';
@@ -76,6 +76,7 @@ const List = (props) => {
                                     <thead>
                                         <tr>
                                             <th className="fw-bold">Désignation</th>
+                                            <th className="fw-bold">Montant</th>
                                             <th className="fw-bold">Date de debut</th>
                                             <th className="fw-bold">Date de fin</th>
                                             <th className="fw-bold">Status</th>
@@ -89,6 +90,13 @@ const List = (props) => {
                                                     <div className="media">
                                                         <div className="media-body pt-10">
                                                             <h4 className="m-0 fw-bold text-dark">{item.label}</h4>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="media">
+                                                        <div className="media-body pt-10">
+                                                            <h4 className="m-0 fw-bold text-dark">{getPriceWithCurrency(item?.amount, item?.currency)}</h4>
                                                         </div>
                                                     </div>
                                                 </td>

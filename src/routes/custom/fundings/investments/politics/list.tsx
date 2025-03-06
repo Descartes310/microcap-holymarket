@@ -1,11 +1,12 @@
 import { connect } from 'react-redux';
-import { FUNDING } from 'Url/frontendUrl';
+import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
 import FundingService from 'Services/funding';
 import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
 import React, { useEffect, useState } from 'react';
 import TimeFromMoment from 'Components/TimeFromMoment';
+import { FUNDING, joinUrlWithParamsId } from 'Url/frontendUrl';
 
 const List = (props) => {
 
@@ -44,6 +45,7 @@ const List = (props) => {
                                         <th className="fw-bold">Intitulé</th>
                                         <th className="fw-bold">Description</th>
                                         <th className="fw-bold">Date de création</th>
+                                        <th className="fw-bold">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -69,6 +71,16 @@ const List = (props) => {
                                                         <TimeFromMoment time={item.createdAt} showFullDate />
                                                     </div>
                                                 </div>
+                                            </td>
+                                            <td>
+                                                <Button
+                                                    color="primary"
+                                                    variant="contained"
+                                                    className="text-white font-weight-bold"
+                                                    onClick={() => props.history.push(joinUrlWithParamsId(FUNDING.INVESTMENT.POLITIC.DETAILS, item.reference))}
+                                                >
+                                                    Détails
+                                                </Button>
                                             </td>
                                         </tr>
                                     ))}

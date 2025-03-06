@@ -90,20 +90,24 @@ export const FUNDING = {
             SELF: '/funding/investments/strategies',
             LIST: '/funding/investments/strategies/list',
             CREATE: '/funding/investments/strategies/create',
+            DETAILS: '/funding/investments/strategies/:id',
         },
         POLITIC: {
             SELF: '/funding/investments/politics',
             LIST: '/funding/investments/politics/list',
             CREATE: '/funding/investments/politics/create',
+            DETAILS: '/funding/investments/politics/:id',
         },
         PROSPECTUS: {
             SELF: '/funding/investments/prospectus',
             LIST: '/funding/investments/prospectus/list',
             CREATE: '/funding/investments/prospectus/create',
+            DETAILS: '/funding/investments/prospectus/:id',
         },
         PROGRAM: {
             SELF: '/funding/investments/programs',
             LIST: '/funding/investments/programs/list',
+            DETAILS: '/funding/investments/programs/:id',
             CREATE: '/funding/investments/programs/create',
         }
     },

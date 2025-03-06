@@ -34,6 +34,11 @@ export const CREATE_PROGRAM = 'api/products/codevs/investments/programs';
 export const GET_ACTIVE_PROSPECTUS = 'api/products/codevs/investments/prospectus/active';
 export const ACTIVE_PROSPECTUS = (reference) => `api/products/codevs/investments/prospectus/${reference}`;
 
+export const FIND_POLITIC = (reference) => `api/products/codevs/investments/politics/${reference}`;
+export const FIND_STRATEGY = (reference) => `api/products/codevs/investments/strategies/${reference}`;
+export const FIND_PROGRAM = (reference) => `api/products/codevs/investments/programs/${reference}`;
+export const FIND_PROSPECTUS = (reference) => `api/products/codevs/investments/prospectus/${reference}`;
+
 export const GET_PLACEMENTS = 'api/investments/placements';
 export const CREATE_PLACEMENT = 'api/investments/placements';
 export const GET_PLACEMENT_DEALS = 'api/investments/placements/deals/availables';

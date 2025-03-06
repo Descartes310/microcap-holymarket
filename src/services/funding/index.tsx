@@ -125,4 +125,20 @@ export default class FundingService {
     static getPlacements(): Promise<any> {
         return makeRequest('get', Routes.GET_PLACEMENTS);
     }
+
+    static findFundingProspectus(reference: string): Promise<any> {
+        return makeRequest('get', Routes.FIND_PROSPECTUS(reference));
+    }
+
+    static findFundingPolitic(reference: string): Promise<any> {
+        return makeRequest('get', Routes.FIND_POLITIC(reference));
+    }
+
+    static findFundingStrategy(reference: string): Promise<any> {
+        return makeRequest('get', Routes.FIND_STRATEGY(reference));
+    }
+
+    static findFundingProgram(reference: string): Promise<any> {
+        return makeRequest('get', Routes.FIND_PROGRAM(reference));
+    }
 }

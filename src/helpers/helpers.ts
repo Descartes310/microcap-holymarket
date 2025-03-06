@@ -1163,7 +1163,7 @@ export const getInvestmentPerimeterTypeLabel = (value) => {
     if (type)
         return type.label;
     else
-        return "";
+        return null;
 }
 
 export const getInitializationTypes = () => {

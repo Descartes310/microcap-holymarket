@@ -1,6 +1,7 @@
 import React from 'react';
 import List from './list';
 import Create from './create';
+import Details from './details';
 import {connect} from "react-redux";
 import {injectIntl} from "react-intl";
 import { FUNDING } from 'Url/frontendUrl';
@@ -14,6 +15,7 @@ const FundingInvestmentStrategies = (props) => {
                 <Redirect exact from={`${match.url}/`} to={FUNDING.INVESTMENT.STRATEGY.LIST} />
                 <Route path={FUNDING.INVESTMENT.STRATEGY.CREATE} component={Create} />
                 <Route path={FUNDING.INVESTMENT.STRATEGY.LIST} component={List} />
+                <Route path={FUNDING.INVESTMENT.STRATEGY.DETAILS} component={Details} />
             </Switch>
         </div>
     );

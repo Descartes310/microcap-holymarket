@@ -288,6 +288,10 @@ export default class GroupService {
         return makeRequest('put', Routes.CHANGE_FINANCIAL_STRUCTURE_LOCK(reference));
     }
 
+    static findFinancialStructure(reference: string): Promise<any> {
+        return makeRequest('get', Routes.FIND_FINANCIAL_STRUCTURE(reference));
+    }
+
     static changeFinancialStructureProgression(reference: string, data: any): Promise<any> {
         return makeRequest('put', Routes.CHANGE_FINANCIAL_STRUCTURE_PROGRESSION(reference), data);
     }

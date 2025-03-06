@@ -1,8 +1,9 @@
 import { connect } from 'react-redux';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import GroupService from 'Services/groups';
 import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
+import UnitSelect from 'Components/UnitSelect';
 import { setRequestGlobalAction } from 'Actions';
 import {NotificationManager} from 'react-notifications';
 import { GROUP, joinUrlWithParamsId } from 'Url/frontendUrl';
@@ -14,12 +15,26 @@ import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard
 const Create = (props) => {
 
     const [label, setLabel] = useState('');
+    const [amount, setAmount] = useState(null);
     const [endDate, setEndDate] = useState(null);
-    const [description, setDescription] = useState('');
+    const [currency, setCurrency] = useState(null);
     const [startDate, setStartDate] = useState(null);
+    const [description, setDescription] = useState('');
+    const [financialStructure, setFinancialStructure] = useState(null);
+
+    useEffect(() => {
+        findFinancialStructure();
+    }, []);
+
+    const findFinancialStructure = () => {
+        props.setRequestGlobalAction(true),
+        GroupService.findFinancialStructure(props.match.params.id)
+        .then(response => setFinancialStructure(response))
+        .finally(() => props.setRequestGlobalAction(false))
+    }
 
     const onSubmit = () => {
-        if(!label || !startDate || !endDate) {
+        if(!label || !startDate || !endDate || !amount || !currency || !financialStructure) {
             NotificationManager.error("Le formulaire est mal renseigné");
             return;
         }
@@ -27,6 +42,7 @@ const Create = (props) => {
         let data: any = {
             label, description,
             startDate, endDate,
+            amount, currency: currency.code,
             reference: props.match.params.id
         }
 
@@ -77,6 +93,33 @@ const Create = (props) => {
                             onChange={(e) => setDescription(e.target.value)}
                         />
                     </FormGroup>
+                    <div className="row">
+                        <FormGroup className="col-md-12 col-sm-12 has-wrapper">
+                            <InputLabel className="text-left" htmlFor="amount">
+                                Montant de la campagne
+                            </InputLabel>
+                            <InputStrap
+                                required
+                                id="amount"
+                                type="number"
+                                name='amount'
+                                value={amount}
+                                className="input-lg"
+                                onChange={(e) => setAmount(e.target.value)}
+                            />
+                        </FormGroup>
+                        <FormGroup className="col-md-12 col-sm-12 has-wrapper">
+                            <InputLabel className="text-left" htmlFor="amount">
+                                Montant disponible
+                            </InputLabel>
+                            <InputStrap
+                                disabled
+                                type="text"
+                                value={financialStructure ? (financialStructure.totalAmount - financialStructure.campaignAmount)+' '+financialStructure.currency : ''}
+                                className="input-lg"
+                            />
+                        </FormGroup>
+                    </div>
                     <FormGroup className="has-wrapper">
                         <InputLabel className="text-left" htmlFor="startDate">
                             Date de debut
