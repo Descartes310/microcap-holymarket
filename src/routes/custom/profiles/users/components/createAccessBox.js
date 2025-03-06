@@ -13,7 +13,7 @@ import { NotificationManager } from 'react-notifications';
 import Checkbox from "@material-ui/core/Checkbox/Checkbox";
 import DialogComponent from "Components/dialog/DialogComponent";
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
-import { FormGroup, Input as InputStrap, Button } from 'reactstrap';
+import { FormGroup, Button } from 'reactstrap';
 
 const CreateAccessBox = (props) => {
 
@@ -31,15 +31,30 @@ const CreateAccessBox = (props) => {
     }, []);
 
     const getRoles = () => {
-        props.setRequestGlobalAction(true),
-        RoleService.getRoles({type: 'ACCESS'})
+        props.setRequestGlobalAction(true);
+
+        let data = {
+            type: 'ACCESS'
+        }
+
+        if(props.referralCode) {
+            data.referralCode = props.referralCode
+        }
+
+        RoleService.getRoles(data)
         .then(response => setRoles(response))
         .finally(() => props.setRequestGlobalAction(false))
     }
 
     const getContracts = () => {
-        props.setRequestGlobalAction(true),
-        ContractService.getActivableContracts({referralCode: props.authUser.referralId})
+        props.setRequestGlobalAction(true);
+        let data = {}
+        if(props.referralCode) {
+            data.referralCode = props.referralCode
+        } else {
+            data.referralCode = props.authUser.referralId
+        }
+        ContractService.getActivableContracts(data)
         .then(response => setContracts(response))
         .finally(() => props.setRequestGlobalAction(false))
     }
@@ -48,19 +63,23 @@ const CreateAccessBox = (props) => {
 
         let data = {};
 
-        if(derogation) {
+        if(!derogation) {
             if(!contract) {
-                NotificationManager.error("Le formulaire est mal renseigné");
+                NotificationManager.error("Le formulaire est mal renseigné 1");
                 return;
             }
             data.contract_reference = contract.reference;
         } else {
             if(!role || !user) {
-                NotificationManager.error("Le formulaire est mal renseigné");
+                NotificationManager.error("Le formulaire est mal renseigné 2");
                 return;
             }
             data.reference = user.referralCode;
             data.role_reference = role.reference; 
+        }
+
+        if(props.referralCode) {
+            data.referralCode = props.referralCode;
         }
         
         props.setRequestGlobalAction(true);
@@ -91,14 +110,16 @@ const CreateAccessBox = (props) => {
             )}
         >
             <RctCardContent>
-                <FormGroup>
-                    <Checkbox
-                        color="primary"
-                        checked={derogation}
-                        onChange={(e) => setDerogation(!derogation)}
-                    />
-                    <label>Je veux donner une dérogation</label>
-                </FormGroup>
+                { !props.referralCode && (
+                    <FormGroup>
+                        <Checkbox
+                            color="primary"
+                            checked={derogation}
+                            onChange={(e) => setDerogation(!derogation)}
+                        />
+                        <label>Je veux donner une dérogation</label>
+                    </FormGroup>
+                )}
                 {
                     !derogation ? 
                     <div className="has-wrapper col-md-12 col-sm-12 mb-30 ">

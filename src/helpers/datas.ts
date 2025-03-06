@@ -409,6 +409,12 @@ export const getUserAssistanceTypes = () => {
             regularizable: false
         },
         {
+            label: 'Activer un contrat',
+            value: 'ACTIVATE_CONTRACT',
+            permission: 'ASSIST_ACTIVATE_CONTRACT_PRIVILEGE',
+            regularizable: false
+        },
+        {
             label: 'Effectuer une commande',
             value: 'PLACE_ORDER',
             permission: 'ASSIST_PLACE_ORDER_PRIVILEGE',

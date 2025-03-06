@@ -23,6 +23,7 @@ import { setRequestGlobalAction, onAddItemToCart, onClearCart } from 'Actions';
 import OrderFormModal from 'Routes/custom/marketplace/checkout/orderFormModal';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
 import AccountVentilation from 'Components/Product/Ventilation/AccountVentilation';
+import CreateAccessBox from 'Routes/custom/profiles/users/components/createAccessBox';
 import AddFileToOrderModal from 'Routes/custom/marketplace/orders/addFileToOrderModal';
 import AuthenticateUser from 'Routes/custom/networks/coverages/components/authenticateUser';
 import MemberDocumentsModal from 'Routes/custom/networks/coverages/components/memberFilesModal';
@@ -48,6 +49,7 @@ const Assist = (props) => {
     const [showMemberFileBox, setShowMemberFileBox] = useState(false);
     const [showOrderFolderModal, setShowOrderFolderModal] = useState(false);
     const [showSubscriptionModal, setShowSubscriptionModal] = useState(false);
+    const [showCreateAccessModal, setShowCreateAccessModal] = useState(false);
     const [showAuthentificationBox, setShowAuthentificationBox] = useState(false);
     const [showOrderManagementModal, setShowOrderManagementModal] = useState(false);
 
@@ -287,11 +289,12 @@ const Assist = (props) => {
             case 'ACTIVATE_PROFILE':
                 activateProfile();
                 break;
-
             case 'AUTHENTICATE_PROFILE':
                 setShowMemberFileBox(true);
                 break;
-
+            case 'ACTIVATE_CONTRACT':
+                setShowCreateAccessModal(true);
+                break;
             case 'PLACE_ORDER':
                 addToCart(product);
                 if(product.specialProduct == 'CODEV_DEAL_PLAN' || product.specialProduct == 'CODEV') {
@@ -741,6 +744,15 @@ const Assist = (props) => {
                     onClose={() => {
                         setShowOrderManagementModal(false);
                         window.location.reload();
+                    }}
+                />
+            )}
+            { (member && action?.value == 'ACTIVATE_CONTRACT' && showCreateAccessModal) && (
+                <CreateAccessBox 
+                    show={showCreateAccessModal}
+                    referralCode={member.referralCode}
+                    onClose={(reload = false) => {
+                        setShowCreateAccessModal(false);
                     }}
                 />
             )}
