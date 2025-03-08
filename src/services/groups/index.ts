@@ -323,5 +323,9 @@ export default class GroupService {
     static changeCampaignStatus(reference: string): Promise<any> {
         return makeRequest('post', Routes.CHANGE_CAMPAIGN_STATUS(reference), {});
     }
+
+    static changeFundingCampaignProgression(reference: string, data: any): Promise<any> {
+        return makeRequest('put', Routes.CHANGE_CAMPAIGN_PROGRESSION(reference), data);
+    }
     
 }

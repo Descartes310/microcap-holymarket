@@ -205,7 +205,7 @@ const FinancialStructureSupports = (props) => {
                             color="primary"
                             variant="contained"
                             onClick={() => changeLock(props.financialStructure)}
-                            disabled={!lockable}
+                            disabled={!lockable || props.financialStructure.lock}
                             className="text-white font-weight-bold"
                         >
                             Vérouiller la structure

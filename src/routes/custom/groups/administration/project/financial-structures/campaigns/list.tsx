@@ -4,9 +4,10 @@ import { withRouter } from "react-router-dom";
 import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
 import React, { useState, useEffect } from 'react';
-import { getGeneralStatus, getPriceWithCurrency } from 'Helpers/helpers';
 import ConfirmBox from "Components/dialog/ConfirmBox";
 import {NotificationManager} from 'react-notifications';
+import { getPriceWithCurrency } from 'Helpers/helpers';
+import {getStatusLabel } from "../../../../../../../data";
 import { GROUP, joinUrlWithParamsId } from 'Url/frontendUrl';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
@@ -18,6 +19,7 @@ const List = (props) => {
     const [dropdownOpen, setDropdownOpen] = useState([]);
     const [showConfirmClosing, setShowConfirmClosing] = useState(false);
     const [showConfirmActivation, setShowConfirmActivation] = useState(false);
+    const [showConfirmSuspension, setShowConfirmSuspension] = useState(false);
 
     useEffect(() => {
         getDatas();
@@ -48,6 +50,18 @@ const List = (props) => {
         })
         .catch(() => {
             NotificationManager.error("Une erreur est survenue lors de l'element");
+        })
+        .finally(() => props.setRequestGlobalAction(false))
+    }
+
+    const changeProgression = (item, suspend) => {
+        props.setRequestGlobalAction(true),
+        GroupService.changeFundingCampaignProgression(item.reference, {suspend})
+        .then(() => {
+            window.location.reload()
+        })
+        .catch((err) => {
+            NotificationManager.error("Une erreur est survenue, veuillez reéssayer plus tard.");
         })
         .finally(() => props.setRequestGlobalAction(false))
     }
@@ -117,7 +131,7 @@ const List = (props) => {
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{getGeneralStatus().find(s => s.value == item.status)?.label}</h4>
+                                                            <h4 className="m-0 fw-bold text-dark">{getStatusLabel(item.progression)}</h4>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -127,7 +141,40 @@ const List = (props) => {
                                                             Actions
                                                         </DropdownToggle>
                                                         <DropdownMenu>
-                                                            { item.status == 'PENDING' && (
+                                                            { item.progression == 'NONE' && (
+                                                                <DropdownItem style={{ color: 'black' }}
+                                                                    onClick={() => {
+                                                                        setCampaign(item);
+                                                                        setShowConfirmClosing(false);
+                                                                        setShowConfirmActivation(true);
+                                                                    }}
+                                                                >
+                                                                    Soumettre
+                                                                </DropdownItem>
+                                                            )}
+                                                            { item.progression == 'PENDING' && (
+                                                                <DropdownItem style={{ color: 'black' }}
+                                                                    onClick={() => {
+                                                                        setCampaign(item);
+                                                                        setShowConfirmClosing(false);
+                                                                        setShowConfirmActivation(true);
+                                                                    }}
+                                                                >
+                                                                    Vérifier
+                                                                </DropdownItem>
+                                                            )}
+                                                            { item.progression == 'VERIFIED' && (
+                                                                <DropdownItem style={{ color: 'black' }}
+                                                                    onClick={() => {
+                                                                        setCampaign(item);
+                                                                        setShowConfirmClosing(false);
+                                                                        setShowConfirmActivation(true);
+                                                                    }}
+                                                                >
+                                                                    Approuver
+                                                                </DropdownItem>
+                                                            )}
+                                                            { item.progression == 'APPROVED' && (
                                                                 <DropdownItem style={{ color: 'black' }}
                                                                     onClick={() => {
                                                                         setCampaign(item);
@@ -136,6 +183,18 @@ const List = (props) => {
                                                                     }}
                                                                 >
                                                                     Activer
+                                                                </DropdownItem>
+                                                            )}
+                                                            { item.progression !== 'SUSPENDED' && item.progression !== 'CONFIRMED' && (
+                                                                <DropdownItem style={{ color: 'black' }}
+                                                                    onClick={() => {
+                                                                        setCampaign(item);
+                                                                        setShowConfirmSuspension(true);
+                                                                        setShowConfirmClosing(false);
+                                                                        setShowConfirmActivation(false);
+                                                                    }}
+                                                                >
+                                                                    Suspendre
                                                                 </DropdownItem>
                                                             )}
                                                             { item.status == 'ONGOING' && (
@@ -165,13 +224,26 @@ const List = (props) => {
                 <ConfirmBox
                     show={showConfirmActivation}
                     rightButtonOnClick={() => {
-                        changeCampaignStatus();
+                        changeProgression(campaign, false);
                     }}
                     leftButtonOnClick={() => {
                         setShowConfirmActivation(false);
                         setCampaign(null);
                     }}
-                    message={'Etes vous sure de vouloir activer cette campagne ?'}
+                    message={'Etes vous sure de vouloir confirmer cette action?'}
+                />
+            )}
+            { showConfirmSuspension && campaign && (
+                <ConfirmBox
+                    show={showConfirmSuspension}
+                    rightButtonOnClick={() => {
+                        changeProgression(campaign, true);
+                    }}
+                    leftButtonOnClick={() => {
+                        setShowConfirmSuspension(false);
+                        setCampaign(null);
+                    }}
+                    message={'Etes vous sure de vouloir suspendre cette campagne?'}
                 />
             )}
             { showConfirmClosing && campaign && (

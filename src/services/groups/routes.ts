@@ -92,6 +92,7 @@ export const GET_FINANCIAL_STRUCTURE_ACTIVE_SUPPORTS = `api/socialnetworks/group
 export const GET_CAMPAIGNS = `api/socialnetworks/groups/structures/campaigns`;
 export const CREATE_CAMPAIGN = `api/socialnetworks/groups/structures/campaigns`;
 export const CHANGE_CAMPAIGN_STATUS = (reference) => `api/socialnetworks/groups/structures/campaigns/${reference}`;
+export const CHANGE_CAMPAIGN_PROGRESSION = (reference) => `api/socialnetworks/groups/structures/campaigns/${reference}/progression`;
 
 export const GET_FINANCIAL_STRUCTURE_SUPPORTS = (reference) => `api/socialnetworks/groups/types/financial-structures/${reference}/supports`;
 export const CREATE_FINANCIAL_STRUCTURE_SUPPORT = (reference) => `api/socialnetworks/groups/types/financial-structures/${reference}/supports`;

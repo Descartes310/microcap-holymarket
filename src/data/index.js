@@ -104,6 +104,15 @@ export const getStatusLabel = (type) => {
         case 'REJECTED':
             statusLabel = 'Rejetté'
             break;
+        case 'NONE':
+            statusLabel = 'Soumettre'
+            break;
+        case 'CONFIRMED':
+            statusLabel = 'Activé'
+            break;
+        case 'SUSPENDED':
+            statusLabel = 'Suspendu'
+            break;
         default:
             break;
     }
