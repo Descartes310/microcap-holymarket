@@ -34,7 +34,7 @@ const Create = (props) => {
     }
 
     const onSubmit = () => {
-        if(!label || !startDate || !endDate || !amount || !currency || !financialStructure) {
+        if(!label || !startDate || !endDate || !amount || !financialStructure) {
             NotificationManager.error("Le formulaire est mal renseigné");
             return;
         }
@@ -42,7 +42,7 @@ const Create = (props) => {
         let data: any = {
             label, description,
             startDate, endDate,
-            amount, currency: currency.code,
+            amount, currency: financialStructure?.currency ?? 'EUR',
             reference: props.match.params.id
         }
 
