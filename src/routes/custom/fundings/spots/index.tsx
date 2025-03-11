@@ -17,6 +17,8 @@ class Spots extends Component<any, any> {
         const defaultState = (function (url) {
             if (url.includes(FUNDING.BOURSE.SPOTS.SENT)) return 0;
             else if (url.includes(FUNDING.BOURSE.SPOTS.RECEIVED)) return 1;
+            else if (url.includes(FUNDING.BOURSE.SPOTS.REQUEST)) return 2;
+            else if (url.includes(FUNDING.BOURSE.SPOTS.OFFER)) return 3;
             else return 0;
         })(window.location.pathname);
 
@@ -32,6 +34,8 @@ class Spots extends Component<any, any> {
             switch (value) {
                 case 0: return this.props.history.push(FUNDING.BOURSE.SPOTS.SENT);
                 case 1: return this.props.history.push(FUNDING.BOURSE.SPOTS.RECEIVED);
+                case 2: return this.props.history.push(FUNDING.BOURSE.SPOTS.REQUEST);
+                case 3: return this.props.history.push(FUNDING.BOURSE.SPOTS.OFFER);
                 default: return this.props.history.push(FUNDING.BOURSE.SPOTS.SENT);
             }
         }
@@ -63,6 +67,14 @@ class Spots extends Component<any, any> {
                                         <Tab
                                             icon={<i className="zmdi zmdi-home" />}
                                             label={"Spots souscris"}
+                                        />
+                                        <Tab
+                                            icon={<i className="zmdi zmdi-home" />}
+                                            label={"Demandes"}
+                                        />
+                                        <Tab
+                                            icon={<i className="zmdi zmdi-home" />}
+                                            label={"Offres"}
                                         />
                                     </Tabs>
                                 </div>

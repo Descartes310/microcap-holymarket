@@ -703,28 +703,28 @@ export default [
             "profiles": null,
             "child_routes": null
          },
-         {
-            "menu_title": "Demandes",
-            "new_item": false,
-            "path": FUNDING.BOURSE.REQUEST.MINE,
-            "permissions": [
-               Permission.bourse.offer.name,
-               Permission.assets.all.name,
-            ],
-            "profiles": null,
-            "child_routes": null
-         },
-         {
-            "menu_title": "Offres",
-            "new_item": false,
-            "path": FUNDING.BOURSE.OFFER.MINE,
-            "permissions": [
-               Permission.bourse.offer.name,
-               Permission.assets.all.name,
-            ],
-            "profiles": null,
-            "child_routes": null
-         }
+         // {
+         //    "menu_title": "Demandes",
+         //    "new_item": false,
+         //    "path": FUNDING.BOURSE.REQUEST.MINE,
+         //    "permissions": [
+         //       Permission.bourse.offer.name,
+         //       Permission.assets.all.name,
+         //    ],
+         //    "profiles": null,
+         //    "child_routes": null
+         // },
+         // {
+         //    "menu_title": "Offres",
+         //    "new_item": false,
+         //    "path": FUNDING.BOURSE.OFFER.MINE,
+         //    "permissions": [
+         //       Permission.bourse.offer.name,
+         //       Permission.assets.all.name,
+         //    ],
+         //    "profiles": null,
+         //    "child_routes": null
+         // }
       ],
    },
 

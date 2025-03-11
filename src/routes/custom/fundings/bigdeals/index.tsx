@@ -17,6 +17,8 @@ class Deals extends Component<any, any> {
         const defaultState = (function (url) {
             if (url.includes(FUNDING.BOURSE.BIGDEALS.SENT)) return 0;
             else if (url.includes(FUNDING.BOURSE.BIGDEALS.RECEIVED)) return 1;
+            else if (url.includes(FUNDING.BOURSE.BIGDEALS.REQUEST)) return 2;
+            else if (url.includes(FUNDING.BOURSE.BIGDEALS.OFFER)) return 3;
             else return 0;
         })(window.location.pathname);
 
@@ -32,6 +34,8 @@ class Deals extends Component<any, any> {
             switch (value) {
                 case 0: return this.props.history.push(FUNDING.BOURSE.BIGDEALS.SENT);
                 case 1: return this.props.history.push(FUNDING.BOURSE.BIGDEALS.RECEIVED);
+                case 2: return this.props.history.push(FUNDING.BOURSE.BIGDEALS.REQUEST);
+                case 3: return this.props.history.push(FUNDING.BOURSE.BIGDEALS.OFFER);
                 default: return this.props.history.push(FUNDING.BOURSE.BIGDEALS.SENT);
             }
         }
@@ -63,6 +67,14 @@ class Deals extends Component<any, any> {
                                         <Tab
                                             icon={<i className="zmdi zmdi-home" />}
                                             label={"Big Deals souscris"}
+                                        />
+                                        <Tab
+                                            icon={<i className="zmdi zmdi-home" />}
+                                            label={"Demandes"}
+                                        />
+                                        <Tab
+                                            icon={<i className="zmdi zmdi-home" />}
+                                            label={"Offres"}
                                         />
                                     </Tabs>
                                 </div>

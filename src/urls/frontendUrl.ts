@@ -156,16 +156,22 @@ export const FUNDING = {
             SELF: '/funding/deals',
             SENT: '/funding/deals/sent',
             RECEIVED: '/funding/deals/received',
+            REQUEST: '/funding/deals/requests',
+            OFFER: '/funding/deals/offers',
         },
         SPOTS: {
             SELF: '/funding/spots',
             SENT: '/funding/spots/sent',
             RECEIVED: '/funding/spots/received',
+            REQUEST: '/funding/spots/requests',
+            OFFER: '/funding/spots/offers',
         },
         BIGDEALS: {
             SELF: '/funding/bigdeals',
             SENT: '/funding/bigdeals/sent',
             RECEIVED: '/funding/bigdeals/received',
+            REQUEST: '/funding/bigdeals/requests',
+            OFFER: '/funding/bigdeals/offers',
         }
     }
 } as const;
