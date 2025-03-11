@@ -10,13 +10,13 @@ import { withRouter } from "react-router-dom";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import { setRequestGlobalAction } from "Actions/RequestGlobalAction";
 
-class Deals extends Component<any, any> {
+class Spots extends Component<any, any> {
 
     constructor(props: any) {
         super(props);
         const defaultState = (function (url) {
-            if (url.includes(FUNDING.BOURSE.BIGDEALS.SENT)) return 0;
-            else if (url.includes(FUNDING.BOURSE.BIGDEALS.RECEIVED)) return 1;
+            if (url.includes(FUNDING.BOURSE.SPOTS.SENT)) return 0;
+            else if (url.includes(FUNDING.BOURSE.SPOTS.RECEIVED)) return 1;
             else return 0;
         })(window.location.pathname);
 
@@ -30,9 +30,9 @@ class Deals extends Component<any, any> {
         this.setState({ activeTab: value });
         if (oldActivateTab !== value) {
             switch (value) {
-                case 0: return this.props.history.push(FUNDING.BOURSE.BIGDEALS.SENT);
-                case 1: return this.props.history.push(FUNDING.BOURSE.BIGDEALS.RECEIVED);
-                default: return this.props.history.push(FUNDING.BOURSE.BIGDEALS.SENT);
+                case 0: return this.props.history.push(FUNDING.BOURSE.SPOTS.SENT);
+                case 1: return this.props.history.push(FUNDING.BOURSE.SPOTS.RECEIVED);
+                default: return this.props.history.push(FUNDING.BOURSE.SPOTS.SENT);
             }
         }
     };
@@ -42,7 +42,7 @@ class Deals extends Component<any, any> {
 
         return (
             <div>
-                <PageTitleBar title={"Mes big deals"} match={this.props.match} />
+                <PageTitleBar title={"Mes spots"} match={this.props.match} />
                 <RctCard>
                     <div className="rct-tabs">
                         <AppBar position="static">
@@ -58,11 +58,11 @@ class Deals extends Component<any, any> {
                                     >
                                         <Tab
                                             icon={<i className="zmdi zmdi-home" />}
-                                            label={"Big Deals bénéficiés"}
+                                            label={"Spots bénéficiés"}
                                         />
                                         <Tab
                                             icon={<i className="zmdi zmdi-home" />}
-                                            label={"Big Deals souscris"}
+                                            label={"Spots souscris"}
                                         />
                                     </Tabs>
                                 </div>
@@ -81,4 +81,4 @@ const mapStateToProps = ({ authUser }) => {
     return { authUser: authUser.data, }
 };
 
-export default connect(mapStateToProps, { setRequestGlobalAction })(withRouter(Deals));
+export default connect(mapStateToProps, { setRequestGlobalAction })(withRouter(Spots));

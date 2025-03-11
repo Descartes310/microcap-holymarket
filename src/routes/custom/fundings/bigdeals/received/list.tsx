@@ -22,13 +22,13 @@ const List = (props) => {
 
     const getDatas = () => {
         props.setRequestGlobalAction(true),
-        FundingService.getDeals({received: false, free: false, type: 'DEAL'})
+        FundingService.getDeals({received: true, free: false, type: 'BIGDEAL'})
         .then(response => setDatas(response))
         .finally(() => props.setRequestGlobalAction(false))
     }
 
     return (
-        <>
+            <>
             <CustomList
                 list={datas}
                 loading={false}
@@ -127,7 +127,7 @@ const List = (props) => {
                         setShowDealDetails(false);
                         setShowInitDeal(true);
                     }}
-                    isSender={true}
+                    isSender={false}
                     isBlocked={true}
                 />
             )}

@@ -682,6 +682,28 @@ export default [
             "child_routes": null
          },
          {
+            "menu_title": "Spots",
+            "new_item": false,
+            "path": FUNDING.BOURSE.SPOTS.SENT,
+            "permissions": [
+               Permission.bourse.offer.name,
+               Permission.assets.all.name,
+            ],
+            "profiles": null,
+            "child_routes": null
+         },
+         {
+            "menu_title": "BigDeals",
+            "new_item": false,
+            "path": FUNDING.BOURSE.BIGDEALS.SENT,
+            "permissions": [
+               Permission.bourse.offer.name,
+               Permission.assets.all.name,
+            ],
+            "profiles": null,
+            "child_routes": null
+         },
+         {
             "menu_title": "Demandes",
             "new_item": false,
             "path": FUNDING.BOURSE.REQUEST.MINE,

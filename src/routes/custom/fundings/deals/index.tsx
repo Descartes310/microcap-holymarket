@@ -58,11 +58,11 @@ class Deals extends Component<any, any> {
                                     >
                                         <Tab
                                             icon={<i className="zmdi zmdi-home" />}
-                                            label={"Deals souscris"}
+                                            label={"Deals bénéficiés"}
                                         />
                                         <Tab
                                             icon={<i className="zmdi zmdi-home" />}
-                                            label={"Deals bénéficiés"}
+                                            label={"Deals souscris"}
                                         />
                                     </Tabs>
                                 </div>

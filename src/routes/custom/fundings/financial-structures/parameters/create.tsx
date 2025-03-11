@@ -61,19 +61,13 @@ const Create = (props) => {
     const [showCreateFundingOption, setShowCreateFundingOption] = useState(false);
 
     useEffect(() => {
-        findAccount();
         getProducts();
+        getCustomCarts();
+        getRules();
+        getPrevisions();
+        getOptions();
+        getProjectDetails();
     }, []);
-
-    useEffect(() => {
-        if(account) {
-            getCustomCarts();
-            getRules();
-            getPrevisions();
-            getOptions();
-            getProjectDetails();
-        }
-    }, [account]);
 
     useEffect(() => {
         if(codevs.length > 0 && details) {
@@ -122,18 +116,9 @@ const Create = (props) => {
             .finally(() => props.setRequestGlobalAction(false))
     }
 
-    const findAccount = () => {
-        props.setRequestGlobalAction(true);
-        FundingService.findDeal(props.match.params.id)
-        .then(response => {
-            setAccount(response)
-        })
-        .finally(() => props.setRequestGlobalAction(false))
-    }
-
     const getRules = () => {
         props.setRequestGlobalAction(false);
-        ProjectService.getProjectRules({type: 'BIGDEAL', reference: account.reference})
+        ProjectService.getProjectRules({type: 'MEMBER', reference: props.authUser.referralId})
         .then((response) => setRules(response))
         .catch((err) => {
             console.log(err);
@@ -145,7 +130,7 @@ const Create = (props) => {
 
     const getPrevisions = () => {
         props.setRequestGlobalAction(false);
-        ProjectService.getProjectPrevisions({type: 'BIGDEAL', reference: account.reference})
+        ProjectService.getProjectPrevisions({type: 'MEMBER', reference: props.authUser.referralId})
         .then((response) => setPrevisions(response))
         .catch((err) => {
             console.log(err);
@@ -173,7 +158,7 @@ const Create = (props) => {
 
     const getProjectDetails = () => {
         props.setRequestGlobalAction(true);
-        ProjectService.getSettingDetails({project_reference: account.reference, type: 'BIGDEAL'}).then(response => {
+        ProjectService.getSettingDetails({project_reference: props.authUser.referralId, type: 'MEMBER'}).then(response => {
             setDetails(response);
             setMinBase(response.find(t => t.type == 'MINIMUM_FIXED_BASE')?.value ?? null);
             setMaxBase(response.find(t => t.type == 'MAXIMUM_FIXED_BASE')?.value ?? null);
@@ -192,7 +177,7 @@ const Create = (props) => {
 
     const getCustomCarts = () => {
         props.setRequestGlobalAction(true);
-        ProductService.getCustomCarts(account.reference).then(response => {
+        ProductService.getCustomCarts(props.authUser.referralId).then(response => {
             setCustomCarts(response);
         })
         .finally(() => props.setRequestGlobalAction(false))
@@ -224,7 +209,7 @@ const Create = (props) => {
 
     const activeRule = (reference) => {
         props.setRequestGlobalAction(true);
-        ProjectService.activeProjectRule(reference, {type: 'BIGDEAL', project_reference: account.reference}).then(() => {
+        ProjectService.activeProjectRule(reference, {type: 'MEMBER', project_reference: props.authUser.referralId}).then(() => {
             getRules();
         })
         .finally(() => props.setRequestGlobalAction(false))
@@ -232,7 +217,7 @@ const Create = (props) => {
 
     const getOptions = () => {
         props.setRequestGlobalAction(true);
-        GroupService.getFundingOptions({reference: account.reference, type: 'BIGDEAL'}).then(response => {
+        GroupService.getFundingOptions({reference: props.authUser.referralId, type: 'MEMBER'}).then(response => {
             setOptions(response);
         })
         .finally(() => props.setRequestGlobalAction(false))
@@ -248,7 +233,7 @@ const Create = (props) => {
 
     const onSubmit = () => {        
         if(!minBase || !maxBase || !minRate || !maxRate || !currency || !distribution || !bonificationBase || !bonificationMinRate || !bonificationMaxRate ||
-            !prevision || !dotationMinRate || !dotationMaxRate || !periodicity || !account || !codev
+            !prevision || !dotationMinRate || !dotationMaxRate || !periodicity || !codev
         ) {
             NotificationManager.error('Veuillez bien remplir le formulaire')
             return;
@@ -260,7 +245,7 @@ const Create = (props) => {
         }
 
         let data = {
-            type: 'BIGDEAL', project_reference: account.reference,
+            type: 'MEMBER', project_reference: props.authUser.referralId,
             minBase, maxBase, bonificationBase: bonificationBase.reference,
             minRate, maxRate, bonificationMinRate, bonificationMaxRate,
             currency: currency.code, distribution: distribution.value,
@@ -910,24 +895,24 @@ const Create = (props) => {
                         setShowCreateProduct(false);
                         getCustomCarts();
                     }}
-                    type='BIGDEAL'
-                    project={account}
+                    type='MEMBER'
+                    project={{reference: props.authUser.referralId}}
                 />
 
                 <CreateFundingOption
                     show={showCreateFundingOption}
-                    type='BIGDEAL'
+                    type='MEMBER'
                     onClose={() => {
                         setShowCreateFundingOption(false);
                         getOptions();
                     }}
-                    project={account}
+                    project={{reference: props.authUser.referralId}}
                 />
 
                 <CreatePrevision
                     show={showCreatePrevision}
-                    type='BIGDEAL'
-                    project={account}
+                    type='MEMBER'
+                    project={{reference: props.authUser.referralId}}
                     onClose={() => {
                         setShowCreatePrevision(false);
                         getPrevisions();
@@ -936,8 +921,8 @@ const Create = (props) => {
 
                 <CreateRule
                     show={showCreateRule}
-                    project={account}
-                    type='BIGDEAL'
+                    project={{reference: props.authUser.referralId}}
+                    type='MEMBER'
                     onClose={() => {
                         setShowCreateRule(false);
                         getRules();
@@ -948,4 +933,8 @@ const Create = (props) => {
     );
 }
 
-export default connect(() => {}, { setRequestGlobalAction })(withRouter(Create));
+const mapStateToProps = ({ authUser }) => {
+    return { authUser: authUser.data, }
+};
+
+export default connect(mapStateToProps, { setRequestGlobalAction })(withRouter(Create));

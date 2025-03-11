@@ -122,7 +122,7 @@ export const FUNDING = {
         PARAM: {
             SELF: '/funding/financial-structures/params',
             LIST: '/funding/financial-structures/params/list',
-            CREATE: '/funding/financial-structures/params/:id/create',
+            CREATE: '/funding/financial-structures/params/create',
         },
     },
     BOND: {
@@ -156,6 +156,16 @@ export const FUNDING = {
             SELF: '/funding/deals',
             SENT: '/funding/deals/sent',
             RECEIVED: '/funding/deals/received',
+        },
+        SPOTS: {
+            SELF: '/funding/spots',
+            SENT: '/funding/spots/sent',
+            RECEIVED: '/funding/spots/received',
+        },
+        BIGDEALS: {
+            SELF: '/funding/bigdeals',
+            SENT: '/funding/bigdeals/sent',
+            RECEIVED: '/funding/bigdeals/received',
         }
     }
 } as const;

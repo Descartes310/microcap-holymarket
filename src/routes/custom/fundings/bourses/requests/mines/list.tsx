@@ -9,6 +9,7 @@ import { getPriceWithCurrency } from 'Helpers/helpers';
 import TimeFromMoment from 'Components/TimeFromMoment';
 import InitDealModal from 'Routes/custom/fundings/components/InitDealModal';
 import InitSpotModal from 'Routes/custom/fundings/components/InitSpotModal';
+import InitBigDealModal from 'Routes/custom/fundings/components/InitBigDealModal';
 import DealChildModal from 'Routes/custom/fundings/components/DealChildModal';
 import DealDetailsModal from 'Routes/custom/fundings/components/DealDetailsModal';
 
@@ -26,7 +27,7 @@ const List = (props) => {
 
     const getDatas = () => {
         props.setRequestGlobalAction(true),
-        FundingService.getRequests({mine: true, types: ['DEAL', 'SPOT']})
+        FundingService.getRequests({mine: true, types: ['DEAL', 'SPOT', 'BIGDEAL']})
         .then(response => setDatas(response))
         .finally(() => props.setRequestGlobalAction(false))
     }
@@ -152,21 +153,21 @@ const List = (props) => {
                     isSender={true}
                 />
             )}
-            {/* {deal && showInitDeal && (
-                <InitDealModal 
-                    show={showInitDeal}
-                    onClose={() => {
-                        setDeal(null);
-                        setShowInitDeal(false);
-                    }}
-                    deal={deal}
-                    dealType={deal.type}
-                />
-            )} */}
             {deal && showInitDeal && (
                 <>
                     { deal.type == 'DEAL' ?
                         <InitDealModal 
+                            show={showInitDeal}
+                            onClose={() => {
+                                setDeal(null);
+                                setShowInitDeal(false);
+                                getDatas();
+                            }}
+                            deal={deal}
+                            dealType={deal.type}
+                        /> : 
+                        deal.type == 'BIGDEAL' ?
+                        <InitBigDealModal 
                             show={showInitDeal}
                             onClose={() => {
                                 setDeal(null);

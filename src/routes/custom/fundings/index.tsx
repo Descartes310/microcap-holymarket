@@ -1,9 +1,11 @@
 import React from 'react';
 import Deals from './deals';
+import Spots from './spots';
 import Bonds from './bonds';
 import Bourses from './bourses';
-import Accounts from './accounts';
 import BigDeals from './bigdeals';
+import Accounts from './accounts';
+// import BigDeals from './bigdeals';
 import {connect} from "react-redux";
 import Placements from './placements';
 import {injectIntl} from "react-intl";
@@ -24,7 +26,9 @@ const Funding = (props) => {
                     <Route path={FUNDING.BOND.SELF} component={Bonds} />
                     <Route path={FUNDING.INVESTMENT.SELF} component={Investments} />
                     <Route path={FUNDING.BOURSE.DEALS.SELF} component={Deals} />
-                    <Route path={FUNDING.BIGDEAL.SELF} component={BigDeals} />
+                    <Route path={FUNDING.BOURSE.SPOTS.SELF} component={Spots} />
+                    <Route path={FUNDING.BOURSE.BIGDEALS.SELF} component={BigDeals} />
+                    {/* <Route path={FUNDING.BIGDEAL.SELF} component={BigDeals} /> */}
                     <Route path={FUNDING.PLACEMENT.SELF} component={Placements} />
                     <Route path={FUNDING.FINANCIAL_STRUCTURES.SELF} component={FinancialStructures} />
                 </Switch>

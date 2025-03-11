@@ -11,7 +11,7 @@ const FundingInvestmentParams = (props) => {
     return (
         <div>
             <Switch>
-                <Redirect exact from={`${match.url}/`} to={FUNDING.FINANCIAL_STRUCTURES.PARAM.LIST} />
+                <Redirect exact from={`${match.url}/`} to={FUNDING.FINANCIAL_STRUCTURES.PARAM.CREATE} />
                 <Route path={FUNDING.FINANCIAL_STRUCTURES.PARAM.CREATE} component={Create} />
                 <Route path={FUNDING.FINANCIAL_STRUCTURES.PARAM.LIST} component={List} />
             </Switch>

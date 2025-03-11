@@ -19,7 +19,6 @@ import FundingService from 'Services/funding';
 const Create = (props) => {
 
     const [label, setLabel] = useState('');
-    const [deals, setDeals] = useState([]);
     const [deal, setDeal] = useState(null);
     const [option, setOption] = useState(null);
     const [options, setOptions] = useState([]);
@@ -32,25 +31,10 @@ const Create = (props) => {
 
     useEffect(() => {
         if(itemType === 'MEMBER') {
-            //getDeals();
             getActiveProspectus();
-        } else {
-            getOptions();
         }
+        getOptions();
     }, []);
-
-    useEffect(() => {
-        if(deal) {
-            getOptions();
-        }
-    }, [deal]);
-
-    // const getDeals = () => {
-    //     props.setRequestGlobalAction(true),
-    //     FundingService.getRequests({mine: true, received: false, type: 'BIGDEAL'})
-    //     .then(response => setDeals(response))
-    //     .finally(() => props.setRequestGlobalAction(false))
-    // }
 
     const getActiveProspectus = () => {
         props.setRequestGlobalAction(true);
@@ -166,7 +150,6 @@ const Create = (props) => {
                                 onChange={(__, item) => {
                                     setOption(item);
                                 }}
-                                disabled={itemType !== 'PROJECT' && !deal}
                                 getOptionLabel={(option) => option.label}
                                 renderInput={(params) => <TextField {...params} variant="outlined" />}
                             />
@@ -268,4 +251,8 @@ const Create = (props) => {
     );
 };
 
-export default connect(() => { }, { setRequestGlobalAction })(withRouter(Create));
+const mapStateToProps = ({ authUser }) => {
+    return { authUser: authUser.data, }
+};
+
+export default connect(mapStateToProps, { setRequestGlobalAction })(withRouter(Create));
