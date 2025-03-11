@@ -1,13 +1,16 @@
 import { connect } from 'react-redux';
+import {useAbility} from "@casl/react";
 import GroupService from 'Services/groups';
+import Permissions from "Enums/Permissions";
 import { withRouter } from "react-router-dom";
 import Button from '@material-ui/core/Button';
 import UnitSelect from 'Components/UnitSelect';
+import {AbilityContext} from "Permissions/Can";
 import CustomList from "Components/CustomList";
 import { setRequestGlobalAction } from 'Actions';
 import React, { useState, useEffect } from 'react';
-import { getPriceWithCurrency } from 'Helpers/helpers';
 import TextField from '@material-ui/core/TextField';
+import { getPriceWithCurrency } from 'Helpers/helpers';
 import {NotificationManager} from 'react-notifications';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import DialogComponent from "Components/dialog/DialogComponent";
@@ -16,6 +19,7 @@ import { Form, FormGroup, Input as InputStrap } from 'reactstrap';
 
 const FinancialStructureSupports = (props) => {
 
+    const ability = useAbility(AbilityContext)
     const {show, onClose, financialStructure} = props;
     
     const [datas, setDatas] = useState([]);
@@ -201,16 +205,18 @@ const FinancialStructureSupports = (props) => {
                         )}
                     />
                     <div className='row d-flex' style={{ justifyContent: 'space-evenly' }}>
-                        <Button
-                            color="primary"
-                            variant="contained"
-                            onClick={() => changeLock(props.financialStructure)}
-                            disabled={!lockable || props.financialStructure.lock}
-                            className="text-white font-weight-bold"
-                        >
-                            Vérouiller la structure
-                        </Button>
-                        { props.financialStructure.progression === 'NONE' && (
+                        { ability.can(Permissions.funding.bigdeals.structures.lock.name, Permissions) && (
+                            <Button
+                                color="primary"
+                                variant="contained"
+                                onClick={() => changeLock(props.financialStructure)}
+                                disabled={!lockable || props.financialStructure.lock}
+                                className="text-white font-weight-bold"
+                            >
+                                Vérouiller la structure
+                            </Button>
+                        )}
+                        { props.financialStructure.progression === 'NONE' && ability.can(Permissions.funding.bigdeals.structures.submit.name, Permissions) && (
                             <Button
                                 color="primary"
                                 variant="contained"
@@ -221,27 +227,7 @@ const FinancialStructureSupports = (props) => {
                                 Soumettre
                             </Button>
                         )}
-                        { props.financialStructure.progression === 'PENDING' && (
-                            <Button
-                                color="primary"
-                                variant="contained"
-                            onClick={() => changeProgression(props.financialStructure)}
-                                className="text-white font-weight-bold"
-                            >
-                                Vérifier
-                            </Button>
-                        )}
-                        { props.financialStructure.progression === 'VERIFIED' && (
-                            <Button
-                                color="primary"
-                                variant="contained"
-                            onClick={() => changeProgression(props.financialStructure)}
-                                className="text-white font-weight-bold"
-                            >
-                                Approuver
-                            </Button>
-                        )}
-                        { props.financialStructure.progression === 'APPROVED' && (
+                        { props.financialStructure.progression === 'APPROVED' && ability.can(Permissions.funding.bigdeals.structures.activate.name, Permissions) && (
                             <Button
                                 color="primary"
                                 variant="contained"
@@ -251,14 +237,14 @@ const FinancialStructureSupports = (props) => {
                                 Confirmer
                             </Button>
                         )}
-                        <Button
+                        {/* <Button
                             color="primary"
                             variant="contained"
                             onClick={() => {}}
                             className="text-white font-weight-bold"
                         >
                             Fermer
-                        </Button>
+                        </Button> */}
                     </div>
                 </>
             ) : (

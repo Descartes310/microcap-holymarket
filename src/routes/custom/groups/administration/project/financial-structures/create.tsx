@@ -154,26 +154,6 @@ const Create = (props) => {
                         />
                     </FormGroup>
 
-                    {/* { itemType === 'MEMBER' && (
-                        <div className='row'>
-                            <FormGroup className="col-md-12 col-sm-12 has-wrapper mb-30">
-                                <InputLabel className="text-left">
-                                    Big deals
-                                </InputLabel>
-                                <Autocomplete
-                                    id="combo-box-demo"
-                                    value={deal}
-                                    options={deals}
-                                    onChange={(__, item) => {
-                                        setDeal(item);
-                                    }}
-                                    getOptionLabel={(option) => option.label}
-                                    renderInput={(params) => <TextField {...params} variant="outlined" />}
-                                />
-                            </FormGroup>
-                        </div>
-                    )} */}
-
                     <div className='row'>
                         <FormGroup className="col-md-12 col-sm-12 has-wrapper mb-30">
                             <InputLabel className="text-left">

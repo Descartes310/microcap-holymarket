@@ -1,19 +1,23 @@
 import { connect } from 'react-redux';
+import {useAbility} from "@casl/react";
 import GroupService from 'Services/groups';
+import Permissions from "Enums/Permissions";
 import { withRouter } from "react-router-dom";
+import Switch from "@material-ui/core/Switch";
 import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
+import {AbilityContext} from "Permissions/Can";
 import React, { useState, useEffect } from 'react';
 import ConfirmBox from "Components/dialog/ConfirmBox";
-import {NotificationManager} from 'react-notifications';
 import { getPriceWithCurrency } from 'Helpers/helpers';
+import {NotificationManager} from 'react-notifications';
 import {getStatusLabel } from "../../../../../../../data";
 import { GROUP, joinUrlWithParamsId } from 'Url/frontendUrl';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 
 const List = (props) => {    
-    
+    const ability = useAbility(AbilityContext)
     const [datas, setDatas] = useState([]);
     const [campaign, setCampaign] = useState(null);
     const [dropdownOpen, setDropdownOpen] = useState([]);
@@ -50,6 +54,18 @@ const List = (props) => {
         })
         .catch(() => {
             NotificationManager.error("Une erreur est survenue lors de l'element");
+        })
+        .finally(() => props.setRequestGlobalAction(false))
+    }
+
+    const changeStatus = (item) => {
+        props.setRequestGlobalAction(true),
+        GroupService.changeFundingCampaignStatus(item.reference)
+        .then(() => {
+            getDatas();
+        })
+        .catch((err) => {
+            NotificationManager.error("Une erreur est survenue, veuillez reéssayer plus tard.");
         })
         .finally(() => props.setRequestGlobalAction(false))
     }
@@ -93,6 +109,7 @@ const List = (props) => {
                                             <th className="fw-bold">Montant</th>
                                             <th className="fw-bold">Date de debut</th>
                                             <th className="fw-bold">Date de fin</th>
+                                            <th className="fw-bold">Actif</th>
                                             <th className="fw-bold">Status</th>
                                             <th className="fw-bold">Activer</th>
                                         </tr>
@@ -129,6 +146,14 @@ const List = (props) => {
                                                     </div>
                                                 </td>
                                                 <td>
+                                                    <Switch
+                                                        aria-label="Par défaut"
+                                                        checked={item.active}
+                                                        disabled={item.progression !== 'CONFIRMED'}
+                                                        onChange={() => { changeStatus(item) }}
+                                                    />
+                                                </td>
+                                                <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
                                                             <h4 className="m-0 fw-bold text-dark">{getStatusLabel(item.progression)}</h4>
@@ -141,7 +166,7 @@ const List = (props) => {
                                                             Actions
                                                         </DropdownToggle>
                                                         <DropdownMenu>
-                                                            { item.progression == 'NONE' && (
+                                                            { item.progression == 'NONE' && ability.can(Permissions.funding.bigdeals.campaigns.submit.name, Permissions) && (
                                                                 <DropdownItem style={{ color: 'black' }}
                                                                     onClick={() => {
                                                                         setCampaign(item);
@@ -152,29 +177,7 @@ const List = (props) => {
                                                                     Soumettre
                                                                 </DropdownItem>
                                                             )}
-                                                            { item.progression == 'PENDING' && (
-                                                                <DropdownItem style={{ color: 'black' }}
-                                                                    onClick={() => {
-                                                                        setCampaign(item);
-                                                                        setShowConfirmClosing(false);
-                                                                        setShowConfirmActivation(true);
-                                                                    }}
-                                                                >
-                                                                    Vérifier
-                                                                </DropdownItem>
-                                                            )}
-                                                            { item.progression == 'VERIFIED' && (
-                                                                <DropdownItem style={{ color: 'black' }}
-                                                                    onClick={() => {
-                                                                        setCampaign(item);
-                                                                        setShowConfirmClosing(false);
-                                                                        setShowConfirmActivation(true);
-                                                                    }}
-                                                                >
-                                                                    Approuver
-                                                                </DropdownItem>
-                                                            )}
-                                                            { item.progression == 'APPROVED' && (
+                                                            { item.progression == 'APPROVED' && ability.can(Permissions.funding.bigdeals.campaigns.activate.name, Permissions) && (
                                                                 <DropdownItem style={{ color: 'black' }}
                                                                     onClick={() => {
                                                                         setCampaign(item);
@@ -185,7 +188,7 @@ const List = (props) => {
                                                                     Activer
                                                                 </DropdownItem>
                                                             )}
-                                                            { item.progression !== 'SUSPENDED' && item.progression !== 'CONFIRMED' && (
+                                                            {/* { item.progression !== 'SUSPENDED' && item.progression !== 'CONFIRMED' && (
                                                                 <DropdownItem style={{ color: 'black' }}
                                                                     onClick={() => {
                                                                         setCampaign(item);
@@ -196,8 +199,8 @@ const List = (props) => {
                                                                 >
                                                                     Suspendre
                                                                 </DropdownItem>
-                                                            )}
-                                                            { item.status == 'ONGOING' && (
+                                                            )} */}
+                                                            {/* { item.status == 'ONGOING' && (
                                                                 <DropdownItem style={{ color: 'black' }}
                                                                     onClick={() => {
                                                                         setCampaign(item);
@@ -207,7 +210,7 @@ const List = (props) => {
                                                                 >
                                                                     Cloturer
                                                                 </DropdownItem>
-                                                            )}
+                                                            )} */}
                                                         </DropdownMenu>
                                                     </ButtonDropdown>
                                                 </td>

@@ -82,6 +82,7 @@ export const GET_FUNDING_OPTION_BY_GROUP_TYPE = (reference) => `api/socialnetwor
 export const GET_FINANCIAL_STRUCTURES = `api/socialnetworks/groups/types/financial-structures`;
 export const CREATE_FINANCIAL_STRUCTURES = `api/socialnetworks/groups/types/financial-structures`;
 export const DELETE_FINANCIAL_STRUCTURES = `api/socialnetworks/groups/types/financial-structures`;
+export const GET_SUPERVISED_FINANCIAL_STRUCTURES = `api/socialnetworks/groups/types/financial-structures/supervision`;
 export const FIND_FINANCIAL_STRUCTURE = (reference) => `api/socialnetworks/groups/types/financial-structures/${reference}`;
 export const CHANGE_FINANCIAL_STRUCTURE_STATUS = (reference) => `api/socialnetworks/groups/types/financial-structures/${reference}/status`;
 export const CHANGE_FINANCIAL_STRUCTURE_LOCK = (reference) => `api/socialnetworks/groups/types/financial-structures/${reference}/lock`;
@@ -91,7 +92,9 @@ export const GET_FINANCIAL_STRUCTURE_ACTIVE_SUPPORTS = `api/socialnetworks/group
 
 export const GET_CAMPAIGNS = `api/socialnetworks/groups/structures/campaigns`;
 export const CREATE_CAMPAIGN = `api/socialnetworks/groups/structures/campaigns`;
+export const GET_SUPERVISED_CAMPAIGNS = `api/socialnetworks/groups/structures/campaigns/supervision`;
 export const CHANGE_CAMPAIGN_STATUS = (reference) => `api/socialnetworks/groups/structures/campaigns/${reference}`;
+export const CHANGE_CAMPAIGN_ACTIVATE = (reference) => `api/socialnetworks/groups/structures/campaigns/${reference}/activate`;
 export const CHANGE_CAMPAIGN_PROGRESSION = (reference) => `api/socialnetworks/groups/structures/campaigns/${reference}/progression`;
 
 export const GET_FINANCIAL_STRUCTURE_SUPPORTS = (reference) => `api/socialnetworks/groups/types/financial-structures/${reference}/supports`;

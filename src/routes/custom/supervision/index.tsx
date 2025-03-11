@@ -6,6 +6,8 @@ import {connect} from "react-redux";
 import {injectIntl} from "react-intl";
 import Operations from './operations';
 import { SUPERVISION } from 'Url/frontendUrl';
+import FundingCampaigns from './fundingCampaigns';
+import FinancialStructures from './financialStructures';
 import {withRouter, Switch, Redirect, Route} from "react-router-dom";
 
 const Supervisions = (props) => {
@@ -19,6 +21,8 @@ const Supervisions = (props) => {
                     <Route path={SUPERVISION.VOTES.SELF} component={Votes} />
                     <Route path={SUPERVISION.OPERATIONS.SELF} component={Operations} />
                     <Route path={SUPERVISION.PROJECTS.SELF} component={Projects} />
+                    <Route path={SUPERVISION.FINANCIAL_STRUCTURE.SELF} component={FinancialStructures} />
+                    <Route path={SUPERVISION.FUNDING_CAMPAIGN.SELF} component={FundingCampaigns} />
                 </Switch>
             </>
         </div>

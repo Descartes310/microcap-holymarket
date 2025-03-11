@@ -292,7 +292,21 @@ export default class Permission extends BaseEnum {
             "name": "FUNDING_PLACEMENT_PRIVILEGE"
         },
         bigdeals: {
-            "name": "FUNDING_BIGDEAL_PRIVILEGE"
+            "name": "FUNDING_BIGDEAL_PRIVILEGE",
+            campaigns: {
+                submit: {"name": "DEAL_FUNDING_CAMPAIGN_SUBMIT_PRIVILEGE"},
+                verify: {"name": "DEAL_FUNDING_CAMPAIGN_VERIFY_PRIVILEGE"},
+                approve: {"name": "DEAL_FUNDING_CAMPAIGN_APPROVE_PRIVILEGE"},
+                activate: {"name": "DEAL_FUNDING_CAMPAIGN_ACTIVATE_PRIVILEGE"},
+                suspend: {"name": "DEAL_FUNDING_CAMPAIGN_SUSPEND_PRIVILEGE"},
+            },
+            structures: {
+                submit: {"name": "DEAL_FINANCIAL_STRUCTURE_SUBMIT_PRIVILEGE"},
+                verify: {"name": "DEAL_FINANCIAL_STRUCTURE_VERIFY_PRIVILEGE"},
+                approve: {"name": "DEAL_FINANCIAL_STRUCTURE_APPROVE_PRIVILEGE"},
+                activate: {"name": "DEAL_FINANCIAL_STRUCTURE_ACTIVATE_PRIVILEGE"},
+                lock: {"name": "DEAL_FINANCIAL_STRUCTURE_LOCK_PRIVILEGE"},
+            }
         },
         investments: {
             "name": "FUNDING_INVESTMENT_PRIVILEGE"
@@ -314,6 +328,12 @@ export default class Permission extends BaseEnum {
         },
         operation: {
             "name": "SUPERVISION_OPERATION"
+        },
+        dealCampaign: {
+            "name": "SUPERVISION_DEAL_CAMPAIGN"
+        },
+        dealFinancialStructure: {
+            "name": "SUPERVISION_DEAL_FINANCIAL_STRUCTURE"
         },
     };
 

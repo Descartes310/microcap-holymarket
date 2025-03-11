@@ -157,6 +157,8 @@ export default [
          Permission.supervision.project.name,
          Permission.general.operationCounterValidation.name,
          Permission.general.operationAgencyValidation.name,
+         Permission.supervision.dealCampaign.name,
+         Permission.supervision.dealFinancialStructure.name,
       ],
       "type_multi": true,
       "child_routes": [
@@ -207,6 +209,22 @@ export default [
             "path": SUPERVISION.PROJECTS.LIST,
             "permissions": [
                Permission.supervision.project.name,
+            ],
+         },
+         {
+            "menu_title": "Structures financières",
+            "new_item": false,
+            "path": SUPERVISION.FINANCIAL_STRUCTURE.LIST,
+            "permissions": [
+               Permission.supervision.dealFinancialStructure.name,
+            ],
+         },
+         {
+            "menu_title": "Campagnes",
+            "new_item": false,
+            "path": SUPERVISION.FUNDING_CAMPAIGN.LIST,
+            "permissions": [
+               Permission.supervision.dealCampaign.name,
             ],
          }
       ]

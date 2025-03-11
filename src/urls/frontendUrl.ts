@@ -1022,6 +1022,14 @@ export const SUPERVISION = {
     PROJECTS: {
         SELF: '/supervision/projects',
         LIST: '/supervision/projects/list',
+    },    
+    FINANCIAL_STRUCTURE: {
+        SELF: '/supervision/financial-structures',
+        LIST: '/supervision/financial-structures/list',
+    },    
+    FUNDING_CAMPAIGN: {
+        SELF: '/supervision/funding-campaigns',
+        LIST: '/supervision/funding-campaigns/list',
     },
     VOTES: {
         SELF: '/supervision/votes',

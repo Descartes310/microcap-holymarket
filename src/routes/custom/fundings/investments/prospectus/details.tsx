@@ -55,22 +55,6 @@ const List = (props) => {
                             <td>
                                 <div className="media">
                                     <div className="media-body pt-10">
-                                        <h4 className="m-0 fw-bold text-dark">Big deal</h4>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <div className="media">
-                                    <div className="media-body pt-10">
-                                        <h4 className="m-0 text-dark">{data?.itemName}</h4>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr className="cursor-pointer">
-                            <td>
-                                <div className="media">
-                                    <div className="media-body pt-10">
                                         <h4 className="m-0 fw-bold text-dark">Date de création</h4>
                                     </div>
                                 </div>
@@ -107,7 +91,6 @@ const List = (props) => {
                                     <thead>
                                         <tr>
                                             <th className="fw-bold">Intitulé</th>
-                                            <th className="fw-bold">Périmètre</th>
                                             <th className="fw-bold">Article</th>
                                         </tr>
                                     </thead>
@@ -118,13 +101,6 @@ const List = (props) => {
                                                     <div className="media">
                                                         <div className="media-body pt-10">
                                                             <p className="m-0 text-dark">{item?.label}</p>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div className="media">
-                                                        <div className="media-body pt-10">
-                                                            <p className="m-0 text-dark">{getInvestmentPerimeterTypeLabel(item?.perimeter) ?? "Programme"}</p>
                                                         </div>
                                                     </div>
                                                 </td>

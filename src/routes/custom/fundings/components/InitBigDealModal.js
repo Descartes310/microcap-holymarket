@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { dateDiff } from 'Helpers/helpers';
 import { getTimeUnits } from 'Helpers/datas';
 import FundingService from 'Services/funding';
-import AccounService from 'Services/accounts';
+import AccountService from 'Services/accounts';
 import { withRouter } from "react-router-dom";
 import CustomList from "Components/CustomList";
 import { setRequestGlobalAction } from 'Actions';
@@ -22,7 +22,6 @@ class InitBigDealModal extends Component {
         deal: null,
         amount: null,
         programs: [],
-        accounts: [],
         currencies: [],
         currency: null,
         program: null,
@@ -49,7 +48,7 @@ class InitBigDealModal extends Component {
         } else {
             this.getUnits();
             this.getPrograms();
-            this.getAccounts();
+            this.findAccount();
         }
     }
 
@@ -71,17 +70,22 @@ class InitBigDealModal extends Component {
         })
     }
 
+    findAccount = () => {
+        this.props.setRequestGlobalAction(true);
+        AccountService.getAccount(this.props.match.params.id).then(response => {
+            this.setState({ account: response });
+        }).catch((err) => {
+            console.log(err);
+        })
+        .finally(() => {
+            this.props.setRequestGlobalAction(false);
+        })
+    }
+
     getPrograms = () => {
         this.props.setRequestGlobalAction(true),
         FundingService.getFundingPrograms()
         .then(response => this.setState({ programs: response }))
-        .finally(() => this.props.setRequestGlobalAction(false))
-    }
-
-    getAccounts = () => {
-        this.props.setRequestGlobalAction(true),
-        AccounService.getBigDealAccounts()
-        .then(response => this.setState({ accounts: response }))
         .finally(() => this.props.setRequestGlobalAction(false))
     }
 
@@ -190,7 +194,7 @@ class InitBigDealModal extends Component {
 
         const { onClose, show, deal } = this.props;
         const { label, amount, periodStartDate, periodEndDate, periodicity, length, fixPart, variablePart, senderName, currency,
-            program, programs, receiverName, currencies, compensations, account, accounts } = this.state;
+            program, programs, receiverName, currencies, compensations } = this.state;
 
         return (
             <DialogComponent
@@ -260,21 +264,6 @@ class InitBigDealModal extends Component {
                                 </FormGroup>
                             </div> : (
                             <>
-                                <FormGroup className="has-wrapper mr-20" style={{ flex: 1 }}>
-                                    <InputLabel className="text-left">
-                                        Compte Ndjangui Big deals
-                                    </InputLabel>
-                                    <Autocomplete
-                                        id="combo-box-demo"
-                                        value={account}
-                                        options={accounts}
-                                        onChange={(__, item) => {
-                                            this.setState({ account: item });
-                                        }}
-                                        getOptionLabel={(option) => option.label}
-                                        renderInput={(params) => <TextField {...params} variant="outlined" />}
-                                    />
-                                </FormGroup>   
                                 <FormGroup className="has-wrapper mr-20" style={{ flex: 1 }}>
                                     <InputLabel className="text-left">
                                         Programmes

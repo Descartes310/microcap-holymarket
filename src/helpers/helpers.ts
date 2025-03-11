@@ -921,6 +921,12 @@ export const translatePermissionFolder = (path) => {
             return 'Services';
         case 'OPERATIONS':
             return 'Opérations';
+        case 'BIGDEALS':
+            return 'Big deals';
+        case 'CAMPAIGNS':
+            return 'Campagnes';
+        case 'STRUCTURES':
+            return 'Structures financière';
         default:
             return path;
     }

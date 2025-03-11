@@ -320,12 +320,24 @@ export default class GroupService {
         return makeRequest('get', Routes.GET_CAMPAIGNS, data);
     }
 
+    static getSupervisedCampaigns(): Promise<any> {
+        return makeRequest('get', Routes.GET_SUPERVISED_CAMPAIGNS);
+    }
+
+    static getSupervisedStructures(): Promise<any> {
+        return makeRequest('get', Routes.GET_SUPERVISED_FINANCIAL_STRUCTURES);
+    }
+
     static changeCampaignStatus(reference: string): Promise<any> {
         return makeRequest('post', Routes.CHANGE_CAMPAIGN_STATUS(reference), {});
     }
 
     static changeFundingCampaignProgression(reference: string, data: any): Promise<any> {
         return makeRequest('put', Routes.CHANGE_CAMPAIGN_PROGRESSION(reference), data);
+    }
+
+    static changeFundingCampaignStatus(reference: string): Promise<any> {
+        return makeRequest('put', Routes.CHANGE_CAMPAIGN_ACTIVATE(reference), {});
     }
     
 }
