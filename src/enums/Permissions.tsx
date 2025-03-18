@@ -335,6 +335,9 @@ export default class Permission extends BaseEnum {
         dealFinancialStructure: {
             "name": "SUPERVISION_DEAL_FINANCIAL_STRUCTURE"
         },
+        logs: {
+            "name": "SUPERVISION_AUDIT_LOGS"
+        },
     };
 
     static assets = {

@@ -155,6 +155,7 @@ export default [
          Permission.supervision.operation.name,
          Permission.supervision.partner.name,
          Permission.supervision.project.name,
+         Permission.supervision.logs.name,
          Permission.general.operationCounterValidation.name,
          Permission.general.operationAgencyValidation.name,
          Permission.supervision.dealCampaign.name,
@@ -177,7 +178,7 @@ export default [
             "permissions": [
                Permission.supervision.user.name,
             ],
-         },         {
+         }, {
             "menu_title": "Opérations",
             "new_item": false,
             "path": SUPERVISION.OPERATIONS.PENDING,
@@ -185,6 +186,13 @@ export default [
                Permission.supervision.operation.name,
                Permission.general.operationCounterValidation.name,
                Permission.general.operationAgencyValidation.name,
+            ],
+         }, {
+            "menu_title": "Journalisation",
+            "new_item": false,
+            "path": SUPERVISION.AUDIT.LIST,
+            "permissions": [
+               Permission.supervision.logs.name,
             ],
          },
          {

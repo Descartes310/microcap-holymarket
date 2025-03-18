@@ -78,7 +78,7 @@ const Access = (props) => {
                                             <th className="fw-bold">Type</th>
                                             <th className="fw-bold">Catégorie</th>
                                             <th className="fw-bold">Réference</th>
-                                            <th className="fw-bold">Login</th>
+                                            <th className="fw-bold">Contact</th>
                                             <th className="fw-bold">Status</th>
                                             <th className="fw-bold">Action</th>
                                         </tr>
@@ -122,7 +122,7 @@ const Access = (props) => {
                                                     <div className="media">
                                                         <div className="media-body pt-10">
                                                             <h4 className="m-0 fw-bold text-dark">
-                                                                {item.login}
+                                                                {item.contact ? item.contact.value : '-'}
                                                             </h4>
                                                         </div>
                                                     </div>

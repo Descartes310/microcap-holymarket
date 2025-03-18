@@ -1,3 +1,4 @@
+export const KYCU = "api/socialnetworks/users/self";
 export const KYC = "api/socialnetworks/users/self/all";
 export const GENERATE_OTP = "api/socialnetworks/users/self/otp";
 export const REGISTER = "api/socialnetworks/users/self/register";
@@ -15,6 +16,7 @@ export const GET_PROCURATION_ACCESS = `api/socialnetworks/users/access/procurati
 export const USER_KYC = (reference) => `api/socialnetworks/users/self/${reference}/all`;
 export const RESET_PASSWORD_LINK = "api/socialnetworks/users/access/send-password-link";
 export const CHANGE_ACCESS_LOGIN = (id) => `api/socialnetworks/users/access/${id}/login`;
+export const CHANGE_ACCESS_CONTACT = (id) => `api/socialnetworks/users/access/${id}/contact`;
 export const CREATE_PROCURATION_ACCESS = `api/socialnetworks/users/access/procurations`;
 export const ACTIVATE_OR_BLOCK_ACCESS = "api/socialnetworks/users/access/activate-or-block";
 export const USER_ARTICLES = (reference) => `api/socialnetworks/users/self/blogs/${reference}`;

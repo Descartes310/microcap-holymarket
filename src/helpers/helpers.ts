@@ -801,132 +801,66 @@ export const getNodeFromPermissions = (permissions: any) => {
 
 export const translatePermissionFolder = (path) => {
     switch (path) {
-        case 'USER_ACCOUNT':
-            return 'Comptes utilisateurs'
-        case 'USERS':
-            return 'Utilisateurs'
-        case 'CATEGORY':
-            return 'Catégories';
-        case 'TYPE':
-            return "Types"
-        case 'ACCOUNT':
-            return 'Comptes';
-        case 'ROLE':
-            return 'Rôles';
-        case 'ORGANISATION':
-            return 'Organisations';
-        case 'ADMINISTRATION':
-            return 'Administration';
-        case 'MEMBER':
-            return 'Membres';
-        case 'MANAGEMENT':
-            return 'Configuration';
-        case 'DETAILS':
-            return 'Détails';
-        case 'MARKETPLACE':
-            return 'Marketplace';
-        case 'SETTING':
-            return 'Paramètrage';
-        case 'STORE':
-            return 'Commercant';
-        case 'ACCESS':
-            return 'Accès';
-        case 'PROJECTS':
-            return 'Projet';
-        case 'COVERAGE':
-            return 'Couverture';
-        case 'TERRITORY':
-            return 'Térritoire';
-        case 'CONTRACT':
-            return 'Contrat';
-        case 'PARTNER':
-            return 'Partenaire';
-        case 'PARTNERS':
-            return 'Partenaires';
-        case 'FUNDING':
-            return 'Financement';
-        case 'BROKER':
-            return 'Broker';
-        case 'BANK_SERVICE':
-            return 'Service bancaire';
-        case 'CASHMANAGEMENT':
-            return 'Cash management';
-        case 'AGENT':
-            return 'Agent';
-        case 'INTERMEDIARY':
-            return 'Intermédiaire bancaire';
-        case 'INTERMEDIATION':
-            return 'Intermédiation';
-        case 'BANK':
-            return 'Banque';
-        case 'COUNTER':
-            return 'Guichet';
-        case 'CASHDESK':
-            return 'Caisse';
-        case 'BOURSE':
-            return 'Bourse de financement';
-        case 'MARKETS':
-            return 'Marchés';
-        case 'NETWORKS':
-            return 'Gestion du réseaux';
-        case 'MICROCAP360':
-            return 'MicroCap 360';
-        case 'BROKERS':
-            return 'Brokers';
-        case 'PSGAV':
-            return 'PSGAV';
-        case 'COMMUNITY':
-            return 'Communauté';
-        case 'ASSETS':
-            return 'Actifs';
-        case 'SUPERVISION':
-            return 'Supervision';
-        case 'PROJECT':
-            return 'Projets';
-        case 'SYSTEM':
-            return 'Système';
-        case 'CONFIGURATION':
-            return 'Configuration';
-        case 'ACCESSORIES':
-            return 'Accessoires';
-        case 'PROFILE':
-            return 'Profile';
-        case 'MPADMIN':
-            return 'Produits & services';
-        case 'SUPPORT':
-            return 'Métiers support';
-        case 'NETWORK':
-            return 'Réseau social';
-        case 'NUSER':
-            return 'Réseau utilisateur';
-        case 'USER':
-            return 'Utilisateurs';
         case 'SOCIALNETWORK':
             return 'Réseau social';
-        case 'PERSONAL_PROFILE':
-            return 'Profil personnel';
-        case 'SHOP':
-            return 'MicroCap Store';
-        case 'ASSIST':
-            return 'Assistance';
-        case 'MENU':
-            return 'Menu';
-        case 'EXTENSION':
-            return 'Extensions';
+        case 'ORGANISATION':
+            return 'Organisations';
+        case 'PROFILE':
+            return 'Profil';
+        case 'ADMINISTRATION':
+            return 'Administration';
+        case 'CONFIGURATION':
+            return 'Configuration';
+        case 'USER_ACCOUNT':
+            return 'Comptes utilisateurs';
+        case 'USER':
+            return 'Utilisateurs';
+        case 'MEMBER':
+            return 'Membres';
+        case 'PROJECT':
+            return 'Projets';
         case 'PROJECT_COMMUNITY':
             return 'Communauté projet';
-        case 'ENDORSMENT':
-            return 'Cautionnement';
         case 'SERVICES':
             return 'Services';
-        case 'OPERATIONS':
-            return 'Opérations';
+        case 'ASSIST':
+            return 'Assistance';
+        case 'MARKETPLACE':
+            return 'Marketplace';
+        case 'STORE':
+            return 'Commercant';
+        case 'SHOP':
+            return 'MicroCap Store';
+        case 'FUNDING':
+            return 'Financement';
+        case 'ENDORSMENT':
+            return 'Cautionnement';
+        case 'ASSETS':
+            return 'Actifs';
+        case 'BROKER':
+            return 'Broker';
+        case 'BANK':
+            return 'Banque';
+        case 'PSGAV':
+            return 'PSGAV';
+        case 'INTERMEDIATION':
+            return 'Intermédiation';
+        case 'CASHDESK':
+            return 'Caisse';
         case 'BIGDEALS':
             return 'Big deals';
         case 'CAMPAIGNS':
             return 'Campagnes';
         case 'STRUCTURES':
             return 'Structures financière';
+        case 'SYSTEM':
+            return 'Système';
+        case 'SETTING':
+            return 'Paramètrage';
+        case 'SUPERVISION':
+            return 'Supervision';
+        case 'EXTENSION':
+            return 'Extensions';
         default:
             return path;
     }
@@ -1450,3 +1384,23 @@ export const RECHARGE_NATURES = [
         value: 'CASH_OUT'
     }
 ]
+
+
+export const logActionTypes = [
+    {
+        label: 'Création',
+        value: 'CREATE'
+    }, 
+    {
+        label: 'Mise à jour',
+        value: 'UPDATE'
+    },
+    {
+        label: 'Suppression',
+        value: 'DELETE'
+    }
+];
+
+export const getLogActionTypeLabel = (value) => {
+    return logActionTypes.find(d => d.value == value)?.label
+}

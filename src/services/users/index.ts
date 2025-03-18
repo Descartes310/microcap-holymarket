@@ -16,8 +16,12 @@ export default class UserService {
         return makeRequest('get', Routes.KYC);
     }
 
-    static userKYC(reference: string): Promise<any> {
-        return makeRequest('get', Routes.USER_KYC(reference));
+    static userKYC(reference: string = null): Promise<any> {
+        if(reference) {
+            return makeRequest('get', Routes.USER_KYC(reference));
+        } else {
+            return makeRequest('get', Routes.KYCU);
+        }
     }
 
     static getBlogs(): Promise<any> {
@@ -65,6 +69,10 @@ export default class UserService {
 
     static changeAccessLogin(id: number, data: any): Promise<any> {
         return makeRequest('put', Routes.CHANGE_ACCESS_LOGIN(id), data);
+    }
+
+    static changeAccessContact(id: number, data: any): Promise<any> {
+        return makeRequest('put', Routes.CHANGE_ACCESS_CONTACT(id), data);
     }
 
     static changeAccessPassword(id: number, data: any): Promise<any> {

@@ -39,4 +39,8 @@ export default class SystemService {
         return makeRequest('get', Routes.GET_LOGS);
     }
 
+    static getAuditLogs(): Promise<any> {
+        return makeRequest('get', Routes.GET_AUDIT_LOGS);
+    }
+
 }

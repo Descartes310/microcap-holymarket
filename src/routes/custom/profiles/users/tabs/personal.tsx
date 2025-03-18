@@ -7,15 +7,24 @@ import { getReferralTypeLabel } from 'Helpers/helpers';
 import UpdateProfile from '../components/updateProfile';
 import { FormGroup, Input as InputStrap, Button } from 'reactstrap';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
+import UserService from 'Services/users';
 
 const PROFILE_BANNER = 'https://reactify.theironnetwork.org/static/media/profile-bg.5573c7e7.jpg';
 
 const Personal = (props) => {
 
     const [showUpdateBox, setShowUpdateBox] = useState(false);
+    const [user, setUser] = useState(null);
 
     useEffect(() => {
+        getUser();
     }, []);
+
+    const getUser = () => {
+        UserService.userKYC().then((response) => {
+            setUser(response)
+        });
+    }
 
     return (
         <div className="userProfile-wrapper">
@@ -27,8 +36,8 @@ const Personal = (props) => {
                             <img src={require('Assets/avatars/profile.jpg')} alt="user profile" className="rounded-circle mr-30 bordered" width="140" height="140" />
                             <div className="media-body pt-25">
                                 <div>
-                                    <h2>{props.authUser.userName}</h2>
-                                    <p>{props.authUser.email}</p>
+                                    <h2>{user?.userName}</h2>
+                                    <p>{user?.email}</p>
                                 </div>
                             </div>
                         </div>
@@ -42,7 +51,7 @@ const Personal = (props) => {
                         <InputStrap
                             disabled
                             className="input-lg"
-                            value={props.authUser.userName}
+                            value={user?.userName}
                         />
                     </FormGroup>
                     <FormGroup className="has-wrapper">
@@ -52,7 +61,7 @@ const Personal = (props) => {
                         <InputStrap
                             disabled
                             className="input-lg"
-                            value={props.authUser.email}
+                            value={user?.email}
                         />
                     </FormGroup>
                     <FormGroup className="has-wrapper">
@@ -62,7 +71,7 @@ const Personal = (props) => {
                         <InputStrap
                             disabled
                             className="input-lg"
-                            value={props.authUser.referralId}
+                            value={user?.referralId}
                         />
                     </FormGroup>
                     <FormGroup className="has-wrapper">
@@ -72,7 +81,7 @@ const Personal = (props) => {
                         <InputStrap
                             disabled
                             className="input-lg"
-                            value={getReferralTypeLabel(props.authUser.referralType)}
+                            value={getReferralTypeLabel(user?.referralType)}
                         />
                     </FormGroup>
 
@@ -83,7 +92,7 @@ const Personal = (props) => {
                         <InputStrap
                             disabled
                             className="input-lg"
-                            value={props.authUser.notificationAddress}
+                            value={user?.notificationAddress}
                         />
                     </FormGroup>
                     <FormGroup>
@@ -99,10 +108,15 @@ const Personal = (props) => {
                     </FormGroup>
                 </div>
             </RctCard>
-            <UpdateProfile show={showUpdateBox} onClose={() => {
-                    setShowUpdateBox(false);
-                }
-            } />
+            { user && (
+                <UpdateProfile 
+                    user={user} 
+                    show={showUpdateBox} 
+                    onClose={() => {
+                        setShowUpdateBox(false);
+                    }}
+                />
+            )}
         </div>
     );
 }

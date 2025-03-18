@@ -1,13 +1,15 @@
 import { connect } from "react-redux";
-import { AUTH } from 'Url/frontendUrl';
 import { injectIntl } from "react-intl";
 import React, { Component } from 'react';
 import UserService from 'Services/users';
+import { getContactTypeLabel } from '../data';
 import { withRouter } from "react-router-dom";
+import TextField from '@material-ui/core/TextField';
 import { setRequestGlobalAction } from 'Actions';
 import { RctCardContent } from 'Components/RctCard';
 import { FormGroup, Input, Button } from 'reactstrap';
 import {NotificationManager} from "react-notifications";
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import DialogComponent from "Components/dialog/DialogComponent";
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 
@@ -16,6 +18,8 @@ class ChangeAccessCredentials extends Component {
     state = {
         pass: null,
         login: null,
+        contacts: [],
+        contact: null,
         password: null,
         oldPassword: null,
         confirmation: null,
@@ -25,7 +29,15 @@ class ChangeAccessCredentials extends Component {
         super(props);
      }
 
-     componentDidMount() {}
+     componentDidMount() {
+        this.getContacts();
+     }
+
+    getContacts = () => {
+        UserService.getContacts().then((response) => {
+            this.setState({contacts: response.filter(c => c.type !== 'ALIAS')})
+        });
+    }
   
      onSubmitProfile = () => {
         this.props.setRequestGlobalAction(true);
@@ -52,18 +64,28 @@ class ChangeAccessCredentials extends Component {
         .finally(() => this.props.setRequestGlobalAction(false))
     }
 
-    // activatePass = () => {
-    //     this.props.setRequestGlobalAction(true);
+    onSubmitContact = () => {
+        this.props.setRequestGlobalAction(true);
+        if(!this.state.contact) {
+            NotificationManager.error("Sélectionnez un contact");
+        }
 
-    //     UserService.activatePass(this.state.pass).then((response) => {
-    //         console.log(response);
-    //     })
-    //     .catch(err => {
-    //         console.log(err);
-    //         NotificationManager.error("Une erreur s'est produite, veuillez reessayer plutard.");
-    //     })
-    //     .finally(() => this.props.setRequestGlobalAction(false))
-    // }
+        let datas = {
+            contact_id: this.state.contact.id
+        };
+
+        UserService.changeAccessContact(this.props.access.id, datas).then(() => {
+            if(this.props.access.reference === this.props.authUser.access) {
+                window.location.reload();
+            }
+        })
+        .catch(err => {
+            console.log(err);
+            NotificationManager.error("Une erreur est survenue, veuillez réessayer");
+            this.props.onClose();
+        })
+        .finally(() => this.props.setRequestGlobalAction(false))
+    }
 
      onSubmitLogin = () => {
 
@@ -132,7 +154,7 @@ class ChangeAccessCredentials extends Component {
     render() {
 
         const { onClose, show, access } = this.props;
-        const { login, password, oldPassword, confirmation, pass } = this.state;
+        const { login, password, oldPassword, confirmation, contact, contacts } = this.state;
 
         return (
             <DialogComponent
@@ -146,30 +168,36 @@ class ChangeAccessCredentials extends Component {
                 )}
             >
                 <RctCardContent>
-                    {/* <FormGroup tag="fieldset">
+                    
+                    <FormGroup tag="fieldset">
+                        <h2 className="mb-10 mb-20 mt-20">Adresse de notification</h2>
                         <FormGroup className="has-wrapper">
-                            <h2 className="mb-10 mb-20">Profil utilisateur</h2>
-                            <InputLabel className="text-left" htmlFor="login">
-                                Réference du pass
-                            </InputLabel>
-                            <Input
-                                id="pass"
-                                type="text"
-                                name='pass'
-                                value={pass}
-                                className="input-lg"
-                                onChange={(e) => this.setState({ pass: e.target.value })}
-                            />
+                            <div className="col-md-12 col-sm-12 has-wrapper mb-30 p-0">
+                                <InputLabel className="text-left">
+                                    Contact
+                                </InputLabel>
+                                <Autocomplete
+                                    value={contact}
+                                    options={contacts}
+                                    id="combo-box-demo"
+                                    classes={{ paper: 'custom-input' }}
+                                    getOptionLabel={(option) => `${option.value} (${getContactTypeLabel(option.type)})`}
+                                    onChange={(__, item) => { this.setState({ contact: item }) }}
+                                    renderInput={(params) => <TextField {...params} variant="outlined" />}
+                                />
+                            </div>
                         </FormGroup>
+
                         <Button
                             color="primary"
-                            disabled={!this.state.pass}
-                            onClick={() => this.activatePass()}
+                            disabled={!contact}
                             className="ml-0 text-white float-right"
+                            onClick={() => this.onSubmitContact()}
                         >
-                            Valider
+                            Enregistrer
                         </Button>
-                    </FormGroup> */}
+                    </FormGroup>
+
                     <FormGroup tag="fieldset">
                         <h2 className="mb-10 mb-20 mt-20">Login</h2>
                         <FormGroup className="has-wrapper">

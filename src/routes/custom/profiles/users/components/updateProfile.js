@@ -18,21 +18,19 @@ import { FormGroup, Input as InputStrap, Button } from 'reactstrap';
 
 const UpdateProfile = (props) => {
 
-    const {show, onClose, authUser: user } = props;
+    const {show, onClose, user } = props;
     const [types, setTypes] = useState([]);
-    const [email, setEmail] = useState(user.email);
+    const [email, setEmail] = useState(user?.email);
     const [countries, setCountries] = useState([]);
-    const [name, setName] = useState(user.userName);
+    const [name, setName] = useState(user?.userName);
     const [juridicForms, setJuridicForms] = useState([]);
     const [juridicForm, setJuridicForm] = useState(null);
     const [nationality, setNationality] = useState(null);
-    // const [telephone, setTelephone] = useState(user.telephone);
     const [residenceCountry, setResidenceCountry] = useState(null);
     const [immatriculationType, setImmatriculationType] = useState(null);
-    // const [notificationAddress, setNotificationAddress] = useState(user.notificationAddress);
-    const [immatriculationNumber, setImmatriculationNumber] = useState(user.identificationNumber);
-    const [immatriculationEndDate, setImmatriculationEndDate] = useState(user.identificationEndDate);
-    const [immatriculationStartDate, setImmatriculationStartDate] = useState(user.identificationStartDate);
+    const [immatriculationNumber, setImmatriculationNumber] = useState(user?.identificationNumber);
+    const [immatriculationEndDate, setImmatriculationEndDate] = useState(user?.identificationEndDate);
+    const [immatriculationStartDate, setImmatriculationStartDate] = useState(user?.identificationStartDate);
 
     useEffect(() => {
         _getCountries();
@@ -95,10 +93,8 @@ const UpdateProfile = (props) => {
     const onSubmit = () => {
         checkFormValidity();
         let data = {
+            email,
             user_name: name,
-            email, 
-            // telephone,
-            // notification_address: notificationAddress,
             residence_country: residenceCountry.id,
             identification_type: immatriculationType.id,
             identification_value: immatriculationNumber,

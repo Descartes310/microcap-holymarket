@@ -1055,6 +1055,10 @@ export const SUPERVISION = {
         SELF: '/supervision/operations',
         LIST: '/supervision/operations/list',
         PENDING: '/supervision/operations/pending',
+    },
+    AUDIT: {
+        SELF: '/supervision/audits',
+        LIST: '/supervision/audits/list'
     }
 }
 

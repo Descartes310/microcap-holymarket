@@ -9,3 +9,5 @@ export const FIND_VOTE_CONFIG = (reference) => `api/pme-votes/configurations/${r
 export const UPDATE_VOTE_CONFIG = (reference) => `api/pme-votes/configurations/${reference}`;
 
 export const GET_LOGS = "api/sequences/logs";
+
+export const GET_AUDIT_LOGS = 'api/audits/logs';
