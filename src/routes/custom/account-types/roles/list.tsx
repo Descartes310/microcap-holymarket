@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 import RoleService from 'Services/roles';
 import { withRouter } from "react-router-dom";
 import Button from '@material-ui/core/Button';
+import UploadBox from 'Components/UploadBox';
 import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
 import React, { useState, useEffect } from 'react';
@@ -11,6 +12,7 @@ import { joinUrlWithParamsId, USER_ACCOUNT_TYPE } from 'Url/frontendUrl';
 const Roles = (props) => {
 
     const [roles, setRoles] = useState([]);
+    const [showExcelBox, setShowExcelBox] = useState(false);
 
     useEffect(() => {
         getRoles();
@@ -37,6 +39,20 @@ const Roles = (props) => {
                 list={roles}
                 itemsFoundText={n => `${n} role.s trouvé.s`}
                 onAddClick={() => goToCreate()}
+                rightComponent={() => (
+                    <div className="col-md-12 col-sm-12 d-flex has-wrapper">
+                        <Button
+                            color="primary"
+                            className="text-white mr-2 ml-10"
+                            variant="contained"
+                            onClick={() => {
+                                setShowExcelBox(true);
+                            }}
+                        >
+                            Mise à jour Excel
+                        </Button>
+                    </div>
+                )}
                 renderItem={list => (
                     <>
                         {list && list.length === 0 ? (
@@ -98,6 +114,14 @@ const Roles = (props) => {
                         )}
                     </>
                 )}
+            />
+
+            <UploadBox
+                show={showExcelBox}
+                onClose={() => {
+                    setShowExcelBox(false);
+                }}
+                setRequestGlobalAction={props.setRequestGlobalAction}
             />
         </>
     );

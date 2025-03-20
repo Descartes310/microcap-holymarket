@@ -27,4 +27,8 @@ export default class RoleService {
     static updateRole(id: number, data: any): Promise<any> {
         return makeRequest('put', Routes.UPDATE_ROLE(id), data);
     }
+
+    static updateFromExcel(data: any): Promise<any> {
+        return makeRequest('post', Routes.UPDATE_FROM_EXCEL, data, { fileData: ['file'], multipart: true });
+    }
 }
