@@ -120,6 +120,7 @@ const Roles = (props) => {
                 show={showExcelBox}
                 onClose={() => {
                     setShowExcelBox(false);
+                    getRoles();
                 }}
                 setRequestGlobalAction={props.setRequestGlobalAction}
             />
