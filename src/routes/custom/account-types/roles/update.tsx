@@ -22,6 +22,7 @@ type TreeNode = {
 
 const Update = (props) => {
 
+    const [code, setCode] = useState('');
     const [label, setLabel] = useState('');
     const [role, setRole] = useState(null);
     const [expanded, setExpanded] = useState([]);
@@ -49,6 +50,7 @@ const Update = (props) => {
             RoleService.findRole(props.match.params.id)
             .then(response => {
                 setRole(response);
+                setCode(response.code);
                 setLabel(response.label);
                 setDescription(response.description);
                 setSelectedPermissions(response.permissions.map(permission => permission.id));
@@ -62,12 +64,15 @@ const Update = (props) => {
 
     const onSubmit = () => {
 
-        if (!label || selectedPermissions.length <= 0)
+        if (!label || selectedPermissions.length <= 0 || !code) {
+            NotificationManager.error("Le formulaire est mal renseigné");
             return
+        }
 
         props.setRequestGlobalAction(true);
 
         let data: any = {
+            code: code,
             label: label,
             permissionIds: selectedPermissions.map(p => Number(p))
         }
@@ -103,6 +108,20 @@ const Update = (props) => {
                             value={label}
                             className="input-lg"
                             onChange={(e) => setLabel(e.target.value)}
+                        />
+                    </FormGroup>
+                    <FormGroup className="has-wrapper">
+                        <InputLabel className="text-left" htmlFor="code">
+                            Code
+                        </InputLabel>
+                        <InputStrap
+                            required
+                            id="code"
+                            type="text"
+                            name='code'
+                            className="input-lg"
+                            value={code}
+                            onChange={(e) => setCode(e.target.value)}
                         />
                     </FormGroup>
                     <FormGroup className="has-wrapper">

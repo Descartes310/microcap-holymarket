@@ -22,10 +22,10 @@ type TreeNode = {
 
 const Create = (props) => {
 
+    const [code, setCode] = useState('');
     const [label, setLabel] = useState('');
     const [expanded, setExpanded] = useState([]);
     const [nodes, setNodes] = useState<TreeNode[]>([]);
-    const [setPermissions] = useState([]);
     const [description, setDescription] = useState('');
     const [selectedPermissions, setSelectedPermissions] = useState([]);
 
@@ -45,12 +45,15 @@ const Create = (props) => {
 
     const onSubmit = () => {
 
-        if (!label || selectedPermissions.length <= 0)
+        if (!label || selectedPermissions.length <= 0 || !code) {
+            NotificationManager.error("Le formulaire est mal renseigné");
             return
+        }
 
         props.setRequestGlobalAction(true);
 
         let data: any = {
+            code: code,
             label: label,
             type: 'USER_ACCOUNT',
             permissionIds: selectedPermissions.map(p => Number(p))
@@ -88,6 +91,20 @@ const Create = (props) => {
                             className="input-lg"
                             value={label}
                             onChange={(e) => setLabel(e.target.value)}
+                        />
+                    </FormGroup>
+                    <FormGroup className="has-wrapper">
+                        <InputLabel className="text-left" htmlFor="code">
+                            Code
+                        </InputLabel>
+                        <InputStrap
+                            required
+                            id="code"
+                            type="text"
+                            name='code'
+                            className="input-lg"
+                            value={code}
+                            onChange={(e) => setCode(e.target.value)}
                         />
                     </FormGroup>
                     <FormGroup className="has-wrapper">
