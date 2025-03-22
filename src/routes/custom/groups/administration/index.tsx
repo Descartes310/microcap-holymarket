@@ -1,6 +1,7 @@
 import React from 'react';
 import Posts from './posts';
 import Roles from './roles';
+import Clans from './clans';
 import Members from './members';
 import Requests from './requests';
 import Articles from './articles';
@@ -21,6 +22,7 @@ const GroupAdministration = (props) => {
                     <Route path={GROUP.ADMINISTRATION.ROLE.SELF} component={Roles} />
                     <Route path={GROUP.ADMINISTRATION.POST.SELF} component={Posts} />
                     <Route path={GROUP.ADMINISTRATION.MEMBER.SELF} component={Members} />
+                    <Route path={GROUP.ADMINISTRATION.CLAN.SELF} component={Clans} />
                     <Route path={GROUP.ADMINISTRATION.REQUEST.SELF} component={Requests} />
                     <Route path={GROUP.ADMINISTRATION.PARAMETER.SELF} component={Settings} />
                     <Route path={GROUP.ADMINISTRATION.ARTICLE.SELF} component={Articles} />

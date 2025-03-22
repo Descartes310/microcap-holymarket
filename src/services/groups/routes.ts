@@ -21,6 +21,7 @@ export const FIND_GROUP_MEMBER_BY_REFERENCE = (id) => `api/socialnetworks/groups
 export const GET_COMMUNITY_DATAS = `api/socialnetworks/groups/self`;
 export const UPDATE_GROUP_DETAILS = `api/socialnetworks/groups/self/details`;
 export const GET_GROUP_DETAILS = (ref) => `api/socialnetworks/groups/self/${ref}/details`;
+export const LIKE_GROUP = (reference) => `api/socialnetworks/groups/self/${reference}/likes`;
 export const SEND_EXTERNAL_GROUP_INVITATION = `api/socialnetworks/users/self/invitations`;
 export const CREATE_UNCONVENTIONATED_GROUP = `api/socialnetworks/groups/self/unconventionated`;
 
@@ -99,4 +100,13 @@ export const CHANGE_CAMPAIGN_PROGRESSION = (reference) => `api/socialnetworks/gr
 
 export const GET_FINANCIAL_STRUCTURE_SUPPORTS = (reference) => `api/socialnetworks/groups/types/financial-structures/${reference}/supports`;
 export const CREATE_FINANCIAL_STRUCTURE_SUPPORT = (reference) => `api/socialnetworks/groups/types/financial-structures/${reference}/supports`;
+
+export const GET_GROUP_REQUESTS = `api/socialnetworks/requests`;
+export const CREATE_VISIBILITY_REQUEST = `api/socialnetworks/requests/visibility`;
+export const TREAT_GROUP_REQUEST = (reference) => `api/socialnetworks/requests/${reference}/treat`;
+
+export const GET_CLANS = `api/socialnetworks/groups/self/clans`;
+export const CREATE_CLAN = "api/socialnetworks/groups/self/clans";
+export const GET_ADMIN_CLANS = `api/socialnetworks/groups/self/clans/admin`;
+export const TREAT_ADMIN_CLAN = "api/socialnetworks/groups/self/clans/admin";
 

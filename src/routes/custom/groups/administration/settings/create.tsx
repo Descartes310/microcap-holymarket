@@ -9,6 +9,7 @@ import { setRequestGlobalAction } from 'Actions';
 import React, { useState, useEffect } from 'react';
 import TextField from '@material-ui/core/TextField';
 import { FileUploader } from "react-drag-drop-files";
+import ConfirmBox from "Components/dialog/ConfirmBox";
 import PartnershipService from 'Services/partnerships';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { NotificationManager } from 'react-notifications';
@@ -50,6 +51,7 @@ const Create = (props) => {
     const [partner, setPartner] = useState(null);
     const [userFiles, setUserFiles] = useState([]);
     const [description, setDescription] = useState('');
+    const [showConfirmBox, setShowConfirmBox] = useState(false);
     const [selectedUserFiles, setSelectedUserFiles] = useState([]);
 
     useEffect(() => {
@@ -77,6 +79,21 @@ const Create = (props) => {
             setPartners(response);
         })
         .finally(() => {
+            props.setRequestGlobalAction(false);
+        })
+    }
+
+    const requestForVisibility = () => {
+        props.setRequestGlobalAction(true);
+        GroupService.requestForVisibility({reference: group.reference})
+        .then((response) => {
+            NotificationManager.success("La demande a été envoyée avec succès");
+        })
+        .catch((err) => {
+            NotificationManager.error("Une erreur est survenue, veuillez reessayer plus tard");
+        })
+        .finally(() => {
+            setShowConfirmBox(false);
             props.setRequestGlobalAction(false);
         })
     }
@@ -144,6 +161,7 @@ const Create = (props) => {
                 title={"Paramètres du groupe"}
             />
             <RctCollapsibleCard>
+                {!group?.visible && (<p style={{ fontSize: '1.2rem', marginBottom: 30 }}>Votre communauté n'est pas visible sur le réseau MicroCap, <span onClick={() => setShowConfirmBox(true)} className='cursor-pointer' style={{ textDecoration: 'underline', color: '#fece00' }}>cliquez ici pour faire une demande de visibilité</span></p>)}
                 <Form onSubmit={onSubmit}>
                     <FormGroup className="has-wrapper">
                         <InputLabel className="text-left" htmlFor="title">
@@ -223,6 +241,16 @@ const Create = (props) => {
                         </Button>
                     </FormGroup>
                 </Form>
+                <ConfirmBox
+                    show={showConfirmBox}
+                    rightButtonOnClick={() => {
+                        requestForVisibility();
+                    }}
+                    leftButtonOnClick={() => {
+                        setShowConfirmBox(false)
+                    }}
+                    message={'Etes vous sure de vouloir envoyer la requête ?'}
+                />
             </RctCollapsibleCard>
         </>
     );

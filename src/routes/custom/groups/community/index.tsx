@@ -1,4 +1,5 @@
 import React from 'react';
+import Clan from './clans';
 import Space from './space'
 import Management from './management';
 import { connect } from "react-redux";
@@ -11,6 +12,7 @@ const Community = ({ match }) => {
             <Switch>
                 <Redirect exact from={`${match.url}/`} to={GROUP.COMMUNITY.SPACE.SELF} />
                 <Route path={GROUP.COMMUNITY.SPACE.SELF} component={Space} />
+                <Route path={GROUP.COMMUNITY.CLAN.SELF} component={Clan} />
                 <Route path={GROUP.COMMUNITY.MANAGEMENT.SELF} component={Management} />
             </Switch>
         </div>

@@ -327,6 +327,11 @@ export const GROUP = {
         MANAGEMENT: {
             SELF: '/groups/communities/management',
             CREATE: '/groups/communities/management/create',
+        },
+        CLAN: {
+            SELF: '/groups/communities/clans',
+            LIST: '/groups/communities/clans/list',
+            CREATE: '/groups/communities/clans/create',
         }
     },
     ADMINISTRATION: {
@@ -342,6 +347,10 @@ export const GROUP = {
             SELF: '/groups/administration/requests',
             JOIN: '/groups/administration/requests/joins',
             INVITATION: '/groups/administration/requests/invitations',
+        },
+        CLAN: {
+            SELF: '/groups/administration/clans',
+            LIST: '/groups/administration/clans/list',
         },
         PROJECT: {
             SELF: '/groups/administration/projects',

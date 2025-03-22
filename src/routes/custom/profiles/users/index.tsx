@@ -17,10 +17,10 @@ class Users extends Component<any, any> {
     constructor(props: any) {
         super(props);
         const defaultState = (function (url) {
-            if (url.includes(PROFILE.USER.PERSONAL)) return 0;
-            else if (url.includes(PROFILE.USER.ACCOUNTS)) return 1;
-            else if (url.includes(PROFILE.USER.CARD)) return 2;
-            else if (url.includes(PROFILE.USER.ACCESS)) return 3;
+            if (url.includes(PROFILE.USER.ACCESS)) return 0;
+            else if (url.includes(PROFILE.USER.PERSONAL)) return 1;
+            else if (url.includes(PROFILE.USER.ACCOUNTS)) return 2;
+            else if (url.includes(PROFILE.USER.CARD)) return 3;
             else if (url.includes(PROFILE.USER.CONTACT)) return 4;
             else if (url.includes(PROFILE.USER.BLOG)) return 5;
             else if (url.includes(PROFILE.USER.BROADCAST)) return 6;
@@ -38,15 +38,15 @@ class Users extends Component<any, any> {
         this.setState({ activeTab: value });
         if (oldActivateTab !== value) {
             switch (value) {
-                case 0: return this.props.history.push(PROFILE.USER.PERSONAL);
-                case 1: return this.props.history.push(PROFILE.USER.ACCOUNTS);
-                case 2: return this.props.history.push(PROFILE.USER.CARD);
-                case 3: return this.props.history.push(PROFILE.USER.ACCESS);
+                case 0: return this.props.history.push(PROFILE.USER.ACCESS);
+                case 1: return this.props.history.push(PROFILE.USER.PERSONAL);
+                case 2: return this.props.history.push(PROFILE.USER.ACCOUNTS);
+                case 3: return this.props.history.push(PROFILE.USER.CARD);
                 case 4: return this.props.history.push(PROFILE.USER.CONTACT);
                 case 5: return this.props.history.push(PROFILE.USER.BLOG);
                 case 6: return this.props.history.push(PROFILE.USER.BROADCAST);
                 case 7: return this.props.history.push(PROFILE.USER.INSTITUTION);
-                default: return this.props.history.push(PROFILE.USER.PERSONAL);
+                default: return this.props.history.push(PROFILE.USER.ACCESS);
             }
         }
     };
@@ -72,6 +72,10 @@ class Users extends Component<any, any> {
                                     >
                                         <Tab
                                             icon={<i className="zmdi zmdi-account" />}
+                                            label={"Mes accès"}
+                                        />
+                                        <Tab
+                                            icon={<i className="zmdi zmdi-account" />}
                                             label={"Information personnelles"}
                                             disabled={!this.context.can(Permissions.accountType.profile.name, Permissions)}
                                         />
@@ -84,10 +88,6 @@ class Users extends Component<any, any> {
                                             icon={<i className="zmdi zmdi-account" />}
                                             label={"Ma fiche client"}
                                             disabled={!this.context.can(Permissions.accountType.fiche.name, Permissions)}
-                                        />
-                                        <Tab
-                                            icon={<i className="zmdi zmdi-account" />}
-                                            label={"Mes accès"}
                                         />
                                         <Tab
                                             icon={<i className="zmdi zmdi-account" />}

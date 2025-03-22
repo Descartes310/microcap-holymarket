@@ -15,7 +15,7 @@ const TabContent = ({ match }) => {
     return (
         <div>
             <Switch>
-                <Redirect exact from={`${match.url}/`} to={PROFILE.USER.PERSONAL} />
+                <Redirect exact from={`${match.url}/`} to={PROFILE.USER.ACCESS} />
                 <Route path={PROFILE.USER.ACCESS} component={Access} />
                 <Route path={PROFILE.USER.CARD} component={Card} />
                 <Route path={PROFILE.USER.CONTACT} component={Contact} />

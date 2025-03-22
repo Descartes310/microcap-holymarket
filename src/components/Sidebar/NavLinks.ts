@@ -198,7 +198,7 @@ export default [
          {
             "menu_title": "Partenaires",
             "new_item": false,
-            "path": SUPERVISION.USERS.LIST,
+            "path": SUPERVISION.PARTNERS.LIST,
             "permissions": [
                Permission.supervision.partner.name,
             ],
@@ -396,6 +396,13 @@ export default [
             "profiles": ['GROUP'],
          },
          {
+            "menu_title": "Clans",
+            "new_item": false,
+            "path": GROUP.ADMINISTRATION.CLAN.LIST,
+            "permissions": [Permission.group.admin.post.name],
+            "profiles": ['CONVENTIONATED_COMMUNITY', 'UNCONVENTIONATED_COMMUNITY', 'PROJECT'],
+         },
+         {
             "menu_title": "Invitations/Demandes",
             "new_item": false,
             "path": GROUP.ADMINISTRATION.REQUEST.SELF,
@@ -417,6 +424,15 @@ export default [
             "profiles": ['GROUP'],
          }
       ],
+   },
+
+   {
+      "path": GROUP.COMMUNITY.CLAN.LIST,
+      "menu_title": "Liste des clans",
+      "menu_icon": "zmdi zmdi-users-outline",
+      "new_item": false,
+      "child_routes": null,
+      "profiles": ['CONVENTIONATED_COMMUNITY', 'UNCONVENTIONATED_COMMUNITY', 'PROJECT'],
    },
    {
       "menu_title": "Assistance client",

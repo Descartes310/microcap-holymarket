@@ -339,5 +339,37 @@ export default class GroupService {
     static changeFundingCampaignStatus(reference: string): Promise<any> {
         return makeRequest('put', Routes.CHANGE_CAMPAIGN_ACTIVATE(reference), {});
     }
+
+    static likeGroup(reference: string): Promise<any> {
+        return makeRequest('post', Routes.LIKE_GROUP(reference), {});
+    }
+
+    static getGroupRequests(data: any): Promise<any> {
+        return makeRequest('get', Routes.GET_GROUP_REQUESTS, data);
+    }
+
+    static requestForVisibility(data): Promise<any> {
+        return makeRequest('post', Routes.CREATE_VISIBILITY_REQUEST, data);
+    }
+
+    static treatGroupRequest(reference, data): Promise<any> {
+        return makeRequest('post', Routes.TREAT_GROUP_REQUEST(reference), data);
+    }
+
+    static getClans(data: any): Promise<any> {
+        return makeRequest('get', Routes.GET_CLANS, data);
+    }
+
+    static createClan(data, config: any): Promise<any> {
+        return makeRequest('post', Routes.CREATE_CLAN, data, config);
+    }
+
+    static getAdminClans(data: any): Promise<any> {
+        return makeRequest('get', Routes.GET_ADMIN_CLANS, data);
+    }
+
+    static treatAdminClan(data): Promise<any> {
+        return makeRequest('post', Routes.TREAT_ADMIN_CLAN, data);
+    }
     
 }

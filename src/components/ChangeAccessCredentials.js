@@ -4,8 +4,8 @@ import React, { Component } from 'react';
 import UserService from 'Services/users';
 import { getContactTypeLabel } from '../data';
 import { withRouter } from "react-router-dom";
-import TextField from '@material-ui/core/TextField';
 import { setRequestGlobalAction } from 'Actions';
+import TextField from '@material-ui/core/TextField';
 import { RctCardContent } from 'Components/RctCard';
 import { FormGroup, Input, Button } from 'reactstrap';
 import {NotificationManager} from "react-notifications";
@@ -75,9 +75,7 @@ class ChangeAccessCredentials extends Component {
         };
 
         UserService.changeAccessContact(this.props.access.id, datas).then(() => {
-            if(this.props.access.reference === this.props.authUser.access) {
-                window.location.reload();
-            }
+            window.location.reload();
         })
         .catch(err => {
             console.log(err);

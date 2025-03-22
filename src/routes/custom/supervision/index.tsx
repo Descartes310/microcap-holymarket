@@ -2,6 +2,7 @@ import React from 'react';
 import Users from './users';
 import Votes from './votes';
 import Audits from './audits';
+import Partners from './partners';
 import Projects from './projects';
 import {connect} from "react-redux";
 import {injectIntl} from "react-intl";
@@ -19,6 +20,7 @@ const Supervisions = (props) => {
                 <Switch>
                     <Redirect exact from={`${match.url}/`} to={SUPERVISION.USERS.SELF} />
                     <Route path={SUPERVISION.USERS.SELF} component={Users} />
+                    <Route path={SUPERVISION.PARTNERS.SELF} component={Partners} />
                     <Route path={SUPERVISION.VOTES.SELF} component={Votes} />
                     <Route path={SUPERVISION.OPERATIONS.SELF} component={Operations} />
                     <Route path={SUPERVISION.AUDIT.SELF} component={Audits} />

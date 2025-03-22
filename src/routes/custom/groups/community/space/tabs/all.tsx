@@ -147,7 +147,6 @@ const All = (props) => {
                                     <CommunityItemGrid 
                                         key={index}
                                         community={item}
-                                        authUser={props.authUser}
                                         onAskRequest={() => {
                                             setShowRequestModal(true);
                                             setGroup(item);

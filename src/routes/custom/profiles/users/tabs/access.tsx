@@ -1,5 +1,6 @@
 import { Button } from "reactstrap";
 import { connect } from 'react-redux';
+import { HOME } from "Url/frontendUrl";
 import UserService from 'Services/users';
 import { setSession } from 'Helpers/tokens';
 import { withRouter } from "react-router-dom";
@@ -7,9 +8,9 @@ import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
 import ListRoles from '../components/listRoles';
 import React, { useState, useEffect } from 'react';
+import { NotificationManager } from 'react-notifications';
 import CreateAccessBox from '../components/createAccessBox';
 import ChangeAccessCredentials from 'Components/ChangeAccessCredentials';
-import { HOME } from "Url/frontendUrl";
 
 const Access = (props) => {
 
@@ -30,9 +31,15 @@ const Access = (props) => {
         .finally(() => props.setRequestGlobalAction(false))
     }
 
-    const changeAccess = (id) => {
+    const changeAccess = (item) => {
+        if(!item.contact) {
+            NotificationManager.error("Veuillez sélectionner l'adresse de notification avant de vous connecter");
+            setSelectedAccess(item);
+            setShowCredentialBox(true);
+            return;
+        }
         props.setRequestGlobalAction(true),
-        UserService.changeUserAccess(id)
+        UserService.changeUserAccess(item.id)
         .then(response => {
             setSession(response);
             window.location.href = HOME;
@@ -141,7 +148,7 @@ const Access = (props) => {
                                                         size="small"
                                                         color="primary"
                                                         variant="contained"
-                                                        onClick={() => changeAccess(item.id)}
+                                                        onClick={() => changeAccess(item)}
                                                         className={"text-white font-weight-bold mr-3"}
                                                         disabled={item.reference == props.authUser.access}
                                                     >
