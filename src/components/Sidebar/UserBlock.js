@@ -110,7 +110,7 @@ class UserBlock extends Component {
 										</p>
 									</li>
 									<li className="border-top">
-										<NavLink to={PROFILE.USER.PERSONAL} className="nav-link" activeClassName="active">
+										<NavLink to={PROFILE.USER.ACCESS} className="nav-link" activeClassName="active">
 											<i className="zmdi zmdi-account text-primary mr-3"></i>
 											<span>
 												Espace utilisateur
