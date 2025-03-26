@@ -139,11 +139,6 @@ const Create = (props) => {
             profiles: selectedProfiles.map(sp => sp.reference), seller_profiles: sellerProfiles.map(sp => sp.reference)
         }
 
-        if (specialType?.value == 'PASS' && !userAccountType) {
-            NotificationManager.error('Un type de compte est nécessaire');
-            return;
-        }
-
         // if(lines) data.lines = lines;
 
         if (isAccount || ['TRANSACTION_BOOK', 'SEGRAGATED_ACCOUNT'].includes(specialType?.value)) {
@@ -161,9 +156,6 @@ const Create = (props) => {
 
         if(specialType) {
             data.specialType = specialType.value;
-            if(specialType?.value == 'PASS') {
-                data.userAccountTypeReference = userAccountType.reference
-            }
             if(specialType?.value == 'TRANSACTION_BOOK') {
                 data.isAggregation = true;
                 data.numberOfJournals = transactionalPageCount;
@@ -258,7 +250,7 @@ const Create = (props) => {
                             />
                         </FormGroup>
                     </div>
-                    { specialType?.value == 'PASS' && (
+                    {/* { specialType?.value == 'PASS' && (
                         <div className="col-md-12 col-sm-12 has-wrapper mb-30">
                             <InputLabel className="text-left">
                                 Profile utilisateur associé
@@ -274,7 +266,7 @@ const Create = (props) => {
                                 renderInput={(params) => <TextField {...params} variant="outlined" />}
                             />
                         </div>
-                    )}
+                    )} */}
                     <div className="row">
                         <FormGroup className='col-md-12 col-sm-12 has-wrapper'>
                             <InputLabel className="text-left" htmlFor="description">

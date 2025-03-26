@@ -18,6 +18,7 @@ import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard
 const Create = (props) => {
 
     const [label, setLabel] = useState('');
+    const [code, setCode] = useState('');
     const [roles, setRoles] = useState([]);
     const [role, setRole] = useState(null);
     const [category, setCategory] = useState(null);
@@ -33,7 +34,7 @@ const Create = (props) => {
     const getTypes = () => {
         setRequestGlobalAction(true),
         UserAccountTypeService.getAccountTypeCategories()
-        .then(response => setCategories(response))
+        .then(response => setCategories(response.filter(c => c.show)))
         .finally(() => setRequestGlobalAction(false))
     }
 
@@ -46,10 +47,13 @@ const Create = (props) => {
 
     const onSubmit = () => {
 
-        if(!category || !label || !role)
+        if(!category || !label || !role || !code){
+            NotificationManager.error("Le formulaire est mal renseigné");
             return
+        }
 
         let data: any = {
+            code: code,
             label: label,
             roleRef: role.reference,
             categoryId: category.id,
@@ -89,6 +93,20 @@ const Create = (props) => {
                             className="input-lg"
                             value={label}
                             onChange={(e) => setLabel(e.target.value)}
+                        />
+                    </FormGroup>
+                    <FormGroup className="has-wrapper">
+                        <InputLabel className="text-left" htmlFor="code">
+                            Code
+                        </InputLabel>
+                        <InputStrap
+                            required
+                            id="code"
+                            type="text"
+                            name='code'
+                            className="input-lg"
+                            value={code}
+                            onChange={(e) => setCode(e.target.value)}
                         />
                     </FormGroup>
                     <FormGroup className="has-wrapper">

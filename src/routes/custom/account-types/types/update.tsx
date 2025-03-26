@@ -19,6 +19,7 @@ const Update = (props) => {
 
     const [type, setType] = useState(null);
     const [label, setLabel] = useState('');
+    const [code, setCode] = useState('');
     const [role, setRole] = useState(null);
     const [roles, setRoles] = useState([]);
     const [category, setCategory] = useState(null);
@@ -39,6 +40,7 @@ const Update = (props) => {
             setType(response);
             setRole(response.role);
             setLabel(response.label);
+            setCode(response.code);
             setDescription(response.description);
             setReferralType(referraTypes().find(t => t.value == response.referralType));
             setCategory(response.userAccountTypeCategory);
@@ -48,7 +50,7 @@ const Update = (props) => {
     const getTypes = () => {
         setRequestGlobalAction(true),
         UserAccountTypeService.getAccountTypeCategories()
-        .then(response => setCategories(response))
+        .then(response => setCategories(response.filter(c => c.show)))
         .finally(() => setRequestGlobalAction(false))
     }
 
@@ -61,12 +63,15 @@ const Update = (props) => {
 
     const onSubmit = () => {
 
-        if(!category || !label || !role)
+        if(!category || !label || !role || !code) {
+            NotificationManager.error("Le formulaire est mal renseigné");
             return
+        }
 
         props.setRequestGlobalAction(true);
 
         let data: any = {
+            code,
             label: label,
             categoryId: category.id,
             roleRef: role.reference,
@@ -104,6 +109,20 @@ const Update = (props) => {
                             className="input-lg"
                             value={label}
                             onChange={(e) => setLabel(e.target.value)}
+                        />
+                    </FormGroup>
+                    <FormGroup className="has-wrapper">
+                        <InputLabel className="text-left" htmlFor="code">
+                            Code
+                        </InputLabel>
+                        <InputStrap
+                            required
+                            id="code"
+                            type="text"
+                            name='code'
+                            className="input-lg"
+                            value={code}
+                            onChange={(e) => setCode(e.target.value)}
                         />
                     </FormGroup>
                     <FormGroup className="has-wrapper">

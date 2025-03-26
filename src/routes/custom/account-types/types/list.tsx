@@ -61,8 +61,8 @@ const Types = (props) => {
                                     <thead>
                                         <tr>
                                             <th className="fw-bold">Désignation</th>
+                                            <th className="fw-bold">Code</th>
                                             <th className="fw-bold">Cible</th>
-                                            <th className="fw-bold">Description</th>
                                             <th className="fw-bold">Catégorie</th>
                                             <th className="fw-bold">Par défaut</th>
                                             <th className="fw-bold">Action</th>
@@ -82,14 +82,14 @@ const Types = (props) => {
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <h4 className="m-0 text-dark">{getReferralTypeLabel(item.referralType)}</h4>
+                                                            <h4 className="m-0 fw-bold text-dark">{item.code}</h4>
                                                         </div>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <h4 className="m-0 text-dark">{item.description}</h4>
+                                                            <h4 className="m-0 text-dark">{getReferralTypeLabel(item.referralType)}</h4>
                                                         </div>
                                                     </div>
                                                 </td>

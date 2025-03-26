@@ -93,7 +93,7 @@ const Update = (props) => {
             setRange(getProductRanges().find(r => r.value == response.range));
             setIsAccount(response.account);
             setAccountUnit(units.find(u => u.reference == response.accountUnitReference));
-            setAccountTypeUnit(units.find(u => u.reference == response.accountUnitReference).type);
+            setAccountTypeUnit(units.find(u => u.reference == response.accountUnitReference)?.type);
             setMaxAccountBalance(response.maxBalance);
             setMinAccountBalance(response.minBalance);
             setIsMirrorAccount(response.mirrorAccount);
@@ -183,11 +183,6 @@ const Update = (props) => {
             data.image = file;
         }
 
-        if (specialType?.value == 'PASS' && !userAccountType) {
-            NotificationManager.error('Un type de compte est nécessaire');
-            return;
-        }
-
         // if(lines) data.lines = lines;
 
         if (isAccount || ['TRANSACTION_BOOK', 'SEGRAGATED_ACCOUNT'].includes(specialType?.value)) {
@@ -205,9 +200,6 @@ const Update = (props) => {
 
         if(specialType) {
             data.specialType = specialType.value;
-            if(specialType?.value == 'PASS') {
-                data.userAccountTypeReference = userAccountType.reference
-            }
             if(specialType?.value == 'TRANSACTION_BOOK') {
                 if(journalAccount == null) {
                     NotificationManager.error('Le formulaire est mal renseigné');
@@ -306,7 +298,7 @@ const Update = (props) => {
                             />
                         </FormGroup>
                     </div>
-                    { specialType?.value == 'PASS' && (
+                    {/* { specialType?.value == 'PASS' && (
                         <div className="col-md-12 col-sm-12 has-wrapper mb-30">
                             <InputLabel className="text-left">
                                 Profile utilisateur associé
@@ -322,7 +314,7 @@ const Update = (props) => {
                                 renderInput={(params) => <TextField {...params} variant="outlined" />}
                             />
                         </div>
-                    )}
+                    )} */}
                     <div className="row">
                         <FormGroup className='col-md-12 col-sm-12 has-wrapper'>
                             <InputLabel className="text-left" htmlFor="description">
