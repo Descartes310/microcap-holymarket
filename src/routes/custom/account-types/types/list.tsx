@@ -62,6 +62,7 @@ const Types = (props) => {
                                         <tr>
                                             <th className="fw-bold">Désignation</th>
                                             <th className="fw-bold">Code</th>
+                                            <th className="fw-bold">Status</th>
                                             <th className="fw-bold">Cible</th>
                                             <th className="fw-bold">Catégorie</th>
                                             <th className="fw-bold">Par défaut</th>
@@ -83,6 +84,13 @@ const Types = (props) => {
                                                     <div className="media">
                                                         <div className="media-body pt-10">
                                                             <h4 className="m-0 fw-bold text-dark">{item.code}</h4>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="media">
+                                                        <div className="media-body pt-10">
+                                                            <h4 className="m-0 fw-bold text-dark">{item.show ? 'Actif' : 'Inactif'}</h4>
                                                         </div>
                                                     </div>
                                                 </td>
