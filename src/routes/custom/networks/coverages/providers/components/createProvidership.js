@@ -13,7 +13,7 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import { NotificationManager } from 'react-notifications';
 import DialogComponent from "Components/dialog/DialogComponent";
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
-import { FormGroup, Label, Button, Input as InputStrap  } from 'reactstrap';
+import { FormGroup, Button, Input as InputStrap  } from 'reactstrap';
 
 class CreateProviderModal extends Component {
   
@@ -72,8 +72,8 @@ class CreateProviderModal extends Component {
         this.props.setRequestGlobalAction(true);
 
         let data = {
+            type: this.props.type,
             contractId: contract.id,
-            type: 'PROVIDER_INTERMEDIARY',
             commercialName: commercialName,
             referralCode: member.referralCode,
             immatriculation: immatriculation,
