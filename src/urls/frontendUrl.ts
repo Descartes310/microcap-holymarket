@@ -725,6 +725,10 @@ export const SETTING = {
         CREATE: "/settings/pme-votes/create",
         UPDATE: "/settings/pme-votes/:id/update",
     },
+    PROFILE: {
+        SELF: "/settings/profiles",
+        UPDATE: "/settings/profiles/update"
+    },
     AGENT: {
         SELF: "/settings/agents",
         LIST: "/settings/agents/list",

@@ -1134,6 +1134,14 @@ export default [
             "child_routes": null
          },
          {
+            "menu_title": "Profiles auto.",
+            "new_item": false,
+            "path": SETTING.PROFILE.UPDATE,
+            "permissions": [Permission.setting.unit.name],
+            "profiles": ['GROUP'],
+            "child_routes": null
+         },
+         {
             "menu_title": "Modèles messages",
             "new_item": false,
             "path": SETTING.MESSAGE_TEMPLATE.LIST,

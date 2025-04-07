@@ -73,8 +73,11 @@ const Create = (props) => {
             NotificationManager.success("Le marché a été créé avec succès");
             props.history.push(MARKETPLACE.MARKET.LIST);
         }).catch((err) => {
-            console.log(err);
-            NotificationManager.error("Une erreur est survenu lors de la création du marché");
+            if(err?.response?.status == 412) {
+                NotificationManager.error("Cet utilisateur ne peut pas posséder de marché");
+            } else {
+                NotificationManager.error("Une erreur est survenu lors de la création du marché");
+            }
         }).finally(() => {
             props.setRequestGlobalAction(false);
         })
@@ -118,7 +121,7 @@ const Create = (props) => {
 
                     <div className="col-md-12 col-sm-12 has-wrapper mb-30">
                         <InputLabel className="text-left">
-                            Profiles autorisées
+                            Profiles autorisés à voir le marché sur la MarketPlace
                         </InputLabel>
                         <Autocomplete
                             multiple

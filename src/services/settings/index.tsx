@@ -188,4 +188,12 @@ export default class SettingService {
     static findInvestmentSetting(reference: string): Promise<any> {
         return makeRequest('get', Routes.FIND_INVESTMENT_SETTING(reference));
     }
+
+    static getAuthorizedProfiles(): Promise<any> {
+        return makeRequest('get', Routes.GET_AUTHORIZED_PROFILE);
+    }
+
+    static updateAuthorizedProfiles(data: any): Promise<any> {
+        return makeRequest('post', Routes.UPDATE_AUTHORIZED_PROFILE, data);
+    }
 }
