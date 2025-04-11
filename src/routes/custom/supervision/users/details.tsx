@@ -366,7 +366,8 @@ const UserDetails = (props) => {
                 <MemberDocumentsModal
                     user={user}
                     show={showMemberFileBox}
-                    reference={user.referralCode}
+                    reference={user.referralId}
+                    type="ALL"
                     onClose={() => {
                         setShowMemberFileBox(false);
                     }}

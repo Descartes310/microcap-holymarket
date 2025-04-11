@@ -3,16 +3,23 @@ import { injectIntl } from "react-intl";
 import React, { Component } from 'react';
 import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
-import { NOTIFICATIONS, PROFILE, GROUP } from "Url/frontendUrl";
+import { PROFILE, GROUP } from "Url/frontendUrl";
+import ActivationBox from './notifications/ActivationBox';
 
 class HomePage extends Component {
+
+	state = {
+		showActivationBox: false
+	}
 
 	constructor(props) {
         super(props);
 	}
 
 	render() {
-		const { match, authUser, history } = this.props;
+		const { authUser, history } = this.props;
+		const { showActivationBox } = this.state;
+
 		return (
 			<div className="full-height col-sm-12 col-md-9 col-lg-7 mx-auto text-center d-flex align-items-center justify-content-center">
 				{
@@ -23,7 +30,7 @@ class HomePage extends Component {
 								color="primary"
 								variant="contained"
 								onClick={() => {
-									history.push(`${NOTIFICATIONS.LIST}?action=activate`);
+									this.setState({showActivationBox: true});
 								}}
 								className={"text-white font-weight-bold mt-20"}
 							>
@@ -68,6 +75,16 @@ class HomePage extends Component {
 							Bienvenue sur MicroCap
 						</h1>
 				}
+				{ showActivationBox && (
+					<ActivationBox
+						show={showActivationBox}
+						pdfURL={'http://www.africau.edu/images/default/sample.pdf'}
+						onClose={() => {
+							this.setState({showActivationBox: false});
+							window.location.reload();
+						}}
+					/>
+				)}
 			</div>
 		)
 	}

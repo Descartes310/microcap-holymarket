@@ -49,7 +49,7 @@ const SendContactMessage = (props) => {
 
     const getContacts = () => {
         UserService.getContacts({referral_code: props.user?.referralId}).then((response) => {
-            setContacts(response.filter(c => c.type === 'EMAIL' || c.type === 'PHONE'))
+            setContacts(response.filter(c => c.type !== 'ALIAS'))
         });
     }
 

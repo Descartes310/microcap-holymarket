@@ -23,6 +23,7 @@ class ChangeAccessCredentials extends Component {
         password: null,
         oldPassword: null,
         confirmation: null,
+        choice: {label: 'Contact de notification', value: 'CONTACT'}
      }
   
      constructor(props) {
@@ -152,7 +153,7 @@ class ChangeAccessCredentials extends Component {
     render() {
 
         const { onClose, show, access } = this.props;
-        const { login, password, oldPassword, confirmation, contact, contacts } = this.state;
+        const { login, password, oldPassword, confirmation, contact, contacts, choice } = this.state;
 
         return (
             <DialogComponent
@@ -166,116 +167,141 @@ class ChangeAccessCredentials extends Component {
                 )}
             >
                 <RctCardContent>
-                    
-                    <FormGroup tag="fieldset">
-                        <h2 className="mb-10 mb-20 mt-20">Adresse de notification</h2>
-                        <FormGroup className="has-wrapper">
-                            <div className="col-md-12 col-sm-12 has-wrapper mb-30 p-0">
-                                <InputLabel className="text-left">
-                                    Contact
+                    <FormGroup className="has-wrapper">
+                        <div className="col-md-12 col-sm-12 has-wrapper mb-30 p-0">
+                            <InputLabel className="text-left">
+                                Quelle information voulez-vous changer ?
+                            </InputLabel>
+                            <Autocomplete
+                                value={choice}
+                                options={[
+                                    {label: 'Contact de notification', value: 'CONTACT'},
+                                    {label: 'Login de connexion', value: 'LOGIN'},
+                                    {label: 'Mot de passe', value: 'PASSWORD'}
+                                ]}
+                                id="combo-box-demo"
+                                classes={{ paper: 'custom-input' }}
+                                getOptionLabel={(option) => option.label}
+                                onChange={(__, item) => { this.setState({ choice: item }) }}
+                                renderInput={(params) => <TextField {...params} variant="outlined" />}
+                            />
+                        </div>
+                    </FormGroup>
+                    { choice && choice.value == 'CONTACT' && (
+                        <FormGroup tag="fieldset">
+                            {/* <h2 className="mb-10 mb-20 mt-20">Adresse de notification</h2> */}
+                            <FormGroup className="has-wrapper">
+                                <div className="col-md-12 col-sm-12 has-wrapper mb-30 p-0">
+                                    <InputLabel className="text-left">
+                                        Contact
+                                    </InputLabel>
+                                    <Autocomplete
+                                        value={contact}
+                                        options={contacts}
+                                        id="combo-box-demo"
+                                        classes={{ paper: 'custom-input' }}
+                                        getOptionLabel={(option) => `${option.value} (${getContactTypeLabel(option.oldType ?? option.type)})`}
+                                        onChange={(__, item) => { this.setState({ contact: item }) }}
+                                        renderInput={(params) => <TextField {...params} variant="outlined" />}
+                                    />
+                                </div>
+                            </FormGroup>
+
+                            <Button
+                                color="primary"
+                                disabled={!contact}
+                                className="ml-0 text-white float-right"
+                                onClick={() => this.onSubmitContact()}
+                            >
+                                Enregistrer
+                            </Button>
+                        </FormGroup>
+                    )}
+
+                    { choice && choice.value == 'LOGIN' && (
+                        <FormGroup tag="fieldset">
+                            {/* <h2 className="mb-10 mb-20 mt-20">Login</h2> */}
+                            <FormGroup className="has-wrapper">
+                                <InputLabel className="text-left" htmlFor="login">
+                                    Nouveau login
                                 </InputLabel>
-                                <Autocomplete
-                                    value={contact}
-                                    options={contacts}
-                                    id="combo-box-demo"
-                                    classes={{ paper: 'custom-input' }}
-                                    getOptionLabel={(option) => `${option.value} (${getContactTypeLabel(option.type)})`}
-                                    onChange={(__, item) => { this.setState({ contact: item }) }}
-                                    renderInput={(params) => <TextField {...params} variant="outlined" />}
+                                <Input
+                                    required
+                                    id="login"
+                                    type="text"
+                                    name='login'
+                                    value={login}
+                                    className="input-lg"
+                                    onChange={(e) => this.setState({ login: e.target.value })}
                                 />
-                            </div>
-                        </FormGroup>
+                            </FormGroup>
 
-                        <Button
-                            color="primary"
-                            disabled={!contact}
-                            className="ml-0 text-white float-right"
-                            onClick={() => this.onSubmitContact()}
-                        >
-                            Enregistrer
-                        </Button>
-                    </FormGroup>
+                            <Button
+                                color="primary"
+                                disabled={!login || !access}
+                                className="ml-0 text-white float-right"
+                                onClick={() => this.onSubmitLogin()}
+                            >
+                                Enregistrer
+                            </Button>
+                        </FormGroup>
+                    )}
 
-                    <FormGroup tag="fieldset">
-                        <h2 className="mb-10 mb-20 mt-20">Login</h2>
-                        <FormGroup className="has-wrapper">
-                            <InputLabel className="text-left" htmlFor="login">
-                                Login
-                            </InputLabel>
-                            <Input
-                                required
-                                id="login"
-                                type="text"
-                                name='login'
-                                value={login}
-                                className="input-lg"
-                                onChange={(e) => this.setState({ login: e.target.value })}
-                            />
+                    { choice && choice.value == 'PASSWORD' && (
+                        <FormGroup tag="fieldset">
+                            {/* <h2 className="mb-10 mb-20 mt-20">Mot de passe</h2> */}
+                            <FormGroup className="has-wrapper">
+                                <InputLabel className="text-left" htmlFor="oldPassword">
+                                    Ancien mot de passe
+                                </InputLabel>
+                                <Input
+                                    required
+                                    id="oldPassword"
+                                    type="password"
+                                    name='oldPassword'
+                                    value={oldPassword}
+                                    className="input-lg"
+                                    onChange={(e) => this.setState({ oldPassword: e.target.value })}
+                                />
+                            </FormGroup>
+                            <FormGroup className="has-wrapper">
+                                <InputLabel className="text-left" htmlFor="password">
+                                    Nouveau mot de passe
+                                </InputLabel>
+                                <Input
+                                    required
+                                    id="password"
+                                    type="password"
+                                    name='password'
+                                    value={password}
+                                    className="input-lg"
+                                    onChange={(e) => this.setState({ password: e.target.value })}
+                                />
+                            </FormGroup>
+                            <FormGroup className="has-wrapper">
+                                <InputLabel className="text-left" htmlFor="confirmation">
+                                    Confirmation
+                                </InputLabel>
+                                <Input
+                                    required
+                                    id="confirmation"
+                                    type="password"
+                                    name='confirmation'
+                                    value={confirmation}
+                                    className="input-lg"
+                                    onChange={(e) => this.setState({ confirmation: e.target.value })}
+                                />
+                            </FormGroup>
+                            <Button
+                                color="primary"
+                                disabled={!password || !oldPassword || !confirmation || !access}
+                                className="ml-0 text-white float-right"
+                                onClick={() => this.onSubmitPassword()}
+                            >
+                                Enregistrer
+                            </Button>
                         </FormGroup>
-
-                        <Button
-                            color="primary"
-                            disabled={!login || !access}
-                            className="ml-0 text-white float-right"
-                            onClick={() => this.onSubmitLogin()}
-                        >
-                            Enregistrer
-                        </Button>
-                    </FormGroup>
-                    <FormGroup tag="fieldset">
-                        <h2 className="mb-10 mb-20 mt-20">Mot de passe</h2>
-                        <FormGroup className="has-wrapper">
-                            <InputLabel className="text-left" htmlFor="oldPassword">
-                                Ancien mot de passe
-                            </InputLabel>
-                            <Input
-                                required
-                                id="oldPassword"
-                                type="password"
-                                name='oldPassword'
-                                value={oldPassword}
-                                className="input-lg"
-                                onChange={(e) => this.setState({ oldPassword: e.target.value })}
-                            />
-                        </FormGroup>
-                        <FormGroup className="has-wrapper">
-                            <InputLabel className="text-left" htmlFor="password">
-                                Nouveau mot de passe
-                            </InputLabel>
-                            <Input
-                                required
-                                id="password"
-                                type="password"
-                                name='password'
-                                value={password}
-                                className="input-lg"
-                                onChange={(e) => this.setState({ password: e.target.value })}
-                            />
-                        </FormGroup>
-                        <FormGroup className="has-wrapper">
-                            <InputLabel className="text-left" htmlFor="confirmation">
-                                Confirmation
-                            </InputLabel>
-                            <Input
-                                required
-                                id="confirmation"
-                                type="password"
-                                name='confirmation'
-                                value={confirmation}
-                                className="input-lg"
-                                onChange={(e) => this.setState({ confirmation: e.target.value })}
-                            />
-                        </FormGroup>
-                        <Button
-                            color="primary"
-                            disabled={!password || !oldPassword || !confirmation || !access}
-                            className="ml-0 text-white float-right"
-                            onClick={() => this.onSubmitPassword()}
-                        >
-                            Enregistrer
-                        </Button>
-                    </FormGroup>
-                    <h2 className="mb-10 mb-20">Profil utilisateur</h2>
+                    )}
                 </RctCardContent>
             </DialogComponent>
         );

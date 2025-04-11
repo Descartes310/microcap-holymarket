@@ -117,7 +117,7 @@ const CreateAccessBox = (props) => {
                             checked={derogation}
                             onChange={(e) => setDerogation(!derogation)}
                         />
-                        <label>Je veux donner une dérogation</label>
+                        <label>Je veux donner une procuration</label>
                     </FormGroup>
                 )}
                 {

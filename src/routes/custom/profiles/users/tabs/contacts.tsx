@@ -39,13 +39,13 @@ const Personal = (props) => {
         });
     }
 
-    // const changeStatus = (contact) => {
-    //     props.setRequestGlobalAction(true),
-    //     UserService.setContactAsNotification(contact.id)
-    //     .then(() => getContacts())
-    //     .catch(err => NotificationManager.error("Le contact doit être vérifié au préalable"))
-    //     .finally(() => props.setRequestGlobalAction(false))
-    // }
+    const changeStatus = (contact) => {
+        props.setRequestGlobalAction(true),
+        UserService.setContactAsNotification(contact.id)
+        .then(() => getContacts())
+        .catch(err => NotificationManager.error("Le contact doit être vérifié au préalable"))
+        .finally(() => props.setRequestGlobalAction(false))
+    }
 
     const sendVerifyCode = (reference) => {
         props.setRequestGlobalAction(true);
@@ -108,7 +108,7 @@ const Personal = (props) => {
                                                         <th className="fw-bold">Type</th>
                                                         <th className="fw-bold">Valeur</th>
                                                         <th className="fw-bold">Status</th>
-                                                        {/* <th className="fw-bold">Notification</th> */}
+                                                        <th className="fw-bold">Notification</th>
                                                         <th className="fw-bold">Editer</th>
                                                         <th className="fw-bold">Action</th>
                                                     </tr>
@@ -137,13 +137,13 @@ const Personal = (props) => {
                                                                     </div>
                                                                 </div>
                                                             </td>
-                                                            {/* <td>
+                                                            <td>
                                                                 <Switch
                                                                     aria-label="Notification"
                                                                     checked={item.notificationAddress}
                                                                     onChange={() => { changeStatus(item) }}
                                                                 />
-                                                            </td> */}
+                                                            </td>
                                                             <td>
                                                                 <div className="media">
                                                                     <Button

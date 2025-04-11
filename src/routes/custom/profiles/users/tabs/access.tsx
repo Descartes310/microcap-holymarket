@@ -141,7 +141,8 @@ const Access = (props) => {
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{item.referralId}</h4>
+                                                            <h4 className="m-0 fw-bold text-dark">{item.originalReferralId}</h4>
+                                                            {/* <h4 className="m-0 fw-bold text-dark">{item.referralId}</h4> */}
                                                         </div>
                                                     </div>
                                                 </td>
