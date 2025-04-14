@@ -4,6 +4,7 @@ import { withRouter } from "react-router-dom";
 import Button from '@material-ui/core/Button';
 import {setRequestGlobalAction} from 'Actions';
 import { referraTypes } from 'Helpers/helpers';
+import ProductService from 'Services/products';
 import { getChainEventTypes } from 'Helpers/datas';
 import React, { useState, useEffect } from 'react';
 import TextField from '@material-ui/core/TextField';
@@ -16,7 +17,6 @@ import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { joinUrlWithParamsId, USER_ACCOUNT_TYPE } from 'Url/frontendUrl';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
 import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
-import ProductService from 'Services/products';
 
 const Update = (props) => {
 
@@ -29,6 +29,9 @@ const Update = (props) => {
     const [referralType, setReferralType] = useState(null);
     const [createAccess, setCreateAccess] = useState(false);
     const [productReference, setProductReference] = useState(null);
+    const [mustHaveMembership, setMustHaveMembership] = useState(false);
+    const [contractAccountType, setContractAccountType] = useState(null);
+    const [contractTypeReference, setContractTypeReference] = useState(null);
 
     useEffect(() => {
         getTypes();
@@ -42,6 +45,12 @@ const Update = (props) => {
         }
     }, [products, productReference]);
 
+    useEffect(() => {
+        if(accountTypes.length > 0 && contractTypeReference) {
+            setContractAccountType(accountTypes.find(at => at.reference == contractTypeReference));
+        }
+    }, [accountTypes, contractTypeReference]);
+
     const findChain = () => {
         setRequestGlobalAction(true),
         UserAccountTypeService.findChain(props.match.params.chainId)
@@ -50,6 +59,7 @@ const Update = (props) => {
             setAccountType(response.next);
             setCreateAccess(response.createAccess);
             setProductReference(response.productModelReference);
+            setContractTypeReference(response.contractTypeReference);
             setEvent(getChainEventTypes().find(e => e.value === response.event));
             setReferralType(referraTypes().find(e => e.value === response.referralType));
         })
@@ -82,15 +92,24 @@ const Update = (props) => {
             return;
         }
 
+        if(event.value == 'ACTIVATE_CONTRACT' && !contractAccountType) {
+            NotificationManager.error("Le type de contrat est obligatoire");
+            return;
+        }
+
         let data: any = {
             event: event.value,
             nextId: accountType.id,
             referralType: referralType.value,
-            createAccess
+            createAccess, mustHaveMembership
         }
 
         if(product) {
             data.product_model_reference = product.reference;
+        }
+
+        if(contractAccountType) {
+            data.contract_account_type = contractAccountType.reference;
         }
         
         props.setRequestGlobalAction(true);
@@ -161,6 +180,24 @@ const Update = (props) => {
                             />
                         </div>
                     )}
+                    
+                    {event && event.value == 'ACTIVATE_CONTRACT' && (
+                        <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                            <InputLabel className="text-left">
+                                Type de contrat
+                            </InputLabel>
+                            <Autocomplete
+                                value={contractAccountType}
+                                id="combo-box-demo"
+                                onChange={(__, item) => {
+                                    setContractAccountType(item);
+                                }}
+                                getOptionLabel={(option) => option.label}
+                                options={accountTypes.filter(at => at.id != props.match.params.id && at.show)}
+                                renderInput={(params) => <TextField {...params} variant="outlined" />}
+                            />
+                        </div>
+                    )}
 
                     <div className="col-md-12 col-sm-12 has-wrapper mb-30">
                         <InputLabel className="text-left">
@@ -177,6 +214,17 @@ const Update = (props) => {
                             renderInput={(params) => <TextField {...params} variant="outlined" />}
                         />
                     </div>
+
+                    <FormGroup className="col-sm-12 has-wrapper">
+                        <FormControlLabel control={
+                            <Checkbox
+                                color="primary"
+                                checked={mustHaveMembership}
+                                onChange={() => setMustHaveMembership(!mustHaveMembership)}
+                            />
+                        } label={'Doit avoir un numéro d\'adhésion'}
+                        />
+                    </FormGroup>
 
                     <FormGroup className="col-sm-12 has-wrapper">
                         <FormControlLabel control={

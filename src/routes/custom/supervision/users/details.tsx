@@ -309,6 +309,7 @@ const UserDetails = (props) => {
                                 <th className="fw-bold">Numéro</th>
                                 <th className="fw-bold">Pass</th>
                                 <th className="fw-bold">Type</th>
+                                <th className="fw-bold">Status</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -339,6 +340,13 @@ const UserDetails = (props) => {
                                         <div className="media">
                                             <div className="media-body pt-10">
                                                 <h4 className="m-0 fw-bold text-dark">{getContractTypeLabel(item.type)}</h4>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div className="media">
+                                            <div className="media-body pt-10">
+                                                <h4 className={`m-0 fw-bold ${item.beneficiaryReference ? 'text-danger' : 'text-success'}`}>{item.beneficiaryReference ? 'Utilisé' : 'Disponible'}</h4>
                                             </div>
                                         </div>
                                     </td>

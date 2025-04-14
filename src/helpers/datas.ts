@@ -17,6 +17,10 @@ export const getChainEventTypes = () => {
             value: 'PASS'
         },
         {
+            label: 'Activation d\'un contrat',
+            value: 'ACTIVATE_CONTRACT'
+        },
+        {
             label: 'Authentification',
             value: 'AUTHENTIFICATION'
         },

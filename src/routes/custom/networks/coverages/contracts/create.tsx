@@ -28,6 +28,7 @@ const Create = (props) => {
     const [passes, setPasses] = useState([]);
     const [number, setNumber] = useState('');
     const [member, setMember] = useState(null);
+    const [hasUser, setHasUser] = useState(false);
     const [hasPass, setHasPass] = useState(false);
     const [category, setCategory] = useState(null);
     const [categories, setCategories] = useState([]);
@@ -75,7 +76,12 @@ const Create = (props) => {
             return;
         }
 
-        if(hasPass && !pass) {
+        if(hasUser && !member) {
+            NotificationManager.error('Veuillez sélectionner un utilisateur');
+            return;
+        }
+
+        if(hasUser && member && hasPass && !pass) {
             NotificationManager.error('Veuillez sélectionner un pass');
             return;
         }
@@ -86,8 +92,12 @@ const Create = (props) => {
             type: contractType.value
         };
 
-        if(hasPass && pass) {
+        if(hasUser && member && hasPass && pass) {
             data.passReference = pass.reference;
+        }
+
+        if(hasUser && member) {
+            data.referralCode = member.referralCode;
         }
 
         if(contractType.value !== 'ASSET') {
@@ -202,35 +212,46 @@ const Create = (props) => {
                                 <FormControlLabel control={
                                     <Checkbox
                                         color="primary"
-                                        checked={hasPass}
-                                        onChange={() => setHasPass(!hasPass)}
+                                        checked={hasUser}
+                                        onChange={() => setHasUser(!hasUser)}
                                     />
-                                } label={'Associer un pass'}
+                                } label={'Associer à un utilisateur'}
                                 />
                             </FormGroup>
-                            { hasPass && (
-                                <>
-                                    <UserSelect label={'Numéro utilisateur'} onChange={(_, user) => {
-                                        setMember(user);
-                                    }} />
-                                    { member && (
-                                        <div className="col-md-12 col-sm-12 has-wrapper mb-30">
-                                            <InputLabel className="text-left">
-                                                Liste des passes
-                                            </InputLabel>
-                                            <Autocomplete
-                                                value={pass}
-                                                id="combo-box-demo"
-                                                onChange={(__, item) => {
-                                                    setPass(item);
-                                                }}
-                                                options={passes}
-                                                getOptionLabel={(option) => option.label}
-                                                renderInput={(params) => <TextField {...params} variant="outlined" />}
-                                            />
-                                        </div>
-                                    )}
-                                </>
+                            { hasUser && (
+                                <UserSelect label={'Numéro utilisateur'} onChange={(_, user) => {
+                                    setMember(user);
+                                }} />
+                            )}
+
+                            {hasUser && member && (
+                                <FormGroup className="col-sm-12 has-wrapper">
+                                    <FormControlLabel control={
+                                        <Checkbox
+                                            color="primary"
+                                            checked={hasPass}
+                                            onChange={() => setHasPass(!hasPass)}
+                                        />
+                                    } label={'Associer à un Pass'}
+                                    />
+                                </FormGroup>
+                            )}
+                            { hasUser && hasPass && member && (
+                                <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                                    <InputLabel className="text-left">
+                                        Liste des passes
+                                    </InputLabel>
+                                    <Autocomplete
+                                        value={pass}
+                                        id="combo-box-demo"
+                                        onChange={(__, item) => {
+                                            setPass(item);
+                                        }}
+                                        options={passes}
+                                        getOptionLabel={(option) => option.label}
+                                        renderInput={(params) => <TextField {...params} variant="outlined" />}
+                                    />
+                                </div>
                             )}
                         </>
                     )}
