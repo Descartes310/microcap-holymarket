@@ -1100,10 +1100,11 @@ export const getInvestmentPerimeterTypes = () => {
 
 export const getInvestmentPerimeterTypeLabel = (value) => {
     let type = getInvestmentPerimeterTypes().find(rt => rt.value === value);
-    if (type)
+    if (type) {
         return type.label;
-    else
-        return null;
+    } else {
+        return value === 'PROGRAM' ? 'Programme' : null;
+    }
 }
 
 export const getInitializationTypes = () => {

@@ -3,6 +3,9 @@ export const ROOT = '/';
 export const HOME = '/home';
 export const LANDING_PAGE_FLOW = '/page-flows';
 export const PAYMENT = '/session/payments';
+export const PUBLIC = {
+    PROSPECTUS: '/prospectus/:id/details'
+}
 
 export const LANDING = {
     SELF: '/landing',

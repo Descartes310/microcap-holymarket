@@ -14,7 +14,7 @@ const TimeFromMoment = ({time, showFullDate, style, format="LL"}) => {
 
     return (
         <Tooltip id="tooltip-createdAt" title={_time.format('LLL')}>
-            <p className={"m-0 fw-bold text-dark"} style={style}>
+            <p className={"m-0"} style={style}>
                 { (showFullDate || format) ? _time.format(format) :  _time.fromNow()}
             </p>
         </Tooltip>

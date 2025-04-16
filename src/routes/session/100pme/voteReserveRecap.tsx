@@ -19,7 +19,7 @@ const VoteReserveRecap = (props) => {
     return (
         <QueueAnim type="bottom" duration={2000}>
             <div className="rct-session-wrapper">
-            <div className='mb-50'></div>
+                <div className='mb-50'></div>
                 <div className="session-inner-wrapper">
                     <div className="container">
                         <div className="row">

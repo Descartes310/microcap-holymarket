@@ -59,7 +59,7 @@ const Create = (props) => {
         }
 
         var data: any = {
-            label, description, politic_reference: politic.reference, values: JSON.stringify(values.map(v => {return {reference: v.setting.reference, value: v.value}}))
+            label, description, politic_reference: politic.reference, values: JSON.stringify(values.map(v => {return {reference: v.setting.reference, value: v.value, label: v.label}}))
         }
 
         props.setRequestGlobalAction(true);
@@ -156,7 +156,7 @@ const Create = (props) => {
                                                         <td>
                                                             <div className="media">
                                                                 <div className="media-body pt-10">
-                                                                    <p className="m-0 text-dark">{item?.setting.label}</p>
+                                                                    <p className="m-0 text-dark">{item?.label}</p>
                                                                 </div>
                                                             </div>
                                                         </td>

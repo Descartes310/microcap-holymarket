@@ -6,7 +6,8 @@ import {
     LANDING,
     LANDING_PAGE_FLOW,
     PAYMENT,
-    PME_PROJECT
+    PME_PROJECT,
+    PUBLIC
 } from "../urls/frontendUrl";
 import {connect} from 'react-redux';
 import React, {Component} from 'react';
@@ -25,6 +26,7 @@ import LandingPageFlow from './../routes/session/pageFlows';
 import PermissionAlertBox from "Components/PermissionAlertBox";
 import RequestGlobalLoader from "Components/RequestGlobalLoader";
 import RctPageLoader from "Components/RctPageLoader/RctPageLoader";
+import ProspectusDetails from './../routes/session/public/prospectus';
 import {disableAppLoading, loginIntoStore, setAuthUser} from 'Actions';
 import ResetPassword from './../routes/session/forgot-password/ResetPassword';
 import {BrowserRouter as Router, Redirect, Route, Switch} from 'react-router-dom';
@@ -102,6 +104,7 @@ class App extends Component {
                                         <Route path={AUTH.RESET_PASSWORD} component={ResetPassword} />
                                         <Route path={AUTH.FORGOT_PASSWORD} component={SendResetPasswordLink} />
                                         <Route path={LANDING_PAGE_FLOW} component={LandingPageFlow} />
+                                        <Route path={PUBLIC.PROSPECTUS} component={ProspectusDetails} />
                                         <Route path={PAYMENT} component={Payment} />
                                         <Route path={PME_PROJECT.SELF} component={AsyncPmeProject} />
 

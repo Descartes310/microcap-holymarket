@@ -1,15 +1,13 @@
 import { connect } from 'react-redux';
-import { FUNDING } from 'Url/frontendUrl';
 import { withRouter } from "react-router-dom";
 import FundingService from 'Services/funding';
 import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
 import React, { useEffect, useState } from 'react';
-import { RctCardContent } from 'Components/RctCard';
 import TimeFromMoment from 'Components/TimeFromMoment';
 import { getPriceWithCurrency } from 'Helpers/helpers';
 
-const List = (props) => {
+const Details = (props) => {
 
     const [data, setData] = useState(null);
 
@@ -19,15 +17,15 @@ const List = (props) => {
 
     const getData = () => {
         props.setRequestGlobalAction(true),
-        FundingService.findFundingProgram(props.match.params.id)
+        FundingService.findFundingProgram(props?.reference ?? props.match.params.id)
         .then(response => setData(response))
         .finally(() => props.setRequestGlobalAction(false))
     }
 
     return (
-        <RctCardContent>
+        <div className='mr-60'>
             <div className="table-responsive">
-                <table className="table table-hover table-middle mb-0">
+                <table className="table table-bordered mb-0">
                     <thead>
                         <tr>
                             <th className="fw-bold">Détails</th>
@@ -38,31 +36,15 @@ const List = (props) => {
                         <tr className="cursor-pointer">
                             <td>
                                 <div className="media">
-                                    <div className="media-body pt-10">
-                                        <h4 className="m-0 fw-bold text-dark">Désignation</h4>
+                                    <div className="media-body">
+                                        <p className="m-0">Désignation</p>
                                     </div>
                                 </div>
                             </td>
                             <td>
                                 <div className="media">
-                                    <div className="media-body pt-10">
-                                        <h4 className="m-0 text-dark">{data?.label}</h4>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr className="cursor-pointer">
-                            <td>
-                                <div className="media">
-                                    <div className="media-body pt-10">
-                                        <h4 className="m-0 fw-bold text-dark">Enveloppe d'investissement</h4>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <div className="media">
-                                    <div className="media-body pt-10">
-                                        <h4 className="m-0 text-dark">{getPriceWithCurrency(data?.amount, data?.currency)}</h4>
+                                    <div className="media-body">
+                                        <p className="m-0 text-dark">{data?.label}</p>
                                     </div>
                                 </div>
                             </td>
@@ -70,31 +52,15 @@ const List = (props) => {
                         <tr className="cursor-pointer">
                             <td>
                                 <div className="media">
-                                    <div className="media-body pt-10">
-                                        <h4 className="m-0 fw-bold text-dark">Nombre min. de souscription</h4>
+                                    <div className="media-body">
+                                        <p className="m-0">Enveloppe d'investissement</p>
                                     </div>
                                 </div>
                             </td>
                             <td>
                                 <div className="media">
-                                    <div className="media-body pt-10">
-                                        <h4 className="m-0 text-dark">{data?.minimalSubscription}</h4>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr className="cursor-pointer">
-                            <td>
-                                <div className="media">
-                                    <div className="media-body pt-10">
-                                        <h4 className="m-0 fw-bold text-dark">Plan CODEV</h4>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <div className="media">
-                                    <div className="media-body pt-10">
-                                        <h4 className="m-0 text-dark">{data?.codevName}</h4>
+                                    <div className="media-body">
+                                        <p className="m-0 text-dark">{getPriceWithCurrency(data?.amount, data?.currency)}</p>
                                     </div>
                                 </div>
                             </td>
@@ -102,31 +68,15 @@ const List = (props) => {
                         <tr className="cursor-pointer">
                             <td>
                                 <div className="media">
-                                    <div className="media-body pt-10">
-                                        <h4 className="m-0 fw-bold text-dark">Nombre de ligne</h4>
+                                    <div className="media-body">
+                                        <p className="m-0">Nombre min. de souscription</p>
                                     </div>
                                 </div>
                             </td>
                             <td>
                                 <div className="media">
-                                    <div className="media-body pt-10">
-                                        <h4 className="m-0 text-dark">{data?.numberOfLine} lignes</h4>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr className="cursor-pointer">
-                            <td>
-                                <div className="media">
-                                    <div className="media-body pt-10">
-                                        <h4 className="m-0 fw-bold text-dark">Stratégies</h4>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <div className="media">
-                                    <div className="media-body pt-10">
-                                        <h4 className="m-0 text-dark">{data?.strategyName}</h4>
+                                    <div className="media-body">
+                                        <p className="m-0 text-dark">{data?.minimalSubscription}</p>
                                     </div>
                                 </div>
                             </td>
@@ -134,15 +84,63 @@ const List = (props) => {
                         <tr className="cursor-pointer">
                             <td>
                                 <div className="media">
-                                    <div className="media-body pt-10">
-                                        <h4 className="m-0 fw-bold text-dark">Date de création</h4>
+                                    <div className="media-body">
+                                        <p className="m-0">Plan CODEV</p>
                                     </div>
                                 </div>
                             </td>
                             <td>
                                 <div className="media">
-                                    <div className="media-body pt-10">
-                                        <h4 className="m-0 text-dark"><TimeFromMoment time={data?.createdAt} showFullDate /></h4>
+                                    <div className="media-body">
+                                        <p className="m-0 text-dark">{data?.codevName}</p>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr className="cursor-pointer">
+                            <td>
+                                <div className="media">
+                                    <div className="media-body">
+                                        <p className="m-0">Nombre de ligne</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div className="media">
+                                    <div className="media-body">
+                                        <p className="m-0 text-dark">{data?.numberOfLine} lignes</p>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr className="cursor-pointer">
+                            <td>
+                                <div className="media">
+                                    <div className="media-body">
+                                        <p className="m-0">Stratégies</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div className="media">
+                                    <div className="media-body">
+                                        <p className="m-0 text-dark">{data?.strategyName}</p>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr className="cursor-pointer">
+                            <td>
+                                <div className="media">
+                                    <div className="media-body">
+                                        <p className="m-0">Date de création</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div className="media">
+                                    <div className="media-body">
+                                        <p className="m-0 text-dark"><TimeFromMoment time={data?.createdAt} showFullDate /></p>
                                     </div>
                                 </div>
                             </td>
@@ -150,74 +148,78 @@ const List = (props) => {
                     </tbody>
                 </table>
             </div>
-            <h2 className="text-left" style={{ marginTop: 20, marginBottom: 20 }}>
-                Liste des investissements
-            </h2>
-            <CustomList
-                list={data ? data.investmentProgramItemList : []}
-                loading={false}
-                itemsFoundText={n => `${n} paramètres trouvés`}
-                renderItem={list => (
-                    <>
-                        {list && list.length === 0 ? (
-                            <div className="d-flex justify-content-center align-items-center py-50">
-                                <h4>
-                                    Aucune paramètre trouvé
-                                </h4>
-                            </div>
-                        ) : (
-                            <div className="table-responsive">
-                                <table className="table table-hover table-middle mb-0">
-                                    <thead>
-                                        <tr>
-                                            <th className="fw-bold">Intitulé</th>
-                                            <th className="fw-bold">Coût</th>
-                                            <th className="fw-bold">Durée</th>
-                                            <th className="fw-bold">Option sortie</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {list && list.map((item, key) => (
-                                            <tr key={key} className="cursor-pointer">
-                                                <td>
-                                                    <div className="media">
-                                                        <div className="media-body pt-10">
-                                                            <p className="m-0 text-dark">{item?.label}</p>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div className="media">
-                                                        <div className="media-body pt-10">
-                                                            <p className="m-0 text-dark">{getPriceWithCurrency(item?.amount, item?.currency)}</p>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div className="media">
-                                                        <div className="media-body pt-10">
-                                                            <p className="m-0 text-dark">{item?.period}</p>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div className="media">
-                                                        <div className="media-body pt-10">
-                                                            <p className="m-0 text-dark">{item?.exitOption}</p>
-                                                        </div>
-                                                    </div>
-                                                </td>
+            { data?.investmentProgramItemList?.length > 0 && (
+                <h2 className="text-left" style={{ marginTop: 40, marginBottom: 30, fontSize: '1.8rem' }}>
+                    Liste des investissements
+                </h2>
+            )}
+            { data?.investmentProgramItemList?.length > 0 && (
+                <CustomList
+                    list={data ? data.investmentProgramItemList : []}
+                    loading={false}
+                    showSearch={false}
+                    renderItem={list => (
+                        <>
+                            {list && list.length === 0 ? (
+                                <div className="d-flex justify-content-center align-items-center py-50">
+                                    <p>
+                                        Aucune paramètre trouvé
+                                    </p>
+                                </div>
+                            ) : (
+                                <div className="table-responsive">
+                                    <table className="table table-bordered mb-0">
+                                        <thead>
+                                            <tr>
+                                                <th className="fw-bold">Intitulé</th>
+                                                <th className="fw-bold">Coût</th>
+                                                <th className="fw-bold">Durée</th>
+                                                <th className="fw-bold">Option sortie</th>
                                             </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
-                            </div>
-                        )}
-                    </>
-                )}
-            />
-        </RctCardContent>
+                                        </thead>
+                                        <tbody>
+                                            {list && list.map((item, key) => (
+                                                <tr key={key} className="cursor-pointer">
+                                                    <td>
+                                                        <div className="media">
+                                                            <div className="media-body">
+                                                                <p className="m-0 text-dark">{item?.label}</p>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div className="media">
+                                                            <div className="media-body">
+                                                                <p className="m-0 text-dark">{getPriceWithCurrency(item?.amount, item?.currency)}</p>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div className="media">
+                                                            <div className="media-body">
+                                                                <p className="m-0 text-dark">{item?.period}</p>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div className="media">
+                                                            <div className="media-body">
+                                                                <p className="m-0 text-dark">{item?.exitOption}</p>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            )}
+                        </>
+                    )}
+                />
+            )}
+        </div>
     );
 }
 
-export default connect(() => {}, { setRequestGlobalAction })(withRouter(List));
+export default connect(() => {}, { setRequestGlobalAction })(withRouter(Details));

@@ -45,7 +45,7 @@ class CustomList extends Component {
     render() {
         const {
             titleList, itemsFoundText, addingButton,
-            loading, list, error, renderItem, style,
+            loading, list, renderItem, style,
             match, history, classes, showSearch, onRetryClick,
             addText, onAddClick, addPermissions, searchPermissions,
             showBackBtn, titleClassName, wrapClassName, rightComponent

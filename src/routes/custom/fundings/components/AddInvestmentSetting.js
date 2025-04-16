@@ -39,6 +39,7 @@ const AddInvestmentSetting = (props) => {
 
     const [item, setItem] = useState(null);
     const [value, setValue] = useState('');
+    const [label, setLabel] = useState('');
 
     return (
         <DialogComponent
@@ -53,6 +54,20 @@ const AddInvestmentSetting = (props) => {
         >
             <RctCardContent>
                 <Form onSubmit={props.onSubmit}>
+                    <FormGroup className="has-wrapper">
+                        <InputLabel className="text-left" htmlFor="label">
+                            Désignation
+                        </InputLabel>
+                        <InputStrap
+                            required
+                            id="label"
+                            name='label'
+                            type={"text"}
+                            value={label}
+                            className="input-lg"
+                            onChange={(e) => setLabel(e.target.value)}
+                        />
+                    </FormGroup>
                     <div className="col-md-12 col-sm-12 has-wrapper mb-30">
                         <InputLabel className="text-left">
                             Paramètre
@@ -92,8 +107,8 @@ const AddInvestmentSetting = (props) => {
                             variant="contained"
                             className="text-white font-weight-bold"
                             onClick={() => {
-                                if(item && value) {
-                                    props.onSubmit({setting: item, value});
+                                if(item && value && label) {
+                                    props.onSubmit({setting: item, value, label});
                                 }
                             }}
                         >
