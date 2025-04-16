@@ -15,7 +15,7 @@ const FundingInvestmentStrategies = (props) => {
                 <Redirect exact from={`${match.url}/`} to={FUNDING.INVESTMENT.STRATEGY.LIST} />
                 <Route path={FUNDING.INVESTMENT.STRATEGY.CREATE} component={Create} />
                 <Route path={FUNDING.INVESTMENT.STRATEGY.LIST} component={List} />
-                <Route path={FUNDING.INVESTMENT.STRATEGY.DETAILS} component={Details} />
+                <Route path={FUNDING.INVESTMENT.STRATEGY.DETAILS} render={(props) => <Details page={true} {...props} />} />
             </Switch>
         </div>
     );

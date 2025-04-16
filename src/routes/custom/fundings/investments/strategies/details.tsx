@@ -23,7 +23,7 @@ const List = (props) => {
     }
 
     return (
-        <div className='mr-60'>
+        <div className={`${props.page ? 'm-60 pb-40' : 'mr-60'}`}>
             <div className="table-responsive">
                 <table className="table table-bordered mb-0">
                     <thead>
