@@ -443,6 +443,12 @@ export const getUserAssistanceTypes = () => {
             regularizable: false
         },
         {
+            label: 'Re-initialisation de mot de passe',
+            value: 'RESET_PASSWORD',
+            permission: 'ASSIST_RESET_PASSWORD_PRIVILEGE',
+            regularizable: false
+        },
+        {
             label: 'Demande d\'autorisation bancaire',
             value: 'INITIATE_OPERATION',
             permission: 'ASSIST_INITIATE_OPERATION_PRIVILEGE',

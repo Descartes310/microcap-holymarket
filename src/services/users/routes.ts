@@ -60,3 +60,4 @@ export const ASK_FILE_AUTHENTIFICATION = (reference) => `api/socialnetworks/user
 
 export const SEND_OTP = `api/socialnetworks/users/self/otp/send`;
 export const FIND_OTP = `api/socialnetworks/users/self/otp/find`;
+export const ASSISTANCE_RESET_PASSWORD = `api/socialnetworks/users/self/reset-password`;

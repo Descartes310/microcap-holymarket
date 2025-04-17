@@ -60,12 +60,30 @@ const List = (props) => {
                 <div className='mb-40'>
                     <p><span>Description:</span> {data?.description}</p>
                 </div>
-                <div>
-                    <h1 style={{ fontSize: '2.2rem', fontWeight: 'bold' }}>Rubriques</h1>
-                    {data?.investmentProspectusItems.map(item => (
-                        <ProspectusInvestmentItem investmentItem={item} />
-                    ))}
-                </div>
+                {data?.investmentProspectusItems.filter(i => i.perimeter === 'POLITIC').length > 0 && (
+                    <div className='mb-40'>
+                        <h1 style={{ fontSize: '2.2rem', fontWeight: 'bold' }}>Politique d'investissement</h1>
+                        {data?.investmentProspectusItems.filter(i => i.perimeter === 'POLITIC').map(item => (
+                            <ProspectusInvestmentItem investmentItem={item} />
+                        ))}
+                    </div>
+                )}
+                {data?.investmentProspectusItems.filter(i => i.perimeter === 'STRATEGY').length > 0 && (
+                    <div className='mb-40'>
+                        <h1 style={{ fontSize: '2.2rem', fontWeight: 'bold' }}>Stratégie d'investissement</h1>
+                        {data?.investmentProspectusItems.filter(i => i.perimeter === 'STRATEGY').map(item => (
+                            <ProspectusInvestmentItem investmentItem={item} />
+                        ))}
+                    </div>
+                )}
+                {data?.investmentProspectusItems.filter(i => i.perimeter === 'PROGRAM').length > 0 && (
+                    <div>
+                        <h1 style={{ fontSize: '2.2rem', fontWeight: 'bold' }}>Programme d'investissement</h1>
+                        {data?.investmentProspectusItems.filter(i => i.perimeter === 'PROGRAM').map(item => (
+                            <ProspectusInvestmentItem investmentItem={item} />
+                        ))}
+                    </div>
+                )}
             </div>
         </RctCardContent>
     );

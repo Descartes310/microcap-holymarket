@@ -29,6 +29,7 @@ import AuthenticateUser from 'Routes/custom/networks/coverages/components/authen
 import MemberDocumentsModal from 'Routes/custom/networks/coverages/components/memberFilesModal';
 import { getPriceWithCurrency, getReferralTypeLabel, getUserPermissions } from 'Helpers/helpers';
 import CodevSubscriptionModal from 'Routes/custom/marketplace/_components/codevSubscriptionModal';
+import { AUTH } from 'Url/frontendUrl';
 
 const Assist = (props) => {
 
@@ -164,6 +165,20 @@ const Assist = (props) => {
         OrderService.initiatePayment(order.reference, {})
            .then(() => {
               NotificationManager.success("La demande de paiement a été envoyée");
+              window.location.reload();
+           })
+           .catch((err) => {
+              NotificationManager.error("Une erreur est survenue");
+           })
+           .finally(() => props.setRequestGlobalAction(false))
+     }    
+     
+     const assistanceResetPassword = () => {
+        props.setRequestGlobalAction(true);
+
+        UserService.assistanceResetPassword({username: member.referralCode, branch_url: window.location.origin+AUTH.RESET_PASSWORD})
+           .then(() => {
+              NotificationManager.success("La procédure de restauration a été envoyée");
               window.location.reload();
            })
            .catch((err) => {
@@ -306,6 +321,10 @@ const Assist = (props) => {
 
             case 'PAY_ORDER':
                 initiatePayment()
+                break;
+
+            case 'RESET_PASSWORD':
+                assistanceResetPassword()
                 break;
 
             case 'INITIATE_OPERATION':
@@ -621,21 +640,6 @@ const Assist = (props) => {
                     }}
                 />
             )}
-
-            {/* { member && showUserFileBox && (
-                <UserDocumentsModal
-                    user={member}
-                    show={showUserFileBox}
-                    reference={member.referralCode}
-                    onClose={() => {
-                        setShowUserFileBox(false);
-                    }}
-                    onValidate={() => {
-                        setShowUserFileBox(false);
-                        setShowMemberFileBox(true);
-                    }}
-                />
-            )} */}
             { member && showMemberFileBox && (
                 <MemberDocumentsModal
                     user={member}

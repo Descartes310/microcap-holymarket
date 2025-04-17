@@ -87,6 +87,10 @@ export default class UserService {
         return makeRequest('post', Routes.RESET_PASSWORD, datas);
     }
 
+    static assistanceResetPassword(datas: any): Promise<any> {
+        return makeRequest('post', Routes.ASSISTANCE_RESET_PASSWORD, datas);
+    }
+
     static getBranchUsers(): Promise<any> {
         return makeRequest('get', Routes.GET_BRANCH_USERS);    
     }

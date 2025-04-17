@@ -69,60 +69,20 @@ const List = (props) => {
                 </table>
             </div>
 
-            { data?.investmentSettingValueList?.length > 0 && (
-                <h2 className="text-left" style={{ marginTop: 40, marginBottom: 30, fontSize: '1.8rem' }}>
-                    Liste des paramètres
-                </h2>
-            )}
-            { data?.investmentSettingValueList?.length > 0 && (
-                <CustomList
-                    list={data ? data.investmentSettingValueList : []}
-                    loading={false}
-                    showSearch={false}
-                    renderItem={list => (
-                        <>
-                            {list && list.length === 0 ? (
-                                <div className="d-flex justify-content-center align-items-center py-50">
-                                    <p>
-                                        Aucune paramètre trouvé
-                                    </p>
-                                </div>
-                            ) : (
-                                <div className="table-responsive">
-                                    <table className="table  table-bordered mb-0">
-                                        <thead>
-                                            <tr>
-                                                <th className="fw-bold">Désignation</th>
-                                                <th className="fw-bold">Valeur</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {list && list.map((item, key) => (
-                                                <tr key={key} className="cursor-pointer">
-                                                    <td>
-                                                        <div className="media">
-                                                            <div className="media-body pt-10">
-                                                                <p className="m-0">{item?.label} ({getInvestmentPerimeterTypeLabel(item?.perimeter)})</p>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div className="media">
-                                                            <div className="media-body pt-10">
-                                                                <p className="m-0"><span dangerouslySetInnerHTML={{__html: item.value}}></span></p>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            ))}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            )}
-                        </>
-                    )}
-                />
-            )}
+            <div className='mt-40'>
+                { data?.investmentSettingValueList?.map(item => (
+                    <>
+                        <div className='mb-20'>
+                            <h2 style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>{item?.label}</h2>
+                        </div>
+                        <div className='ml-20 mt-20 mb-40'>
+                            <p>
+                                <span dangerouslySetInnerHTML={{__html: item.value}}></span>
+                            </p>
+                        </div>
+                    </>
+                ))}
+            </div>
         </div>
     );
 }

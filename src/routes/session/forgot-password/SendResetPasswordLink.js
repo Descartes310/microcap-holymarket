@@ -1,40 +1,38 @@
 import React from 'react';
 import {connect} from "react-redux";
-import {injectIntl} from "react-intl";
 import QueueAnim from 'rc-queue-anim';
 import { Link } from 'react-router-dom';
 import {useForm} from "react-hook-form";
 import UserService from 'Services/users';
 import {HOME, AUTH} from "Url/frontendUrl";
 import AppConfig from 'Constants/AppConfig';
-import IntlMessages from "Util/IntlMessages";
 import { Form, FormGroup } from 'reactstrap';
 import Button from '@material-ui/core/Button';
 import AppBar from '@material-ui/core/AppBar';
 import {setRequestGlobalAction} from "Actions";
 import Toolbar from '@material-ui/core/Toolbar';
+import { withRouter } from "react-router-dom";
 import InputComponent from "Components/InputComponent";
-import {emailValidatorObject} from "Helpers/validator";
 import {NotificationManager} from "react-notifications";
-import ErrorInputComponent from "Components/ErrorInputComponent";
 
-const SendResetPasswordLink = ({intl, loading, setRequestGlobalAction}) => {
+const SendResetPasswordLink = ({loading, setRequestGlobalAction, history}) => {
    const { register, errors, handleSubmit } = useForm();
 
-   const onSubmit = ({email}) => {
+   const onSubmit = ({username}) => {
       setRequestGlobalAction(true);
 
       let datas = {
-         email,
+         username,
          branchUrl: window.location.origin+AUTH.RESET_PASSWORD
       };
 
       UserService.sendPasswordLink(datas)
           .then(() => {
-             NotificationManager.success("Nous venons de vous envoyez un email. Merci de bien vouloir le consulter.");
+               NotificationManager.success("Nous venons de vous envoyez un message. Merci de bien vouloir le consulter.");
+               // history.push(AUTH.RESET_PASSWORD);
           })
           .catch(() => {
-            NotificationManager.error("L'adresse email fournie n'est pas reconnue.")
+               NotificationManager.error("Le numéro utilisateur ou l'adresse email fournie n'est pas reconnue.")
           })
           .finally(() =>  setRequestGlobalAction(false));
    };
@@ -60,27 +58,22 @@ const SendResetPasswordLink = ({intl, loading, setRequestGlobalAction}) => {
                    <div className="col-sm-8 col-lg-5 mx-auto">
                       <div className="session-body text-center">
                          <div className="session-head mb-30">
-                            <h2><IntlMessages id="auth.resetPasswordLink.title" /></h2>
-                            <h4 className="mb-0">
-                               <IntlMessages id="auth.resetPasswordLink.subTitle" />
-                            </h4>
+                            <h2>Réinitialisez votre mot de passe</h2>
+                            <p className="mb-0">
+                              Entrez votre email et nous vous enverrons un lien de réinitialisation de mot de passe
+                            </p>
                          </div>
                          <Form onSubmit={handleSubmit(onSubmit)}>
                             <FormGroup className="has-wrapper">
                                <InputComponent
-                                   id="email"
-                                   type="mail"
+                                   id="username"
+                                   type="text"
                                    isRequired
-                                   name={'email'}
+                                   name={'username'}
                                    errors={errors}
                                    register={register}
                                    className="has-input input-lg"
-                                   placeholder={intl.formatMessage({id: "auth.email"})}
-                                   otherValidator={{pattern: emailValidatorObject.regex}}>
-                                  {errors.email?.type === 'pattern' && (
-                                      <ErrorInputComponent text={intl.formatMessage({id: emailValidatorObject.message})} />
-                                  )}
-                               </InputComponent>
+                                   placeholder={'Numéro utilisateur ou adresse email'} />
                                <span className="has-icon"><i className="ti-email"></i></span>
                             </FormGroup>
                             <FormGroup>
@@ -88,9 +81,10 @@ const SendResetPasswordLink = ({intl, loading, setRequestGlobalAction}) => {
                                    type="submit"
                                    disabled={loading}
                                    variant="contained"
-                                   className="btn-info text-white btn-block btn-large w-100">
-                                  <IntlMessages id="auth.resetPasswordLink.btnText"/>
-                               </Button>
+                                   className="btn-info text-white btn-block btn-large w-100"
+                              >
+                                 Réinitialiser le mot de passe
+                              </Button>
                             </FormGroup>
                          </Form>
                       </div>
@@ -106,5 +100,5 @@ const mapStateToProps = ({ requestGlobalLoader }) => {
    return { loading: requestGlobalLoader }
 };
 
-export default connect(mapStateToProps, {setRequestGlobalAction})(injectIntl(SendResetPasswordLink));
+export default connect(mapStateToProps, {setRequestGlobalAction})(withRouter(SendResetPasswordLink));
 
