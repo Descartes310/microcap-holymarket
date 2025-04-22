@@ -61,3 +61,8 @@ export const ASK_FILE_AUTHENTIFICATION = (reference) => `api/socialnetworks/user
 export const SEND_OTP = `api/socialnetworks/users/self/otp/send`;
 export const FIND_OTP = `api/socialnetworks/users/self/otp/find`;
 export const ASSISTANCE_RESET_PASSWORD = `api/socialnetworks/users/self/reset-password`;
+
+export const GET_ADDRESSES = "api/socialnetworks/users/self/addresses";
+export const CREATE_ADDRESS = "api/socialnetworks/users/self/addresses";
+export const FIND_ADDRESS = (reference) => `api/socialnetworks/users/self/addresses/${reference}`;
+export const UPDATE_ADDRESS = (reference) => `api/socialnetworks/users/self/addresses/${reference}`;

@@ -9,7 +9,9 @@ import CustomList from "Components/CustomList";
 import { setRequestGlobalAction } from 'Actions';
 import React, { useEffect, useState } from 'react';
 import CreateContact from '../components/createContact';
+import CreateAddress from '../components/createAddress';
 import UpdateContact from '../components/updateContact';
+import UpdateAddress from '../components/updateAddress';
 import { NotificationManager } from 'react-notifications';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import ConfirmContactCode from '../components/confirmContactCode';
@@ -23,19 +25,30 @@ const Personal = (props) => {
     const [alias, setAlias] = useState([]);
     const [contacts, setContacts] = useState([]);
     const [contact, setContact] = useState(null);
+    const [address, setAddress] = useState(null);
+    const [addresses, setAddresses] = useState([]);
     const [showCreateAliasBox, setShowCreateAliasBox] = useState(false);
     const [showCreateContactBox, setShowCreateContactBox] = useState(false);
+    const [showCreateAddressBox, setShowCreateAddressBox] = useState(false);
     const [showUpdateContactBox, setShowUpdateContactBox] = useState(false);
+    const [showUpdateAddressBox, setShowUpdateAddressBox] = useState(false);
     const [showConfirmContactBox, setShowConfirmContactBox] = useState(false);
 
     useEffect(() => {
         getContacts();
+        getAddresses();
     }, []);
 
     const getContacts = () => {
         UserService.getContacts().then((response) => {
             setContacts(response)
             setAlias(response.filter(c => c.type === 'ALIAS'));
+        });
+    }
+
+    const getAddresses = () => {
+        UserService.getAddresses().then((response) => {
+            setAddresses(response)
         });
     }
 
@@ -224,6 +237,88 @@ const Personal = (props) => {
                                 </>
                             )}
                         />
+
+                        <h2>Mes adresses</h2>
+                        <CustomList
+                            list={addresses}
+                            loading={false}
+                            onAddClick={() => setShowCreateAddressBox(true)}
+                            itemsFoundText={n => `${n} adresses trouvées`}
+                            renderItem={list => (
+                                <>
+                                    {list && list.length === 0 ? (
+                                        <div className="d-flex justify-content-center align-items-center py-50">
+                                            <h4>
+                                                Aucun adresse trouvée
+                                            </h4>
+                                        </div>
+                                    ) : (
+                                        <div className="table-responsive">
+                                            <table className="table table-hover table-middle mb-0">
+                                                <thead>
+                                                    <tr>
+                                                        <th className="fw-bold">Désignation</th>
+                                                        <th className="fw-bold">Region</th>
+                                                        <th className="fw-bold">Ville</th>
+                                                        <th className="fw-bold">Adresse</th>
+                                                        <th className="fw-bold">Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {list && list.map((item, key) => (
+                                                        <tr key={key} className="cursor-pointer">
+                                                            <td>
+                                                                <div className="media">
+                                                                    <div className="media-body pt-10">
+                                                                        <h4 className="m-0 fw-bold text-dark">{item.label}</h4>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div className="media">
+                                                                    <div className="media-body pt-10">
+                                                                        <h4 className="m-0 fw-bold text-dark">{item.region}</h4>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div className="media">
+                                                                    <div className="media-body pt-10">
+                                                                        <h4 className="m-0 fw-bold text-dark">{item.city}</h4>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div className="media">
+                                                                    <div className="media-body pt-10">
+                                                                        <h4 className="m-0 fw-bold text-dark">{item.address}</h4>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div className="media">
+                                                                    <Button
+                                                                        color="primary"
+                                                                        variant="contained"
+                                                                        className="text-white font-weight-bold"
+                                                                        onClick={() => {
+                                                                            setShowUpdateAddressBox(true);
+                                                                            setAddress(item);
+                                                                        }}
+                                                                    >
+                                                                        Editer
+                                                                    </Button>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    ))}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    )}
+                                </>
+                            )}
+                        />
                     </Form>
                 </div>
             </RctCard>
@@ -237,6 +332,15 @@ const Personal = (props) => {
                         getContacts();
                 }
             } />
+            <CreateAddress
+                show={showCreateAddressBox}
+                onClose={(reload = false) => {
+                    setShowCreateAddressBox(false);
+                    if(reload) {
+                        getAddresses();
+                    }
+                }
+            } />
             {showUpdateContactBox && contact && (
                 <UpdateContact 
                     show={showUpdateContactBox} 
@@ -247,6 +351,19 @@ const Personal = (props) => {
                         setContact(null);
                         if(reload) {
                             getContacts();
+                        }
+                    }} 
+                />
+            )}
+            {showUpdateAddressBox && address && (
+                <UpdateAddress
+                    show={showUpdateAddressBox} 
+                    item={address}
+                    onClose={(reload = false) => {
+                        setShowUpdateAddressBox(false);
+                        setAddress(null);
+                        if(reload) {
+                            getAddresses();
                         }
                     }} 
                 />

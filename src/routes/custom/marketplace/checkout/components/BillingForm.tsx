@@ -5,6 +5,7 @@ import OrderService from "Services/orders";
 import IntlMessages from 'Util/IntlMessages';
 import TerritoryType from "Enums/Territories";
 import Button from '@material-ui/core/Button';
+import ProductService from "Services/products";
 import { setRequestGlobalAction } from 'Actions';
 import TerritoryService from 'Services/territories';
 import TextField from '@material-ui/core/TextField';
@@ -16,7 +17,6 @@ import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { getNotificationMethods, getPaymentMethods } from "Helpers/datas";
 import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
 import { Form, FormGroup, Input, Label, Col, InputGroup, InputGroupAddon } from 'reactstrap';
-import ProductService from "Services/products";
 
 class BillingForm extends Component<any, any> {
 

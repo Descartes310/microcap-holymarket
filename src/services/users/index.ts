@@ -224,4 +224,20 @@ export default class UserService {
         return makeRequest('delete', Routes.DELETE_PROCURATION_ACCESS(reference));
     }
 
+    static getAddresses(data: any = null): Promise<any> {
+        return makeRequest('get', Routes.GET_ADDRESSES, data);
+    }
+
+    static createAddress(datas: any): Promise<any> {
+        return makeRequest('post', Routes.CREATE_ADDRESS, datas);
+    }
+
+    static updateAddress(reference: string, datas: any): Promise<any> {
+        return makeRequest('put', Routes.UPDATE_ADDRESS(reference), datas);
+    }
+
+    static findAddress(reference: string): Promise<any> {
+        return makeRequest('get', Routes.UPDATE_ADDRESS(reference));
+    }
+
 }
