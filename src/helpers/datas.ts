@@ -437,6 +437,12 @@ export const getUserAssistanceTypes = () => {
             regularizable: true
         },
         {
+            label: 'Confirmer le paiement d\'une commande',
+            value: 'ORDER_PAYMENT',
+            permission: 'ASSIST_ORDER_PAYMENT_PRIVILEGE',
+            regularizable: true
+        },
+        {
             label: 'Gérer une commande',
             value: 'MANAGE_ORDER',
             permission: 'ASSIST_MANAGE_ORDER_PRIVILEGE',

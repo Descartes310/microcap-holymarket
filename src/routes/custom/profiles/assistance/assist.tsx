@@ -29,6 +29,7 @@ import AuthenticateUser from 'Routes/custom/networks/coverages/components/authen
 import MemberDocumentsModal from 'Routes/custom/networks/coverages/components/memberFilesModal';
 import { getPriceWithCurrency, getReferralTypeLabel, getUserPermissions } from 'Helpers/helpers';
 import CodevSubscriptionModal from 'Routes/custom/marketplace/_components/codevSubscriptionModal';
+import OrderPaymentProofModal from 'Routes/custom/marketplace/orders/sales/components/OrderPaymentProof';
 import { AUTH } from 'Url/frontendUrl';
 
 const Assist = (props) => {
@@ -50,6 +51,7 @@ const Assist = (props) => {
     const [showMemberFileBox, setShowMemberFileBox] = useState(false);
     const [showOrderFolderModal, setShowOrderFolderModal] = useState(false);
     const [showSubscriptionModal, setShowSubscriptionModal] = useState(false);
+    const [showOrderPaymentModal, setShowOrderPaymentModal] = useState(false);
     const [showCreateAccessModal, setShowCreateAccessModal] = useState(false);
     const [showAuthentificationBox, setShowAuthentificationBox] = useState(false);
     const [showOrderManagementModal, setShowOrderManagementModal] = useState(false);
@@ -96,6 +98,7 @@ const Assist = (props) => {
                 case 'PAY_ORDER':
                 case 'ORDER_FOLDER':
                 case 'MANAGE_ORDER':
+                case 'ORDER_PAYMENT':
                     getOrders();
                     break;
                 case 'INITIATE_OPERATION':
@@ -338,6 +341,10 @@ const Assist = (props) => {
             case 'MANAGE_ORDER':
                 setShowOrderManagementModal(true);
                 break;
+
+            case 'ORDER_PAYMENT':
+                setShowOrderPaymentModal(true);
+                break;
         
             default:
                 break;
@@ -347,7 +354,6 @@ const Assist = (props) => {
     const activateProfile = () => {
         setShowActivationBox(true);
     }
-
 
     return (
         <RctCollapsibleCard>
@@ -451,14 +457,14 @@ const Assist = (props) => {
                         </FormGroup>
                     </>
                 )}
-                { (action?.value == 'PAY_ORDER' || action?.value == 'ORDER_FOLDER' || action?.value == 'MANAGE_ORDER') && (
+                { (action?.value == 'PAY_ORDER' || action?.value == 'ORDER_PAYMENT' || action?.value == 'ORDER_FOLDER' || action?.value == 'MANAGE_ORDER') && (
                     <FormGroup className="col-md-12 col-sm-12 has-wrapper">
                         <InputLabel className="text-left">
                             Mes commandes
                         </InputLabel>
                         <Autocomplete
                             value={order}
-                            options={orders}
+                            options={orders.filter(o => (o.paymentStatus !== 'PAID' && ['PAY_ORDER', 'ORDER_PAYMENT'].includes(action?.value)) || !['PAY_ORDER', 'ORDER_PAYMENT'].includes(action?.value))}
                             id="combo-box-demo"
                             onChange={(__, item) => {
                                 setOrder(item);
@@ -758,6 +764,18 @@ const Assist = (props) => {
                     onClose={(reload = false) => {
                         setShowCreateAccessModal(false);
                     }}
+                />
+            )}
+            { (member && order && action?.value == 'ORDER_PAYMENT' && showOrderPaymentModal) && (
+                <OrderPaymentProofModal
+                    show={showOrderPaymentModal}
+                    onClose={() => {
+                        setShowOrderPaymentModal(false);
+                        window.location.reload();
+                    }}
+                    item={order}
+                    amount={order.amount + order.complementaryPayment - order.amountPaid}
+                    currency={order?.currency}
                 />
             )}
         </RctCollapsibleCard>

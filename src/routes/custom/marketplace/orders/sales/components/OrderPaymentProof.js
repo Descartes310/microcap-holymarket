@@ -1,10 +1,10 @@
 import { connect } from 'react-redux';
-import React, { useEffect, useState } from 'react';
 import OrderService from "Services/orders";
 import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
 import {setRequestGlobalAction} from 'Actions';
 import { imageFileTypes } from 'Helpers/datas';
+import React, { useEffect, useState } from 'react';
 import { RctCardContent } from 'Components/RctCard';
 import { FileUploader } from "react-drag-drop-files";
 import { NotificationManager } from 'react-notifications';
@@ -14,13 +14,71 @@ import { Form, FormGroup, Input as InputStrap } from 'reactstrap';
 
 const OrderPaymentProofModal = (props) => {
 
-    const {show, onClose, order, sale, currency} = props;
+    const {show, onClose, item, sale, currency} = props;
     const [file, setFile] = useState(null);
+    const [order, setOrder] = useState(null);
+    const [discount, setDiscount] = useState(null);
     const [amount, setAmount] = useState(props.amount);
 
     useEffect(() => {
-        setAmount(props.amount);
+        if(sale) {
+            setAmount(props.amount);
+        }
     }, [props.amount])
+
+    useEffect(() => {
+        if(props.item) {
+            findOrder();
+            setOrder(item);
+        }
+    }, [props.item])
+
+    useEffect(() => {
+        if(order) {
+            setAmount(getDiscountedAmountToPay());
+            findDiscount();
+        }
+    }, [order]);
+
+    useEffect(() => {
+        if(discount) {
+            setAmount(getDiscountedAmountToPay());
+        }
+    }, [discount]);
+
+    const findOrder = () => {
+        props.setRequestGlobalAction(true);
+        OrderService.findOrder(item.id).then((response) => {
+           setOrder(response);
+        }).catch(() => {
+           onClose();
+        }).finally(() => {
+           props.setRequestGlobalAction(false);
+        });
+     }
+
+    const findDiscount = () => {
+        if(order.discountCode) {
+           props.setRequestGlobalAction(true);
+           OrderService.findDiscount(order.id, {code: order.discountCode})
+           .then((response) => {
+                NotificationManager.success("Le coupon est valide");
+                setDiscount(response)
+            })
+           .catch((err) => {
+              NotificationManager.error("Ce code est incorrect");
+           })
+           .finally(() => props.setRequestGlobalAction(false))
+        }
+    }
+
+    const getDiscountedAmountToPay = () => {
+        let baseAmount = order?.amount;
+        if(discount) {
+           baseAmount = baseAmount - (baseAmount * discount.percentage/100);
+        }
+        return baseAmount + order.complementaryPayment - order.amountPaid;
+     }
 
     const onSubmit = () => {
 

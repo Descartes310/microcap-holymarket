@@ -49,7 +49,6 @@ const Create = (props) => {
     const [accountTypeUnit, setAccountTypeUnit] = useState(null);
     const [selectedProfiles, setSelectedProfiles] = useState([]);
     const [sellerProfiles, setSellerProfiles] = useState([]);
-    const [userAccountType, setUserAccountType] = useState(null);
     const [isMirrorAccount, setIsMirrorAccount] = useState(false);
     const [minAccountbalance, setMinAccountBalance] = useState(null);
     const [maxAccountBalance, setMaxAccountBalance] = useState(null);

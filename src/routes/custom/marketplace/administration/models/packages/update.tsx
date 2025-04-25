@@ -20,7 +20,7 @@ import UserAccountTypeService from 'Services/account-types';
 
 const fileTypes = ["JPG", "PNG", "GIF", "JPEG"];
 
-const Create = (props) => {
+const Update = (props) => {
 
     const [code, setCode] = useState('');
     const [file, setFile] = useState(null);
@@ -39,11 +39,11 @@ const Create = (props) => {
     const [priceUnit, setPriceUnit] = useState(null);
     const [description, setDescription] = useState('');
     const [saleTypeUnit, setSaleTypeUnit] = useState(null);
-    const [maximumByUser, setMaximumByUser] = useState(null);
     const [sellerProfiles, setSellerProfiles] = useState([]);
+    const [maximumByUser, setMaximumByUser] = useState(null);
     const [selectedProfiles, setSelectedProfiles] = useState([]);
-    const [associatedProducts, setAssociatedProducts] = useState([]);
     const [showAddProductbox, setShowAddProductbox] = useState(false);
+    const [associatedProducts, setAssociatedProducts] = useState([]);
 
 
     useEffect(() => {
@@ -54,11 +54,40 @@ const Create = (props) => {
         getCategories();
     }, []);
 
+    useEffect(() => {
+        if(units.length > 0 && profiles.length > 0 && categories.length > 0 && products.length > 0) {
+            findProductModel();
+        }
+    }, [units, profiles, categories, products]);
+
     const getCategories = () => {
         props.setRequestGlobalAction(true);
         ProductService.getCategories()
             .then(response => setCategories(response))
             .finally(() => props.setRequestGlobalAction(false))
+    }
+
+
+    const findProductModel = () => {
+        props.setRequestGlobalAction(true);
+        ProductService.findDetailedProductModel(props.match.params.reference).then(response => {
+            setLabel(response.label);
+            setCode(response.code);
+            setDescription(response.description);
+            setPrice(response.price);
+            setPriceUnit(units.find(u => u.reference == response.priceUnitReference));
+            setMaximumByUser(response.maximumByUser);
+            setSaleUnit(units.find(u => u.code == response.currency));
+            setSaleTypeUnit(units.find(u => u.code == response.currency).type);
+            setCategory(categories.find(c => c.id == response.categoryProduct.id));
+            setSellWay(getSellWay().find(s => s.value == response.sellWay));
+            setNature(getProductNatures().find(p => p.value == response.nature));
+            setRange(getProductRanges().find(r => r.value == response.range));
+            setSelectedProfiles(profiles.filter(p => response.buyerProfiles.includes(p.reference)));
+            setSellerProfiles(profiles.filter(p => response.sellerProfiles.includes(p.reference)));
+            setAssociatedProducts(response.fullAssociations.map(p => { return {product: products.find(product => product.reference == p.productReference) ?? {}, quantity: p.quantity, price: p.price} }));
+        })
+        .finally(() => props.setRequestGlobalAction(false))
     }
 
     const getTypes = () => {
@@ -122,7 +151,6 @@ const Create = (props) => {
         if (
             !label ||
             !code ||
-            !file ||
             !price ||
             !range ||
             !nature ||
@@ -142,13 +170,17 @@ const Create = (props) => {
         let data: any = {
             label, code, price, description, maximumByUser, sellWay: sellWay.value,
             priceUnitReference: priceUnit.reference, categoryId: category.id,
-            image: file, nature: nature.value, range: range.value, type: 'PACKAGE',
+            nature: nature.value, range: range.value, type: 'PACKAGE',
             profiles: selectedProfiles.map(sp => sp.reference), seller_profiles: sellerProfiles.map(sp => sp.reference)
         }
 
         if (associatedProducts.length <= 0) {
             NotificationManager.error('Sélectionnez les produits à associer');
             return;
+        }
+
+        if(file) {
+            data.image = file;
         }
 
         if(saleTypeUnit) {
@@ -160,14 +192,14 @@ const Create = (props) => {
         data.prices_for_package = associatedProducts.map(ap => ap.price);
 
         props.setRequestGlobalAction(true);
-        ProductService.createProductModel(data, { fileData: ['image'], multipart: true })
+        ProductService.updateProductModel(props.match.params.reference, data, { fileData: ['image'], multipart: true })
             .then(() => {
-                NotificationManager.success('Le modèle a été crée avec succès !');
+                NotificationManager.success('Le package a été édité avec succès !');
                 props.history.push(MARKETPLACE.MODEL.PACKAGE.LIST);
             })
             .catch(err => {
                 console.log(err);
-                NotificationManager.error('Une erreur est survenu lors de la création du modèle !');
+                NotificationManager.error('Une erreur est survenu lors de la mise à jour du package !');
             }).finally(() => {
                 props.setRequestGlobalAction(false);
             });
@@ -342,7 +374,6 @@ const Create = (props) => {
                                 renderInput={(params) => <TextField {...params} variant="outlined" />}
                             />
                         </div>
-
                         <div className="col-md-6 col-sm-12 has-wrapper mb-30">
                             <InputLabel className="text-left">
                                 Profiles autorisées à vendre
@@ -487,7 +518,7 @@ const Create = (props) => {
                             onClick={onSubmit}
                             className="text-white font-weight-bold"
                         >
-                            Ajouter
+                            Enregistrer
                         </Button>
                     </FormGroup>
                 </Form>
@@ -503,4 +534,4 @@ const Create = (props) => {
     );
 };
 
-export default connect(() => { }, { setRequestGlobalAction })(withRouter(Create));
+export default connect(() => { }, { setRequestGlobalAction })(withRouter(Update));

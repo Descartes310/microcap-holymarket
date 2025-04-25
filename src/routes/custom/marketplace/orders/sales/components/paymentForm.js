@@ -132,7 +132,7 @@ class PaymentCard extends Component {
                         window.location.reload();
                      }
                   }}
-                  order={this.props.order}
+                  item={this.props.order}
                   amount={this.getDiscountedAmountToPay()}
                   currency={order?.items[0]?.currency}
                />

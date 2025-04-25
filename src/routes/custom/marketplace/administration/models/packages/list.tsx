@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
-import { MARKETPLACE } from 'Url/frontendUrl';
+import { MARKETPLACE, joinUrlWithParams } from 'Url/frontendUrl';
 import { withRouter } from "react-router-dom";
+import Button from "@material-ui/core/Button";
 import ProductService from 'Services/products';
 import CustomList from "Components/CustomList";
 import { setRequestGlobalAction } from 'Actions';
@@ -20,6 +21,10 @@ const List = (props) => {
         ProductService.getProductModels({types: ['PACKAGE']})
             .then(response => setPackages(response))
             .finally(() => props.setRequestGlobalAction(false))
+    }
+
+    const updateProduct = (item) => {
+        props.history.push(joinUrlWithParams(MARKETPLACE.MODEL.PACKAGE.UPDATE, [{param: 'reference', value: item.reference}]));
     }
 
     return (
@@ -47,6 +52,7 @@ const List = (props) => {
                                         <th className="fw-bold">Nature</th>
                                         <th className="fw-bold">Portée</th>
                                         <th className="fw-bold">Catégorie</th>
+                                        <th className="fw-bold">Edition</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -93,6 +99,16 @@ const List = (props) => {
                                                         <h4 className="m-0 fw-bold text-dark">{item.categoryProduct.label}</h4>
                                                     </div>
                                                 </div>
+                                            </td>
+                                            <td>
+                                                <Button
+                                                    color="primary"
+                                                    variant="contained"
+                                                    onClick={() => updateProduct(item)}
+                                                    className="text-white font-weight-bold mr-3"
+                                                >
+                                                    Editer
+                                                </Button>
                                             </td>
                                         </tr>
                                     ))}

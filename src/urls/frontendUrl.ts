@@ -603,6 +603,7 @@ export const MARKETPLACE = {
             SELF: "/marketplace/models/packages",
             LIST: "/marketplace/models/packages/list",
             CREATE: "/marketplace/models/packages/create",
+            UPDATE: "/marketplace/models/packages/:reference/update",
         }
     },
     DISCOUNT_MODELS: {
