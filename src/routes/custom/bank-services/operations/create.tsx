@@ -29,6 +29,8 @@ const Create = (props) => {
 
     const [user, setUser] = useState(null);
     const [data, setData] = useState(null);
+    const [banks, setBanks] = useState([]);
+    const [bank, setBank] = useState(null);
     const [order, setOrder] = useState(null);
     const [details, setDetails] = useState([]);
     const [activeTab, setActiveTab] = useState(0);
@@ -44,8 +46,14 @@ const Create = (props) => {
     const [showPaymentRequest, setShowPaymentRequest] = useState(false);
 
     useEffect(() => {
-        getPrestations();
+        getBanks();
     }, []);
+
+    useEffect(() => {
+        if(bank) {
+            getPrestations();
+        }
+    }, [bank]);
 
     const findOperation = () => {
         props.setRequestGlobalAction(true);
@@ -77,8 +85,15 @@ const Create = (props) => {
 
     const getPrestations = () => {
         props.setRequestGlobalAction(true);
-        BankService.getPrestations()
+        BankService.getPrestations({bank_reference: bank.reference})
         .then(response => setPrestations(response))
+        .finally(() => props.setRequestGlobalAction(false))
+    }
+
+    const getBanks = () => {
+        props.setRequestGlobalAction(true),
+        BankService.getIntermediateBanks()
+        .then(response => setBanks(response))
         .finally(() => props.setRequestGlobalAction(false))
     }
 
@@ -168,6 +183,23 @@ const Create = (props) => {
                                             onChange={(e) => setAuthCode(e.target.value)}
                                         />
                                     </FormGroup>
+                                    
+                                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                                        <InputLabel className="text-left">
+                                            Mandats
+                                        </InputLabel>
+                                        <Autocomplete
+                                            value={bank}
+                                            id="combo-box-demo"
+                                            options={banks}
+                                            onChange={(__, item) => {
+                                                setBank(item);
+                                            }}
+                                            getOptionLabel={(option) => option.label}
+                                            renderInput={(params) => <TextField {...params} variant="outlined" />}
+                                        />
+                                    </div>
+
                                     <div className="col-md-12 col-sm-12 has-wrapper mb-30">
                                         <InputLabel className="text-left">
                                             Prestation

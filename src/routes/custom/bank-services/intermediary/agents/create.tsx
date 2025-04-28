@@ -63,7 +63,7 @@ const Create = (props) => {
     const getTypes = () => {
         props.setRequestGlobalAction(true),
         UserAccountTypeService.getAccountTypes({based_from_member: true})
-        .then(response => setTypes(response))
+        .then(response => setTypes(response.filter(at => at.show)))
         .finally(() => props.setRequestGlobalAction(false))
     }
 

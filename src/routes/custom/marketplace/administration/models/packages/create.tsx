@@ -65,7 +65,7 @@ const Create = (props) => {
         props.setRequestGlobalAction(true),
         UserAccountTypeService.getAccountTypes()
         .then(response => {
-            setProfiles(response);
+            setProfiles(response.filter(at => at.show));
         }).finally(() => props.setRequestGlobalAction(false))
     }
 

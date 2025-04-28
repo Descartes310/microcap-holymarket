@@ -4,8 +4,8 @@ import { makeRequest } from 'Helpers/helpers';
 
 export default class BankService {
 
-    static getPrestations(): Promise<any> {
-        return makeRequest('get', Routes.GET_PRESTATIONS);
+    static getPrestations(data: any = {}): Promise<any> {
+        return makeRequest('get', Routes.GET_PRESTATIONS, data);
     }
 
     static getFundAccounts(): Promise<any> {
