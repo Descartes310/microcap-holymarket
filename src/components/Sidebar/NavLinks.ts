@@ -399,7 +399,7 @@ export default [
             "menu_title": "Clans",
             "new_item": false,
             "path": GROUP.ADMINISTRATION.CLAN.LIST,
-            "permissions": [Permission.group.admin.post.name],
+            "permissions": [Permission.group.admin.clan.name],
             "profiles": ['CONVENTIONATED_COMMUNITY', 'UNCONVENTIONATED_COMMUNITY', 'PROJECT'],
          },
          {

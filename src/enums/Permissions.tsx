@@ -85,6 +85,9 @@ export default class Permission extends BaseEnum {
             project: {
                 "name": "GROUP_ADMIN_PROJECT"
             },
+            clan: {
+                "name": "GROUP_ADMIN_CLAN"
+            },
         }
     };
 
