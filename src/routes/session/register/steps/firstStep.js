@@ -62,6 +62,9 @@ const FirstStep = props => {
         if(!residenceCountry) {
             return;
         }
+        if(isOrganisation && !data.referralCode) {
+            return;
+        }
         if(isAssistance) {
             if(!type || !contact) {
                 NotificationManager.error("Veuillez bien remplir le formulaire");
@@ -155,6 +158,23 @@ const FirstStep = props => {
                     />}
                 />
             </FormControl>
+
+            { isOrganisation && (
+                <FormGroup className="has-wrapper">
+                    <InputLabel className="text-left" htmlFor="referralCode">
+                        Numéro de reference de l'administrateur
+                    </InputLabel>
+                    <InputComponent
+                        isRequired
+                        type="text"
+                        id="referralCode"
+                        name={'referralCode'}
+                        errors={errors}
+                        register={register}
+                        className="has-input input-lg"
+                    />
+                </FormGroup>
+            )}
 
             <div className="col-md-12 col-sm-12 has-wrapper mb-30 p-0">
                 <InputLabel className="text-left">
