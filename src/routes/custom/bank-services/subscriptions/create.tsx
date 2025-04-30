@@ -180,7 +180,7 @@ const Create = (props) => {
                                 onChange={(__, item) => {
                                     setBankCode(item);
                                 }}
-                                getOptionLabel={(option) => option.value}
+                                getOptionLabel={(option) => `${option.partnerName} (${option.value})`}
                                 renderInput={(params) => <TextField {...params} variant="outlined" />}
                             />
                         </FormGroup>
@@ -195,7 +195,7 @@ const Create = (props) => {
                                 onChange={(__, item) => {
                                     setAgencyCode(item);
                                 }}
-                                getOptionLabel={(option) => option.code+" ("+option.label+")"}
+                                getOptionLabel={(option) => option.label+" ("+option.code+")"}
                                 renderInput={(params) => <TextField {...params} variant="outlined" />}
                             />
                         </FormGroup>

@@ -54,6 +54,7 @@ const List = (props) => {
                                     <thead>
                                         <tr>
                                             <th className="fw-bold">Nom commercial</th>
+                                            <th className="fw-bold">Reference</th>
                                             <th className="fw-bold">Prestations</th>
                                             <th className="fw-bold">Prestations</th>
                                         </tr>
@@ -65,6 +66,13 @@ const List = (props) => {
                                                     <div className="media">
                                                         <div className="media-body pt-10">
                                                             <h4 className="m-0 fw-bold text-dark">{item.commercialName}</h4>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="media">
+                                                        <div className="media-body pt-10">
+                                                            <h4 className="m-0 fw-bold text-dark">{item.referralCode}</h4>
                                                         </div>
                                                     </div>
                                                 </td>

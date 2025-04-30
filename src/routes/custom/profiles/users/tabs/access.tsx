@@ -84,6 +84,7 @@ const Access = (props) => {
                                             <th className="fw-bold">Nom de l'accès</th>
                                             <th className="fw-bold">Catégorie</th>
                                             <th className="fw-bold">Profil</th>
+                                            <th className="fw-bold">Compte</th>
                                             <th className="fw-bold">Poste</th>
                                             <th className="fw-bold">Réference</th>
                                             <th className="fw-bold">Login</th>
@@ -116,6 +117,15 @@ const Access = (props) => {
                                                         <div className="media-body pt-10">
                                                             <h4 className="m-0 fw-bold text-dark">
                                                                 {item.type}
+                                                            </h4>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="media">
+                                                        <div className="media-body pt-10">
+                                                            <h4 className="m-0 fw-bold text-dark">
+                                                                {item.account}
                                                             </h4>
                                                         </div>
                                                     </div>

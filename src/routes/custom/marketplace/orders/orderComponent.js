@@ -253,17 +253,19 @@ const OrderComponent = (props) => {
                                                     }
                                                 </td>
                                                 <td>
-                                                    <Button
-                                                        color="primary"
-                                                        variant="contained"
-                                                        className="text-white font-weight-bold"
-                                                        onClick={() => {
-                                                            setOrder(item);
-                                                            setShowAddFileBox(true);
-                                                        }}
-                                                    >
-                                                        Dossiers
-                                                    </Button>
+                                                    { item.status !== 'DELIVERED' && (
+                                                        <Button
+                                                            color="primary"
+                                                            variant="contained"
+                                                            className="text-white font-weight-bold"
+                                                            onClick={() => {
+                                                                setOrder(item);
+                                                                setShowAddFileBox(true);
+                                                            }}
+                                                        >
+                                                            Dossiers
+                                                        </Button>
+                                                    )}
                                                 </td>
                                             </tr>
                                         ))}
