@@ -17,6 +17,7 @@ import UserAccountTypeService from 'Services/account-types';
 const Update = (props) => {
 
     const [profiles, setProfiles] = useState([]);
+    const [psgProfiles, setPsgProfiles] = useState([]);
     const [marketProfiles, setMarketProfiles] = useState([]);
 
     useEffect(() => {
@@ -37,6 +38,7 @@ const Update = (props) => {
         props.setRequestGlobalAction(true);
         SettingService.getAuthorizedProfiles().then((response) => {
             setMarketProfiles(response.filter(p => p.scope === 'MARKET').map(p => p.userAccountType));
+            setPsgProfiles(response.filter(p => p.scope === 'PSGAV').map(p => p.userAccountType));
         }).catch((err) => {
             console.log(err);
             NotificationManager.error("Une erreur est survenu lors du chargement");
@@ -46,7 +48,10 @@ const Update = (props) => {
     }
 
     const onSubmit = () => {
-        SettingService.updateAuthorizedProfiles({market_profiles: marketProfiles.map(p => p.reference).join(",")}).then(() => {
+        SettingService.updateAuthorizedProfiles({
+            market_profiles: marketProfiles.map(p => p.reference).join(","), 
+            psg_profiles: psgProfiles.map(p => p.reference).join(",")
+        }).then(() => {
             NotificationManager.success("Profiles enregistrés avec succès");
             getTypes();
         }).catch((err) => {
@@ -76,6 +81,22 @@ const Update = (props) => {
                             id="combo-box-demo"
                             onChange={(__, items) => {
                                 setMarketProfiles(items);
+                            }}
+                            getOptionLabel={(option) => option.label}
+                            renderInput={(params) => <TextField {...params} variant="outlined" />}
+                        />
+                    </div>
+                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                        <InputLabel className="text-left">
+                            Profiles autorisés pour prestation de guichet
+                        </InputLabel>
+                        <Autocomplete
+                            multiple
+                            value={psgProfiles}
+                            options={profiles}
+                            id="combo-box-demo"
+                            onChange={(__, items) => {
+                                setPsgProfiles(items);
                             }}
                             getOptionLabel={(option) => option.label}
                             renderInput={(params) => <TextField {...params} variant="outlined" />}

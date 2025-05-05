@@ -47,6 +47,7 @@ const List = (props) => {
                                     <thead>
                                         <tr>
                                             <th className="fw-bold">Désignation</th>
+                                            <th className="fw-bold">Reference</th>
                                             <th className="fw-bold">Immatriculation</th>
                                             <th className="fw-bold">Contrat</th>
                                         </tr>
@@ -58,6 +59,13 @@ const List = (props) => {
                                                     <div className="media">
                                                         <div className="media-body pt-10">
                                                             <h4 className="m-0 fw-bold text-dark">{item.partnershipDetails.find(pd => pd.type === 'COMMERCIAL_NAME').value}</h4>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="media">
+                                                        <div className="media-body pt-10">
+                                                            <h4 className="m-0 fw-bold text-dark">{item.referralCode}</h4>
                                                         </div>
                                                     </div>
                                                 </td>
