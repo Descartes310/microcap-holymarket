@@ -45,11 +45,9 @@ const Create = (props) => {
         props.setRequestGlobalAction(true);
         UserService.findUserByReference(membership, {from_group: true})
         .then(response => {
-            if(response.referralType === 'PERSON' || (props.authUser.referralTypes.includes('PROVIDER_INTERMEDIARY') && props.authUser.referralId === response.referralCode)) {
-                setMember(response);
-            } else {
-                NotificationManager.error("Uniquement les personnes physiques sont autorisées");
-            }
+            // if(response.referralType === 'PERSON' || (props.authUser.referralTypes.includes('PROVIDER_INTERMEDIARY') && props.authUser.referralId === response.referralCode)) {
+            setMember(response);
+            // }
         })
         .catch((err) => {
             console.log(err);
