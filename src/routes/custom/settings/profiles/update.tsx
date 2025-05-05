@@ -19,6 +19,8 @@ const Update = (props) => {
     const [profiles, setProfiles] = useState([]);
     const [psgProfiles, setPsgProfiles] = useState([]);
     const [marketProfiles, setMarketProfiles] = useState([]);
+    const [brokerProfiles, setBrokerProfiles] = useState([]);
+    const [communityProfiles, setCommunityProfiles] = useState([]);
 
     useEffect(() => {
         getTypes();
@@ -39,6 +41,8 @@ const Update = (props) => {
         SettingService.getAuthorizedProfiles().then((response) => {
             setMarketProfiles(response.filter(p => p.scope === 'MARKET').map(p => p.userAccountType));
             setPsgProfiles(response.filter(p => p.scope === 'PSGAV').map(p => p.userAccountType));
+            setBrokerProfiles(response.filter(p => p.scope === 'BROKER').map(p => p.userAccountType));
+            setCommunityProfiles(response.filter(p => p.scope === 'COMMUNITY').map(p => p.userAccountType));
         }).catch((err) => {
             console.log(err);
             NotificationManager.error("Une erreur est survenu lors du chargement");
@@ -50,7 +54,9 @@ const Update = (props) => {
     const onSubmit = () => {
         SettingService.updateAuthorizedProfiles({
             market_profiles: marketProfiles.map(p => p.reference).join(","), 
-            psg_profiles: psgProfiles.map(p => p.reference).join(",")
+            psg_profiles: psgProfiles.map(p => p.reference).join(","),
+            broker_profiles: brokerProfiles.map(p => p.reference).join(","),
+            community_profiles: communityProfiles.map(p => p.reference).join(","),
         }).then(() => {
             NotificationManager.success("Profiles enregistrés avec succès");
             getTypes();
@@ -97,6 +103,38 @@ const Update = (props) => {
                             id="combo-box-demo"
                             onChange={(__, items) => {
                                 setPsgProfiles(items);
+                            }}
+                            getOptionLabel={(option) => option.label}
+                            renderInput={(params) => <TextField {...params} variant="outlined" />}
+                        />
+                    </div>
+                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                        <InputLabel className="text-left">
+                            Profiles autorisés pour courtage
+                        </InputLabel>
+                        <Autocomplete
+                            multiple
+                            value={brokerProfiles}
+                            options={profiles}
+                            id="combo-box-demo"
+                            onChange={(__, items) => {
+                                setBrokerProfiles(items);
+                            }}
+                            getOptionLabel={(option) => option.label}
+                            renderInput={(params) => <TextField {...params} variant="outlined" />}
+                        />
+                    </div>
+                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                        <InputLabel className="text-left">
+                            Profiles autorisés pour communauté
+                        </InputLabel>
+                        <Autocomplete
+                            multiple
+                            value={communityProfiles}
+                            options={profiles}
+                            id="combo-box-demo"
+                            onChange={(__, items) => {
+                                setCommunityProfiles(items);
                             }}
                             getOptionLabel={(option) => option.label}
                             renderInput={(params) => <TextField {...params} variant="outlined" />}
