@@ -15,16 +15,17 @@ const Create = (props) => {
     const [code, setCode] = useState('');
     const [label, setLabel] = useState('');
     const [endDate, setEndDate] = useState(null);
+    const [quantity, setQuantity] = useState(null);
     const [startDate, setStartDate] = useState(null);
     const [percentage, setPercentage] = useState(null);
 
     const onSubmit = () => {
-        if(!label || !code || !percentage || !startDate || !endDate)
+        if(!label || !code || !percentage || !startDate || !endDate || !quantity)
             return;
 
         var data = {
-            label, percentage,
-            startDate, endDate, code
+            label, percentage, code,
+            startDate, endDate, quantity
         }
 
         props.setRequestGlobalAction(true);
@@ -72,6 +73,20 @@ const Create = (props) => {
                             className="input-lg"
                             value={code}
                             onChange={(e) => setCode(e.target.value)}
+                        />
+                    </FormGroup>
+                    <FormGroup className="has-wrapper">
+                        <InputLabel className="text-left" htmlFor="quantity">
+                            Nombre d'usage
+                        </InputLabel>
+                        <InputStrap
+                            required
+                            id="quantity"
+                            type="number"
+                            name='quantity'
+                            className="input-lg"
+                            value={quantity}
+                            onChange={(e) => setQuantity(e.target.value)}
                         />
                     </FormGroup>
                     <FormGroup className="has-wrapper">

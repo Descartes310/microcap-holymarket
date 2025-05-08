@@ -7,17 +7,29 @@ import { setRequestGlobalAction } from 'Actions';
 import React, { useEffect, useState } from 'react';
 import ConfirmBox from "Components/dialog/ConfirmBox";
 import TimeFromMoment from "Components/TimeFromMoment";
-import { joinUrlWithParamsId, MARKETPLACE } from 'Url/frontendUrl';
+import DiscountMembers from "../components/discountMembers";
+import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+import AddMemberToDiscount from 'Routes/custom/marketplace/administration/discountModels/components/AddMemberToDiscount';
 
 const List = (props) => {
 
     const [discounts, setDiscounts] = useState([]);
     const [discount, setDiscount] = useState(null);
+    const [dropdownOpen, setDropdownOpen] = useState([]);
     const [showConfirmBox, setShowConfirmBox] = useState(false);
+    const [showParticipants, setShowParticipants] = useState(false);
+    const [showAddMemberbox, setShowAddMemberbox] = useState(false);
+    const [showClientMemberBox, setShowClientMemberBox] = useState(false);
 
     useEffect(() => {
         getDiscounts();
     }, []);
+
+    const onToggleButton = (key) => {
+        let currentArray = dropdownOpen;
+        currentArray[key] = !currentArray[key];
+        setDropdownOpen([...currentArray]);
+    }
 
     const getDiscounts = () => {
         props.setRequestGlobalAction(true);
@@ -46,7 +58,7 @@ const List = (props) => {
             list={discounts}
             loading={false}
             itemsFoundText={n => `${n} coupons trouvés`}
-            onAddClick={() => props.history.push(MARKETPLACE.STORE.DISCOUNT.CREATE)}
+            // onAddClick={() => props.history.push(MARKETPLACE.STORE.DISCOUNT.CREATE)}
             renderItem={list => (
                 <>
                     {list && list.length === 0 ? (
@@ -63,9 +75,8 @@ const List = (props) => {
                                         <th className="fw-bold">Désignation</th>
                                         <th className="fw-bold">Code</th>
                                         <th className="fw-bold">Réduction</th>
-                                        <th className="fw-bold">Date de début</th>
-                                        <th className="fw-bold">Date de fin</th>
-                                        <th className="fw-bold">Produits</th>
+                                        <th className="fw-bold">Limite d'usage</th>
+                                        <th className="fw-bold">Usage restant</th>
                                         <th className="fw-bold">Actions</th>
                                     </tr>
                                 </thead>
@@ -96,14 +107,14 @@ const List = (props) => {
                                             <td>
                                                 <div className="media">
                                                     <div className="media-body pt-10">
-                                                        <p className="m-0 text-dark"><TimeFromMoment time={item.startDate} showFullDate /></p>
+                                                        <h4 className="m-0 fw-bold text-dark">{item.quantity}</h4>
                                                     </div>
                                                 </div>
                                             </td>
                                             <td>
                                                 <div className="media">
                                                     <div className="media-body pt-10">
-                                                        <p className="m-0 text-dark"><TimeFromMoment time={item.endDate} showFullDate /></p>
+                                                        <h4 className="m-0 fw-bold text-dark">{item.remaining}</h4>
                                                     </div>
                                                 </div>
                                             </td>
@@ -111,38 +122,66 @@ const List = (props) => {
                                                 <Button
                                                     color="primary"
                                                     variant="contained"
-                                                    onClick={() => props.history.push(joinUrlWithParamsId(MARKETPLACE.STORE.DISCOUNT.PRODUCTS, item.reference))}
-                                                    className="text-white font-weight-bold mr-3"
-                                                >
-                                                    Produits
-                                                </Button>
-                                            </td>
-                                            <td>
-                                                <Button
-                                                    color="primary"
-                                                    variant="contained"
-                                                    onClick={() => props.history.push(joinUrlWithParamsId(MARKETPLACE.STORE.DISCOUNT.UPDATE, item.reference))}
-                                                    className="text-white font-weight-bold mr-3"
-                                                >
-                                                    Editer
-                                                </Button>
-                                                <Button
-                                                    color="primary"
-                                                    variant="contained"
                                                     onClick={() => {
                                                         setDiscount(item);
-                                                        setShowConfirmBox(true);
+                                                        setShowParticipants(true);
                                                     }}
-                                                    className="btn-danger text-white font-weight-bold mr-3"
+                                                    className="text-white font-weight-bold mr-3"
                                                 >
-                                                    Supprimer
+                                                    Participants
                                                 </Button>
+                                                <ButtonDropdown isOpen={dropdownOpen[1]} toggle={() => onToggleButton(1)} className="mr-3">
+                                                    <DropdownToggle caret color='primary' style={{ color: 'white', fontSize: '1rem' }}>
+                                                        Partager
+                                                    </DropdownToggle>
+                                                    <DropdownMenu>
+                                                            <DropdownItem style={{ color: 'black' }}
+                                                                onClick={() => {
+                                                                    setDiscount(item);
+                                                                    setShowAddMemberbox(true);
+                                                                }}
+                                                            >
+                                                                A un distributeur
+                                                            </DropdownItem>
+                                                            <DropdownItem style={{ color: 'black' }}
+                                                                onClick={() => {
+                                                                    setDiscount(item);
+                                                                    setShowClientMemberBox(true);
+                                                                }}
+                                                            >
+                                                                A un client
+                                                            </DropdownItem>
+                                                    </DropdownMenu>
+                                                </ButtonDropdown>
                                             </td>
                                         </tr>
                                     ))}
                                 </tbody>
                             </table>
                         </div>
+                    )}
+                    { (showAddMemberbox || showClientMemberBox) && discount && (
+                        <AddMemberToDiscount
+                            show={showAddMemberbox || showClientMemberBox}
+                            usable={showClientMemberBox}
+                            reference={discount.reference}
+                            isSeller={false}
+                            onClose={() => {
+                                setShowAddMemberbox(false);
+                                setShowClientMemberBox(false);
+                                getDiscounts();
+                            }}
+                        />
+                    )}
+                    { showParticipants && discount && (
+                        <DiscountMembers
+                            show={showParticipants}
+                            reference={discount.reference}
+                            onClose={() => {
+                                setShowParticipants(false)
+                                setDiscount(null);
+                            }}
+                        />
                     )}
                     { discount && showConfirmBox && (
                         <ConfirmBox

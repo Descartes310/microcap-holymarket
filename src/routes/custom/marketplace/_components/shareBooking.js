@@ -30,7 +30,8 @@ class ShareBooking extends Component {
         }
 
         let data = {
-            referral_code: this.state.member.referralCode
+            usable: this.props.usable,
+            referral_code: this.state.member.referralCode,
         };
 
         if(this.state.useLimit && this.state.useLimit > 0) {

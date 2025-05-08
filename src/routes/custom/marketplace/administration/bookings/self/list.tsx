@@ -11,15 +11,18 @@ import BookingGifts from '../../../_components/bookingGifts';
 import ShareBooking from '../../../_components/shareBooking';
 import BookingMembers from '../../../_components/bookingMembers';
 import { joinUrlWithParamsId, MARKETPLACE } from 'Url/frontendUrl';
+import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 
 const List = (props) => {
 
     const [bookings, setBookings] = useState([]);
     const [booking, setBooking] = useState(null);
+    const [dropdownOpen, setDropdownOpen] = useState([]);
     const [showGiftBox, setShowGiftBox] = useState(false);
     const [showShareBox, setShowShareBox] = useState(false);
     const [showMemberBox, setShowMemberBox] = useState(false);
     const [showConfirmBox, setShowConfirmBox] = useState(false);
+    const [showClientShareBox, setShowClientShareBox] = useState(false);
 
     useEffect(() => {
         getBookings();
@@ -45,6 +48,12 @@ const List = (props) => {
                 setShowConfirmBox(false);
             })
             .finally(() => props.setRequestGlobalAction(false))
+    }
+
+    const onToggleButton = (key) => {
+        let currentArray = dropdownOpen;
+        currentArray[key] = !currentArray[key];
+        setDropdownOpen([...currentArray]);
     }
 
     return (
@@ -150,32 +159,31 @@ const List = (props) => {
                                                     </>
                                                 )}
                                                 { !item.usable && (
-                                                    <Button
-                                                        color="primary"
-                                                        variant="contained"
-                                                        onClick={() => {
-                                                            setBooking(item);
-                                                            setShowShareBox(true);
-                                                        }}
-                                                        className="text-white font-weight-bold mr-3"
-                                                    >
-                                                        Partager
-                                                    </Button>
+                                                    <ButtonDropdown isOpen={dropdownOpen[key]} toggle={() => onToggleButton(key)} className="mr-3">
+                                                        <DropdownToggle caret color='primary' style={{ color: 'white', fontSize: '1rem' }}>
+                                                            Partager
+                                                        </DropdownToggle>
+                                                        <DropdownMenu>
+                                                                <DropdownItem style={{ color: 'black' }}
+                                                                    onClick={() => {
+                                                                        setBooking(item);
+                                                                        setShowShareBox(true);
+                                                                    }}
+                                                                >
+                                                                    A un distributeur
+                                                                </DropdownItem>
+                                                                <DropdownItem style={{ color: 'black' }}
+                                                                    onClick={() => {
+                                                                        setBooking(item);
+                                                                        setShowClientShareBox(true);
+                                                                    }}
+                                                                >
+                                                                    A un client
+                                                                </DropdownItem>
+                                                        </DropdownMenu>
+                                                    </ButtonDropdown>
                                                 )}
                                             </td>
-                                            {/* <td>
-                                                <Button
-                                                    color="primary"
-                                                    variant="contained"
-                                                    onClick={() => {
-                                                        setBooking(item);
-                                                        setShowConfirmBox(true);
-                                                    }}
-                                                    className="btn-danger text-white font-weight-bold mr-3"
-                                                >
-                                                    Supprimer
-                                                </Button>
-                                            </td> */}
                                         </tr>
                                     ))}
                                 </tbody>
@@ -194,14 +202,16 @@ const List = (props) => {
                             message={'Etes vous sure de vouloir supprimer ce code de reservation ?'}
                         />
                     )}
-                    { booking && showShareBox && (
+                    { booking && (showShareBox || showClientShareBox) && (
                         <ShareBooking
                             booking={booking}
-                            show={showShareBox}
+                            show={showShareBox || showClientShareBox}
                             uniqueUsage={false}
+                            usable={false}
                             title={'Partager '+booking.label}
                             onClose={() => {
                                 setShowShareBox(false);
+                                setShowClientShareBox(false);
                                 getBookings();
                             }}
                         />

@@ -9,14 +9,17 @@ import ConfirmBox from "Components/dialog/ConfirmBox";
 import TimeFromMoment from "Components/TimeFromMoment";
 import ShareBooking from '../../../_components/shareBooking';
 import BookingMembers from '../../../_components/bookingMembers';
+import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 
 const List = (props) => {
 
     const [bookings, setBookings] = useState([]);
     const [booking, setBooking] = useState(null);
+    const [dropdownOpen, setDropdownOpen] = useState([]);
     const [showShareBox, setShowShareBox] = useState(false);
     const [showMemberBox, setShowMemberBox] = useState(false);
     const [showConfirmBox, setShowConfirmBox] = useState(false);
+    const [showClientShareBox, setShowClientShareBox] = useState(false);
 
     useEffect(() => {
         getBookings();
@@ -42,6 +45,12 @@ const List = (props) => {
                 setShowConfirmBox(false);
             })
             .finally(() => props.setRequestGlobalAction(false))
+    }
+
+    const onToggleButton = (key) => {
+        let currentArray = dropdownOpen;
+        currentArray[key] = !currentArray[key];
+        setDropdownOpen([...currentArray]);
     }
 
     return (
@@ -120,17 +129,29 @@ const List = (props) => {
                                             <td>
                                                 { !item.usable && (
                                                     <>
-                                                        <Button
-                                                            color="primary"
-                                                            variant="contained"
-                                                            onClick={() => {
-                                                                setBooking(item);
-                                                                setShowShareBox(true);
-                                                            }}
-                                                            className="text-white font-weight-bold mr-3"
-                                                        >
-                                                            Partager
-                                                        </Button>
+                                                        <ButtonDropdown isOpen={dropdownOpen[key]} toggle={() => onToggleButton(key)} className="mr-3">
+                                                            <DropdownToggle caret color='primary' style={{ color: 'white', fontSize: '1rem' }}>
+                                                                Partager
+                                                            </DropdownToggle>
+                                                            <DropdownMenu>
+                                                                    <DropdownItem style={{ color: 'black' }}
+                                                                        onClick={() => {
+                                                                            setBooking(item);
+                                                                            setShowShareBox(true);
+                                                                        }}
+                                                                    >
+                                                                        A un distributeur
+                                                                    </DropdownItem>
+                                                                    <DropdownItem style={{ color: 'black' }}
+                                                                        onClick={() => {
+                                                                            setBooking(item);
+                                                                            setShowClientShareBox(true);
+                                                                        }}
+                                                                    >
+                                                                        A un client
+                                                                    </DropdownItem>
+                                                            </DropdownMenu>
+                                                        </ButtonDropdown>
                                                         <Button
                                                             color="primary"
                                                             variant="contained"
@@ -176,14 +197,16 @@ const List = (props) => {
                             message={'Etes vous sure de vouloir supprimer ce code de reservation ?'}
                         />
                     )}
-                    { booking && showShareBox && (
+                    { booking && (showShareBox || showClientShareBox) && (
                         <ShareBooking
                             booking={booking}
-                            show={showShareBox}
+                            show={showShareBox || showClientShareBox}
                             uniqueUsage={false}
+                            usable={showClientShareBox}
                             title={'Partager '+booking.label}
                             onClose={() => {
                                 setShowShareBox(false);
+                                setShowClientShareBox(false);
                                 getBookings();
                             }}
                         />

@@ -6,8 +6,8 @@ import { MARKETPLACE } from 'Url/frontendUrl';
 import ProductService from 'Services/products';
 import { setRequestGlobalAction } from 'Actions';
 import { NotificationManager } from 'react-notifications';
-import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import {Form, FormGroup, Input as InputStrap} from 'reactstrap';
+import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
 
 const Update = (props) => {
@@ -15,6 +15,7 @@ const Update = (props) => {
     const [code, setCode] = useState('');
     const [label, setLabel] = useState('');
     const [endDate, setEndDate] = useState(null);
+    const [quantity, setQuantity] = useState(null);
     const [startDate, setStartDate] = useState(null);
     const [percentage, setPercentage] = useState(null);
 
@@ -27,6 +28,7 @@ const Update = (props) => {
             setCode(response.code);
             setLabel(response.label);
             setEndDate(response.endDate);
+            setQuantity(response.quantity);
             setStartDate(response.startDate);
             setPercentage(response.percentage);
         }).catch((err) => {
@@ -37,12 +39,12 @@ const Update = (props) => {
     }
 
     const onSubmit = () => {
-        if(!label || !code || !percentage || !startDate || !endDate)
+        if(!label || !code || !percentage || !startDate || !endDate || !quantity)
             return;
 
         var data = {
-            label, percentage,
-            startDate, endDate, code
+            label, percentage, code,
+            startDate, endDate, quantity
         }
 
         props.setRequestGlobalAction(true);
@@ -90,6 +92,20 @@ const Update = (props) => {
                             className="input-lg"
                             value={code}
                             onChange={(e) => setCode(e.target.value)}
+                        />
+                    </FormGroup>
+                    <FormGroup className="has-wrapper">
+                        <InputLabel className="text-left" htmlFor="quantity">
+                            Nombre d'usage
+                        </InputLabel>
+                        <InputStrap
+                            required
+                            id="quantity"
+                            type="number"
+                            name='quantity'
+                            className="input-lg"
+                            value={quantity}
+                            onChange={(e) => setQuantity(e.target.value)}
                         />
                     </FormGroup>
                     <FormGroup className="has-wrapper">
