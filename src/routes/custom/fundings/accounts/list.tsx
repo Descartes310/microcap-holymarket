@@ -6,25 +6,64 @@ import CustomList from "Components/CustomList";
 import AccountProfile from './accountProfile';
 import { setRequestGlobalAction } from 'Actions';
 import React, { useState, useEffect } from 'react';
+import ConfirmBox from "Components/dialog/ConfirmBox";
 import { getPriceWithCurrency } from 'Helpers/helpers';
+import { NotificationManager } from 'react-notifications';
 import { FUNDING, joinUrlWithParamsId } from 'Url/frontendUrl';
 import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
+import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 
 const List = (props) => {
 
     const [accounts, setAccounts] = useState([]);
+    const [dropdownOpen, setDropdownOpen] = useState([]);
     const [showProfiles, setShowProfiles] = useState(false);
+    const [showConfirmBox, setShowConfirmBox] = useState(false);
     const [selectedAccount, setSelectedAccount] = useState(null);
 
     useEffect(() => {
         getAccounts();
     }, []);
 
+    const onToggleButton = (key) => {
+        let currentArray = dropdownOpen;
+        currentArray[key] = !currentArray[key];
+        setDropdownOpen([...currentArray]);
+    }
+
     const getAccounts = () => {
         props.setRequestGlobalAction(true),
         AccountService.getAccountProfiles()
                 .then(response => setAccounts(response))
                 .finally(() => props.setRequestGlobalAction(false))
+    }
+
+    const createExternalAccount = () => {
+
+        if(!selectedAccount) {
+            return;
+        }
+
+        let data = {
+            account_reference: selectedAccount.reference, type: 'BANK'
+        };
+
+        props.setRequestGlobalAction(true);
+
+        AccountService.createExternalAccount(data).then(() => {
+            NotificationManager.success('Le compte a été enregistré');
+            window.location.reload();
+        })
+        .catch((err) => {
+            console.log(err);
+            NotificationManager.error("Une erreur s'est produite");
+        })
+        .finally(() => {
+            props.setRequestGlobalAction(false);
+            setSelectedAccount(null);
+            setShowConfirmBox(false);
+            getAccounts();
+        });
     }
 
     return (
@@ -98,17 +137,32 @@ const List = (props) => {
                                                 </td>
                                                 <td>
                                                     { item.owner && (
-                                                        <Button
-                                                            color="primary"
-                                                            variant="contained"
-                                                            className="text-white font-weight-bold"
-                                                            onClick={() => {
-                                                                setSelectedAccount(item);
-                                                                setShowProfiles(true);
-                                                            }}
-                                                        >
-                                                            Profile
-                                                        </Button>
+
+                                                        <ButtonDropdown isOpen={dropdownOpen[key]} toggle={() => onToggleButton(key)} className="mr-3" positionFixed={true}>
+                                                            <DropdownToggle caret color='primary' style={{ color: 'white', fontSize: '0.9rem' }}>
+                                                                Actions
+                                                            </DropdownToggle>
+                                                            <DropdownMenu  container={'body'}>
+                                                                <DropdownItem style={{ color: 'black' }}
+                                                                    onClick={() => {
+                                                                        setSelectedAccount(item);
+                                                                        setShowProfiles(true);
+                                                                    }}
+                                                                >
+                                                                    Profile
+                                                                </DropdownItem>
+                                                                { !item.externalAccountReference && (
+                                                                    <DropdownItem style={{ color: 'black' }}
+                                                                        onClick={() => {
+                                                                            setSelectedAccount(item);
+                                                                            setShowConfirmBox(true);
+                                                                        }}
+                                                                    >
+                                                                        Créer le compte externe
+                                                                    </DropdownItem>
+                                                                )}
+                                                            </DropdownMenu>
+                                                        </ButtonDropdown>
                                                     )}
                                                 </td>
                                             </tr>
@@ -129,6 +183,20 @@ const List = (props) => {
                         setShowProfiles(false);
                         setSelectedAccount(null);
                     }}
+                />
+            )}
+
+            { showConfirmBox && selectedAccount && (
+                <ConfirmBox
+                    show={showConfirmBox}
+                    rightButtonOnClick={() => {
+                        createExternalAccount();
+                    }}
+                    leftButtonOnClick={() => {
+                        setShowConfirmBox(false);
+                        setSelectedAccount(null);
+                    }}
+                    message={`Etes vous sure de vouloir créer un compte externe associé ?`}
                 />
             )}
         </>

@@ -30,7 +30,6 @@ const Accounts = (props) => {
             <CustomList
                 loading={false}
                 list={accounts}
-                onAddClick={() => setShowAddBox(true)}
                 itemsFoundText={n => `${n} comptes trouvés`}
                 renderItem={list => (
                     <>
